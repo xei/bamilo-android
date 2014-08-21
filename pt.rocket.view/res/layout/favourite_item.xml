@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/favourite_item_height" >
+    android:layout_height="@dimen/catalog_list_item_height"
+    android:layout_marginBottom="@dimen/rounded_vertical_margin"
+    android:layout_marginLeft="@dimen/rounded_horizontal_margin"
+    android:layout_marginRight="@dimen/rounded_horizontal_margin"
+    android:layout_marginTop="@dimen/rounded_vertical_margin"
+    android:background="@drawable/background_content" >
 
     <!-- CONTAINER -->
 
@@ -15,9 +20,11 @@
 
         <include
             android:id="@+id/favourite_item_image_container"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/catalog_list_item_image_width"
+            android:layout_height="@dimen/catalog_list_item_image_height"
             android:layout_alignParentLeft="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/catalog_grid_item_horizontal_padding"
             layout="@layout/favourite_item_image" />
 
         <!-- INFO CONTAINER -->
@@ -25,23 +32,16 @@
         <include
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/margin_mid"
-            android:layout_marginRight="@dimen/margin_mid"
+            android:layout_marginLeft="@dimen/catalog_list_item_horizontal_padding"
+            android:layout_marginRight="@dimen/catalog_list_item_horizontal_padding"
             android:layout_toRightOf="@id/favourite_item_image_container"
             layout="@layout/favourite_item_info" />
     </RelativeLayout>
 
-    <!-- DIV -->
-
     <View
-        style="@style/divider_horizontal"
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/rounded_vertical_margin"
         android:layout_alignParentBottom="true" />
-
-    <!-- DIV -->
-
-    <View
-        style="@style/divider_vertical_favourite"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true" />
 
 </RelativeLayout>

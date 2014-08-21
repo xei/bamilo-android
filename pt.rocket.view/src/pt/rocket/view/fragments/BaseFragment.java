@@ -862,6 +862,22 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
     
     /**
+     * Show the empty view from the root layout
+     * 
+     * @param emptyStringResId
+     * @param emptyDrawableResId
+     * @param buttonEmptyStringResId
+     * @param onClickListener
+     */
+    protected void showFragmentEmpty(int emptyStringResId, int emptyDrawableResId, int buttonEmptyStringResId, OnClickListener onClickListener) {
+        showFragmentEmpty(emptyStringResId, emptyDrawableResId);
+        Button emptyContinueButton = (Button) getView().findViewById(R.id.fragment_root_empty_continue_button);
+        emptyContinueButton.setVisibility(View.VISIBLE);
+        emptyContinueButton.setText(getString(buttonEmptyStringResId));
+        emptyContinueButton.setOnClickListener(onClickListener);
+    }
+    
+    /**
      * Hide all root views
      */
     protected void hideFragmentRootViews() {

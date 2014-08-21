@@ -201,17 +201,26 @@
     <dimen name="catalog_item_vertical_padding">10dp</dimen>
     <dimen name="catalog_grid_item_horizontal_padding">6.67dp</dimen>
     <dimen name="catalog_list_item_horizontal_padding">13.33dp</dimen>
+    <dimen name="catalog_grid_item_image_width">97.33dp</dimen>
+    <dimen name="catalog_grid_item_image_height">121.67dp</dimen>
+    <integer name="catalog_list_num_columns">1</integer>
+    <integer name="catalog_grid_num_columns">2</integer>
     
     <dimen name="root_empty_container_height">240dp</dimen>
     <dimen name="root_empty_drawable_padding">23.33dp</dimen>
     
-    <dimen name="catalog_grid_item_image_width">97.33dp</dimen>
-    <dimen name="catalog_grid_item_image_height">121.67dp</dimen>
+    <!-- MY PROFILE REDESIGN -->
+    <dimen name="button_orange_text_size">16.67sp</dimen>
+    <dimen name="button_orange_height">33.33dp</dimen>
+    <dimen name="button_orange_extra_height">50dp</dimen>
+    <dimen name="button_orange_top_margin">26.67dp</dimen>
+    <dimen name="button_orange_landscape_width">440dp</dimen>
     
-    <dimen name="catalog_text_size">10.67sp</dimen>
-    <dimen name="catalog_big_text_size">12sp</dimen>
-
-    <integer name="catalog_list_num_columns">1</integer>
-    <integer name="catalog_grid_num_columns">2</integer>
+    <dimen name="product_item_text_size">10.67sp</dimen>
+    <dimen name="product_item_brand_text_size">12sp</dimen>
+    <dimen name="product_item_addtocart_text_size">8sp</dimen>
+    <dimen name="product_item_addtocart_height">25dp</dimen>
+    <dimen name="product_item_addtocart_variation_width">43.33dp</dimen>
+    <dimen name="product_item_delete_text_size">20sp</dimen>
 
 </resources>

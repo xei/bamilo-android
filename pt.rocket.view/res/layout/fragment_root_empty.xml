@@ -22,6 +22,7 @@
             android:id="@+id/fragment_root_empty_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:src="@drawable/no_image_small" />
 
         <org.holoeverywhere.widget.TextView
@@ -31,25 +32,18 @@
             android:layout_marginTop="@dimen/root_empty_drawable_padding"
             android:gravity="center"
             android:text="You have no items at the moment."
-            android:textColor="#e0e0e0"
-            android:textSize="@dimen/text_smid" />
+            android:textColor="@color/grey_middlelight"
+            android:textSize="@dimen/button_orange_text_size" />
     </LinearLayout>
 
     <org.holoeverywhere.widget.Button
         android:id="@+id/fragment_root_empty_continue_button"
         style="@style/button_orange_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/rounded_vertical_margin"
-        android:layout_marginLeft="@dimen/rounded_horizontal_margin"
-        android:layout_marginRight="@dimen/rounded_horizontal_margin"
-        android:layout_marginTop="@dimen/rounded_vertical_margin"
-        android:clickable="false"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
+        android:layout_height="@dimen/button_orange_height"
+        android:layout_margin="@dimen/rounded_horizontal_margin"
         android:text="@string/catalog_edit_filters"
         android:textColor="@color/grey_dark"
-        android:textSize="@dimen/text_mid"
+        android:textSize="@dimen/button_orange_text_size"
         android:visibility="gone" />
 
 </LinearLayout>

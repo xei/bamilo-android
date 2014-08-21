@@ -137,6 +137,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        // Hide title
+        // getBaseActivity().hideTitle();
         // Tracking page
         TrackerDelegator.trackPage(TrackingPage.RECENTLY_VIEWED);
     }
@@ -203,9 +205,20 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             showFragmentContentContainer();
         } else {
             Log.i(TAG, "ON SHOW IS EMPTY");
-            showFragmentEmpty(R.string.recentlyview_no_searches, R.drawable.img_norecentview); // XXX
-            mClearAllButton.setVisibility(View.GONE);
+            showEmpty();
         }
+    }
+    
+    private void showEmpty() {
+        getBaseActivity().showWarningVariation(false);
+        mClearAllButton.setVisibility(View.GONE);
+        mClearAllButton.setOnClickListener(null);
+        showFragmentEmpty(R.string.recentlyview_no_searches, R.drawable.img_norecentview, R.string.continue_shopping, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
+        });
     }
 
     /**
@@ -601,8 +614,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         mRecentlyViewedAdapter.notifyDataSetChanged();
         // Validate current state
         if (mRecentlyViewed.isEmpty()) {
-            showFragmentEmpty(R.string.recentlyview_no_searches, R.drawable.img_norecentview);
-            mClearAllButton.setVisibility(View.GONE);
+            showEmpty();
         }
         // Dismiss
         Handler handler = new Handler();

@@ -2,38 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/favourites_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/grey_background" >
 
     <GridView
         android:id="@+id/favourites_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/rounded_vertical_margin"
         android:listSelector="@drawable/selector_listitem_highlight"
         android:numColumns="@integer/favourite_num_columns"
-        android:paddingBottom="73dp" />
+        android:paddingBottom="@dimen/button_orange_extra_height" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/button_orange_extra_height"
         android:layout_alignBottom="@id/favourites_grid"
-        android:layout_centerHorizontal="true"
-        android:background="@android:color/white"
+        android:background="@color/grey_background"
         android:gravity="center" >
 
-        <org.holoeverywhere.widget.Button
-            android:id="@+id/favourite_button_shop_all"
-            style="@style/button_orange_style"
-            android:layout_width="@dimen/inner_container_width"
-            android:layout_marginLeft="@dimen/margin_large"
-            android:layout_marginRight="@dimen/margin_large"
-            android:contentDescription="@string/productdetail_addcart_description"
-            android:gravity="center"
-            android:paddingLeft="@dimen/margin_large"
-            android:paddingRight="@dimen/margin_large"
-            android:singleLine="true"
-            android:text="@string/favourite_addalltocart"
-            android:textColor="#333"
-            android:textSize="@dimen/text_s" />
+        <include layout="@layout/favourite_button_layout" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -144,6 +144,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        // Hide title
+        // getBaseActivity().hideTitle();
         // Tracking page        
         TrackerDelegator.trackPage(TrackingPage.FAVORITES);
     }
@@ -215,7 +217,12 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         getBaseActivity().showWarningVariation(false);
         mAddAllToCartButton.setVisibility(View.GONE);
         mAddAllToCartButton.setOnClickListener(null);
-        showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites);
+        showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites, R.string.continue_shopping, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
+        });
     }
     
 
@@ -740,9 +747,10 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Update adapter
         mFavouritesAdapter.notifyDataSetChanged();
         // Validate current state
-        if (mFavourites.isEmpty()) showEmpty();
+        if (mFavourites.isEmpty()){
+            showEmpty();
+        }
     }
-    
     
     /**
      * ###### DIALOG ###### 
