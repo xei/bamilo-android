@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/rounded_vertical_margin"
-    android:background="#c8c8c8"
+    android:background="@color/grey_background"
     android:paddingBottom="0dp" >
 
     <!-- EMPTY VIEW / RETRY VIEW -->
@@ -30,14 +30,14 @@
             android:gravity="center"
             android:text="@string/catalog_no_results"
             android:textColor="#e0e0e0"
-            android:textSize="@dimen/text_smid" />
+            android:textSize="@dimen/button_orange_text_size" />
     </LinearLayout>
 
     <org.holoeverywhere.widget.Button
         android:id="@+id/retry_alert_view_button"
         style="@style/button_orange_style"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/button_orange_height"
         android:layout_below="@id/search_products_not_found"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/rounded_vertical_margin"
@@ -49,7 +49,7 @@
         android:paddingRight="8dp"
         android:text="@string/catalog_edit_filters"
         android:textColor="@color/grey_dark"
-        android:textSize="@dimen/text_mid"
+        android:textSize="@dimen/button_orange_text_size"
         android:visibility="gone" />
 
     <!-- CONTENT -->
