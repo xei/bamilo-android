@@ -998,6 +998,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         }
     }
 
+    public ArrayList<CatalogFilter> getCatalogFilter() {
+        return mCatalogFilter;
+    }
+
     // ---------------------------------------------------------------
     // ----- Listeners
     // ---------------------------------------------------------------

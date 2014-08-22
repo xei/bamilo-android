@@ -28,6 +28,7 @@ import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.helpers.products.GetProductsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.utils.dialogfragments.DialogFilterFragment;
 import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
@@ -36,6 +37,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -101,18 +103,12 @@ public class CatalogPageFragment extends BaseFragment {
     private boolean mReceivedError = false;
     private boolean isFrench = false;
 
-    // Spnf - search_products_not_found
-    private LinearLayout viewSpnf;
-    // Ravb - retry_alert_view_button
-    private Button buttonRavb;
     // pc products_content
     private RelativeLayout relativeLayoutPc;
     // Lm loading_more
     private LinearLayout linearLayoutLm;
     // Products grid view
     private GridView gridView;
-    // Lb - loading_bar
-    private LinearLayout linearLayoutLb;
     // Button to go to top of list
     private Button btnToplist;
 
@@ -236,50 +232,62 @@ public class CatalogPageFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED #" + mPageIndex);
 
-        this.viewSpnf = (LinearLayout) view.findViewById(R.id.search_products_not_found);
-        this.buttonRavb = (Button) view.findViewById(R.id.retry_alert_view_button);
         this.relativeLayoutPc = (RelativeLayout) view.findViewById(R.id.products_content);
         this.linearLayoutLm = (LinearLayout) view.findViewById(R.id.loadmore);
         this.gridView = (GridView) view.findViewById(R.id.middle_productslist_list);
         this.gridView.setOnItemClickListener(onItemClickListener);
 
-        this.linearLayoutLb = (LinearLayout) view.findViewById(R.id.loading_view_pager);
-        // this.loadingBarView = ((LoadingBarView)
-        // this.linearLayoutLb.findViewById(R.id.loading_bar_view));
-
         this.btnToplist = (Button) view.findViewById(R.id.btn_toplist);
         this.btnToplist.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*--
-                 * Position scroll on position nItemsScroll
-                 * Smooth scroll after DELAY
-                 * Force scroll on position 0 after more DELAY
-                 */
-                int delay = 0;
-                int nItemsToScroll = numColumns * 5;
-                Log.d(TAG, "mFirstVisibleItem: " + mFirstVisibleItem + "; nItemsToScroll: " + nItemsToScroll);
-                // Position scroll if past nItemsScroll. Delay smoothScroll
-                if (mFirstVisibleItem > nItemsToScroll) {
-                    gridView.setSelection(nItemsToScroll);
-                    delay = SCROLL_DELAY;
+                // verify if API is 11 or above
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    /*--
+                     * smooth scroll directly to top in 1 second
+                     */
+                    gridView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            int duration = mFirstVisibleItem <= 10 ? 300 : 1000;
+                            gridView.smoothScrollToPositionFromTop(0, 0, duration);
+                        }
+                    });
+                } else {
+                    oldSmoothScroll();
                 }
+            }
+        });
+    }
+    
+    private void oldSmoothScroll() {
+        /*--
+         * Position scroll on position nItemsScroll
+         * Smooth scroll after DELAY
+         * Force scroll on position 0 after more DELAY
+         */
+        int delay = 0;
+        int nItemsToScroll = numColumns * 5;
+        Log.d(TAG, "mFirstVisibleItem: " + mFirstVisibleItem + "; nItemsToScroll: " + nItemsToScroll);
+        // Position scroll if past nItemsScroll. Delay smoothScroll
+        if (mFirstVisibleItem > nItemsToScroll) {
+            gridView.setSelection(nItemsToScroll);
+            delay = SCROLL_DELAY;
+        }
 
-                // Smooth scroll and position scroll after 2 * DELAY
+        // Smooth scroll and position scroll after 2 times DELAY
+        gridView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                gridView.smoothScrollToPosition(0);
                 gridView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        gridView.smoothScrollToPosition(0);
-                        gridView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                gridView.setSelection(0);
-                            }
-                        }, SCROLL_DELAY*2);
+                        gridView.setSelection(0);
                     }
-                }, delay);
+                }, SCROLL_DELAY*2);
             }
-        });
+        }, delay);
     }
 
     @Override
@@ -378,7 +386,11 @@ public class CatalogPageFragment extends BaseFragment {
                 gridView.setOnScrollListener(onScrollListener);
     
                 if (products == null || products.isEmpty()) {
-                    showProductsNotfound();
+                    if (mSavedProductsSKU != null /*- AAA && !mSavedProductsSKU.isEmpty()*/) {
+                        showFiltersNoResults();
+                    } else {
+                        showProductsNotfound();
+                    }
                 } else {
                     showCatalogContent();
                 }
@@ -386,6 +398,8 @@ public class CatalogPageFragment extends BaseFragment {
                 mIsLoadingMore = false;
     
                 mSwitchMD5 = switchMD5;
+            } else {
+                Log.e(TAG, "ON RESUME -> UNKNOWN!");
             }
     
             if (forceRefresh) {
@@ -409,11 +423,10 @@ public class CatalogPageFragment extends BaseFragment {
         updateGridColumns(showList);
         Log.d(TAG, "ON RESUME - REQ -> Landscape ? " + mIsLandScape + "; Columns #" + numColumns);
 
-        ProductsListAdapter adapter = (ProductsListAdapter) this.gridView.getAdapter();
         final boolean hasProducts = (null != mSavedProductsSKU);
 
         // initialize new adapter depending on view choosen
-        adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, numColumns, isFrench);
+        ProductsListAdapter adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, numColumns, isFrench);
         if (!hasProducts) {
             mPageNumber = 1;
         } else {
@@ -444,7 +457,11 @@ public class CatalogPageFragment extends BaseFragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        showProductsNotfound();
+                        if (mSavedProductsSKU != null/*- AAA && !mSavedProductsSKU.isEmpty()*/) {
+                            showFiltersNoResults();
+                        } else {
+                            showProductsNotfound();
+                        };
                     }
                 }, 200);
             }
@@ -479,7 +496,7 @@ public class CatalogPageFragment extends BaseFragment {
 
             if (mPageNumber == 1 && null != getView()) {
                 hideProductsNotFound();
-                linearLayoutLb.setVisibility(View.VISIBLE);
+                showFragmentLoading(); // AAA linearLayoutLb.setVisibility(View.VISIBLE);
                 // showLoadingInfo();
             }
 
@@ -509,7 +526,7 @@ public class CatalogPageFragment extends BaseFragment {
         relativeLayoutPc.setVisibility(View.VISIBLE);
         hideProductsLoading();
         if (getView() != null) {
-            linearLayoutLb.setVisibility(View.GONE);
+            showFragmentContentContainer(); // AAA linearLayoutLb.setVisibility(View.GONE);
             // hideLoadingInfo();
         }
     }
@@ -535,25 +552,33 @@ public class CatalogPageFragment extends BaseFragment {
         Log.d(TAG, "showProductsNotfound");
         hideProductsLoading(false);
         relativeLayoutPc.setVisibility(View.GONE);
-        viewSpnf.setVisibility(View.VISIBLE);
-        buttonRavb.setVisibility(View.VISIBLE);
-        buttonRavb.setOnClickListener(new OnClickListener() {
-
+        showFragmentRetry(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideProductsNotFound();
                 getMoreProducts();
             }
         });
-        if (getView() != null) {
-            linearLayoutLb.setVisibility(View.GONE);
-            // hideLoadingInfo();
-        }
     }
 
     private void hideProductsNotFound() {
-        viewSpnf.setVisibility(View.GONE);
-        buttonRavb.setVisibility(View.GONE);
+        showFragmentContentContainer();
+    }
+
+    private void showFiltersNoResults() {
+        Log.d(TAG, "showFiltersNoResults");
+        hideProductsLoading(false);
+        relativeLayoutPc.setVisibility(View.GONE);
+        showFragmentEmpty(R.string.catalog_no_results, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "ON CLICK: FILTER BUTTON");
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, parentFragment.getCatalogFilter());
+                DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, parentFragment);
+                newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+            }
+        });
     }
 
     private void showProductsLoading() {
@@ -577,8 +602,9 @@ public class CatalogPageFragment extends BaseFragment {
             @Override
             public void run() {
                 linearLayoutLm.setVisibility(View.GONE);
-                if (hideViewSpnf)
-                    viewSpnf.setVisibility(View.GONE);
+                if (hideViewSpnf) {
+                    showFragmentContentContainer(); // AAA viewSpnf.setVisibility(View.GONE);
+                }
             }
         }, 200);
     }
@@ -599,17 +625,20 @@ public class CatalogPageFragment extends BaseFragment {
             if (-1 < activePosition && null != adapter) {
                 // Call Product Details
                 Product product = parentFragment.getProduct((String) adapter.getItem(activePosition));
-
-                Bundle bundle = new Bundle();
-                bundle.putString(ConstantsIntentExtra.CONTENT_URL, product.getUrl());
-                bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, mNavigationSource);
-                bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, mNavigationPath);
-                bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
-                // inform PDV that Related Items should be shown
-                bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
-                if (mTitle != null)
-                    bundle.putString(ProductDetailsFragment.PRODUCT_CATEGORY, mTitle);
-                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                if (product != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, product.getUrl());
+                    bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, mNavigationSource);
+                    bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, mNavigationPath);
+                    bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
+                    // inform PDV that Related Items should be shown
+                    bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
+                    if (mTitle != null)
+                        bundle.putString(ProductDetailsFragment.PRODUCT_CATEGORY, mTitle);
+                    getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                } else {
+                    Toast.makeText(getBaseActivity(), R.string.error_occured, Toast.LENGTH_SHORT).show();
+                }
             }
 
         }
@@ -835,6 +864,7 @@ public class CatalogPageFragment extends BaseFragment {
     }
 
     private void onErrorEvent(Bundle bundle) {
+        Log.d(TAG, "ON ERROR EVENT");
     	
         // Validate fragment state
         if (isOnStoppingProcess) return;
@@ -874,7 +904,7 @@ public class CatalogPageFragment extends BaseFragment {
                     @Override
                     public void run() {
                         mSavedProductsSKU = null;
-                        showProductsNotfound();
+                        showFiltersNoResults();
                     }
                 }, 200);
             }

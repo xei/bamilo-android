@@ -843,8 +843,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     
     /**
      * Show the empty view from the root layout
-     * @param string id
-     * @param drawable id
+     * 
+     * @param emptyStringResId string id
+     * @param emptyDrawableResId drawable id
      */
     protected void showFragmentEmpty(int emptyStringResId, int emptyDrawableResId) {
         setVisibility(mContentView, false);
@@ -868,7 +869,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param emptyDrawableResId
      * @param buttonEmptyStringResId
      * @param onClickListener
-     * @author andre
+     * @author Andre Lopes
      */
     protected void showFragmentEmpty(int emptyStringResId, int emptyDrawableResId, int buttonEmptyStringResId, OnClickListener onClickListener) {
         showFragmentEmpty(emptyStringResId, emptyDrawableResId);

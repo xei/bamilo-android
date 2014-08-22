@@ -3,6 +3,7 @@
     android:id="@+id/fragment_root_empty_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/grey_background"
     android:gravity="top"
     android:orientation="vertical" >
 
