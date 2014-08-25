@@ -6,68 +6,63 @@
     android:background="@color/grey_background"
     android:orientation="vertical" >
 
+    <!-- ACCOUNT SETTINGS -->
+
     <RelativeLayout
         style="@style/rounded_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="0dp"
         android:paddingBottom="@dimen/my_account_medium_margin"
         android:paddingTop="@dimen/my_account_small_margin" >
 
-    <org.holoeverywhere.widget.TextView
-        android:id="@+id/title_options"
-        style="@style/rounded_box_title_grey"
-        android:layout_centerHorizontal="true"
-        android:text="@string/section_title_account" />
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/title_options"
+            style="@style/rounded_box_title_grey"
+            android:layout_centerHorizontal="true"
+            android:text="@string/section_title_account" />
 
-    <ListView
-        android:id="@+id/middle_myaccount_list"
-        android:layout_width="@dimen/inner_container_width"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/divider_options"
-        android:layout_gravity="center" />
+        <ListView
+            android:id="@+id/middle_myaccount_list"
+            android:layout_width="@dimen/inner_container_width"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_options"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center" />
 
-    <View
-        android:id="@id/divider_options"
-        style="@style/divider_horizontal_orange"
-        android:layout_below="@id/title_options"
-        android:layout_marginBottom="@dimen/my_account_hide_topdivider_margin"
-        android:layout_marginLeft="@dimen/my_account_topdivider_fullwidth_margin"
-        android:layout_marginRight="@dimen/my_account_topdivider_fullwidth_margin" />
-      
+        <View
+            style="@style/divider_horizontal_orange"
+            android:layout_below="@id/title_options" />
     </RelativeLayout>
 
+    <!-- NOTIFICATION SETTINGS -->
+
     <RelativeLayout
         style="@style/rounded_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
         android:layout_gravity="center"
+        android:layout_marginTop="0dp"
         android:paddingBottom="@dimen/my_account_medium_margin"
         android:paddingTop="@dimen/my_account_small_margin" >
 
-      <org.holoeverywhere.widget.TextView
-          android:id="@+id/title_preferences"
-          style="@style/rounded_box_title_grey"
-          android:text="@string/section_title_notification" />
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/title_preferences"
+            style="@style/rounded_box_title_grey"
+            android:text="@string/section_title_notification" />
 
-      <fragment
-          android:name="pt.rocket.view.fragments.MyAccountPushPreferences"
-          android:layout_width="@dimen/inner_container_width"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/divider_preferences"
-          android:layout_centerHorizontal="true"
-          android:layout_gravity="center" />
+        <fragment
+            android:name="pt.rocket.view.fragments.MyAccountPushPreferences"
+            android:layout_width="@dimen/inner_container_width"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_preferences"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center" />
 
-      <View
-          android:id="@id/divider_preferences"
-          style="@style/divider_horizontal_orange"
-          android:layout_below="@id/title_preferences"
-          android:layout_marginBottom="@dimen/my_account_hide_topdivider_margin"
-          android:layout_marginLeft="@dimen/my_account_topdivider_fullwidth_margin"
-          android:layout_marginRight="@dimen/my_account_topdivider_fullwidth_margin" />
+        <View
+            style="@style/divider_horizontal_orange"
+            android:layout_below="@id/title_preferences" />
     </RelativeLayout>
 
 </LinearLayout>

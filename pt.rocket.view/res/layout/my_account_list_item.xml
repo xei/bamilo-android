@@ -3,29 +3,17 @@
     android:id="@+id/options_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/my_account_medium_margin"
+    android:layout_marginRight="@dimen/my_account_medium_margin"
     android:orientation="vertical" >
 
-    <View
-        style="@style/line_grey_style"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="@dimen/my_account_medium_margin"
-        android:layout_marginRight="@dimen/my_account_medium_margin"
-        android:layout_marginTop="0dp"
-        android:paddingTop="@dimen/my_account_medium_margin" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="@dimen/my_account_medium_margin"
-        android:layout_marginRight="@dimen/my_account_medium_margin"
-        android:paddingBottom="@dimen/my_account_medium_margin"
-        android:paddingTop="@dimen/my_account_medium_margin" >
+    <View style="@style/divider_horizontal" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/option_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/my_account_medium_margin"
         android:text="Title"
         android:textColor="@color/grey_middledark"
         android:textSize="@dimen/product_item_brand_text_size" />
@@ -35,9 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/option_name"
+        android:paddingBottom="@dimen/my_account_medium_margin"
         android:text="Info"
         android:textColor="@color/grey_middle"
         android:textSize="@dimen/product_item_text_size" />
-    </LinearLayout>
 
 </LinearLayout>
