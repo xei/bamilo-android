@@ -360,20 +360,20 @@ public class AnalyticsGoogle {
 	 * @param url
 	 * @param price
 	 */
-	public void trackProduct(int navigationPrefix, String navigationPath, String name, String sku, String url, Double price) {
+	public void trackProduct(String navigationPrefix, String navigationPath, String name, String sku, String url, Double price) {
 		// Validation
 		if (!isEnabled) return;
 		// Data
-		if (navigationPrefix != -1) {
-			String pageView;
-			String n = !TextUtils.isEmpty(name) ? name.replace(" ", "_") : "n.a.";
-			if(navigationPath != null && !navigationPath.equalsIgnoreCase("")){
-				pageView = mContext.getString(navigationPrefix) + "_" + navigationPath + "/" + n;	
-			} else {
-				pageView = mContext.getString(navigationPrefix) + "_" + n;
-			}
-			trackPage(pageView);
+		if(navigationPrefix == null) navigationPrefix = "n.a.";
+		String pageView;
+		String n = !TextUtils.isEmpty(name) ? name.replace(" ", "_") : "n.a.";
+		if(navigationPath != null && !navigationPath.equalsIgnoreCase("")){
+			pageView = navigationPrefix + "_" + navigationPath + "/" + n;
+		} else {
+			pageView = navigationPrefix + "_" + n;
 		}
+		trackPage(pageView);
+		
 		String category = mContext.getString(R.string.gcatalog);
 		String action = mContext.getString(R.string.gpdv);
 		trackEvent(category, action, sku, (price != null) ? price.longValue() : 0l);

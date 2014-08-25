@@ -652,7 +652,7 @@ public class TrackerDelegator {
      */
     public static void trackProduct(Bundle bundle) {
         // Data
-        int prefix = bundle.getInt(SOURCE_KEY);
+        String prefix = bundle.getString(SOURCE_KEY);
         String path = bundle.getString(PATH_KEY);
         String name = bundle.getString(NAME_KEY);
         String sku = bundle.getString(SKU_KEY);

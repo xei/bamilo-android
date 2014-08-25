@@ -169,7 +169,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private String mNavigationPath;
 
-    private int mNavigationSource;
+    private String mNavigationSource;
 
     private boolean mShowRelatedItems;
 
@@ -379,7 +379,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Get url
         mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
         // Get source and path
-        mNavigationSource = bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog);
+        mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog));
         mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
         // Determine if related items should be shown
         mShowRelatedItems = bundle.getBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS);
@@ -403,7 +403,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Validate
         if (sku != null) {
             Log.i(TAG, "DEEP LINK GET PDV: " + sku + " " + mDeepLinkSimpleSize);
-            mNavigationSource = bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog);
+            mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix));
             mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
             mBeginRequestMillis = System.currentTimeMillis();
             triggerContentEvent(new GetSearchProductHelper(), bundle, responseCallback);
@@ -1113,7 +1113,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      */
     private Bundle createBundleProduct() {
         Bundle bundle = new Bundle();
-        bundle.putInt(TrackerDelegator.SOURCE_KEY, mNavigationSource);
+        bundle.putString(TrackerDelegator.SOURCE_KEY, mNavigationSource);
         bundle.putString(TrackerDelegator.PATH_KEY, mNavigationPath);
         bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         bundle.putString(TrackerDelegator.SKU_KEY, mCompleteProduct.getSku());
