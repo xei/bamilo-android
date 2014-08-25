@@ -62,8 +62,9 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     public ProductVariationsFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.string.product_details_title,
+                0,
                 KeyboardState.NO_ADJUST_CONTENT);
+        // R.string.product_details_title
     }
 
     /*
@@ -88,7 +89,7 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
     public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         super.onCreateView(mInflater, viewGroup, savedInstanceState);
         Log.i(TAG, "ON CREATE VIEW");
-        return mInflater.inflate(R.layout.variations_fragment, viewGroup, false);
+        return mInflater.inflate(R.layout.product_details_fragment_variations, viewGroup, false);
     }
     
     /*

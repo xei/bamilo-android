@@ -55,8 +55,9 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyAccount,
                 R.layout.myaccount_fragment,
-                R.string.account_name,
+                0,
                 KeyboardState.NO_ADJUST_CONTENT);
+        // R.string.account_name
     }
 
     /*
@@ -115,8 +116,6 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // Hide title
-        getBaseActivity().hideTitle();
     }
 
     /*

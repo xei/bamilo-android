@@ -76,8 +76,9 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
                 R.layout.my_account_user_data_fragment,
-                R.string.personal_data_title,
+                0,
                 KeyboardState.ADJUST_CONTENT);
+        // R.string.personal_data_title
     }
 
     /*
@@ -144,8 +145,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // Hide title
-        getBaseActivity().hideTitle();
     }
 
     /*

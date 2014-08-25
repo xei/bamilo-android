@@ -75,8 +75,9 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
                 R.layout.my_account_email_notification_fragment,
-                R.string.myaccount_email_notifications,
+                0,
                 KeyboardState.NO_ADJUST_CONTENT);
+        // R.string.myaccount_email_notifications
     }
 
     /*
@@ -148,8 +149,6 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // Hide title
-        getBaseActivity().hideTitle();
         // Tracking page
         TrackerDelegator.trackPage(TrackingPage.NEWSLETTER_SUBS);
     }

@@ -132,8 +132,9 @@ public class SessionLoginFragment extends BaseFragment {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
                 R.layout.login,
-                R.string.login_title,
+                0,
                 KeyboardState.ADJUST_CONTENT);
+        // R.string.login_title
     }
 
     /*
@@ -204,8 +205,6 @@ public class SessionLoginFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // Hide title
-        getBaseActivity().hideTitle();
         TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGNUP);
         
         String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);

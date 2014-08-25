@@ -48,8 +48,7 @@ public class ProductRelatedItemsFragment extends BaseFragment {
      * Constructor
      */
     public ProductRelatedItemsFragment() {
-        super(IS_NESTED_FRAGMENT, R.layout.related_items_view);
-        this.setRetainInstance(true);
+        super(IS_NESTED_FRAGMENT, R.layout.product_details_fragment_related);
     }
    
     /*

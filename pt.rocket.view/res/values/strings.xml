@@ -325,7 +325,7 @@
     <string name="clear_all_uppercase_label">CLEAR ALL</string>
     <string name="filter_label">Filter</string>
     <string name="all_label">All</string>
-    <!-- string name="category_label">Category</string -->
+    <string name="framework_category_label">Category</string>
     <string name="top_brands_toplevel_title">All Brands</string>
     <string name="extra_costs">Extra Costs:</string>
     <string name="extra_costs_label">Extra Costs</string>
@@ -372,4 +372,6 @@
 	<string name="splash_slogan">The biggest online shopping mall in Africa</string>
 	<string name="catalog_no_results">No results match your filter criteria.\nYou can try to use less specific filters</string>
 	<string name="catalog_edit_filters">Edit Filters</string>
+	<string name="color_label">Color</string>
+	<string name="size_label">Size</string>
 </resources>

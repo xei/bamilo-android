@@ -15,10 +15,14 @@
 
     <style name="button_orange_style" parent="button">
         <item name="android:background">@drawable/btn_orange</item>
+        <item name="android:layout_marginTop">@dimen/margin_mid</item>
+        <item name="android:layout_marginBottom">@dimen/margin_large</item>
     </style>
 
     <style name="button_grey_style" parent="button">
         <item name="android:background">@drawable/btn_grey</item>
+        <item name="android:layout_marginTop">@dimen/margin_mid</item>
+        <item name="android:layout_marginBottom">@dimen/margin_large</item>
     </style>
 
     <!-- TEXT STYLES -->
@@ -131,10 +135,11 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/grey_middle</item>
-        <item name="android:textSize">14dp</item>
-        <item name="android:layout_marginLeft">@dimen/margin_huge</item>
-        <item name="android:layout_marginRight">@dimen/margin_huge</item>
-        <item name="android:layout_marginBottom">@dimen/margin_mid</item>
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:paddingLeft">@dimen/margin_large</item>
+        <item name="android:paddingRight">@dimen/margin_large</item>
+        <item name="android:paddingBottom">@dimen/margin_huge</item>
+        <item name="android:paddingTop">@dimen/margin_huge</item>
     </style>
 
     <!-- These styles are used for the prices in the listings for the product prices - price current is represented in red and price old is represented in black -->
@@ -591,8 +596,10 @@
     </style>
 
     <!-- NEW -->
-    
+
     <style name="rounded_box">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/rounded_vertical_margin</item>
         <item name="android:layout_marginBottom">@dimen/rounded_vertical_margin</item>
         <item name="android:layout_marginLeft">@dimen/rounded_horizontal_margin</item>
@@ -604,9 +611,9 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">30dp</item>
         <item name="android:textColor">@color/grey_middledark</item>
-        <item name="android:textSize">@dimen/product_item_brand_text_size</item>
+        <item name="android:textSize">@dimen/text_title</item>
         <item name="android:gravity">left|center</item>
-        <item name="android:layout_margin">@dimen/my_account_medium_margin</item>
+        <item name="android:layout_margin">@dimen/margin_mid</item>
         <item name="android:fontFamily">roboto_regular</item>
     </style>
 

@@ -123,7 +123,7 @@ public class ProductsPage implements IJSONSerializable, Parcelable {
 			}
 		}
 		// Create the category filter and save it
-		mFilters.add(new CatalogFilter("category", Darwin.context.getString(R.string.category_label), false, options));
+		mFilters.add(new CatalogFilter("category", Darwin.context.getString(R.string.framework_category_label), false, options));
 	}
 	
 	/* (non-Javadoc)

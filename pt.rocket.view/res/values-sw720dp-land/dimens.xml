@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- better naming sceme for the text dimensions -->
+<!--     better naming sceme for the text dimensions
     <dimen name="text_xxs">16sp</dimen>
     <dimen name="text_xs">18sp</dimen>
     <dimen name="text_s">20sp</dimen>
     <dimen name="text_m">21sp</dimen>
     <dimen name="text_l">22sp</dimen>
     <dimen name="text_xl">23sp</dimen>
-    <dimen name="text_xxl">24sp</dimen>
+    <dimen name="text_xxl">24sp</dimen> -->
 
     <!-- HOME -->
     <dimen name="teaser_swipe_banner_height">260dp</dimen>  <!-- 1440x600 -->
