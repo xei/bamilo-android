@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <View
+        style="@style/line_grey_style"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="@dimen/my_account_medium_margin"
+        android:layout_marginRight="@dimen/my_account_medium_margin"
+        android:layout_marginTop="0dp" />
 
     <org.holoeverywhere.widget.CheckBox
         android:id="@+id/myaccount_newsletter_checkbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:paddingLeft="@dimen/margin_huge"
-        android:paddingRight="@dimen/margin_mid"
-        android:background="@android:color/white"
         android:button="@null"
         android:drawableRight="@drawable/selector_btn_check_holo_orange"
         android:fontFamily="roboto_regular"
         android:gravity="left|center"
-        android:paddingBottom="@dimen/margin_large"
-        android:paddingTop="@dimen/margin_large"
-        android:textColor="@color/grey_dark"
-        android:textSize="@dimen/text_l" />
+        android:padding="@dimen/my_account_medium_margin"
+        android:text="Newslewttwer"
+        android:textColor="@color/grey_middle"
+        android:textSize="@dimen/product_item_brand_text_size" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_height"
-        android:background="@color/grey_dividerlight" />
-
-</RelativeLayout>
+</LinearLayout>

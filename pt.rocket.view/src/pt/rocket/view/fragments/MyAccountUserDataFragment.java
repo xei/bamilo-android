@@ -46,11 +46,11 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     
     private View mainView;
     
-    private EditText firstNameText;
+    private TextView firstNameText;
     
-    private EditText lastNameText;
+    private TextView lastNameText;
     
-    private EditText emailText;
+    private TextView emailText;
     
     private EditText newPasswordText;
     
@@ -144,6 +144,8 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        // Hide title
+        getBaseActivity().hideTitle();
     }
 
     /*
@@ -188,10 +190,10 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         Button cancelButton = (Button) mainView.findViewById(R.id.button_cancel);
         cancelButton.setOnClickListener(this);
 
-        firstNameText = (EditText) mainView.findViewById(R.id.clientFirstName);
-        lastNameText = (EditText) mainView.findViewById(R.id.clientLastName);
+        firstNameText = (TextView) mainView.findViewById(R.id.clientFirstName);
+        lastNameText = (TextView) mainView.findViewById(R.id.clientLastName);
         lastNameText.setVisibility(View.GONE);
-        emailText = (EditText) mainView.findViewById(R.id.clientEmail);
+        emailText = (TextView) mainView.findViewById(R.id.clientEmail);
         
         newPasswordText = (EditText) mainView.findViewById(R.id.typeNewPassword);
         newPassword2Text = (EditText) mainView.findViewById(R.id.retypeNewPassword);

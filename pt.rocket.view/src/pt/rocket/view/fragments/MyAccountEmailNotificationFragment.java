@@ -148,6 +148,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        // Hide title
+        getBaseActivity().hideTitle();
         // Tracking page
         TrackerDelegator.trackPage(TrackingPage.NEWSLETTER_SUBS);
     }

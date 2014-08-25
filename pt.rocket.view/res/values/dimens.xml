@@ -222,5 +222,11 @@
     <dimen name="product_item_addtocart_height">25dp</dimen>
     <dimen name="product_item_addtocart_variation_width">43.33dp</dimen>
     <dimen name="product_item_delete_text_size">20sp</dimen>
+    
+    <dimen name="my_account_medium_margin">@dimen/rounded_horizontal_margin</dimen>
+    <dimen name="my_account_small_margin">@dimen/rounded_vertical_margin</dimen>
+    
+    <dimen name="my_account_hide_topdivider_margin">-1dp</dimen>
+    <dimen name="my_account_topdivider_fullwidth_margin">-50dp</dimen>
 
 </resources>

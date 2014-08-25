@@ -211,10 +211,10 @@
     <string name="shoppingcart_minamount_waiting">Waiting for information about minimal order amount from server</string>
     <string name="notifications">Notifications</string>
     <string name="notifications_summary">Receive exclusive offers and personal updates</string>
-    <string name="vibrate">Vibrate</string>
-    <string name="vibrate_summary">Vibrate on incoming notifications</string>
-    <string name="sound">Sound</string>
-    <string name="sound_summary">Play sound on incoming notifications</string>
+    <!-- string name="vibrate">Vibrate</string -->
+    <!-- string name="vibrate_summary">Vibrate on incoming notifications</string -->
+    <!-- string name="sound">Sound</string -->
+    <!-- string name="sound_summary">Play sound on incoming notifications</string -->
     <string name="error_no_connection">No connection</string>
     <string name="section_title_account">Account Settings</string>
     <string name="section_title_notification">Notification Settings</string>

@@ -204,6 +204,8 @@ public class SessionLoginFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        // Hide title
+        getBaseActivity().hideTitle();
         TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGNUP);
         
         String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);

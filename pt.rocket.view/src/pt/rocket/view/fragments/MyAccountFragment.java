@@ -115,6 +115,8 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        // Hide title
+        getBaseActivity().hideTitle();
     }
 
     /*

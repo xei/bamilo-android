@@ -211,10 +211,10 @@
     <string name="shoppingcart_minamount_waiting">En attendant des informations sur la quantité de la commande minimum du serveur</string>
     <string name="notifications">Notifications</string>
     <string name="notifications_summary">Recevez des offres exclusives et mises à jour personnelles</string>
-    <string name="vibrate">Vibrer</string>
-    <string name="vibrate_summary">Vibrez sur les notifications entrantes</string>
-    <string name="sound">Son</string>
-    <string name="sound_summary">Emettre un son sur les notifications entrantes</string>
+    <!-- string name="vibrate">Vibrer</string -->
+    <!-- string name="vibrate_summary">Vibrez sur les notifications entrantes</string -->
+    <!-- string name="sound">Son</string -->
+    <!-- string name="sound_summary">Emettre un son sur les notifications entrantes</string -->
     <string name="error_no_connection">Pas de connexion</string>
     <string name="section_title_account">Paramètres du compte</string>
     <string name="section_title_notification">Paramètres de notification</string>
