@@ -38,7 +38,7 @@ import pt.rocket.view.fragments.HomeFragment;
 import pt.rocket.view.fragments.MyAccountEmailNotificationFragment;
 import pt.rocket.view.fragments.MyAccountFragment;
 import pt.rocket.view.fragments.MyAccountUserDataFragment;
-import pt.rocket.view.fragments.PopularityFragment;
+import pt.rocket.view.fragments.ReviewsFragment;
 import pt.rocket.view.fragments.ProductDetailsDescriptionFragment;
 import pt.rocket.view.fragments.ProductDetailsFragment;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
@@ -51,7 +51,7 @@ import pt.rocket.view.fragments.SessionRegisterFragment;
 import pt.rocket.view.fragments.SessionTermsFragment;
 import pt.rocket.view.fragments.ShoppingCartFragment;
 import pt.rocket.view.fragments.TrackOrderFragment;
-import pt.rocket.view.fragments.WriteReviewFragment;
+import pt.rocket.view.fragments.ReviewWriteFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -269,10 +269,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = ProductImageGalleryFragment.getInstance(bundle);
             break;
         case POPULARITY:
-            fragment = PopularityFragment.getInstance();
+            fragment = ReviewsFragment.getInstance();
             break;
         case WRITE_REVIEW:
-            fragment = WriteReviewFragment.getInstance();
+            fragment = ReviewWriteFragment.getInstance();
             break;
         case REVIEW:
             fragment = ReviewFragment.getInstance();

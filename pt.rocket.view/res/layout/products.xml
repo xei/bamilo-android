@@ -3,7 +3,7 @@
     android:id="@+id/products_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/rounded_vertical_margin"
+    android:layout_margin="@dimen/rounded_margin_small"
     android:background="@color/grey_background"
     android:paddingBottom="0dp" >
 
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/loadmore"
         android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/rounded_vertical_margin"
+        android:layout_margin="@dimen/rounded_margin_small"
         android:listSelector="@drawable/selector_listitem_highlight"
         android:numColumns="3" />
 

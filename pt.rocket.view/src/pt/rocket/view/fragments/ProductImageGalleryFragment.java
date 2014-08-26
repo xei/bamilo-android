@@ -61,6 +61,10 @@ public class ProductImageGalleryFragment extends BaseFragment {
     private ArrayList<String> imagesList;
 
     private View mCloseView;
+
+    private View mIndicatorLeftView;
+
+    private View mIndicatorRightView;
     
     /**
      * 
@@ -144,9 +148,13 @@ public class ProductImageGalleryFragment extends BaseFragment {
         mProductImageLoading = (RelativeLayout) view.findViewById(R.id.loading_gallery);
         mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.viewpager);
         mCloseView = view.findViewById(R.id.gallery_button_close);
+        mIndicatorLeftView = view.findViewById(R.id.gallery_button_indicator_left);
+        mIndicatorRightView = view.findViewById(R.id.gallery_button_indicator_right);
 
         // Set close button
         setCloseButton();
+        // Set indicators
+        setIndicators();
         
         // set page listener to handler infinite scrool event.
         mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
@@ -275,6 +283,17 @@ public class ProductImageGalleryFragment extends BaseFragment {
                 }
             });
             mCloseView.setVisibility(View.VISIBLE);
+        }
+    }
+    
+    
+    /**
+     * Set the indicators
+     */
+    private void setIndicators() {
+        if(isZoomAvailable) {
+            mIndicatorLeftView.setVisibility(View.VISIBLE);
+            mIndicatorRightView.setVisibility(View.VISIBLE);
         }
     }
     

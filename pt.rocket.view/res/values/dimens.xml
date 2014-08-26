@@ -199,8 +199,8 @@
     <dimen name="recentsearch_button_margin">13.33dp</dimen>
     
     <!-- ROUNDED BORDERS -->
-    <dimen name="rounded_vertical_margin">3.33dp</dimen>
-    <dimen name="rounded_horizontal_margin">6.67dp</dimen>
+    <dimen name="rounded_margin_small">3.33dp</dimen>
+    <dimen name="rounded_margin_mid">6.67dp</dimen>
     
     <!-- CATALOG REDESIGN -->
     <dimen name="catalog_list_item_height">100dp</dimen>
@@ -233,8 +233,8 @@
     <dimen name="product_item_addtocart_variation_width">43.33dp</dimen>
     <dimen name="product_item_delete_text_size">20sp</dimen>
     
-    <dimen name="my_account_medium_margin">@dimen/rounded_horizontal_margin</dimen>
-    <dimen name="my_account_small_margin">@dimen/rounded_vertical_margin</dimen>
+    <dimen name="my_account_medium_margin">@dimen/rounded_margin_mid</dimen>
+    <dimen name="my_account_small_margin">@dimen/rounded_margin_small</dimen>
     
     <!-- ???? -->
     <dimen name="my_account_hide_topdivider_margin">-1dp</dimen>

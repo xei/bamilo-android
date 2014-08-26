@@ -639,10 +639,10 @@
     <style name="rounded_box">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/rounded_vertical_margin</item>
-        <item name="android:layout_marginBottom">@dimen/rounded_vertical_margin</item>
-        <item name="android:layout_marginLeft">@dimen/rounded_horizontal_margin</item>
-        <item name="android:layout_marginRight">@dimen/rounded_horizontal_margin</item>
+        <item name="android:layout_marginTop">@dimen/rounded_margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/rounded_margin_small</item>
+        <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
         <item name="android:background">@drawable/background_content</item>
     </style>
 

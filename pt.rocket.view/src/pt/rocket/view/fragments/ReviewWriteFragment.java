@@ -43,9 +43,9 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira rating-option--
  * 
  */
-public class WriteReviewFragment extends BaseFragment {
+public class ReviewWriteFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(WriteReviewFragment.class);
+    private static final String TAG = LogTagHelper.create(ReviewWriteFragment.class);
     
     private static final String NAME = "name";
     
@@ -53,7 +53,7 @@ public class WriteReviewFragment extends BaseFragment {
     
     private static final String COMMENT = "comment";
 
-    private static WriteReviewFragment writeReviewFragment;
+    private static ReviewWriteFragment writeReviewFragment;
 
     private CompleteProduct completeProduct;
 
@@ -90,21 +90,22 @@ public class WriteReviewFragment extends BaseFragment {
      * 
      * @return
      */
-    public static WriteReviewFragment getInstance() {
+    public static ReviewWriteFragment getInstance() {
         Log.i(TAG, "getInstance");
-        writeReviewFragment = new WriteReviewFragment();
+        writeReviewFragment = new ReviewWriteFragment();
         return writeReviewFragment;
     }
 
     /**
      * Empty constructor
      */
-    public WriteReviewFragment() {
+    public ReviewWriteFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.layout.writereview,
-                R.string.writereview_page_title,
+                R.layout.review_write_fragment,
+                0,
                 KeyboardState.ADJUST_CONTENT);
+        // R.string.writereview_page_title
     }
 
     /*
@@ -171,8 +172,9 @@ public class WriteReviewFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         isExecutingSendReview = false;
-        if (getArguments() != null && getArguments().containsKey(PopularityFragment.CAME_FROM_POPULARITY)) {
+        if (getArguments() != null && getArguments().containsKey(ReviewsFragment.CAME_FROM_POPULARITY)) {
             getView().findViewById(R.id.product_basicinfo_container).setVisibility(View.GONE);
+            getView().findViewById(R.id.shadow).setVisibility(View.GONE);
         }
     }
 

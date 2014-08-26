@@ -45,9 +45,10 @@ public class ReviewFragment extends BaseFragment {
     public ReviewFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.layout.reviews,
-                R.string.review,
+                R.layout.review_fragment,
+                0,
                 KeyboardState.NO_ADJUST_CONTENT);
+        // R.string.review
         this.setRetainInstance(true);
     }
 

@@ -46,13 +46,13 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * @modified manuelsilva
  */
-public class PopularityFragment extends BaseFragment {
+public class ReviewsFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(PopularityFragment.class);
+    private static final String TAG = LogTagHelper.create(ReviewsFragment.class);
     
     private static final int MAX_REVIEW_COUNT = 10;
 
-    private static PopularityFragment sPopularityFragment;
+    private static ReviewsFragment sPopularityFragment;
     
     public static final String CAME_FROM_POPULARITY = "came_from_popularity";
 
@@ -79,8 +79,8 @@ public class PopularityFragment extends BaseFragment {
      * 
      * @return
      */
-    public static PopularityFragment getInstance() {
-        sPopularityFragment = new PopularityFragment();
+    public static ReviewsFragment getInstance() {
+        sPopularityFragment = new ReviewsFragment();
         sPopularityFragment.mProductRatingPage = null;
         return sPopularityFragment;
     }
@@ -88,12 +88,13 @@ public class PopularityFragment extends BaseFragment {
     /**
      * Empty constructor
      */
-    public PopularityFragment() {
+    public ReviewsFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.layout.popularity,
-                R.string.reviews,
+                R.layout.reviews_fragment,
+                0,
                 KeyboardState.NO_ADJUST_CONTENT);
+        // R.string.reviews
     }
 
     /*
@@ -249,7 +250,7 @@ public class PopularityFragment extends BaseFragment {
     }
 
     private void startWriteReviewFragment() {
-        mWriteReviewFragment = new WriteReviewFragment();
+        mWriteReviewFragment = new ReviewWriteFragment();
         Bundle args = new Bundle();
         args.putBoolean(CAME_FROM_POPULARITY, true);
         mWriteReviewFragment.setArguments(args);
@@ -409,10 +410,10 @@ public class PopularityFragment extends BaseFragment {
         // Log.i("REVIEW COUNT", " IS " + review.size());
         if (productRatingPage.getCommentsCount() >= 0) {
             TextView reviewsPop = (TextView) getView().findViewById(R.id.reviews);
-            reviewsPop.setText("" + productRatingPage.getCommentsCount());
+            reviewsPop.setText("(" + productRatingPage.getCommentsCount() + ")");
         }
         for (final ProductReviewComment review : reviews) {
-            final View theInflatedView = inflater.inflate(R.layout.popularityreview, reviewsLin, false);
+            final View theInflatedView = inflater.inflate(R.layout.reviews_fragment_item, reviewsLin, false);
 
             final TextView userName = (TextView) theInflatedView.findViewById(R.id.user_review);
             final TextView userDate = (TextView) theInflatedView.findViewById(R.id.date_review);
@@ -471,7 +472,7 @@ public class PopularityFragment extends BaseFragment {
                     bundle.putString(ConstantsIntentExtra.REVIEW_COMMENT, review.getComments());
                     bundle.putDouble(ConstantsIntentExtra.REVIEW_RATING, review.getRating());
                     bundle.putString(ConstantsIntentExtra.REVIEW_DATE, stringCor[0]);
-                    ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.REVIEW, bundle, true);
+                    getBaseActivity().onSwitchFragment(FragmentType.REVIEW, bundle, true);
                 }
             });
 

@@ -4,10 +4,10 @@
     android:id="@+id/general_container"
     style="@style/list_row_style"
     android:layout_height="@dimen/catalog_list_item_height"
-    android:layout_marginBottom="@dimen/rounded_vertical_margin"
-    android:layout_marginLeft="@dimen/rounded_horizontal_margin"
-    android:layout_marginRight="@dimen/rounded_horizontal_margin"
-    android:layout_marginTop="@dimen/rounded_vertical_margin"
+    android:layout_marginBottom="@dimen/rounded_margin_small"
+    android:layout_marginLeft="@dimen/rounded_margin_mid"
+    android:layout_marginRight="@dimen/rounded_margin_mid"
+    android:layout_marginTop="@dimen/rounded_margin_small"
     android:background="@drawable/background_content" >
 
     <include
@@ -152,7 +152,7 @@
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/rounded_vertical_margin"
+        android:layout_height="@dimen/rounded_margin_small"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

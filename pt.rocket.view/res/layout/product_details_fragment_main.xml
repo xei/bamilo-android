@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="@dimen/rounded_horizontal_margin"
-        android:layout_marginRight="@dimen/rounded_horizontal_margin"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
         layout="@layout/product_details_fragment_buttons" />
 
     <!-- SCROLL CONTAINER -->
@@ -27,7 +27,7 @@
             android:id="@+id/product_detail_details_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/rounded_vertical_margin"
+            android:layout_marginTop="@dimen/rounded_margin_small"
             android:orientation="vertical" >
 
             <!-- IMAGE CONTAINER -->

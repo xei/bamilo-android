@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="roboto_regular"
             android:textColor="@color/grey_middlelight"
-            android:textSize="@dimen/text_s" />
+            android:textSize="@dimen/text_header" />
     </LinearLayout>
 
     <View style="@style/divider_horizontal" />
@@ -123,7 +123,7 @@
         android:gravity="left|center"
         android:maxLines="2"
         android:text="Specifications"
-        android:textColor="@color/grey_light"
+        android:textColor="@color/grey_middle"
         android:textSize="@dimen/text_header" />
 
 </LinearLayout>
