@@ -4,18 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/grey_background"
-    android:gravity="top"
+    android:gravity="top|center_horizontal"
     android:orientation="vertical" >
 
     <LinearLayout
+        style="@style/rounded_box"
         android:layout_width="match_parent"
         android:layout_height="@dimen/root_empty_container_height"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/rounded_vertical_margin"
-        android:layout_marginLeft="@dimen/rounded_horizontal_margin"
-        android:layout_marginRight="@dimen/rounded_horizontal_margin"
-        android:layout_marginTop="@dimen/rounded_vertical_margin"
-        android:background="@drawable/background_content"
         android:gravity="center"
         android:orientation="vertical" >
 
@@ -37,14 +33,9 @@
             android:textSize="@dimen/button_orange_text_size" />
     </LinearLayout>
 
-    <org.holoeverywhere.widget.Button
+    <include
         android:id="@+id/fragment_root_empty_button"
-        style="@style/button_orange_style"
-        android:layout_height="@dimen/button_orange_height"
-        android:layout_margin="@dimen/rounded_horizontal_margin"
-        android:text="@string/continue_shopping"
-        android:textColor="@color/grey_dark"
-        android:textSize="@dimen/button_orange_text_size"
+        layout="@layout/orange_button_layout"
         android:visibility="gone" />
 
 </LinearLayout>

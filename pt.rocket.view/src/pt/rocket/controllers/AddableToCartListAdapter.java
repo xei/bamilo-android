@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.framework.objects.AddableToCart;
+import pt.rocket.framework.objects.Favourite;
 import pt.rocket.framework.objects.LastViewedAddableToCart;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.imageloader.RocketImageLoader;
@@ -21,7 +22,8 @@ import android.widget.ImageView;
 import de.akquinet.android.androlog.Log;
 
 /**
- * This Class is used to create an adapter for the list of items addableToCart. It is called by LastViewedFragment
+ * This Class is used to create an adapter for the list of items addableToCart.
+ * It is called by LastViewedFragment and FavouritesFragment
  * 
  * @author Andre Lopes
  * @modified sergiopereira
@@ -101,6 +103,8 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
         // Set clickable views
         if (itemsClass == LastViewedAddableToCart.class) {
             setClickableViews(position, prodItem.container, prodItem.addToCartButton, prodItem.varianceButton);
+        } else if (itemsClass == Favourite.class) {
+            setClickableViews(position, prodItem.container, prodItem.deleteButton, prodItem.addToCartButton, prodItem.varianceButton);
         } else {
             setClickableViews(position, prodItem.container, prodItem.deleteButton, prodItem.addToCartButton, prodItem.varianceButton);
         }

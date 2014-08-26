@@ -21,7 +21,9 @@
         android:background="@color/grey_background"
         android:gravity="center" >
 
-        <include layout="@layout/favourite_button_layout" />
+        <include
+            android:id="@+id/favourite_button_shop_all"
+            layout="@layout/orange_button_layout" />
     </LinearLayout>
 
 </RelativeLayout>

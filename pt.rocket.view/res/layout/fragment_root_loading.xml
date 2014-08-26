@@ -8,14 +8,10 @@
     android:gravity="top" >
 
     <LinearLayout
+        style="@style/rounded_box"
         android:layout_width="match_parent"
         android:layout_height="@dimen/root_empty_container_height"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/rounded_vertical_margin"
-        android:layout_marginLeft="@dimen/rounded_horizontal_margin"
-        android:layout_marginRight="@dimen/rounded_horizontal_margin"
-        android:layout_marginTop="@dimen/rounded_vertical_margin"
-        android:background="@drawable/background_content"
         android:gravity="center"
         android:orientation="vertical" >
 

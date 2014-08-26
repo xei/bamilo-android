@@ -368,6 +368,5 @@
     <string name="products_tip_swipe_text">Balayer à la gauche ou droite pour changer de classement</string>
 	<string name="login_remember_user_email">Remember my email</string>
 	<string name="catalog_no_results">No results match your filter criteria.\nYou can try to use less specific filters</string>
-	<string name="catalog_edit_filters">Edit Filters</string>
 
 </resources>

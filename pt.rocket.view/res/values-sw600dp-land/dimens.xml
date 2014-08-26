@@ -95,5 +95,8 @@
     <!-- CATALOG REDESIGN -->
     <integer name="catalog_list_num_columns">2</integer>
     <integer name="catalog_grid_num_columns">3</integer>
+    
+    <!-- MY PROFILE REDESIGN -->
+    <dimen name="button_recently_viewed_extra_height">75dp</dimen>
 
 </resources>

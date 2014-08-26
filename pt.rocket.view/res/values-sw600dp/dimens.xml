@@ -85,6 +85,7 @@
     <dimen name="button_orange_text_size">25sp</dimen>
     <dimen name="button_orange_height">50dp</dimen>
     <dimen name="button_orange_extra_height">75dp</dimen>
+    <dimen name="button_recently_viewed_extra_height">150dp</dimen>
     <dimen name="product_item_text_size">16sp</dimen>
     <dimen name="product_item_brand_text_size">18sp</dimen>
     <dimen name="product_item_addtocart_text_size">12sp</dimen>
