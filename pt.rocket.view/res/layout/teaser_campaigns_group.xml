@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragment_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginTop="3dp"
     android:layout_marginBottom="@dimen/teaser_margin_bottom"
-    android:layout_marginLeft="6.5dp"               
+    android:layout_marginLeft="6.5dp"
     android:layout_marginRight="6.5dp"
-    android:background="@drawable/background_content" >
+    android:layout_marginTop="3dp"
+    android:orientation="vertical" >
+
+    <!-- CONTAINER -->
+
+    <LinearLayout
+        android:id="@+id/teaser_group_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/teaser_group_title_container"
+        android:background="@drawable/background_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/campaign_title_button_height" />
+
+    <!-- TITLE -->
 
     <RelativeLayout
         android:id="@+id/teaser_group_title_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/campaign_title_button_height"        
+        android:layout_height="@dimen/campaign_title_button_height"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
         android:background="@drawable/btn_campaign" >
-        
+
         <LinearLayout
             android:layout_width="62.67dp"
             android:layout_height="wrap_content"
@@ -56,10 +70,4 @@
             android:textSize="@dimen/text_m" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/teaser_group_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" />
-
-</LinearLayout>
+</RelativeLayout>

@@ -311,7 +311,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
 
         switch (action) {
         case Home:
-            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_home, R.string.home, this);
+            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_home, R.string.home_label, this);
             layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             break;
         case Categories:
@@ -358,7 +358,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     private View createCategoriesHeader() {
         View navComponent = mInflater.inflate(R.layout.navigation_categories_component, mNavigationContainer, false);
         TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
-        String text = getString(R.string.categories);
+        String text = getString(R.string.categories_label);
         tVSearch.setText(text.toUpperCase());
         tVSearch.setContentDescription("calabash_" + text);
         navComponent.setOnClickListener(null);

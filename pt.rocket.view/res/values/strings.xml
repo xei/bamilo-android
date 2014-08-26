@@ -14,13 +14,13 @@
     <string name="loading_message">Loading…</string>
     <!-- string name="session_label">Session Expired</string -->
     <!-- string name="session_expired_text">Your sessions has expired. Please login again.</string -->
-    <string name="home">Home</string>
-    <string name="products">Products</string>
-    <string name="brands">Brands</string>
+    <string name="home_label">Home</string>
+    <string name="products_label">Products</string>
+    <string name="brands_label">Brands</string>
     <string name="my_account">My Account</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_out">Sign Out</string>
-    <string name="categories">Categories</string>
+    <string name="categories_label">Categories</string>
     <!-- string name="sales">Sales</string -->
     <!-- string name="nav_products">Products</string -->
     <string name="nav_country">Choose Country</string>

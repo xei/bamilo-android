@@ -178,9 +178,11 @@ public class TeasersFactory {
         ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
         if (teaserCategoryGroup != null) {
             ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserCategoryGroup.getTitle());
-            container.addView(createCategoryAllTeaserView(container, mInflater));
+            // Add each item
             for (TeaserCategory category : teaserCategoryGroup.getTeasers())
                 container.addView(createCategoryTeaserView(category, container, mInflater));
+            // Add item for all categories
+            container.addView(createCategoryAllTeaserView(container, mInflater));
         }
         return rootView;
     }

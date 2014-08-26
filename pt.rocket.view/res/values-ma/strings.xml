@@ -13,13 +13,13 @@
     <string name="loading_message">Chargement... </string>
     <!-- string name="session_label">Session expirée</string -->
     <!-- string name="session_expired_text">Vos sessions ont expiré. Veillez vous connecter à nouveau. </string -->
-    <string name="home">Accueil </string>
-    <string name="products">Produits </string>
-    <string name="brands">Marques</string>
+    <string name="home_label">Accueil </string>
+    <string name="products_label">Produits </string>
+    <string name="brands_label">Marques</string>
     <string name="my_account">Mon compte</string>
     <string name="sign_in">Accéder au compte</string>
     <string name="sign_out">Se déconnecter</string>
-    <string name="categories">Catégories </string>
+    <string name="categories_label">Catégories </string>
     <!-- string name="sales">PROMO</string -->
     <!-- string name="nav_products">Produits</string -->
     <string name="nav_country">Choisir le pays </string>
