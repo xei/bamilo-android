@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Button xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/recentsearch_clear_all"
-    style="@style/button_grey_style"
+    style="@style/button_grey_bottom"
     android:layout_width="440dp"
     android:layout_alignBottom="@id/middle_recentsearch_list"
     android:layout_centerHorizontal="true"

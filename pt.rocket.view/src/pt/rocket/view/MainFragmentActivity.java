@@ -174,9 +174,11 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         Log.i(TAG, "ON RESUME");
 
         // AD4Push activity tracking for in-app messages
+        //Ad4PushTracker.startActivityForInAppMessages(this);
         Ad4PushTracker.startActivity(this);
+        //Ad4PushTracker.setPushNotificationLocked(true);
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -186,8 +188,16 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
-//        JumiaApplication.COMPONENTS.get(UrbanAirshipComponent.class).setUserPushSettings();
-
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.BaseActivity#onStop()
+     */
+    @Override
+    protected void onStop() {
+        Log.i(TAG, "ON STOP");
+        super.onStop();
         // AD4Push activity tracking for in-app messages
         Ad4PushTracker.stopActivity(this);
     }

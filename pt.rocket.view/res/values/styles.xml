@@ -652,7 +652,7 @@
         <item name="android:textColor">@color/grey_middledark</item>
         <item name="android:textSize">@dimen/text_title</item>
         <item name="android:gravity">left|center</item>
-        <item name="android:layout_margin">@dimen/margin_mid</item>
+        <item name="android:layout_margin">@dimen/rounded_margin_mid</item>
         <item name="android:fontFamily">roboto_regular</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
@@ -664,5 +664,31 @@
         <item name="android:layout_height">@dimen/divider_height</item>
         <item name="android:background">@color/orange_basic</item>
     </style>
+    
+        <!-- BUTTON FOR BOTTOM CONTAINER -->
+
+    <style name="_button_bottom_container">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginTop">@dimen/margin_mid</item>
+        <item name="android:layout_marginBottom">@dimen/margin_large</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:fontFamily">roboto_bold</item>
+    </style>
+
+    <style name="button_grey_bottom" parent="_button_bottom_container">
+        <item name="android:background">@drawable/btn_grey</item>
+    </style>
+
+    <style name="button_orange_bottom" parent="_button_bottom_container">
+        <item name="android:background">@drawable/btn_orange</item>
+    </style>
+    
+    
 
 </resources>

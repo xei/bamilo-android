@@ -150,7 +150,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        // UAirship.shared().getAnalytics().activityStarted(this);
     }
 
     /*

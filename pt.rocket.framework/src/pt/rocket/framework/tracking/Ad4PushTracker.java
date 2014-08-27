@@ -9,8 +9,13 @@ import java.util.HashMap;
 
 import pt.rocket.framework.R;
 import pt.rocket.framework.database.CategoriesTableHelper;
-import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.CurrencyFormatter;
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.telephony.TelephonyManager;
 
 import com.ad4screen.sdk.A4S;
 import com.ad4screen.sdk.analytics.Cart;
@@ -19,12 +24,6 @@ import com.ad4screen.sdk.analytics.Lead;
 import com.ad4screen.sdk.analytics.Purchase;
 
 import de.akquinet.android.androlog.Log;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.telephony.TelephonyManager;
 
 /**
  * @author nunocastro
@@ -160,16 +159,23 @@ public class Ad4PushTracker {
         // CREATE_LISTING_DONE_VIEW);
 
         if (isEnabled) {
+        	Log.d(TAG, "Ad4PSUH Startup -> INITITALIZED");
             mA4S = A4S.get(context);
-            Log.d(TAG, "Ad4PSUH Startup -> INITITALIZED");
-
             Bundle prefs = new Bundle();
             prefs.putString(USER_ID, "0");
             mA4S.updateUserPreferences(prefs);
         }
 
     }
-
+    
+    /**
+     * ####### BASE ####### 
+     */
+    
+    /**
+     * 
+     * @param activity
+     */
     public static void startActivity(Activity activity) {
         if (null != mA4S && isEnabled) {
             Log.d(TAG, "Started Activity -> " + activity.getLocalClassName());
@@ -177,12 +183,55 @@ public class Ad4PushTracker {
         }
     }
 
+    /**
+     * 
+     * @param activity
+     */
     public static void stopActivity(Activity activity) {
         if (null != mA4S && isEnabled) {
             Log.d(TAG, "Stoped Activity -> " + activity.getLocalClassName());
             mA4S.stopActivity(activity);
         }
     }
+    
+    /**
+     * Mark this activity to receive in app messages from Ad4Push service.
+     * @param activity
+     * @author sergiopereira
+     */
+    public static void startActivityForInAppMessages(Activity activity) {
+    	if (null != mA4S && isEnabled) {
+            Log.d(TAG, "ON START ACTIVITY ONLY FOR IN-APP MSG: " + activity.getLocalClassName());
+            startActivity(activity);
+            setPushNotificationLocked(true);
+        } else Log.w(TAG, "WARNING: A4S IS NULL OR IS DISABLED"); 
+    }
+    
+    /**
+     * Lock or unlock the push notifications.
+     * @param true/false
+     * @author sergiopereira
+     */
+    public static void setPushNotificationLocked(boolean bool) {
+    	if (null != mA4S && isEnabled) {
+    		Log.d(TAG, "LOCK PUSH NOTIFICATIONS: " + bool);
+        	mA4S.setPushNotificationLocked(bool);
+    	}
+    }
+    
+    /**
+     * Lock or unlock the in-app messages. 
+     * @param true/false
+     * @author sergiopereira
+     */
+	public static void setInAppDisplayLocked(boolean bool) {
+		if (null != mA4S && isEnabled) {
+			Log.d(TAG, "LOCK IN APP MESSAGE: " + bool);
+			mA4S.setInAppDisplayLocked(bool);
+		}
+    }
+    
+    
 
     private void trackView(String view) {
         if (null != mA4S && isEnabled) {

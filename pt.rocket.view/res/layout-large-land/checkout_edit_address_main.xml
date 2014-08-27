@@ -69,7 +69,7 @@
 
                 <org.holoeverywhere.widget.Button
                     android:id="@+id/checkout_edit_button_cancel"
-                    style="@style/button_grey_style"
+                    style="@style/button_grey_bottom"
                     android:layout_width="0dp"
                     android:layout_marginRight="@dimen/margin_small"
                     android:layout_weight="1"

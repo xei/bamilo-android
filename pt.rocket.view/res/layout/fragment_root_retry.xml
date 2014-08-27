@@ -29,7 +29,7 @@
 
     <org.holoeverywhere.widget.Button
         android:id="@+id/fragment_root_retry_button"
-        style="@style/button_grey_style"
+        style="@style/button_grey_bottom"
         android:layout_width="@dimen/button_orange_landscape_width"
         android:layout_height="@dimen/button_orange_height"
         android:layout_gravity="center"

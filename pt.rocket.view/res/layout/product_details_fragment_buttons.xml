@@ -9,32 +9,17 @@
 
     <org.holoeverywhere.widget.Button
         android:id="@+id/product_detail_call_to_order"
-        style="@style/button_grey_style"
-        android:layout_width="0dp"
-        android:layout_height="42dp"
-        android:layout_weight="1"
+        style="@style/button_grey_bottom"
         android:contentDescription="@string/productdetail_order_button_description"
-        android:ellipsize="marquee"
-        android:gravity="center"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:singleLine="true"
-        android:text="@string/call_to_order"
-        android:visibility="visible" />
+        android:text="@string/call_to_order" />
 
     <!-- ADD TO CART -->
 
     <org.holoeverywhere.widget.Button
         android:id="@+id/product_detail_shop"
-        style="@style/button_orange_style"
-        android:layout_width="0dp"
-        android:layout_height="42dp"
+        style="@style/button_orange_bottom"
         android:layout_marginLeft="@dimen/margin_small"
-        android:layout_weight="1"
         android:contentDescription="@string/productdetail_addcart_description"
-        android:ellipsize="marquee"
-        android:gravity="center"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:singleLine="true"
         android:text="@string/add_to_shopping_cart" />
 
 </LinearLayout>

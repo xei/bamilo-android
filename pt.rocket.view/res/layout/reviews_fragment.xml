@@ -115,7 +115,7 @@
 
             <org.holoeverywhere.widget.Button
                 android:id="@+id/write_btn"
-                style="@style/button_grey_style"
+                style="@style/button_grey_bottom"
                 android:layout_marginBottom="4dp"
                 android:layout_marginLeft="@dimen/margin_huge"
                 android:layout_marginRight="@dimen/margin_huge"
