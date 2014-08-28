@@ -374,4 +374,5 @@
 	<string name="catalog_edit_filters">Edit Filters</string>
 	<string name="color_label">Color</string>
 	<string name="size_label">Size</string>
+	<string name="shoppingcart_remove_products">Do you want to remove the products in the Cart?</string>
 </resources>

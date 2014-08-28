@@ -236,9 +236,5 @@
     
     <dimen name="my_account_medium_margin">@dimen/rounded_margin_mid</dimen>
     <dimen name="my_account_small_margin">@dimen/rounded_margin_small</dimen>
-    
-    <!-- ???? -->
-    <dimen name="my_account_hide_topdivider_margin">-1dp</dimen>
-    <dimen name="my_account_topdivider_fullwidth_margin">-50dp</dimen>
 
 </resources>

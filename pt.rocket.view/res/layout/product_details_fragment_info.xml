@@ -10,7 +10,10 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_centerVertical="true"
-        android:layout_margin="@dimen/margin_mid"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginTop="@dimen/margin_mid"
         android:gravity="left|center"
         android:orientation="horizontal" >
 
@@ -40,7 +43,10 @@
         android:id="@+id/product_detail_product_variant_container"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_margin="@dimen/margin_mid"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginTop="@dimen/margin_mid"
         android:gravity="left|center"
         android:orientation="horizontal" >
 
@@ -74,7 +80,10 @@
         android:id="@+id/product_detail_product_rating_container"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_margin="@dimen/margin_mid"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginTop="@dimen/margin_mid"
         android:background="@drawable/selector_clickableitem_highlight"
         android:paddingBottom="@dimen/margin_mid"
         android:paddingTop="@dimen/margin_mid" >
@@ -117,7 +126,10 @@
         android:layout_height="48dp"
         android:layout_below="@id/product_detail_div_title"
         android:layout_centerVertical="true"
-        android:layout_margin="@dimen/margin_mid"
+        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginTop="@dimen/margin_mid"
         android:background="@drawable/selector_listitem_highlight"
         android:ellipsize="end"
         android:gravity="left|center"

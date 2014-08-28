@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="button">
+    <style name="_button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/btn_orange</item>
@@ -13,17 +13,19 @@
         <item name="android:layout_marginBottom">@dimen/margin_huge</item>
     </style>
 
-    <style name="button_orange_style" parent="button">
+    <style name="button_orange_style" parent="_button">
         <item name="android:background">@drawable/btn_orange</item>
         <item name="android:layout_marginTop">@dimen/margin_mid</item>
         <item name="android:layout_marginBottom">@dimen/margin_large</item>
     </style>
 
-    <style name="button_grey_style" parent="button">
+    <!--
+    style name="button_grey_style" parent="_button">
         <item name="android:background">@drawable/btn_grey</item>
         <item name="android:layout_marginTop">@dimen/margin_mid</item>
         <item name="android:layout_marginBottom">@dimen/margin_large</item>
-    </style>
+    </style
+    -->
 
     <!-- TEXT STYLES -->
 
@@ -664,21 +666,21 @@
         <item name="android:layout_height">@dimen/divider_height</item>
         <item name="android:background">@color/orange_basic</item>
     </style>
-    
-        <!-- BUTTON FOR BOTTOM CONTAINER -->
 
+    <!-- BUTTON FOR BOTTOM CONTAINER -->
     <style name="_button_bottom_container">
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">42dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginTop">@dimen/margin_mid</item>
-        <item name="android:layout_marginBottom">@dimen/margin_large</item>
+        <item name="android:layout_marginTop">@dimen/rounded_margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/rounded_margin_small</item>
         <item name="android:ellipsize">marquee</item>
         <item name="android:maxLines">1</item>
         <item name="android:gravity">center</item>
         <item name="android:marqueeRepeatLimit">marquee_forever</item>
         <item name="android:singleLine">true</item>
         <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:textColor">@color/grey_dark</item>
+        <item name="android:textSize">@dimen/button_orange_text_size</item>
     </style>
 
     <style name="button_grey_bottom" parent="_button_bottom_container">
@@ -688,7 +690,5 @@
     <style name="button_orange_bottom" parent="_button_bottom_container">
         <item name="android:background">@drawable/btn_orange</item>
     </style>
-    
-    
 
 </resources>

@@ -5,6 +5,7 @@ package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.Set;
 import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -19,6 +21,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
+import pt.rocket.framework.tracking.AdXTracker;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
@@ -43,8 +46,11 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -69,20 +75,14 @@ public class ShoppingCartFragment extends BaseFragment {
     private static final String TAG = LogTagHelper.create(ShoppingCartFragment.class);
 
     private final static String ID_CHANGE_QUANTITY = "id_change_quantity";
-    
+
     private final static int FAVOURITE_DELAY = 2000;
-    
+
     private Handler triggerHander;
 
     private static ShoppingCartFragment reviewFragment;
 
     private long mBeginRequestMillis;
-
-    private LinearLayout noItems;
-
-    private View container;
-
-    //private MinOrderAmount minAmount;
 
     private List<ShoppingCartItem> items;
 
@@ -90,17 +90,10 @@ public class ShoppingCartFragment extends BaseFragment {
 
     private double unreduced_cart_price;
 
-    //private double reduced_cart_price;
-
     /**
      * Boolean to the define the activities type: false - ShoppingBasket | true . Checkout
      */
     public boolean isShoppingBasket = true;
-
-    /**
-     * mAdapter Basket adapter(ShoppingBasketListAdapter)
-     */
-//    private ShoppingBasketFragListAdapter mAdapter;
 
     /**
      * lView Basket grid view
@@ -113,6 +106,8 @@ public class ShoppingCartFragment extends BaseFragment {
 
     private Button checkoutButton;
 
+    private Button mCallToOrderButton;
+
     /**
      * dialogList for DialogList
      */
@@ -120,22 +115,24 @@ public class ShoppingCartFragment extends BaseFragment {
 
     // Voucher
     private Button couponButton;
-    
-    //private View voucherDivider;
-    
+
     private TextView voucherError;
-    
+
     EditText voucherValue;
-    
+
     private String mVoucher = null;
     
-    //private boolean noPaymentNeeded = false;
+    // private boolean noPaymentNeeded = false;
 
     private boolean removeVoucher = false;
 
     private String itemRemoved_sku;
 
     private String itemRemoved_price;
+
+    private String mPhone2Call = "";
+
+    private boolean isCallInProgress = false;
 
     public static class CartItemValues {
         public Boolean is_in_wishlist;
@@ -162,8 +159,9 @@ public class ShoppingCartFragment extends BaseFragment {
      * @return
      */
     public static ShoppingCartFragment getInstance() {
-        if (reviewFragment == null)
+        if (reviewFragment == null) {
             reviewFragment = new ShoppingCartFragment();
+        }
         return reviewFragment;
     }
 
@@ -174,8 +172,9 @@ public class ShoppingCartFragment extends BaseFragment {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Basket,
                 R.layout.shopping_basket,
-                R.string.shoppingcart_title,
+                0,
                 KeyboardState.ADJUST_CONTENT);
+        // R.string.shoppingcart_title
         this.setRetainInstance(true);
     }
 
@@ -201,19 +200,19 @@ public class ShoppingCartFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
     }
 
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, container, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        View view = inflater.inflate(R.layout.shopping_basket, container, false);
-//        return view;
-//    }
+    /*-
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
+     */
+    /*-@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        Log.i(TAG, "ON CREATE VIEW");
+        View view = inflater.inflate(R.layout.shopping_basket, container, false);
+        return view;
+    }*/
 
     /*
      * (non-Javadoc)
@@ -248,25 +247,27 @@ public class ShoppingCartFragment extends BaseFragment {
 
     /**
      * Trigger to get cart items validating FavouritesFragment state is completed
+     * 
      * @author sergiopereira
      */
     private void triggerGetShoppingCart() {
         // Check if FavouritesFragment is complete
-        if(!FavouritesFragment.isOnAddingAllItemsToCart)
+        if (!FavouritesFragment.isOnAddingAllItemsToCart) {
             // Get items
             triggerContentEvent(new GetShoppingCartItemsHelper(), null, responseCallback);
-        else {
+        } else {
             // Singleton for handler
-            if(triggerHander == null) triggerHander = new Handler();
+            if (triggerHander == null) triggerHander = new Handler();
             // Remove peding posts
             else triggerHander.removeCallbacks(triggerRunnable);
             // Remove trigger
             triggerHander.postDelayed(triggerRunnable, FAVOURITE_DELAY);
         }
     }
-    
+
     /**
      * Runnable used to get the cart items after FavouritesFragment is complete action
+     * 
      * @author sergiopereira
      */
     Runnable triggerRunnable = new Runnable() {
@@ -281,7 +282,7 @@ public class ShoppingCartFragment extends BaseFragment {
         values.put("sku", item.getConfigSimpleSKU());
         itemRemoved_sku = item.getConfigSimpleSKU();
         itemRemoved_price = item.getSpecialPriceVal().toString();
-        if(itemRemoved_price == null){
+        if (itemRemoved_price == null) {
             itemRemoved_price = item.getPriceVal().toString();
         }
         Bundle bundle = new Bundle();
@@ -344,12 +345,6 @@ public class ShoppingCartFragment extends BaseFragment {
     private void releaseVars() {
         reviewFragment = null;
 
-        noItems = null;
-
-        container = null;
-
-        //minAmount = null;
-
         itemsValues = null;
 
         lView = null;
@@ -367,8 +362,7 @@ public class ShoppingCartFragment extends BaseFragment {
             return;
         }
         checkoutButton = (Button) getView().findViewById(R.id.checkout_button);
-        noItems = (LinearLayout) getView().findViewById(R.id.no_items_container);
-        container = getView().findViewById(R.id.shopping_cart_container);
+        mCallToOrderButton = (Button) getView().findViewById(R.id.checkout_call_to_order);
         prepareCouponView();
     }
 
@@ -399,6 +393,44 @@ public class ShoppingCartFragment extends BaseFragment {
             }
         });
 
+        // Show Call To Order if available on the device
+        PackageManager pm = getActivity().getPackageManager();
+        if (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
+            setCallPhone();
+            mCallToOrderButton.setVisibility(View.VISIBLE);
+            mCallToOrderButton.setSelected(true);
+            mCallToOrderButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String user_id = "";
+                    if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
+                        user_id = JumiaApplication.CUSTOMER.getIdAsString();
+                    }
+                    AdXTracker.trackCall(getActivity().getApplicationContext(), user_id, JumiaApplication.SHOP_NAME);
+                    makeCall();
+                }
+            });
+        } else {
+            mCallToOrderButton.setVisibility(View.GONE);
+        }
+    }
+
+    private void makeCall() {
+        // Displays the phone number but the user must press the Call button to begin the phone call
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + mPhone2Call));
+        if (intent.resolveActivity(getBaseActivity().getPackageManager()) != null) {
+            startActivity(intent);
+            isCallInProgress = true;
+        }
+    }
+
+    private void setCallPhone() {
+        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, "");
+        if ("".equalsIgnoreCase(mPhone2Call)) {
+            mPhone2Call = getString(R.string.call_to_order_number);
+        }
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
@@ -409,26 +441,26 @@ public class ShoppingCartFragment extends BaseFragment {
 
         // Update cart info
         getBaseActivity().handleSuccessEvent(bundle);
-        
+
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        //ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        // ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         Log.d(TAG, "onSuccessEvent: eventType = " + eventType);
         switch (eventType) {
         case ADD_VOUCHER:
             couponButton.setText(getString(R.string.voucher_remove));
             voucherError.setVisibility(View.GONE);
-//            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
+            // voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             hideActivityProgress();
-            //noPaymentNeeded = false;
+            // noPaymentNeeded = false;
             removeVoucher = true;
             triggerGetShoppingCart();
             return true;
         case REMOVE_VOUCHER:
-            //noPaymentNeeded = false;
+            // noPaymentNeeded = false;
             couponButton.setText(getString(R.string.voucher_use));
             voucherError.setVisibility(View.GONE);
-//            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
+            // voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             hideActivityProgress();
             triggerGetShoppingCart();
             removeVoucher = false;
@@ -446,13 +478,13 @@ public class ShoppingCartFragment extends BaseFragment {
             }
             return true;
         case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-            Log.i(TAG, "code1removing and tracking"+itemRemoved_price);
+            Log.i(TAG, "code1removing and tracking" + itemRemoved_price);
             params = new Bundle();
             params.putString(TrackerDelegator.SKU_KEY, itemRemoved_sku);
             params.putString(TrackerDelegator.PRICE_KEY, itemRemoved_price);
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-            
+
             TrackerDelegator.trackProductRemoveFromCart(params);
             showFragmentContentContainer();
             TrackerDelegator.trackLoadTiming(params);
@@ -464,35 +496,78 @@ public class ShoppingCartFragment extends BaseFragment {
             params = new Bundle();
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-            
+
             TrackerDelegator.trackLoadTiming(params);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             return true;
         case GET_SHOPPING_CART_ITEMS_EVENT:
-            if (((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getCartItems() != null
-                    && ((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY))
-                            .getCartItems().values() != null) {
-                TrackerDelegator.trackViewCart(((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY))
-                                .getCartItems().values().size());
+            ShoppingCart shoppingCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            if (shoppingCart.getCartItems() != null && shoppingCart.getCartItems().values() != null) {
+                TrackerDelegator.trackViewCart(shoppingCart.getCartItems().values().size());
             }
             showFragmentContentContainer();
             params = new Bundle();
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-            
+
             TrackerDelegator.trackLoadTiming(params);
-            displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+
+            // verify if "Call to Order" was used
+            if (isCallInProgress) {
+                isCallInProgress = false;
+
+                askToRemoveProductsAfterOrder(shoppingCart);
+            } else {
+                displayShoppingCart(shoppingCart);
+            }
+
             return true;
         default:
             showFragmentContentContainer();
             params = new Bundle();
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-            
+
             TrackerDelegator.trackLoadTiming(params);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
         }
         return true;
+    }
+
+    /**
+     * Present a dialog to remove all items from cart <br>
+     * (Expectly used after user uses "Call to Order")
+     * 
+     * @param shoppingCart
+     * @author André Lopes
+     */
+    private void askToRemoveProductsAfterOrder(final ShoppingCart shoppingCart) {
+        dialog = DialogGenericFragment.newInstance(true, true, false,
+                getString(R.string.shoppingcart_dialog_title),
+                getString(R.string.shoppingcart_remove_products),
+                getString(R.string.yes_label),
+                getString(R.string.no_label),
+                new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int id = v.getId();
+                        if (id == R.id.button1) {
+                            List<ShoppingCartItem> items = new ArrayList<ShoppingCartItem>(shoppingCart.getCartItems().values());
+
+                            for (ShoppingCartItem item : items) {
+                                mBeginRequestMillis = System.currentTimeMillis();
+                                triggerRemoveItem(item);
+                            }
+
+                            showNoItems();
+                        } else if (id == R.id.button2) {
+                            displayShoppingCart(shoppingCart);
+                        }
+
+                        dialog.dismiss();
+                    }
+                });
+        dialog.show(getActivity().getSupportFragmentManager(), null);
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
@@ -509,7 +584,7 @@ public class ShoppingCartFragment extends BaseFragment {
         case REMOVE_VOUCHER:
             voucherValue.setText("");
             voucherError.setVisibility(View.VISIBLE);
-//            voucherDivider.setBackgroundColor(R.color.red_middle);
+            // voucherDivider.setBackgroundColor(R.color.red_middle);
             hideActivityProgress();
             break;
         case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
@@ -537,9 +612,15 @@ public class ShoppingCartFragment extends BaseFragment {
         // Get and set the cart value
         setTotal(cart);
         // Set voucher
-        if(cart.getCouponDiscount() != null && !cart.getCouponDiscount().equalsIgnoreCase("") && Double.parseDouble(cart.getCouponDiscount()) > 0){
-            voucherValue.setText("- "+CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getCouponDiscount())));
-            voucherContainer.setVisibility(View.VISIBLE);
+        String couponDiscount = cart.getCouponDiscount();
+        if (couponDiscount != null && !couponDiscount.equals("")) {
+            double couponDiscountValue = Double.parseDouble(couponDiscount);
+            if (couponDiscountValue > 0) {
+                voucherValue.setText("- " + CurrencyFormatter.formatCurrency(couponDiscountValue));
+                voucherContainer.setVisibility(View.VISIBLE);
+            } else {
+                voucherContainer.setVisibility(View.GONE);
+            }
         } else {
             voucherContainer.setVisibility(View.GONE);
         }
@@ -552,42 +633,41 @@ public class ShoppingCartFragment extends BaseFragment {
             e.printStackTrace();
             cleanValue = -1;
         }
-        if(cleanValue > 0){
+        if (cleanValue > 0) {
             priceTotal.setText(CurrencyFormatter.formatCurrency(cleanValue));
         } else {
             priceTotal.setText(cart.getCartCleanValue());
         }
-        
+
         TextView shippingValue = (TextView) getView().findViewById(R.id.shipping_value);
         View shippingMain = getView().findViewById(R.id.shipping_container);
-        if(!cart.isSumCosts()){
+        if (!cart.isSumCosts()) {
             extraCostsMain.setVisibility(View.VISIBLE);
             extraCostsValue.setText(CurrencyFormatter.formatCurrency(cart.getExtraCosts()));
-            if (cart.getShippingValue() != null
-                    && !cart.getShippingValue().equalsIgnoreCase("null")
-                    && !cart.getShippingValue().equalsIgnoreCase("")) {
+            String shipping = cart.getShippingValue();
+            if (shipping != null && !shipping.equalsIgnoreCase("null") && !shipping.equals("")) {
                 // Validate the shipping value
-                if(!cart.getShippingValue().equals("0"))
-                    shippingValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getShippingValue())));
-                else 
+                if (!shipping.equals("0")) {
+                    shippingValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(shipping)));
+                } else {
                     shippingValue.setText(getString(R.string.free_label));
+                }
                 shippingMain.setVisibility(View.VISIBLE);
             }
         } else {
             extraCostsMain.setVisibility(View.GONE);
-            if (cart.getSumCostsValue() != null
-                    && !cart.getSumCostsValue().equalsIgnoreCase("null")
-                    && !cart.getSumCostsValue().equalsIgnoreCase("")) {
+            String sumCosts = cart.getSumCostsValue();
+            if (sumCosts != null && !sumCosts.equalsIgnoreCase("null") && !sumCosts.equals("")) {
                 // Validate the shipping value
-                if(!cart.getShippingValue().equals("0"))
-                    shippingValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getSumCostsValue())));
-                else 
+                if (!cart.getShippingValue().equals("0")) {
+                    shippingValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(sumCosts)));
+                } else {
                     shippingValue.setText(getString(R.string.free_label));
+                }
                 shippingMain.setVisibility(View.VISIBLE);
             }
         }
-        
-        
+
         String articleString = getResources().getQuantityString(
                 R.plurals.shoppingcart_text_article, cart.getCartCount());
         articlesCount.setText(cart.getCartCount() + " " + articleString);
@@ -598,7 +678,7 @@ public class ShoppingCartFragment extends BaseFragment {
             lView.removeAllViewsInLayout();
             itemsValues = new ArrayList<CartItemValues>();
             unreduced_cart_price = 0;
-            //reduced_cart_price = 0;
+            // reduced_cart_price = 0;
             boolean cartHasReducedItem = false;
             for (int i = 0; i < items.size(); i++) {
                 ShoppingCartItem item = items.get(i);
@@ -617,23 +697,15 @@ public class ShoppingCartFragment extends BaseFragment {
                 values.max_delivery_time = 99;
                 values.simpleData = item.getSimpleData();
                 values.variation = item.getVariation();
-                
+
                 Log.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
-                
+
                 itemsValues.add(values);
                 lView.addView(getView(i, lView, LayoutInflater.from(getBaseActivity()), values));
                 if (!item.getPrice().equals(item.getSpecialPrice())) {
                     cartHasReducedItem = true;
                 }
 
-                //Double actItemPrice;
-                //if (item.getPrice().equals(item.getSpecialPrice())) {
-                //    actItemPrice = item.getPriceVal();
-                //} else {
-                //    actItemPrice = item.getSpecialPriceVal();
-                //}
-                //reduced_cart_price += actItemPrice * item.getQuantity();
-                
                 unreduced_cart_price += item.getPriceVal() * item.getQuantity();
             }
 
@@ -646,48 +718,51 @@ public class ShoppingCartFragment extends BaseFragment {
             } else {
                 priceUnreduced.setVisibility(View.INVISIBLE);
             }
-            if (cart.getVatValue() != null && !cart.getVatValue().equalsIgnoreCase("null") && !cart.getShippingValue().equalsIgnoreCase("")) {
+            String vat = cart.getVatValue();
+            // XXX  before was this...
+            // if (cart.getVatValue() != null && !cart.getVatValue().equalsIgnoreCase("null") && !cart.getShippingValue().equalsIgnoreCase("")) {
+            if (vat != null && !vat.equalsIgnoreCase("null") && !vat.equalsIgnoreCase("")) {
                 TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
                 View vatMain = getView().findViewById(R.id.vat_container);
                 double cleanVatValue = 0;
                 try {
-                    cleanVatValue = Double.parseDouble(cart.getVatValue());
+                    cleanVatValue = Double.parseDouble(vat);
                 } catch (Exception e) {
                     e.printStackTrace();
                     cleanVatValue = -1;
                 }
-                if(cleanVatValue > 0){
+                if (cleanVatValue > 0) {
                     vatValue.setText(CurrencyFormatter.formatCurrency(cleanVatValue));
                 } else {
-                    vatValue.setText(cart.getVatValue());
+                    vatValue.setText(vat);
                 }
                 vatMain.setVisibility(View.VISIBLE);
             }
-           
-            if(cart.getPriceRules() != null && cart.getPriceRules().size() > 0){
+
+            HashMap<String, String> priceRules = cart.getPriceRules();
+            if (priceRules != null && priceRules.size() > 0) {
                 LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
                 priceRulesContainer.removeAllViews();
                 priceRulesContainer.setVisibility(View.VISIBLE);
                 LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
-                Set<String> priceRulesKeys = cart.getPriceRules().keySet();
+                Set<String> priceRulesKeys = priceRules.keySet();
                 for (String key : priceRulesKeys) {
                     View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element, null);
                     ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
-                    ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"+CurrencyFormatter.formatCurrency(cart.getPriceRules().get(key)));
+                    ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-" + CurrencyFormatter.formatCurrency(priceRules.get(key)));
                     priceRulesContainer.addView(priceRuleElement);
                 }
-                
             }
-            
 
             hideNoItems();
             TrackerDelegator.trackPage(TrackingPage.FILLED_CART);
 
         }
     }
-    
+
     /**
      * Set the total value
+     * 
      * @param cart
      * @author sergiopereira
      */
@@ -697,11 +772,13 @@ public class ShoppingCartFragment extends BaseFragment {
         TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
         View totalMain = getView().findViewById(R.id.total_container);
         // Set value
-        if(!TextUtils.isEmpty(cart.getCartValue()) && !cart.getCartValue().equals("null")) {
-            totalValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cart.getCartValue())));
+        String cartValue = cart.getCartValue();
+        if (!TextUtils.isEmpty(cartValue) && !cartValue.equals("null")) {
+            totalValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cartValue)));
             totalMain.setVisibility(View.VISIBLE);
-        } else 
+        } else {
             Log.w(TAG, "CART VALUES IS EMPTY");
+        }
     }
 
     /**
@@ -716,9 +793,7 @@ public class ShoppingCartFragment extends BaseFragment {
         public View pBar;
         public TextView discountPercentage;
         public TextView priceDisc;
-        public ImageView promoImg;
         public TextView variancesContainer;
-//        public TextView stockInfo;
         public Button deleteBtn;
         public CartItemValues itemValues;
 
@@ -737,9 +812,7 @@ public class ShoppingCartFragment extends BaseFragment {
             pBar = null;
             discountPercentage = null;
             priceDisc = null;
-            promoImg = null;
             variancesContainer = null;
-//            stockInfo = null;
             deleteBtn = null;
 
             super.finalize();
@@ -747,7 +820,7 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
     public View getView(final int position, ViewGroup parent, LayoutInflater mInflater, CartItemValues item) {
-        
+
         View view = mInflater.inflate(R.layout.shopping_basket_product_element_container, parent, false);
 
         final Item prodItem = new Item();
@@ -761,21 +834,19 @@ public class ShoppingCartFragment extends BaseFragment {
         prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
 
         prodItem.pBar = view.findViewById(R.id.image_loading_progress);
-        prodItem.discountPercentage = (TextView) view.findViewById(R.id.discount_percentage);
+        prodItem.discountPercentage = (TextView) view.findViewById(R.id.item_percentage);
         prodItem.priceDisc = (TextView) view.findViewById(R.id.item_discount);
-        prodItem.promoImg = (ImageView) view.findViewById(R.id.item_promotion);
         prodItem.variancesContainer = (TextView) view.findViewById(R.id.variances_container);
-//        prodItem.stockInfo = (TextView) view.findViewById(R.id.item_stock);
-        prodItem.deleteBtn = (Button) view.findViewById(R.id.delete_button);
+        prodItem.deleteBtn = (Button) view.findViewById(R.id.button_delete);
         view.setTag(prodItem);
 
         prodItem.itemName.setText(prodItem.itemValues.product_name);
         prodItem.itemName.setSelected(true);
 
         String url = prodItem.itemValues.image;
-        
+
         RocketImageLoader.instance.loadImage(url, prodItem.productView, prodItem.pBar, R.drawable.no_image_small);
-        
+
         if (!prodItem.itemValues.price.equals(prodItem.itemValues.price_disc)) {
             prodItem.priceDisc.setText(prodItem.itemValues.price_disc);
             prodItem.priceDisc.setVisibility(View.VISIBLE);
@@ -787,35 +858,26 @@ public class ShoppingCartFragment extends BaseFragment {
 
             prodItem.discountPercentage.setText("-" + prodItem.itemValues.discount_value.intValue() + "%");
             prodItem.discountPercentage.setVisibility(View.VISIBLE);
-            prodItem.promoImg.setVisibility(View.VISIBLE);
         } else {
             prodItem.priceDisc.setText(prodItem.itemValues.price);
             prodItem.priceView.setVisibility(View.INVISIBLE);
-            prodItem.promoImg.setVisibility(View.GONE);
             prodItem.discountPercentage.setVisibility(View.GONE);
         }
         prodItem.variancesContainer.setVisibility(View.GONE);
         if (prodItem.itemValues.variation != null) {
 
-            //Map<String, String> simpleData = prodItem.itemValues.simpleData;
+            // Map<String, String> simpleData = prodItem.itemValues.simpleData;
 
-            if (prodItem.itemValues.variation != null && prodItem.itemValues.variation.length() > 0
-                    && !prodItem.itemValues.variation.equalsIgnoreCase("1")
-                    && !prodItem.itemValues.variation.equalsIgnoreCase(",")
-                    && !prodItem.itemValues.variation.equalsIgnoreCase("...")
-                    && !prodItem.itemValues.variation.equalsIgnoreCase(".")) {
+            String variation = prodItem.itemValues.variation;
+            if (variation != null && variation.length() > 0
+                    && !variation.equals("1")
+                    && !variation.equals(",")
+                    && !variation.equals("...")
+                    && !variation.equals(".")) {
                 prodItem.variancesContainer.setVisibility(View.VISIBLE);
-                prodItem.variancesContainer.setText(prodItem.itemValues.variation);
+                prodItem.variancesContainer.setText(variation);
             }
         }
-
-//        if (prodItem.itemValues.stock > 0) {
-//            prodItem.stockInfo.setText(getString(R.string.shoppingcart_instock));
-//            prodItem.stockInfo.setTextColor(getResources().getColor(R.color.green_stock));
-//        } else {
-//            prodItem.stockInfo.setText(getString(R.string.shoppingcart_notinstock));
-//            prodItem.stockInfo.setTextColor(getResources().getColor(R.color.red_basic));
-//        }
 
         prodItem.deleteBtn.setOnClickListener(new OnClickListener() {
 
@@ -835,7 +897,7 @@ public class ShoppingCartFragment extends BaseFragment {
                 changeQuantityOfItem(position);
             }
         });
-        
+
         // Save the position to process the click on item
         view.setTag(position);
         view.setOnClickListener(new OnClickListener() {
@@ -844,10 +906,10 @@ public class ShoppingCartFragment extends BaseFragment {
                 try {
                     int position = Integer.parseInt(v.getTag().toString());
                     goToProducDetails(position);
-                } catch (NumberFormatException e) {
-                    Log.w(TAG, "WARNING: NFE ON GET CLICKED POSITION FROM TAG: " + v.getTag().toString());
                 } catch (NullPointerException e) {
                     Log.w(TAG, "WARNING: NPE ON GET CLICKED TAG");
+                } catch (NumberFormatException e) {
+                        Log.w(TAG, "WARNING: NFE ON GET CLICKED POSITION FROM TAG: " + v.getTag().toString());
                 }
             }
         });
@@ -859,39 +921,24 @@ public class ShoppingCartFragment extends BaseFragment {
      * showNoItems update the layout when basket has no items
      */
     public void showNoItems() {
-        setAppContentLayout();
-        if (noItems == null) {
-            return;
-        }
-        noItems.setVisibility(View.VISIBLE);
-        container.setVisibility(View.GONE);
-        Button continueShopping = (Button) noItems.findViewById(R.id.continue_shopping_button);
-        continueShopping.setOnClickListener(new OnClickListener() {
-
+        showFragmentEmpty(R.string.order_notiems, R.drawable.empty_shoppingcart, R.string.continue_shopping, new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = v.getId();
-                if (id == R.id.continue_shopping_button) {
-                    getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                    // ActivitiesWorkFlow.homePageActivity(getActivity());
-                    // getActivity().finish();
-                }
-
+                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
         });
 
         TrackerDelegator.trackPage(TrackingPage.EMPTY_CART);
     }
 
-
     /**
      * Function to redirect to the selected product details.
      * 
      * @param position
      */
-    private void goToProducDetails(int position) {        
+    private void goToProducDetails(int position) {
         // Log.d(TAG, "CART COMPLETE PRODUCT URL: " + items.get(position).getProductUrl());
-        
+
         if (items.get(position).getProductUrl().equals(""))
             return;
 
@@ -899,7 +946,7 @@ public class ShoppingCartFragment extends BaseFragment {
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, items.get(position).getProductUrl());
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     private void goToWebCheckout() {
@@ -907,44 +954,22 @@ public class ShoppingCartFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
         bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
-        ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     private void checkMinOrderAmount() {
-        // if (minAmount == null) {
-        // Toast.makeText(getActivity(),
-        // getString(R.string.shoppingcart_minamount_waiting), Toast.LENGTH_LONG).show();
-        // } else if (reduced_cart_price < minAmount.getValue()) {
-        // String formattedMinAmount = CurrencyFormatter.formatCurrency(minAmount.getValue());
-        // String message = String.format(getString(R.string.shoppingcart_minamount,
-        // formattedMinAmount));
-        // dialog = DialogGenericFragment.newInstance(true, true, false,
-        // getString(R.string.shoppingcart_dialog_title),
-        // message, getString(R.string.continue_shopping), null, new OnClickListener() {
-        //
-        // @Override
-        // public void onClick(View v) {
-        // dialog.dismiss();
-        // }
-        // });
-        // dialog.show( getActivity().getSupportFragmentManager(), null);
-        // } else {
-
-        
         TrackerDelegator.trackCheckout(items);
-        
+
         SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(
                 ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String restbase = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, null);
-        if(restbase != null){
+        if (restbase != null) {
             if (restbase.contains("mobapi/v1")) {
                 triggerIsNativeCheckoutAvailable();
             } else {
                 goToWebCheckout();
             }
         }
-
-        // }
     }
 
     /**
@@ -971,12 +996,7 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
     public void hideNoItems() {
-        if (noItems != null)
-            noItems.setVisibility(View.GONE);
-        if (container != null)
-            container.setVisibility(View.VISIBLE);
-        if (lView != null)
-            lView.setVisibility(View.VISIBLE);
+        showFragmentContentContainer();
     }
 
     public void changeQuantityOfItem(final int position) {
@@ -1019,8 +1039,7 @@ public class ShoppingCartFragment extends BaseFragment {
             values.put("qty_" + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
         }
         bundle.putParcelable(GetShoppingCartChangeItemQuantityHelper.CART_ITEMS, values);
-        triggerContentEventProgress(new GetShoppingCartChangeItemQuantityHelper(), bundle,
-                responseCallback);
+        triggerContentEventProgress(new GetShoppingCartChangeItemQuantityHelper(), bundle, responseCallback);
     }
 
     IResponseCallback responseCallback = new IResponseCallback() {
@@ -1044,7 +1063,7 @@ public class ShoppingCartFragment extends BaseFragment {
             voucherValue.setText(mVoucher);
         }
 
-        //voucherDivider = getView().findViewById(R.id.voucher_divider);
+        // voucherDivider = getView().findViewById(R.id.voucher_divider);
         voucherError = (TextView) getView().findViewById(R.id.voucher_error_message);
         couponButton = (Button) getView().findViewById(R.id.voucher_btn);
         if (removeVoucher) {
@@ -1067,8 +1086,7 @@ public class ShoppingCartFragment extends BaseFragment {
                     }
 
                 } else {
-                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message),
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message), Toast.LENGTH_LONG).show();
                 }
             }
         });
