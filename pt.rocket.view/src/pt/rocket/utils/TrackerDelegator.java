@@ -81,7 +81,7 @@ public class TrackerDelegator {
 
     public final static void trackLoginSuccessful(Bundle params) {
         String mOrigin;
-        int resLogin;
+        TrackingEvent event;
 
         Customer customer = params.getParcelable(CUSTOMER_KEY);
         boolean wasAutologin = params.getBoolean(AUTOLOGIN_KEY);
@@ -89,24 +89,25 @@ public class TrackerDelegator {
         boolean wasFacebookLogin = params.getBoolean(FACEBOOKLOGIN_KEY);
 
         if (wasFacebookLogin) {
-            resLogin = R.string.gfacebookloginsuccess;
+            event = TrackingEvent.LOGIN_FB_SUCCESS;
             mOrigin = origin;
         } else if (wasAutologin) {
-            resLogin = R.string.gautologinsuccess;
+            event = TrackingEvent.LOGIN_AUTO_SUCCESS;
             mOrigin = context.getString(R.string.mixprop_loginlocationautologin);
         } else {
-            resLogin = R.string.gloginsuccess;
+            event = TrackingEvent.LOGIN_SUCCESS;
             mOrigin = origin;
         }
 
         if (mOrigin == null || mOrigin.length() == 0) {
             mOrigin = context.getString(R.string.mixprop_loginlocationsidemenu);
         }
-        String customer_id = "";
+        String customerId = "";
         if (customer != null) {
-            customer_id = customer.getIdAsString();
+            customerId = customer.getIdAsString();
         }
-        AnalyticsGoogle.get().trackAccount(resLogin, customer_id);
+            
+        AnalyticsGoogle.get().trackEvent(event, customerId, 0l);
 
         if (customer == null) {
             return;
@@ -134,22 +135,22 @@ public class TrackerDelegator {
     public final static void trackLoginFailed(boolean wasAutologin) {
         Log.i(TAG, "trackAccount: autologin " + wasAutologin);
         // Case login
-        int resLogin = R.string.gloginfailed;
+        TrackingEvent event = TrackingEvent.LOGIN_FAIL;
         // Case autologin
-        if (wasAutologin) resLogin = R.string.gautologinfailed;
+        if (wasAutologin) event = TrackingEvent.LOGIN_AUTO_FAIL;
         // Track
-        AnalyticsGoogle.get().trackAccount(resLogin, null);
+        AnalyticsGoogle.get().trackEvent(event, "", 0l);
     }
 
     public final static void trackLogoutSuccessful() {
         //MixpanelTracker.logout(context);
-        String customer_id = "";
+        String customerId = "";
         if (JumiaApplication.CUSTOMER != null) {
-            customer_id = JumiaApplication.CUSTOMER.getIdAsString();
+            customerId = JumiaApplication.CUSTOMER.getIdAsString();
         }
-        AdXTracker.logout(context, JumiaApplication.SHOP_NAME, customer_id);
-        int trackRes = R.string.glogoutsuccess;
-        AnalyticsGoogle.get().trackAccount(trackRes, customer_id);
+        AdXTracker.logout(context, JumiaApplication.SHOP_NAME, customerId);
+        
+        AnalyticsGoogle.get().trackEvent(TrackingEvent.LOGOUT_SUCCESS, customerId, 0l);
 
         JumiaApplication.CUSTOMER = null;
     }
@@ -160,7 +161,7 @@ public class TrackerDelegator {
 
         ////MixpanelTracker.search(context, criteria, results);
         // GA
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.SEARCH, criteria, results);
+        AnalyticsGoogle.get().trackEvent(TrackingEvent.CATALOG_SEARCH, criteria, results);
         // AD4P
         Ad4PushTracker.get().trackSearch(criteria);
     }
@@ -232,13 +233,13 @@ public class TrackerDelegator {
         // Data
         String category = params.getString(CATEGORY_KEY);
         //int page = params.getInt(PAGE_NUMBER_KEY);
-        String location = params.getString(LOCATION_KEY);
+        TrackingEvent event = (TrackingEvent) params.getSerializable(LOCATION_KEY);
         // MIX
         //MixpanelTracker.listCategory(context, category, page);
         // AD4Push
         Ad4PushTracker.get().trackCategorySelection();
         // GA
-        AnalyticsGoogle.get().trackCategory(location, category);
+        AnalyticsGoogle.get().trackEvent(event, category, 0l);
     }
 
     public final static void trackItemReview(Bundle params) {
@@ -282,7 +283,9 @@ public class TrackerDelegator {
         if (customer != null) {
             customer_id = customer.getIdAsString();
         }
-        AnalyticsGoogle.get().trackAccount(R.string.gcreatesuccess, customer_id);
+        
+        AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP_SUCCESS, customer_id, 0l);
+        
         if (customer == null) {
             return;
         }
@@ -294,7 +297,7 @@ public class TrackerDelegator {
     }
 
     public static void trackSignupFailed() {
-        AnalyticsGoogle.get().trackAccount(R.string.gcreatefailed, null);
+        AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP_FAIL, null, 0l);
     }
 
     public static void trackPurchase(final Bundle params) {
@@ -317,7 +320,7 @@ public class TrackerDelegator {
     public static void trackCheckoutStep(Bundle params) {
 
         String email = params.getString(EMAIL_KEY);
-        final int gstep = params.getInt(GA_STEP_KEY);
+        final TrackingEvent event = (TrackingEvent) params.getSerializable(GA_STEP_KEY);
         final int xstep = params.getInt(ADX_STEP_KEY);
         //final int mixstep = params.getInt(MIXPANEL_STEP_KEY);
 
@@ -330,7 +333,9 @@ public class TrackerDelegator {
                         && JumiaApplication.CUSTOMER.getIdAsString().length() > 0) {
                     user_id = JumiaApplication.CUSTOMER.getIdAsString();
                 }
-                AnalyticsGoogle.get().trackCheckoutStep(user_id, gstep);
+                
+                AnalyticsGoogle.get().trackEvent(event, user_id, 0l);
+                
                 AdXTracker.trackCheckoutStep(context, JumiaApplication.SHOP_NAME, user_id, xstep);
                 //MixpanelTracker.trackCheckoutStep(context, user_id, mixstep);
             }
@@ -661,8 +666,6 @@ public class TrackerDelegator {
         //String category = bundle.getString(CATEGORY_KEY);
         // GA
         AnalyticsGoogle.get().trackProduct(prefix, path, name, sku, url, product.getPriceAsDouble());
-        // MIX
-        //MixpanelTracker.product(context, product, category);
     }
 
     /**

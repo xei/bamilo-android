@@ -195,7 +195,7 @@ public class AnalyticsGoogle {
 		}
 		mTracker = mAnalytics.newTracker(mCurrentKey);
 		mTracker.setAnonymizeIp(true);
-		Log.d(TAG, "tracking switched");
+		Log.i(TAG, "UPDATED TRACKER WITH KEY: " + mCurrentKey);
 	}
 	
 	/**
@@ -208,7 +208,7 @@ public class AnalyticsGoogle {
 	 * @author sergiopereira
 	 */
 	private void trackPage(String path) {
-		Log.d(TAG, "TRACK PAGE: " + path);
+		Log.i(TAG, "TRACK PAGE: " + path);
 		mTracker.setScreenName(path);
 		mTracker.send(new HitBuilders.AppViewBuilder().build());
 	}
@@ -311,7 +311,7 @@ public class AnalyticsGoogle {
 	 * @author sergiopereira
 	 */
 	private void trackCampaign(String campaign) {
-		Log.d(TAG, "TRACK CAMPAIGN: campaign->" + campaign);
+		Log.i(TAG, "TRACK CAMPAIGN: campaign->" + campaign);
 		mTracker.send(new HitBuilders.AppViewBuilder()
 	    .setCampaignParamsFromUrl(campaign)
 	    .build());
@@ -349,49 +349,6 @@ public class AnalyticsGoogle {
 		String action = mContext.getString(event.getAction());
 		// Tracking
 		trackEvent(category, action, label, value);
-	}
-
-	/**
-	 * 
-	 * @param navigationPrefix
-	 * @param navigationPath
-	 * @param name
-	 * @param sku
-	 * @param url
-	 * @param price
-	 */
-	public void trackProduct(String navigationPrefix, String navigationPath, String name, String sku, String url, Double price) {
-		// Validation
-		if (!isEnabled) return;
-		// Data
-		if(navigationPrefix == null) navigationPrefix = "n.a.";
-		String pageView;
-		String n = !TextUtils.isEmpty(name) ? name.replace(" ", "_") : "n.a.";
-		if(navigationPath != null && !navigationPath.equalsIgnoreCase("")){
-			pageView = navigationPrefix + "_" + navigationPath + "/" + n;
-		} else {
-			pageView = navigationPrefix + "_" + n;
-		}
-		trackPage(pageView);
-		
-		String category = mContext.getString(R.string.gcatalog);
-		String action = mContext.getString(R.string.gpdv);
-		trackEvent(category, action, sku, (price != null) ? price.longValue() : 0l);
-	}
-
-	/**
-	 * 
-	 * @param resAction
-	 * @param userId
-	 */
-	public void trackAccount(int resAction, String userId) {
-		// Validate
-		if (!isEnabled) return;
-		// Data
-		String category = mContext.getString(R.string.gaccount);
-		String action = mContext.getString(resAction);
-		String label = !TextUtils.isEmpty(userId) ? userId : "";
-		trackEvent(category, action, label, 0l);
 	}
 
 	/**
@@ -436,35 +393,46 @@ public class AnalyticsGoogle {
 		// Validate items
 		if (items == null || items.size() == 0) return;
 		// Data
-		String category = mContext.getString(R.string.gcheckout);
-		String action;
+		TrackingEvent event;
 		if (isCheckoutStarted) {
-			action = mContext.getString(R.string.gcontinueshopping);
+			event = TrackingEvent.CHECKOUT_CONTINUE;
 		} else {
-			action = mContext.getString(R.string.gstarted);
+			event = TrackingEvent.CHECKOUT_STARTED;
 			isCheckoutStarted = true;
 		}
-
+		// Track each item
 		for (ShoppingCartItem item : items) {
 			String sku = item.getConfigSimpleSKU();
 			long price = item.getPriceVal().longValue() * item.getQuantity();
-			trackEvent(category, action, sku, price);
+			trackEvent(event, sku, price);
 		}
 	}
 	
 	/**
 	 * 
-	 * @param email
-	 * @param step
+	 * @param navigationPrefix
+	 * @param navigationPath
+	 * @param name
+	 * @param sku
+	 * @param url
+	 * @param price
 	 */
-	public void trackCheckoutStep(String email, int step) {
+	public void trackProduct(String navigationPrefix, String navigationPath, String name, String sku, String url, Double price) {
 		// Validation
 		if (!isEnabled) return;
 		// Data
-		String category = mContext.getString(R.string.gNativeCheckout);
-		String action = mContext.getString(step);
-		trackEvent(category, action, email, 0l);
+		if(navigationPrefix == null) navigationPrefix = "n.a.";
+		String pageView;
+		String n = !TextUtils.isEmpty(name) ? name.replace(" ", "_") : "n.a.";
+		if(!TextUtils.isEmpty(navigationPath)){
+			pageView = navigationPrefix + "_" + navigationPath + "/" + n;
+		} else {
+			pageView = navigationPrefix + "_" + n;
+		}
+		trackPage(pageView);
+		trackEvent(TrackingEvent.SHOW_PRODUCT_DETAIL, sku, (price != null) ? price.longValue() : 0l);
 	}
+
 	
 	/**
 	 * 
@@ -569,19 +537,6 @@ public class AnalyticsGoogle {
 		if (!isEnabled) return;
 		// Data
 		if (campaignString != null) trackCampaign(campaignString);
-	}
-	
-	/**
-	 * 
-	 * @param location
-	 * @param title
-	 */
-	public void trackCategory(String action, String title) {
-		// Validate
-		if (!isEnabled) return;
-		// Data
-		String category = mContext.getString(R.string.gcatalog);
-		trackEvent(category, action, title, 0l);
 	}
 
 }
