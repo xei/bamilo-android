@@ -51,7 +51,7 @@ public final class ShopSelector {
 	 */
 	public static void init(Context context, String shopId, boolean isChangeShop) {
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-		setLocale( context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null));
+		setLocale( context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null));
 		RestContract.init(context, shopId);
 		RestClientSingleton.init(context);
 
@@ -104,9 +104,7 @@ public final class ShopSelector {
 	 */
 	public static void update(Context context, String shopId) {
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-		setLocale(
-				context,
-				sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null));
+		setLocale(context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null));
 		RestContract.init(context, shopId);
 		RestClientSingleton.init(context);
 
@@ -125,10 +123,10 @@ public final class ShopSelector {
 	 * @param language
 	 */
 	private static void setLocale(Context context, String language) {
+		Log.i(TAG, "setLocale language: " + language);
 		Resources res = context.getResources();
 		String[] languageCountry = language.split("_");
-		sLocale = languageCountry.length >= 2 ? new Locale(
-				languageCountry[0], languageCountry[1]) : new Locale(language);
+		sLocale = languageCountry.length >= 2 ? new Locale(languageCountry[0], languageCountry[1]) : new Locale(language);
 		res.getConfiguration().locale = sLocale;
 		res.updateConfiguration(res.getConfiguration(), res.getDisplayMetrics());
 		Locale.setDefault(sLocale);
