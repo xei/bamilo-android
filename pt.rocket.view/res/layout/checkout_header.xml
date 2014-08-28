@@ -24,7 +24,7 @@
             android:background="@drawable/selector_checkout_step_back"
             android:clickable="true"
             android:gravity="center"
-            android:onClick="OnCheckoutHeaderClickListener"
+            android:onClick="onCheckoutHeaderClickListener"
             android:paddingLeft="@dimen/margin_large"
             android:paddingRight="@dimen/margin_mid" >
 
@@ -60,7 +60,7 @@
             android:background="@drawable/selector_checkout_step_back"
             android:clickable="true"
             android:gravity="center"
-            android:onClick="OnCheckoutHeaderClickListener"
+            android:onClick="onCheckoutHeaderClickListener"
             android:paddingLeft="@dimen/margin_large"
             android:paddingRight="@dimen/margin_mid" >
 
@@ -96,7 +96,7 @@
             android:background="@drawable/selector_checkout_step_back"
             android:clickable="true"
             android:gravity="center"
-            android:onClick="OnCheckoutHeaderClickListener"
+            android:onClick="onCheckoutHeaderClickListener"
             android:paddingLeft="@dimen/margin_large"
             android:paddingRight="@dimen/margin_mid" >
 
