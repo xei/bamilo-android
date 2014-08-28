@@ -26,6 +26,7 @@ import pt.rocket.framework.objects.AddressCity;
 import pt.rocket.framework.objects.AddressRegion;
 import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -190,7 +191,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         }
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutCreateAddress);
+        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_CREATE_ADDRESS);
         params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutcreateaddress);
         params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_create_address);        
         

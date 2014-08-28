@@ -14,7 +14,7 @@
         android:gravity="center_vertical"
         android:text="Inner category"
         android:textColor="@color/grey_light"
-        android:textSize="@dimen/text_smid"
+        android:textSize="@dimen/text_m"
         android:textStyle="normal" />
 
     <View

@@ -19,6 +19,7 @@ import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
@@ -142,7 +143,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         setRetainInstance(true);
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutMyOrder);
+        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ORDER);
         params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutmyorder);
         params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_my_order);        
         TrackerDelegator.trackCheckoutStep(params);

@@ -23,6 +23,7 @@ import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
@@ -177,7 +178,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutAboutYou);
+        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ABOUT_YOU);
         params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutaboutyou);
         params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_about_you);        
         

@@ -12,6 +12,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.forms.ShippingMethodFormBuilder;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.OrderSummary;
+import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -106,7 +107,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutShippingMethods);
+        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_SHIPPING);
         params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutshippingmethods);
         params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_shipping_methods);        
         

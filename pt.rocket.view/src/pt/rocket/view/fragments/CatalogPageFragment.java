@@ -22,6 +22,7 @@ import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestContract;
+import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
 import pt.rocket.framework.utils.ProductSort;
@@ -829,7 +830,7 @@ public class CatalogPageFragment extends BaseFragment {
                 params = new Bundle();
                 params.putString(TrackerDelegator.CATEGORY_KEY, mTitle);
                 params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, mPageNumber);
-                params.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.gcatalog));
+                params.putSerializable(TrackerDelegator.LOCATION_KEY, TrackingEvent.CATALOG_FROM_CATEGORIES);
                 TrackerDelegator.trackCategoryView(params);
             }
         }

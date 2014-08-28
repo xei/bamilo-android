@@ -18,7 +18,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/error_no_connection"
         android:textColor="@color/grey_dark"
-        android:textSize="@dimen/text_mid"
+        android:textSize="@dimen/text_m"
         android:layout_marginBottom="12dp" />
 
     <org.holoeverywhere.widget.Button
@@ -32,6 +32,6 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:text="@string/try_again"
-        android:textSize="@dimen/text_mid" />
+        android:textSize="@dimen/text_m" />
 
 </RelativeLayout>

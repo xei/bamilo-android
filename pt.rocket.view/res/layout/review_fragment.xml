@@ -32,7 +32,7 @@
                 android:layout_marginTop="@dimen/margin_mid"
                 android:text="This is a review title"
                 android:textColor="@color/grey_middle"
-                android:textSize="@dimen/text_mid"
+                android:textSize="@dimen/text_m"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/posted_by"
                     android:textColor="@color/grey_middle"
-                    android:textSize="@dimen/text_small" />
+                    android:textSize="@dimen/text_s" />
 
                 <org.holoeverywhere.widget.TextView
                     android:id="@+id/review_username"
@@ -55,7 +55,7 @@
                     android:layout_marginLeft="3dp"
                     android:text="User"
                     android:textColor="@color/grey_middle"
-                    android:textSize="@dimen/text_small" />
+                    android:textSize="@dimen/text_s" />
 
                 <org.holoeverywhere.widget.TextView
                     android:id="@+id/review_date"
@@ -64,7 +64,7 @@
                     android:layout_marginLeft="3dp"
                     android:text="Date"
                     android:textColor="@color/grey_middle"
-                    android:textSize="@dimen/text_small" />
+                    android:textSize="@dimen/text_s" />
             </LinearLayout>
         </LinearLayout>
 
@@ -85,7 +85,7 @@
                 style="@style/body_text_feature_add"
                 android:text="This is a really interesting comment."
                 android:textColor="@color/grey_middle"
-                android:textSize="@dimen/text_mid" />
+                android:textSize="@dimen/text_m" />
         </LinearLayout>
     </LinearLayout>
 

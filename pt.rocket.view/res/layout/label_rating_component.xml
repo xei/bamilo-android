@@ -7,4 +7,4 @@
     android:paddingTop="@dimen/margin_midhuge"
     android:text="@string/rating_quality"
     android:textColor="@color/grey_middle"
-    android:textSize="@dimen/text_mid" />
+    android:textSize="@dimen/text_m" />

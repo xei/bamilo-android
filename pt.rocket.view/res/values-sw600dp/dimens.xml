@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- TEXT DIMENSIONS -->
+    <!-- TEXT DIMENSIONS (px/2) -->
     <dimen name="text_header">24sp</dimen>
     <dimen name="text_title">18sp</dimen>
     <dimen name="text_subtitle">16sp</dimen>
     <dimen name="text_description">15sp</dimen>
+    <dimen name="text_button">25sp</dimen>
+    <dimen name="text_button_item">16sp</dimen>
 
     <!-- MAIN LAYOUT -->
     <dimen name="sliding_tab_height">48dp</dimen>

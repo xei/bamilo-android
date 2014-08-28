@@ -10,7 +10,7 @@
         android:layout_centerVertical="true"
         android:fontFamily="roboto_light"
         android:gravity="center_vertical"
-        android:textSize="@dimen/text_tiny"        
+        android:textSize="@dimen/text_xs"        
         android:text="Category" />
 
     <View

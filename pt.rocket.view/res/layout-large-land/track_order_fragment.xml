@@ -80,7 +80,7 @@
                 android:layout_marginRight="@dimen/margin_huge"
                 android:text="@string/track_your_order"
                 android:textColor="@color/orange_basic"
-                android:textSize="@dimen/text_mid" />
+                android:textSize="@dimen/text_m" />
 
             <View
                 android:layout_width="match_parent"

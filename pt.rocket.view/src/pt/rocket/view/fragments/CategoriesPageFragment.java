@@ -10,6 +10,7 @@ import pt.rocket.controllers.SubCategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.Category;
+import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
@@ -711,7 +712,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         Bundle params = new Bundle();
         params.putString(TrackerDelegator.CATEGORY_KEY, name);
         params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, 1);
-        params.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.gnavigation));
+        params.putSerializable(TrackerDelegator.LOCATION_KEY, TrackingEvent.CATALOG_FROM_CATEGORIES);
         TrackerDelegator.trackCategoryView(params);
     }
 }

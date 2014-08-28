@@ -59,7 +59,7 @@
                 android:singleLine="true"
                 android:text="@string/register_required_text"
                 android:textColor="@color/red_basic"
-                android:textSize="@dimen/text_smid"
+                android:textSize="@dimen/text_m"
                 android:visibility="gone" />
 
             <LinearLayout

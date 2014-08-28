@@ -23,6 +23,7 @@ import pt.rocket.framework.objects.Address;
 import pt.rocket.framework.objects.Addresses;
 import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -130,7 +131,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         setRetainInstance(true);
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutMyAddresses);
+        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ADDRESSES);
         params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutmyaddresses);
         params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_my_addresses);        
         

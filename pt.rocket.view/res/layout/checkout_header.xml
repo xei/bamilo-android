@@ -46,7 +46,7 @@
                 android:singleLine="true"
                 android:text="@string/checkout_header_step_1"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_small"
+                android:textSize="@dimen/text_s"
                 android:visibility="gone" />
         </LinearLayout>
 
@@ -82,7 +82,7 @@
                 android:singleLine="true"
                 android:text="@string/checkout_header_step_2"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_small"
+                android:textSize="@dimen/text_s"
                 android:visibility="gone" />
         </LinearLayout>
 
@@ -118,7 +118,7 @@
                 android:singleLine="true"
                 android:text="@string/checkout_header_step_3"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_small"
+                android:textSize="@dimen/text_s"
                 android:visibility="gone" />
         </LinearLayout>
 
@@ -152,7 +152,7 @@
                 android:singleLine="true"
                 android:text="@string/checkout_header_step_4"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_small"
+                android:textSize="@dimen/text_s"
                 android:visibility="gone" />
         </LinearLayout>
     </RelativeLayout>

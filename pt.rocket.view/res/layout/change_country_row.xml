@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="Country"
             android:textColor="@color/grey_dark"
-            android:textSize="@dimen/text_mid"
+            android:textSize="@dimen/text_m"
             android:textStyle="bold" />
     </LinearLayout>
 

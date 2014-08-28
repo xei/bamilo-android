@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/item_discount"
         android:textColor="@color/grey_middle"
-        android:textSize="@dimen/text_small"
+        android:textSize="@dimen/text_s"
         android:visibility="gone" />
 
     <org.holoeverywhere.widget.Button
@@ -111,7 +111,7 @@
         android:background="@drawable/spinnerbutton_background_holo_light"
         android:gravity="top|center_horizontal"
         android:text="Press"
-        android:textSize="@dimen/text_small"
+        android:textSize="@dimen/text_s"
         android:visibility="visible" />
 
     <View

@@ -79,7 +79,7 @@
             android:gravity="center"
             android:text="@string/fgt_pass"
             android:textColor="@drawable/selector_link_blue"
-            android:textSize="@dimen/text_small" />
+            android:textSize="@dimen/text_s" />
 
         <!-- DIVIDER -->
 

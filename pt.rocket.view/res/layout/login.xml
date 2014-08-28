@@ -87,7 +87,7 @@
                     android:paddingLeft="3dp"
                     android:text="@string/fgt_pass"
                     android:textColor="@drawable/selector_link_blue"
-                    android:textSize="@dimen/text_small" />
+                    android:textSize="@dimen/text_s" />
             </RelativeLayout>
 
             <org.holoeverywhere.widget.Button

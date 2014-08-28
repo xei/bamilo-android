@@ -21,6 +21,7 @@ import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.OrderSummary;
+import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -125,7 +126,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         }
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutPaymentMethods);
+        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_PAYMENT);
         params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutpaymentmethods);
         params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_payment_methods);        
         TrackerDelegator.trackCheckoutStep(params);

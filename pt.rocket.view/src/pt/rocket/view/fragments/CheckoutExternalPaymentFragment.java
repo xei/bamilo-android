@@ -25,6 +25,7 @@ import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
+import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -151,7 +152,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
          triggerGetCustomer();
          Bundle params = new Bundle();        
          params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-         params.putInt(TrackerDelegator.GA_STEP_KEY, R.string.gcheckoutExternalPayment);
+         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_EXTERNAL_PAYMENT);
          params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutexternalpayment);
          params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_external_payment);        
          

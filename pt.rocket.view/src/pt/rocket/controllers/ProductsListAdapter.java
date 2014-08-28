@@ -193,65 +193,61 @@ public class ProductsListAdapter extends BaseAdapter {
 
         final Product product = parentCatalog.getProduct(products.get(position));
         prodItem.image.setImageDrawable(context.getResources().getDrawable(R.drawable.no_image_small));
-        if (product == null) {
-            // Toast.makeText(context, "No Product!", Toast.LENGTH_SHORT).show();
-        } else {
-            RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image, prodItem.progress, R.drawable.no_image_small,
-                    CatalogFragment.requestTag);
-    
-            // Set is new image
-            prodItem.isNew.setSelected(product.getAttributes().isNew());
-    
-            // Set is favourite image
-            prodItem.isFavourite.setSelected(product.getAttributes().isFavourite());
-    
-            prodItem.isFavourite.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final Product favProduct = parentCatalog.getProduct(products.get(position));
-                    final boolean isFavourite = favProduct.getAttributes().isFavourite();
-                    if (!isFavourite) {
-                        FavouriteTableHelper.insertPartialFavouriteProduct(favProduct);                    
-                        favProduct.getAttributes().setFavourite(true);
-                        TrackerDelegator.trackAddToFavorites(favProduct.getSKU());
-                        Toast.makeText(context, context.getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
-                    } else {
-                        FavouriteTableHelper.removeFavouriteProduct(favProduct.getSKU());
-                        favProduct.getAttributes().setFavourite(false);
-                        TrackerDelegator.trackRemoveFromFavorites(favProduct.getSKU());
-                        Toast.makeText(context, context.getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
-                    }
-                    parentCatalog.invalidatePages();
-                }
-            });
-    
-            // Set brand
-            prodItem.brand.setText(product.getBrand().toUpperCase());
-    
-            prodItem.name.setText(product.getName());
-            prodItem.price.setText(product.getSuggestedPrice());
-    
-            if (showList) {
-                if (product.getRating() != null && product.getRating() > 0) {
-                    prodItem.rating.setRating(product.getRating().floatValue());
-                    prodItem.rating.setVisibility(View.VISIBLE);
-                    prodItem.reviews.setText(product.getReviews() + " " + reviewLabel);
+        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image, prodItem.progress, R.drawable.no_image_small,
+                CatalogFragment.requestTag);
+
+        // Set is new image
+        prodItem.isNew.setSelected(product.getAttributes().isNew());
+
+        // Set is favourite image
+        prodItem.isFavourite.setSelected(product.getAttributes().isFavourite());
+
+        prodItem.isFavourite.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Product favProduct = parentCatalog.getProduct(products.get(position));
+                final boolean isFavourite = favProduct.getAttributes().isFavourite();
+                if (!isFavourite) {
+                    FavouriteTableHelper.insertPartialFavouriteProduct(favProduct);                    
+                    favProduct.getAttributes().setFavourite(true);
+                    TrackerDelegator.trackAddToFavorites(favProduct.getSKU());
+                    Toast.makeText(context, context.getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
                 } else {
-                    prodItem.rating.setVisibility(View.INVISIBLE);
-                    prodItem.reviews.setText("");
+                    FavouriteTableHelper.removeFavouriteProduct(favProduct.getSKU());
+                    favProduct.getAttributes().setFavourite(false);
+                    TrackerDelegator.trackRemoveFromFavorites(favProduct.getSKU());
+                    Toast.makeText(context, context.getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
                 }
+                parentCatalog.invalidatePages();
             }
-    
-            if (null != product.getSpecialPrice() && !product.getSpecialPrice().equals(product.getPrice())) {
-                prodItem.discount.setText(product.getSpecialPrice());
-                prodItem.price.setText(product.getSuggestedPrice());
-                prodItem.discountPercentage.setText("-" + product.getMaxSavingPercentage().intValue() + "%");
-                prodItem.discountPercentage.setVisibility(View.VISIBLE);
+        });
+
+        // Set brand
+        prodItem.brand.setText(product.getBrand().toUpperCase());
+
+        prodItem.name.setText(product.getName());
+        prodItem.price.setText(product.getSuggestedPrice());
+
+        if (showList) {
+            if (product.getRating() != null && product.getRating() > 0) {
+                prodItem.rating.setRating(product.getRating().floatValue());
+                prodItem.rating.setVisibility(View.VISIBLE);
+                prodItem.reviews.setText(product.getReviews() + " " + reviewLabel);
             } else {
-                prodItem.discount.setText(product.getSuggestedPrice());
-                prodItem.price.setText("");
-                prodItem.discountPercentage.setVisibility(View.GONE);
+                prodItem.rating.setVisibility(View.INVISIBLE);
+                prodItem.reviews.setText("");
             }
+        }
+
+        if (null != product.getSpecialPrice() && !product.getSpecialPrice().equals(product.getPrice())) {
+            prodItem.discount.setText(product.getSpecialPrice());
+            prodItem.price.setText(product.getSuggestedPrice());
+            prodItem.discountPercentage.setText("-" + product.getMaxSavingPercentage().intValue() + "%");
+            prodItem.discountPercentage.setVisibility(View.VISIBLE);
+        } else {
+            prodItem.discount.setText(product.getSuggestedPrice());
+            prodItem.price.setText("");
+            prodItem.discountPercentage.setVisibility(View.GONE);
         }
 
         return itemView;

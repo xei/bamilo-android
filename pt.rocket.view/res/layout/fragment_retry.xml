@@ -21,7 +21,7 @@
         android:gravity="center"
         android:text="@string/error_please_try_again"
         android:textColor="@color/grey_dark"
-        android:textSize="@dimen/text_mid" />
+        android:textSize="@dimen/text_m" />
 
     <org.holoeverywhere.widget.Button
         android:id="@+id/fragment_retry_button"
@@ -35,6 +35,6 @@
         android:paddingRight="8dp"
         android:text="@string/try_again"
         android:textColor="@color/grey_dark"
-        android:textSize="@dimen/text_mid" />
+        android:textSize="@dimen/text_m" />
 
 </RelativeLayout>

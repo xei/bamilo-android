@@ -39,7 +39,7 @@
                 android:layout_marginLeft="@dimen/margin_small"
                 android:text="@string/register_required_text"
                 android:textColor="@color/red_basic"
-                android:textSize="@dimen/text_smid"
+                android:textSize="@dimen/text_s"
                 android:visibility="gone" />
 
             <!-- FORM -->
@@ -137,7 +137,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="@string/login_label"
                     android:textColor="@drawable/selector_link_blue"
-                    android:textSize="@dimen/text_small" />
+                    android:textSize="@dimen/text_s" />
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>
