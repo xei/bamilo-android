@@ -120,7 +120,7 @@ public class ShoppingCartFragment extends BaseFragment {
     EditText voucherValue;
 
     private String mVoucher = null;
-    
+
     // private boolean noPaymentNeeded = false;
 
     private boolean removeVoucher = false;
@@ -132,6 +132,8 @@ public class ShoppingCartFragment extends BaseFragment {
     private String mPhone2Call = "";
 
     private boolean isCallInProgress = false;
+
+    private boolean isRemovingAddItems = false;
 
     public static class CartItemValues {
         public Boolean is_in_wishlist;
@@ -286,7 +288,12 @@ public class ShoppingCartFragment extends BaseFragment {
         }
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartRemoveItemHelper.ITEM, values);
-        triggerContentEvent(new GetShoppingCartRemoveItemHelper(), bundle, responseCallback);
+        // only show loading when removing individual items
+        if (isRemovingAddItems) {
+            triggerContentEventWithNoLoading(new GetShoppingCartRemoveItemHelper(), bundle, responseCallback);
+        } else {
+            triggerContentEventProgress(new GetShoppingCartRemoveItemHelper(), bundle, responseCallback);
+        }
     }
 
     private void triggerIsNativeCheckoutAvailable() {
@@ -382,8 +389,7 @@ public class ShoppingCartFragment extends BaseFragment {
                         String title = getString(R.string.shoppingcart_alert_header);
                         String message = getString(R.string.shoppingcart_alert_message_no_items);
                         String buttonText = getString(R.string.ok_label);
-                        messageDialog = DialogGenericFragment.newInstance(false, true,
-                                false, title, message, buttonText, null, null);
+                        messageDialog = DialogGenericFragment.newInstance(false, true, false, title, message, buttonText, null, null);
                         messageDialog.show(getActivity().getSupportFragmentManager(), null);
                     }
                     break;
@@ -485,9 +491,14 @@ public class ShoppingCartFragment extends BaseFragment {
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
 
             TrackerDelegator.trackProductRemoveFromCart(params);
-            showFragmentContentContainer();
+            if (!isRemovingAddItems) {
+                showFragmentContentContainer();
+            }
             TrackerDelegator.trackLoadTiming(params);
-            displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+            if (!isRemovingAddItems) {
+                displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+                hideActivityProgress();
+            }
             return true;
         case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
             hideActivityProgress();
@@ -541,6 +552,10 @@ public class ShoppingCartFragment extends BaseFragment {
      * @author André Lopes
      */
     private void askToRemoveProductsAfterOrder(final ShoppingCart shoppingCart) {
+        // Dismiss any existing dialogs
+        if (dialog != null) {
+            dialog.dismiss();
+        }
         dialog = DialogGenericFragment.newInstance(true, true, false,
                 getString(R.string.shoppingcart_dialog_title),
                 getString(R.string.shoppingcart_remove_products),
@@ -551,6 +566,8 @@ public class ShoppingCartFragment extends BaseFragment {
                     public void onClick(View v) {
                         int id = v.getId();
                         if (id == R.id.button1) {
+                            isRemovingAddItems = true;
+
                             List<ShoppingCartItem> items = new ArrayList<ShoppingCartItem>(shoppingCart.getCartItems().values());
 
                             for (ShoppingCartItem item : items) {
@@ -667,8 +684,7 @@ public class ShoppingCartFragment extends BaseFragment {
             }
         }
 
-        String articleString = getResources().getQuantityString(
-                R.plurals.shoppingcart_text_article, cart.getCartCount());
+        String articleString = getResources().getQuantityString(R.plurals.shoppingcart_text_article, cart.getCartCount());
         articlesCount.setText(cart.getCartCount() + " " + articleString);
         if (items.size() == 0) {
             showNoItems();
@@ -718,8 +734,6 @@ public class ShoppingCartFragment extends BaseFragment {
                 priceUnreduced.setVisibility(View.INVISIBLE);
             }
             String vat = cart.getVatValue();
-            // XXX  before was this...
-            // if (cart.getVatValue() != null && !cart.getVatValue().equalsIgnoreCase("null") && !cart.getShippingValue().equalsIgnoreCase("")) {
             if (vat != null && !vat.equalsIgnoreCase("null") && !vat.equalsIgnoreCase("")) {
                 TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
                 View vatMain = getView().findViewById(R.id.vat_container);
@@ -908,7 +922,7 @@ public class ShoppingCartFragment extends BaseFragment {
                 } catch (NullPointerException e) {
                     Log.w(TAG, "WARNING: NPE ON GET CLICKED TAG");
                 } catch (NumberFormatException e) {
-                        Log.w(TAG, "WARNING: NFE ON GET CLICKED POSITION FROM TAG: " + v.getTag().toString());
+                    Log.w(TAG, "WARNING: NFE ON GET CLICKED POSITION FROM TAG: " + v.getTag().toString());
                 }
             }
         });
@@ -938,8 +952,9 @@ public class ShoppingCartFragment extends BaseFragment {
     private void goToProducDetails(int position) {
         // Log.d(TAG, "CART COMPLETE PRODUCT URL: " + items.get(position).getProductUrl());
 
-        if (items.get(position).getProductUrl().equals(""))
+        if (items.get(position).getProductUrl().equals("")) {
             return;
+        }
 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, items.get(position).getProductUrl());
@@ -959,8 +974,7 @@ public class ShoppingCartFragment extends BaseFragment {
     private void checkMinOrderAmount() {
         TrackerDelegator.trackCheckout(items);
 
-        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String restbase = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, null);
         if (restbase != null) {
             if (restbase.contains("mobapi/v1")) {
@@ -983,7 +997,6 @@ public class ShoppingCartFragment extends BaseFragment {
                 triggerRemoveItem(items.get(position));
 
                 items.remove(position);
-
             }
         }
 
@@ -1013,15 +1026,13 @@ public class ShoppingCartFragment extends BaseFragment {
         long crrQuantity = items.get(position).getQuantity();
 
         OnDialogListListener listener = new OnDialogListListener() {
-
             @Override
             public void onDialogListItemSelect(String id, int quantity, String value) {
                 changeQuantityOfItem(position, quantity);
             }
         };
 
-        dialogList = DialogListFragment.newInstance(getActivity(), listener, ID_CHANGE_QUANTITY,
-                getString(R.string.shoppingcart_choose_quantity), quantities, crrQuantity);
+        dialogList = DialogListFragment.newInstance(getActivity(), listener, ID_CHANGE_QUANTITY, getString(R.string.shoppingcart_choose_quantity), quantities, crrQuantity);
         dialogList.show(getActivity().getSupportFragmentManager(), null);
     }
 
@@ -1042,7 +1053,6 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
     IResponseCallback responseCallback = new IResponseCallback() {
-
         @Override
         public void onRequestError(Bundle bundle) {
             onErrorEvent(bundle);
@@ -1056,7 +1066,6 @@ public class ShoppingCartFragment extends BaseFragment {
     };
 
     private void prepareCouponView() {
-
         voucherValue = (EditText) getView().findViewById(R.id.voucher_name);
         if (mVoucher != null && mVoucher.length() > 0) {
             voucherValue.setText(mVoucher);
@@ -1090,5 +1099,4 @@ public class ShoppingCartFragment extends BaseFragment {
             }
         });
     }
-
 }

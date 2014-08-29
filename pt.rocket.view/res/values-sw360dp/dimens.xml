@@ -2,12 +2,12 @@
 <resources>
 
     <!-- TEXT DIMENSIONS (px/2.5) -->
-    <dimen name="text_header">19.20sp</dimen>
+    <!-- dimen name="text_header">19.20sp</dimen>
     <dimen name="text_title">14.40sp</dimen>
     <dimen name="text_subtitle">12.80sp</dimen>
     <dimen name="text_description">12sp</dimen>
     <dimen name="text_button">20sp</dimen>
-    <dimen name="text_button_item">12.80sp</dimen>
+    <dimen name="text_button_item">12.80sp</dimen -->
 
     <!-- TEASERS -->
     <dimen name="teaser_swipe_banner_height">196dp</dimen>

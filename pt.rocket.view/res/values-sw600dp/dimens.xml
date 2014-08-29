@@ -88,5 +88,6 @@
     <dimen name="product_item_addtocart_text_size">12sp</dimen>
     <dimen name="product_item_addtocart_height">37.5dp</dimen>
     <dimen name="product_item_addtocart_variation_width">65dp</dimen>
+    <dimen name="product_item_text_right_margin">75dp</dimen>
 
 </resources>

@@ -155,9 +155,9 @@ public enum EventType {
 	
 	SET_SHIPPING_ADDRESS_EVENT("https:/multistep/shipping/", RestContract.NO_CACHE),
 	
-	GET_REGIONS_EVENT("https:/customer/address/regions/", RestContract.MAX_CACHE_TIME),
+	GET_REGIONS_EVENT("https:/customer/address/regions/", RestContract.NO_CACHE),
 	
-	GET_CITIES_EVENT("https:/customer/address/cities/", RestContract.MAX_CACHE_TIME),
+	GET_CITIES_EVENT("https:/customer/address/cities/", RestContract.NO_CACHE),
 	
 	GET_SHIPPING_METHODS_EVENT("https:/multistep/shippingmethod/", RestContract.DEFAULT_CACHE_TIME),
 	

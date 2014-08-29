@@ -222,5 +222,6 @@
     <dimen name="product_item_addtocart_text_size">8sp</dimen>
     <dimen name="product_item_addtocart_height">25dp</dimen>
     <dimen name="product_item_addtocart_variation_width">43.33dp</dimen>
+    <dimen name="product_item_text_right_margin">50dp</dimen>
 
 </resources>
