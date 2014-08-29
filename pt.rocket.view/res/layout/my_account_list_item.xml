@@ -7,17 +7,17 @@
 
     <View
         style="@style/divider_horizontal"
-        android:layout_marginLeft="@dimen/my_account_medium_margin"
-        android:layout_marginRight="@dimen/my_account_medium_margin" />
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/my_account_medium_margin"
-        android:layout_marginRight="@dimen/my_account_medium_margin"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/my_account_medium_margin"
-        android:paddingTop="@dimen/my_account_medium_margin" >
+        android:paddingBottom="@dimen/rounded_margin_mid"
+        android:paddingTop="@dimen/rounded_margin_mid" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/option_name"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:text="Title"
             android:textColor="@color/grey_middledark"
-            android:textSize="@dimen/product_item_brand_text_size" />
+            android:textSize="@dimen/text_title" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/option_info"
@@ -34,7 +34,7 @@
             android:layout_below="@id/option_name"
             android:text="Info"
             android:textColor="@color/grey_middle"
-            android:textSize="@dimen/product_item_text_size" />
+            android:textSize="@dimen/text_subtitle" />
     </LinearLayout>
 
 </LinearLayout>

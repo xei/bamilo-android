@@ -202,10 +202,8 @@
     <dimen name="catalog_grid_item_height">186.67dp</dimen>
     <dimen name="catalog_list_item_image_width">74.67dp</dimen>
     <dimen name="catalog_list_item_image_height">93.33dp</dimen>
-    <dimen name="catalog_list_item_image_margin">13.33dp</dimen>
+    <dimen name="catalog_list_item_image_padding">13.33dp</dimen>
     <dimen name="catalog_item_vertical_padding">10dp</dimen>
-    <dimen name="catalog_grid_item_horizontal_padding">6.67dp</dimen>
-    <dimen name="catalog_list_item_horizontal_padding">13.33dp</dimen>
     <dimen name="catalog_grid_item_image_width">97.33dp</dimen>
     <dimen name="catalog_grid_item_image_height">121.67dp</dimen>
 
@@ -216,19 +214,13 @@
     <dimen name="root_empty_drawable_padding">23.33dp</dimen>
 
     <!-- MY PROFILE REDESIGN -->
-    <dimen name="button_orange_text_size">16.67sp</dimen>
     <dimen name="button_orange_height">33.33dp</dimen>
     <dimen name="button_orange_extra_height">50dp</dimen>
     <dimen name="button_recently_viewed_extra_height">100dp</dimen>
     <dimen name="button_orange_top_margin">26.67dp</dimen>
     <dimen name="button_orange_landscape_width">440dp</dimen>
-    <dimen name="product_item_text_size">10.67sp</dimen>
-    <dimen name="product_item_brand_text_size">12sp</dimen>
     <dimen name="product_item_addtocart_text_size">8sp</dimen>
     <dimen name="product_item_addtocart_height">25dp</dimen>
     <dimen name="product_item_addtocart_variation_width">43.33dp</dimen>
-    <dimen name="product_item_delete_text_size">20sp</dimen>
-    <dimen name="my_account_medium_margin">@dimen/rounded_margin_mid</dimen>
-    <dimen name="my_account_small_margin">@dimen/rounded_margin_small</dimen>
 
 </resources>

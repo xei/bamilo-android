@@ -99,6 +99,7 @@
             <org.holoeverywhere.widget.Button
                 android:id="@+id/middle_login_link_register"
                 style="@style/button_grey_bottom"
+                android:layout_marginBottom="0dp"
                 android:layout_marginLeft="66dp"
                 android:layout_marginRight="66dp"
                 android:layout_marginTop="@dimen/distance_item_mid"

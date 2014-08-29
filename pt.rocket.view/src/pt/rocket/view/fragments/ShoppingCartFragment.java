@@ -920,7 +920,7 @@ public class ShoppingCartFragment extends BaseFragment {
      * showNoItems update the layout when basket has no items
      */
     public void showNoItems() {
-        showFragmentEmpty(R.string.order_notiems, R.drawable.empty_shoppingcart, R.string.continue_shopping, new OnClickListener() {
+        showFragmentEmpty(R.string.order_notiems, R.drawable.img_emptycart, R.string.continue_shopping, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);

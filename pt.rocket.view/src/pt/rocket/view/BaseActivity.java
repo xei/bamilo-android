@@ -484,7 +484,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
             }
         });
-        // errorView = findViewById(R.id.alert_view);
 
         // Get the fallback stub
         mMainFallBackStub = (ViewStub) findViewById(R.id.main_fall_back_stub);

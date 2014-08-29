@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/rounded_box" >
+
+<RelativeLayout
     android:id="@+id/general_container"
     style="@style/list_row_style"
-    android:layout_height="@dimen/catalog_list_item_height"
-    android:layout_marginBottom="@dimen/rounded_margin_small"
-    android:layout_marginLeft="@dimen/rounded_margin_mid"
-    android:layout_marginRight="@dimen/rounded_margin_mid"
-    android:layout_marginTop="@dimen/rounded_margin_small"
-    android:background="@drawable/background_content" >
+    android:layout_height="@dimen/catalog_list_item_height" >
 
     <include
         android:id="@+id/image_loadable"
         android:layout_width="@dimen/catalog_list_item_image_width"
         android:layout_height="@dimen/catalog_list_item_image_height"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/catalog_grid_item_horizontal_padding"
-        android:layout_marginRight="@dimen/catalog_list_item_image_margin"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/catalog_list_item_image_padding"
         layout="@layout/catalog_image_item"
         android:background="@color/orange_basic" />
 
@@ -52,7 +49,7 @@
         android:singleLine="true"
         android:text="BRAND"
         android:textColor="@color/grey_middle"
-        android:textSize="@dimen/product_item_brand_text_size" />
+        android:textSize="@dimen/text_title" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_name"
@@ -68,7 +65,7 @@
         android:singleLine="true"
         android:text="Name"
         android:textColor="@color/grey_middle"
-        android:textSize="@dimen/product_item_text_size" />
+        android:textSize="@dimen/text_subtitle" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_discount"
@@ -81,7 +78,7 @@
         android:singleLine="true"
         android:text="Discount"
         android:textColor="@color/red_middle"
-        android:textSize="@dimen/product_item_text_size" />
+        android:textSize="@dimen/text_subtitle" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_regprice"
@@ -93,7 +90,7 @@
         android:singleLine="true"
         android:text="Price"
         android:textColor="@color/grey_light"
-        android:textSize="@dimen/product_item_text_size" />
+        android:textSize="@dimen/text_subtitle" />
 
     <RatingBar
         android:id="@+id/item_rating"
@@ -127,7 +124,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:padding="@dimen/catalog_grid_item_horizontal_padding"
+        android:padding="@dimen/rounded_margin_mid"
         android:paddingTop="@dimen/catalog_item_vertical_padding"
         android:src="@drawable/selector_favorite" />
 
@@ -135,10 +132,9 @@
         android:id="@+id/discount_percentage"
         android:layout_width="@dimen/product_list_item_discount_percentage_image_width"
         android:layout_height="@dimen/product_list_item_discount_percentage_image_height"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/bottom_spacer"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/catalog_item_vertical_padding"
-        android:layout_marginRight="@dimen/catalog_grid_item_horizontal_padding"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
         android:background="@drawable/discount_badge"
         android:fontFamily="roboto_bold"
         android:gravity="center"
@@ -150,9 +146,17 @@
         android:textSize="@dimen/product_list_item_discount_percentage_text_size" />
 
     <View
+        android:id="@id/bottom_spacer"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/catalog_item_vertical_padding"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
+
+    <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/rounded_margin_small"
         android:layout_alignParentBottom="true" />
-
 </RelativeLayout>
+
+</LinearLayout>

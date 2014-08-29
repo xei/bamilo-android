@@ -66,7 +66,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
      * @author sergiopereira
      */
     public AddableToCartListAdapter(Context context, ArrayList<AddableToCart> items, OnClickListener parentListener) {
-        super(context, R.layout.favourite_item, items);
+        super(context, R.layout.addabletocart_item, items);
         mInflater = LayoutInflater.from(context);
         mOnClickParentListener = parentListener;
 
@@ -87,7 +87,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
         // If the view already exists there is no need to inflate it again
         if (convertView != null) itemView = convertView;
         // Inflate the view
-        else itemView = mInflater.inflate(R.layout.favourite_item, parent, false);
+        else itemView = mInflater.inflate(R.layout.addabletocart_item, parent, false);
         // Get the class associated to the view
         Item prodItem = getItemView(itemView);
         // Get addableToCart
@@ -135,19 +135,19 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
         if ((Item) itemView.getTag() == null) {
             // Create tag
             item = new Item();
-            item.container = itemView.findViewById(R.id.favourite_item_container);
-            item.isNew = itemView.findViewById(R.id.favourite_item_image_is_new);
-            item.image = (ImageView) itemView.findViewById(R.id.favourite_item_image);
-            item.name = (TextView) itemView.findViewById(R.id.favourite_item_name);
-            item.brand = (TextView) itemView.findViewById(R.id.favourite_item_brand);
-            item.price = (TextView) itemView.findViewById(R.id.favourite_item_regprice);
-            item.discount = (TextView) itemView.findViewById(R.id.favourite_item_discount);
-            item.discountPercentage = (TextView) itemView.findViewById(R.id.favourite_item_percentage);
-            item.varianceButton = (Button) itemView.findViewById(R.id.favourite_button_variant);
-            item.variantChooseError = itemView.findViewById(R.id.favourite_error_variant);
-            item.stockError = itemView.findViewById(R.id.favourite_error_stock);
-            item.addToCartButton = itemView.findViewById(R.id.favourite_button_shop);
-            item.deleteButton = itemView.findViewById(R.id.favourite_button_delete);
+            item.container = itemView.findViewById(R.id.addabletocart_item_container);
+            item.isNew = itemView.findViewById(R.id.item_image_is_new);
+            item.image = (ImageView) itemView.findViewById(R.id.item_image);
+            item.name = (TextView) itemView.findViewById(R.id.item_name);
+            item.brand = (TextView) itemView.findViewById(R.id.item_brand);
+            item.price = (TextView) itemView.findViewById(R.id.item_regprice);
+            item.discount = (TextView) itemView.findViewById(R.id.item_discount);
+            item.discountPercentage = (TextView) itemView.findViewById(R.id.item_percentage);
+            item.varianceButton = (Button) itemView.findViewById(R.id.button_variant);
+            item.variantChooseError = itemView.findViewById(R.id.error_variant);
+            item.stockError = itemView.findViewById(R.id.error_stock);
+            item.addToCartButton = itemView.findViewById(R.id.button_shop);
+            item.deleteButton = itemView.findViewById(R.id.button_delete);
             itemView.setTag(item);
         } else {
             item = (Item) itemView.getTag();

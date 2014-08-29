@@ -23,7 +23,7 @@
         <include layout="@layout/loading_bar_simple" />
     </RelativeLayout>
 
-    <Button
+    <org.holoeverywhere.widget.Button
         android:id="@+id/gallery_button_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

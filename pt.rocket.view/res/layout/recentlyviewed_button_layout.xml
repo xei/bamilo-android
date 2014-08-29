@@ -4,25 +4,18 @@
     android:layout_height="@dimen/button_recently_viewed_extra_height"
     android:layout_alignBottom="@id/recentlyviewed_grid"
     android:background="@color/grey_background"
-    android:gravity="center"
+    android:gravity="top"
     android:orientation="vertical" >
 
-    <Button
+    <org.holoeverywhere.widget.Button
         android:id="@+id/recentlyviewed_button_grey"
         style="@style/button_grey_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/button_orange_height"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/rounded_margin_mid"
-        android:layout_marginTop="@dimen/button_orange_top_margin"
-        android:gravity="center"
-        android:singleLine="true"
-        android:text="@string/recentlyview_clear_viewed"
-        android:textColor="@color/grey_dark"
-        android:textSize="@dimen/button_orange_text_size" />
+        android:layout_marginBottom="0dp"
+        android:text="@string/recentlyview_clear_viewed" />
 
-    <include
-        android:id="@+id/favourite_button_shop_all"
-        layout="@layout/orange_button_layout" />
+    <org.holoeverywhere.widget.Button
+        android:id="@+id/button_shop_all"
+        style="@style/button_orange_bottom"
+        android:text="@string/favourite_addalltocart" />
 
 </LinearLayout>

@@ -21,7 +21,7 @@
         android:layout_above="@id/loadmore"
         android:layout_alignParentTop="true"
         android:layout_margin="@dimen/rounded_margin_small"
-        android:listSelector="@drawable/selector_listitem_highlight"
+        android:listSelector="@color/transparent"
         android:numColumns="3" />
 
     <org.holoeverywhere.widget.Button

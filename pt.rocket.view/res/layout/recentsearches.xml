@@ -1,16 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/recentsearch_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/grey_background" >
 
-    <GridView
-        android:id="@+id/middle_recentsearch_list"
+    <LinearLayout
+        android:id="@+id/recentsearch_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:listSelector="@drawable/transparent"
-        android:paddingBottom="80dp" />
+        android:paddingBottom="@dimen/button_orange_extra_height" >
 
-    <include layout="@layout/recentsearches_button_layout" />
+        <ListView
+            android:id="@+id/recentsearch_list"
+            style="@style/rounded_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/grey_highlight"
+            android:dividerHeight="1dp"
+            android:listSelector="@color/transparent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_orange_extra_height"
+        android:layout_alignBottom="@id/recentsearch_container"
+        android:background="@color/grey_background"
+        android:gravity="center" >
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/recentsearch_clear_all"
+            style="@style/button_grey_landscape"
+            android:text="@string/recentsearch_clear_searches" />
+    </LinearLayout>
 
 </RelativeLayout>

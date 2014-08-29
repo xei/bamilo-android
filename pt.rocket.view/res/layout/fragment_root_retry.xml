@@ -20,25 +20,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            android:layout_marginLeft="@dimen/rounded_margin_mid"
+            android:layout_marginRight="@dimen/rounded_margin_mid"
             android:gravity="center"
             android:padding="@dimen/rounded_margin_mid"
             android:text="@string/error_please_try_again"
             android:textColor="@color/grey_middlelight"
-            android:textSize="@dimen/button_orange_text_size" />
+            android:textSize="@dimen/text_button" />
     </LinearLayout>
 
     <org.holoeverywhere.widget.Button
         android:id="@+id/fragment_root_retry_button"
         style="@style/button_grey_bottom"
-        android:layout_width="@dimen/button_orange_landscape_width"
-        android:layout_height="@dimen/button_orange_height"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/rounded_margin_mid"
         android:clickable="false"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:text="@string/try_again"
-        android:textColor="@color/grey_dark"
-        android:textSize="@dimen/button_orange_text_size" />
+        android:text="@string/try_again" />
 
 </LinearLayout>

@@ -17,11 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/top_spacer"
-        android:background="@android:color/transparent"
-        android:fontFamily="roboto"
-        android:text="X"
-        android:textColor="@drawable/selector_link_blue"
-        android:textSize="@dimen/product_item_delete_text_size" />
+        android:background="@drawable/selector_btn_remove_item" />
 
     <!-- BRAND -->
 
@@ -37,7 +33,7 @@
         android:maxLines="1"
         android:singleLine="true"
         android:text="BRAND"
-        android:textSize="@dimen/product_item_brand_text_size"
+        android:textSize="@dimen/text_title"
         android:visibility="gone" />
 
     <!-- NAME -->
@@ -57,7 +53,7 @@
         android:singleLine="true"
         android:text="Name"
         android:textColor="@color/grey_middle"
-        android:textSize="@dimen/product_item_text_size" />
+        android:textSize="@dimen/text_subtitle" />
 
     <!-- DISCOUNT -->
 
@@ -73,7 +69,7 @@
         android:singleLine="true"
         android:text="Discount"
         android:textColor="@color/red_middle"
-        android:textSize="@dimen/product_item_text_size" />
+        android:textSize="@dimen/text_subtitle" />
 
     <!-- PRICE -->
 
@@ -88,7 +84,7 @@
         android:maxLines="1"
         android:singleLine="true"
         android:text="Price"
-        android:textSize="@dimen/product_item_text_size" />
+        android:textSize="@dimen/text_subtitle" />
 
     <!-- VARIATION -->
 
@@ -117,7 +113,7 @@
     <View
         android:id="@id/bottom_spacer"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/catalog_list_item_horizontal_padding"
+        android:layout_height="@dimen/catalog_list_item_image_padding"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true" />
 

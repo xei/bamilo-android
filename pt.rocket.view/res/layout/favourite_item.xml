@@ -7,7 +7,7 @@
     <!-- CONTAINER -->
 
     <RelativeLayout
-        android:id="@+id/favourite_item_container"
+        android:id="@+id/addabletocart_item_container"
         style="@style/list_row_style"
         android:layout_height="match_parent"
         android:gravity="center" >
@@ -15,23 +15,23 @@
         <!-- IMAGE CONTAINER -->
 
         <include
-            android:id="@+id/favourite_item_image_container"
+            android:id="@+id/item_image_container"
             android:layout_width="@dimen/catalog_list_item_image_width"
             android:layout_height="@dimen/catalog_list_item_image_height"
             android:layout_alignParentLeft="true"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/catalog_grid_item_horizontal_padding"
-            layout="@layout/favourite_item_image" />
+            android:layout_marginLeft="@dimen/rounded_margin_mid"
+            layout="@layout/addabletocart_item_image" />
 
         <!-- INFO CONTAINER -->
 
         <include
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/catalog_list_item_horizontal_padding"
-            android:layout_marginRight="@dimen/catalog_list_item_horizontal_padding"
-            android:layout_toRightOf="@id/favourite_item_image_container"
-            layout="@layout/favourite_item_info" />
+            android:layout_marginLeft="@dimen/catalog_list_item_image_padding"
+            android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_toRightOf="@id/item_image_container"
+            layout="@layout/addabletocart_item_info" />
     </RelativeLayout>
 
     <View

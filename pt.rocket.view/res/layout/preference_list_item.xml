@@ -4,15 +4,13 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/my_account_medium_margin" >
+    android:paddingBottom="@dimen/rounded_margin_mid" >
 
     <View
         style="@style/line_grey_style"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="@dimen/my_account_medium_margin"
-        android:layout_marginRight="@dimen/my_account_medium_margin"
-        android:layout_marginTop="0dp"
-        android:paddingTop="@dimen/my_account_medium_margin" />
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:paddingTop="@dimen/rounded_margin_mid" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,10 +20,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/my_account_small_margin"
-        android:layout_marginLeft="@dimen/my_account_medium_margin"
-        android:layout_marginRight="@dimen/my_account_medium_margin"
-        android:layout_marginTop="@dimen/my_account_small_margin"
+        android:layout_marginBottom="@dimen/rounded_margin_small"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginTop="@dimen/rounded_margin_small"
         android:layout_weight="1" >
 
         <org.holoeverywhere.widget.TextView
@@ -37,7 +35,7 @@
             android:singleLine="true"
             android:text="Title"
             android:textColor="@color/grey_middledark"
-            android:textSize="@dimen/product_item_brand_text_size" />
+            android:textSize="@dimen/text_title" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+android:id/summary"
@@ -48,7 +46,7 @@
             android:maxLines="2"
             android:text="Summary"
             android:textColor="@color/grey_middle"
-            android:textSize="@dimen/product_item_text_size" />
+            android:textSize="@dimen/text_subtitle" />
     </RelativeLayout>
 
     <!-- Preference should place its actual preference widget here. -->

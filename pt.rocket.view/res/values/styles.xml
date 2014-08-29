@@ -192,13 +192,7 @@
 
     <!-- This style is applied to all the blue lines in the application -->
 
-    <style name="line_grey_style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/divider_height</item>
-        <item name="android:layout_marginTop">11dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:background">@color/grey_highlight</item>
-    </style>
+    <style name="line_grey_style" parent="divider_horizontal" />
 
     <!-- This style is applied to all the dialogs in the application -->
 
@@ -323,7 +317,7 @@
     <style name="list_row_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/selector_listitem_highlight</item>
+        <item name="android:background">@drawable/selector_listitem_rounded_margin_highlight</item>
     </style>
 
     <style name="navigation_cart_titletext">
@@ -670,9 +664,11 @@
     <!-- BUTTON FOR BOTTOM CONTAINER -->
     <style name="_parent_button_bottom_container">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">42dp</item>
-        <item name="android:layout_marginTop">@dimen/rounded_margin_small</item>
-        <item name="android:layout_marginBottom">@dimen/rounded_margin_small</item>
+        <item name="android:layout_height">@dimen/button_orange_height</item>
+        <item name="android:layout_marginBottom">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginTop">@dimen/rounded_margin_mid</item>
         <item name="android:ellipsize">marquee</item>
         <item name="android:maxLines">1</item>
         <item name="android:gravity">center</item>
@@ -689,6 +685,14 @@
 
     <style name="button_orange_bottom" parent="_parent_button_bottom_container">
         <item name="android:background">@drawable/btn_orange</item>
+    </style>
+
+    <style name="button_grey_landscape" parent="button_grey_bottom">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="button_orange_landscape" parent="button_orange_bottom">
+        <item name="android:layout_width">match_parent</item>
     </style>
 
 </resources>

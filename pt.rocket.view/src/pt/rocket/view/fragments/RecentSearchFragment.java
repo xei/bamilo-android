@@ -6,6 +6,8 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import org.holoeverywhere.widget.Button;
+
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.SearchSuggestionsAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -29,8 +31,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.GridView;
+import android.widget.ListView;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -50,7 +51,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
     
     private ArrayList<SearchSuggestion> mRecentSearches;
     
-    private GridView mRecentSearchesGrid;
+    private ListView mRecentSearchesList;
     
     private Button mClearAllButton;
 
@@ -61,8 +62,9 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.RecentSearch,
                 R.layout.recentsearches,
-                R.string.recent_searches,
-                KeyboardState.NO_ADJUST_CONTENT);
+                0,
+                KeyboardState.ADJUST_CONTENT);
+        // R.string.recent_searches
     }
     
     /**
@@ -119,7 +121,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
             mainView = getView();
         }
 
-        mRecentSearchesGrid = (GridView) mainView.findViewById(R.id.middle_recentsearch_list);
+        mRecentSearchesList = (ListView) mainView.findViewById(R.id.recentsearch_list);
 
         mClearAllButton = (Button) mainView.findViewById(R.id.recentsearch_clear_all);
         mClearAllButton.setVisibility(View.GONE);
@@ -210,12 +212,12 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
                 mRecentSearches = response;
                 if (mRecentSearches != null && !mRecentSearches.isEmpty()) {
                     mRecentSearchesAdapter = new SearchSuggestionsAdapter(mContext, mRecentSearches);
-                    mRecentSearchesGrid.setAdapter(mRecentSearchesAdapter);
-                    mRecentSearchesGrid.setOnItemClickListener(new OnItemClickListener() {
+                    mRecentSearchesList.setAdapter(mRecentSearchesAdapter);
+                    mRecentSearchesList.setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             Log.d(TAG, "SEARCH: CLICKED ITEM " + position);
-                            SearchSuggestion selectedSuggestion = (SearchSuggestion) mRecentSearchesGrid.getItemAtPosition(position);
+                            SearchSuggestion selectedSuggestion = (SearchSuggestion) mRecentSearchesList.getItemAtPosition(position);
                             String text = selectedSuggestion.getResult();
                             GetSearchSuggestionHelper.saveSearchQuery(text);
                             executeSearchRequest(text);

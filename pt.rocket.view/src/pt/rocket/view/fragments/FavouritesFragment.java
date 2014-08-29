@@ -84,8 +84,9 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Favorite,
                 R.layout.favourites,
-                R.string.favourites,
+                0,
                 KeyboardState.NO_ADJUST_CONTENT);
+        // R.string.favourites
     }
 
     protected FavouritesFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action,
@@ -131,7 +132,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Get grid view
         mAddableToCartGridView = (GridView) view.findViewById(R.id.favourites_grid);
         // Get add to cart button
-        mAddAllToCartButton = (Button) view.findViewById(R.id.favourite_button_shop_all);
+        mAddAllToCartButton = (Button) view.findViewById(R.id.button_shop_all);
         mAddAllToCartButton.setOnClickListener((OnClickListener) this);
 
         // Validate current state
@@ -157,8 +158,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // Hide title
-        getBaseActivity().hideTitle();
         // Tracking page
         TrackerDelegator.trackPage(TrackingPage.FAVORITES);
     }
@@ -257,23 +256,23 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Get view id
         int id = view.getId();
         // Case item
-        if (id == R.id.favourite_item_container) {
+        if (id == R.id.addabletocart_item_container) {
             onItemClick(view);
         }
         // Case delete
-        else if (id == R.id.favourite_button_delete) {
+        else if (id == R.id.button_delete) {
             onClickDeleteItem(view);
         }
         // Case add to cart
-        else if (id == R.id.favourite_button_shop) {
+        else if (id == R.id.button_shop) {
             onClickAddToCart(view);
         }
         // Case add all
-        else if (id == R.id.favourite_button_shop_all) {
+        else if (id == R.id.button_shop_all) {
             onClickAddAllToCart();
         }
         // Case simple
-        else if (id == R.id.favourite_button_variant) {
+        else if (id == R.id.button_variant) {
             onClickVariation(view);
         }
         // Case continue shopping
@@ -519,7 +518,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     /**
      * ######### TRIGGERS #########
      */
-    
+
     /**
      * Trigger to add an item to cart
      * 
@@ -536,6 +535,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * 
      * @param addableToCart
      * @param position
+     * @param keyRemoveTable
      * @author sergiopereira
      */
     protected synchronized void triggerAddProductToCart(AddableToCart addableToCart, int position, String keyRemoveTable) {
@@ -859,7 +859,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         if (mAddableToCartList.isEmpty()) {
             showEmpty();
         }
-        // Dismiss
+        
+        // Dismiss progress, used because of onClickClearAll() on RecentlyViewedFragment
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -878,8 +879,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         String title = getString(R.string.product_variance_choose);
         //
         ArrayList<String> mSimpleVariantsAvailable = new ArrayList<String>();
-        ArrayList<String> mSimpleVariants = createSimpleVariants(addableToCart,
-                mSimpleVariantsAvailable);
+        ArrayList<String> mSimpleVariants = createSimpleVariants(addableToCart, mSimpleVariantsAvailable);
         //
         DialogListFragment dialogListFragment = DialogListFragment.newInstance(getBaseActivity(),
                 new FavouriteOnDialogListListener(addableToCart),
@@ -912,8 +912,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     }
 
-    protected ArrayList<String> createSimpleVariants(AddableToCart addableToCart,
-            ArrayList<String> mSimpleVariantsAvailable) {
+    protected ArrayList<String> createSimpleVariants(AddableToCart addableToCart, ArrayList<String> mSimpleVariantsAvailable) {
         Log.i(TAG, "scanSimpleForKnownVariations : createSimpleVariants" + addableToCart.getName());
         ArrayList<ProductSimple> simples = (ArrayList<ProductSimple>) addableToCart.getSimples().clone();
         ArrayList<String> variations = addableToCart.getKnownVariations();
@@ -948,8 +947,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         return variationValues;
     }
 
-    protected Set<String> scanSimpleAttributesForKnownVariants(ArrayList<ProductSimple> simples,
-            ArrayList<String> variations) {
+    protected Set<String> scanSimpleAttributesForKnownVariants(ArrayList<ProductSimple> simples, ArrayList<String> variations) {
         Set<String> foundVariations = new HashSet<String>();
         Log.i(TAG, "scanSimpleForKnownVariations : scanSimpleAttributesForKnownVariants");
         for (ProductSimple simple : simples) {

@@ -77,7 +77,9 @@
     </style>
     
     <style name="Widget.Jumia.ListView" parent="android:Widget.ListView.White">
-        <item name="android:listSelector">@drawable/selector_listitem_highlight</item>
+        <!-- WHY??? -->
+        <!-- item name="android:listSelector">@drawable/selector_listitem_highlight</item -->
+        <item name="android:cacheColorHint">@android:color/transparent</item>
         <item name="android:divider">@color/grey_light</item>
     </style>
 

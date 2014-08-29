@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="0dp"
-        android:paddingBottom="@dimen/my_account_medium_margin"
-        android:paddingTop="@dimen/my_account_small_margin" >
+        android:paddingBottom="@dimen/rounded_margin_mid"
+        android:paddingTop="@dimen/rounded_margin_small" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/title_options"
@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/title_options"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:listSelector="@drawable/selector_listitem_rounded_margin_highlight" />
 
         <View
             style="@style/divider_horizontal_orange"
@@ -44,8 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="0dp"
-        android:paddingBottom="@dimen/my_account_medium_margin"
-        android:paddingTop="@dimen/my_account_small_margin" >
+        android:paddingBottom="@dimen/rounded_margin_mid"
+        android:paddingTop="@dimen/rounded_margin_small" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/title_preferences"

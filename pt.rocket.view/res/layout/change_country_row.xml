@@ -3,14 +3,14 @@
     android:id="@+id/change_country_row_container"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_height_normal"
-    android:background="@drawable/selector_listitem_highlight" >
+    android:background="@drawable/selector_listitem_rounded_margin_highlight" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-		android:layout_centerVertical="true"
-        android:orientation="horizontal"
+        android:layout_centerVertical="true"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="@dimen/margin_huge" >
 
         <ImageView

@@ -6,23 +6,22 @@
 
     <View
         style="@style/line_grey_style"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="@dimen/my_account_medium_margin"
-        android:layout_marginRight="@dimen/my_account_medium_margin"
-        android:layout_marginTop="0dp" />
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid" />
 
     <org.holoeverywhere.widget.CheckBox
         android:id="@+id/myaccount_newsletter_checkbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@drawable/selector_listitem_rounded_margin_highlight"
         android:button="@null"
         android:drawableRight="@drawable/selector_btn_check_holo_orange"
         android:fontFamily="roboto_regular"
         android:gravity="left|center"
-        android:padding="@dimen/my_account_medium_margin"
+        android:padding="@dimen/rounded_margin_mid"
         android:text="Newslewttwer"
         android:textColor="@color/grey_middle"
-        android:textSize="@dimen/product_item_brand_text_size" />
+        android:textSize="@dimen/text_title" />
 
 </LinearLayout>

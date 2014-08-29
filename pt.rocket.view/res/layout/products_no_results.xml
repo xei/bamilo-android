@@ -30,10 +30,7 @@
             android:textSize="@dimen/text_l"
             android:visibility="visible" />
 
-        <View
-            android:id="@+id/no_results_search_error_message_divider"
-            style="@style/line_grey_style"
-            android:layout_marginBottom="0dp" />
+        <View style="@style/line_grey_style" />
 
         <RelativeLayout
             android:id="@+id/no_results_search_terms"
@@ -64,10 +61,7 @@
                 android:textSize="@dimen/text_s" />
         </RelativeLayout>
 
-        <View
-            android:id="@+id/teaser_group_title_divider"
-            style="@style/line_grey_style"
-            android:layout_marginBottom="0dp" />
+        <View style="@style/line_grey_style" />
 
         <RelativeLayout
             android:id="@+id/featured_products"
@@ -98,10 +92,7 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <View
-            android:id="@+id/teaser_group_title_divider"
-            style="@style/line_grey_style"
-            android:layout_marginBottom="0dp" />
+        <View style="@style/line_grey_style" />
 
         <RelativeLayout
             android:id="@+id/featured_brands"
@@ -132,10 +123,7 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <View
-            android:id="@+id/teaser_group_title_divider"
-            style="@style/line_grey_style"
-            android:layout_marginBottom="0dp" />
+        <View style="@style/line_grey_style" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/no_results_search_notice_message"

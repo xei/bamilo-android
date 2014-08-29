@@ -21,9 +21,10 @@
         android:background="@color/grey_background"
         android:gravity="center" >
 
-        <include
-            android:id="@+id/favourite_button_shop_all"
-            layout="@layout/orange_button_layout" />
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/button_shop_all"
+            style="@style/button_orange_landscape"
+            android:text="@string/favourite_addalltocart" />
     </LinearLayout>
 
 </RelativeLayout>

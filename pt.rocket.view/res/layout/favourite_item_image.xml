@@ -5,7 +5,7 @@
     android:gravity="center" >
 
     <ImageView
-        android:id="@+id/favourite_item_image"
+        android:id="@+id/item_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -14,7 +14,7 @@
         android:src="@drawable/no_image_small" />
 
     <ImageView
-        android:id="@+id/favourite_item_image_is_new"
+        android:id="@+id/item_image_is_new"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|left"
@@ -23,7 +23,7 @@
         android:src="@drawable/img_newarrival_en" />
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/favourite_item_percentage"
+        android:id="@+id/item_percentage"
         android:layout_width="@dimen/product_list_item_discount_percentage_image_width"
         android:layout_height="@dimen/product_list_item_discount_percentage_image_height"
         android:layout_gravity="bottom|right"

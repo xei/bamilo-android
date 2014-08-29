@@ -26,15 +26,12 @@
         <include
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/catalog_list_item_horizontal_padding"
+            android:layout_marginLeft="@dimen/catalog_list_item_image_padding"
             android:layout_marginRight="@dimen/rounded_margin_mid"
             android:layout_toRightOf="@id/item_image_container"
             layout="@layout/shopping_basket_product_element" />
     </RelativeLayout>
 
-    <View
-        style="@style/line_grey_style"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="0dp" />
+    <View style="@style/line_grey_style" />
 
 </RelativeLayout>

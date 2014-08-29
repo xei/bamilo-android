@@ -6,6 +6,7 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.Toast;
 
 import pt.rocket.constants.ConstantsIntentExtra;
@@ -27,7 +28,6 @@ import pt.rocket.view.R;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.GridView;
 import de.akquinet.android.androlog.Log;
 
@@ -51,8 +51,9 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.RecentlyView,
                 R.layout.recentlyviewed,
-                R.string.recently_viewed,
+                0,
                 KeyboardState.NO_ADJUST_CONTENT);
+        // R.string.recently_viewed
     }
 
     /**
@@ -96,7 +97,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         mClearAllButton = (Button) view.findViewById(R.id.recentlyviewed_button_grey);
         mClearAllButton.setOnClickListener((OnClickListener) this);
         // Get add to cart button
-        mAddAllToCartButton = (Button) view.findViewById(R.id.favourite_button_shop_all);
+        mAddAllToCartButton = (Button) view.findViewById(R.id.button_shop_all);
         mAddAllToCartButton.setOnClickListener((OnClickListener) this);
 
         // Validate current state
@@ -145,11 +146,11 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         // Get view id
         int id = view.getId();
         // Case item
-        if (id == R.id.favourite_item_container) {
+        if (id == R.id.addabletocart_item_container) {
             onItemClick(view);
         }
         // Case add to cart
-        else if (id == R.id.favourite_button_shop) {
+        else if (id == R.id.button_shop) {
             onClickAddToCart(view);
         }
         // Case clear all
@@ -157,11 +158,11 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
             onClickClearAll();
         }
         // Case add all
-        else if (id == R.id.favourite_button_shop_all) {
+        else if (id == R.id.button_shop_all) {
             onClickAddAllToCart();
         }
         // Case simple
-        else if (id == R.id.favourite_button_variant) {
+        else if (id == R.id.button_variant) {
             onClickVariation(view);
         }
         // Case continue shopping
