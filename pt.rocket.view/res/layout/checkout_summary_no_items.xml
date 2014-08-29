@@ -13,7 +13,7 @@
         android:layout_height="158dp"
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_marginTop="55dp"
-        android:src="@drawable/empty_shoppingcart" />
+        android:src="@drawable/img_emptycart" />
 
     <org.holoeverywhere.widget.TextView
         android:layout_width="fill_parent"
