@@ -33,7 +33,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/margin_veryhuge"
-        android:fontFamily="roboto-bold"
+        android:fontFamily="roboto_bold"
         android:text="@string/got_it"
         android:textColor="@android:color/white" />
 

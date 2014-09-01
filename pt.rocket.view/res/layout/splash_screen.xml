@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="13.2dp"
                 android:layout_marginTop="-3dp"
-                android:fontFamily="roboto-bold"
+                android:fontFamily="roboto_bold"
                 android:gravity="center"
                 android:textColor="#000000"
                 android:textSize="29.04sp"
@@ -110,7 +110,7 @@
                     android:id="@+id/fallback_country_top"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="roboto-bold"
+                    android:fontFamily="roboto_bold"
                     android:gravity="left"
                     android:textColor="#000000"
                     android:textSize="17.14sp" />
@@ -120,7 +120,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-10dp"
-                    android:fontFamily="roboto-bold"
+                    android:fontFamily="roboto_bold"
                     android:gravity="left"
                     android:textColor="#000000"
                     android:textSize="17.14sp" />
@@ -152,7 +152,7 @@
                 android:id="@+id/fallback_choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="roboto-bold"
+                android:fontFamily="roboto_bold"
                 android:text="@string/fallback_choice"
                 android:textColor="#ffffff"
                 android:textSize="9.9sp" />
@@ -210,7 +210,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6.6dp"
-                android:fontFamily="roboto-bold"
+                android:fontFamily="roboto_bold"
                 android:text="@string/fallback_fashion"
                 android:textColor="#000000"
                 android:textSize="@dimen/text_s" />

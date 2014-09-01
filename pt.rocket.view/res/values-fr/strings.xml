@@ -301,7 +301,7 @@
     <string name="my_order_is_same">Facturer à la même adresse</string>
     <string name="my_order_payment">Mode de paiement</string>
     <string name="my_order_coupon_label">Coupon</string>
-    <string name="my_order_qty">Qté:</string>
+    <string name="my_order_qty">Qté</string>
     <string name="error_please_try_again">Nous avons eu un léger problème lors de la récupération des donnés. Veuillez réessayer.</string>
     <string name="checkout_header_step_1">1. Informations client</string>
     <string name="checkout_header_step_2">2. Adresse</string>

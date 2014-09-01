@@ -4,60 +4,48 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
+    <View
+        android:id="@+id/order_item_divider"
+        style="@style/line_grey_style"
+        android:layout_marginBottom="@dimen/rounded_margin_small"
+        android:layout_marginTop="@dimen/rounded_margin_small"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="1" >
+        android:paddingTop="@dimen/rounded_margin_mid" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/order_item_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:ellipsize="marquee"
-            android:singleLine="true"
-            android:text="@string/creation_date"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_xs" />
+            style="@style/text_title"
+            android:fontFamily="roboto_regular"
+            android:text="@string/creation_date" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/order_item_quantity"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15.84dp"
-            android:layout_weight="0.2"
-            android:fontFamily="roboto-bold"
-            android:singleLine="true"
-            android:text="@string/creation_date"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_xs" />
+            style="@style/text_title"
+            android:text="@string/creation_date" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/order_status_title_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/rounded_margin_mid" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/order_last_update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            style="@style/text_title"
+            android:layout_marginRight="@dimen/margin_x_small"
             android:text="@string/track_your_order"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_xs" />
+            android:visibility="gone" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/order_status_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15.84dp"
-            android:fontFamily="roboto-bold"
-            android:text="@string/track_your_order"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_xs" />
+            style="@style/text_title"
+            android:text="@string/track_your_order" />
     </LinearLayout>
 
 </LinearLayout>

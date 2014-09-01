@@ -214,14 +214,23 @@
     <dimen name="root_empty_drawable_padding">23.33dp</dimen>
 
     <!-- MY PROFILE REDESIGN -->
-    <dimen name="button_orange_height">33.33dp</dimen>
-    <dimen name="button_orange_extra_height">50dp</dimen>
-    <dimen name="button_recently_viewed_extra_height">100dp</dimen>
-    <dimen name="button_orange_top_margin">26.67dp</dimen>
-    <dimen name="button_orange_landscape_width">440dp</dimen>
-    <dimen name="product_item_addtocart_text_size">8sp</dimen>
-    <dimen name="product_item_addtocart_height">25dp</dimen>
+    <dimen name="button_height">40dp</dimen>
+    <dimen name="button_container_height">53.33dp</dimen>
+    <dimen name="button_double_container_height">100dp</dimen>
+    <dimen name="button_landscape_width">440dp</dimen>
+    <dimen name="product_item_variant_text_size">8sp</dimen>
+    <dimen name="product_item_button_height">25dp</dimen>
     <dimen name="product_item_addtocart_variation_width">43.33dp</dimen>
     <dimen name="product_item_text_right_margin">50dp</dimen>
+    <dimen name="title_box_height">16.67dp</dimen>
+
+    <!--  TRACK ORDER REDESIGN -->
+    <dimen name="track_order_container_height">156.67dp</dimen>
+    <dimen name="track_order_margin_small">10dp</dimen>
+    <dimen name="track_order_margin_mid">10dp</dimen>
+    <dimen name="track_order_content_height">106.66dp</dimen>
+    <dimen name="tack_order_order_nr_container_height">70dp</dimen>
+
+    <dimen name="recently_viewed_button_container_height">@dimen/button_double_container_height</dimen>
 
 </resources>

@@ -301,7 +301,7 @@
     <!--
     style name="lists_sel_arrow">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:padding">3dp</item>
         <item name="android:layout_centerVertical">true</item>
@@ -492,7 +492,7 @@
     </style>
 
     <style name="dialog_container_content">
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@android:color/white</item>
         <item name="android:paddingBottom">@dimen/distance_item_small</item>
@@ -512,7 +512,7 @@
 
     <style name="dialog_button_style">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">49</item>
         <item name="android:background">@drawable/button_dialog_background_selector</item>
         <item name="android:textSize">14dp</item>
@@ -644,7 +644,7 @@
 
     <style name="rounded_box_title_grey">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_height">@dimen/title_box_height</item>
         <item name="android:textColor">@color/grey_middledark</item>
         <item name="android:textSize">@dimen/text_title</item>
         <item name="android:gravity">left|center</item>
@@ -664,7 +664,7 @@
     <!-- BUTTON FOR BOTTOM CONTAINER -->
     <style name="_parent_button_bottom_container">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/button_orange_height</item>
+        <item name="android:layout_height">@dimen/button_height</item>
         <item name="android:layout_marginBottom">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
@@ -693,6 +693,22 @@
 
     <style name="button_orange_landscape" parent="button_orange_bottom">
         <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="text_subtitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:textColor">@color/grey_middle</item>
+        <item name="android:textSize">@dimen/text_subtitle</item>
+    </style>
+
+    <style name="text_title" parent="text_subtitle">
+        <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:textSize">@dimen/text_title</item>
     </style>
 
 </resources>

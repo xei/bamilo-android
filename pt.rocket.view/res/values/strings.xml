@@ -303,7 +303,7 @@
     <string name="my_order_is_same">Billing to same address</string>
     <string name="my_order_payment">Payment Options</string>
     <string name="my_order_coupon_label">Coupon</string>
-    <string name="my_order_qty">Qty:</string>
+    <string name="my_order_qty">Qty</string>
     <string name="error_please_try_again">We have encountered a small problem fetching the data. Please try again.</string>
     <string name="checkout_header_step_1">1. About you</string>
     <string name="checkout_header_step_2">2. Address</string>
@@ -375,4 +375,6 @@
 	<string name="color_label">Color</string>
 	<string name="size_label">Size</string>
 	<string name="shoppingcart_remove_products">Do you want to remove the products in the Cart?</string>
+	<string name="track_your_order_tip">Search for your Order ID and every detail about it will show here</string>
+	<string name="your_order">Your Order</string>
 </resources>

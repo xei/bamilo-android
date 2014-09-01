@@ -26,6 +26,7 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,16 +40,18 @@ import de.akquinet.android.androlog.Log;
 public class TrackOrderFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(TrackOrderFragment.class);
-    
+
     private static TrackOrderFragment mTrackOrderFragment;
-    
+
     private LoadingBarView loadingTrackBarView;
-    
+
     private EditText mEditText;
-    
+
     private static OrderTracker mOrderTracker;
     private static boolean mOrderTrackerError = false;
     
+    private boolean mOrderTrackingClicked = false;
+
     /**
      * Get instance
      * 
@@ -66,15 +69,16 @@ public class TrackOrderFragment extends BaseFragment {
         super(EnumSet.of(MyMenuItem.MY_PROFILE),
                 NavigationAction.TrackOrder,
                 R.layout.track_order_fragment,
-                R.string.nav_track_order,
+                0,
                 KeyboardState.ADJUST_CONTENT);
+        // R.string.nav_track_order
         this.setRetainInstance(true);
     }
 
     @Override
     public void sendValuesToFragment(int identifier, Object values) {
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -99,7 +103,9 @@ public class TrackOrderFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
-     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
+     * 
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -128,6 +134,12 @@ public class TrackOrderFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         setupView();
+        // Show status container if Button "Track Order" was clicked, or if in landscape mode
+        if (mOrderTrackingClicked || BaseActivity.isTabletInLandscape(mainActivity)) {
+            showStatusContainer();
+            // set tip visible if Button "Track Order" wasn't clicked yet
+            setTipVisibility();
+        }
     }
 
     /*
@@ -162,117 +174,147 @@ public class TrackOrderFragment extends BaseFragment {
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
     }
-    
+
     private void setupView() {
-        
-        mEditText = (EditText) getView().findViewById(R.id.order_nr_edittext);
+        mEditText = (EditText) getView().findViewById(R.id.order_nr);
         Button mButton = (Button) getView().findViewById(R.id.btn_track_order);
         mButton.setOnClickListener(trackOrderClickListener);
-        
+
         Bundle args = this.getArguments();
         String order_number = null;
-        if(args != null) order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
-        if(order_number != null) mEditText.setText(order_number);
-        
-        if(mEditText.getText() != null && mEditText.getText().length() > 0 && mOrderTracker != null){
+        if (args != null) {
+            order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
+        }
+        if (order_number != null) {
+            mEditText.setText(order_number);
+        }
+        Editable text = mEditText.getText();
+        if (text != null && text.length() > 0 && mOrderTracker != null) {
             proccessSuccess();
-        } else if(mEditText.getText() != null && mEditText.getText().length() > 0 && mOrderTrackerError){
+        } else if (text != null && text.length() > 0 && mOrderTrackerError) {
             proccessError();
         }
     }
-    
+
     OnClickListener trackOrderClickListener = new OnClickListener() {
-        
+
         @Override
         public void onClick(View v) {
-            ((BaseActivity) getActivity()).hideKeyboard();
+            getBaseActivity().hideKeyboard();
             String orderNumber = mEditText.getText().toString();
-            if(orderNumber != null && orderNumber.length()>0){
+            if (orderNumber != null && orderNumber.length() > 0) {
+                mOrderTrackingClicked = true;
+                // set status container visible from this point on
+                showStatusContainer();
+                setTipVisibility();
+
                 showLoading();
                 Bundle args = new Bundle();
                 args.putString(GetTrackOrderHelper.ORDER_NR, orderNumber);
                 JumiaApplication.INSTANCE.sendRequest(new GetTrackOrderHelper(), args, new IResponseCallback() {
-                    
                     @Override
                     public void onRequestError(Bundle bundle) {
                         onErrorEvent(bundle);
-                        
                     }
                     
                     @Override
                     public void onRequestComplete(Bundle bundle) {
                         onSuccessEvent(bundle);
-                        
                     }
                 });
-            }    
-
+            }
         }
     };
 
-    private void showLoading(){
+    private void setTipVisibility() {
+        if (mOrderTrackingClicked) {
+            getView().findViewById(R.id.tip_tracking_order).setVisibility(View.GONE);
+        } else {
+            getView().findViewById(R.id.tip_tracking_order).setVisibility(View.VISIBLE);
+        }
+    }
+    
+    /**
+     * 
+     */
+    private void showStatusContainer() {
+        getView().findViewById(R.id.track_order_status_container).setVisibility(View.VISIBLE);
+    }
+
+    private void showLoading() {
+        getView().findViewById(R.id.track_order_status_container).setVisibility(View.VISIBLE);
+
         getView().findViewById(R.id.order_status_container).setVisibility(View.GONE);
-        getView().findViewById(R.id.title_status_container).setVisibility(View.GONE); 
-        getView().findViewById(R.id.error_trakcing_order).setVisibility(View.GONE);
-        getView().findViewById(R.id.loading_status).setVisibility(View.VISIBLE); 
+        // HEADER CONTAINER getView().findViewById(R.id.title_status_container).setVisibility(View.GONE);
+        getView().findViewById(R.id.error_tracking_order).setVisibility(View.GONE);
+        getView().findViewById(R.id.loading_status).setVisibility(View.VISIBLE);
         loadingTrackBarView = (LoadingBarView) getView().findViewById(R.id.loading_bar_view);
-        if(loadingTrackBarView != null){
+        if (loadingTrackBarView != null) {
             loadingTrackBarView.startRendering();
         }
         ((Button) getView().findViewById(R.id.btn_track_order)).setText(R.string.track_order);
-        ((TextView) getView().findViewById(R.id.title_text)).setText(getActivity().getString(R.string.track_your_order));
+        // ((TextView) getView().findViewById(R.id.title_text)).setText(getString(R.string.track_your_order));
     }
-    
-    private void inflateItemsList(ArrayList<OrderTrackerItem> items){
-        LayoutInflater mInflater = (LayoutInflater) getActivity()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+    private void inflateItemsList(ArrayList<OrderTrackerItem> items) {
+        LayoutInflater mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout mLinearLayout = (LinearLayout) getView().findViewById(R.id.products_items_container);
         try {
             mLinearLayout.removeAllViews();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-        
-        for (OrderTrackerItem orderTrackerItem : items) {
+
+        int numberItems = items.size();
+        for (int i = 0; i < numberItems; i++) {
+            OrderTrackerItem orderTrackerItem = items.get(i);
             LinearLayout view = (LinearLayout) mInflater.inflate(R.layout.track_order_item, null, false);
-            ((TextView) view.findViewById(R.id.order_item_name)).setText(orderTrackerItem.getName());
-            ((TextView) view.findViewById(R.id.order_item_name)).setSelected(true);
-            ((TextView) view.findViewById(R.id.order_item_quantity)).setText("Qty. "+orderTrackerItem.getQuantity());
+            TextView orderItemName = (TextView) view.findViewById(R.id.order_item_name);
+            orderItemName.setText(orderTrackerItem.getName());
+            orderItemName.setSelected(true);
+            ((TextView) view.findViewById(R.id.order_item_quantity)).setText(" - " + getString(R.string.my_order_qty) + ". " + orderTrackerItem.getQuantity());
             ((TextView) view.findViewById(R.id.order_status_text)).setText(orderTrackerItem.getStatus());
-            ((TextView) view.findViewById(R.id.order_last_update)).setText(orderTrackerItem.getUpdateDate());
+
+            // REMOVED ON NAFAMZ-7271
+            // ((TextView) view.findViewById(R.id.order_last_update)).setText(orderTrackerItem.getUpdateDate());
+
+            // add divider to top of item after first item
+            if (i > 0) {
+                view.findViewById(R.id.order_item_divider).setVisibility(View.VISIBLE);
+            }
             mLinearLayout.addView(view);
         }
     }
-    
-    private void proccessSuccess(){
-        ((TextView) getView().findViewById(R.id.title_status_text)).setText("# "+mOrderTracker.getId());
+
+    private void proccessSuccess() {
+        ((TextView) getView().findViewById(R.id.title_status_text)).setText("# " + mOrderTracker.getId());
         ((TextView) getView().findViewById(R.id.order_creation_date_text)).setText(mOrderTracker.getDate());
         ((TextView) getView().findViewById(R.id.order_payment_method_text)).setText(mOrderTracker.getPaymentMethod());
-        
+
         inflateItemsList(mOrderTracker.getOrderTrackerItems());
-        if(loadingTrackBarView != null){
+        if (loadingTrackBarView != null) {
             loadingTrackBarView.stopRendering();
         }
         getView().findViewById(R.id.loading_status).setVisibility(View.GONE);
-        getView().findViewById(R.id.title_status_container).setVisibility(View.VISIBLE); 
+        // HEADER CONTAINER getView().findViewById(R.id.title_status_container).setVisibility(View.VISIBLE);
         getView().findViewById(R.id.order_status_container).setVisibility(View.VISIBLE);
-        getView().findViewById(R.id.error_trakcing_order).setVisibility(View.GONE);
+        getView().findViewById(R.id.error_tracking_order).setVisibility(View.GONE);
     }
-    
-    private void proccessError(){
+
+    private void proccessError() {
         mOrderTracker = null;
         String orderNumber = mEditText.getText().toString();
-        ((TextView) getView().findViewById(R.id.title_status_text)).setText("# "+orderNumber);
-        if(loadingTrackBarView != null){
+        ((TextView) getView().findViewById(R.id.title_status_text)).setText("# " + orderNumber);
+        if (loadingTrackBarView != null) {
             loadingTrackBarView.stopRendering();
         }
         getView().findViewById(R.id.loading_status).setVisibility(View.GONE);
-        getView().findViewById(R.id.title_status_container).setVisibility(View.VISIBLE); 
-        getView().findViewById(R.id.error_trakcing_order).setVisibility(View.VISIBLE);
+        // HEADER CONTAINER getView().findViewById(R.id.title_status_container).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.error_tracking_order).setVisibility(View.VISIBLE);
     }
-    
+
     protected boolean onSuccessEvent(Bundle bundle) {
-        if(!isVisible()){
+        if (!isVisible()) {
             return true;
         }
         Log.d(TAG, "ON SUCCESS EVENT");
@@ -280,9 +322,9 @@ public class TrackOrderFragment extends BaseFragment {
         proccessSuccess();
         return true;
     }
-    
+
     protected boolean onErrorEvent(Bundle bundle) {
-        if(!isVisible()){
+        if (!isVisible()) {
             return true;
         }
         Log.d(TAG, "ON ERROR EVENT");
@@ -293,6 +335,6 @@ public class TrackOrderFragment extends BaseFragment {
 
     @Override
     public void notifyFragment(Bundle bundle) {
-        
+
     }
 }

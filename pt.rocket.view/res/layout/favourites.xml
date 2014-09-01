@@ -12,11 +12,11 @@
         android:layout_margin="@dimen/rounded_margin_small"
         android:listSelector="@drawable/selector_listitem_highlight"
         android:numColumns="@integer/favourite_num_columns"
-        android:paddingBottom="@dimen/button_orange_extra_height" />
+        android:paddingBottom="@dimen/button_container_height" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/button_orange_extra_height"
+        android:layout_height="@dimen/button_container_height"
         android:layout_alignBottom="@id/favourites_grid"
         android:background="@color/grey_background"
         android:gravity="center" >

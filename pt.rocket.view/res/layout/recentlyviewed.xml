@@ -12,10 +12,10 @@
         android:layout_margin="@dimen/rounded_margin_small"
         android:listSelector="@drawable/selector_listitem_highlight"
         android:numColumns="@integer/favourite_num_columns"
-        android:paddingBottom="@dimen/button_recently_viewed_extra_height" />
+        android:paddingBottom="@dimen/recently_viewed_button_container_height" />
 
     <include
         android:layout_alignBottom="@id/recentlyviewed_grid"
-        layout="@layout/recentlyviewed_button_layout" />
+        layout="@layout/recentlyviewed_buttons" />
 
 </RelativeLayout>

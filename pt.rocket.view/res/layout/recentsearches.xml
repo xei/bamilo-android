@@ -8,7 +8,7 @@
         android:id="@+id/recentsearch_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/button_orange_extra_height" >
+        android:paddingBottom="@dimen/button_container_height" >
 
         <ListView
             android:id="@+id/recentsearch_list"
@@ -22,7 +22,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/button_orange_extra_height"
+        android:layout_height="@dimen/button_container_height"
         android:layout_alignBottom="@id/recentsearch_container"
         android:background="@color/grey_background"
         android:gravity="center" >

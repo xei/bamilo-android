@@ -97,6 +97,8 @@
     <integer name="catalog_grid_num_columns">3</integer>
     
     <!-- MY PROFILE REDESIGN -->
-    <dimen name="button_recently_viewed_extra_height">75dp</dimen>
+    <dimen name="button_double_container_height">116dp</dimen>
+
+    <dimen name="recently_viewed_button_container_height">@dimen/button_container_height</dimen>
 
 </resources>

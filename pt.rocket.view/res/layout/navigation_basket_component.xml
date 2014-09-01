@@ -15,7 +15,7 @@
         android:layout_marginTop="@dimen/margin_mid" />
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/navigation_cart_vertical_distance"
         android:layout_marginTop="@dimen/margin_small"
