@@ -4,7 +4,7 @@ import pt.rocket.framework.tracking.AdXTracker;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira

@@ -15,7 +15,7 @@ import pt.rocket.framework.R;
 import pt.rocket.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * @author nutzer2

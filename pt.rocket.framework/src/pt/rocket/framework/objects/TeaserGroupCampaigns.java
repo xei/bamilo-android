@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to represent a group of teaser campaigns

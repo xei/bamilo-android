@@ -10,7 +10,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * This class is a helper to manage the Related Items on database.

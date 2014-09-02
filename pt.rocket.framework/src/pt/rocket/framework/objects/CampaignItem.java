@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import pt.rocket.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to represent an item associated a campaign

@@ -11,7 +11,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * 

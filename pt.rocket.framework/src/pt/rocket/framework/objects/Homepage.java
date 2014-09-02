@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import pt.rocket.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 /**
  * Object that deals with the parsing of a homepage

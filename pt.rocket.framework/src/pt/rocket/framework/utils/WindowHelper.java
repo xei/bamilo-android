@@ -5,7 +5,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.os.Message;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 import android.view.Display;
 import android.view.WindowManager;
 

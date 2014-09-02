@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to save the newsletter subscription

@@ -17,7 +17,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * This class is a helper to manage the Last Viewed products on database.
