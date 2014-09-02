@@ -133,7 +133,7 @@ public class ShoppingCartFragment extends BaseFragment {
 
     private boolean isCallInProgress = false;
 
-    private boolean isRemovingAddItems = false;
+    private boolean isRemovingAllItems = false;
 
     public static class CartItemValues {
         public Boolean is_in_wishlist;
@@ -257,6 +257,8 @@ public class ShoppingCartFragment extends BaseFragment {
             // Get items
             triggerContentEvent(new GetShoppingCartItemsHelper(), null, responseCallback);
         } else {
+            // Show loading when 
+            showFragmentLoading();
             // Singleton for handler
             if (triggerHander == null) triggerHander = new Handler();
             // Remove peding posts
@@ -289,8 +291,9 @@ public class ShoppingCartFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartRemoveItemHelper.ITEM, values);
         // only show loading when removing individual items
-        if (isRemovingAddItems) {
-            triggerContentEventWithNoLoading(new GetShoppingCartRemoveItemHelper(), bundle, responseCallback);
+        if (isRemovingAllItems) {
+            bundle.putBoolean(GetShoppingCartRemoveItemHelper.UPDATE_CART, false);
+            triggerContentEventWithNoLoading(new GetShoppingCartRemoveItemHelper(), bundle, null);
         } else {
             triggerContentEventProgress(new GetShoppingCartRemoveItemHelper(), bundle, responseCallback);
         }
@@ -491,11 +494,11 @@ public class ShoppingCartFragment extends BaseFragment {
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
 
             TrackerDelegator.trackProductRemoveFromCart(params);
-            if (!isRemovingAddItems) {
+            if (!isRemovingAllItems) {
                 showFragmentContentContainer();
             }
             TrackerDelegator.trackLoadTiming(params);
-            if (!isRemovingAddItems) {
+            if (!isRemovingAllItems) {
                 displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
                 hideActivityProgress();
             }
@@ -566,7 +569,7 @@ public class ShoppingCartFragment extends BaseFragment {
                     public void onClick(View v) {
                         int id = v.getId();
                         if (id == R.id.button1) {
-                            isRemovingAddItems = true;
+                            isRemovingAllItems = true;
 
                             List<ShoppingCartItem> items = new ArrayList<ShoppingCartItem>(shoppingCart.getCartItems().values());
 
@@ -576,6 +579,13 @@ public class ShoppingCartFragment extends BaseFragment {
                             }
 
                             showNoItems();
+
+                            // Update global cart with an empty Cart
+                            ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+                            JumiaApplication.INSTANCE.setCart(cart);
+
+                            // Update cart
+                            getBaseActivity().updateCartInfo();
                         } else if (id == R.id.button2) {
                             displayShoppingCart(shoppingCart);
                         }
@@ -952,7 +962,7 @@ public class ShoppingCartFragment extends BaseFragment {
     private void goToProducDetails(int position) {
         // Log.d(TAG, "CART COMPLETE PRODUCT URL: " + items.get(position).getProductUrl());
 
-        if (items.get(position).getProductUrl().equals("")) {
+        if (TextUtils.isEmpty(items.get(position).getProductUrl())) {
             return;
         }
 

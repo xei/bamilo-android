@@ -135,7 +135,7 @@ public class TrackOrderFragment extends BaseFragment {
         Log.i(TAG, "ON RESUME");
         setupView();
         // Show status container if Button "Track Order" was clicked, or if in landscape mode
-        if (mOrderTrackingClicked || BaseActivity.isTabletInLandscape(mainActivity)) {
+        if (mOrderTrackingClicked || BaseActivity.isTabletInLandscape(getBaseActivity())) {
             showStatusContainer();
             // set tip visible if Button "Track Order" wasn't clicked yet
             setTipVisibility();

@@ -29,6 +29,7 @@ public class GetShoppingCartRemoveItemHelper extends BaseHelper {
     private static String TAG = GetShoppingCartRemoveItemHelper.class.getSimpleName();
     
     public static final String ITEM = "item";
+    public static final String UPDATE_CART = "update_cart";
 
     /*
      * (non-Javadoc)
@@ -37,6 +38,12 @@ public class GetShoppingCartRemoveItemHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "ON REQUEST");
+
+        // Set Global updateCart to false if UPDATE_CART that came from Bundle is false
+        // Used when parsing response to update Global Cart if updateCart is true
+        boolean updateCart = args.getBoolean(UPDATE_CART, true);
+        JumiaApplication.updateCart = updateCart;
+
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
@@ -54,6 +61,11 @@ public class GetShoppingCartRemoveItemHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "ON PARSE RESPONSE");
+        // Don't continue if Global updateCart was set as false on generateRequestBundle()
+        if (!JumiaApplication.updateCart) {
+            return null;
+        }
+        
         JumiaApplication.INSTANCE.setCart(null);
         ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
         try {
