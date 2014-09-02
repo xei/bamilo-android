@@ -27,13 +27,10 @@
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/review_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/text_title"
                 android:layout_marginTop="@dimen/margin_mid"
                 android:text="This is a review title"
-                android:textColor="@color/grey_middle"
-                android:textSize="@dimen/text_m"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_m" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,28 +39,22 @@
 
                 <org.holoeverywhere.widget.TextView
                     android:id="@+id/posted_by"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/text_normal"
                     android:text="@string/posted_by"
-                    android:textColor="@color/grey_middle"
                     android:textSize="@dimen/text_s" />
 
                 <org.holoeverywhere.widget.TextView
                     android:id="@+id/review_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/text_normal"
                     android:layout_marginLeft="3dp"
                     android:text="User"
-                    android:textColor="@color/grey_middle"
                     android:textSize="@dimen/text_s" />
 
                 <org.holoeverywhere.widget.TextView
                     android:id="@+id/review_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/text_normal"
                     android:layout_marginLeft="3dp"
                     android:text="Date"
-                    android:textColor="@color/grey_middle"
                     android:textSize="@dimen/text_s" />
             </LinearLayout>
         </LinearLayout>
@@ -82,10 +73,8 @@
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/review_comment"
-                style="@style/body_text_feature_add"
-                android:text="This is a really interesting comment."
-                android:textColor="@color/grey_middle"
-                android:textSize="@dimen/text_m" />
+                style="@style/text_normal"
+                android:text="This is a really interesting comment." />
         </LinearLayout>
     </LinearLayout>
 

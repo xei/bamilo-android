@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- NOTE: The "teaser_product_item_width" is not used, is calculated from Window width.   -->
+<!-- NOTE: The "teaser_product_item_width" is not used, is calculated from Window width. -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/teaser_product_item_width"
@@ -16,21 +16,15 @@
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_title"
-        style="@style/product_name_list_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/text_normal"
         android:layout_gravity="center_horizontal"
-        android:ellipsize="end"
         android:lines="2"
         android:maxLines="2"
-        android:text="Title"
-        android:textStyle="normal" />
+        android:text="Title" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_price"
-        style="@style/product_price_current_list_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/text_price"
         android:layout_gravity="center_horizontal"
         android:text="Price" />
 

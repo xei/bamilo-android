@@ -17,8 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/rounded_margin_mid"
-            android:paddingTop="@dimen/rounded_margin_mid" >
+            android:paddingBottom="@dimen/rounded_margin_mid" >
 
             <org.holoeverywhere.widget.TextView
                 style="@style/rounded_box_title_grey"
@@ -45,35 +44,29 @@
 
                     <org.holoeverywhere.widget.TextView
                         android:id="@+id/clientLastName"
+                        style="@style/text_normal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".5"
+                        android:layout_weight="1"
                         android:focusable="false"
-                        android:text="first"
-                        android:textColor="@color/grey_middle"
-                        android:textSize="@dimen/text_title" />
+                        android:text="first" />
 
                     <org.holoeverywhere.widget.TextView
                         android:id="@+id/clientFirstName"
+                        style="@style/text_normal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".5"
+                        android:layout_weight="1"
                         android:focusable="false"
-                        android:text="last"
-                        android:textColor="@color/grey_middle"
-                        android:textSize="@dimen/text_title" />
+                        android:text="last" />
                 </LinearLayout>
 
                 <org.holoeverywhere.widget.TextView
                     android:id="@+id/clientEmail"
+                    style="@style/text_normal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_below="@id/name_wrapper"
                     android:layout_marginLeft="@dimen/rounded_margin_small"
                     android:focusable="false"
-                    android:text="email"
-                    android:textColor="@color/grey_middle"
-                    android:textSize="@dimen/text_title" />
+                    android:text="email" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -84,8 +77,7 @@
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/rounded_margin_mid"
-            android:paddingTop="@dimen/rounded_margin_mid" >
+            android:paddingBottom="@dimen/rounded_margin_mid" >
 
             <org.holoeverywhere.widget.TextView
                 style="@style/rounded_box_title_grey"
@@ -105,12 +97,11 @@
 
                 <org.holoeverywhere.widget.TextView
                     android:id="@+id/passwordErrorHint"
+                    style="@style/text_normal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_mid"
                     android:layout_marginLeft="@dimen/margin_small"
                     android:textColor="@color/red_basic"
-                    android:textSize="@dimen/text_s"
                     android:visibility="gone" />
 
                 <org.holoeverywhere.widget.EditText
@@ -139,10 +130,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" >
+        <LinearLayout style="@style/button_container" >
 
             <org.holoeverywhere.widget.Button
                 android:id="@+id/button_save"

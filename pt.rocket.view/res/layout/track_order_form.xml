@@ -35,15 +35,13 @@
 
             <org.holoeverywhere.widget.EditText
                 android:id="@+id/order_nr"
-                style="@style/text_title"
+                style="@style/text_normal"
                 android:layout_width="match_parent"
                 android:background="@drawable/selector_edittext_bottomline"
                 android:cursorVisible="true"
                 android:drawableRight="@drawable/ic_star_formular"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:fontFamily="roboto_regular"
-                android:gravity="left|center_vertical"
                 android:hint="@string/track_order_hint"
                 android:inputType="textAutoComplete"
                 android:textColorHint="@color/form_text_hint"

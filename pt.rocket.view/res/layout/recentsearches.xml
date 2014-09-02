@@ -15,17 +15,15 @@
             style="@style/rounded_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
             android:divider="@color/grey_highlight"
             android:dividerHeight="1dp"
             android:listSelector="@color/transparent" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/button_container_height"
-        android:layout_alignBottom="@id/recentsearch_container"
-        android:background="@color/grey_background"
-        android:gravity="center" >
+        style="@style/button_container"
+        android:layout_alignBottom="@id/recentsearch_container" >
 
         <org.holoeverywhere.widget.Button
             android:id="@+id/recentsearch_clear_all"

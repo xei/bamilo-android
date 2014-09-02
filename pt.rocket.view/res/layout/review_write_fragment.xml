@@ -14,36 +14,28 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/product_name"
+            style="@style/text_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/margin_huge"
-            android:ellipsize="end"
             android:fontFamily="roboto_regular"
             android:maxLines="2"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_header"
             android:textStyle="bold" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/product_price_result"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_header"
             android:layout_below="@+id/product_name"
             android:layout_marginTop="@dimen/margin_small"
             android:fontFamily="roboto_bold"
-            android:textColor="@color/red_middle"
-            android:textSize="@dimen/text_header" />
+            android:textColor="@color/red_middle" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/product_price_normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_header"
             android:layout_alignBaseline="@+id/product_price_result"
             android:layout_marginLeft="@dimen/margin_mid"
             android:layout_toRightOf="@+id/product_price_result"
-            android:fontFamily="roboto_regular"
-            android:textColor="@color/grey_middlelight"
-            android:textSize="@dimen/text_header" />
+            android:textColor="@color/grey_middlelight" />
     </RelativeLayout>
 
     <!-- SHADOW -->
@@ -70,6 +62,7 @@
             <LinearLayout
                 android:id="@+id/product_rating_container"
                 style="@style/rounded_box"
+                android:layout_marginBottom="0dp"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/margin_mid"
                 android:paddingLeft="@dimen/margin_huge"
@@ -77,10 +70,10 @@
                 android:paddingTop="@dimen/margin_large" >
 
                 <org.holoeverywhere.widget.TextView
+                    style="@style/text_header"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/rating_question"
-                    android:textColor="@color/grey_middle"
                     android:textSize="@dimen/text_s" />
 
                 <RelativeLayout
@@ -148,12 +141,15 @@
                     android:textSize="@dimen/text_m" />
             </LinearLayout>
 
-            <org.holoeverywhere.widget.Button
-                android:id="@+id/send_review"
-                style="@style/button_orange_style"
-                android:layout_marginLeft="@dimen/rounded_margin_mid"
-                android:layout_marginRight="@dimen/rounded_margin_mid"
-                android:text="@string/writereview_send" />
+            <LinearLayout style="@style/button_container" >
+
+                <org.holoeverywhere.widget.Button
+                    android:id="@+id/send_review"
+                    style="@style/button_orange_bottom"
+                    android:layout_marginLeft="@dimen/rounded_margin_mid"
+                    android:layout_marginRight="@dimen/rounded_margin_mid"
+                    android:text="@string/writereview_send" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

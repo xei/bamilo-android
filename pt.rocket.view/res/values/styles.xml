@@ -32,11 +32,11 @@
 
     <!-- If needed to change text appearence from normal to bold and vice versa use these styles -->
 
-    <style name="text_normal">
+    <style name="text_normal_programatically">
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="text_bold">
+    <style name="text_bold_programatically">
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -127,16 +127,6 @@
 
     <!-- This style is used for the product name in all listings -->
 
-    <style name="product_name_list_text">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">left</item>
-        <item name="android:lines">2</item>
-        <item name="android:textColor">@color/grey_middle</item>
-        <item name="android:textSize">@dimen/text_xs</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <style name="product_description_text">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -146,17 +136,6 @@
         <item name="android:paddingRight">@dimen/margin_large</item>
         <item name="android:paddingBottom">@dimen/margin_huge</item>
         <item name="android:paddingTop">@dimen/margin_huge</item>
-    </style>
-
-    <!-- These styles are used for the prices in the listings for the product prices - price current is represented in red and price old is represented in black -->
-
-    <style name="product_price_current_list_text">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/text_xs</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/red_basic</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- These styles are used for the product prices in the product details activity and single item list view : current is the actual price and old is the old price -->
@@ -175,17 +154,6 @@
         <item name="android:textColor">@color/grey_highlight</item>
     </style>
 
-    <!-- BODY TEXT STYLES -->
-
-
-    <!-- This style is used for texts in body like Add address or add payment method -->
-    <style name="body_text_feature_add">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">18dp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@android:color/black</item>
-    </style>
 
     <!-- LINES STYLES -->
 
@@ -648,7 +616,10 @@
         <item name="android:textColor">@color/grey_middledark</item>
         <item name="android:textSize">@dimen/text_title</item>
         <item name="android:gravity">left|center</item>
-        <item name="android:layout_margin">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginBottom">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginTop">@dimen/rounded_margin_mid</item>
         <item name="android:fontFamily">roboto_regular</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
@@ -695,7 +666,32 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
-    <style name="text_subtitle">
+    <!-- BUTTON CONTAINER HAS ALWAYS A BOTTOM PADDING -->
+    <style name="button_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/button_container_height</item>
+        <item name="android:background">@color/grey_background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">@dimen/rounded_margin_mid</item>
+    </style>
+
+    <style name="discount_percentage">
+        <item name="android:layout_width">@dimen/product_list_item_discount_percentage_image_width</item>
+        <item name="android:layout_height">@dimen/product_list_item_discount_percentage_image_height</item>
+        <item name="android:background">@drawable/discount_badge</item>
+        <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:text">-99%</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/product_list_item_discount_percentage_text_size</item>
+    </style>
+
+
+    <!-- TEXT STYLES -->
+
+    <style name="_base_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:ellipsize">end</item>
@@ -703,12 +699,30 @@
         <item name="android:fontFamily">roboto_regular</item>
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:textColor">@color/grey_middle</item>
+    </style>
+
+    <style name="text_subtitle" parent="_base_text">
         <item name="android:textSize">@dimen/text_subtitle</item>
     </style>
 
-    <style name="text_title" parent="text_subtitle">
+    <style name="text_normal" parent="_base_text">
+        <item name="android:textSize">@dimen/text_title</item>
+    </style>
+
+    <style name="text_title" parent="_base_text">
         <item name="android:fontFamily">roboto_bold</item>
         <item name="android:textSize">@dimen/text_title</item>
+    </style>
+
+    <style name="text_header" parent="_base_text">
+        <item name="android:textSize">@dimen/text_header</item>
+    </style>
+
+    <style name="text_price" parent="_base_text">
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:textColor">@color/red_basic</item>
+        <item name="android:ellipsize">marquee</item>
     </style>
 
 </resources>

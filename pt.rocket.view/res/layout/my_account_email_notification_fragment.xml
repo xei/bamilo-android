@@ -46,10 +46,7 @@
 
         <!-- BUTTONS -->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" >
+        <LinearLayout style="@style/button_container" >
 
             <org.holoeverywhere.widget.Button
                 android:id="@+id/myaccount_newsletter_save"

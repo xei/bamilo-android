@@ -60,13 +60,11 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/voucher_error_message"
+            style="@style/text_normal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_below="@id/voucher_name"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             android:layout_marginTop="@dimen/margin_x_small"
-            android:fontFamily="roboto_regular"
-            android:gravity="left"
             android:text="@string/voucher_error_message"
             android:textColor="@color/red_middle"
             android:textSize="@dimen/text_xs"

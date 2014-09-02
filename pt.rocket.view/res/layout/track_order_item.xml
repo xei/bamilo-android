@@ -19,8 +19,7 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/order_item_name"
-            style="@style/text_title"
-            android:fontFamily="roboto_regular"
+            style="@style/text_normal"
             android:text="@string/creation_date" />
 
         <org.holoeverywhere.widget.TextView

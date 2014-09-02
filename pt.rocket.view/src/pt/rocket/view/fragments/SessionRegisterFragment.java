@@ -265,7 +265,7 @@ public class SessionRegisterFragment extends BaseFragment {
         // checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
         registerRequiredText = (TextView) getView().findViewById(R.id.register_required_text);
 
-        registerButton.setTextAppearance(getActivity(), R.style.text_normal);
+        registerButton.setTextAppearance(getActivity(), R.style.text_normal_programatically);
         FontLoader.apply(registerButton, FontLoader.ROBOTO_REGULAR);
 
         // checkTerms.setOnClickListener(click);
@@ -437,11 +437,11 @@ public class SessionRegisterFragment extends BaseFragment {
         if (serverForm.checkRequired() && checkTermsIfRequired()) {
             // Log.d( TAG, "checkInputFieds: check passed" );
             registerRequiredText.setVisibility(View.GONE);
-            registerButton.setTextAppearance(getActivity(), R.style.text_bold);
+            registerButton.setTextAppearance(getActivity(), R.style.text_bold_programatically);
             FontLoader.apply(registerButton, FontLoader.ROBOTO_BOLD);
         } else {
             // Log.d( TAG, "checkInputFieds: check not passed" );
-            registerButton.setTextAppearance(getActivity(), R.style.text_normal);
+            registerButton.setTextAppearance(getActivity(), R.style.text_normal_programatically);
             FontLoader.apply(registerButton, FontLoader.ROBOTO_REGULAR);
         }
     }
@@ -612,10 +612,10 @@ public class SessionRegisterFragment extends BaseFragment {
                 }
                 
                 if (serverForm != null && serverForm.checkRequired()) {
-                    registerButton.setTextAppearance(getActivity(), R.style.text_bold);
+                    registerButton.setTextAppearance(getActivity(), R.style.text_bold_programatically);
                     FontLoader.apply(registerButton, FontLoader.ROBOTO_BOLD);
                 } else {
-                    registerButton.setTextAppearance(getActivity(), R.style.text_normal);
+                    registerButton.setTextAppearance(getActivity(), R.style.text_normal_programatically);
                     FontLoader.apply(registerButton, FontLoader.ROBOTO_REGULAR);
                 }
             }

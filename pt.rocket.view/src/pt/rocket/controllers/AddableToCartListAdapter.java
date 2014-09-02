@@ -265,14 +265,14 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
                 prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 prodItem.price.setSelected(true);
                 prodItem.price.setTextColor(getContext().getResources().getColor(R.color.grey_light));
-                prodItem.price.setTextAppearance(getContext(), R.style.text_normal);
+                prodItem.price.setTextAppearance(getContext(), R.style.text_normal_programatically);
             } else {
                 // Set price
                 prodItem.discount.setVisibility(View.GONE);
                 prodItem.discountPercentage.setVisibility(View.INVISIBLE);
                 prodItem.price.setText(addableToCart.getPrice());
                 prodItem.price.setPaintFlags(prodItem.price.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                prodItem.price.setTextAppearance(getContext(), R.style.text_bold);
+                prodItem.price.setTextAppearance(getContext(), R.style.text_bold_programatically);
                 prodItem.price.setTextColor(getContext().getResources().getColor(R.color.red_basic));
             }
             if (itemsClass == LastViewedAddableToCart.class) {

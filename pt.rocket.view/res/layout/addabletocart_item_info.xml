@@ -22,69 +22,42 @@
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_brand"
-        style="@style/product_name_list_text"
+        style="@style/text_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_below="@id/top_spacer"
         android:layout_marginRight="@dimen/product_item_text_right_margin"
-        android:ellipsize="end"
-        android:fontFamily="roboto_bold"
-        android:maxLines="1"
-        android:singleLine="true"
         android:text="BRAND"
-        android:textSize="@dimen/text_title"
         android:visibility="visible" />
 
     <!-- NAME -->
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_name"
-        style="@style/product_name_list_text"
+        style="@style/text_subtitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_below="@id/item_brand"
         android:layout_marginRight="@dimen/product_item_text_right_margin"
-        android:ellipsize="end"
-        android:fontFamily="roboto_regular"
-        android:gravity="center|left"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:text="Name"
-        android:textColor="@color/grey_middle"
-        android:textSize="@dimen/text_subtitle" />
+        android:text="Name" />
 
     <!-- DISCOUNT -->
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_discount"
-        style="@style/product_price_current_list_text"
+        style="@style/text_price"
         android:layout_alignLeft="@id/item_name"
         android:layout_below="@id/item_name"
         android:layout_marginRight="4dp"
-        android:ellipsize="marquee"
-        android:fontFamily="roboto_bold"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:text="Discount"
-        android:textColor="@color/red_middle"
-        android:textSize="@dimen/text_subtitle" />
+        android:text="Discount" />
 
     <!-- PRICE -->
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_regprice"
-        style="@style/product_price_current_list_text"
+        style="@style/text_price"
         android:layout_alignTop="@id/item_discount"
         android:layout_below="@id/item_name"
         android:layout_toRightOf="@id/item_discount"
-        android:ellipsize="marquee"
-        android:fontFamily="roboto_bold"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:text="Price"
-        android:textSize="@dimen/text_subtitle" />
+        android:text="Price" />
 
     <!-- WARNINGS -->
 
@@ -109,22 +82,20 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/error_stock"
+            style="@style/text_subtitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="@string/product_outof_stock"
             android:textColor="@color/blue_basic"
-            android:textSize="@dimen/text_subtitle"
             android:visibility="gone" />
 
         <!-- CHOOSE WARNING -->
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/error_variant"
+            style="@style/text_subtitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="@string/product_variance_choose_error"
             android:textColor="@color/red_basic"
-            android:textSize="@dimen/text_subtitle"
             android:visibility="gone" />
     </RelativeLayout>
 

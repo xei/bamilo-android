@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/root_empty_container_height"
         android:layout_gravity="center"
+        android:layout_marginBottom="0dp"
         android:gravity="center"
         android:orientation="vertical" >
 
@@ -35,10 +36,13 @@
             android:textSize="@dimen/text_button" />
     </LinearLayout>
 
-    <org.holoeverywhere.widget.Button
-        android:id="@+id/fragment_root_empty_button"
-        style="@style/button_orange_landscape"
-        android:text="@string/favourite_addalltocart"
-        android:visibility="gone" />
+    <LinearLayout style="@style/button_container" >
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/fragment_root_empty_button"
+            style="@style/button_orange_landscape"
+            android:text="@string/favourite_addalltocart"
+            android:visibility="gone" />
+    </LinearLayout>
 
 </LinearLayout>

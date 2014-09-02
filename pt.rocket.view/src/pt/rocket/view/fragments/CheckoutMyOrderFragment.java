@@ -316,7 +316,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             // Name
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_name)).setText(item.getName());
             // Quantity
-            ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.my_order_qty) + " " + item.getQuantity());
+            ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.my_order_qty) + ": " + item.getQuantity());
             // Price
             String price = item.getPrice();
             if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();  

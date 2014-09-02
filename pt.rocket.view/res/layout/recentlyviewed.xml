@@ -9,7 +9,9 @@
         android:id="@+id/recentlyviewed_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/rounded_margin_small"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginTop="@dimen/rounded_margin_small"
         android:listSelector="@drawable/selector_listitem_highlight"
         android:numColumns="@integer/favourite_num_columns"
         android:paddingBottom="@dimen/recently_viewed_button_container_height" />

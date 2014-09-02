@@ -16,20 +16,14 @@
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/product_detail_discount_percentage"
+        style="@style/discount_percentage"
         android:layout_width="@dimen/product_detail_item_discount_percentage_width"
         android:layout_height="@dimen/product_detail_item_discount_percentage_height"
         android:layout_alignBottom="@id/product_detail_image_gallery_container"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_mid"
         android:layout_marginTop="@dimen/margin_large"
-        android:background="@drawable/discount_badge"
-        android:fontFamily="roboto_bold"
-        android:gravity="center"
-        android:maxLines="1"
         android:paddingBottom="@dimen/margin_small"
-        android:singleLine="true"
-        android:text="-99%"
-        android:textColor="@android:color/white"
         android:textSize="@dimen/text_title" />
 
     <!-- SHARE -->
@@ -68,6 +62,7 @@
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/product_detail_title"
+        style="@style/text_header"
         android:layout_width="match_parent"
         android:layout_height="@dimen/product_detail_item_title_height"
         android:layout_below="@id/product_detail_div_title"
@@ -77,10 +72,6 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_mid"
         android:background="@drawable/selector_listitem_highlight"
-        android:ellipsize="end"
-        android:gravity="left|center"
-        android:maxLines="2"
-        android:textColor="@color/grey_middle"
-        android:textSize="@dimen/text_header" />
+        android:maxLines="2" />
 
 </RelativeLayout>

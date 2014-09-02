@@ -83,8 +83,10 @@
 
     <!-- MY PROFILE REDESIGN -->
     <dimen name="button_height">60dp</dimen>
-    <dimen name="button_container_height">80dp</dimen>
-    <dimen name="button_double_container_height">150dp</dimen>
+    <!-- rounded_margin_mid + button_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
+    <dimen name="button_container_height">90dp</dimen>
+    <!-- rounded_margin_mid + button_height + button_container_height -->
+    <dimen name="button_double_container_height">160dp</dimen>
     <dimen name="product_item_variant_text_size">12sp</dimen>
     <dimen name="product_item_button_height">37.5dp</dimen>
     <dimen name="product_item_addtocart_variation_width">65dp</dimen>

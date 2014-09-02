@@ -25,18 +25,9 @@
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_percentage"
-        android:layout_width="@dimen/product_list_item_discount_percentage_image_width"
-        android:layout_height="@dimen/product_list_item_discount_percentage_image_height"
+        style="@style/discount_percentage"
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="@dimen/product_list_item_image_margin"
-        android:background="@drawable/discount_badge"
-        android:fontFamily="roboto_bold"
-        android:gravity="center"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:text="99%"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/product_list_item_discount_percentage_text_size"
         android:visibility="gone" />
 
 </FrameLayout>

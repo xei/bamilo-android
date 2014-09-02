@@ -21,15 +21,12 @@
                 android:text="@string/shoppingcart_items" />
 
             <org.holoeverywhere.widget.TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/text_normal"
                 android:layout_alignBaseline="@+id/title"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
-                android:fontFamily="roboto_regular"
                 android:text="@string/shoppingcart_quantity"
-                android:textColor="@color/grey_middlelight"
-                android:textSize="@dimen/text_title" />
+                android:textColor="@color/grey_middlelight" />
 
             <LinearLayout
                 android:id="@+id/shoppingcart_list"
@@ -59,17 +56,23 @@
 
             <include layout="@layout/shopping_basket_subtotal_element" />
 
-            <org.holoeverywhere.widget.Button
-                android:id="@+id/checkout_button"
-                style="@style/button_orange_bottom"
-                android:text="@string/checkout_button_text" />
+            <LinearLayout
+                style="@style/button_container"
+                android:layout_height="@dimen/button_double_container_height"
+                android:orientation="vertical" >
 
-            <org.holoeverywhere.widget.Button
-                android:id="@+id/checkout_call_to_order"
-                style="@style/button_grey_bottom"
-                android:layout_marginTop="0dp"
-                android:text="@string/call_to_order"
-                android:visibility="gone" />
+                <org.holoeverywhere.widget.Button
+                    android:id="@+id/checkout_button"
+                    style="@style/button_orange_bottom"
+                    android:text="@string/checkout_button_text" />
+
+                <org.holoeverywhere.widget.Button
+                    android:id="@+id/checkout_call_to_order"
+                    style="@style/button_grey_bottom"
+                    android:layout_marginTop="0dp"
+                    android:text="@string/call_to_order"
+                    android:visibility="gone" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

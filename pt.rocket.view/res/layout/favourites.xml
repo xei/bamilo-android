@@ -9,17 +9,16 @@
         android:id="@+id/favourites_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/rounded_margin_small"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginTop="@dimen/rounded_margin_small"
         android:listSelector="@drawable/selector_listitem_highlight"
         android:numColumns="@integer/favourite_num_columns"
         android:paddingBottom="@dimen/button_container_height" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/button_container_height"
-        android:layout_alignBottom="@id/favourites_grid"
-        android:background="@color/grey_background"
-        android:gravity="center" >
+        style="@style/button_container"
+        android:layout_alignBottom="@id/favourites_grid" >
 
         <org.holoeverywhere.widget.Button
             android:id="@+id/button_shop_all"

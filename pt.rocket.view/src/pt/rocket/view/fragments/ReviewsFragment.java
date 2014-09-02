@@ -283,7 +283,7 @@ public class ReviewsFragment extends BaseFragment {
             pricePop.setText("" + selectedProduct.getPrice());
             pricePop.setPaintFlags(pricePop.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             pricePop.setTextColor(getResources().getColor(R.color.grey_light));
-            pricePop.setTextAppearance(getActivity(), R.style.text_normal);
+            pricePop.setTextAppearance(getActivity(), R.style.text_normal_programatically);
             discountPop.setText("" + selectedProduct.getSpecialPrice());
             discountPop.setVisibility(View.VISIBLE);
         } else {

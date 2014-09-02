@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="0dp"
-        android:paddingBottom="@dimen/rounded_margin_mid"
-        android:paddingTop="@dimen/rounded_margin_small" >
+        android:paddingBottom="@dimen/rounded_margin_mid" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/title_options"
@@ -45,8 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="0dp"
-        android:paddingBottom="@dimen/rounded_margin_mid"
-        android:paddingTop="@dimen/rounded_margin_small" >
+        android:paddingBottom="@dimen/rounded_margin_mid" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/title_preferences"
