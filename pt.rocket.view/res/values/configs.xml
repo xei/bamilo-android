@@ -24,6 +24,7 @@
     <string name="global_server_password">@string/jumia_global_password</string>
     
     <!-- FACEBOOK ID's -->
+    <string name="facebook_id_cm">@string/facebook_id_default</string>
     <string name="facebook_id_ci">472507709498904</string>
     <string name="facebook_id_eg">390085037744566</string>
     <string name="facebook_id_ke">319581271497227</string>

@@ -6,6 +6,6 @@
     <string name="fallback_best">Premier site de e-commerce au Cameroun</string>
 
     <!-- Facebook App Id -->
-    <string name="facebook_app_id">@string/facebook_id_default</string>
+    <string name="facebook_app_id">@string/facebook_id_cm</string>
 
 </resources>
