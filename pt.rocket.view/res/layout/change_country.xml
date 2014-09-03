@@ -2,11 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey_background"
     android:orientation="vertical" >
 
     <org.holoeverywhere.widget.TextView
-        style="@style/headline"
-        android:text="@string/nav_country" />
+        style="@style/text_title"
+        android:layout_width="match_parent"
+        android:background="@drawable/titlebar"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:text="@string/nav_country"
+        android:textColor="@android:color/white" />
 
     <ListView
         android:id="@+id/change_country_list"

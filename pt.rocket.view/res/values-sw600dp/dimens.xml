@@ -100,4 +100,8 @@
     <dimen name="track_order_content_height">160dp</dimen>
     <dimen name="tack_order_order_nr_container_height">105dp</dimen>
 
+    <dimen name="home_items_margin">27dp</dimen>
+
+    <dimen name="fragment_root_text_size">27sp</dimen>
+
 </resources>

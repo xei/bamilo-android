@@ -6,12 +6,11 @@
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/text"
-        style="@style/category_inner_current_text"
+        style="@style/text_title"
+        android:layout_width="match_parent"
         android:layout_centerVertical="true"
-        android:fontFamily="roboto"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:gravity="center_vertical"
-        android:textSize="@dimen/text_xs"
-        android:textStyle="bold"
         android:text="Inner category" />
 
     <View

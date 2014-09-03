@@ -96,10 +96,7 @@
     <integer name="catalog_list_num_columns">2</integer>
     <integer name="catalog_grid_num_columns">3</integer>
 
-    <!-- MY PROFILE REDESIGN -->
     <!-- rounded_margin_mid + button_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
-    <dimen name="button_double_container_height">90dp</dimen>
-
-    <dimen name="recently_viewed_button_container_height">@dimen/button_container_height</dimen>
+    <dimen name="recently_viewed_button_container_height">90dp</dimen>
 
 </resources>

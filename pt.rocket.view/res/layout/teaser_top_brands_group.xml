@@ -25,11 +25,14 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/teaser_group_title_clickable_title"
-            style="@style/activity_sectionheader_clickable"
+            style="@style/text_header"
+            android:layout_width="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_huge"
+            android:layout_marginTop="@dimen/margin_large"
             android:gravity="center_vertical"
-            android:text="@string/categories_label" />
+            android:text="@string/categories_label"
+            android:textColor="@color/orange_basic" />
     </RelativeLayout>
 
     <View
@@ -43,10 +46,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/teaser_group_title_divider"
         android:orientation="vertical" />
-
-    <View
-        style="@style/divider_vertical"
-        android:layout_below="@id/teaser_group_title_divider"
-        android:background="@color/grey_highlight" />
 
 </RelativeLayout>

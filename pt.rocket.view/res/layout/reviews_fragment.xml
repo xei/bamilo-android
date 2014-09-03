@@ -92,12 +92,10 @@
             android:paddingBottom="@dimen/rounded_margin_small" >
 
             <org.holoeverywhere.widget.TextView
-                android:id="@+id/textView1"
-                style="@style/text_header"
+                style="@style/text_normal"
                 android:layout_marginLeft="@dimen/margin_huge"
                 android:layout_marginRight="@dimen/margin_huge"
-                android:text="@string/rating_question"
-                android:textSize="14dp" />
+                android:text="@string/rating_question" />
 
             <org.holoeverywhere.widget.Button
                 android:id="@+id/write_btn"

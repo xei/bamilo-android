@@ -70,11 +70,10 @@
                 android:paddingTop="@dimen/margin_large" >
 
                 <org.holoeverywhere.widget.TextView
-                    style="@style/text_header"
+                    style="@style/text_normal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/rating_question"
-                    android:textSize="@dimen/text_s" />
+                    android:text="@string/rating_question" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -103,42 +102,27 @@
 
                 <org.holoeverywhere.widget.EditText
                     android:id="@+id/name_box"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/form_edittext_style"
                     android:layout_marginTop="@dimen/margin_midhuge"
-                    android:background="@drawable/selector_edittext_bottomline"
                     android:contentDescription="review_name"
                     android:hint="@string/name"
-                    android:inputType="text"
-                    android:textColor="@color/form_text"
-                    android:textColorHint="@color/form_text_hint"
-                    android:textSize="@dimen/text_m" />
+                    android:inputType="text" />
 
                 <org.holoeverywhere.widget.EditText
                     android:id="@+id/title_box"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/form_edittext_style"
                     android:layout_marginTop="@dimen/margin_mid"
-                    android:background="@drawable/selector_edittext_bottomline"
                     android:contentDescription="review_title"
                     android:hint="@string/writereview_title_hint"
-                    android:inputType="text"
-                    android:textColor="@color/form_text"
-                    android:textColorHint="@color/form_text_hint"
-                    android:textSize="@dimen/text_m" />
+                    android:inputType="text" />
 
                 <org.holoeverywhere.widget.EditText
                     android:id="@+id/review_box"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/form_edittext_style"
                     android:layout_marginTop="@dimen/margin_mid"
-                    android:background="@drawable/selector_edittext_bottomline"
                     android:contentDescription="review_comment"
                     android:hint="@string/writereview_review_hint"
-                    android:inputType="text"
-                    android:textColor="@color/form_text"
-                    android:textColorHint="@color/form_text_hint"
-                    android:textSize="@dimen/text_m" />
+                    android:inputType="text" />
             </LinearLayout>
 
             <LinearLayout style="@style/button_container" >

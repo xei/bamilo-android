@@ -107,26 +107,18 @@
                 <org.holoeverywhere.widget.EditText
                     android:id="@+id/typeNewPassword"
                     style="@style/form_edittext_style"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_mid"
                     android:contentDescription="@string/myaccount_newpass_description"
                     android:hint="@string/new_password_hint"
-                    android:inputType="textPassword"
-                    android:textColor="@color/grey_middlelight"
-                    android:textSize="@dimen/text_title" />
+                    android:inputType="textPassword" />
 
                 <org.holoeverywhere.widget.EditText
                     android:id="@+id/retypeNewPassword"
                     style="@style/form_edittext_style"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_mid"
                     android:contentDescription="@string/myaccount_repeatpass_description"
                     android:hint="@string/retype_new_password_hint"
-                    android:inputType="textPassword"
-                    android:textColor="@color/grey_middlelight"
-                    android:textSize="@dimen/text_title" />
+                    android:inputType="textPassword" />
             </LinearLayout>
         </LinearLayout>
 

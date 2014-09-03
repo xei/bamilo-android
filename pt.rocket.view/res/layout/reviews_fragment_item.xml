@@ -27,8 +27,7 @@
                 style="@style/text_title"
                 android:layout_below="@id/top_review_line"
                 android:layout_marginTop="10dp"
-                android:text="Title"
-                android:textSize="14dp" />
+                android:text="Title" />
 
             <RatingBar
                 android:id="@+id/price_rating"
@@ -52,8 +51,7 @@
                 android:layout_below="@id/top_review_line"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Title"
-                android:textSize="14dp" />
+                android:text="Title" />
 
             <RatingBar
                 android:id="@+id/appearence_rating"
@@ -77,8 +75,7 @@
                 android:layout_below="@id/top_review_line"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="quality"
-                android:textSize="14dp" />
+                android:text="quality" />
 
             <RatingBar
                 android:id="@+id/quality_rating"
@@ -98,8 +95,7 @@
         android:layout_below="@id/ratings_container"
         android:layout_marginLeft="@dimen/margin_huge"
         android:layout_marginRight="32dp"
-        android:text="Title"
-        android:textSize="14dp" />
+        android:text="Title" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/textreview"
@@ -109,33 +105,29 @@
         android:layout_marginLeft="@dimen/margin_huge"
         android:layout_marginRight="32dp"
         android:maxLines="5"
-        android:text="Review"
-        android:textSize="14dp" />
+        android:text="Review" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/posted_by"
-        style="@style/text_normal"
+        style="@style/text_subtitle"
         android:layout_below="@id/textreview"
         android:layout_marginLeft="@dimen/margin_huge"
-        android:text="@string/posted_by"
-        android:textSize="12dp" />
+        android:text="@string/posted_by" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/user_review"
-        style="@style/text_normal"
+        style="@style/text_subtitle"
         android:layout_below="@id/textreview"
         android:layout_marginLeft="3dp"
         android:layout_toRightOf="@id/posted_by"
-        android:text="User"
-        android:textSize="12dp" />
+        android:text="User" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/date_review"
-        style="@style/text_normal"
+        style="@style/text_subtitle"
         android:layout_below="@id/textreview"
         android:layout_marginLeft="3dp"
         android:layout_toRightOf="@id/user_review"
-        android:text="Date"
-        android:textSize="12dp" />
+        android:text="Date" />
 
 </RelativeLayout>

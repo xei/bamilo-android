@@ -15,36 +15,26 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/product_name"
+            style="@style/text_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/margin_huge"
-            android:ellipsize="end"
-            android:fontFamily="roboto_regular"
-            android:maxLines="2"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_header"
-            android:textStyle="bold" />
+            android:maxLines="2" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/product_price_result"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_header"
             android:layout_below="@+id/product_name"
             android:layout_marginTop="@dimen/margin_small"
             android:fontFamily="roboto_bold"
-            android:textColor="@color/red_middle"
-            android:textSize="@dimen/text_header" />
+            android:textColor="@color/red_middle" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/product_price_normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_header"
             android:layout_alignBaseline="@+id/product_price_result"
             android:layout_marginLeft="@dimen/margin_mid"
             android:layout_toRightOf="@+id/product_price_result"
-            android:fontFamily="roboto_regular"
-            android:textColor="@color/grey_middlelight"
-            android:textSize="@dimen/text_header" />
+            android:textColor="@color/grey_middlelight" />
     </RelativeLayout>
 
     <!-- SHADOW -->
@@ -88,9 +78,15 @@
 
                 <org.holoeverywhere.widget.TextView
                     android:id="@+id/product_features_text"
-                    style="@style/product_description_text"
+                    style="@style/text_normal"
+                    android:layout_width="match_parent"
                     android:layout_below="@id/divider"
-                    android:lineSpacingMultiplier="1.3" />
+                    android:lineSpacingMultiplier="1.3"
+                    android:paddingBottom="@dimen/margin_huge"
+                    android:paddingLeft="@dimen/margin_large"
+                    android:paddingRight="@dimen/margin_large"
+                    android:paddingTop="@dimen/margin_huge"
+                    android:singleLine="false" />
             </RelativeLayout>
 
             <!-- DESCRIPTION -->
@@ -112,9 +108,15 @@
 
                 <org.holoeverywhere.widget.TextView
                     android:id="@+id/product_description_text"
-                    style="@style/product_description_text"
+                    style="@style/text_normal"
+                    android:layout_width="match_parent"
                     android:layout_below="@id/divider"
-                    android:lineSpacingMultiplier="1.3" />
+                    android:lineSpacingMultiplier="1.3"
+                    android:paddingBottom="@dimen/margin_huge"
+                    android:paddingLeft="@dimen/margin_large"
+                    android:paddingRight="@dimen/margin_large"
+                    android:paddingTop="@dimen/margin_huge"
+                    android:singleLine="false" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

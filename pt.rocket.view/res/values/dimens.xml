@@ -235,4 +235,8 @@
 
     <dimen name="recently_viewed_button_container_height">@dimen/button_double_container_height</dimen>
 
+    <dimen name="home_items_margin">18dp</dimen>
+
+    <dimen name="fragment_root_text_size">18sp</dimen>
+
 </resources>

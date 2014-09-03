@@ -221,12 +221,10 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         } else if (specialPrice == null || ( unitPrice.equals( specialPrice ))) {
             // display only the normal price
             mProductResultPrice.setText( unitPrice );
-            mProductResultPrice.setTextColor(getResources().getColor(R.color.red_basic));
             mProductNormalPrice.setVisibility(View.GONE);
         } else {
             // display reduced and special price
             mProductResultPrice.setText( specialPrice );
-            mProductResultPrice.setTextColor(getResources().getColor(R.color.red_basic));
             mProductNormalPrice.setText( unitPrice );
             mProductNormalPrice.setVisibility(View.VISIBLE);
             mProductNormalPrice.setPaintFlags(mProductNormalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
