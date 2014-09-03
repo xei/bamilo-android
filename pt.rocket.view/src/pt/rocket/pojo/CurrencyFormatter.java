@@ -65,8 +65,8 @@ public class CurrencyFormatter {
     	}
     	
     	currencyUnitPattern = context.getResources().getStringArray(R.array.formatter_currency_unit_pattern)[i];
-//    	android.util.Log.e("CURRENCY CODE", ":"+currCode);
-//    	android.util.Log.e("CURRENCY PATTERN", ":"+currencyUnitPattern);
+//    	de.akquinet.android.androlog.Log.e("CURRENCY CODE", ":"+currCode);
+//    	de.akquinet.android.androlog.Log.e("CURRENCY PATTERN", ":"+currencyUnitPattern);
     }
     
     public static void setCurrency( String currencyCode ) {

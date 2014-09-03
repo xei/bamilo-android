@@ -51,7 +51,7 @@ public class GetProductReviewsHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        android.util.Log.d("TRACK", "parseResponseBundle GetProductReviewsHelper");
+        de.akquinet.android.androlog.Log.d("TRACK", "parseResponseBundle GetProductReviewsHelper");
         JSONObject dataObject = null;
         try {
             dataObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
@@ -73,7 +73,7 @@ public class GetProductReviewsHelper extends BaseHelper {
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle GetProductReviewsHelper");
+        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetProductReviewsHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_REVIEWS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

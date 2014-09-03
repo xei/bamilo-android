@@ -60,7 +60,7 @@ public class GetTrackOrderHelper extends BaseHelper {
     
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle GetTrackOrderHelper");
+        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetTrackOrderHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.TRACK_ORDER_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

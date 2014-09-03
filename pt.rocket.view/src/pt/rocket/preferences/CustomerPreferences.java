@@ -5,7 +5,7 @@ package pt.rocket.preferences;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to save the shared preferences for customer            

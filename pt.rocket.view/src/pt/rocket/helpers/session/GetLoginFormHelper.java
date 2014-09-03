@@ -20,7 +20,7 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.os.Bundle;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Example helper
@@ -86,7 +86,7 @@ public class GetLoginFormHelper extends BaseHelper {
     
         @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle GetLoginFormHelper");
+        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetLoginFormHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_LOGIN_FORM_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

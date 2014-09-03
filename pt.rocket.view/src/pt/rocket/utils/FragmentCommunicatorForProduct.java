@@ -7,7 +7,7 @@ import pt.rocket.view.fragments.BaseFragment.OnFragmentActivityInteraction;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Interface to communicate between fragments using activity has initializer.

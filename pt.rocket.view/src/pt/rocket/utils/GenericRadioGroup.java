@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;

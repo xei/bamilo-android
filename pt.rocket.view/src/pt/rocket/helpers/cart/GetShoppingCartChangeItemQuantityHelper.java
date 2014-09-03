@@ -43,7 +43,7 @@ public class GetShoppingCartChangeItemQuantityHelper extends BaseHelper {
     
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        android.util.Log.d("TRACK", "parseResponseBundle GetShoppingCartChangeItemQuantityHelper");
+        de.akquinet.android.androlog.Log.d("TRACK", "parseResponseBundle GetShoppingCartChangeItemQuantityHelper");
         JumiaApplication.INSTANCE.setCart(null);
         ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
         try {
@@ -59,7 +59,7 @@ public class GetShoppingCartChangeItemQuantityHelper extends BaseHelper {
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle GetShoppingCartItemsHelper");
+        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetShoppingCartItemsHelper");
      
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);

@@ -46,7 +46,7 @@ public class GetRatingOptionsHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        android.util.Log.d("TRACK", "parseResponseBundle GetRatingsHelper");
+        de.akquinet.android.androlog.Log.d("TRACK", "parseResponseBundle GetRatingsHelper");
         HashMap<String, HashMap<String, String>> ratingOptions = new HashMap<String, HashMap<String, String>>();
         JSONArray dataArray = null;
         try {
@@ -89,7 +89,7 @@ public class GetRatingOptionsHelper extends BaseHelper {
     
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle GetRatingsHelper");
+        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetRatingsHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_RATING_OPTIONS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

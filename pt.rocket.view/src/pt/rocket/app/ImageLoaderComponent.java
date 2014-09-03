@@ -10,7 +10,7 @@
 //import android.app.Application;
 //import android.content.Context;
 //import android.graphics.Bitmap.Config;
-//import android.util.Log;
+//import de.akquinet.android.androlog.Log;
 //
 //import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 //import com.nostra13.universalimageloader.core.DisplayImageOptions;

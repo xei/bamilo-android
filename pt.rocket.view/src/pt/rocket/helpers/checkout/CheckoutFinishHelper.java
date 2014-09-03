@@ -18,7 +18,7 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.os.Bundle;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Helper used to ...
@@ -200,7 +200,7 @@ public class CheckoutFinishHelper extends BaseHelper {
      */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "PARSE ERROR BUNDLE");
+        de.akquinet.android.androlog.Log.d(TAG, "PARSE ERROR BUNDLE");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
@@ -212,7 +212,7 @@ public class CheckoutFinishHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "PARSE RESPONSE BUNDLE");
+        de.akquinet.android.androlog.Log.d(TAG, "PARSE RESPONSE BUNDLE");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

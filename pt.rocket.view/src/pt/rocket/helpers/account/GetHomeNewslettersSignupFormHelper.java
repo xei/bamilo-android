@@ -17,7 +17,7 @@
 //import pt.rocket.helpers.BaseHelper;
 //import pt.rocket.helpers.HelperPriorityConfiguration;
 //import android.os.Bundle;
-//import android.util.Log;
+//import de.akquinet.android.androlog.Log;
 //
 ///**
 // * Helper used to get the form informations on Home to sign up an user to newsletter

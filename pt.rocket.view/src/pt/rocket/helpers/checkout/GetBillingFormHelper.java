@@ -85,7 +85,7 @@ public class GetBillingFormHelper extends BaseHelper {
      */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "PARSE ERROR BUNDLE");
+        de.akquinet.android.androlog.Log.d(TAG, "PARSE ERROR BUNDLE");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
@@ -97,7 +97,7 @@ public class GetBillingFormHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "PARSE ERROR RESPONSE");
+        de.akquinet.android.androlog.Log.d(TAG, "PARSE ERROR RESPONSE");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

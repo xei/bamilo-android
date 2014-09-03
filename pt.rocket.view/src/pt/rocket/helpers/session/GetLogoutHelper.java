@@ -12,7 +12,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import android.os.Bundle;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Example helper
@@ -37,7 +37,7 @@ public class GetLogoutHelper extends BaseHelper {
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle GetLogoutHelper");
+        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetLogoutHelper");
         
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.LOGOUT_EVENT);

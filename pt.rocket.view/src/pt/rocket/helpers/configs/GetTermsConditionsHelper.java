@@ -41,7 +41,7 @@ public class GetTermsConditionsHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        android.util.Log.d("TRACK", "parseResponseBundle GetTermsConditionsHelper");
+        de.akquinet.android.androlog.Log.d("TRACK", "parseResponseBundle GetTermsConditionsHelper");
         String text = "";
         JSONArray dataArray;
         try {
@@ -67,7 +67,7 @@ public class GetTermsConditionsHelper extends BaseHelper {
     
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle GetTermsHelper");
+        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetTermsHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TERMS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

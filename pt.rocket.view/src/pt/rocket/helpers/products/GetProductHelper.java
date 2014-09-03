@@ -42,7 +42,7 @@ public class GetProductHelper extends BaseHelper {
     
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        android.util.Log.d("TRACK", "parseResponseBundle GetProductsHelper");
+        de.akquinet.android.androlog.Log.d("TRACK", "parseResponseBundle GetProductsHelper");
         
         CompleteProduct product = new CompleteProduct();
         product.initialize(jsonObject);
@@ -57,7 +57,7 @@ public class GetProductHelper extends BaseHelper {
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle GetTeasersHelper");
+        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetTeasersHelper");
      
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);

@@ -6,7 +6,7 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 public class WizardPreferences {
     

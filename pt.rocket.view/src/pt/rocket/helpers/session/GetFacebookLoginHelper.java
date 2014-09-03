@@ -77,7 +77,7 @@ public class GetFacebookLoginHelper extends BaseHelper {
     
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle GetFacebookLoginHelper");
+        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetFacebookLoginHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FACEBOOK_LOGIN_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

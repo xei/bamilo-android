@@ -21,7 +21,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.telephony.TelephonyManager;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to perform the automatic country selection

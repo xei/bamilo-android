@@ -10,7 +10,7 @@
 //import android.content.Context;
 //import android.content.SharedPreferences;
 //import android.preference.PreferenceManager;
-//import android.util.Log;
+//import de.akquinet.android.androlog.Log;
 //
 //import com.urbanairship.AirshipConfigOptions;
 //import com.urbanairship.UAirship;

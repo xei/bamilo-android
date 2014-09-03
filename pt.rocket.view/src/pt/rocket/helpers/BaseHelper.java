@@ -16,7 +16,7 @@ import pt.rocket.utils.JSONConstants;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Bundle;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Base helper for the test app. The helper is responsible for generating the bundle for the api

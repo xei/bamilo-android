@@ -19,7 +19,7 @@ import pt.rocket.helpers.HelperPriorityConfiguration;
 import pt.rocket.utils.JSONConstants;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Helper used to set the shipping address 
@@ -82,7 +82,7 @@ public class GetRegionsHelper extends BaseHelper {
      */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "PARSE ERROR BUNDLE");
+        de.akquinet.android.androlog.Log.d(TAG, "PARSE ERROR BUNDLE");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_REGIONS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
@@ -94,7 +94,7 @@ public class GetRegionsHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "PARSE RESPONSE BUNDLE");
+        de.akquinet.android.androlog.Log.d(TAG, "PARSE RESPONSE BUNDLE");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_REGIONS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

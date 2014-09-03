@@ -15,7 +15,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;

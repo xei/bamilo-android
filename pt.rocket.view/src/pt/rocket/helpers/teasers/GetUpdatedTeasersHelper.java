@@ -115,7 +115,7 @@ public class GetUpdatedTeasersHelper extends BaseHelper {
      */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "ON PARSE ERROR");
+        de.akquinet.android.androlog.Log.d(TAG, "ON PARSE ERROR");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
@@ -127,7 +127,7 @@ public class GetUpdatedTeasersHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "ON RESPONSE ERROR");
+        de.akquinet.android.androlog.Log.d(TAG, "ON RESPONSE ERROR");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

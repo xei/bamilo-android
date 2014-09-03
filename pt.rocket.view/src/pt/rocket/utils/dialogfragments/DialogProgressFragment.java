@@ -5,7 +5,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

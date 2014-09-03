@@ -12,7 +12,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * @author nutzer2

@@ -19,7 +19,7 @@ import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Set Voucher helper
@@ -51,7 +51,7 @@ public class SetVoucherHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        android.util.Log
+        de.akquinet.android.androlog.Log
                 .d("TRACK", "parseResponseBundle SetVoucherHelper " + jsonObject.toString());
         Log.i(TAG, "code1coupon : " + jsonObject.toString());
         Voucher mVoucher = new Voucher();
@@ -84,7 +84,7 @@ public class SetVoucherHelper extends BaseHelper {
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle SetVoucherHelper");
+        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle SetVoucherHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.ADD_VOUCHER);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
@@ -92,7 +92,7 @@ public class SetVoucherHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseResponseErrorBundle SetVoucherHelper");
+        de.akquinet.android.androlog.Log.d(TAG, "parseResponseErrorBundle SetVoucherHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.ADD_VOUCHER);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

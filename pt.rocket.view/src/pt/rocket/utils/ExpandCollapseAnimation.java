@@ -1,6 +1,6 @@
 package pt.rocket.utils;
 
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;

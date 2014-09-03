@@ -22,7 +22,7 @@ import pt.rocket.view.fragments.CatalogFragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 
 /**

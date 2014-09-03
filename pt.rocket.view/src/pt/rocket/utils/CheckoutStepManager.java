@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.rest.RestConstants;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to manage the checkout steps

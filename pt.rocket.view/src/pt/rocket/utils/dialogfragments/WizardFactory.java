@@ -5,7 +5,7 @@ package pt.rocket.utils.dialogfragments;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 public class WizardFactory {
     

@@ -81,7 +81,7 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        android.util.Log.d(TAG, "ON PARSE RESPONSE BUNDLE");
+        de.akquinet.android.androlog.Log.d(TAG, "ON PARSE RESPONSE BUNDLE");
         
         JumiaApplication.INSTANCE.setCart(null);
         ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
@@ -121,7 +121,7 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
      */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        android.util.Log.d(TAG, "parseErrorBundle GetShoppingCartItemsHelper");
+        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetShoppingCartItemsHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         // Add specific data

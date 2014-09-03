@@ -5,7 +5,7 @@ import pt.rocket.view.R;
 import pt.rocket.view.SplashScreenActivity;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
+import de.akquinet.android.androlog.Log;
 
 /**
  * This Class is responsible by all the application workflow. Contains all

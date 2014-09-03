@@ -2,7 +2,7 @@
 //
 //import pt.rocket.view.HomeFragmentActivity;
 //import android.app.Activity;
-//import android.util.Log;
+//import de.akquinet.android.androlog.Log;
 //import android.view.MotionEvent;
 //import android.view.View;
 //

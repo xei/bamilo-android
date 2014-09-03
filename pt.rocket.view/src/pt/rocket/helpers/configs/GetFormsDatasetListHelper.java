@@ -85,7 +85,7 @@ public class GetFormsDatasetListHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         // TODO Auto-generated method stub
-        android.util.Log.d("TRACK", "parseErrorBundle GetTeasersHelper");
+        de.akquinet.android.androlog.Log.d("TRACK", "parseErrorBundle GetTeasersHelper");
      
         //FIXME next line is just for test porpouse, to delete
         bundle.putString(Constants.BUNDLE_URL_KEY, " GetTeasersHelper");
