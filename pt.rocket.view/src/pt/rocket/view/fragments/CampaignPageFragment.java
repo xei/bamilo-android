@@ -68,6 +68,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
     public static final String TAG = LogTagHelper.create(CampaignPageFragment.class);
     
     private final static String COUNTER_START_TIME = "start_time";
+
     private final static String BANNER_STATE = "banner_state";
     
     private static CampaignPageFragment sCampaignFragment;
@@ -111,6 +112,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         VISIBLE,
         HIDDEN
     }
+
     private BannerVisibility bannerState;
     
     
@@ -121,7 +123,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      */
     public static CampaignPageFragment getInstance(TeaserCampaign teaserCampaign) {
         sCampaignFragment = new CampaignPageFragment();
-        sCampaignFragment.mTeaserCampaign = teaserCampaign;        
+        sCampaignFragment.mTeaserCampaign = teaserCampaign;
         return sCampaignFragment;
     }
     
@@ -296,10 +298,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         Log.i(TAG, "LOAD CAMPAIGN");
         // Get banner
         mBannerView = getBannerView();
-        if (BannerVisibility.HIDDEN != bannerState) {
-            // Add banner to header
-            mGridView.addHeaderView(mBannerView);
-        }
+		// Add banner to header
+        if (BannerVisibility.HIDDEN != bannerState) mGridView.addHeaderView(mBannerView);
         // Validate the current data
         mArrayAdapter = (CampaignAdapter) mGridView.getAdapter();
         if(mArrayAdapter == null){
@@ -308,10 +308,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             mGridView.setAdapter(mArrayAdapter);
         }
         // Show content
-        if (BannerVisibility.HIDDEN == bannerState) {
-            showContent();
-        }
-        //showContent();
+        if (BannerVisibility.HIDDEN == bannerState) showContent();
+		// else show when is loaded the banner
     }
     
     /**

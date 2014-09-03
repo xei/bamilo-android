@@ -123,7 +123,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     private SlidingTabLayout mPagerTabStrip;
 
-    private int mSavedPagerPosition = 0;
+    private int mSavedPagerPosition = 1; // POPULARITY
     
     private SortPages startPage = SortPages.DEFAULT;
 
@@ -212,7 +212,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_products_list);
         mViewPager.setOnPageChangeListener(onPageChangeListener);
 
-        mPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.catalog_pager_tag); // XXX
+        mPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.catalog_pager_tag);
         mPagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
 
         // Get wizard container
@@ -288,7 +288,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         RocketImageLoader.getInstance().startProcessingQueue();
 
         mViewPager.setAdapter(mCatalogPagerAdapter);
-        mPagerTabStrip.setViewPager(mViewPager); // XXX
+        mPagerTabStrip.setViewPager(mViewPager);
         mViewPager.setOffscreenPageLimit(1);
         if (null != startPage && startPage != SortPages.DEFAULT) {
             mViewPager.setCurrentItem(startPage.ordinal());
@@ -1010,14 +1010,12 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
         @Override
         public void onPageSelected(int position) {
-            // TODO Auto-generated method stub
-
+            // ...
         }
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            // TODO Auto-generated method stub
-
+            // ...
         }
 
         @Override

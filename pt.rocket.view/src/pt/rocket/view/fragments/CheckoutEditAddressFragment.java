@@ -520,9 +520,9 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             }
         }
         // Unexpected
-//        else {
-//            Log.e(TAG, RestConstants.JSON_CITY_ID_TAG + " IS AN UNEXPECTED VIEW: " + mCityView.getClass().getName());
-//        }
+        else {
+            Log.w(TAG, "WARNING: THE " + RestConstants.JSON_CITY_ID_TAG + " IS AN UNEXPECTED VIEW");
+        }
         
         // Get some values
         int mAddressId = mCurrentAddress.getId();
