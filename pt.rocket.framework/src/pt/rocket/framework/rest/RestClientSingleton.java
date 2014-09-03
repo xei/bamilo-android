@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import javax.net.ssl.SSLException;
+
 import org.apache.http.params.CoreProtocolPNames;
 
 import pt.rocket.framework.Darwin;
@@ -481,6 +483,11 @@ public final class RestClientSingleton {
 			Log.w(TAG, "Unknown host error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority));
 			trackError(context, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false, startTimeMillis);
+		} catch (SSLException e) {
+			de.akquinet.android.androlog.Log.d("TRACK", "SSLException");
+			Log.e(TAG, "SSL error calling " + httpRequest.getURI(), e);
+			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SSL, result, md5, priority));
+			trackError(context, e, httpRequest.getURI(), ErrorCode.SSL, null, false, startTimeMillis);
 		} catch (IOException e) {
 			Log.d("TRACK", "IOException");
 			Log.e(TAG, "IO error calling " + httpRequest.getURI(), e);

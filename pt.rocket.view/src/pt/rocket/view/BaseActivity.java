@@ -1682,6 +1682,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
+            case SSL:
+            case IO:
             case CONNECT_ERROR:
             case TIME_OUT:
             case HTTP_STATUS:

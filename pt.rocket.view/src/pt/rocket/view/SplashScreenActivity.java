@@ -666,6 +666,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
+            case SSL:
             case IO:
             case CONNECT_ERROR:
             case TIME_OUT:
@@ -732,6 +733,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                         });
 
                 dialog.show(getSupportFragmentManager(), null);
+                break;
             default:
                 if (dialog != null) {
                     try {

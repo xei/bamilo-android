@@ -15,7 +15,8 @@ public enum ErrorCode {
 	TIME_OUT(-4),
 	ERROR_PARSING_SERVER_DATA(-5), 
 	HTTP_PROTOCOL(-6), 
-	IO(-7), 
+	IO(-7),
+	SSL(-443),
 	EMPTY_ENTITY(-8), 
 	HTTP_STATUS(-9), 
 	REQUEST_ERROR(-10),
@@ -53,6 +54,7 @@ public enum ErrorCode {
 		case SERVER_IN_MAINTENANCE:
 		case CONNECT_ERROR:
 		case TIME_OUT:
+		case SSL:
 		case IO:
 		case HTTP_STATUS:
 			return true;
