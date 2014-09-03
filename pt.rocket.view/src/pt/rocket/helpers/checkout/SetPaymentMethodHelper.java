@@ -80,7 +80,7 @@ public class SetPaymentMethodHelper extends BaseHelper {
      */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "PARSE ERROR BUNDLE");
+        Log.d(TAG, "PARSE ERROR BUNDLE");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
@@ -92,7 +92,7 @@ public class SetPaymentMethodHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "PARSE RESPONSE BUNDLE");
+        Log.d(TAG, "PARSE RESPONSE BUNDLE");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

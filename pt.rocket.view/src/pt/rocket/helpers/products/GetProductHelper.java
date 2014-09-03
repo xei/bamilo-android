@@ -14,6 +14,7 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.os.Bundle;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Get Product Information helper
@@ -42,7 +43,7 @@ public class GetProductHelper extends BaseHelper {
     
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        de.akquinet.android.androlog.Log.d("TRACK", "parseResponseBundle GetProductsHelper");
+        Log.d("TRACK", "parseResponseBundle GetProductsHelper");
         
         CompleteProduct product = new CompleteProduct();
         product.initialize(jsonObject);
@@ -57,7 +58,7 @@ public class GetProductHelper extends BaseHelper {
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetTeasersHelper");
+        Log.d(TAG, "parseErrorBundle GetTeasersHelper");
      
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);

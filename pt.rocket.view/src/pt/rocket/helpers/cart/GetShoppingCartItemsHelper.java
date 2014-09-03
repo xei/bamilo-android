@@ -17,6 +17,7 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.os.Bundle;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Get Shopping Cart Items helper
@@ -43,9 +44,9 @@ public class GetShoppingCartItemsHelper extends BaseHelper {
     
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        de.akquinet.android.androlog.Log.d(TAG, "ON PARSE REPONSE" + jsonObject.toString());
+        Log.d(TAG, "ON PARSE REPONSE" + jsonObject.toString());
         JumiaApplication.INSTANCE.setCart(null);
-        de.akquinet.android.androlog.Log.d(TAG, "CLEAN CART");        
+        Log.d(TAG, "CLEAN CART");        
         ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
         try {
             cart.initialize(jsonObject);
@@ -53,7 +54,7 @@ public class GetShoppingCartItemsHelper extends BaseHelper {
             e.printStackTrace();
         }
         JumiaApplication.INSTANCE.setCart(cart);
-        de.akquinet.android.androlog.Log.d(TAG, "ADD CART: " + cart.getCartValue());
+        Log.d(TAG, "ADD CART: " + cart.getCartValue());
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT);
         return bundle;
@@ -61,7 +62,7 @@ public class GetShoppingCartItemsHelper extends BaseHelper {
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetShoppingCartItemsHelper");
+        Log.d(TAG, "parseErrorBundle GetShoppingCartItemsHelper");
      
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);

@@ -46,8 +46,7 @@ public class RemoveVoucherHelper extends BaseHelper {
  
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        de.akquinet.android.androlog.Log
-                .d("TRACK", "parseResponseBundle SetVoucherHelper " + jsonObject.toString());
+        Log.d("TRACK", "parseResponseBundle SetVoucherHelper " + jsonObject.toString());
         Log.i(TAG, "code1coupon : " + jsonObject.toString());
         Voucher mVoucher = new Voucher();
 
@@ -79,7 +78,7 @@ public class RemoveVoucherHelper extends BaseHelper {
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle SetVoucherHelper");
+        Log.d(TAG, "parseErrorBundle SetVoucherHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REMOVE_VOUCHER);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
@@ -87,7 +86,7 @@ public class RemoveVoucherHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseResponseErrorBundle SetVoucherHelper");
+        Log.d(TAG, "parseResponseErrorBundle SetVoucherHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REMOVE_VOUCHER);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

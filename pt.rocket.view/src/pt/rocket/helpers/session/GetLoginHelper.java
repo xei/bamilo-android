@@ -77,7 +77,7 @@ public class GetLoginHelper extends BaseHelper {
     
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetLoginHelper");
+        Log.d(TAG, "parseErrorBundle GetLoginHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.LOGIN_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

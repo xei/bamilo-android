@@ -187,7 +187,7 @@ public final class RestClientSingleton {
 	 */
 	public String executeGetRestUrlString(Uri uri, Handler mHandler, Bundle metaData) {
 		// databaseHelper.getReadableDatabase().quer
-		de.akquinet.android.androlog.Log.d("TRACK", "executeGetRestUrlString : " + uri.toString() + " complete: " + RemoteService.completeUri(uri).toString());
+		Log.d("TRACK", "executeGetRestUrlString : " + uri.toString() + " complete: " + RemoteService.completeUri(uri).toString());
 
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.d(TAG, "get: " + uri.toString());
@@ -457,42 +457,42 @@ public final class RestClientSingleton {
 			return result;
 			
 		} catch (ClientProtocolException e) {
-			de.akquinet.android.androlog.Log.d("TRACK", "ClientProtocolException");
+			Log.d("TRACK", "ClientProtocolException");
 			Log.e(TAG, "There was a protocol error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_PROTOCOL, result, md5, priority));
 			trackError(context, e, httpRequest.getURI(), ErrorCode.HTTP_PROTOCOL, null, false, startTimeMillis);
 		} catch (HttpHostConnectException e) {
-			de.akquinet.android.androlog.Log.d("TRACK", "HttpHostConnectException");
+			Log.d("TRACK", "HttpHostConnectException");
 			Log.w(TAG, "Http host connect error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority));
 			trackError(context, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false, startTimeMillis);
 		} catch (ConnectTimeoutException e) {
-			de.akquinet.android.androlog.Log.d("TRACK", "ConnectTimeoutException");
+			Log.d("TRACK", "ConnectTimeoutException");
 			Log.w(TAG, "Connection timeout calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority));
 			trackError(context, e, httpRequest.getURI(), ErrorCode.TIME_OUT, null, false, startTimeMillis);
 		} catch (SocketTimeoutException e) {
-			de.akquinet.android.androlog.Log.d("TRACK", "SocketTimeoutException");
+			Log.d("TRACK", "SocketTimeoutException");
 			Log.w(TAG, "Socket timeout calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority));
 			trackError(context, e, httpRequest.getURI(), ErrorCode.TIME_OUT, null, false, startTimeMillis);
 		} catch (UnknownHostException e) {
-			de.akquinet.android.androlog.Log.d("TRACK", "UnknownHostException");
+			Log.d("TRACK", "UnknownHostException");
 			Log.w(TAG, "Unknown host error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority));
 			trackError(context, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false, startTimeMillis);
 		} catch (IOException e) {
-			de.akquinet.android.androlog.Log.d("TRACK", "IOException");
+			Log.d("TRACK", "IOException");
 			Log.e(TAG, "IO error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority));
 			trackError(context, e, httpRequest.getURI(), ErrorCode.IO, null, false, startTimeMillis);
 		} catch (OutOfMemoryError e) {
-            de.akquinet.android.androlog.Log.d("TRACK", "OutOfMemoryError");
+            Log.d("TRACK", "OutOfMemoryError");
             Log.e(TAG, "OutOfMemoryError calling " + httpRequest.getURI(), e);
             mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority));
             trackError(context, null, httpRequest.getURI(), ErrorCode.IO, e.getStackTrace().toString(), false, startTimeMillis);
 		} catch (Exception e) {
-			de.akquinet.android.androlog.Log.d("TRACK", "Exception");
+			Log.d("TRACK", "Exception");
 			e.printStackTrace();
 			Log.e(TAG, "Anormal exception " + e.getMessage(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.UNKNOWN_ERROR, result, md5, priority));

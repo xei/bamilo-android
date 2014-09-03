@@ -16,6 +16,7 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.os.Bundle;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Get Product Information helper
@@ -41,7 +42,7 @@ public class GetTermsConditionsHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        de.akquinet.android.androlog.Log.d("TRACK", "parseResponseBundle GetTermsConditionsHelper");
+        Log.d("TRACK", "parseResponseBundle GetTermsConditionsHelper");
         String text = "";
         JSONArray dataArray;
         try {
@@ -67,7 +68,7 @@ public class GetTermsConditionsHelper extends BaseHelper {
     
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetTermsHelper");
+        Log.d(TAG, "parseErrorBundle GetTermsHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TERMS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

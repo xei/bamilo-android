@@ -16,6 +16,7 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.os.Bundle;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Get Shopping Cart Items helper
@@ -43,7 +44,7 @@ public class GetShoppingCartChangeItemQuantityHelper extends BaseHelper {
     
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        de.akquinet.android.androlog.Log.d("TRACK", "parseResponseBundle GetShoppingCartChangeItemQuantityHelper");
+        Log.d("TRACK", "parseResponseBundle GetShoppingCartChangeItemQuantityHelper");
         JumiaApplication.INSTANCE.setCart(null);
         ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
         try {
@@ -59,7 +60,7 @@ public class GetShoppingCartChangeItemQuantityHelper extends BaseHelper {
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetShoppingCartItemsHelper");
+        Log.d(TAG, "parseErrorBundle GetShoppingCartItemsHelper");
      
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);

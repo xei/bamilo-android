@@ -60,7 +60,7 @@ public class GetSearchCategoryHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE RESPONSE BUNDLE");
         try {
-        	de.akquinet.android.androlog.Log.d("TRACK", "parseResponseBundle GetCategoriesHelper");
+        	Log.d("TRACK", "parseResponseBundle GetCategoriesHelper");
         	JSONArray categoriesArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
             int categoriesArrayLenght = categoriesArray.length();
             ArrayList<Category> categories = new ArrayList<Category>();
@@ -85,7 +85,7 @@ public class GetSearchCategoryHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE ERROR BUNDLE");
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetCategoriesHelper");
+        Log.d(TAG, "parseErrorBundle GetCategoriesHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CATEGORIES_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

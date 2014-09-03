@@ -37,7 +37,7 @@ public class GetLogoutHelper extends BaseHelper {
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetLogoutHelper");
+        Log.d(TAG, "parseErrorBundle GetLogoutHelper");
         
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.LOGOUT_EVENT);

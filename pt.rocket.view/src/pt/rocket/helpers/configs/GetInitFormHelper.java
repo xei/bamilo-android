@@ -16,6 +16,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import android.os.Bundle;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Example helper
@@ -67,7 +68,7 @@ public class GetInitFormHelper extends BaseHelper {
     
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetInitFormsHelper");
+        Log.d(TAG, "parseErrorBundle GetInitFormsHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.INIT_FORMS);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

@@ -66,7 +66,7 @@ public class GetPromotionsHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         // TODO Auto-generated method stub
-        de.akquinet.android.androlog.Log.d("TRACK", "parseErrorBundle GetTeasersHelper");
+        Log.d("TRACK", "parseErrorBundle GetTeasersHelper");
 
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PROMOTIONS);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);

@@ -126,7 +126,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        de.akquinet.android.androlog.Log.d(TAG, "ON PARSE RESPONSE");
+        Log.d(TAG, "ON PARSE RESPONSE");
 
         ArrayList<SearchSuggestion> suggestions = new ArrayList<SearchSuggestion>();
         
@@ -162,7 +162,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
      */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "ON PARSE ERROR BUNDLE");
+        Log.d(TAG, "ON PARSE ERROR BUNDLE");
         
         // Get the recent queries 
         ArrayList<SearchSuggestion> suggestions = new ArrayList<SearchSuggestion>();
@@ -189,7 +189,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "ON PARSE RESPONSE ERROR BUNDLE");
+        Log.d(TAG, "ON PARSE RESPONSE ERROR BUNDLE");
 //        bundle.putString(SEACH_PARAM, mQuery);
 //        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
 //        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);

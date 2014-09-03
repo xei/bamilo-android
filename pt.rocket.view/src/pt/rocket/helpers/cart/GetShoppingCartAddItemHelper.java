@@ -20,6 +20,7 @@ import pt.rocket.helpers.HelperPriorityConfiguration;
 import pt.rocket.utils.TrackerDelegator;
 import android.os.Bundle;
 import android.text.TextUtils;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Get Shopping Cart Items helper
@@ -81,7 +82,7 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        de.akquinet.android.androlog.Log.d(TAG, "ON PARSE RESPONSE BUNDLE");
+        Log.d(TAG, "ON PARSE RESPONSE BUNDLE");
         
         JumiaApplication.INSTANCE.setCart(null);
         ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
@@ -121,7 +122,7 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
      */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetShoppingCartItemsHelper");
+        Log.d(TAG, "parseErrorBundle GetShoppingCartItemsHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         // Add specific data

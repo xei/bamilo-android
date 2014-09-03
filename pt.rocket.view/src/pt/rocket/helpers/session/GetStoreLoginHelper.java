@@ -46,7 +46,7 @@ public class GetStoreLoginHelper extends BaseHelper {
     
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetStoreLoginHelper");
+        Log.d(TAG, "parseErrorBundle GetStoreLoginHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.STORE_LOGIN);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

@@ -19,6 +19,7 @@ import pt.rocket.helpers.HelperPriorityConfiguration;
 import pt.rocket.utils.CheckoutStepManager;
 import android.content.ContentValues;
 import android.os.Bundle;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Example helper
@@ -77,7 +78,7 @@ public class GetFacebookLoginHelper extends BaseHelper {
     
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetFacebookLoginHelper");
+        Log.d(TAG, "parseErrorBundle GetFacebookLoginHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FACEBOOK_LOGIN_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

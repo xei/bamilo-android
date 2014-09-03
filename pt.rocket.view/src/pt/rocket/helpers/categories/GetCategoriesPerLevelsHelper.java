@@ -98,7 +98,7 @@ public class GetCategoriesPerLevelsHelper extends BaseHelper {
      */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetCategoriesHelper");
+        Log.d(TAG, "parseErrorBundle GetCategoriesHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

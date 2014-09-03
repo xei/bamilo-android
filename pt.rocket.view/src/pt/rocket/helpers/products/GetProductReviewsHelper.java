@@ -18,6 +18,7 @@ import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.net.Uri;
 import android.os.Bundle;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Get Product Reviews helper
@@ -51,7 +52,7 @@ public class GetProductReviewsHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        de.akquinet.android.androlog.Log.d("TRACK", "parseResponseBundle GetProductReviewsHelper");
+        Log.d("TRACK", "parseResponseBundle GetProductReviewsHelper");
         JSONObject dataObject = null;
         try {
             dataObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
@@ -73,7 +74,7 @@ public class GetProductReviewsHelper extends BaseHelper {
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetProductReviewsHelper");
+        Log.d(TAG, "parseErrorBundle GetProductReviewsHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_REVIEWS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

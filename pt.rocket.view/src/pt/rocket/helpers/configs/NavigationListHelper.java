@@ -15,6 +15,7 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.os.Bundle;
+import de.akquinet.android.androlog.Log;
 
 public class NavigationListHelper extends BaseHelper {
 
@@ -105,7 +106,7 @@ public class NavigationListHelper extends BaseHelper {
      */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetNAvListHelper");
+        Log.d(TAG, "parseErrorBundle GetNAvListHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

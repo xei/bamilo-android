@@ -16,6 +16,7 @@ import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.content.ContentValues;
 import android.os.Bundle;
+import de.akquinet.android.androlog.Log;
 
 /**
  * This helper will Clean the Shopping Cart by sending an empty update to the cart.
@@ -46,7 +47,7 @@ public class ClearShoppingCartHelper extends BaseHelper {
     
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        de.akquinet.android.androlog.Log.d("TRACK", "parseResponseBundle GetShoppingCartChangeItemQuantityHelper");
+        Log.d("TRACK", "parseResponseBundle GetShoppingCartChangeItemQuantityHelper");
         JumiaApplication.INSTANCE.setCart(null);
         ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
         JumiaApplication.INSTANCE.setCart(cart);
@@ -58,7 +59,7 @@ public class ClearShoppingCartHelper extends BaseHelper {
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetShoppingCartItemsHelper");
+        Log.d(TAG, "parseErrorBundle GetShoppingCartItemsHelper");
      
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);

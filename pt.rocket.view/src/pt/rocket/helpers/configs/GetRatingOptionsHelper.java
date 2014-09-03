@@ -18,6 +18,7 @@ import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
 import android.os.Bundle;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Get Ratings helper
@@ -46,7 +47,7 @@ public class GetRatingOptionsHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        de.akquinet.android.androlog.Log.d("TRACK", "parseResponseBundle GetRatingsHelper");
+        Log.d("TRACK", "parseResponseBundle GetRatingsHelper");
         HashMap<String, HashMap<String, String>> ratingOptions = new HashMap<String, HashMap<String, String>>();
         JSONArray dataArray = null;
         try {
@@ -89,7 +90,7 @@ public class GetRatingOptionsHelper extends BaseHelper {
     
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetRatingsHelper");
+        Log.d(TAG, "parseErrorBundle GetRatingsHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_RATING_OPTIONS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

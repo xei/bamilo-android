@@ -136,7 +136,7 @@ public class GetProductsHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         try {
-        	de.akquinet.android.androlog.Log.d("TRACK", "parseResponseBundle GetProductsHelper");
+        	Log.d("TRACK", "parseResponseBundle GetProductsHelper");
         	
         	ProductsPage products = new ProductsPage();
             products.initialize(jsonObject);
@@ -153,7 +153,7 @@ public class GetProductsHelper extends BaseHelper {
     
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        de.akquinet.android.androlog.Log.d(TAG, "parseErrorBundle GetProductsHelper");
+        Log.d(TAG, "parseErrorBundle GetProductsHelper");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCTS_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
@@ -162,7 +162,7 @@ public class GetProductsHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
         try {
-            de.akquinet.android.androlog.Log.d("TRACK", "parseResponseErrorBundle GetProductsHelper");
+            Log.d("TRACK", "parseResponseErrorBundle GetProductsHelper");
             ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 Log.i(TAG, "REQUEST_ERROR");
