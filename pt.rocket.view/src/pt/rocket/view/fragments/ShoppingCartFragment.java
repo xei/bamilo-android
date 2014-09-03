@@ -201,20 +201,6 @@ public class ShoppingCartFragment extends BaseFragment {
         Log.i(TAG, "ON CREATE");
     }
 
-    /*-
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    /*-@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        View view = inflater.inflate(R.layout.shopping_basket, container, false);
-        return view;
-    }*/
-
     /*
      * (non-Javadoc)
      * 
@@ -494,12 +480,11 @@ public class ShoppingCartFragment extends BaseFragment {
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
 
             TrackerDelegator.trackProductRemoveFromCart(params);
+            TrackerDelegator.trackLoadTiming(params);
+            
             if (!isRemovingAllItems) {
                 showFragmentContentContainer();
-            }
-            TrackerDelegator.trackLoadTiming(params);
-            if (!isRemovingAllItems) {
-                displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+				displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
                 hideActivityProgress();
             }
             return true;
@@ -569,6 +554,7 @@ public class ShoppingCartFragment extends BaseFragment {
                     public void onClick(View v) {
                         int id = v.getId();
                         if (id == R.id.button1) {
+                        	
                             isRemovingAllItems = true;
 
                             List<ShoppingCartItem> items = new ArrayList<ShoppingCartItem>(shoppingCart.getCartItems().values());

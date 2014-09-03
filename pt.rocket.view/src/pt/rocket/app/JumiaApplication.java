@@ -135,8 +135,6 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
 
     public ArrayList<CountryObject> countriesAvailable = null;
 
-    public static boolean updateCart = true;
-
     @Override
     public void onApplicationCreate() {
         Log.d(TAG, "ON CREATE");
