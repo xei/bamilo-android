@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jumia.blackberry"
     android:installLocation="auto"
-    android:versionCode="1"
+    android:versionCode="2"
     android:versionName="2.0" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -41,8 +41,8 @@
     <uses-permission android:name="com.jumia.blackberry.permission.A4S_SEND" />    
     
 
-    <uses-sdk android:minSdkVersion="8" />
-    <!-- android:targetSdkVersion="19" -->
+    <uses-sdk android:minSdkVersion="8" 
+        android:targetSdkVersion="?" />
 
     <application
         android:name="pt.rocket.app.JumiaApplication"
