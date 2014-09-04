@@ -188,17 +188,18 @@ public final class RestClientSingleton {
 	 * @return the response as String e.g. a json string
 	 */
 	public String executeGetRestUrlString(Uri uri, Handler mHandler, Bundle metaData) {
-		// databaseHelper.getReadableDatabase().quer
-		Log.d("TRACK", "executeGetRestUrlString : " + uri.toString() + " complete: " + RemoteService.completeUri(uri).toString());
 
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-			Log.d(TAG, "get: " + uri.toString());
+			Log.d(TAG, "executeGetRestUrlString original: " + uri.toString());
 		}
 		
-		String url = RemoteService.completeUri(uri).toString();
+		// Get event type
+		EventType eventType = (EventType) metaData.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+		// Validate if is ventures.json
+		String url = (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) ? uri.toString() : RemoteService.completeUri(uri).toString();
 		
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-			Log.d(TAG, "get: " + url.toString());
+			Log.d(TAG, "executeGetRestUrlString complete: " + url.toString());
 		}
 		
 		HttpGet httpRequest = new HttpGet(url.replaceAll(" ", "%20"));
@@ -218,22 +219,22 @@ public final class RestClientSingleton {
 	 *            name - value pairs of the form to send with the request
 	 * @return the response as String e.g. a json string
 	 */
-	public String executePostRestUrlString(Uri uri, ContentValues formData,
-			Handler mHandler, Bundle metaData) {
+	public String executePostRestUrlString(Uri uri, ContentValues formData, Handler mHandler, Bundle metaData) {
 
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-			Log.d(TAG, "post: " + uri.toString());
+			Log.d(TAG, "executePostRestUrlString original: " + uri.toString());
 		}
 		
-		String url = RemoteService.completeUri(uri)
-				.toString();
+		// Get event type
+		EventType eventType = (EventType) metaData.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+		// Validate if is ventures.json
+		String url = (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) ? uri.toString() : RemoteService.completeUri(uri).toString();
 		
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-			Log.d(TAG, "post: " + url.toString());
+			Log.d(TAG, "executePostRestUrlString complete: " + url.toString());
 		}
 		
-		HttpPost httpRequest = new HttpPost(url
-				.toString());
+		HttpPost httpRequest = new HttpPost(url.toString());
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		if(formData != null){
