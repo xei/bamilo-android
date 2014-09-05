@@ -2,13 +2,13 @@
 <resources>
 
     <!-- better naming sceme for the text dimensions -->
-    <dimen name="text_xxs">16sp</dimen>
+    <!-- dimen name="text_xxs">16sp</dimen -->
     <dimen name="text_xs">18sp</dimen>
     <dimen name="text_s">20sp</dimen>
     <dimen name="text_m">21sp</dimen>
     <dimen name="text_l">22sp</dimen>
     <dimen name="text_xl">23sp</dimen>
-    <dimen name="text_xxl">24sp</dimen>
+    <!-- dimen name="text_xxl">24sp</dimen -->
 
     <!-- HOME -->
     <dimen name="teaser_swipe_banner_height">435dp</dimen>
@@ -27,11 +27,6 @@
     <dimen name="product_list_item_discount_percentage_image_height">20dp</dimen>
     <dimen name="product_list_item_discount_percentage_text_size">10sp</dimen>
 
-    <dimen name="product_item_height">140dp</dimen>
-
-    <!-- PRODUCT DETAIL ITEM -->
-    <dimen name="product_detail_item_variation_list_height">110dp</dimen>
-
     <!-- CHECKOUT HEADER -->
     <dimen name="checkout_header_height">32dp</dimen>
     <dimen name="checkout_header_margin">@dimen/margin_small</dimen>
@@ -40,31 +35,26 @@
     <dimen name="checkout_header_step_icon">15dp</dimen>
     <dimen name="checkout_header_step_s_icon">20dp</dimen>
     <dimen name="checkout_header_divider_height">1.5dp</dimen>
-    
-	<!-- CAMPAIGN PAGE -->
+
+    <!-- CAMPAIGN PAGE -->
     <integer name="campaign_num_columns">2</integer>
+
     <dimen name="campaign_discount_flag_width">60dp</dimen>
-	<dimen name="campaign_banner_height">273.33dp</dimen>
+    <dimen name="campaign_banner_height">273.33dp</dimen>
     <dimen name="campaign_title_height">72.33dp</dimen>
     <dimen name="campaign_title_margin_left">@dimen/margin_mid</dimen>
     <dimen name="campaign_image_height">226.67dp</dimen>
     <dimen name="campaign_size_container_height">53.33dp</dimen>
     <dimen name="campaign_size_spinner_width">70dp</dimen>
 
-	<!-- NO RESULTS PAGE -->
-	<dimen name="no_results_brands_height">177dp</dimen>
+    <!-- NO RESULTS PAGE -->
+    <dimen name="no_results_brands_height">177dp</dimen>
 
-    <!-- GRID PRODUCTS -->
-    <dimen name="product_item_grid_width">212.67dp</dimen>
-    <dimen name="product_item_grid_height">266.67dp</dimen>
-    <dimen name="product_item_description_height">90dp</dimen>
-    <dimen name="product_item_grid_divider_height">361.67dp</dimen>
-    
     <!-- MY PROFILE -->
-	<dimen name="myprofile_item_size">64dp</dimen>
-	<dimen name="myprofile_item_icon_container_size">40.50dp</dimen>
-	<dimen name="myprofile_item_icon_size">32dp</dimen>
-	<dimen name="myprofile_icon_counter_size">18dp</dimen>
-	<dimen name="myprofile_icon_counter_text_size">9sp</dimen>
+    <dimen name="myprofile_item_size">64dp</dimen>
+    <dimen name="myprofile_item_icon_container_size">40.50dp</dimen>
+    <dimen name="myprofile_item_icon_size">32dp</dimen>
+    <dimen name="myprofile_icon_counter_size">18dp</dimen>
+    <dimen name="myprofile_icon_counter_text_size">9sp</dimen>
 
 </resources>

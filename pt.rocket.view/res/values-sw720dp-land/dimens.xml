@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<!--     better naming sceme for the text dimensions
-    <dimen name="text_xxs">16sp</dimen>
+    <!-- better naming sceme for the text dimensions
     <dimen name="text_xs">18sp</dimen>
     <dimen name="text_s">20sp</dimen>
     <dimen name="text_m">21sp</dimen>
     <dimen name="text_l">22sp</dimen>
-    <dimen name="text_xl">23sp</dimen>
-    <dimen name="text_xxl">24sp</dimen> -->
+    <dimen name="text_xl">23sp</dimen> -->
+
 
     <!-- HOME -->
-    <dimen name="teaser_swipe_banner_height">260dp</dimen>  <!-- 1440x600 -->
-    
+    <dimen name="teaser_swipe_banner_height">260dp</dimen> <!-- 1440x600 -->
+
     <dimen name="teaser_product_item_width">50dp</dimen>
-    
     <dimen name="teaser_banners_group_height">166dp</dimen> <!-- 359x189 -->
-    <dimen name="teaser_banners_group_margin">@dimen/margin_large</dimen>
-    
+
     <dimen name="teaser_banners_brands_list_height">100dp</dimen>
-    <dimen name="teaser_banners_brands_list_margin">@dimen/margin_huge</dimen>
 
     <!-- SLIDING MENU -->
     <!-- <dimen name="navigation_menu_offset">1000dp</dimen> -->
@@ -29,9 +25,6 @@
     <dimen name="navigation_title_height">56dp</dimen>
     <dimen name="navigation_item_divider_height">1dp</dimen>
     <dimen name="navigation_cart_vertical_distance">17dp</dimen>
-
-    <!-- PRODUCT DETAIL ITEM -->
-    <dimen name="product_detail_item_variation_list_height">110dp</dimen>
 
     <!-- INNER CONTAINER -->
     <dimen name="inner_container_width">560dp</dimen>
@@ -44,9 +37,10 @@
     <dimen name="checkout_header_step_icon">15dp</dimen>
     <dimen name="checkout_header_step_s_icon">20dp</dimen>
     <dimen name="checkout_header_divider_height">1.5dp</dimen>
-    
-	<!-- CAMPAIGN PAGE -->
+
+    <!-- CAMPAIGN PAGE -->
     <integer name="campaign_num_columns">3</integer>
+
     <dimen name="campaign_discount_flag_width">60dp</dimen>
     <dimen name="campaign_banner_height">273.33dp</dimen>
     <dimen name="campaign_title_height">72.33dp</dimen>

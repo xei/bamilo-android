@@ -1,43 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- Nexus 7 resolution -->
+
+    <!-- Nexus 7 resolution -->
     <!-- better naming sceme for the text dimensions -->
-    <dimen name="text_xxs">14sp</dimen>
+    <!-- dimen name="text_xxs">14sp</dimen -->
     <dimen name="text_xs">16sp</dimen>
     <dimen name="text_s">18sp</dimen>
     <dimen name="text_m">20sp</dimen>
     <dimen name="text_l">22sp</dimen>
     <dimen name="text_xl">24sp</dimen>
-    <dimen name="text_xxl">26sp</dimen>
+    <!-- dimen name="text_xxl">26sp</dimen -->
 
-    <!-- General -->
-    <dimen name="margin_buttons">66dp</dimen>
     <!-- HOME -->
     <dimen name="teaser_margin_bottom">0dp</dimen>
     <dimen name="teaser_margin_left">0dp</dimen>
-    
-	<dimen name="teaser_swipe_banner_height">195dp</dimen>  <!-- 1440x600 -->    
-    
-    <dimen name="teaser_product_item_width">208dp</dimen>
-    
-	<dimen name="teaser_banners_group_height">125dp</dimen> <!-- 359x189 -->
-	<dimen name="teaser_banners_group_margin">@dimen/margin_large</dimen>
-        
-    <dimen name="teaser_banners_brands_list_height">88dp</dimen>
-    <dimen name="teaser_banners_brands_list_margin">@dimen/margin_large</dimen>
+    <dimen name="teaser_swipe_banner_height">195dp</dimen> <!-- 1440x600 -->
 
-    <dimen name="product_item_height">135dp</dimen>
-    <!-- SLIDING MENU -->
-    <!-- <dimen name="navigation_menu_offset">750dp</dimen> -->
+    <dimen name="teaser_product_item_width">208dp</dimen>
+    <dimen name="teaser_banners_group_height">125dp</dimen> <!-- 359x189 -->
+
+    <dimen name="teaser_banners_brands_list_height">88dp</dimen>
+
     <!-- ATTENTION: These percentages must be the same defined on the main layout-large-land -->
     <item name="navigation_menu_offset" type="dimen">75%</item>
 
     <dimen name="navigation_title_height">56dp</dimen>
     <dimen name="navigation_item_divider_height">1dp</dimen>
     <dimen name="navigation_cart_vertical_distance">17dp</dimen>
-
-    <!-- PRODUCT DETAIL ITEM -->
-    <dimen name="product_detail_item_variation_list_height">75dp</dimen>
 
     <!-- INNER CONTAINER -->
     <dimen name="inner_container_width">420dp</dimen>
@@ -50,17 +39,18 @@
     <dimen name="checkout_header_step_icon">15dp</dimen>
     <dimen name="checkout_header_step_s_icon">20dp</dimen>
     <dimen name="checkout_header_divider_height">1.5dp</dimen>
-    
-	<!-- MY ORDER -->
+
+    <!-- MY ORDER -->
     <dimen name="checkout_order_inner_margin_left">50dp</dimen>
     <dimen name="checkout_order_inner_margin_right">50dp</dimen>
-    
-	<!-- DIALOG CATALOG FILTER -->
-	<dimen name="dialog_catalog_filter_width">@integer/match_parent</dimen>
+
+    <!-- DIALOG CATALOG FILTER -->
+    <dimen name="dialog_catalog_filter_width">@integer/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">450.00dp</dimen>
-    
-	<!-- CAMPAIGN PAGE -->
+
+    <!-- CAMPAIGN PAGE -->
     <integer name="campaign_num_columns">3</integer>
+
     <dimen name="campaign_discount_flag_width">60dp</dimen>
     <dimen name="campaign_banner_height">273.33dp</dimen>
     <dimen name="campaign_title_height">72.33dp</dimen>
@@ -74,23 +64,13 @@
     <dimen name="no_results_bottom_margin">40dp</dimen>
     <dimen name="no_results_search_tips_width">600dp</dimen>
 
-    <!-- GRID PRODUCTS -->
-    <dimen name="product_item_grid_height">266.67dp</dimen>
-    <dimen name="product_item_description_height">75dp</dimen>
-    <dimen name="product_item_grid_divider_height">351.67dp</dimen>
-
-    <!--  FAVOURITE WIZARD -->
+    <!-- FAVOURITE WIZARD -->
     <!-- <dimen name="product_tip_variations_top_margin">12dp</dimen> -->
     <!-- <dimen name="product_tip_padding">52.8dp</dimen> -->
     <dimen name="product_tip_padding_side">15dp</dimen>
 
-    <!--  FAVOURITES -->
-	<dimen name="favourite_item_height">190dp</dimen>
+    <!-- FAVOURITES -->
     <integer name="favourite_num_columns">2</integer>
-
-    <!--  RECENT SEARCHES -->
-    <dimen name="recentsearch_list_margin">13.33dp</dimen>
-    <dimen name="recentsearch_button_margin">0dp</dimen>
 
     <!-- CATALOG REDESIGN -->
     <integer name="catalog_list_num_columns">2</integer>

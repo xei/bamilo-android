@@ -32,21 +32,6 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <!-- These styles bellow are used for the text in the forgotten password layout -->
-
-    <style name="forgot_password_introtext">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">18dp</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:textColor">@color/grey_middle</item>
-        <item name="android:textSize">15dp</item>
-    </style>
-
-    <style name="forgot_password_introtext.bold">
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <!-- new title styles for redesign 2013/03 -->
     <style name="activity_sectionheader_container">
         <item name="android:layout_width">match_parent</item>
@@ -135,12 +120,6 @@
         <item name="android:layout_width">@dimen/divider_height</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/grey_highlight</item>
-    </style>
-
-    <style name="divider_vertical_grid">
-        <item name="android:layout_width">@dimen/divider_width</item>
-        <item name="android:layout_height">@dimen/product_item_grid_divider_height</item>
-        <item name="android:background">@color/grey_dividerlight</item>
     </style>
 
     <style name="divider_horizontal_campaign">
@@ -338,13 +317,6 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:gravity">center</item>
-    </style>
-
-    <style name="login_remember_user_email_checkbox">
-        <item name="android:textColor">@color/grey_middle</item>
-        <item name="android:textSize">14dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <!-- NEW -->
