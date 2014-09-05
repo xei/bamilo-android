@@ -27,7 +27,7 @@
             android:padding="@dimen/rounded_margin_mid"
             android:text="@string/error_please_try_again"
             android:textColor="@color/grey_middlelight"
-            android:textSize="@dimen/fragment_root_text_size" />
+            android:textSize="@dimen/text_header" />
     </LinearLayout>
 
     <LinearLayout style="@style/button_container" >

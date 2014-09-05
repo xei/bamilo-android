@@ -33,7 +33,7 @@
             android:gravity="center"
             android:text="You have no items at the moment."
             android:textColor="@color/grey_middlelight"
-            android:textSize="@dimen/fragment_root_text_size" />
+            android:textSize="@dimen/text_header" />
     </LinearLayout>
 
     <LinearLayout style="@style/button_container" >
