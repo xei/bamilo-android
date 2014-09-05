@@ -27,7 +27,6 @@
     <dimen name="divider_height">1dp</dimen>
     <dimen name="divider_width">0.5dp</dimen>
     <dimen name="distance_item_small">24dp</dimen>
-    <dimen name="distance_item_mid">36dp</dimen>
     <dimen name="navigation_title_height">48dp</dimen>
     <dimen name="navigation_item_divider_height">1dp</dimen>
     <dimen name="navigation_cart_vertical_distance">17dp</dimen>
@@ -40,13 +39,13 @@
     <dimen name="form_errormessage_margin">4dp</dimen>
 
     <!-- better naming sceme for the text dimensions -->
-    <dimen name="text_xxs">14sp</dimen>
+    <!-- dimen name="text_xxs">14sp</dimen -->
     <dimen name="text_xs">12sp</dimen>
     <dimen name="text_s">14sp</dimen>
     <dimen name="text_m">16sp</dimen>
     <dimen name="text_l">18sp</dimen>
     <dimen name="text_xl">20sp</dimen>
-    <dimen name="text_xxl">22sp</dimen>
+    <!-- dimen name="text_xxl">22sp</dimen -->
 
     <!-- TEXT DIMENSIONS (px/3) -->
     <dimen name="text_header">16sp</dimen>
@@ -67,7 +66,6 @@
     <dimen name="teaser_swipe_banner_height">196dp</dimen>
     <dimen name="teaser_product_item_width">120dp</dimen>
     <dimen name="teaser_banners_group_height">96dp</dimen>
-    <dimen name="teaser_banners_group_margin">0dp</dimen>
     <dimen name="teaser_recently_viewed_height">196dp</dimen>
 
     <!-- actual values for hdpi - are referenced as aliases -->
@@ -75,7 +73,6 @@
     <dimen name="teaser_swipe_banner_height_sw320dp">171dp</dimen>
     <dimen name="teaser_banners_group_height_sw320dp">171dp</dimen>
     <dimen name="teaser_banners_brands_list_height">88dp</dimen>
-    <dimen name="teaser_banners_brands_list_margin">0dp</dimen>
 
     <!-- BASE -->
     <integer name="match_parent">-1</integer>
@@ -100,7 +97,6 @@
     <dimen name="product_list_item_image_side_margin">13.33dp</dimen>
 
     <!-- PRODUCT DETAIL ITEM -->
-    <dimen name="product_detail_item_variation_list_height">63dp</dimen>
     <dimen name="product_detail_item_title_height">48dp</dimen>
     <dimen name="product_detail_item_discount_percentage_width">45dp</dimen>
     <dimen name="product_detail_item_discount_percentage_height">25dp</dimen>
@@ -132,10 +128,6 @@
     <dimen name="dialog_catalog_filter_width">@integer/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">400.00dp</dimen>
 
-    <!-- PRODUCT LIST ITEM -->
-    <!-- <dimen name="product_item_height">@dimen/wrap_content</dimen> -->
-    <dimen name="product_item_height">127dp</dimen>
-
     <!-- CAMPAIGN PAGE -->
     <integer name="campaign_num_columns">1</integer>
 
@@ -156,12 +148,6 @@
     <dimen name="no_results_bottom_margin">33.33dp</dimen>
     <dimen name="no_results_search_tips_width">@integer/match_parent</dimen>
     <dimen name="no_results_brands_height">147dp</dimen>
-
-    <!-- GRID PRODUCTS -->
-    <dimen name="product_item_grid_width">117.33dp</dimen>
-    <dimen name="product_item_grid_height">146.67dp</dimen>
-    <dimen name="product_item_description_height">60dp</dimen>
-    <dimen name="product_item_grid_divider_height">211.67dp</dimen>
 
     <!-- ACTIONBAR SHERLOCK SEARCH adjustDropDownSizeAndPosition@SearchView -->
     <dimen name="abs__dropdownitem_icon_width">0dp</dimen>
@@ -186,13 +172,7 @@
     <dimen name="myprofile_icon_counter_text_size">6sp</dimen>
 
     <!-- FAVOURITES -->
-    <dimen name="favourite_item_height">145dp</dimen>
-
     <integer name="favourite_num_columns">1</integer>
-
-    <!-- RECENT SEARCHES -->
-    <dimen name="recentsearch_list_margin">6.67dp</dimen>
-    <dimen name="recentsearch_button_margin">13.33dp</dimen>
 
     <!-- ROUNDED BORDERS -->
     <dimen name="rounded_margin_small">3.33dp</dimen>
@@ -220,7 +200,7 @@
     <dimen name="button_container_height">60dp</dimen>
     <!-- rounded_margin_mid + button_height + button_container_height -->
     <dimen name="button_double_container_height">106.67dp</dimen>
-    <dimen name="button_landscape_width">440dp</dimen>
+    <dimen name="button_landscape_width">426.67dp</dimen>
     <dimen name="product_item_variant_text_size">8sp</dimen>
     <dimen name="product_item_button_height">25dp</dimen>
     <dimen name="product_item_addtocart_variation_width">43.33dp</dimen>
@@ -228,9 +208,7 @@
     <dimen name="title_box_height">16.67dp</dimen>
 
     <!--  TRACK ORDER REDESIGN -->
-    <dimen name="track_order_container_height">156.67dp</dimen>
     <dimen name="track_order_margin_small">10dp</dimen>
-    <dimen name="track_order_margin_mid">10dp</dimen>
     <dimen name="track_order_content_height">106.66dp</dimen>
     <dimen name="tack_order_order_nr_container_height">70dp</dimen>
 
@@ -238,7 +216,7 @@
 
     <dimen name="home_items_margin">18dp</dimen>
 
-    <dimen name="fragment_root_text_size">18sp</dimen >
+    <dimen name="fragment_root_text_size">18sp</dimen>
 
     <dimen name="login_container_width">@integer/match_parent</dimen>
 
@@ -251,11 +229,12 @@
 
     <dimen name="checkout_box_title_height">40dp</dimen>
 
+    <dimen name="com_facebook_loginview_compound_drawable_padding">0dp</dimen>
     <dimen name="com_facebook_loginview_padding_top">0dp</dimen>
     <dimen name="com_facebook_loginview_padding_bottom">0dp</dimen>
-    <!-- dimen name="com_facebook_loginview_padding_left">@dimen/rounded_margin_mid</dimen>
-    <dimen name="com_facebook_loginview_padding_right">@dimen/rounded_margin_mid</dimen -->
+    <dimen name="com_facebook_loginview_padding_right">0dp</dimen>
+    <!-- dimen name="com_facebook_loginview_padding_left">@dimen/rounded_margin_mid</dimen -->
 
-    <dimen name="com_facebook_loginview_text_size">@dimen/text_button</dimen>
+    <dimen name="com_facebook_loginview_text_size">@dimen/text_header</dimen>
 
 </resources>

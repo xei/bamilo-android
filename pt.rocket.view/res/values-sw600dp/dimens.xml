@@ -53,18 +53,10 @@
     <!-- NO RESULTS PAGE -->
     <dimen name="no_results_brands_height">177dp</dimen>
 
-    <!-- GRID PRODUCTS -->
-    <dimen name="product_item_grid_width">212.67dp</dimen>
-    <dimen name="product_item_grid_height">266.67dp</dimen>
-    <dimen name="product_item_grid_divider_height">361.67dp</dimen>
-
     <!-- WIZARD -->
     <dimen name="wizard_nav_img_margin_left">80dp</dimen>
     <dimen name="wizard_nav_img_margin_top">165dp</dimen>
     <dimen name="wizard_product_height">150dp</dimen>
-
-    <!-- FAVOURITE -->
-    <dimen name="favourite_item_height">190dp</dimen>
 
     <!-- ROUNDED BORDERS -->
     <dimen name="rounded_margin_small">5dp</dimen>
@@ -88,6 +80,7 @@
     <dimen name="button_container_height">90dp</dimen>
     <!-- rounded_margin_mid + button_height + button_container_height -->
     <dimen name="button_double_container_height">160dp</dimen>
+    <dimen name="button_landscape_width">640dp</dimen>
     <dimen name="product_item_variant_text_size">12sp</dimen>
     <dimen name="product_item_button_height">37.5dp</dimen>
     <dimen name="product_item_addtocart_variation_width">65dp</dimen>
@@ -95,9 +88,7 @@
     <dimen name="title_box_height">25dp</dimen>
 
     <!--  TRACK ORDER REDESIGN -->
-    <dimen name="track_order_container_height">235dp</dimen>
     <dimen name="track_order_margin_small">15dp</dimen>
-    <dimen name="track_order_margin_mid">15dp</dimen>
     <dimen name="track_order_content_height">160dp</dimen>
     <dimen name="tack_order_order_nr_container_height">105dp</dimen>
 
