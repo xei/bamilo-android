@@ -272,14 +272,28 @@
         <item name="android:textColor">@color/grey_middle</item>
     </style>
 
-    <!-- FORM EDITTEXT STYLE -->
-    <style name="form_edittext_style">
+    <style name="form_style">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:background">@drawable/selector_edittext_bottomline</item>
         <item name="android:textColor">@color/form_text</item>
+        <item name="android:textSize">@dimen/text_form</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="form_edittext_style" parent="form_style">
+        <item name="android:background">@drawable/selector_edittext_bottomline</item>
         <item name="android:textColorHint">@color/form_text_hint</item>
-        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="form_checkbox_style" parent="form_style">
+        <!-- item name="android:layout_marginRight">@dimen/login_margin_medium</item -->
+        <!-- item name="android:layout_marginBottom">-5dp</item>
+        <item name="android:layout_marginTop">-5dp</item -->
     </style>
 
     <style name="starRatingBarSmall">
@@ -338,7 +352,7 @@
     <style name="rounded_box">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/rounded_margin_small</item>
+        <item name="android:layout_marginTop">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginBottom">@dimen/rounded_margin_small</item>
         <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
@@ -401,6 +415,15 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
+    <!-- style name="button_facebook">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_marginBottom">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginTop">@dimen/rounded_margin_mid</item>
+    </style -->
+
     <!-- BUTTON CONTAINER HAS ALWAYS A BOTTOM PADDING -->
     <style name="button_container">
         <item name="android:layout_width">match_parent</item>
@@ -447,6 +470,10 @@
     <style name="text_title" parent="_base_text">
         <item name="android:fontFamily">roboto_bold</item>
         <item name="android:textSize">@dimen/text_title</item>
+    </style>
+
+    <style name="text_form" parent="_base_text">
+        <item name="android:textSize">@dimen/text_form</item>
     </style>
 
     <style name="text_header" parent="_base_text">

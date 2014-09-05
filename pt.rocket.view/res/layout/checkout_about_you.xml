@@ -3,7 +3,7 @@
     android:id="@+id/rocket_app_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" >
+    android:background="@color/grey_background" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,6 @@
         <!-- SIGNUP -->
 
         <include layout="@layout/checkout_about_you_signup" />
-        
     </LinearLayout>
 
 </ScrollView>

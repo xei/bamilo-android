@@ -3,9 +3,10 @@
 
     <!-- TEXT DIMENSIONS (px/2) -->
     <dimen name="text_header">24sp</dimen>
+    <dimen name="text_form">19.5sp</dimen>
     <dimen name="text_title">18sp</dimen>
     <dimen name="text_subtitle">16sp</dimen>
-    <dimen name="text_description">15sp</dimen>
+    <!-- dimen name="text_description">15sp</dimen -->
     <dimen name="text_button">25sp</dimen>
     <dimen name="text_button_item">16sp</dimen>
 
@@ -31,7 +32,7 @@
     <dimen name="product_detail_item_discount_percentage_height">40dp</dimen>
 
     <!-- DIALOG CATALOG FILTER -->
-    <dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
+    <dimen name="dialog_catalog_filter_width">@integer/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">450.00dp</dimen>
 
     <!-- CAMPAIGN PAGE -->
@@ -102,6 +103,14 @@
 
     <dimen name="home_items_margin">27dp</dimen>
 
-    <dimen name="fragment_root_text_size">27sp</dimen>
+    <!-- dimen name="fragment_root_text_size">27sp</dimen -->
+
+    <dimen name="form_date_width">190dp</dimen>
+
+    <dimen name="login_margin_small">15dp</dimen>
+    <dimen name="login_margin_medium">30dp</dimen>
+    <dimen name="login_margin_high">35dp</dimen>
+
+    <dimen name="checkout_box_title_height">60dp</dimen>
 
 </resources>

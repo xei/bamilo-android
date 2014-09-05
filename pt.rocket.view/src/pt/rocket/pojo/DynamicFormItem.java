@@ -1019,6 +1019,53 @@ public class DynamicFormItem {
 
     }
 
+    private void buildCheckBoxInflated(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
+
+        this.control.setLayoutParams(params);
+
+        // data controls
+        params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        dataContainer = new RelativeLayout(this.context);
+        dataContainer.setId(parent.getNextId());
+        dataContainer.setLayoutParams(params);
+
+        params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        this.dataControl = (CheckBox) View.inflate(this.context, R.layout.form_checkbox, null);
+        this.dataControl.setId(parent.getNextId());
+        
+        params.addRule(RelativeLayout.CENTER_VERTICAL);
+        //params.setMargins((int) (3 * this.scale), 0, 0, 0);
+        // this.dataControl.setLayoutParams(params);
+        ((View) this.dataControl).setContentDescription(this.entry.getKey());
+        ((CheckBox) this.dataControl).setFocusable(false);
+        ((CheckBox) this.dataControl).setFocusableInTouchMode(false);
+        ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
+        // ((CheckBox) this.dataControl).setPadding(this.dataControl.getPaddingLeft(), this.dataControl.getPaddingTop(), this.dataControl.getPaddingRight(), this.dataControl.getPaddingBottom());
+
+        if (this.entry.getValue().equals("1")) {
+            ((CheckBox) this.dataControl).setChecked(true);
+        }
+
+        this.dataControl.setVisibility(View.VISIBLE);
+        
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        params.addRule(RelativeLayout.CENTER_VERTICAL);
+        params.rightMargin = 10;
+        this.mandatoryControl = new TextView(this.context);
+        this.mandatoryControl.setLayoutParams(params);
+        this.mandatoryControl.setText("*");
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
+        this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
+
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+
+        dataContainer.addView(this.dataControl);
+        dataContainer.addView(this.mandatoryControl);
+
+        ((ViewGroup) this.control).addView(dataContainer);
+    }
+
     private void buildRadioGroup(RelativeLayout dataContainer, RelativeLayout.LayoutParams params,
             int controlWidth) {
         this.control.setLayoutParams(params);
@@ -1247,7 +1294,7 @@ public class DynamicFormItem {
 
             switch (this.entry.getInputType()) {
             case checkBox:
-                buildCheckBox(dataContainer, params, controlWidth);
+                buildCheckBoxInflated(dataContainer, params, controlWidth);
                 break;
             case checkBoxList:
                 buildCheckBoxForTerms(dataContainer, params, controlWidth);
@@ -1264,19 +1311,21 @@ public class DynamicFormItem {
                 break;
             case number:             
                 // fix for devices with big density
-                float dateScale = (float) (scale < 1.6 ? scale : 1.5);
+                /*-float dateScale = (float) (scale < 1.6 ? scale : 1.5);
                 TextView measure = new TextView(this.context);
-                measure.setTextSize(MANDATORYSIGNALSIZE+2);
+                measure.setTextSize(MANDATORYSIGNALSIZE + 2);*/
                 boolean datePart = isDatePart();
                 //String filler  = this.entry.getKey().contains("year") ? "OOOOOO" : new String(new char[this.entry.getKey().length()]).replace('\0', 'O');
-                String filler  = this.entry.getKey().contains("year") ? "OOOOOO" : "OWVV";
+                /*-String filler = this.entry.getKey().contains("year") ? "OOOOOO" : "OWVV";*/
                 //controlWidth = (!datePart) ? RelativeLayout.LayoutParams.MATCH_PARENT : (int) (measure.getPaint().measureText(this.entry.getLabel()) * scale);
-                controlWidth = (!datePart) ? RelativeLayout.LayoutParams.MATCH_PARENT : (int) (measure.getPaint().measureText(filler) * dateScale);
-                
-                params = new RelativeLayout.LayoutParams( controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                if ( datePart ) {
+                /*-controlWidth = (!datePart) ? RelativeLayout.LayoutParams.MATCH_PARENT : (int) (measure.getPaint().measureText(filler) * dateScale);*/
+
+                controlWidth = (!datePart) ? RelativeLayout.LayoutParams.MATCH_PARENT : context.getResources().getDimensionPixelSize(R.dimen.form_date_width);
+
+                params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                if (datePart) {
                     params.setMargins(0, 0, (int) (10 * scale), 0);
-                }      
+                }
                 
             case email:
             case text:
@@ -1740,6 +1789,9 @@ public class DynamicFormItem {
 
         dataContainer.addView(this.dataControl);
         dataContainer.addView(this.mandatoryControl);
+        if (isDatePart()) {
+            dataContainer.setPadding(0, 0, 10, 0);
+        }
 
         return dataContainer;
     }

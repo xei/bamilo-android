@@ -50,9 +50,10 @@
 
     <!-- TEXT DIMENSIONS (px/3) -->
     <dimen name="text_header">16sp</dimen>
+    <dimen name="text_form">13sp</dimen>
     <dimen name="text_title">12sp</dimen>
     <dimen name="text_subtitle">10.67sp</dimen>
-    <dimen name="text_description">10sp</dimen>
+    <!-- dimen name="text_description">10sp</dimen -->
     <dimen name="text_button">16.67sp</dimen>
     <dimen name="text_button_item">10.67sp</dimen>
 
@@ -77,8 +78,8 @@
     <dimen name="teaser_banners_brands_list_margin">0dp</dimen>
 
     <!-- BASE -->
-    <dimen name="match_parent">-1dp</dimen>
-    <dimen name="wrap_content">-2dp</dimen>
+    <integer name="match_parent">-1</integer>
+    <integer name="wrap_content">-2</integer>
 
     <!-- HOME -->
     <dimen name="teaser_product_item_width">120dp</dimen>
@@ -108,7 +109,7 @@
     <dimen name="about_you_toogle_height">48dp</dimen>
 
     <!-- INNER CONTAINER -->
-    <dimen name="inner_container_width">@dimen/match_parent</dimen>
+    <dimen name="inner_container_width">@integer/match_parent</dimen>
 
     <!-- CHECKOUT HEADER -->
     <dimen name="checkout_header_height">22dp</dimen>
@@ -128,7 +129,7 @@
 
     <!-- DIALOG CATALOG FILTER -->
     <dimen name="catalog_button_filter_width">80dp</dimen>
-    <dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
+    <dimen name="dialog_catalog_filter_width">@integer/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">400.00dp</dimen>
 
     <!-- PRODUCT LIST ITEM -->
@@ -153,7 +154,7 @@
     <!-- NO RESULTS PAGE -->
     <dimen name="no_results_top_margin">40dp</dimen>
     <dimen name="no_results_bottom_margin">33.33dp</dimen>
-    <dimen name="no_results_search_tips_width">@dimen/match_parent</dimen>
+    <dimen name="no_results_search_tips_width">@integer/match_parent</dimen>
     <dimen name="no_results_brands_height">147dp</dimen>
 
     <!-- GRID PRODUCTS -->
@@ -237,6 +238,24 @@
 
     <dimen name="home_items_margin">18dp</dimen>
 
-    <dimen name="fragment_root_text_size">18sp</dimen>
+    <!-- dimen name="fragment_root_text_size">18sp</dimen -->
+
+    <dimen name="login_container_width">@integer/match_parent</dimen>
+
+    <!-- 93.33dp reduced to 90dp -->
+    <dimen name="form_date_width">90dp</dimen>
+
+    <dimen name="login_margin_small">10dp</dimen>
+    <dimen name="login_margin_medium">20dp</dimen>
+    <dimen name="login_margin_high">23.33dp</dimen>
+
+    <dimen name="checkout_box_title_height">40dp</dimen>
+
+    <dimen name="com_facebook_loginview_padding_top">0dp</dimen>
+    <dimen name="com_facebook_loginview_padding_bottom">0dp</dimen>
+    <!-- dimen name="com_facebook_loginview_padding_left">@dimen/rounded_margin_mid</dimen>
+    <dimen name="com_facebook_loginview_padding_right">@dimen/rounded_margin_mid</dimen -->
+
+    <dimen name="com_facebook_loginview_text_size">@dimen/text_button</dimen>
 
 </resources>

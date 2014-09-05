@@ -56,7 +56,7 @@
     <dimen name="checkout_order_inner_margin_right">50dp</dimen>
     
 	<!-- DIALOG CATALOG FILTER -->
-	<dimen name="dialog_catalog_filter_width">@dimen/match_parent</dimen>
+	<dimen name="dialog_catalog_filter_width">@integer/match_parent</dimen>
     <dimen name="dialog_catalog_filter_height">450.00dp</dimen>
     
 	<!-- CAMPAIGN PAGE -->
@@ -98,5 +98,7 @@
 
     <!-- rounded_margin_mid + button_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
     <dimen name="recently_viewed_button_container_height">90dp</dimen>
+
+    <dimen name="login_container_width">640dp</dimen>
 
 </resources>

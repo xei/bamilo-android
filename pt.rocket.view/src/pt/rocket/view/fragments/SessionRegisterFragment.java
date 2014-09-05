@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.holoeverywhere.FontLoader;
+import org.holoeverywhere.widget.CheckBox;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
@@ -41,22 +42,21 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.deeplink.DeepLinkManager;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import de.akquinet.android.androlog.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
@@ -70,9 +70,9 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private Button registerButton;
 
-    private org.holoeverywhere.widget.CheckBox rememberEmailCheck;
+    private CheckBox rememberEmailCheck;
 
-    private  TextView loginText;
+    private TextView loginText;
 
     private CheckBox checkTerms;
 
@@ -83,11 +83,11 @@ public class SessionRegisterFragment extends BaseFragment {
     private TextView registerRequiredText;
 
     private static DynamicForm serverForm;
-    
+
     private DynamicFormItem termsLink;
-    
+
     private DynamicFormItem newsletterSubscribe;
-    
+
     private String terms;
 
     private LinearLayout container;
@@ -102,8 +102,9 @@ public class SessionRegisterFragment extends BaseFragment {
         if (bundle != null) {
             // Force load form if comes from deep link
             String path = bundle.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
-            if (path != null && path.equals(DeepLinkManager.TAG))
+            if (path != null && path.equals(DeepLinkManager.TAG)) {
                 JumiaApplication.INSTANCE.registerForm = null;
+            }
         }
 
         return sRegisterFragment;
@@ -116,8 +117,9 @@ public class SessionRegisterFragment extends BaseFragment {
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.MyAccount,
                 R.layout.register,
-                R.string.register_title,
+                0,
                 KeyboardState.ADJUST_CONTENT);
+        // R.string.register_title
     }
 
     /*
@@ -162,12 +164,12 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        
+
         TrackerDelegator.trackPage(TrackingPage.REGISTRATION);
-        
+
         // Used for UG
         forceInputAlignToLeft();
-        
+
         if (JumiaApplication.INSTANCE.registerForm != null) {
             Log.d(TAG, " ON RESUME -> load From");
             loadForm(JumiaApplication.INSTANCE.registerForm);
@@ -214,7 +216,6 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         Log.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
         if (null != serverForm) {
-
             Iterator<DynamicFormItem> iterator = serverForm.iterator();
 
             while (iterator.hasNext()) {
@@ -229,9 +230,8 @@ public class SessionRegisterFragment extends BaseFragment {
 
     public void saveFormState() {
         if (null != serverForm) {
-            
             Log.d(TAG, "  -----> SAVE FORM STATE <--------- ");
-            
+
             if (JumiaApplication.INSTANCE.registerSavedInstanceState == null) {
                 JumiaApplication.INSTANCE.registerSavedInstanceState = new Bundle();
             }
@@ -260,7 +260,7 @@ public class SessionRegisterFragment extends BaseFragment {
      */
     private void getFormComponents() {
         registerButton = (Button) getView().findViewById(R.id.register_button_submit);
-        rememberEmailCheck = (org.holoeverywhere.widget.CheckBox) getView().findViewById(R.id.login_remember_user_email);
+        rememberEmailCheck = (CheckBox) getView().findViewById( R.id.login_remember_user_email);
         loginText = (TextView) getView().findViewById(R.id.loginText);
         // checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
         registerRequiredText = (TextView) getView().findViewById(R.id.register_required_text);
@@ -291,7 +291,7 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View arg0) {
                 Log.d(TAG, "registerButton onClick");
-                
+
                 if (serverForm != null && !serverForm.checkRequired()) {
                     registerRequiredText.setVisibility(View.VISIBLE);
                     return;
@@ -335,10 +335,9 @@ public class SessionRegisterFragment extends BaseFragment {
      * button when all the mandatory fields are filled
      */
     OnFocusChangeListener focus_listener = new OnFocusChangeListener() {
-
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-//            saveFormState();
+            // saveFormState();
             if (!hasFocus) {
                 checkInputFields();
             }
@@ -349,7 +348,6 @@ public class SessionRegisterFragment extends BaseFragment {
      * 
      */
     IcsAdapterView.OnItemSelectedListener selected_listener = new IcsAdapterView.OnItemSelectedListener() {
-
         @Override
         public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
             checkInputFields();
@@ -364,7 +362,6 @@ public class SessionRegisterFragment extends BaseFragment {
      * 
      */
     TextWatcher text_watcher = new TextWatcher() {
-
         @Override
         public void afterTextChanged(Editable s) {
             checkInputFields();
@@ -415,8 +412,7 @@ public class SessionRegisterFragment extends BaseFragment {
                 } else {
                     result &= old.equals(item.getValue());
                     if (!result) {
-                        item.ShowError(getActivity().getResources().getString(
-                                R.string.form_passwordsnomatch));
+                        item.ShowError(getString(R.string.form_passwordsnomatch));
                     }
                 }
             }
@@ -458,10 +454,9 @@ public class SessionRegisterFragment extends BaseFragment {
         // Create Event Manager
         ContentValues values = serverForm.save();
         String newsletterType = getSubscribeType();
-        if(newsletterType != null && values.containsKey(newsletterSubscribe.getName())){
+        if (newsletterType != null && values.containsKey(newsletterSubscribe.getName())) {
             values.remove(newsletterSubscribe.getName());
             values.put(newsletterSubscribe.getName(), newsletterType);
-
         }
         triggerRegister(values);
     }
@@ -471,12 +466,11 @@ public class SessionRegisterFragment extends BaseFragment {
      */
 
     protected boolean onSuccessEvent(Bundle bundle) {
-        
-        if(isOnStoppingProcess){
+        if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        
+
         if (getBaseActivity() != null) {
             getBaseActivity().handleSuccessEvent(bundle);
         } else {
@@ -492,13 +486,13 @@ public class SessionRegisterFragment extends BaseFragment {
             Bundle params = new Bundle();
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
             TrackerDelegator.trackSignupSuccessful(params);
-            
+
             JumiaApplication.INSTANCE.registerForm = null;
             JumiaApplication.INSTANCE.registerSavedInstanceState = null;
-            
+
             // Persist user email or empty that value after successfull login
             CustomerPreferences.setRememberedEmail(getBaseActivity(), rememberEmailCheck.isChecked() ? customer.getEmail() : null);
-            
+
             // Finish
             getActivity().onBackPressed();
             Log.d(TAG, "event done - REGISTER_ACCOUNT_EVENT");
@@ -552,21 +546,20 @@ public class SessionRegisterFragment extends BaseFragment {
         showFragmentContentContainer();
     }
 
-    private String getSubscribeType(){
+    private String getSubscribeType() {
         String result = null;
         newsletterSubscribe = serverForm.getItemByKey(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG);
-        if(newsletterSubscribe == null){
+        if (newsletterSubscribe == null) {
             return result;
         }
-        
-        ArrayList<NewsletterOption> newsletterOptions = serverForm.getForm().getFieldKeyMap().get(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG).newsletterOptions;
-        
 
-        if(newsletterSubscribe.getEditControl() != null && ((CheckBox) newsletterSubscribe.getEditControl()).isChecked()){
+        ArrayList<NewsletterOption> newsletterOptions = serverForm.getForm().getFieldKeyMap().get(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG).newsletterOptions;
+
+        if (newsletterSubscribe.getEditControl() != null && ((CheckBox) newsletterSubscribe.getEditControl()).isChecked()) {
             DynamicFormItem genderForm = serverForm.getItemByKey(RestConstants.JSON_GENDER_TAG);
-            if(newsletterOptions!=null){
+            if (newsletterOptions != null) {
                 for (NewsletterOption newsletterOption : newsletterOptions) {
-                    if(newsletterOption.label.toLowerCase().contains(genderForm.getValue().toLowerCase())){
+                    if (newsletterOption.label.toLowerCase().contains(genderForm.getValue().toLowerCase())) {
                         result = newsletterOption.value;
                         return result;
                     }
@@ -575,9 +568,8 @@ public class SessionRegisterFragment extends BaseFragment {
         }
         return result;
     }
-    
-    private void setTermsListener() {
 
+    private void setTermsListener() {
         termsLink = serverForm.getItemByKey(RestConstants.JSON_TERMS_TAG);
         if (termsLink == null) {
             return;
@@ -588,14 +580,12 @@ public class SessionRegisterFragment extends BaseFragment {
         linkText = (TextView) termsLink.getEditControl().findViewWithTag(
                 RestConstants.JSON_TERMS_TAG);
         linkText.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 saveFormState();
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.TERMS_CONDITIONS, terms);
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.TERMS, bundle,
-                        FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.TERMS, bundle, FragmentController.ADD_TO_BACK_STACK);
 
             }
         });
@@ -605,12 +595,12 @@ public class SessionRegisterFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                if(((CheckBox) v).isChecked()){
+                if (((CheckBox) v).isChecked()) {
                     mandatory.setVisibility(View.GONE);
                 } else {
                     mandatory.setVisibility(View.VISIBLE);
                 }
-                
+
                 if (serverForm != null && serverForm.checkRequired()) {
                     registerButton.setTextAppearance(getActivity(), R.style.text_bold_programatically);
                     FontLoader.apply(registerButton, FontLoader.ROBOTO_BOLD);
@@ -644,17 +634,16 @@ public class SessionRegisterFragment extends BaseFragment {
                     dialog = DialogGenericFragment.newInstance(true, true, false,
                             getString(R.string.error_register_title),
                             getString(R.string.error_register_alreadyexists),
-                            getString(R.string.ok_label), "", new OnClickListener() {
-
+                            getString(R.string.ok_label), 
+                            "", 
+                            new OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     int id = v.getId();
                                     if (id == R.id.button1) {
                                         dialog.dismiss();
                                     }
-
                                 }
-
                             });
                     dialog.show(getActivity().getSupportFragmentManager(), null);
                     return true;
@@ -663,17 +652,16 @@ public class SessionRegisterFragment extends BaseFragment {
                     dialog = DialogGenericFragment.newInstance(true, true, false,
                             getString(R.string.error_register_title),
                             getString(R.string.incomplete_alert),
-                            getString(R.string.ok_label), "", new OnClickListener() {
-
+                            getString(R.string.ok_label), 
+                            "", 
+                            new OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     int id = v.getId();
                                     if (id == R.id.button1) {
                                         dialog.dismiss();
                                     }
-
                                 }
-
                             });
                     dialog.show(getActivity().getSupportFragmentManager(), null);
                     return true;
@@ -735,9 +723,9 @@ public class SessionRegisterFragment extends BaseFragment {
         triggerContentEventWithNoLoading(new GetTermsConditionsHelper(), null, mCallBack);
     }
 
-//    private void triggerStoreLogin(ContentValues values) {
-//        JumiaApplication.INSTANCE.getCustomerUtils().storeLogin(values);
-//    }
+    // private void triggerStoreLogin(ContentValues values) {
+    // JumiaApplication.INSTANCE.getCustomerUtils().storeLogin(values);
+    // }
 
     /**
      * CALLBACK
@@ -745,7 +733,6 @@ public class SessionRegisterFragment extends BaseFragment {
      * @author sergiopereira
      */
     IResponseCallback mCallBack = new IResponseCallback() {
-
         @Override
         public void onRequestError(Bundle bundle) {
             onErrorEvent(bundle);
@@ -756,5 +743,4 @@ public class SessionRegisterFragment extends BaseFragment {
             onSuccessEvent(bundle);
         }
     };
-
 }

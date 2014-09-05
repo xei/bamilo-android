@@ -80,6 +80,7 @@ public class RadioGroupLayout extends LinearLayout {
             button.setText(mItems.get(idx));
             if (idx == mDefaultSelected)
                 button.setChecked(true);
+            button.setPadding(0, 0, 100, 0);
             RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
                     RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
             mGroup.addView(button, idx, layoutParams);

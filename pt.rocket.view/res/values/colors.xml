@@ -38,8 +38,8 @@
     <color name="item_highlight">#ecedee</color>
     <color name="dialog_button_highlight">@color/item_highlight</color>
     <!-- color name="dialog_title_background">@color/grey_highlight</color -->
-    <color name="form_text">@color/grey_middlelight</color>
-    <color name="form_text_hint">@color/grey_highlight</color>
+    <color name="form_text">@color/grey_middle</color>
+    <color name="form_text_hint">@color/grey_middlelight</color>
     
     <color name="campaign_info_background">#fff7e6</color>
     

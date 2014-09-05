@@ -9,6 +9,8 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.pojo.MetaFormExtractor;
+import pt.rocket.utils.UIUtils;
+import pt.rocket.view.R;
 import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -326,8 +328,9 @@ public class FormFactory {
             LinearLayout groupLayout = new LinearLayout(context);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             groupLayout.setId( userForm.getNextId() );
-            groupLayout.setOrientation(LinearLayout.HORIZONTAL);            
+            groupLayout.setOrientation(LinearLayout.HORIZONTAL);
             groupLayout.setLayoutParams(params);
+            groupLayout.setPadding(0, UIUtils.dpToPx(context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_small), scale), 0, 0);
             
             DynamicFormItem ctrl;
             
