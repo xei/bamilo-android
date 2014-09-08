@@ -17,6 +17,7 @@
             android:layout_width="@dimen/catalog_list_item_image_width"
             android:layout_height="@dimen/catalog_list_item_image_height"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             layout="@layout/shopping_basket_item_image" />

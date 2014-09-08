@@ -13,15 +13,6 @@
         android:scaleType="fitCenter"
         android:src="@drawable/no_image_small" />
 
-    <ImageView
-        android:id="@+id/item_image_is_new"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|left"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        android:src="@drawable/img_newarrival_en" />
-
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_percentage"
         style="@style/discount_percentage"

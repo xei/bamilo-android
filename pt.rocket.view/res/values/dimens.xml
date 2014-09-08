@@ -179,7 +179,7 @@
     <dimen name="rounded_margin_mid">6.67dp</dimen>
 
     <!-- CATALOG REDESIGN -->
-    <dimen name="catalog_list_item_height">100dp</dimen>
+    <dimen name="catalog_list_item_height">103.33dp</dimen><!--105dp-->
     <dimen name="catalog_grid_item_height">186.67dp</dimen>
     <dimen name="catalog_list_item_image_width">74.67dp</dimen>
     <dimen name="catalog_list_item_image_height">93.33dp</dimen>
@@ -202,7 +202,7 @@
     <dimen name="button_double_container_height">106.67dp</dimen>
     <dimen name="button_landscape_width">426.67dp</dimen>
     <dimen name="product_item_variant_text_size">8sp</dimen>
-    <dimen name="product_item_button_height">25dp</dimen>
+    <dimen name="product_item_button_height">30dp</dimen>
     <dimen name="product_item_addtocart_variation_width">43.33dp</dimen>
     <dimen name="product_item_text_right_margin">50dp</dimen>
     <dimen name="title_box_height">16.67dp</dimen>
@@ -228,6 +228,8 @@
     <dimen name="login_margin_high">23.33dp</dimen>
 
     <dimen name="checkout_box_title_height">40dp</dimen>
+
+    <dimen name="delete_button_size">16dp</dimen>
 
     <dimen name="com_facebook_loginview_compound_drawable_padding">0dp</dimen>
     <dimen name="com_facebook_loginview_padding_top">0dp</dimen>

@@ -19,9 +19,16 @@
             android:layout_width="@dimen/catalog_list_item_image_width"
             android:layout_height="@dimen/catalog_list_item_image_height"
             android:layout_alignParentLeft="true"
-            android:layout_gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             layout="@layout/addabletocart_item_image" />
+
+        <ImageView
+            android:id="@+id/item_image_is_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left"
+            android:src="@drawable/img_newarrival_en" />
 
         <!-- INFO CONTAINER -->
 

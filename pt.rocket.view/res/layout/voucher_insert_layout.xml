@@ -28,12 +28,13 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/rounded_margin_mid"
             android:ellipsize="marquee"
+            android:gravity="center"
             android:paddingLeft="16.6dp"
             android:paddingRight="16.6dp"
             android:singleLine="true"
             android:text="@string/voucher_use"
             android:textColor="@color/grey_dark"
-            android:textSize="@dimen/text_title" />
+            android:textSize="@dimen/text_subtitle" />
 
         <org.holoeverywhere.widget.EditText
             android:id="@+id/voucher_name"
@@ -41,14 +42,7 @@
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             android:layout_marginRight="26.67dp"
             android:layout_toLeftOf="@+id/voucher_btn"
-            android:cursorVisible="true"
-            android:ellipsize="end"
-            android:ems="10"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:hint="@string/voucher_message_hint"
-            android:maxLines="1"
-            android:textCursorDrawable="@null" >
+            android:hint="@string/voucher_message_hint" >
 
             <requestFocus />
         </org.holoeverywhere.widget.EditText>

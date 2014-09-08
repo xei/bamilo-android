@@ -75,6 +75,8 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 
 	private ArrayList<String> known_variations;
 
+	private boolean isNew;
+
 	/**
 	 * Complete product empty constructor.
 	 */
@@ -94,10 +96,15 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 
 		specialPrice = CurrencyFormatter.formatCurrency(0.0);
 		maxSpecialPrice = CurrencyFormatter.formatCurrency(0.0);
+        // TODO use formatCurrency(String)
+        // specialPrice = CurrencyFormatter.formatCurrency("0");
+        // maxSpecialPrice = CurrencyFormatter.formatCurrency("0");
 		maxSavingPercentage = 0.0;
 
 		ratingsAverage = 0.0;
 		ratingsCount = 0;
+
+		isNew = false;
 	}
 
 	/*
@@ -122,12 +129,16 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			url = dataObject.optString(RestConstants.JSON_PROD_URL_TAG, "");
 			priceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_PRICE_TAG, "0"));
 			price = CurrencyFormatter.formatCurrency(priceDouble);
+			// TODO fix UG huge amount conversion
+			// price = CurrencyFormatter.formatCurrency(dataObject.getString(RestConstants.JSON_PRICE_TAG));
 			maxPriceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_PRICE_TAG, "0"));
 			maxPrice = CurrencyFormatter.formatCurrency(maxPriceDouble);
 			brand = dataObject.getString(RestConstants.JSON_BRAND_TAG);
 
 			double specialPriceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG, "" + priceDouble));
 			specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);
+			// TODO fix UG huge amount conversion
+			// specialPrice = CurrencyFormatter.formatCurrency(dataObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG, dataObject.getString(RestConstants.JSON_PRICE_TAG)));
 			maxSpecialPrice = CurrencyFormatter.formatCurrency(Double.parseDouble(dataObject.optString(
 							RestConstants.JSON_MAX_SPECIAL_PRICE_TAG, "" + maxPriceDouble)));
 			maxSavingPercentage = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, "0"));
@@ -142,7 +153,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 						RestConstants.JSON_RATINGS_TOTAL_SUM_TAG, 0);
 			}
 
-			if (maxSavingPercentage.equals(0) && !price.equals(specialPrice)) {
+			if (maxSavingPercentage.equals(0D) && !price.equals(specialPrice)) {
 				maxSavingPercentage = (double) Math.round(specialPriceDouble
 						* 100 / priceDouble);
 			}
@@ -216,7 +227,9 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 				}
 
 			}
-			
+
+			isNew = dataObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
+
 			JSONObject variationsObject = dataObject
 					.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
 			if (variationsObject == null)
@@ -561,6 +574,14 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	public ArrayList<String> getKnownVariations() {
 		return known_variations;
 	}
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean isNew) {
+        this.isNew = isNew;
+    }
 
 	@Override
 	public int describeContents() {

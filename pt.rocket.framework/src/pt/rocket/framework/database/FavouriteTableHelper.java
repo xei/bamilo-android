@@ -13,7 +13,6 @@ import pt.rocket.framework.objects.Favourite;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.Variation;
-import pt.rocket.framework.rest.RestConstants;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -95,7 +94,7 @@ public class FavouriteTableHelper {
 			values.put(FavouriteTableHelper._FAVOURITE_DISCOUNT_PERCENTAGE, completeProduct.getMaxSavingPercentage());
 			values.put(FavouriteTableHelper._FAVOURITE_URL, completeProduct.getUrl());
 			values.put(FavouriteTableHelper._FAVOURITE_IMAGE_URL, completeProduct.getImageList().size() == 0 ? "" : completeProduct.getImageList().get(0));
-			values.put(FavouriteTableHelper._FAVOURITE_IS_NEW, Boolean.getBoolean(completeProduct.getAttributes().get(RestConstants.JSON_IS_NEW_TAG)));
+			values.put(FavouriteTableHelper._FAVOURITE_IS_NEW, completeProduct.isNew());
 
 			String simplesJSON = "";
 			ArrayList<ProductSimple> simples = completeProduct.getSimples();

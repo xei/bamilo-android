@@ -13,8 +13,8 @@
 
     <org.holoeverywhere.widget.Button
         android:id="@+id/button_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/delete_button_size"
+        android:layout_height="@dimen/delete_button_size"
         android:layout_alignParentRight="true"
         android:layout_below="@id/top_spacer"
         android:background="@drawable/selector_btn_remove_item" />

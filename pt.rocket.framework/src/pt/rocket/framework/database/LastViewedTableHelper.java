@@ -12,7 +12,6 @@ import pt.rocket.framework.objects.LastViewed;
 import pt.rocket.framework.objects.LastViewedAddableToCart;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.Variation;
-import pt.rocket.framework.rest.RestConstants;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -101,7 +100,7 @@ public class LastViewedTableHelper {
 				values.put(LastViewedTableHelper._PRODUCT_DISCOUNT_PERCENTAGE, completeProduct.getMaxSavingPercentage());
 				values.put(LastViewedTableHelper._PRODUCT_URL, completeProduct.getUrl());
 				values.put(LastViewedTableHelper._PRODUCT_IMAGE_URL, completeProduct.getImageList().size() == 0 ? "" : completeProduct.getImageList().get(0));
-				values.put(LastViewedTableHelper._PRODUCT_IS_NEW, Boolean.getBoolean(completeProduct.getAttributes().get(RestConstants.JSON_IS_NEW_TAG)));
+				values.put(LastViewedTableHelper._PRODUCT_IS_NEW, completeProduct.isNew());
 
 				String simplesJSON = "";
 				ArrayList<ProductSimple> simples = completeProduct.getSimples();

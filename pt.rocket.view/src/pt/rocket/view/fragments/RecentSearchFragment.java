@@ -138,7 +138,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
 
                 mRecentSearchesAdapter.notifyDataSetChanged();
 
-                showFragmentEmpty(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch);
+                showEmpty();
                 mClearAllButton.setVisibility(View.GONE);
                 Log.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());
 
@@ -152,21 +152,44 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
             }
         });
     }
-    
-    
+
+    /**
+     * Show empty content
+     * 
+     * @author Andre Lopes
+     */
+    protected void showEmpty() {
+        showFragmentEmpty(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch, R.string.continue_shopping, (OnClickListener) this);
+    }
+
     /**
      * ########### LISTENERS ########### 
      */
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
-    public void onClick(View v) {
-        // TODO : Add all click listener here
+    public void onClick(View view) {
+        // Get view id
+        int id = view.getId();
+        if (id == R.id.fragment_root_empty_button) {
+            onClickContinueShopping();
+        }
     }
-    
+
+    /**
+     * Process the click on continue button
+     * 
+     * @author Andre Lopes
+     */
+    protected void onClickContinueShopping() {
+        Log.i(TAG, "ON CLICK CONTINUE SHOPPING");
+        getBaseActivity().onBackPressed();
+    }
+
     /**
      * ########### TRIGGERS ########### 
      */
@@ -227,11 +250,11 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
                     mClearAllButton.setVisibility(View.VISIBLE);
                     showFragmentContentContainer();
                 } else {
-                    showFragmentEmpty(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch);
+                    showEmpty();
                 }
             } else {
                 mRecentSearches = null;
-                showFragmentEmpty(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch);
+                showEmpty();
             }
 
             Log.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());
