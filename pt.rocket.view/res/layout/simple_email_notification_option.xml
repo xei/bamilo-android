@@ -11,7 +11,7 @@
 
     <org.holoeverywhere.widget.CheckBox
         android:id="@+id/myaccount_newsletter_checkbox"
-        style="@style/text_header"
+        style="@style/text_normal"
         android:layout_width="match_parent"
         android:layout_gravity="center"
         android:background="@drawable/selector_listitem_rounded_margin_highlight"
