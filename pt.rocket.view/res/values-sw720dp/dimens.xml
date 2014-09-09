@@ -22,11 +22,6 @@
     <dimen name="navigation_item_divider_height">1dp</dimen>
     <dimen name="navigation_cart_vertical_distance">17dp</dimen>
 
-    <!-- PRODUCT LIST ITEM -->
-    <dimen name="product_list_item_discount_percentage_image_width">36dp</dimen>
-    <dimen name="product_list_item_discount_percentage_image_height">20dp</dimen>
-    <dimen name="product_list_item_discount_percentage_text_size">10sp</dimen>
-
     <!-- CHECKOUT HEADER -->
     <dimen name="checkout_header_height">32dp</dimen>
     <dimen name="checkout_header_margin">@dimen/margin_small</dimen>

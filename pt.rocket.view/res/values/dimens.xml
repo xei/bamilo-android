@@ -90,9 +90,9 @@
     <dimen name="sliding_tab_text_size">14sp</dimen>
 
     <!-- PRODUCT LIST ITEM -->
-    <dimen name="product_list_item_discount_percentage_image_width">28dp</dimen>
-    <dimen name="product_list_item_discount_percentage_image_height">16dp</dimen>
-    <dimen name="product_list_item_discount_percentage_text_size">8sp</dimen>
+    <dimen name="product_list_item_discount_percentage_image_width">30dp</dimen>
+    <dimen name="product_list_item_discount_percentage_image_height">20dp</dimen>
+    <dimen name="product_list_item_discount_percentage_text_size">9sp</dimen>
     <dimen name="product_list_item_image_margin">6.67dp</dimen>
     <dimen name="product_list_item_image_side_margin">13.33dp</dimen>
 

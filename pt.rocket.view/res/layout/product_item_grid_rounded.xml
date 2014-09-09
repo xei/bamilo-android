@@ -21,8 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
         android:background="@drawable/selector_is_new_en" />
 
     <ImageView
@@ -39,10 +37,10 @@
     <org.holoeverywhere.widget.TextView
         android:id="@+id/discount_percentage"
         style="@style/discount_percentage"
+        android:gravity="center"
         android:layout_above="@+id/item_brand"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:paddingBottom="@dimen/margin_small" />
+        android:layout_marginRight="@dimen/rounded_margin_mid" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_brand"

@@ -38,7 +38,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -71,9 +70,11 @@ public class CatalogPageFragment extends BaseFragment {
     private final String PRODUCT_LIST_POSITION = "product_list_position";
     private final String LIST_TITLE = "list_title";
 
-    private final int MAX_PAGE_ITEMS = 18;
+    private final int MAX_PAGE_ITEMS = 24;
     private final int NO_MORE_PAGES = -1;
-    
+
+    private int numItemsToLoad = MAX_PAGE_ITEMS;
+
     private final int SCROLL_DELAY = 250;
 
     private CatalogFragment parentFragment;
@@ -117,6 +118,10 @@ public class CatalogPageFragment extends BaseFragment {
 
     private int numColumns;
     private int mFirstVisibleItem;
+
+    private boolean reattached = false;
+
+    private boolean isScrolling = false;
 
     public static CatalogPageFragment newInstance(Bundle bundle) {
         CatalogPageFragment sCatalogPageFragment = new CatalogPageFragment();
@@ -233,6 +238,10 @@ public class CatalogPageFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED #" + mPageIndex);
 
+        if (savedInstanceState != null) {
+            reattached = true;
+        }
+
         this.relativeLayoutPc = (RelativeLayout) view.findViewById(R.id.products_content);
         this.linearLayoutLm = (LinearLayout) view.findViewById(R.id.loadmore);
         this.gridView = (GridView) view.findViewById(R.id.middle_productslist_list);
@@ -242,53 +251,41 @@ public class CatalogPageFragment extends BaseFragment {
         this.btnToplist.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // verify if API is 11 or above
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    /*--
-                     * smooth scroll directly to top in 1 second
-                     */
-                    gridView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            int duration = mFirstVisibleItem <= 10 ? 300 : 1000;
-                            gridView.smoothScrollToPositionFromTop(0, 0, duration);
-                        }
-                    });
-                } else {
-                    oldSmoothScroll();
-                }
+                smoothScroll();
             }
         });
     }
-    
-    private void oldSmoothScroll() {
-        /*--
-         * Position scroll on position nItemsScroll
-         * Smooth scroll after DELAY
-         * Force scroll on position 0 after more DELAY
-         */
-        int delay = 0;
+
+    private void smoothScroll() {
+        // Use this flag to signal onSuccess() that scroll is in progress
+        isScrolling = true;
+
+        // Position scroll on position nItemsScroll and smooth scroll to position 0
         int nItemsToScroll = numColumns * 5;
         Log.d(TAG, "mFirstVisibleItem: " + mFirstVisibleItem + "; nItemsToScroll: " + nItemsToScroll);
         // Position scroll if past nItemsScroll. Delay smoothScroll
         if (mFirstVisibleItem > nItemsToScroll) {
             gridView.setSelection(nItemsToScroll);
-            delay = SCROLL_DELAY;
         }
+        gridView.smoothScrollToPosition(0);
 
-        // Smooth scroll and position scroll after 2 times DELAY
+        // Force scroll on position 0 after DELAY
         gridView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                gridView.smoothScrollToPosition(0);
+                gridView.setSelection(0);
+                // after another DELAY verify is position was done and reset isScrolling
+                // otherwise only onSuccess() will try to scroll further on
                 gridView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        gridView.setSelection(0);
+                        if (mFirstVisibleItem == 0) {
+                            isScrolling = false;
+                        }
                     }
-                }, SCROLL_DELAY*2);
+                }, SCROLL_DELAY);
             }
-        }, delay);
+        }, SCROLL_DELAY);
     }
 
     @Override
@@ -341,7 +338,9 @@ public class CatalogPageFragment extends BaseFragment {
      */
     public void invalidateData(final Bundle arguments, final boolean forceRefresh) {
 
-        if (isVisible() && !isDetached()) {        
+        // update GridView when visible or if reattached after a rotation
+        if (!isDetached() && (isVisible() || reattached)) {
+            reattached = false;
             if (null != getView() && null == gridView) {
                 this.gridView = (GridView) getView().findViewById(R.id.middle_productslist_list);
             } else if (null == getView() && null == gridView) {
@@ -387,7 +386,7 @@ public class CatalogPageFragment extends BaseFragment {
                 gridView.setOnScrollListener(onScrollListener);
     
                 if (products == null || products.isEmpty()) {
-                    if (mSavedProductsSKU != null /*- AAA && !mSavedProductsSKU.isEmpty()*/) {
+                    if (mSavedProductsSKU != null) {
                         showFiltersNoResults();
                     } else {
                         showProductsNotfound();
@@ -421,6 +420,15 @@ public class CatalogPageFragment extends BaseFragment {
     }
 
     private void initializeCatalogPage(boolean showList) {
+        initializeCatalogPage(showList, false);
+    }
+
+    /**
+     * 
+     * @param showList
+     * @param forceGetMoreProducts used to ignore existing products and request products
+     */
+    private void initializeCatalogPage(boolean showList, boolean forceGetMoreProducts) {
         updateGridColumns(showList);
         Log.d(TAG, "ON RESUME - REQ -> Landscape ? " + mIsLandScape + "; Columns #" + numColumns);
 
@@ -458,7 +466,7 @@ public class CatalogPageFragment extends BaseFragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (mSavedProductsSKU != null/*- AAA && !mSavedProductsSKU.isEmpty()*/) {
+                        if (mSavedProductsSKU != null) {
                             showFiltersNoResults();
                         } else {
                             showProductsNotfound();
@@ -497,7 +505,7 @@ public class CatalogPageFragment extends BaseFragment {
 
             if (mPageNumber == 1 && null != getView()) {
                 hideProductsNotFound();
-                showFragmentLoading(); // AAA linearLayoutLb.setVisibility(View.VISIBLE);
+                showFragmentLoading();
                 // showLoadingInfo();
             }
 
@@ -511,7 +519,7 @@ public class CatalogPageFragment extends BaseFragment {
             bundle.putString(GetProductsHelper.PRODUCT_URL, mProductsURL);
             bundle.putString(GetProductsHelper.SEARCH_QUERY, mSearchQuery);
             bundle.putInt(GetProductsHelper.PAGE_NUMBER, mPageNumber);
-            bundle.putInt(GetProductsHelper.TOTAL_COUNT, MAX_PAGE_ITEMS);
+            bundle.putInt(GetProductsHelper.TOTAL_COUNT, numItemsToLoad);
             bundle.putInt(GetProductsHelper.SORT, mSort.id);
             bundle.putInt(GetProductsHelper.DIRECTION, mDirection.id);
             bundle.putParcelable(GetProductsHelper.FILTERS, mFilters);
@@ -527,7 +535,7 @@ public class CatalogPageFragment extends BaseFragment {
         relativeLayoutPc.setVisibility(View.VISIBLE);
         hideProductsLoading();
         if (getView() != null) {
-            showFragmentContentContainer(); // AAA linearLayoutLb.setVisibility(View.GONE);
+            showFragmentContentContainer();
             // hideLoadingInfo();
         }
     }
@@ -604,7 +612,7 @@ public class CatalogPageFragment extends BaseFragment {
             public void run() {
                 linearLayoutLm.setVisibility(View.GONE);
                 if (hideViewSpnf) {
-                    showFragmentContentContainer(); // AAA viewSpnf.setVisibility(View.GONE);
+                    showFragmentContentContainer();
                 }
             }
         }, 200);
@@ -656,10 +664,10 @@ public class CatalogPageFragment extends BaseFragment {
             if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
                 RocketImageLoader.getInstance().stopProcessingQueue(); // CatalogFragment.requestTag
             } else {
-                ProductsListAdapter adapter = (ProductsListAdapter) gridView.getAdapter();
-                adapter.notifyDataSetChanged();
+                // TODO test if notifyDataSetChanged is really needed
+                /*-ProductsListAdapter adapter = (ProductsListAdapter) gridView.getAdapter();
+                adapter.notifyDataSetChanged();*/
                 RocketImageLoader.getInstance().startProcessingQueue();
-
             }
         }
 
@@ -847,7 +855,7 @@ public class CatalogPageFragment extends BaseFragment {
 
         mPageNumber = numberProducts >= totalProducts ? NO_MORE_PAGES : mPageNumber + 1;
         showCatalogContent();
-        if (mTotalProducts < ((mPageNumber - 1) * MAX_PAGE_ITEMS)) {
+        if (mTotalProducts < ((mPageNumber - 1) * numItemsToLoad)) {
             mPageNumber = NO_MORE_PAGES;
         }
 
@@ -859,6 +867,21 @@ public class CatalogPageFragment extends BaseFragment {
         // Updated filter
         if (parentFragment.isVisible()) {
             parentFragment.onSuccesLoadingFilteredCatalog(productsPage.getFilters());
+        }
+
+        // if smoothScroll didn't finish the job properly, finish it here
+        if (isScrolling) {
+            isScrolling = false;
+            // if still not in position 0, wait 2 DELAYS and force scroll to position 0 
+            if (mFirstVisibleItem > 0) {
+                gridView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        gridView.setSelection(0);
+                    }
+                }, 2 * SCROLL_DELAY);
+                // Toast.makeText(getBaseActivity(), "FORCE SCROLL ON SUCCESS!", Toast.LENGTH_SHORT).show();
+            }
         }
 
         RocketImageLoader.getInstance().startProcessingQueue();
@@ -913,8 +936,9 @@ public class CatalogPageFragment extends BaseFragment {
         } else {
             Log.d(TAG, "onErrorEvent: loading more products failed");
             hideProductsLoading();
-            if (mTotalProducts != -1 && mTotalProducts > ((mPageNumber - 1) * MAX_PAGE_ITEMS)) {
+            if (mTotalProducts != -1 && mTotalProducts > ((mPageNumber - 1) * numItemsToLoad)) {
                 Toast.makeText(getBaseActivity(), R.string.products_could_notloaded, Toast.LENGTH_SHORT).show();
+                /*- TODO showProductsNotfound();*/
             }
         }
         mBeginRequestMillis = System.currentTimeMillis();

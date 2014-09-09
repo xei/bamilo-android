@@ -70,6 +70,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     private static final String FILTER_STATE_KEY = "filter_state";
     private static final String TOTAL_KEY = "total_products";
     private static final String TITLE_KEY = "title";
+    private static final String CURRENT_PAGE = "current_page";
 
     public static String requestTag = "CTLG_REQUEST";
     private static String PRODUCTS_LIST = "CTLG_PRODUCTS";
@@ -124,8 +125,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     private SlidingTabLayout mPagerTabStrip;
 
     private int mSavedPagerPosition = 1; // POPULARITY
-    
-    private SortPages startPage = SortPages.DEFAULT;
+
+    private SortPages currentPage = SortPages.DEFAULT;
 
     /**
      * Empty constructor
@@ -170,6 +171,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                     mFilterMD5 = iMD5;
                 }
             }
+            currentPage = (SortPages) savedInstanceState.getSerializable(CURRENT_PAGE);
         }
 
         mShowListDrawable = getResources().getDrawable(R.drawable.selector_catalog_listview);
@@ -178,19 +180,27 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         sharedPreferences = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         showList = sharedPreferences.getBoolean(ConstantsSharedPrefs.KEY_SHOW_LIST_LAYOUT, true);
 
-        if (title.equals("")) {
-            title = getArguments().getString(ConstantsIntentExtra.CONTENT_TITLE);
+        Bundle arguments = getArguments();
+
+        if (TextUtils.isEmpty(title)) {
+            title = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
         }
 
-        productsURL = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
+        productsURL = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
 
-        searchQuery = getArguments().getString(ConstantsIntentExtra.SEARCH_QUERY);
+        searchQuery = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
 
-        navigationSource = getArguments().getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
+        navigationSource = arguments.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
 
-        navigationPath = getArguments().getString(ConstantsIntentExtra.NAVIGATION_PATH);
-        
-        startPage = (SortPages) getArguments().getSerializable(ConstantsIntentExtra.CATALOG_SORT_PAGE);
+        navigationPath = arguments.getString(ConstantsIntentExtra.NAVIGATION_PATH);
+
+        // only set currentPage if arguments exists and CATALOG_SORT_PAGE is defined
+        if (arguments != null) {
+            Object currentPageObject = arguments.getSerializable(ConstantsIntentExtra.CATALOG_SORT_PAGE);
+            if (currentPageObject != null && currentPageObject instanceof SortPages) {
+                currentPage = (SortPages) currentPageObject;
+            }
+        }
 
         // Save the current catalog data, used as a fall back
         saveCurrentCatalogDataForFilters();
@@ -290,9 +300,9 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         mViewPager.setAdapter(mCatalogPagerAdapter);
         mPagerTabStrip.setViewPager(mViewPager);
         mViewPager.setOffscreenPageLimit(1);
-        if (null != startPage && startPage != SortPages.DEFAULT) {
-            mViewPager.setCurrentItem(startPage.ordinal());
-            startPage = SortPages.DEFAULT;
+        if (null != currentPage && currentPage != SortPages.DEFAULT) {
+            mViewPager.setCurrentItem(currentPage.ordinal());
+            currentPage = SortPages.DEFAULT;
         } else {
             mViewPager.setCurrentItem(mSavedPagerPosition);
         }
@@ -349,6 +359,12 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         outState.putParcelableArrayList(PRODUCTS_LIST, new ArrayList<Product>(mProductsMap.values()));
         outState.putInt(TOTAL_KEY, mTotalProducts);
         outState.putString(TITLE_KEY, title);
+
+        // save current page to be restored after a rotation
+        int currentPage = mViewPager.getCurrentItem();
+        if (currentPage >= 0) {
+            outState.putSerializable(CURRENT_PAGE, SortPages.values()[currentPage]);
+        }
     }
 
     @Override
