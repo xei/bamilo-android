@@ -363,7 +363,7 @@
     <!-- BUTTON FOR BOTTOM CONTAINER -->
     <style name="_parent_button_bottom_container">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_height">@dimen/button_big_height</item>
         <item name="android:layout_marginBottom">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
@@ -396,7 +396,7 @@
 
     <!-- style name="button_facebook">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_height">@dimen/button_big_height</item>
         <item name="android:layout_marginBottom">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>

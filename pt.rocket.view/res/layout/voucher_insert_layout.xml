@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/voucher_container"
     style="@style/rounded_box"
-    android:layout_marginBottom="0dp" >
+    android:layout_marginBottom="0dp"
+    android:layout_marginTop="@dimen/rounded_margin_small" >
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/title"
@@ -14,50 +15,49 @@
         style="@style/divider_horizontal_orange"
         android:layout_below="@id/title" />
 
-    <RelativeLayout
-        android:id="@+id/voucher_container"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_below="@id/voucher_divider"
-        android:gravity="center" >
+        android:layout_height="@dimen/checkout_voucher_box_height"
+        android:layout_below="@id/voucher_divider" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <org.holoeverywhere.widget.EditText
+                android:id="@+id/voucher_name"
+                style="@style/form_edittext_style"
+                android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:layout_marginRight="@dimen/rounded_margin_mid"
+                android:layout_marginTop="@dimen/login_margin_medium"
+                android:hint="@string/voucher_message_hint" >
+            </org.holoeverywhere.widget.EditText>
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/voucher_error_message"
+                style="@style/text_normal"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:text="@string/voucher_error_message"
+                android:textColor="@color/red_middle"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <org.holoeverywhere.widget.Button
             android:id="@+id/voucher_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_height="@dimen/button_big_height"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/login_margin_medium"
             android:layout_marginRight="@dimen/rounded_margin_mid"
             android:ellipsize="marquee"
             android:gravity="center"
-            android:paddingLeft="16.6dp"
-            android:paddingRight="16.6dp"
             android:singleLine="true"
             android:text="@string/voucher_use"
             android:textColor="@color/grey_dark"
-            android:textSize="@dimen/text_subtitle" />
-
-        <org.holoeverywhere.widget.EditText
-            android:id="@+id/voucher_name"
-            style="@style/form_edittext_style"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginRight="26.67dp"
-            android:layout_toLeftOf="@+id/voucher_btn"
-            android:hint="@string/voucher_message_hint" >
-
-            <requestFocus />
-        </org.holoeverywhere.widget.EditText>
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/voucher_error_message"
-            style="@style/text_normal"
-            android:layout_width="match_parent"
-            android:layout_below="@id/voucher_name"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginTop="@dimen/margin_x_small"
-            android:text="@string/voucher_error_message"
-            android:textColor="@color/red_middle"
-            android:textSize="@dimen/text_xs"
-            android:visibility="gone" />
-    </RelativeLayout>
+            android:textSize="@dimen/text_title" />
+    </LinearLayout>
 
 </RelativeLayout>

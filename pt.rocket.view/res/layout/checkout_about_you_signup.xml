@@ -82,7 +82,7 @@
                 xmlns:fb="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/checkout_signup_form_button_facebook"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
+                android:layout_height="@dimen/button_big_height"
                 android:layout_margin="@dimen/rounded_margin_mid"
                 android:text="@string/facebook_signup_button_text"
                 fb:login_text="@string/facebook_signup_button_text" />

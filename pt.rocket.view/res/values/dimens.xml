@@ -196,14 +196,14 @@
     <dimen name="root_empty_drawable_padding">23.33dp</dimen>
 
     <!-- MY PROFILE REDESIGN -->
-    <dimen name="button_height">40dp</dimen>
-    <!-- rounded_margin_mid + button_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
+    <dimen name="button_big_height">40dp</dimen>
+    <!-- rounded_margin_mid + button_big_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
     <dimen name="button_container_height">60dp</dimen>
-    <!-- rounded_margin_mid + button_height + button_container_height -->
+    <!-- rounded_margin_mid + button_big_height + button_container_height -->
     <dimen name="button_double_container_height">106.67dp</dimen>
     <dimen name="button_landscape_width">426.67dp</dimen>
     <dimen name="product_item_variant_text_size">8sp</dimen>
-    <dimen name="product_item_button_height">30dp</dimen>
+    <dimen name="product_item_button_height">@dimen/button_small_height</dimen>
     <dimen name="product_item_addtocart_variation_width">43.33dp</dimen>
     <dimen name="product_item_text_right_margin">50dp</dimen>
     <dimen name="title_box_height">16.67dp</dimen>
@@ -230,6 +230,7 @@
     <dimen name="login_margin_high">23.33dp</dimen>
 
     <dimen name="checkout_box_title_height">40dp</dimen>
+    <dimen name="checkout_voucher_box_height">70dp</dimen>
 
     <dimen name="delete_button_size">12.67dp</dimen>
     <dimen name="delete_button_margin">2dp</dimen>
@@ -243,5 +244,7 @@
     <!-- dimen name="com_facebook_loginview_padding_left">@dimen/rounded_margin_mid</dimen -->
 
     <dimen name="com_facebook_loginview_text_size">@dimen/text_header</dimen>
+
+    <dimen name="button_small_height">30dp</dimen>
 
 </resources>

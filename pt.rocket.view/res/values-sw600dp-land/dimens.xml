@@ -76,7 +76,7 @@
     <integer name="catalog_list_num_columns">2</integer>
     <integer name="catalog_grid_num_columns">3</integer>
 
-    <!-- rounded_margin_mid + button_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
+    <!-- rounded_margin_mid + button_big_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
     <dimen name="recently_viewed_button_container_height">90dp</dimen>
 
     <dimen name="login_container_width">640dp</dimen>

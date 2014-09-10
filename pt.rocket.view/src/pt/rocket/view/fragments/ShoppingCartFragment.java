@@ -406,6 +406,8 @@ public class ShoppingCartFragment extends BaseFragment {
             });
         } else {
             mCallToOrderButton.setVisibility(View.GONE);
+            LinearLayout buttonsContainer = (LinearLayout) getView().findViewById(R.id.shopping_basket_buttons_container);
+            buttonsContainer.getLayoutParams().height = getResources().getDimensionPixelSize(R.dimen.button_container_height);
         }
     }
 

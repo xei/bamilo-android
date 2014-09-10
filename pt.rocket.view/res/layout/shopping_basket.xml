@@ -45,6 +45,7 @@
         <include layout="@layout/shopping_basket_subtotal_element" />
 
         <LinearLayout
+            android:id="@+id/shopping_basket_buttons_container"
             style="@style/button_container"
             android:layout_height="@dimen/button_double_container_height"
             android:orientation="vertical" >

@@ -17,6 +17,7 @@
         android:layout_height="@dimen/delete_button_size"
         android:layout_alignParentRight="true"
         android:layout_below="@id/top_spacer"
+        android:layout_margin="@dimen/delete_button_margin"
         android:background="@drawable/selector_btn_remove_item" />
 
     <!-- BRAND -->

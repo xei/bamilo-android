@@ -13,7 +13,9 @@
         android:layout_marginBottom="@dimen/rounded_margin_mid"
         android:layout_weight="1" >
 
-        <RelativeLayout style="@style/rounded_box" >
+        <RelativeLayout
+            style="@style/rounded_box"
+            android:layout_marginRight="0dp" >
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/title"
@@ -50,6 +52,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/rounded_margin_small"
             android:orientation="vertical" >
 
             <include layout="@layout/voucher_insert_layout" />
@@ -57,6 +60,7 @@
             <include layout="@layout/shopping_basket_subtotal_element" />
 
             <LinearLayout
+                android:id="@+id/shopping_basket_buttons_container"
                 style="@style/button_container"
                 android:layout_height="@dimen/button_double_container_height"
                 android:orientation="vertical" >

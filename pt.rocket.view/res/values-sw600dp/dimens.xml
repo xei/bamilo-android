@@ -75,14 +75,14 @@
     <dimen name="root_empty_drawable_padding">35dp</dimen>
 
     <!-- MY PROFILE REDESIGN -->
-    <dimen name="button_height">60dp</dimen>
-    <!-- rounded_margin_mid + button_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
+    <dimen name="button_big_height">60dp</dimen>
+    <!-- rounded_margin_mid + button_big_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
     <dimen name="button_container_height">90dp</dimen>
-    <!-- rounded_margin_mid + button_height + button_container_height -->
+    <!-- rounded_margin_mid + button_big_height + button_container_height -->
     <dimen name="button_double_container_height">160dp</dimen>
     <dimen name="button_landscape_width">640dp</dimen>
     <dimen name="product_item_variant_text_size">12sp</dimen>
-    <dimen name="product_item_button_height">45dp</dimen>
+    <dimen name="product_item_button_height">@dimen/button_small_height</dimen>
     <dimen name="product_item_addtocart_variation_width">65dp</dimen>
     <dimen name="product_item_text_right_margin">75dp</dimen>
     <dimen name="title_box_height">25dp</dimen>
@@ -103,10 +103,13 @@
     <dimen name="login_margin_high">35dp</dimen>
 
     <dimen name="checkout_box_title_height">60dp</dimen>
+    <dimen name="checkout_voucher_box_height">105dp</dimen>
 
     <dimen name="delete_button_size">19dp</dimen>
     <dimen name="delete_button_margin">3dp</dimen>
 
     <dimen name="inner_child_height">50dp</dimen>
+
+    <dimen name="button_small_height">45dp</dimen>
 
 </resources>
