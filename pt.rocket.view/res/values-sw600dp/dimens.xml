@@ -107,4 +107,6 @@
 
     <dimen name="delete_button_size">24dp</dimen>
 
+    <dimen name="inner_child_height">50dp</dimen>
+
 </resources>

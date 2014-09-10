@@ -83,6 +83,7 @@
     <dimen name="teaser_banners_group_height">100dp</dimen>
     <dimen name="teaser_margin_bottom">0dp</dimen>
     <dimen name="teaser_margin_left">6.5dp</dimen>
+    <dimen name="teaser_margin">6.5dp</dimen>
 
     <!-- MAIN LAYOUT -->
     <dimen name="sliding_tab_height">38dp</dimen>
@@ -231,6 +232,8 @@
     <dimen name="checkout_box_title_height">40dp</dimen>
 
     <dimen name="delete_button_size">16dp</dimen>
+
+    <dimen name="inner_child_height">33.33dp</dimen>
 
     <dimen name="com_facebook_loginview_compound_drawable_padding">0dp</dimen>
     <dimen name="com_facebook_loginview_padding_top">0dp</dimen>

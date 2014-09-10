@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/teaser_margin_bottom"
-    android:layout_marginLeft="6.5dp"
-    android:layout_marginRight="6.5dp"
-    android:layout_marginTop="3dp"
+    android:layout_marginLeft="@dimen/teaser_margin"
+    android:layout_marginRight="@dimen/teaser_margin"
+    android:layout_marginTop="@dimen/rounded_margin_small"
     android:orientation="vertical" >
 
     <!-- CONTAINER -->

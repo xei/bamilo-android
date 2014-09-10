@@ -257,7 +257,7 @@ public class TeasersFactory {
      */
     private View createCategoryTeaserView(TeaserCategory cat, ViewGroup vg, LayoutInflater mInflater) {
         View categoryTeaserView;
-        categoryTeaserView = mInflater.inflate(R.layout.category_inner_childcat, vg, false);
+        categoryTeaserView = mInflater.inflate(R.layout.teaser_inner_childcat, vg, false);
         categoryTeaserView.findViewById(R.id.divider).setVisibility(View.GONE);
         TextView textView = (TextView) categoryTeaserView.findViewById(R.id.text);
         textView.setText(cat.getName());
@@ -272,7 +272,7 @@ public class TeasersFactory {
      * @return
      */
     private View createCategoryAllTeaserView(ViewGroup container, LayoutInflater mInflater) {
-        View view = mInflater.inflate(R.layout.category_inner_currentcat, container, false);
+        View view = mInflater.inflate(R.layout.teaser_inner_currentcat, container, false);
         view.findViewById(R.id.divider).setVisibility(View.GONE);
         TextView textView = (TextView) view.findViewById(R.id.text);
         textView.setText(mContext.getString(R.string.categories_toplevel_title));
@@ -366,7 +366,7 @@ public class TeasersFactory {
      */
     private View createTopBrandTeaserView(TeaserTopBrand teaser, ViewGroup vg, LayoutInflater mInflater) {
         View mTopBrandTeaserView;
-        mTopBrandTeaserView = mInflater.inflate(R.layout.category_inner_childcat, vg, false);
+        mTopBrandTeaserView = mInflater.inflate(R.layout.teaser_inner_childcat, vg, false);
         mTopBrandTeaserView.findViewById(R.id.divider).setVisibility(View.GONE);
         TextView textView = (TextView) mTopBrandTeaserView.findViewById(R.id.text);
         textView.setText(teaser.getName());
@@ -383,7 +383,7 @@ public class TeasersFactory {
      */
     @SuppressWarnings("unused")
     private View createItemAllBrandsView(ViewGroup container, LayoutInflater mInflater) {
-        View view = mInflater.inflate(R.layout.category_inner_currentcat, container, false);
+        View view = mInflater.inflate(R.layout.teaser_inner_currentcat, container, false);
         TextView textView = (TextView) view.findViewById(R.id.text);
         textView.setText(mContext.getString(R.string.top_brands_toplevel_title));
         view.setOnClickListener(onTeaserClickListener);
@@ -449,7 +449,7 @@ public class TeasersFactory {
      * @author sergiopereira
      */
     private View createCampaignTeaserView(TeaserCampaign teaser, ViewGroup vg, LayoutInflater mInflater) {
-    	View campaignTeaserView = mInflater.inflate(R.layout.category_inner_childcat, vg, false);
+    	View campaignTeaserView = mInflater.inflate(R.layout.teaser_inner_childcat, vg, false);
     	campaignTeaserView.findViewById(R.id.divider).setVisibility(View.GONE);
         TextView textView = (TextView) campaignTeaserView.findViewById(R.id.text);
         textView.setText(teaser.getTargetTitle());
