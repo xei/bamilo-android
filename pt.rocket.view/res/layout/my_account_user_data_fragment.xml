@@ -76,8 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/rounded_margin_mid" >
+            android:orientation="vertical" >
 
             <org.holoeverywhere.widget.TextView
                 style="@style/rounded_box_title_grey"
