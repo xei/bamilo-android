@@ -237,7 +237,7 @@
     <string name="creation_date">Creation Date:</string>
     <string name="payment_method">Payment Method:</string>
     <string name="order_track_products">Products:</string>
-    <string name="error_tracking_order_text">No results found for the searched order id. Please recheck the order id and try again.</string>
+    <string name="error_tracking_order_text">No results found for the searched order id.\nPlease recheck the order id and try again.</string>
     <string name="fallback_maintenance">MAINTENANCE</string>
     <string name="fallback_maintenance_text">is currently in maintenance.</string>
     <string name="fallback_maintenance_text_bottom">We will try to be brief, you can try again later</string>

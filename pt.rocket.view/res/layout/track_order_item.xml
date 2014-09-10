@@ -4,17 +4,22 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <View
+    <LinearLayout
         android:id="@+id/order_item_divider"
-        style="@style/line_grey_style"
-        android:layout_marginBottom="@dimen/rounded_margin_small"
-        android:layout_marginTop="@dimen/rounded_margin_small"
-        android:visibility="gone" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/rounded_margin_mid"
+        android:visibility="gone" >
+
+        <View
+            style="@style/line_grey_style"
+            android:layout_marginBottom="@dimen/rounded_margin_small"
+            android:layout_marginTop="@dimen/rounded_margin_small" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:paddingTop="@dimen/rounded_margin_mid" >
 
         <org.holoeverywhere.widget.TextView
@@ -30,9 +35,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/rounded_margin_mid" >
+        android:layout_height="wrap_content" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/order_last_update"

@@ -81,4 +81,6 @@
 
     <dimen name="login_container_width">640dp</dimen>
 
+    <dimen name="track_order_error_content_height">@dimen/track_order_content_height</dimen>
+
 </resources>

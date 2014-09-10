@@ -246,7 +246,7 @@ public class TrackOrderFragment extends BaseFragment {
 
         getView().findViewById(R.id.order_status_container).setVisibility(View.GONE);
         // HEADER CONTAINER getView().findViewById(R.id.title_status_container).setVisibility(View.GONE);
-        getView().findViewById(R.id.error_tracking_order).setVisibility(View.GONE);
+        getView().findViewById(R.id.error_tracking_order_container).setVisibility(View.GONE);
         getView().findViewById(R.id.loading_status).setVisibility(View.VISIBLE);
         loadingTrackBarView = (LoadingBarView) getView().findViewById(R.id.loading_bar_view);
         if (loadingTrackBarView != null) {
@@ -298,7 +298,7 @@ public class TrackOrderFragment extends BaseFragment {
         getView().findViewById(R.id.loading_status).setVisibility(View.GONE);
         // HEADER CONTAINER getView().findViewById(R.id.title_status_container).setVisibility(View.VISIBLE);
         getView().findViewById(R.id.order_status_container).setVisibility(View.VISIBLE);
-        getView().findViewById(R.id.error_tracking_order).setVisibility(View.GONE);
+        getView().findViewById(R.id.error_tracking_order_container).setVisibility(View.GONE);
     }
 
     private void proccessError() {
@@ -310,7 +310,7 @@ public class TrackOrderFragment extends BaseFragment {
         }
         getView().findViewById(R.id.loading_status).setVisibility(View.GONE);
         // HEADER CONTAINER getView().findViewById(R.id.title_status_container).setVisibility(View.VISIBLE);
-        getView().findViewById(R.id.error_tracking_order).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.error_tracking_order_container).setVisibility(View.VISIBLE);
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {

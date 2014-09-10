@@ -239,7 +239,7 @@
     <string name="creation_date">Date de création:</string>
     <string name="payment_method">Méthode de Paiement:</string>
     <string name="order_track_products">Produits:</string>
-    <string name="error_tracking_order_text">Aucun résultat pour le numéro de commande recherché. S\'il vous plaît vérifiez à nouveau le numéro de commande et réessayez.</string>
+    <string name="error_tracking_order_text">Aucun résultat pour le numéro de commande recherché.\nS\'il vous plaît vérifiez à nouveau le numéro de commande et réessayez.</string>
     <string name="fallback_welcome">BIENVENUE</string>
     <string name="fallback_maintenance_text">est actuellement en maintenance.</string>
     <string name="fallback_maintenance_text_bottom">Nous allons essayer d\'être bref, réessayer dans quelques secondes </string>

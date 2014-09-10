@@ -19,7 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/voucher_divider"
-        android:layout_margin="@dimen/rounded_margin_mid"
+        android:layout_marginBottom="@dimen/rounded_margin_mid"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
         android:gravity="center"
         android:orientation="vertical" >
 
@@ -31,8 +33,7 @@
             android:layout_height="@dimen/track_order_content_height"
             android:gravity="center"
             android:maxLines="4"
-            android:paddingLeft="@dimen/margin_veryhuge"
-            android:paddingRight="@dimen/margin_veryhuge"
+            android:padding="@dimen/rounded_margin_mid"
             android:singleLine="false"
             android:text="@string/track_your_order_tip"
             android:textColor="@color/grey_middlelight"
@@ -55,17 +56,24 @@
 
         <!-- ERROR -->
 
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/error_tracking_order"
-            style="@style/text_normal"
-            android:layout_height="@dimen/track_order_content_height"
+        <LinearLayout
+            android:id="@+id/error_tracking_order_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/track_order_error_content_height"
             android:gravity="center"
-            android:maxLines="4"
-            android:paddingLeft="@dimen/margin_veryhuge"
-            android:paddingRight="@dimen/margin_veryhuge"
-            android:singleLine="false"
-            android:text="@string/error_tracking_order_text"
-            android:visibility="gone" />
+            android:visibility="gone" >
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/error_tracking_order"
+                style="@style/text_normal"
+                android:layout_marginBottom="@dimen/rounded_margin_mid"
+                android:layout_marginTop="@dimen/rounded_margin_mid"
+                android:gravity="center"
+                android:maxLines="4"
+                android:padding="@dimen/rounded_margin_mid"
+                android:singleLine="false"
+                android:text="@string/error_tracking_order_text" />
+        </LinearLayout>
 
         <!-- RESULTS -->
 
@@ -80,6 +88,7 @@
                 android:id="@+id/order_creation_date_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/rounded_margin_mid"
                 android:orientation="horizontal" >
 
                 <org.holoeverywhere.widget.TextView

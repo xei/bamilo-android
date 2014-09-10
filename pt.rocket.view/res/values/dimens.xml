@@ -211,7 +211,7 @@
     <!--  TRACK ORDER REDESIGN -->
     <dimen name="track_order_margin_small">10dp</dimen>
     <dimen name="track_order_content_height">106.66dp</dimen>
-    <dimen name="tack_order_order_nr_container_height">70dp</dimen>
+    <dimen name="track_order_error_content_height">@integer/wrap_content</dimen>
 
     <dimen name="recently_viewed_button_container_height">@dimen/button_double_container_height</dimen>
 
