@@ -220,6 +220,7 @@
 
     <dimen name="login_container_width">@integer/match_parent</dimen>
 
+    <dimen name="form_item_height">30dp</dimen>
     <!-- 93.33dp reduced to 90dp -->
     <dimen name="form_date_width">90dp</dimen>
 

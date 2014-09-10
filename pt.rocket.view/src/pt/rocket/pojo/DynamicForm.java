@@ -117,7 +117,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
 
             group.addView(controlView);
             if (null == base.findViewById(group.getId())) {
-                base.addView(group);
+                base.addView(group, params);
             }
         }
     }

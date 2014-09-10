@@ -35,7 +35,6 @@ import pt.rocket.view.R;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -103,8 +102,6 @@ public class DynamicFormItem {
 
     private int errorColor;
 
-    private float screenDensity;
-
     private ArrayList<DynamicForm> childDynamicForm;
 
     /**
@@ -122,7 +119,6 @@ public class DynamicFormItem {
     public DynamicFormItem(DynamicForm parent, Context context, IFormField entry) {
         this.context = context;
         this.parent = parent;
-        this.screenDensity = context.getResources().getDisplayMetrics().density;
         this.entry = entry;
         this.control = null;
         this.errorControl = null;
@@ -863,7 +859,7 @@ public class DynamicFormItem {
         textWatcher = watcher;
     }
 
-    private void buildCheckBox(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
+    /*-private void buildCheckBox(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
 
         this.control.setLayoutParams(params);
 
@@ -921,7 +917,7 @@ public class DynamicFormItem {
 
         ((ViewGroup) this.control).addView(dataContainer);
 
-    }
+    }*/
 
     private void buildCheckBoxForTerms(RelativeLayout dataContainer,
             RelativeLayout.LayoutParams params,
@@ -1034,13 +1030,11 @@ public class DynamicFormItem {
         this.dataControl.setId(parent.getNextId());
         
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        //params.setMargins((int) (3 * this.scale), 0, 0, 0);
-        // this.dataControl.setLayoutParams(params);
-        ((View) this.dataControl).setContentDescription(this.entry.getKey());
-        ((CheckBox) this.dataControl).setFocusable(false);
-        ((CheckBox) this.dataControl).setFocusableInTouchMode(false);
+        this.dataControl.setLayoutParams(params);
+        this.dataControl.setContentDescription(this.entry.getKey());
+        this.dataControl.setFocusable(false);
+        this.dataControl.setFocusableInTouchMode(false);
         ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
-        // ((CheckBox) this.dataControl).setPadding(this.dataControl.getPaddingLeft(), this.dataControl.getPaddingTop(), this.dataControl.getPaddingRight(), this.dataControl.getPaddingBottom());
 
         if (this.entry.getValue().equals("1")) {
             ((CheckBox) this.dataControl).setChecked(true);
@@ -1153,7 +1147,7 @@ public class DynamicFormItem {
             ((Button) this.dataControl).setHint(text);
             ((Button) this.dataControl).setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
             ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
-            this.dataControl.setPadding(UIUtils.dpToPx(13, screenDensity), 0, 0, 10);
+            this.dataControl.setPadding(UIUtils.dpToPx(13, scale), 0, 0, 10);
             // ((Button)
             // this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
 
@@ -1267,6 +1261,8 @@ public class DynamicFormItem {
     private void buildHide(RelativeLayout dataContainer, RelativeLayout.LayoutParams params,
             int controlWidth) {
         this.control.setLayoutParams(params);
+        // Don't allow an hidden control to take visual space
+        this.control.setVisibility(View.GONE);
         createTextDataContainer(controlWidth);
         EditText editText = ((EditText) this.dataControl);
         editText.setText(this.entry.getValue());

@@ -260,6 +260,7 @@
     </style>
 
     <style name="form_edittext_style" parent="form_style">
+        <item name="android:layout_height">@dimen/form_item_height</item>
         <item name="android:background">@drawable/selector_edittext_bottomline</item>
         <item name="android:textColorHint">@color/form_text_hint</item>
         <item name="android:cursorVisible">true</item>
@@ -271,8 +272,14 @@
 
     <style name="form_checkbox_style" parent="form_style">
         <!-- item name="android:layout_marginRight">@dimen/login_margin_medium</item -->
-        <!-- item name="android:layout_marginBottom">-5dp</item>
-        <item name="android:layout_marginTop">-5dp</item -->
+        <item name="android:height">@dimen/form_item_height</item>
+        <!-- item name="android:layout_marginBottom">-4dp</item>
+        <item name="android:layout_marginTop">-4dp</item -->
+        <item name="android:layout_gravity">top</item>
+    </style>
+
+    <style name="form_radiobutton_style" parent="form_style">
+        <item name="android:layout_gravity">top</item>
     </style>
 
     <style name="starRatingBarSmall">
@@ -325,7 +332,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/rounded_margin_mid</item>
-        <item name="android:layout_marginBottom">@dimen/rounded_margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
         <item name="android:background">@drawable/background_content</item>
