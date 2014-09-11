@@ -361,9 +361,11 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         outState.putString(TITLE_KEY, title);
 
         // save current page to be restored after a rotation
-        int currentPage = mViewPager.getCurrentItem();
-        if (currentPage >= 0) {
-            outState.putSerializable(CURRENT_PAGE, SortPages.values()[currentPage]);
+        if (mViewPager != null) {
+            int currentPage = mViewPager.getCurrentItem();
+            if (currentPage >= 0) {
+                outState.putSerializable(CURRENT_PAGE, SortPages.values()[currentPage]);
+            }
         }
     }
 
