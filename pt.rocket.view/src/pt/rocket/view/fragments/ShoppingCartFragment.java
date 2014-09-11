@@ -406,6 +406,7 @@ public class ShoppingCartFragment extends BaseFragment {
             });
         } else {
             mCallToOrderButton.setVisibility(View.GONE);
+            // Change buttonsContainer height from two vertical buttons to height to accomodate a single button
             LinearLayout buttonsContainer = (LinearLayout) getView().findViewById(R.id.shopping_basket_buttons_container);
             buttonsContainer.getLayoutParams().height = getResources().getDimensionPixelSize(R.dimen.button_container_height);
         }
