@@ -82,8 +82,9 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     private OrderSummary orderSummary;
 
     private View mMsgRequired;
-    
-    
+
+    private boolean isCityIdAnEditText = false;
+
     /**
      * 
      * @return
@@ -293,6 +294,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             Log.d(TAG, "REGIONS ISN'T NULL");
             setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
         }
+        // Define if CITY is a List or Text
+        isCityIdAnEditText = (mEditFormGenerator.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl() instanceof EditText);
         // Hide check boxes
         hideSomeFields(mEditFormGenerator);
         // Show selected address content
@@ -327,7 +330,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         if (mCityView instanceof RelativeLayout) {
             mCityView = ((RelativeLayout) mCityView).getChildAt(0);
             if (mCityView instanceof EditText) {
-                EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
+                EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG).getEditControl();
                 mCityEdit.setText(selectedAddress.getCity());
             }
         }
@@ -342,8 +345,15 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         item.getEditControl().setVisibility(View.GONE);
         item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_BILLING_TAG);
         item.getEditControl().setVisibility(View.GONE);
-        item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
-        item.getControl().setVisibility(View.GONE);
+        // When CITY_ID is EditText use CITY
+        if (isCityIdAnEditText) {
+            item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG);
+            if (item != null) item.getControl().setVisibility(View.GONE);
+        } else {
+            // Use CITY_ID
+            item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
+            item.getControl().setVisibility(View.GONE);
+        }
     }
     
     /**
@@ -512,12 +522,12 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         }
         // Get from edit text
         else if (mCityView instanceof RelativeLayout) {
-            mCityView = ((RelativeLayout) mCityView).getChildAt(0);
+            /*-mCityView = ((RelativeLayout) mCityView).getChildAt(0);
             if (mCityView instanceof EditText) {
                 EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
                 mCityName = mCityEdit.getText().toString();
                 Log.d(TAG, "SELECTED CITY: " + mCityName);
-            }
+            }*/
         }
         // Unexpected
         else {
@@ -537,7 +547,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             else if(entry.getKey().contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) mContentValues.put(entry.getKey(), isDefaultShipping);
             else if(entry.getKey().contains(RestConstants.JSON_REGION_ID_TAG)) mContentValues.put(entry.getKey(), mRegionId);
             else if(entry.getKey().contains(RestConstants.JSON_CITY_ID_TAG)) mContentValues.put(entry.getKey(), mCityId);
-            else if(entry.getKey().contains(RestConstants.JSON_CITY_TAG)) mContentValues.put(entry.getKey(), mCityName);
+            else if(!isCityIdAnEditText && entry.getKey().contains(RestConstants.JSON_CITY_TAG)) mContentValues.put(entry.getKey(), mCityName);
         }
         
         Log.d(TAG, "CURRENT CONTENT VALUES: " + mContentValues.toString());

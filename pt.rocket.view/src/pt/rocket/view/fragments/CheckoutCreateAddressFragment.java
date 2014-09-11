@@ -133,7 +133,9 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     private ContentValues mShippingSavedValues;
     
     private ContentValues mBillingSavedValues;
-    
+
+    private boolean isCityIdAnEditText = false;
+
     /**
      * Fragment used to create an address
      * @return CheckoutCreateAddressFragment
@@ -351,6 +353,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      */
     private void loadCreateAddressForm(Form form) {
         Log.i(TAG, "LOAD CREATE ADDRESS FORM");
+        // Shipping form
         shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
         mShippingFormContainer.removeAllViews();
         mShippingFormContainer.addView(shippingFormGenerator.getContainer());                
@@ -360,6 +363,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         mBillingFormContainer.removeAllViews();
         mBillingFormContainer.addView(billingFormGenerator.getContainer());
         mBillingFormContainer.refreshDrawableState();
+        // Define if CITY is a List or Text
+        isCityIdAnEditText = (shippingFormGenerator.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl() instanceof EditText);
         // Hide unused fields form
         hideSomeFields(shippingFormGenerator);
         hideSomeFields(billingFormGenerator);
@@ -412,15 +417,22 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      * @param dynamicForm
      * @author sergiopereira
      */
-    private void hideSomeFields(DynamicForm dynamicForm){
+    private void hideSomeFields(DynamicForm dynamicForm) {
         DynamicFormItem item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG);
-        if(item != null) item.getEditControl().setVisibility(View.GONE);
+        if (item != null) item.getEditControl().setVisibility(View.GONE);
         item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_BILLING_TAG);
-        if(item != null) item.getEditControl().setVisibility(View.GONE);
-        item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
-        if(item != null) item.getControl().setVisibility(View.GONE);
+        if (item != null) item.getEditControl().setVisibility(View.GONE);
+        // When CITY_ID is EditText use CITY
+        if (isCityIdAnEditText) {
+            item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG);
+            if (item != null) item.getControl().setVisibility(View.GONE);
+        } else {
+            // Use CITY_ID
+            item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
+            item.getControl().setVisibility(View.GONE);
+        }
     }
-    
+
     /**
      * Method used to set the regions on the respective form
      * @param dynamicForm
@@ -651,7 +663,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         }
         // Get from edit text
         else if (mCityView instanceof RelativeLayout) {
-            mCityView = ((RelativeLayout) mCityView).getChildAt(0);
+            /*-mCityView = ((RelativeLayout) mCityView).getChildAt(0);
             if (mCityView instanceof EditText) {
                 EditText mCityEdit = (EditText) dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl();
                 String city = mCityEdit.getText().toString(); 
@@ -659,7 +671,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                 mCityId = city;
                 mCityName = city;
                 Log.d(TAG, "SELECTED CITY: " + mCityName);
-            }
+            }*/
         }
         // Unexpected
         else {
@@ -673,7 +685,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             else if(key.contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) mContentValues.put(key, isDefaultShipping);
             else if(key.contains(RestConstants.JSON_REGION_ID_TAG)) mContentValues.put(key, mRegionId);
             else if(key.contains(RestConstants.JSON_CITY_ID_TAG)) mContentValues.put(key, mCityId);
-            else if(key.contains(RestConstants.JSON_CITY_TAG)) mContentValues.put(key, mCityName);
+            else if(!isCityIdAnEditText && key.contains(RestConstants.JSON_CITY_TAG)) mContentValues.put(key, mCityName);
         }
    
         // return the new content values
