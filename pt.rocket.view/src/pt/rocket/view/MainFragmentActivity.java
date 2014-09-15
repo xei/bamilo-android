@@ -18,7 +18,7 @@ import pt.rocket.utils.PreferenceListFragment.OnPreferenceAttachedListener;
 import pt.rocket.view.fragments.BaseFragment;
 import pt.rocket.view.fragments.CampaignsFragment;
 import pt.rocket.view.fragments.CatalogFragment;
-import pt.rocket.view.fragments.CategoriesColletionFragment;
+import pt.rocket.view.fragments.CategoriesCollectionFragment;
 import pt.rocket.view.fragments.ChangeCountryFragment;
 import pt.rocket.view.fragments.CheckoutAboutYouFragment;
 import pt.rocket.view.fragments.CheckoutCreateAddressFragment;
@@ -264,7 +264,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = HomeFragment.newInstance();
             break;
         case CATEGORIES:
-            fragment = CategoriesColletionFragment.getInstance(bundle);
+            fragment = CategoriesCollectionFragment.getInstance(bundle);
             break;
         case PRODUCT_LIST:
             fragment = CatalogFragment.getInstance();
