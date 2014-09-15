@@ -74,6 +74,8 @@ public class ReviewsFragment extends BaseFragment {
 
     private ProductRatingPage mSavedProductRatingPage;
 
+    private boolean firstRequest = false;
+
     /**
      * Get instance
      * 
@@ -239,7 +241,9 @@ public class ReviewsFragment extends BaseFragment {
     private void setAppContentLayout() {
         setViewContent();
         setPopularity();
-        
+
+        firstRequest = true;
+
         // Validate current rating page 
         if (mProductRatingPage != null) displayReviews(mProductRatingPage);
         else triggerReviews(selectedProduct.getUrl(), pageNumber);
@@ -319,8 +323,8 @@ public class ReviewsFragment extends BaseFragment {
         
         ratingBar.setRating(selectedProduct.getRatingsAverage().floatValue());
 
-        ScrollViewEx reviewsScroll = (ScrollViewEx) getView().findViewById(R.id.reviews_scroller);
-        reviewsScroll.setOnScrollBottomReached(new OnScrollBottomReachedListener() {
+        // Apply OnScrollBottomReachedListener to outer ScrollView, now that all page scrolls
+        ((ScrollViewEx) getView().findViewById(R.id.reviews_scrollview_container)).setOnScrollBottomReached(new OnScrollBottomReachedListener() {
 
             private View mLoadingLayout;
 
@@ -426,81 +430,94 @@ public class ReviewsFragment extends BaseFragment {
             reviewsPop.setText("(" + productRatingPage.getCommentsCount() + ")");
         }
         int numberReviews = reviews.size();
-        for (int i = 0; i < numberReviews; i++) {
-            final ProductReviewComment review = reviews.get(i);
-            
-            final View theInflatedView = inflater.inflate(R.layout.reviews_fragment_item, reviewsLin, false);
+        // If there are reviews, list them
+        // Otherwise, hide reviews list and show empty view
+        if (numberReviews > 0) {
+            firstRequest = false;
+            for (int i = 0; i < numberReviews; i++) {
+                final ProductReviewComment review = reviews.get(i);
 
-            // Hide first divider
-            if (i == 0) {
-                theInflatedView.findViewById(R.id.top_review_line).setVisibility(View.GONE);
-            }
-            
-            final TextView userName = (TextView) theInflatedView.findViewById(R.id.user_review);
-            final TextView userDate = (TextView) theInflatedView.findViewById(R.id.date_review);
-            final TextView textReview = (TextView) theInflatedView.findViewById(R.id.textreview);
-            final RatingBar userRating = (RatingBar) theInflatedView.findViewById(R.id.quality_rating);
-            final TextView titleReview = (TextView) theInflatedView.findViewById(R.id.title_review);
-            
-            final TextView optionTitle = (TextView) theInflatedView.findViewById(R.id.quality_title_option);
-            final TextView appearenceTitle = (TextView) theInflatedView.findViewById(R.id.appearence_title_option);
-            final TextView priceTitle = (TextView) theInflatedView.findViewById(R.id.price_title_option);
-            
-            final RatingBar appearenceRating = (RatingBar) theInflatedView.findViewById(R.id.appearence_rating);
-            final RatingBar priceRating = (RatingBar) theInflatedView.findViewById(R.id.price_rating);
-            
-            
-            ArrayList<RatingOption> ratingOptionArray= new ArrayList<RatingOption>();
-            ratingOptionArray = review.getRatingOptions();
+                final View theInflatedView = inflater.inflate(R.layout.reviews_fragment_item, reviewsLin, false);
 
-            final String[] stringCor = review.getDate().split(" ");
-            userName.setText(review.getName() + ",");
-            userDate.setText(stringCor[0]);
-            textReview.setText(review.getComments());
-            
-            if(ratingOptionArray.size()>0){
-                priceRating.setRating((float) ratingOptionArray.get(0).getRating());
-                priceTitle.setText(ratingOptionArray.get(0).getTitle());
-            }
-            
-            if(ratingOptionArray.size()>1){
-                appearenceRating.setRating((float) ratingOptionArray.get(1).getRating());
-                appearenceTitle.setText(ratingOptionArray.get(1).getTitle());
-            } else {
-            	appearenceRating.setVisibility(View.GONE);
-            	appearenceTitle.setVisibility(View.GONE);
-            }
-            
-            if(ratingOptionArray.size()>2){
-                userRating.setRating((float) ratingOptionArray.get(2).getRating());
-                optionTitle.setText(ratingOptionArray.get(2).getTitle());
-            } else {
-            	userRating.setVisibility(View.GONE);
-            	optionTitle.setVisibility(View.GONE);
-            }
-        
-            titleReview.setText(review.getTitle());
-            
-            theInflatedView.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "review clicked: username = " + userName.getText().toString());
-                    
-                    Bundle bundle = new Bundle();
-                    bundle.putString(ConstantsIntentExtra.REVIEW_TITLE, review.getTitle());
-                    bundle.putString(ConstantsIntentExtra.REVIEW_NAME, review.getName());
-                    bundle.putString(ConstantsIntentExtra.REVIEW_COMMENT, review.getComments());
-                    bundle.putDouble(ConstantsIntentExtra.REVIEW_RATING, review.getRating());
-                    bundle.putString(ConstantsIntentExtra.REVIEW_DATE, stringCor[0]);
-                    getBaseActivity().onSwitchFragment(FragmentType.REVIEW, bundle, true);
+                // Hide first divider
+                if (i == 0) {
+                    theInflatedView.findViewById(R.id.top_review_line).setVisibility(View.GONE);
                 }
-            });
 
-            reviewsLin.addView(theInflatedView);
-            isLoadingMore = false;
+                final TextView userName = (TextView) theInflatedView.findViewById(R.id.user_review);
+                final TextView userDate = (TextView) theInflatedView.findViewById(R.id.date_review);
+                final TextView textReview = (TextView) theInflatedView.findViewById(R.id.textreview);
+                final RatingBar userRating = (RatingBar) theInflatedView.findViewById(R.id.quality_rating);
+                final TextView titleReview = (TextView) theInflatedView.findViewById(R.id.title_review);
 
+                final TextView optionTitle = (TextView) theInflatedView.findViewById(R.id.quality_title_option);
+                final TextView appearenceTitle = (TextView) theInflatedView.findViewById(R.id.appearence_title_option);
+                final TextView priceTitle = (TextView) theInflatedView.findViewById(R.id.price_title_option);
+
+                final RatingBar appearenceRating = (RatingBar) theInflatedView.findViewById(R.id.appearence_rating);
+                final RatingBar priceRating = (RatingBar) theInflatedView.findViewById(R.id.price_rating);
+
+                ArrayList<RatingOption> ratingOptionArray = new ArrayList<RatingOption>();
+                ratingOptionArray = review.getRatingOptions();
+
+                final String[] stringCor = review.getDate().split(" ");
+                userName.setText(review.getName() + ",");
+                userDate.setText(stringCor[0]);
+                textReview.setText(review.getComments());
+
+                if (ratingOptionArray.size() > 0) {
+                    priceRating.setRating((float) ratingOptionArray.get(0).getRating());
+                    priceTitle.setText(ratingOptionArray.get(0).getTitle());
+                }
+
+                if (ratingOptionArray.size() > 1) {
+                    appearenceRating.setRating((float) ratingOptionArray.get(1).getRating());
+                    appearenceTitle.setText(ratingOptionArray.get(1).getTitle());
+                } else {
+                    appearenceRating.setVisibility(View.GONE);
+                    appearenceTitle.setVisibility(View.GONE);
+                }
+
+                if (ratingOptionArray.size() > 2) {
+                    userRating.setRating((float) ratingOptionArray.get(2).getRating());
+                    optionTitle.setText(ratingOptionArray.get(2).getTitle());
+                } else {
+                    userRating.setVisibility(View.GONE);
+                    optionTitle.setVisibility(View.GONE);
+                }
+
+                titleReview.setText(review.getTitle());
+
+                theInflatedView.setOnClickListener(new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG, "review clicked: username = " + userName.getText().toString());
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString(ConstantsIntentExtra.REVIEW_TITLE, review.getTitle());
+                        bundle.putString(ConstantsIntentExtra.REVIEW_NAME, review.getName());
+                        bundle.putString(ConstantsIntentExtra.REVIEW_COMMENT, review.getComments());
+                        bundle.putDouble(ConstantsIntentExtra.REVIEW_RATING, review.getRating());
+                        bundle.putString(ConstantsIntentExtra.REVIEW_DATE, stringCor[0]);
+                        getBaseActivity().onSwitchFragment(FragmentType.REVIEW, bundle, true);
+                    }
+                });
+
+                reviewsLin.addView(theInflatedView);
+                isLoadingMore = false;
+
+            }
+        } else {
+            // Only hide reviews list and show empty on first request
+            // Otherwise it was only a empty response for a page after the first 
+            if (firstRequest) {
+                reviewsLin.setVisibility(View.GONE);
+                getView().findViewById(R.id.reviews_empty).setVisibility(View.VISIBLE);
+            }
+            firstRequest = false;
         }
+
         View loadingLayout = getView().findViewById(R.id.loadmore);
         loadingLayout.setVisibility(View.GONE);
         loadingLayout.refreshDrawableState();
