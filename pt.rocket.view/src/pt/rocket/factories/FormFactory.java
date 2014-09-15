@@ -9,7 +9,6 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.pojo.MetaFormExtractor;
-import pt.rocket.utils.UIUtils;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.view.ViewGroup;
@@ -174,7 +173,7 @@ public class FormFactory {
         final int CTRLMARGIN_RIGHT = 0;
         final int CTRLMARGIN_BOTTOM = 0;
 
-        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, context.getResources().getDimensionPixelOffset(R.dimen.form_item_height));
+        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
 
         return createGenericForm(context, form, loginForm, ctrlParams);
@@ -212,7 +211,7 @@ public class FormFactory {
         final int CTRLMARGIN_RIGHT = 0;
         final int CTRLMARGIN_BOTTOM = 0;
 
-        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, context.getResources().getDimensionPixelOffset(R.dimen.form_item_height));
+        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
 
         return createGenericForm(context, form, registerForm, ctrlParams);
@@ -231,7 +230,7 @@ public class FormFactory {
         final int CTRLMARGIN_RIGHT = 0;
         final int CTRLMARGIN_BOTTOM = 0;
 
-        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, context.getResources().getDimensionPixelOffset(R.dimen.form_item_height));
+        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
 
         return createGenericForm(context, form, registerForm, ctrlParams);

@@ -1,49 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:paddingLeft="@dimen/margin_large"
-    android:paddingRight="@dimen/margin_large" >
+    android:layout_height="match_parent" >
+
+    <!-- android:background="@color/grey_background" -->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content" >
 
-        <!-- NO ITEMS -->
+        <LinearLayout
+            style="@style/rounded_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:orientation="vertical" >
 
-        <include
-            android:id="@+id/checkout_summary_include_no_items"
-            layout="@layout/checkout_summary_no_items"
-            android:visibility="gone" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_box_height"
+                android:layout_margin="@dimen/rounded_margin_mid"
+                android:gravity="left|center"
+                android:orientation="horizontal" >
 
-        <!-- PRODUCTS -->
+                <org.holoeverywhere.widget.TextView
+                    android:id="@+id/title_options"
+                    style="@style/rounded_box_title_grey"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:text="@string/order_summary_label" />
 
-        <include
-            android:id="@+id/checkout_summary_include_products"
-            layout="@layout/checkout_summary_products" />
+                <ImageView
+                    android:id="@+id/checkout_summary_products_btn_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignBaseline="@+id/title"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/rounded_margin_mid"
+                    android:src="@drawable/selector_btn_edit" />
+            </RelativeLayout>
 
-        <!-- SHIPPING ADDRESS -->
+            <View
+                android:id="@+id/title_divider"
+                style="@style/divider_horizontal_orange" />
 
-        <include
-            android:id="@+id/checkout_summary_include_shipping_address"
-            layout="@layout/checkout_summary_shipping_address"
-            android:visibility="gone" />
+            <LinearLayout
+                android:id="@+id/login_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/rounded_margin_mid"
+                android:orientation="vertical" >
 
-        <!-- SHIPPING METHOD -->
+                <!-- PRODUCTS -->
 
-        <include
-            android:id="@+id/checkout_summary_include_shipping_method"
-            layout="@layout/checkout_summary_shipping_method"
-            android:visibility="gone" />
+                <include
+                    android:id="@+id/checkout_summary_include_products"
+                    layout="@layout/checkout_summary_products" />
 
-        <!-- TOTAL -->
+                <!-- SHIPPING ADDRESS -->
 
-        <include
-            android:id="@+id/checkout_summary_include_total"
-            layout="@layout/checkout_summary_total"
-            android:visibility="gone" />
+                <include
+                    android:id="@+id/checkout_summary_include_shipping_address"
+                    layout="@layout/checkout_summary_shipping_address"
+                    android:visibility="gone" />
+
+                <!-- SHIPPING METHOD -->
+
+                <include
+                    android:id="@+id/checkout_summary_include_shipping_method"
+                    layout="@layout/checkout_summary_shipping_method"
+                    android:visibility="gone" />
+
+                <!-- TOTAL -->
+
+                <include
+                    android:id="@+id/checkout_summary_include_total"
+                    layout="@layout/checkout_summary_total"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

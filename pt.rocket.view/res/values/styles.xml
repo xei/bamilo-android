@@ -266,6 +266,7 @@
         <item name="android:cursorVisible">true</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
+        <item name="android:paddingLeft">@dimen/login_margin_small</item>
         <item name="android:textCursorDrawable">@null</item>
         <item name="android:inputType">text</item>
     </style>
@@ -273,13 +274,15 @@
     <style name="form_checkbox_style" parent="form_style">
         <!-- item name="android:layout_marginRight">@dimen/login_margin_medium</item -->
         <item name="android:height">@dimen/form_item_height</item>
-        <!-- item name="android:layout_marginBottom">-4dp</item>
-        <item name="android:layout_marginTop">-4dp</item -->
+        <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
+        <!-- item name="android:layout_marginBottom">-4dp</item -->
+        <!-- item name="android:layout_marginTop">-4dp</item -->
         <item name="android:layout_gravity">top</item>
     </style>
 
     <style name="form_radiobutton_style" parent="form_style">
         <item name="android:layout_gravity">top</item>
+        <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
     </style>
 
     <style name="starRatingBarSmall">

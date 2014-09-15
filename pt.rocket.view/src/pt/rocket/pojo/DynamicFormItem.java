@@ -80,6 +80,7 @@ public class DynamicFormItem {
 
     private final static int ERRORTEXTSIZE = 14;
     private final static int MANDATORYSIGNALSIZE = 18;
+    private final static int MANDATORYSIGNALMARGIN = 15;
 
     private Context context;
     private DynamicForm parent;
@@ -901,7 +902,7 @@ public class DynamicFormItem {
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = 10;
+        params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
@@ -996,7 +997,7 @@ public class DynamicFormItem {
                 RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = 10;
+        params.rightMargin = MANDATORYSIGNALMARGIN;
 
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
@@ -1026,6 +1027,7 @@ public class DynamicFormItem {
         dataContainer.setLayoutParams(params);
 
         params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.leftMargin = context.getResources().getDimensionPixelOffset(R.dimen.rounded_margin_mid);
         this.dataControl = (CheckBox) View.inflate(this.context, R.layout.form_checkbox, null);
         this.dataControl.setId(parent.getNextId());
         
@@ -1045,7 +1047,7 @@ public class DynamicFormItem {
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = 10;
+        params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
@@ -1124,7 +1126,7 @@ public class DynamicFormItem {
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = 10;
+        params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
@@ -1381,7 +1383,7 @@ public class DynamicFormItem {
                 RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = 10;
+        params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
@@ -1488,7 +1490,7 @@ public class DynamicFormItem {
                 RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = 10;
+        params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
@@ -1519,6 +1521,7 @@ public class DynamicFormItem {
 
         this.dataControl = radioGroup;
         this.dataControl.setId(parent.getNextId());
+        params.leftMargin = context.getResources().getDimensionPixelOffset(R.dimen.rounded_margin_mid);
         this.dataControl.setLayoutParams(params);
         dataContainer.addView(this.dataControl);
 
@@ -1526,7 +1529,7 @@ public class DynamicFormItem {
                 RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = 10;
+        params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
@@ -1606,7 +1609,7 @@ public class DynamicFormItem {
                 RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = 10;
+        params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
@@ -1746,7 +1749,7 @@ public class DynamicFormItem {
 //                    RelativeLayout.LayoutParams.MATCH_PARENT);
 //            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 //            params.addRule(RelativeLayout.CENTER_VERTICAL);
-//            params.rightMargin = 10;
+//            params.rightMargin = MANDATORYSIGNALMARGIN;
 //            this.mandatoryControl = new TextView(this.context);
 //            this.mandatoryControl.setLayoutParams(params);
 //            this.mandatoryControl.setText("*");
@@ -1769,12 +1772,13 @@ public class DynamicFormItem {
         this.dataControl = createTextDataControl();
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
+        this.dataControl.setPadding(context.getResources().getDimensionPixelSize(R.dimen.login_margin_small), 0, 0, 0);
 
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = 10;
+        params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");

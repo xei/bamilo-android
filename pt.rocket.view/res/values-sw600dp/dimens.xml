@@ -103,7 +103,7 @@
     <dimen name="login_margin_medium">30dp</dimen>
     <dimen name="login_margin_high">35dp</dimen>
 
-    <dimen name="checkout_box_title_height">60dp</dimen>
+    <dimen name="checkout_box_title_height">40dp</dimen>
     <dimen name="checkout_voucher_box_height">105dp</dimen>
 
     <dimen name="delete_button_size">19dp</dimen>

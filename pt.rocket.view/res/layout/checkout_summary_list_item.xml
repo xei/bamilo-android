@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="@dimen/margin_mid" >
+    android:orientation="horizontal" >
 
     <LinearLayout
         android:layout_width="0dp"
@@ -13,40 +12,26 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/order_summary_item_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="roboto_regular"
-            android:gravity="left"
-            android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_m" />
+            style="@style/text_normal" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/order_summary_item_quantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="roboto_regular"
-            android:gravity="left"
-            android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_m" />
+            style="@style/text_normal" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/order_summary_item_variation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="roboto_regular"
-            android:gravity="left"
-            android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_m"
+            style="@style/text_normal"
             android:visibility="gone" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/order_summary_item_btn_remove"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/delete_button_size"
+        android:layout_height="@dimen/delete_button_size"
         android:layout_alignParentRight="true"
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/margin_small"
-        android:src="@drawable/selector_btn_remove" />
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:src="@drawable/selector_btn_remove_item" />
 
 </LinearLayout>
