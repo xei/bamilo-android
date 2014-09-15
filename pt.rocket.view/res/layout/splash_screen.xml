@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerInside"
         android:src="@drawable/img_splashmap" />
-    
+
     <ImageView
         android:id="@+id/imgView"
         android:layout_width="match_parent"
@@ -21,16 +21,15 @@
         android:src="@drawable/logo_splash" />
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/slogan_text"        
+        android:id="@+id/slogan_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:text="@string/splash_slogan"
-        android:textSize="12sp"
-        android:textColor="@color/grey_middledark" />
-    
-    
+        android:textColor="@color/grey_middledark"
+        android:textSize="12sp" />
+
     <org.holoeverywhere.widget.TextView
         android:id="@+id/dev_text"
         android:layout_width="wrap_content"
@@ -169,10 +168,9 @@
 
         <org.holoeverywhere.widget.Button
             android:id="@+id/fallback_retry"
-            style="@style/button_orange_style"
+            style="@style/button_orange_landscape"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/margin_huge"
-            android:layout_marginRight="@dimen/margin_huge"
+            android:layout_centerHorizontal="true"
             android:contentDescription="@string/try_again"
             android:text="@string/try_again" />
 
@@ -183,8 +181,7 @@
             android:layout_above="@id/fallback_retry"
             android:layout_marginBottom="26.4dp"
             android:layout_marginLeft="26.4dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal" >
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/fallback_country_bottom_text2"

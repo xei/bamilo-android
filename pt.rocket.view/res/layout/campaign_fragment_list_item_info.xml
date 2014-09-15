@@ -115,6 +115,7 @@
         android:id="@+id/campaign_item_button_buy"
         style="@style/button_orange_style"
         android:layout_width="0dp"
+        android:layout_height="@dimen/button_big_height"
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/margin_veryhuge"
         android:layout_marginRight="@dimen/margin_mid"
