@@ -27,7 +27,7 @@
     <dimen name="product_list_item_discount_percentage_text_size">13.5sp</dimen>
 
     <!-- PRODUCT DETAIL ITEM -->
-    <dimen name="product_detail_item_title_height">56dp</dimen>
+    <dimen name="product_detail_item_title_height">55dp</dimen>
     <dimen name="product_detail_item_discount_percentage_width">60dp</dimen>
     <dimen name="product_detail_item_discount_percentage_height">40dp</dimen>
 
@@ -61,6 +61,7 @@
     <!-- ROUNDED BORDERS -->
     <dimen name="rounded_margin_small">5dp</dimen>
     <dimen name="rounded_margin_mid">10dp</dimen>
+    <dimen name="rounded_margin_double_mid">20dp</dimen>
 
     <!-- CATALOG REDESIGN -->
     <dimen name="catalog_list_item_height">155dp</dimen><!--157.5dp-->

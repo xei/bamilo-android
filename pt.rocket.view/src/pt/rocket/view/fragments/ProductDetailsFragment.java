@@ -300,8 +300,16 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         setAppContentLayout(view);
         // Validate the current product
         mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
-        if (mCompleteProduct == null) init();
-        else displayProduct(mCompleteProduct);
+        if (mCompleteProduct == null) {
+            init();
+        } else{
+            // Must get other params other than currentProduct
+
+            // Get arguments
+            Bundle bundle = getArguments();
+            restoreParams(bundle);
+            displayProduct(mCompleteProduct);
+        }
     }
 
     /*
@@ -376,16 +384,22 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         Bundle bundle = getArguments();
         // Validate deep link arguments
         if (hasArgumentsFromDeepLink(bundle)) return;
+
+        restoreParams(bundle);
+
         // Get url
         mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
+        // Validate url and load product
+        if (mCompleteProductUrl == null) getBaseActivity().onBackPressed();
+        else loadProduct();
+    }
+
+    private void restoreParams(Bundle bundle) {
         // Get source and path
         mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog));
         mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
         // Determine if related items should be shown
         mShowRelatedItems = bundle.getBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS);
-        // Validate url and load product
-        if (mCompleteProductUrl == null) getBaseActivity().onBackPressed();
-        else loadProduct();
     }
 
     /**

@@ -3,7 +3,7 @@
     android:id="@+id/product_detail_image_container"
     style="@style/rounded_box"
     android:layout_marginBottom="0dp"
-    android:paddingTop="@dimen/margin_mid" >
+    android:paddingTop="@dimen/rounded_margin_mid" >
 
     <!-- IMAGE -->
 
@@ -64,14 +64,16 @@
         android:id="@+id/product_detail_title"
         style="@style/text_header"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/product_detail_item_title_height"
+        android:layout_height="wrap_content"
         android:layout_below="@id/product_detail_div_title"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="@dimen/margin_mid"
+        android:layout_marginBottom="@dimen/rounded_margin_mid"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:layout_marginTop="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/rounded_margin_mid"
         android:background="@drawable/selector_listitem_highlight"
-        android:maxLines="2" />
+        android:maxLines="2"
+        android:minHeight="@dimen/product_detail_item_title_height"
+        android:singleLine="false" />
 
 </RelativeLayout>

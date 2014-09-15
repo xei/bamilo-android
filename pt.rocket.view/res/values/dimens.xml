@@ -98,7 +98,7 @@
     <dimen name="product_list_item_image_side_margin">13.33dp</dimen>
 
     <!-- PRODUCT DETAIL ITEM -->
-    <dimen name="product_detail_item_title_height">48dp</dimen>
+    <dimen name="product_detail_item_title_height">36.67dp</dimen>
     <dimen name="product_detail_item_discount_percentage_width">45dp</dimen>
     <dimen name="product_detail_item_discount_percentage_height">25dp</dimen>
 
@@ -178,6 +178,7 @@
     <!-- ROUNDED BORDERS -->
     <dimen name="rounded_margin_small">3.33dp</dimen>
     <dimen name="rounded_margin_mid">6.67dp</dimen>
+    <dimen name="rounded_margin_double_mid">13.33dp</dimen>
 
     <!-- CATALOG REDESIGN -->
     <dimen name="catalog_list_item_height">103.33dp</dimen><!--105dp-->

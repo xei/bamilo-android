@@ -3,6 +3,7 @@
     android:id="@+id/product_detail_product_related_container"
     style="@style/rounded_box"
     android:layout_marginBottom="0dp"
+    android:layout_marginTop="@dimen/rounded_margin_small"
     android:visibility="gone" >
 
     <org.holoeverywhere.widget.TextView

@@ -1,41 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/product_description_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <!-- TITLE -->
 
-    <RelativeLayout
-        android:id="@+id/product_basicinfo_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:padding="@dimen/margin_huge" >
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/product_name"
-            style="@style/text_header"
-            android:layout_width="match_parent"
-            android:layout_marginRight="@dimen/margin_huge"
-            android:maxLines="2" />
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/product_price_result"
-            style="@style/text_header"
-            android:layout_below="@+id/product_name"
-            android:layout_marginTop="@dimen/margin_small"
-            android:fontFamily="roboto_bold"
-            android:textColor="@color/red_middle" />
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/product_price_normal"
-            style="@style/text_header"
-            android:layout_alignBaseline="@+id/product_price_result"
-            android:layout_marginLeft="@dimen/margin_mid"
-            android:layout_toRightOf="@+id/product_price_result"
-            android:textColor="@color/grey_middlelight" />
-    </RelativeLayout>
+    <include
+        android:id="@+id/product_info_container"
+        layout="@layout/product_details_fragment_header" />
 
     <!-- SHADOW -->
 
@@ -43,13 +15,12 @@
         android:id="@+id/shadow"
         android:layout_width="match_parent"
         android:layout_height="5dp"
-        android:layout_below="@id/product_basicinfo_container"
+        android:layout_below="@id/product_info_container"
         android:background="@drawable/shadow_white_2_grey_horizontal" />
 
     <!-- SCROLLABLE -->
 
     <ScrollView
-        android:id="@+id/product_description_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/shadow" >
@@ -57,14 +28,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/rounded_margin_mid" >
 
             <!-- FEATURES -->
 
             <RelativeLayout
-                android:id="@+id/variations_container"
+                android:id="@+id/features_container"
                 style="@style/rounded_box"
-                android:layout_marginBottom="0dp" >
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="@dimen/rounded_margin_small" >
 
                 <org.holoeverywhere.widget.TextView
                     android:id="@+id/color_label"
@@ -92,9 +65,10 @@
             <!-- DESCRIPTION -->
 
             <RelativeLayout
-                android:id="@+id/variations_container"
+                android:id="@+id/description_container"
                 style="@style/rounded_box"
-                android:layout_marginBottom="0dp" >
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="@dimen/rounded_margin_small" >
 
                 <org.holoeverywhere.widget.TextView
                     android:id="@+id/color_label"

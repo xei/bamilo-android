@@ -16,7 +16,6 @@ import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.JumiaViewPagerWithZoom;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -422,7 +421,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
                 bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
                 bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
                 bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
-                ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.PRODUCT_GALLERY, bundle, FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_GALLERY, bundle, FragmentController.ADD_TO_BACK_STACK);
             } else {
                 if (getActivity() != null) getActivity().onBackPressed();
             }

@@ -275,26 +275,39 @@ public class ReviewsFragment extends BaseFragment {
      */
     private void setViewContent() {
 
-        TextView namePop = (TextView) getView().findViewById(R.id.product_info_name_p);
-        TextView pricePop = (TextView) getView().findViewById(R.id.price_normal_p);
-        TextView discountPop = (TextView) getView().findViewById(R.id.price_w_discount_p);
-        namePop.setText(selectedProduct.getBrand()+" "+selectedProduct.getName());
-        if (!selectedProduct.getSpecialPrice().equals(selectedProduct.getPrice())) {
-            pricePop.setText("" + selectedProduct.getPrice());
-            pricePop.setPaintFlags(pricePop.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            pricePop.setTextColor(getResources().getColor(R.color.grey_light));
-            pricePop.setTextAppearance(getActivity(), R.style.text_normal_programatically);
-            discountPop.setText("" + selectedProduct.getSpecialPrice());
-            discountPop.setVisibility(View.VISIBLE);
-        } else {
-            pricePop.setText("" + selectedProduct.getPrice());
-            discountPop.setVisibility(View.GONE);
-        }
+        getView().findViewById(R.id.rating_stripe).setVisibility(View.VISIBLE);
+        TextView productName = (TextView) getView().findViewById(R.id.product_name);
+        TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
+        TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
+        productName.setText(selectedProduct.getBrand()+" "+selectedProduct.getName());
+        displayPriceInformation(productPriceNormal, productPriceSpecial);
+        
         Bundle params = new Bundle();
         params.putParcelable(TrackerDelegator.PRODUCT_KEY,selectedProduct);
         params.putFloat(TrackerDelegator.RATING_KEY, selectedProduct.getRatingsAverage().floatValue());
         
         //TrackerDelegator.trackViewReview(params);
+    }
+
+    private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
+        String unitPrice = selectedProduct.getPrice();
+        String specialPrice = selectedProduct.getSpecialPrice();
+        if (specialPrice == null) specialPrice = selectedProduct.getMaxSpecialPrice();
+        displayPriceInfo(productPriceNormal, productPriceSpecial, unitPrice, specialPrice);
+    }
+
+    private void displayPriceInfo(TextView productPriceNormal, TextView productPriceSpecial, String unitPrice, String specialPrice) {
+        if (specialPrice == null || (unitPrice.equals(specialPrice))) {
+            // display only the special price
+            productPriceSpecial.setText(unitPrice);
+            productPriceNormal.setVisibility(View.GONE);
+        } else {
+            // display special and normal price
+            productPriceSpecial.setText(specialPrice);
+            productPriceNormal.setText(unitPrice);
+            productPriceNormal.setVisibility(View.VISIBLE);
+            productPriceNormal.setPaintFlags(productPriceNormal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
     }
 
     /**
@@ -412,9 +425,17 @@ public class ReviewsFragment extends BaseFragment {
             TextView reviewsPop = (TextView) getView().findViewById(R.id.reviews);
             reviewsPop.setText("(" + productRatingPage.getCommentsCount() + ")");
         }
-        for (final ProductReviewComment review : reviews) {
+        int numberReviews = reviews.size();
+        for (int i = 0; i < numberReviews; i++) {
+            final ProductReviewComment review = reviews.get(i);
+            
             final View theInflatedView = inflater.inflate(R.layout.reviews_fragment_item, reviewsLin, false);
 
+            // Hide first divider
+            if (i == 0) {
+                theInflatedView.findViewById(R.id.top_review_line).setVisibility(View.GONE);
+            }
+            
             final TextView userName = (TextView) theInflatedView.findViewById(R.id.user_review);
             final TextView userDate = (TextView) theInflatedView.findViewById(R.id.date_review);
             final TextView textReview = (TextView) theInflatedView.findViewById(R.id.textreview);

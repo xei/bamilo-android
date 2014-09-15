@@ -59,10 +59,6 @@ public class ReviewWriteFragment extends BaseFragment {
 
     private TextView productName;
 
-    private TextView productResultPrice;
-
-    private TextView productNormalPrice;
-
     private LinearLayout labelsContainer;
     
     private LinearLayout ratingBarContainer;
@@ -173,7 +169,7 @@ public class ReviewWriteFragment extends BaseFragment {
         Log.i(TAG, "ON RESUME");
         isExecutingSendReview = false;
         if (getArguments() != null && getArguments().containsKey(ReviewsFragment.CAME_FROM_POPULARITY)) {
-            getView().findViewById(R.id.product_basicinfo_container).setVisibility(View.GONE);
+            getView().findViewById(R.id.product_info_container).setVisibility(View.GONE);
             getView().findViewById(R.id.shadow).setVisibility(View.GONE);
         }
     }
@@ -245,8 +241,8 @@ public class ReviewWriteFragment extends BaseFragment {
             }
         }
         productName = (TextView) getView().findViewById(R.id.product_name);
-        productResultPrice = (TextView) getView().findViewById(R.id.product_price_result);
-        productNormalPrice = (TextView) getView().findViewById(R.id.product_price_normal);
+        TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
+        TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
 
         titleText = (EditText) getView().findViewById(R.id.title_box);
         nameText = (EditText) getView().findViewById(R.id.name_box);
@@ -263,7 +259,7 @@ public class ReviewWriteFragment extends BaseFragment {
                 });
 
         productName.setText(completeProduct.getBrand()+" "+completeProduct.getName());
-        displayPriceInformation();
+        displayPriceInformation(productPriceNormal, productPriceSpecial);
         
         // Load the saved values
         ContentValues review = JumiaApplication.getReview();
@@ -348,29 +344,27 @@ public class ReviewWriteFragment extends BaseFragment {
             }
         }
     }
-    
 
-    private void displayPriceInformation() {
+    private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
         String unitPrice = completeProduct.getPrice();
+        if (unitPrice == null) unitPrice = completeProduct.getMaxPrice();
         String specialPrice = completeProduct.getSpecialPrice();
-        if (specialPrice == null)
-            specialPrice = completeProduct.getMaxSpecialPrice();
-        displayPriceInfo(unitPrice, specialPrice);
+        if (specialPrice == null) specialPrice = completeProduct.getMaxSpecialPrice();
+        
+        displayPriceInfo(productPriceNormal, productPriceSpecial, unitPrice, specialPrice);
     }
 
-    private void displayPriceInfo(String unitPrice, String specialPrice) {
+    private void displayPriceInfo(TextView productPriceNormal, TextView productPriceSpecial, String unitPrice, String specialPrice) {
         if (specialPrice == null || (unitPrice.equals(specialPrice))) {
-            // display only the normal price
-            productResultPrice.setText(unitPrice);
-            productResultPrice.setTextColor(getResources().getColor(R.color.red_basic));
-            productNormalPrice.setVisibility(View.GONE);
+            // display only the special price
+            productPriceSpecial.setText(unitPrice);
+            productPriceNormal.setVisibility(View.GONE);
         } else {
-            // display reduced and special price
-            productResultPrice.setText(specialPrice);
-            productResultPrice.setTextColor(getResources().getColor(R.color.red_basic));
-            productNormalPrice.setText(unitPrice);
-            productNormalPrice.setVisibility(View.VISIBLE);
-            productNormalPrice.setPaintFlags(productNormalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            // display special and normal price
+            productPriceSpecial.setText(specialPrice);
+            productPriceNormal.setText(unitPrice);
+            productPriceNormal.setVisibility(View.VISIBLE);
+            productPriceNormal.setPaintFlags(productPriceNormal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
     }
 

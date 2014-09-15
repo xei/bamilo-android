@@ -3,64 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-    <!-- TITLE -->
-
-    <RelativeLayout
-        android:id="@+id/product_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:padding="@dimen/margin_huge" >
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/product_info_name_p"
-            style="@style/text_header"
-            android:layout_width="match_parent"
-            android:layout_marginRight="@dimen/margin_huge"
-            android:maxLines="2" />
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/price_w_discount_p"
-            style="@style/text_header"
-            android:layout_below="@+id/product_info_name_p"
-            android:layout_marginTop="@dimen/margin_small"
-            android:fontFamily="roboto_bold"
-            android:textColor="@color/red_middle" />
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/price_normal_p"
-            style="@style/text_header"
-            android:layout_alignBaseline="@+id/price_w_discount_p"
-            android:layout_marginLeft="@dimen/margin_mid"
-            android:layout_toRightOf="@+id/price_w_discount_p"
-            android:textColor="@color/grey_middlelight" />
-
-        <!-- RATING -->
-
-        <RelativeLayout
-            android:id="@+id/rating_stripe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/price_w_discount_p"
-            android:layout_marginTop="@dimen/margin_mid" >
-
-            <RatingBar
-                android:id="@+id/rating"
-                style="@style/starRatingBarBig"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:isIndicator="true" />
-
-            <org.holoeverywhere.widget.TextView
-                android:id="@+id/reviews"
-                style="@style/text_header"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/margin_mid"
-                android:layout_toRightOf="@+id/rating"
-                android:textColor="@color/grey_light" />
-        </RelativeLayout>
-    </RelativeLayout>
+    <include
+        android:id="@+id/product_info_container"
+        layout="@layout/product_details_fragment_header" />
 
     <!-- SHADOW -->
 
@@ -68,7 +13,7 @@
         android:id="@+id/shadow"
         android:layout_width="match_parent"
         android:layout_height="5dp"
-        android:layout_below="@id/product_info"
+        android:layout_below="@id/product_info_container"
         android:background="@drawable/shadow_white_2_grey_horizontal" />
 
     <!-- REVIEWS -->
@@ -78,31 +23,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/shadow"
-        android:fillViewport="true"
-        android:paddingBottom="@dimen/rounded_margin_small"
-        android:paddingLeft="@dimen/rounded_margin_mid"
-        android:paddingRight="@dimen/rounded_margin_mid"
-        android:paddingTop="@dimen/rounded_margin_small" >
+        android:layout_marginBottom="@dimen/rounded_margin_mid"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginTop="@dimen/rounded_margin_small"
+        android:fillViewport="true" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/rounded_margin_small" >
+            android:padding="@dimen/rounded_margin_mid" >
 
             <org.holoeverywhere.widget.TextView
                 style="@style/text_normal"
-                android:layout_marginLeft="@dimen/margin_huge"
-                android:layout_marginRight="@dimen/margin_huge"
+                android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:layout_marginRight="@dimen/rounded_margin_mid"
                 android:text="@string/rating_question" />
 
             <org.holoeverywhere.widget.Button
                 android:id="@+id/write_btn"
                 style="@style/button_grey_bottom"
                 android:layout_marginBottom="4dp"
-                android:layout_marginLeft="@dimen/margin_huge"
-                android:layout_marginRight="@dimen/margin_huge"
                 android:layout_marginTop="4dp"
                 android:text="@string/write_comment" />
 

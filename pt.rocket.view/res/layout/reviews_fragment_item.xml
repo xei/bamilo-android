@@ -7,14 +7,14 @@
 
     <View
         android:id="@+id/top_review_line"
-        style="@style/divider_horizontal"
-        android:layout_marginBottom="10dp" />
+        style="@style/divider_horizontal" />
 
     <LinearLayout
         android:id="@+id/ratings_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal" >
 
         <LinearLayout
@@ -105,6 +105,7 @@
         android:layout_marginLeft="@dimen/margin_huge"
         android:layout_marginRight="32dp"
         android:maxLines="5"
+        android:singleLine="false"
         android:text="Review" />
 
     <org.holoeverywhere.widget.TextView
@@ -118,7 +119,7 @@
         android:id="@+id/user_review"
         style="@style/text_subtitle"
         android:layout_below="@id/textreview"
-        android:layout_marginLeft="3dp"
+        android:layout_marginLeft="@dimen/rounded_margin_small"
         android:layout_toRightOf="@id/posted_by"
         android:text="User" />
 
@@ -126,7 +127,7 @@
         android:id="@+id/date_review"
         style="@style/text_subtitle"
         android:layout_below="@id/textreview"
-        android:layout_marginLeft="3dp"
+        android:layout_marginLeft="@dimen/rounded_margin_small"
         android:layout_toRightOf="@id/user_review"
         android:text="Date" />
 

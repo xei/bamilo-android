@@ -19,8 +19,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spannable;
+import android.text.TextUtils;
 import android.text.style.MetricAffectingSpan;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
@@ -35,8 +37,9 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     private static ProductDetailsDescriptionFragment sProductDetailsDescriptionFragment;
 
     private TextView mProductName;
-    private TextView mProductResultPrice;
-    private TextView mProductNormalPrice;
+    private TextView mProductPriceSpecial;
+    private TextView mProductPriceNormal;
+    private RelativeLayout mProductFeaturesContainer;
     private TextView mProductFeaturesText;
     private TextView mProductDescriptionText;
     private CompleteProduct mCompleteProduct;
@@ -98,11 +101,8 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         mainView = view;
-        mProductName = (TextView) mainView.findViewById( R.id.product_name );
-        mProductResultPrice = (TextView) mainView.findViewById( R.id.product_price_result );
-        mProductNormalPrice = (TextView) mainView.findViewById( R.id.product_price_normal );
-        mProductFeaturesText = (TextView) mainView.findViewById( R.id.product_features_text );
-        mProductDescriptionText = (TextView) mainView.findViewById( R.id.product_description_text );
+        
+        getViews();
     }
 
     /*
@@ -185,13 +185,13 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         System.gc();
     }
     
-    
     private void getViews(){
-        mProductName = (TextView) mainView.findViewById( R.id.product_name );
-        mProductResultPrice = (TextView) mainView.findViewById( R.id.product_price_result );
-        mProductNormalPrice = (TextView) mainView.findViewById( R.id.product_price_normal );
-        mProductFeaturesText = (TextView) mainView.findViewById( R.id.product_features_text );
-        mProductDescriptionText = (TextView) mainView.findViewById( R.id.product_description_text );
+        mProductName = (TextView) mainView.findViewById(R.id.product_name);
+        mProductPriceSpecial = (TextView) mainView.findViewById(R.id.product_price_special);
+        mProductPriceNormal = (TextView) mainView.findViewById(R.id.product_price_normal);
+        mProductFeaturesContainer = (RelativeLayout) mainView.findViewById(R.id.features_container);
+        mProductFeaturesText = (TextView) mainView.findViewById(R.id.product_features_text);
+        mProductDescriptionText = (TextView) mainView.findViewById(R.id.product_description_text);
     }
     
     private void displayProductInformation(View view ) {
@@ -203,45 +203,42 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     
     private void displayPriceInformation() {
         String unitPrice = mCompleteProduct.getPrice();
-        if ( unitPrice == null) {
-            unitPrice = mCompleteProduct.getMaxPrice();
-        }
-        String specialPrice = mCompleteProduct.getSpecialPrice(); 
-        if ( specialPrice == null)
-            specialPrice = mCompleteProduct.getMaxSpecialPrice();
+        if (unitPrice == null) unitPrice = mCompleteProduct.getMaxPrice();
+        String specialPrice = mCompleteProduct.getSpecialPrice();
+        if (specialPrice == null) specialPrice = mCompleteProduct.getMaxSpecialPrice();
         
         displayPriceInfo(unitPrice, specialPrice);
     }
     
     private void displayPriceInfo(String unitPrice, String specialPrice) {
-        
-        if ( specialPrice == null && unitPrice == null ) {
-          mProductNormalPrice.setVisibility(View.GONE);
-          mProductResultPrice.setVisibility(View.GONE);  
-        } else if (specialPrice == null || ( unitPrice.equals( specialPrice ))) {
-            // display only the normal price
-            mProductResultPrice.setText( unitPrice );
-            mProductNormalPrice.setVisibility(View.GONE);
+        /*-if (specialPrice == null && unitPrice == null) {
+            mProductPriceNormal.setVisibility(View.GONE);
+            mProductPriceSpecial.setVisibility(View.GONE);
+        } else*/
+        if (specialPrice == null || (unitPrice.equals(specialPrice))) {
+            // display only the special price
+            mProductPriceSpecial.setText(unitPrice);
+            mProductPriceNormal.setVisibility(View.GONE);
         } else {
-            // display reduced and special price
-            mProductResultPrice.setText( specialPrice );
-            mProductNormalPrice.setText( unitPrice );
-            mProductNormalPrice.setVisibility(View.VISIBLE);
-            mProductNormalPrice.setPaintFlags(mProductNormalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            // display special and normal price
+            mProductPriceSpecial.setText(specialPrice);
+            mProductPriceNormal.setText(unitPrice);
+            mProductPriceNormal.setVisibility(View.VISIBLE);
+            mProductPriceNormal.setPaintFlags(mProductPriceNormal.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
     }
     
     private void displaySpecification() {
         String shortDescription = mCompleteProduct.getShortDescription();
-//        if (TextUtils.isEmpty(shortDescription)) {
-//            Log.i(TAG, "shortDescription : empty");
-//            if(mProductFeaturesContainer!=null){
-//                mProductFeaturesContainer.setVisibility(View.GONE);
-//            }
-//            return;
-//        } else {
-//            mProductFeaturesContainer.setVisibility(View.VISIBLE);
-//        }        
+        // Don't show the features box if there is no content for it
+        if (TextUtils.isEmpty(shortDescription)) {
+            Log.i(TAG, "shortDescription : empty");
+            if(mProductFeaturesContainer!=null){
+                mProductFeaturesContainer.setVisibility(View.GONE);
+            }
+            return;
+        } else {
+            mProductFeaturesContainer.setVisibility(View.VISIBLE);
         
         String translatedDescription = shortDescription.replace("\r", "<br>");
         Log.d(TAG, "displaySpecification: *" + translatedDescription + "*");
@@ -249,15 +246,16 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
         // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);                
+            Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);
             MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
-            for (MetricAffectingSpan span: spans) {
-                htmlText.removeSpan(span);                
+            for (MetricAffectingSpan span : spans) {
+                htmlText.removeSpan(span);
             }
         }
         mProductFeaturesText.setText(htmlText);
         
 //        mProductFeaturesText.setText(Html.fromHtml(translatedDescription));
+        }
     }
     
     private void displayDescription() {

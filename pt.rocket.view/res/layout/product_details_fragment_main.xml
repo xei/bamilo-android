@@ -25,7 +25,6 @@
             android:id="@+id/product_detail_details_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/rounded_margin_small"
             android:orientation="vertical" >
 
             <!-- IMAGE CONTAINER -->
@@ -37,7 +36,9 @@
             <FrameLayout
                 android:id="@+id/product_detail_variations_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="@dimen/rounded_margin_small" />
 
             <!-- BASIC INFO -->
 
