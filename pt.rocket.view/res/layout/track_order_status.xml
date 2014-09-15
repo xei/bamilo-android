@@ -84,51 +84,40 @@
             android:minHeight="@dimen/track_order_content_height"
             android:visibility="gone" >
 
-            <LinearLayout
-                android:id="@+id/order_creation_date_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/order_creation_date_title"
+                style="@style/text_title"
+                android:layout_marginRight="@dimen/margin_x_small"
                 android:layout_marginTop="@dimen/rounded_margin_mid"
-                android:orientation="horizontal" >
+                android:text="@string/creation_date" />
 
-                <org.holoeverywhere.widget.TextView
-                    android:id="@+id/order_creation_date_title"
-                    style="@style/text_title"
-                    android:layout_marginRight="@dimen/margin_x_small"
-                    android:text="@string/creation_date" />
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/order_creation_date_text"
+                style="@style/text_normal"
+                android:layout_alignBaseline="@id/order_creation_date_title"
+                android:layout_toRightOf="@id/order_creation_date_title"
+                android:text="@string/creation_date" />
 
-                <org.holoeverywhere.widget.TextView
-                    android:id="@+id/order_creation_date_text"
-                    style="@style/text_normal"
-                    android:layout_marginLeft="@dimen/margin_x_small"
-                    android:text="@string/creation_date" />
-            </LinearLayout>
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/order_payment_method_title"
+                style="@style/text_title"
+                android:layout_below="@id/order_creation_date_title"
+                android:layout_marginRight="@dimen/margin_x_small"
+                android:text="@string/payment_method" />
 
-            <LinearLayout
-                android:id="@+id/order_payment_method_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/order_creation_date_container"
-                android:orientation="horizontal" >
-
-                <org.holoeverywhere.widget.TextView
-                    android:id="@+id/order_payment_method_title"
-                    style="@style/text_title"
-                    android:layout_marginRight="@dimen/margin_x_small"
-                    android:text="@string/payment_method" />
-
-                <org.holoeverywhere.widget.TextView
-                    android:id="@+id/order_payment_method_text"
-                    style="@style/text_normal"
-                    android:layout_marginLeft="@dimen/margin_x_small"
-                    android:text="@string/payment_method" />
-            </LinearLayout>
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/order_payment_method_text"
+                style="@style/text_normal"
+                android:layout_alignBaseline="@id/order_payment_method_title"
+                android:layout_marginLeft="@dimen/margin_x_small"
+                android:layout_toRightOf="@id/order_payment_method_title"
+                android:text="@string/payment_method" />
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/order_products_title"
                 style="@style/text_title"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/order_payment_method_container"
+                android:layout_below="@id/order_payment_method_title"
                 android:layout_marginTop="@dimen/track_order_margin_small"
                 android:text="@string/order_track_products" />
 
