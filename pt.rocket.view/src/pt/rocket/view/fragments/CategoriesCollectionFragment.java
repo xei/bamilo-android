@@ -18,11 +18,11 @@ import de.akquinet.android.androlog.Log;
  * Class used to show categories with support for multi levels.
  * @author sergiopereira
  */
-public class CategoriesColletionFragment extends BaseFragment {
+public class CategoriesCollectionFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(CategoriesColletionFragment.class);
+    private static final String TAG = LogTagHelper.create(CategoriesCollectionFragment.class);
     
-    private static CategoriesColletionFragment sCategoriesFragment;
+    private static CategoriesCollectionFragment sCategoriesFragment;
     
     private static int BACK_STACK_EMPTY = 0;
 
@@ -32,15 +32,15 @@ public class CategoriesColletionFragment extends BaseFragment {
      * @return CategoryColletionFragment
      * @author sergiopereira
      */
-    public static CategoriesColletionFragment getInstance(Bundle bundle) {
-        sCategoriesFragment = new CategoriesColletionFragment();        
+    public static CategoriesCollectionFragment getInstance(Bundle bundle) {
+        sCategoriesFragment = new CategoriesCollectionFragment();        
         return sCategoriesFragment;
     }
 
     /**
      * Empty constructor
      */
-    public CategoriesColletionFragment() {
+    public CategoriesCollectionFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.Categories,
                 R.layout.categories_collection_fragment,

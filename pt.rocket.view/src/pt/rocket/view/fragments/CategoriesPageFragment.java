@@ -627,7 +627,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         String treeName = (TextUtils.isEmpty(mTitleCategory))? name : mTitleCategory + "/" + name;
         bundle.putString(ConstantsIntentExtra.CATEGORY_TREE_NAME,  treeName);
         // Switch
-        ((CategoriesColletionFragment) getParentFragment()).onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_SUB_LEVEL, bundle);
+        ((CategoriesCollectionFragment) getParentFragment()).onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_SUB_LEVEL, bundle);
     }
     
     /**
@@ -657,10 +657,10 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         Log.i(TAG, "GOTO PARENT LEVEL FROM: " + type.toString());
         switch (type) {
         case NAVIGATION_CATEGORIES_ROOT_LEVEL:
-            ((CategoriesColletionFragment) getParentFragment()).goToBackUntil(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
+            ((CategoriesCollectionFragment) getParentFragment()).goToBackUntil(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
             break;
         case NAVIGATION_CATEGORIES_SUB_LEVEL:
-            ((CategoriesColletionFragment) getParentFragment()).goToParentCategory();
+            ((CategoriesCollectionFragment) getParentFragment()).goToParentCategory();
             break;
         default:
             Log.w(TAG, "WARNING: ON GOTO PARENT UNKNOWN LEVEL");
