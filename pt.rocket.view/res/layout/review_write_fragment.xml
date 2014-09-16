@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <include
-        android:id="@+id/product_info_container"
-        layout="@layout/product_details_fragment_header" />
-
-    <!-- SHADOW -->
-
-    <View
-        android:id="@+id/shadow"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_below="@id/product_info_container"
-        android:background="@drawable/shadow_white_2_grey_horizontal" />
+        android:layout_height="match_parent" >
 
-    <!-- SCROLLABLE -->
+        <include
+            android:id="@+id/product_info_container"
+            layout="@layout/product_details_fragment_header" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/shadow" >
+        <!-- SHADOW -->
+
+        <View
+            android:id="@+id/shadow"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_below="@id/product_info_container"
+            android:background="@drawable/shadow_white_2_grey_horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/shadow"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -100,6 +98,6 @@
                     android:text="@string/writereview_send" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </RelativeLayout>
 
-</RelativeLayout>
+</ScrollView>
