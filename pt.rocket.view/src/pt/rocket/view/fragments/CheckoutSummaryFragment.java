@@ -25,7 +25,6 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.cart.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.cart.GetShoppingCartRemoveItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -77,10 +76,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
     private TextView mTotal;
 
     private int mCheckoutStep;
-
-    private View mNoItemsView;
-
-    private ViewGroup mProductListView;
 
     private ViewGroup mVoucherView;
 
@@ -144,10 +139,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         
-        // No items
-        mNoItemsView = view.findViewById(R.id.checkout_summary_include_no_items);
         // Products
-        mProductListView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_products);
         mProductList = (ViewGroup) view.findViewById(R.id.checkout_summary_products_list);
         view.findViewById(R.id.checkout_summary_products_btn_edit).setOnClickListener(this);
         mVatView = view.findViewById(R.id.checkout_summary_products_vat_container);
@@ -432,30 +424,16 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
      */
     public void showNoItems() {
         // setAppContentLayout();
-        mNoItemsView.setVisibility(View.VISIBLE);
-        mProductListView.setVisibility(View.GONE);
-        mShippingAddressView.setVisibility(View.GONE);
-        mShippingMethodView.setVisibility(View.GONE);
-        mTotalView.setVisibility(View.GONE);
-        // Show dialog
-        dialog = DialogGenericFragment.newInstance(true, true, false,
-                getString(R.string.order_summary_label),
-                getString(R.string.order_notiems),
-                getString(R.string.ok_label),
-                "",
-                new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        if (id == R.id.button1) {
-                            dialog.dismiss();
-                            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                        }
-                    }
-                });
-        // Fixed back bug
-        dialog.setCancelable(false);
-        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+        showFragmentEmpty(R.string.order_notiems, R.drawable.img_emptycart, R.string.continue_shopping, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id = v.getId();
+                if (id == R.id.button1) {
+                    dialog.dismiss();
+                    getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                }
+            }
+        });
     }
     
 
