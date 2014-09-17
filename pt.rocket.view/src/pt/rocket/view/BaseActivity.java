@@ -23,11 +23,12 @@ import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.SearchSuggestion;
+import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
-import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.tracking.TrackingEvent;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -69,7 +70,6 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -83,6 +83,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.actionbarsherlock.ActionBarSherlock;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.interfaces.SearchViewImeBackListener;
 import com.actionbarsherlock.internal.ActionBarSherlockNative;
@@ -92,7 +93,6 @@ import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnCloseListener;
 import com.actionbarsherlock.widget.SearchView.SearchAutoComplete;
 import com.bugsense.trace.BugSenseHandler;
-
 
 import de.akquinet.android.androlog.Log;
 
@@ -148,7 +148,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private boolean backPressedOnce = false;
 
-    private View logoView = null;
+    // private View logoView = null;
+
+    private TextView logoTextView = null;
 
     public View mDrawerNavigation;
     /**
@@ -164,11 +166,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public ActionBarDrawerToggle mDrawerToggle;
     private int mDrawableState = DrawerLayout.STATE_IDLE;
 
-    private static final Set<EventType> HANDLED_EVENTS = EnumSet
+    /*-private static final Set<EventType> HANDLED_EVENTS = EnumSet
             .of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT,
-                    EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT, EventType.INITIALIZE, EventType.LOGOUT_EVENT);
+                    EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT, EventType.INITIALIZE, EventType.LOGOUT_EVENT);*/
 
-    private final Set<EventType> allHandledEvents = EnumSet.copyOf(HANDLED_EVENTS);
+    // private final Set<EventType> allHandledEvents = EnumSet.copyOf(HANDLED_EVENTS);
     private final Set<EventType> contentEvents;
 
     private boolean isRegistered = false;
@@ -205,23 +207,47 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private ViewStub mMainFallBackStub;
 
+    private ActionBar supportActionBar;
+
     /**
      * Constructor used to initialize the navigation list component and the
      * autocomplete handler
      * 
+     * @param action
+     * @param enabledMenuItems
+     * @param contentEvents
      * @param userEvents
+     * @param titleResId
+     * @param contentLayoutId
      */
-    public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> contentEvents, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
-        this(R.layout.main, action, enabledMenuItems, contentEvents, userEvents, titleResId, contentLayoutId);
+    public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems,
+            Set<EventType> contentEvents, Set<EventType> userEvents, int titleResId,
+            int contentLayoutId) {
+        this(R.layout.main,
+                action,
+                enabledMenuItems,
+                contentEvents,
+                userEvents,
+                titleResId,
+                contentLayoutId);
     }
 
-    public BaseActivity(int activityLayoutId, NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> contentEvents,
+    /**
+     * 
+     * @param activityLayoutId
+     * @param action
+     * @param enabledMenuItems
+     * @param contentEvents
+     * @param userEvents
+     * @param titleResId
+     * @param contentLayoutId
+     */
+    public BaseActivity(int activityLayoutId, NavigationAction action,
+            Set<MyMenuItem> enabledMenuItems, Set<EventType> contentEvents,
             Set<EventType> userEvents, int titleResId, int contentLayoutId) {
         this.activityLayoutId = activityLayoutId;
         this.contentEvents = contentEvents;
         this.userEvents = userEvents;
-        this.allHandledEvents.addAll(contentEvents);
-        this.allHandledEvents.addAll(userEvents);
         this.action = action != null ? action : NavigationAction.Unknown;
         this.menuItems = enabledMenuItems;
         this.titleResId = titleResId;
@@ -393,7 +419,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param titleResId
      * @author sergiopereira
      */
-    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId) {
+    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, int checkoutStep) {
         Log.i(TAG, "ON UPDATE BASE COMPONENTS");
 
         // Update options menu and search bar
@@ -403,15 +429,19 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Update the sliding menu
         this.action = action != null ? action : NavigationAction.Unknown;
         updateNavigationMenu();
-        // Update the title of fragment
 
-        if (setCheckoutHeader(titleResId))
-            ;
-        else if (titleResId == 0) {
+        // Select step on Checkout
+        setCheckoutHeader(checkoutStep);
+        // Set actionbarTitle
+        if (titleResId == 0) {
             hideTitle();
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
+            hideActionBarTitle();
         } else {
-            setTitle(titleResId);
+            // setTitle(titleResId);
+            hideTitle();
+            findViewById(R.id.totalProducts).setVisibility(View.GONE);
+            setActionBarTitle(getString(titleResId));
         }
 
     }
@@ -423,14 +453,19 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     public void setupActionBar() {
         ActionBarSherlock.unregisterImplementation(ActionBarSherlockNative.class);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // Set custom view
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        supportActionBar = getSupportActionBar();
 
-        getSupportActionBar().setCustomView(R.layout.action_bar_logo_layout);
-        logoView = getSupportActionBar().getCustomView().findViewById(R.id.ic_logo);
-        logoView.setOnClickListener(onActionBarClickListener);
+        supportActionBar.setHomeButtonEnabled(true);
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        // Set custom view
+        supportActionBar.setDisplayShowCustomEnabled(true);
+
+        supportActionBar.setCustomView(R.layout.action_bar_logo_layout);
+        // logoView = supportActionBar.getCustomView().findViewById(R.id.ic_logo);
+        // logoView.setOnClickListener(onActionBarClickListener);
+
+        logoTextView = (TextView) supportActionBar.getCustomView().findViewById(R.id.ic_text_logo);
+        logoTextView.setOnClickListener(onActionBarClickListener);
     }
 
     private void setupContentViews() {
@@ -440,17 +475,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
             public void onDrawerClosed(View view) {
-                //                 getActionBar().setTitle(mTitle);
-                // calling onPrepareOptionsMenu() to show action bar icons
                 onClosed();
-                getSupportActionBar().updateUpState(true);
+                supportActionBar.updateUpState(true);
             }
 
             public void onDrawerOpened(View drawerView) {
-                //                 getActionBar().setTitle(mDrawerTitle);
-                // calling onPrepareOptionsMenu() to hide action bar icons
                 onOpened();
-                getSupportActionBar().updateUpState(false);
+                supportActionBar.updateUpState(false);
             }
 
             @Override
@@ -515,11 +546,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
          */
         if (initialCountry) {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            getSupportActionBar().setDisplayShowHomeEnabled(false);
-            getSupportActionBar().setCustomView(R.layout.action_bar_initial_logo_layout);
+            supportActionBar.setDisplayShowHomeEnabled(false);
+            supportActionBar.setCustomView(R.layout.action_bar_initial_logo_layout);
         } else {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            supportActionBar.setDisplayShowHomeEnabled(true);
         }
     }
 
@@ -742,6 +773,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 Log.i(TAG, "ON OPTIONS MENU: CREATE SEARCH VIEW");
                 setActionBarSearch(menu);
                 break;
+            case BASKET:
+                MenuItem basket = menu.findItem(item.resId);
+                basket.setVisible(true);
+                basket.setEnabled(true);
+                break;
             /*-case SHARE:
                 menu.findItem(item.resId).setVisible(true);
                 menu.findItem(item.resId).setEnabled(true);
@@ -757,7 +793,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 setShareIntent(createShareIntent());
                 break;*/
             case MY_PROFILE:
-                MenuItem myProfile = menu.findItem(item.resId); // menu.findItem(item.resId);
+                MenuItem myProfile = menu.findItem(item.resId);
                 myProfile.setVisible(true);
                 myProfile.setEnabled(true);
                 setMyProfile(myProfile);
@@ -805,22 +841,28 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         //
         mSearchMenuItem.setVisible(true);
-        // Get the width of main content
-        logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-        int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
-        int mainContentWidth = WindowHelper.getWidth(getApplicationContext());
-        int genericIconWidth = getResources().getDimensionPixelSize(R.dimen.item_height_normal);
-        // Calculate the search width
-        int searchComponentWidth = mainContentWidth - logoViewWidth - genericIconWidth;
-        Log.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
-        // Set measures
-        mSearchView.setMaxWidth(searchComponentWidth);
-        mSearchAutoComplete.setDropDownWidth(searchComponentWidth);
+        
+        setSearchWidth();
+        
         // Set hint
         mSearchView.setQueryHint(getString(R.string.action_label_search_hint));
         mSearchAutoComplete.setHintTextColor(getResources().getColor(R.color.grey_middlelight));
         // Set search
         setActionBarSearchBehavior();
+    }
+    
+    private void setSearchWidth() {
+        // Get the width of main content
+        // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+        // int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
+        int mainContentWidth = WindowHelper.getWidth(getApplicationContext());
+        int genericIconWidth = getResources().getDimensionPixelSize(R.dimen.item_height_normal);
+        // Calculate the search width
+        int searchComponentWidth = mainContentWidth - genericIconWidth;
+        Log.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
+        // Set measures
+        mSearchView.setMaxWidth(searchComponentWidth);
+        mSearchAutoComplete.setDropDownWidth(searchComponentWidth);
     }
 
     /**
@@ -966,10 +1008,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     protected void setItemsVisibility(boolean visible) {
         for (MyMenuItem item : menuItems) {
-            if(item != MyMenuItem.SEARCH_VIEW) currentMenu.findItem(item.resId).setVisible(visible);
+            if (item != MyMenuItem.SEARCH_VIEW) currentMenu.findItem(item.resId).setVisible(visible);
         }
-        // set visibility for menu_basket
-        currentMenu.findItem(R.id.menu_basket).setVisible(visible);
     }
 
     /**
@@ -1171,8 +1211,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             return;
         }
 
-        final String quantity = JumiaApplication.INSTANCE.getCart() == null ? "?" : JumiaApplication.INSTANCE.getCart().getCartCount() > 0 ? String
-                .valueOf(JumiaApplication.INSTANCE.getCart().getCartCount()) : "";
+        ShoppingCart currentCart = JumiaApplication.INSTANCE.getCart();
+        // Show 0 while the cart is not updated
+        final String quantity = currentCart == null ? "0" : currentCart.getCartCount() > 0 ? String.valueOf(currentCart.getCartCount()) : "";
 
         tvActionCartCount.post(new Runnable() {
             @Override
@@ -1379,6 +1420,23 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         if (titleId != 0) {
             setTitle(getString(titleId));
         }
+    }
+
+    /**
+     * Show and set title on actionbar
+     * 
+     * @param title
+     */
+    private void setActionBarTitle(CharSequence title) {
+        logoTextView.setVisibility(View.VISIBLE);
+        logoTextView.setText(title);
+    }
+
+    /**
+     * Hide title on actionbar
+     */
+    public void hideActionBarTitle() {
+        logoTextView.setVisibility(View.GONE);
     }
 
     /**
@@ -2138,7 +2196,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             hideTitle();
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
             break;
+        case ConstantsCheckout.NO_CHECKOUT:
+            visibility = View.GONE;
+            result = false;
+            updateBaseComponentsOutCheckout(visibility);
+            break;
         default:
+            Log.e(TAG, "checkoutStep unknown");
             visibility = View.GONE;
             result = false;
             updateBaseComponentsOutCheckout(visibility);

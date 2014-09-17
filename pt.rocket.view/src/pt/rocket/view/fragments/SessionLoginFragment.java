@@ -114,14 +114,17 @@ public class SessionLoginFragment extends BaseFragment {
      * @return
      */
     public static SessionLoginFragment getInstance(Bundle bundle) {
-        sLoginFragment = new SessionLoginFragment();
-
         if (bundle != null) {
+            // Initialize SessionLoginFragment with no title
+            sLoginFragment = new SessionLoginFragment(0);
             sLoginFragment.nextFragmentType = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
             sLoginFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
             // Force load form if comes from deep link
             String path = bundle.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
             if (path != null && path.equals(DeepLinkManager.TAG)) sLoginFragment.formResponse = null;
+        } else {
+            // Initialize SessionLoginFragment with proper title
+            sLoginFragment = new SessionLoginFragment(R.string.login_label);
         }
         return sLoginFragment;
     }
@@ -129,11 +132,11 @@ public class SessionLoginFragment extends BaseFragment {
     /**
      * Empty constructor
      */
-    public SessionLoginFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+    public SessionLoginFragment(int titleResId) {
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
                 R.layout.login,
-                0,
+                titleResId,
                 KeyboardState.ADJUST_CONTENT);
         // R.string.login_title
     }

@@ -96,7 +96,7 @@ public class ReviewWriteFragment extends BaseFragment {
      * Empty constructor
      */
     public ReviewWriteFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.review_write_fragment,
                 0,

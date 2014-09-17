@@ -104,8 +104,10 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_my_addresses,
-                ConstantsCheckout.CHECKOUT_BILLING,
-                KeyboardState.ADJUST_CONTENT);
+                R.string.checkout_label,
+                KeyboardState.ADJUST_CONTENT,
+                ConstantsCheckout.CHECKOUT_BILLING);
+        // ConstantsCheckout.CHECKOUT_BILLING
     }
 
     /*

@@ -154,8 +154,10 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_create_address_main,
-                ConstantsCheckout.CHECKOUT_BILLING,
-                KeyboardState.ADJUST_CONTENT);
+                R.string.checkout_label,
+                KeyboardState.ADJUST_CONTENT,
+                ConstantsCheckout.CHECKOUT_BILLING);
+        // ConstantsCheckout.CHECKOUT_BILLING
     }
 
     /*

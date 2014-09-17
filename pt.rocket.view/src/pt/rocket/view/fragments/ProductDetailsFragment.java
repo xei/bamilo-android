@@ -217,7 +217,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      * Empty constructor
      */
     public ProductDetailsFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.product_details_fragment_main,
                 0,
@@ -870,7 +870,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             isAddingProductToCart = false;
             return;
         } else if (simple == null) {
-            ((BaseActivity) getActivity()).showWarningVariation(true);
+            getBaseActivity().showWarningVariation(true);
             isAddingProductToCart = false;
             return;
         }
@@ -947,7 +947,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     }
 
     private void showChooseReminder() {
-        ((BaseActivity) getActivity()).showWarningVariation(true);
+        getBaseActivity().showWarningVariation(true);
         ScrollViewWithHorizontal scrollView = (ScrollViewWithHorizontal) getView().findViewById(R.id.product_detail_scrollview);
         scrollView.scrollTo(0, (getView().findViewById(R.id.product_detail_variations_container).getBottom() + 10));
     }

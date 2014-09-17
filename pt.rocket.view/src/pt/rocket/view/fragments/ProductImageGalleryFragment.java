@@ -93,10 +93,11 @@ public class ProductImageGalleryFragment extends BaseFragment {
      * Empty constructor
      */
     public ProductImageGalleryFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(IS_NESTED_FRAGMENT, BaseFragment.NO_INFLATE_LAYOUT);
+        /*-super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 0,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.NO_ADJUST_CONTENT);*/
     }
 
     /*

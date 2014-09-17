@@ -145,8 +145,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_about_you,
-                ConstantsCheckout.CHECKOUT_ABOUT_YOU,
-                KeyboardState.ADJUST_CONTENT);
+                R.string.checkout_label,
+                KeyboardState.ADJUST_CONTENT,
+                ConstantsCheckout.CHECKOUT_ABOUT_YOU);
+        // ConstantsCheckout.CHECKOUT_ABOUT_YOU
     }
     
     /*

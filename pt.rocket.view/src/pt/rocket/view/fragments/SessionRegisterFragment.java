@@ -114,10 +114,10 @@ public class SessionRegisterFragment extends BaseFragment {
      * Empty Constructor
      */
     public SessionRegisterFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyAccount,
                 R.layout.register,
-                0,
+                R.string.register_title,
                 KeyboardState.ADJUST_CONTENT);
         // R.string.register_title
     }

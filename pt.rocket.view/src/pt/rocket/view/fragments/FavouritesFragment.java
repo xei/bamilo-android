@@ -81,10 +81,10 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * Empty constructor
      */
     public FavouritesFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Favorite,
                 R.layout.favourites,
-                0,
+                R.string.favourites,
                 KeyboardState.NO_ADJUST_CONTENT);
         // R.string.favourites
     }

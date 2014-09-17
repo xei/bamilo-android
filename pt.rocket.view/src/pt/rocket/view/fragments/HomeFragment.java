@@ -95,7 +95,12 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
      * Empty constructor
      */
     public HomeFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), NavigationAction.Home, R.layout.home_fragment_main, 0, KeyboardState.NO_ADJUST_CONTENT);
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.Home,
+                R.layout.home_fragment_main,
+                R.string.home_label,
+                KeyboardState.NO_ADJUST_CONTENT);
+        // 0
     }
 
     /*

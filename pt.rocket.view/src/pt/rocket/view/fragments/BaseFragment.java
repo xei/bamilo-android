@@ -10,6 +10,7 @@ import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -79,7 +80,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private int mInflateLayoutResId = NO_INFLATE_LAYOUT;
     
     private int titleResId;
-
+    
+    private int checkoutStep;
+    
     private Boolean isNestedFragment = false;
     
     private boolean isOrderSummaryPresent;
@@ -104,33 +107,70 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Constructor with layout to inflate
+     * 
+     * @param enabledMenuItems
+     * @param action
+     * @param layoutResId
+     * @param titleResId
+     * @param adjust_state
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId,
+            int titleResId, KeyboardState adjust_state) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
         this.titleResId = titleResId;
         this.adjustState = adjust_state;
+        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
     }
-    
+
     /**
      * Constructor used only by nested fragments
      * 
      * @param isNestedFragment
+     * @param layoutResId
      */
-    public BaseFragment(Boolean isNestedFragment, int inflateLayout) {
+    public BaseFragment(Boolean isNestedFragment, int layoutResId) {
         this.isNestedFragment = isNestedFragment;
-        this.mInflateLayoutResId = inflateLayout;
+        this.mInflateLayoutResId = layoutResId;
+        this.titleResId = 0;
+        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
     }
 
     /**
      * Constructor used only by PDV fragments
+     * 
+     * @param enabledMenuItems
+     * @param action
+     * @param titleResId
+     * @param adjust_state
      */
-    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
+    /*-public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.titleResId = titleResId;
         this.adjustState = adjust_state;
+        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
+    }*/
+
+    /**
+     * Constructor with layout to inflate used only by Checkout fragments
+     * 
+     * @param enabledMenuItems
+     * @param action
+     * @param layoutResId
+     * @param titleResId
+     * @param adjust_state
+     * @param checkoutStep
+     */
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId,
+            int titleResId, KeyboardState adjust_state, int titleCheckout) {
+        this.enabledMenuItems = enabledMenuItems;
+        this.action = action;
+        this.mInflateLayoutResId = layoutResId;
+        this.titleResId = titleResId;
+        this.adjustState = adjust_state;
+        this.checkoutStep = titleCheckout;
     }
 
     /**
@@ -240,7 +280,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
             Log.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
-            ((BaseActivity) getActivity()).updateBaseComponents(enabledMenuItems, action, titleResId);
+            getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
         }
     }
 

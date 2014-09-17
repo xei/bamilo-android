@@ -86,7 +86,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 EnumSet.noneOf(MyMenuItem.class),
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
-                0, R.layout.teasers_main_fragment);
+                0,
+                R.layout.teasers_main_fragment);
     }
 
     /*

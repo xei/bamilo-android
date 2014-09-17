@@ -60,11 +60,12 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
      * Empty constructor
      */
     public ProductDetailsDescriptionFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(IS_NESTED_FRAGMENT, R.layout.product_description_fragment);
+        /*-super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.product_description_fragment,
                 0,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.NO_ADJUST_CONTENT);*/
         // R.string.product_details_title
         this.mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
     }

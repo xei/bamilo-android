@@ -41,7 +41,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
      * Empty constructor
      */
     public CategoriesCollectionFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Categories,
                 R.layout.categories_collection_fragment,
                 R.string.categories_title,

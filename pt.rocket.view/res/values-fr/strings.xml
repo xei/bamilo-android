@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_name">Jumia</string>
     <string name="yes_label">Oui</string>
     <string name="no_label">Non</string>
     <string name="submit_label">Soumettre</string>
@@ -26,7 +27,7 @@
     <string name="nav_track_order">Suivi de commande</string>
     <string name="nav_country_warning">Vous êtes sur le point de changer le pays. Ceci efface le panier et vous serez déconnecté. Etes-vous sûr?</string>
     <string name="navigation_cart_empty">Votre panier est vide</string>
-    <string name="login_title">Connectez-vous </string>
+    <!-- string name="login_title">Connectez-vous </string -->
     <string name="login_sectiontitle">Identifiants </string>
     <string name="register_required_text">Veillez remplir les champs obligatoires (*) </string>
     <string name="fgt_pass">Mot de passe oublié ?</string>
@@ -127,9 +128,8 @@
     <string name="shoppingcart_item_btn_delete">Effacer</string>
     <string name="shoppingcart_instock">En stock</string>
     <string name="shoppingcart_notinstock">Plus en stock</string>
-    <string name="thank_you_order_title">Merci pour votre commande!</string>
     <!-- string name="order_sent_soon">Votre commande sera très bientôt expédiée!</string -->
-<!--     <string name="thank_you_title">Merci</string> -->
+    <!-- string name="thank_you_title">Merci</string -->
     <string name="register_button">Créer un compte</string>
     <string name="register_title">Créer un compte</string>
     <string name="register_sectiontitle">Données du compte</string>
@@ -221,7 +221,6 @@
     <string name="rating_quality">Qualité</string>
     <string name="call_to_order_number">20006161</string>
     <string name="home_tip_text">Faites défiler vers la gauche ou la droite pour changer de catégorie</string>
-    <string name="facebook_login_button_text">Connectez-vous via Facebook</string>
     <string name="tip_tap_text">Cliquez pour voir l\'ensemble \ndes images produit</string>
     <string name="tip_swipe_text">Balayez vers la gauche ou la droite pour observer les différentes images </string>
     <!-- string name="tip_pinch_text">Ecartez les doigts pour zoomer</string -->
@@ -240,9 +239,9 @@
     <string name="order_track_products">Produits:</string>
     <string name="error_tracking_order_text">Aucun résultat pour le numéro de commande recherché.\nS\'il vous plaît vérifiez à nouveau le numéro de commande et réessayez.</string>
     <string name="fallback_maintenance">MAINTENANCE</string>
-    <string name="fallback_welcome">BIENVENUE</string>
     <string name="fallback_maintenance_text">est actuellement en maintenance.</string>
     <string name="fallback_maintenance_text_bottom">Nous allons essayer d\'être bref, réessayer dans quelques secondes </string>
+    <string name="fallback_welcome">BIENVENUE</string>
     <string name="fallback_bottom_text">partout et à tout moment</string>
     <string name="fallback_bottom_text2">Et beaucoup plus pour naviguer ou fair des achats</string>
     <string name="fallback_fashion">Mode</string>
@@ -337,8 +336,8 @@
     <string name="myaccount_email_notifications">Préférence eMails</string>
     <string name="option3_description">S\'inscrire ou Se désinscrire</string>
     <string name="newsletters_label">Newsletters</string>
-<!--     <string name="newsletter_male_label">Newsletter Homme</string> -->
-<!--     <string name="newsletter_female_label">Newsletter Femme</string> -->
+    <!-- string name="newsletter_male_label">Newsletter Homme</string -->
+    <!-- string name="newsletter_female_label">Newsletter Femme</string -->
     <string name="newsletter_saved_message">Vos préférences eMails ont été enregistrées</string>
     <string name="menu_label_uppercase">MENU</string>
     <string name="categories_label_uppercase">CATÉGORIES</string>
@@ -351,6 +350,7 @@
     <string name="products_tip_favourite_text">Cliquez pour ajouter aux Favoris!</string>
     <string name="products_added_favourite">Produit ajouté aux Favoris</string>
     <string name="products_removed_favourite">Produit supprimé de Mes Favoris</string>
+    <string name="favourite_add_to_cart">Le produit a été ajouté à votre panier</string>
     <string name="favourite_addalltocart">Tout ajouter au Panier</string>
     <!-- string name="favourite_variance_choose_error">Veuillez sélectionner une variation</string -->
     <string name="favourite_no_favourites">Vous n\'avez pas de favoris pour le moment</string>
@@ -359,10 +359,9 @@
     <string name="recentlyview_no_searches">Aucun Dernier Produit Vu</string>
     <string name="recentlyview_clear_viewed">Effacer les Derniers Produits Vus</string>
     <string name="error_occured">Une erreur est produite</string>
-    <string name="campaing_offer_ended">Promo Expirée!</string>
-    <string name="favourite_add_to_cart">Le produit a été ajouté à votre panier</string>
     <string name="teaser_campaign_button_first_line">HOT</string>
     <string name="teaser_campaign_button_second_line">OFFERS</string>
+    <string name="campaing_offer_ended">Promo Expirée!</string>
     <string name="back_label">RETOUR</string>
     <string name="campaing_timer_end">Se termine le:  </string>
     <string name="products_tip_swipe_text">Balayer à la gauche ou droite pour changer de classement</string>
@@ -375,5 +374,11 @@
     <string name="shoppingcart_remove_products">Do you want to remove the products in the Cart?</string>
     <string name="track_your_order_tip">Search for your Order ID and every detail about it will show here</string>
     <string name="your_order">Your Order</string>
+
+    <string name="reviews_empty">This Product has no ratings, yet!</string>
+    <string name="checkout_label">Checkout</string>
+    <string name="campaigns_label">Campaigns</string>
+    <string name="order_status_label">Order Status</string>
+    <string name="cart_label">Cart</string>
 
 </resources>

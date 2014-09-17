@@ -59,10 +59,10 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
      * Empty constructor
      */
     public RecentSearchFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.RecentSearch,
                 R.layout.recentsearches,
-                0,
+                R.string.recent_searches,
                 KeyboardState.ADJUST_CONTENT);
         // R.string.recent_searches
     }

@@ -72,8 +72,10 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_shipping_methods,
-                ConstantsCheckout.CHECKOUT_SHIPPING,
-                KeyboardState.NO_ADJUST_CONTENT);
+                R.string.checkout_label,
+                KeyboardState.NO_ADJUST_CONTENT,
+                ConstantsCheckout.CHECKOUT_SHIPPING);
+        // ConstantsCheckout.CHECKOUT_SHIPPING
     }
 
     /*

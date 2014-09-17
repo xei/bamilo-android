@@ -59,11 +59,12 @@ public class CampaignsFragment extends BaseFragment {
      * Empty constructor
      */
     public CampaignsFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Unknown,
                 R.layout.campaign_fragment_main,
-                0,
+                R.string.campaigns_label,
                 KeyboardState.NO_ADJUST_CONTENT);
+        // 0
     }
 
     /*

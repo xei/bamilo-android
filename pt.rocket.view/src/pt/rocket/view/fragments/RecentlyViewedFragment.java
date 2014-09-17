@@ -48,10 +48,10 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      * Empty constructor
      */
     public RecentlyViewedFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.RecentlyView,
                 R.layout.recentlyviewed,
-                0,
+                R.string.recently_viewed,
                 KeyboardState.NO_ADJUST_CONTENT);
         // R.string.recently_viewed
     }

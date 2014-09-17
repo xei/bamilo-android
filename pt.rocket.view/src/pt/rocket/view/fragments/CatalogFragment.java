@@ -132,11 +132,12 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
      * Empty constructor
      */
     public CatalogFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE), 
-                NavigationAction.Products, 
-                R.layout.products_frame, 
-                R.string.products_label,
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.Products,
+                R.layout.products_frame,
+                0,
                 KeyboardState.NO_ADJUST_CONTENT);
+        // R.string.products_label
         mProductsMap = new HashMap<String, Product>();
     }
 

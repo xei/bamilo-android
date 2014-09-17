@@ -77,8 +77,10 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_thanks,
-                ConstantsCheckout.CHECKOUT_THANKS,
-                KeyboardState.NO_ADJUST_CONTENT);
+                R.string.checkout_label,
+                KeyboardState.NO_ADJUST_CONTENT,
+                ConstantsCheckout.CHECKOUT_THANKS);
+        // ConstantsCheckout.CHECKOUT_THANKS
         this.setRetainInstance(true);
     }
 

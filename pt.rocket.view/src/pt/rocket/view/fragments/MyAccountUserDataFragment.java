@@ -73,10 +73,10 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
      * Empty constructor
      */
     public MyAccountUserDataFragment() {
-        super(EnumSet.noneOf(MyMenuItem.class),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyAccount,
                 R.layout.my_account_user_data_fragment,
-                0,
+                R.string.personal_data_title,
                 KeyboardState.ADJUST_CONTENT);
         // R.string.personal_data_title
     }

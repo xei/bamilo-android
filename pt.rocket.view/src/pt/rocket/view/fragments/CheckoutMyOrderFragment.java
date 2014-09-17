@@ -116,8 +116,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_my_order_main,
-                ConstantsCheckout.CHECKOUT_ORDER,
-                KeyboardState.NO_ADJUST_CONTENT);
+                R.string.checkout_label,
+                KeyboardState.NO_ADJUST_CONTENT,
+                ConstantsCheckout.CHECKOUT_ORDER);
+        // ConstantsCheckout.CHECKOUT_ORDER
     }
 
     /*

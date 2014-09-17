@@ -52,10 +52,10 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
      * Empty constructor
      */
     public MyAccountFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyAccount,
                 R.layout.my_account_fragment,
-                0,
+                R.string.account_name,
                 KeyboardState.NO_ADJUST_CONTENT);
         // R.string.account_name
     }

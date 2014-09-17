@@ -74,8 +74,9 @@ public class ChangeCountryFragment extends BaseFragment {
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Country,
                 R.layout.change_country,
-                0,
+                R.string.nav_country,
                 KeyboardState.NO_ADJUST_CONTENT);
+        // R.string.nav_country
     }
 
     /*
@@ -135,13 +136,13 @@ public class ChangeCountryFragment extends BaseFragment {
         
         if(selected == SHOP_NOT_SELECTED) {
             isChangeCountry = false;
-            getBaseActivity().hideTitle();
+            // getBaseActivity().hideTitle();
             getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
         }
         
         if(selected != SHOP_NOT_SELECTED){
-            getBaseActivity().hideTitle();
-            getBaseActivity().setCheckoutHeader(R.string.nav_country);
+            // getBaseActivity().hideTitle();
+            // getBaseActivity().setCheckoutHeader(R.string.nav_country);
         }
         
     }
@@ -260,7 +261,7 @@ public class ChangeCountryFragment extends BaseFragment {
                         dialog.dismiss();
                         int id = v.getId();
                         if (id == R.id.button1) {
-                            ((BaseActivity) getActivity()).onBackPressed();
+                            getBaseActivity().onBackPressed();
                         } else if (id == R.id.button2) {
                             setCountry(position);
                         }

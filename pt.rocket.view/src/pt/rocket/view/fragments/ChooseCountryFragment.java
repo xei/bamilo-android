@@ -78,8 +78,9 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Country,
                 R.layout.change_country,
-                0,
+                R.string.nav_country,
                 KeyboardState.NO_ADJUST_CONTENT);
+        // 0
     }
 
     /*
@@ -446,7 +447,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                         dialog.dismiss();
                         int id = v.getId();
                         if (id == R.id.button1) {
-                            ((BaseActivity) getActivity()).onBackPressed();
+                            getBaseActivity().onBackPressed();
                         } else if (id == R.id.button2) {
                             setCountry(position);
                         }

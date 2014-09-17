@@ -170,10 +170,10 @@ public class ShoppingCartFragment extends BaseFragment {
      * Empty constructor
      */
     public ShoppingCartFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Basket,
                 R.layout.shopping_basket,
-                0,
+                R.string.cart_label,
                 KeyboardState.ADJUST_CONTENT);
         // R.string.shoppingcart_title
         this.setRetainInstance(true);

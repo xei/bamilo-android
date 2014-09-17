@@ -35,7 +35,6 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -104,11 +103,14 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
      * Empty constructor
      */
     public CheckoutExternalPaymentFragment() {
+        // Uses webview
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkoutweb,
-                0,
-                KeyboardState.NO_ADJUST_CONTENT);
+                R.string.checkout_label,
+                KeyboardState.NO_ADJUST_CONTENT,
+                ConstantsCheckout.NO_CHECKOUT);
+        // 0
         this.setRetainInstance(true);
     }
 
@@ -636,8 +638,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                     }
 
                     bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);
-                    ((BaseActivity) getActivity()).onSwitchFragment(FragmentType.CHECKOUT_THANKS,
-                            bundle, FragmentController.ADD_TO_BACK_STACK);
+                    getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
             } catch (ParseException e) {
                 Log.e(TAG, "parse exception:", e);

@@ -66,10 +66,10 @@ public class TrackOrderFragment extends BaseFragment {
      * Empty constructor
      */
     public TrackOrderFragment() {
-        super(EnumSet.of(MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.TrackOrder,
                 R.layout.track_order_fragment,
-                0,
+                R.string.order_status_label,
                 KeyboardState.ADJUST_CONTENT);
         // R.string.nav_track_order
         this.setRetainInstance(true);

@@ -28,4 +28,6 @@ public class ConstantsCheckout {
     public static final int CHECKOUT_THANKS = -6;
     public static final int CHECKOUT_NO_SET_HEADER = -7;
     
+    public static final int NO_CHECKOUT = 0;
+
 }

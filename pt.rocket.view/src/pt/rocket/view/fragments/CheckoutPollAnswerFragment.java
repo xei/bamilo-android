@@ -72,8 +72,10 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
                 R.layout.checkout_poll_question,
-                ConstantsCheckout.CHECKOUT_ABOUT_YOU,
-                KeyboardState.NO_ADJUST_CONTENT);
+                R.string.checkout_label,
+                KeyboardState.NO_ADJUST_CONTENT,
+                ConstantsCheckout.CHECKOUT_ABOUT_YOU);
+        // ConstantsCheckout.CHECKOUT_ABOUT_YOU
     }
 
     /*

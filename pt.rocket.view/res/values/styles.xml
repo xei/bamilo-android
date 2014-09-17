@@ -469,4 +469,9 @@
         <item name="android:ellipsize">marquee</item>
     </style>
 
+    <style name="text_actionbar" parent="_base_text">
+        <item name="android:textSize">@dimen/text_actionbar</item>
+        <item name="android:textColor">@color/grey_middledark</item>
+    </style>
+
 </resources>

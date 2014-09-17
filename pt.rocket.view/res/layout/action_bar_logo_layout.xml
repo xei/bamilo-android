@@ -14,6 +14,19 @@
         android:contentDescription="@string/app_name"
         android:focusable="false"
         android:longClickable="false"
-        android:src="@drawable/logo_ic_text" />
+        android:src="@drawable/logo_ic_text"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/ic_text_logo"
+        style="@style/text_actionbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_logo_header"
+        android:clickable="true"
+        android:contentDescription="@string/app_name"
+        android:focusable="false"
+        android:longClickable="false"
+        android:paddingLeft="@dimen/rounded_margin_mid" />
 
 </LinearLayout>
