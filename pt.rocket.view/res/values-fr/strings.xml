@@ -129,7 +129,7 @@
     <string name="shoppingcart_notinstock">Plus en stock</string>
     <string name="thank_you_order_title">Merci pour votre commande!</string>
     <!-- string name="order_sent_soon">Votre commande sera très bientôt expédiée!</string -->
-    <string name="thank_you_title">Merci</string>
+<!--     <string name="thank_you_title">Merci</string> -->
     <string name="register_button">Créer un compte</string>
     <string name="register_title">Créer un compte</string>
     <string name="register_sectiontitle">Données du compte</string>
@@ -225,7 +225,6 @@
     <string name="tip_tap_text">Cliquez pour voir l\'ensemble \ndes images produit</string>
     <string name="tip_swipe_text">Balayez vers la gauche ou la droite pour observer les différentes images </string>
     <!-- string name="tip_pinch_text">Ecartez les doigts pour zoomer</string -->
-    <string name="products_tip_text">Balayez vers la gauche ou la droite pour changer de filtre</string>
     <string name="go_shop_text">J\'achète</string>
     <string name="promotion_tip_tap_text">Cliquez sur la case ci-dessus pour copier le code dans le presse-papier et gardez le ainsi à portée de main pour le paiement final</string>
     <string name="copied_to_clipboard">Copié dans le presse-papier</string>
@@ -240,6 +239,7 @@
     <string name="payment_method">Méthode de Paiement:</string>
     <string name="order_track_products">Produits:</string>
     <string name="error_tracking_order_text">Aucun résultat pour le numéro de commande recherché.\nS\'il vous plaît vérifiez à nouveau le numéro de commande et réessayez.</string>
+    <string name="fallback_maintenance">MAINTENANCE</string>
     <string name="fallback_welcome">BIENVENUE</string>
     <string name="fallback_maintenance_text">est actuellement en maintenance.</string>
     <string name="fallback_maintenance_text_bottom">Nous allons essayer d\'être bref, réessayer dans quelques secondes </string>
@@ -336,11 +336,11 @@
     <string name="campaign_ramaining_stock">Stock Restant:</string>
     <string name="myaccount_email_notifications">Préférence eMails</string>
     <string name="option3_description">S\'inscrire ou Se désinscrire</string>
-    <!-- string name="newsletters_label">Newsletters</string -->
-    <string name="newsletter_male_label">Newsletter Homme</string>
-    <string name="newsletter_female_label">Newsletter Femme</string>
+    <string name="newsletters_label">Newsletters</string>
+<!--     <string name="newsletter_male_label">Newsletter Homme</string> -->
+<!--     <string name="newsletter_female_label">Newsletter Femme</string> -->
     <string name="newsletter_saved_message">Vos préférences eMails ont été enregistrées</string>
-    <!-- string name="menu_label_uppercase">MENU</string -->
+    <string name="menu_label_uppercase">MENU</string>
     <string name="categories_label_uppercase">CATÉGORIES</string>
     <string name="wizard_navigation">Accès rapide à toutes vos catégories préférées</string>
     <string name="my_profile">Mon Profil</string>
@@ -367,6 +367,13 @@
     <string name="campaing_timer_end">Se termine le:  </string>
     <string name="products_tip_swipe_text">Balayer à la gauche ou droite pour changer de classement</string>
     <string name="login_remember_user_email">Remember my email</string>
+    <string name="splash_slogan">The biggest online shopping mall in Africa</string>
     <string name="catalog_no_results">No results match your filter criteria.\nYou can try to use less specific filters</string>
+    <string name="catalog_edit_filters">Edit Filters</string>
+    <string name="color_label">Color</string>
+    <string name="size_label">Size</string>
+    <string name="shoppingcart_remove_products">Do you want to remove the products in the Cart?</string>
+    <string name="track_your_order_tip">Search for your Order ID and every detail about it will show here</string>
+    <string name="your_order">Your Order</string>
 
 </resources>

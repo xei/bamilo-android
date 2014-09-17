@@ -83,7 +83,7 @@
     <!-- string name="wishlist_login_title">You are not logged in</string -->
     <!-- string name="wishlist_login_text">In order to complete your purchase, you must be logged in. Do you wish to login now or continue locally?</string -->
     <!-- string name="wishlist_addalltocart">Add all items to shopping cart</string -->
-    <string name="search_no_items">We couldn\'t find your product!</string>
+<!--     <string name="search_no_items">We couldn\'t find your product!</string> -->
     <!-- string name="searchsuggestions_empty">No suggestions for your search term!</string -->
     <!-- string name="searchsuggestions_pleaseenter">Please enter a term for suggestions!</string -->
     <!-- string name="action_label_mypayments">Add Payment Method</string -->
