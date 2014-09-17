@@ -93,6 +93,7 @@ def initvars
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "addddd" 
     @search_p= "nikon" 
+    @search_word="samsung"
     @search="Search"
     @myaccount="My Account"
     @myinfo="User Data"
@@ -222,6 +223,7 @@ def initvars
     @back_button= "BACK"
     @track_my_order = "Track My Order"
     @number_items="Items"
+    @remember_my_email= "Remember my email"
     
     ##### Ivory Coast ####################################### IC ##############################################################################          
     when "ic"
@@ -231,6 +233,7 @@ def initvars
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "addddd" 
     @search_p= "caresse Sava" 
+    @search_word="samsung"
     @search="Rechercher"
     @myaccount="Mon compte"
     @myinfo="Les données de"
@@ -290,7 +293,7 @@ def initvars
     @second_tip="Cliquez pour voir l'ensemble"
     @specification="Caractéristiques"
     @please_choose="Choisissez"
-    @search_v="sandales à Clous - argent"
+    @search_v="sandal"
     @product_features="du produit"
     @product_description="Description du produit"
     @write_review="Donnez-nous notre avis"
@@ -310,7 +313,7 @@ def initvars
     @confirm_order="Confirmer la commande"
     
     #@popular_categories="Nos Meilleures Catégories"
-    @popular_categories="Popular"
+    @popular_categories="Meilleures ventes"
     @filter="Filtre"
     @filter_brand="Brand"
     @filter_size="Size"
@@ -322,7 +325,7 @@ def initvars
     @new_in="NOUVEAUTÉS"
     @best_rating="MIEUX NOTÉS"
     @back="Appuyez de nouveau sur retour si vous souhaitez quitter l'app"
-    @search_r="nokia lumia 920 noir"
+    @search_r="nokia"
     
     @valid_order="300028219"
     @no_track_results="Aucun résultat pour le numéro"
@@ -362,9 +365,10 @@ def initvars
     @item_removed = "Produit supprimé"
     @shopping_cart = "Panier d'achat"
     @my_cart = "Mon panier" 
-    @back_button= "BACK"
+    @back_button= "RETOUR"
     @track_my_order = "Suivi de commande"
     @number_items="Articles"
+    @remember_my_email= "Remember my email"
       
     ##### Morocco ########################################### MA ##############################################################################
     when "ma"
@@ -374,11 +378,12 @@ def initvars
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "addddf" 
     @search_p= "surf" 
+    @search_word="samsung"
     @search="Rechercher"
     @myaccount="Mon compte"
     @myinfo="Les données de"
     @categories="CATÉGORIES"
-    @categoryfashion="Téléphonie"
+    @categoryfashion="Tablettes"
     @choose_country="Choisir le pays"
     @order_status="Suivre la commande"
     
@@ -433,7 +438,7 @@ def initvars
     @second_tip="Cliquez pour voir l'ensemble"
     @specification="Caractéristiques"
     @please_choose="Choisissez"
-    @search_v="bottes à talons"
+    @search_v="sandal"
     @product_features="Spécificités du produit"
     @product_description="Description du produit"
     @write_review="Donnez-nous notre avis"
@@ -503,9 +508,10 @@ def initvars
     @item_removed = "Produit supprimé"
     @shopping_cart = "Panier d'achat"
     @my_cart = "Mon panier" 
-    @back_button= "BACK"
-    @track_my_order = "Suivi de commande"
+    @back_button= "RETOUR"
+    @track_my_order = "Suivre la commande"
     @number_items="Articles"
+    @remember_my_email= "Remember my email"
         
     ##### Nigeria ########################################### NG ##############################################################################
     when "ng"
@@ -515,6 +521,7 @@ def initvars
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "adddddf" 
     @search_p= "nikon" 
+    @search_word="samsung"
     @search="Search"
     @myaccount="My Account"
     @myinfo="User Data"
@@ -642,6 +649,7 @@ def initvars
     @back_button= "BACK"
     @track_my_order = "Track My Order"
     @number_items="Items"
+    @remember_my_email= "Remember my email"
     
     ##### Egypt ############################################# EG ##############################################################################
     when "eg"
@@ -651,6 +659,7 @@ def initvars
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "adddddf" 
     @search_p= "nikon" 
+    @search_word="samsung"
     @search="Search" 
     @myaccount="My Account"
     @myinfo="User Data"
@@ -778,6 +787,7 @@ def initvars
     @back_button= "BACK"
     @track_my_order = "Track My Order"
     @number_items="Items"
+    @remember_my_email= "Remember my email"
     
     ##### Uganda  ############################################ UG ##############################################################################
     when "ug"
@@ -787,11 +797,12 @@ def initvars
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "addddd" 
     @search_p= "nikon" 
+    @search_word="samsung"
     @search="Search"
     @myaccount="My Account"
     @myinfo="User Data"
     @categories="CATEGORIES"
-    @categoryfashion="Mobile"
+    @categoryfashion="Tablets"
     @choose_country="Choose Country"
     @order_status="Order Status"
     
@@ -857,7 +868,7 @@ def initvars
     #native checkout
     @proceed_to_checkout="Proceed to Checkout"
     @next="Next"
-    @pay_on_delivery="Pay On Delivery"
+    @pay_on_delivery="Cash on Delivery"
     @confirm_order="Confirm Order"
     
     @popular_categories="Popular"
@@ -914,6 +925,7 @@ def initvars
     @back_button= "BACK"
     @track_my_order = "Track My Order"
     @number_items="Items"
+    @remember_my_email= "Remember my email"
     
     ##### Ghana   ############################################ GH ##############################################################################
     when "gh"
@@ -923,6 +935,7 @@ def initvars
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "addddd" 
     @search_p= "nikon" 
+    @search_word="samsung"
     @search="Search"
     @myaccount="My Account"
     @myinfo="User Data"
@@ -947,7 +960,7 @@ def initvars
      
     @addtocart="Add to Cart"
     @home="Home"
-    @home_c="HOME"
+    @home_c="Top Sellers"
     @new_pass_short="The new password has to have at least 6 characters"
    
     #password recovery
@@ -964,7 +977,7 @@ def initvars
     @clear_cart_message="This clears the cart"
     
     #catalog
-    @currency= "USH"
+    @currency= "GH"
     @loading_items="Loading more items"
     @popularity="POPULARITY"
     @price_up="PRICE UP"
@@ -977,7 +990,7 @@ def initvars
     @second_tip="Tap to open the product gallery"
     @specification="Specification"
     @please_choose="Please choose"
-    @search_v="flip flops"
+    @search_v="jersey"
     @product_features="Product Features"
     @product_description="Product Description"
     @write_review="Write a Review"
@@ -993,7 +1006,7 @@ def initvars
     #native checkout
     @proceed_to_checkout="Proceed to Checkout"
     @next="Next"
-    @pay_on_delivery="Pay On Delivery"
+    @pay_on_delivery="Cash On Delivery"
     @confirm_order="Confirm Order"
     
     @popular_categories="Popular"
@@ -1010,7 +1023,7 @@ def initvars
     @back="Please press back again if you wish to leave the app"
     @search_r="samsung"
     
-    @valid_order="400093859"
+    @valid_order="300000376"
     @no_track_results="No results found"
     
     @related_items="Related Items"
@@ -1050,5 +1063,6 @@ def initvars
     @back_button= "BACK"
     @track_my_order = "Track My Order"
     @number_items="Items"
+    @remember_my_email= "Remember my email"
   end
 end

@@ -390,3 +390,7 @@ end
 Then /^I enter track my order$/ do
   performAction('click_on_text', @track_my_order.to_s)
 end
+
+Then /^I click on remember user email$/ do
+  performAction('click_on_text', @remember_my_email.to_s)
+end

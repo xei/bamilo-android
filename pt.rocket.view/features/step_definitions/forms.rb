@@ -136,7 +136,7 @@ end
 
 Then /^I write a valid result on the search bar$/ do
   performAction('clear_id_field', "abs__search_src_text")
-  performAction('enter_text_into_id_field',"surf", "abs__search_src_text")
+  performAction('enter_text_into_id_field',@search_word, "abs__search_src_text")
 end
 
 Then /^I write a invalid result on the search bar$/ do

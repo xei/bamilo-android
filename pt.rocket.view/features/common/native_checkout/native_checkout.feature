@@ -39,7 +39,7 @@ And I wait for 15 seconds
 And I press Next
 And I wait for 7 seconds
 And I press Next
-And I wait for 5 seconds
+And I wait for 10 seconds
 And I press Pay on Delivery
 And I press Next
 And I wait for the confirm order

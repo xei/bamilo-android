@@ -28,7 +28,7 @@ And I press list item number 2
 * I wait for 5 seconds
 Then I press Got it
 And I add product to cart
-* I wait for 8 seconds
+* I wait for 10 seconds
 Then I should see the item was added to shopping cart message
 When I go to cart
 Then I should not see the no items message

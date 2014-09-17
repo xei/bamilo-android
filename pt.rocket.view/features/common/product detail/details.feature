@@ -10,7 +10,7 @@ Given I select the country
 And I wait to see the home
 When I click on search
 When I enter a variation search
-* I wait for 2 seconds
+* I wait for 5 seconds
 And I press list item number 1
 * I wait for 5 seconds 
 And I press Got it
@@ -31,7 +31,7 @@ And I press list item number 1
 * I wait for 3 seconds
 When I press product specifications
 * I wait for 10 seconds
-Then I should see the product features
+#Then I should see the product features
 And I should see the product description
 
 @review_overview

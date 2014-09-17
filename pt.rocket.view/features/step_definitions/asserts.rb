@@ -446,3 +446,16 @@ end
 Then /^I should see the catalog number of items$/ do
   performAction('assert_text', @number_items.to_s, true)
 end
+
+Then /^I should see the remember user email checkbox$/ do
+  performAction('assert_text', @remember_my_email.to_s, true)
+end
+
+Then /^I (should not|should) see email$/ do |item|
+  case item.to_s
+    when "should"
+      performAction('assert_text', @username.to_s, true)
+    when "should not"
+      performAction('assert_text', @username.to_s, false)
+    end
+end

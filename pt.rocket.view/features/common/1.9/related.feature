@@ -70,5 +70,5 @@ Then I should see the related items
 Scenario: Open a product on home
 Given I wait to see the home
 When I press on a related item
-Then I should not see the related items
+#Then I should not see the related items
 	
