@@ -1772,7 +1772,7 @@ public class DynamicFormItem {
         this.dataControl = createTextDataControl();
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
-        this.dataControl.setPadding(context.getResources().getDimensionPixelSize(R.dimen.login_margin_small), 0, 0, 0);
+        this.dataControl.setPadding(context.getResources().getDimensionPixelSize(R.dimen.form_left_padding), 0, 0, 0);
 
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.MATCH_PARENT);

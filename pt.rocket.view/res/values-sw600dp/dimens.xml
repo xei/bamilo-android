@@ -103,6 +103,8 @@
     <dimen name="login_margin_medium">30dp</dimen>
     <dimen name="login_margin_high">35dp</dimen>
 
+    <dimen name="form_left_padding">20dp</dimen>
+
     <dimen name="checkout_box_title_height">40dp</dimen>
     <dimen name="checkout_voucher_box_height">105dp</dimen>
 
