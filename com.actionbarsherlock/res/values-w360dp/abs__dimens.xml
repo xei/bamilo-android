@@ -19,7 +19,4 @@
 -->
 <resources>
     <integer name="abs__max_action_buttons">3</integer>
-
-    <!-- Right margin of the search view FIX -->
-    <dimen name="abs__search_view_fix_right_margin">0dp</dimen>
 </resources>

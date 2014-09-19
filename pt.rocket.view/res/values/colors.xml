@@ -22,7 +22,7 @@
     <color name="promotion_dialog_bkg">#80000000</color>
     <!-- color name="loadingbackground_dimmed">#FFFFFFFF</color -->
     <color name="grey_background">#c8c8c8</color>
-    
+
     <color name="yellow_dark">#feaf07</color>
     <color name="green_basic">#47b638</color>
 
@@ -40,18 +40,18 @@
     <!-- color name="dialog_title_background">@color/grey_highlight</color -->
     <color name="form_text">@color/grey_middle</color>
     <color name="form_text_hint">@color/grey_middlelight</color>
-    
+
     <color name="campaign_info_background">#fff7e6</color>
-    
+
     <color name="grey_campaign_bar">#dadada</color>
     <color name="green_campaign_bar">#0a9f2a</color>
     <color name="yellow_campaign_bar">#ffc64a</color>
     <color name="orange_campaign_bar">#ee7822</color>
-    
+
     <color name="orange_tab_bar">#ff9900</color>
     <color name="grey_tab_background">#ebebeb</color>
     <color name="grey_div_background">#d3d3d3</color>
-    
-    
+
+    <color name="search_hint">#a3a3a3</color>
 
 </resources>

@@ -27,7 +27,6 @@
     <dimen name="divider_height">1dp</dimen>
     <dimen name="divider_width">0.5dp</dimen>
     <dimen name="distance_item_small">24dp</dimen>
-    <dimen name="navigation_title_height">48dp</dimen>
     <dimen name="navigation_item_divider_height">1dp</dimen>
     <dimen name="navigation_cart_vertical_distance">17dp</dimen>
 
@@ -48,7 +47,9 @@
     <!-- dimen name="text_xxl">22sp</dimen -->
 
     <!-- TEXT DIMENSIONS (px/3) -->
-    <dimen name="text_actionbar">16.67sp</dimen>
+    <dimen name="text_actionbar_title">18sp</dimen>
+    <!-- ACTION BAR Tablet will use dimensions from Phone and upscale -->
+    <dimen name="text_actionbar_search">14sp</dimen>
     <dimen name="text_header">16sp</dimen>
     <dimen name="text_form">13sp</dimen>
     <dimen name="text_title">12sp</dimen>
@@ -250,5 +251,11 @@
     <dimen name="com_facebook_loginview_text_size">@dimen/text_header</dimen>
 
     <dimen name="button_small_height">30dp</dimen>
+
+    <dimen name="action_bar_icon_size">32dp</dimen>
+    <dimen name="action_bar_margin">16dp</dimen>
+    <dimen name="abs__search_button_icon_height">@dimen/action_bar_icon_size</dimen>
+    <dimen name="abs__action_button_min_width">@dimen/action_bar_icon_size</dimen>
+    <dimen name="action_bar_height">48dp</dimen>
 
 </resources>

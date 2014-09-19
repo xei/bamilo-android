@@ -2,7 +2,9 @@
 <resources>
 
     <!-- TEXT DIMENSIONS (px/2) -->
-    <dimen name="text_actionbar">25sp</dimen>
+    <dimen name="text_actionbar_title">27sp</dimen>
+    <!-- ACTION BAR Tablet will use dimensions from Phone and upscale -->
+    <!--dimen name="text_actionbar_search">21sp</dimen-->
     <dimen name="text_header">24sp</dimen>
     <dimen name="text_form">19.5sp</dimen>
     <dimen name="text_title">18sp</dimen>
@@ -115,5 +117,12 @@
     <dimen name="inner_child_height">50dp</dimen>
 
     <dimen name="button_small_height">45dp</dimen>
+
+    <!-- ACTION BAR Tablet will use dimensions from Phone and upscale -->
+    <!-- dimen name="action_bar_icon_size">48dp</dimen>
+    <dimen name="action_bar_margin">24dp</dimen>
+    <dimen name="abs__search_button_icon_height">@dimen/action_bar_icon_size</dimen>
+    <dimen name="abs__action_button_min_width">@dimen/action_bar_icon_size</dimen>
+    <dimen name="action_bar_height">72dp</dimen -->
 
 </resources>

@@ -101,6 +101,7 @@ public class ReviewWriteFragment extends BaseFragment {
                 R.layout.review_write_fragment,
                 0,
                 KeyboardState.ADJUST_CONTENT);
+        setUpButton(UP_BUTTON.BACK);
         // R.string.writereview_page_title
     }
 

@@ -57,9 +57,6 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
 
     private static final String TAG = LogTagHelper.create(CheckoutMyAddressesFragment.class);
     
-    @SuppressWarnings("unused")
-    private static CheckoutMyAddressesFragment customerAddressesFragment;
-    
     private static final String IS_SAME_ADDRESS = "1";
     
     private static final String ISNT_SAME_ADDRESS = "0";
@@ -93,7 +90,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      * @return CheckoutMyAddressesFragment
      */
     public static CheckoutMyAddressesFragment getInstance(Bundle bundle) {
-        return customerAddressesFragment = new CheckoutMyAddressesFragment();
+        return new CheckoutMyAddressesFragment();
     }
 
 
@@ -562,6 +559,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         // Buttons
         View editBtn = parent.findViewById(R.id.checkout_address_item_btn_edit);
         View deleteBtn = parent.findViewById(R.id.checkout_address_item_btn_delete);
+        // deleteBtn.setVisibility(View.VISIBLE);
         editBtn.setTag(tag);
         deleteBtn.setTag(tag);
         editBtn.setOnClickListener(this);

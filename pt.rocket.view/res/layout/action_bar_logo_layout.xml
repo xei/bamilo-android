@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/ic_text_logo"
-        style="@style/text_actionbar"
+        style="@style/text_actionbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_logo_header"
@@ -27,6 +27,7 @@
         android:contentDescription="@string/app_name"
         android:focusable="false"
         android:longClickable="false"
-        android:paddingLeft="@dimen/rounded_margin_mid" />
+        android:paddingLeft="@dimen/rounded_margin_mid"
+        android:paddingRight="@dimen/action_bar_margin" />
 
 </LinearLayout>

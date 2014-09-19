@@ -63,6 +63,13 @@
         <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
         <item name="searchViewTextField">@drawable/selector_textfield_orange</item>
         <item name="searchViewSearchIcon">@drawable/selector_search_edit_icon</item>
+        <item name="searchViewCloseIcon">@drawable/btn_clearsearchfield</item>
+        <item name="textColorPrimary">@color/grey_middle</item>
+        <item name="searchAutoCompleteTextView">@style/actionbar_search</item>
+        <item name="actionButtonStyle">@style/action_button</item>
+        <item name="android:textColorHint">@color/green_basic</item>
+        <!-- ACTION BAR Tablet will use dimensions from actionBarSherlock -->
+        <!-- item name="actionBarSize">@dimen/action_bar_height</item -->
     </style>
 
     <style name="Widget.Jumia.ActionBar" parent="Widget.Sherlock.ActionBar">

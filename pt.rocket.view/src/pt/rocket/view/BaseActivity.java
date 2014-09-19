@@ -209,6 +209,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private ActionBar supportActionBar;
 
+    private boolean isBackButtonEnabled = false;
+
     /**
      * Constructor used to initialize the navigation list component and the
      * autocomplete handler
@@ -411,15 +413,18 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
 
     /**
-     * Method used to update the sliding menu and items on action bar. Called
-     * from BaseFragment
+     * Method used to update the sliding menu and items on action bar. Called from BaseFragment
      * 
      * @param enabledMenuItems
      * @param action
-     * @param titleResId
+     * @param actionBarTitleResId
+     * @param checkoutStep
+     * @param backButtonEnabled
+     * 
      * @author sergiopereira
+     * @modified Andre Lopes
      */
-    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, int checkoutStep) {
+    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int actionBarTitleResId, int checkoutStep, boolean backButtonEnabled/*, boolean displayHomeAsUpEnabled*/) {
         Log.i(TAG, "ON UPDATE BASE COMPONENTS");
 
         // Update options menu and search bar
@@ -430,10 +435,17 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         this.action = action != null ? action : NavigationAction.Unknown;
         updateNavigationMenu();
 
+        isBackButtonEnabled = backButtonEnabled;
+        if (isBackButtonEnabled) {
+            supportActionBar.setUpIcon(R.drawable.abs__ic_ab_back_holo_light);
+        } else {
+            supportActionBar.setUpIcon(R.drawable.ic_drawer);
+        }
+
         // Select step on Checkout
         setCheckoutHeader(checkoutStep);
         // Set actionbarTitle
-        if (titleResId == 0) {
+        if (actionBarTitleResId == 0) {
             hideTitle();
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
             hideActionBarTitle();
@@ -441,7 +453,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             // setTitle(titleResId);
             hideTitle();
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
-            setActionBarTitle(getString(titleResId));
+            setActionBarTitle(actionBarTitleResId);
         }
 
     }
@@ -730,7 +742,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         // HOME
         if (itemId == android.R.id.home) {
-            toggle();
+            // Go back or toggle between opened and closed drawer  
+            if (isBackButtonEnabled) {
+               onBackPressed();
+            } else {
+                toggle();
+            }
+
             return true;
 
             // CART
@@ -839,14 +857,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Set the ime options
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        //
+        
         mSearchMenuItem.setVisible(true);
         
         setSearchWidth();
         
         // Set hint
         mSearchView.setQueryHint(getString(R.string.action_label_search_hint));
-        mSearchAutoComplete.setHintTextColor(getResources().getColor(R.color.grey_middlelight));
+        // Set colorhint
+        mSearchAutoComplete.setHintTextColor(getResources().getColor(R.color.search_hint));
         // Set search
         setActionBarSearchBehavior();
     }
@@ -1425,17 +1444,19 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     /**
      * Show and set title on actionbar
      * 
-     * @param title
+     * @param actionBarTitleResId
      */
-    private void setActionBarTitle(CharSequence title) {
+    public void setActionBarTitle(int actionBarTitleResId) {
+        // TODO supportActionBar.setTitle(getString(actionBarTitleResId));
         logoTextView.setVisibility(View.VISIBLE);
-        logoTextView.setText(title);
+        logoTextView.setText(getString(actionBarTitleResId));
     }
 
     /**
      * Hide title on actionbar
      */
     public void hideActionBarTitle() {
+        // TODO supportActionBar.setTitle("");
         logoTextView.setVisibility(View.GONE);
     }
 

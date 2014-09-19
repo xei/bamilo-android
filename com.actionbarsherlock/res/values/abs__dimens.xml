@@ -67,7 +67,4 @@
     <!-- Height of the search button icon -->
     <dimen name="abs__search_button_icon_height">32dip</dimen>
 
-    <!-- Right margin of the search view FIX -->
-    <dimen name="abs__search_view_fix_right_margin">15dp</dimen>
-
 </resources>

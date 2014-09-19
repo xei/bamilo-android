@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 
 import com.actionbarsherlock.R;
@@ -490,4 +491,14 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
 		ActionBarView mActionView = (ActionBarView) mActivity.findViewById(R.id.abs__action_bar);
 		mActionView.animateUpButton(state);
 	}
+
+    /*
+     * (non-Javadoc)
+     * @see com.actionbarsherlock.app.ActionBar#setUpIcon(upImageResId)
+     */
+    @Override
+    public void setUpIcon(int upImageResId) {
+        ActionBarView mActionView = (ActionBarView) mActivity.findViewById(R.id.abs__action_bar);
+        ((ImageView) mActionView.findViewById(R.id.abs__up)).setImageResource(upImageResId);
+    }
 }

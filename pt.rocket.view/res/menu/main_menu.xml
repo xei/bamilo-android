@@ -24,10 +24,10 @@
     <item
         android:id="@+id/menu_search"
         android:actionViewClass="com.actionbarsherlock.widget.SearchView"
-        android:icon="@drawable/selector_search_edit_icon"
         android:showAsAction="always"
         android:title="@string/search_label"
         android:visible="false"/>
+
     <!--
         item
         android:id="@+id/menu_share"

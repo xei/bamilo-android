@@ -78,6 +78,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
                 R.string.myaccount_email_notifications,
                 KeyboardState.NO_ADJUST_CONTENT);
         // R.string.myaccount_email_notifications
+        setUpButton(UP_BUTTON.BACK);
     }
 
     /*

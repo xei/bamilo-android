@@ -49,6 +49,7 @@ public class ReviewFragment extends BaseFragment {
                 0,
                 KeyboardState.NO_ADJUST_CONTENT);
         // R.string.review
+        setUpButton(UP_BUTTON.BACK);
         this.setRetainInstance(true);
     }
 

@@ -565,6 +565,11 @@ public class SessionLoginFragment extends BaseFragment {
      * @param form
      */
     private void loadForm(Form form) {
+        // Set title when Login form is displayed to allow access to other fragments
+        if (sLoginFragment.nextFragmentType != null) {
+            getBaseActivity().setActionBarTitle(R.string.login_label);
+        }
+
         dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getBaseActivity(), form);
         try {
             container.removeAllViews();

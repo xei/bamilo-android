@@ -79,6 +79,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
                 R.string.personal_data_title,
                 KeyboardState.ADJUST_CONTENT);
         // R.string.personal_data_title
+        setUpButton(UP_BUTTON.BACK);
     }
 
     /*

@@ -137,8 +137,8 @@
     <!-- //////// Layouts Defenitions //////// -->
 
     <style name="ShoppingCartCount">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/action_bar_icon_size</item>
+        <item name="android:layout_height">@dimen/action_bar_icon_size</item>
         <item name="android:textSize">11dp</item>
         <item name="android:textColor">@color/orange_basic</item>
         <item name="android:textStyle">bold</item>
@@ -469,9 +469,24 @@
         <item name="android:ellipsize">marquee</item>
     </style>
 
-    <style name="text_actionbar" parent="_base_text">
-        <item name="android:textSize">@dimen/text_actionbar</item>
+    <style name="text_actionbar_title" parent="_base_text">
+        <item name="android:textSize">@dimen/text_actionbar_title</item>
         <item name="android:textColor">@color/grey_middledark</item>
     </style>
+
+    <style name="actionbar_search">
+        <item name="android:textSize">@dimen/text_actionbar_search</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/grey_middle</item>
+    </style>
+    
+    <style name="action_button" parent="Widget.Sherlock.ActionButton">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:layout_marginRight">@dimen/action_bar_margin</item>
+        <item name="android:minHeight">@dimen/action_bar_icon_size</item>
+        <item name="android:minWidth">@dimen/action_bar_icon_size</item>
+    </style>
+    
 
 </resources>

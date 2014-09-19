@@ -222,6 +222,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 R.layout.product_details_fragment_main,
                 0,
                 KeyboardState.NO_ADJUST_CONTENT);
+        setUpButton(UP_BUTTON.BACK);
     }
 
     public static ProductDetailsFragment getInstance(Bundle bundle) {

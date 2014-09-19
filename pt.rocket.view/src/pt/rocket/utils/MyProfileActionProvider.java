@@ -18,7 +18,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SpinnerAdapter;
 
 import com.actionbarsherlock.view.ActionProvider;
@@ -65,7 +64,7 @@ public class MyProfileActionProvider extends ActionProvider {
      */
     @Override
     public View onCreateActionView() {
-        LinearLayout spinnerContainer = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.action_bar_menu_layout, null);
+        View spinnerContainer = LayoutInflater.from(mContext).inflate(R.layout.action_bar_myprofile_layout, null);
 
         mSpinner = (DismissibleSpinner) spinnerContainer.findViewById(R.id.spinner_myprofile);
         mIcon = spinnerContainer.findViewById(R.id.image_myprofile);

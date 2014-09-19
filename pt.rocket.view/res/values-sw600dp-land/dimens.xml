@@ -24,7 +24,6 @@
     <!-- ATTENTION: These percentages must be the same defined on the main layout-large-land -->
     <item name="navigation_menu_offset" type="dimen">75%</item>
 
-    <dimen name="navigation_title_height">56dp</dimen>
     <dimen name="navigation_item_divider_height">1dp</dimen>
     <dimen name="navigation_cart_vertical_distance">17dp</dimen>
 

@@ -96,6 +96,7 @@ public class ReviewsFragment extends BaseFragment {
                 R.layout.reviews_fragment,
                 0,
                 KeyboardState.NO_ADJUST_CONTENT);
+        setUpButton(UP_BUTTON.BACK);
         // R.string.reviews
     }
 

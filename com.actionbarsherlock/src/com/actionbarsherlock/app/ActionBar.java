@@ -252,6 +252,14 @@ public abstract class ActionBar {
     public abstract void updateUpState(boolean state);
     
     /**
+     * JUMIA CHANGES
+     * Set icon for up button 
+     * 
+     * @param upImageResId
+     */
+    public abstract void setUpIcon(int upImageResId);
+    
+    /**
      * Set the adapter and navigation callback for list navigation mode.
      *
      * The supplied adapter will provide views for the expanded list as well as

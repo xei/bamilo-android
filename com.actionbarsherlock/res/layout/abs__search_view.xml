@@ -38,17 +38,15 @@
             android:visibility="gone"
             />
 
-    <!--
-    Icon height defined 
-    and right margin added for small phones, but removed on values-w360dp
-    -->
+
+    <!-- Icon height defined  -->
+
     <ImageView
             android:id="@+id/abs__search_button"
-            style="?android:attr/actionButtonStyle"
+            style="?attr/actionButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/abs__search_button_icon_height"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/abs__search_view_fix_right_margin"
             android:src="?attr/searchViewSearchIcon"
             android:contentDescription="@string/abs__searchview_description_search"
             />
@@ -112,8 +110,8 @@
                     android:id="@+id/abs__search_close_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:paddingLeft="8dip"
-                    android:paddingRight="8dip"
+                    android:paddingLeft="6.67dp"
+                    android:paddingRight="6.67dp"
                     android:layout_gravity="center_vertical"
                     android:background="?attr/selectableItemBackground"
                     android:src="?attr/searchViewCloseIcon"

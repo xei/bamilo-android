@@ -37,6 +37,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 
 import com.actionbarsherlock.R;
@@ -1039,5 +1040,14 @@ public class ActionBarImpl extends ActionBar {
     @Override
     public void updateUpState(boolean state){
     	mActionView.animateUpButton(state);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.actionbarsherlock.app.ActionBar#setUpIcon(upImageResId)
+     */
+    @Override
+    public void setUpIcon(int upImageResId) {
+        ((ImageView) mActionView.findViewById(R.id.abs__up)).setImageResource(upImageResId);
     }
 }
