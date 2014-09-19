@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/shape_itemhighlight" android:state_activated="true"/>
+    <!-- Pressed -->
     <item android:drawable="@drawable/shape_itemhighlight" android:state_pressed="true"/>
-    <item android:drawable="@android:color/white" android:state_pressed="false"/>
+    <!-- Default -->
+    <item android:drawable="@android:color/white"/>
 
 </selector>
