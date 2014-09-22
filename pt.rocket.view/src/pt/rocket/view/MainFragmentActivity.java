@@ -78,6 +78,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
     private boolean wasReceivedNotification = false;
 
+    private boolean isInMaintenance = false;
+
     /**
      * Constructor
      */
@@ -119,6 +121,11 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             if (null != fragment) {
                 fragment.setActivity(this);
             }
+        }
+
+        Intent splashScreenParams = getIntent();
+        if (splashScreenParams != null && splashScreenParams.getExtras() != null) {
+            isInMaintenance = splashScreenParams.getExtras().getBoolean(ConstantsIntentExtra.IN_MAINTANCE, false);
         }
     }
 
@@ -396,15 +403,27 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     public void onBackPressed() {
         Log.i(TAG, "ON BACK PRESSED");
-        fragment = getActiveFragment();
-        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
 
-            mDrawerLayout.closeDrawer(mDrawerNavigation);
-        } else if (fragment == null || !fragment.allowBackPressed()) {
-            Log.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
-            fragmentManagerBackPressed();
+        /*-
+         * This situation only occurs when user goes to Choose Country screen on maintance page and presses back
+         */
+        if (isInMaintenance) {
+            Intent newIntent = new Intent(this, SplashScreenActivity.class);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            startActivity(newIntent);
+            finish();
         } else {
-            Log.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
+            fragment = getActiveFragment();
+            if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
+
+                mDrawerLayout.closeDrawer(mDrawerNavigation);
+            } else if (fragment == null || !fragment.allowBackPressed()) {
+                Log.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
+                fragmentManagerBackPressed();
+            } else {
+                Log.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
+            }
         }
     }
 

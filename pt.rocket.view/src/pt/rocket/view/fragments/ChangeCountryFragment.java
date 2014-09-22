@@ -19,7 +19,6 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -35,8 +34,9 @@ import android.widget.ListView;
 import de.akquinet.android.androlog.Log;
 
 /**
- * @author sergiopereira
+ * Fragment used on SplashScreen on First Use
  * 
+ * @author sergiopereira
  */
 public class ChangeCountryFragment extends BaseFragment {
 
@@ -44,27 +44,28 @@ public class ChangeCountryFragment extends BaseFragment {
 
     private static final int SHOP_NOT_SELECTED = -1;
 
-    private static ChangeCountryFragment changeCountryFragment;
+    private static ChangeCountryFragment sChangeCountryFragment;
 
     private Context context;
 
     private DialogGenericFragment dialog;
-    
+
     private int selected = SHOP_NOT_SELECTED;
-    
+
     private CountryAdapter countryAdapter;
-    
+
     private boolean isChangeCountry;
 
     /**
      * Get instance
-     * @return
+     * @return ChangeCountryFragment
      */
     public static ChangeCountryFragment getInstance() {
-        if (changeCountryFragment == null)
-            changeCountryFragment = new ChangeCountryFragment();
-        
-        return changeCountryFragment;
+        if (sChangeCountryFragment == null) {
+            sChangeCountryFragment = new ChangeCountryFragment();
+        }
+
+        return sChangeCountryFragment;
     }
 
     /**
@@ -103,6 +104,10 @@ public class ChangeCountryFragment extends BaseFragment {
         context = getActivity().getApplicationContext();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -178,11 +183,14 @@ public class ChangeCountryFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
-    
-    
+
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#allowBackPressed()
+     */
     @Override
     public boolean allowBackPressed() {
-        if( selected == SHOP_NOT_SELECTED ){
+        if (selected == SHOP_NOT_SELECTED) {
             getBaseActivity().finish();
         }
         return super.allowBackPressed();
@@ -204,11 +212,12 @@ public class ChangeCountryFragment extends BaseFragment {
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         }
         
-        Log.d(TAG, "COUNTRIES SIZE: " + JumiaApplication.INSTANCE.countriesAvailable.size());
-   
+        int countriesAvailable = JumiaApplication.INSTANCE.countriesAvailable.size();
+        Log.d(TAG, "COUNTRIES SIZE: " + countriesAvailable);
+        
         int count = 0;
-        countries = new String[JumiaApplication.INSTANCE.countriesAvailable.size()];
-        flagsList = new String[JumiaApplication.INSTANCE.countriesAvailable.size()];
+        countries = new String[countriesAvailable];
+        flagsList = new String[countriesAvailable];
         for (CountryObject country : JumiaApplication.INSTANCE.countriesAvailable) {
             countries[count] = country.getCountryName();
             flagsList[count] = country.getCountryFlag();
@@ -227,15 +236,13 @@ public class ChangeCountryFragment extends BaseFragment {
         countryList.setAdapter(countryAdapter);
         countryList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         
-        
         if (selected > SHOP_NOT_SELECTED) {
             countryList.setItemChecked(selected, true);
         }
 
         // Listener
         countryList.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 countryList.setItemChecked(position, true);
                 if (position == selected) {
                     return;
@@ -306,7 +313,6 @@ public class ChangeCountryFragment extends BaseFragment {
         ActivitiesWorkFlow.splashActivityNewTask(getActivity());
         getActivity().finish();
     }
-
     
     private String calculateMapImageResolution(CountryObject mCountryObject){
         String mapImage =  mCountryObject.getCountryMapMdpi();

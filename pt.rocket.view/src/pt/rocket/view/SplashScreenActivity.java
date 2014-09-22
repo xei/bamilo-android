@@ -25,6 +25,7 @@ import pt.rocket.framework.tracking.AdXTracker;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.helpers.configs.GetApiInfoHelper;
 import pt.rocket.helpers.configs.GetCountriesConfigsHelper;
 import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
@@ -39,6 +40,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
@@ -54,6 +56,8 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 
 import com.bugsense.trace.BugSenseHandler;
 
@@ -122,6 +126,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+
+        // Validate if is phone and force orientaion
+        setOrientationForHandsetDevices();
 
         Intent mIntent = getIntent();
         Bundle mBundle = mIntent.getExtras();
@@ -784,8 +791,33 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             }
         });
 
+        Button changeCountry = (Button) findViewById(R.id.fallback_change_country);
+        changeCountry.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show Change country
+                Intent intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
+                intent.putExtra(ConstantsIntentExtra.IN_MAINTANCE, true);
+                intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
+
+                // Start activity
+                startActivity(intent);
+            }
+        });
+
         ImageView mapBg = (ImageView) findViewById(R.id.fallback_country_map);
         RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg);
+
+        // ImageView for map is between title text and change country button
+        int height = WindowHelper.getHeight(getApplicationContext());
+        RelativeLayout.LayoutParams params = (LayoutParams) mapBg.getLayoutParams();
+        if (height > 1000) {
+            // Set map image above maintance message for big devices
+            params.addRule(RelativeLayout.ABOVE, R.id.fallback_options_container);
+        } else if (height < 500) {
+            // Set map image below MAINTANCE title
+            params.addRule(RelativeLayout.BELOW, R.id.fallback_title_container);
+        }
 
         String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
         TextView fallbackBest = (TextView) findViewById(R.id.fallback_best);
@@ -934,6 +966,14 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mLaunchTime = 0;
         // Trigger
         AdXTracker.launch(this, duration);
+    }
+
+    public void setOrientationForHandsetDevices() {
+        // Validate if is phone and force portrait orientaion
+        if (!getResources().getBoolean(R.bool.isTablet)) {
+            Log.i(TAG, "IS PHONE: FORCE PORTRAIT ORIENTATION");
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 
 }

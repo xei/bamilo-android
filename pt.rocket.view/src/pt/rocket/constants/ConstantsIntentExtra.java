@@ -95,4 +95,7 @@ public class ConstantsIntentExtra {
 
     public static final String ORDER_FINISH                 = mPackage + "OrderFinish";
 
+    // ########### MAINTANCE ##############
+    public static final String IN_MAINTANCE = "is_in_maintance";
+
 }

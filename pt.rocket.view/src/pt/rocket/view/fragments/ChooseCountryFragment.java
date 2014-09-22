@@ -24,7 +24,6 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -40,9 +39,9 @@ import android.widget.ListView;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Frament used to show Jumia countries from server
- * @author sergiopereira
+ * Frament used to show Jumia countries from server, used on Navigation Drawer and Maintenance page
  * 
+ * @author sergiopereira
  */
 public class ChooseCountryFragment extends BaseFragment implements IResponseCallback, OnClickListener{
 
@@ -80,7 +79,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                 R.layout.change_country,
                 R.string.nav_country,
                 KeyboardState.NO_ADJUST_CONTENT);
-        // 0
+        // R.string.nav_country
     }
 
     /*
@@ -114,8 +113,8 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        // Hide or show title
-        getBaseActivity().hideTitle();
+        // Hide title
+        // getBaseActivity().hideTitle();
         // Get countries
         triggerGetJumiaCountries();
     }
@@ -180,9 +179,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * @see pt.rocket.view.fragments.BaseFragment#allowBackPressed()
      */
     @Override
-    public boolean allowBackPressed() { 
-        // TODO Validate
-        if( selected == SHOP_NOT_SELECTED ) getBaseActivity().finish();
+    public boolean allowBackPressed() {
+        if (selected == SHOP_NOT_SELECTED) {
+            getBaseActivity().finish();
+        }
         return super.allowBackPressed();
     }
     
@@ -204,13 +204,12 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         }
         
-        Log.d(TAG, "COUNTRIES SIZE: " + JumiaApplication.INSTANCE.countriesAvailable.size());
+        int countriesAvailable = JumiaApplication.INSTANCE.countriesAvailable.size();
+        Log.d(TAG, "COUNTRIES SIZE: " + countriesAvailable);
         
-        Log.d(TAG, "COUNTRIES SIZE: " + JumiaApplication.INSTANCE.countriesAvailable.size());
-   
         int count = 0;
-        countries = new String[JumiaApplication.INSTANCE.countriesAvailable.size()];
-        flagsList = new String[JumiaApplication.INSTANCE.countriesAvailable.size()];
+        countries = new String[countriesAvailable];
+        flagsList = new String[countriesAvailable];
         for (CountryObject country : JumiaApplication.INSTANCE.countriesAvailable) {
             countries[count] = country.getCountryName();
             flagsList[count] = country.getCountryFlag();
@@ -228,7 +227,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         countryAdapter.updateValues(countries);
         countryList.setAdapter(countryAdapter);
         countryList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        
         
         if (selected > SHOP_NOT_SELECTED) {
             countryList.setItemChecked(selected, true);
@@ -257,17 +255,15 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         
         if(selected == SHOP_NOT_SELECTED) {
             isChangeCountry = false;
-            getBaseActivity().hideTitle();
+            // getBaseActivity().hideTitle();
             getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
         }
         
         if(selected != SHOP_NOT_SELECTED){
-            getBaseActivity().hideTitle();
-            getBaseActivity().setCheckoutHeader(R.string.nav_country);
+            // getBaseActivity().hideTitle();
+            // getBaseActivity().setCheckoutHeader(R.string.nav_country);
         }
     }
-
-
 
     protected void setCountry(int position) {
         JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
