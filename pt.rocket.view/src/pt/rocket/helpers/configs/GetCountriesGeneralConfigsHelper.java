@@ -127,32 +127,6 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                     integrationCountryUG.setCountryForceHttps(stagingServers.get(posUG).isCountryForceHttps());
                     integrationCountryUG.setCountryIsLive(stagingServers.get(posUG).isCountryIsLive());
                     stagingServers.add(integrationCountryUG);
-                    
-                    // Add the CM SERVER (LIVE)
-                    CountryObject stgCountryCM = new CountryObject();
-                    stgCountryCM.setCountryName("Cameroon Live (HARDCODED)");
-                    stgCountryCM.setCountryUrl("www.jumia.cm");
-                    stgCountryCM.setCountryFlag("http://www.jumia.cm/images/mobapi/flag_cm.png");
-                    stgCountryCM.setCountryMapMdpi("http://www.jumia.cm/images/mobapi/map_mdpi_cm.png");
-                    stgCountryCM.setCountryMapHdpi("http://www.jumia.cm/images/mobapi/map_hdpi_cm.png");
-                    stgCountryCM.setCountryMapXhdpi("http://www.jumia.cm/images/mobapi/map_xhdpi_cm.png");
-                    stgCountryCM.setCountryIso("CM");
-                    stgCountryCM.setCountryForceHttps(false);
-                    stgCountryCM.setCountryIsLive(true);
-                    stagingServers.add(stgCountryCM);
-                    
-                    // Add the CM SERVER (STG)
-                    CountryObject liveCountryCM = new CountryObject();
-                    liveCountryCM.setCountryName("Cameroon Staging (HARDCODED)");
-                    liveCountryCM.setCountryUrl("alice-staging.jumia.cm");
-                    liveCountryCM.setCountryFlag("http://alice-staging.jumia.cm/images/mobapi/flag_cm.png");
-                    liveCountryCM.setCountryMapMdpi("http://alice-staging.jumia.cm/images/mobapi/map_mdpi_cm.png");
-                    liveCountryCM.setCountryMapHdpi("http://alice-staging.jumia.cm/images/mobapi/map_hdpi_cm.png");
-                    liveCountryCM.setCountryMapXhdpi("http://alice-staging.jumia.cm/images/mobapi/map_xhdpi_cm.png");
-                    liveCountryCM.setCountryIso("CM");
-                    liveCountryCM.setCountryForceHttps(false);
-                    liveCountryCM.setCountryIsLive(false);
-                    stagingServers.add(liveCountryCM);
 
                     mCountries.addAll(stagingServers);
                     
