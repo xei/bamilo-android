@@ -229,7 +229,7 @@
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="track_your_order">Track Your Order</string>
     <string name="track_order">Track Order</string>
-    <string name="track_order_hint">Order id</string>
+    <string name="track_order_hint">Order ID</string>
     <string name="thank_you_order_title">Thank You!</string>
     <string name="order_success">Your order has been successfully registered\n with the number:</string>
     <!-- string name="track_order_status">Current Status:</string -->

@@ -26,12 +26,11 @@
             android:id="@+id/order_nr_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/rounded_margin_mid"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
             android:gravity="center"
             android:paddingBottom="@dimen/login_margin_medium"
-            android:paddingTop="@dimen/login_margin_medium" >
+            android:paddingTop="@dimen/rounded_margin_double_mid" >
 
             <org.holoeverywhere.widget.EditText
                 android:id="@+id/order_nr"
