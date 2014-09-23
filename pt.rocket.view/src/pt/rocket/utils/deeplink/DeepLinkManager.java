@@ -357,7 +357,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processLoginLink() {
-        Log.i(TAG, "DEEP LINK TO HOME");
+        Log.i(TAG, "DEEP LINK TO LOGIN");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.LOGIN);
@@ -370,7 +370,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processRegisterLink() {
-        Log.i(TAG, "DEEP LINK TO HOME");
+        Log.i(TAG, "DEEP LINK TO REGISTER");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.REGISTER);
@@ -383,7 +383,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processNewsletterLink() {
-        Log.i(TAG, "DEEP LINK TO HOME");
+        Log.i(TAG, "DEEP LINK TO NEWSLETTER");
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
@@ -397,7 +397,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processRecentViewedLink() {
-        Log.i(TAG, "DEEP LINK TO HOME");
+        Log.i(TAG, "DEEP LINK TO RECENT VIEWED");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.RECENTLYVIEWED_LIST);
@@ -410,7 +410,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processRecenteSearchesLink() {
-        Log.i(TAG, "DEEP LINK TO HOME");
+        Log.i(TAG, "DEEP LINK TO RECENT SEARCHES");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.RECENTSEARCHES_LIST);
@@ -423,7 +423,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processFavoritesLink() {
-        Log.i(TAG, "DEEP LINK TO HOME");
+        Log.i(TAG, "DEEP LINK TO FAVOURITES");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.FAVORITE_LIST);

@@ -21,7 +21,6 @@
             android:id="@+id/campaign_item_discount"
             style="@style/product_price_current_single_item"
             android:layout_marginRight="@dimen/margin_small"
-            android:layout_toRightOf="@+id/image_loadable"
             android:ellipsize="marquee"
             android:fontFamily="roboto_bold"
             android:gravity="left|bottom"

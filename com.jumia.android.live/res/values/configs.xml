@@ -1,4 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+	<!-- Countries -->
+	<string name="countries_url">http://www.jumia.com/mobapi/availablecountries</string>
 
     <!-- App -->
     <string name="app_name">Jumia Market Dev</string>

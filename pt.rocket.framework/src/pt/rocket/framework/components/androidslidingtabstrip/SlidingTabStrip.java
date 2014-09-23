@@ -82,7 +82,13 @@ class SlidingTabStrip extends LinearLayout {
      * @param defStyle
      */
     SlidingTabStrip(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs);
+
+		/**
+		* Fix crash
+		*/
+    	//super(context, attrs);
+		super(context, null);
+
         setWillNotDraw(false);
         
         final float density = getResources().getDisplayMetrics().density;

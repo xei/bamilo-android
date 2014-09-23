@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+	<!-- Countries -->
+	<string name="countries_url">http://www.jumia.com/mobapi/availablecountries/staging</string>
+    
     <!-- GA -->
     <bool name="ga_debug_mode">false</bool>
 

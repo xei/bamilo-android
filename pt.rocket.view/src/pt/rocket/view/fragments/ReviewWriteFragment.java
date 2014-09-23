@@ -80,6 +80,8 @@ public class ReviewWriteFragment extends BaseFragment {
     private boolean isExecutingSendReview = false;
     
     private HashMap<String, HashMap<String, String>> ratingOptions;
+    
+    private boolean completedReview = false;
 
     /**
      * Get instance
@@ -131,6 +133,8 @@ public class ReviewWriteFragment extends BaseFragment {
         
         triggerAutoLogin();
         triggerCustomer();
+
+        completedReview = false;
     }
 
     /*
@@ -185,8 +189,11 @@ public class ReviewWriteFragment extends BaseFragment {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
         
-        // Save review before rotation, going to background or leaving to Popularity fragment
-        saveReview();
+        // only save the fragment if the user didn't finish the review
+        if (!completedReview) {
+            // Save review before rotation, going to background or leaving to Popularity fragment
+            saveReview();
+        }
     }
 
     /*
@@ -464,14 +471,17 @@ public class ReviewWriteFragment extends BaseFragment {
             reviewText.setText("");
             dialog_review_submitted.show(getActivity().getSupportFragmentManager(), null);
             hideActivityProgress();
+            completedReview = true;      
+            JumiaApplication.setReview(null);
             return false;
+
         case GET_RATING_OPTIONS_EVENT:
             ratingOptions = (HashMap<String, HashMap<String, String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.INSTANCE.setRatingOptions(ratingOptions);
             showFragmentContentContainer();
-            setLayout();
-            
+            setLayout();            
             return true;
+
             // case GET_CUSTOMER:
         case LOGIN_EVENT:
             JumiaApplication.INSTANCE.setLoggedIn(true);

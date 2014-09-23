@@ -311,9 +311,10 @@ public class AnalyticsGoogle {
 	 * @author sergiopereira
 	 */
 	private void trackCampaign(String campaign) {
-		Log.i(TAG, "TRACK CAMPAIGN: campaign->" + campaign);
+		String utmURI = (!campaign.contains("utm_source")) ? "utm_campaign=" + campaign + "&utm_source=push&utm_medium=referrer" : campaign;
+		Log.i(TAG, "TRACK CAMPAIGN: campaign->" + utmURI);
 		mTracker.send(new HitBuilders.AppViewBuilder()
-	    .setCampaignParamsFromUrl(campaign)
+	    .setCampaignParamsFromUrl(utmURI)
 	    .build());
 	}
 		
@@ -536,7 +537,7 @@ public class AnalyticsGoogle {
 		// Validation
 		if (!isEnabled) return;
 		// Data
-		if (campaignString != null) trackCampaign(campaignString);
+		if (!TextUtils.isEmpty(campaignString)) trackCampaign(campaignString);
 	}
 
 }

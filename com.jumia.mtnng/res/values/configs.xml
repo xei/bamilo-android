@@ -1,5 +1,8 @@
 <resources>
 
+	<!-- Countries -->
+	<string name="countries_url">http://www.jumia.com/mobapi/availablecountries</string>
+
     <string name="app_name">Jumia</string>
     <string name="adx_app_name">com.jumia.mtnng</string>
     <string name="urban_airship_category">com.jumia.mtnng</string>

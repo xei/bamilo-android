@@ -36,8 +36,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class CompleteProduct implements IJSONSerializable, Parcelable {
 
-	private static final String TAG = LogTagHelper
-			.create(CompleteProduct.class);
+	private static final String TAG = LogTagHelper.create(CompleteProduct.class);
 
 	private String sku;
 	private String name;
@@ -139,28 +138,22 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);
 			// TODO fix UG huge amount conversion
 			// specialPrice = CurrencyFormatter.formatCurrency(dataObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG, dataObject.getString(RestConstants.JSON_PRICE_TAG)));
-			maxSpecialPrice = CurrencyFormatter.formatCurrency(Double.parseDouble(dataObject.optString(
-							RestConstants.JSON_MAX_SPECIAL_PRICE_TAG, "" + maxPriceDouble)));
+			maxSpecialPrice = CurrencyFormatter.formatCurrency(Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG, "" + maxPriceDouble)));
 			maxSavingPercentage = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, "0"));
 
 			// TODO: ratings need to be completed
-			JSONObject ratingsTotalObject = dataObject
-					.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
+			JSONObject ratingsTotalObject = dataObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
 			if (ratingsTotalObject != null) {
-				ratingsAverage = ratingsTotalObject.optDouble(
-						RestConstants.JSON_RATINGS_TOTAL_AVG_TAG, .0);
-				ratingsCount = ratingsTotalObject.optInt(
-						RestConstants.JSON_RATINGS_TOTAL_SUM_TAG, 0);
+				ratingsAverage = ratingsTotalObject.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG, .0);
+				ratingsCount = ratingsTotalObject.optInt(RestConstants.JSON_RATINGS_TOTAL_SUM_TAG, 0);
 			}
 
 			if (maxSavingPercentage.equals(0D) && !price.equals(specialPrice)) {
-				maxSavingPercentage = (double) Math.round(specialPriceDouble
-						* 100 / priceDouble);
+				maxSavingPercentage = (double) Math.round(specialPriceDouble * 100 / priceDouble);
 			}
 
 			categories.clear();
-			JSONArray categoriesArray = dataObject
-					.getJSONArray(RestConstants.JSON_CATEGORIES_TAG);
+			JSONArray categoriesArray = dataObject.getJSONArray(RestConstants.JSON_CATEGORIES_TAG);
 			for (int i = 0; i < categoriesArray.length(); ++i) {
 				categories.add(categoriesArray.getString(i));
 			}
@@ -196,11 +189,12 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 
 			// image_list
 			imageList.clear();
-			JSONArray imageArray = dataObject
-					.getJSONArray(RestConstants.JSON_IMAGE_LIST_TAG);
-			for (int i = 0; i < imageArray.length(); ++i) {
-				JSONObject imageJsonObject = imageArray.getJSONObject(i);
-				imageList.add(getImageUrl(imageJsonObject.getString("url")));
+			JSONArray imageArray = dataObject.optJSONArray(RestConstants.JSON_IMAGE_LIST_TAG);
+			if (null != imageArray) {
+				for (int i = 0; i < imageArray.length(); ++i) {
+					JSONObject imageJsonObject = imageArray.getJSONObject(i);
+					imageList.add(getImageUrl(imageJsonObject.getString("url")));
+				}
 			}
 
 			if(	dataObject.has(RestConstants.JSON_PROD_UNIQUES_TAG) &&  

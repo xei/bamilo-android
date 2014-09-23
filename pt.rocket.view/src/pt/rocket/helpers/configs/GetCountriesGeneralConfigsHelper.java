@@ -25,6 +25,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
+import pt.rocket.view.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -44,7 +45,8 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_GLOBAL_CONFIGURATIONS.action);
+        Context context = JumiaApplication.INSTANCE.getApplicationContext();
+        bundle.putString(Constants.BUNDLE_URL_KEY, context.getString(R.string.countries_url));
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
@@ -58,7 +60,11 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         Log.i(TAG, "ON PARSE RESPONSE");
         
         ArrayList<CountryObject> mCountries = new ArrayList<CountryObject>();
-        JSONArray sessionJSONArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
+        JSONObject metadataJsonObject = jsonObject.optJSONObject(RestConstants.JSON_METADATA_TAG);        
+        JSONArray sessionJSONArray = null;
+        if (null != metadataJsonObject) {
+            sessionJSONArray = metadataJsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
+        }
         
         // Gets the previous Countries list
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
@@ -79,58 +85,6 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                 }
             }
             if(mCountries != null && mCountries.size() > 0){
-                
-                if(JumiaApplication.INSTANCE.generateStagingServers){
-                    ArrayList<CountryObject> stagingServers = new ArrayList<CountryObject>();
-                    for (CountryObject countryObject : mCountries) {
-                        CountryObject stagingCountryObject = new CountryObject();
-                        try {
-                            stagingCountryObject.setCountryName(URLDecoder.decode(countryObject.getCountryName(), "utf-8")+" Staging");
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-                        stagingCountryObject.setCountryUrl(countryObject.getCountryUrl().replace("www", "alice-staging"));
-                        stagingCountryObject.setCountryFlag(countryObject.getCountryFlag());
-                        stagingCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
-                        stagingCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
-                        stagingCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
-                        stagingCountryObject.setCountryIso(countryObject.getCountryIso());
-                        stagingCountryObject.setCountryForceHttps(countryObject.isCountryForceHttps());
-                        stagingCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
-                        stagingServers.add(stagingCountryObject);
-                    }                    
-                    
-                    // Add the MA SERVER CORE 4.6 (INTEGRATION)
-                    int posMA = 0;
-                    CountryObject integrationCountryObject = new CountryObject();
-                    integrationCountryObject.setCountryName("Maroc Integration");
-                    integrationCountryObject.setCountryUrl("integration-www.jumia.ma");
-                    integrationCountryObject.setCountryFlag(stagingServers.get(posMA).getCountryFlag());
-                    integrationCountryObject.setCountryMapMdpi(stagingServers.get(posMA).getCountryMapMdpi());
-                    integrationCountryObject.setCountryMapHdpi(stagingServers.get(posMA).getCountryMapHdpi());
-                    integrationCountryObject.setCountryMapXhdpi(stagingServers.get(posMA).getCountryMapXhdpi());
-                    integrationCountryObject.setCountryIso(stagingServers.get(posMA).getCountryIso());
-                    integrationCountryObject.setCountryForceHttps(stagingServers.get(posMA).isCountryForceHttps());
-                    integrationCountryObject.setCountryIsLive(stagingServers.get(posMA).isCountryIsLive());
-                    stagingServers.add(integrationCountryObject);
-                    
-                    // Add the UG SERVER CORE 4.6 (INTEGRATION)
-                    int posUG = 5;
-                    CountryObject integrationCountryUG = new CountryObject();
-                    integrationCountryUG.setCountryName("Uganda Integration");
-                    integrationCountryUG.setCountryUrl("integration-www.jumia.ug");
-                    integrationCountryUG.setCountryFlag(stagingServers.get(posUG).getCountryFlag());
-                    integrationCountryUG.setCountryMapMdpi(stagingServers.get(posUG).getCountryMapMdpi());
-                    integrationCountryUG.setCountryMapHdpi(stagingServers.get(posUG).getCountryMapHdpi());
-                    integrationCountryUG.setCountryMapXhdpi(stagingServers.get(posUG).getCountryMapXhdpi());
-                    integrationCountryUG.setCountryIso(stagingServers.get(posUG).getCountryIso());
-                    integrationCountryUG.setCountryForceHttps(stagingServers.get(posUG).isCountryForceHttps());
-                    integrationCountryUG.setCountryIsLive(stagingServers.get(posUG).isCountryIsLive());
-                    stagingServers.add(integrationCountryUG);
-
-                    mCountries.addAll(stagingServers);
-                    
-                }
                 JumiaApplication.INSTANCE.countriesAvailable = mCountries;
                 CountriesConfigsTableHelper.insertCountriesConfigs(mCountries);
                 Log.i(TAG, "INSERT INTO DB FROM JSON");

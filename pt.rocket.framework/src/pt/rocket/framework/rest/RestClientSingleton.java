@@ -7,7 +7,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
 
 import javax.net.ssl.SSLException;
 
@@ -98,7 +97,7 @@ public final class RestClientSingleton {
 	
 	private static final int MAX_CACHE_OBJECT_SIZE = 131072;
 	
-	private static final Pattern proxyPattern = Pattern.compile(".*@(.*):[0-9]*$");
+	//private static final Pattern proxyPattern = Pattern.compile(".*@(.*):[0-9]*$");
 	
 	public static RestClientSingleton INSTANCE;
 	
@@ -485,7 +484,7 @@ public final class RestClientSingleton {
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority));
 			trackError(context, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false, startTimeMillis);
 		} catch (SSLException e) {
-			de.akquinet.android.androlog.Log.d("TRACK", "SSLException");
+			Log.d("TRACK", "SSLException");
 			Log.e(TAG, "SSL error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SSL, result, md5, priority));
 			trackError(context, e, httpRequest.getURI(), ErrorCode.SSL, null, false, startTimeMillis);

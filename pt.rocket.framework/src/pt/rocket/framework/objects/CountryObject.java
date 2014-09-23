@@ -310,7 +310,9 @@ public class CountryObject implements IJSONSerializable, Parcelable {
 		country_url = jsonObject.optString(RestConstants.JSON_URL_TAG);
 		if(country_url != null ){
 			country_url = country_url.replace("http://www", "www");
+			country_url = country_url.replace("http://alice-staging", "alice-staging");
 			country_url = country_url.replace("https://www", "www");
+			country_url = country_url.replace("https://alice-staging", "alice-staging");
 			country_url = country_url.replace("/mobapi/", "");
 		}
 		country_flag = jsonObject.optString(RestConstants.JSON_FLAG_TAG);

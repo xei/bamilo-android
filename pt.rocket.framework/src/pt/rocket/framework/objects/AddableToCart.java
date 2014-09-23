@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Class that manages the full representation of an object that can be added to
@@ -26,7 +28,7 @@ import pt.rocket.framework.utils.CurrencyFormatter;
  * @author Andre Lopes
  * 
  */
-public class AddableToCart {
+public class AddableToCart implements Parcelable {
 
 	public final static int NO_SIMPLE_SELECTED = -1;
 
@@ -384,4 +386,76 @@ public class AddableToCart {
 	public boolean showStockVariationWarning() {
 		return mStockVariationWarning;
 	}
+
+
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(sku);
+		dest.writeString(brand);
+		dest.writeString(name);
+		dest.writeString(price);
+		dest.writeString(specialPrice);
+		dest.writeDouble(maxSavingPercentage);
+		dest.writeString(url);
+		dest.writeByte((byte) (isNew ? 1 : 0));
+		dest.writeInt(selectedSimple);
+		dest.writeByte((byte) (isComplete ? 1 : 0));
+
+		dest.writeList(imageList);
+		dest.writeList(simples);
+		dest.writeList(variations);
+		dest.writeList(knownVariations);
+		dest.writeInt(favoriteSelected);
+		dest.writeByte((byte) (hasVariations ? 1 : 0));
+		dest.writeString(mSelectedSimpleValue);
+		dest.writeByte((byte) (mChooseVariationWarning ? 1 : 0));
+		dest.writeByte((byte) (mStockVariationWarning ? 1 : 0));
+		dest.writeDouble(priceDouble);
+		dest.writeDouble(specialPriceDouble);
+	}
+
+	private AddableToCart(Parcel in) {
+		sku = in.readString();
+		brand = in.readString();
+		name = in.readString();
+		price = in.readString();
+		specialPrice = in.readString();
+		maxSavingPercentage = in.readDouble();
+		url = in.readString();
+		isNew = in.readByte() == 1;
+		selectedSimple = in.readInt();
+		isComplete = in.readByte() == 1;
+
+		imageList = new ArrayList<String>();
+		in.readList(imageList, String.class.getClassLoader());
+		simples = new ArrayList<ProductSimple>();
+		in.readList(simples, ProductSimple.class.getClassLoader());
+		variations = new ArrayList<Variation>();
+		in.readList(variations, Variation.class.getClassLoader());
+		knownVariations = new ArrayList<String>();
+		in.readList(knownVariations, String.class.getClassLoader());
+		favoriteSelected = in.readInt();
+		hasVariations = in.readByte() == 1;
+		mSelectedSimpleValue = in.readString();
+		mChooseVariationWarning = in.readByte() == 1;
+		mStockVariationWarning = in.readByte() == 1;
+		priceDouble = in.readDouble();
+		specialPriceDouble = in.readDouble();
+	}
+
+	public static final Parcelable.Creator<AddableToCart> CREATOR = new Parcelable.Creator<AddableToCart>() {
+		public AddableToCart createFromParcel(Parcel in) {
+			return new AddableToCart(in);
+		}
+
+		public AddableToCart[] newArray(int size) {
+			return new AddableToCart[size];
+		}
+	};
 }

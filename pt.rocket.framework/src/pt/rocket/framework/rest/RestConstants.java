@@ -435,7 +435,7 @@ public class RestConstants {
 	 * Countries Configs Keys
 	 */
 	public static final String JSON_FLAG_TAG = "flag";
-	public static final String JSON_MAP_IMAGES_TAG = "map_images";
+	public static final String JSON_MAP_IMAGES_TAG = "map_files";
 	public static final String JSON_MDPI_TAG = "mdpi";
 	public static final String JSON_HDPI_TAG = "hdpi";
 	public static final String JSON_XHDPI_TAG = "xhdpi";

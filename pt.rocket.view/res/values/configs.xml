@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Countries -->
+	<string name="countries_url">http://www.jumia.com/mobapi/availablecountries/staging</string>       
+
     <string name="enable_multi_selection">false</string>
     
     <!-- BUG SENSE -->
