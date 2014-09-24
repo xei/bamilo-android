@@ -35,6 +35,7 @@
             <org.holoeverywhere.widget.EditText
                 android:id="@+id/order_nr"
                 style="@style/form_edittext_style"
+                android:layout_height="wrap_content"
                 android:drawableRight="@drawable/ic_star_formular"
                 android:hint="@string/track_order_hint"
                 android:inputType="textAutoComplete" />
