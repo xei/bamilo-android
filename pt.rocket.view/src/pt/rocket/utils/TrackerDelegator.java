@@ -468,6 +468,7 @@ public class TrackerDelegator {
             averageValue += item.paidpriceAsDouble;
             favoritesCount += favoritesSKU.contains(item.sku) ? 1 : 0;
         }
+        averageValue = averageValue / items.size();
         AnalyticsGoogle.get().trackSales(orderNr, value, items);
 
         if (customer == null) {
@@ -516,7 +517,7 @@ public class TrackerDelegator {
             averageValue += item.paidpriceAsDouble;
             favoritesCount += favoritesSKU.contains(item.sku) ? 1 : 0;
         }
-
+        averageValue = averageValue / items.size();
         AnalyticsGoogle.get().trackSales(order_nr, value, items);
 
         if (customer == null) {
