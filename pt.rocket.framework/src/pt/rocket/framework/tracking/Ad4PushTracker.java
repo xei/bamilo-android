@@ -405,7 +405,7 @@ public class Ad4PushTracker {
 
             mA4S.updateUserPreferences(prefs);
 
-            mA4S.trackEvent(EVENT_ADD_TO_WHISHLIST, productSKU);
+            //mA4S.trackEvent(EVENT_ADD_TO_WHISHLIST, productSKU);
         }
     }
 
