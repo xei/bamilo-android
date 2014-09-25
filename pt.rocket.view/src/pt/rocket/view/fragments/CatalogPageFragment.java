@@ -6,9 +6,6 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.holoeverywhere.widget.Button;
-
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ProductsListAdapter;
@@ -47,6 +44,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -122,6 +120,9 @@ public class CatalogPageFragment extends BaseFragment {
     private boolean reattached = false;
 
     private boolean isScrolling = false;
+    
+    private Bundle mReceivedDataInBackgroung = null;
+    
 
     public static CatalogPageFragment newInstance(Bundle bundle) {
         CatalogPageFragment sCatalogPageFragment = new CatalogPageFragment();
@@ -133,7 +134,7 @@ public class CatalogPageFragment extends BaseFragment {
      * Empty constructor
      */
     public CatalogPageFragment() {
-        super(IS_NESTED_FRAGMENT, R.layout.products);
+        super(IS_NESTED_FRAGMENT, R.layout.catalog_fragment_page);
     }
 
     /*
@@ -288,20 +289,49 @@ public class CatalogPageFragment extends BaseFragment {
         }, SCROLL_DELAY);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onResume()
+     */
     @Override
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME #" + mPageIndex);
-
+        // Get arguments
         Bundle args = getArguments();
-        invalidateData(args, false);
+        boolean forceReload = false;
+        /**
+         * Validated if was received new arguments from invalidateData() and fragment is not visible.
+         * Clean saved products and force reload.
+         */
+        if(mReceivedDataInBackgroung != null) {
+            args = (Bundle) mReceivedDataInBackgroung.clone();
+            mSavedProductsSKU = null;
+            mReceivedDataInBackgroung = null;
+        }
+        // Show
+        invalidateData(args, forceReload);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#setUserVisibleHint(boolean)
+     */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        Log.i(TAG, "ON SET USER VISIBLE HINT #" + mPageIndex + " -> " + isVisibleToUser + "[isResumed:" + isResumed() + " isStopping:" + isOnStoppingProcess + "]");
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onPause()
+     */
     @Override
     public void onPause() {
         super.onPause();
         ProductsListAdapter adapter = (ProductsListAdapter) this.gridView.getAdapter();
-        if (mTotalProducts > 0) {
+        if (mTotalProducts > 0 && adapter != null) {
             mSavedProductsSKU = adapter.getProductsList();
             mCurrentListPosition = this.gridView.getFirstVisiblePosition();
         }
@@ -337,6 +367,7 @@ public class CatalogPageFragment extends BaseFragment {
      * force the refresh of the list to update the status of each item
      */
     public void invalidateData(final Bundle arguments, final boolean forceRefresh) {
+        Log.i(TAG, "ON INVALIDATE DATA");
 
         // update GridView when visible or if reattached after a rotation
         if (!isDetached() && (isVisible() || reattached)) {
@@ -362,10 +393,8 @@ public class CatalogPageFragment extends BaseFragment {
                 Log.i(TAG, "ON RESUME -> Null Adapter");
                 mFilters = newFilters;
                 initializeCatalogPage(showList);
-    
-            } else if (newFilters != null && newFilters.getAsInteger("md5") != mFilterMD5) { // Case
-                                                                                             // new
-                                                                                             // filter
+                
+            } else if (newFilters != null && newFilters.getAsInteger("md5") != mFilterMD5) { // Case new filter
                 Log.i(TAG, "ON RESUME -> FILTER IS DIFF: " + newFilters.getAsInteger("md5") + " " + mFilterMD5);
                 mFilterMD5 = newFilters.getAsInteger("md5");
                 mFilters = newFilters;
@@ -417,6 +446,11 @@ public class CatalogPageFragment extends BaseFragment {
                 }
             }
         }
+        // Case fragment is in background
+        else if (null != arguments) { 
+            Log.i(TAG, "ON INVALIDATE DATA: IS NOT VISIBLE");
+            mReceivedDataInBackgroung = arguments;
+        }
     }
 
     private void initializeCatalogPage(boolean showList) {
@@ -451,8 +485,6 @@ public class CatalogPageFragment extends BaseFragment {
         this.gridView.setOnScrollListener(onScrollListener);
 
         relativeLayoutPc.setVisibility(View.VISIBLE);
-
-        hideProductsLoading();
 
         gridView.setAdapter(adapter);
 
@@ -501,13 +533,6 @@ public class CatalogPageFragment extends BaseFragment {
         Log.d(TAG, "FILTER GET MORE PRODUCTS");
 
         if (mPageNumber != NO_MORE_PAGES) {
-            // Test to see if we already have all the products available
-
-            if (mPageNumber == 1 && null != getView()) {
-                hideProductsNotFound();
-                showFragmentLoading();
-                // showLoadingInfo();
-            }
 
             mBeginRequestMillis = System.currentTimeMillis();
 
@@ -524,7 +549,8 @@ public class CatalogPageFragment extends BaseFragment {
             bundle.putInt(GetProductsHelper.DIRECTION, mDirection.id);
             bundle.putParcelable(GetProductsHelper.FILTERS, mFilters);
 
-            JumiaApplication.INSTANCE.sendRequest(new GetProductsHelper(), bundle, responseCallback);
+            if(mPageNumber == 1) triggerContentEvent(new GetProductsHelper(), bundle, responseCallback);
+            else triggerContentEventWithNoLoading(new GetProductsHelper(), bundle, responseCallback);
 
         } else {
             hideProductsLoading();

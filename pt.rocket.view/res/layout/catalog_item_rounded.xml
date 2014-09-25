@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/rounded_box" >
-
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/general_container"
-    style="@style/list_row_style"
-    android:layout_height="@dimen/catalog_list_item_height">
+    style="@style/list_row_rounded_style"
+    android:layout_height="@dimen/catalog_list_item_height" >
 
     <include
         android:id="@+id/image_loadable"
@@ -14,7 +11,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/catalog_list_item_image_padding"
-        layout="@layout/catalog_image_item"
+        layout="@layout/catalog_item_image"
         android:background="@color/orange_basic" />
 
     <ImageView
@@ -110,9 +107,9 @@
         android:id="@+id/discount_percentage"
         style="@style/discount_percentage"
         android:layout_above="@+id/bottom_spacer"
-        android:gravity="center"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/rounded_margin_mid" />
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:gravity="center" />
 
     <View
         android:id="@id/bottom_spacer"
@@ -126,6 +123,5 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/rounded_margin_small"
         android:layout_alignParentBottom="true" />
-</RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

@@ -157,7 +157,7 @@ public class ProductsListAdapter extends BaseAdapter {
             // if the view already exists there is no need to inflate it again
             itemView = convertView;
         } else {
-            int layoutId = showList ? R.layout.product_item_rounded : R.layout.product_item_grid_rounded;
+            int layoutId = showList ? R.layout.catalog_item_rounded : R.layout.catalog_item_grid_rounded;
 
             itemView = inflater.inflate(layoutId, parent, false);
         }

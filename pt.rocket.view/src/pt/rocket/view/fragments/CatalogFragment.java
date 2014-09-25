@@ -134,7 +134,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public CatalogFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.layout.products_frame,
+                R.layout.catalog_fragment_main,
                 0,
                 KeyboardState.NO_ADJUST_CONTENT);
         // R.string.products_label

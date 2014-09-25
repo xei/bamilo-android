@@ -32,6 +32,8 @@ import de.akquinet.android.androlog.Log;
 public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
     
     public final static String TAG = LogTagHelper.create(AddableToCartListAdapter.class);
+    
+    private static int RECYCLED_VIEW_KEY = R.id.recycled_view;
 
     private LayoutInflater mInflater;
 
@@ -132,7 +134,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
      */
     private Item getItemView(View itemView){
         Item item;
-        if ((Item) itemView.getTag() == null) {
+        if ((Item) itemView.getTag(RECYCLED_VIEW_KEY) == null) {
             // Create tag
             item = new Item();
             item.container = itemView.findViewById(R.id.addabletocart_item_container);
@@ -148,9 +150,9 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
             item.stockError = itemView.findViewById(R.id.error_stock);
             item.addToCartButton = itemView.findViewById(R.id.button_shop);
             item.deleteButton = itemView.findViewById(R.id.button_delete);
-            itemView.setTag(item);
+            itemView.setTag(RECYCLED_VIEW_KEY, item);
         } else {
-            item = (Item) itemView.getTag();
+            item = (Item) itemView.getTag(RECYCLED_VIEW_KEY);
         }
         return item;
     }

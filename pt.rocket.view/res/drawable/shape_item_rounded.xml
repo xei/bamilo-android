@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:drawable="@drawable/background_content"/>
+    <item
+        android:drawable="@drawable/shape_itemhighlight"
+        android:left="@dimen/rounded_margin_mid"
+        android:right="@dimen/rounded_margin_mid"/>
+
+</layer-list>

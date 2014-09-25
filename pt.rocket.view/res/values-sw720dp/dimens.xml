@@ -50,5 +50,8 @@
     <dimen name="myprofile_item_icon_size">32dp</dimen>
     <dimen name="myprofile_icon_counter_size">18dp</dimen>
     <dimen name="myprofile_icon_counter_text_size">9sp</dimen>
+    
+    <!-- CATALOG -->
+    <dimen name="root_empty_container_height">360dp</dimen>
 
 </resources>
