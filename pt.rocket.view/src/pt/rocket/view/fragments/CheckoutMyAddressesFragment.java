@@ -171,8 +171,8 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         mIsSameCheckBox.setOnClickListener(this);
         // Buttons
         mTopAddContainer = view.findViewById(R.id.checkout_addresses_default_button_container);
-        view.findViewById(R.id.checkout_addresses_default_button_add).setOnClickListener(this);
-        view.findViewById(R.id.checkout_addresses_other_button_add).setOnClickListener(this);
+        view.findViewById(R.id.checkout_addresses_default_add).setOnClickListener(this);
+        view.findViewById(R.id.checkout_addresses_other_add).setOnClickListener(this);
         view.findViewById(R.id.checkout_addresses_button_enter).setOnClickListener(this);
         // Get and show addresses
         triggerGetBillingForm();
@@ -257,9 +257,9 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         // Submit
         if(id == R.id.checkout_addresses_button_enter) onClickSubmitAddressesButton();
         // Add new
-        else if(id == R.id.checkout_addresses_default_button_add) onClickCreateAddressButton();
+        else if(id == R.id.checkout_addresses_default_add) onClickCreateAddressButton();
         // Add new
-        else if(id == R.id.checkout_addresses_other_button_add) onClickCreateAddressButton();
+        else if(id == R.id.checkout_addresses_other_add) onClickCreateAddressButton();
         // Edit button
         else if(id == R.id.checkout_address_item_btn_edit) onClickEditAddressButton(view);
         // Delete button
@@ -556,6 +556,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         ((TextView) parent.findViewById(R.id.checkout_address_item_region)).setText(address.getRegion() + " " + address.getCity());
         ((TextView) parent.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
         ((TextView) parent.findViewById(R.id.checkout_address_item_phone)).setText(""+address.getPhone());
+        parent.findViewById(R.id.checkout_address_item_divider).setVisibility(View.VISIBLE);
         // Buttons
         View editBtn = parent.findViewById(R.id.checkout_address_item_btn_edit);
         View deleteBtn = parent.findViewById(R.id.checkout_address_item_btn_delete);

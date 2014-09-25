@@ -48,7 +48,7 @@
 
     <!-- TEXT DIMENSIONS (px/3) -->
     <dimen name="text_actionbar_title">18sp</dimen>
-    <!-- ACTION BAR Tablet will use dimensions from Phone and upscale -->
+    <!-- ACTION BAR Tablet will use search dimensions from Phone and upscale -->
     <dimen name="text_actionbar_search">14sp</dimen>
     <dimen name="text_header">16sp</dimen>
     <dimen name="text_form">13sp</dimen>
@@ -121,10 +121,6 @@
 
     <item name="checkout_main_container" format="float" type="dimen">0.70</item>
     <item name="checkout_order_summary" format="float" type="dimen">0.30</item>
-
-    <!-- MY ORDER -->
-    <dimen name="checkout_order_inner_margin_left">@dimen/margin_mid</dimen>
-    <dimen name="checkout_order_inner_margin_right">@dimen/margin_mid</dimen>
 
     <!-- DIALOG CATALOG FILTER -->
     <dimen name="catalog_button_filter_width">80dp</dimen>
@@ -232,7 +228,8 @@
     <dimen name="login_margin_medium">20dp</dimen>
     <dimen name="login_margin_high">23.33dp</dimen>
 
-    <dimen name="form_left_padding">13.33dp</dimen>
+    <dimen name="form_padding">@dimen/margin_30px</dimen>
+    <dimen name="form_check_padding">@dimen/margin_10px</dimen>
 
     <dimen name="checkout_box_title_height">26.67dp</dimen>
     <dimen name="checkout_voucher_box_height">70dp</dimen>
@@ -252,10 +249,42 @@
 
     <dimen name="button_small_height">30dp</dimen>
 
+    <!-- (320px-20px-20px) -->
+    <dimen name="checkout_address_item_min_height">93.33dp</dimen>
+
+    <dimen name="checkout_address_button_container_height">@dimen/margin_150px</dimen>
+    <dimen name="checkout_shipping_item_height">48dp</dimen>
+    <dimen name="checkout_myorder_item_height">100dp</dimen>
+    <dimen name="checkout_thanks_image_size">106.67dp</dimen>
+    <dimen name="checkout_thanks_thankyou_text_size">42sp</dimen>
+    <dimen name="checkout_thanks_order_text_size">15.33sp</dimen>
+    <dimen name="checkout_thanks_message_text_size">13.33sp</dimen>
+    <dimen name="checkout_thanks_order_width">163.33dp</dimen>
+    <dimen name="checkout_thanks_order_height">32dp</dimen>
+
+    <dimen name="form_spinner_left_margin">5dp</dimen>
+    <dimen name="form_spinner_dropdown_left_margin">2dp</dimen>
+    <dimen name="form_top_margin">@dimen/margin_60px</dimen>
+
     <dimen name="action_bar_icon_size">32dp</dimen>
     <dimen name="action_bar_margin">16dp</dimen>
     <dimen name="abs__search_button_icon_height">@dimen/action_bar_icon_size</dimen>
     <dimen name="abs__action_button_min_width">@dimen/action_bar_icon_size</dimen>
     <dimen name="action_bar_height">48dp</dimen>
+
+    <dimen name="margin_10px">3.33dp</dimen>
+    <dimen name="margin_20px">6.67dp</dimen>
+    <dimen name="margin_30px">10dp</dimen>
+    <dimen name="margin_40px">13.33dp</dimen>
+    <dimen name="margin_50px">16.67dp</dimen>
+    <dimen name="margin_60px">20dp</dimen>
+    <!-- dimen name="margin_70px">23.33dp</dimen -->
+    <dimen name="margin_80px">26.67dp</dimen>
+    <!-- dimen name="margin_90px">30dp</dimen -->
+    <dimen name="margin_100px">33.33dp</dimen>
+    <!-- dimen name="margin_110px">36.67dp</dimen -->
+    <dimen name="margin_120px">40dp</dimen>
+
+    <dimen name="margin_150px">50dp</dimen>
 
 </resources>

@@ -3,7 +3,7 @@
 
     <!-- TEXT DIMENSIONS (px/2) -->
     <dimen name="text_actionbar_title">27sp</dimen>
-    <!-- ACTION BAR Tablet will use dimensions from Phone and upscale -->
+    <!-- ACTION BAR Tablet will use search dimensions from Phone and upscale -->
     <!--dimen name="text_actionbar_search">21sp</dimen-->
     <dimen name="text_header">24sp</dimen>
     <dimen name="text_form">19.5sp</dimen>
@@ -106,7 +106,8 @@
     <dimen name="login_margin_medium">30dp</dimen>
     <dimen name="login_margin_high">35dp</dimen>
 
-    <dimen name="form_left_padding">20dp</dimen>
+    <dimen name="form_padding">@dimen/margin_30px</dimen>
+    <dimen name="form_check_padding">@dimen/margin_10px</dimen>
 
     <dimen name="checkout_box_title_height">40dp</dimen>
     <dimen name="checkout_voucher_box_height">105dp</dimen>
@@ -118,11 +119,43 @@
 
     <dimen name="button_small_height">45dp</dimen>
 
+    <!-- (320px-20px-20px) -->
+    <dimen name="checkout_address_item_min_height">140dp</dimen>
+
+    <dimen name="checkout_address_button_container_height">@dimen/margin_150px</dimen>
+    <dimen name="checkout_shipping_item_height">72dp</dimen>
+    <dimen name="checkout_myorder_item_height">150dp</dimen>
+    <dimen name="checkout_thanks_image_size">160dp</dimen>
+    <dimen name="checkout_thanks_thankyou_text_size">63sp</dimen>
+    <dimen name="checkout_thanks_order_text_size">23sp</dimen>
+    <dimen name="checkout_thanks_message_text_size">20sp</dimen>
+    <dimen name="checkout_thanks_order_width">245dp</dimen>
+    <dimen name="checkout_thanks_order_height">48dp</dimen>
+
+    <dimen name="form_spinner_left_margin">7.5dp</dimen>
+    <dimen name="form_spinner_dropdown_left_margin">3dp</dimen>
+    <dimen name="form_top_margin">@dimen/margin_60px</dimen>
+
     <!-- ACTION BAR Tablet will use dimensions from Phone and upscale -->
     <!-- dimen name="action_bar_icon_size">48dp</dimen>
     <dimen name="action_bar_margin">24dp</dimen>
     <dimen name="abs__search_button_icon_height">@dimen/action_bar_icon_size</dimen>
     <dimen name="abs__action_button_min_width">@dimen/action_bar_icon_size</dimen>
     <dimen name="action_bar_height">72dp</dimen -->
+
+    <dimen name="margin_10px">5dp</dimen>
+    <dimen name="margin_20px">10dp</dimen>
+    <dimen name="margin_30px">15dp</dimen>
+    <dimen name="margin_40px">20dp</dimen>
+    <dimen name="margin_50px">25dp</dimen>
+    <dimen name="margin_60px">30dp</dimen>
+    <!-- dimen name="margin_70px">35dp</dimen -->
+    <dimen name="margin_80px">40dp</dimen>
+    <!-- dimen name="margin_90px">45dp</dimen -->
+    <dimen name="margin_100px">50dp</dimen>
+    <!-- dimen name="margin_110px">55dp</dimen -->
+    <dimen name="margin_120px">60dp</dimen>
+
+    <dimen name="margin_150px">75dp</dimen>
 
 </resources>

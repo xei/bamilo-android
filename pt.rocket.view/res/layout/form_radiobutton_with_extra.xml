@@ -4,36 +4,44 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
+    <!-- DIVIDER -->
+
+    <View
+        android:id="@+id/radio_divider"
+        style="@style/divider_horizontal" />
+
     <LinearLayout
         android:id="@+id/radio_container"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/extras"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingRight="10dp"
+        android:paddingLeft="@dimen/margin_30px"
+        android:paddingRight="@dimen/margin_30px"
         android:visibility="gone" >
 
         <ImageView
             android:id="@+id/payment_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" 
-            android:visibility="gone"/>
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/payment_text"
-            android:layout_width="wrap_content"
+            style="@style/text_form"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_xs"
+            android:paddingBottom="@dimen/margin_30px"
+            android:paddingTop="@dimen/margin_30px"
+            android:singleLine="false"
             android:visibility="gone" />
+
+        <!-- android:layout_height="@dimen/checkout_shipping_item_height" -->
     </LinearLayout>
+
 </LinearLayout>

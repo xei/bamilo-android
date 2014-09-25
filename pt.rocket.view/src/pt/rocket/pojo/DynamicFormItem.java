@@ -1027,7 +1027,9 @@ public class DynamicFormItem {
         dataContainer.setLayoutParams(params);
 
         params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.leftMargin = context.getResources().getDimensionPixelOffset(R.dimen.rounded_margin_mid);
+        int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
+        params.leftMargin = formPadding;
+        params.rightMargin = formPadding;
         this.dataControl = (CheckBox) View.inflate(this.context, R.layout.form_checkbox, null);
         this.dataControl.setId(parent.getNextId());
         
@@ -1521,7 +1523,9 @@ public class DynamicFormItem {
 
         this.dataControl = radioGroup;
         this.dataControl.setId(parent.getNextId());
-        params.leftMargin = context.getResources().getDimensionPixelOffset(R.dimen.rounded_margin_mid);
+        int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
+        params.leftMargin = formPadding;
+        params.rightMargin = formPadding;
         this.dataControl.setLayoutParams(params);
         dataContainer.addView(this.dataControl);
 
@@ -1560,16 +1564,13 @@ public class DynamicFormItem {
         while (it.hasNext()) {
 
             String key = it.next();
-            if (this.parent.getForm().fields != null && this.parent.getForm().fields.size() > 0
-                    && this.parent.getForm().fields.get(0).getPaymentMethodsField() != null) {
-                Log.i(TAG, "code1subForms : " + key + " --> "
-                        + this.parent.getForm().fields.get(0).getPaymentMethodsField().toString());
-                if (this.parent.getForm().fields.get(0).getPaymentMethodsField().containsKey(key)
-                        && (this.parent.getForm().fields.get(0).getPaymentMethodsField().get(key).fields
-                                .size() > 0 || this.parent.getForm().fields.get(0)
-                                .getPaymentMethodsField().get(key).subForms.size() > 0)) {
-                    formsMap.put(key,
-                            this.parent.getForm().fields.get(0).getPaymentMethodsField().get(key));
+            if (this.parent.getForm().fields != null && this.parent.getForm().fields.size() > 0) {
+                HashMap<String, Form> paymentMethodsField = this.parent.getForm().fields.get(0).getPaymentMethodsField();
+                if(paymentMethodsField != null) {
+                    Log.i(TAG, "code1subForms : " + key + " --> " + paymentMethodsField.toString());
+                    if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).fields.size() > 0 || paymentMethodsField.get(key).subForms.size() > 0)) {
+                        formsMap.put(key, paymentMethodsField.get(key));
+                    }
                 }
             }
         }
@@ -1772,7 +1773,8 @@ public class DynamicFormItem {
         this.dataControl = createTextDataControl();
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
-        this.dataControl.setPadding(context.getResources().getDimensionPixelSize(R.dimen.form_left_padding), 0, 0, 0);
+        int formPadding = context.getResources().getDimensionPixelSize(R.dimen.form_padding);
+        this.dataControl.setPadding(formPadding, 0, formPadding, 0);
 
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.MATCH_PARENT);

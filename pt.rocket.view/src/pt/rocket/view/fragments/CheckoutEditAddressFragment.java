@@ -376,6 +376,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         spinner.setLayoutParams(group.getLayoutParams());
         // Create adapter
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<AddressRegion>( getBaseActivity(), R.layout.form_spinner_item, regions);
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(getRegionPosition(regions, selecedAddress));
         spinner.setOnItemSelectedListener(this);
@@ -423,6 +424,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         spinner.setLayoutParams(group.getLayoutParams());
         // Create adapter
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<AddressCity>( getBaseActivity(), R.layout.form_spinner_item, cities);
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(getCityPosition(cities, selectedAddress));
         spinner.setOnItemSelectedListener(this);

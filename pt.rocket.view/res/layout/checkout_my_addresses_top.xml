@@ -1,26 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white"
+    style="@style/rounded_box"
+    android:layout_marginBottom="0dp"
     android:orientation="vertical" >
 
-    <!-- TOP ADDRESSES -->
+    <!-- TITLE -->
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/checkout_addresses_default_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_huge"
-        android:fontFamily="roboto_regular"
-        android:gravity="left"
-        android:textColor="@color/orange_basic"
-        android:textSize="@dimen/text_l" />
+        style="@style/rounded_box_title_grey"
+        android:text="@string/billing_def_shipping_label" />
 
-    <View
-        style="@style/divider_horizontal"
-        android:layout_width="wrap_content" />
+    <View style="@style/divider_horizontal_orange" />
 
     <!-- GROUP CONTAINER -->
 
@@ -28,50 +19,52 @@
         android:id="@+id/checkout_addresses_default_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_midhuge"
-        android:layout_marginTop="@dimen/margin_small"
         android:orientation="vertical" />
 
     <!-- BILLING CHECK BOX -->
 
-    <org.holoeverywhere.widget.CheckBox
-        android:id="@+id/checkout_address_billing_checkbox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_mid"
-        android:layout_marginLeft="@dimen/margin_mid"
-        android:drawablePadding="@dimen/margin_mid"
-        android:fontFamily="roboto_regular"
-        android:text="@string/billing_same_label"
-        android:textColor="@color/grey_middle"
-        android:textSize="@dimen/text_m" />
+    <include
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        layout="@layout/checkout_sameaddress_checkbox" />
 
     <!-- ADD NEW ADDRESS -->
 
     <LinearLayout
         android:id="@+id/checkout_addresses_default_button_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_mid"
-        android:layout_marginTop="@dimen/margin_mid"
+        android:layout_height="@dimen/margin_150px"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
-        <org.holoeverywhere.widget.Button
-            android:id="@+id/checkout_addresses_default_button_add"
+        <LinearLayout
+            android:id="@+id/checkout_addresses_default_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_mid"
-            android:background="@android:color/transparent"
-            android:drawableRight="@drawable/selector_btn_addaddress"
-            android:fontFamily="roboto_regular"
-            android:gravity="left|center"
-            android:paddingRight="7dp"
-            android:text="@string/billing_add_label"
-            android:textColor="@color/grey_divider_light_text"
-            android:textSize="@dimen/text_m" />
+            android:layout_marginLeft="@dimen/margin_30px" >
 
-        <View style="@style/divider_horizontal" />
+            <TextView
+                style="@style/text_form"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:paddingBottom="@dimen/margin_20px"
+                android:text="@string/billing_add_label"
+                android:textColor="@color/grey_middlelight" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_30px"
+                android:src="@drawable/selector_btn_addaddress" />
+        </LinearLayout>
+
+        <View
+            style="@style/divider_horizontal"
+            android:layout_marginBottom="@dimen/margin_30px" />
     </LinearLayout>
 
 </LinearLayout>

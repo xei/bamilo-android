@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:paddingLeft="@dimen/margin_mid"
-    android:paddingRight="@dimen/margin_mid" >
+    android:layout_height="match_parent" >
 
     <!-- CONTENT -->
 
@@ -31,38 +28,29 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/checkout_edit_address_required_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_mid"
-            android:layout_marginRight="@dimen/margin_mid"
-            android:layout_marginTop="@dimen/margin_mid"
-            android:ellipsize="end"
-            android:fontFamily="roboto_regular"
-            android:maxLines="1"
-            android:singleLine="true"
+            style="@style/text_header"
+            android:layout_margin="@dimen/rounded_margin_mid"
             android:text="@string/register_required_text"
             android:textColor="@color/red_basic"
-            android:textSize="@dimen/text_m"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/button_container"
             android:orientation="horizontal" >
-
-            <org.holoeverywhere.widget.Button
-                android:id="@+id/checkout_edit_button_cancel"
-                style="@style/button_grey_bottom"
-                android:layout_marginRight="@dimen/margin_x_small"
-                android:layout_weight="1"
-                android:text="@string/cancel_label" />
 
             <org.holoeverywhere.widget.Button
                 android:id="@+id/checkout_edit_button_enter"
                 style="@style/button_orange_bottom"
-                android:layout_marginLeft="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_x_small"
                 android:layout_weight="1"
                 android:text="@string/save_changes_label" />
+
+            <org.holoeverywhere.widget.Button
+                android:id="@+id/checkout_edit_button_cancel"
+                style="@style/button_grey_bottom"
+                android:layout_marginLeft="@dimen/margin_x_small"
+                android:layout_weight="1"
+                android:text="@string/cancel_label" />
         </LinearLayout>
     </LinearLayout>
 

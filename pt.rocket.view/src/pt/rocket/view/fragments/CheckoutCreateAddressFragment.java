@@ -43,7 +43,6 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -55,7 +54,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -121,8 +119,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     private CheckBox mIsSameCheckBox;
 
     private TextView mShippingTitle;
-
-    private View mShippingFormMain;
 
     private OrderSummary orderSummary;
 
@@ -227,7 +223,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         mShippingTitle = (TextView) view.findViewById(R.id.checkout_address_form_shipping_title);
         // Shipping form
         mShippingFormContainer = (ViewGroup) view.findViewById(R.id.checkout_address_form_shipping_container);
-        mShippingFormMain = view.findViewById(R.id.checkout_address_form_shipping_main);
         // Billing container
         mBillingIncludeContainer = (ViewGroup) view.findViewById(R.id.checkout_address_form_include_billing);
         // Billing form
@@ -453,6 +448,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         spinner.setLayoutParams(group.getLayoutParams());
         // Create adapter
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<AddressRegion>( getBaseActivity(), R.layout.form_spinner_item, regions);
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         int defaultPosition = 0;
         if(mFormResponse.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG).getValue() != null && Integer.parseInt(mFormResponse.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG).getValue()) > 0){
@@ -528,6 +524,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         spinner.setLayoutParams(group.getLayoutParams());
         // Create adapter
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<AddressCity>( getBaseActivity(), R.layout.form_spinner_item, cities);
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         setSavedSelectedCityPos(spinner, cities, tag);
         spinner.setTag(tag);
@@ -775,18 +772,11 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             if (mBillingIncludeContainer != null) {
                 mBillingIncludeContainer.setVisibility(View.GONE);
             }
-            
-            // Update the ship form width
-            if(BaseActivity.isTabletInLandscape(getBaseActivity()))
-                mShippingFormMain.getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.inner_container_width);
         } else {
             // Set title
             mShippingTitle.setText(getString(R.string.billing_shipping_label));
             // Hide billing container
             mBillingIncludeContainer.setVisibility(View.VISIBLE);
-            // Update the ship form width
-            if(BaseActivity.isTabletInLandscape(getBaseActivity()))
-                mShippingFormMain.getLayoutParams().width = LayoutParams.MATCH_PARENT;
         }
     }
     

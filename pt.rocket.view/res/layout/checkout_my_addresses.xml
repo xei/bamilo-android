@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/margin_mid"
-    android:paddingRight="@dimen/margin_mid"
-    android:background="@android:color/white" >
+    android:layout_height="match_parent" >
 
     <!-- CONTENT -->
 
@@ -14,6 +11,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/checkout_addresses_button_enter"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/button_container_height"
         android:fillViewport="true" >
 
         <LinearLayout
@@ -33,12 +31,14 @@
 
     <!-- NEXT BUTTON -->
 
-    <org.holoeverywhere.widget.Button
-        android:id="@+id/checkout_addresses_button_enter"
-        style="@style/button_orange_style"
-        android:layout_alignParentBottom="true"
-        android:fontFamily="roboto_regular"
-        android:text="@string/next_button"
-        android:layout_width="@dimen/inner_container_width" />
+    <LinearLayout
+        style="@style/button_container"
+        android:layout_alignParentBottom="true" >
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/checkout_addresses_button_enter"
+            style="@style/button_orange_bottom"
+            android:text="@string/next_button" />
+    </LinearLayout>
 
 </RelativeLayout>

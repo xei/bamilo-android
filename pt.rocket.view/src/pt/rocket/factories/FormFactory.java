@@ -128,9 +128,9 @@ public class FormFactory {
      */
     private DynamicForm createAddressForm(Context context, Form form) {
         final int CTRLMARGIN_LEFT = 0;
-        final int CTRLMARGIN_TOP = 15;
-        final int CTRLMARGIN_RIGHT = 3;
-        final int CTRLMARGIN_BOTTOM = 3;
+        final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
+        final int CTRLMARGIN_RIGHT = 0;
+        final int CTRLMARGIN_BOTTOM = 0;
 
         LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
@@ -149,9 +149,9 @@ public class FormFactory {
      */
     private DynamicForm createEditAddressForm(Context context, Form form) {
         final int CTRLMARGIN_LEFT = 0;
-        final int CTRLMARGIN_TOP = 15;
-        final int CTRLMARGIN_RIGHT = 3;
-        final int CTRLMARGIN_BOTTOM = 3;
+        final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
+        final int CTRLMARGIN_RIGHT = 0;
+        final int CTRLMARGIN_BOTTOM = 0;
 
         LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
@@ -169,7 +169,7 @@ public class FormFactory {
      */
     private DynamicForm createLoginForm(Context context, Form form) {
         final int CTRLMARGIN_LEFT = 0;
-        final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelOffset(R.dimen.login_margin_medium);
+        final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
         final int CTRLMARGIN_RIGHT = 0;
         final int CTRLMARGIN_BOTTOM = 0;
 
@@ -207,7 +207,7 @@ public class FormFactory {
      */
     private DynamicForm createRegistrationForm(Context context, Form form) {
         final int CTRLMARGIN_LEFT = 0;
-        final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelOffset(R.dimen.login_margin_medium);
+        final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
         final int CTRLMARGIN_RIGHT = 0;
         final int CTRLMARGIN_BOTTOM = 0;
 
@@ -226,7 +226,7 @@ public class FormFactory {
      */
     private DynamicForm createForgetPasswordForm(Context context, Form form) {
         final int CTRLMARGIN_LEFT = 0;
-        final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelOffset(R.dimen.login_margin_medium);
+        final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
         final int CTRLMARGIN_RIGHT = 0;
         final int CTRLMARGIN_BOTTOM = 0;
 
@@ -267,11 +267,11 @@ public class FormFactory {
     // Validate this method for signup
     private DynamicForm createSignupForm(Context context, Form form) {
         final int CTRLMARGIN_LEFT = 0;
-        final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelOffset(R.dimen.login_margin_medium);
+        final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
         final int CTRLMARGIN_RIGHT = 0;
         final int CTRLMARGIN_BOTTOM = 0;
 
-        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, context.getResources().getDimensionPixelOffset(R.dimen.form_item_height));
+        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, context.getResources().getDimensionPixelSize(R.dimen.form_item_height));
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
 
         return createGenericForm(context, form, signupForm, ctrlParams);

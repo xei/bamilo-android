@@ -252,8 +252,8 @@
     </style>
 
     <style name="form_style">
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/form_text</item>
         <item name="android:textSize">@dimen/text_form</item>
         <item name="android:ellipsize">end</item>
@@ -266,23 +266,21 @@
         <item name="android:cursorVisible">true</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
-        <item name="android:paddingLeft">@dimen/form_left_padding</item>
+        <item name="android:paddingLeft">@dimen/form_padding</item>
         <item name="android:textCursorDrawable">@null</item>
         <item name="android:inputType">text</item>
     </style>
 
     <style name="form_checkbox_style" parent="form_style">
-        <!-- item name="android:layout_marginRight">@dimen/login_margin_medium</item -->
-        <item name="android:height">@dimen/form_item_height</item>
-        <item name="android:layout_marginLeft">@dimen/login_margin_small</item>
-        <!-- item name="android:layout_marginBottom">-4dp</item -->
-        <!-- item name="android:layout_marginTop">-4dp</item -->
+        <item name="android:layout_marginLeft">@dimen/form_check_padding</item>
+        <item name="android:layout_marginRight">@dimen/form_check_padding</item>
         <item name="android:layout_gravity">top</item>
     </style>
 
     <style name="form_radiobutton_style" parent="form_style">
+        <item name="android:layout_marginLeft">@dimen/form_check_padding</item>
+        <item name="android:layout_marginRight">@dimen/form_check_padding</item>
         <item name="android:layout_gravity">top</item>
-        <item name="android:layout_marginLeft">@dimen/login_margin_small</item>
     </style>
 
     <style name="starRatingBarSmall">
@@ -431,14 +429,21 @@
 
     <!-- TEXT STYLES -->
 
-    <style name="_base_text">
+    <style name="text_regular">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:textColor">@color/grey_middle</item>
+    </style>
+
+    <style name="text_bold" parent="text_regular">
+        <item name="android:fontFamily">roboto_bold</item>
+    </style>
+
+    <style name="_base_text" parent="text_regular">
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
-        <item name="android:fontFamily">roboto_regular</item>
         <item name="android:gravity">left|center_vertical</item>
-        <item name="android:textColor">@color/grey_middle</item>
     </style>
 
     <style name="text_subtitle" parent="_base_text">
