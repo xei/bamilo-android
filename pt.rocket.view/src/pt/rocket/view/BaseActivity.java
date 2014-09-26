@@ -2209,8 +2209,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             break;
         case ConstantsCheckout.CHECKOUT_ORDER:
         case ConstantsCheckout.CHECKOUT_THANKS:
+            visibility = View.GONE;
             updateBaseComponentsInCheckout(visibility);
-            hideOnlySteps();
             break;
         case ConstantsCheckout.CHECKOUT_NO_SET_HEADER:
             // Hide title and total
@@ -2232,15 +2232,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         // Return value
         return result;
-    }
-
-    /**
-     * Hide only the steps
-     * 
-     * @author sergiopereira
-     */
-    private void hideOnlySteps() {
-        findViewById(R.id.checkout_header_main_step).setVisibility(View.INVISIBLE);
     }
 
     /**

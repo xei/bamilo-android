@@ -43,7 +43,7 @@
     <string name="logout_title">Logout Confirmation</string>
     <string name="logout_text_question">Are you sure you want to exit?</string>
     <!-- string name="wishlist_addcart">Buy</string -->
-    <string name="order_notiems">You have no items in the cart</string>
+    <string name="order_no_items">You have no items in the cart</string>
     <!-- string name="categories_name">Categories</string -->
     <string name="categories_title">Search Categories</string>
     <string name="categories_name_all">All for</string>

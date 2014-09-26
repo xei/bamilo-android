@@ -122,10 +122,6 @@
     <item name="checkout_main_container" format="float" type="dimen">0.70</item>
     <item name="checkout_order_summary" format="float" type="dimen">0.30</item>
 
-    <!-- MY ORDER -->
-    <dimen name="checkout_order_inner_margin_left">@dimen/margin_mid</dimen>
-    <dimen name="checkout_order_inner_margin_right">@dimen/margin_mid</dimen>
-
     <!-- DIALOG CATALOG FILTER -->
     <dimen name="catalog_button_filter_width">80dp</dimen>
     <dimen name="dialog_catalog_filter_width">@integer/match_parent</dimen>
@@ -269,6 +265,10 @@
     <dimen name="form_spinner_left_margin">5dp</dimen>
     <dimen name="form_spinner_dropdown_left_margin">2dp</dimen>
     <dimen name="form_top_margin">@dimen/margin_60px</dimen>
+    <dimen name="form_radiobutton_shipping_margin">@dimen/margin_30px</dimen>
+    <dimen name="form_btn_address_padding_fix">@dimen/margin_30px</dimen>
+    <dimen name="form_payment_left_margin">@dimen/margin_50px</dimen>
+    <dimen name="form_payment_vertical_margin">@dimen/margin_20px</dimen>
 
     <dimen name="action_bar_icon_size">32dp</dimen>
     <dimen name="action_bar_margin">16dp</dimen>

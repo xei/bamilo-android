@@ -135,6 +135,10 @@
     <dimen name="form_spinner_left_margin">7.5dp</dimen>
     <dimen name="form_spinner_dropdown_left_margin">3dp</dimen>
     <dimen name="form_top_margin">@dimen/margin_60px</dimen>
+    <dimen name="form_radiobutton_shipping_margin">@dimen/margin_30px</dimen>
+    <dimen name="form_btn_address_padding_fix">@dimen/margin_20px</dimen>
+    <dimen name="form_payment_left_margin">@dimen/margin_50px</dimen>
+    <dimen name="form_payment_vertical_margin">@dimen/margin_20px</dimen>
 
     <!-- ACTION BAR Tablet will use dimensions from Phone and upscale -->
     <!-- dimen name="action_bar_icon_size">48dp</dimen>

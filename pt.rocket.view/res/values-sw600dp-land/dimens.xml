@@ -78,4 +78,6 @@
 
     <dimen name="track_order_error_content_height">@dimen/track_order_content_height</dimen>
 
+    <dimen name="form_btn_address_padding_fix">@dimen/margin_40px</dimen>
+
 </resources>

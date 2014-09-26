@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/margin_mid"
-    android:layout_marginRight="@dimen/margin_mid"
-    android:background="@android:color/white" >
+    android:layout_height="match_parent" >
 
     <!-- CONTENT -->
 
@@ -13,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/checkout_my_order_button_enter"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/button_container_height"
         android:orientation="horizontal" >
 
         <ScrollView
@@ -35,7 +33,7 @@
 
                 <include
                     android:id="@+id/checkout_my_order_include_subtotal"
-                    layout="@layout/checkout_my_order_subtotal" />
+                    layout="@layout/shopping_basket_subtotal_element" />
             </LinearLayout>
         </ScrollView>
 
@@ -47,6 +45,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/rounded_margin_small"
                 android:orientation="vertical" >
 
                 <!-- SHIPPING ADDRESS -->
@@ -82,13 +81,16 @@
 
     <!-- NEXT STEP BUTTON -->
 
-    <org.holoeverywhere.widget.Button
-        android:id="@+id/checkout_my_order_button_enter"
-        style="@style/button_orange_style"
-        android:layout_width="@dimen/inner_container_width"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:contentDescription="@string/login_button_description"
-        android:text="@string/my_order_confirm_button" />
+    <LinearLayout
+        style="@style/button_container"
+        android:layout_alignParentBottom="true" >
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/checkout_my_order_button_enter"
+            style="@style/button_orange_landscape"
+            android:layout_width="@dimen/inner_container_width"
+            android:contentDescription="@string/login_button_description"
+            android:text="@string/my_order_confirm_button" />
+    </LinearLayout>
 
 </RelativeLayout>

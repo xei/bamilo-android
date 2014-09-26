@@ -43,7 +43,7 @@
     <string name="logout_title">Confirmation de Déconnexion</string>
     <string name="logout_text_question">Etes-vous sûr de vouloir quitter?</string>
     <!-- string name="wishlist_addcart">J\'achète !</string -->
-    <string name="order_notiems">Vous n\'avez pas d\'articles dans le panier</string>
+    <string name="order_no_items">Vous n\'avez pas d\'articles dans le panier</string>
     <!-- string name="categories_name">Les catégories</string -->
     <string name="categories_title">Recherchez les Catégories</string>
     <string name="categories_name_all">Tout pour</string>

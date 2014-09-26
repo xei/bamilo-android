@@ -16,16 +16,18 @@
 
     <pt.rocket.utils.GenericRadioGroup
         android:id="@+id/checkout_addresses_other_container"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/inner_container_width"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:orientation="vertical" />
 
     <!-- ADD NEW ADDRESS -->
 
     <LinearLayout
         android:id="@+id/checkout_addresses_default_button_container"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/inner_container_width"
         android:layout_height="@dimen/margin_150px"
+        android:layout_gravity="center_horizontal"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:orientation="vertical" >
@@ -34,7 +36,7 @@
             android:id="@+id/checkout_addresses_other_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_30px" >
+            android:paddingLeft="@dimen/margin_30px" >
 
             <TextView
                 style="@style/text_form"
@@ -49,7 +51,10 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/margin_30px"
+                android:paddingBottom="@dimen/margin_30px"
+                android:paddingLeft="@dimen/form_btn_address_padding_fix"
+                android:paddingRight="@dimen/form_btn_address_padding_fix"
+                android:paddingTop="@dimen/margin_30px"
                 android:src="@drawable/selector_btn_addaddress" />
         </LinearLayout>
 
