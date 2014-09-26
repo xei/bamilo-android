@@ -113,6 +113,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
         prepareLayout();
     }
     

@@ -42,6 +42,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -86,7 +87,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     
     private TextView mExtraCosts;
     
-    private LinearLayout mExtraCostsContainer;
+    private RelativeLayout mExtraCostsContainer;
     
     private OrderSummary mOrderFinish;
 
@@ -176,17 +177,17 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         // Get product items
         mProductsContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_list);
         // Get sub total
-        mProductsNum = (TextView) view.findViewById(R.id.checkout_my_order_products_text_n_items);
-        mSubTotal = (TextView) view.findViewById(R.id.checkout_my_order_products_text_total_items);
-        mExtraCosts = (TextView) view.findViewById(R.id.checkout_my_order_extra_costs);
-        mExtraCostsContainer = (LinearLayout) view.findViewById(R.id.checkout_my_order_products_extracosts_container);
+        mProductsNum = (TextView) view.findViewById(R.id.articles_count);
+        mSubTotal = (TextView) view.findViewById(R.id.price_total);
+        mExtraCosts = (TextView) view.findViewById(R.id.extra_costs_value);
+        mExtraCostsContainer = (RelativeLayout) view.findViewById(R.id.extra_costs_container);
       
-        mVatValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_vat_value);
-        //mShipFeeView = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_shippingfee_container);
-        mShipFeeValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_shippingfee);
-        mVoucherView = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_voucher_container);
-        mVoucherValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_voucher);
-        mTotalValue = (TextView) view.findViewById(R.id.checkout_my_order_products_text_total);
+        mVatValue = (TextView) view.findViewById(R.id.vat_value);
+        //mShipFeeView = (ViewGroup) view.findViewById(R.id.shipping_container);
+        mShipFeeValue = (TextView) view.findViewById(R.id.shipping_value);
+        mVoucherView = (ViewGroup) view.findViewById(R.id.voucher_info_container);
+        mVoucherValue = (TextView) view.findViewById(R.id.text_voucher);
+        mTotalValue = (TextView) view.findViewById(R.id.total_value);
         // Get shipping address
         view.findViewById(R.id.checkout_my_order_shipping_address_btn_edit).setOnClickListener((OnClickListener) this);
         mShippingAddressContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_shipping_address_list);
@@ -309,6 +310,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      * @author sergiopereira
      */
     private void showProducts(){
+        boolean first = true;
         // Show products
         for (ShoppingCartItem item : cart.getCartItems().values()) {
             View prodInflateView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_my_order_product_item, mProductsContainer, false);
@@ -329,7 +331,13 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                  !variation.equalsIgnoreCase("...") && !variation.equalsIgnoreCase(".") && !variation.equalsIgnoreCase("false")) {
                 ((TextView) prodInflateView.findViewById(R.id.my_order_item_variation)).setText(variation);
                 ((TextView) prodInflateView.findViewById(R.id.my_order_item_variation)).setVisibility(View.VISIBLE);
-          } 
+            } 
+            // // Hide first divider
+            if (first) {
+                first = false;
+                prodInflateView.findViewById(R.id.my_order_item_divider).setVisibility(View.GONE);
+            }
+            
             // Add item view
             mProductsContainer.addView(prodInflateView);
         }

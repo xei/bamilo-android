@@ -25,10 +25,12 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.cart.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.cart.GetShoppingCartRemoveItemHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -310,6 +312,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             } 
             // Buttons
             View deleteButton = cartItemView.findViewById(R.id.order_summary_item_btn_remove);
+            // deleteButton.setVisibility(View.VISIBLE);
             deleteButton.setOnClickListener((OnClickListener)this);
             deleteButton.setTag(item.getConfigSimpleSKU());
             // Add view
@@ -336,7 +339,15 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         View shippingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, mShippingAddressList, false);
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(shippingAddress.getFirstName() + " " + shippingAddress.getLastName());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(shippingAddress.getAddress());
-        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(shippingAddress.getRegion() + " " + shippingAddress.getCity());
+
+        // Only use region if is available
+        StringBuilder regionString = new StringBuilder();
+        if(!TextUtils.isEmpty(shippingAddress.getRegion())) {
+            regionString.append(shippingAddress.getRegion()).append(" ");
+        }
+        regionString.append(shippingAddress.getCity());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(regionString.toString());
+
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(shippingAddress.getPostcode());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(""+shippingAddress.getPhone());
         shippingAddressView.findViewById(R.id.checkout_address_item_btn_container).setVisibility(View.GONE);
@@ -423,17 +434,25 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
      * @author sergiopereira
      */
     public void showNoItems() {
-        // setAppContentLayout();
-        showFragmentEmpty(R.string.order_notiems, R.drawable.img_emptycart, R.string.continue_shopping, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int id = v.getId();
-                if (id == R.id.button1) {
-                    dialog.dismiss();
-                    getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                }
-            }
-        });
+        // Show dialog
+        dialog = DialogGenericFragment.newInstance(true, true, false,
+                getString(R.string.order_summary_label),
+                getString(R.string.order_no_items),
+                getString(R.string.ok_label),
+                "",
+                new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int id = v.getId();
+                        if (id == R.id.button1) {
+                            dialog.dismiss();
+                            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        }
+                    }
+                });
+        // Fixed back bug
+        dialog.setCancelable(false);
+        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
     }
     
 
