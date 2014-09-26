@@ -40,6 +40,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -553,7 +554,15 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         // Text
         ((TextView) parent.findViewById(R.id.checkout_address_item_name)).setText(address.getFirstName() + " " + address.getLastName());
         ((TextView) parent.findViewById(R.id.checkout_address_item_street)).setText(address.getAddress());
-        ((TextView) parent.findViewById(R.id.checkout_address_item_region)).setText(address.getRegion() + " " + address.getCity());
+
+        // Only use region if is available
+        StringBuilder regionString = new StringBuilder();
+        if(!TextUtils.isEmpty(address.getRegion())) {
+            regionString.append(address.getRegion()).append(" ");
+        }
+        regionString.append(address.getCity());
+        ((TextView) parent.findViewById(R.id.checkout_address_item_region)).setText(regionString.toString());
+
         ((TextView) parent.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
         ((TextView) parent.findViewById(R.id.checkout_address_item_phone)).setText(""+address.getPhone());
         parent.findViewById(R.id.checkout_address_item_divider).setVisibility(View.VISIBLE);
