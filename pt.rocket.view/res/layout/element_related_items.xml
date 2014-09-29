@@ -1,117 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:weightSum="3" >
 
-    <RelativeLayout
-        android:id="@+id/element_1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/selector_listitem_highlight" >
+<!-- NOTE: The "teaser_product_item_width" is not used, is calculated from Window width. -->
 
-        <ImageView
-            android:id="@+id/img_1"
-            android:layout_width="97.02dp"
-            android:layout_height="69dp"
-            android:layout_centerHorizontal="true" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/related_item_container"
+    android:layout_width="@dimen/teaser_product_item_width"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/margin_mid"
+    android:paddingRight="@dimen/margin_mid" >
 
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/name_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/img_1"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="6.6dp"
-            android:lines="2"
-            android:maxLines="2"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_xs" />
+    <include
+        android:id="@+id/related_item_image_loadable"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/teaser_banners_brands_list_height"
+        android:layout_centerHorizontal="true"
+        layout="@layout/image_loadable"
+        android:background="@color/red_basic" />
 
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/price_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/name_1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="6.6dp"
-            android:paddingBottom="6.6dp"
-            android:textColor="@color/red_middle"
-            android:textSize="@dimen/text_xs" />
-    </RelativeLayout>
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/related_item_brand"
+        style="@style/text_normal"
+        android:layout_below="@id/related_item_image_loadable"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:lines="1" />
 
-    <RelativeLayout
-        android:id="@+id/element_2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/selector_listitem_highlight" >
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/related_item_title"
+        style="@style/text_normal"
+        android:layout_below="@id/related_item_brand"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:lines="1"
+        android:text="Title" />
 
-        <ImageView
-            android:id="@+id/img_2"
-            android:layout_width="97.02dp"
-            android:layout_height="69dp"
-            android:layout_centerHorizontal="true" />
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/related_item_price"
+        style="@style/text_price"
+        android:layout_below="@id/related_item_title"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:text="Price" />
 
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/name_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/img_2"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="6.6dp"
-            android:lines="2"
-            android:maxLines="2"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_xs" />
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/price_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/name_2"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="6.6dp"
-            android:textColor="@color/red_middle"
-            android:textSize="@dimen/text_xs" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/element_3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/selector_listitem_highlight" >
-
-        <ImageView
-            android:id="@+id/img_3"
-            android:layout_width="97.02dp"
-            android:layout_height="69dp"
-            android:layout_centerHorizontal="true" />
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/name_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/img_3"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="6.6dp"
-            android:lines="2"
-            android:maxLines="2"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_xs" />
-
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/price_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/name_3"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="6.6dp"
-            android:textColor="@color/red_middle"
-            android:textSize="@dimen/text_xs" />
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

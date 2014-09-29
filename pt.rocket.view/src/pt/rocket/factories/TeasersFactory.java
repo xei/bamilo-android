@@ -291,24 +291,20 @@ public class TeasersFactory {
      */
     private View createProductTeaserView(TeaserProduct product, ViewGroup vg, LayoutInflater mInflater, int size) {
         View productTeaserView = mInflater.inflate(R.layout.product_item_small, vg, false);
-        
         // Tablet
         if(mContext.getResources().getBoolean(R.bool.isTablet) && product.getImagesTablet() != null && product.getImagesTablet().size() > 0) {
             // Log.d(TAG, "PROD IMG: LOADED TABLET " + product.getImagesTablet().get(0).getUrl());
-            setImageToLoad(product.getImagesTablet().get(0).getUrl(), productTeaserView, size);
+            setImageToLoad(product.getImagesTablet().get(0).getUrl(), productTeaserView, 0);
         } // Portrait
         else if (product.getImages() != null && product.getImages().size() > 0) {
             // Log.d(TAG, "PROD IMG: LOADED PHONE " + product.getImages().get(0).getUrl());
-            setImageToLoad(product.getImages().get(0).getUrl(), productTeaserView, size);
+            setImageToLoad(product.getImages().get(0).getUrl(), productTeaserView, 0);
         }
-        
+        // Set data
+        ((TextView) productTeaserView.findViewById(R.id.item_brand)).setText(product.getBrand());
         ((TextView) productTeaserView.findViewById(R.id.item_title)).setText(product.getName());
-        String price;
-        if (!TextUtils.isEmpty(product.getSpecialPrice())) {
-            price = product.getSpecialPrice();
-        } else {
-            price = product.getPrice();
-        }
+        // Set price
+        String price = (!TextUtils.isEmpty(product.getSpecialPrice())) ? product.getSpecialPrice() : product.getPrice(); 
         ((TextView) productTeaserView.findViewById(R.id.item_price)).setText(price);
         attachTeaserListener(product, productTeaserView);
         return productTeaserView;
@@ -470,11 +466,12 @@ public class TeasersFactory {
     private void setImageToLoad(String imageUrl, View imageTeaserView, int size) {
         final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
         final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
-        // Adapts the Image size if needed
-        if(size > 0 && imageTeaserView.getLayoutParams() != null) {
-            if(mContentWidth == 0) mContentWidth = WindowHelper.getWidth(mContext);
-            imageTeaserView.getLayoutParams().width = mContentWidth / size;
-        }
+
+//        // Adapts the Image size if needed
+//        if(size > 0 && imageTeaserView.getLayoutParams() != null) {
+//            if(mContentWidth == 0) mContentWidth = WindowHelper.getWidth(mContext);
+//            imageTeaserView.getLayoutParams().width = mContentWidth / size;
+//        }
             
         
         if (!TextUtils.isEmpty(imageUrl)) {

@@ -15,7 +15,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
 	
 	public static final String TAG = DarwinDatabaseHelper.class.getName();
 	
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 6;
 
     public static final String DB_NAME = "darwin.db";
     

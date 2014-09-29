@@ -11,7 +11,7 @@
 
     <!-- TEASERS -->
     <dimen name="teaser_swipe_banner_height">196dp</dimen>
-    <dimen name="teaser_product_item_width">120dp</dimen>
+    <dimen name="teaser_product_item_width">135dp</dimen>
     <dimen name="teaser_banners_group_height">140dp</dimen>
 
     <!-- DIALOG CATALOG FILTER -->

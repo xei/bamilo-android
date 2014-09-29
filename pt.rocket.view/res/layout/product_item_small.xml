@@ -2,7 +2,7 @@
 
 <!-- NOTE: The "teaser_product_item_width" is not used, is calculated from Window width. -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/teaser_product_item_width"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,22 +10,36 @@
     android:paddingRight="@dimen/margin_mid" >
 
     <include
+        android:id="@+id/item_image_loadable"
         android:layout_width="match_parent"
         android:layout_height="@dimen/teaser_banners_brands_list_height"
-        layout="@layout/image_loadable" />
+        android:layout_centerHorizontal="true"
+        layout="@layout/image_loadable"
+        android:background="@color/red_basic" />
+
+    <org.holoeverywhere.widget.TextView
+        android:id="@+id/item_brand"
+        style="@style/text_normal"
+        android:layout_below="@id/item_image_loadable"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:lines="1" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_title"
         style="@style/text_normal"
+        android:layout_below="@id/item_brand"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:lines="2"
-        android:maxLines="2"
+        android:lines="1"
         android:text="Title" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_price"
         style="@style/text_price"
+        android:layout_below="@id/item_title"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:text="Price" />
 
-</LinearLayout>
+</RelativeLayout>

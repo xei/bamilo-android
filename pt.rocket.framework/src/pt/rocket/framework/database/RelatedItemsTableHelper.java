@@ -29,6 +29,7 @@ public class RelatedItemsTableHelper {
 	// Table Rows
 	public static final String _ID = "id";
 	public static final String _PRODUCT_SKU = "product_sku";
+	public static final String _PRODUCT_BRAND = "product_brand";
 	public static final String _PRODUCT_NAME = "product_name";
 	public static final String _PRODUCT_PRICE = "product_price";
 	public static final String _PRODUCT_URL = "product_url";
@@ -37,36 +38,37 @@ public class RelatedItemsTableHelper {
 	// Create table
     public static final String CREATE = 
     		"CREATE TABLE " + TABLE_RELATED + " (" + 
-    				_ID +			" INTEGER PRIMARY KEY, " +
-    				_PRODUCT_SKU +		" TEXT," + 
+    				_ID +				" INTEGER PRIMARY KEY, " +
+    				_PRODUCT_SKU +		" TEXT," +
+    				_PRODUCT_BRAND +	" TEXT," + 
     				_PRODUCT_NAME +		" TEXT," + 
-    				_PRODUCT_PRICE +		" TEXT," + 
+    				_PRODUCT_PRICE +	" TEXT," + 
     				_PRODUCT_URL +		" TEXT," + 
-    				_IMAGE_URL +	" TEXT" + 
+    				_IMAGE_URL +		" TEXT" + 
     				 ")";
 
     /**
      * Insert related items into database
-     * @param product_sku
-     * @param product_name
-     * @param product_price
-     * @param product_url
-     * @param image_url
+     * @param sku
+     * @param name
+     * @param price
+     * @param url
+     * @param image
      */
-    public static void insertRelatedItem(SQLiteDatabase db, String product_sku, String product_name, String product_price, String product_url, String image_url){
+    public static void insertRelatedItem(SQLiteDatabase db, String sku, String brand, String name, String price, String url, String image){
     	// Validate sku
-    	if(TextUtils.isEmpty(product_sku)) {
+    	if(TextUtils.isEmpty(sku)) {
     		Log.w(TAG, "WARNING ON INSERT RELATED ITEM: SKU IS EMPTY");
     		return;
     	}
-    	Log.i(TAG, "ON INSERT ITEM: " + product_sku);
     	// Insert
 		ContentValues values = new ContentValues();
-		values.put(RelatedItemsTableHelper._PRODUCT_SKU, product_sku);
-		values.put(RelatedItemsTableHelper._PRODUCT_NAME, product_name);
-		values.put(RelatedItemsTableHelper._PRODUCT_PRICE, product_price);
-		values.put(RelatedItemsTableHelper._PRODUCT_URL, product_url);
-		values.put(RelatedItemsTableHelper._IMAGE_URL, image_url);
+		values.put(RelatedItemsTableHelper._PRODUCT_SKU, sku);
+		values.put(RelatedItemsTableHelper._PRODUCT_BRAND, brand);
+		values.put(RelatedItemsTableHelper._PRODUCT_NAME, name);
+		values.put(RelatedItemsTableHelper._PRODUCT_PRICE, price);
+		values.put(RelatedItemsTableHelper._PRODUCT_URL, url);
+		values.put(RelatedItemsTableHelper._IMAGE_URL, image);
 		db.insertWithOnConflict(RelatedItemsTableHelper.TABLE_RELATED, null, values, SQLiteDatabase.CONFLICT_IGNORE);
     }
     
@@ -86,11 +88,14 @@ public class RelatedItemsTableHelper {
 			
 			int count = 19;
 			for (Product product : mProducts) {
-				insertRelatedItem(db, product.getSKU(), product.getBrand()
-						+ " " + product.getName(), product.getSpecialPrice(),
+				Log.d(TAG, "RELATED ITEM: " + product.getBrand());
+				insertRelatedItem(db, 
+						product.getSKU(), 
+						product.getBrand(), 
+						product.getName(), 
+						product.getSpecialPrice(),
 						product.getUrl(),
-						(product.getImages().size() == 0) ? "" : product
-								.getImages().get(0).getUrl());
+						(product.getImages().size() == 0) ? "" : product.getImages().get(0).getUrl());
 				if(count == MAX_SAVED_PRODUCTS)
 					break;
 				count++;
@@ -141,10 +146,13 @@ public class RelatedItemsTableHelper {
 	private synchronized static void cleanAndInsert(SQLiteDatabase db, ArrayList<Product> mProducts) {
 		clearRelatedItems(db);
 		int count = 1;
+		Log.d(TAG, "RELATED ITEMS COUNT: " + mProducts.size());
 		for (Product product : mProducts) {
+			Log.d(TAG, "RELATED ITEM: " + product.getBrand());
 			insertRelatedItem(db, 
 							product.getSKU(), 
-							product.getBrand() + " " + product.getName(), 
+							product.getBrand(),
+							product.getName(), 
 							product.getSpecialPrice(),
 							product.getUrl(),
 							(product.getImages().size() == 0) ? "" : product.getImages().get(0).getUrl());
@@ -169,10 +177,11 @@ public class RelatedItemsTableHelper {
     		while (cursor.moveToNext()) {
     			LastViewed lViewed = new LastViewed();
     			lViewed.setProductSku(cursor.getString(1));
-    			lViewed.setProductName(cursor.getString(2));
-    			lViewed.setProductPrice(cursor.getString(3));
-    			lViewed.setProductUrl(cursor.getString(4));
-    			lViewed.setImageUrl(cursor.getString(5));
+    			lViewed.setProductBrand(cursor.getString(2));
+    			lViewed.setProductName(cursor.getString(3));
+    			lViewed.setProductPrice(cursor.getString(4));
+    			lViewed.setProductUrl(cursor.getString(5));
+    			lViewed.setImageUrl(cursor.getString(6));
     			lastViewed.add(lViewed);
     		}
 		}

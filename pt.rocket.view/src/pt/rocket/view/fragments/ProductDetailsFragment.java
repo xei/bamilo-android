@@ -13,7 +13,6 @@ import org.holoeverywhere.widget.TextView;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
-import pt.rocket.controllers.RelatedItemsAdapter;
 import pt.rocket.controllers.TipsPagerAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -51,6 +50,7 @@ import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.utils.dialogfragments.WizardPreferences;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
+import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.ContentValues;
@@ -207,11 +207,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private TextView mDiscountPercentageText;
 
-    private ViewPager mRelatedPager;
-
     private View mRelatedLoading;
 
     private View mRelatedContainer;
+
+    private View mRelatedHorizontalScroll;
+
+    private ViewGroup mRelatedHorizontalGroup;
 
     /**
      * Empty constructor
@@ -458,7 +460,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         loadingRating = (RelativeLayout) view.findViewById(R.id.product_detail_loading_rating);
         // Related
         mRelatedContainer = view.findViewById(R.id.product_detail_product_related_container);
-        mRelatedPager = (ViewPager) view.findViewById(R.id.last_viewed_viewpager);
+        mRelatedHorizontalScroll = view.findViewById(R.id.product_detail_horizontal_scroll);
+        mRelatedHorizontalGroup = (ViewGroup) view.findViewById(R.id.product_detail_horizontal_group_container);
         mRelatedLoading = view.findViewById(R.id.loading_related);
         // Button specification
         view.findViewById(R.id.product_detail_specifications).setOnClickListener((OnClickListener) this);
@@ -1084,14 +1087,63 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     
     /**
      * Method used to create the view
-     * @param relatedItemsList 
+     * @param relatedItemsList
+     * @modified sergiopereira
      */
     private void showRelatedItemsLayout(ArrayList<LastViewed> relatedItemsList){
         mRelatedContainer.setVisibility(View.VISIBLE);
-        RelatedItemsAdapter mRelatedItemsAdapter = new RelatedItemsAdapter(getBaseActivity(), relatedItemsList, LayoutInflater.from(getBaseActivity()));
-        mRelatedPager.setAdapter(mRelatedItemsAdapter);
-        mRelatedPager.setVisibility(View.VISIBLE);
+        // Get Layout inflator
+        LayoutInflater inflator = LayoutInflater.from(getBaseActivity());
+        // For each related item
+        for (LastViewed lastViewed : relatedItemsList) {
+            // Create view for related item
+            View itemView = createRelatedItemView(inflator, lastViewed);
+            // Add view
+            mRelatedHorizontalGroup.addView(itemView);
+        }
+        // Show container
+        mRelatedHorizontalScroll.setVisibility(View.VISIBLE);
         mRelatedLoading.setVisibility(View.GONE);
+    }
+    
+    /**
+     * Create a related item with respective layout
+     * @param inflator
+     * @param lastViewed
+     * @return View
+     * @author sergiopereira
+     */
+    private View createRelatedItemView(LayoutInflater inflator, LastViewed lastViewed) {
+        // Inflate
+        View view = inflator.inflate(R.layout.element_related_items, mRelatedHorizontalGroup, false);
+        // Get clickable view
+        RelativeLayout mElement1 = (RelativeLayout) view.findViewById(R.id.related_item_container);
+        mElement1.setTag(lastViewed.getProductUrl());
+        mElement1.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString(ConstantsIntentExtra.CONTENT_URL, (String) v.getTag());
+                bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserrecentlyviewed_prefix);
+                bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+                // inform PDV that Related Items should be shown
+                bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
+                ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            }
+        });
+        // Set data
+        TextView brand = (TextView) mElement1.findViewById(R.id.related_item_brand);
+        TextView name = (TextView) mElement1.findViewById(R.id.related_item_title);
+        TextView price = (TextView) mElement1.findViewById(R.id.related_item_price);
+        ImageView image = (ImageView) mElement1.findViewById(R.id.image_view);
+        View progress = mElement1.findViewById(R.id.image_loading_progress);
+        brand.setText(lastViewed.getProductBrand());
+        name.setText(lastViewed.getProductName());
+        price.setText(lastViewed.getProductPrice());
+        // Load image
+        RocketImageLoader.instance.loadImage(lastViewed.getImageUrl(), image, progress, R.drawable.no_image_small);
+        // Return the current view
+        return view;
     }
     
 

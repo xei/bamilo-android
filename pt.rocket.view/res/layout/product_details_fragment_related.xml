@@ -16,13 +16,24 @@
         style="@style/divider_horizontal_orange"
         android:layout_below="@id/related_label" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/last_viewed_viewpager"
+    <!-- CONTAINER -->
+
+    <pt.rocket.utils.scrolls.HorizontalScrollGroup
+        android:id="@+id/product_detail_horizontal_scroll"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/teaser_banners_group_height"
+        android:layout_height="wrap_content"
         android:layout_below="@id/divider"
-        android:layout_marginTop="@dimen/margin_mid"
-        android:visibility="gone" />
+        android:layout_marginBottom="@dimen/margin_10px"
+        android:layout_marginTop="@dimen/margin_10px"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:id="@+id/product_detail_horizontal_group_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </pt.rocket.utils.scrolls.HorizontalScrollGroup>
+
+    <!-- LOADING -->
 
     <RelativeLayout
         android:id="@+id/loading_related"

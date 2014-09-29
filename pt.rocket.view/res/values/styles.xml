@@ -450,6 +450,7 @@
     <style name="_base_text" parent="text_regular">
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
         <item name="android:gravity">left|center_vertical</item>
     </style>
 

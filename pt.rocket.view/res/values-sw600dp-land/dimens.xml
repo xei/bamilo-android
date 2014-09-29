@@ -15,8 +15,6 @@
     <dimen name="teaser_margin_bottom">0dp</dimen>
     <dimen name="teaser_margin_left">0dp</dimen>
     <dimen name="teaser_swipe_banner_height">195dp</dimen> <!-- 1440x600 -->
-
-    <dimen name="teaser_product_item_width">208dp</dimen>
     <dimen name="teaser_banners_group_height">125dp</dimen> <!-- 359x189 -->
 
     <dimen name="teaser_banners_brands_list_height">88dp</dimen>

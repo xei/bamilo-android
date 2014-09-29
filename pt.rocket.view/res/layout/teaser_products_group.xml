@@ -9,6 +9,8 @@
     android:background="@drawable/background_content"
     android:orientation="vertical" >
 
+    <!-- TITLE -->
+
     <org.holoeverywhere.widget.TextView
         android:id="@+id/teaser_group_title"
         style="@style/rounded_box_title_grey"
@@ -17,11 +19,20 @@
 
     <View style="@style/divider_horizontal_orange" />
 
-    <LinearLayout
-        android:id="@+id/teaser_group_container"
+    <!-- CONTAINER -->
+
+    <pt.rocket.utils.scrolls.HorizontalScrollGroup
+        android:id="@+id/teaser_group_horizontal_scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_mid"
-        android:paddingBottom="@dimen/margin_large" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_10px"
+        android:layout_marginTop="@dimen/margin_10px"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:id="@+id/teaser_group_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </pt.rocket.utils.scrolls.HorizontalScrollGroup>
 
 </LinearLayout>

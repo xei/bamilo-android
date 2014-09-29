@@ -372,7 +372,7 @@ public class FormFactory {
                 
                 if (ctrl.isMeta()) {
                     // Don't waste space with meta fields
-                    Log.e(TAG, "Meta field");
+                    Log.i(TAG, "Meta field");
                     userForm.addControl(ctrl, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
                 } else if ( ! ctrl.isDatePart() ) {                
                     userForm.addControl(ctrl, ctrlParams);
