@@ -14,9 +14,9 @@ public interface ITargeting {
 	public enum TargetType {
 		PRODUCT_LIST(0), 
 		PRODUCT(1), 
-		CATEGORY(2), 
-		BRAND(3),
-		CAMPAIGN(4),
+		CAMPAIGN(2),
+	    BRAND(3),
+	    CATEGORY(4), 
 		UNKNOWN(-1);
 
 		private final int value;
