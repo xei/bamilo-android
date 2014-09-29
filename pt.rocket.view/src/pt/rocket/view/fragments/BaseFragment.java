@@ -282,8 +282,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             // getBaseActivity().updateActionForCountry(this.action);
         }
         
-        // Validate if is checkout process
-        if(action == NavigationAction.Checkout) enabledMenuItems = getCheckoutMenuItem();
+        /*-// Validate if is checkout process
+        if(action == NavigationAction.Checkout) enabledMenuItems = getCheckoutMenuItem();*/
         
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
@@ -302,12 +302,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @return Set
      * @author sergiopereira
      */
-    private Set<MyMenuItem> getCheckoutMenuItem(){
+    /*-private Set<MyMenuItem> getCheckoutMenuItem(){
         // Old method: force this item
         // return (BaseActivity.isTabletInLandscape(JumiaApplication.INSTANCE)) ? EnumSet.of(MyMenuItem.SEARCH_BAR) : EnumSet.of(MyMenuItem.SEARCH);
         // New method: use items from constructor
         return enabledMenuItems;
-    }
+    }*/
     
     /*
      * (non-Javadoc)

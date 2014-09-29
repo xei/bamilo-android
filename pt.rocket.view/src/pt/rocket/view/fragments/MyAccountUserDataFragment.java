@@ -76,7 +76,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyAccount,
                 R.layout.my_account_user_data_fragment,
-                R.string.personal_data_title,
+                R.string.myaccount_userdata,
                 KeyboardState.ADJUST_CONTENT);
         // R.string.personal_data_title
         setUpButton(UP_BUTTON.BACK);

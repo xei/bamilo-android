@@ -677,8 +677,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 // Hide search component and keyboard
                 hideSearchComponent();
                 hideKeyboard();
-                // Goto home
-                onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                /*-// Goto home
+                onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);*/
             }
         }
     };

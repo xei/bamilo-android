@@ -47,8 +47,8 @@
     <!-- dimen name="text_xxl">22sp</dimen -->
 
     <!-- TEXT DIMENSIONS (px/3) -->
+    <!-- ACTION BAR Tablet will use dimensions from Phone and upscale -->
     <dimen name="text_actionbar_title">18sp</dimen>
-    <!-- ACTION BAR Tablet will use search dimensions from Phone and upscale -->
     <dimen name="text_actionbar_search">14sp</dimen>
     <dimen name="text_header">16sp</dimen>
     <dimen name="text_form">13sp</dimen>
