@@ -82,7 +82,7 @@ public class ProductsListAdapter extends BaseAdapter {
         public TextView discountPercentage;
         public TextView reviews;
         public TextView brand;
-        public ImageView isNew;
+        public ImageView newFlag;
         public ImageView isFavourite;
     }
 
@@ -178,8 +178,8 @@ public class ProductsListAdapter extends BaseAdapter {
             if (showList) prodItem.reviews = (TextView) itemView.findViewById(R.id.item_reviews);
 
             prodItem.brand = (TextView) itemView.findViewById(R.id.item_brand);
-            prodItem.isNew = (ImageView) itemView.findViewById(R.id.image_is_new);
-            prodItem.isNew.setBackgroundResource(isNewResource);
+            prodItem.newFlag = (ImageView) itemView.findViewById(R.id.image_is_new);
+            prodItem.newFlag.setImageResource(isNewResource);
 
             prodItem.isFavourite = (ImageView) itemView.findViewById(R.id.image_is_favourite);
             itemView.setTag(prodItem);
@@ -197,7 +197,7 @@ public class ProductsListAdapter extends BaseAdapter {
                 CatalogFragment.requestTag);
 
         // Set is new image
-        prodItem.isNew.setSelected(product.getAttributes().isNew());
+        prodItem.newFlag.setSelected(product.getAttributes().isNew());        
 
         // Set is favourite image
         prodItem.isFavourite.setSelected(product.getAttributes().isFavourite());
