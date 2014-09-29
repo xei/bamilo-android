@@ -999,7 +999,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             args.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mSelectedSimple);
             args.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
             args.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
-            productImagesViewPagerFragment = ProductImageGalleryFragment.getInstance(args);
+            // Instantiate a nested fragment of ProductImageGalleryFragment
+            productImagesViewPagerFragment = ProductImageGalleryFragment.getInstance(args, true);
 
             startFragmentCallbacks();
 

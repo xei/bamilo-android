@@ -65,7 +65,7 @@
         <item name="searchViewSearchIcon">@drawable/selector_search_edit_icon</item>
         <item name="searchViewCloseIcon">@drawable/btn_clearsearchfield</item>
         <item name="textColorPrimary">@color/grey_middle</item>
-        <item name="searchAutoCompleteTextView">@style/actionbar_search</item>
+        <item name="searchAutoCompleteTextView">@style/text_actionbar_search</item>
         <item name="actionButtonStyle">@style/action_button</item>
         <item name="android:textColorHint">@color/green_basic</item>
         <!-- ACTION BAR Tablet will use dimensions from actionBarSherlock -->

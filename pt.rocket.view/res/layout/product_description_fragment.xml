@@ -13,10 +13,8 @@
 
     <View
         android:id="@+id/shadow"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_below="@id/product_info_container"
-        android:background="@drawable/shadow_white_2_grey_horizontal" />
+        style="@style/shadow"
+        android:layout_below="@id/product_info_container" />
 
     <!-- SCROLLABLE -->
 

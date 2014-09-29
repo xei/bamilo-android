@@ -53,5 +53,6 @@
     <color name="grey_div_background">#d3d3d3</color>
 
     <color name="search_hint">#a3a3a3</color>
+    <color name="text_root">#e0e0e0</color>
 
 </resources>

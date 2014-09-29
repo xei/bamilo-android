@@ -20,10 +20,8 @@
 
     <View
         android:id="@+id/shadow"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_below="@id/product_info_container"
-        android:background="@drawable/shadow_white_2_grey_horizontal" />
+        style="@style/shadow"
+        android:layout_below="@id/product_info_container" />
 
     <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
 
@@ -50,8 +48,8 @@
             android:layout_marginBottom="@dimen/rounded_margin_mid"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             android:layout_marginTop="@dimen/rounded_margin_small"
-            android:paddingBottom="@dimen/rounded_margin_mid"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/rounded_margin_mid" >
 
             <LinearLayout
                 android:id="@+id/linear_reviews"
@@ -98,7 +96,6 @@
         <include
             android:layout_alignParentBottom="true"
             layout="@layout/loading_more" />
-
     </RelativeLayout>
 
     <!-- WRITE -->

@@ -2,7 +2,7 @@
 <pt.rocket.framework.components.ScrollViewEx xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/reviews_scrollview_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
 <RelativeLayout
     android:layout_width="match_parent"
@@ -18,10 +18,8 @@
 
     <View
         android:id="@+id/shadow"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_below="@id/product_info_container"
-        android:background="@drawable/shadow_white_2_grey_horizontal" />
+        style="@style/shadow"
+        android:layout_below="@id/product_info_container" />
 
     <!-- REVIEWS -->
 
@@ -47,6 +45,7 @@
                 style="@style/text_normal"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
+                android:paddingLeft="3dp"
                 android:text="@string/rating_question" />
 
             <org.holoeverywhere.widget.Button
@@ -71,29 +70,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/root_empty_container_height"
                 android:layout_gravity="center"
+                android:layout_marginTop="-20dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:layout_marginTop="-20dp"
                 android:visibility="gone" >
 
                 <ImageView
-                    android:id="@+id/fragment_root_empty_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|center_horizontal"
                     android:src="@drawable/img_noratings" />
 
                 <org.holoeverywhere.widget.TextView
-                    android:id="@+id/fragment_root_empty_text"
+                    style="@style/text_root"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_mid"
                     android:layout_marginRight="@dimen/margin_mid"
                     android:layout_marginTop="@dimen/root_empty_drawable_padding"
-                    android:gravity="center"
-                    android:text="@string/reviews_empty"
-                    android:textColor="@color/grey_middlelight"
-                    android:textSize="@dimen/text_header" />
+                    android:text="@string/reviews_empty" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
@@ -101,7 +95,6 @@
     <include
         android:layout_alignParentBottom="true"
         layout="@layout/loading_more" />
-
 </RelativeLayout>
 
 </pt.rocket.framework.components.ScrollViewEx>

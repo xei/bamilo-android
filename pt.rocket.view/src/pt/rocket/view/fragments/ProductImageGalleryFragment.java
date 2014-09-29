@@ -4,7 +4,6 @@
 package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.GalleryPagerAdapter;
@@ -14,8 +13,6 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.JumiaViewPagerWithZoom;
-import pt.rocket.utils.MyMenuItem;
-import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -67,21 +64,28 @@ public class ProductImageGalleryFragment extends BaseFragment {
     
     /**
      * 
-     * @param dynamicForm
      * @return
      */
     public static ProductImageGalleryFragment getInstance() {
-        sProductImageGalleryFragment = new ProductImageGalleryFragment();
+        // Instantiate full Fragment and hide actionBar
+        sProductImageGalleryFragment = new ProductImageGalleryFragment(ACTION_BAR.HIDDEN);
         return sProductImageGalleryFragment;
     }
 
     /**
      * 
-     * @param dynamicForm
+     * @param bundle
+     * @param isNested
      * @return
      */
-    public static ProductImageGalleryFragment getInstance(Bundle bundle) {
-        sProductImageGalleryFragment = new ProductImageGalleryFragment();
+    public static ProductImageGalleryFragment getInstance(Bundle bundle, boolean isNested) {
+        /*-
+         * Show actionBar when Fragment is nested.
+         * Otherwise, instantiate fragment in fullscreen and hide actionBar
+         */
+        ACTION_BAR showActionBar = isNested? ACTION_BAR.VISIBLE: ACTION_BAR.HIDDEN;
+
+        sProductImageGalleryFragment = new ProductImageGalleryFragment(showActionBar);
         sProductImageGalleryFragment.mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, 1);
         sProductImageGalleryFragment.currentPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
         if (sProductImageGalleryFragment.currentPosition <= 0) sProductImageGalleryFragment.currentPosition = 1;
@@ -90,10 +94,31 @@ public class ProductImageGalleryFragment extends BaseFragment {
     }
 
     /**
+     * 
+     * @param bundle
+     * @return
+     */
+    public static ProductImageGalleryFragment getInstance(Bundle bundle) {
+        return getInstance(bundle, false);
+    }
+    
+
+
+    /**
      * Empty constructor
      */
     public ProductImageGalleryFragment() {
-        super(IS_NESTED_FRAGMENT, BaseFragment.NO_INFLATE_LAYOUT);
+     // Instantiate full Fragment and hide actionBar
+        super(IS_NESTED_FRAGMENT, BaseFragment.NO_INFLATE_LAYOUT, ACTION_BAR.HIDDEN);
+    }
+
+    /**
+     * Default constuctor
+     * 
+     * @param showActionbar
+     */
+    public ProductImageGalleryFragment (ACTION_BAR showActionbar) {
+        super(IS_NESTED_FRAGMENT, BaseFragment.NO_INFLATE_LAYOUT, showActionbar);
         /*-super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 0,
@@ -424,7 +449,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
                 bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
                 getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_GALLERY, bundle, FragmentController.ADD_TO_BACK_STACK);
             } else {
-                if (getActivity() != null) getActivity().onBackPressed();
+                getBaseActivity().onBackPressed();
             }
 
             return true;

@@ -47,6 +47,7 @@ import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.utils.imageloader.RocketImageLoader;
+import pt.rocket.view.fragments.BaseFragment.ACTION_BAR;
 import pt.rocket.view.fragments.BaseFragment.KeyboardState;
 import pt.rocket.view.fragments.NavigationFragment;
 import android.app.Activity;
@@ -420,11 +421,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param actionBarTitleResId
      * @param checkoutStep
      * @param backButtonEnabled
+     * @param showActionBar
      * 
      * @author sergiopereira
      * @modified Andre Lopes
      */
-    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int actionBarTitleResId, int checkoutStep, boolean backButtonEnabled/*, boolean displayHomeAsUpEnabled*/) {
+    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action,int actionBarTitleResId, 
+            int checkoutStep, boolean backButtonEnabled, ACTION_BAR showActionBar/* , boolean displayHomeAsUpEnabled */) {
         Log.i(TAG, "ON UPDATE BASE COMPONENTS");
 
         // Update options menu and search bar
@@ -456,6 +459,23 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             setActionBarTitle(actionBarTitleResId);
         }
 
+        setActionBarVisibility(showActionBar);
+    }
+
+    /**
+     * Change actionBar visibility if necessary
+     * 
+     * @param showActionBar
+     */
+    public void setActionBarVisibility (ACTION_BAR showActionBar) {
+        boolean actionBarVisible = getSupportActionBar().isShowing();
+        if (!actionBarVisible) {
+            if (ACTION_BAR.VISIBLE.equals(showActionBar)) {
+                getSupportActionBar().show();
+            }
+        } else if (ACTION_BAR.HIDDEN.equals(showActionBar)) {
+            getSupportActionBar().hide();
+        }
     }
 
     public void updateActionForCountry(NavigationAction action) {

@@ -25,15 +25,12 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/fragment_root_empty_text"
+            style="@style/text_root"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_mid"
             android:layout_marginRight="@dimen/margin_mid"
             android:layout_marginTop="@dimen/root_empty_drawable_padding"
-            android:gravity="center"
-            android:text="You have no items at the moment."
-            android:textColor="@color/grey_middlelight"
-            android:textSize="@dimen/text_header" />
+            android:text="You have no items at the moment." />
     </LinearLayout>
 
     <LinearLayout style="@style/button_container" >

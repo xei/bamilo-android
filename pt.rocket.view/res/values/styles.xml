@@ -133,6 +133,13 @@
         <item name="android:background">@color/grey_highlight</item>
     </style>
 
+    <style name="shadow">
+        <item name="android:layout_width">match_parent</item>
+        <!-- ORIGINAL SHADOW HEIGHT item name="android:layout_height">5dp</item -->
+        <item name="android:layout_height">@dimen/divider_height</item>
+        <item name="android:background">@drawable/shadow_white_2_grey_horizontal</item>
+    </style>
+
     <!-- //////// Layouts Defenitions //////// -->
 
     <style name="ShoppingCartCount">
@@ -450,7 +457,6 @@
     <style name="_base_text" parent="text_regular">
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
-        <item name="android:maxLines">1</item>
         <item name="android:gravity">left|center_vertical</item>
     </style>
 
@@ -487,10 +493,17 @@
         <item name="android:textColor">@color/grey_middledark</item>
     </style>
 
-    <style name="actionbar_search">
+    <style name="text_actionbar_search">
         <item name="android:textSize">@dimen/text_actionbar_search</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/grey_middle</item>
+    </style>
+
+    <style name="text_root" parent="_base_text">
+        <item name="android:textSize">@dimen/text_root</item>
+        <item name="android:textColor">@color/text_root</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="action_button" parent="Widget.Sherlock.ActionButton">

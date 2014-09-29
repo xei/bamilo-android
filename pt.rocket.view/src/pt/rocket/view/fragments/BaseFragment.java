@@ -109,6 +109,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private UP_BUTTON upButton;
 
+    public static enum ACTION_BAR { VISIBLE, HIDDEN }
+
+    private ACTION_BAR showActionBar;
+
     /**
      * Constructor with layout to inflate
      * 
@@ -127,6 +131,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.adjustState = adjust_state;
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
         this.upButton = UP_BUTTON.MENU;
+        this.showActionBar = ACTION_BAR.VISIBLE; 
     }
 
     /**
@@ -141,6 +146,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.titleResId = 0;
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
         this.upButton = UP_BUTTON.MENU;
+        this.showActionBar = ACTION_BAR.VISIBLE;
     }
 
     /**
@@ -158,6 +164,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.adjustState = adjust_state;
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
         this.upButton = UP_BUTTON.MENU;
+        this.showActionBar = ACTION_BAR.VISIBLE;
     }*/
 
     /**
@@ -179,6 +186,23 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.adjustState = adjust_state;
         this.checkoutStep = titleCheckout;
         this.upButton = UP_BUTTON.MENU;
+        this.showActionBar = ACTION_BAR.VISIBLE;
+    }
+
+    /**
+     * Constructor used by nested fragments with control of actionBar visibility
+     * 
+     * @param isNestedFragment
+     * @param layoutResId
+     * @param showActionBar
+     */
+    public BaseFragment(Boolean isNestedFragment, int layoutResId, ACTION_BAR showActionBar) {
+        this.isNestedFragment = isNestedFragment;
+        this.mInflateLayoutResId = layoutResId;
+        this.titleResId = 0;
+        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
+        this.upButton = UP_BUTTON.MENU;
+        this.showActionBar = showActionBar;
     }
 
     /**
@@ -289,7 +313,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (!isNestedFragment && enabledMenuItems != null) {
             Log.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
             boolean backButtonEnabled = UP_BUTTON.BACK.equals(upButton);
-            getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep, backButtonEnabled/*, true*/);
+            getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep, backButtonEnabled, showActionBar/*, true*/);
+        } else {
+            getBaseActivity().setActionBarVisibility(showActionBar);
         }
     }
 

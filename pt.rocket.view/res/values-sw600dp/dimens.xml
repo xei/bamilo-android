@@ -3,8 +3,9 @@
 
     <!-- TEXT DIMENSIONS (px/2) -->
     <!-- ACTION BAR Tablet will use dimensions from Phone and upscale -->
-    <!-- dimen name="text_actionbar_title">27sp</dimen>
+    <!-- dimen name="text_actionbar_title">@dimen/text_root</dimen>
     <dimen name="text_actionbar_search">21sp</dimen -->
+    <dimen name="text_root">27sp</dimen>
     <dimen name="text_header">24sp</dimen>
     <dimen name="text_form">19.5sp</dimen>
     <dimen name="text_title">18sp</dimen>

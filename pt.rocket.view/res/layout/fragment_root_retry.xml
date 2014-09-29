@@ -18,16 +18,12 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/fragment_root_retry_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_root"
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
-            android:gravity="center"
             android:padding="@dimen/rounded_margin_mid"
-            android:text="@string/error_please_try_again"
-            android:textColor="@color/grey_middlelight"
-            android:textSize="@dimen/text_header" />
+            android:text="@string/error_please_try_again" />
     </LinearLayout>
 
     <LinearLayout style="@style/button_container" >
