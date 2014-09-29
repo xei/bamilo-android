@@ -229,7 +229,7 @@
     <dimen name="login_margin_high">23.33dp</dimen>
 
     <dimen name="form_padding">@dimen/margin_30px</dimen>
-    <dimen name="form_check_padding">@dimen/margin_10px</dimen>
+    <dimen name="form_check_padding">@dimen/margin_20px</dimen>
 
     <dimen name="checkout_box_title_height">26.67dp</dimen>
     <dimen name="checkout_voucher_box_height">70dp</dimen>

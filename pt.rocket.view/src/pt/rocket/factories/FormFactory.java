@@ -39,7 +39,7 @@ public class FormFactory {
     private DynamicForm paymentForm = null;
     private DynamicForm registerForm = null;
     private DynamicForm pollForm = null;
-    private DynamicForm shippingForm = null;
+    // private DynamicForm shippingForm = null;
     private float scale = 1;
 
     private DynamicForm signupForm;
@@ -78,6 +78,25 @@ public class FormFactory {
      * @return An instance of a DynamicForm with the form representation implemented
      */
     public DynamicForm CreateForm(int formType, Context context, Form form) {
+        return CreateForm(formType, context, form, null);
+    }
+
+    
+    /**
+     * Creates the form for a given type using a definition provided from the framework
+     * 
+     * @param formType
+     *            The type of form to create. This value should be placed on the FormConstants
+     * @param context
+     *            The context where the form is to be inserted
+     * @param form
+     *            The definition provided by the framework
+     * @param ctrlParams
+     *            LayoutParams to use instead of default
+     * 
+     * @return An instance of a DynamicForm with the form representation implemented
+     */
+    public DynamicForm CreateForm(int formType, Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
         DynamicForm parent = null;
         if (context != null && context.getResources() != null && context.getResources().getDisplayMetrics() != null) {
             scale = context.getResources().getDisplayMetrics().density;
@@ -105,11 +124,11 @@ public class FormFactory {
         case FormConstants.SIGNUP_FORM:
             parent = createSignupForm(context, form);
             break;
-        case FormConstants.SHIPPING_DETAILS_FORM:
+        /*-case FormConstants.SHIPPING_DETAILS_FORM:
             parent = createShippingMethodsForm(context, form);
-            break;
+            break;*/
         case FormConstants.PAYMENT_DETAILS_FORM:
-            parent = createPaymentMethodsForm(context, form);
+            parent = createPaymentMethodsForm(context, form, ctrlParams);
             break;
         }
         
@@ -187,13 +206,26 @@ public class FormFactory {
      * @return An instance of a DynamicForm with the form representation implemented
      */
     private DynamicForm createPaymentMethodsForm(Context context, Form form) {
-        final int CTRLMARGIN_LEFT = 0;
-        final int CTRLMARGIN_TOP = (int) (5 * scale);
-        final int CTRLMARGIN_RIGHT = 0;
-        final int CTRLMARGIN_BOTTOM = (int) (5 * scale);
-
-        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
+        return createPaymentMethodsForm(context, form, null);
+    }
+    
+    /**
+     * Create the payment methods edit form 
+     * 
+     * @param context The context where the form is to be inserted
+     * @param form The definition provided by the framework
+     * @param ctrlParams LayoutParams to use instead of default
+     * @return An instance of a DynamicForm with the form representation implemented
+     */
+    private DynamicForm createPaymentMethodsForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
+        if (null == ctrlParams) {
+            final int CTRLMARGIN_LEFT = 0;
+            final int CTRLMARGIN_TOP = 0;
+            final int CTRLMARGIN_RIGHT = 0;
+            final int CTRLMARGIN_BOTTOM = 0;
+            ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
+        }
 
         return createGenericForm(context, form, paymentForm, ctrlParams);
     }
@@ -285,7 +317,7 @@ public class FormFactory {
      * @param form The definition provided by the framework
      * @return An instance of a DynamicForm with the form representation implemented
      */
-    private DynamicForm createShippingMethodsForm(Context context, Form form) {
+    /*-private DynamicForm createShippingMethodsForm(Context context, Form form) {
         final int CTRLMARGIN_LEFT = 0;
         final int CTRLMARGIN_TOP = (int) (5 * scale);
         final int CTRLMARGIN_RIGHT = 0;
@@ -295,8 +327,7 @@ public class FormFactory {
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
 
         return createShippingMethodsForm(context, form, shippingForm, ctrlParams);
-    }
-    
+    }*/
     
     /**
      * This is used as base to create the given form. Here all the controls are instantiated.
@@ -339,7 +370,11 @@ public class FormFactory {
             	Log.d( TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType() );
                 ctrl = new DynamicFormItem(userForm, context, frmEntry);
                 
-                if ( ! ctrl.isDatePart() ) {                
+                if (ctrl.isMeta()) {
+                    // Don't waste space with meta fields
+                    Log.e(TAG, "Meta field");
+                    userForm.addControl(ctrl, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
+                } else if ( ! ctrl.isDatePart() ) {                
                     userForm.addControl(ctrl, ctrlParams);
                 } else {
                     userForm.addGroupedControl(groupLayout, ctrl, ctrlParams);
@@ -361,7 +396,7 @@ public class FormFactory {
      * @param ctrlParams
      * @return n instance of a DynamicForm with the form representation implemented
      */
-    private DynamicForm createShippingMethodsForm(Context context, Form form, DynamicForm userForm, ViewGroup.LayoutParams ctrlParams) {
+    /*-private DynamicForm createShippingMethodsForm(Context context, Form form, DynamicForm userForm, ViewGroup.LayoutParams ctrlParams) {
 
         LinearLayout parent;
         Log.i(TAG,"code1form id : "+form.id+" name: "+form.name);
@@ -395,8 +430,6 @@ public class FormFactory {
         }
         
         return userForm;
-    }
-        
+    }*/
+
 }
-
-

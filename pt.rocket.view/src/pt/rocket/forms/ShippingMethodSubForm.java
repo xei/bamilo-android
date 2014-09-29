@@ -17,6 +17,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
@@ -127,19 +128,22 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
     public int getNextId() {
         return ++lastID;
     }
-    
-    public View generateForm(final Context context, RelativeLayout.LayoutParams params){
-        this.dataControl = View.inflate(context, R.layout.form_icsspinner, null);
+
+    public View generateForm(final Context context) {
+        // Generate LayoutParams for Spinner
+        LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        mParams.setMargins(0, context.getResources().getDimensionPixelSize(R.dimen.form_top_margin), 0, context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid));
+
+        this.dataControl = View.inflate(context, R.layout.form_icsspinner_shipping, null);
         this.dataControl.setId(getNextId());
-        this.dataControl.setLayoutParams(params);
+        this.dataControl.setLayoutParams(mParams);
 
         if (this.options.size() > 0) {
             ArrayList<String> mSpinnerOptions = new ArrayList<String>();
             for(int i = 0; i< this.options.size(); i++){
                 mSpinnerOptions.add(this.options.get(i).getName());
             }
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
-                    R.layout.form_spinner_item, new ArrayList<String>(mSpinnerOptions));
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.form_spinner_item, new ArrayList<String>(mSpinnerOptions));
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
             ((IcsSpinner) this.dataControl).setPrompt(this.label);

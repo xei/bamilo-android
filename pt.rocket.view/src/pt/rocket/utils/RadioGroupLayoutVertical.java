@@ -9,6 +9,7 @@ import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
+import pt.rocket.framework.objects.PaymentInfo;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.pojo.DynamicForm;
 import pt.rocket.pojo.DynamicFormItem;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
 
 public class RadioGroupLayoutVertical extends RadioGroup {
@@ -78,152 +80,112 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         int idx;
         generatedForms = new HashMap<Integer, DynamicForm>();
         for (idx = 0; idx < mItems.size(); idx++) {
-            Log.i(TAG, "code1subForms updateRadioGroup : " + mItems.get(idx) + " formsMap size : "
-                    + formsMap.size());
+            Log.i(TAG, "code1subForms updateRadioGroup : " + mItems.get(idx) + " formsMap size : " + formsMap.size());
+            HashMap<String, PaymentInfo> paymentsInfoList = JumiaApplication.getPaymentsInfoList();
             if (formsMap.containsKey(mItems.get(idx))) {
-                Log.i(TAG, "code1subForms updateRadioGroup contains : " + mItems.get(idx));
-                DynamicForm formGenerator = FormFactory.getSingleton()
-                        .CreateForm(FormConstants.PAYMENT_DETAILS_FORM, mContext,
-                                formsMap.get(mItems.get(idx)));
-                generatedForms.put(idx, formGenerator);
-
-                Log.d(TAG,
-                        "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
-                final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(
-                        R.layout.form_radiobutton_with_extra, null,
-                        false);
-
-                final LinearLayout buttonContainer = (LinearLayout) mLinearLayout
-                        .findViewById(R.id.radio_container);
-                final LinearLayout extras = (LinearLayout) mLinearLayout.findViewById(R.id.extras);
-                extras.addView(formGenerator.getContainer());
-                mLinearLayout.setId(idx);
-                
-                if (JumiaApplication.getPaymentsInfoList() != null
-                        && JumiaApplication.getPaymentsInfoList().size() > 0
-                        && JumiaApplication.getPaymentsInfoList().containsKey(mItems.get(idx))) {
-                    
-                    
-                    if(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getText() != null && JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getText().length() > 0){
-                        TextView mTextView = (TextView) extras.findViewById(R.id.payment_text);
-                        mTextView.setText(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getText());
-                        mTextView.setVisibility(View.VISIBLE);
-                    }
-                    
-                    if(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getImages() != null && JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getImages().size() > 0){
-                        ImageView mImageView = (ImageView) extras.findViewById(R.id.payment_img);
-                        RocketImageLoader.instance.loadImage(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getImages().get(0), mImageView);
-                    }
-                }
-
-                final RadioButton button = (RadioButton) mInflater.inflate(
-                        R.layout.form_radiobutton, null,
-                        false);
-                button.setId(idx);
-                button.setText(mItems.get(idx));
-                RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
-                        RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-                button.setText(mItems.get(idx));
-                if (idx == mDefaultSelected)
-                    button.setChecked(true);
-                button.setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            if (button.isChecked()) {
-                                extras.setVisibility(View.VISIBLE);
-                            } else {
-                                extras.setVisibility(View.GONE);
-                            }    
-                        } catch (StackOverflowError e) {
-                            e.printStackTrace();
-                        }
-                        
-                        setSelection(mLinearLayout.getId());
-                        mGroup.check(mLinearLayout.getId());
-                    }
-                });
-
-                buttonContainer.addView(button, layoutParams);
-
-                mGroup.addView(mLinearLayout);
-
-            } else if (JumiaApplication.getPaymentsInfoList() != null
-                    && JumiaApplication.getPaymentsInfoList().size() > 0
-                    && JumiaApplication.getPaymentsInfoList().containsKey(mItems.get(idx))) {
-                final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(
-                        R.layout.form_radiobutton_with_extra, null,
-                        false);
-
-                final LinearLayout buttonContainer = (LinearLayout) mLinearLayout
-                        .findViewById(R.id.radio_container);
-                final LinearLayout extras = (LinearLayout) mLinearLayout.findViewById(R.id.extras);
-                mLinearLayout.setId(idx);
-                
-                if (JumiaApplication.getPaymentsInfoList() != null
-                        && JumiaApplication.getPaymentsInfoList().size() > 0
-                        && JumiaApplication.getPaymentsInfoList().containsKey(mItems.get(idx))) {
-                    
-                    
-                    if(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getText() != null && JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getText().length() > 0){
-                        TextView mTextView = (TextView) extras.findViewById(R.id.payment_text);
-                        mTextView.setText(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getText());
-                        mTextView.setVisibility(View.VISIBLE);
-                    }
-                    
-                    if(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getImages() != null && JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getImages().size() > 0){
-                        ImageView mImageView = (ImageView) extras.findViewById(R.id.payment_img);
-                        
-                        RocketImageLoader.instance.loadImage(JumiaApplication.getPaymentsInfoList().get(mItems.get(idx)).getImages().get(0), mImageView);
-                    }
-                }
-
-                final RadioButton button = (RadioButton) mInflater.inflate(
-                        R.layout.form_radiobutton, null,
-                        false);
-                button.setId(idx);
-                button.setText(mItems.get(idx));
-                RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
-                        RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-                button.setText(mItems.get(idx));
-                if (idx == mDefaultSelected)
-                    button.setChecked(true);
-                button.setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        if (button.isChecked()) {
-                            extras.setVisibility(View.VISIBLE);
-                        } else {
-                            extras.setVisibility(View.GONE);
-                        }
-                        setSelection(mLinearLayout.getId());
-                        mGroup.check(mLinearLayout.getId());
-                    }
-                });
-
-                buttonContainer.addView(button, layoutParams);
-
-                mGroup.addView(mLinearLayout);
+                createRadioButton(idx, paymentsInfoList, true);
+            } else if (paymentsInfoList != null && paymentsInfoList.size() > 0 && paymentsInfoList.containsKey(mItems.get(idx))) {
+                createRadioButton(idx, paymentsInfoList, false);
             } else {
-
-                Log.d(TAG,
-                        "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
-                RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton,
-                        null,
-                        false);
+                Log.d(TAG, "code1subForms updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
+                RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, null, false);
                 button.setId(idx);
                 button.setText(mItems.get(idx));
-                if (idx == mDefaultSelected)
-                    button.setChecked(true);
-                RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
-                        RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
+                if (idx == mDefaultSelected) button.setChecked(true);
+                RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
                 mGroup.addView(button, idx, layoutParams);
             }
 
         }
 
+    }
+
+    /**
+     * Create a Radio button with an extra LinearLayout for content
+     * 
+     * @param idx index of label
+     * @param paymentsInfoList list of PaymentInfo items 
+     * @param addInnerForm used to indicate if a inner Form should be created inside the <code>extras LinearLayout</code>
+     */
+    private void createRadioButton(int idx, HashMap<String, PaymentInfo> paymentsInfoList, boolean addInnerForm) {
+        final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, null, false);
+        final LinearLayout buttonContainer = (LinearLayout) mLinearLayout.findViewById(R.id.radio_container);
+        final LinearLayout extras = (LinearLayout) mLinearLayout.findViewById(R.id.extras);
+
+        if (addInnerForm) {
+            Log.i(TAG, "code1subForms updateRadioGroup contains : " + mItems.get(idx));
+
+            // Generate an inner form with this LayoutParams
+            LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            // int leftMargin = getResources().getDimensionPixelSize(R.dimen.form_payment_left_margin);
+            int verticalMargin = getResources().getDimensionPixelSize(R.dimen.form_payment_vertical_margin);
+            ctrlParams.setMargins(0, verticalMargin, 0, verticalMargin);
+
+            DynamicForm formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, mContext, formsMap.get(mItems.get(idx)), ctrlParams);
+            generatedForms.put(idx, formGenerator);
+
+            extras.addView(formGenerator.getContainer());
+
+            Log.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
+        } else {
+            Log.i(TAG, "code1subForms updateRadioGroup does not contains : " + mItems.get(idx));
+        }
+
+        // Hide first divider
+        if (idx == 0) {
+            mLinearLayout.findViewById(R.id.radio_divider).setVisibility(View.GONE);
+        }
+
+        RelativeLayout.LayoutParams mParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        mLinearLayout.setId(idx);
+        mLinearLayout.setLayoutParams(mParams);
+        
+        if (paymentsInfoList != null && paymentsInfoList.size() > 0 && paymentsInfoList.containsKey(mItems.get(idx))) {
+            
+            String paymentText = paymentsInfoList.get(mItems.get(idx)).getText();
+            if(paymentText != null && paymentText.length() > 0){
+                TextView mTextView = (TextView) extras.findViewById(R.id.payment_text);
+                mTextView.setText(paymentText);
+                mTextView.setVisibility(View.VISIBLE);
+            }
+            
+            ArrayList<String> paymentImages = paymentsInfoList.get(mItems.get(idx)).getImages();
+            if(paymentImages != null && paymentImages.size() > 0){
+                ImageView mImageView = (ImageView) extras.findViewById(R.id.payment_img);
+                
+                RocketImageLoader.instance.loadImage(paymentImages.get(0), mImageView);
+            }
+        }
+
+        final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton_shipping, null, false);
+        button.setId(idx);
+        button.setText(mItems.get(idx));
+        RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.checkout_shipping_item_height));
+        layoutParams.setMargins(0, 0, getResources().getDimensionPixelSize(R.dimen.form_radiobutton_shipping_margin), 0);
+        button.setText(mItems.get(idx));
+        if (idx == mDefaultSelected) button.setChecked(true);
+        button.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                try {
+                    if (button.isChecked()) {
+                        extras.setVisibility(View.VISIBLE);
+                    } else {
+                        extras.setVisibility(View.GONE);
+                    }    
+                } catch (StackOverflowError e) {
+                    e.printStackTrace();
+                }
+                setSelection(mLinearLayout.getId());
+                mGroup.check(mLinearLayout.getId());
+            }
+        });
+
+        buttonContainer.addView(button, layoutParams);
+
+        mGroup.addView(mLinearLayout);
     }
 
     public int getSelectedIndex() {

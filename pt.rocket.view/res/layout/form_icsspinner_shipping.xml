@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.actionbarsherlock.internal.widget.IcsSpinner xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/custom"
+    style="@style/form_style"
+    android:layout_height="@dimen/checkout_shipping_item_height"
+    android:background="@drawable/spinner_background_holo_orange"
+    android:clickable="true"
+    android:spinnerMode="dropdown" />

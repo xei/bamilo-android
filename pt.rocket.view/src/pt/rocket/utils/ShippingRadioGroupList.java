@@ -80,31 +80,32 @@ public class ShippingRadioGroupList extends RadioGroup {
             e.printStackTrace();
         }
 
-        for (int idx = 0; idx < mItems.size(); idx++) {
+        int numberItems = mItems.size();
+        for (int idx = 0; idx < numberItems; idx++) {
 
             Log.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
 
             /**
              * Global Container
              */
-            final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(
-                    R.layout.form_radiobutton_with_extra, null,
-                    false);
+            final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, null, false);
+
+            // Hide first divider
+            if (idx == 0) {
+                mLinearLayout.findViewById(R.id.radio_divider).setVisibility(View.GONE);
+            }
 
             /**
              * Button Container
              */
-            final LinearLayout buttonContainer = (LinearLayout) mLinearLayout
-                    .findViewById(R.id.radio_container);
+            final LinearLayout buttonContainer = (LinearLayout) mLinearLayout.findViewById(R.id.radio_container);
 
             /**
              * Extras Container
              */
             final LinearLayout extras = (LinearLayout) mLinearLayout.findViewById(R.id.extras);
             
-            RelativeLayout.LayoutParams mParams = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams mParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
             ArrayList<ShippingMethodSubForm> tmpSubForms = new ArrayList<ShippingMethodSubForm>();
 
@@ -119,7 +120,7 @@ public class ShippingRadioGroupList extends RadioGroup {
                     Log.i(TAG, "code1generate subForms : " + mForm.subForms.get(i).name);
                     tmpSubForms.add(mForm.subForms.get(i));
 
-                    View mView = mForm.subForms.get(i).generateForm(mContext, mParams);
+                    View mView = mForm.subForms.get(i).generateForm(mContext);
                     if (mView != null) {
                         extras.addView(mView);
                     }
@@ -131,15 +132,14 @@ public class ShippingRadioGroupList extends RadioGroup {
             }
 
             mLinearLayout.setId(idx);
+            mLinearLayout.setLayoutParams(mParams);
 
-            final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton,
-                    null,
-                    false);
+            final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton_shipping, null, false);
             button.setId(idx);
             String optionLabel = mForm.optionsLabel.get(mItems.get(idx));
             //Log.i(TAG, "options jsonobject label: " + optionLabel);
             button.setText(!TextUtils.isEmpty(optionLabel) ? optionLabel : mItems.get(idx));
-            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
+            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.checkout_shipping_item_height));
             if (mItems.get(idx).equalsIgnoreCase(mDefaultSelected)) {
                 button.setChecked(true);
                 mDefaultSelectedId = idx;

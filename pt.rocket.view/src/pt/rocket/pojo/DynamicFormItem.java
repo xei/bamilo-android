@@ -1830,6 +1830,15 @@ public class DynamicFormItem {
         
         return result;
         
-    }    
-    
+    }
+
+    /**
+     * Determines if this field is a <code>meta</code> field
+     * 
+     * @return True, if the type of the field is <code>meta<code>
+     */
+    public boolean isMeta() {
+        return InputType.meta.equals(this.entry.getInputType());
+    }
+
 }

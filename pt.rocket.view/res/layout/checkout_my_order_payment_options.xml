@@ -45,17 +45,19 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/checkout_my_order_payment_name"
-            style="@style/text_normal"
-            android:layout_marginBottom="@dimen/margin_60px" />
+            style="@style/text_normal" />
 
-        <org.holoeverywhere.widget.TextView
+        <!--
+             org.holoeverywhere.widget.TextView
             android:id="@+id/checkout_my_order_payment_extra"
             style="@style/text_normal"
-            android:visibility="gone" />
+            android:visibility="gone" /
+        -->
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/checkout_my_order_payment_coupon"
             style="@style/text_normal"
+            android:layout_marginTop="@dimen/margin_60px"
             android:visibility="gone" />
     </LinearLayout>
 

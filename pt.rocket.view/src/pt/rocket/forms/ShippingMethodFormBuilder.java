@@ -123,17 +123,10 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
     
     public View generateForm(Context context){
         LinearLayout parent;
-        if(context != null && context.getResources() != null && context.getResources().getDisplayMetrics() != null)
+        if(context != null && context.getResources() != null && context.getResources().getDisplayMetrics() != null){
             scale = context.getResources().getDisplayMetrics().density;
-        final int CTRLMARGIN_LEFT = 0;
-        final int CTRLMARGIN_TOP = (int) (5 * scale);
-        final int CTRLMARGIN_RIGHT = 0;
-        final int CTRLMARGIN_BOTTOM = (int) (5 * scale);
+        }
 
-        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
-
-        
         parent = new LinearLayout(context);
         LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parent.setOrientation(LinearLayout.VERTICAL);

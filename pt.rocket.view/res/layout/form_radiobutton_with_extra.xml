@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/margin_30px"
-        android:paddingRight="@dimen/margin_30px"
+        android:paddingLeft="@dimen/form_radiobutton_shipping_margin"
+        android:paddingRight="@dimen/form_radiobutton_shipping_margin"
         android:visibility="gone" >
 
         <ImageView
@@ -34,14 +34,13 @@
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/payment_text"
-            style="@style/text_form"
+            style="@style/text_normal"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/margin_30px"
-            android:paddingTop="@dimen/margin_30px"
+            android:fontFamily="roboto_light"
+            android:paddingBottom="@dimen/margin_20px"
+            android:paddingTop="@dimen/margin_20px"
             android:singleLine="false"
             android:visibility="gone" />
-
-        <!-- android:layout_height="@dimen/checkout_shipping_item_height" -->
     </LinearLayout>
 
 </LinearLayout>

@@ -32,7 +32,7 @@
             android:layout_margin="@dimen/rounded_margin_mid"
             android:text="@string/register_required_text"
             android:textColor="@color/red_basic"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <LinearLayout
             style="@style/button_container"
