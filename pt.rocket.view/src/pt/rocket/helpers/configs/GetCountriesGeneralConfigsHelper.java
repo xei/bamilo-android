@@ -42,6 +42,10 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
     
     private static String TAG = GetCountriesGeneralConfigsHelper.class.getSimpleName();
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
+     */
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
@@ -55,6 +59,10 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         return bundle;
     }
     
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
+     */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.i(TAG, "ON PARSE RESPONSE");
@@ -85,6 +93,10 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                 }
             }
             if(mCountries != null && mCountries.size() > 0){
+                
+                // XXX
+                addDevServers(mCountries);
+                
                 JumiaApplication.INSTANCE.countriesAvailable = mCountries;
                 CountriesConfigsTableHelper.insertCountriesConfigs(mCountries);
                 Log.i(TAG, "INSERT INTO DB FROM JSON");
@@ -106,9 +118,10 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         return bundle;
     }
 
- 
- 
-    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "parseErrorBundle GetCountriesGeneralConfigsHelper");
@@ -118,28 +131,9 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         mCountries = JumiaApplication.INSTANCE.countriesAvailable;
         if(mCountries != null && mCountries.size() > 0){
             
-            if(JumiaApplication.INSTANCE.generateStagingServers){
-                ArrayList<CountryObject> stagingServers = new ArrayList<CountryObject>();
-                for (CountryObject countryObject : mCountries) {
-                    CountryObject stagingCountryObject = new CountryObject();
-                    try {
-                        stagingCountryObject.setCountryName(URLDecoder.decode(countryObject.getCountryName(), "utf-8")+" Staging");
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    stagingCountryObject.setCountryUrl(countryObject.getCountryUrl().replace("www", "alice-staging"));
-                    stagingCountryObject.setCountryFlag(countryObject.getCountryFlag());
-                    stagingCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
-                    stagingCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
-                    stagingCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
-                    stagingCountryObject.setCountryIso(countryObject.getCountryIso());
-                    stagingCountryObject.setCountryForceHttps(countryObject.isCountryForceHttps());
-                    stagingCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
-                    stagingServers.add(stagingCountryObject);
-                }
-                mCountries.addAll(stagingServers);
-                
-            }
+            // XXX
+            addDevServers(mCountries);
+            
             JumiaApplication.INSTANCE.countriesAvailable = mCountries;
             SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor mEditor = sharedPrefs.edit();
@@ -154,6 +148,10 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         return bundle;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
+     */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         ArrayList<CountryObject> mCountries = new ArrayList<CountryObject>();
@@ -162,28 +160,9 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         mCountries = JumiaApplication.INSTANCE.countriesAvailable;
         if(mCountries != null && mCountries.size() > 0){
             
-            if(JumiaApplication.INSTANCE.generateStagingServers){
-                ArrayList<CountryObject> stagingServers = new ArrayList<CountryObject>();
-                for (CountryObject countryObject : mCountries) {
-                    CountryObject stagingCountryObject = new CountryObject();
-                    try {
-                        stagingCountryObject.setCountryName(URLDecoder.decode(countryObject.getCountryName(), "utf-8")+" Staging");
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    stagingCountryObject.setCountryUrl(countryObject.getCountryUrl().replace("www", "alice-staging"));
-                    stagingCountryObject.setCountryFlag(countryObject.getCountryFlag());
-                    stagingCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
-                    stagingCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
-                    stagingCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
-                    stagingCountryObject.setCountryIso(countryObject.getCountryIso());
-                    stagingCountryObject.setCountryForceHttps(countryObject.isCountryForceHttps());
-                    stagingCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
-                    stagingServers.add(stagingCountryObject);
-                }
-                mCountries.addAll(stagingServers);
-                
-            }
+            // XXX
+            addDevServers(mCountries);
+            
             JumiaApplication.INSTANCE.countriesAvailable = mCountries;
             SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor mEditor = sharedPrefs.edit();
@@ -196,5 +175,34 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_GLOBAL_CONFIGURATIONS);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
+    }
+    
+    
+    /**
+     * 
+     * @param mCountries
+     */
+    private void addDevServers(ArrayList<CountryObject> mCountries) {
+        if(JumiaApplication.INSTANCE.generateStagingServers){
+            ArrayList<CountryObject> stagingServers = new ArrayList<CountryObject>();
+            for (CountryObject countryObject : mCountries) {
+                CountryObject stagingCountryObject = new CountryObject();
+                try {
+                    stagingCountryObject.setCountryName(URLDecoder.decode(countryObject.getCountryName(), "utf-8")+" Integration");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                stagingCountryObject.setCountryUrl(countryObject.getCountryUrl().replace("alice-staging", "integration-www"));
+                stagingCountryObject.setCountryFlag(countryObject.getCountryFlag());
+                stagingCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
+                stagingCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
+                stagingCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
+                stagingCountryObject.setCountryIso(countryObject.getCountryIso());
+                stagingCountryObject.setCountryForceHttps(countryObject.isCountryForceHttps());
+                stagingCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
+                stagingServers.add(stagingCountryObject);
+            }
+            mCountries.addAll(stagingServers);
+        }
     }
 }
