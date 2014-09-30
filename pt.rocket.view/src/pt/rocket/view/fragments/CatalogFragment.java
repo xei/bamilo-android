@@ -36,7 +36,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Spannable;
@@ -100,6 +99,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     private ImageView mSwitchLayoutButton;
 
     private static ArrayList<CatalogFilter> mCatalogFilter;
+    
     private static ArrayList<CatalogFilter> mOldCatalogFilterState;
 
     private ContentValues mCatalogFilterValues;
@@ -338,6 +338,9 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public void onDestroyView() {
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY VIEW");
+        mCatalogFilter = null;
+        mOldCatalogFilterState = null;
+        mCatalogFilterValues = null;
     }
 
     /*
