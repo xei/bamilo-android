@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/variations_container"
     style="@style/rounded_box"
-    android:layout_marginBottom="0dp" >
+    android:layout_marginBottom="0dp"
+    android:layout_marginTop="@dimen/rounded_margin_small" >
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/color_label"
