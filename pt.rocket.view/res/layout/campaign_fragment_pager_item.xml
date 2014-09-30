@@ -4,5 +4,5 @@
     style="@style/rounded_box"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:listSelector="@null"
+    android:listSelector="@color/transparent"
     android:numColumns="@integer/campaign_num_columns" />
