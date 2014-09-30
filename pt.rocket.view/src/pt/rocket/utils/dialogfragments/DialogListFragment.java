@@ -251,11 +251,15 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 			TextView textView = (TextView) view.findViewById(R.id.item_text);
 			TextView textViewUnAvailable = (TextView) view.findViewById(R.id.item_text_unavailable);
 			if(mItemsAvailable != null && !mItemsAvailable.contains(mItems.get(position))){
+                view.setEnabled(false);
+
 			    textView.setVisibility(View.GONE);
 			    
 			    textViewUnAvailable.setVisibility(View.VISIBLE);
 			    textViewUnAvailable.setText(mItems.get(position));
 			} else {
+                view.setEnabled(true);
+
 			    textViewUnAvailable.setVisibility(View.GONE);
 			    textView.setVisibility(View.VISIBLE);
 	            textView.setText(mItems.get(position));
