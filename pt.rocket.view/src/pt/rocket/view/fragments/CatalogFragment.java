@@ -928,7 +928,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             mWizardContainer.findViewById(R.id.viewpager_tips).setVisibility(View.GONE);
             ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.GONE);
 
-        } else if (id == R.id.products_switch_layout_button) {
+        } else if (id == R.id.products_switch_layout_button) { // XXX
             Log.d(TAG, "ON CLICK: SWITCH LAYOUT BUTTON");
             v.setEnabled(false);
 
@@ -950,28 +950,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             // update totalUpdates
             mSwitchMD5++;
             Log.i(TAG, "Updating totalUpdates: " + mSwitchMD5);
-
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    // Update the current view page with the current list of
-                    // products rendered on a
-                    // different layout without calling a new request
-                    Bundle params = new Bundle();
-                    params.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-                    params.putString(ConstantsIntentExtra.CONTENT_URL, productsURL);
-                    params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
-                    params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
-                    params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-                    params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
-
-                    mCatalogPagerAdapter.updateParametersBundle(params);
-                    mCatalogPagerAdapter.invalidateCatalogPages();
-
-                    v.setEnabled(true);
-                }
-            }, 300);
+  
+            // Redraw layout
+            mCatalogPagerAdapter.invalidateCatalogPages();
+            v.setEnabled(true);
         }
     }
 

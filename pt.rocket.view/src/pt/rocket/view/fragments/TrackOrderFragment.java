@@ -248,7 +248,7 @@ public class TrackOrderFragment extends BaseFragment {
         // HEADER CONTAINER getView().findViewById(R.id.title_status_container).setVisibility(View.GONE);
         getView().findViewById(R.id.error_tracking_order_container).setVisibility(View.GONE);
         getView().findViewById(R.id.loading_status).setVisibility(View.VISIBLE);
-        loadingTrackBarView = (LoadingBarView) getView().findViewById(R.id.loading_bar_view);
+        loadingTrackBarView = (LoadingBarView) getView().findViewById(R.id.fragment_root_loading_gif);
         if (loadingTrackBarView != null) {
             loadingTrackBarView.startRendering();
         }

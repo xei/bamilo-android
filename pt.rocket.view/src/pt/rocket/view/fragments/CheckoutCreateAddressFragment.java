@@ -224,8 +224,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Next button
         view.findViewById(R.id.checkout_address_button_enter).setOnClickListener((OnClickListener) this);
         
-        Bundle args = getArguments();
-        
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
             triggerInitForm();

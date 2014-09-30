@@ -47,7 +47,6 @@ public class ConstantsIntentExtra {
     public static final String CUSTOMER_EMAIL               = mPackage + "CustomerEmail";
     public static final String IS_SIGNUP                    = mPackage + "is_signup";
 
-
     // ########### REVIEW ##############
     public static final String REVIEW_TITLE                 = mPackage + "ReviewTitle";
     public static final String REVIEW_COMMENT               = mPackage + "ReviewComment";

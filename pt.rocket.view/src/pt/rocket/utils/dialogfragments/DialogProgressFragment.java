@@ -3,12 +3,15 @@ package pt.rocket.utils.dialogfragments;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import de.akquinet.android.androlog.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import de.akquinet.android.androlog.Log;
 
 /**
  * 
@@ -55,13 +58,21 @@ public class DialogProgressFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
         view = inflater.inflate(R.layout.dialog_progress, container);
-        
-        loadingBarView = (LoadingBarView) view.findViewById(R.id.loading_bar_view);
+        loadingBarView = (LoadingBarView) view.findViewById(R.id.fragment_root_loading_gif);
         view.findViewById(R.id.loading_bar).setVisibility(View.VISIBLE);
-
         loadingBarView.startRendering();
-        
         return view;
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.DialogFragment#onCreateDialog(android.os.Bundle)
+     */
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        return dialog;
     }
     
     /* (non-Javadoc)
@@ -73,7 +84,10 @@ public class DialogProgressFragment extends DialogFragment {
         if(loadingBarView != null) loadingBarView.stopRendering();
     }
     
-    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onPause()
+     */
     @Override
     public void onPause() {
         super.onPause();
