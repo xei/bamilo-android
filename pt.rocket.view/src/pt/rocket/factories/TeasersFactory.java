@@ -157,16 +157,20 @@ public class TeasersFactory {
         View rootView = mInflater.inflate(R.layout.teaser_banners_group, mainView, false);
         ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
 
-        int width = 0;
-        if(null != mContext)
-             width  = WindowHelper.getWidth(mContext);
-        
-        if(width != 0){
+        if (null != mContext) {
+            int width = WindowHelper.getWidth(mContext);
             container.requestLayout();
             LayoutParams params = container.getLayoutParams();
-            params.height = width/2;
-        }
-        
+            
+            if(!mContext.getResources().getBoolean(R.bool.isTablet)){
+                params.height = width / 2;
+            } else {
+                params.height = mContext.getResources().getDimensionPixelSize(R.dimen.teaser_banners_group_height);
+            }
+
+            container.setLayoutParams(params);
+            
+        } 
         if (teaserImageArrayList != null) {
             int maxItems = MAX_IMAGES_ON_SCREEN;
             if (teaserImageArrayList.size() < MAX_IMAGES_ON_SCREEN) {
