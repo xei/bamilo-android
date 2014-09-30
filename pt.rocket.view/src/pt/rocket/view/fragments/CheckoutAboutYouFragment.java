@@ -12,6 +12,7 @@ import java.util.List;
 import org.holoeverywhere.widget.CheckBox;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.BundleConstants;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
@@ -787,7 +788,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             // Clean stack for new native checkout on the back stack (auto ogin)
             super.removeNativeCheckoutFromBackStack();
             // Goto next step
-            getBaseActivity().onSwitchFragment(mNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(ConstantsIntentExtra.IS_SIGNUP, true);
+            getBaseActivity().onSwitchFragment(mNextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
     

@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.rest.RestConstants;
@@ -39,12 +40,19 @@ public class GetFormAddAddressHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
+ 
         String url = EventType.GET_CREATE_ADDRESS_FORM_FALLBACK_EVENT.action;
         try {
             url = JumiaApplication.INSTANCE.getFormDataRegistry().get(type.action).getUrl();
         } catch (NullPointerException e) {
             Log.w(TAG, "FORM DATA IS NULL THEN GET CREATE ADDRESS FORM FALLBACK", e);
         }
+        if(null != args && args.containsKey(ConstantsIntentExtra.IS_SIGNUP)){
+            if(args.getBoolean(ConstantsIntentExtra.IS_SIGNUP, false))
+              url = EventType.GET_CREATE_ADDRESS_FORM_SIGNUP_EVENT.action;
+        } 
+        
+        
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);

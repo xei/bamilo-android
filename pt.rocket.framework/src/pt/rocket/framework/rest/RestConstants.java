@@ -80,6 +80,8 @@ public class RestConstants {
 	public static final String JSON_MIN_TAG = "min";
 	public static final String JSON_MAX_TAG = "max";
 	public static final String JSON_REGEX_TAG = "regex";
+	public static final String JSON_PATTERN_TAG = "pattern";
+	public static final String JSON_MATCH_TAG = "match";
 
 	// NavigationList Tags
 	public static final String JSON_ATTRIBUTES_TAG = "attributes";

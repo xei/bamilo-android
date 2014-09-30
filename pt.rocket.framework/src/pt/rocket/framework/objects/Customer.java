@@ -327,7 +327,14 @@ public class Customer implements IJSONSerializable, Parcelable{
             created_at = jsonObject.getString(RestConstants.JSON_CREATED_AT_TAG);
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());  
             try {  
-            	birthday = format.parse(jsonObject.getString(RestConstants.JSON_BIRTHDAY_TAG));  
+                
+                if(jsonObject.optString(RestConstants.JSON_BIRTHDAY_TAG,"").equalsIgnoreCase("")){
+                    birthday = new Date();
+                } else {
+                    birthday = format.parse(jsonObject.getString(RestConstants.JSON_BIRTHDAY_TAG));      
+                }
+                
+            	
             } catch (ParseException e) {  
                 e.printStackTrace();  
             }
@@ -391,7 +398,6 @@ public class Customer implements IJSONSerializable, Parcelable{
             jsonObject.put(RestConstants.JSON_EMAIL_TAG, email);
             
             jsonObject.put(RestConstants.JSON_GENDER_TAG, gender==CustomerGender.Male?"male":"female");
-            jsonObject.put(RestConstants.JSON_BIRTHDAY_TAG, birthday.toString());
             
         } catch (JSONException e) {
             e.printStackTrace();
@@ -426,7 +432,6 @@ public class Customer implements IJSONSerializable, Parcelable{
 	    dest.writeString(middleName);
 	    dest.writeString(lastName);
 	    dest.writeString(email);
-	    dest.writeLong(birthday.getTime());
 	    dest.writeValue(gender);
 	    dest.writeString(password);
 	    dest.writeValue(prefix);
@@ -444,7 +449,6 @@ public class Customer implements IJSONSerializable, Parcelable{
         this.middleName = in.readString();
         this.lastName = in.readString();
         this.email = in.readString();
-        this.birthday = new Date(in.readLong());
         this.gender = (CustomerGender) in.readValue(CustomerGender.class.getClassLoader());
         this.password = in.readString();
         this.prefix = (CustomerPrefix) in.readValue(CustomerPrefix.class.getClassLoader());

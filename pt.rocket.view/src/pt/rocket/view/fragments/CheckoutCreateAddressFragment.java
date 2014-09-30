@@ -15,6 +15,7 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -222,6 +223,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         mMsgRequired = view.findViewById(R.id.checkout_address_required_text);
         // Next button
         view.findViewById(R.id.checkout_address_button_enter).setOnClickListener((OnClickListener) this);
+        
+        Bundle args = getArguments();
         
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
@@ -790,7 +793,16 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      */
     private void triggerCreateAddressForm(){
         Log.i(TAG, "TRIGGER: LOGIN FORM");
-        triggerContentEvent(new GetFormAddAddressHelper(), null, this);
+        Bundle args = getArguments();
+        
+        if(null != args && args.containsKey(ConstantsIntentExtra.IS_SIGNUP)){
+            if(args.getBoolean(ConstantsIntentExtra.IS_SIGNUP, false))
+                triggerContentEvent(new GetFormAddAddressHelper(), args, this);            
+        } else {
+            triggerContentEvent(new GetFormAddAddressHelper(), null, this);    
+        }
+        
+        
     }
     
     /**

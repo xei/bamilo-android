@@ -86,7 +86,18 @@ private static final String TAG = FieldValidation.class.getName();
 		
 		min = jsonObject.optInt(RestConstants.JSON_MIN_TAG, MIN_CHARACTERS);
 		max = jsonObject.optInt(RestConstants.JSON_MAX_TAG, MAX_CHARACTERS);
-        regex = jsonObject.optString(RestConstants.JSON_REGEX_TAG, DEFAULT_REGEX);
+        regex = jsonObject.optString(RestConstants.JSON_REGEX_TAG, "");
+
+        if(regex.equalsIgnoreCase("")){        
+            //this extra parsing option exists because
+            JSONObject matchObject = jsonObject.optJSONObject(RestConstants.JSON_MATCH_TAG);
+            if(null != matchObject){
+                regex = matchObject.optString(RestConstants.JSON_PATTERN_TAG, DEFAULT_REGEX);
+            } else {
+                regex =  DEFAULT_REGEX;
+            }
+        }
+        
         
         if ( regex.substring(0, 2).equals("a/") ) {
             regex = regex.substring(2);
