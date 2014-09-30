@@ -1153,6 +1153,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      */
     private void isToShowWizard() {
         if (WizardPreferences.isFirstTime(getBaseActivity(), WizardType.PRODUCT_DETAIL)) {
+            Log.d(TAG, "Show Wizard");
+            mainView.findViewById(R.id.product_detail_tips_container).setVisibility(View.VISIBLE);
             boolean hasVariations = (mCompleteProduct != null && mCompleteProduct.getVariations() != null && mCompleteProduct.getVariations().size() > 1) ? true : false;
             ViewPager viewPagerTips = (ViewPager) mainView.findViewById(R.id.viewpager_tips);
             viewPagerTips.setVisibility(View.VISIBLE);
