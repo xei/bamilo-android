@@ -36,7 +36,6 @@ public class Customer implements IJSONSerializable, Parcelable{
     private String middleName;
     private String lastName;
     private String email;
-    private Date birthday;
     private CustomerGender gender;
     private String password;
     private String created_at;
@@ -56,7 +55,6 @@ public class Customer implements IJSONSerializable, Parcelable{
         middleName = "";
         lastName = "";
         email = "";
-        birthday = new Date();
         gender = CustomerGender.Gender;
         password = "";
         setCreatedAt("");
@@ -79,14 +77,13 @@ public class Customer implements IJSONSerializable, Parcelable{
      * @param birthDay of the customer.
      * @param customerPrefix of the customer.
      */
-    public Customer(String id, String firstName, String middleName, String lastName, String email, String password, CustomerGender gender, Date birthDay,
+    public Customer(String id, String firstName, String middleName, String lastName, String email, String password, CustomerGender gender,
             CustomerPrefix customerPrefix, String createdAt, ArrayList<String> addresses) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
         this.email = email;
-        this.birthday = birthDay;
         this.gender = gender;
         this.password = password;
         this.prefix = customerPrefix;
@@ -168,22 +165,6 @@ public class Customer implements IJSONSerializable, Parcelable{
         return password;
     }
 
-    /**
-     * return's the customer birthday
-     * 
-     * @return the birthday
-     */
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    /**
-     * @param birthday
-     *            the birthday to set
-     */
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
 
     /**
      * @param firstName
@@ -325,19 +306,6 @@ public class Customer implements IJSONSerializable, Parcelable{
             lastName = jsonObject.getString(RestConstants.JSON_LAST_NAME_TAG);
             email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
             created_at = jsonObject.getString(RestConstants.JSON_CREATED_AT_TAG);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());  
-            try {  
-                
-                if(jsonObject.optString(RestConstants.JSON_BIRTHDAY_TAG,"").equalsIgnoreCase("")){
-                    birthday = new Date();
-                } else {
-                    birthday = format.parse(jsonObject.getString(RestConstants.JSON_BIRTHDAY_TAG));      
-                }
-                
-            	
-            } catch (ParseException e) {  
-                e.printStackTrace();  
-            }
  
             String genderString = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
             if(genderString == null) {
