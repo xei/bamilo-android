@@ -32,6 +32,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
@@ -156,6 +157,16 @@ public class TeasersFactory {
         View rootView = mInflater.inflate(R.layout.teaser_banners_group, mainView, false);
         ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
 
+        int width = 0;
+        if(null != mContext)
+             width  = WindowHelper.getWidth(mContext);
+        
+        if(width != 0){
+            container.requestLayout();
+            LayoutParams params = container.getLayoutParams();
+            params.height = width/2;
+        }
+        
         if (teaserImageArrayList != null) {
             int maxItems = MAX_IMAGES_ON_SCREEN;
             if (teaserImageArrayList.size() < MAX_IMAGES_ON_SCREEN) {
@@ -481,7 +492,8 @@ public class TeasersFactory {
             RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large, new RocketImageLoaderListener() {
                 
                 @Override
-                public void onLoadedSuccess(Bitmap bitmap) { if(resize) imageView.setScaleType(ScaleType.FIT_XY); }
+                public void onLoadedSuccess(Bitmap bitmap) { if(resize) imageView.setScaleType(ScaleType.FIT_XY);
+                }
                 
                 @Override
                 public void onLoadedError() { }
