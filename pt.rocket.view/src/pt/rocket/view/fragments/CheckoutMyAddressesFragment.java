@@ -86,6 +86,8 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
 
     private Form hiddenForm;
     
+    private static String sameAddress = "";
+    
     /**
      * Get instance
      * @return CheckoutMyAddressesFragment
@@ -128,6 +130,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        sameAddress = "";
         setRetainInstance(true);
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
@@ -179,11 +182,8 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         triggerGetBillingForm();
     }
     
+        
     
-    /*
-     * (non-Javadoc)
-     * @see pt.rocket.view.fragments.BaseFragment#onStart()
-     */
     @Override
     public void onStart() {
         super.onStart();
@@ -286,7 +286,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      * @author sergiopereira
      */
     private void onClickCheckBox(final CheckBox view){
-        Log.d(TAG, "SAME ADDRESS: " + view.isChecked());
+        Log.d(TAG, "SAME ADDRESS CLICK: " + view.isChecked());
         // Show loading
         showFragmentLoading();
         // Validate the current selection
@@ -464,7 +464,8 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      * @author sergiopereira
      */
     private void showAddresses(boolean isSameAddress) {
-        Log.i(TAG, "SHOW ADDRESSES: " + isSameAddress);
+        Log.d(TAG, "SHOW ADDRESSES: " + isSameAddress);
+        sameAddress = ""+isSameAddress;
         if(isSameAddress){
             // Set top container
             mTopTitle.setText(getString(R.string.billing_def_shipping_label));
@@ -630,7 +631,18 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             // Validate response
             if(!isValidateResponse()){ super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT"); return true; }
             // Show addresses
-            showAddresses(addresses.hasDefaultShippingAndBillingAddress());
+            if(sameAddress != null && !sameAddress.equalsIgnoreCase("")){
+                try {
+                    boolean defaultValue = Boolean.parseBoolean(sameAddress);
+                    showAddresses(defaultValue);
+                } catch (Exception e) {
+                    showAddresses(addresses.hasDefaultShippingAndBillingAddress());
+                }
+                
+            } else {
+                showAddresses(addresses.hasDefaultShippingAndBillingAddress());
+            }
+               
             // Get order summary
             OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
