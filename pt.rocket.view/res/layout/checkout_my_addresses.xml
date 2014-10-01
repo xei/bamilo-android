@@ -12,7 +12,8 @@
         android:layout_above="@+id/checkout_addresses_button_enter"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/button_container_height"
-        android:fillViewport="true" >
+        android:fillViewport="true"
+        android:scrollbars="none" >
 
         <LinearLayout
             android:layout_width="match_parent"
