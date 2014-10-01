@@ -1116,9 +1116,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      */
     private View createRelatedItemView(LayoutInflater inflator, LastViewed lastViewed) {
         // Inflate
-        View view = inflator.inflate(R.layout.element_related_items, mRelatedHorizontalGroup, false);
+        View view = inflator.inflate(R.layout.product_item_small, mRelatedHorizontalGroup, false);
         // Get clickable view
-        RelativeLayout mElement1 = (RelativeLayout) view.findViewById(R.id.related_item_container);
+        RelativeLayout mElement1 = (RelativeLayout) view.findViewById(R.id.item_container);
         mElement1.setTag(lastViewed.getProductUrl());
         mElement1.setOnClickListener(new OnClickListener() {
             @Override
@@ -1133,16 +1133,16 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             }
         });
         // Set data
-        TextView brand = (TextView) mElement1.findViewById(R.id.related_item_brand);
-        TextView name = (TextView) mElement1.findViewById(R.id.related_item_title);
-        TextView price = (TextView) mElement1.findViewById(R.id.related_item_price);
+        TextView brand = (TextView) mElement1.findViewById(R.id.item_brand);
+        TextView name = (TextView) mElement1.findViewById(R.id.item_title);
+        TextView price = (TextView) mElement1.findViewById(R.id.item_price);
         ImageView image = (ImageView) mElement1.findViewById(R.id.image_view);
         View progress = mElement1.findViewById(R.id.image_loading_progress);
         brand.setText(lastViewed.getProductBrand());
         name.setText(lastViewed.getProductName());
         price.setText(lastViewed.getProductPrice());
         // Load image
-        RocketImageLoader.instance.loadImage(lastViewed.getImageUrl(), image, progress, R.drawable.no_image_small);
+        RocketImageLoader.instance.loadImage(lastViewed.getImageUrl(), image, progress, R.drawable.no_image_large);
         // Return the current view
         return view;
     }

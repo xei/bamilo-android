@@ -180,9 +180,9 @@
     <integer name="favourite_num_columns">1</integer>
 
     <!-- ROUNDED BORDERS -->
-    <dimen name="rounded_margin_small">3.33dp</dimen>
-    <dimen name="rounded_margin_mid">6.67dp</dimen>
-    <dimen name="rounded_margin_double_mid">13.33dp</dimen>
+    <dimen name="rounded_margin_small">@dimen/margin_10px</dimen>
+    <dimen name="rounded_margin_mid">@dimen/margin_20px</dimen>
+    <dimen name="rounded_margin_double_mid">@dimen/margin_40px</dimen>
 
     <!-- CATALOG REDESIGN -->
     <dimen name="catalog_list_item_height">103.33dp</dimen><!--105dp-->

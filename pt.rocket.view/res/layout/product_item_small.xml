@@ -3,6 +3,7 @@
 <!-- NOTE: The "teaser_product_item_width" is not used, is calculated from Window width. -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_container"
     android:layout_width="@dimen/teaser_product_item_width"
     android:layout_height="match_parent"
     android:orientation="vertical"

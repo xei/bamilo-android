@@ -142,10 +142,10 @@ public class TeasersFactory {
             // Validate device and orientation
             if(mContext.getResources().getBoolean(R.bool.isTablet) && teaserImageArrayList.get(0).getImageTableUrl() != null) {
                 //Log.d(TAG, "SLIDE IMG: LOADED TABLET " + teaserImageArrayList.get(0).getImageTableUrl());
-                setImageToLoad(teaserImageArrayList.get(0).getImageTableUrl(),imageContainer, 0);
+                setImageToLoad(teaserImageArrayList.get(0).getImageTableUrl(),imageContainer, 0, R.drawable.no_image_large);
             } else {
                 //Log.d(TAG, "SLIDE IMG: LOADED PHONE " + teaserImageArrayList.get(0).getImageUrl());
-                setImageToLoad(teaserImageArrayList.get(0).getImageUrl(),imageContainer, 0);
+                setImageToLoad(teaserImageArrayList.get(0).getImageUrl(),imageContainer, 0, R.drawable.no_image_large);
             }
             
             attachTeaserListener(teaserImageArrayList.get(0), imageContainer);
@@ -202,9 +202,12 @@ public class TeasersFactory {
         return rootView;
     }
 
-
-    
-    
+    /**
+     * 
+     * @param mainView
+     * @param productTeaserGroup
+     * @return
+     */
     private View getProductsListTeaser(ViewGroup mainView, ProductTeaserGroup productTeaserGroup) {
         View rootView = mInflater.inflate(R.layout.teaser_products_group, mainView, false);
         ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
@@ -217,6 +220,12 @@ public class TeasersFactory {
         return rootView;
     }
 
+    /**
+     * 
+     * @param mainView
+     * @param brandsTeaserGroup
+     * @return
+     */
     private View getBrandsListTeaser(ViewGroup mainView, BrandsTeaserGroup brandsTeaserGroup) {
         View rootView = mInflater.inflate(R.layout.teaser_brands_group, mainView, false);
         ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
@@ -241,10 +250,10 @@ public class TeasersFactory {
         // Validate device and orientation
         if(mContext.getResources().getBoolean(R.bool.isTablet) && teaserImage.getImageTableUrl() != null) {
             // Log.d(TAG, "T IMG: LOADED TABLET " + teaserImage.getImageTableUrl());
-            setImageToLoad(teaserImage.getImageTableUrl(), imageTeaserView, size);
+            setImageToLoad(teaserImage.getImageTableUrl(), imageTeaserView, size, R.drawable.no_image_large);
         } else {
             // Log.d(TAG, "T IMG: LOADED PHONE " + teaserImage.getImageUrl());
-            setImageToLoad(teaserImage.getImageUrl(), imageTeaserView, size);
+            setImageToLoad(teaserImage.getImageUrl(), imageTeaserView, size, R.drawable.no_image_large);
         }
         
         attachTeaserListener(teaserImage, imageTeaserView);
@@ -309,11 +318,11 @@ public class TeasersFactory {
         // Tablet
         if(mContext.getResources().getBoolean(R.bool.isTablet) && product.getImagesTablet() != null && product.getImagesTablet().size() > 0) {
             // Log.d(TAG, "PROD IMG: LOADED TABLET " + product.getImagesTablet().get(0).getUrl());
-            setImageToLoad(product.getImagesTablet().get(0).getUrl(), productTeaserView, 0);
+            setImageToLoad(product.getImagesTablet().get(0).getUrl(), productTeaserView, 0, R.drawable.no_image_large);
         } // Portrait
         else if (product.getImages() != null && product.getImages().size() > 0) {
             // Log.d(TAG, "PROD IMG: LOADED PHONE " + product.getImages().get(0).getUrl());
-            setImageToLoad(product.getImages().get(0).getUrl(), productTeaserView, 0);
+            setImageToLoad(product.getImages().get(0).getUrl(), productTeaserView, 0, R.drawable.no_image_large);
         }
         // Set data
         ((TextView) productTeaserView.findViewById(R.id.item_brand)).setText(product.getBrand());
@@ -332,11 +341,11 @@ public class TeasersFactory {
         // Tablet
         if(mContext.getResources().getBoolean(R.bool.isTablet) && brand.getImageTableUrl() != null && brand.getImageTableUrl().length() > 0) {
             // Log.d(TAG, "BRAND IMG: LOADED TABLET " + brand.getImageTableUrl());
-            setImageToLoad(brand.getImageTableUrl(), brandTeaserView, size);
+            setImageToLoad(brand.getImageTableUrl(), brandTeaserView, size, R.drawable.no_image_large);
         } // Portrait
         else if (brand.getImageUrl() != null) {
             // Log.d(TAG, "BRAND IMG: LOADED PHONE " + brand.getImageUrl());
-            setImageToLoad(brand.getImageUrl(), brandTeaserView, size);
+            setImageToLoad(brand.getImageUrl(), brandTeaserView, size, R.drawable.no_image_large);
         }
         
         attachTeaserListener(brand, brandTeaserView);
@@ -478,7 +487,7 @@ public class TeasersFactory {
      * @param imageUrl
      * @param imageTeaserView
      */
-    private void setImageToLoad(String imageUrl, View imageTeaserView, int size) {
+    private void setImageToLoad(String imageUrl, View imageTeaserView, int size, int placeHolder) {
         final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
         final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
 
@@ -487,17 +496,18 @@ public class TeasersFactory {
 //            if(mContentWidth == 0) mContentWidth = WindowHelper.getWidth(mContext);
 //            imageTeaserView.getLayoutParams().width = mContentWidth / size;
 //        }
-            
+        
+        // Validate place holder
+        placeHolder = placeHolder < 0 ? R.drawable.no_image_large : placeHolder;
         
         if (!TextUtils.isEmpty(imageUrl)) {
             // Flag for FIT_XY
             final boolean resize = isToResize;
             // Load image
-            RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large, new RocketImageLoaderListener() {
+            RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, placeHolder, new RocketImageLoaderListener() {
                 
                 @Override
-                public void onLoadedSuccess(Bitmap bitmap) { if(resize) imageView.setScaleType(ScaleType.FIT_XY);
-                }
+                public void onLoadedSuccess(Bitmap bitmap) { if(resize) imageView.setScaleType(ScaleType.FIT_XY); }
                 
                 @Override
                 public void onLoadedError() { }

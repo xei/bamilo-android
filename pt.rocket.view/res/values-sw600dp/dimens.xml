@@ -62,11 +62,6 @@
     <dimen name="wizard_nav_img_margin_top">165dp</dimen>
     <dimen name="wizard_product_height">150dp</dimen>
 
-    <!-- ROUNDED BORDERS -->
-    <dimen name="rounded_margin_small">5dp</dimen>
-    <dimen name="rounded_margin_mid">10dp</dimen>
-    <dimen name="rounded_margin_double_mid">20dp</dimen>
-
     <!-- CATALOG REDESIGN -->
     <dimen name="catalog_list_item_height">155dp</dimen><!--157.5dp-->
     <dimen name="catalog_grid_item_height">280dp</dimen>
