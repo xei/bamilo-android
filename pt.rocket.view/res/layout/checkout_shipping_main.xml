@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <!-- SCROLLABLE CONTAINER -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:fillViewport="true" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <include layout="@layout/checkout_shipping_methods" />
+        </FrameLayout>
+    </ScrollView>
+
+    <!-- NEXT BUTTON -->
+
+    <LinearLayout
+        style="@style/button_container"
+        android:layout_alignParentBottom="true" >
+
+        <org.holoeverywhere.widget.Button
+            android:id="@+id/checkout_shipping_button_enter"
+            style="@style/button_orange_bottom"
+            android:layout_width="@dimen/inner_container_width"
+            android:text="@string/next_button" />
+    </LinearLayout>
+
+</RelativeLayout>

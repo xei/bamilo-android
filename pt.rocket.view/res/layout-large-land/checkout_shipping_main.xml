@@ -16,37 +16,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="@dimen/button_container_height"
-            android:fillViewport="true" >
+            android:fillViewport="true"
+            android:scrollbars="none" >
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <LinearLayout
-                    style="@style/rounded_box"
-                    android:orientation="vertical" >
-
-                    <!-- TITLE -->
-
-                    <org.holoeverywhere.widget.TextView
-                        style="@style/rounded_box_title_grey"
-                        android:text="@string/shipping" />
-
-                    <View style="@style/divider_horizontal_orange" />
-
-                    <!-- FORM -->
-
-                    <LinearLayout
-                        android:id="@+id/checkout_shipping_methods_container"
-                        android:layout_width="@dimen/inner_container_width"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginLeft="@dimen/rounded_margin_mid"
-                        android:layout_marginRight="@dimen/rounded_margin_mid"
-                        android:orientation="vertical" >
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
+                <include layout="@layout/checkout_shipping_methods" />
+            </FrameLayout>
         </ScrollView>
 
         <!-- NEXT BUTTON -->
