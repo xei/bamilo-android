@@ -5,4 +5,9 @@
     <dimen name="teaser_swipe_banner_height">@dimen/teaser_swipe_banner_height_sw320dp</dimen>
     <dimen name="teaser_banners_group_height">@dimen/teaser_banners_group_height_sw320dp</dimen>
 
+    <!-- LOADING -->
+    <dimen name="loading_width">250dp</dimen>
+    <dimen name="loading_height">125dp</dimen>
+    <dimen name="loading_gif_layout">62.5dp</dimen>
+
 </resources>
