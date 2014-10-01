@@ -92,7 +92,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     public CheckoutPaymentMethodsFragment() {
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
-                R.layout.checkout_payment_methods,
+                R.layout.checkout_payment_main,
                 R.string.checkout_label,
                 KeyboardState.ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_PAYMENT);
