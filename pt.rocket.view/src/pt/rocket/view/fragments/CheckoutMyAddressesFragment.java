@@ -130,29 +130,18 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        sameAddress = "";
         setRetainInstance(true);
+        // Flag
+        sameAddress = "";
+        // Get arguments
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ADDRESSES);
         params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutmyaddresses);
         params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_my_addresses);        
-        
+        // Tracking checkout step
         TrackerDelegator.trackCheckoutStep(params);
     }
-    
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, viewGroup, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        return inflater.inflate(R.layout.checkout_my_addresses, viewGroup, false);
-//    }
     
     /*
      * (non-Javadoc)
@@ -182,8 +171,10 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         triggerGetBillingForm();
     }
     
-        
-    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onStart()
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -465,7 +456,9 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      */
     private void showAddresses(boolean isSameAddress) {
         Log.d(TAG, "SHOW ADDRESSES: " + isSameAddress);
-        sameAddress = ""+isSameAddress;
+        // Set flag
+        sameAddress = "" + isSameAddress;
+        // Validate current address
         if(isSameAddress){
             // Set top container
             mTopTitle.setText(getString(R.string.billing_def_shipping_label));
@@ -630,19 +623,9 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
             this.addresses = addresses;
             // Validate response
             if(!isValidateResponse()){ super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT"); return true; }
-            // Show addresses
-            if(sameAddress != null && !sameAddress.equalsIgnoreCase("")){
-                try {
-                    boolean defaultValue = Boolean.parseBoolean(sameAddress);
-                    showAddresses(defaultValue);
-                } catch (Exception e) {
-                    showAddresses(addresses.hasDefaultShippingAndBillingAddress());
-                }
-                
-            } else {
-                showAddresses(addresses.hasDefaultShippingAndBillingAddress());
-            }
-               
+            // Show addresses using saved value, if is the same address for Bill and Ship
+            if(!TextUtils.isEmpty(sameAddress)) showAddresses(Boolean.parseBoolean(sameAddress));
+            else showAddresses(addresses.hasDefaultShippingAndBillingAddress());
             // Get order summary
             OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);

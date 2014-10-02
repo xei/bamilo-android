@@ -1000,7 +1000,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             args.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
             args.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
             // Instantiate a nested fragment of ProductImageGalleryFragment
-            productImagesViewPagerFragment = ProductImageGalleryFragment.getInstance(args, true);
+            productImagesViewPagerFragment = ProductImageGalleryFragment.getInstanceAsNested(args);
 
             startFragmentCallbacks();
 
@@ -1438,13 +1438,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
             if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
-                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return;
             } else {
-                mCompleteProduct = (CompleteProduct) bundle
-                        .getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                mCompleteProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);
                 Bundle params = new Bundle();
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gproductdetail);

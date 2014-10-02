@@ -98,7 +98,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        //setRetainInstance(true);
         // Validate the saved values 
         if(savedInstanceState != null) {
             mSelectionSaved = savedInstanceState.getInt(SELECTION_STATE, -1);

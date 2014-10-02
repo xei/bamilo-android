@@ -4,6 +4,7 @@
 package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.GalleryPagerAdapter;
@@ -13,6 +14,9 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.JumiaViewPagerWithZoom;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -30,6 +34,7 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * @author manuelsilva
+ * @modified sergiopereria
  * 
  */
 public class ProductImageGalleryFragment extends BaseFragment {
@@ -61,68 +66,59 @@ public class ProductImageGalleryFragment extends BaseFragment {
     private View mIndicatorLeftView;
 
     private View mIndicatorRightView;
-    
-    /**
-     * 
-     * @return
-     */
-    public static ProductImageGalleryFragment getInstance() {
-        // Instantiate full Fragment and hide actionBar
-        sProductImageGalleryFragment = new ProductImageGalleryFragment(ACTION_BAR.HIDDEN);
-        return sProductImageGalleryFragment;
-    }
 
     /**
-     * 
+     * Constructor using a nested flag
      * @param bundle
      * @param isNested
-     * @return
+     * @return ProductImageGalleryFragment
+     * @author sergiopereira
      */
-    public static ProductImageGalleryFragment getInstance(Bundle bundle, boolean isNested) {
-        /*-
-         * Show actionBar when Fragment is nested.
-         * Otherwise, instantiate fragment in fullscreen and hide actionBar
-         */
-        ACTION_BAR showActionBar = isNested? ACTION_BAR.VISIBLE: ACTION_BAR.HIDDEN;
-
-        sProductImageGalleryFragment = new ProductImageGalleryFragment(showActionBar);
+    private static ProductImageGalleryFragment getInstance(Bundle bundle, boolean isNested) {
+        // Validate if is nested or not
+        sProductImageGalleryFragment = isNested ? new ProductImageGalleryFragment(isNested) : new ProductImageGalleryFragment();
+        // Save arguments
         sProductImageGalleryFragment.mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, 1);
         sProductImageGalleryFragment.currentPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
         if (sProductImageGalleryFragment.currentPosition <= 0) sProductImageGalleryFragment.currentPosition = 1;
         sProductImageGalleryFragment.isZoomAvailable = bundle.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
+        // Return instance
         return sProductImageGalleryFragment;
     }
 
     /**
-     * 
+     * Construtor with arguments, called from {@link BaseActivity#onSwitchFragment(FragmentType, Bundle, Boolean)}.
      * @param bundle
-     * @return
+     * @return ProductImageGalleryFragment 
+     * @author sergiopereira
      */
     public static ProductImageGalleryFragment getInstance(Bundle bundle) {
-        return getInstance(bundle, false);
+        return getInstance(bundle, ISNT_NESTED_FRAGMENT);
     }
     
-
-
     /**
-     * Empty constructor
+     * Constructor as nested fragment, called from {@link ProductDetailsFragment#displayProduct()}.
+     * @param bundle
+     * @return ProductImageGalleryFragment
+     * @author sergiopereira
+     */
+    public static ProductImageGalleryFragment getInstanceAsNested(Bundle bundle) {
+        return getInstance(bundle, IS_NESTED_FRAGMENT);
+    }
+    
+    /**
+     * Default constructor
      */
     public ProductImageGalleryFragment() {
-     // Instantiate full Fragment and hide actionBar
-        super(IS_NESTED_FRAGMENT, BaseFragment.NO_INFLATE_LAYOUT, ACTION_BAR.HIDDEN);
+        super(EnumSet.of(MyMenuItem.HIDE_AB), NavigationAction.Products, 0, KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /**
-     * Default constuctor
-     * 
-     * @param showActionbar
+     * Constuctor as nested
+     * @param 
      */
-    public ProductImageGalleryFragment (ACTION_BAR showActionbar) {
-        super(IS_NESTED_FRAGMENT, BaseFragment.NO_INFLATE_LAYOUT, showActionbar);
-        /*-super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
-                0,
-                KeyboardState.NO_ADJUST_CONTENT);*/
+    public ProductImageGalleryFragment(Boolean isNested) {
+        super(IS_NESTED_FRAGMENT, BaseFragment.NO_INFLATE_LAYOUT);
     }
 
     /*

@@ -47,7 +47,6 @@ import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.utils.imageloader.RocketImageLoader;
-import pt.rocket.view.fragments.BaseFragment.ACTION_BAR;
 import pt.rocket.view.fragments.BaseFragment.KeyboardState;
 import pt.rocket.view.fragments.NavigationFragment;
 import android.app.Activity;
@@ -426,8 +425,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @author sergiopereira
      * @modified Andre Lopes
      */
-    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action,int actionBarTitleResId, 
-            int checkoutStep, boolean backButtonEnabled, ACTION_BAR showActionBar/* , boolean displayHomeAsUpEnabled */) {
+    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action,int actionBarTitleResId, int checkoutStep, boolean backButtonEnabled ) {
         Log.i(TAG, "ON UPDATE BASE COMPONENTS");
 
         // Update options menu and search bar
@@ -458,23 +456,28 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
             setActionBarTitle(actionBarTitleResId);
         }
-
-        setActionBarVisibility(showActionBar);
     }
 
     /**
      * Change actionBar visibility if necessary
-     * 
      * @param showActionBar
+     * @author andre
+     * @modified sergiopereira
      */
-    public void setActionBarVisibility (ACTION_BAR showActionBar) {
+    public void setActionBarVisibility(int showActionBar) {
+        // Get current visibility
         boolean actionBarVisible = getSupportActionBar().isShowing();
-        if (!actionBarVisible) {
-            if (ACTION_BAR.VISIBLE.equals(showActionBar)) {
-                getSupportActionBar().show();
-            }
-        } else if (ACTION_BAR.HIDDEN.equals(showActionBar)) {
+        // Validate flag
+        switch (showActionBar) {
+        case View.VISIBLE:
+            if(!actionBarVisible) getSupportActionBar().show();
+            break;
+        case View.GONE:
             getSupportActionBar().hide();
+            break;
+        default:
+            Log.w(TAG, "WARNING: INVALIDE FLAG, USE VISIBLE/INVISIBLE FROM View.");
+            break;
         }
     }
 
@@ -801,12 +804,18 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         // Save the current menu
         currentMenu = menu;
+        
+        // Flag used to show action bar as default
+        int showActionBar = View.VISIBLE;
 
         /**
          * Setting Menu Options
          */
         for (MyMenuItem item : menuItems) {
             switch (item) {
+            case HIDE_AB:
+                showActionBar = View.GONE;
+                break;
             case SEARCH_VIEW:
                 Log.i(TAG, "ON OPTIONS MENU: CREATE SEARCH VIEW");
                 setActionBarSearch(menu);
@@ -841,6 +850,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 break;
             }
         }
+        
+        // Set AB visibility
+        setActionBarVisibility(showActionBar);
+        
+        // Validate country
         if (!initialCountry) {
             tvActionCartCount = (TextView) menu.findItem(R.id.menu_basket).getActionView().findViewById(R.id.cart_count);
             tvActionCartCount.setOnClickListener(new OnClickListener() {

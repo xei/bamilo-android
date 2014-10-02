@@ -491,11 +491,11 @@ public class TeasersFactory {
         final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
         final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
 
-//        // Adapts the Image size if needed
-//        if(size > 0 && imageTeaserView.getLayoutParams() != null) {
-//            if(mContentWidth == 0) mContentWidth = WindowHelper.getWidth(mContext);
-//            imageTeaserView.getLayoutParams().width = mContentWidth / size;
-//        }
+        // Adapts the Image size if needed
+        if(size > 0 && imageTeaserView.getLayoutParams() != null) {
+            if(mContentWidth == 0) mContentWidth = WindowHelper.getWidth(mContext);
+            imageTeaserView.getLayoutParams().width = mContentWidth / size;
+        }
         
         // Validate place holder
         placeHolder = placeHolder < 0 ? R.drawable.no_image_large : placeHolder;

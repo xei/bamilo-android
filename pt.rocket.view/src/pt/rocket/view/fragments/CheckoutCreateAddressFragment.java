@@ -177,7 +177,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        //setRetainInstance(true);
         
         // Validate the saved values 
         if(savedInstanceState != null) {

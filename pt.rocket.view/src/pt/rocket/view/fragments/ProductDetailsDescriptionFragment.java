@@ -3,15 +3,11 @@
  */
 package pt.rocket.view.fragments;
 
-import java.util.EnumSet;
-
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.MyMenuItem;
-import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Paint;

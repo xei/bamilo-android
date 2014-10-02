@@ -119,7 +119,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        //setRetainInstance(true);
         
         // Validate the saved values 
         if(savedInstanceState != null){
