@@ -163,14 +163,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private Intent mOnActivityResultIntent = null;
 
     public DrawerLayout mDrawerLayout;
+    
     public ActionBarDrawerToggle mDrawerToggle;
+    
     private int mDrawableState = DrawerLayout.STATE_IDLE;
 
-    /*-private static final Set<EventType> HANDLED_EVENTS = EnumSet
-            .of(EventType.GET_SHOPPING_CART_ITEMS_EVENT, EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT,
-                    EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT, EventType.INITIALIZE, EventType.LOGOUT_EVENT);*/
-
-    // private final Set<EventType> allHandledEvents = EnumSet.copyOf(HANDLED_EVENTS);
     private final Set<EventType> contentEvents;
 
     private boolean isRegistered = false;
@@ -425,7 +422,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @author sergiopereira
      * @modified Andre Lopes
      */
-    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action,int actionBarTitleResId, int checkoutStep, boolean backButtonEnabled ) {
+    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action,int actionBarTitleResId, int checkoutStep) {
         Log.i(TAG, "ON UPDATE BASE COMPONENTS");
 
         // Update options menu and search bar
@@ -435,13 +432,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Update the sliding menu
         this.action = action != null ? action : NavigationAction.Unknown;
         updateNavigationMenu();
-
-        isBackButtonEnabled = backButtonEnabled;
-        if (isBackButtonEnabled) {
-            supportActionBar.setUpIcon(R.drawable.abs__ic_ab_back_holo_light);
-        } else {
-            supportActionBar.setUpIcon(R.drawable.ic_drawer);
-        }
 
         // Select step on Checkout
         setCheckoutHeader(checkoutStep);
@@ -479,6 +469,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             Log.w(TAG, "WARNING: INVALIDE FLAG, USE VISIBLE/INVISIBLE FROM View.");
             break;
         }
+    }
+    
+    /**
+     * Set the up button in ActionBar
+     * @param upButton
+     * @author sergiopereira
+     */
+    private void setActionBarUpButton(int upButton) {
+        supportActionBar.setUpIcon(upButton);
     }
 
     public void updateActionForCountry(NavigationAction action) {
@@ -766,12 +765,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // HOME
         if (itemId == android.R.id.home) {
             // Go back or toggle between opened and closed drawer  
-            if (isBackButtonEnabled) {
-               onBackPressed();
-            } else {
-                toggle();
-            }
-
+            if (isBackButtonEnabled) onBackPressed();
+            else toggle();
             return true;
 
             // CART
@@ -807,7 +802,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         
         // Flag used to show action bar as default
         int showActionBar = View.VISIBLE;
-
+        // Default drawable for UP Button
+        int actionBarUpButton = R.drawable.ic_drawer;
+        isBackButtonEnabled = false;
+                
         /**
          * Setting Menu Options
          */
@@ -815,6 +813,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             switch (item) {
             case HIDE_AB:
                 showActionBar = View.GONE;
+                break;
+            case UP_BUTTON_BACK:
+                actionBarUpButton = R.drawable.abs__ic_ab_back_holo_light;
+                isBackButtonEnabled = true;
                 break;
             case SEARCH_VIEW:
                 Log.i(TAG, "ON OPTIONS MENU: CREATE SEARCH VIEW");
@@ -851,6 +853,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             }
         }
         
+        // Set AB UP button
+        setActionBarUpButton(actionBarUpButton);
         // Set AB visibility
         setActionBarVisibility(showActionBar);
         
@@ -1061,7 +1065,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     protected void setItemsVisibility(boolean visible) {
         for (MyMenuItem item : menuItems) {
-            if (item != MyMenuItem.SEARCH_VIEW) currentMenu.findItem(item.resId).setVisible(visible);
+            if (item != MyMenuItem.SEARCH_VIEW && item.resId != -1) currentMenu.findItem(item.resId).setVisible(visible);
         }
     }
 
@@ -1481,7 +1485,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param actionBarTitleResId
      */
     public void setActionBarTitle(int actionBarTitleResId) {
-        // TODO supportActionBar.setTitle(getString(actionBarTitleResId));
+        // supportActionBar.setTitle(getString(actionBarTitleResId));
         logoTextView.setVisibility(View.VISIBLE);
         logoTextView.setText(getString(actionBarTitleResId));
     }
@@ -1490,7 +1494,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * Hide title on actionbar
      */
     public void hideActionBarTitle() {
-        // TODO supportActionBar.setTitle("");
+        // supportActionBar.setTitle("");
         logoTextView.setVisibility(View.GONE);
     }
 
@@ -1584,7 +1588,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     // errorView.setOnClickListener(clickListener);
     // }
 
-    // public final void showContentContainer() { // XXX
+    // public final void showContentContainer() {
     // if (processShow) {
     // Log.d(TAG, "Showing the content container");
     // hideLoadingInfo();
