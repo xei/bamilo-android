@@ -195,14 +195,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
         // Set onScrollListener to signal adapter's Handler when user is scrolling
         mGridView.setOnScrollListener(this);
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            // Validate the current state
-            getAndShowCampaign();            
-        } else {
-            showFragmentRetry(this);
-        }
-
+        getAndShowCampaign();            
     }
         
     /*
@@ -237,7 +230,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE STATE: CAMPAIGN");
-//        outState.putParcelable(TAG, mCampaign);
+        outState.putParcelable(TAG, mCampaign);
         outState.putLong(COUNTER_START_TIME, mStartTimeInMilliseconds);
         outState.putSerializable(BANNER_STATE, bannerState);
     }
@@ -512,11 +505,17 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      * @author sergiopereira
      */
     private void triggerGetCampaign(String id){
-        Log.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
-        // Create request
-        Bundle bundle = new Bundle();
-        bundle.putString(GetCampaignHelper.CAMPAIGN_ID, id);
-        triggerContentEvent(new GetCampaignHelper(), bundle, this);
+      //Validate is service is available
+      if(JumiaApplication.mIsBound){
+            Log.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
+            // Create request
+            Bundle bundle = new Bundle();
+            bundle.putString(GetCampaignHelper.CAMPAIGN_ID, id);
+            triggerContentEvent(new GetCampaignHelper(), bundle, this);
+       } else {
+          showFragmentRetry(this);
+       }
+        
     }
     
     /**
@@ -1087,8 +1086,6 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
          */
         private void setSizeContainer(ItemView view, CampaignItem item, int position){
             // Campaign has sizes except itself (>1)
-            Log.d("CAMP","hasUniqueSize:"+item.hasUniqueSize());
-            Log.d("CAMP","hasSizes:"+item.hasSizes());
             if(!item.hasUniqueSize() && item.hasSizes()) {
                 // Show container
                 view.mSizeContainer.setVisibility(View.VISIBLE);
@@ -1104,7 +1101,6 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
                 view.mSizeSpinner.setTag(position);
                 // Check pre selection
                 if(item.hasSelectedSize()){
-                    Log.d("CAMP","getSelectedSizePosition:"+item.getSelectedSizePosition());
                     view.mSizeSpinner.setSelection(item.getSelectedSizePosition());
                 }
                 // Apply the select listener

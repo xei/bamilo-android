@@ -430,8 +430,8 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		dest.writeList(mImages);
 		dest.writeInt(mStockPercentage);
 		dest.writeString(mMaxSavingPercentage);
-//		dest.writeBooleanArray(new boolean[] {hasUniqueSize});
-		dest.writeString("" + hasUniqueSize);
+		dest.writeBooleanArray(new boolean[] {hasUniqueSize});
+//		dest.writeString("" + hasUniqueSize);
 		dest.writeList(mSizes);
 		dest.writeParcelable(mSelectedSize, 0);
 		dest.writeInt(mSelectedSizePosition);
@@ -457,8 +457,10 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		in.readList(mImages, String.class.getClassLoader());
 		mStockPercentage = in.readInt();
 		mMaxSavingPercentage = in.readString();
-//		in.readBooleanArray(new boolean[] {hasUniqueSize});
-		hasUniqueSize = in.readString().equals("1") ? true : false;
+		boolean[] bolArray = new boolean[1];
+		in.readBooleanArray(bolArray);
+		hasUniqueSize = bolArray[0];
+//		hasUniqueSize = in.readString().equals("true") ? true : false;
 		mSizes = new ArrayList<CampaignItemSize>();
 		in.readList(mSizes, CampaignItemSize.class.getClassLoader());
 		mSelectedSize = in.readParcelable(CampaignItemSize.class.getClassLoader());
