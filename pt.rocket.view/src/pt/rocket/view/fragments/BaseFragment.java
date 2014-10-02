@@ -105,10 +105,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private View mFallBackView;
 
-    public static enum UP_BUTTON { MENU, BACK };
-
-    private UP_BUTTON upButton;
-
     /**
      * Constructor with layout to inflate
      * 
@@ -118,15 +114,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param titleResId
      * @param adjust_state
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId,
-            int titleResId, KeyboardState adjust_state) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
         this.titleResId = titleResId;
         this.adjustState = adjust_state;
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
-        this.upButton = UP_BUTTON.MENU;
     }
 
     /**
@@ -140,7 +134,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.mInflateLayoutResId = layoutResId;
         this.titleResId = 0;
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
-        this.upButton = UP_BUTTON.MENU;
     }
 
     /**
@@ -157,7 +150,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.titleResId = titleResId;
         this.adjustState = adjust_state;
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
-        this.upButton = UP_BUTTON.MENU;
     }
 
     /**
@@ -170,15 +162,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param adjust_state
      * @param checkoutStep
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId,
-            int titleResId, KeyboardState adjust_state, int titleCheckout) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state, int titleCheckout) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
         this.titleResId = titleResId;
         this.adjustState = adjust_state;
         this.checkoutStep = titleCheckout;
-        this.upButton = UP_BUTTON.MENU;
     }
 
     /**
@@ -285,13 +275,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
             Log.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
-            boolean backButtonEnabled = UP_BUTTON.BACK.equals(upButton);
-            getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep, backButtonEnabled);
+            getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
         }
-    }
-
-    protected void setUpButton(UP_BUTTON upButton) {
-        this.upButton = upButton;
     }
     
     /*

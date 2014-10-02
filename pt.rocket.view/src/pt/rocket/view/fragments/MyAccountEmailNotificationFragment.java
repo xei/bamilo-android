@@ -72,13 +72,11 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @author sergiopereira
      */
     public MyAccountEmailNotificationFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyAccount,
                 R.layout.my_account_email_notification_fragment,
                 R.string.myaccount_email_notifications,
                 KeyboardState.NO_ADJUST_CONTENT);
-        // R.string.myaccount_email_notifications
-        setUpButton(UP_BUTTON.BACK);
     }
 
     /*

@@ -98,13 +98,11 @@ public class ReviewWriteFragment extends BaseFragment {
      * Empty constructor
      */
     public ReviewWriteFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.review_write_fragment,
                 0,
                 KeyboardState.ADJUST_CONTENT);
-        setUpButton(UP_BUTTON.BACK);
-        // R.string.writereview_page_title
     }
 
     /*

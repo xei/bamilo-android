@@ -43,13 +43,12 @@ public class ReviewFragment extends BaseFragment {
      * Empty constructor
      */
     public ReviewFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.review_fragment,
                 0,
                 KeyboardState.NO_ADJUST_CONTENT);
-        // R.string.review
-        setUpButton(UP_BUTTON.BACK);
+        
         this.setRetainInstance(true);
     }
 

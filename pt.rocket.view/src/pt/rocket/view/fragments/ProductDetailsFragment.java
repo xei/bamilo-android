@@ -219,12 +219,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      * Empty constructor
      */
     public ProductDetailsFragment() {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.product_details_fragment_main,
                 0,
                 KeyboardState.NO_ADJUST_CONTENT);
-        setUpButton(UP_BUTTON.BACK);
     }
 
     public static ProductDetailsFragment getInstance(Bundle bundle) {

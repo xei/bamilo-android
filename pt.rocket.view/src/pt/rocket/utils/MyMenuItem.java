@@ -34,16 +34,17 @@ import pt.rocket.view.R;
  */
 public enum MyMenuItem {
 
-	/*SHARE(R.id.menu_share), */
+    /* SHARE(R.id.menu_share), */
     BASKET(R.id.menu_basket), 
     SEARCH_VIEW(R.id.menu_search), 
     MY_PROFILE(R.id.menu_myprofile), 
-    HIDE_AB(-1);
+    HIDE_AB(-1), 
+    UP_BUTTON_BACK(-1);
 
-	public final int resId;
+    public final int resId;
 
-	MyMenuItem(int resId) {
-		this.resId = resId;
-	}
+    MyMenuItem(int resId) {
+        this.resId = resId;
+    }
 
 }
