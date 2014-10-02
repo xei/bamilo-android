@@ -11,7 +11,10 @@ import java.util.Map.Entry;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.forms.FormField;
@@ -172,14 +175,20 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         // Cancel button
         view.findViewById(R.id.checkout_edit_button_cancel).setOnClickListener((OnClickListener) this);
         
-        // Get and show form
-        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
-            triggerInitForm();
-        } else if(mFormResponse != null && orderSummary != null){
-            loadEditAddressForm(mFormResponse);
+      //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            // Get and show form
+            if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
+                triggerInitForm();
+            } else if(mFormResponse != null && orderSummary != null){
+                loadEditAddressForm(mFormResponse);
+            } else {
+                triggerEditAddressForm();
+            }
         } else {
-            triggerEditAddressForm();
+            showFragmentRetry(this);
         }
+
     }
     
     /*
@@ -459,6 +468,17 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         if(id == R.id.checkout_edit_button_enter) onClickEditAddressButton();
         // Next button
         else if(id == R.id.checkout_edit_button_cancel) onClickCancelAddressButton();
+        //retry button
+        else if(id == R.id.fragment_root_retry_button){
+            Bundle bundle = new Bundle();
+            if(null != JumiaApplication.CUSTOMER){
+                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                restartAllFragments();
+            }
+          }     
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }

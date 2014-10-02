@@ -10,6 +10,7 @@ import org.holoeverywhere.widget.AdapterView.OnItemSelectedListener;
 import org.holoeverywhere.widget.Spinner;
 import org.holoeverywhere.widget.TextView;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -17,7 +18,7 @@ import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.HeaderGridView;
 import pt.rocket.framework.objects.Campaign;
 import pt.rocket.framework.objects.CampaignItem;
-import pt.rocket.framework.objects.CampaignItem.CampaignItemSize;
+import pt.rocket.framework.objects.CampaignItemSize;
 import pt.rocket.framework.objects.TeaserCampaign;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
@@ -169,9 +170,10 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         // Get campaigns from arguments
         mTeaserCampaign = getArguments().getParcelable(TAG);
         // Validate the saved state
-        if(savedInstanceState != null && savedInstanceState.containsKey(TAG)){
+        if(savedInstanceState != null ){
             Log.i(TAG, "ON GET SAVED STATE");
-            mCampaign = savedInstanceState.getParcelable(TAG);
+            if(savedInstanceState.containsKey(TAG))
+                mCampaign = savedInstanceState.getParcelable(TAG);
             // Restore startTime
             if(savedInstanceState.containsKey(COUNTER_START_TIME)) 
                 mStartTimeInMilliseconds = savedInstanceState.getLong(COUNTER_START_TIME, SystemClock.elapsedRealtime());
@@ -193,8 +195,14 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
         // Set onScrollListener to signal adapter's Handler when user is scrolling
         mGridView.setOnScrollListener(this);
-        // Validate the current state
-        getAndShowCampaign();
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            // Validate the current state
+            getAndShowCampaign();            
+        } else {
+            showFragmentRetry(this);
+        }
+
     }
         
     /*
@@ -229,7 +237,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE STATE: CAMPAIGN");
-        outState.putParcelable(TAG, mCampaign);
+//        outState.putParcelable(TAG, mCampaign);
         outState.putLong(COUNTER_START_TIME, mStartTimeInMilliseconds);
         outState.putSerializable(BANNER_STATE, bannerState);
     }
@@ -1079,6 +1087,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
          */
         private void setSizeContainer(ItemView view, CampaignItem item, int position){
             // Campaign has sizes except itself (>1)
+            Log.d("CAMP","hasUniqueSize:"+item.hasUniqueSize());
+            Log.d("CAMP","hasSizes:"+item.hasSizes());
             if(!item.hasUniqueSize() && item.hasSizes()) {
                 // Show container
                 view.mSizeContainer.setVisibility(View.VISIBLE);
@@ -1093,8 +1103,10 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
                 // Save position in spinner
                 view.mSizeSpinner.setTag(position);
                 // Check pre selection
-                if(item.hasSelectedSize())
+                if(item.hasSelectedSize()){
+                    Log.d("CAMP","getSelectedSizePosition:"+item.getSelectedSizePosition());
                     view.mSizeSpinner.setSelection(item.getSelectedSizePosition());
+                }
                 // Apply the select listener
                 view.mSizeSpinner.setOnItemSelectedListener(this);
             } else {

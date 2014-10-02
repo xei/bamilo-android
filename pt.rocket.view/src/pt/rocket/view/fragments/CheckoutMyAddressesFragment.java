@@ -14,6 +14,7 @@ import org.holoeverywhere.widget.CheckBox;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.forms.Form;
@@ -258,7 +259,18 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         else if(id == R.id.checkout_address_item_btn_delete) onClickDeleteAddressButton(view);
         // Check box
         else if(id == R.id.checkout_address_billing_checkbox) onClickCheckBox((CheckBox) view);
-        // Unknown view
+        //retry button
+        else if(id == R.id.fragment_root_retry_button){
+            Bundle bundle = new Bundle();
+            if(null != JumiaApplication.CUSTOMER){
+                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                restartAllFragments();
+            }
+          }      
+        // Unknown view   
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW " + view.getTag());
     }
     
@@ -591,7 +603,12 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      */
     private void triggerGetBillingForm(){
         Log.i(TAG, "TRIGGER: LOGIN FORM");
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
         triggerContentEvent(new GetBillingFormHelper(), null, this);
+        } else {
+            showFragmentRetry(this);
+        }
     }
     
    

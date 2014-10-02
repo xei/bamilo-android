@@ -8,7 +8,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.rest.RestConstants;
@@ -38,7 +42,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class SessionForgotPasswordFragment extends BaseFragment {
+public class SessionForgotPasswordFragment extends BaseFragment implements OnClickListener{
 
     private static final String TAG = LogTagHelper.create(SessionForgotPasswordFragment.class);
 
@@ -134,13 +138,22 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            
+            if (formResponse != null) {
+                displayForm(formResponse);
+            }
+            else{
+                triggerForgotForm();
+            }
+            
+        } else {
+            showFragmentRetry(this);
+        }
 
-        if (formResponse != null) {
-            displayForm(formResponse);
-        }
-        else{
-            triggerForgotForm();
-        }
+            
+
 
         setAppContentLayout();
     }
@@ -386,4 +399,15 @@ public class SessionForgotPasswordFragment extends BaseFragment {
             onSuccessEvent(bundle);
         }
     };
+    
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.fragment_root_retry_button) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+            getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+        }
+    }
 }

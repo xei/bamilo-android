@@ -69,7 +69,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class ShoppingCartFragment extends BaseFragment {
+public class ShoppingCartFragment extends BaseFragment implements OnClickListener{
 
     private static final String TAG = LogTagHelper.create(ShoppingCartFragment.class);
 
@@ -225,11 +225,16 @@ public class ShoppingCartFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
-        mBeginRequestMillis = System.currentTimeMillis();
-        triggerGetShoppingCart();
-        setListeners();
-        TrackerDelegator.trackPage(TrackingPage.CART);
+        //Validate is service is available
+        if (JumiaApplication.mIsBound) {
+            Log.i(TAG, "ON RESUME");
+            mBeginRequestMillis = System.currentTimeMillis();
+            triggerGetShoppingCart();
+            setListeners();
+            TrackerDelegator.trackPage(TrackingPage.CART);
+        } else {
+            showFragmentRetry(this);
+        }
     }
 
     /**
@@ -1097,5 +1102,20 @@ public class ShoppingCartFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if(id == R.id.fragment_root_retry_button){
+          Bundle bundle = new Bundle();
+          if(null != JumiaApplication.CUSTOMER){
+              bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+              bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+              getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+          } else {
+              restartAllFragments();
+          }
+        }
     }
 }

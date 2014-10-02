@@ -7,6 +7,7 @@ import java.util.EnumSet;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -122,15 +123,20 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
         pollFormContainer = (ViewGroup) view.findViewById(R.id.checkout_poll_form_container);
         // Next button
         view.findViewById(R.id.checkout_poll_button_enter).setOnClickListener((OnClickListener) this);
-
-        // Get and show form
-        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
-            triggerInitForm();
-        } else if(formResponse != null && orderSummary != null){
-            loadPollForm(formResponse);
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            // Get and show form
+            if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
+                triggerInitForm();
+            } else if(formResponse != null && orderSummary != null){
+                loadPollForm(formResponse);
+            } else {
+                triggerPollForm();
+            }
         } else {
-            triggerPollForm();
+            showFragmentRetry(this);
         }
+
         
     }
     
@@ -229,6 +235,17 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
         int id = view.getId();
         // Next button
         if(id == R.id.checkout_poll_button_enter) onClickPollAnswerButton();
+        //retry button
+        else if(id == R.id.fragment_root_retry_button){
+            Bundle bundle = new Bundle();
+            if(null != JumiaApplication.CUSTOMER){
+                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                restartAllFragments();
+            }
+          }     
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }

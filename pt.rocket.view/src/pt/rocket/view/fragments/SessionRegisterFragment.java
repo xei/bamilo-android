@@ -62,7 +62,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class SessionRegisterFragment extends BaseFragment {
+public class SessionRegisterFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(SessionRegisterFragment.class);
 
@@ -169,17 +169,22 @@ public class SessionRegisterFragment extends BaseFragment {
 
         // Used for UG
         forceInputAlignToLeft();
-
-        if (JumiaApplication.INSTANCE.registerForm != null) {
-            Log.d(TAG, " ON RESUME -> load From");
-            loadForm(JumiaApplication.INSTANCE.registerForm);
-            JumiaApplication.INSTANCE.registerSavedInstanceState = null;
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            if (JumiaApplication.INSTANCE.registerForm != null) {
+                Log.d(TAG, " ON RESUME -> load From");
+                loadForm(JumiaApplication.INSTANCE.registerForm);
+                JumiaApplication.INSTANCE.registerSavedInstanceState = null;
+            } else {
+                triggerRegisterForm();
+            }
+            setAppContentLayout();
+            getFormComponents();
+            setFormComponents();
         } else {
-            triggerRegisterForm();
+            showFragmentRetry(this);
         }
-        setAppContentLayout();
-        getFormComponents();
-        setFormComponents();
+      
     }
 
     /*
@@ -743,4 +748,15 @@ public class SessionRegisterFragment extends BaseFragment {
             onSuccessEvent(bundle);
         }
     };
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.fragment_root_retry_button) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+            getBaseActivity().onSwitchFragment(FragmentType.REGISTER, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+        }        
+    }
 }

@@ -360,7 +360,13 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * @author sergiopereira
      */
     private void triggerGetJumiaCountries() {
-        triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, (IResponseCallback) this);
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, (IResponseCallback) this);
+        } else {
+            showFragmentRetry(this);
+        }
+        
     }
     
     /**

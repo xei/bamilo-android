@@ -204,8 +204,14 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         mCoupon = (TextView) view.findViewById(R.id.checkout_my_order_payment_coupon);
         // Get the next step button
         view.findViewById(R.id.checkout_my_order_button_enter).setOnClickListener((OnClickListener) this);
-        // Get my Order
-        showMyOrder();
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            // Get my Order
+            showMyOrder();
+        } else {
+            showFragmentRetry(this);
+        }
+
     }
 
     /*
@@ -475,6 +481,17 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         else if (id == R.id.checkout_my_order_payment_options_btn_edit) onClickEditPaymentOptionsButton();
         // Next step button
         else if (id == R.id.checkout_my_order_button_enter) onClickNextStepButton();
+        //retry button
+        else if(id == R.id.fragment_root_retry_button){
+            Bundle bundle = new Bundle();
+            if(null != JumiaApplication.CUSTOMER){
+                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                restartAllFragments();
+            }
+          }     
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }

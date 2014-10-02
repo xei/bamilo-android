@@ -159,8 +159,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_payment_button_enter).setOnClickListener(this);
-        // Get and show addresses
-        triggerGetPaymentMethods();
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            // Get and show addresses
+            triggerGetPaymentMethods();
+        } else {
+            showFragmentRetry(this);
+        }
     }
 
     
@@ -355,8 +360,16 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         if(id == R.id.checkout_payment_button_enter){
             onClickSubmitPaymentButton(); 
             getBaseActivity().hideKeyboard();
-        } // Unknown view
-        else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        } else if(id == R.id.fragment_root_retry_button){
+            Bundle bundle = new Bundle();
+            if(null != JumiaApplication.CUSTOMER){
+                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                restartAllFragments();
+            }
+          } else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
     
     private void onClickSubmitPaymentButton() {

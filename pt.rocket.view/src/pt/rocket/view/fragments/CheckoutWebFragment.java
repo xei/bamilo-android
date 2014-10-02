@@ -37,6 +37,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.HttpAuthHandler;
@@ -53,7 +54,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class CheckoutWebFragment extends BaseFragment {
+public class CheckoutWebFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(CheckoutWebFragment.class);
 
@@ -146,9 +147,14 @@ public class CheckoutWebFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-       
-        triggerGetCustomer();
-        triggerGetShoppingCartItems();
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            triggerGetCustomer();
+            triggerGetShoppingCartItems();    
+        } else {
+            showFragmentRetry(this);
+        }
+        
     }
     
     private void triggerGetCustomer(){
@@ -564,6 +570,23 @@ public class CheckoutWebFragment extends BaseFragment {
             break;
         }
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        //retry button
+        if(id == R.id.fragment_root_retry_button){
+            Bundle bundle = new Bundle();
+            if(null != JumiaApplication.CUSTOMER){
+                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                restartAllFragments();
+            }
+          }     
+        
     }
     
 }

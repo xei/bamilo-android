@@ -35,6 +35,7 @@ import pt.rocket.helpers.address.GetCitiesHelper;
 import pt.rocket.helpers.address.GetFormAddAddressHelper;
 import pt.rocket.helpers.address.GetRegionsHelper;
 import pt.rocket.helpers.address.SetNewAddressHelper;
+import pt.rocket.helpers.checkout.GetBillingFormHelper;
 import pt.rocket.helpers.configs.GetInitFormHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
@@ -222,15 +223,20 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         mMsgRequired = view.findViewById(R.id.checkout_address_required_text);
         // Next button
         view.findViewById(R.id.checkout_address_button_enter).setOnClickListener((OnClickListener) this);
-        
-        // Get and show form
-        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
-            triggerInitForm();
-        } else if(mFormResponse != null && orderSummary != null){
-            loadCreateAddressForm(mFormResponse);
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            // Get and show form
+            if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
+                triggerInitForm();
+            } else if(mFormResponse != null && orderSummary != null){
+                loadCreateAddressForm(mFormResponse);
+            } else {
+                triggerCreateAddressForm();
+            }
         } else {
-            triggerCreateAddressForm();
+            showFragmentRetry(this);
         }
+      
     }
     
     /*
@@ -557,6 +563,17 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         int id = view.getId();
         // Next button
         if(id == R.id.checkout_address_button_enter) onClickCreateAddressButton();
+        //retry button
+        else if(id == R.id.fragment_root_retry_button){
+            Bundle bundle = new Bundle();
+            if(null != JumiaApplication.CUSTOMER){
+                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                restartAllFragments();
+            }
+          }     
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }

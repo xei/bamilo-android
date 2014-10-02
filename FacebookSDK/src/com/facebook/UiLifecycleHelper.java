@@ -85,7 +85,8 @@ public class UiLifecycleHelper {
         if (session == null) {
             if (savedInstanceState != null) {
                 session = Session.restoreSession(activity, null, callback, savedInstanceState);
-                session.setAppId(this.jumiaAppId);
+                if(session != null)
+                    session.setAppId(this.jumiaAppId);
             }
             if (session == null) {
                 session = new Session(activity);

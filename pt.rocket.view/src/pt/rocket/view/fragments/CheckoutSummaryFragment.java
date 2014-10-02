@@ -11,6 +11,7 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
@@ -164,11 +165,17 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         // Total
         mTotalView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_total);
         mTotal = (TextView) view.findViewById(R.id.checkout_summary_total_text);
-        
-        // Get cart
-        mCart = JumiaApplication.INSTANCE.getCart();
-        if (mCart == null) triggerGetShoppingCart();
-        else showOrderSummary();
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            // Get cart
+            mCart = JumiaApplication.INSTANCE.getCart();
+            if (mCart == null) triggerGetShoppingCart();
+            else showOrderSummary();
+            
+        } else {
+            showFragmentRetry(this);
+        }
+
     }
     
     /*
@@ -476,6 +483,17 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         else if (id == R.id.checkout_summary_shipping_method_btn_edit) onClickEditMethodButton();
         // Remove
         else if (id == R.id.order_summary_item_btn_remove) onClickRemoveItemButton(view);
+        //retry button
+        if(id == R.id.fragment_root_retry_button){
+            Bundle bundle = new Bundle();
+            if(null != JumiaApplication.CUSTOMER){
+                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                restartAllFragments();
+            }
+          }     
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }

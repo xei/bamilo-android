@@ -8,6 +8,10 @@ import java.util.EnumSet;
 
 import org.holoeverywhere.widget.CheckBox;
 
+import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.forms.Form;
 import pt.rocket.forms.FormField;
 import pt.rocket.forms.NewsletterOption;
@@ -259,9 +263,21 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         // Get view id
         int id = view.getId();
         // Next button
-        if(id == R.id.myaccount_newsletter_save) onClickSaveButton();
+        if(id == R.id.myaccount_newsletter_save){
+            onClickSaveButton();
+        }
         // Next button
-        else if(id == R.id.myaccount_newsletter_cancel) onClickCancelButton();
+        else if(id == R.id.myaccount_newsletter_cancel){
+            onClickCancelButton();
+        }
+        
+        else if(id == R.id.fragment_root_retry_button){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
+            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+          }
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
@@ -320,8 +336,13 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     private void triggerGetNewslettersForm(){
         Log.i(TAG, "TRIGGER: GET NEWSLETTER FORM");
-        showFragmentLoading();
-        triggerContentEvent(new GetNewslettersFormHelper(), null, (IResponseCallback) this);
+        if(null != JumiaApplication.CUSTOMER){
+            showFragmentLoading();
+            triggerContentEvent(new GetNewslettersFormHelper(), null, (IResponseCallback) this);    
+        } else {
+            showFragmentRetry(this);
+        }
+        
     }
    
     /**

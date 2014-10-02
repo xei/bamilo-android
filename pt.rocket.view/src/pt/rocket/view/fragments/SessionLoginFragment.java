@@ -9,6 +9,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.holoeverywhere.widget.CheckBox;
 
@@ -29,6 +30,7 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
 import pt.rocket.helpers.configs.GetInitFormHelper;
 import pt.rocket.helpers.session.GetFacebookLoginHelper;
 import pt.rocket.helpers.session.GetLoginFormHelper;
@@ -69,7 +71,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class SessionLoginFragment extends BaseFragment {
+public class SessionLoginFragment extends BaseFragment implements OnClickListener{
 
     private static final String TAG = LogTagHelper.create(SessionLoginFragment.class);
 
@@ -117,11 +119,13 @@ public class SessionLoginFragment extends BaseFragment {
         if (bundle != null) {
             // Initialize SessionLoginFragment with no title
             sLoginFragment = new SessionLoginFragment(0);
-            sLoginFragment.nextFragmentType = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
+            sLoginFragment.nextFragmentType = (FragmentType) bundle
+                    .getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
             sLoginFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
             // Force load form if comes from deep link
             String path = bundle.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
-            if (path != null && path.equals(DeepLinkManager.TAG)) sLoginFragment.formResponse = null;
+            if (path != null && path.equals(DeepLinkManager.TAG))
+                sLoginFragment.formResponse = null;
         } else {
             // Initialize SessionLoginFragment with proper title
             sLoginFragment = new SessionLoginFragment(R.string.login_label);
@@ -132,6 +136,14 @@ public class SessionLoginFragment extends BaseFragment {
     /**
      * Empty constructor
      */
+    public SessionLoginFragment() {
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.LoginOut,
+                R.layout.login,
+                0,
+                KeyboardState.ADJUST_CONTENT);
+    }
+
     public SessionLoginFragment(int titleResId) {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
@@ -220,30 +232,37 @@ public class SessionLoginFragment extends BaseFragment {
          */
         forceInputAlignToLeft();
 
-        // Valdiate form
-        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-            Log.d(TAG, "FORM: TRY AUTO LOGIN");
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+          
+            // Valdiate form
+            if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+                Log.d(TAG, "FORM: TRY AUTO LOGIN");
 
-            triggerAutoLogin();
-        } else if (formResponse != null) {
-            Log.d(TAG, "FORM ISN'T NULL");
-            loadForm(formResponse);
-            cameFromRegister = false;
-        } else {
-            Log.d(TAG, "FORM IS NULL");
-
-            Session s = Session.getActiveSession();
-            s.closeAndClearTokenInformation();
-
-            HashMap<String, FormData> formDataRegistry = JumiaApplication.INSTANCE.getFormDataRegistry();
-            if (formDataRegistry == null || formDataRegistry.size() == 0) {
-                triggerInitForm();
+                triggerAutoLogin();
+            } else if (formResponse != null) {
+                Log.d(TAG, "FORM ISN'T NULL");
+                loadForm(formResponse);
+                cameFromRegister = false;
             } else {
-                triggerLoginForm();
-            }
-            cameFromRegister = false;
-        }
+                Log.d(TAG, "FORM IS NULL");
 
+                Session s = Session.getActiveSession();
+                s.closeAndClearTokenInformation();
+
+                HashMap<String, FormData> formDataRegistry = JumiaApplication.INSTANCE.getFormDataRegistry();
+                if (formDataRegistry == null || formDataRegistry.size() == 0) {
+                    triggerInitForm();
+                } else {
+                    triggerLoginForm();
+                }
+                cameFromRegister = false;
+            }
+            
+        } else {
+            showFragmentRetry(this);
+        }
+        
         setLoginBottomLayout();
     }
 
@@ -393,11 +412,13 @@ public class SessionLoginFragment extends BaseFragment {
 
             }
             else if (id == R.id.middle_login_link_fgtpassword) {
-                getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD,
+                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
             else if (id == R.id.middle_login_link_register) {
                 cameFromRegister = true;
-                getBaseActivity().onSwitchFragment(FragmentType.REGISTER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.REGISTER,
+                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
         }
     };
@@ -490,7 +511,8 @@ public class SessionLoginFragment extends BaseFragment {
             // Validate the next step
             if (nextFragmentType != null && baseActivity != null) {
                 FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
-                baseActivity.onSwitchFragment(nextFragmentType, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                baseActivity.onSwitchFragment(nextFragmentType, FragmentController.NO_BUNDLE,
+                        FragmentController.ADD_TO_BACK_STACK);
             } else {
                 baseActivity.onBackPressed();
             }
@@ -518,7 +540,8 @@ public class SessionLoginFragment extends BaseFragment {
                 TrackerDelegator.trackLoginSuccessful(params);
 
                 // Persist user email or empty that value after successfull login
-                CustomerPreferences.setRememberedEmail(baseActivity, rememberEmailCheck.isChecked() ? customer.getEmail() : null);
+                CustomerPreferences.setRememberedEmail(baseActivity,
+                        rememberEmailCheck.isChecked() ? customer.getEmail() : null);
             }
 
             cameFromRegister = false;
@@ -527,7 +550,8 @@ public class SessionLoginFragment extends BaseFragment {
             if (nextFragmentType != null && baseActivity != null) {
                 Log.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
                 FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
-                baseActivity.onSwitchFragment(nextFragmentType, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                baseActivity.onSwitchFragment(nextFragmentType, FragmentController.NO_BUNDLE,
+                        FragmentController.ADD_TO_BACK_STACK);
             } else {
                 Log.d(TAG, "NEXT STEP: BACK");
                 baseActivity.onBackPressed();
@@ -570,7 +594,8 @@ public class SessionLoginFragment extends BaseFragment {
             getBaseActivity().setActionBarTitle(R.string.login_label);
         }
 
-        dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getBaseActivity(), form);
+        dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM,
+                getBaseActivity(), form);
         try {
             container.removeAllViews();
         } catch (IllegalArgumentException e) {
@@ -647,7 +672,8 @@ public class SessionLoginFragment extends BaseFragment {
                     }
                 } else {
                     Log.d(TAG, "SHOW DIALOG");
-                    HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                    HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle
+                            .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                     List<String> errorMessages = null;
                     if (errors != null) {
                         errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
@@ -683,7 +709,8 @@ public class SessionLoginFragment extends BaseFragment {
     private void triggerAutoLogin() {
         wasAutologin = true;
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE
+                .getCustomerUtils().getCredentials());
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, wasAutologin);
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
@@ -732,4 +759,15 @@ public class SessionLoginFragment extends BaseFragment {
             onSuccessEvent(bundle);
         }
     };
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.fragment_root_retry_button) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+        }
+    }
 }

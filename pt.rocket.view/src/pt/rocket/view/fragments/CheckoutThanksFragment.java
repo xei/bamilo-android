@@ -9,6 +9,7 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
@@ -114,7 +115,12 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        prepareLayout();
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            prepareLayout();
+        } else {
+            showFragmentRetry(this);
+        }
     }
     
     /*
@@ -333,7 +339,16 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
             if (viewId == R.id.order_status_text) {
                 Log.d(TAG, "ON CLICK SPAN: " + view.getId());
                 onClickSpannableString(view);
-            }
+            } else if(viewId == R.id.fragment_root_retry_button){
+                Bundle bundle = new Bundle();
+                if(null != JumiaApplication.CUSTOMER){
+                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+                    bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+                    getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+                } else {
+                    restartAllFragments();
+                }
+              }     
         }
     }
 
@@ -364,6 +379,17 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         if (v.getId() == R.id.btn_checkout_continue) onClickContinue();
         // CASE order number
         else if(v.getId() == R.id.order_number_id) onClickOrderNumber(v);
+        //retry button
+        else if(v.getId() == R.id.fragment_root_retry_button){
+            Bundle bundle = new Bundle();
+            if(null != JumiaApplication.CUSTOMER){
+                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                restartAllFragments();
+            }
+          }     
         // CASE default
         else getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         
@@ -431,17 +457,6 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
      */
     protected boolean onSuccessEvent(Bundle bundle) {
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
-
-        switch (eventType) {
-        case GET_CUSTOMER:
-            trackPurchase();
-            break;
-        default:
-            break;
-        }
-
         return true;
     }
 
@@ -452,17 +467,6 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
      * @return
      */
     protected boolean onErrorEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-
-        switch (eventType) {
-        case GET_CUSTOMER:
-            
-            break;
-        default:
-            break;
-        }
 
         return false;
     }

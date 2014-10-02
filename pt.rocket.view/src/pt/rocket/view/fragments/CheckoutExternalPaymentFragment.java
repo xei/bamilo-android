@@ -44,6 +44,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.HttpAuthHandler;
@@ -65,7 +66,7 @@ import de.akquinet.android.androlog.Log;
  * @author Manuel Silva
  * 
  */
-public class CheckoutExternalPaymentFragment extends BaseFragment {
+public class CheckoutExternalPaymentFragment extends BaseFragment implements OnClickListener{
 
     private static final String TAG = LogTagHelper.create(CheckoutExternalPaymentFragment.class);
 
@@ -150,8 +151,13 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-
-         triggerGetCustomer();
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            triggerGetCustomer();   
+        } else {
+            showFragmentRetry(this);
+        }
+         
          Bundle params = new Bundle();        
          params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
          params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_EXTERNAL_PAYMENT);
@@ -664,6 +670,25 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             break;
         }
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        // Get view id
+        int id = v.getId();
+
+        //retry button
+        if(id == R.id.fragment_root_retry_button){
+            Bundle bundle = new Bundle();
+            if(null != JumiaApplication.CUSTOMER){
+                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                restartAllFragments();
+            }
+          }     
+        
     }
 
 }

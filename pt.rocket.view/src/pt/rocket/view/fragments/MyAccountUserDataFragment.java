@@ -11,6 +11,9 @@ import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestConstants;
@@ -26,6 +29,7 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -116,12 +120,39 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         Log.i(TAG, "ON VIEW CREATED");
         
         mainView = view;
-        setAppContentLayout();
-        init();
+        
+        if(null != JumiaApplication.CUSTOMER){
+            setAppContentLayout();
+            init();
+        } else {         
+            showFragmentRetry(this);
+        }
+
+        
+        
     }
 
     private void init() {
-        triggerCustomer();
+        
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if(isVisible()){
+//                    triggerCustomer();
+//                }
+//            }
+//        }, 750);
+
+        if ( null != lastNameText ) {
+            lastNameText.setText(JumiaApplication.CUSTOMER.getLastName());
+            firstNameText.setText(JumiaApplication.CUSTOMER.getFirstName());
+            emailText.setText(JumiaApplication.CUSTOMER.getEmail());
+            showFragmentContentContainer();
+        } else {
+            restartAllFragments();
+
+        }
+        
     }
 
     /*
@@ -246,10 +277,11 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
+        Log.d(TAG, "ON SUCCESS EVENT");
         if(!isVisible()){
             return true;
         }
-        Log.i(TAG, "ON SUCCESS EVENT");
+
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         
         switch (eventType) {
@@ -334,6 +366,12 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
             finish();
         } else if (id == R.id.button_save) {
             changePassword();
+        } else if(id == R.id.fragment_root_retry_button){
+          Bundle bundle = new Bundle();
+          bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
+          bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+          getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+
         }
     }
     
@@ -348,6 +386,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
      */
     private void triggerCustomer(){
         Bundle bundle = new Bundle();
+        Log.d("USER","triggerCustomer");
         triggerContentEvent(new GetCustomerHelper(), bundle, mCallBack);
     }
     

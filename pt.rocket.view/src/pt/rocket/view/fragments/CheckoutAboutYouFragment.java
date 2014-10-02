@@ -374,6 +374,17 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         else if(id == R.id.checkout_signup_toogle) onClickSignupToogle(view);
         // Sign button
         else if(id == R.id.checkout_signup_form_button_enter) onClickSignupButton();
+        //retry button
+        else if(id == R.id.fragment_root_retry_button){
+            Bundle bundle = new Bundle();
+            if(null != JumiaApplication.CUSTOMER){
+                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                restartAllFragments();
+            }
+          }     
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
@@ -648,37 +659,42 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      */
     private void triggerAutoLogin(){
         Log.i(TAG, "TRIGGER: AUTO LOGIN");
-        onAutoLogin = true;
-        
-        ContentValues values = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
-        
-        // Validate used has facebook credentials
-        try {
-            // Facebook flag
-            if(values.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG)) {
-                Log.i(TAG, "USER HAS FACEBOOK CREDENTIALS");
-                showFragmentLoading();
-                triggerFacebookLogin(values, onAutoLogin);
-                return;
+        onAutoLogin = true;   
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            ContentValues values = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
+
+            // Validate used has facebook credentials
+            try {
+                // Facebook flag
+                if(values.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG)) {
+                    Log.i(TAG, "USER HAS FACEBOOK CREDENTIALS");
+                    showFragmentLoading();
+                    triggerFacebookLogin(values, onAutoLogin);
+                    return;
+                }
+            } catch (NullPointerException e) {
+                Log.i(TAG, "USER HASN'T FACEBOOK CREDENTIALS");
             }
-        } catch (NullPointerException e) {
-            Log.i(TAG, "USER HASN'T FACEBOOK CREDENTIALS");
-        }
-        
-        // Signup flag
-        try {
-            if(values.getAsBoolean(CustomerUtils.INTERNAL_SIGNUP_FLAG)){
-                Log.i(TAG, "USER HAS SIGNUP CREDENTIALS");
-                showFragmentLoading();
-                triggerSignup(values, onAutoLogin);
-                return;
+            
+            // Signup flag
+            try {
+                if(values.getAsBoolean(CustomerUtils.INTERNAL_SIGNUP_FLAG)){
+                    Log.i(TAG, "USER HAS SIGNUP CREDENTIALS");
+                    showFragmentLoading();
+                    triggerSignup(values, onAutoLogin);
+                    return;
+                }
+            } catch (NullPointerException e) {
+                Log.i(TAG, "USER HASN'T SIGNUP CREDENTIALS");
             }
-        } catch (NullPointerException e) {
-            Log.i(TAG, "USER HASN'T SIGNUP CREDENTIALS");
+            
+            // Try login with saved credentials
+            triggerLogin(values, onAutoLogin);
+        } else {
+            showFragmentRetry(this);
         }
-        
-        // Try login with saved credentials
-        triggerLogin(values, onAutoLogin);
+     
     }
     
     /**
