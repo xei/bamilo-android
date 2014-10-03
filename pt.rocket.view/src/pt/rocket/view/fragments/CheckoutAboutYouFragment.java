@@ -12,7 +12,6 @@ import java.util.List;
 import org.holoeverywhere.widget.CheckBox;
 
 import pt.rocket.app.JumiaApplication;
-import pt.rocket.constants.BundleConstants;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
@@ -375,18 +374,24 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         // Sign button
         else if(id == R.id.checkout_signup_form_button_enter) onClickSignupButton();
         //retry button
-        else if(id == R.id.fragment_root_retry_button){
-            Bundle bundle = new Bundle();
-            if(null != JumiaApplication.CUSTOMER){
-                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
-                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
-                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                restartAllFragments();
-            }
-          }     
+        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+    
+    /**
+     * Process the click on retry button.
+     * @author paulo
+     */
+    private void onClickRetryButton() {
+    	Bundle bundle = new Bundle();
+        if(null != JumiaApplication.CUSTOMER){
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            restartAllFragments();
+        }
     }
     
     /**

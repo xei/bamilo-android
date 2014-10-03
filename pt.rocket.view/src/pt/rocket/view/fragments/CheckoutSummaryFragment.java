@@ -171,7 +171,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             mCart = JumiaApplication.INSTANCE.getCart();
             if (mCart == null) triggerGetShoppingCart();
             else showOrderSummary();
-            
         } else {
             showFragmentRetry(this);
         }
@@ -483,19 +482,25 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         else if (id == R.id.checkout_summary_shipping_method_btn_edit) onClickEditMethodButton();
         // Remove
         else if (id == R.id.order_summary_item_btn_remove) onClickRemoveItemButton(view);
-        //retry button
-        if(id == R.id.fragment_root_retry_button){
-            Bundle bundle = new Bundle();
-            if(null != JumiaApplication.CUSTOMER){
-                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
-                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
-                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                restartAllFragments();
-            }
-          }     
+        // Retry button
+        if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+    
+    /**
+     * Process the click on retry button.
+     * @author paulo
+     */
+    private void onClickRetryButton() {
+        Bundle bundle = new Bundle();
+        if(null != JumiaApplication.CUSTOMER){
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            restartAllFragments();
+        }
     }
 
     /**

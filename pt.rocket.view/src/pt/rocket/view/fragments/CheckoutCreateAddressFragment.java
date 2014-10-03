@@ -35,7 +35,6 @@ import pt.rocket.helpers.address.GetCitiesHelper;
 import pt.rocket.helpers.address.GetFormAddAddressHelper;
 import pt.rocket.helpers.address.GetRegionsHelper;
 import pt.rocket.helpers.address.SetNewAddressHelper;
-import pt.rocket.helpers.checkout.GetBillingFormHelper;
 import pt.rocket.helpers.configs.GetInitFormHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.pojo.DynamicForm;
@@ -223,6 +222,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         mMsgRequired = view.findViewById(R.id.checkout_address_required_text);
         // Next button
         view.findViewById(R.id.checkout_address_button_enter).setOnClickListener((OnClickListener) this);
+        
         //Validate is service is available
         if(JumiaApplication.mIsBound){
             // Get and show form
@@ -564,18 +564,24 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Next button
         if(id == R.id.checkout_address_button_enter) onClickCreateAddressButton();
         //retry button
-        else if(id == R.id.fragment_root_retry_button){
-            Bundle bundle = new Bundle();
-            if(null != JumiaApplication.CUSTOMER){
-                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
-                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
-                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                restartAllFragments();
-            }
-          }     
+        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+    
+    /**
+     * Process the click on retry button.
+     * @author paulo
+     */
+    private void onClickRetryButton() {
+    	Bundle bundle = new Bundle();
+        if(null != JumiaApplication.CUSTOMER){
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            restartAllFragments();
+        }
     }
     
     /**

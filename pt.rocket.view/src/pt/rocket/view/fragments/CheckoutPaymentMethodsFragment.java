@@ -360,17 +360,28 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         if(id == R.id.checkout_payment_button_enter){
             onClickSubmitPaymentButton(); 
             getBaseActivity().hideKeyboard();
-        } else if(id == R.id.fragment_root_retry_button){
-            Bundle bundle = new Bundle();
-            if(null != JumiaApplication.CUSTOMER){
-                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
-                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
-                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                restartAllFragments();
-            }
-          } else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        }
+        // Case retry
+        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
+        // Case Unknown
+        else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
+    
+    /**
+     * Process the click on retry button.
+     * @author paulo
+     */
+    private void onClickRetryButton() {
+        Bundle bundle = new Bundle();
+        if(null != JumiaApplication.CUSTOMER){
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            restartAllFragments();
+        }
+    }
+    
     
     private void onClickSubmitPaymentButton() {
         Log.i(TAG, "ON CLICK: Submit Payment Method");

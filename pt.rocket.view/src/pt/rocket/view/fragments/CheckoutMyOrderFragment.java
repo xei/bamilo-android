@@ -204,6 +204,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         mCoupon = (TextView) view.findViewById(R.id.checkout_my_order_payment_coupon);
         // Get the next step button
         view.findViewById(R.id.checkout_my_order_button_enter).setOnClickListener((OnClickListener) this);
+        
         //Validate is service is available
         if(JumiaApplication.mIsBound){
             // Get my Order
@@ -482,18 +483,24 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         // Next step button
         else if (id == R.id.checkout_my_order_button_enter) onClickNextStepButton();
         //retry button
-        else if(id == R.id.fragment_root_retry_button){
-            Bundle bundle = new Bundle();
-            if(null != JumiaApplication.CUSTOMER){
-                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
-                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
-                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                restartAllFragments();
-            }
-          }     
+        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+    
+    /**
+     * Process the click on retry button.
+     * @author paulo
+     */
+    private void onClickRetryButton() {
+        Bundle bundle = new Bundle();
+        if(null != JumiaApplication.CUSTOMER){
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            restartAllFragments();
+        }
     }
 
     /**

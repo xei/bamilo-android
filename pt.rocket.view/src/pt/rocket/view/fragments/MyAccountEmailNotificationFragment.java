@@ -263,23 +263,24 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         // Get view id
         int id = view.getId();
         // Next button
-        if(id == R.id.myaccount_newsletter_save){
-            onClickSaveButton();
-        }
-        // Next button
-        else if(id == R.id.myaccount_newsletter_cancel){
-            onClickCancelButton();
-        }
-        
-        else if(id == R.id.fragment_root_retry_button){
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
-            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-
-          }
+        if(id == R.id.myaccount_newsletter_save) onClickSaveButton();
+        // Cancel button
+        else if(id == R.id.myaccount_newsletter_cancel) onClickCancelButton();
+        // Retry button
+        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+    
+    /**
+     * Process the click on retry button.
+     * @author paulo
+     */
+    private void onClickRetryButton() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
+        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
     /**

@@ -134,14 +134,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
 
     private void init() {
         
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                if(isVisible()){
-//                    triggerCustomer();
-//                }
-//            }
-//        }, 750);
+        // triggerCustomer();
 
         if ( null != lastNameText ) {
             lastNameText.setText(JumiaApplication.CUSTOMER.getLastName());
@@ -150,7 +143,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
             showFragmentContentContainer();
         } else {
             restartAllFragments();
-
         }
         
     }
@@ -362,19 +354,28 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     public void onClick(View v) {
         int id = v.getId();
         hideKeyboard();
-        if (id == R.id.button_cancel) {
-            finish();
-        } else if (id == R.id.button_save) {
-            changePassword();
-        } else if(id == R.id.fragment_root_retry_button){
-          Bundle bundle = new Bundle();
-          bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
-          bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
-          getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-
-        }
+        // Cancel button
+        if (id == R.id.button_cancel) finish();
+        // Save button    
+        else if (id == R.id.button_save) changePassword();
+        // Retry button
+        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
     }
     
+    /**
+     * Process the click on retry button.
+     * @author paulo
+     */
+    private void onClickRetryButton() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
+        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+    
+    /**
+     * 
+     */
     private void finish(){
         getActivity().onBackPressed();
     }
@@ -385,8 +386,8 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
      * @author sergiopereira
      */
     private void triggerCustomer(){
+    	Log.i(TAG,"TRIGGER GET CUSTOMER");
         Bundle bundle = new Bundle();
-        Log.d("USER","triggerCustomer");
         triggerContentEvent(new GetCustomerHelper(), bundle, mCallBack);
     }
     
