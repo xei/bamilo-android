@@ -155,7 +155,7 @@ public class TeasersFactory {
 
     private View getStaticBanner(ViewGroup mainView, ArrayList<TeaserImage> teaserImageArrayList) {
         View rootView = mInflater.inflate(R.layout.teaser_banners_group, mainView, false);
-        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
+        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_banners_group_container);
 
         if (null != mContext) {
             int width = WindowHelper.getWidth(mContext);
@@ -190,9 +190,9 @@ public class TeasersFactory {
 
     private View getCategoriesTeaser(ViewGroup mainView, CategoryTeaserGroup teaserCategoryGroup) {
         View rootView = mInflater.inflate(R.layout.teaser_categories_group, mainView, false);
-        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
+        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_categories_group_container);
         if (teaserCategoryGroup != null) {
-            ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserCategoryGroup.getTitle());
+            ((TextView) rootView.findViewById(R.id.teaser_categories_group_title)).setText(teaserCategoryGroup.getTitle());
             // Add each item
             for (TeaserCategory category : teaserCategoryGroup.getTeasers())
                 container.addView(createCategoryTeaserView(category, container, mInflater));
@@ -210,10 +210,10 @@ public class TeasersFactory {
      */
     private View getProductsListTeaser(ViewGroup mainView, ProductTeaserGroup productTeaserGroup) {
         View rootView = mInflater.inflate(R.layout.teaser_products_group, mainView, false);
-        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
+        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_products_group_container);
 
         if (productTeaserGroup != null) {
-            ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(productTeaserGroup.getTitle());
+            ((TextView) rootView.findViewById(R.id.teaser_products_group_title)).setText(productTeaserGroup.getTitle());
             for (TeaserProduct product : productTeaserGroup.getTeasers())
                 container.addView(createProductTeaserView(product, container, mInflater, productTeaserGroup.getTeasers().size()));
         }
@@ -228,7 +228,7 @@ public class TeasersFactory {
      */
     private View getBrandsListTeaser(ViewGroup mainView, BrandsTeaserGroup brandsTeaserGroup) {
         View rootView = mInflater.inflate(R.layout.teaser_brands_group, mainView, false);
-        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
+        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_brands_group_container);
         if(brandsTeaserGroup!=null){
             for (TeaserBrand brand : brandsTeaserGroup.getTeasers()) {
                 container.addView(createBrandTeaserView(brand, container, mInflater, brandsTeaserGroup.getTeasers().size()));
@@ -365,9 +365,9 @@ public class TeasersFactory {
      */
     private View getTeaserTopBrands(ViewGroup mainView, TeaserGroupTopBrands teaserGroupTopBrands) {
         View rootView = mInflater.inflate(R.layout.teaser_top_brands_group, mainView, false);
-        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
+        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_top_brands_group_container);
         if (teaserGroupTopBrands != null) {
-            ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserGroupTopBrands.getTitle().replace("_", " "));
+            ((TextView) rootView.findViewById(R.id.teaser_top_brands_group_title)).setText(teaserGroupTopBrands.getTitle().replace("_", " "));
             // Add each brand
             for (TeaserTopBrand teaser : teaserGroupTopBrands.getTeasers()) {
                 container.addView(createTopBrandTeaserView(teaser, container, mInflater));
@@ -425,7 +425,7 @@ public class TeasersFactory {
      */
     private View getTeaserCampaigns(ViewGroup mainView, TeaserGroupCampaigns teaserGroupCampaigns) {
         View rootView = mInflater.inflate(R.layout.teaser_campaigns_group, mainView, false);
-        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_group_container);
+        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_campaigns_group_container);
         if (teaserGroupCampaigns != null) {
             // Get teaser campaigns
             ArrayList<TeaserCampaign> campaigns = teaserGroupCampaigns.getTeasers();
@@ -435,19 +435,19 @@ public class TeasersFactory {
             switch (size) {
             // Case empty
             case 0:
-                rootView.findViewById(R.id.teaser_group_title_container).setVisibility(View.GONE);
+                rootView.findViewById(R.id.teaser_campaigns_group_title_container).setVisibility(View.GONE);
                 break;
             // Case one
             case 1:
                 // Set title
-                ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(campaigns.get(0).getTargetTitle());
-                attachTeaserListener(campaigns.get(0), rootView.findViewById(R.id.teaser_group_title_container));
+                ((TextView) rootView.findViewById(R.id.teaser_campaigns_group_title)).setText(campaigns.get(0).getTargetTitle());
+                attachTeaserListener(campaigns.get(0), rootView.findViewById(R.id.teaser_campaigns_group_title_container));
                 break;
             // Case multi
             default:
                 // Set title
-                ((TextView) rootView.findViewById(R.id.teaser_group_title)).setText(teaserGroupCampaigns.getTitle());
-                attachTeaserListener(campaigns.get(0), rootView.findViewById(R.id.teaser_group_title_container));
+                ((TextView) rootView.findViewById(R.id.teaser_campaigns_group_title)).setText(teaserGroupCampaigns.getTitle());
+                attachTeaserListener(campaigns.get(0), rootView.findViewById(R.id.teaser_campaigns_group_title_container));
                 // Create views
                 for (int i = 0; i < campaigns.size(); i++) {
                     View view = createCampaignTeaserView(campaigns.get(i), container, mInflater);

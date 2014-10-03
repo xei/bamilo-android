@@ -12,10 +12,10 @@
     <!-- CONTAINER -->
 
     <LinearLayout
-        android:id="@+id/teaser_group_container"
+        android:id="@+id/teaser_campaigns_group_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/teaser_group_title_container"
+        android:layout_alignTop="@+id/teaser_campaigns_group_title_container"
         android:background="@drawable/background_content"
         android:orientation="vertical"
         android:paddingTop="@dimen/campaign_title_button_height" />
@@ -23,7 +23,7 @@
     <!-- TITLE -->
 
     <RelativeLayout
-        android:id="@+id/teaser_group_title_container"
+        android:id="@+id/teaser_campaigns_group_title_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/campaign_title_button_height"
         android:layout_marginLeft="1dp"
@@ -59,7 +59,7 @@
         </LinearLayout>
 
         <org.holoeverywhere.widget.TextView
-            android:id="@+id/teaser_group_title"
+            android:id="@+id/teaser_campaigns_group_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

@@ -55,14 +55,14 @@
                 android:paddingBottom="1dp"
                 android:paddingLeft="1dp" >
 
-                <LinearLayout
+                <FrameLayout
                     android:id="@+id/home_page_right_container_categpries"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:visibility="gone" />
 
-                <LinearLayout
+                <FrameLayout
                     android:id="@+id/home_page_right_container_brands"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

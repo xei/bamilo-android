@@ -15,10 +15,11 @@ import pt.rocket.framework.objects.TeaserCampaign;
 import pt.rocket.framework.objects.TeaserGroupCampaigns;
 import pt.rocket.framework.objects.TeaserGroupType;
 import pt.rocket.framework.objects.TeaserSpecification;
+import pt.rocket.framework.tracking.AnalyticsGoogle;
+import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.utils.ScrollViewWithHorizontal;
-import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
 
@@ -123,10 +125,10 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         mScrollViewWithHorizontal = (ScrollViewWithHorizontal) view.findViewById(R.id.home_page_single_scrollview);
         
         // Get landscape containers
-        LinearLayout leftContainer = (LinearLayout) view.findViewById(R.id.home_page_left_container);
-        LinearLayout rightContainer = (LinearLayout) view.findViewById(R.id.home_page_right_container);
-        LinearLayout rightContainerCategories = (LinearLayout) view.findViewById(R.id.home_page_right_container_categpries);
-        LinearLayout rightContainerBrands = (LinearLayout) view.findViewById(R.id.home_page_right_container_brands);
+        ViewGroup leftContainer = (ViewGroup) view.findViewById(R.id.home_page_left_container);
+        ViewGroup rightContainer = (ViewGroup) view.findViewById(R.id.home_page_right_container);
+        ViewGroup rightContainerCategories = (ViewGroup) view.findViewById(R.id.home_page_right_container_categpries);
+        ViewGroup rightContainerBrands = (ViewGroup) view.findViewById(R.id.home_page_right_container_brands);
         
         // Validate current home 
         if (mHomePage != null) {
@@ -260,7 +262,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      * @param rightViewCategories 
      * @author sergiopereira
      */
-    private void showHomePage(Homepage homePage, LinearLayout leftView, LinearLayout rightView, LinearLayout rightViewCategories, LinearLayout rightViewBrands) {
+    private void showHomePage(Homepage homePage, ViewGroup leftView, ViewGroup rightView, ViewGroup rightViewCategories, ViewGroup rightViewBrands) {
         Log.i(TAG, "SHOW HOME WITH TEASERS");
         // Create the teaser factory
         TeasersFactory mTeasersFactory = new TeasersFactory(getBaseActivity(), mInflater, (OnClickListener) this);
@@ -496,12 +498,13 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         if (targetUrl != null && targetPosition != null && hasSavedTeaserCampaigns()) {
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
+            // Tracking event
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, targetTitle, 0l);
             // Selected campaign position
             Log.d(TAG, "ON CLICK CAMPAIGN: " + targetTitle + " " + targetUrl + " " + targetPosition);
             bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, mCampaigns);
             bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, Integer.valueOf(targetPosition));
             getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
-            TrackerDelegator.trackCampaignsView(targetTitle);
         } else 
             Log.w(TAG, "WARNING: NPE ON CLICK CAMPAIGN: " + targetTitle + " " + targetUrl + " " + targetPosition + " " + hasSavedTeaserCampaigns());
     }
