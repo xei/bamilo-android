@@ -9,10 +9,10 @@
     <bool name="ga_enable">false</bool>
 
     <string name="ga_trackingId"></string>
-
-    <!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes.
-    <integer name="ga_dispatchPeriod">30</integer>
-     -->
+    
+	<!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
+    <integer name="ga_dispatchPeriod">0</integer>
+    -->
 
     <!-- PageView Names -->
     <string name="gnavigation">LeftMenu</string>
@@ -50,11 +50,13 @@
     <string name="gsearch_prefix">search</string>
     <string name="gpush_prefix">push</string>
     <string name="gcart_prefix">cart</string>
+    <string name="grelateditem_prefix">related_item</string>
 
     <!-- Event Categories -->
     <string name="gcatalog">Catalog</string>
     <string name="gcheckout">Checkout</string>
     <string name="gcampaign">Campaign</string>
+    <string name="grelateditem">RelatedItem</string>
 
     <!-- Action -->
     <string name="gpdv">pdv</string>

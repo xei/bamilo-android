@@ -33,17 +33,17 @@ public enum EventType {
 		
 	GET_CATEGORIES_EVENT("http:/catalog/categories/", RestContract.MAX_CACHE_TIME), 
 
-	GET_PRODUCTS_EVENT("http:/search?setDevice=mobileApi", null), 
+	GET_PRODUCTS_EVENT("http:/search?setDevice=mobileApi", RestContract.NO_CACHE), 
 	
-	LOGIN_EVENT("https:/customer/login?setDevice=mobileApi", null),
+	LOGIN_EVENT("https:/customer/login?setDevice=mobileApi", RestContract.NO_CACHE),
 	
-	FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin?setDevice=mobileApi&facebook=true", null),
+	FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin?setDevice=mobileApi&facebook=true", RestContract.NO_CACHE),
 		
 	GET_LOGIN_FORM_EVENT("login", RestContract.MAX_CACHE_TIME),
 	
 	GET_LOGIN_FORM_FALLBACK_EVENT("http:/forms/login/", RestContract.MAX_CACHE_TIME),
 
-	LOGOUT_EVENT("https:/customer/logout/", null), 
+	LOGOUT_EVENT("https:/customer/logout/", RestContract.NO_CACHE), 
 
 	GET_WISHLIST_EVENT,
 
@@ -59,9 +59,9 @@ public enum EventType {
 	
 	GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggest/", RestContract.DEFAULT_CACHE_TIME),
 	
-	ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/order/add?setDevice=mobileApi", null),
+	ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/order/add?setDevice=mobileApi", RestContract.NO_CACHE),
 	
-	REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/order/remove?setDevice=mobileApi", null),
+	REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/order/remove?setDevice=mobileApi", RestContract.NO_CACHE),
 	
 	GET_SHOPPING_CART_ITEMS_EVENT("https:/order/cartdata?setDevice=mobileApi", RestContract.NO_CACHE),
 	
@@ -71,7 +71,7 @@ public enum EventType {
 	
 	GET_REGISTRATION_EDIT_FORM_EVENT("edit", RestContract.MAX_CACHE_TIME),
 	
-    CHANGE_PASSWORD_EVENT("https:/customer/changepass?setDevice=mobileApi", null),
+    CHANGE_PASSWORD_EVENT("https:/customer/changepass?setDevice=mobileApi", RestContract.NO_CACHE),
 	
 	GET_CHANGE_PASSWORD_FORM_EVENT("changepassword", RestContract.MAX_CACHE_TIME),
 	
@@ -79,11 +79,11 @@ public enum EventType {
 	
 	GET_FORGET_PASSWORD_FORM_FALLBACK_EVENT("http:/forms/forgotpassword/", RestContract.MAX_CACHE_TIME),
 
-    FORGET_PASSWORD_EVENT("https:/customer/forgotpassword?setDevice=mobileApi", null),
+    FORGET_PASSWORD_EVENT("https:/customer/forgotpassword?setDevice=mobileApi", RestContract.NO_CACHE),
 	
-    REGISTER_ACCOUNT_EVENT("https:/customer/create?setDevice=mobileApi", null), 
+    REGISTER_ACCOUNT_EVENT("https:/customer/create?setDevice=mobileApi", RestContract.NO_CACHE), 
     
-    EDIT_ACCOUNT_EVENT("https:/customer/edit/", null),
+    EDIT_ACCOUNT_EVENT("https:/customer/edit/", RestContract.NO_CACHE),
     
     GET_NAVIGATION_LIST_COMPONENTS_EVENT("http:/main/getstatic?key=mobile_navigation", RestContract.MAX_CACHE_TIME),
     
@@ -93,9 +93,9 @@ public enum EventType {
     
     GET_PRODUCT_REVIEWS_EVENT,
     
-    REVIEW_PRODUCT_EVENT("http:/rating/add/", null),
+    REVIEW_PRODUCT_EVENT("http:/rating/add/", RestContract.NO_CACHE),
             
-    CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT("https:/order/cartchange/", null),
+    CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT("https:/order/cartchange/", RestContract.NO_CACHE),
     
     GET_FORMS_DATASET_LIST_EVENT,
     
@@ -109,9 +109,9 @@ public enum EventType {
 	
 	GET_RESOLUTIONS("http:/main/imageresolutions/", RestContract.MAX_CACHE_TIME),
 	
-	GET_PROMOTIONS("http:/main/getstatic?key=mobile_promotions", null),
+	GET_PROMOTIONS("http:/main/getstatic?key=mobile_promotions", RestContract.NO_CACHE),
 	
-	TRACK_ORDER_EVENT("http:/order/trackingorder/?setDevice=mobileApi", null),
+	TRACK_ORDER_EVENT("http:/order/trackingorder/?setDevice=mobileApi", RestContract.NO_CACHE),
 	
 	/**
 	 * NATIVE CHECKOUT EVENTS

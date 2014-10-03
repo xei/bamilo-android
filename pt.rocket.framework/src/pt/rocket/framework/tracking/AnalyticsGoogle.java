@@ -310,7 +310,7 @@ public class AnalyticsGoogle {
 	 * @param campaign
 	 * @author sergiopereira
 	 */
-	private void trackCampaign(String campaign) {
+	private void trackGACampaign(String campaign) {
 		String utmURI = (!campaign.contains("utm_source")) ? "utm_campaign=" + campaign + "&utm_source=push&utm_medium=referrer" : campaign;
 		Log.i(TAG, "TRACK CAMPAIGN: campaign->" + utmURI);
 		mTracker.send(new HitBuilders.AppViewBuilder()
@@ -526,6 +526,20 @@ public class AnalyticsGoogle {
 		String action = stringBuilder.toString();		
 		trackEvent(category, action, sku, value);
 	}
+	
+	/**
+	 * 
+	 * @param context
+	 * @param sku
+	 * @param value
+	 * @param ratingType
+	 */
+	public void trackCampaign(String campaign){
+		// Validate
+		if (!isEnabled) return;
+		// Data		
+		trackPage(campaign);
+	}
 
 	/**
 	 * Google Analytics "General Campaign Measurement"
@@ -533,11 +547,11 @@ public class AnalyticsGoogle {
 	 * @param UTM Campaign
 	 * 
 	 */
-	public void setCampaign(String campaignString) {
+	public void setGACampaign(String campaignString) {
 		// Validation
 		if (!isEnabled) return;
 		// Data
-		if (!TextUtils.isEmpty(campaignString)) trackCampaign(campaignString);
+		if (!TextUtils.isEmpty(campaignString)) trackGACampaign(campaignString);
 	}
 
 }

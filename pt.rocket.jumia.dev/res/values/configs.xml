@@ -9,6 +9,10 @@
 
     <!-- App -->
     <string name="app_name">Jumia Dev</string>
+    <string name="package_id">pt.rocket.jumia.dev</string>
+    
+    <!-- ADX -->
+    <string name="adx_app_name">pt.rocket.jumia</string>
 
     <!-- BUG SENSE -->
     <string name="bugsense_apikey">c05cc696</string>
