@@ -5,4 +5,12 @@
     <dimen name="teaser_swipe_banner_height">@dimen/teaser_swipe_banner_height_sw320dp</dimen>
     <dimen name="teaser_banners_group_height">@dimen/teaser_banners_group_height_sw320dp</dimen>
 
+	<!-- CATALOG WIZARD -->
+	<dimen name="product_tip_top_swipe">36dp</dimen>
+	<dimen name="product_tip_top_favourite">36dp</dimen>
+	
+	<dimen name="product_tip_variations_top_margin">45dp</dimen>
+	
+	<dimen name="text_l">16sp</dimen>
+    <dimen name="text_xl">18sp</dimen>
 </resources>

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/product_tip_padding_side"
-        android:layout_marginTop="@dimen/margin_veryhuge"
+        android:layout_marginTop="@dimen/product_tip_top_favourite"
         android:src="@drawable/img_instructions_right_tap" />
 
     <View

@@ -161,14 +161,16 @@
     <dimen name="wizard_nav_img_margin_left">80dp</dimen>
     <dimen name="wizard_nav_img_margin_top">140dp</dimen>
     <dimen name="wizard_product_height">100dp</dimen>
-
     <!-- FAVOURITE WIZARD -->
     <dimen name="product_tip_top_margin">0dp</dimen>
     <dimen name="product_tip_variations_top_margin">65dp</dimen>
     <!-- <dimen name="product_tip_padding">52.8dp</dimen> -->
     <dimen name="product_tip_padding">@dimen/margin_large</dimen>
     <dimen name="product_tip_padding_side">15dp</dimen>
-
+    
+	<!-- PRODUCT WIZARD -->
+	<dimen name="product_tip_top_swipe">52.8dp</dimen>
+	<dimen name="product_tip_top_favourite">32dp</dimen>
     <!-- MY PROFILE -->
     <dimen name="myprofile_item_size">42.67dp</dimen>
     <dimen name="myprofile_item_icon_container_size">27dp</dimen>
