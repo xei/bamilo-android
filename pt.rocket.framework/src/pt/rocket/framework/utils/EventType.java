@@ -33,7 +33,7 @@ public enum EventType {
 		
 	GET_CATEGORIES_EVENT("http:/catalog/categories/", RestContract.MAX_CACHE_TIME), 
 
-	GET_PRODUCTS_EVENT("http:/search?setDevice=mobileApi", RestContract.DEFAULT_CACHE_TIME), 
+	GET_PRODUCTS_EVENT("http:/search?setDevice=mobileApi", null), 
 	
 	LOGIN_EVENT("https:/customer/login?setDevice=mobileApi", null),
 	
