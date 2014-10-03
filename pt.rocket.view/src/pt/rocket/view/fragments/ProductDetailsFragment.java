@@ -1124,7 +1124,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.CONTENT_URL, (String) v.getTag());
-                bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserrecentlyviewed_prefix);
+                bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.grelateditem_prefix);
                 bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
                 // inform PDV that Related Items should be shown
                 bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);

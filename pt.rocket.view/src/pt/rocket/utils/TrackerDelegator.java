@@ -674,20 +674,20 @@ public class TrackerDelegator {
      * 
      * @param utm
      */
-    public static void trackCampaign(String utm) {
+    public static void trackGACampaign(String utm) {
         // GA
-        AnalyticsGoogle.get().setCampaign(utm);
+        AnalyticsGoogle.get().setGACampaign(utm);
     }
 
     /**
      * Tracking a campaign
      * @param name the name of campaign
      */
-    public static void trackCampaignsView(String name) {
+    public static void trackCampaignView(String name) {
         // AD4Push
         Ad4PushTracker.get().trackCampaignsView();
         // GA
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, name, 0l);
+        AnalyticsGoogle.get().trackCampaign(name);
     }
 
     /**
@@ -775,7 +775,6 @@ public class TrackerDelegator {
     public static void trackCatalogSwitchLayout(String label) {
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.CATALOG_SWITCH_LAYOUT, label, 0l);
-    }
-    
+    }    
     
 }

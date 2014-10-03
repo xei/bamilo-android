@@ -170,7 +170,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         // Get campaigns from arguments
         mTeaserCampaign = getArguments().getParcelable(TAG);
         // Validate the saved state
-        if(savedInstanceState != null ){
+        if(savedInstanceState != null ) {
             Log.i(TAG, "ON GET SAVED STATE");
             if(savedInstanceState.containsKey(TAG))
                 mCampaign = savedInstanceState.getParcelable(TAG);
@@ -180,6 +180,9 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             if(savedInstanceState.containsKey(BANNER_STATE)) 
                 bannerState = (BannerVisibility)savedInstanceState.getSerializable(BANNER_STATE);
         }
+        
+        // Tracking
+        TrackerDelegator.trackCampaignView(mTeaserCampaign != null ? mTeaserCampaign.getTargetTitle() : "n.a.");
     }
     
     /*
@@ -195,7 +198,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
         // Set onScrollListener to signal adapter's Handler when user is scrolling
         mGridView.setOnScrollListener(this);
-        getAndShowCampaign();            
+        // Validate the current state
+        getAndShowCampaign();
     }
         
     /*
@@ -515,7 +519,6 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
        } else {
           showFragmentRetry(this);
        }
-        
     }
     
     /**
@@ -1100,7 +1103,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
                 // Save position in spinner
                 view.mSizeSpinner.setTag(position);
                 // Check pre selection
-                if(item.hasSelectedSize()){
+                if(item.hasSelectedSize()) {
                     view.mSizeSpinner.setSelection(item.getSelectedSizePosition());
                 }
                 // Apply the select listener

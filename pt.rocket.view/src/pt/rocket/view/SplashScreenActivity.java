@@ -321,7 +321,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             public void onAnimationEnd(Animation animation) {
                 jumiaMapImage.setVisibility(View.GONE);
                 // ## Google Analytics "General Campaign Measurement" ##
-                TrackerDelegator.trackCampaign(utm);
+                TrackerDelegator.trackGACampaign(utm);
                 // ## Product URL ##
                 if (!TextUtils.isEmpty(productUrl)) {
                     // Start with deep link to product detail

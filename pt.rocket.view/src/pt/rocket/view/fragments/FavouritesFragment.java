@@ -76,6 +76,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     protected int mAddedItemsCounter = 0;
 
     protected ArrayList<Integer> mItemsNotAddedToCart = new ArrayList<Integer>();
+    
+    protected TrackingPage mPageName = TrackingPage.FAVORITES;
 
     /**
      * Empty constructor
@@ -159,7 +161,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         super.onResume();
         Log.i(TAG, "ON RESUME");
         // Tracking page
-        TrackerDelegator.trackPage(TrackingPage.FAVORITES);
+        TrackerDelegator.trackPage(mPageName);
     }
 
     /*

@@ -16,6 +16,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.objects.AddableToCart;
 import pt.rocket.framework.objects.LastViewedAddableToCart;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -43,6 +44,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
     private static RecentlyViewedFragment mRecentlyViewedFragment;
 
     private Button mClearAllButton;
+    
+    protected TrackingPage mPageName = TrackingPage.RECENTLY_VIEWED;
 
     /**
      * Empty constructor
@@ -53,7 +56,6 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
                 R.layout.recentlyviewed,
                 R.string.recently_viewed,
                 KeyboardState.NO_ADJUST_CONTENT);
-        // R.string.recently_viewed
     }
 
     /**

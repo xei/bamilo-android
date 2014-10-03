@@ -1,75 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <!--
-    Google tracking
-    y
-    <bool name="ga_enable">true</bool>
-    <bool name="ga_autoActivityTracking">true</bool>
-    <bool name="ga_reportUncaughtExceptions">true</bool>
-
-    tracking keys
-    <bool name="ga_testmode">true</bool>
-
-    <string name="ga_trackingId">UA-39889173-1</string> TestKonto SMF
-
-    <string name="gaid_id_test">UA-29801013-4</string>
-    <string name="gaid_id_live">UA-29801013-5</string>
-    <string name="gaid_my_test">UA-30335348-2</string>
-    <string name="gaid_my_live">UA-30335348-3</string>
-    <string name="gaid_ph_test">UA-30245404-2</string>
-    <string name="gaid_ph_live">UA-30245404-3</string>
-    <string name="gaid_th_test">UA-30236174-5</string>
-    <string name="gaid_th_live">UA-30236174-6</string>
-    <string name="gaid_vn_test">UA-30172376-2</string>
-    <string name="gaid_vn_live">UA-30172376-3</string>
-    -->
-
-
-    <!--  -->
     <!-- Google tracking -->
-    <!-- y -->
     <bool name="ga_enable">true</bool>
     <bool name="ga_autoActivityTracking">true</bool>
     <bool name="ga_reportUncaughtExceptions">true</bool>
 
-    <!-- tracking keys -->
-    <bool name="ga_testmode">true</bool>
-
-    <string name="ga_trackingId">aaaaaaaaa</string> <!-- TestKonto SMF -->
-
-
-    <!-- Jumia NG. live: UA-31880622-4; dev: UA-31880622-3 -->
-    <string name="gaid_ng_test">UA-31880622-3</string>
-    <string name="gaid_ng_live">UA-31880622-4</string>
-
-    <!-- Jumia KE. live: UA-38440634-3; dev: UA-38440634-2 -->
-    <string name="gaid_ke_test">UA-38440634-2</string>
-    <string name="gaid_ke_live">UA-38440634-3</string>
-
-    <!-- Jumia MA. live: UA-32132208-3; dev: UA-32132208-2 -->
-    <string name="gaid_ma_test">UA-32132208-2</string>
-    <string name="gaid_ma_live">UA-32132208-3</string>
-    
-     <!-- Jumia EG. live: UA-32132208-3; dev: UA-32132208-2 -->
-    <string name="gaid_eg_test">UA-33473298-3</string>
-    <string name="gaid_eg_live">UA-33473298-4</string>
-
-
-    <!-- Dev : UA-41452964-2 -->
-    <!-- Live: UA-41452964-3 -->
-    <string name="gaid_ci_test">UA-41452964-2</string>
-    <string name="gaid_ci_live">UA-41452964-3</string>
-    
-    <!-- Jumia UG -->
-    <string name="gaid_ug_test">UA-46256089-3</string>
-    <string name="gaid_ug_live">UA-46256089-4</string>
-
-    <!--  -->
-    <!-- AD-X tracking -->
-    <!--  -->
-
-<!--     <bool name="adx_enable">false</bool> -->
+    <!-- ADX -->
     <bool name="adx_enable">true</bool> 
     <string name="xid">Jma390Sq104mxe741ksJ0</string>
+    
  </resources>
