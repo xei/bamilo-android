@@ -200,9 +200,9 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     
     private void displayPriceInformation() {
         String unitPrice = mCompleteProduct.getPrice();
-        if (unitPrice == null) unitPrice = mCompleteProduct.getMaxPrice();
+        /*--if (unitPrice == null) unitPrice = mCompleteProduct.getMaxPrice();*/
         String specialPrice = mCompleteProduct.getSpecialPrice();
-        if (specialPrice == null) specialPrice = mCompleteProduct.getMaxSpecialPrice();
+        /*--if (specialPrice == null) specialPrice = mCompleteProduct.getMaxSpecialPrice();*/
         
         displayPriceInfo(unitPrice, specialPrice);
     }

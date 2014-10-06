@@ -50,7 +50,7 @@ public class FeaturedProduct extends FeaturedItem {
 				return false;
 			}
 
-			String priceString = jsonObject.optString(RestConstants.JSON_PRICE_TAG);
+			/*-String priceString = jsonObject.optString(RestConstants.JSON_PRICE_TAG);
 
 			double priceDouble = -1;
 			try {
@@ -59,6 +59,14 @@ public class FeaturedProduct extends FeaturedItem {
 			} catch (NumberFormatException e) {
 				price = priceString;
 				e.printStackTrace();
+			}*/
+			// Fix NAFAMZ-7848
+			// Throw JSONException if JSON_PRICE_TAG is not present
+			String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
+			if (CurrencyFormatter.isNumber(priceJSON)) {
+			    price = CurrencyFormatter.formatCurrency(priceJSON);
+			} else {
+			    throw new JSONException("Price is not a number!");
 			}
 
 			// get url from first image which has url

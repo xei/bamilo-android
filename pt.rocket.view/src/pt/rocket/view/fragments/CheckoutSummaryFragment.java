@@ -3,6 +3,7 @@
  */
 package pt.rocket.view.fragments;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -328,7 +329,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         mSubTotal.setText(CurrencyFormatter.formatCurrency(mCart.getCartValue()));
         
         if(!mCart.isSumCosts()){
-            mExtraCosts.setText(CurrencyFormatter.formatCurrency(mCart.getExtraCosts()));
+            // Fix NAFAMZ-7848
+            mExtraCosts.setText(CurrencyFormatter.formatCurrency(new BigDecimal(mCart.getExtraCosts()).toString()));
             mExtraCostsContainer.setVisibility(View.VISIBLE);
         } else {
             mExtraCostsContainer.setVisibility(View.GONE);

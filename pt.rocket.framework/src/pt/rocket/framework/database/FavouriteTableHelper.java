@@ -90,7 +90,7 @@ public class FavouriteTableHelper {
 			values.put(FavouriteTableHelper._FAVOURITE_PRICE, completeProduct.getPrice());
 			values.put(FavouriteTableHelper._FAVOURITE_PRICE_ORIG, completeProduct.getPriceAsDouble());
 			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE, completeProduct.getSpecialPrice());
-			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE_ORIG, completeProduct.getMaxPriceAsDouble());
+			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE_ORIG, completeProduct.getSpecialPriceAsDouble());
 			values.put(FavouriteTableHelper._FAVOURITE_DISCOUNT_PERCENTAGE, completeProduct.getMaxSavingPercentage());
 			values.put(FavouriteTableHelper._FAVOURITE_URL, completeProduct.getUrl());
 			values.put(FavouriteTableHelper._FAVOURITE_IMAGE_URL, completeProduct.getImageList().size() == 0 ? "" : completeProduct.getImageList().get(0));

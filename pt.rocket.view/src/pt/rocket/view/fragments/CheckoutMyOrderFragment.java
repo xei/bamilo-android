@@ -1,5 +1,6 @@
 package pt.rocket.view.fragments;
 
+import java.math.BigDecimal;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -365,7 +366,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         mSubTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartCleanValue()));
         
         if(!cart.isSumCosts()){
-            mExtraCosts.setText(CurrencyFormatter.formatCurrency(cart.getExtraCosts()));
+            // Fix NAFAMZ-7848
+            mExtraCosts.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart.getExtraCosts()).toString()));
             mExtraCostsContainer.setVisibility(View.VISIBLE);
             // Shipping fee
             mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));

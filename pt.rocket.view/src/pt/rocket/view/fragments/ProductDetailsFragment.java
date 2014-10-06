@@ -659,8 +659,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         if (mSelectedSimple == NO_SIMPLE_SELECTED || simple == null) {
             String unitPrice = mCompleteProduct.getPrice();
             String specialPrice = mCompleteProduct.getSpecialPrice();
-            if (specialPrice == null)
-                specialPrice = mCompleteProduct.getMaxSpecialPrice();
+            /*--if (specialPrice == null) specialPrice = mCompleteProduct.getMaxSpecialPrice();*/
             int discountPercentage = mCompleteProduct.getMaxSavingPercentage().intValue();
 
             displayPriceInfo(unitPrice, specialPrice, discountPercentage);
@@ -687,6 +686,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             mSpecialPriceText.setText(unitPrice);
             mSpecialPriceText.setTextColor(getResources().getColor(R.color.red_basic));
             mPriceText.setVisibility(View.GONE);
+            // Set discount percentage value
+            if (discountPercentage > 0) {
+                mDiscountPercentageText.setText("-" + discountPercentage + "%");
+                mDiscountPercentageText.setVisibility(View.VISIBLE);
+            } else {
+                mDiscountPercentageText.setVisibility(View.GONE);
+            }
         } else {
             // display reduced and special price
             mSpecialPriceText.setText(specialPrice);
@@ -863,7 +869,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     }
 
     private String currencyFormatHelper(String number) {
-        return CurrencyFormatter.formatCurrency(Double.parseDouble(number));
+        return CurrencyFormatter.formatCurrency(number);
     }
 
     private void executeAddProductToCart() {

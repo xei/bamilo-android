@@ -224,9 +224,9 @@ public class Product implements IJSONSerializable, Parcelable {
     /**
      * @return the suggested price
      */
-    public String getSuggestedPrice() {
+    /*--public String getSuggestedPrice() {
         return attributes.getMaxPrice();
-    }
+    }*/
 
     /**
      * @return the max saving percentage
@@ -260,9 +260,9 @@ public class Product implements IJSONSerializable, Parcelable {
     /**
      * @return the maxSpecialPrice
      */
-    public String getMaxSpecialPrice() {
+    /*--public String getMaxSpecialPrice() {
         return attributes.getMaxSpecialPrice();
-    }
+    }*/
 
     @Override
     public int describeContents() {

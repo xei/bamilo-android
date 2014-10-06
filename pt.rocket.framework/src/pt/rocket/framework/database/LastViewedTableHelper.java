@@ -96,7 +96,7 @@ public class LastViewedTableHelper {
 				values.put(LastViewedTableHelper._PRODUCT_PRICE, completeProduct.getPrice());
 				values.put(LastViewedTableHelper._PRODUCT_PRICE_ORIG, completeProduct.getPriceAsDouble());
 				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE, completeProduct.getSpecialPrice());
-				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_ORIG, completeProduct.getMaxPriceAsDouble());
+				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_ORIG, completeProduct.getSpecialPriceAsDouble());
 				values.put(LastViewedTableHelper._PRODUCT_DISCOUNT_PERCENTAGE, completeProduct.getMaxSavingPercentage());
 				values.put(LastViewedTableHelper._PRODUCT_URL, completeProduct.getUrl());
 				values.put(LastViewedTableHelper._PRODUCT_IMAGE_URL, completeProduct.getImageList().size() == 0 ? "" : completeProduct.getImageList().get(0));

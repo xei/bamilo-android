@@ -3,6 +3,7 @@
  */
 package pt.rocket.view.fragments;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -87,7 +88,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
     private ArrayList<CartItemValues> itemsValues;
 
-    private double unreduced_cart_price;
+    private BigDecimal unreduced_cart_price;
 
     /**
      * Boolean to the define the activities type: false - ShoppingBasket | true . Checkout
@@ -636,7 +637,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         if (couponDiscount != null && !couponDiscount.equals("")) {
             double couponDiscountValue = Double.parseDouble(couponDiscount);
             if (couponDiscountValue > 0) {
-                voucherValue.setText("- " + CurrencyFormatter.formatCurrency(couponDiscountValue));
+                // Fix NAFAMZ-7848
+                voucherValue.setText("- " + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue).toString()));
                 voucherContainer.setVisibility(View.VISIBLE);
             } else {
                 voucherContainer.setVisibility(View.GONE);
@@ -646,15 +648,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         }
 
         items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
-        double cleanValue = 0;
-        try {
-            cleanValue = Double.parseDouble(cart.getCartCleanValue());
-        } catch (Exception e) {
-            e.printStackTrace();
-            cleanValue = -1;
-        }
-        if (cleanValue > 0) {
-            priceTotal.setText(CurrencyFormatter.formatCurrency(cleanValue));
+        // Fix NAFAMZ-7848
+        // Only convert value if it is a number
+        if (CurrencyFormatter.isNumber(cart.getCartCleanValue())) {
+            priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartCleanValue()));
         } else {
             priceTotal.setText(cart.getCartCleanValue());
         }
@@ -663,12 +660,13 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         View shippingMain = getView().findViewById(R.id.shipping_container);
         if (!cart.isSumCosts()) {
             extraCostsMain.setVisibility(View.VISIBLE);
-            extraCostsValue.setText(CurrencyFormatter.formatCurrency(cart.getExtraCosts()));
+            // Fix NAFAMZ-7848
+            extraCostsValue.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart.getExtraCosts()).toString()));
             String shipping = cart.getShippingValue();
             if (shipping != null && !shipping.equalsIgnoreCase("null") && !shipping.equals("")) {
                 // Validate the shipping value
                 if (!shipping.equals("0")) {
-                    shippingValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(shipping)));
+                    shippingValue.setText(CurrencyFormatter.formatCurrency(shipping));
                 } else {
                     shippingValue.setText(getString(R.string.free_label));
                 }
@@ -680,7 +678,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             if (sumCosts != null && !sumCosts.equalsIgnoreCase("null") && !sumCosts.equals("")) {
                 // Validate the shipping value
                 if (!cart.getShippingValue().equals("0")) {
-                    shippingValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(sumCosts)));
+                    shippingValue.setText(CurrencyFormatter.formatCurrency(sumCosts));
                 } else {
                     shippingValue.setText(getString(R.string.free_label));
                 }
@@ -696,7 +694,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             lView = (LinearLayout) getView().findViewById(R.id.shoppingcart_list);
             lView.removeAllViewsInLayout();
             itemsValues = new ArrayList<CartItemValues>();
-            unreduced_cart_price = 0;
+            // Fix NAFAMZ-7848
+            unreduced_cart_price = new BigDecimal(0);
             // reduced_cart_price = 0;
             boolean cartHasReducedItem = false;
             for (int i = 0; i < items.size(); i++) {
@@ -725,12 +724,14 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                     cartHasReducedItem = true;
                 }
 
-                unreduced_cart_price += item.getPriceVal() * item.getQuantity();
+                // Fix NAFAMZ-7848
+                unreduced_cart_price = unreduced_cart_price.add(new BigDecimal(item.getPriceVal() * item.getQuantity()));
+                Log.e(TAG, "unreduced_cart_price= " + unreduced_cart_price);
             }
 
             TextView priceUnreduced = (TextView) getView().findViewById(R.id.price_unreduced);
             if (cartHasReducedItem) {
-                priceUnreduced.setText(CurrencyFormatter.formatCurrency(unreduced_cart_price));
+                priceUnreduced.setText(CurrencyFormatter.formatCurrency(unreduced_cart_price.toString()));
                 priceUnreduced.setPaintFlags(priceUnreduced.getPaintFlags()
                         | Paint.STRIKE_THRU_TEXT_FLAG);
                 priceUnreduced.setVisibility(View.VISIBLE);
@@ -741,15 +742,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             if (vat != null && !vat.equalsIgnoreCase("null") && !vat.equalsIgnoreCase("")) {
                 TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
                 View vatMain = getView().findViewById(R.id.vat_container);
-                double cleanVatValue = 0;
-                try {
-                    cleanVatValue = Double.parseDouble(vat);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    cleanVatValue = -1;
-                }
-                if (cleanVatValue > 0) {
-                    vatValue.setText(CurrencyFormatter.formatCurrency(cleanVatValue));
+                // Fix NAFAMZ-7848
+                // Only convert value if it is a number
+                if (CurrencyFormatter.isNumber(vat)) {
+                    vatValue.setText(CurrencyFormatter.formatCurrency(vat));
                 } else {
                     vatValue.setText(vat);
                 }
@@ -791,7 +787,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         // Set value
         String cartValue = cart.getCartValue();
         if (!TextUtils.isEmpty(cartValue) && !cartValue.equals("null")) {
-            totalValue.setText(CurrencyFormatter.formatCurrency(Double.parseDouble(cartValue)));
+            totalValue.setText(CurrencyFormatter.formatCurrency(cartValue));
             totalMain.setVisibility(View.VISIBLE);
         } else {
             Log.w(TAG, "CART VALUES IS EMPTY");

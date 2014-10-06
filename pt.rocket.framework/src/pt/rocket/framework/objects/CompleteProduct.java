@@ -48,14 +48,15 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	private String ratingsUrl;
 
 	private String price;
-	private String maxPrice;
+	/*--private String maxPrice;*/
 	private String brand;
 
 	private double priceDouble;
-	private double maxPriceDouble;
+	/*--private double maxPriceDouble;*/
 
 	private String specialPrice;
-	private String maxSpecialPrice;
+	private double specialPriceDouble;
+	/*--private String maxSpecialPrice;*/
 	private Double maxSavingPercentage;
 	private Double ratingsAverage;
 	private Integer ratingsCount;
@@ -93,11 +94,8 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		url = "";
 		description = "";
 
-		specialPrice = CurrencyFormatter.formatCurrency(0.0);
-		maxSpecialPrice = CurrencyFormatter.formatCurrency(0.0);
-        // TODO use formatCurrency(String)
-        // specialPrice = CurrencyFormatter.formatCurrency("0");
-        // maxSpecialPrice = CurrencyFormatter.formatCurrency("0");
+		specialPrice = CurrencyFormatter.formatCurrency("0");
+		/*--maxSpecialPrice = CurrencyFormatter.formatCurrency("0");*/
 		maxSavingPercentage = 0.0;
 
 		ratingsAverage = 0.0;
@@ -116,8 +114,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) {
 		try {
-			JSONObject dataObject = jsonObject
-					.getJSONObject(RestConstants.JSON_DATA_TAG);
+			JSONObject dataObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
 
 			sku = dataObject.getString(RestConstants.JSON_SKU_TAG);
 			name = dataObject.getString(RestConstants.JSON_PROD_NAME_TAG);
@@ -126,20 +123,52 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			activatedAt = dataObject.getString(RestConstants.JSON_ACTIVATED_AT_TAG);
 			description = dataObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
 			url = dataObject.optString(RestConstants.JSON_PROD_URL_TAG, "");
-			priceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_PRICE_TAG, "0"));
-			price = CurrencyFormatter.formatCurrency(priceDouble);
-			// TODO fix UG huge amount conversion
-			// price = CurrencyFormatter.formatCurrency(dataObject.getString(RestConstants.JSON_PRICE_TAG));
-			maxPriceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_PRICE_TAG, "0"));
-			maxPrice = CurrencyFormatter.formatCurrency(maxPriceDouble);
+
+			/*-priceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_PRICE_TAG, "0"));
+			price = CurrencyFormatter.formatCurrency(priceDouble);*/
+			// Fix NAFAMZ-7848
+			// Throw JSONException if JSON_PRICE_TAG is not present
+			String priceJSON = dataObject.getString(RestConstants.JSON_PRICE_TAG);
+			if (!CurrencyFormatter.isNumber(priceJSON)) {
+			    throw new JSONException("Price is not a number!");
+			}
+			priceDouble = Double.parseDouble(priceJSON);
+			price = CurrencyFormatter.formatCurrency(priceJSON);
+
+			/*-maxPriceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_PRICE_TAG, "0"));
+			maxPrice = CurrencyFormatter.formatCurrency(maxPriceDouble);*/
+			/*--String maxPriceJSON = dataObject.optString(RestConstants.JSON_MAX_PRICE_TAG);
+			if (!CurrencyFormatter.isNumber(maxPriceJSON)) {
+			    maxPriceJSON = "0";
+			}
+			maxPriceDouble = Double.parseDouble(maxPriceJSON);
+			maxPrice = CurrencyFormatter.formatCurrency(maxPriceJSON);*/
 			brand = dataObject.getString(RestConstants.JSON_BRAND_TAG);
 
-			double specialPriceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG, "" + priceDouble));
-			specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);
-			// TODO fix UG huge amount conversion
-			// specialPrice = CurrencyFormatter.formatCurrency(dataObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG, dataObject.getString(RestConstants.JSON_PRICE_TAG)));
-			maxSpecialPrice = CurrencyFormatter.formatCurrency(Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG, "" + maxPriceDouble)));
-			maxSavingPercentage = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, "0"));
+			/*-double specialPriceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG, "" + priceDouble));
+			specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);*/
+			String specialPriceJSON = dataObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
+			if (!CurrencyFormatter.isNumber(specialPriceJSON)) {
+			    specialPriceJSON = priceJSON;
+			}
+			specialPriceDouble = Double.parseDouble(specialPriceJSON);
+			// specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);
+			// Fix NAFAMZ-7848
+			specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
+
+			/*-maxSpecialPrice = CurrencyFormatter.formatCurrency(maxSpecialJSON);*/
+			/*--String maxSpecialJSON = dataObject.optString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG);
+			if(!CurrencyFormatter.isNumber(maxSpecialJSON)){
+			    maxSpecialJSON = maxPriceJSON;
+			}
+
+			/*-maxSavingPercentage = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, "0"));*/
+			String maxSavingPercentageJSON = dataObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
+			if (CurrencyFormatter.isNumber(maxSavingPercentageJSON)) {
+			    maxSavingPercentage = Double.parseDouble(maxSavingPercentageJSON);
+			} else {
+			    maxSavingPercentageJSON = "0";
+			}
 
 			// TODO: ratings need to be completed
 			JSONObject ratingsTotalObject = dataObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
@@ -316,15 +345,22 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	/**
 	 * @return the maxPrice
 	 */
-	public String getMaxPrice() {
+	/*--public String getMaxPrice() {
 		return maxPrice;
-	}
+	}*/
 
 	/**
 	 * @return the maxPrice as a Double
 	 */
-	public Double getMaxPriceAsDouble() {
+	/*--public Double getMaxPriceAsDouble() {
 		return maxPriceDouble;
+	}*/
+
+	/**
+	 * @return the special price as a Double
+	 */
+	public double getSpecialPriceAsDouble() {
+	    return specialPriceDouble;
 	}
 
 	/**
@@ -465,9 +501,9 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	 * @param maxPrice
 	 *            the maxPrice to set
 	 */
-	public void setMaxPrice(String maxPrice) {
+	/*--public void setMaxPrice(String maxPrice) {
 		this.maxPrice = maxPrice;
-	}
+	}*/
 
 	/**
 	 * @param brand
@@ -527,9 +563,9 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	/**
 	 * @return the maxSpecialPrice
 	 */
-	public String getMaxSpecialPrice() {
+	/*--public String getMaxSpecialPrice() {
 		return maxSpecialPrice;
-	}
+	}*/
 
 	/**
 	 * @return the maxSavingPercentage
@@ -594,7 +630,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		dest.writeString(url);
 		dest.writeString(description);
 		dest.writeString(specialPrice);
-		dest.writeString(maxSpecialPrice);
+		/*--dest.writeString(maxSpecialPrice);*/
 		dest.writeDouble(maxSavingPercentage);
 		dest.writeDouble(ratingsAverage);
 		dest.writeInt(ratingsCount);
@@ -623,7 +659,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		url = in.readString();
 		description = in.readString();
 		specialPrice = in.readString();
-		maxSpecialPrice = in.readString();
+		/*--maxSpecialPrice = in.readString();*/
 		maxSavingPercentage = in.readDouble();
 		ratingsAverage = in.readDouble();
 		ratingsCount = in.readInt();

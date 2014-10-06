@@ -81,19 +81,37 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
             stock = Long.parseLong(jsonObject.getString(RestConstants.JSON_STOCK_TAG));
             variation =  jsonObject.optString(RestConstants.JSON_VARIATION);
             
-            if (!jsonObject.isNull(RestConstants.JSON_ITEM_PRICE_TAG)) {
+            /*-if (!jsonObject.isNull(RestConstants.JSON_ITEM_PRICE_TAG)) {
                 priceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_PRICE_TAG);                
             }
-            price = CurrencyFormatter.formatCurrency(priceVal);
-            
-            if (!jsonObject.isNull(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG) && jsonObject.getDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG) > 0 ) {
+            price = CurrencyFormatter.formatCurrency(priceVal);*/
+            // Fix NAFAMZ-7848
+            // Throw JSONException if JSON_PRICE_TAG is not present
+            String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
+            if (CurrencyFormatter.isNumber(priceJSON)) {
+                priceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_PRICE_TAG);
+                price = CurrencyFormatter.formatCurrency(priceJSON);
+            } else {
+                throw new JSONException("Price is not a number!");
+            }
+
+            /*-if (!jsonObject.isNull(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG) && jsonObject.getDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG) > 0 ) {
                 specialPriceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG);                
             }
             else {
                 specialPriceVal = priceVal;
 //                specialPrice = CurrencyFormatter.formatCurrency(0.0);
             }
-            specialPrice = CurrencyFormatter.formatCurrency(specialPriceVal);
+            specialPrice = CurrencyFormatter.formatCurrency(specialPriceVal);*/
+            // Fix NAFAMZ-7848
+            String specialPriceJSON = jsonObject.optString(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG);
+            if (CurrencyFormatter.isNumber(specialPriceJSON)) {
+                specialPriceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG);
+                specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
+            } else {
+                specialPriceVal = priceVal;
+                specialPrice = price;
+            }
             
             taxAmount = jsonObject.optDouble(RestConstants.JSON_TAX_AMOUNT_TAG, 0);
             savingPercentage = 100 - specialPriceVal / priceVal * 100;

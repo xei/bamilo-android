@@ -75,8 +75,8 @@ public class AddableToCart implements Parcelable {
 		knownVariations = new ArrayList<String>();
 		priceDouble = 0.0;
 		specialPriceDouble = 0.0;
-		price = CurrencyFormatter.formatCurrency(0.0);
-		specialPrice = CurrencyFormatter.formatCurrency(0.0);
+		price = CurrencyFormatter.formatCurrency("0");
+		specialPrice = CurrencyFormatter.formatCurrency("0");
 		maxSavingPercentage = 0.0;
 		url = "";
 		favoriteSelected = NO_SIMPLE_SELECTED;
@@ -91,7 +91,7 @@ public class AddableToCart implements Parcelable {
 		name = completeProduct.getName();
 		price = completeProduct.getPrice();
 		priceDouble = completeProduct.getPriceAsDouble();
-		specialPriceDouble = completeProduct.getMaxPriceAsDouble();
+		specialPriceDouble = completeProduct.getSpecialPriceAsDouble();
 		specialPrice = completeProduct.getSpecialPrice();
 		maxSavingPercentage = completeProduct.getMaxSavingPercentage();
 		url = completeProduct.getUrl();
@@ -184,7 +184,6 @@ public class AddableToCart implements Parcelable {
 	public void setPriceAsDouble(double priceDouble) {
 		this.priceDouble = priceDouble;
 	}
-	
 	
 	public void setSpecialPriceDouble(Double priceDouble) {
 		this.specialPriceDouble = priceDouble;

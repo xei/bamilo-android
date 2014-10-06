@@ -6,7 +6,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
-import java.util.StringTokenizer;
 
 import pt.rocket.framework.Darwin;
 import android.content.Context;
@@ -81,57 +80,59 @@ public class CurrencyFormatter {
     	currency = Currency.getInstance(currencyCode);
     }
     
-    /**
-     * Formats the currency based on the pre-defined values.
-     * @param value
-     * @return the formatted string
-     */
-    public static String formatCurrency(double value) {
-    	
-    	String result =  String.valueOf(value);
-
-    	String noFraction;
-    	String fraction;
-    	if(result.contains(".")){
-    		StringTokenizer tokens = new StringTokenizer(result, ".");
-    		noFraction = tokens.nextToken();
-    		fraction = tokens.nextToken();
-    	} else {
-    		noFraction = result;
-    		fraction =null;
-    	}
-    	
-    	if(noFraction.length()>3){
-	    	String thousands = noFraction.substring(noFraction.length()-3, noFraction.length());
-	    	String other = noFraction.substring(0, noFraction.length()-3);
-	    
-	    	if(currencyFractionCount == 0)
-	    		result = other+currencyThousandsDelim+thousands;
-	    	else { 
-	    		
-	    		while(fraction.length()<currencyFractionCount){
-	    			fraction+="0";
-	    		}
-	    		result = other+currencyThousandsDelim+thousands+currencyFractionDelim+fraction;
-	    	}
-    	} else {
-    		
-    		if(currencyFractionCount == 0)
-    			result = noFraction;
-	    	else { 
-	    		while(fraction.length()<currencyFractionCount){
-	    			fraction+="0";
-	    		}
-	    		
-	    		result = noFraction+currencyFractionDelim+fraction;
-	    	}
-    		
-    	}
-
-    	result = String.format(currencyUnitPattern, result);
-    	
-    	return result;
-    }
+//    /**
+//     * Formats the currency based on the pre-defined values.
+//     * @param value
+//     * @return the formatted string
+//     */
+//    public static String formatCurrency(double value) {
+//    	if (!initialized) throw new RuntimeException("currency converter not initialized");
+//    	
+//    	// String result = String.valueOf(value);
+//    	String result = new BigDecimal(value).toString();
+//
+//    	String noFraction;
+//    	String fraction;
+//    	if(result.contains(".")){
+//    		StringTokenizer tokens = new StringTokenizer(result, ".");
+//    		noFraction = tokens.nextToken();
+//    		fraction = tokens.nextToken();
+//    	} else {
+//    		noFraction = result;
+//    		fraction =null;
+//    	}
+//    	
+//    	if(noFraction.length()>3){
+//	    	String thousands = noFraction.substring(noFraction.length()-3, noFraction.length());
+//	    	String other = noFraction.substring(0, noFraction.length()-3);
+//	    
+//	    	if(currencyFractionCount == 0)
+//	    		result = other+currencyThousandsDelim+thousands;
+//	    	else { 
+//	    		
+//	    		while(fraction.length()<currencyFractionCount){
+//	    			fraction+="0";
+//	    		}
+//	    		result = other+currencyThousandsDelim+thousands+currencyFractionDelim+fraction;
+//	    	}
+//    	} else {
+//    		
+//    		if(currencyFractionCount == 0)
+//    			result = noFraction;
+//	    	else { 
+//	    		while(fraction.length()<currencyFractionCount){
+//	    			fraction+="0";
+//	    		}
+//	    		
+//	    		result = noFraction+currencyFractionDelim+fraction;
+//	    	}
+//    		
+//    	}
+//
+//    	result = String.format(currencyUnitPattern, result);
+//    	
+//    	return result;
+//    }
     
     /**
      * This Function restrieves the double value of a previously formatted value with currency and locale options.
@@ -186,13 +187,14 @@ public class CurrencyFormatter {
     }
     
     /**
-     * Formats a string containing a numeric value into the proper formatted currency of the country in question.
+     * Formats a string containing a numeric value into the proper formatted
+     * currency of the country in question.
+     * 
      * @param value
      * @return the formatted string
      */
     public static String formatCurrency(String value) {
-        if ( !initialized )
-        	throw new RuntimeException("currency converter not initialized" );
+        if (!initialized) throw new RuntimeException("currency converter not initialized");
     	
         try {
             
@@ -214,8 +216,7 @@ public class CurrencyFormatter {
     }
     
     private static NumberFormat getNumberFormatter() {
-    	if ( !initialized )
-        	throw new RuntimeException("currency converter not initialized" );
+        if (!initialized) throw new RuntimeException("currency converter not initialized");
     	
     	NumberFormat currencyFormat;
     	if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
@@ -274,5 +275,20 @@ public class CurrencyFormatter {
     	}
     	
     	return false;
+    }
+
+    /**
+     * Test if text is number
+     * 
+     * @param text
+     * @return
+     */
+    public static boolean isNumber(String text) {
+        try {
+            Double.parseDouble(text);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

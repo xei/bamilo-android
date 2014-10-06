@@ -197,7 +197,7 @@ public class ProductsListAdapter extends BaseAdapter {
                 CatalogFragment.requestTag);
 
         // Set is new image
-        prodItem.newFlag.setSelected(product.getAttributes().isNew());        
+        prodItem.newFlag.setSelected(product.getAttributes().isNew());
 
         // Set is favourite image
         prodItem.isFavourite.setSelected(product.getAttributes().isFavourite());
@@ -208,7 +208,7 @@ public class ProductsListAdapter extends BaseAdapter {
                 final Product favProduct = parentCatalog.getProduct(products.get(position));
                 final boolean isFavourite = favProduct.getAttributes().isFavourite();
                 if (!isFavourite) {
-                    FavouriteTableHelper.insertPartialFavouriteProduct(favProduct);                    
+                    FavouriteTableHelper.insertPartialFavouriteProduct(favProduct);
                     favProduct.getAttributes().setFavourite(true);
                     TrackerDelegator.trackAddToFavorites(favProduct.getSKU());
                     Toast.makeText(context, context.getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
@@ -226,7 +226,7 @@ public class ProductsListAdapter extends BaseAdapter {
         prodItem.brand.setText(product.getBrand().toUpperCase());
 
         prodItem.name.setText(product.getName());
-        prodItem.price.setText(product.getSuggestedPrice());
+        prodItem.price.setText(product.getPrice());
 
         if (showList) {
             if (product.getRating() != null && product.getRating() > 0) {
@@ -241,11 +241,11 @@ public class ProductsListAdapter extends BaseAdapter {
 
         if (null != product.getSpecialPrice() && !product.getSpecialPrice().equals(product.getPrice())) {
             prodItem.discount.setText(product.getSpecialPrice());
-            prodItem.price.setText(product.getSuggestedPrice());
+            prodItem.price.setText(product.getPrice());
             prodItem.discountPercentage.setText("-" + product.getMaxSavingPercentage().intValue() + "%");
             prodItem.discountPercentage.setVisibility(View.VISIBLE);
         } else {
-            prodItem.discount.setText(product.getSuggestedPrice());
+            prodItem.discount.setText(product.getSpecialPrice());
             prodItem.price.setText("");
             prodItem.discountPercentage.setVisibility(View.GONE);
         }

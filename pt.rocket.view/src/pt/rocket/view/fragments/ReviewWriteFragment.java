@@ -371,11 +371,9 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
 
     private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
         String unitPrice = completeProduct.getPrice();
-        if (unitPrice == null)
-            unitPrice = completeProduct.getMaxPrice();
+        /*--if (unitPrice == null) unitPrice = completeProduct.getMaxPrice();*/
         String specialPrice = completeProduct.getSpecialPrice();
-        if (specialPrice == null)
-            specialPrice = completeProduct.getMaxSpecialPrice();
+        /*--if (specialPrice == null) specialPrice = completeProduct.getMaxSpecialPrice();*/
 
         displayPriceInfo(productPriceNormal, productPriceSpecial, unitPrice, specialPrice);
     }
