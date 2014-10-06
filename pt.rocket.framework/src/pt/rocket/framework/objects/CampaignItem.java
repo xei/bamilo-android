@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import pt.rocket.framework.rest.RestConstants;
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import de.akquinet.android.androlog.Log;
@@ -26,11 +25,11 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	
 	private double mSpecialPrice;
 
-	private double mMaxSpecialPrice;
+	/*--private double mMaxSpecialPrice;*/
 
 	private double mPrice;
 
-	private double mMaxPrice;
+	/*--private double mMaxPrice;*/
 
 	private String mSku;
 
@@ -79,9 +78,9 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		
 		mSavePrice = jsonObject.optDouble(RestConstants.JSON_SAVE_PRICE_TAG);
 		mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
-		mMaxSpecialPrice = jsonObject.optDouble(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG);
+		/*--mMaxSpecialPrice = jsonObject.optDouble(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG);*/
 		mPrice = jsonObject.optDouble(RestConstants.JSON_PRICE_TAG);
-		mMaxPrice = jsonObject.optDouble(RestConstants.JSON_MAX_PRICE_TAG);
+		/*--mMaxPrice = jsonObject.optDouble(RestConstants.JSON_MAX_PRICE_TAG);*/
 		mSku = jsonObject.optString(RestConstants.JSON_SKU_TAG);
 		mBrand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
 		mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
@@ -152,9 +151,9 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	/**
 	 * @return the mMaxSpecialPrice
 	 */
-	public double getMaxSpecialPrice() {
+	/*--public double getMaxSpecialPrice() {
 		return mMaxSpecialPrice;
-	}
+	}*/
 
 	/**
 	 * @return the mPrice
@@ -166,9 +165,9 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	/**
 	 * @return the mMaxPrice
 	 */
-	public double getMaxPrice() {
+	/*--public double getMaxPrice() {
 		return mMaxPrice;
-	}
+	}*/
 
 	/**
 	 * @return the mSku
@@ -298,9 +297,9 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	/**
 	 * @param mMaxSpecialPrice the mMaxSpecialPrice to set
 	 */
-	public void setMaxSpecialPrice(double mMaxSpecialPrice) {
+	/*--public void setMaxSpecialPrice(double mMaxSpecialPrice) {
 		this.mMaxSpecialPrice = mMaxSpecialPrice;
-	}
+	}*/
 
 	/**
 	 * @param mPrice the mPrice to set
@@ -312,9 +311,9 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	/**
 	 * @param mMaxPrice the mMaxPrice to set
 	 */
-	public void setMaxPrice(double mMaxPrice) {
+	/*--public void setMaxPrice(double mMaxPrice) {
 		this.mMaxPrice = mMaxPrice;
-	}
+	}*/
 
 	/**
 	 * @param mSku the mSku to set
@@ -420,9 +419,9 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeDouble(mSavePrice);
 		dest.writeDouble(mSpecialPrice);
-		dest.writeDouble(mMaxSpecialPrice);
+		/*--dest.writeDouble(mMaxSpecialPrice);*/
 		dest.writeDouble(mPrice);
-		dest.writeDouble(mMaxPrice);
+		/*--dest.writeDouble(mMaxPrice);*/
 		dest.writeString(mSku);
 		dest.writeString(mBrand);
 		dest.writeString(mName);
@@ -446,9 +445,9 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	public CampaignItem(Parcel in) {
 		mSavePrice = in.readDouble();
 		mSpecialPrice = in.readDouble();
-		mMaxSpecialPrice = in.readDouble();
+		/*--mMaxSpecialPrice = in.readDouble();*/
 		mPrice = in.readDouble();
-		mMaxPrice = in.readDouble();
+		/*--mMaxPrice = in.readDouble();*/
 		mSku = in.readString();
 		mBrand = in.readString();
 		mName = in.readString();
