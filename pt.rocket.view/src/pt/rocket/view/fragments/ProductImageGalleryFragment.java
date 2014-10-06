@@ -141,6 +141,10 @@ public class ProductImageGalleryFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Restore isZoomAvailable after rotation
+        if (savedInstanceState != null) {
+            isZoomAvailable = savedInstanceState.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
+        }
     }
     
     
@@ -502,6 +506,18 @@ public class ProductImageGalleryFragment extends BaseFragment {
         createViewPager();
         if (currentPosition <= 0) currentPosition = 1;
         updateImage(currentPosition);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onSaveInstanceState()
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // Persist isZoomAvailable
+        outState.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, isZoomAvailable);
+        super.onSaveInstanceState(outState);
     }
 
 }
