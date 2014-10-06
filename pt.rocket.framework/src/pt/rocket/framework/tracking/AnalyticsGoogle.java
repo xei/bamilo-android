@@ -62,6 +62,8 @@ public class AnalyticsGoogle {
 	
 	private SharedPreferences mSharedPreferences;
 
+	private String mGACampaign;
+
 	private static boolean isCheckoutStarted = false;
 
 	/**
@@ -210,7 +212,9 @@ public class AnalyticsGoogle {
 	private void trackPage(String path) {
 		Log.i(TAG, "TRACK PAGE: " + path);
 		mTracker.setScreenName(path);
-		mTracker.send(new HitBuilders.AppViewBuilder().build());
+		mTracker.send(new HitBuilders.AppViewBuilder()
+		.setCampaignParamsFromUrl(getGACampaign())
+		.build());
 	}
 
 	/**
@@ -228,6 +232,7 @@ public class AnalyticsGoogle {
     	.setAction(action)
     	.setLabel(label)
     	.setValue(value)
+    	.setCampaignParamsFromUrl(getGACampaign())
 		.build());
 	}
 	
@@ -244,6 +249,7 @@ public class AnalyticsGoogle {
 		.setNetwork(category)
         .setAction(action)
         .setTarget(target)
+        .setCampaignParamsFromUrl(getGACampaign())
         .build());
 	}
 	
@@ -262,6 +268,7 @@ public class AnalyticsGoogle {
         .setValue(milliSeconds)
         .setVariable(name)
         .setLabel(label)
+        .setCampaignParamsFromUrl(getGACampaign())
         .build());
 	}
 	
@@ -278,6 +285,7 @@ public class AnalyticsGoogle {
 		.setTransactionId(order)
 		.setRevenue(valueAsLongMicro)
 		.setCurrencyCode(currencyCode)
+		.setCampaignParamsFromUrl(getGACampaign())
 		.build());
 	}
 	
@@ -293,7 +301,7 @@ public class AnalyticsGoogle {
 	 * @author sergiopereira
 	 */
 	private void trackTransactionItem(String order, String name, String sku, String category, long price, long quantity, String currencyCode) {
-		Log.i(TAG, "TRACK TRANSACTION: id->" + order + " nm->" + name + " sku->" + sku + " ct->" + category + " prc->" + price + " qt->" + quantity);
+		Log.i(TAG, "TRACK TRANSACTION ITEM: id->" + order + " nm->" + name + " sku->" + sku + " ct->" + category + " prc->" + price + " qt->" + quantity);
 		mTracker.send(new HitBuilders.ItemBuilder()
 		.setTransactionId(order)
 	    .setName(name)
@@ -302,6 +310,7 @@ public class AnalyticsGoogle {
 	    .setPrice(price)
 	    .setQuantity(quantity)
 	    .setCurrencyCode(currencyCode)
+	    .setCampaignParamsFromUrl(getGACampaign())
 	    .build());
 	}
 	
@@ -310,12 +319,17 @@ public class AnalyticsGoogle {
 	 * @param campaign
 	 * @author sergiopereira
 	 */
-	private void trackGACampaign(String campaign) {
-		String utmURI = (!campaign.contains("utm_source")) ? "utm_campaign=" + campaign + "&utm_source=push&utm_medium=referrer" : campaign;
-		Log.i(TAG, "TRACK CAMPAIGN: campaign->" + utmURI);
-		mTracker.send(new HitBuilders.AppViewBuilder()
-	    .setCampaignParamsFromUrl(utmURI)
-	    .build());
+	protected void trackGACampaign() {
+		// Track
+		// String utmURI = (!mGACampaign.contains("utm_source")) ? "utm_campaign=" + mGACampaign + "&utm_source=push&utm_medium=referrer" : mGACampaign;
+		// Log.i(TAG, "TRACK CAMPAIGN: campaign->" + utmURI);
+		// mTracker.send(new HitBuilders.AppViewBuilder()
+		// .setCampaignParamsFromUrl(utmURI)
+		// .build());
+		
+		//mTracker.set("&cn", campaign);
+		//mTracker.set("&cs", "push");
+		//mTracker.set("&cm", "referrer");
 	}
 		
 	/**
@@ -551,7 +565,21 @@ public class AnalyticsGoogle {
 		// Validation
 		if (!isEnabled) return;
 		// Data
-		if (!TextUtils.isEmpty(campaignString)) trackGACampaign(campaignString);
+		if (!TextUtils.isEmpty(campaignString)) {
+			// Track
+			String utmURI = (!campaignString.contains("utm_campaign")) ? "utm_campaign=" + campaignString + "&utm_source=push&utm_medium=referrer" : campaignString;
+			Log.i(TAG, "TRACK CAMPAIGN: campaign->" + utmURI);
+			mGACampaign = utmURI;
+		}
+	}
+	
+	/**
+	 * Build and send a GA campaign.
+	 * @param campaign
+	 * @author sergiopereira
+	 */
+	private String getGACampaign() {
+		return !TextUtils.isEmpty(mGACampaign) ? mGACampaign : "";
 	}
 
 }

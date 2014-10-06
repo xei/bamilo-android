@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+	<!-- App -->
+    <string name="app_name">Jumia Dev</string>
+    <string name="package_id">pt.rocket.jumia.dev</string>
+    
 	<!-- Countries -->
 	<string name="countries_url">http://www.jumia.com/mobapi/availablecountries/staging</string>
     
     <!-- GA -->
     <bool name="ga_debug_mode">false</bool>
-
-    <!-- App -->
-    <string name="app_name">Jumia Dev</string>
-    <string name="package_id">pt.rocket.jumia.dev</string>
+	<!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
+    <integer name="ga_dispatchPeriod">0</integer>
+    --> 
     
     <!-- ADX -->
     <string name="adx_app_name">pt.rocket.jumia</string>
@@ -19,12 +22,10 @@
 
     <!-- MIX PANEL -->
     <string name="mixpanel_token">2fc00ccbfeca1ac7be997ef4c1f379ed</string>
-
     <bool name="rest_host_auth_use_it">true</bool>
 
     <!-- HOCKEY APP -->
     <string name="hockeyapp_token">5a55f44dbed1b1bdb88f57f6eda07d78</string>
-
     <item name="hockeyapp_enable_dev" type="bool">true</item>
 
     <!-- DEEP LINK -->

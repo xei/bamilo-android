@@ -300,6 +300,9 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP_FAIL, null, 0l);
     }
 
+    /**
+     * For Web Checkout
+     */
     public static void trackPurchase(final Bundle params) {
         new Thread(new Runnable() {
             @Override
@@ -412,8 +415,10 @@ public class TrackerDelegator {
         }).run();
     }
 
+    /**
+     * For Native Checkout
+     */
     public static void trackPurchaseNativeCheckout(final Bundle params, final Map<String, ShoppingCartItem> mItems) {
-
         new Thread(new Runnable() {
             @Override
             public void run() {

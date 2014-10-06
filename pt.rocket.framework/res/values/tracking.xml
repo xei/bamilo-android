@@ -9,10 +9,6 @@
     <bool name="ga_enable">false</bool>
 
     <string name="ga_trackingId"></string>
-    
-	<!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
-    <integer name="ga_dispatchPeriod">0</integer>
-    -->
 
     <!-- PageView Names -->
     <string name="gnavigation">LeftMenu</string>

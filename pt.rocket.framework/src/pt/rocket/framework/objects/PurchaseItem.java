@@ -58,6 +58,9 @@ public class PurchaseItem implements Parcelable {
 		return true;
 	}
 
+	/**
+	 * For WebCheckout
+	 */
 	public static List<PurchaseItem> parseItems(JSONObject itemsJson) {
 		List<PurchaseItem> items = new ArrayList<PurchaseItem>();
 
@@ -78,6 +81,9 @@ public class PurchaseItem implements Parcelable {
 		return items;
 	}
 	
+	/**
+	 * For NativeCheckout
+	 */
 	public static List<PurchaseItem> parseItems(Map<String, ShoppingCartItem> mItems) {
 		List<PurchaseItem> items = new ArrayList<PurchaseItem>();
 		
@@ -89,7 +95,15 @@ public class PurchaseItem implements Parcelable {
             mPurchaseItem.paidprice = mShoppingCartItem.getPrice();
             mPurchaseItem.paidpriceAsDouble = mShoppingCartItem.getPriceVal();
             mPurchaseItem.quantity = String.valueOf(mShoppingCartItem.getQuantity());
+            mPurchaseItem.quantityAsInt = (int) mShoppingCartItem.getQuantity();
             items.add(mPurchaseItem);
+            
+			Log.d(TAG, "PURCHASE: sku = " + mPurchaseItem.sku + 
+					" name = " + mPurchaseItem.name + 
+					" category = " + mPurchaseItem.category + 
+					" paidprice = " + mPurchaseItem.paidprice + 
+					" quantity = " + mPurchaseItem.quantity +
+					" quantityAsInt = " + mPurchaseItem.quantityAsInt);
         }
 
 		return items;

@@ -101,9 +101,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private static boolean shouldHandleEvent = true;
 
-    private String productUrl;
-
-    private String utm;
+    private String mUtm;
 
     private boolean sendAdxLaunchEvent = false;
 
@@ -144,7 +142,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Keep launch time to compare with newer timestamp later
         mLaunchTime = System.currentTimeMillis();
         // Get values from intent
-        getPushNotifications();
+        getDeepLinkView();
         // Initialize application
         JumiaApplication.INSTANCE.init(false, initializationHandler);
     }
@@ -242,10 +240,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private void cleanIntent(Intent intent) {
         Log.d(TAG, "CLEAN NOTIFICATION");
-        utm = null;
-        productUrl = null;
+        mUtm = null;
         mDeepLinkBundle = null;
-        // setIntent(null);
         intent.putExtra(ConstantsIntentExtra.UTM_STRING, "");
         intent.putExtra(ConstantsIntentExtra.CONTENT_URL, "");
         intent.putExtra(ConstantsIntentExtra.DEEP_LINK_TAG, "");
@@ -255,10 +251,23 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     /**
      * Get values from intent, sent by push notification
      */
-    private void getPushNotifications() {
+    private void getDeepLinkView() {
         // Get intent, action and MIME type
         Intent intent = getIntent();
         Log.d(TAG, "DEEP LINK RECEIVED INTENT: " + intent.toString());
+        // ## DEEP LINK FROM EXTERNAL URIs ##
+        if (hasDeepLinkFromURI(intent));
+        // ## DEEP LINK FROM UA ##
+        else hasDeepLinkFromGCM(intent);
+    }
+    
+    /**
+     * Validate deep link from External URI.
+     * @param intent
+     * @return true or false
+     * @author sergiopereira
+     */
+    private boolean hasDeepLinkFromURI(Intent intent) {
         // Get intent action ACTION_VIEW
         String action = intent.getAction();
         // Get intent data
@@ -266,37 +275,41 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // ## DEEP LINK FROM EXTERNAL URIs ##
         if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
             mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
-            isDeepLinkLaunch = true;
-        } else {
-            isDeepLinkLaunch = false;
-            Log.i(TAG, "DEEP LINK: NO EXTERNAL URI");
+            return isDeepLinkLaunch = true;
         }
-
+        Log.i(TAG, "DEEP LINK: NO EXTERNAL URI");
+        return isDeepLinkLaunch = false;
+    }
+    
+    /**
+     * Validate deep link from Push Notification.
+     * @param intent
+     * @return true or false
+     * @author sergiopereira
+     */
+    private boolean hasDeepLinkFromGCM(Intent intent) {
         // ## DEEP LINK FROM UA ##
-        Bundle payload = getIntent().getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
-        String deepLink = "";
-        utm = "";
+        Bundle payload = intent.getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
+        // Get Deep link
         if (null != payload) {
-            deepLink = payload.getString(BundleConstants.DEEPLINKING_PAGE_INDICATION);
-            utm = payload.getString(ConstantsIntentExtra.UTM_STRING);
+            // Get UTM
+            mUtm = payload.getString(ConstantsIntentExtra.UTM_STRING);
+            Log.i(TAG, "UTM FROM GCM: " + mUtm);
+            // Get value from deep link key
+            String deepLink = payload.getString(BundleConstants.DEEPLINKING_PAGE_INDICATION);
+            Log.i(TAG, "DEEP LINK: GCM " + deepLink);
+            // Validate deep link
+            if (!TextUtils.isEmpty(deepLink)) {
+                // Create uri from the value
+                Uri data = Uri.parse(deepLink);
+                Log.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
+                // Load deep link
+                mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
+                return isDeepLinkLaunch = true;
+            }
         }
-        if (!TextUtils.isEmpty(deepLink)) {
-            isDeepLinkLaunch = true;
-            // Create uri from the value
-            Uri uri = Uri.parse(deepLink);
-            Log.d(TAG, "DEEP LINK URI: " + uri.toString() + " " + uri.getPathSegments().toString());
-            // Load deep link
-            mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), uri);
-        } else {
-            Log.i(TAG, "DEEP LINK: NO UA TAG");
-            isDeepLinkLaunch = false;
-        }
-        if (TextUtils.isEmpty(utm)) {
-            // ## Google Analytics "General Campaign Measurement" ##
-            utm = getIntent().getStringExtra(ConstantsIntentExtra.UTM_STRING);
-        }
-        // ## Product URL ##
-        productUrl = getIntent().getStringExtra(ConstantsIntentExtra.CONTENT_URL);
+        Log.i(TAG, "DEEP LINK: NO GCM TAG");
+        return isDeepLinkLaunch = false;
     }
 
     /**
@@ -321,14 +334,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             public void onAnimationEnd(Animation animation) {
                 jumiaMapImage.setVisibility(View.GONE);
                 // ## Google Analytics "General Campaign Measurement" ##
-                TrackerDelegator.trackGACampaign(utm);
-                // ## Product URL ##
-                if (!TextUtils.isEmpty(productUrl)) {
-                    // Start with deep link to product detail
-                    startActivityWithDeepLink(ConstantsIntentExtra.CONTENT_URL, productUrl, FragmentType.PRODUCT_DETAILS);
-                    // ## Deep link via URIs
-                } else if (mDeepLinkBundle != null) {
-                    startDeepView(mDeepLinkBundle);
+                TrackerDelegator.trackGACampaign(mUtm);
+                // Validate deep link bundle    
+                if (mDeepLinkBundle != null) {
+                    startActivityWithDeepLink(mDeepLinkBundle);
                 } else {
                     // Default Start
                     Intent intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
@@ -343,43 +352,43 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         jumiaMapImage.startAnimation(animationFadeOut);
     }
 
-    /**
-     * Get the base URL
-     * 
-     * @return String
-     */
-    @SuppressWarnings("unused")
-    private String getBaseURL() {
-        return RestContract.HTTPS_PROTOCOL + "://" + RestContract.REQUEST_HOST + "/" + RestContract.REST_BASE_PATH;
-    }
+//    /**
+//     * Get the base URL
+//     * 
+//     * @return String
+//     */
+//    @SuppressWarnings("unused")
+//    private String getBaseURL() {
+//        return RestContract.HTTPS_PROTOCOL + "://" + RestContract.REQUEST_HOST + "/" + RestContract.REST_BASE_PATH;
+//    }
 
-    /**
-     * Start the main activity with a deep link
-     * 
-     * @param key
-     *            the deep link key
-     * @param value
-     *            the deep link value
-     * @param receiverType
-     *            the fragment to receive the deep link
-     * @author sergiopereira
-     */
-    private void startActivityWithDeepLink(String key, String value, FragmentType receiverType) {
-        Log.d(TAG, "START DEEP LINK: KEY:" + key + " VALUE:" + value + " RECEIVER:" + receiverType.toString());
-        // Create bundle for fragment
-        Bundle bundle = new Bundle();
-        bundle.putString(key, value);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        // Create intent with fragment type and bundle
-        Intent intent = new Intent(this, MainFragmentActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, receiverType);
-        intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
-        // Start activity
-        startActivity(intent);
-        TrackerDelegator.trackPushNotificationsEnabled(true);
-    }
+//    /**
+//     * Start the main activity with a deep link
+//     * 
+//     * @param key
+//     *            the deep link key
+//     * @param value
+//     *            the deep link value
+//     * @param receiverType
+//     *            the fragment to receive the deep link
+//     * @author sergiopereira
+//     */
+//    private void startActivityWithDeepLink(String key, String value, FragmentType receiverType) {
+//        Log.d(TAG, "START DEEP LINK: KEY:" + key + " VALUE:" + value + " RECEIVER:" + receiverType.toString());
+//        // Create bundle for fragment
+//        Bundle bundle = new Bundle();
+//        bundle.putString(key, value);
+//        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
+//        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+//        // Create intent with fragment type and bundle
+//        Intent intent = new Intent(this, MainFragmentActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, receiverType);
+//        intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
+//        // Start activity
+//        startActivity(intent);
+//        TrackerDelegator.trackPushNotificationsEnabled(true);
+//    }
 
     /**
      * Start deep view with the respective bundle and set the ADX event
@@ -387,7 +396,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @param bundle
      * @author sergiopereira
      */
-    private void startDeepView(Bundle bundle) {
+    private void startActivityWithDeepLink(Bundle bundle) {
         // Get fragment type
         FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
         Log.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
@@ -461,6 +470,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         BugSenseHandler.initAndStartSession(getApplicationContext(), getString(R.string.bugsense_apikey));
     }
 
+    /*
+     * (non-Javadoc)
+     * @see android.app.Activity#onUserLeaveHint()
+     */
     @Override
     public void onUserLeaveHint() {
         shouldHandleEvent = false;
@@ -498,23 +511,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
 
         // Case event
-        if (eventType == EventType.INITIALIZE)
-            onProcessInitialize();
-        else if (eventType == EventType.GET_API_INFO)
-            onProcessApiEvent(bundle);
-        else if (eventType == EventType.GET_COUNTRY_CONFIGURATIONS)
-            onProcessCountryConfigsEvent();
-        else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS)
-            onProcessGlobalConfigsEvent(bundle);
+        if (eventType == EventType.INITIALIZE) onProcessInitialize();
+        else if (eventType == EventType.GET_API_INFO) onProcessApiEvent(bundle);
+        else if (eventType == EventType.GET_COUNTRY_CONFIGURATIONS) onProcessCountryConfigsEvent();
+        else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) onProcessGlobalConfigsEvent(bundle);
         // Case error
-        else if (errorCode == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE)
-            onProcessNoCountryConfigsError();
-        else if (errorCode == ErrorCode.NO_COUNTRIES_CONFIGS)
-            onProcessNoCountriesConfigsError();
-        else if (errorCode == ErrorCode.AUTO_COUNTRY_SELECTION)
-            onProcessAutoCountrySelection();
-        else if (errorCode == ErrorCode.REQUIRES_USER_INTERACTION)
-            onProcessRequiresUserError();
+        else if (errorCode == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) onProcessNoCountryConfigsError();
+        else if (errorCode == ErrorCode.NO_COUNTRIES_CONFIGS) onProcessNoCountriesConfigsError();
+        else if (errorCode == ErrorCode.AUTO_COUNTRY_SELECTION) onProcessAutoCountrySelection();
+        else if (errorCode == ErrorCode.REQUIRES_USER_INTERACTION) onProcessRequiresUserError();
     }
 
     /**
