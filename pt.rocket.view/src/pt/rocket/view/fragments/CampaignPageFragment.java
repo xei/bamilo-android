@@ -733,6 +733,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             private TextView mName;
             private View mImageContainer;
             private ImageView mImage;
+            private View progress;
             private View mSizeContainer;
             private Spinner mSizeSpinner;
             private TextView mPrice;
@@ -819,6 +820,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
                 item.mImageContainer = view.findViewById(R.id.image_container);
                 // Get image
                 item.mImage = (ImageView) view.findViewById(R.id.image_view);
+                // Get Progress
+                item.progress = view.findViewById(R.id.campaign_loading_progress);
                 // Get size container
                 item.mSizeContainer = view.findViewById(R.id.campaign_item_size_container);
                 // Get size spinner
@@ -868,7 +871,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             // Set image container
             setClickableView(view.mImageContainer, position);
             // Set image
-            RocketImageLoader.instance.loadImage(item.getImage(), view.mImage, null, R.drawable.no_image_large);
+            RocketImageLoader.instance.loadImage(item.getImage(), view.mImage, view.progress, R.drawable.no_image_large);
+            // RocketImageLoader.instance.loadImage(item.getImage(), view.mImage, null, R.drawable.no_image_large);
             // Set size
             setSizeContainer(view, item, position);
             // Set price and special price

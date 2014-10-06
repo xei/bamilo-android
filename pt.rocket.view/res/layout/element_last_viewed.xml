@@ -18,6 +18,13 @@
             android:layout_height="69dp"
             android:layout_centerHorizontal="true" />
 
+        <ProgressBar
+            android:id="@+id/progress_1"
+            android:layout_width="30dp"
+            android:layout_height="69dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+
         <org.holoeverywhere.widget.TextView
             android:id="@+id/name_1"
             android:layout_width="wrap_content"
@@ -55,6 +62,13 @@
             android:layout_height="69dp"
             android:layout_centerHorizontal="true" />
 
+        <ProgressBar
+            android:id="@+id/progress_2"
+            android:layout_width="30dp"
+            android:layout_height="69dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+
         <org.holoeverywhere.widget.TextView
             android:id="@+id/name_2"
             android:layout_width="wrap_content"
@@ -90,6 +104,13 @@
             android:layout_width="97.02dp"
             android:layout_height="69dp"
             android:layout_centerHorizontal="true" />
+
+        <ProgressBar
+            android:id="@+id/progress_3"
+            android:layout_width="30dp"
+            android:layout_height="69dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/name_3"

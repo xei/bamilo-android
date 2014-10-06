@@ -21,6 +21,13 @@
             android:layout_centerInParent="true"
             android:scaleType="fitCenter" />
 
+        <ProgressBar
+            android:id="@+id/campaign_loading_progress"
+            android:layout_width="30dp"
+            android:layout_height="@dimen/campaign_banner_height"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+
         <org.holoeverywhere.widget.TextView
             android:id="@+id/campaign_item_offer_ended"
             android:layout_width="@dimen/campaign_item_offer_ended_width"

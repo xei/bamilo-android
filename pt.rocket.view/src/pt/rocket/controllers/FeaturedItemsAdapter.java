@@ -73,7 +73,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        int viewId =  R.layout.element_last_viewed;
+        int viewId = R.layout.element_last_viewed;
         // only use the landscape layout when partialSize > 3
         if (this.partialSize > 3) {
             viewId = R.layout.element_last_viewed_landscape;
@@ -87,7 +87,9 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         if (index < featureListSize) {
             final FeaturedItem featuredItem = mFeaturedList.get(index);
 
-            setViewForFeaturedItem(featuredItem, view, R.id.element_1, R.id.img_1, R.id.name_1, R.id.price_1, index);
+            setViewForFeaturedItem(featuredItem, view, R.id.element_1, R.id.img_1, R.id.progress_1, R.id.name_1, R.id.price_1, index);
+        } else {
+            hideViewForFeaturedItem(view, R.id.element_1);
         }
 
         // second item
@@ -95,7 +97,9 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         if (index < featureListSize) {
             final FeaturedItem featuredItem = mFeaturedList.get(index);
 
-            setViewForFeaturedItem(featuredItem, view, R.id.element_2, R.id.img_2, R.id.name_2, R.id.price_2, index);
+            setViewForFeaturedItem(featuredItem, view, R.id.element_2, R.id.img_2, R.id.progress_2, R.id.name_2, R.id.price_2, index);
+        } else {
+            hideViewForFeaturedItem(view, R.id.element_2);
         }
 
         // third item
@@ -103,7 +107,9 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         if (index < featureListSize) {
             final FeaturedItem featuredItem = mFeaturedList.get(index);
 
-            setViewForFeaturedItem(featuredItem, view, R.id.element_3, R.id.img_3, R.id.name_3, R.id.price_3, index);
+            setViewForFeaturedItem(featuredItem, view, R.id.element_3, R.id.img_3, R.id.progress_3, R.id.name_3, R.id.price_3, index);
+        } else {
+            hideViewForFeaturedItem(view, R.id.element_3);
         }
 
         if (partialSize > 3) {
@@ -113,7 +119,9 @@ public class FeaturedItemsAdapter extends PagerAdapter {
             if (index < featureListSize) {
                 final FeaturedItem featuredItem = mFeaturedList.get(index);
 
-                setViewForFeaturedItem(featuredItem, view, R.id.element_4, R.id.img_4, R.id.name_4, R.id.price_4, index);
+                setViewForFeaturedItem(featuredItem, view, R.id.element_4, R.id.img_4, R.id.progress_4, R.id.name_4, R.id.price_4, index);
+            } else {
+                hideViewForFeaturedItem(view, R.id.element_4);
             }
 
             // fifth item
@@ -121,7 +129,9 @@ public class FeaturedItemsAdapter extends PagerAdapter {
             if (index < featureListSize) {
                 final FeaturedItem featuredItem = mFeaturedList.get(index);
 
-                setViewForFeaturedItem(featuredItem, view, R.id.element_5, R.id.img_5, R.id.name_5, R.id.price_5, index);
+                setViewForFeaturedItem(featuredItem, view, R.id.element_5, R.id.img_5, R.id.progress_5, R.id.name_5, R.id.price_5, index);
+            } else {
+                hideViewForFeaturedItem(view, R.id.element_5);
             }
         }
 
@@ -173,11 +183,12 @@ public class FeaturedItemsAdapter extends PagerAdapter {
      * @param view
      * @param idRelativeLayout
      * @param idImage
+     * @param idProgress
      * @param idName
      * @param idPrice
      * @param index
      */
-    void setViewForFeaturedItem(FeaturedItem featuredItem, View view, int idRelativeLayout, int idImage, int idName, int idPrice, int index) {
+    void setViewForFeaturedItem(FeaturedItem featuredItem, View view, int idRelativeLayout, int idImage, int idProgress, int idName, int idPrice, int index) {
         RelativeLayout mElement = (RelativeLayout) view.findViewById(idRelativeLayout);
 
         // set price TextView visible for FeaturedProduct
@@ -191,6 +202,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
             mElement.setOnClickListener(elementOnClickListener);
 
             ImageView img = (ImageView) mElement.findViewById(idImage);
+            View progress = mElement.findViewById(idProgress);
             TextView name = (TextView) mElement.findViewById(idName);
             // Log.i(TAG, "code1last generating : "+mFeaturedList.get(position).getProductName());
             name.setText(featuredItem.getName());
@@ -198,12 +210,21 @@ public class FeaturedItemsAdapter extends PagerAdapter {
                 TextView price = (TextView) mElement.findViewById(idPrice);
                 price.setText(((FeaturedProduct) featuredItem).getPrice());
             }
-            
-            RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img);
-            
+
+            // RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img);
+            RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img, progress, R.drawable.no_image_large);
         } else {
             Log.e(TAG, "setViewForFeaturedItem for index: " + index + " with no layout available!");
         }
+    }
+
+    /**
+     * 
+     * @param view
+     * @param idRelativeLayout
+     */
+    void hideViewForFeaturedItem(View view, int idRelativeLayout) {
+        view.findViewById(idRelativeLayout).setVisibility(View.GONE);
     }
 
     @Override
