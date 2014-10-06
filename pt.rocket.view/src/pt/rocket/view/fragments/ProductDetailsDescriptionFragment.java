@@ -3,11 +3,15 @@
  */
 package pt.rocket.view.fragments;
 
+import java.util.EnumSet;
+
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.MyMenuItem;
+import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Paint;
@@ -56,12 +60,12 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
      * Empty constructor
      */
     public ProductDetailsDescriptionFragment() {
-        super(IS_NESTED_FRAGMENT, R.layout.product_description_fragment);
-        /*-super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.product_description_fragment,
                 0,
-                KeyboardState.NO_ADJUST_CONTENT);*/
+                KeyboardState.NO_ADJUST_CONTENT);
+        // super(IS_NESTED_FRAGMENT, R.layout.product_description_fragment);
         // R.string.product_details_title
         this.mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
     }

@@ -110,7 +110,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
      * Default constructor
      */
     public ProductImageGalleryFragment() {
-        super(EnumSet.of(MyMenuItem.HIDE_AB), NavigationAction.Products, 0, KeyboardState.NO_ADJUST_CONTENT);
+        super(EnumSet.of(MyMenuItem.HIDE_AB, MyMenuItem.UP_BUTTON_BACK), NavigationAction.Products, 0, KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /**
