@@ -88,8 +88,6 @@ public class FeaturedItemsAdapter extends PagerAdapter {
             final FeaturedItem featuredItem = mFeaturedList.get(index);
 
             setViewForFeaturedItem(featuredItem, view, R.id.element_1, R.id.img_1, R.id.progress_1, R.id.name_1, R.id.price_1, index);
-        } else {
-            hideViewForFeaturedItem(view, R.id.element_1);
         }
 
         // second item
@@ -98,8 +96,6 @@ public class FeaturedItemsAdapter extends PagerAdapter {
             final FeaturedItem featuredItem = mFeaturedList.get(index);
 
             setViewForFeaturedItem(featuredItem, view, R.id.element_2, R.id.img_2, R.id.progress_2, R.id.name_2, R.id.price_2, index);
-        } else {
-            hideViewForFeaturedItem(view, R.id.element_2);
         }
 
         // third item
@@ -108,8 +104,6 @@ public class FeaturedItemsAdapter extends PagerAdapter {
             final FeaturedItem featuredItem = mFeaturedList.get(index);
 
             setViewForFeaturedItem(featuredItem, view, R.id.element_3, R.id.img_3, R.id.progress_3, R.id.name_3, R.id.price_3, index);
-        } else {
-            hideViewForFeaturedItem(view, R.id.element_3);
         }
 
         if (partialSize > 3) {
@@ -120,8 +114,6 @@ public class FeaturedItemsAdapter extends PagerAdapter {
                 final FeaturedItem featuredItem = mFeaturedList.get(index);
 
                 setViewForFeaturedItem(featuredItem, view, R.id.element_4, R.id.img_4, R.id.progress_4, R.id.name_4, R.id.price_4, index);
-            } else {
-                hideViewForFeaturedItem(view, R.id.element_4);
             }
 
             // fifth item
@@ -130,8 +122,6 @@ public class FeaturedItemsAdapter extends PagerAdapter {
                 final FeaturedItem featuredItem = mFeaturedList.get(index);
 
                 setViewForFeaturedItem(featuredItem, view, R.id.element_5, R.id.img_5, R.id.progress_5, R.id.name_5, R.id.price_5, index);
-            } else {
-                hideViewForFeaturedItem(view, R.id.element_5);
             }
         }
 
@@ -216,15 +206,6 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         } else {
             Log.e(TAG, "setViewForFeaturedItem for index: " + index + " with no layout available!");
         }
-    }
-
-    /**
-     * 
-     * @param view
-     * @param idRelativeLayout
-     */
-    void hideViewForFeaturedItem(View view, int idRelativeLayout) {
-        view.findViewById(idRelativeLayout).setVisibility(View.GONE);
     }
 
     @Override
