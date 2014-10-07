@@ -187,7 +187,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     }
     
     private void getViews(){
-        mProductName = (TextView) mainView.findViewById(R.id.product_name);
+        mProductName = (TextView) mainView.findViewById(R.id.product_detail_name);
         mProductPriceSpecial = (TextView) mainView.findViewById(R.id.product_price_special);
         mProductPriceNormal = (TextView) mainView.findViewById(R.id.product_price_normal);
         mProductFeaturesContainer = (RelativeLayout) mainView.findViewById(R.id.features_container);

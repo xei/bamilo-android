@@ -54,5 +54,8 @@
 
     <color name="search_hint">#a3a3a3</color>
     <color name="text_root">#e0e0e0</color>
+    
+    <color name="white_50">#80FFFFFF</color>
+    <color name="item_highlight_50">#80ecedee</color>
 
 </resources>

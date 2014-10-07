@@ -60,6 +60,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -67,11 +68,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.style.MetricAffectingSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.webkit.WebView.FindListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -214,6 +221,18 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     private View mRelatedHorizontalScroll;
 
     private ViewGroup mRelatedHorizontalGroup;
+    
+    private RelativeLayout mProductFeaturesContainer;
+    
+    private TextView mProductFeaturesText;
+    
+    private TextView mProductDescriptionText;
+    
+    private LinearLayout mProductFeaturesMore;
+    
+    private LinearLayout mProductDescriptionMore;
+    
+    private RelativeLayout mProductDescriptionContainer;
 
     /**
      * Empty constructor
@@ -221,7 +240,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public ProductDetailsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.layout.product_details_fragment_main,
+                R.layout.productdetailsnew_fragments,
                 0,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -440,12 +459,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         imageShare.setOnClickListener((OnClickListener) this);
         // Discount percentage
         mDiscountPercentageText = (TextView) view.findViewById(R.id.product_detail_discount_percentage);
-        // Title
-        mTitleText = (TextView) view.findViewById(R.id.product_detail_title);
-        mTitleText.setOnClickListener((OnClickListener) this);
+
         // Prices
-        mSpecialPriceText = (TextView) view.findViewById(R.id.product_detail_price_special);
-        mPriceText = (TextView) view.findViewById(R.id.product_detail_price_normal);
+        mSpecialPriceText = (TextView) view.findViewById(R.id.product_price_special);
+        mPriceText = (TextView) view.findViewById(R.id.product_price_normal);
         // Variations
         mVarianceContainer = (ViewGroup) view.findViewById(R.id.product_detail_product_variant_container);
         mVarianceText = (TextView) view.findViewById(R.id.product_detail_product_variant_text);
@@ -461,9 +478,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         mRelatedContainer = view.findViewById(R.id.product_detail_product_related_container);
         mRelatedHorizontalScroll = view.findViewById(R.id.product_detail_horizontal_scroll);
         mRelatedHorizontalGroup = (ViewGroup) view.findViewById(R.id.product_detail_horizontal_group_container);
-        mRelatedLoading = view.findViewById(R.id.loading_related);
-        // Button specification
-        view.findViewById(R.id.product_detail_specifications).setOnClickListener((OnClickListener) this);
+        mRelatedLoading = view.findViewById(R.id.loading_related);        
         // Bottom Button
         mAddToCartButton = (Button) view.findViewById(R.id.product_detail_shop);
         mAddToCartButton.setSelected(true);
@@ -478,6 +493,32 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             mCallToOrderButton.setVisibility(View.GONE);
         }
 
+
+      
+      
+      if(BaseActivity.isTabletInLandscape(getBaseActivity())){
+          mProductFeaturesContainer = (RelativeLayout) mainView.findViewById(R.id.features_container);
+          mProductDescriptionContainer = (RelativeLayout) mainView.findViewById(R.id.description_container);
+          mProductFeaturesText = (TextView) mainView.findViewById(R.id.product_features_text);
+          mProductDescriptionText = (TextView) mainView.findViewById(R.id.product_description_text);
+          mProductFeaturesMore = (LinearLayout) mainView.findViewById(R.id.features_more_container);
+          mProductFeaturesMore.setOnClickListener(this);
+          mProductDescriptionMore = (LinearLayout) mainView.findViewById(R.id.description_more_container);
+          mProductDescriptionMore.setOnClickListener(this);
+          
+          // Title
+          mTitleText = (TextView) view.findViewById(R.id.product_detail_name);
+          mTitleText.setOnClickListener((OnClickListener) this);
+      } else {
+          
+          // Title
+          mTitleText = (TextView) view.findViewById(R.id.product_name);
+          mTitleText.setOnClickListener((OnClickListener) this);
+          // Button specification
+          view.findViewById(R.id.product_detail_specifications).setOnClickListener((OnClickListener) this);
+      }
+     
+        
     }
 
     private void startFragmentCallbacks() {
@@ -794,7 +835,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         Integer ratingCount = mCompleteProduct.getRatingsCount();
 
         mProductRating.setRating(ratingAverage);
-        mProductRatingCount.setText("(" + String.valueOf(ratingCount) + ")");
+        
+        if(ratingCount == 1){
+            mProductRatingCount.setText(String.valueOf(ratingCount) + " " + getString(R.string.review) );
+        } else {
+            mProductRatingCount.setText(String.valueOf(ratingCount) + " " + getString(R.string.reviews) );
+        }
+        
+//        mProductRatingCount.setText("(" + String.valueOf(ratingCount) + ")");
         loadingRating.setVisibility(View.GONE);
     }
 
@@ -1045,6 +1093,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         setContentInformation();
 
+        if(BaseActivity.isTabletInLandscape(getBaseActivity())){
+            displayDescription();
+            displaySpecification();   
+        }
         // Tracking
         TrackerDelegator.trackProduct(createBundleProduct());
     }
@@ -1283,7 +1335,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             getBaseActivity().onSwitchFragment(FragmentType.POPULARITY,
                     FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
 
-        } else if (id == R.id.product_detail_specifications || id == R.id.product_detail_title) {
+        } else if (id == R.id.product_detail_specifications || id == R.id.product_name || id == R.id.product_detail_name ||
+                id == R.id.features_more_container || id == R.id.description_more_container) {
             if (null != mCompleteProduct) {
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
@@ -1581,4 +1634,98 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         fragmentTransaction.commitAllowingStateLoss();
     }
 
+    /**
+     * display product specification on landscape
+     */
+    private void displaySpecification() {
+        String shortDescription = mCompleteProduct.getShortDescription();
+        // Don't show the features box if there is no content for it
+        if (TextUtils.isEmpty(shortDescription)) {
+            Log.i(TAG, "shortDescription : empty");
+            if(mProductFeaturesContainer!=null){
+                mProductFeaturesContainer.setVisibility(View.GONE);
+            }
+            return;
+        } else {
+            mProductFeaturesContainer.setVisibility(View.VISIBLE);
+        
+        String translatedDescription = shortDescription.replace("\r", "<br>");
+        Log.d(TAG, "displaySpecification: *" + translatedDescription + "*");
+        
+        Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
+        // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);
+            MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
+            for (MetricAffectingSpan span : spans) {
+                htmlText.removeSpan(span);
+            }
+        }
+        mProductFeaturesText.setText(htmlText);
+        
+        showMoreButton(mProductFeaturesText,mProductFeaturesMore);
+        
+        }
+    }
+    
+    /**
+     * display product description on landscape
+     */
+    private void displayDescription() {
+        String longDescription = mCompleteProduct.getDescription();
+        if(longDescription.isEmpty()){
+            mProductDescriptionContainer.setVisibility(View.GONE); 
+        } else {
+            mProductDescriptionContainer.setVisibility(View.VISIBLE);
+        }
+        String translatedDescription = longDescription.replace("\r", "<br>");
+        Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
+        // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);                
+            MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
+            for (MetricAffectingSpan span: spans) {
+                htmlText.removeSpan(span);                
+            }
+        }
+        mProductDescriptionText.setText(htmlText);
+        
+        showMoreButton(mProductDescriptionText,mProductDescriptionMore);
+        
+    }
+    
+    /**
+     * function used to calculate if text is all visible or not, on order to show the show more buttom
+     * 
+     * @param textView, view to count the lines
+     * @param moreView, view to hide or show
+     */
+    private void showMoreButton(final TextView textView, final LinearLayout moreView){
+        
+        try {
+            ViewTreeObserver observer = textView.getViewTreeObserver();
+            observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+                @SuppressWarnings("deprecation")
+                @Override
+                public void onGlobalLayout() {
+                    int maxLines = (int) textView.getHeight() / textView.getLineHeight();
+
+                    textView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+                    Log.d("COUNT LINE",":"+maxLines);
+                    if (textView.getLineCount() >= maxLines) {
+                        moreView.setVisibility(View.VISIBLE);
+                       
+                    } else {
+                        moreView.setVisibility(View.GONE);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            moreView.setVisibility(View.VISIBLE);
+            e.printStackTrace();
+        }
+        
+    }
+    
 }

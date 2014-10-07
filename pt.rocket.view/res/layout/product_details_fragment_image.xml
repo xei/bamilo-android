@@ -17,14 +17,11 @@
     <org.holoeverywhere.widget.TextView
         android:id="@+id/product_detail_discount_percentage"
         style="@style/discount_percentage"
-        android:layout_width="@dimen/product_detail_item_discount_percentage_width"
-        android:layout_height="@dimen/product_detail_item_discount_percentage_height"
         android:layout_alignBottom="@id/product_detail_image_gallery_container"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_mid"
         android:layout_marginTop="@dimen/margin_large"
-        android:paddingBottom="@dimen/margin_small"
-        android:textSize="@dimen/text_title" />
+        android:paddingBottom="@dimen/margin_small" />
 
     <!-- SHARE -->
 
@@ -61,7 +58,7 @@
     <!-- TITLE -->
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/product_detail_title"
+        android:id="@+id/product_name"
         style="@style/text_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- BUTTONS -->
+
+    <include
+        android:id="@+id/product_detail_shop_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        layout="@layout/product_details_fragment_buttons" />
+
+    <!-- SCROLL CONTAINER -->
+
+    <pt.rocket.utils.ScrollViewWithHorizontal
+        android:id="@+id/product_detail_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/product_detail_shop_container"
+        android:fillViewport="true" >
+
+        <LinearLayout
+            android:id="@+id/product_detail_details_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- IMAGE CONTAINER -->
+
+            <include layout="@layout/product_details_fragment_image" />
+
+            <!-- VARIATIONS -->
+
+            <FrameLayout
+                android:id="@+id/product_detail_variations_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp" />
+
+            <!-- BASIC INFO -->
+
+            <include layout="@layout/product_details_fragment_info" />
+
+            <!-- RELATED PRODUCTS -->
+
+            <include layout="@layout/product_details_fragment_related" />
+        </LinearLayout>
+    </pt.rocket.utils.ScrollViewWithHorizontal>
+
+    <!-- TIPS -->
+
+    <include
+        android:id="@+id/product_detail_tips_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/tips"
+        android:visibility="gone" />
+
+</RelativeLayout>

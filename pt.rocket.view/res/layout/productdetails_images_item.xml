@@ -4,12 +4,13 @@
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/margin_small"
     android:paddingRight="@dimen/margin_small"
-    android:paddingTop="@dimen/margin_small">
+    android:paddingTop="@dimen/margin_small" >
+    
 
     <RelativeLayout
         android:id="@+id/image_container"
         android:layout_width="75dp"
-        android:layout_height="50dp">
+        android:layout_height="50dp" >
 
         <ImageView
             android:id="@+id/image"

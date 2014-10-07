@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/login_margin_small" >
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/product_name"
+        android:id="@+id/product_detail_name"
         style="@style/text_header"
         android:layout_width="match_parent"
         android:layout_marginRight="@dimen/margin_huge"
@@ -20,7 +20,7 @@
     <org.holoeverywhere.widget.TextView
         android:id="@+id/product_price_special"
         style="@style/text_header"
-        android:layout_below="@+id/product_name"
+        android:layout_below="@+id/product_detail_name"
         android:layout_marginRight="@dimen/margin_mid"
         android:fontFamily="roboto_bold"
         android:text="Discount Price"
@@ -30,7 +30,7 @@
         android:id="@+id/product_price_normal"
         style="@style/text_header"
         android:layout_alignBaseline="@+id/product_price_special"
-        android:layout_below="@+id/product_name"
+        android:layout_below="@+id/product_detail_name"
         android:layout_toRightOf="@+id/product_price_special"
         android:text="Normal Price"
         android:textColor="@color/grey_middlelight" />

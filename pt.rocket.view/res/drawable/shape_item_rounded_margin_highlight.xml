@@ -2,8 +2,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:drawable="@drawable/shape_itemhighlight"
-        android:left="@dimen/rounded_margin_mid"
-        android:right="@dimen/rounded_margin_mid"/>
+        android:drawable="@drawable/shape_itemhighlight"/>
 
 </layer-list>

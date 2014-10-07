@@ -19,14 +19,14 @@
         android:orientation="horizontal" >
 
         <org.holoeverywhere.widget.TextView
-            android:id="@+id/product_detail_price_special"
+            android:id="@+id/product_price_special"
             style="@style/text_header"
             android:layout_marginRight="@dimen/margin_mid"
             android:fontFamily="roboto_bold"
             android:textColor="@color/red_basic" />
 
         <org.holoeverywhere.widget.TextView
-            android:id="@+id/product_detail_price_normal"
+            android:id="@+id/product_price_normal"
             style="@style/text_header"
             android:textColor="@color/grey_middlelight" />
     </LinearLayout>

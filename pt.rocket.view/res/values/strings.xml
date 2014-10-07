@@ -384,5 +384,6 @@
     <string name="order_status_label">Order Status</string>
     <string name="cart_label">Cart</string>
     <string name="change_country">Change Country</string>
+    <string name="show_more">More...</string>
 
 </resources>

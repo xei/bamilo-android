@@ -262,7 +262,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                 labelsContainer.addView(viewLabel);
             }
         }
-        productName = (TextView) getView().findViewById(R.id.product_name);
+        productName = (TextView) getView().findViewById(R.id.product_detail_name);
         TextView productPriceSpecial = (TextView) getView()
                 .findViewById(R.id.product_price_special);
         TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);

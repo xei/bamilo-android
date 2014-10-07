@@ -59,6 +59,8 @@ public class ProductsListAdapter extends BaseAdapter {
     int counter = 1;
 
     private final String reviewLabel;
+    
+    private final String reviewsLabel;
 
     private LayoutInflater inflater;
 
@@ -101,7 +103,8 @@ public class ProductsListAdapter extends BaseAdapter {
         this.showList = showList;
 
         this.inflater = LayoutInflater.from(context);
-        reviewLabel = context.getString(R.string.reviews);
+        reviewLabel = context.getString(R.string.review);
+        reviewsLabel = context.getString(R.string.reviews);
 
         // Get is new image for respective country
         this.isNewResource = !isFrench ? R.drawable.selector_is_new_en : R.drawable.selector_is_new_fr;
@@ -232,7 +235,13 @@ public class ProductsListAdapter extends BaseAdapter {
             if (product.getRating() != null && product.getRating() > 0) {
                 prodItem.rating.setRating(product.getRating().floatValue());
                 prodItem.rating.setVisibility(View.VISIBLE);
-                prodItem.reviews.setText(product.getReviews() + " " + reviewLabel);
+                if(product.getReviews() == 1){
+                    prodItem.reviews.setText(product.getReviews() + " " + reviewLabel);    
+                } else {
+                    prodItem.reviews.setText(product.getReviews() + " " + reviewsLabel);    
+                }
+                
+                
             } else {
                 prodItem.rating.setVisibility(View.INVISIBLE);
                 prodItem.reviews.setText("");

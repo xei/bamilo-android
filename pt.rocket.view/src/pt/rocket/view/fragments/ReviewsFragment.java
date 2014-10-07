@@ -279,7 +279,7 @@ public class ReviewsFragment extends BaseFragment {
     private void setViewContent() {
 
         getView().findViewById(R.id.rating_stripe).setVisibility(View.VISIBLE);
-        TextView productName = (TextView) getView().findViewById(R.id.product_name);
+        TextView productName = (TextView) getView().findViewById(R.id.product_detail_name);
         TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
         TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
         productName.setText(selectedProduct.getBrand()+" "+selectedProduct.getName());
@@ -426,7 +426,13 @@ public class ReviewsFragment extends BaseFragment {
         // Log.i("REVIEW COUNT", " IS " + review.size());
         if (productRatingPage.getCommentsCount() >= 0) {
             TextView reviewsPop = (TextView) getView().findViewById(R.id.reviews);
-            reviewsPop.setText("(" + productRatingPage.getCommentsCount() + ")");
+            
+            if(productRatingPage.getCommentsCount() == 1){
+                reviewsPop.setText(String.valueOf(productRatingPage.getCommentsCount()) + " " + getString(R.string.review) );
+            } else {
+                reviewsPop.setText(String.valueOf(productRatingPage.getCommentsCount()) + " " + getString(R.string.reviews) );
+            }           
+//            reviewsPop.setText("(" + productRatingPage.getCommentsCount() + ")");
         }
         int numberReviews = reviews.size();
         // If there are reviews, list them
