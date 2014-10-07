@@ -527,16 +527,22 @@ public class AnalyticsGoogle {
 	 * @param context
 	 * @param sku
 	 * @param value
-	 * @param ratingType
+	 * @param ratingLabel
 	 */
-	public void trackRateProduct(Context context, String sku, Long value, String ratingType){
+	public void trackRateProduct(Context context, String sku, Long value, String ratingLabel){
 		// Validate
 		if (!isEnabled) return;
 		// Data
 		String category = mContext.getString(R.string.gcatalog);
+		
+        // FIXME : (TEMPORARY) Validate rating label if ins't a number from API
+        if (ratingLabel.equals("1")) ratingLabel = "Price";
+        else if (ratingLabel.equals("2")) ratingLabel = "Appearance";
+        else if (ratingLabel.equals("3")) ratingLabel = "Quality";
+		
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(mContext.getString(R.string.grateproduct));
-		stringBuilder.append(ratingType.toUpperCase(Locale.getDefault()));
+		stringBuilder.append(ratingLabel);
 		String action = stringBuilder.toString();		
 		trackEvent(category, action, sku, value);
 	}

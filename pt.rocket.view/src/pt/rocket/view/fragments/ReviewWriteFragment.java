@@ -8,9 +8,6 @@ import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
-import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.controllers.fragments.FragmentController;
-import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
@@ -18,7 +15,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.account.GetCustomerHelper;
-import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
 import pt.rocket.helpers.configs.GetRatingOptionsHelper;
 import pt.rocket.helpers.products.ReviewProductHelper;
 import pt.rocket.helpers.session.GetLoginHelper;
@@ -250,6 +246,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         int id = 77;
         // Only render ratings if available
         if (ratingOptions != null && !ratingOptions.isEmpty()) {
+            int size = ratingOptions.size();
             for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
                 View viewRating = mInflater.inflate(R.layout.rating_bar_component, null, false);
                 View viewLabel = mInflater.inflate(R.layout.label_rating_component, null, false);
@@ -257,7 +254,15 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                 viewRating.setId(id);
                 id++;
                 viewLabel.setTag(option.getKey());
-                ((TextView) viewLabel).setText(option.getKey());
+                
+                // Get the rating label
+                // FIXME : (TEMPORARY) Validate rating label if ins't a number from API
+                String ratingLabel = option.getKey();
+                if (ratingLabel.equals("1")) ratingLabel = size == 1 ? "Rating" : "Price";
+                else if (ratingLabel.equals("2")) ratingLabel = "Appearance";
+                else if (ratingLabel.equals("3")) ratingLabel = "Quality";
+                
+                ((TextView) viewLabel).setText(ratingLabel);
                 ratingBarContainer.addView(viewRating);
                 labelsContainer.addView(viewLabel);
             }
@@ -396,20 +401,16 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
 
     private boolean checkReview() {
         ratings = new HashMap<String, Double>();
-        boolean result = checkEmpty(getResources().getColor(R.color.red_basic), titleText,
-                nameText, reviewText);
+        boolean result = checkEmpty(getResources().getColor(R.color.red_basic), titleText, nameText, reviewText);
         int numberRatings = labelsContainer.getChildCount();
         if (numberRatings > 0) {
             for (int i = 0; i < numberRatings; i++) {
                 if (((RatingBar) ratingBarContainer.getChildAt(i)).getRating() == 0) {
-                    ((TextView) labelsContainer.getChildAt(i)).setTextColor(getResources()
-                            .getColor(R.color.red_basic));
+                    ((TextView) labelsContainer.getChildAt(i)).setTextColor(getResources().getColor(R.color.red_basic));
                     result = false;
                 } else {
-                    ratings.put((String) ratingBarContainer.getChildAt(i).getTag(),
-                            (double) ((RatingBar) ratingBarContainer.getChildAt(i)).getRating());
-                    ((TextView) labelsContainer.getChildAt(i)).setTextColor(getResources()
-                            .getColor(R.color.grey_middle));
+                    ratings.put((String) ratingBarContainer.getChildAt(i).getTag(), (double) ((RatingBar) ratingBarContainer.getChildAt(i)).getRating());
+                    ((TextView) labelsContainer.getChildAt(i)).setTextColor(getResources().getColor(R.color.grey_middle));
                 }
             }
         } else {

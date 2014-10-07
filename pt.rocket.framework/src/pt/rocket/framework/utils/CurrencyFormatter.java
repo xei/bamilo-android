@@ -279,16 +279,21 @@ public class CurrencyFormatter {
 
     /**
      * Test if text is number
-     * 
      * @param text
-     * @return
+     * @see http://stackoverflow.com/questions/1102891/how-to-check-if-a-string-is-a-numeric-type-in-java?answertab=active#tab-top
+     * @return true or false
      */
     public static boolean isNumber(String text) {
-        try {
-            Double.parseDouble(text);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
+//        try {
+//            Double.parseDouble(text);
+//            return true;
+//        } catch (NumberFormatException e) {
+//            return false;
+//        }
+    	try {
+    		return text.matches("-?\\d+(\\.\\d+)?");
+		} catch (NullPointerException e) {
+			return false;
+		}
     }
 }

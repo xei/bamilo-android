@@ -299,6 +299,8 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
 
                 if (serverForm != null && !serverForm.checkRequired()) {
                     registerRequiredText.setVisibility(View.VISIBLE);
+                    // Tracking signup failed
+                    TrackerDelegator.trackSignupFailed();
                     return;
                 } else {
                     registerRequiredText.setVisibility(View.GONE);
@@ -311,8 +313,12 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
                 } else if (!checkTermsIfRequired()) {
                     mandatory.setVisibility(View.VISIBLE);
                     getBaseActivity().hideKeyboard();
+                    // Tracking signup failed
+                    TrackerDelegator.trackSignupFailed();
                 } else {
                     getBaseActivity().hideKeyboard();
+                    // Tracking signup failed
+                    TrackerDelegator.trackSignupFailed();
                 }
             }
         });

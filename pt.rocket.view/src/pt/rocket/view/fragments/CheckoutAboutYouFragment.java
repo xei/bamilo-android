@@ -446,7 +446,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private void onClickLoginButton() {
         Log.i(TAG, "ON CLICK: LOGIN");
         try {
+            // Validate form
             if (loginForm.validate()) requestLogin();
+            // Tracking login failed
+            else TrackerDelegator.trackLoginFailed(TrackerDelegator.ISNT_AUTO_LOGIN);
         } catch (NullPointerException e) {
             Log.w(TAG, "LOGIN FORM IS NULL", e);
             triggerLoginForm();
@@ -832,7 +835,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         }
         
         TrackerDelegator.trackSignUp(JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        TrackerDelegator.trackCheckoutStart(JumiaApplication.CUSTOMER.getIdAsString());
+        TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, JumiaApplication.CUSTOMER.getIdAsString());
         
         // Next step
         gotoNextStep();            
@@ -880,7 +883,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             params.putString(TrackerDelegator.ORIGIN_KEY,loginOrigin);
             params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, true);
             TrackerDelegator.trackLoginSuccessful(params);
-            TrackerDelegator.trackCheckoutStart(customerFb.getIdAsString());
+            TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, customerFb.getIdAsString());
             
             // Force update the cart and after goto next step
             if(!onAutoLogin){
@@ -907,7 +910,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             params2.putString(TrackerDelegator.ORIGIN_KEY,loginOrigin);
             params2.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
             TrackerDelegator.trackLoginSuccessful(params2);
-            TrackerDelegator.trackCheckoutStart(customer.getIdAsString());
+            TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, customer.getIdAsString());
             
             // Force update the cart and after goto next step
             if(!onAutoLogin){

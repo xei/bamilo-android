@@ -234,6 +234,7 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
             String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
             if (CurrencyFormatter.isNumber(priceJSON)) {
                 price = CurrencyFormatter.formatCurrency(priceJSON);
+                priceDouble = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
             } else {
                 throw new JSONException("Price is not a number!");
             }
@@ -280,10 +281,14 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
             }*/
             // Fix NAFAMZ-7848
             String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
-            if (!CurrencyFormatter.isNumber(specialPriceJSON)) {
-                specialPriceJSON = priceJSON;
+            if (CurrencyFormatter.isNumber(specialPriceJSON)) {
+            	specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
+            	specialPriceDouble = jsonObject.getDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
+            } else {
+            	specialPrice = price;
+            	specialPriceDouble = priceDouble;
             }
-            specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
+            
 
             /*-if (!jsonObject.isNull(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG)) {
             	try {

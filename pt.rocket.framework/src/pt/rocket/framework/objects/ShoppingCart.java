@@ -122,7 +122,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException{
 		cartValue = jsonObject.getString(RestConstants.JSON_CART_VALUE_TAG);
-		cartValueAsDouble = jsonObject.getDouble(RestConstants.JSON_CART_VALUE_TAG);
+		cartValueAsDouble = jsonObject.optDouble(RestConstants.JSON_CART_VALUE_TAG, 0);
 		cartCleanValue = jsonObject.optString(RestConstants.JSON_CART_CLEAN_VALUE_TAG);
 		cartCount = jsonObject.getInt(RestConstants.JSON_CART_COUNT_TAG);
 		vat_value = jsonObject.optString(RestConstants.JSON_CART_VAT_VALUE_TAG);

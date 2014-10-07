@@ -33,6 +33,9 @@ import de.akquinet.android.androlog.Log;
 
 public class TrackerDelegator {
     private final static String TAG = TrackerDelegator.class.getSimpleName();
+    
+    public static final boolean IS_AUTO_LOGIN = true;
+    public static final boolean ISNT_AUTO_LOGIN = false;
 
     public static final String CUSTOMER_KEY = "customer";
     public static final String AUTOLOGIN_KEY = "auto_login";
@@ -127,9 +130,9 @@ public class TrackerDelegator {
         }
         Ad4PushTracker.get().trackLogin(customer.getIdAsString(), customer.getFirstName());
     }
-
+    
     /**
-     * 
+     * Track the normal/auto login
      * @param wasAutologin
      */
     public final static void trackLoginFailed(boolean wasAutologin) {
@@ -211,10 +214,6 @@ public class TrackerDelegator {
     public final static void trackCheckout(List<ShoppingCartItem> items) {
         //MixpanelTracker.checkout(context, items);
         AnalyticsGoogle.get().trackCheckout(items);
-    }
-
-    public final static void trackViewCart(int numberItems) {
-        //MixpanelTracker.viewCart(context, numberItems);
     }
 
     public final static void trackItemShared(Intent intent) {
@@ -597,9 +596,9 @@ public class TrackerDelegator {
      * @param context
      * @param userId
      */
-    public static void trackCheckoutStart(String userId) {
+    public static void trackCheckoutStart(TrackingEvent event, String userId) {
         // GA
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.CHECKOUT_STARTED, userId, 0l);
+        AnalyticsGoogle.get().trackEvent(event, userId, 0l);
         // AD4Push
         Ad4PushTracker.get().trackCheckoutStarted();
     }
@@ -699,11 +698,12 @@ public class TrackerDelegator {
      * Tracking add product to favorites
      * 
      * @param productSku
+     * @param price 
      */
-    public static void trackAddToFavorites(String productSku) {
+    public static void trackAddToFavorites(String productSku, double price) {
         Ad4PushTracker.get().trackAddToFavorites(productSku);
         // GA
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_WISHLIST, productSku, 0l);
+        AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_WISHLIST, productSku, (long) price);
     }
 
     /**
@@ -711,10 +711,10 @@ public class TrackerDelegator {
      * 
      * @param productSku
      */
-    public static void trackRemoveFromFavorites(String productSku) {
+    public static void trackRemoveFromFavorites(String productSku, double price) {
         Ad4PushTracker.get().trackRemoveFromWishlist(productSku);
         // GA
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.REMOVE_FROM_WISHLIST, productSku, 0l);
+        AnalyticsGoogle.get().trackEvent(TrackingEvent.REMOVE_FROM_WISHLIST, productSku, (long) price);
     }
 
     /**

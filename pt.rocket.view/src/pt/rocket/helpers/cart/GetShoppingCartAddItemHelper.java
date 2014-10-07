@@ -45,6 +45,8 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
     public static final String REMOVE_FAVOURITE_TAG = "rmv_fv";
     
     public static final String REMOVE_RECENTLYVIEWED_TAG = "rmv_rv";
+
+    public static final String PRODUCT_PRICE_TAG = "price";
     
     private String mCurrentSku;
     
@@ -53,6 +55,8 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
     private boolean isToRemoveFromFavourite;
 
     private boolean isToRemoveFromLastViewed;
+
+    private double mCurrentPrice = 0d;
  
     /*
      * (non-Javadoc)
@@ -63,6 +67,7 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
         // Get specific data
         mCurrentPos = args.getInt(PRODUCT_POS_TAG, -1);
         mCurrentSku = args.getString(PRODUCT_SKU_TAG);
+        mCurrentPrice  = args.getDouble(PRODUCT_PRICE_TAG);
         isToRemoveFromFavourite = args.getBoolean(REMOVE_FAVOURITE_TAG, false);
         isToRemoveFromLastViewed = args.getBoolean(REMOVE_RECENTLYVIEWED_TAG, false);
         // Create request
@@ -104,7 +109,7 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
         // Validate if is to remove from favourite
         if (isToRemoveFromFavourite && !TextUtils.isEmpty(mCurrentSku)) { 
             FavouriteTableHelper.removeFavouriteProduct(mCurrentSku);
-            TrackerDelegator.trackRemoveFromFavorites(mCurrentSku);
+            TrackerDelegator.trackRemoveFromFavorites(mCurrentSku, mCurrentPrice);
         }
 
         /**

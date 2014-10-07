@@ -194,7 +194,7 @@
                 style="@style/button_grey_landscape"
                 android:layout_marginTop="0dp"
                 android:contentDescription="@string/try_again"
-                android:text="@string/change_country" />
+                android:text="@string/nav_country" />
         </LinearLayout>
 
         <LinearLayout

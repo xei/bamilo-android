@@ -1378,21 +1378,17 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             if (!isFavourite) {
                 fragmentMessage = BaseFragment.FRAGMENT_VALUE_SET_FAVORITE;
                 FavouriteTableHelper.insertFavouriteProduct(mCompleteProduct);
-                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG,
-                        Boolean.TRUE.toString());
+                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
                 imageIsFavourite.setSelected(true);
-                TrackerDelegator.trackAddToFavorites(mCompleteProduct.getSku());
-                Toast.makeText(mContext, getString(R.string.products_added_favourite),
-                        Toast.LENGTH_SHORT).show();
+                TrackerDelegator.trackAddToFavorites(mCompleteProduct.getSku(), mCompleteProduct.getPriceAsDouble());
+                Toast.makeText(mContext, getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
             } else {
                 fragmentMessage = BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE;
                 FavouriteTableHelper.removeFavouriteProduct(mCompleteProduct.getSku());
-                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG,
-                        Boolean.FALSE.toString());
+                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
                 imageIsFavourite.setSelected(false);
-                TrackerDelegator.trackRemoveFromFavorites(mCompleteProduct.getSku());
-                Toast.makeText(mContext, getString(R.string.products_removed_favourite),
-                        Toast.LENGTH_SHORT).show();
+                TrackerDelegator.trackRemoveFromFavorites(mCompleteProduct.getSku(), mCompleteProduct.getPriceAsDouble());
+                Toast.makeText(mContext, getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
             }
 
             BaseFragment catalogFragment = (BaseFragment) getBaseActivity()

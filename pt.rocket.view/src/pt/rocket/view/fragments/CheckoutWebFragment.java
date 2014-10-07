@@ -19,6 +19,7 @@ import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.framework.rest.RestContract;
+import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -199,7 +200,7 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
             user_id = JumiaApplication.CUSTOMER.getIdAsString();
         }
-        TrackerDelegator.trackCheckoutStart(user_id);
+        TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STARTED, user_id);
     }
 
     /*

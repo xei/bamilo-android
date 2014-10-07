@@ -9,7 +9,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.holoeverywhere.widget.CheckBox;
 
@@ -30,7 +29,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
 import pt.rocket.helpers.configs.GetInitFormHelper;
 import pt.rocket.helpers.session.GetFacebookLoginHelper;
 import pt.rocket.helpers.session.GetLoginFormHelper;
@@ -406,6 +404,8 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                     if (dynamicForm.validate()) {
                         requestLogin();
                     }
+                    // Tracking login failed
+                    else TrackerDelegator.trackLoginFailed(TrackerDelegator.ISNT_AUTO_LOGIN);
                 } else {
                     triggerLoginForm();
                 }

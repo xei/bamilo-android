@@ -12,6 +12,7 @@ import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.components.androidslidingtabstrip.SlidingTabLayout;
+import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.rest.RestConstants;
@@ -77,7 +78,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     private View mMainContent;
 
     private int mPagerSavedPosition = 0;
-    
+
     private boolean mReceivedInBackgroundAndDiscarded = false;
 
     /**
@@ -100,7 +101,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
                 R.layout.home_fragment_main,
                 R.string.home_label,
                 KeyboardState.NO_ADJUST_CONTENT);
-        // 0
     }
 
     /*
@@ -127,6 +127,9 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         HockeyStartup.register(getBaseActivity());
         // Get saved state
         if (savedInstanceState != null) mPagerSavedPosition = savedInstanceState.getInt(PAGER_POSITION_KEY);
+
+        // Track auto login failed if hasn't saved credentials
+        if (!JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN);
     }
 
     /*
@@ -146,7 +149,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         // Get tab pager
         mHomePagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.home_pager_tab);
         mHomePagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
-        
+
         /**
          * TODO: Validate this method is necessary to recover the app from
          * strange behavior In case Application is connected and has shop id
@@ -174,12 +177,12 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        
+
         /**
-         * Received and discarded data so the current view is the loading.
-         * Force reload the content.
+         * Received and discarded data so the current view is the loading. Force
+         * reload the content.
          */
-        if(mReceivedInBackgroundAndDiscarded) triggerTeasers();
+        if (mReceivedInBackgroundAndDiscarded) triggerTeasers();
     }
 
     /*
@@ -191,7 +194,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-
+        // Track page
         TrackerDelegator.trackPage(TrackingPage.HOME);
     }
 
@@ -224,12 +227,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         Log.i(TAG, "ON RESUME EXECUTION");
 
         // TODO : Comment for Samsung store
-        if (CheckVersion.needsToShowDialog())
-            CheckVersion.showDialog(getActivity());
-
-        // Validate the user credentials
-        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.INSTANCE.isLoggedIn())
-            triggerAutoLogin();
+        if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
 
         // Validate promotions
         SharedPreferences sP = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
@@ -244,12 +242,15 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             mHomePagerTabStrip.setViewPager(mHomePager);
             // Show container
             showContent();
+
         } else {
             Log.i(TAG, "ADAPTER IS NULL");
             triggerTeasers();
-        }
 
-        // TrackerDelegator.trackPage(TrackingPage.HOME);
+            // Validate the user credentials
+            if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.INSTANCE.isLoggedIn()) triggerAutoLogin();
+            else Log.i(TAG, "USER IS LOGGED IN: " + JumiaApplication.INSTANCE.isLoggedIn());
+        }
     }
 
     /*
@@ -263,8 +264,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE");
         // Save the current position
-        if (mHomePager != null)
-            outState.putInt(PAGER_POSITION_KEY, mHomePager.getCurrentItem());
+        if (mHomePager != null) outState.putInt(PAGER_POSITION_KEY, mHomePager.getCurrentItem());
     }
 
     /*
@@ -309,7 +309,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
-        //MixpanelTracker.flush();
         // Destroy adapter
         mHomePagerAdapter = null;
     }
@@ -332,10 +331,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             mHomePager.setAdapter(mHomePagerAdapter);
             mHomePagerTabStrip.setViewPager(mHomePager);
             // Valdiate the saved position
-            if (mPagerSavedPosition != 0 && mPagerSavedPosition < mHomePagerAdapter.getCount())
-                mHomePager.setCurrentItem(mPagerSavedPosition);
-            else
-                mHomePager.setCurrentItem(defaultPosition);
+            if (mPagerSavedPosition != 0 && mPagerSavedPosition < mHomePagerAdapter.getCount()) mHomePager.setCurrentItem(mPagerSavedPosition);
+            else mHomePager.setCurrentItem(defaultPosition);
         } else {
             Log.i(TAG, "UPDATE ADAPTER");
             mHomePagerAdapter.updateCollection(collection);
@@ -484,11 +481,11 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     public void onRequestComplete(Bundle bundle) {
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            if(eventType == EventType.GET_TEASERS_EVENT) mReceivedInBackgroundAndDiscarded = true;
+            if (eventType == EventType.GET_TEASERS_EVENT) mReceivedInBackgroundAndDiscarded = true;
             return;
         }
 
@@ -499,8 +496,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             mCurrentMd5Collection = bundle.getString(GetUpdatedTeasersHelper.MD5_KEY);
             // Get updated teaser collection
             ArrayList<Homepage> updatedCollection = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            if (updatedCollection != null)
-                onShowCollection(updatedCollection, 0);
+            if (updatedCollection != null) onShowCollection(updatedCollection, 0);
             break;
         case GET_TEASERS_EVENT:
             Log.i(TAG, "ON SUCCESS RESPONSE: GET_TEASERS_EVENT");
@@ -512,16 +508,29 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             // Get default home
             int defaultPosition = bundle.getInt(RestConstants.JSON_HOMEPAGE_DEFAULT_TAG, 0);
             // Show collection
-            if (collection != null) { 
-            	onShowCollection(collection, defaultPosition);
-           	} else { 
-            	showFragmentFallBack(); 
-            	setLayoutFallback(); 
-           	}
+            if (collection != null) {
+                onShowCollection(collection, defaultPosition);
+            } else {
+                showFragmentFallBack();
+                setLayoutFallback();
+            }
             break;
         case GET_PROMOTIONS:
             Log.i(TAG, "ON SUCCESS RESPONSE: GET_TEASERS_EVENT");
             onGetPromotions(bundle);
+            break;
+        case LOGIN_EVENT:
+            // Set logged in
+            JumiaApplication.INSTANCE.setLoggedIn(true);
+            // Get customer
+            Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            // Track
+            Bundle params = new Bundle();
+            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
+            params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, TrackerDelegator.IS_AUTO_LOGIN);
+            params.putString(TrackerDelegator.ORIGIN_KEY,getString(R.string.ghomepage));
+            params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
+            TrackerDelegator.trackLoginSuccessful(params);
             break;
         default:
             break;
@@ -561,8 +570,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         }
 
         // Check base errors
-        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle))
-            return;
+        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) return;
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
@@ -577,7 +585,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         case GET_PROMOTIONS:
             break;
         case LOGIN_EVENT:
-            TrackerDelegator.trackLoginFailed(true);
+            TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN);
             break;
         default:
             break;
