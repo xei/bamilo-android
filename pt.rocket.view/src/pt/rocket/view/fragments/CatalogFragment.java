@@ -128,6 +128,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     private SortPages currentPage = SortPages.DEFAULT;
 
+    private static String FEATURED_BOX = "FEATURED_BOX";
+
+    private FeaturedBox mFeaturedBox;
+
     /**
      * Empty constructor
      */
@@ -173,6 +177,11 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                 }
             }
             currentPage = (SortPages) savedInstanceState.getSerializable(CURRENT_PAGE);
+        }
+
+        // Get FeatureBox
+        if (savedInstanceState != null && savedInstanceState.containsKey(FEATURED_BOX)) {
+            mFeaturedBox = savedInstanceState.getParcelable(FEATURED_BOX);
         }
 
         mShowListDrawable = getResources().getDrawable(R.drawable.selector_catalog_listview);
@@ -262,6 +271,16 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
         Log.i(TAG, "DATA :  " + productsURL + " " + searchQuery + " " + navigationSource + " " + navigationPath);
 
+        /*--
+         * If restored from a rotation on "Undefined search terms", mFeaturedBox will be filled
+         * Present "Undefined search terms" page without completing rest of onResume process
+         */
+        if (mFeaturedBox != null) {
+            onErrorSearchResult(mFeaturedBox);
+
+            return;
+        }
+
         // Set catalog filters
         if (mCatalogFilter != null) {
             Log.i(TAG, "setFilterAction");
@@ -341,6 +360,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         mCatalogFilter = null;
         mOldCatalogFilterState = null;
         mCatalogFilterValues = null;
+        mFeaturedBox = null;
     }
 
     /*
@@ -370,6 +390,11 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             if (currentPage >= 0) {
                 outState.putSerializable(CURRENT_PAGE, SortPages.values()[currentPage]);
             }
+        }
+
+        // Persist featureBox if exists
+        if (mFeaturedBox != null) {
+            outState.putParcelable(FEATURED_BOX, mFeaturedBox);
         }
     }
 
@@ -469,6 +494,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         View view = getView();
         // Validate
         if (featuredBox != null && view != null) {
+            // Persist featureBox for future rotations
+            this.mFeaturedBox = featuredBox;
             // hide default products list
             view.findViewById(R.id.catalog_viewpager_container).setVisibility(View.GONE);
             view.findViewById(R.id.no_results_search_terms).setVisibility(View.VISIBLE);
