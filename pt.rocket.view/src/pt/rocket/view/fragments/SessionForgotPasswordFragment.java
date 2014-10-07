@@ -405,7 +405,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements OnCli
         int id = v.getId();
         if (id == R.id.fragment_root_retry_button) {
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
             getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, bundle, FragmentController.ADD_TO_BACK_STACK);
 
         }

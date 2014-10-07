@@ -1306,11 +1306,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Validate
         if (null != prod) {
             // For tracking when sharing
-            sharingIntent.putExtra(getString(R.string.mixprop_sharelocation), getString(R.string.mixprop_sharelocationproduct));
-            sharingIntent.putExtra(getString(R.string.mixprop_sharecategory), prod.getCategories().size() > 0 ? prod.getCategories().get(0) : "");
-            sharingIntent.putExtra(getString(R.string.mixprop_sharename), prod.getName());
-            sharingIntent.putExtra(getString(R.string.mixprop_sharebrand), prod.getBrand());
-            sharingIntent.putExtra(getString(R.string.mixprop_shareprice), prod.getPrice());
             sharingIntent.putExtra(RestConstants.JSON_SKU_TAG, prod.getSku());
             String msg = getString(R.string.share_checkout_this_product) + "\n" + prod.getUrl().replace("/mobapi", "");
             sharingIntent.putExtra(Intent.EXTRA_TEXT, msg);

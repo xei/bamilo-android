@@ -323,7 +323,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      */
     @Override
     protected void trackAddtoCart(String sku, AddableToCart addableToCart) {
-        trackAddtoCart(sku, addableToCart, getString(R.string.mixprop_itemlocationrecently));
+        super.trackAddtoCart(sku, addableToCart);
     }
 
     /**

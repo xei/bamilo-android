@@ -139,7 +139,6 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ADDRESSES);
         params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutmyaddresses);
-        params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_my_addresses);        
         // Tracking checkout step
         TrackerDelegator.trackCheckoutStep(params);
     }
@@ -273,7 +272,6 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         Bundle bundle = new Bundle();
         if(null != JumiaApplication.CUSTOMER){
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
-            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             restartAllFragments();

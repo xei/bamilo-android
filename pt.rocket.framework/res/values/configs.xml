@@ -23,9 +23,6 @@
 
     <string name="framework_category_label"></string>
 
-    <!-- MIX PANEL -->
-    <string name="mixpanel_token"></string>
-
     <!-- NEW RELIC -->
     <string name="newrelic_token"></string>
 

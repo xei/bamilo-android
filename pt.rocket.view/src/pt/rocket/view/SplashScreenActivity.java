@@ -414,7 +414,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
         // Start activity
         startActivity(intent);
-        TrackerDelegator.trackPushNotificationsEnabled(true);
     }
 
     /**

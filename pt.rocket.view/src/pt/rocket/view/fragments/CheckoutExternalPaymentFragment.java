@@ -161,8 +161,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements OnC
          Bundle params = new Bundle();        
          params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
          params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_EXTERNAL_PAYMENT);
-         params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutexternalpayment);
-         params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_external_payment);        
+         params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutexternalpayment);        
          
          TrackerDelegator.trackCheckoutStep(params);
     }
@@ -171,11 +170,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements OnC
 
         triggerContentEventWithNoLoading(new GetCustomerHelper(), null, mCallback);
     }
-
-//    private void triggerGetShoppingCartItems() {
-//
-//        triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mCallback);
-//    }
 
     IResponseCallback mCallback = new IResponseCallback() {
 
@@ -190,23 +184,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements OnC
 
         }
     };
-
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, container, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        View view = inflater.inflate(R.layout.checkoutweb, container, false);
-//
-//        webview = (WebView) view.findViewById(R.id.webview);
-//
-//        return view;
-//    }
 
     /*
      * (non-Javadoc)
@@ -682,7 +659,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements OnC
             Bundle bundle = new Bundle();
             if(null != JumiaApplication.CUSTOMER){
                 bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
-                bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
                 getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
             } else {
                 restartAllFragments();

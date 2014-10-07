@@ -750,7 +750,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
-        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationcart));
         activity.onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     

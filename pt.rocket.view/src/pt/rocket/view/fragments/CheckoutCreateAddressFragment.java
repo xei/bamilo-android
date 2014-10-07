@@ -192,8 +192,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_CREATE_ADDRESS);
-        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutcreateaddress);
-        params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_create_address);        
+        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutcreateaddress);    
         
         TrackerDelegator.trackCheckoutStep(params);
     }
@@ -577,7 +576,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     	Bundle bundle = new Bundle();
         if(null != JumiaApplication.CUSTOMER){
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
-            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             restartAllFragments();

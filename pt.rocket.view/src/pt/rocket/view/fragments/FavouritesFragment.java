@@ -570,10 +570,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author sergiopereira
      */
     protected void trackAddtoCart(String sku, AddableToCart addableToCart) {
-        trackAddtoCart(sku, addableToCart, getString(R.string.mixprop_itemlocationwishlist));
-    }
-
-    protected void trackAddtoCart(String sku, AddableToCart addableToCart, String trackerMessage) {
         try {
             // Tracking
             Bundle bundle = new Bundle();
@@ -583,7 +579,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             bundle.putString(TrackerDelegator.NAME_KEY, addableToCart.getName());
             bundle.putString(TrackerDelegator.BRAND_KEY, addableToCart.getBrand());
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
-            bundle.putString(TrackerDelegator.LOCATION_KEY, trackerMessage);
             TrackerDelegator.trackProductAddedToCart(bundle);
         } catch (NullPointerException e) {
             e.printStackTrace();

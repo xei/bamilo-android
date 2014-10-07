@@ -59,8 +59,6 @@ public final class ShopSelector {
 //		Log.i(TAG, "code1 currency code is :_ "+currencyCode);
 		CurrencyFormatter.initialize(context, currencyCode);
 		AnalyticsGoogle.startup(context, shopId);
-//		MixpanelTracker.startup(context, shopId);
-//		MixpanelTracker.launch(context);
 		AdXTracker.startup(context);
 		Ad4PushTracker.startup(context);
 		

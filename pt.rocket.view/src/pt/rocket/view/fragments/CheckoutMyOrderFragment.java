@@ -149,22 +149,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ORDER);
         params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutmyorder);
-        params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_my_order);        
         TrackerDelegator.trackCheckoutStep(params);
     }
-
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, viewGroup, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        return inflater.inflate(R.layout.checkout_my_order_main, viewGroup, false);
-//    }
 
     /*
      * (non-Javadoc)
@@ -498,7 +484,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         Bundle bundle = new Bundle();
         if(null != JumiaApplication.CUSTOMER){
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
-            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             restartAllFragments();

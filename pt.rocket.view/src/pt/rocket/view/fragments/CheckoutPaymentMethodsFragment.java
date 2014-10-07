@@ -128,24 +128,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_PAYMENT);
-        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutpaymentmethods);
-        params.putInt(TrackerDelegator.MIXPANEL_STEP_KEY, R.string.mixprop_checkout_payment_methods);        
+        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutpaymentmethods);        
         TrackerDelegator.trackCheckoutStep(params);
     }
-
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-//     * android.view.ViewGroup, android.os.Bundle)
-//     */
-//    
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-//        super.onCreateView(inflater, viewGroup, savedInstanceState);
-//        Log.i(TAG, "ON CREATE VIEW");
-//        return inflater.inflate(R.layout.checkout_payment_methods, viewGroup, false);
-//    }
     
     /*
      * (non-Javadoc)
@@ -375,7 +360,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         Bundle bundle = new Bundle();
         if(null != JumiaApplication.CUSTOMER){
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
-            bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             restartAllFragments();

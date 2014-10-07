@@ -201,7 +201,6 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     private void processOnClickUserData(){
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
-        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
         getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
@@ -212,7 +211,6 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     private void processOnClickEmailNotification(){
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
-        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
         getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     

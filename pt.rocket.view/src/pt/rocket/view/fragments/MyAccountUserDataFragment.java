@@ -369,7 +369,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     private void onClickRetryButton() {
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
-        bundle.putString(ConstantsIntentExtra.LOGIN_ORIGIN, getString(R.string.mixprop_loginlocationmyaccount));
         getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     

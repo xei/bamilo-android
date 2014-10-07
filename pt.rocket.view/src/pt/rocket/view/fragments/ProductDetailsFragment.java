@@ -979,8 +979,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 TrackerDelegator.CATEGORY_KEY,
                 mCompleteProduct.getCategories().size() > 0 ? mCompleteProduct.getCategories().get(
                         0) : "");
-        bundle.putString(TrackerDelegator.LOCATION_KEY,
-                getString(R.string.mixprop_itemlocationdetails));
         TrackerDelegator.trackProductAddedToCart(bundle);
     }
 

@@ -474,7 +474,6 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             bundle.putString(TrackerDelegator.NAME_KEY, name);
             bundle.putString(TrackerDelegator.BRAND_KEY, brand);
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
-            bundle.putString(TrackerDelegator.LOCATION_KEY, getString(R.string.mixprop_itemlocationcampaign));
             TrackerDelegator.trackProductAddedToCart(bundle);
         } catch (NullPointerException e) {
             e.printStackTrace();
