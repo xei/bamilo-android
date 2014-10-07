@@ -87,7 +87,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
             price = CurrencyFormatter.formatCurrency(priceVal);*/
             // Fix NAFAMZ-7848
             // Throw JSONException if JSON_PRICE_TAG is not present
-            String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
+            String priceJSON = jsonObject.getString(RestConstants.JSON_ITEM_PRICE_TAG);
             if (CurrencyFormatter.isNumber(priceJSON)) {
                 priceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_PRICE_TAG);
                 price = CurrencyFormatter.formatCurrency(priceJSON);

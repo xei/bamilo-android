@@ -509,9 +509,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             return true;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             ShoppingCart shoppingCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            if (shoppingCart.getCartItems() != null && shoppingCart.getCartItems().values() != null) {
-                TrackerDelegator.trackViewCart(shoppingCart.getCartItems().values().size());
-            }
             showFragmentContentContainer();
             params = new Bundle();
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
