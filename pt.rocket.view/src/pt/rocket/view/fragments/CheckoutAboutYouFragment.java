@@ -878,7 +878,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             Bundle params = new Bundle();
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customerFb);
             params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, onAutoLogin);
-            params.putString(TrackerDelegator.ORIGIN_KEY,loginOrigin);
             params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, true);
             TrackerDelegator.trackLoginSuccessful(params);
             TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, customerFb.getIdAsString());
@@ -905,7 +904,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             Bundle params2 = new Bundle();
             params2.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
             params2.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, onAutoLogin);
-            params2.putString(TrackerDelegator.ORIGIN_KEY,loginOrigin);
             params2.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
             TrackerDelegator.trackLoginSuccessful(params2);
             TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, customer.getIdAsString());

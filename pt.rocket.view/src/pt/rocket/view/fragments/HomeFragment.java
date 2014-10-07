@@ -528,7 +528,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             Bundle params = new Bundle();
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
             params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, TrackerDelegator.IS_AUTO_LOGIN);
-            params.putString(TrackerDelegator.ORIGIN_KEY,getString(R.string.ghomepage));
             params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
             TrackerDelegator.trackLoginSuccessful(params);
             break;

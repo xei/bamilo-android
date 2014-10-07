@@ -502,7 +502,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 Bundle params = new Bundle();
                 params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
                 params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutologin);
-                params.putString(TrackerDelegator.ORIGIN_KEY, loginOrigin);
                 params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, true);
 
                 TrackerDelegator.trackLoginSuccessful(params);
@@ -534,7 +533,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 Bundle params = new Bundle();
                 params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
                 params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutologin);
-                params.putString(TrackerDelegator.ORIGIN_KEY, loginOrigin);
                 params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
 
                 TrackerDelegator.trackLoginSuccessful(params);
