@@ -28,13 +28,10 @@ public class ErrorMonitoring {
 	
 	private final static String TAG = ErrorMonitoring.class.getSimpleName();
 
-	private static SortedMap<String, String> map = new TreeMap<String, String>();
-	
 	private static int sVersionCode;
 	
-	private static  void buildErrorMap(Context mContext, String uri, ErrorCode errorCode, Exception exception, String msg ) {
-		
-	    if(null == map) map = new TreeMap<String, String>();
+	private static SortedMap<String, String> buildErrorMap(Context mContext, String uri, ErrorCode errorCode, Exception exception, String msg ) {
+	    SortedMap<String, String> map = new TreeMap<String, String>();
 	    
 		map.clear();
 		
@@ -56,11 +53,13 @@ public class ErrorMonitoring {
 		map.put( "Timestamp", SimpleDateFormat.getInstance().format(new Date()));
 		map.put( "VersionCode", getVersionCode(mContext));
 		map.put("Exception Message", exception == null ? "No Exception" : exception.getMessage());
+		
+		return map;
 	}
 
 	public static void sendException(Context mContext, Exception e, String uri, ErrorCode errorCode, String msg, String msgTwo, boolean nonFatal) {
 		Log.d(TAG, "sendException: sending exception for uri = " + uri + " with errorCode = " + errorCode );
-		buildErrorMap(mContext, uri, errorCode, e, msg);
+		SortedMap<String, String> map = buildErrorMap(mContext, uri, errorCode, e, msg);
 		
 		HashMap<String, String> hMap = new HashMap<String, String>( map );
 		if ( !TextUtils.isEmpty( msgTwo )) {
