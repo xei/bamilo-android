@@ -91,6 +91,7 @@
     <string name="gCatalogSortPriceDown">SortPriceDown</string>
     <string name="gCatalogSortName">SortName</string>
     <string name="gCatalogSortBrand">SortName</string>
+    <string name="gRelatedProduct">RelatedItem</string>
 
     <!-- Checkout Steps -->
     <string name="gNativeCheckout">NativeCheckout</string>

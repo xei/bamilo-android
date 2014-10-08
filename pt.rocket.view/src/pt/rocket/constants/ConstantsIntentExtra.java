@@ -38,6 +38,7 @@ public class ConstantsIntentExtra {
     public static final String IS_ZOOM_AVAILABLE            = mPackage + "ZoomAvailable";
     public static final String SHOW_HORIZONTAL_LIST_VIEW    = mPackage + "ShowHorizontalListView";
     public static final String SHOW_RELATED_ITEMS           = mPackage + "ShowRelatedItems";
+    public static final String IS_RELATED_ITEM              = mPackage + "RelatedItem";
     
     // ########### Checkout ###########
     //

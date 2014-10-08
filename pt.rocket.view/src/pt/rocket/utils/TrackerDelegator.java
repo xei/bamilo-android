@@ -68,6 +68,7 @@ public class TrackerDelegator {
     public static final String URL_KEY = "url";
     public static final String SIMPLE_KEY = "simple";
     public static final String BRAND_KEY = "brand";
+    public static final String RELATED_ITEM = "related_item";
 
     private static final String TRACKING_PREFS = "tracking_prefs";
     private static final String SIGNUP_KEY_FOR_LOGIN = "signup_for_login";
@@ -79,6 +80,7 @@ public class TrackerDelegator {
 
     private static final Context context = JumiaApplication.INSTANCE.getApplicationContext();
 
+    
     public final static void trackLoginSuccessful(Bundle params) {
         TrackingEvent event;
 
@@ -606,11 +608,11 @@ public class TrackerDelegator {
         String path = bundle.getString(PATH_KEY);
         String name = bundle.getString(NAME_KEY);
         String sku = bundle.getString(SKU_KEY);
-        String url = bundle.getString(URL_KEY);
-        CompleteProduct product = bundle.getParcelable(PRODUCT_KEY);
-        //String category = bundle.getString(CATEGORY_KEY);
+        double price = bundle.getDouble(PRICE_KEY);
+        Boolean isRelatedItem = bundle.getBoolean(RELATED_ITEM, false);
+        TrackingEvent event = !isRelatedItem ? TrackingEvent.SHOW_PRODUCT_DETAIL : TrackingEvent.SHOW_RELATED_PRODUCT_DETAIL;
         // GA
-        AnalyticsGoogle.get().trackProduct(prefix, path, name, sku, url, product.getPriceAsDouble());
+        AnalyticsGoogle.get().trackProduct(event, prefix, path, name, sku, price);
     }
 
     /**

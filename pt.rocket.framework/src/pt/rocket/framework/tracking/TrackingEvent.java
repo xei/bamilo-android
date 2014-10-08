@@ -19,13 +19,15 @@ public enum TrackingEvent {
 	
 	REMOVE_FROM_WISHLIST(R.string.gfavourites, R.string.gremovefromfavorites),
 	
-	SUBSCRIBE_NEWSLETTER(R.string.gaccount, R.string.gremovefromfavorites),
+	SUBSCRIBE_NEWSLETTER(R.string.gaccount, R.string.gsubscribenewsletter),
 	
 	UNSUBSCRIBE_NEWSLETTER(R.string.gaccount, R.string.gunsubscribenewsletter),
 	
 	SHOW_CAMPAIGN(R.string.ghomepage, R.string.gcampaign),
 	
 	SHOW_PRODUCT_DETAIL(R.string.gcatalog, R.string.gpdv),
+	
+	SHOW_RELATED_PRODUCT_DETAIL(R.string.gproductdetail, R.string.gRelatedProduct),
 	
 	// ### ACTION BAR EVENTS
 	

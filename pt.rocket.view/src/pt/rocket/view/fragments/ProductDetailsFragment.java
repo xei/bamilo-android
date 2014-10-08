@@ -78,7 +78,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.webkit.WebView.FindListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -196,8 +195,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private static View mainView;
 
-    private static String mCategory = "";
-
     private static ProductDetailsFragment mProductDetailsActivityFragment;
 
     boolean isAddingProductToCart = false;
@@ -234,6 +231,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     
     private RelativeLayout mProductDescriptionContainer;
 
+    private boolean isRelatedItem = false;
+
     /**
      * Empty constructor
      */
@@ -247,13 +246,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     public static ProductDetailsFragment getInstance(Bundle bundle) {
         ProductDetailsFragment.mProductDetailsActivityFragment = new ProductDetailsFragment();
-        if (bundle.containsKey(PRODUCT_CATEGORY)) {
-            mCategory = bundle.getString(PRODUCT_CATEGORY);
-        }
-
         // Clean current product
         JumiaApplication.INSTANCE.setCurrentProduct(null);
-
         return ProductDetailsFragment.mProductDetailsActivityFragment;
     }
 
@@ -421,6 +415,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
         // Determine if related items should be shown
         mShowRelatedItems = bundle.getBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS);
+        isRelatedItem = bundle.getBoolean(ConstantsIntentExtra.IS_RELATED_ITEM);
     }
 
     /**
@@ -1181,10 +1176,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         mElement1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Show related item
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.CONTENT_URL, (String) v.getTag());
                 bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.grelateditem_prefix);
                 bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+                // For tracking as a related item
+                bundle.putBoolean(ConstantsIntentExtra.IS_RELATED_ITEM, true);
                 // inform PDV that Related Items should be shown
                 bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
                 ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -1238,6 +1236,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     /**
      * Create a bundle for tracking
+     * @author sergiopereira
      */
     private Bundle createBundleProduct() {
         Bundle bundle = new Bundle();
@@ -1245,9 +1244,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         bundle.putString(TrackerDelegator.PATH_KEY, mNavigationPath);
         bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         bundle.putString(TrackerDelegator.SKU_KEY, mCompleteProduct.getSku());
-        bundle.putString(TrackerDelegator.URL_KEY, mCompleteProduct.getUrl());
-        bundle.putParcelable(TrackerDelegator.PRODUCT_KEY, mCompleteProduct);
-        bundle.putString(TrackerDelegator.CATEGORY_KEY, mCategory);
+        bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceAsDouble());
+        bundle.putBoolean(TrackerDelegator.RELATED_ITEM, isRelatedItem);
         return bundle;
     }
 

@@ -428,10 +428,9 @@ public class AnalyticsGoogle {
 	 * @param navigationPath
 	 * @param name
 	 * @param sku
-	 * @param url
 	 * @param price
 	 */
-	public void trackProduct(String navigationPrefix, String navigationPath, String name, String sku, String url, Double price) {
+	public void trackProduct(TrackingEvent event, String navigationPrefix, String navigationPath, String name, String sku, Double price) {
 		// Validation
 		if (!isEnabled) return;
 		// Data
@@ -444,7 +443,7 @@ public class AnalyticsGoogle {
 			pageView = navigationPrefix + "_" + n;
 		}
 		trackPage(pageView);
-		trackEvent(TrackingEvent.SHOW_PRODUCT_DETAIL, sku, (price != null) ? price.longValue() : 0l);
+		trackEvent(event, sku, (price != null) ? price.longValue() : 0l);
 	}
 
 	
