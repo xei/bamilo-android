@@ -108,7 +108,7 @@ public class TipsPagerAdapter extends PagerAdapter implements IconPagerAdapter {
         View view = mLayoutInflater.inflate(mTipsPages[position], container, false);
         ((ViewPager) container).addView(view, 0);
 
-        if (mAddVariationsPadding) {
+//        if (mAddVariationsPadding) {
             ImageView tipImg = (ImageView) view.findViewById(R.id.tip_img);
             if (tipImg != null && tipImg.isShown()) {
                 RelativeLayout.LayoutParams tipImgLayoutParams = (LayoutParams) tipImg.getLayoutParams();
@@ -121,7 +121,7 @@ public class TipsPagerAdapter extends PagerAdapter implements IconPagerAdapter {
                 tipSpacerLayoutParams.height = mPadding;
 
             }
-        }
+//        }
 
         return view;
     }

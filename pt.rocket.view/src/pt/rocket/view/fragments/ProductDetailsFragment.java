@@ -1059,7 +1059,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             if (isNotValidVariation(mCompleteProduct.getVariations())){
                 if (mainView != null){
                     mainView.findViewById(R.id.product_detail_variations_container).setVisibility(View.GONE);
-                    mainView.findViewById(R.id.variation_bottom_line).setVisibility(View.GONE);
+                    if(BaseActivity.isTabletInLandscape(getBaseActivity()))
+                        mainView.findViewById(R.id.variation_bottom_line).setVisibility(View.GONE);
                 }
             }
             // Containers
