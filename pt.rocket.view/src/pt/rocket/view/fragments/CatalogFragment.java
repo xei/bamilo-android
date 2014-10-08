@@ -947,14 +947,15 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         // Get the view id
         int id = v.getId();
         // Validate the click
-        if (id == R.id.products_list_filter_button && isNotShowing) {
-            Log.d(TAG, "ON CLICK: FILTER BUTTON");
-            isNotShowing = false;
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, sCatalogFilter);
-            DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
-            newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
-
+        if (id == R.id.products_list_filter_button && isNotShowing) {           
+            if (!CatalogPageFragment.goNext) {
+                Log.d(TAG, "ON CLICK: FILTER BUTTON");
+                isNotShowing = false;
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, sCatalogFilter);
+                DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
+                newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+            }
         } else if (id == R.id.viewpager_tips_btn_indicator) {
             WizardPreferences.changeState(getBaseActivity(), WizardType.CATALOG);
             mWizardContainer.findViewById(R.id.viewpager_tips).setVisibility(View.GONE);

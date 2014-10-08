@@ -2,5 +2,5 @@
 <resources>
 	<!-- CATALOG WIZARD -->
 	<dimen name="product_tip_top_swipe">20dp</dimen>
-
+<dimen name="product_tip_variations_top_margin">35dp</dimen>
 </resources>

@@ -125,6 +125,8 @@ public class CatalogPageFragment extends BaseFragment {
 
     private TrackingEvent mTrackSortEvent = TrackingEvent.CATALOG_FROM_CATEGORIES;
     
+    public static boolean goNext = false;
+
     /**
      * 
      * @param bundle
@@ -609,11 +611,11 @@ public class CatalogPageFragment extends BaseFragment {
         showFragmentEmpty(R.string.catalog_no_results, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "ON CLICK: FILTER BUTTON");
+                Log.d(TAG, "ON CLICK: FILTER BUTTON");                
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, parentFragment.getCatalogFilter());
                 DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, parentFragment);
-                newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+                newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");                
             }
         });
     }
@@ -654,7 +656,7 @@ public class CatalogPageFragment extends BaseFragment {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            goNext = true;
             int activePosition = position; // -
                                            // productsAdapter.getJumpConstant();
             ProductsListAdapter adapter = (ProductsListAdapter) parent.getAdapter();
@@ -672,8 +674,11 @@ public class CatalogPageFragment extends BaseFragment {
                     bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
                     if (mTitle != null)
                         bundle.putString(ProductDetailsFragment.PRODUCT_CATEGORY, mTitle);
+                   
                     getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                    goNext = false;
                 } else {
+                    goNext = false;
                     Toast.makeText(getBaseActivity(), R.string.error_occured, Toast.LENGTH_SHORT).show();
                 }
             }
