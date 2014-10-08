@@ -40,15 +40,16 @@ import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Class used to show the newsletter form 
+ * Class used to show the newsletter form
+ * 
  * @author sergiopereira
  */
 public class MyAccountEmailNotificationFragment extends BaseFragment implements OnClickListener, IResponseCallback, OnCheckedChangeListener {
 
     private static final String TAG = LogTagHelper.create(MyAccountEmailNotificationFragment.class);
-    
+
     private final static int UNSUBSCRIBE_VALUE = -1;
-    
+
     private static MyAccountEmailNotificationFragment sEmailNotificationFragment;
 
     private Form mNewslettersForm;
@@ -58,11 +59,12 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     private ArrayList<NewsletterOption> mNewsletterOptions;
 
     private LayoutInflater mInflater;
-    
+
     private ArrayList<NewsletterOption> mNewsletterOptionsSaved;
 
     /**
      * Create new instance
+     * 
      * @return MyAccountEmailNotificationFragment
      * @author sergiopereira
      */
@@ -73,6 +75,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
     /**
      * Empty constructor
+     * 
      * @author sergiopereira
      */
     public MyAccountEmailNotificationFragment() {
@@ -106,15 +109,17 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         // Get inflater
         mInflater = LayoutInflater.from(getBaseActivity());
         // Validate the saved state
-        if(savedInstanceState != null && savedInstanceState.containsKey(TAG)){
+        if (savedInstanceState != null && savedInstanceState.containsKey(TAG)) {
             Log.i(TAG, "ON GET SAVED STATE");
             mNewsletterOptionsSaved = savedInstanceState.getParcelableArrayList(TAG);
         }
     }
-    
+
     /*
      * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     * 
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -127,14 +132,13 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         // Get cancel button
         view.findViewById(R.id.myaccount_newsletter_cancel).setOnClickListener((OnClickListener) this);
         // Validate data
-        if(mNewslettersForm == null)
-            triggerGetNewslettersForm();
-        else 
-            showNewslettersForm();
+        if (mNewslettersForm == null) triggerGetNewslettersForm();
+        else showNewslettersForm();
     }
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.view.fragments.BaseFragment#onStart()
      */
     @Override
@@ -155,10 +159,12 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         // Tracking page
         TrackerDelegator.trackPage(TrackingPage.NEWSLETTER_SUBS);
     }
-    
+
     /*
      * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     * 
+     * @see
+     * android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -188,9 +194,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         super.onStop();
         Log.i(TAG, "ON STOP");
     }
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.view.fragments.BaseFragment#onDestroyView()
      */
     @Override
@@ -198,9 +205,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY VIEW");
     }
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.view.fragments.BaseFragment#onDestroy()
      */
     @Override
@@ -208,18 +216,17 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
     }
-    
+
     /**
      * Show the newsletter form
+     * 
      * @author sergiopereira
      */
     private void showNewslettersForm() {
         try {
             FormField formField = mNewslettersForm.fields.get(0);
-            if(mNewsletterOptionsSaved != null)
-                mNewsletterOptions = mNewsletterOptionsSaved;
-            else
-                mNewsletterOptions = formField.newsletterOptions;
+            if (mNewsletterOptionsSaved != null) mNewsletterOptions = mNewsletterOptionsSaved;
+            else mNewsletterOptions = formField.newsletterOptions;
             generateNewsletterOptions(mNewsletterOptions, mNewsletterList);
             // Show form
             showFragmentContentContainer();
@@ -234,12 +241,13 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
     /**
      * Gemerate the newsletter option and add it to container
+     * 
      * @param layoutInflater
      * @author msilva
-     * @param newsletterOptions 
-     * @param newsletterList 
+     * @param newsletterOptions
+     * @param newsletterList
      */
-    private void generateNewsletterOptions(ArrayList<NewsletterOption> newsletterOptions, LinearLayout newsletterList){
+    private void generateNewsletterOptions(ArrayList<NewsletterOption> newsletterOptions, LinearLayout newsletterList) {
         for (int i = 0; i < newsletterOptions.size(); i++) {
             View view = mInflater.inflate(R.layout.simple_email_notification_option, newsletterList, false);
             CheckBox checkBox = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox);
@@ -250,12 +258,13 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             newsletterList.addView(view);
         }
     }
-    
+
     /**
      * ############# CLICK LISTENER #############
      */
     /*
      * (non-Javadoc)
+     * 
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
@@ -263,17 +272,18 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         // Get view id
         int id = view.getId();
         // Next button
-        if(id == R.id.myaccount_newsletter_save) onClickSaveButton();
+        if (id == R.id.myaccount_newsletter_save) onClickSaveButton();
         // Cancel button
-        else if(id == R.id.myaccount_newsletter_cancel) onClickCancelButton();
+        else if (id == R.id.myaccount_newsletter_cancel) onClickCancelButton();
         // Retry button
-        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
+        else if (id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
-    
+
     /**
      * Process the click on retry button.
+     * 
      * @author paulo
      */
     private void onClickRetryButton() {
@@ -281,9 +291,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
         getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
-    
+
     /**
      * Process the click on the save button
+     * 
      * @author sergiopereira
      */
     private void onClickSaveButton() {
@@ -293,8 +304,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             ContentValues values = new ContentValues();
             boolean isSubscribed = false;
             for (NewsletterOption option : mNewsletterOptions) {
-                if(option.isSubscrided) { values.put(option.name, option.value); isSubscribed = true; }
-                else values.put(option.name, UNSUBSCRIBE_VALUE);
+                if (option.isSubscrided) {
+                    values.put(option.name, option.value);
+                    isSubscribed = true;
+                } else values.put(option.name, UNSUBSCRIBE_VALUE);
             }
             // Trigger
             Log.d(TAG, "VALUES: " + values.toString());
@@ -305,21 +318,23 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             Log.w(TAG, "NPE ON SUBSCRIBE NEWSLETTERS", e);
         }
     }
-    
+
     /**
      * Process the click on the cancel button
+     * 
      * @author sergiopereira
      */
     private void onClickCancelButton() {
         Log.i(TAG, "ON CLICK: CANCEL");
         getBaseActivity().onBackPressed();
     }
-    
+
     /**
      * ############# REQUESTS #############
      */
     /**
      * Trigger to subscribe newsletters
+     * 
      * @param values
      * @author sergiopereira
      */
@@ -329,42 +344,44 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         bundle.putParcelable(SubscribeNewslettersHelper.FORM_CONTENT_VALUES, values);
         triggerContentEvent(new SubscribeNewslettersHelper(), bundle, (IResponseCallback) this);
     }
-    
+
     /**
      * Trigger to get the newsletters form
+     * 
      * @author sergiopereira
      */
-    private void triggerGetNewslettersForm(){
+    private void triggerGetNewslettersForm() {
         Log.i(TAG, "TRIGGER: GET NEWSLETTER FORM");
-        if(null != JumiaApplication.CUSTOMER){
+        if (null != JumiaApplication.CUSTOMER) {
             showFragmentLoading();
-            triggerContentEvent(new GetNewslettersFormHelper(), null, (IResponseCallback) this);    
+            triggerContentEvent(new GetNewslettersFormHelper(), null, (IResponseCallback) this);
         } else {
             showFragmentRetry(this);
         }
-        
+
     }
-   
+
     /**
      * ############# RESPONSE #############
      */
     /**
      * Filter the success response
+     * 
      * @param bundle
      * @return boolean
      */
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS EVENT");
-        
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        
+
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        
+
         switch (eventType) {
         case GET_NEWSLETTERS_FORM_EVENT:
             Log.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
@@ -387,35 +404,36 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         default:
             break;
         }
-        
+
         return true;
     }
-    
+
     /**
      * Filter the error response
+     * 
      * @param bundle
      * @return boolean
      */
     protected boolean onErrorEvent(Bundle bundle) {
-        
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        
+
         // Generic error
         if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
             Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }
-        
+
         showFragmentContentContainer();
-        
+
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-        
+
         switch (eventType) {
         case GET_NEWSLETTERS_FORM_EVENT:
             Log.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
@@ -428,35 +446,40 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         default:
             break;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Go to back and warning user through toast
+     * 
      * @author sergiopereira
      */
-    private void goBackWarningUser(){
+    private void goBackWarningUser() {
         getBaseActivity().onBackPressed();
         Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
     }
-   
-    
-    /**
-     * ########### RESPONSE LISTENER ###########  
+
+    /*
+     * ########### RESPONSE LISTENER ###########
      */
     /*
      * (non-Javadoc)
-     * @see pt.rocket.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
+     * 
+     * @see
+     * pt.rocket.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
     public void onRequestError(Bundle bundle) {
         onErrorEvent(bundle);
     }
-       
+
     /*
      * (non-Javadoc)
-     * @see pt.rocket.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
+     * 
+     * @see
+     * pt.rocket.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle
+     * )
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
@@ -465,66 +488,77 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
     /*
      * (non-Javadoc)
-     * @see android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged(android.widget.CompoundButton, boolean)
+     * 
+     * @see
+     * android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged
+     * (android.widget.CompoundButton, boolean)
      */
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        int position = Integer.parseInt((String)buttonView.getTag());
+        int position = Integer.parseInt((String) buttonView.getTag());
         mNewsletterOptions.get(position).isSubscrided = isChecked;
     }
-    
 
+    // /**
+    // * ########### ADAPTER ###########
+    // */
+    // private class NewsletterAdapter extends ArrayAdapter<NewsletterOption>
+    // implements OnCheckedChangeListener {
+    //
+    // /**
+    // *
+    // * @author sergiopereira
+    // * @param context
+    // * @param options
+    // */
+    // public NewsletterAdapter(Context context, ArrayList<NewsletterOption>
+    // options ) {
+    // super(context, R.layout.simple_email_notification_option, options);
+    // }
+    //
+    // /*
+    // * (non-Javadoc)
+    // * @see android.widget.ArrayAdapter#getView(int, android.view.View,
+    // android.view.ViewGroup)
+    // */
+    // @Override
+    // public View getView(int position, View convertView, ViewGroup parent) {
+    // View view = convertView;
+    //
+    // if(view == null){
+    // view =
+    // LayoutInflater.from(getContext()).inflate(R.layout.simple_email_notification_option,
+    // parent, false);
+    // }
+    //
+    // CheckBox check = (CheckBox)
+    // view.findViewById(R.id.myaccount_newsletter_checkbox);
+    // check.setText(getItem(position).toString());
+    // Log.i(TAG,
+    // "code1news :  "+getItem(position)+" : "+getItem(position).isSubscrided);
+    //
+    // check.setChecked(getItem(position).isSubscrided);
+    // check.setTag("" + position);
+    // check.setOnCheckedChangeListener(this);
+    // return view;
+    // }
+    //
+    // /*
+    // * (non-Javadoc)
+    // * @see
+    // android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged(android.widget.CompoundButton,
+    // boolean)
+    // */
+    // @Override
+    // public void onCheckedChanged(CompoundButton buttonView, boolean
+    // isChecked) {
+    // int position = Integer.parseInt((String)buttonView.getTag());
+    // getItem(position).isSubscrided = isChecked;
+    // }
+    // }
 
-//    /**
-//     * ########### ADAPTER ###########  
-//     */
-//    private class NewsletterAdapter extends ArrayAdapter<NewsletterOption> implements OnCheckedChangeListener {
-//
-//        /**
-//         * 
-//         * @author sergiopereira
-//         * @param context
-//         * @param options
-//         */
-//        public NewsletterAdapter(Context context, ArrayList<NewsletterOption> options ) {
-//            super(context, R.layout.simple_email_notification_option, options);
-//        }
-//
-//        /*
-//         * (non-Javadoc)
-//         * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
-//         */
-//        @Override
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//            View view = convertView;
-//
-//            if(view == null){
-//                view = LayoutInflater.from(getContext()).inflate(R.layout.simple_email_notification_option, parent, false);
-//            } 
-//            
-//            CheckBox check = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox);
-//            check.setText(getItem(position).toString());
-//            Log.i(TAG, "code1news :  "+getItem(position)+" : "+getItem(position).isSubscrided);
-//            
-//            check.setChecked(getItem(position).isSubscrided);            
-//            check.setTag("" + position);
-//            check.setOnCheckedChangeListener(this);
-//            return view;
-//        }
-//        
-//        /*
-//         * (non-Javadoc)
-//         * @see android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged(android.widget.CompoundButton, boolean)
-//         */
-//        @Override
-//        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//            int position = Integer.parseInt((String)buttonView.getTag());
-//            getItem(position).isSubscrided = isChecked;
-//        }
-//    }
-    
     /**
-     * ########### DIALOGS ###########  
-     */    
-    
+     * ########### DIALOGS ###########
+     */
+
 }

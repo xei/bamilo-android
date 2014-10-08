@@ -38,6 +38,12 @@
 
             <include
                 android:id="@+id/checkout_my_order_include_subtotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="@dimen/rounded_margin_small"
                 layout="@layout/shopping_basket_subtotal_element" />
         </LinearLayout>
     </ScrollView>

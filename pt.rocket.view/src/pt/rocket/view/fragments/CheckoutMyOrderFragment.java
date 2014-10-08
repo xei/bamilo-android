@@ -54,8 +54,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
 
     private static final String TAG = LogTagHelper.create(CheckoutMyOrderFragment.class);
 
-    private static CheckoutMyOrderFragment mMyOrderFragment;
-
     private ViewGroup mProductsContainer;
 
     private TextView mTotalValue;
@@ -100,15 +98,17 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
 
     private TextView mVatValue;
 
+    private ViewGroup mShipFeeView;
+
     /**
      * Get CheckoutMyOrderFragment instance
      * @return
      */
     public static CheckoutMyOrderFragment getInstance(Bundle bundle) {
-        if (mMyOrderFragment == null) mMyOrderFragment = new CheckoutMyOrderFragment();
+        CheckoutMyOrderFragment myOrderFragment = new CheckoutMyOrderFragment();
         // Save order
-        mMyOrderFragment.mOrderFinish = (OrderSummary) bundle.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
-        return mMyOrderFragment;
+        myOrderFragment.mOrderFinish = (OrderSummary) bundle.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
+        return myOrderFragment;
     }
 
     /**
@@ -121,7 +121,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                 R.string.checkout_label,
                 KeyboardState.NO_ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_ORDER);
-        // ConstantsCheckout.CHECKOUT_ORDER
     }
 
     /*
@@ -144,7 +143,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Retain instance for rotation
         setRetainInstance(true);
+        // Track
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ORDER);
@@ -168,9 +169,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         mSubTotal = (TextView) view.findViewById(R.id.price_total);
         mExtraCosts = (TextView) view.findViewById(R.id.extra_costs_value);
         mExtraCostsContainer = (RelativeLayout) view.findViewById(R.id.extra_costs_container);
-      
+        
         mVatValue = (TextView) view.findViewById(R.id.vat_value);
-        //mShipFeeView = (ViewGroup) view.findViewById(R.id.shipping_container);
+        mShipFeeView = (ViewGroup) view.findViewById(R.id.shipping_container);
         mShipFeeValue = (TextView) view.findViewById(R.id.shipping_value);
         mVoucherView = (ViewGroup) view.findViewById(R.id.voucher_info_container);
         mVoucherValue = (TextView) view.findViewById(R.id.text_voucher);
@@ -310,7 +311,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             View prodInflateView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_my_order_product_item, mProductsContainer, false);
             // Image
             ImageView imageView = (ImageView) prodInflateView.findViewById(R.id.image_view);
-            RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView);
+            RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView,  null, R.drawable.no_image_small);
             // Name
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_name)).setText(item.getName());
             // Quantity
@@ -356,10 +357,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             mExtraCosts.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart.getExtraCosts()).toString()));
             mExtraCostsContainer.setVisibility(View.VISIBLE);
             // Shipping fee
+            mShipFeeView.setVisibility(View.VISIBLE);
             mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
         } else {
             mExtraCostsContainer.setVisibility(View.GONE);
             // Shipping fee
+            mShipFeeView.setVisibility(View.VISIBLE);
             mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
         }
         
@@ -379,7 +382,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
             Set<String> priceRulesKeys = cart.getPriceRules().keySet();
             for (String key : priceRulesKeys) {
-                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_summary_element, null);
+                View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_summary_element, priceRulesContainer, false);
                 ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
                 ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"+CurrencyFormatter.formatCurrency(cart.getPriceRules().get(key)));
                 priceRulesContainer.addView(priceRuleElement);

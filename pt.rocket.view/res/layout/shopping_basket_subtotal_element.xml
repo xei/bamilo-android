@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/rounded_box"
     android:layout_marginBottom="0dp"
-    android:layout_marginRight="0dp"
-    android:layout_marginTop="@dimen/rounded_margin_small" >
+    android:layout_marginTop="@dimen/rounded_margin_small"
+    android:paddingBottom="@dimen/rounded_margin_mid" >
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/title"
@@ -45,6 +45,7 @@
             android:layout_alignParentRight="true"
             android:textColor="@color/red_basic" />
     </RelativeLayout>
+
     <!-- Price Rules -->
 
     <LinearLayout
@@ -56,8 +57,7 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_mid"
         android:orientation="vertical"
-        android:visibility="gone" >
-    </LinearLayout>
+        android:visibility="gone" />
 
     <!-- VAT -->
 
@@ -69,7 +69,7 @@
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_mid"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <org.holoeverywhere.widget.TextView
             style="@style/text_normal"
@@ -133,7 +133,7 @@
         android:layout_below="@id/extra_costs_container"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <org.holoeverywhere.widget.TextView
             style="@style/text_normal"
@@ -157,7 +157,7 @@
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_mid"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <org.holoeverywhere.widget.TextView
             style="@style/text_normal"

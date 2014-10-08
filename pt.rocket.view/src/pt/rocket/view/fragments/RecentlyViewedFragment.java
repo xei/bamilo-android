@@ -44,8 +44,6 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
     private static RecentlyViewedFragment mRecentlyViewedFragment;
 
     private Button mClearAllButton;
-    
-    protected TrackingPage mPageName = TrackingPage.RECENTLY_VIEWED;
 
     /**
      * Empty constructor
@@ -81,6 +79,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         isOnAddingAllItemsToCart = false;
         // Retain the instance to receive callbacks from add all to cart
         setRetainInstance(true);
+        // Track page name
+        super.mPageName = TrackingPage.RECENTLY_VIEWED;
     }
 
     /*
