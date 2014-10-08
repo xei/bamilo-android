@@ -55,7 +55,7 @@ public class ErrorMonitoring {
 		
 		map.put( "Timestamp", SimpleDateFormat.getInstance().format(new Date()));
 		map.put( "VersionCode", getVersionCode(mContext));
-		map.put( "Exception Message", exception.getMessage());
+		map.put("Exception Message", exception == null ? "No Exception" : exception.getMessage());
 	}
 
 	public static void sendException(Context mContext, Exception e, String uri, ErrorCode errorCode, String msg, String msgTwo, boolean nonFatal) {
