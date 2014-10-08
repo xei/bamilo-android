@@ -20,6 +20,7 @@ import de.akquinet.android.androlog.Log;
  * Get Product Information helper
  * 
  * @author Manuel Silva
+ * @modified sergiopereira
  * 
  */
 public class GetProductHelper extends BaseHelper {
@@ -44,22 +45,19 @@ public class GetProductHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d("TRACK", "parseResponseBundle GetProductsHelper");
-        
         CompleteProduct product = new CompleteProduct();
-        product.initialize(jsonObject);
+        boolean status = product.initialize(jsonObject);
+        // Validate product initialization
+        if(!status) return parseErrorBundle(bundle);
+        // Return product
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, product);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_EVENT);
-//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.GET_PRODUCT_EVENT);
-//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
-//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
-//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "parseErrorBundle GetTeasersHelper");
-     
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_EVENT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;

@@ -105,8 +105,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
 
     private UiLifecycleHelper uiHelper;
 
-    private String loginOrigin = "";
-
     private boolean cameFromRegister = false;
 
     /**
@@ -117,9 +115,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         if (bundle != null) {
             // Initialize SessionLoginFragment with no title
             sLoginFragment = new SessionLoginFragment(0);
-            sLoginFragment.nextFragmentType = (FragmentType) bundle
-                    .getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
-            sLoginFragment.loginOrigin = bundle.getString(ConstantsIntentExtra.LOGIN_ORIGIN);
+            sLoginFragment.nextFragmentType = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
             // Force load form if comes from deep link
             String path = bundle.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
             if (path != null && path.equals(DeepLinkManager.TAG))

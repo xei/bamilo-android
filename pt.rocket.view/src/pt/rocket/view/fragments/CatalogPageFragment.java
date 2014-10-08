@@ -122,8 +122,15 @@ public class CatalogPageFragment extends BaseFragment {
     private boolean isScrolling = false;
     
     private Bundle mReceivedDataInBackgroung = null;
-    
 
+    private TrackingEvent mTrackSortEvent = TrackingEvent.CATALOG_FROM_CATEGORIES;
+    
+    /**
+     * 
+     * @param bundle
+     * @return 
+     * @author sergiopereira
+     */
     public static CatalogPageFragment newInstance(Bundle bundle) {
         CatalogPageFragment sCatalogPageFragment = new CatalogPageFragment();
         sCatalogPageFragment.setArguments(bundle);
@@ -178,51 +185,46 @@ public class CatalogPageFragment extends BaseFragment {
                 // option
                 mSort = ProductSort.BESTRATING;
                 mDirection = Direction.DESCENDENT;
+                mTrackSortEvent = TrackingEvent.CATALOG_SORT_RATING;
                 break;
 
             case 1: // <item >Popularity</item>
                 mSort = ProductSort.POPULARITY;
                 mDirection = Direction.DESCENDENT;
+                mTrackSortEvent = TrackingEvent.CATALOG_SORT_POPULARIRY;
                 break;
 
             case 2: // <item >Price up</item>
                 mSort = ProductSort.NEWIN;
                 mDirection = Direction.DESCENDENT;
+                mTrackSortEvent = TrackingEvent.CATALOG_SORT_NEW_IN;
                 break;
 
             case 3: // <item >Price up</item>
                 mSort = ProductSort.PRICE;
                 mDirection = Direction.ASCENDENT;
+                mTrackSortEvent = TrackingEvent.CATALOG_SORT_PRICE_UP;
                 break;
 
             case 4: // <item >Price down</item>
                 mSort = ProductSort.PRICE;
                 mDirection = Direction.DESCENDENT;
+                mTrackSortEvent = TrackingEvent.CATALOG_SORT_PRICE_DOWN;
                 break;
 
             case 5: // <item >Name</item>
                 // Offer option
                 mSort = ProductSort.NAME;
                 mDirection = Direction.ASCENDENT;
+                mTrackSortEvent = TrackingEvent.CATALOG_SORT_NAME;
                 break;
 
             case 6: // <item >Brand</item>
                 // option
                 mSort = ProductSort.BRAND;
                 mDirection = Direction.ASCENDENT;
+                mTrackSortEvent = TrackingEvent.CATALOG_SORT_BRAND;
                 break;
-
-            case 7: // <item >Best Rating</item>
-                // option
-                mSort = ProductSort.BESTRATING;
-                mDirection = Direction.DESCENDENT;
-                break;
-
-            case 8: // <item >Copy of Popularity for infinite scroll</item>
-                mSort = ProductSort.POPULARITY;
-                mDirection = Direction.DESCENDENT;
-                break;
-
             }
 
         }
@@ -859,14 +861,12 @@ public class CatalogPageFragment extends BaseFragment {
                 TrackerDelegator.trackSearch(params);
             }
 
-        } else {
-            if (mPageNumber == 1) {
-                params = new Bundle();
-                params.putString(TrackerDelegator.CATEGORY_KEY, mTitle);
-                params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, mPageNumber);
-                params.putSerializable(TrackerDelegator.LOCATION_KEY, TrackingEvent.CATALOG_FROM_CATEGORIES);
-                TrackerDelegator.trackCategoryView(params);
-            }
+        } else if (mPageNumber == 1) {
+            params = new Bundle();
+            params.putString(TrackerDelegator.CATEGORY_KEY, mTitle);
+            params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, mPageNumber);
+            params.putSerializable(TrackerDelegator.LOCATION_KEY, mTrackSortEvent);
+            TrackerDelegator.trackCategoryView(params);
         }
 
         try {

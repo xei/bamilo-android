@@ -84,6 +84,13 @@
     <string name="gremovefromfavorites">RemoveFromWishlist</string>
     <string name="gsignin">SignIn</string>
     <string name="gcatalogswitchlayout">ChangeCatalogView</string>
+    <string name="gCatalogSortBestRating">SortBestRating</string>
+    <string name="gCatalogSortPopularity">SortPopularity</string>
+    <string name="gCatalogSortNewIn">SortNewIn</string>
+    <string name="gCatalogSortPriceUp">SortPriceUp</string>
+    <string name="gCatalogSortPriceDown">SortPriceDown</string>
+    <string name="gCatalogSortName">SortName</string>
+    <string name="gCatalogSortBrand">SortName</string>
 
     <!-- Checkout Steps -->
     <string name="gNativeCheckout">NativeCheckout</string>

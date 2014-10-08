@@ -51,6 +51,20 @@ public enum TrackingEvent {
 	
 	CATALOG_FROM_CATEGORIES(R.string.gcatalog, R.string.gcategories),
 	
+	CATALOG_SORT_RATING(R.string.gcatalog, R.string.gCatalogSortBestRating),
+	
+	CATALOG_SORT_POPULARIRY(R.string.gcatalog, R.string.gCatalogSortPopularity),
+	
+	CATALOG_SORT_NEW_IN(R.string.gcatalog, R.string.gCatalogSortNewIn),
+	
+	CATALOG_SORT_PRICE_UP(R.string.gcatalog, R.string.gCatalogSortPriceUp),
+	
+	CATALOG_SORT_PRICE_DOWN(R.string.gcatalog, R.string.gCatalogSortPriceDown),
+	
+	CATALOG_SORT_NAME(R.string.gcatalog, R.string.gCatalogSortName),
+	
+	CATALOG_SORT_BRAND(R.string.gcatalog, R.string.gCatalogSortBrand),
+	
 	CATALOG_FROM_NAVIGATION(R.string.gcatalog, R.string.gnavigation),
 	
 	//	### ACCOUNT EVENTS

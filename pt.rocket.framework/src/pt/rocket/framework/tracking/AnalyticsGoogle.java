@@ -1,7 +1,6 @@
 package pt.rocket.framework.tracking;
 
 import java.util.List;
-import java.util.Locale;
 
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;

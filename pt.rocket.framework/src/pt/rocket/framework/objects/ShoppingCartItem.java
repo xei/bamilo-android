@@ -92,7 +92,9 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
                 priceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_PRICE_TAG);
                 price = CurrencyFormatter.formatCurrency(priceJSON);
             } else {
-                throw new JSONException("Price is not a number!");
+                //throw new JSONException("Price is not a number!");
+            	Log.w(TAG, "WARNING: Price is not a number!");
+                price = "";
             }
 
             /*-if (!jsonObject.isNull(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG) && jsonObject.getDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG) > 0 ) {

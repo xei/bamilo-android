@@ -284,16 +284,11 @@ public class CurrencyFormatter {
      * @return true or false
      */
     public static boolean isNumber(String text) {
-//        try {
-//            Double.parseDouble(text);
-//            return true;
-//        } catch (NumberFormatException e) {
-//            return false;
-//        }
-    	try {
-    		return text.matches("-?\\d+(\\.\\d+)?");
-		} catch (NullPointerException e) {
-			return false;
-		}
+        try {
+            Double.parseDouble(text);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

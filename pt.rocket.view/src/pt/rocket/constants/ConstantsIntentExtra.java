@@ -81,7 +81,6 @@ public class ConstantsIntentExtra {
 
     // ########### Login ##############
     public static final String NEXT_FRAGMENT_TYPE           = mPackage + "NextFragmentType";
-    public static final String LOGIN_ORIGIN                 = mPackage + "LoginOrigin";
 
     // ########### Terms ##############
     public static final String TERMS_CONDITIONS             = mPackage + "TermsConditions";
