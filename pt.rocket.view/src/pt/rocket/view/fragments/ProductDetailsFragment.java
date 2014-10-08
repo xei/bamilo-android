@@ -240,7 +240,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public ProductDetailsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.layout.productdetailsnew_fragments,
+                R.layout.product_details_fragment_main,
                 0,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -1056,9 +1056,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             startFragmentCallbacks();
 
             // Validate variations
-            if (isNotValidVariation(mCompleteProduct.getVariations()))
-                if (mainView != null) mainView.findViewById(R.id.product_detail_variations_container).setVisibility(View.GONE);
-            
+            if (isNotValidVariation(mCompleteProduct.getVariations())){
+                if (mainView != null){
+                    mainView.findViewById(R.id.product_detail_variations_container).setVisibility(View.GONE);
+                    mainView.findViewById(R.id.variation_bottom_line).setVisibility(View.GONE);
+                }
+            }
             // Containers
             fragmentManagerTransition(R.id.product_detail_variations_container, productVariationsFragment, false, true);
             fragmentManagerTransition(R.id.product_detail_image_gallery_container, productImagesViewPagerFragment, false, true);
