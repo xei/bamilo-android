@@ -134,9 +134,9 @@ public class CatalogPageFragment extends BaseFragment {
      * @author sergiopereira
      */
     public static CatalogPageFragment newInstance(Bundle bundle) {
-        CatalogPageFragment sCatalogPageFragment = new CatalogPageFragment();
-        sCatalogPageFragment.setArguments(bundle);
-        return sCatalogPageFragment;
+        CatalogPageFragment catalogPageFragment = new CatalogPageFragment();
+        catalogPageFragment.setArguments(bundle);
+        return catalogPageFragment;
     }
 
     /**

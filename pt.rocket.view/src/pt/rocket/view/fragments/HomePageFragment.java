@@ -43,8 +43,8 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
     
     public static final String SCROLL_STATE_KEY = "scroll";
 
-    private static HomePageFragment sHomePageFragment;
-    
+    // private static HomePageFragment sHomePageFragment;
+
     private LayoutInflater mInflater;
 
     private ScrollViewWithHorizontal mScrollViewWithHorizontal;
@@ -61,9 +61,9 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      * @author sergiopereira
      */
     public static HomePageFragment getInstance(Bundle bundle) {
-        sHomePageFragment = new HomePageFragment();
-        sHomePageFragment.setArguments(bundle);
-        return sHomePageFragment;
+        HomePageFragment homePageFragment = new HomePageFragment();
+        homePageFragment.setArguments(bundle);
+        return homePageFragment;
     }
 
     /**

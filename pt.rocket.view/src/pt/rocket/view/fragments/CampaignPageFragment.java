@@ -72,7 +72,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
 
     private final static String BANNER_STATE = "banner_state";
     
-    private static CampaignPageFragment sCampaignFragment;
+    // private static CampaignPageFragment sCampaignFragment;
 
     private TeaserCampaign mTeaserCampaign;
     
@@ -122,11 +122,11 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      * @return CampaignFragment
      * @author sergiopereira
      */
-    public static CampaignPageFragment getInstance(TeaserCampaign teaserCampaign) {
+    /*-public static CampaignPageFragment getInstance(TeaserCampaign teaserCampaign) {
         sCampaignFragment = new CampaignPageFragment();
         sCampaignFragment.mTeaserCampaign = teaserCampaign;
         return sCampaignFragment;
-    }
+    }*/
     
     /**
      * Constructor via bundle
@@ -134,9 +134,9 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      * @author sergiopereira
      */
     public static CampaignPageFragment getInstance(Bundle bundle) {
-        sCampaignFragment = new CampaignPageFragment();
-        sCampaignFragment.setArguments(bundle);
-        return sCampaignFragment;
+        CampaignPageFragment campaignPageFragment = new CampaignPageFragment();
+        campaignPageFragment.setArguments(bundle);
+        return campaignPageFragment;
     }
 
     /**
