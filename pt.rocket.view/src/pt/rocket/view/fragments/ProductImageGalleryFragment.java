@@ -272,6 +272,18 @@ public class ProductImageGalleryFragment extends BaseFragment {
 
         createViewPager();
     }
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onSaveInstanceState()
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // Persist isZoomAvailable
+        outState.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, isZoomAvailable);
+        super.onSaveInstanceState(outState);
+    }
 
     /*
      * (non-Javadoc)
@@ -506,18 +518,6 @@ public class ProductImageGalleryFragment extends BaseFragment {
         createViewPager();
         if (currentPosition <= 0) currentPosition = 1;
         updateImage(currentPosition);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onSaveInstanceState()
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        // Persist isZoomAvailable
-        outState.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, isZoomAvailable);
-        super.onSaveInstanceState(outState);
     }
 
 }
