@@ -784,7 +784,12 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Assumed that was added to cart
         // Case added to cart
         if (success) {
-            mAddableToCartList.remove(pos);
+            try{
+                mAddableToCartList.remove(pos);
+            }catch (IndexOutOfBoundsException  e){
+                Log.w(TAG, "IndexOutOfBoundsException avoided when removing position: " + pos);
+                message = getString(error);
+            }
         }
         // Case not added to cart
         else {
