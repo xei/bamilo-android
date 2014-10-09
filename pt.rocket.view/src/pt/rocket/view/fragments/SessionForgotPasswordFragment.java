@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
-import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -46,8 +45,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements OnCli
 
     private static final String TAG = LogTagHelper.create(SessionForgotPasswordFragment.class);
 
-    private static SessionForgotPasswordFragment forgotPasswordFragment;
-
     protected DynamicForm dynamicForm;
 
     private LinearLayout container;
@@ -61,10 +58,7 @@ public class SessionForgotPasswordFragment extends BaseFragment implements OnCli
      * @return
      */
     public static SessionForgotPasswordFragment getInstance() {
-        if (forgotPasswordFragment == null) {
-            forgotPasswordFragment = new SessionForgotPasswordFragment();
-        }
-        return forgotPasswordFragment;
+        return new SessionForgotPasswordFragment();
     }
 
     /**

@@ -127,8 +127,10 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
      */
     private static HashMap<String, PaymentInfo> paymentsInfoList;
 
+    // TODO use an alternative to persist form on rotation
     public Form registerForm;
 
+    // TODO use an alternative to persist filled fields on rotation
     public Bundle registerSavedInstanceState;
 
     public int lastPaymentSelected = -1;

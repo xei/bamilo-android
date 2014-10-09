@@ -228,6 +228,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
                 item.saveState(outState);
             }
 
+            // TODO use an alternative to persist filled fields on rotation
             JumiaApplication.INSTANCE.registerSavedInstanceState = outState;
         }
         super.onSaveInstanceState(outState);
@@ -546,6 +547,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
         }
         container.addView(serverForm.getContainer());
         setTermsListener();
+        // TODO use an alternative to persist filled fields on rotation
         if (null != JumiaApplication.INSTANCE.registerSavedInstanceState && null != serverForm) {
             Iterator<DynamicFormItem> iter = serverForm.getIterator();
             while (iter.hasNext()) {
