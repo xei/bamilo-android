@@ -57,7 +57,7 @@ public class GetShippingMethodsHelper extends BaseHelper {
 //                            "PickupStation": [],
 //                            "UniversalShippingMatrix": []
 //                        },
-//                        "EVENT_TYPE": "radio",
+//                        "type": "radio",
 //                        "rules": {
 //                            "required": true
 //                        },
@@ -122,7 +122,7 @@ public class GetShippingMethodsHelper extends BaseHelper {
 //                                }
 //                            }
 //                        },
-//                        "EVENT_TYPE": "radio",
+//                        "type": "radio",
 //                        "rules": {
 //                            "required": {
 //                                "on": "PickupStation"
