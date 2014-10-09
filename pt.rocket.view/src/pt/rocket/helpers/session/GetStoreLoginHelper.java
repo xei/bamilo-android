@@ -20,30 +20,28 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 public class GetStoreLoginHelper extends BaseHelper {
-    private static String TAG=GetStoreLoginHelper.class.getSimpleName();
+
+    private static String TAG = GetStoreLoginHelper.class.getSimpleName();
+
+    private static final EventType EVENT_TYPE = EventType.STORE_LOGIN;
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.STORE_LOGIN.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.STORE_LOGIN);
         return bundle;
     }
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        // TODO Auto-generated method stub
-        Log.i(TAG,"parseResponseBundle");
+        Log.i(TAG, "parseResponseBundle");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.STORE_LOGIN);
-//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.STORE_LOGIN);
-//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
-//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
-//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
-    
+
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "parseErrorBundle GetStoreLoginHelper");

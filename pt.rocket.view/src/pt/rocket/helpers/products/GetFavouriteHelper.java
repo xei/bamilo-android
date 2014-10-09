@@ -17,7 +17,7 @@ public class GetFavouriteHelper implements IResponseCallback {
 
     public static String TAG = GetFavouriteHelper.class.getSimpleName();
 
-    private static final EventType type = EventType.GET_FAVOURITE_LIST;
+    private static final EventType EVENT_TYPE = EventType.GET_FAVOURITE_LIST;
 
     private int mNumberOfIncomplete = 0;
 
@@ -63,7 +63,7 @@ public class GetFavouriteHelper implements IResponseCallback {
         Log.d(TAG, "ON GET FAVOURITE LIST");
         ArrayList<Favourite> favourites = FavouriteTableHelper.getFavouriteList();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY, favourites);
         mResponseCallback.onRequestComplete(bundle);
     }

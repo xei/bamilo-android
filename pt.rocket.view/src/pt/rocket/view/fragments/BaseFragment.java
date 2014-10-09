@@ -490,52 +490,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         showActivityProgress();
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
-    
-    /**
-     * #### HANDLE EVENT ####
-     */
-
-//    /**
-//     * Handles a successful event and reflects necessary changes on the UI.
-//     * 
-//     * @param event
-//     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
-//     */
-//    private void handleSuccessEvent(Bundle bundle) {
-//        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-//        Log.i(TAG, "ON HANDLE SUCCESS EVENT: " + eventType);
-//        switch (eventType) {
-//        case GET_SHOPPING_CART_ITEMS_EVENT:
-//        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-//        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-//        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-//            getBaseActivity().updateCartInfo();
-//            break;
-//        case LOGOUT_EVENT:
-//            break;
-//        }
-//    }
-
-//    /**
-//     * Handles a failed event and shows dialogs to the user.
-//     * 
-//     * @param event
-//     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
-//     */
-//    public void handleErrorEvent(Bundle bundle) {
-//        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-//        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-//        try {
-//            HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-//            List<String> errors = (List<String>) errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-//            Log.i(TAG, "ON HANDLE ERROR EVENT: " + eventType);
-//            if(errors != null)
-//                Log.i(TAG, "ON HANDLE ERROR EVENT error response was : error code : " + errorCode +" error message : " + errors.toString());
-//        } catch (NullPointerException e) {
-//            Log.w(TAG, "ON HANDLE ERROR: The Message is null: " + e.getMessage());
-//        }
-//    }
-
 
     /**
      * @return the action
@@ -581,38 +535,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         Log.d(TAG, "DYNAMIC FORMS: HIDE KEYBOARD");
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-    }
-
-//    /**
-//     * This method generates a unique and always diferent MD5 hash based on a given key 
-//     * @param key 
-//     * @return the unique MD5 
-//     */
-//    protected static String uniqueMD5(String key) { 
-//        String md5String = "";
-//        try {
-//            Calendar calendar = Calendar.getInstance();
-//            key = key + calendar.getTimeInMillis() ;
-//        
-//            // Create MD5 Hash
-//            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-//            digest.update(key.getBytes());
-//            byte messageDigest[] = digest.digest();
-//     
-//            // Create Hex String
-//            StringBuffer hexString = new StringBuffer();
-//            for (int i=0; i<messageDigest.length; i++) {
-//                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
-//            }
-//            md5String = hexString.toString();
-//     
-//         } catch (NoSuchAlgorithmException e) {
-//             e.printStackTrace();
-//         }
-//        
-//        return md5String;
-// 
-//    }         
+    }     
 
 
     public void setActivity(BaseActivity activity) {

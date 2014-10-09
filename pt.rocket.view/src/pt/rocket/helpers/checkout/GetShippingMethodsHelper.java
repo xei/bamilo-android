@@ -28,7 +28,7 @@ public class GetShippingMethodsHelper extends BaseHelper {
     
     private static String TAG = GetShippingMethodsHelper.class.getSimpleName();
     
-    private static final EventType type = EventType.GET_SHIPPING_METHODS_EVENT;
+    private static final EventType EVENT_TYPE = EventType.GET_SHIPPING_METHODS_EVENT;
     
 //    {
 //        "success": true,
@@ -57,7 +57,7 @@ public class GetShippingMethodsHelper extends BaseHelper {
 //                            "PickupStation": [],
 //                            "UniversalShippingMatrix": []
 //                        },
-//                        "type": "radio",
+//                        "EVENT_TYPE": "radio",
 //                        "rules": {
 //                            "required": true
 //                        },
@@ -122,7 +122,7 @@ public class GetShippingMethodsHelper extends BaseHelper {
 //                                }
 //                            }
 //                        },
-//                        "type": "radio",
+//                        "EVENT_TYPE": "radio",
 //                        "rules": {
 //                            "required": {
 //                                "on": "PickupStation"
@@ -198,12 +198,12 @@ public class GetShippingMethodsHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, type.action);
+        bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
    
@@ -242,7 +242,7 @@ public class GetShippingMethodsHelper extends BaseHelper {
         }
         
         Log.i(TAG, "PARSE JSON: SUCCESS");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;
     }
     
@@ -253,7 +253,7 @@ public class GetShippingMethodsHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -265,7 +265,7 @@ public class GetShippingMethodsHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE RESPONSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

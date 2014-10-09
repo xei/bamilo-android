@@ -51,7 +51,11 @@ import de.akquinet.android.androlog.Log;
 public class GetCountriesConfigsHelper extends BaseHelper {
 
     private static String TAG = GetCountriesConfigsHelper.class.getSimpleName();
+    
+    private static final EventType EVENT_TYPE = EventType.GET_COUNTRY_CONFIGURATIONS;
+    
     private final String POSITION_LEFT = "1";
+    
     //private final String POSITION_RIGHT = "2";
 
     @Override
@@ -60,7 +64,7 @@ public class GetCountriesConfigsHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_COUNTRY_CONFIGURATIONS.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_COUNTRY_CONFIGURATIONS);
         return bundle;

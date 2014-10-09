@@ -27,7 +27,7 @@ public class GetSearchProductHelper extends BaseHelper {
     
     private static String TAG = GetSearchProductHelper.class.getSimpleName();
     
-    private static final EventType type = EventType.SEARCH_PRODUCT;
+    private static final EventType EVENT_TYPE = EventType.SEARCH_PRODUCT;
     
     public static final String SKU_TAG = "sku";
     
@@ -41,12 +41,12 @@ public class GetSearchProductHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "DEEP LINK ON GENERATE REQUEST");
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
-        Uri uri = Uri.parse(type.action).buildUpon().appendQueryParameter(SKU_TAG, args.getString(SKU_TAG)).build();
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        Uri uri = Uri.parse(EVENT_TYPE.action).buildUpon().appendQueryParameter(SKU_TAG, args.getString(SKU_TAG)).build();
         bundle.putString(Constants.BUNDLE_URL_KEY, uri.toString());
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
     
@@ -60,7 +60,7 @@ public class GetSearchProductHelper extends BaseHelper {
         CompleteProduct product = new CompleteProduct();
         product.initialize(jsonObject);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, product);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;
     }
 
@@ -71,7 +71,7 @@ public class GetSearchProductHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "ON PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -83,7 +83,7 @@ public class GetSearchProductHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "ON PARSE RESPONSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

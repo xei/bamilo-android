@@ -28,7 +28,10 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 public class GetRegisterFormHelper extends BaseHelper {
-    private static String TAG=GetRegisterFormHelper.class.getSimpleName();
+    
+    private static String TAG = GetRegisterFormHelper.class.getSimpleName();
+    
+    private static final EventType EVENT_TYPE = EventType.GET_REGISTRATION_FORM_EVENT;
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
@@ -43,7 +46,7 @@ public class GetRegisterFormHelper extends BaseHelper {
         }
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_REGISTRATION_FORM_EVENT);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
 

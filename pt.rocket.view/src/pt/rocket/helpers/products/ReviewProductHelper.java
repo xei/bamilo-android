@@ -31,6 +31,8 @@ import de.akquinet.android.androlog.Log;
 public class ReviewProductHelper extends BaseHelper {
 
     private static String TAG = ReviewProductHelper.class.getSimpleName();
+    
+    private static final EventType EVENT_TYPE = EventType.REVIEW_PRODUCT_EVENT;
 
     public static final String COMMENT_CREATED = "commentCreated";
     public static final String PRODUCT_SKU = "productSKU";
@@ -59,7 +61,7 @@ public class ReviewProductHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, values);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REVIEW_PRODUCT_EVENT);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
  
@@ -75,7 +77,7 @@ public class ReviewProductHelper extends BaseHelper {
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REVIEW_PRODUCT_EVENT);
 //        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.REVIEW_PRODUCT_EVENT);
-//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
+//        Log.i("REQUEST", "event EVENT_TYPE response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
 //        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
 //        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;

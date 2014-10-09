@@ -41,6 +41,8 @@ import de.akquinet.android.androlog.Log;
 public class GetCountriesGeneralConfigsHelper extends BaseHelper {
     
     private static String TAG = GetCountriesGeneralConfigsHelper.class.getSimpleName();
+    
+    private static final EventType EVENT_TYPE = EventType.GET_GLOBAL_CONFIGURATIONS;
 
     /*
      * (non-Javadoc)
@@ -53,7 +55,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, context.getString(R.string.countries_url));
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_GLOBAL_CONFIGURATIONS);
         return bundle;

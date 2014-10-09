@@ -23,7 +23,7 @@ public class GetForgotPasswordHelper extends BaseHelper {
     
     private static String TAG = GetForgotPasswordHelper.class.getSimpleName();
     
-    private static final EventType type = EventType.FORGET_PASSWORD_EVENT;
+    private static final EventType EVENT_TYPE = EventType.FORGET_PASSWORD_EVENT;
     
     public static final String CONTENT_VALUES = "contentValues";
 
@@ -39,8 +39,8 @@ public class GetForgotPasswordHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.FORGET_PASSWORD_EVENT.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, args.getParcelable(CONTENT_VALUES));
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;
     }
 
@@ -62,7 +62,7 @@ public class GetForgotPasswordHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "ON PARSE ERROR");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -74,7 +74,7 @@ public class GetForgotPasswordHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "ON PARSE RESPONSE ERROR");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

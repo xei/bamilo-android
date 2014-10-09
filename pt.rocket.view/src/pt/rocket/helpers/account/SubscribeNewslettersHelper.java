@@ -30,7 +30,7 @@ public class SubscribeNewslettersHelper extends BaseHelper {
     
     private static String TAG = SubscribeNewslettersHelper.class.getSimpleName();
     
-    private static final EventType type = EventType.SUBSCRIBE_NEWSLETTERS_EVENT;
+    private static final EventType EVENT_TYPE = EventType.SUBSCRIBE_NEWSLETTERS_EVENT;
     
     public static final String FORM_CONTENT_VALUES = "form_content_values";
 
@@ -45,12 +45,12 @@ public class SubscribeNewslettersHelper extends BaseHelper {
         Log.d(TAG, "REQUEST");
         Bundle bundle = new Bundle();
         contentValues = args.getParcelable(FORM_CONTENT_VALUES);
-        bundle.putString(Constants.BUNDLE_URL_KEY, type.action);
+        bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
    
@@ -80,7 +80,7 @@ public class SubscribeNewslettersHelper extends BaseHelper {
             Log.w(TAG, "ON PARSING NEWSLETTER SUBSCRIPTIONS", e);
             return parseErrorBundle(bundle);
         }
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;
     }
 
@@ -91,7 +91,7 @@ public class SubscribeNewslettersHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -103,7 +103,7 @@ public class SubscribeNewslettersHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE RESPONSE BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

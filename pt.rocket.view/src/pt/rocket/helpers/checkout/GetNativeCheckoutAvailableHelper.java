@@ -22,7 +22,7 @@ public class GetNativeCheckoutAvailableHelper extends BaseHelper {
     
     private static String TAG = GetNativeCheckoutAvailableHelper.class.getSimpleName();
 
-    private static final EventType type = EventType.NATIVE_CHECKOUT_AVAILABLE;
+    private static final EventType EVENT_TYPE = EventType.NATIVE_CHECKOUT_AVAILABLE;
     /*
      * (non-Javadoc)
      * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
@@ -32,12 +32,12 @@ public class GetNativeCheckoutAvailableHelper extends BaseHelper {
         Log.d(TAG, "REQUEST");
         Bundle bundle = new Bundle();    
         
-        bundle.putString(Constants.BUNDLE_URL_KEY, type.action);
+        bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
 
@@ -66,7 +66,7 @@ public class GetNativeCheckoutAvailableHelper extends BaseHelper {
             Log.d(TAG, "PARSE JSON", e);
             return parseErrorBundle(bundle);
         }
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_RESPONSE_KEY,  isAvailable);
         return bundle;
     }
@@ -78,7 +78,7 @@ public class GetNativeCheckoutAvailableHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -90,7 +90,7 @@ public class GetNativeCheckoutAvailableHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE RESPONSE BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

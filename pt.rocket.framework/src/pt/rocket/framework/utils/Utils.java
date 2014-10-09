@@ -4,7 +4,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
-import java.util.Calendar;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -13,6 +12,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import android.annotation.SuppressLint;
 import android.util.Base64;
 import de.akquinet.android.androlog.Log;
 
@@ -44,7 +44,6 @@ public class Utils {
     public static String uniqueMD5(String key) {
         String md5String = "";
         try {
-            Calendar calendar = Calendar.getInstance();
             
            key = key + System.nanoTime();
 
@@ -80,7 +79,6 @@ public class Utils {
     		return "";
         String md5String = "";
         try {
-            Calendar calendar = Calendar.getInstance();
 
             // Create MD5 Hash
             MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
@@ -107,7 +105,8 @@ public class Utils {
      * @param obj
      * @return
      */
-    public static String encrypt(Object obj) {
+    @SuppressLint("TrulyRandom")
+	public static String encrypt(Object obj) {
 
         int saltLength = keyLength / 8; // same size as key output
 

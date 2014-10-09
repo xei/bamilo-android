@@ -21,6 +21,8 @@ public class NavigationListHelper extends BaseHelper {
 
     private static final String TAG = NavigationListHelper.class.getSimpleName();
     
+    private static final EventType EVENT_TYPE = EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT;
+    
     private static final String SEARCH_TAG = "Search";
     
     private static final String BASKET_TAG = "Basket";
@@ -43,7 +45,7 @@ public class NavigationListHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_NAVIGATION_LIST_COMPONENTS_EVENT);
         return bundle;
     }

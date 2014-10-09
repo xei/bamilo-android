@@ -26,7 +26,10 @@ import de.akquinet.android.androlog.Log;
  * @modified Manuel Silva
  */
 public class GetTeasersHelper extends BaseHelper {
+    
     private static String TAG = GetTeasersHelper.class.getSimpleName();
+    
+    private static final EventType EVENT_TYPE = EventType.GET_TEASERS_EVENT;
     
     public static final String MD5_KEY = "md5";
     
@@ -35,7 +38,7 @@ public class GetTeasersHelper extends BaseHelper {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_TEASERS_EVENT.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_TEASERS_EVENT);
         return bundle;
     }

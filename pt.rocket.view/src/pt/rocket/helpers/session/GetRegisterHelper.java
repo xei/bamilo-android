@@ -26,9 +26,15 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 public class GetRegisterHelper extends BaseHelper {
+    
     private static String TAG=GetRegisterHelper.class.getSimpleName();
+    
+    private static final EventType EVENT_TYPE = EventType.REGISTER_ACCOUNT_EVENT;
+    
     public static final String REGISTER_CONTENT_VALUES = "contentValues";
+    
     boolean saveCredentials = true;
+    
     ContentValues contentValues;
     
     @Override
@@ -40,7 +46,7 @@ public class GetRegisterHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REGISTER_ACCOUNT_EVENT);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
 

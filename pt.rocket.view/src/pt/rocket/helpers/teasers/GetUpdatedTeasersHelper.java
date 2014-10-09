@@ -33,7 +33,7 @@ public class GetUpdatedTeasersHelper extends BaseHelper {
     
     public static final String MD5_KEY = "md5";
        
-    private static final EventType type = EventType.GET_UPDATED_TEASERS_EVENT;
+    private static final EventType EVENT_TYPE = EventType.GET_UPDATED_TEASERS_EVENT;
     
     private String mOldMd5 = null;
     
@@ -48,10 +48,10 @@ public class GetUpdatedTeasersHelper extends BaseHelper {
         mOldMd5 = args.getString(OLD_MD5_KEY);
         // Create request
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, type.action);
+        bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;
     }
 
@@ -72,12 +72,12 @@ public class GetUpdatedTeasersHelper extends BaseHelper {
         if(!TextUtils.isEmpty(md5) && !TextUtils.isEmpty(mOldMd5) && mOldMd5.equals(md5))
             return parseResponseErrorBundle(bundle);
         // Remove the old request from cache
-        RestClientSingleton.INSTANCE.moveEntryInCache(type.action, EventType.GET_TEASERS_EVENT.action);
+        RestClientSingleton.INSTANCE.moveEntryInCache(EVENT_TYPE.action, EventType.GET_TEASERS_EVENT.action);
         // MD5 are different then parse response
         try {
             parseJson(jsonObject, bundle);
             bundle.putString(MD5_KEY, md5);
-            bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+            bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         } catch (JSONException e) {
             e.printStackTrace();
             return parseErrorBundle(bundle);
@@ -116,7 +116,7 @@ public class GetUpdatedTeasersHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "ON PARSE ERROR");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -128,7 +128,7 @@ public class GetUpdatedTeasersHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "ON RESPONSE ERROR");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

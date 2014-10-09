@@ -33,7 +33,7 @@ public class GetCitiesHelper extends BaseHelper {
     
     public static String CUSTOM_TAG = "custom_tag";
     
-    private static final EventType TYPE = EventType.GET_CITIES_EVENT;
+    private static final EventType EVENT_TYPE = EventType.GET_CITIES_EVENT;
 
     private String customTag;
     
@@ -51,7 +51,7 @@ public class GetCitiesHelper extends BaseHelper {
         int region = bundle.getInt(REGION_ID_TAG);
         // Get action
         String action = bundle.getString(Constants.BUNDLE_URL_KEY);
-        if(TextUtils.isEmpty(action)) action = TYPE.action.toString();    
+        if(TextUtils.isEmpty(action)) action = EVENT_TYPE.action.toString();    
         // Validate action
         if(action.contains("fk_customer_address_region")) action = action.replace("fk_customer_address_region", "" + region);
         else action += "?region=" + region; 
@@ -61,8 +61,8 @@ public class GetCitiesHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, TYPE);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
    
@@ -91,7 +91,7 @@ public class GetCitiesHelper extends BaseHelper {
             return parseErrorBundle(bundle);
         }
         Log.d(TAG, "PARSE WITH SUCCESS");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;
     }
     
@@ -102,7 +102,7 @@ public class GetCitiesHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -114,7 +114,7 @@ public class GetCitiesHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE RESPONSE BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

@@ -29,7 +29,7 @@ public class GetBillingFormHelper extends BaseHelper {
     
     private static String TAG = GetBillingFormHelper.class.getSimpleName();
     
-    private static final EventType type = EventType.GET_BILLING_FORM_EVENT;
+    private static final EventType EVENT_TYPE = EventType.GET_BILLING_FORM_EVENT;
     
     /*
      * (non-Javadoc)
@@ -39,11 +39,11 @@ public class GetBillingFormHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "GENERATE BUNDLE");
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, type.action);
+        bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;
     }
 
@@ -70,7 +70,7 @@ public class GetBillingFormHelper extends BaseHelper {
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, addresses);
             bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, form);
             bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
-            bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+            bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         } catch (Exception e) {
             Log.d(TAG, "PARSE EXCEPTION:", e);
             return parseErrorBundle(bundle);
@@ -86,7 +86,7 @@ public class GetBillingFormHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -98,7 +98,7 @@ public class GetBillingFormHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE ERROR RESPONSE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

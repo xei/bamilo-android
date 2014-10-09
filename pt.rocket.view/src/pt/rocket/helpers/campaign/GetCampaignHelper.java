@@ -26,7 +26,7 @@ public class GetCampaignHelper extends BaseHelper {
     
     private static String TAG = GetCampaignHelper.class.getSimpleName();
 
-    private static final EventType type = EventType.GET_CAMPAIGN_EVENT;
+    private static final EventType EVENT_TYPE = EventType.GET_CAMPAIGN_EVENT;
     
     public static final String CAMPAIGN_ID = "campaign";
     
@@ -44,8 +44,8 @@ public class GetCampaignHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(CAMPAIGN_ID));
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
 
@@ -67,7 +67,7 @@ public class GetCampaignHelper extends BaseHelper {
             Log.w(TAG, "ERROR ON PARSE JSON", e);
             return parseErrorBundle(bundle);
         }
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
         return bundle;
     }
@@ -79,7 +79,7 @@ public class GetCampaignHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -91,7 +91,7 @@ public class GetCampaignHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE RESPONSE BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

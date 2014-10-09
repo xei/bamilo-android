@@ -31,7 +31,7 @@ public class GetSearchCategoryHelper extends BaseHelper {
     
     private static String TAG = GetSearchCategoryHelper.class.getSimpleName();
     
-    private static final EventType type = EventType.GET_CATEGORIES_EVENT;
+    private static final EventType EVENT_TYPE = EventType.GET_CATEGORIES_EVENT;
     
     public static final String CATEGORY_TAG = "category";
 
@@ -42,13 +42,13 @@ public class GetSearchCategoryHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
-        Uri uri = Uri.parse(type.action).buildUpon().appendQueryParameter(CATEGORY_TAG, args.getString(CATEGORY_TAG)).build();
+        Uri uri = Uri.parse(EVENT_TYPE.action).buildUpon().appendQueryParameter(CATEGORY_TAG, args.getString(CATEGORY_TAG)).build();
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, uri.toString());
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_CATEGORIES_EVENT);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
 

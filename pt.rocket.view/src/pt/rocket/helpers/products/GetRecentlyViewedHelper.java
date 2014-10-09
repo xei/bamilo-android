@@ -19,7 +19,7 @@ public class GetRecentlyViewedHelper {
 
     public static String TAG = GetRecentlyViewedHelper.class.getSimpleName();
 
-    private static final EventType type = EventType.GET_RECENLTLYVIEWED_LIST;
+    private static final EventType EVENT_TYPE = EventType.GET_RECENLTLYVIEWED_LIST;
 
     private IResponseCallback mResponseCallback;
 
@@ -42,7 +42,7 @@ public class GetRecentlyViewedHelper {
         Log.d(TAG, "ON GET FAVOURITE LIST");
         ArrayList<LastViewedAddableToCart> listLastViewed = LastViewedTableHelper.getLastViewedAddableToCartList();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY, listLastViewed);
         mResponseCallback.onRequestComplete(bundle);
     }

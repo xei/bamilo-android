@@ -28,6 +28,8 @@ import de.akquinet.android.androlog.Log;
 public class GetShoppingCartItemsHelper extends BaseHelper {
     
     private static String TAG = GetShoppingCartItemsHelper.class.getSimpleName();
+    
+    private static final EventType EVENT_TYPE = EventType.GET_SHOPPING_CART_ITEMS_EVENT;
    
     @Override
     public Bundle generateRequestBundle(Bundle args) {
@@ -35,7 +37,7 @@ public class GetShoppingCartItemsHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        String md5 = Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY);
+        String md5 = Utils.uniqueMD5(EVENT_TYPE.name());
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
         bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT);

@@ -28,6 +28,8 @@ import de.akquinet.android.androlog.Log;
 public class GetRegionsHelper extends BaseHelper {
     
     private static String TAG = GetRegionsHelper.class.getSimpleName();
+    
+    private static final EventType EVENT_TYPE = EventType.GET_REGIONS_EVENT;
             
     /*
      * (non-Javadoc)
@@ -44,7 +46,7 @@ public class GetRegionsHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_REGIONS_EVENT);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
    

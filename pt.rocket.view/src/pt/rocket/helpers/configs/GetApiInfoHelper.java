@@ -43,6 +43,8 @@ public class GetApiInfoHelper extends BaseHelper {
     
     private static String TAG = GetApiInfoHelper.class.getSimpleName();
     
+    private static final EventType EVENT_TYPE = EventType.GET_API_INFO;
+    
     public static final String API_INFO_OUTDATEDSECTIONS = "outDatedSections";
 
     /*
@@ -55,7 +57,7 @@ public class GetApiInfoHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_API_INFO.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
         return bundle;

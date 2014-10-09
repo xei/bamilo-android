@@ -31,9 +31,9 @@ public class GetForgotPasswordFormHelper extends BaseHelper {
 
     private static String TAG = GetForgotPasswordFormHelper.class.getSimpleName();
     
-    private static final EventType sType = EventType.GET_FORGET_PASSWORD_FORM_EVENT;
+    private static final EventType EVENT_TYPE = EventType.GET_FORGET_PASSWORD_FORM_EVENT;
     
-    private static final EventType sFallBackType = EventType.GET_FORGET_PASSWORD_FORM_FALLBACK_EVENT;
+    private static final EventType FALL_BACK_EVENT_TYPE = EventType.GET_FORGET_PASSWORD_FORM_FALLBACK_EVENT;
 
     /*
      * (non-Javadoc)
@@ -44,10 +44,10 @@ public class GetForgotPasswordFormHelper extends BaseHelper {
         Log.d(TAG, "ON REQUEST");
         
         // Fall back
-        String url = sFallBackType.action;
+        String url = FALL_BACK_EVENT_TYPE.action;
         try {
             // Get form
-            FormData formData = JumiaApplication.INSTANCE.getFormDataRegistry().get(sType.action);
+            FormData formData = JumiaApplication.INSTANCE.getFormDataRegistry().get(EVENT_TYPE.action);
             url = formData.getUrl();
         } catch (NullPointerException e) {
             Log.w(TAG, "FORM DATA IS NULL THEN FORGET_PASSWORD_FORM FALLBACK", e);
@@ -56,8 +56,8 @@ public class GetForgotPasswordFormHelper extends BaseHelper {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, sType);
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;
     }
 
@@ -101,7 +101,7 @@ public class GetForgotPasswordFormHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "ON PARSE ERROR");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, sType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -113,7 +113,7 @@ public class GetForgotPasswordFormHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "ON PARSE RESPONSE ERROR");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, sType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

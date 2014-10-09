@@ -26,6 +26,8 @@ import de.akquinet.android.androlog.Log;
 public class GetPromotionsHelper extends BaseHelper {
 
     private static String TAG = GetPromotionsHelper.class.getSimpleName();
+    
+    private static final EventType EVENT_TYPE = EventType.GET_PROMOTIONS;
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
@@ -33,7 +35,7 @@ public class GetPromotionsHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_PROMOTIONS.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PROMOTIONS);
         return bundle;
     }
@@ -57,7 +59,7 @@ public class GetPromotionsHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PROMOTIONS);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, promo);
 //        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.GET_PROMOTIONS);
-//        Log.i("REQUEST", "event type response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
+//        Log.i("REQUEST", "event EVENT_TYPE response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
 //        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
 //        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;

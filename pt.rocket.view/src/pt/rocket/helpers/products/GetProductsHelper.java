@@ -36,6 +36,8 @@ public class GetProductsHelper extends BaseHelper {
     
     private static String TAG = GetProductsHelper.class.getSimpleName();
     
+    private static final EventType EVENT_TYPE = EventType.GET_PRODUCTS_EVENT;
+    
     public static final String PRODUCT_URL = "productUrl";
     public static final String SEARCH_QUERY = "searchQuery";
     public static final String PAGE_NUMBER = "pageNumber";
@@ -54,7 +56,7 @@ public class GetProductsHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, getRequestURI(args.getString(PRODUCT_URL), args.getString(SEARCH_QUERY), args.getInt(PAGE_NUMBER), args.getInt(TOTAL_COUNT), args.getInt(SORT), args.getInt(DIRECTION), (ContentValues) args.getParcelable(FILTERS)));
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCTS_EVENT);
         return bundle;
     }

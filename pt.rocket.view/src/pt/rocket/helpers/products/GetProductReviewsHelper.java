@@ -29,6 +29,8 @@ import de.akquinet.android.androlog.Log;
 public class GetProductReviewsHelper extends BaseHelper {
 
     private static String TAG = GetProductReviewsHelper.class.getSimpleName();
+    
+    private static final EventType EVENT_TYPE = EventType.GET_PRODUCT_REVIEWS_EVENT;
 
     public static final String PRODUCT_URL = "productUrl";
     public static final String PAGE_NUMBER = "pageNumber";
@@ -45,7 +47,7 @@ public class GetProductReviewsHelper extends BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY,
                 HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_REVIEWS_EVENT);
         return bundle;
     }

@@ -36,7 +36,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
     
     private static final String TAG = GetSearchSuggestionHelper.class.getSimpleName();
 
-    private static final EventType type = EventType.GET_SEARCH_SUGGESTIONS_EVENT;
+    private static final EventType EVENT_TYPE = EventType.GET_SEARCH_SUGGESTIONS_EVENT;
     
     public static final String SEACH_PARAM = "searchParam";
 
@@ -59,7 +59,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, uri.toString());
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
         return bundle;
     }
@@ -85,7 +85,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         ArrayList<SearchSuggestion> suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY, suggestions);
         requester.onRequestComplete(bundle);
     }

@@ -28,6 +28,8 @@ public class GetFormsDatasetListHelper extends BaseHelper {
     
     private static String TAG = GetFormsDatasetListHelper.class.getSimpleName();
     
+    private static final EventType EVENT_TYPE = EventType.GET_FORMS_DATASET_LIST_EVENT;
+    
     public static final String URL = "url";
     public static final String KEY = "key";
     private String JSON_ID_TAG;
@@ -37,7 +39,7 @@ public class GetFormsDatasetListHelper extends BaseHelper {
         JSON_ID_TAG = args.getString(KEY);
         bundle.putString(Constants.BUNDLE_URL_KEY, args.getString(URL));
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_FORMS_DATASET_LIST_EVENT);
         return bundle;
     }

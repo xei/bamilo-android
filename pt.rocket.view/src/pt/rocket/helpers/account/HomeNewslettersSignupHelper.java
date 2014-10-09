@@ -26,9 +26,9 @@ public class HomeNewslettersSignupHelper extends BaseHelper {
     
     private static String TAG = HomeNewslettersSignupHelper.class.getSimpleName();
     
-    private static final EventType type = EventType.HOME_NEWSLETTERS_SIGNUP_FORM_EVENT;
+    private static final EventType EVENT_TYPE = EventType.HOME_NEWSLETTERS_SIGNUP_FORM_EVENT;
     
-    private static final EventType mFallBackEventType = EventType.HOME_NEWSLETTERS_SIGNUP_FORM_FALLBACK_EVENT;
+    private static final EventType FALL_BACK_EVENT_TYPE = EventType.HOME_NEWSLETTERS_SIGNUP_FORM_FALLBACK_EVENT;
 
     public static final String FORM_CONTENT_VALUES = "form_content_values";
 
@@ -47,16 +47,16 @@ public class HomeNewslettersSignupHelper extends BaseHelper {
         // set url based on response from GetHomeNewslettersSignupFormHelper
         String url = args.getString(NEWSLETTER_SIGNUP_URL);
         if (TextUtils.isEmpty(url)) {
-            url = mFallBackEventType.action;
+            url = FALL_BACK_EVENT_TYPE.action;
         }
 
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
 
@@ -66,7 +66,7 @@ public class HomeNewslettersSignupHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE BUNDLE: " + jsonObject);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;
     }
 
@@ -76,7 +76,7 @@ public class HomeNewslettersSignupHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -88,7 +88,7 @@ public class HomeNewslettersSignupHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE RESPONSE BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, type);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

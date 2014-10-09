@@ -28,7 +28,10 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 public class GetLoginHelper extends BaseHelper {
+    
     private static String TAG = GetLoginFormHelper.class.getSimpleName();
+    
+    private static final EventType EVENT_TYPE = EventType.LOGIN_EVENT;
 
     public static final String LOGIN_CONTENT_VALUES = "contentValues";
     boolean saveCredentials = true;
@@ -43,7 +46,7 @@ public class GetLoginHelper extends BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.LOGIN_EVENT);
         return bundle;
     }

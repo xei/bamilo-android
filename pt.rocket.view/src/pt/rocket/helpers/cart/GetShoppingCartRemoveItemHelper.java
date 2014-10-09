@@ -28,6 +28,8 @@ public class GetShoppingCartRemoveItemHelper extends BaseHelper {
     
     private static String TAG = GetShoppingCartRemoveItemHelper.class.getSimpleName();
     
+    private static final EventType EVENT_TYPE = EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT;
+    
     public static final String ITEM = "item";
     
     public static final String UPDATE_CART = "update_cart";
@@ -50,7 +52,7 @@ public class GetShoppingCartRemoveItemHelper extends BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, args.getParcelable(ITEM));
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT);
         return bundle;
     }

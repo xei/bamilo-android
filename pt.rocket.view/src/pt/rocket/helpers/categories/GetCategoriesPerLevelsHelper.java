@@ -34,7 +34,7 @@ public class GetCategoriesPerLevelsHelper extends BaseHelper {
     
     private static String TAG = GetCategoriesPerLevelsHelper.class.getSimpleName();
     
-    private static final EventType TYPE = EventType.GET_CATEGORIES_EVENT;
+    private static final EventType EVENT_TYPE = EventType.GET_CATEGORIES_EVENT;
     
     public static final String PAGINATE_KEY = "paginate";
     
@@ -50,12 +50,12 @@ public class GetCategoriesPerLevelsHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         Log.i(TAG, "ON REQUEST");
         Bundle bundle = new Bundle();
-        String url = (args != null) ? buildUriWithParameters(TYPE.action, args) : TYPE.action; 
+        String url = (args != null) ? buildUriWithParameters(EVENT_TYPE.action, args) : EVENT_TYPE.action; 
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, TYPE);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
 
@@ -88,7 +88,7 @@ public class GetCategoriesPerLevelsHelper extends BaseHelper {
             e.printStackTrace();
             return parseErrorBundle(bundle);
         }
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;
     }
 
@@ -99,7 +99,7 @@ public class GetCategoriesPerLevelsHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "parseErrorBundle GetCategoriesHelper");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -110,7 +110,7 @@ public class GetCategoriesPerLevelsHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

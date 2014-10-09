@@ -19,8 +19,8 @@ import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Base helper for the test app. The helper is responsible for generating the bundle for the api
- * call and parse the http response
+ * Base helper for the test app. The helper is responsible for generating the
+ * bundle for the api call and parse the http response
  * 
  * @author Guilherme Silva
  * 
@@ -36,8 +36,8 @@ public abstract class BaseHelper {
     public abstract Bundle generateRequestBundle(Bundle bundle);
 
     /**
-     * Checks the response status of the response that came in a bundle in order to evaluate if its
-     * a valid response or not
+     * Checks the response status of the response that came in a bundle in order
+     * to evaluate if its a valid response or not
      * 
      * @param bundle
      * @return
@@ -46,36 +46,37 @@ public abstract class BaseHelper {
 
         String response = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        
+
         Log.d(TAG, "checkResponseForStatus : " + eventType);
         try {
-            
-             // full object in order
+
+            // full object in order
             JSONObject jsonObject = new JSONObject(response);
             Boolean success = jsonObject.optBoolean(JSONConstants.JSON_SUCCESS_TAG, false);
-            
-            if(eventType == EventType.GET_GLOBAL_CONFIGURATIONS){
+
+            if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
                 success = true;
                 return parseResponseBundle(bundle, jsonObject);
             }
-            
+
             JSONObject metaData;
-            if ( eventType == EventType.REVIEW_PRODUCT_EVENT) {
+            if (eventType == EventType.REVIEW_PRODUCT_EVENT) {
                 metaData = jsonObject;
             } else {
                 if (jsonObject.has(JSONConstants.JSON_METADATA_TAG)) {
-                	
-                	/**
-                	 * TODO: Validate if is necessary this step
-                	 * The methods GetRegions and GetCities receive a the metadata field as json array
-                	 */
+
+                    /**
+                     * TODO: Validate if is necessary this step The methods
+                     * GetRegions and GetCities receive a the metadata field as
+                     * json array
+                     */
                     try {
                         metaData = jsonObject.getJSONObject(JSONConstants.JSON_METADATA_TAG);
                     } catch (JSONException e) {
                         Log.w(TAG, "METADATA IS AN ARRAY: " + e.getMessage());
                         metaData = jsonObject;
                     }
-                    
+
                 } else {
                     metaData = jsonObject;
                 }
@@ -92,14 +93,13 @@ public abstract class BaseHelper {
                     }
                 }
                 return parseResponseBundle(bundle, metaData);
-            } else if(eventType == EventType.GET_PRODUCTS_EVENT){
-                JSONObject messagesObject = jsonObject
-                        .optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
+            } else if (eventType == EventType.GET_PRODUCTS_EVENT) {
+                JSONObject messagesObject = jsonObject.optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
                 HashMap<String, List<String>> errors = Errors.createErrorMessageMap(messagesObject);
                 bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, errors);
                 bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
                 bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-                return parseResponseErrorBundle(bundle,metaData);
+                return parseResponseErrorBundle(bundle, metaData);
             } else {
                 JSONObject messagesObject = jsonObject.optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
                 HashMap<String, List<String>> errors = Errors.createErrorMessageMap(messagesObject);
@@ -120,18 +120,20 @@ public abstract class BaseHelper {
     }
 
     /**
-     * In case there as a valid json response, but that contains an error indication, be it due to
-     * wrong parameters or something else this is the method used to parse that error
+     * In case there as a valid json response, but that contains an error
+     * indication, be it due to wrong parameters or something else this is the
+     * method used to parse that error
      * 
      * @return
      */
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         return bundle;
     }
-    
+
     /**
-     * In case there as a valid json response, but that contains an error indication, be it due to
-     * wrong parameters or something else this is the method used to parse that error
+     * In case there as a valid json response, but that contains an error
+     * indication, be it due to wrong parameters or something else this is the
+     * method used to parse that error
      * 
      * @return
      */
@@ -148,17 +150,17 @@ public abstract class BaseHelper {
     public abstract Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject);
 
     /**
-     * Parses the bundle from the error response - This parses errors of generic factors: TIMEOUT,
-     * PROTOCOL ERROR, SOCKET ERROR among others
+     * Parses the bundle from the error response - This parses errors of generic
+     * factors: TIMEOUT, PROTOCOL ERROR, SOCKET ERROR among others
      * 
      * @param bundle
      * @return
      */
     public abstract Bundle parseErrorBundle(Bundle bundle);
-    
-    
+
     /**
      * Create a request with parameters.
+     * 
      * @param request
      * @param params
      * @return string, the url with parameters
@@ -170,9 +172,10 @@ public abstract class BaseHelper {
         // Create builder with the base request
         Builder uriBuilder = Uri.parse(request).buildUpon();
         // Append each parameter
-        for (String key : params.keySet()) uriBuilder.appendQueryParameter(key, params.getString(key));
-        // Return the new 
+        for (String key : params.keySet())
+            uriBuilder.appendQueryParameter(key, params.getString(key));
+        // Return the new
         return uriBuilder.build().toString();
     }
-    
+
 }

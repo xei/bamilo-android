@@ -32,6 +32,8 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
     
     private static String TAG = GetShoppingCartAddItemHelper.class.getSimpleName();
     
+    private static final EventType EVENT_TYPE = EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT;
+    
     public static final String PRODUCT_TAG = "p";
     
     public static final String PRODUCT_SKU_TAG = "sku";
@@ -76,7 +78,7 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, args.getParcelable(ADD_ITEM));
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
         return bundle;
     }

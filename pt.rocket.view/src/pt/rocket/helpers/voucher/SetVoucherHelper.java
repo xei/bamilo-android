@@ -30,6 +30,8 @@ import de.akquinet.android.androlog.Log;
 public class SetVoucherHelper extends BaseHelper {
 
     private static String TAG = SetVoucherHelper.class.getSimpleName();
+    
+    private static final EventType EVENT_TYPE = EventType.ADD_VOUCHER;
 
     public static final String VOUCHER_PARAM = "couponcode";
 
@@ -39,7 +41,7 @@ public class SetVoucherHelper extends BaseHelper {
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.ADD_VOUCHER.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         if(args == null){
             bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, new ContentValues());
         } else {

@@ -28,7 +28,10 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 public class GetFacebookLoginHelper extends BaseHelper {
+    
     private static String TAG = GetLoginFormHelper.class.getSimpleName();
+    
+    private static final EventType EVENT_TYPE = EventType.FACEBOOK_LOGIN_EVENT;
 
     public static final String LOGIN_CONTENT_VALUES = "contentValues";
     boolean saveCredentials = true;
@@ -44,7 +47,7 @@ public class GetFacebookLoginHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.FACEBOOK_LOGIN_EVENT);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(Constants.BUNDLE_MD5_KEY));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         return bundle;
     }
 
