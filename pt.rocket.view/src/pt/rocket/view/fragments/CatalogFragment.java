@@ -128,9 +128,9 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     private SortPages currentPage = SortPages.DEFAULT;
 
-    private static String FEATURED_BOX = "FEATURED_BOX";
+    private static final String FEATURED_BOX = "FEATURED_BOX";
 
-    private static FeaturedBox sFeaturedBox;
+    private FeaturedBox mFeaturedBox;
 
     /**
      * Empty constructor
@@ -181,7 +181,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
         // Get FeatureBox
         if (savedInstanceState != null && savedInstanceState.containsKey(FEATURED_BOX)) {
-            sFeaturedBox = savedInstanceState.getParcelable(FEATURED_BOX);
+            mFeaturedBox = savedInstanceState.getParcelable(FEATURED_BOX);
         }
 
         mShowListDrawable = getResources().getDrawable(R.drawable.selector_catalog_listview);
@@ -275,8 +275,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
          * If restored from a rotation on "Undefined search terms", mFeaturedBox will be filled
          * Present "Undefined search terms" page without completing rest of onResume process
          */
-        if (sFeaturedBox != null) {
-            onErrorSearchResult(sFeaturedBox);
+        if (mFeaturedBox != null) {
+            onErrorSearchResult(mFeaturedBox);
 
             return;
         }
@@ -373,7 +373,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         sCatalogFilter = null;
         sOldCatalogFilterState = null;
         // mCatalogFilterValues = null;
-        sFeaturedBox = null;
     }
 
     @Override
@@ -395,8 +394,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         }
 
         // Persist featureBox if exists
-        if (sFeaturedBox != null) {
-            outState.putParcelable(FEATURED_BOX, sFeaturedBox);
+        if (mFeaturedBox != null) {
+            outState.putParcelable(FEATURED_BOX, mFeaturedBox);
         }
     }
 
@@ -497,7 +496,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         // Validate
         if (featuredBox != null && view != null) {
             // Persist featureBox for future rotations
-            sFeaturedBox = featuredBox;
+            mFeaturedBox = featuredBox;
             // hide default products list
             view.findViewById(R.id.catalog_viewpager_container).setVisibility(View.GONE);
             view.findViewById(R.id.no_results_search_terms).setVisibility(View.VISIBLE);
