@@ -95,8 +95,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                 }
             }
             if(mCountries != null && mCountries.size() > 0){
-                
-                // XXX
+                // Add the dev servers if is to generateStagingServers
                 addDevServers(mCountries);
                 
                 JumiaApplication.INSTANCE.countriesAvailable = mCountries;
@@ -115,8 +114,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
         mEditor.commit();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_GLOBAL_CONFIGURATIONS);
-        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, mCountries);
-
+        bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, mCountries);        
         return bundle;
     }
 
@@ -132,8 +130,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         mCountries = JumiaApplication.INSTANCE.countriesAvailable;
         if(mCountries != null && mCountries.size() > 0){
-            
-            // XXX
+            // Add the dev servers if is to generateStagingServers
             addDevServers(mCountries);
             
             JumiaApplication.INSTANCE.countriesAvailable = mCountries;
@@ -161,8 +158,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         mCountries = JumiaApplication.INSTANCE.countriesAvailable;
         if(mCountries != null && mCountries.size() > 0){
-            
-            // XXX
+            // Add the dev servers if is to generateStagingServers
             addDevServers(mCountries);
             
             JumiaApplication.INSTANCE.countriesAvailable = mCountries;

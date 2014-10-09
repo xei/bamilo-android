@@ -7,18 +7,14 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.holoeverywhere.widget.Button;
-
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ActivitiesWorkFlow;
 import pt.rocket.controllers.LogOut;
 import pt.rocket.controllers.SearchDropDownAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.CompleteProduct;
@@ -46,13 +42,12 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
-import pt.rocket.utils.imageloader.RocketImageLoader;
+import pt.rocket.utils.maintenance.MaintenancePage;
 import pt.rocket.view.fragments.BaseFragment.KeyboardState;
 import pt.rocket.view.fragments.NavigationFragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -77,7 +72,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -2133,66 +2127,84 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private void setLayoutMaintenance(final EventType eventType) {
         // Inflate maintenance
         mMainFallBackStub.setVisibility(View.VISIBLE);
-        // Get retry button
-        Button retry = (Button) findViewById(R.id.main_fallback_retry);
-        retry.setOnClickListener(new OnClickListener() {
+        // Set content
+        MaintenancePage.setContentBA(this, new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ;
-                mMainFallBackStub.setVisibility(View.GONE);
-                String result = JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
-                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
-                        JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+              mMainFallBackStub.setVisibility(View.GONE);
+              String result = JumiaApplication.INSTANCE.sendRequest(
+                      JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
+                      JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
+                      JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
 
-                if (result == null || result.equalsIgnoreCase("")) {
-                    onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                }
+              if (result == null || result.equalsIgnoreCase("")) {
+                  onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+              }
             }
         });
-
-        ImageView mapImageView = (ImageView) findViewById(R.id.main_fallback_country_map);
-        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapImageView);
-
-        String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
-
-        TextView fallbackBest = (TextView) findViewById(R.id.main_fallback_best);
-        fallbackBest.setText(R.string.fallback_best);
-        if (country.split(" ").length == 1) {
-            TextView tView = (TextView) findViewById(R.id.main_fallback_country);
-            tView.setVisibility(View.VISIBLE);
-            tView.setText(country.toUpperCase());
-            TextView txView = (TextView) findViewById(R.id.main_fallback_options_bottom);
-            txView.setVisibility(View.VISIBLE);
-            txView.setText(country.toUpperCase());
-            findViewById(R.id.main_fallback_country_double).setVisibility(View.GONE);
-        } else {
-            TextView tView = (TextView) findViewById(R.id.main_fallback_country_top);
-            tView.setText(country.split(" ")[0].toUpperCase());
-            TextView tViewBottom = (TextView) findViewById(R.id.main_fallback_country_bottom);
-            tViewBottom.setText(country.split(" ")[1].toUpperCase());
-            fallbackBest.setTextSize(11.88f);
-            TextView txView = (TextView) findViewById(R.id.main_fallback_options_bottom);
-            txView.setVisibility(View.VISIBLE);
-            txView.setText(country.toUpperCase());
-            findViewById(R.id.main_fallback_country_double).setVisibility(View.VISIBLE);
-            findViewById(R.id.main_fallback_country).setVisibility(View.GONE);
-
-        }
-
-        TextView mTextViewBT = (TextView) findViewById(R.id.main_fallback_country_bottom_text);
-        mTextViewBT.setText(R.string.fallback_maintenance_text);
-
-        TextView mTextViewBT2 = (TextView) findViewById(R.id.main_fallback_country_bottom_text2);
-        mTextViewBT2.setText(R.string.fallback_maintenance_text_bottom);
-
-        TextView mFallbackChoice = (TextView) findViewById(R.id.main_fallback_choice);
-        mFallbackChoice.setText(R.string.fallback_choice);
-
-        TextView mFallbackDoorstep = (TextView) findViewById(R.id.main_fallback_doorstep);
-        mFallbackDoorstep.setText(R.string.fallback_doorstep);
-
-        fallbackBest.setSelected(true);
+        
+        
+        
+//        // Get retry button
+//        Button retry = (Button) findViewById(R.id.main_fallback_retry);
+//        retry.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ;
+//                mMainFallBackStub.setVisibility(View.GONE);
+//                String result = JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
+//                        JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
+//                        JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+//
+//                if (result == null || result.equalsIgnoreCase("")) {
+//                    onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+//                }
+//            }
+//        });
+//
+//        ImageView mapImageView = (ImageView) findViewById(R.id.main_fallback_country_map);
+//        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+//        RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapImageView);
+//
+//        String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
+//
+//        TextView fallbackBest = (TextView) findViewById(R.id.main_fallback_best);
+//        fallbackBest.setText(R.string.fallback_best);
+//        if (country.split(" ").length == 1) {
+//            TextView tView = (TextView) findViewById(R.id.main_fallback_country);
+//            tView.setVisibility(View.VISIBLE);
+//            tView.setText(country.toUpperCase());
+//            TextView txView = (TextView) findViewById(R.id.main_fallback_options_bottom);
+//            txView.setVisibility(View.VISIBLE);
+//            txView.setText(country.toUpperCase());
+//            findViewById(R.id.main_fallback_country_double).setVisibility(View.GONE);
+//        } else {
+//            TextView tView = (TextView) findViewById(R.id.main_fallback_country_top);
+//            tView.setText(country.split(" ")[0].toUpperCase());
+//            TextView tViewBottom = (TextView) findViewById(R.id.main_fallback_country_bottom);
+//            tViewBottom.setText(country.split(" ")[1].toUpperCase());
+//            fallbackBest.setTextSize(11.88f);
+//            TextView txView = (TextView) findViewById(R.id.main_fallback_options_bottom);
+//            txView.setVisibility(View.VISIBLE);
+//            txView.setText(country.toUpperCase());
+//            findViewById(R.id.main_fallback_country_double).setVisibility(View.VISIBLE);
+//            findViewById(R.id.main_fallback_country).setVisibility(View.GONE);
+//
+//        }
+//
+//        TextView mTextViewBT = (TextView) findViewById(R.id.main_fallback_country_bottom_text);
+//        mTextViewBT.setText(R.string.fallback_maintenance_text);
+//
+//        TextView mTextViewBT2 = (TextView) findViewById(R.id.main_fallback_country_bottom_text2);
+//        mTextViewBT2.setText(R.string.fallback_maintenance_text_bottom);
+//
+//        TextView mFallbackChoice = (TextView) findViewById(R.id.main_fallback_choice);
+//        mFallbackChoice.setText(R.string.fallback_choice);
+//
+//        TextView mFallbackDoorstep = (TextView) findViewById(R.id.main_fallback_doorstep);
+//        mFallbackDoorstep.setText(R.string.fallback_doorstep);
+//
+//        fallbackBest.setSelected(true);
 
     }
 

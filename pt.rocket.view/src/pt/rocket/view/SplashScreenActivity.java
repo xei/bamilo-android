@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.holoeverywhere.widget.Button;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
@@ -25,7 +24,6 @@ import pt.rocket.framework.tracking.AdXTracker;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.helpers.configs.GetApiInfoHelper;
 import pt.rocket.helpers.configs.GetCountriesConfigsHelper;
 import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
@@ -35,7 +33,7 @@ import pt.rocket.utils.LocationHelper;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.deeplink.DeepLinkManager;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.utils.imageloader.RocketImageLoader;
+import pt.rocket.utils.maintenance.MaintenancePage;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -55,9 +53,6 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 
 import com.bugsense.trace.BugSenseHandler;
 
@@ -351,44 +346,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         
         jumiaMapImage.startAnimation(animationFadeOut);
     }
-
-//    /**
-//     * Get the base URL
-//     * 
-//     * @return String
-//     */
-//    @SuppressWarnings("unused")
-//    private String getBaseURL() {
-//        return RestContract.HTTPS_PROTOCOL + "://" + RestContract.REQUEST_HOST + "/" + RestContract.REST_BASE_PATH;
-//    }
-
-//    /**
-//     * Start the main activity with a deep link
-//     * 
-//     * @param key
-//     *            the deep link key
-//     * @param value
-//     *            the deep link value
-//     * @param receiverType
-//     *            the fragment to receive the deep link
-//     * @author sergiopereira
-//     */
-//    private void startActivityWithDeepLink(String key, String value, FragmentType receiverType) {
-//        Log.d(TAG, "START DEEP LINK: KEY:" + key + " VALUE:" + value + " RECEIVER:" + receiverType.toString());
-//        // Create bundle for fragment
-//        Bundle bundle = new Bundle();
-//        bundle.putString(key, value);
-//        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
-//        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-//        // Create intent with fragment type and bundle
-//        Intent intent = new Intent(this, MainFragmentActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, receiverType);
-//        intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
-//        // Start activity
-//        startActivity(intent);
-//        TrackerDelegator.trackPushNotificationsEnabled(true);
-//    }
 
     /**
      * Start deep view with the respective bundle and set the ADX event
@@ -777,91 +734,126 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
     }
 
-    /**
+    /*
      * ########### MAINTENANCE ###########
      */
 
-    private void setLayoutMaintenance(final EventType eventType) {
-
-        findViewById(R.id.fallback_content).setVisibility(View.VISIBLE);
-        Button retry = (Button) findViewById(R.id.fallback_retry);
-        retry.setOnClickListener(new OnClickListener() {
-
+    /**
+     * 
+     * @param eventType
+     * @author sergiopereira
+     */
+    private void setLayoutMaintenance(final EventType eventType) { // XXX
+        // Set content
+        MaintenancePage.setContentSA(this, new OnClickListener() {
             @Override
             public void onClick(View v) {
-                findViewById(R.id.fallback_content).setVisibility(View.GONE);
-                JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), JumiaApplication.INSTANCE
-                        .getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+                // Get id
+                int id = v.getId();
+                // Case retry
+                if (id == R.id.fallback_retry) {
+                    findViewById(R.id.fallback_content).setVisibility(View.GONE);
+                    JumiaApplication.INSTANCE.sendRequest(
+                            JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), 
+                            JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), 
+                            JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+                }
+                // Case choose
+                else if (id == R.id.fallback_change_country) {
+                    // Show Change country
+                    Intent intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
+                    intent.putExtra(ConstantsIntentExtra.IN_MAINTANCE, true);
+                    intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
+                    // Start activity
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
+        
 
-        Button changeCountry = (Button) findViewById(R.id.fallback_change_country);
-        changeCountry.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Show Change country
-                Intent intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
-                intent.putExtra(ConstantsIntentExtra.IN_MAINTANCE, true);
-                intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
-
-                // Start activity
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        ImageView mapBg = (ImageView) findViewById(R.id.fallback_country_map);
-        RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg);
-
-        // ImageView for map is between title text and change country button
-        int height = WindowHelper.getHeight(getApplicationContext());
-        RelativeLayout.LayoutParams params = (LayoutParams) mapBg.getLayoutParams();
-        if (height > 1000) {
-            // Set map image above maintance message for big devices
-            params.addRule(RelativeLayout.ABOVE, R.id.fallback_options_container);
-        } else if (height < 500) {
-            // Set map image below MAINTANCE title
-            params.addRule(RelativeLayout.BELOW, R.id.fallback_title_container);
-        }
-
-        String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
-        TextView fallbackBest = (TextView) findViewById(R.id.fallback_best);
-        fallbackBest.setText(R.string.fallback_best);
-        if (country.split(" ").length == 1) {
-            TextView tView = (TextView) findViewById(R.id.fallback_country);
-            tView.setVisibility(View.VISIBLE);
-            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
-            txView.setVisibility(View.VISIBLE);
-            txView.setText(country.toUpperCase());
-            findViewById(R.id.fallback_country_double).setVisibility(View.GONE);
-            tView.setText(country.toUpperCase());
-        } else {
-            TextView tView = (TextView) findViewById(R.id.fallback_country_top);
-            tView.setText(country.split(" ")[0].toUpperCase());
-            TextView tViewBottom = (TextView) findViewById(R.id.fallback_country_bottom);
-            tViewBottom.setText(country.split(" ")[1].toUpperCase());
-            fallbackBest.setTextSize(11.88f);
-            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
-            txView.setVisibility(View.VISIBLE);
-            txView.setText(country.toUpperCase());
-            findViewById(R.id.fallback_country_double).setVisibility(View.VISIBLE);
-            findViewById(R.id.fallback_country).setVisibility(View.GONE);
-
-        }
-
-        TextView mTextViewBT = (TextView) findViewById(R.id.fallback_country_bottom_text);
-        mTextViewBT.setText(R.string.fallback_maintenance_text);
-
-        TextView mTextViewBT2 = (TextView) findViewById(R.id.fallback_country_bottom_text2);
-        mTextViewBT2.setText(R.string.fallback_maintenance_text_bottom);
-
-        TextView mFallbackChoice = (TextView) findViewById(R.id.fallback_choice);
-        mFallbackChoice.setText(R.string.fallback_choice);
-
-        TextView mFallbackDoorstep = (TextView) findViewById(R.id.fallback_doorstep);
-        mFallbackDoorstep.setText(R.string.fallback_doorstep);
-
-        fallbackBest.setSelected(true);
+//        findViewById(R.id.fallback_content).setVisibility(View.VISIBLE);
+//        Button retry = (Button)findViewById(R.id.fallback_retry);
+//        retry.setText(R.string.try_again);
+//        retry.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                findViewById(R.id.fallback_content).setVisibility(View.GONE);
+//                JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), JumiaApplication.INSTANCE
+//                        .getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+//            }
+//        });
+//
+//        Button changeCountry = (Button) findViewById(R.id.fallback_change_country);
+//        changeCountry.setVisibility(View.VISIBLE);
+//        changeCountry.setText(R.string.nav_country);
+//        changeCountry.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Show Change country
+//                Intent intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
+//                intent.putExtra(ConstantsIntentExtra.IN_MAINTANCE, true);
+//                intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
+//
+//                // Start activity
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
+//
+//        ImageView mapBg = (ImageView) findViewById(R.id.fallback_country_map);
+//        RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_splashmap);
+//
+//        // ImageView for map is between title text and change country button
+//        int height = WindowHelper.getHeight(getApplicationContext());
+//        RelativeLayout.LayoutParams params = (LayoutParams) mapBg.getLayoutParams();
+//        if (height > 1000) {
+//            // Set map image above maintance message for big devices
+//            params.addRule(RelativeLayout.ABOVE, R.id.fallback_options_container);
+//        } else if (height < 500) {
+//            // Set map image below MAINTANCE title
+//            params.addRule(RelativeLayout.BELOW, R.id.fallback_title_container);
+//        }
+//
+//        String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
+//        TextView fallbackBest = (TextView) findViewById(R.id.fallback_best);
+//        fallbackBest.setText(R.string.fallback_best);
+//        if (country.split(" ").length == 1) {
+//            TextView tView = (TextView) findViewById(R.id.fallback_country);
+//            tView.setVisibility(View.VISIBLE);
+//            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
+//            txView.setVisibility(View.VISIBLE);
+//            txView.setText(country.toUpperCase());
+//            findViewById(R.id.fallback_country_double).setVisibility(View.GONE);
+//            tView.setText(country.toUpperCase());
+//        } else {
+//            TextView tView = (TextView) findViewById(R.id.fallback_country_top);
+//            tView.setText(country.split(" ")[0].toUpperCase());
+//            TextView tViewBottom = (TextView) findViewById(R.id.fallback_country_bottom);
+//            tViewBottom.setText(country.split(" ")[1].toUpperCase());
+//            fallbackBest.setTextSize(11.88f);
+//            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
+//            txView.setVisibility(View.VISIBLE);
+//            txView.setText(country.toUpperCase());
+//            findViewById(R.id.fallback_country_double).setVisibility(View.VISIBLE);
+//            findViewById(R.id.fallback_country).setVisibility(View.GONE);
+//
+//        }
+//
+//        TextView mTextViewBT = (TextView) findViewById(R.id.fallback_country_bottom_text);
+//        mTextViewBT.setText(R.string.fallback_maintenance_text);
+//
+//        TextView mTextViewBT2 = (TextView) findViewById(R.id.fallback_country_bottom_text2);
+//        mTextViewBT2.setText(R.string.fallback_maintenance_text_bottom);
+//
+//        TextView mFallbackChoice = (TextView) findViewById(R.id.fallback_choice);
+//        mFallbackChoice.setText(R.string.fallback_choice);
+//
+//        TextView mFallbackDoorstep = (TextView) findViewById(R.id.fallback_doorstep);
+//        mFallbackDoorstep.setText(R.string.fallback_doorstep);
+//
+//        fallbackBest.setSelected(true);
 
     }
 

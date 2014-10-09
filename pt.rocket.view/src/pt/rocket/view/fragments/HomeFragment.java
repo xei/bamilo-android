@@ -390,7 +390,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         try {
             ImageView mapBg = (ImageView) getView().findViewById(R.id.home_fallback_country_map);
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg);
+            RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_splashmap);
             String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "Jumia");
             TextView fallbackBest = (TextView) getView().findViewById(R.id.fallback_best);
             fallbackBest.setText(R.string.fallback_best);

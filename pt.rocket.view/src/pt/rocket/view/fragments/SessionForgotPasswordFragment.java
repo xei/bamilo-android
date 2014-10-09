@@ -70,7 +70,7 @@ public class SessionForgotPasswordFragment extends BaseFragment implements OnCli
                 R.layout.forgotpassword,
                 R.string.forgotpass_header,
                 KeyboardState.ADJUST_CONTENT);
-        // R.string.forgotpass_header
+
         this.setRetainInstance(true);
     }
 
@@ -96,21 +96,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements OnCli
         Log.i(TAG, "ON CREATE");
         dynamicForm = null;
     }
-
-    // /*
-    // * (non-Javadoc)
-    // *
-    // * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-    // * android.view.ViewGroup, android.os.Bundle)
-    // */
-    // @Override
-    // public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
-    // savedInstanceState) {
-    // super.onCreateView(inflater, container, savedInstanceState);
-    // Log.i(TAG, "ON CREATE VIEW");
-    // View view = inflater.inflate(R.layout.forgotpassword, container, false);
-    // return view;
-    // }
 
     /*
      * (non-Javadoc)
