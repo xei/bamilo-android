@@ -71,7 +71,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:inflatedId="@+id/main_fall_back_stub_inflate"
-            android:layout="@layout/main_fallback" />
+            android:layout="@layout/maintenance_page" />
     </RelativeLayout>
 
     <!-- NAVIGATION -->
