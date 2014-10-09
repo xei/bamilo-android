@@ -459,7 +459,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         // Get cart value
         String value = currentCart != null ? currentCart.getCartValue() : "";
         // Get cart quantity
-        String quantity = currentCart == null ? "0" : currentCart.getCartCount() == 0 ? "" : "" + currentCart.getCartCount();
+        String quantity = currentCart == null ? "0" : String.valueOf(currentCart.getCartCount());
         // Set layout
         setCartLayout(value, quantity);
     }

@@ -1264,7 +1264,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         ShoppingCart currentCart = JumiaApplication.INSTANCE.getCart();
         // Show 0 while the cart is not updated
-        final String quantity = currentCart == null ? "0" : currentCart.getCartCount() > 0 ? String.valueOf(currentCart.getCartCount()) : "";
+        final String quantity = currentCart == null ? "0" : String.valueOf(currentCart.getCartCount());
 
         tvActionCartCount.post(new Runnable() {
             @Override
