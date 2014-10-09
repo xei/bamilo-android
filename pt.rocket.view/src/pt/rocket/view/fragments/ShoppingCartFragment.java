@@ -726,7 +726,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             }
 
             TextView priceUnreduced = (TextView) getView().findViewById(R.id.price_unreduced);
-            if (cartHasReducedItem) {
+            if (cartHasReducedItem && unreduced_cart_price.intValue() > 0) {
                 priceUnreduced.setText(CurrencyFormatter.formatCurrency(unreduced_cart_price.toString()));
                 priceUnreduced.setPaintFlags(priceUnreduced.getPaintFlags()
                         | Paint.STRIKE_THRU_TEXT_FLAG);
