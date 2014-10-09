@@ -25,26 +25,27 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 public class GetShoppingCartRemoveItemHelper extends BaseHelper {
-    
+
     private static String TAG = GetShoppingCartRemoveItemHelper.class.getSimpleName();
-    
+
     private static final EventType EVENT_TYPE = EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT;
-    
+
     public static final String ITEM = "item";
-    
+
     public static final String UPDATE_CART = "update_cart";
-    
+
     private boolean isToUpdateCart = true;
 
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
      */
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "ON REQUEST");
-        // Set Global updateCart to false if UPDATE_CART that came from Bundle is false
-        // Used when parsing response to update Global Cart if updateCart is true
+        // Set isToUpdateCart to false if UPDATE_CART that came from Bundle is false
+        // Used when parsing response to update Global Cart if isToUpdateCart is true
         isToUpdateCart = args.getBoolean(UPDATE_CART, true);
 
         Bundle bundle = new Bundle();
@@ -56,17 +57,18 @@ public class GetShoppingCartRemoveItemHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT);
         return bundle;
     }
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
      */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "ON PARSE RESPONSE");
-        // Don't continue if Global updateCart was set as false on generateRequestBundle()
+        // Don't continue if isToUpdateCart was set as false on generateRequestBundle()
         if (!isToUpdateCart) return null;
-        
+
         JumiaApplication.INSTANCE.setCart(null);
         ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
         try {
@@ -82,6 +84,7 @@ public class GetShoppingCartRemoveItemHelper extends BaseHelper {
 
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
      */
     @Override
@@ -94,6 +97,7 @@ public class GetShoppingCartRemoveItemHelper extends BaseHelper {
 
     /*
      * (non-Javadoc)
+     * 
      * @see pt.rocket.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
      */
     @Override
