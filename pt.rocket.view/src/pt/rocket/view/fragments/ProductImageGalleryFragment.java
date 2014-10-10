@@ -221,17 +221,16 @@ public class ProductImageGalleryFragment extends BaseFragment {
                     int pageCount = galleryAdapter.getCount();
                     try {
                         mViewPager.setPagingEnabled(true);
-                        mViewPager.toggleJumiaScroller(true);
+                        // mViewPager.toggleJumiaScroller(true);
 
-                        //
                         if (currentPosition == 0) {
-                            mViewPager.toggleJumiaScroller(false);
-                            mViewPager.setCurrentItem(pageCount - 2);
+                            // mViewPager.toggleJumiaScroller(false);
+                            mViewPager.setCurrentItem(pageCount - 2, false);
 
                             //
                         } else if (currentPosition == pageCount - 1) {
-                            mViewPager.toggleJumiaScroller(false);
-                            mViewPager.setCurrentItem(1);
+                            // mViewPager.toggleJumiaScroller(false);
+                            mViewPager.setCurrentItem(1, false);
                         }
                     } catch (NullPointerException e) {
                         Log.w(TAG, "WARNING NPE IN CHANGE PAGE");

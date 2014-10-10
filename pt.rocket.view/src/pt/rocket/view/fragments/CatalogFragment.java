@@ -324,7 +324,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             mViewPager.setCurrentItem(currentPage.ordinal());
             currentPage = SortPages.DEFAULT;
         } else {
-            mViewPager.setCurrentItem(mSavedPagerPosition);
+            mViewPager.setCurrentItem(mSavedPagerPosition, false);
         }
         if (null != mCatalogPagerAdapter && null != mCatalogFilterValues) {
             mCatalogPagerAdapter.restoreFilters(mCatalogFilterValues);
