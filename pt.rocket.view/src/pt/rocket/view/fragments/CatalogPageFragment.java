@@ -124,8 +124,6 @@ public class CatalogPageFragment extends BaseFragment {
     private Bundle mReceivedDataInBackgroung = null;
 
     private TrackingEvent mTrackSortEvent = TrackingEvent.CATALOG_FROM_CATEGORIES;
-    
-    public static boolean goNext = false;
 
     /**
      * 
@@ -656,15 +654,18 @@ public class CatalogPageFragment extends BaseFragment {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            goNext = true;
-            int activePosition = position; // -
-                                           // productsAdapter.getJumpConstant();
+            int activePosition = position;
             ProductsListAdapter adapter = (ProductsListAdapter) parent.getAdapter();
 
             if (-1 < activePosition && null != adapter) {
                 // Call Product Details
                 Product product = parentFragment.getProduct((String) adapter.getItem(activePosition));
                 if (product != null) {
+                    // Validate if dialog is on screen 
+                    if(!CatalogFragment.isNotShowingDialogFilter) return;
+                    // Disable filter button 
+                    parentFragment.disableFilterButton();
+                    // Show product
                     Bundle bundle = new Bundle();
                     bundle.putString(ConstantsIntentExtra.CONTENT_URL, product.getUrl());
                     bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, mNavigationSource);
@@ -672,13 +673,10 @@ public class CatalogPageFragment extends BaseFragment {
                     bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
                     // inform PDV that Related Items should be shown
                     bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
-                    if (mTitle != null)
-                        bundle.putString(ProductDetailsFragment.PRODUCT_CATEGORY, mTitle);
-                   
+                    if (mTitle != null) bundle.putString(ProductDetailsFragment.PRODUCT_CATEGORY, mTitle);
+                    // Goto PDV
                     getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-                    goNext = false;
                 } else {
-                    goNext = false;
                     Toast.makeText(getBaseActivity(), R.string.error_occured, Toast.LENGTH_SHORT).show();
                 }
             }
