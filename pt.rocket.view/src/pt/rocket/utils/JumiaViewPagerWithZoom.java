@@ -27,7 +27,7 @@ public class JumiaViewPagerWithZoom extends ViewPager {
             try {
                 return super.onTouchEvent(event);
             } catch (IllegalArgumentException e) {
-                Log.e(TAG, "catched IllegalArgumentException JumiaViewPagerWithZoom line 34.");
+                Log.e(TAG, "catched IllegalArgumentException JumiaViewPagerWithZoom onTouchEvent");
             }
         }
 
@@ -37,7 +37,12 @@ public class JumiaViewPagerWithZoom extends ViewPager {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         if (this.isPagingEnabled) {
-            return super.onInterceptTouchEvent(event);
+            // https://github.com/chrisbanes/PhotoView/issues/31#issuecomment-19803926
+            try {
+                return super.onInterceptTouchEvent(event);
+            } catch (IllegalArgumentException e) {
+                Log.e(TAG, "catched IllegalArgumentException JumiaViewPagerWithZoom onInterceptTouchEvent");
+            }
         }
 
         return false;
