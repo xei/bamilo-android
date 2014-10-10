@@ -8,6 +8,7 @@ import org.holoeverywhere.widget.EditText;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
@@ -238,11 +239,11 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             return;
         }
 
-        if (ratingBarContainer.getChildCount() > 0)
-            return;
+        if (ratingBarContainer.getChildCount() > 0) return;
 
-        LayoutInflater mInflater = (LayoutInflater) getActivity().getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE);
+        if (getActivity() == null) return;
+
+        LayoutInflater mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int id = 77;
         // Only render ratings if available
         if (ratingOptions != null && !ratingOptions.isEmpty()) {
@@ -461,7 +462,14 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
 
     protected boolean onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        // ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        
         switch (eventType) {
         case REVIEW_PRODUCT_EVENT:
 
@@ -537,7 +545,17 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
 
     protected boolean onErrorEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "eventType : " + eventType);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        // Generic errors
+        if(getBaseActivity().handleErrorEvent(bundle)) return true;
+        
         isExecutingSendReview = false;
         switch (eventType) {
         // case GET_CUSTOMER:
