@@ -196,8 +196,7 @@ public class ProductsListAdapter extends BaseAdapter {
 
         final Product product = parentCatalog.getProduct(products.get(position));
         prodItem.image.setImageDrawable(context.getResources().getDrawable(R.drawable.no_image_small));
-        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image, prodItem.progress, R.drawable.no_image_small,
-                CatalogFragment.requestTag);
+        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image, prodItem.progress, R.drawable.no_image_small, CatalogFragment.requestTag);
 
         // Set is new image
         prodItem.newFlag.setSelected(product.getAttributes().isNew());

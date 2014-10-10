@@ -110,7 +110,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     private ContentValues mOldCatalogFilterValues;
 
-    public static boolean isNotShowing = true;
+    public static boolean isNotShowingDialogFilter = true;
 
     private boolean showList = true;
     private Drawable mShowListDrawable;
@@ -284,7 +284,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         // Set catalog filters
         if (sCatalogFilter != null) {
             Log.i(TAG, "setFilterAction");
-            setFilterAction();
+            enableFilterButton();
         }
 
         if (mCatalogPagerAdapter == null) {
@@ -416,7 +416,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     }
 
     /*
-     * ######## CATALOG FILTER ######## TODO : Add here more filter methods
+     * ######## CATALOG FILTER ########
      */
     /**
      * Method used to set the filter button.
@@ -455,7 +455,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         // Save the current catalog data
         saveCurrentCatalogDataForFilters();
         // Set the button behavior
-        setFilterAction();
+        enableFilterButton();
         Log.i(TAG, "SAVED THE FILTER");
     }
 
@@ -896,13 +896,22 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
      * 
      * @author sergiopereira
      */
-    private void setFilterAction() {
+    private void enableFilterButton() {
         // Show buttons container
         showButtonsContainer();
         // Set listener
         mFilterButton.setVisibility(View.VISIBLE);
         mFilterButton.setOnClickListener(null);
         mFilterButton.setOnClickListener(this);
+    }
+    
+    /**
+     * Set the behavior for filter button
+     * 
+     * @author sergiopereira
+     */    
+    public void disableFilterButton() {
+        if (mFilterButton != null) mFilterButton.setOnClickListener(null);
     }
 
     /**
@@ -946,15 +955,14 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         // Get the view id
         int id = v.getId();
         // Validate the click
-        if (id == R.id.products_list_filter_button && isNotShowing) {           
-            if (!CatalogPageFragment.goNext) {
-                Log.d(TAG, "ON CLICK: FILTER BUTTON");
-                isNotShowing = false;
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, sCatalogFilter);
-                DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
-                newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
-            }
+        if (id == R.id.products_list_filter_button && isNotShowingDialogFilter) {           
+            Log.d(TAG, "ON CLICK: FILTER BUTTON");
+            isNotShowingDialogFilter = false;
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, sCatalogFilter);
+            DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
+            newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+            
         } else if (id == R.id.viewpager_tips_btn_indicator) {
             WizardPreferences.changeState(getBaseActivity(), WizardType.CATALOG);
             mWizardContainer.findViewById(R.id.viewpager_tips).setVisibility(View.GONE);

@@ -215,7 +215,7 @@ public class DialogFilterFragment extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        CatalogFragment.isNotShowing = true;
+        CatalogFragment.isNotShowingDialogFilter = true;
     }
     
     /**
