@@ -470,9 +470,9 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * @param quantity
      * @author sergiopereira
      */
-    private void setCartLayout(String value, String quantity){
+    private void setCartLayout(String value, String quantity) {
         // Validate quantity
-        if (!TextUtils.isEmpty(quantity)) {
+        if (!TextUtils.isEmpty(quantity) && !"0".equals(quantity)) {
             Log.d(TAG, "CART IS NOT EMPTY: " + value);
             mCartCount.setText(quantity);
             mCartElements.setText(CurrencyFormatter.formatCurrency(value));
