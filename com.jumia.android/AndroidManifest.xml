@@ -2,8 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jumia.android"
     android:installLocation="auto"
-    android:versionCode="41"
-    android:versionName="2.0" >
+    android:versionCode="42"
+    android:versionName="2.1" >
+
+    <!-- ######################################## -->
+    <!-- ############# Permissions ############## -->
+    <!-- ######################################## -->
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,36 +15,42 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <!-- Urban Airship. -->
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <!-- Adx additional permissions -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <!-- Location Helper -->
+    <!-- ############# Location: LocationHelper and AD4Push ############# -->
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         android:required="false" />
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
         android:required="false" />
-
-    <uses-feature
+	<uses-feature
         android:name="android.hardware.location.gps"
         android:required="false" />
 
+    <!-- ############# AD4Push: MESSAGE (Receive) and SEND (PushNotificationReceiver) ############# -->
     <permission
         android:name="com.jumia.android.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="com.jumia.android.permission.C2D_MESSAGE" />
-    
-    <permission
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <!--
+         <permission
         android:name="com.jumia.android.permission.A4S_SEND"
-        android:protectionLevel="signature" /> 
-    <uses-permission android:name="com.jumia.android.permission.A4S_SEND" />    
-    
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.jumia.android.permission.A4S_SEND" />
+
+    -->
+
+    <!-- ######################################## -->
+    <!-- ############# Application ############## -->
+    <!-- ######################################## -->
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -79,33 +89,31 @@
             android:name="com.facebook.LoginActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <!-- Fragment Activities -->
         <activity
             android:name="pt.rocket.view.MainFragmentActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="unspecified" />
+            android:exported="true"
+            android:screenOrientation="unspecified"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name="net.hockeyapp.android.UpdateActivity" />
 
         <service
             android:name="pt.rocket.framework.service.RemoteService"
             android:exported="false" />
 
-        <!-- hockey -->
-        <activity android:name="net.hockeyapp.android.UpdateActivity" />
-
-        <!-- Ad X Tracker -->
+        <!-- ######################################## -->
+        <!-- ############# ADX Tracker ############## -->
+        <!-- ######################################## -->
         <receiver
             android:name="com.AdX.tag.AdXAppTracker"
             android:exported="true" >
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
-            
- 			<!--  AD4SCREEN FORWARD RECEIVER -->
+
+            <!-- AD4SCREEN FORWARD RECEIVER -->
             <meta-data
                 android:name="ADX_FORWARD_REFERRAL.ad4screen"
                 android:value="com.ad4screen.sdk.ReferrerHandler" />
-            
         </receiver>
 
         <meta-data
@@ -118,40 +126,20 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <!-- Urban Airship GCM -->
-<!--         <receiver android:name="pt.rocket.utils.PushNotificationIntentReceiver" /> -->
-<!--         <receiver android:name="com.urbanairship.CoreReceiver" /> -->
-<!--         <receiver -->
-<!--             android:name="com.urbanairship.push.GCMPushReceiver" -->
-<!--             android:permission="com.google.android.c2dm.permission.SEND" > -->
-<!--             <intent-filter> -->
-<!--                 <action android:name="com.google.android.c2dm.intent.RECEIVE" /> -->
-<!--                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" /> -->
+        <!-- ##################################### -->
+        <!-- ############# FACEBOOK ############## -->
+        <!-- ##################################### -->
 
-<!--                 <category android:name="com.jumia.android" /> -->
-<!--             </intent-filter> -->
-<!--             <intent-filter> -->
-<!--                 <action android:name="android.intent.action.PACKAGE_REPLACED" /> -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-<!--                 <data android:scheme="package" /> -->
-<!--             </intent-filter> -->
-<!--         </receiver> -->
+        <!-- ######################################## -->
+        <!-- ############# AD4Push GCM ############## -->
+        <!-- ######################################## -->
 
-<!--         <service -->
-<!--             android:name="com.urbanairship.push.PushService" -->
-<!--             android:label="Push Notification Service" /> -->
-<!--         <service -->
-<!--             android:name="com.urbanairship.analytics.EventService" -->
-<!--             android:label="Event Service" /> -->
 
-<!--         <provider -->
-<!--             android:name="com.urbanairship.UrbanAirshipProvider" -->
-<!--             android:authorities="com.jumia.android.urbanairship.provider" -->
-<!--             android:exported="false" -->
-<!--             android:multiprocess="true" /> -->
-        <!-- Urban Airship END -->
-        
-        <!-- AD4Push GCM - Start -->
+        <!-- ############# AD4Push: A4SService ############# -->
         <service
             android:name="com.ad4screen.sdk.A4SService"
             android:label="A4S Service"
@@ -165,36 +153,26 @@
             <meta-data
                 android:name="com.ad4screen.senderid"
                 android:value="@string/ad4push_sender_id" />
+            <meta-data
+                android:name="com.ad4screen.logging"
+                android:value="false" />
         </service>
-        
-        <receiver android:name="pt.rocket.utils.PushNotificationIntentReceiver">
-            <intent-filter>
-                <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
-                <action android:name="com.ad4screen.sdk.intent.action.CLICKED" />
- 
-                <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS" />
-                <category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" />
-                <category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />
-            </intent-filter>
-        </receiver>
-        
-        <receiver
-            android:name="com.ad4screen.sdk.GCMHandler"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <category android:name="com.jumia.android" />
-            </intent-filter>
-        </receiver>
-        
-		<receiver
+        <!-- ############# AD4Push: Basic Integration ############# -->
+        <receiver
             android:name="com.ad4screen.sdk.A4SIDFVHandler"
             android:exported="true" >
             <intent-filter>
                 <action android:name="com.ad4screen.sdk.intent.action.QUERY" />
+
                 <category android:name="com.ad4screen.sdk.intent.category.ANONYM_ID" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.ad4screen.sdk.ReferrerHandler"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
 
@@ -205,13 +183,32 @@
         <activity
             android:name="com.ad4screen.sdk.A4SInterstitial"
             android:theme="@style/com_ad4screen_sdk_theme_interstitial" />
-        
-        <!-- AD4Push GCM - End-->
-        
-        
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+
+        <!-- ############# AD4Push: Push Notifications ############# -->
+
+        <receiver
+            android:name="com.ad4screen.sdk.GCMHandler"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="@string/package_id" />
+            </intent-filter>
+        </receiver>
+        <!--
+             <receiver android:name="pt.rocket.utils.receivers.PushNotificationReceiver" >
+            <intent-filter>
+                <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
+                <action android:name="com.ad4screen.sdk.intent.action.CLICKED" />
+
+                <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS" />
+                <category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" />
+                <category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />
+            </intent-filter>
+        </receiver>
+
+        -->
     </application>
 
 </manifest>
