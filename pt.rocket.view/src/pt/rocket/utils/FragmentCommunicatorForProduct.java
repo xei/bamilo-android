@@ -3,8 +3,6 @@ package pt.rocket.utils;
 import java.util.ArrayList;
 
 import pt.rocket.framework.objects.CompleteProduct;
-import pt.rocket.view.fragments.BaseFragment.OnFragmentActivityInteraction;
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import de.akquinet.android.androlog.Log;
@@ -19,7 +17,7 @@ public class FragmentCommunicatorForProduct {
 
     private static FragmentCommunicatorForProduct mProductDetailsFragmentCommunicator;
     
-    private static OnFragmentActivityInteraction mActivityCallback = null;
+    // private static OnFragmentActivityInteraction mActivityCallback = null;
     private static ArrayList<OnActivityFragmentInteraction> mFragmentsCallback = null;
     private static ArrayList<String> mFragmentsCallbackNames = null;
     
@@ -63,16 +61,16 @@ public class FragmentCommunicatorForProduct {
         }
     }
     
-    public void defineActivityCallBack(Activity activity){
+    /*-public void defineActivityCallBack(Activity activity){
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            this.mActivityCallback = (OnFragmentActivityInteraction) activity;
+            FragmentCommunicatorForProduct.mActivityCallback = (OnFragmentActivityInteraction) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnActivityFragmentInteraction");
         }
-    }
+    }*/
     
     public void updateCurrentProduct(CompleteProduct product){
         Log.i(TAG, " --- updateCurrentProduct --- "+product.getName());

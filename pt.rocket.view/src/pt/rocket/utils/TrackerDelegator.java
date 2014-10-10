@@ -262,7 +262,7 @@ public class TrackerDelegator {
                 trackPurchaseInt(params);
             }
 
-        }).run();
+        }).start();
     }
 
     /**
@@ -293,7 +293,7 @@ public class TrackerDelegator {
                 AdXTracker.trackCheckoutStep(context, JumiaApplication.SHOP_NAME, user_id, xstep);
             }
 
-        }).run();
+        }).start();
     }
 
     public static void trackSignUp(String email) {
@@ -312,7 +312,7 @@ public class TrackerDelegator {
                 AdXTracker.trackSignUp(context, JumiaApplication.SHOP_NAME, user);
             }
 
-        }).run();
+        }).start();
     }
 
     /**
@@ -339,7 +339,7 @@ public class TrackerDelegator {
                 AdXTracker.trackPaymentMethod(context, JumiaApplication.SHOP_NAME, user_id, payment);
             }
 
-        }).run();
+        }).start();
     }
 
     public static void trackNativeCheckoutError(Bundle params) {
@@ -359,7 +359,7 @@ public class TrackerDelegator {
                 AdXTracker.trackNativeCheckoutError(context, JumiaApplication.SHOP_NAME, user_id, error);
             }
 
-        }).run();
+        }).start();
     }
 
     /**
@@ -372,7 +372,7 @@ public class TrackerDelegator {
                 trackNativeCheckoutPurchase(params, mItems);
             }
 
-        }).run();
+        }).start();
     }
 
     // Got checkout response

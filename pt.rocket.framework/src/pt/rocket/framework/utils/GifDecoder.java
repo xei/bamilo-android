@@ -235,12 +235,12 @@ public class GifDecoder {
                     status = STATUS_FORMAT_ERROR;
                 }
             }
+            try {
+                is.close();
+            } catch (Exception e) {
+            }
         } else {
             status = STATUS_OPEN_ERROR;
-        }
-        try {
-            is.close();
-        } catch (Exception e) {
         }
         return status;
     }

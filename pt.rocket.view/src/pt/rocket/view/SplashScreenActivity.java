@@ -918,7 +918,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Validate shop id and launch the Adx event if is the same country on
         // start app
         // First time
-        if (JumiaApplication.SHOP_ID_FOR_ADX == null && shopId != JumiaApplication.SHOP_ID_FOR_ADX) {
+        if (JumiaApplication.SHOP_ID_FOR_ADX == null && shopId != null) {
             // Log.i(TAG, "ON LAUNCH EVENT: FIRST TIME");
             sendAdxLaunchEvent = true;
         }

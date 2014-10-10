@@ -43,7 +43,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
 
     private Boolean isSetOnce = false;
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public interface OnDatePickerDialogListener {
         public void onDatePickerDialogSelect(String id, int year, int month, int day);
