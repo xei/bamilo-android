@@ -955,13 +955,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             return;
         }
 
-        ShoppingCartItem item = new ShoppingCartItem(createVariantAttributesHashMap(simple));
-        item.initialize(mCompleteProduct.getSku(), sku, mCompleteProduct.getImageList().get(0),
-                mCompleteProduct.getUrl(),
-                mCompleteProduct.getBrand() + " " + mCompleteProduct.getName(), quantity,
-                mCompleteProduct.getSpecialPrice(), mCompleteProduct.getPrice(), 1);
-
-        triggerAddItemToCart(item);
+        // Add one unity to cart 
+        triggerAddItemToCart(mCompleteProduct.getSku(), sku);
 
         Log.i(TAG, "code1price : " + price);
 
@@ -970,27 +965,21 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         bundle.putLong(TrackerDelegator.PRICE_KEY, price);
         bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getName());
         bundle.putString(TrackerDelegator.BRAND_KEY, mCompleteProduct.getBrand());
-        bundle.putString(
-                TrackerDelegator.CATEGORY_KEY,
-                mCompleteProduct.getCategories().size() > 0 ? mCompleteProduct.getCategories().get(
-                        0) : "");
+        bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().size() > 0 ? mCompleteProduct.getCategories().get(0) : "");
         TrackerDelegator.trackProductAddedToCart(bundle);
     }
 
-    private void triggerAddItemToCart(ShoppingCartItem item) {
-        // ShoppingCartItem item = event.value;
-
+    /**
+     * Add one item to cart
+     * @param sku
+     * @param simpleSKU
+     * @author sergiopereira
+     */
+    private void triggerAddItemToCart(String sku, String simpleSKU) {
         ContentValues values = new ContentValues();
-
-        // add the simple data to the registry
-        if (item.getSimpleData() != null) {
-            JumiaApplication.INSTANCE.getItemSimpleDataRegistry().put(item.getConfigSKU(),
-                    item.getSimpleData());
-        }
-
-        values.put("p", item.getConfigSKU());
-        values.put("sku", item.getConfigSimpleSKU());
-        values.put("quantity", "" + item.getQuantity());
+        values.put("p", sku);
+        values.put("sku", simpleSKU);
+        values.put("quantity", "1");
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
         triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, responseCallback);
@@ -1491,8 +1480,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
             if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
-                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-                getActivity().onBackPressed();
+                Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+                getBaseActivity().onBackPressed();
                 return;
             } else {
                 mCompleteProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);

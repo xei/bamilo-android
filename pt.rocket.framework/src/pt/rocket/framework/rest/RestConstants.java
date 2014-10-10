@@ -172,6 +172,7 @@ public class RestConstants {
 	// ShoppingCart Tags
 	public static final String JSON_CART_TAG = "cart";
 	public static final String JSON_CART_VALUE_TAG = "cartValue";
+	public static final String JSON_CART_VALUE_CONVERTED_TAG = "cartValue_euroConverted";
 	public static final String JSON_CART_COUNT_TAG = "cartCount";
 	public static final String JSON_CART_ITEMS_TAG = "cartItems";
 	public static final String JSON_CART_VAT_VALUE_TAG = "vat_value";
@@ -192,7 +193,9 @@ public class RestConstants {
 	public static final String JSON_ITEM_NAME_TAG = JSON_NAME_TAG;
 	public static final String JSON_STOCK_TAG = "stock";
 	public static final String JSON_ITEM_SPECIAL_PRICE_TAG = "specialPrice";
+	public static final String JSON_ITEM_SPECIAL_PRICE_CONVERTED_TAG = "specialPrice_euroConverted";
 	public static final String JSON_ITEM_PRICE_TAG = "unit_price";
+	public static final String JSON_ITEM_PRICE_CONVERTED_TAG = "unit_price_euroConverted";
 	public static final String JSON_TAX_AMOUNT_TAG = "tax_amount";
 	public static final String JSON_MAX_QUANTITY = "max_quantity";
 	public static final String JSON_VARIATION = "variation";

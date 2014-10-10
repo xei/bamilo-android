@@ -68,14 +68,6 @@ public class GetPaymentMethodsHelper extends BaseHelper {
             if (!form.initialize(formJSON))
                 Log.e(TAG, "Error initializing the form using the data");
 
-            // Get cart
-            JSONObject cartJSON = jsonObject.optJSONObject("cart");
-            if (cartJSON != null)
-                Log.d(TAG, "CAT JSON: " + cartJSON.toString());
-            // ShoppingCart cart = new
-            // ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
-            // cart.initialize(cartJSON);
-
             OrderSummary orderSummary = new OrderSummary(jsonObject, JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
             bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
 

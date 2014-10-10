@@ -95,6 +95,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
         // Get cart
         if(jsonOrder != null && !jsonObject.isNull(RestConstants.JSON_CART_TAG)) {
             JSONObject jsonCart = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
+            Log.d(TAG, "CART: " + jsonCart.toString());
             ShoppingCart cart = new ShoppingCart(simpleData);
             cart.initialize(jsonCart);
             mCart = cart;

@@ -170,6 +170,7 @@ public final class RestClientSingleton {
 	private void setHttpUserAgent(){
 		// CASE Default user agent
 		String defaultUserAgent = System.getProperty("http.agent");
+		Log.i(TAG, "DEFAULT USER AGENT: " + defaultUserAgent);
 		if(!TextUtils.isEmpty(defaultUserAgent)) {
 			httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, defaultUserAgent);
 		}

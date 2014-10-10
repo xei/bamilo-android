@@ -331,8 +331,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             mHomePager.setAdapter(mHomePagerAdapter);
             mHomePagerTabStrip.setViewPager(mHomePager);
             // Valdiate the saved position
-            if (mPagerSavedPosition != 0 && mPagerSavedPosition < mHomePagerAdapter.getCount()) mHomePager.setCurrentItem(mPagerSavedPosition);
-            else mHomePager.setCurrentItem(defaultPosition);
+            if (mPagerSavedPosition != 0 && mPagerSavedPosition < mHomePagerAdapter.getCount()) mHomePager.setCurrentItem(mPagerSavedPosition, false);
+            else mHomePager.setCurrentItem(defaultPosition, false);
         } else {
             Log.i(TAG, "UPDATE ADAPTER");
             mHomePagerAdapter.updateCollection(collection);

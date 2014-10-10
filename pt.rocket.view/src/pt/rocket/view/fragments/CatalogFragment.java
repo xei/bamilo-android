@@ -321,7 +321,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         mPagerTabStrip.setViewPager(mViewPager);
         mViewPager.setOffscreenPageLimit(1);
         if (null != currentPage && currentPage != SortPages.DEFAULT) {
-            mViewPager.setCurrentItem(currentPage.ordinal());
+            mViewPager.setCurrentItem(currentPage.ordinal(), false);
             currentPage = SortPages.DEFAULT;
         } else {
             mViewPager.setCurrentItem(mSavedPagerPosition, false);

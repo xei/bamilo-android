@@ -21,6 +21,8 @@ import de.akquinet.android.androlog.Log;
  */
 public class CurrencyFormatter {
 	private final static String TAG = LogTagHelper.create( CurrencyFormatter.class );
+	
+	public final static String EURO_CODE = "EUR";
 
     /**
      * Current currency of the shop.
