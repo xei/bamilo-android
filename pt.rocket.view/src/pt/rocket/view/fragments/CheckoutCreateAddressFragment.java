@@ -573,12 +573,14 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      * @author paulo
      */
     private void onClickRetryButton() {
-    	Bundle bundle = new Bundle();
+        Bundle bundle = new Bundle();
         if(null != JumiaApplication.CUSTOMER){
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            
         } else {
-            restartAllFragments();
+            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+//            restartAllFragments();
         }
     }
     
@@ -798,9 +800,16 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      */
     private void triggerCreateAddress(ContentValues values) {
         Log.i(TAG, "TRIGGER: CREATE ADDRESS");
+        Bundle args = getArguments();
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetNewAddressHelper.FORM_CONTENT_VALUES, values);
-        triggerContentEvent(new SetNewAddressHelper(), bundle, this);
+        if(null != args && args.containsKey(ConstantsIntentExtra.IS_SIGNUP)){            
+            bundle.putBoolean(SetNewAddressHelper.IS_FROM_SIGNUP,args.getBoolean(ConstantsIntentExtra.IS_SIGNUP, false));
+            triggerContentEvent(new SetNewAddressHelper(), bundle, this);                   
+        } else {
+            triggerContentEvent(new SetNewAddressHelper(), bundle, this);
+        }
+
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
     }
@@ -914,6 +923,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             ArrayList<AddressCity> cities = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             setCitiesOnSelectedRegion(requestedRegionAndField, cities);
             break;
+        case CREATE_ADDRESS_SIGNUP_EVENT:
         case CREATE_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
             
@@ -978,6 +988,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             Log.w(TAG, "RECEIVED GET_CITIES_EVENT");
             super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_CITIES_EVENT");
             break;
+        case CREATE_ADDRESS_SIGNUP_EVENT:
         case CREATE_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
             

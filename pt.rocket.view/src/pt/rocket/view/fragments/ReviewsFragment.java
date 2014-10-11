@@ -12,6 +12,7 @@ import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.components.ScrollViewEx;
 import pt.rocket.framework.components.ScrollViewEx.OnScrollBottomReachedListener;
 import pt.rocket.framework.objects.CompleteProduct;
@@ -19,7 +20,9 @@ import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ProductReviewComment;
 import pt.rocket.framework.objects.RatingOption;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.products.GetProductHelper;
 import pt.rocket.helpers.products.GetProductReviewsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
@@ -30,6 +33,7 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -40,13 +44,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
  * @modified manuelsilva
  */
-public class ReviewsFragment extends BaseFragment {
+public class ReviewsFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(ReviewsFragment.class);
     
@@ -74,16 +79,18 @@ public class ReviewsFragment extends BaseFragment {
 
     private ProductRatingPage mSavedProductRatingPage;
 
-    private boolean firstRequest = false;
+    private boolean firstRequest = false;   
+
 
     /**
      * Get instance
      * 
      * @return
      */
-    public static ReviewsFragment getInstance() {
+    public static ReviewsFragment getInstance(Bundle bundle) {
         sPopularityFragment = new ReviewsFragment();
         sPopularityFragment.mProductRatingPage = null;
+        sPopularityFragment.mSavedUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL, "");
         return sPopularityFragment;
     }
 
@@ -142,15 +149,28 @@ public class ReviewsFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        
         selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         inflater = LayoutInflater.from(getActivity());
         if (selectedProduct == null) {
-            Log.e(TAG, "NO CURRENT PRODUCT - SWITCHING TO HOME");
-            restartAllFragments();
-            return;
+            if (JumiaApplication.mIsBound && !mSavedUrl.equalsIgnoreCase("")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(GetProductHelper.PRODUCT_URL, mSavedUrl);
+                triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
+            } else {
+                showFragmentRetry(this);
+            }
+        } else {
+            showFragmentContent();    
         }
         
+        
+      
+    }
+
+    /**
+     * show reviews content
+     */
+    private void showFragmentContent(){
         // Valdiate saved state
         if(!TextUtils.isEmpty(mSavedUrl) && !TextUtils.isEmpty(selectedProduct.getUrl()) && selectedProduct.getUrl().equals(mSavedUrl)) {
             pageNumber = mSavedPageNumber;
@@ -160,11 +180,11 @@ public class ReviewsFragment extends BaseFragment {
         setAppContentLayout();
         
         if (BaseActivity.isTabletInLandscape(getBaseActivity())) {
-            Log.i(TAG, "startWriteReviewFragment : ");
             startWriteReviewFragment();
         }
     }
-
+    
+    
     /*
      * (non-Javadoc)
      * 
@@ -186,11 +206,13 @@ public class ReviewsFragment extends BaseFragment {
         // Validate the current product
         if (selectedProduct != null) {
             String url = selectedProduct.getUrl();
+            
             if (!TextUtils.isEmpty(url)) {
                 // Save the url, page number and rating
                 outState.putString("url", url);
                 outState.putInt("page", pageNumber);
                 outState.putParcelable("rate", mProductRatingPage);
+                mSavedUrl = url;
             } else {
                 url = "";
             }
@@ -198,6 +220,7 @@ public class ReviewsFragment extends BaseFragment {
         } else {
             Log.i(TAG, "ON SAVE INSTANCE STATE: " + pageNumber);
         }
+        
     }
 
     /*
@@ -255,6 +278,7 @@ public class ReviewsFragment extends BaseFragment {
     private void startWriteReviewFragment() {
         mWriteReviewFragment = new ReviewWriteFragment();
         Bundle args = new Bundle();
+        args.putString(ConstantsIntentExtra.CONTENT_URL, mSavedUrl);
         args.putBoolean(CAME_FROM_POPULARITY, true);
         mWriteReviewFragment.setArguments(args);
         FragmentManager fm = getChildFragmentManager();
@@ -375,28 +399,55 @@ public class ReviewsFragment extends BaseFragment {
      * This method is invoked when the user wants to create a review.
      */
     private void writeReview() {
-        getBaseActivity().onSwitchFragment(FragmentType.WRITE_REVIEW, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        Bundle args = new Bundle();
+        args.putString(ConstantsIntentExtra.CONTENT_URL, mSavedUrl);
+        getBaseActivity().onSwitchFragment(FragmentType.WRITE_REVIEW, args, FragmentController.ADD_TO_BACK_STACK);
     }
     
 
-    protected boolean onSuccessEvent(Bundle bundle) {
+    protected void onSuccessEvent(Bundle bundle) {
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
-        
-        ProductRatingPage productRatingPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-        
-        // Valdiate current rating page
-        if(mProductRatingPage == null) mProductRatingPage = productRatingPage;
-        // Append the new page to the current
-        else mProductRatingPage.appendPageRating(productRatingPage);
+            return;
+        }        
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "onErrorEvent: type = " + eventType);
+        switch (eventType) {
+        case GET_PRODUCT_REVIEWS_EVENT:
+            ProductRatingPage productRatingPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             
-        showFragmentContentContainer();
-        displayReviews(productRatingPage);
-        return true;
+            // Valdiate current rating page
+            if(mProductRatingPage == null) mProductRatingPage = productRatingPage;
+            // Append the new page to the current
+            else mProductRatingPage.appendPageRating(productRatingPage);
+                
+            showFragmentContentContainer();
+            displayReviews(productRatingPage);
+            break;
+        case GET_PRODUCT_EVENT:
+          if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+              Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+              getActivity().onBackPressed();
+              return;
+          } else {
+              selectedProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+              showFragmentContent();
+              // Waiting for the fragment comunication
+              new Handler().postDelayed(new Runnable() {
+                  @Override
+                  public void run() {
+                      showFragmentContentContainer();
+                  }
+              }, 300);
+          }          
+
+        default:
+            break;
+        }
+        return;
     }
     
     protected void onErrorEvent(Bundle bundle){
@@ -404,11 +455,46 @@ public class ReviewsFragment extends BaseFragment {
             return;
         }
         
-        showFragmentContentContainer();
+        
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         
         if(getBaseActivity().handleErrorEvent(bundle)){
             return;
         }    
+        
+        switch (eventType) {
+        case GET_PRODUCT_REVIEWS_EVENT:
+            ProductRatingPage productRatingPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            
+            // Valdiate current rating page
+            if(mProductRatingPage == null) mProductRatingPage = productRatingPage;
+            // Append the new page to the current
+            else mProductRatingPage.appendPageRating(productRatingPage);
+                
+            showFragmentContentContainer();
+            displayReviews(productRatingPage);
+            break;
+        case GET_PRODUCT_EVENT:
+            if (!errorCode.isNetworkError()) {
+                Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+
+                showFragmentContentContainer();
+
+                try {
+                    getBaseActivity().onBackPressed();
+                } catch (IllegalStateException e) {
+                    getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
+                }
+                return;
+            }
+        default:
+            break;
+        }
+        
+        showFragmentContentContainer();
+        
+
     }
     
     
@@ -565,4 +651,14 @@ public class ReviewsFragment extends BaseFragment {
         }
     };
 
+    
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if(id == R.id.fragment_root_retry_button){
+            getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, getArguments(), FragmentController.ADD_TO_BACK_STACK);
+        }
+    }   
+
+    
 }

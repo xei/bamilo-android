@@ -148,18 +148,20 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        
-        // Validate current address, if null goto back
-        if(mCurrentAddress == null) onClickCancelAddressButton();
-        
+
         // Create address form
         mEditFormContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
         // Message
         mMsgRequired = view.findViewById(R.id.checkout_edit_address_required_text);
         // Next button
-        view.findViewById(R.id.checkout_edit_button_enter).setOnClickListener((OnClickListener) this);
+        view.findViewById(R.id.checkout_edit_button_enter).setOnClickListener(this);
         // Cancel button
-        view.findViewById(R.id.checkout_edit_button_cancel).setOnClickListener((OnClickListener) this);
+        view.findViewById(R.id.checkout_edit_button_cancel).setOnClickListener(this);
+
+        //Validate current address, if null goto back
+        if(mCurrentAddress == null)
+            showFragmentRetry(this);
+
         
       //Validate is service is available
         if(JumiaApplication.mIsBound){
@@ -467,10 +469,12 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     private void onClickRetryButton() {
         Bundle bundle = new Bundle();
         if(null != JumiaApplication.CUSTOMER){
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            
         } else {
-            restartAllFragments();
+            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+//            restartAllFragments();
         }
     }
     

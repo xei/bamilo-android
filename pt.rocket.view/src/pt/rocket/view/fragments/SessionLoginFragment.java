@@ -584,7 +584,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
      */
     private void loadForm(Form form) {
         // Set title when Login form is displayed to allow access to other fragments
-        if (sLoginFragment.nextFragmentType != null) {
+        if (null != sLoginFragment && sLoginFragment.nextFragmentType != null) {
             getBaseActivity().setActionBarTitle(R.string.login_label);
         }
 

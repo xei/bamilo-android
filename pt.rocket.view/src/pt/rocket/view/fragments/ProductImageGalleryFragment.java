@@ -5,21 +5,35 @@ package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.GalleryPagerAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.objects.Errors;
+import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.products.GetProductHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.JumiaViewPagerWithZoom;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.GestureDetector;
@@ -30,6 +44,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -37,7 +52,7 @@ import de.akquinet.android.androlog.Log;
  * @modified sergiopereria
  * 
  */
-public class ProductImageGalleryFragment extends BaseFragment {
+public class ProductImageGalleryFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(ProductImageGalleryFragment.class);
 
@@ -66,6 +81,8 @@ public class ProductImageGalleryFragment extends BaseFragment {
     private View mIndicatorLeftView;
 
     private View mIndicatorRightView;
+    
+    private String mCompleteProductUrl;
 
     /**
      * Constructor using a nested flag
@@ -82,6 +99,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
         sProductImageGalleryFragment.currentPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
         if (sProductImageGalleryFragment.currentPosition <= 0) sProductImageGalleryFragment.currentPosition = 1;
         sProductImageGalleryFragment.isZoomAvailable = bundle.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
+        sProductImageGalleryFragment.mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL, "");
         // Return instance
         return sProductImageGalleryFragment;
     }
@@ -109,8 +127,9 @@ public class ProductImageGalleryFragment extends BaseFragment {
     /**
      * Default constructor
      */
-    public ProductImageGalleryFragment() {
-        super(EnumSet.of(MyMenuItem.HIDE_AB, MyMenuItem.UP_BUTTON_BACK), NavigationAction.Products, 0, KeyboardState.NO_ADJUST_CONTENT);
+    public ProductImageGalleryFragment() {  
+        super(EnumSet.of(MyMenuItem.HIDE_AB, MyMenuItem.UP_BUTTON_BACK), NavigationAction.Products,R.layout.product_gallery_fragment, 0, KeyboardState.NO_ADJUST_CONTENT);
+//        super(
     }
 
     /**
@@ -118,7 +137,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
      * @param 
      */
     public ProductImageGalleryFragment(Boolean isNested) {
-        super(IS_NESTED_FRAGMENT, BaseFragment.NO_INFLATE_LAYOUT);
+        super(IS_NESTED_FRAGMENT, R.layout.product_gallery_fragment);
     }
 
     /*
@@ -147,19 +166,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
         }
     }
     
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-     * android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater mInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-        super.onCreateView(mInflater, viewGroup, savedInstanceState);
-        Log.i(TAG, "ON CREATE VIEW");
-        return mInflater.inflate(R.layout.product_gallery_fragment, viewGroup, false);
-    }
+
     
     /*
      * (non-Javadoc)
@@ -261,15 +268,19 @@ public class ProductImageGalleryFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
         mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
         if (mCompleteProduct == null) {
-            getBaseActivity().onBackPressed();
-            return;
-        }
-        Log.i(TAG, "ON RESUME");
+            if (JumiaApplication.mIsBound && !mCompleteProductUrl.equalsIgnoreCase("")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
+            } else {
+                showFragmentRetry(this);
+            }
 
-        createViewPager();
+        } else {
+            createViewPager();    
+        }
     }
     
     /*
@@ -519,4 +530,100 @@ public class ProductImageGalleryFragment extends BaseFragment {
         updateImage(currentPosition);
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if(id == R.id.fragment_root_retry_button){
+            Log.d(TAG,"RETRY");
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_GALLERY, getArguments(), FragmentController.ADD_TO_BACK_STACK);
+        }
+        
+    }
+
+    
+    IResponseCallback responseCallback = new IResponseCallback() {
+
+        @Override
+        public void onRequestError(Bundle bundle) {
+            onErrorEvent(bundle);
+        }
+
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            onSuccessEvent(bundle);
+        }
+    };
+
+    public void onSuccessEvent(Bundle bundle) {
+
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        if (getBaseActivity() == null)
+            return;
+
+        getBaseActivity().handleSuccessEvent(bundle);
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Log.d(TAG, "onSuccessEvent: type = " + eventType);
+        switch (eventType) {
+        case GET_PRODUCT_EVENT:
+            if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+                getActivity().onBackPressed();
+                return;
+            } else {
+                mCompleteProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                createViewPager();    
+                // Waiting for the fragment comunication
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showFragmentContentContainer();
+                    }
+                }, 300);
+            }          
+
+            break;
+        default:
+            break;
+        }
+    }
+
+    public void onErrorEvent(Bundle bundle) {
+
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        if (getBaseActivity().handleErrorEvent(bundle)) {
+            return;
+        }
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "onErrorEvent: type = " + eventType);
+        switch (eventType) {
+
+        case GET_PRODUCT_EVENT:
+            if (!errorCode.isNetworkError()) {
+                Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+
+                showFragmentContentContainer();
+
+                try {
+                    getBaseActivity().onBackPressed();
+                } catch (IllegalStateException e) {
+                    getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
+                }
+                return;
+            }
+        default:
+            break;
+        }
+    }
+    
 }

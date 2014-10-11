@@ -45,6 +45,7 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -377,12 +378,14 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      * @author paulo
      */
     private void onClickRetryButton() {
-    	Bundle bundle = new Bundle();
+        Bundle bundle = new Bundle();
         if(null != JumiaApplication.CUSTOMER){
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            
         } else {
-            restartAllFragments();
+            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+//            restartAllFragments();
         }
     }
     
@@ -768,10 +771,16 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     /**
      * Trigger used to get the initialize forms
      */
-    private void triggerInitForm(){
-        Log.i(TAG, "TRIGGER: INIT FORMS");
-        Bundle bundle = new Bundle();
-        triggerContentEvent(new GetInitFormHelper(), bundle, this);
+    private void triggerInitForm(){        
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            Log.i(TAG, "TRIGGER: INIT FORMS");
+            Bundle bundle = new Bundle();
+            triggerContentEvent(new GetInitFormHelper(), bundle, this);
+        } else {
+            showFragmentRetry(this);
+        }     
+
     }
     
     /**

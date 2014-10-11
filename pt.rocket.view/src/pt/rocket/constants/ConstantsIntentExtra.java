@@ -98,4 +98,7 @@ public class ConstantsIntentExtra {
 
     // ########### MAINTANCE ##############
     public static final String IN_MAINTANCE = "is_in_maintance";
+    
+    // ########### BACKSTACK ##############
+    public static final String BACSTACK                = mPackage + "backstack";
 }

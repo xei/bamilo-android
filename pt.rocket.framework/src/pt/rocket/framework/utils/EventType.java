@@ -149,6 +149,8 @@ public enum EventType {
 	
 	CREATE_ADDRESS_EVENT("https:/customer/address/create/", RestContract.NO_CACHE),
 	
+	CREATE_ADDRESS_SIGNUP_EVENT("https:/customer/address/create/?showGender=true", RestContract.NO_CACHE),
+	
 	EDIT_ADDRESS_EVENT("https:/customer/address/save/", RestContract.NO_CACHE),
 	
 	// DELETE_ADDRESS_EVENT("https:/customer/address/delete/", RestContract.NO_CACHE),

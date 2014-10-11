@@ -2,6 +2,7 @@ package pt.rocket.controllers.fragments;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
@@ -9,6 +10,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
+import pt.rocket.view.fragments.BaseFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -168,6 +170,14 @@ public class FragmentController {
         while (iterator.hasNext()) {
             Log.d(TAG, "ENTRY: " + iterator.next());
         }
+    }
+    
+    /**
+     * Print all entries
+     * @return 
+     */
+    public LinkedList<String> returnAllEntries(){
+       return backStack;
     }
     
     /**
@@ -471,6 +481,23 @@ public class FragmentController {
     public void popBackStackUntilTag(BaseActivity activity, String tag, boolean inclusive) {
         // getSupportFragmentManager().popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         activity.getSupportFragmentManager().popBackStackImmediate(tag, 0);
+    }
+    
+    /**
+     * Restore the backstack using the provided fragment list
+     * This is useful for when the application is released form memory by the OS and the user opens it again.
+     *   
+     * @param fragments the list of current opened fragments
+     */
+    public void restoreBackstack(BaseActivity activity, List<Fragment> fragments) {
+        for (Fragment fragment : fragments) {
+            if (null != fragment && null != fragment.getTag() && !backStack.contains(fragment.getTag())) {
+                Log.d("BACKSTACK","type:"+fragment.getTag());
+                addToBackStack(fragment.getTag());
+                if (fragment instanceof BaseFragment)
+                    ((BaseFragment)fragment).setActivity(activity);
+            }
+        }
     }
     
 }

@@ -57,7 +57,14 @@
 
             <include layout="@layout/voucher_insert_layout" />
 
-            <include layout="@layout/shopping_basket_subtotal_element" />
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/rounded_margin_mid"
+                android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:layout_marginRight="@dimen/rounded_margin_mid"
+                android:layout_marginTop="@dimen/rounded_margin_mid"
+                layout="@layout/shopping_basket_subtotal_element" />
 
             <LinearLayout
                 android:id="@+id/shopping_basket_buttons_container"

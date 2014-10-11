@@ -8,8 +8,16 @@ import java.util.EnumSet;
 import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.products.GetProductHelper;
+import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
@@ -17,11 +25,13 @@ import android.app.Activity;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.style.MetricAffectingSpan;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
@@ -30,7 +40,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class ProductDetailsDescriptionFragment extends BaseFragment {
+public class ProductDetailsDescriptionFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(ProductDetailsDescriptionFragment.class);
     
@@ -44,15 +54,16 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     private TextView mProductDescriptionText;
     private CompleteProduct mCompleteProduct;
     private View mainView;
-    
+    private String mCompleteProductUrl;
 
     /**
      * Get instance
      * 
      * @return
      */
-    public static ProductDetailsDescriptionFragment getInstance() {
+    public static ProductDetailsDescriptionFragment getInstance(Bundle bundle) {
         sProductDetailsDescriptionFragment = new ProductDetailsDescriptionFragment();
+        sProductDetailsDescriptionFragment.mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL, "");
         return sProductDetailsDescriptionFragment;
     }
 
@@ -135,8 +146,13 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
             getViews();
             displayProductInformation(mainView);
         }else{
-            if(getActivity() != null) Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_SHORT).show();
-            restartAllFragments();
+            if (JumiaApplication.mIsBound && !mCompleteProductUrl.equalsIgnoreCase("")) {
+                Bundle bundle = new Bundle();
+                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
+            } else {
+                showFragmentRetry(this);
+            }
         }
     }
 
@@ -275,6 +291,100 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         
 //        mProductDescriptionText.setText( Html.fromHtml(translatedDescription));
     }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if(id == R.id.fragment_root_retry_button){
+            Log.d(TAG,"RETRY");
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, getArguments(), FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
     
+    IResponseCallback responseCallback = new IResponseCallback() {
+
+        @Override
+        public void onRequestError(Bundle bundle) {
+            onErrorEvent(bundle);
+        }
+
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            onSuccessEvent(bundle);
+        }
+    };
+
+    public void onSuccessEvent(Bundle bundle) {
+
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        if (getBaseActivity() == null)
+            return;
+
+        getBaseActivity().handleSuccessEvent(bundle);
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Log.d(TAG, "onSuccessEvent: type = " + eventType);
+        switch (eventType) {
+        case GET_PRODUCT_EVENT:
+            if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
+                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+                getActivity().onBackPressed();
+                return;
+            } else {
+                mCompleteProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                getViews();
+                displayProductInformation(mainView);   
+                // Waiting for the fragment comunication
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showFragmentContentContainer();
+                    }
+                }, 300);
+            }          
+
+            break;
+        default:
+            break;
+        }
+    }
+
+    public void onErrorEvent(Bundle bundle) {
+
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        if (getBaseActivity().handleErrorEvent(bundle)) {
+            return;
+        }
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "onErrorEvent: type = " + eventType);
+        switch (eventType) {
+
+        case GET_PRODUCT_EVENT:
+            if (!errorCode.isNetworkError()) {
+                Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+
+                showFragmentContentContainer();
+
+                try {
+                    getBaseActivity().onBackPressed();
+                } catch (IllegalStateException e) {
+                    getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
+                }
+                return;
+            }
+        default:
+            break;
+        }
+    }
 
 }

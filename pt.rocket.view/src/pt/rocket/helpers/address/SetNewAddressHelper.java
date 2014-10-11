@@ -5,6 +5,7 @@ package pt.rocket.helpers.address;
 
 import org.json.JSONObject;
 
+import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -25,10 +26,12 @@ public class SetNewAddressHelper extends BaseHelper {
     private static String TAG = SetNewAddressHelper.class.getSimpleName();
     
     public static final String FORM_CONTENT_VALUES = "form_content_values";
+    
+    public static final String IS_FROM_SIGNUP = "fromSignup";
 
     private Parcelable contentValues;
     
-    private static final EventType EVENT_TYPE = EventType.CREATE_ADDRESS_EVENT;
+    private static EventType EVENT_TYPE = EventType.CREATE_ADDRESS_EVENT;
     
     /*
      * (non-Javadoc)
@@ -36,9 +39,18 @@ public class SetNewAddressHelper extends BaseHelper {
      */
     @Override
     public Bundle generateRequestBundle(Bundle args) {
-        Log.d(TAG, "REQUEST");
-        Bundle bundle = new Bundle();
+        Log.d(TAG, "REQUEST");     
+        if(null != args && args.containsKey(IS_FROM_SIGNUP)){
+            if(args.getBoolean(IS_FROM_SIGNUP, false)){
+                EVENT_TYPE = EventType.CREATE_ADDRESS_SIGNUP_EVENT;
+            } else {
+                EVENT_TYPE = EventType.CREATE_ADDRESS_EVENT;
+            }
+        } else {
+            EVENT_TYPE = EventType.CREATE_ADDRESS_EVENT;
+        }      
         contentValues = args.getParcelable(FORM_CONTENT_VALUES);
+        Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);

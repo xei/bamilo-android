@@ -315,16 +315,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         setAppContentLayout(view);
         // Validate the current product
         mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
-        if (mCompleteProduct == null) {
+        if (mCompleteProduct == null)
             init();
-        } else{
-            // Must get other params other than currentProduct
-
-            // Get arguments
-            Bundle bundle = getArguments();
-            restoreParams(bundle);
-            displayProduct(mCompleteProduct);
-        }
+        
     }
 
     /*
@@ -335,6 +328,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "ON RESUME");
+        if (mCompleteProduct != null) {
+            // Must get other params other than currentProduct
+            // Get arguments
+            Bundle bundle = getArguments();
+            restoreParams(bundle);
+            displayProduct(mCompleteProduct);
+        }
         isAddingProductToCart = false;
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL);
     }
@@ -349,12 +350,37 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        // Log.d(TAG, "ON SAVED: SELECTED SIMPLE " + mSelectedSimple);
+        //removed nested fragments
+        removeNestedFragments();
         // Save the current fragment type on orientation change
         if (!mHideVariationSelection)
             outState.putInt(SELECTED_SIMPLE_POSITION, mSelectedSimple);
     }
 
+    
+    /**
+     * method to remove nested fragments from product detail
+     */
+    private void removeNestedFragments() {
+        
+        fragmentManagerTransition(R.id.product_detail_variations_container, new Fragment(), false, true);
+        fragmentManagerTransition(R.id.product_detail_image_gallery_container, new Fragment(), false, true);
+        
+//        if (productImagesViewPagerFragment != null ) {
+//            FragmentManager fm = getChildFragmentManager();
+//            FragmentTransaction ft = fm.beginTransaction();
+//            ft.remove(productImagesViewPagerFragment);
+//            ft.commit();
+//        }
+//        if (productVariationsFragment != null ) {
+//            FragmentManager fm = getChildFragmentManager();
+//            FragmentTransaction ft = fm.beginTransaction();
+//            ft.remove(productVariationsFragment);
+//            ft.commit();
+//        }
+         
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -366,6 +392,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         dialogListFragment = null;
         // Destroy variations
         productVariationsFragment = null;
+        
     }
 
     /*
@@ -374,7 +401,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      * @see pt.rocket.view.fragments.BaseFragment#onDestroyView()
      */
     @Override
-    public void onDestroyView() {
+    public void onDestroyView() {       
         super.onDestroyView();
         Log.d(TAG, "ON DESTROY VIEW");
     }
@@ -388,6 +415,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "ON DESTROY");
+
+
     }
 
     /**
@@ -545,11 +574,18 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     }
 
     private void loadProduct() {
-        Log.d(TAG, "LOAD PRODUCT");
+        Log.d(TAG, "LOAD PRODUCT:"+mCompleteProductUrl);
         mBeginRequestMillis = System.currentTimeMillis();
         Bundle bundle = new Bundle();
         bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-        triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
+        
+        if (JumiaApplication.mIsBound) {
+            triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
+        } else {
+            showFragmentRetry(this);
+        }
+        
+    
     }
 
     private void loadProductPartial() {
@@ -1320,8 +1356,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         int id = v.getId();
 
         if (id == R.id.product_detail_product_rating_container) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
             getBaseActivity().onSwitchFragment(FragmentType.POPULARITY,
-                    FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    bundle, FragmentController.ADD_TO_BACK_STACK);
 
         } else if (id == R.id.product_detail_specifications || id == R.id.product_name || id == R.id.product_detail_name ||
                 id == R.id.features_more_container || id == R.id.description_more_container) {
@@ -1394,6 +1432,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             } catch (NullPointerException e) {
                 Log.w(TAG, "WARNING: NPE ON CLICK SHARE");
             }
+        } else if(id == R.id.fragment_root_retry_button){
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, getArguments(), FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
