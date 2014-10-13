@@ -382,7 +382,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             }
         } else if (noPaymentNeeded) {
          // Get next step
-            FragmentType nextFragment = FragmentType.MY_ORDER;;
+            FragmentType nextFragment = FragmentType.MY_ORDER;
             
             Bundle bundle = new Bundle();
             bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, orderSummary);

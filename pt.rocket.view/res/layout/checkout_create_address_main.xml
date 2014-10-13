@@ -6,6 +6,7 @@
     <!-- CONTENT -->
 
     <ScrollView
+        android:id="@+id/checkout_address_form_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/checkout_address_button_container"

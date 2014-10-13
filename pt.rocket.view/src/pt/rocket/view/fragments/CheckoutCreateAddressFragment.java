@@ -51,11 +51,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
@@ -132,6 +134,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     private ContentValues mBillingSavedValues;
 
     private boolean isCityIdAnEditText = false;
+    
+    private ScrollView mScrollViewContainer;
 
     /**
      * Fragment used to create an address
@@ -205,6 +209,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        // Scroll view
+        mScrollViewContainer = (ScrollView) view.findViewById(R.id.checkout_address_form_scroll);
         // Shipping title
         mShippingTitle = (TextView) view.findViewById(R.id.checkout_address_form_shipping_title);
         // Shipping form
@@ -783,6 +789,16 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                 mBillingIncludeContainer.setVisibility(View.GONE);
             }
         } else {
+            try {
+                mScrollViewContainer.post(new Runnable() {
+                    @Override
+                    public void run() {
+//                        mScrollViewContainer.smoothScrollTo(0, 200);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             // Set title
             mShippingTitle.setText(getString(R.string.billing_shipping_label));
             // Hide billing container

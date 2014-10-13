@@ -1618,8 +1618,13 @@ public class DynamicFormItem {
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
                 : View.GONE);
-        dataContainer.addView(this.mandatoryControl);
 
+        // in order to position the mandatory signal on the payment method screen in the requested position, we don't inflate the dynamic form mandatory sign,
+        // we use a hardcode mandatory signal since the  payment method is always a mandatory section        
+        if(!this.getKey().toString().equalsIgnoreCase("payment_method"))
+            dataContainer.addView(this.mandatoryControl);
+        
+      
         ((ViewGroup) this.control).addView(dataContainer);
     }
 

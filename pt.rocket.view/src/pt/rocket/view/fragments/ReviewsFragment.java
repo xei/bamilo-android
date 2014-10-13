@@ -73,7 +73,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
     
     private Fragment mWriteReviewFragment;
 
-    private String mSavedUrl;
+    private static String mSavedUrl;
 
     private int mSavedPageNumber;
 
@@ -91,6 +91,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         sPopularityFragment = new ReviewsFragment();
         sPopularityFragment.mProductRatingPage = null;
         sPopularityFragment.mSavedUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL, "");
+        sPopularityFragment.setArguments(bundle);
         return sPopularityFragment;
     }
 
@@ -134,6 +135,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
             mSavedProductRatingPage = savedInstanceState.getParcelable("rate");
             //Log.i(TAG, "ON LOAD SAVED STATE: " + mSavedUrl + " " + mSavedPageNumber);
         } else {
+            
             // clean last saved review
             JumiaApplication.cleanReview();
             Log.e(TAG, "ERASE LAST REVIEW!");
@@ -152,6 +154,10 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         inflater = LayoutInflater.from(getActivity());
         if (selectedProduct == null) {
+            
+            if(mSavedUrl == null && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL))
+                mSavedUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL, "");
+            
             if (JumiaApplication.mIsBound && !mSavedUrl.equalsIgnoreCase("")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(GetProductHelper.PRODUCT_URL, mSavedUrl);
@@ -203,6 +209,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Log.i(TAG, "ON SAVE INSTANCE STATE: ");
         // Validate the current product
         if (selectedProduct != null) {
             String url = selectedProduct.getUrl();

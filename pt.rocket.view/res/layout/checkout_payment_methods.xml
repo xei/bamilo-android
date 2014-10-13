@@ -3,12 +3,29 @@
     style="@style/rounded_box"
     android:layout_marginBottom="0dp" >
 
-    <!-- TITLE -->
+    <!-- TITLE mandatoryControl-->
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/checkout_payment_methods_title"
         style="@style/rounded_box_title_grey"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/checkout_payment_methods_mandatory"
         android:text="@string/payment" />
+    
+        <org.holoeverywhere.widget.TextView
+        android:id="@+id/checkout_payment_methods_mandatory"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="33dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentTop="true"
+        android:textSize="18sp"
+        android:visibility="visible"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/orange_basic"
+        android:text="*" />
 
     <!-- DIVIDER -->
 
