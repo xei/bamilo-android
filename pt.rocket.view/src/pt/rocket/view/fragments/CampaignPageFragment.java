@@ -94,7 +94,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
 
     private HeaderGridView mGridView;
 
-    private CampaignAdapter mArrayAdapter;
+    // private CampaignAdapter mArrayAdapter;
 
     private View mBannerView;
 
@@ -306,10 +306,9 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
 		// Add banner to header
         if (BannerVisibility.HIDDEN != bannerState) mGridView.addHeaderView(mBannerView);
         // Validate the current data
-        mArrayAdapter = (CampaignAdapter) mGridView.getAdapter();
-        if(mArrayAdapter == null){
+        if (mGridView.getAdapter() == null) {
             // Set adapter
-            mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), (OnClickListener) this);
+            CampaignAdapter mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), (OnClickListener) this);
             mGridView.setAdapter(mArrayAdapter);
         }
         // Show content
@@ -541,16 +540,14 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      * @return boolean
      */
     protected boolean onSuccessEvent(Bundle bundle) {
-        Log.i(TAG, "ON SUCCESS EVENT");
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
@@ -583,16 +580,17 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      * @return boolean
      */
     protected boolean onErrorEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        // Generic errors
+        if(getBaseActivity().handleErrorEvent(bundle)) return true;
         
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
