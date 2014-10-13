@@ -790,10 +790,11 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             }
         } else {
             try {
+                // make the scroll move downward 200px just to let the user see the new billing address form
                 mScrollViewContainer.post(new Runnable() {
                     @Override
                     public void run() {
-//                        mScrollViewContainer.smoothScrollTo(0, 200);
+                        mScrollViewContainer.smoothScrollBy(0, 200);
                     }
                 });
             } catch (Exception e) {
