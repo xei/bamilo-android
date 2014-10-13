@@ -227,6 +227,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         Log.i(TAG, "ON RESUME EXECUTION");
 
         // TODO : Comment for Samsung store
+        // TODO : Comment for BlackBerry
         if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
 
         // Validate promotions

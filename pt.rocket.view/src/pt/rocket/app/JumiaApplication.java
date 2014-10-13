@@ -211,6 +211,7 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
 
         // TODO : Comment for Samsung store
+        // TODO : Comment for BlackBerry
         CheckVersion.init(getApplicationContext());
     }
 
