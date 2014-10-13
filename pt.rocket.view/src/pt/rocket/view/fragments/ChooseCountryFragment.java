@@ -273,8 +273,8 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             FavouriteTableHelper.deleteAllFavourite();
         }
         
-        System.gc();
-        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        //System.gc();
+        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
@@ -292,14 +292,14 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryIsLive());
-        editor.putString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, context.getString(R.string.jumia_global_api_version));
+        editor.putString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, getString(R.string.jumia_global_api_version));
         editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.commit();
         
         
         TrackerDelegator.trackShopchanged();
-        ActivitiesWorkFlow.splashActivityNewTask(getActivity());
-        getActivity().finish();
+        ActivitiesWorkFlow.splashActivityNewTask(getBaseActivity());
+        getBaseActivity().finish();
     }
 
     private String calculateMapImageResolution(CountryObject mCountryObject){
@@ -447,12 +447,14 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
+                        // Validate activity
+                        if(getBaseActivity() == null) return;
+                        // Get view id
                         int id = v.getId();
-                        if (id == R.id.button1) {
-                            getBaseActivity().onBackPressed();
-                        } else if (id == R.id.button2) {
-                            setCountry(position);
-                        }
+                        // Case cancel
+                        if (id == R.id.button1) getBaseActivity().onBackPressed();
+                        // Case submit
+                        else if (id == R.id.button2) setCountry(position);
                     }
                 });
         dialog.show(fm, null);
