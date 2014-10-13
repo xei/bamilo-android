@@ -32,22 +32,27 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
     private String configId;
     private String name;
     private long stock;
-    private String specialPrice;
-    private Double savingPercentage;
-    private String price;
     private double taxAmount;
     private Map<String, String> simpleData;
-    //private double cartRuleDiscount;
     private String variation;
+    
+    private String price;
+    private String specialPrice;
+    private Double savingPercentage;
 
     private double priceVal = 0;
-    private double specialPriceVal = 0;    
+    
+    private double specialPriceVal = 0;
+
+	private double priceValueEuroConverted = 0;
+
+	private double specialPriceValueEuroConverted = 0;    
     
     /**
      * @param simpleData registry
      */
     public ShoppingCartItem(HashMap<String, String> simpleData) {
-        configSimpleSKU = null;
+    	this.configSimpleSKU = null;
         this.simpleData = simpleData;
     }
 
@@ -66,9 +71,6 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
     	Log.d(TAG, "ON INITIALIZE");
-    	
-        priceVal = 0;
-        specialPriceVal = 0;
         
         try {
             imageUrl = getImageUrl(jsonObject.getString(RestConstants.JSON_ITEM_IMAGE_TAG));
@@ -90,6 +92,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
             String priceJSON = jsonObject.getString(RestConstants.JSON_ITEM_PRICE_TAG);
             if (CurrencyFormatter.isNumber(priceJSON)) {
                 priceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_PRICE_TAG);
+                priceValueEuroConverted = jsonObject.optDouble(RestConstants.JSON_ITEM_PRICE_CONVERTED_TAG, 0);
                 price = CurrencyFormatter.formatCurrency(priceJSON);
             } else {
                 //throw new JSONException("Price is not a number!");
@@ -109,9 +112,10 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
             String specialPriceJSON = jsonObject.optString(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG);
             if (CurrencyFormatter.isNumber(specialPriceJSON)) {
                 specialPriceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG);
+                specialPriceValueEuroConverted = jsonObject.optDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_CONVERTED_TAG, 0);
                 specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
             } else {
-                specialPriceVal = priceVal;
+            	specialPriceValueEuroConverted = specialPriceVal = priceVal;
                 specialPrice = price;
             }
             
@@ -125,35 +129,7 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
             return false;
         }
         return true;
-    }
-
-    /**
-     * Initializes the shopping cart member variables
-     * 
-     * @param productSKU
-     * @param simpleProductSKU
-     * @param imageURL
-     * @param productURL
-     * @param productName
-     * @param stock
-     * @param specialPrice
-     * @param price
-     * @param quantity
-     */
-    public void initialize(String productSKU, String simpleProductSKU, String imageURL, String productURL, String productName, long stock, String specialPrice,
-            String price, int quantity) {
-
-        this.imageUrl = imageURL;
-        this.productUrl = productURL;
-        this.configSKU = productSKU;
-        this.configSimpleSKU = simpleProductSKU;
-        this.quantity = quantity;
-        this.configId = "";
-        this.name = productName;
-        this.stock = stock;
-        this.specialPrice = specialPrice;
-        this.price = price;
-    }
+    }    
 
     /* (non-Javadoc)
      * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
@@ -320,6 +296,44 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	}
 	
     /**
+	 * @return the priceValueEuroConverted
+	 */
+	public double getPriceValueEuroConverted() {
+		return priceValueEuroConverted;
+	}
+
+	/**
+	 * @param priceValueEuroConverted the priceValueEuroConverted to set
+	 */
+	public void setPriceValueEuroConverted(double priceValueEuroConverted) {
+		this.priceValueEuroConverted = priceValueEuroConverted;
+	}
+
+	/**
+	 * @return the specialPriceValueEuroConverted
+	 */
+	public double getSpecialPriceValueEuroConverted() {
+		return specialPriceValueEuroConverted;
+	}
+
+	/**
+	 * @param specialPriceValueEuroConverted the specialPriceValueEuroConverted to set
+	 */
+	public void setSpecialPriceValueEuroConverted(double specialPriceValueEuroConverted) {
+		this.specialPriceValueEuroConverted = specialPriceValueEuroConverted;
+	}
+	
+	/**
+	 * Return the price or special price used for tracking
+	 * @author sergiopereira
+	 */
+	public double getPriceForTracking() {
+		Log.i(TAG, "GA TRACK PRICE FOR TRACKING: " + priceValueEuroConverted + " " + specialPriceValueEuroConverted);
+		//return specialPriceValueEuroConverted > 0 ? specialPriceValueEuroConverted : priceValueEuroConverted;
+		return specialPriceVal > 0 ? specialPriceVal : priceVal;
+	}
+
+	/**
      * ########### Parcelable ###########
      * @author sergiopereira
      */
@@ -356,6 +370,8 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	    dest.writeString(variation);
 	    dest.writeDouble(priceVal);
 	    dest.writeDouble(specialPriceVal);
+	    dest.writeDouble(priceValueEuroConverted);
+	    dest.writeDouble(specialPriceValueEuroConverted);
 	}
 	
 	/**
@@ -381,6 +397,8 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 	    variation = in.readString();
 	    priceVal = in.readDouble();
 	    specialPriceVal = in.readDouble();
+	    priceValueEuroConverted = in.readDouble();
+	    specialPriceValueEuroConverted = in.readDouble();
     }
 		
 	/**

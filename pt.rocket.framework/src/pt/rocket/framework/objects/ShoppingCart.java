@@ -26,135 +26,90 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 
 	private static final String TAG = ShoppingCart.class.getSimpleName();
 
-	private Map<String, ShoppingCartItem> cartItems = new HashMap<String, ShoppingCartItem>();
-	private String cartValue;
-	private int cartCount;
-	private String vat_value;
-	private String shipping_value;
-	private double extraCosts;
-	private String sum_costs_value;
-	private boolean sum_costs;
+	private Map<String, ShoppingCartItem> mCartItems = new HashMap<String, ShoppingCartItem>();
+	private String mCartValue;
+	private double mCartValueAsDouble = 0d;
+	private double mCartValueEuroConverted = 0d;
+	private int mCartCount;
+	private String mVatValue;
+	private String mShippingValue;
+	private double mExtraCosts;
+	private String mSumCostsValue;
+	private boolean hasSumCosts;
 	private Map<String, Map<String, String>> itemSimpleDataRegistry;
 
-	private String cartCleanValue;
-	private String couponDiscount;
-	
-	private HashMap<String, String> price_rules;
+	private String mCartCleanValue;
+	private String mCouponDiscount;
 
-	public double cartValueAsDouble = 0d;
+	private HashMap<String, String> mPriceRules;
+
 	
+
 	/**
-	 * 
+	 * Constructor
+	 * @param itemSimpleDataRegistry
 	 */
 	public ShoppingCart(Map<String, Map<String, String>> itemSimpleDataRegistry) {
 		this.itemSimpleDataRegistry = itemSimpleDataRegistry;
 	}
 
-	/**
-	 * @return the cartItems
-	 */
-	public Map<String, ShoppingCartItem> getCartItems() {
-		return cartItems;
-	}
-
-	/**
-	 * @param cartItems the cartItems to set
-	 */
-	public void setCartItems(HashMap<String, ShoppingCartItem> cartItems) {
-		this.cartItems = cartItems;
-	}
-
-	/**
-	 * @return the cartValue
-	 */
-	public String getCartValue() {
-		return cartValue;
-	}
-
-	/**
-	 * @param cartValue the cartValue to set
-	 */
-	public void setCartValue(String cartValue) {
-		this.cartValue = cartValue;
-	}
-
-	/**
-	 * @return the cartCount
-	 */
-	public int getCartCount() {
-		return cartCount;
-	}
-
-	/**
-	 * @param cartCount the cartCount to set
-	 */
-	public void setCartCount(int cartCount) {
-		this.cartCount = cartCount;
-	}
-	
-	public String getVatValue(){
-		return this.vat_value;
-	}
-	
-	public String getShippingValue(){
-		return this.shipping_value;
-	}
-	
-	/**
-	 * @return the cartCleanValue
-	 */
-	public String getCartCleanValue() {
-		return (!TextUtils.isEmpty(cartCleanValue)) ? cartCleanValue.replaceAll(DarwinRegex.CART_VALUE, "") : cartValue;
-	}
-
-	/**
-	 * @param cartCleanValue the cartCleanValue to set
-	 */
-	public void setCartCleanValue(String cartCleanValue) {
-		this.cartCleanValue = cartCleanValue;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
+	 * @see
+	 * pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
+	 * )
 	 */
 	@Override
-	public boolean initialize(JSONObject jsonObject) throws JSONException{
-		cartValue = jsonObject.getString(RestConstants.JSON_CART_VALUE_TAG);
-		cartValueAsDouble = jsonObject.optDouble(RestConstants.JSON_CART_VALUE_TAG, 0);
-		cartCleanValue = jsonObject.optString(RestConstants.JSON_CART_CLEAN_VALUE_TAG);
-		cartCount = jsonObject.getInt(RestConstants.JSON_CART_COUNT_TAG);
-		vat_value = jsonObject.optString(RestConstants.JSON_CART_VAT_VALUE_TAG);
-		shipping_value = jsonObject.optString(RestConstants.JSON_CART_SHIPPING_VALUE_TAG);
-		couponDiscount = jsonObject.optString(RestConstants.JSON_CART_COUPON_VALUE_TAG);
+	public boolean initialize(JSONObject jsonObject) throws JSONException {
+		// Get cart value as string and double
+		mCartValue = jsonObject.getString(RestConstants.JSON_CART_VALUE_TAG);
+		mCartValueAsDouble = jsonObject.optDouble(RestConstants.JSON_CART_VALUE_TAG, 0);
+		// Get cart value converted
+		mCartValueEuroConverted = jsonObject.optDouble(RestConstants.JSON_CART_VALUE_CONVERTED_TAG, 0);
+		// Get cart clean value
+		mCartCleanValue = jsonObject.optString(RestConstants.JSON_CART_CLEAN_VALUE_TAG);
+		mCartCount = jsonObject.getInt(RestConstants.JSON_CART_COUNT_TAG);
+		mVatValue = jsonObject.optString(RestConstants.JSON_CART_VAT_VALUE_TAG);
+		mShippingValue = jsonObject.optString(RestConstants.JSON_CART_SHIPPING_VALUE_TAG);
+		mCouponDiscount = jsonObject.optString(RestConstants.JSON_CART_COUPON_VALUE_TAG);
 		String sCosts = jsonObject.optString(RestConstants.JSON_CART_SUM_COSTS_TAG);
-		if(sCosts != null && sCosts.equalsIgnoreCase("0")){
-			sum_costs = false;	
+		if (sCosts != null && sCosts.equalsIgnoreCase("0")) {
+			hasSumCosts = false;
 		} else {
-			sum_costs = true;
-			sum_costs_value = jsonObject.optString(RestConstants.JSON_CART_SUM_COSTS_VALUE_TAG);
+			hasSumCosts = true;
+			mSumCostsValue = jsonObject.optString(RestConstants.JSON_CART_SUM_COSTS_VALUE_TAG);
 		}
-		
-		extraCosts = jsonObject.optDouble(RestConstants.JSON_CART_EXTRA_COSTS_TAG, 0);
-		if (cartCount > 0 && jsonObject.has(RestConstants.JSON_CART_ITEMS_TAG)) {
+
+		mExtraCosts = jsonObject.optDouble(RestConstants.JSON_CART_EXTRA_COSTS_TAG, 0);
+		if (mCartCount > 0 && jsonObject.has(RestConstants.JSON_CART_ITEMS_TAG)) {
 			fillCartHashMap(jsonObject.getJSONObject(RestConstants.JSON_CART_ITEMS_TAG));
 		}
-		
+
 		JSONArray priceRules = jsonObject.optJSONArray(RestConstants.JSON_CART_PRICE_RULES_TAG);
-		if(priceRules != null && priceRules.length() > 0){
-			price_rules = new HashMap<String, String>();
+		if (priceRules != null && priceRules.length() > 0) {
+			mPriceRules = new HashMap<String, String>();
 			for (int i = 0; i < priceRules.length(); i++) {
 				JSONObject pRulesElement = priceRules.optJSONObject(i);
-				if(pRulesElement != null){
-					Log.i(TAG, "code1rules : "+pRulesElement.getString(RestConstants.JSON_LABEL_TAG)+ " value : "+ pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
-					price_rules.put(pRulesElement.getString(RestConstants.JSON_LABEL_TAG), pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
+				if (pRulesElement != null) {
+					Log.i(TAG, "code1rules : " + pRulesElement.getString(RestConstants.JSON_LABEL_TAG) + " value : "
+							+ pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
+					mPriceRules.put(pRulesElement.getString(RestConstants.JSON_LABEL_TAG),
+							pRulesElement.getString(RestConstants.JSON_VALUE_TAG));
 				}
 			}
 		}
+		
+		Log.i(TAG, "CART INIT: " + mCartValue + " " + mCartValueAsDouble + " " + mCartValueEuroConverted);
+		
 		return true;
 	}
+
 	
+	/**
+	 * 
+	 * @param cartObject
+	 */
 	private void fillCartHashMap(JSONObject cartObject) {
 		JSONObject itemObject;
 		Log.d(TAG, "ON SAVE CART ITEM");
@@ -164,17 +119,12 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		while (iter.hasNext()) {
 			try {
 				String key = (String) iter.next();
-
 				itemObject = cartObject.getJSONObject(key);
-
 				ShoppingCartItem item = new ShoppingCartItem(key, null);
 				item.initialize(itemObject);
-
 				if (itemSimpleDataRegistry.containsKey(item.getConfigSKU()))
 					item.setSimpleData(itemSimpleDataRegistry.get(item.getConfigSKU()));
-
-				cartItems.put(key, item);
-
+				mCartItems.put(key, item);
 			} catch (JSONException e) {
 				Log.e(TAG, "fillCartHashMap: error", e);
 			}
@@ -190,16 +140,193 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	public JSONObject toJSON() {
 		return null;
 	}
+
+	/*
+	 * ########### GETTERS AND SETTERS ###########
+	 */
+
+	/**
+	 * @return the cartItems
+	 */
+	public Map<String, ShoppingCartItem> getCartItems() {
+		return mCartItems;
+	}
+
+	/**
+	 * @param cartItems
+	 *            the cartItems to set
+	 */
+	public void setCartItems(HashMap<String, ShoppingCartItem> cartItems) {
+		this.mCartItems = cartItems;
+	}
+
+	/**
+	 * @return the cartValue
+	 */
+	public String getCartValue() {
+		return mCartValue;
+	}
+
+	/**
+	 * @param cartValue
+	 *            the cartValue to set
+	 */
+	public void setCartValue(String cartValue) {
+		this.mCartValue = cartValue;
+	}
+
+	/**
+	 * @return the cartCount
+	 */
+	public int getCartCount() {
+		return mCartCount;
+	}
+
+	/**
+	 * @param cartCount
+	 *            the cartCount to set
+	 */
+	public void setCartCount(int cartCount) {
+		this.mCartCount = cartCount;
+	}
+
+	public String getVatValue() {
+		return this.mVatValue;
+	}
+
+	public String getShippingValue() {
+		return this.mShippingValue;
+	}
+
+	/**
+	 * @return the cartCleanValue
+	 */
+	public String getCartCleanValue() {
+		return (!TextUtils.isEmpty(mCartCleanValue)) ? mCartCleanValue.replaceAll(DarwinRegex.CART_VALUE, "") : mCartValue;
+	}
+
+	/**
+	 * @param cartCleanValue
+	 *            the cartCleanValue to set
+	 */
+	public void setCartCleanValue(String cartCleanValue) {
+		this.mCartCleanValue = cartCleanValue;
+	}
+
+	/**
+	 * @return the extra_costs
+	 */
+	public double getExtraCosts() {
+		return mExtraCosts;
+	}
+
+	/**
+	 * @return the extra_costs
+	 */
+	public String getSumCostsValue() {
+		return mSumCostsValue;
+	}
+
+	/**
+	 * @param extraCosts
+	 *            the extra_costs to set
+	 */
+	public void setExtraCosts(double extraCosts) {
+		this.mExtraCosts = extraCosts;
+	}
+
+	/**
+	 * @return the sum_costs
+	 */
+	public boolean isSumCosts() {
+		return hasSumCosts;
+	}
+
+	/**
+	 * @param sum_costs
+	 *            the sum_costs to set
+	 */
+	public void setSumCosts(boolean sum_costs) {
+		this.hasSumCosts = sum_costs;
+	}
+
+	/**
+	 * @return the couponDiscount
+	 */
+	public String getCouponDiscount() {
+		return mCouponDiscount;
+	}
+
+	/**
+	 * @param couponDiscount
+	 *            the couponDiscount to set
+	 */
+	public void setCouponDiscount(String couponDiscount) {
+		this.mCouponDiscount = couponDiscount;
+	}
+
+	/**
+	 * @return the price_rules
+	 */
+	public HashMap<String, String> getPriceRules() {
+		return mPriceRules;
+	}
+
+	/**
+	 * @param price_rules
+	 *            the price_rules to set
+	 */
+	public void setPriceRules(HashMap<String, String> price_rules) {
+		this.mPriceRules = price_rules;
+	}
 	
-    /**
-     * ########### Parcelable ###########
-     * @author sergiopereira
-     */
-    
-    /*
-     * (non-Javadoc)
-     * @see android.os.Parcelable#describeContents()
-     */
+	/**
+	 * @return the mCartValueAsDouble
+	 */
+	public double getCartValueAsDouble() {
+		return mCartValueAsDouble;
+	}
+
+	/**
+	 * @param cartValueAsDouble the mCartValueAsDouble to set
+	 */
+	public void setCartValueAsDouble(double cartValueAsDouble) {
+		this.mCartValueAsDouble = cartValueAsDouble;
+	}
+
+	/**
+	 * @return the mCartValueEuroConverted
+	 */
+	public double getCartValueEuroConverted() {
+		return mCartValueEuroConverted;
+	}
+
+	/**
+	 * @param cartValueEuroConverted the mCartValueEuroConverted to set
+	 */
+	public void setCartValueEuroConverted(double cartValueEuroConverted) {
+		this.mCartValueEuroConverted = cartValueEuroConverted;
+	}
+	
+	/**
+	 * Return the total price used for tracking
+	 * @author sergiopereira
+	 */
+	public double getPriceForTracking() {
+		Log.i(TAG, "GA TRACK PRICE FOR TRACKING: " + mCartValueAsDouble + " " + mCartValueEuroConverted);
+		//return mCartValueEuroConverted > 0 ? mCartValueEuroConverted : mCartValueAsDouble;
+		return mCartValueAsDouble;
+	}
+
+	/*
+	 * ########### PARCELABLE ###########
+	 */
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.os.Parcelable#describeContents()
+	 */
 	@Override
 	public int describeContents() {
 		return 0;
@@ -207,119 +334,62 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-	    dest.writeMap(cartItems);
-	    dest.writeString(cartValue);
-	    dest.writeString(cartCleanValue);
-	    dest.writeInt(cartCount);
-	    dest.writeString(vat_value);
-	    dest.writeString(shipping_value);
-	    dest.writeMap(itemSimpleDataRegistry);
-	    dest.writeBooleanArray(new boolean[]{sum_costs});
-	    dest.writeDouble(extraCosts);
-	    dest.writeString(sum_costs_value);
-	    dest.writeString(couponDiscount);
-	    dest.writeMap(price_rules);
+		dest.writeMap(mCartItems);
+		dest.writeString(mCartValue);
+		dest.writeString(mCartCleanValue);
+		dest.writeInt(mCartCount);
+		dest.writeString(mVatValue);
+		dest.writeString(mShippingValue);
+		dest.writeMap(itemSimpleDataRegistry);
+		dest.writeBooleanArray(new boolean[] { hasSumCosts });
+		dest.writeDouble(mExtraCosts);
+		dest.writeString(mSumCostsValue);
+		dest.writeString(mCouponDiscount);
+		dest.writeMap(mPriceRules);
+	    dest.writeDouble(mCartValueAsDouble);
+	    dest.writeDouble(mCartValueEuroConverted);
 	}
-	
+
 	/**
 	 * Parcel constructor
+	 * 
 	 * @param in
 	 */
 	private ShoppingCart(Parcel in) {
-		in.readMap(cartItems, ShoppingCartItem.class.getClassLoader());
-		cartValue = in.readString();
-		cartCleanValue = in.readString();
-		cartCount = in.readInt();
-		vat_value = in.readString();
-		shipping_value = in.readString();
-		itemSimpleDataRegistry = new HashMap<String, Map<String,String>>();
+		in.readMap(mCartItems, ShoppingCartItem.class.getClassLoader());
+		mCartValue = in.readString();
+		mCartCleanValue = in.readString();
+		mCartCount = in.readInt();
+		mVatValue = in.readString();
+		mShippingValue = in.readString();
+		itemSimpleDataRegistry = new HashMap<String, Map<String, String>>();
 		in.readMap(itemSimpleDataRegistry, String.class.getClassLoader());
-		in.readBooleanArray(new boolean[]{sum_costs});
-	    extraCosts = in.readDouble();
-	    sum_costs_value = in.readString();
-	    couponDiscount = in.readString();
-	    price_rules = new HashMap<String, String>();
-	    in.readMap(price_rules, String.class.getClassLoader());
-    }
-		
-	/**
-	 * @return the extra_costs
-	 */
-	public double getExtraCosts() {
-		return extraCosts;
-	}
-	
-	/**
-     * @return the extra_costs
-     */
-    public String getSumCostsValue() {
-        return sum_costs_value;
-    }
-
-	/**
-	 * @param extraCosts the extra_costs to set
-	 */
-	public void setExtraCosts(double extraCosts) {
-		this.extraCosts = extraCosts;
+		in.readBooleanArray(new boolean[] { hasSumCosts });
+		mExtraCosts = in.readDouble();
+		mSumCostsValue = in.readString();
+		mCouponDiscount = in.readString();
+		mPriceRules = new HashMap<String, String>();
+		in.readMap(mPriceRules, String.class.getClassLoader());
+		mCartValueAsDouble = in.readDouble();
+		mCartValueEuroConverted = in.readDouble();
 	}
 
 	/**
-	 * @return the sum_costs
-	 */
-	public boolean isSumCosts() {
-		return sum_costs;
-	}
-
-	/**
-	 * @param sum_costs the sum_costs to set
-	 */
-	public void setSumCosts(boolean sum_costs) {
-		this.sum_costs = sum_costs;
-	}
-
-	/**
-	 * @return the couponDiscount
-	 */
-	public String getCouponDiscount() {
-		return couponDiscount;
-	}
-
-	/**
-	 * @param couponDiscount the couponDiscount to set
-	 */
-	public void setCouponDiscount(String couponDiscount) {
-		this.couponDiscount = couponDiscount;
-	}
-
-	/**
-	 * @return the price_rules
-	 */
-	public HashMap<String, String> getPriceRules() {
-		return price_rules;
-	}
-
-	/**
-	 * @param price_rules the price_rules to set
-	 */
-	public void setPriceRules(HashMap<String, String> price_rules) {
-		this.price_rules = price_rules;
-	}
-
-	/**
-	 * Create parcelable 
+	 * Create parcelable
 	 */
 	public static final Parcelable.Creator<ShoppingCart> CREATOR = new Parcelable.Creator<ShoppingCart>() {
-        public ShoppingCart createFromParcel(Parcel in) {
-            return new ShoppingCart(in);
-        }
+		public ShoppingCart createFromParcel(Parcel in) {
+			return new ShoppingCart(in);
+		}
 
-        public ShoppingCart[] newArray(int size) {
-            return new ShoppingCart[size];
-        }
-    };
+		public ShoppingCart[] newArray(int size) {
+			return new ShoppingCart[size];
+		}
+	};
 
 }

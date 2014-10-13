@@ -57,9 +57,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     
     protected static final String TAG = LogTagHelper.create(BaseFragment.class);
     
-    public static int FRAGMENT_VALUE_SET_FAVORITE = 100;
+    public static final int FRAGMENT_VALUE_SET_FAVORITE = 100;
     
-    public static int FRAGMENT_VALUE_REMOVE_FAVORITE = 101;
+    public static final int FRAGMENT_VALUE_REMOVE_FAVORITE = 101;
     
     private static Field sChildFragmentManagerField;
 

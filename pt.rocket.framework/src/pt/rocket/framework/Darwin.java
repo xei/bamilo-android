@@ -66,30 +66,30 @@ public class Darwin {
 	/**
 	 * Countries Configs
 	 */
-	public static String KEY_COUNTRY_CHANGED= "country_changed";
-	public static String KEY_COUNTRIES_CONFIGS_LOADED = "countries_configs_loaded";
-	public static String KEY_SELECTED_COUNTRY_ID = "selected_country_id";
-	public static String KEY_SELECTED_COUNTRY_NAME = "selected_country_name";
-	public static String KEY_SELECTED_COUNTRY_URL = "selected_country_url";
-	public static String KEY_SELECTED_COUNTRY_FLAG = "selected_country_flag";
-	public static String KEY_SELECTED_COUNTRY_MAP_FLAG = "selected_country_map_flag";
-	public static String KEY_SELECTED_COUNTRY_ISO = "selected_country_iso";
-	public static String KEY_SELECTED_COUNTRY_FORCE_HTTP = "selected_country_force_http";
-	public static String KEY_SELECTED_COUNTRY_IS_LIVE = "selected_country_is_live";
-	public static String KEY_SELECTED_COUNTRY_REST_BASE = "selected_country_rest_base";
+	public static final String KEY_COUNTRY_CHANGED= "country_changed";
+	public static final String KEY_COUNTRIES_CONFIGS_LOADED = "countries_configs_loaded";
+	public static final String KEY_SELECTED_COUNTRY_ID = "selected_country_id";
+	public static final String KEY_SELECTED_COUNTRY_NAME = "selected_country_name";
+	public static final String KEY_SELECTED_COUNTRY_URL = "selected_country_url";
+	public static final String KEY_SELECTED_COUNTRY_FLAG = "selected_country_flag";
+	public static final String KEY_SELECTED_COUNTRY_MAP_FLAG = "selected_country_map_flag";
+	public static final String KEY_SELECTED_COUNTRY_ISO = "selected_country_iso";
+	public static final String KEY_SELECTED_COUNTRY_FORCE_HTTP = "selected_country_force_http";
+	public static final String KEY_SELECTED_COUNTRY_IS_LIVE = "selected_country_is_live";
+	public static final String KEY_SELECTED_COUNTRY_REST_BASE = "selected_country_rest_base";
 	
-	public static String KEY_SELECTED_COUNTRY_CURRENCY_ISO = "selected_country_currency_iso";
-	public static String KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL = "selected_country_currency_symbol";
-	public static String KEY_SELECTED_COUNTRY_CURRENCY_POSITION = "selected_country_currency_position";
-	public static String KEY_SELECTED_COUNTRY_NO_DECIMALS = "selected_country_no_decimals";
-	public static String KEY_SELECTED_COUNTRY_THOUSANDS_SEP = "selected_country_thousands_sep";
-	public static String KEY_SELECTED_COUNTRY_DECIMALS_SEP = "selected_country_decimals_sep";
-	public static String KEY_SELECTED_COUNTRY_LANG_CODE = "selected_country_lang_code";
-	public static String KEY_SELECTED_COUNTRY_LANG_NAME = "selected_country_lang_name";
-	public static String KEY_SELECTED_COUNTRY_GA_ID = "selected_country_ga_id";
-	public static String KEY_SELECTED_COUNTRY_GA_TEST_ID = "selected_country_ga_test_id";
-	public static String KEY_SELECTED_COUNTRY_PHONE_NUMBER = "selected_country_phone_number";
-	public static String KEY_SELECTED_COUNTRY_CS_EMAIL = "selected_country_cs_email";
+	public static final String KEY_SELECTED_COUNTRY_CURRENCY_ISO = "selected_country_currency_iso";
+	public static final String KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL = "selected_country_currency_symbol";
+	public static final String KEY_SELECTED_COUNTRY_CURRENCY_POSITION = "selected_country_currency_position";
+	public static final String KEY_SELECTED_COUNTRY_NO_DECIMALS = "selected_country_no_decimals";
+	public static final String KEY_SELECTED_COUNTRY_THOUSANDS_SEP = "selected_country_thousands_sep";
+	public static final String KEY_SELECTED_COUNTRY_DECIMALS_SEP = "selected_country_decimals_sep";
+	public static final String KEY_SELECTED_COUNTRY_LANG_CODE = "selected_country_lang_code";
+	public static final String KEY_SELECTED_COUNTRY_LANG_NAME = "selected_country_lang_name";
+	public static final String KEY_SELECTED_COUNTRY_GA_ID = "selected_country_ga_id";
+	public static final String KEY_SELECTED_COUNTRY_GA_TEST_ID = "selected_country_ga_test_id";
+	public static final String KEY_SELECTED_COUNTRY_PHONE_NUMBER = "selected_country_phone_number";
+	public static final String KEY_SELECTED_COUNTRY_CS_EMAIL = "selected_country_cs_email";
 	/**
 	 * Prevent this class from being instantiated. Make this class into a
 	 * singleton

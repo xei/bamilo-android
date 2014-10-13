@@ -39,7 +39,7 @@ public class AnalyticsGoogle {
 
 	private static final String TAG = LogTagHelper.create(AnalyticsGoogle.class);
 	
-	private static final double MICRO_MULTI = 1000000;
+	// private static final double MICRO_MULTI = 1000000;
 
 	private static AnalyticsGoogle sInstance;
 	
@@ -274,15 +274,15 @@ public class AnalyticsGoogle {
 	/**
 	 * Build and send a transaction.
 	 * @param order
-	 * @param valueAsLongMicro
+	 * @param revenue
 	 * @param currencyCode
 	 * @author sergiopereira
 	 */
-	private void trackTransaction(String order, long valueAsLongMicro, String currencyCode) {
-		Log.i(TAG, "TRACK TRANSACTION: id->" + order + " revenue->" + valueAsLongMicro + " currency->" + currencyCode);
+	private void trackTransaction(String order, long revenue, String currencyCode) {
+		Log.i(TAG, "TRACK TRANSACTION: id->" + order + " revenue->" + revenue + " currency->" + currencyCode);
 		mTracker.send(new HitBuilders.TransactionBuilder()
 		.setTransactionId(order)
-		.setRevenue(valueAsLongMicro)
+		.setRevenue(revenue)
 		.setCurrencyCode(currencyCode)
 		.setCampaignParamsFromUrl(getGACampaign())
 		.build());
@@ -472,36 +472,32 @@ public class AnalyticsGoogle {
 		String category = mContext.getString(R.string.gNativeCheckoutError);
 		trackEvent(category, action, email, 0l);
 	}
+	
 	/**
-	 * 
-	 * @param orderNr
-	 * @param value
-	 * @param items
+	 * Tracking the purchase using the EURO currency.
+	 * @param order number
+	 * @param cart value euro converted
+	 * @param list of items
+	 * @author sergiopereira
 	 */
-	public void trackSales(String orderNr, String value, List<PurchaseItem> items) {
+	public void trackPurchase(String orderNr, double cartValue, List<PurchaseItem> items) {
 		isCheckoutStarted = false;
 		// Validation
 		if (!isEnabled) return;
 		// Validation
 		if (items == null || items.size() == 0) return;
-		
-		Double valueDouble = CurrencyFormatter.getValueDouble(value.trim());
-		long valueAsLongMicro = (long) (valueDouble * MICRO_MULTI);
+		// Get euro currency
+		//String currencyCode = CurrencyFormatter.EURO_CODE;
 		String currencyCode = CurrencyFormatter.getCurrencyCode();
-
 		// Track transaction
-		trackTransaction(orderNr, valueAsLongMicro, currencyCode);
-		
-		for (PurchaseItem item : items) {
-			// Track transaction item
-			long itemValueAsLongMicro = (long) (item.paidpriceAsDouble * MICRO_MULTI);
-			long quantity = item.quantityAsInt;
-			trackTransactionItem(orderNr, item.name, item.sku, item.category, itemValueAsLongMicro, quantity, currencyCode);
-		}
-		
+		trackTransaction(orderNr, (long) cartValue, currencyCode);
+		// Track all items
+		for (PurchaseItem item : items)
+			trackTransactionItem(orderNr, item.name, item.sku, item.category, (long) item.getPriceForTracking(), (long) item.quantityAsInt, currencyCode);
 		// Event
-		trackEvent(TrackingEvent.CHECKOUT_FINISHED, orderNr, valueDouble.longValue());
+		trackEvent(TrackingEvent.CHECKOUT_FINISHED, orderNr, (long) cartValue);
 	}
+
 
 	/**
 	 * 

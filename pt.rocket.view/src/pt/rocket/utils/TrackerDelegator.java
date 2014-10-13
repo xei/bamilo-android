@@ -396,12 +396,12 @@ public class TrackerDelegator {
         Log.d(TAG, "TRACK SALE: JSON " + result.toString());
 
         String orderNr;
-        String value;
+        double value;
         JSONObject itemsJson;
         String coupon = "";
         try {
             orderNr = result.getString(JSON_TAG_ORDER_NR);
-            value = result.getString(JSON_TAG_GRAND_TOTAL);
+            value = result.getDouble(JSON_TAG_GRAND_TOTAL);
             itemsJson = result.getJSONObject(JSON_TAG_ITEMS_JSON);
             Log.d(TAG, "TRACK SALE: RESULT: ORDER=" + orderNr + " VALUE=" + value + " ITEMS=" + result.toString(2));
         } catch (JSONException e) {
@@ -421,7 +421,8 @@ public class TrackerDelegator {
             favoritesCount += favoritesSKU.contains(item.sku) ? 1 : 0;
         }
         averageValue = averageValue / items.size();
-        AnalyticsGoogle.get().trackSales(orderNr, value, items);
+        
+        AnalyticsGoogle.get().trackPurchase(orderNr, value, items);
 
         if (customer == null) {
             Log.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
@@ -430,7 +431,7 @@ public class TrackerDelegator {
             // Send the track sale without customer id
             String customerId = "";
             boolean isFirstCustomer = false;
-            AdXTracker.trackSale(context, value, customerId, orderNr, skus, isFirstCustomer, JumiaApplication.SHOP_NAME, false);
+            AdXTracker.trackSale(context, "" + value, customerId, orderNr, skus, isFirstCustomer, JumiaApplication.SHOP_NAME, false);
 
         } else {
             String customerId = customer.getIdAsString();
@@ -438,16 +439,16 @@ public class TrackerDelegator {
 
             Log.d(TAG, "TRACK SALE: CUSTOMER ID: " + customerId + " IS FIRST TIME: " + isFirstCustomer);
 
-            AdXTracker.trackSale(context, value, customerId, orderNr, skus, isFirstCustomer, JumiaApplication.SHOP_NAME, customer.isGuest());
+            AdXTracker.trackSale(context, "" + value, customerId, orderNr, skus, isFirstCustomer, JumiaApplication.SHOP_NAME, customer.isGuest());
         }
 
-        Ad4PushTracker.get().trackCheckoutEnded(orderNr, Double.parseDouble(value), averageValue, items.size(), coupon, favoritesCount);
+        Ad4PushTracker.get().trackCheckoutEnded(orderNr, value, averageValue, items.size(), coupon, favoritesCount);
 
     }
 
     private static void trackNativeCheckoutPurchase(Bundle params, Map<String, ShoppingCartItem> mItems) {
-        String order_nr = params.getString(ORDER_NUMBER_KEY);
-        String value = params.getString(VALUE_KEY);
+        String orderNr = params.getString(ORDER_NUMBER_KEY);
+        double value = params.getDouble(VALUE_KEY);
         String email = params.getString(EMAIL_KEY);
         Customer customer = params.getParcelable(CUSTOMER_KEY);
         String coupon = params.getString(COUPON_KEY);
@@ -456,7 +457,7 @@ public class TrackerDelegator {
 
         Log.i(TAG, "TRACK SALE: STARTED");
         Log.d(TAG, "tracking for " + ShopSelector.getShopName() + " in country " + ShopSelector.getCountryName());
-        Log.d(TAG, "TRACK SALE: JSON " + order_nr);
+        Log.d(TAG, "TRACK SALE: JSON " + orderNr);
 
         ArrayList<String> favoritesSKU = FavouriteTableHelper.getFavouriteSKUList();
 
@@ -469,7 +470,8 @@ public class TrackerDelegator {
             favoritesCount += favoritesSKU.contains(item.sku) ? 1 : 0;
         }
         averageValue = averageValue / items.size();
-        AnalyticsGoogle.get().trackSales(order_nr, value, items);
+        
+        AnalyticsGoogle.get().trackPurchase(orderNr, value, items);
 
         if (customer == null) {
             Log.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
@@ -478,7 +480,7 @@ public class TrackerDelegator {
             // Send the track sale without customer id
             String customerId = Utils.cleanMD5(email);
             boolean isFirstCustomer = false;
-            AdXTracker.trackSale(context, value, customerId, order_nr, skus, isFirstCustomer, JumiaApplication.SHOP_NAME, false);
+            AdXTracker.trackSale(context, "" + value, customerId, orderNr, skus, isFirstCustomer, JumiaApplication.SHOP_NAME, false);
 
         } else {
             String customerId = customer.getIdAsString();
@@ -486,12 +488,12 @@ public class TrackerDelegator {
 
             Log.d(TAG, "TRACK SALE: CUSTOMER ID: " + customerId + " IS FIRST TIME: " + isFirstCustomer);
 
-            AdXTracker.trackSale(context, value, customerId, order_nr, skus, isFirstCustomer, JumiaApplication.SHOP_NAME, customer.isGuest());
+            AdXTracker.trackSale(context, "" + value, customerId, orderNr, skus, isFirstCustomer, JumiaApplication.SHOP_NAME, customer.isGuest());
         }
 
         // String transactionId, Double cartValue, Double average, String
         // category, int orderCount, String coupon
-        Ad4PushTracker.get().trackCheckoutEnded(order_nr, Double.parseDouble(value), averageValue, mItems.size(), coupon, favoritesCount);
+        Ad4PushTracker.get().trackCheckoutEnded(orderNr, value, averageValue, mItems.size(), coupon, favoritesCount);
 
     }
 

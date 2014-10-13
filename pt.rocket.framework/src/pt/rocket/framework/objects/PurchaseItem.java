@@ -24,40 +24,16 @@ public class PurchaseItem implements Parcelable {
 	public String name;
 	public String category;
 	public String paidprice;
-	public Double paidpriceAsDouble = 0d;
 	public String quantity= "";
 	public Integer quantityAsInt = 0;
-	
-	
+	public double paidpriceAsDouble = 0d;
+	private double paidPriceForTracking = 0d;
 	
 	/**
 	 * Empty constructor
 	 */
 	public PurchaseItem() { }
-
 	
-	private boolean parseItem( JSONObject itemsJson, int indexBegin ) {
-		try {
-			sku = itemsJson.getJSONObject(String.valueOf(indexBegin)).getString(RestConstants.JSON_SKU_TAG );
-			name = itemsJson.getJSONObject(String.valueOf(indexBegin + 1)).getString( RestConstants.JSON_PURCHASE_NAME_TAG );
-			category = itemsJson.getJSONObject(String.valueOf(indexBegin + 2)).getString( RestConstants.JSON_CATEGORY_TAG );
-			paidprice = itemsJson.getJSONObject(String.valueOf(indexBegin + 3)).getString( RestConstants.JSON_PAIDPRICE_TAG );
-			quantity = itemsJson.getJSONObject(String.valueOf(indexBegin + 4)).getString( RestConstants.JSON_QUANTITY_TAG );
-		} catch (JSONException e) {
-			Log.e(TAG, "parsing purchase item failed" + e);
-			return false;
-		}			
-		
-		try {
-			paidpriceAsDouble = Double.parseDouble( paidprice );
-			quantityAsInt = Integer.parseInt(quantity);
-		} catch ( NumberFormatException e ) {
-			Log.e(TAG, "parsing of number values failed", e );
-		}
-		
-		return true;
-	}
-
 	/**
 	 * For WebCheckout
 	 */
@@ -81,6 +57,25 @@ public class PurchaseItem implements Parcelable {
 		return items;
 	}
 	
+	private boolean parseItem( JSONObject itemsJson, int indexBegin ) {
+		try {
+			sku = itemsJson.getJSONObject(String.valueOf(indexBegin)).getString(RestConstants.JSON_SKU_TAG );
+			name = itemsJson.getJSONObject(String.valueOf(indexBegin + 1)).getString( RestConstants.JSON_PURCHASE_NAME_TAG );
+			category = itemsJson.getJSONObject(String.valueOf(indexBegin + 2)).getString( RestConstants.JSON_CATEGORY_TAG );
+			JSONObject prcObj = itemsJson.getJSONObject(String.valueOf(indexBegin + 3));
+			paidprice = prcObj.getString( RestConstants.JSON_PAIDPRICE_TAG );
+			paidpriceAsDouble = prcObj.optDouble(RestConstants.JSON_PAIDPRICE_TAG, 0);
+			JSONObject qtObj = itemsJson.getJSONObject(String.valueOf(indexBegin + 4));
+			quantity = qtObj.getString( RestConstants.JSON_QUANTITY_TAG);
+			quantityAsInt = qtObj.optInt(RestConstants.JSON_QUANTITY_TAG, 0);
+		} catch (JSONException e) {
+			Log.e(TAG, "parsing purchase item failed" + e);
+			return false;
+		}
+		
+		return true;
+	}
+	
 	/**
 	 * For NativeCheckout
 	 */
@@ -94,6 +89,7 @@ public class PurchaseItem implements Parcelable {
             mPurchaseItem.name = mShoppingCartItem.getName();
             mPurchaseItem.paidprice = mShoppingCartItem.getPrice();
             mPurchaseItem.paidpriceAsDouble = mShoppingCartItem.getPriceVal();
+            mPurchaseItem.paidPriceForTracking = mShoppingCartItem.getPriceForTracking();
             mPurchaseItem.quantity = String.valueOf(mShoppingCartItem.getQuantity());
             mPurchaseItem.quantityAsInt = (int) mShoppingCartItem.getQuantity();
             items.add(mPurchaseItem);
@@ -107,6 +103,15 @@ public class PurchaseItem implements Parcelable {
         }
 
 		return items;
+	}
+	
+	
+	/**
+	 * Returns the paid price value for tracking
+	 * @author sergiopereira
+	 */
+	public double getPriceForTracking() {
+		return paidPriceForTracking;
 	}
 	
     /**
