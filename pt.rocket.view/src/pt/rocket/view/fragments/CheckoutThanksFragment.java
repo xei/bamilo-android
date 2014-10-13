@@ -37,6 +37,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.MotionEvent;
@@ -354,7 +355,11 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         super.removeNativeCheckoutFromBackStack();
         // Switch to track order
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, view.getTag().toString());
+        // Validate orderNumber from tag
+        String orderNumber = view.getTag() == null ? null : view.getTag().toString();
+        if (!TextUtils.isEmpty(orderNumber)) {
+            bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, view.getTag().toString());
+        }
         getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -454,6 +459,13 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     protected boolean onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        
         return true;
     }
 
@@ -466,7 +478,16 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     protected boolean onErrorEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.i(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        // Generic errors
+        if(getBaseActivity().handleErrorEvent(bundle)) return true;
+        
         return false;
     }
 
