@@ -1395,10 +1395,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         } else if (id == R.id.product_detail_image_is_favourite) {
             boolean isFavourite = false;
-            Object isFavoriteObject = mCompleteProduct.getAttributes().get(
-                    RestConstants.JSON_IS_FAVOURITE_TAG);
-            if (isFavoriteObject != null && isFavoriteObject instanceof String) {
-                isFavourite = Boolean.parseBoolean((String) isFavoriteObject);
+            if (mCompleteProduct != null && mCompleteProduct.getAttributes() != null) {
+                Object isFavoriteObject = mCompleteProduct.getAttributes().get(RestConstants.JSON_IS_FAVOURITE_TAG);
+                if (isFavoriteObject != null && isFavoriteObject instanceof String) {
+                    isFavourite = Boolean.parseBoolean((String) isFavoriteObject);
+                }
+            } else {
+                Log.w(TAG, "mCompleteProduct is null or doesn't have attributes");
+                return;
             }
             int fragmentMessage = 0;
             if (!isFavourite) {
@@ -1496,19 +1500,19 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     };
 
     public void onSuccessEvent(Bundle bundle) {
-
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
-        if (getBaseActivity() == null)
-            return;
-
+        
+        if (getBaseActivity() == null) return;
+        
         getBaseActivity().handleSuccessEvent(bundle);
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.d(TAG, "onSuccessEvent: type = " + eventType);
+        
         switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             isAddingProductToCart = false;
@@ -1548,19 +1552,18 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     }
 
     public void onErrorEvent(Bundle bundle) {
-
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
-        if (getBaseActivity().handleErrorEvent(bundle)) {
-            return;
-        }
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "onErrorEvent: type = " + eventType);
+        // Generic errors
+        if(getBaseActivity().handleErrorEvent(bundle)) return;
+        
         switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             isAddingProductToCart = false;
