@@ -73,7 +73,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
     
     private Fragment mWriteReviewFragment;
 
-    private static String mSavedUrl;
+    private String mSavedUrl;
 
     private int mSavedPageNumber;
 

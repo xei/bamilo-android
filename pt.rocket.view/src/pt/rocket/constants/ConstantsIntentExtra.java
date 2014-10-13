@@ -97,8 +97,8 @@ public class ConstantsIntentExtra {
     public static final String ORDER_FINISH                 = mPackage + "OrderFinish";
 
     // ########### MAINTANCE ##############
-    public static final String IN_MAINTANCE = "is_in_maintance";
+    public static final String IN_MAINTANCE                 = "is_in_maintance";
     
     // ########### BACKSTACK ##############
-    public static final String BACSTACK                = mPackage + "backstack";
+    public static final String BACK_STACK                     = mPackage + "backstack";
 }

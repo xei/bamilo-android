@@ -46,6 +46,8 @@ public class Utils {
         try {
             
            key = key + System.nanoTime();
+           
+           Log.i(TAG, "UNIQUE MD5: " + key);
 
             // Create MD5 Hash
             MessageDigest digest = java.security.MessageDigest.getInstance("MD5");

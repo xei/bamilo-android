@@ -25,7 +25,6 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.LastViewed;
 import pt.rocket.framework.objects.ProductSimple;
-import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.objects.Variation;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.AdXTracker;
@@ -313,11 +312,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         mainView = view;
         // Set layout
         setAppContentLayout(view);
-        // Validate the current product
-        mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
-        if (mCompleteProduct == null)
-            init();
-        
     }
 
     /*
@@ -329,7 +323,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public void onResume() {
         super.onResume();
         Log.d(TAG, "ON RESUME");
-        if (mCompleteProduct != null) {
+        // Validate the current product
+        mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+        if (mCompleteProduct == null) {
+        	init();
+        } else {
             // Must get other params other than currentProduct
             // Get arguments
             Bundle bundle = getArguments();
@@ -392,7 +390,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         dialogListFragment = null;
         // Destroy variations
         productVariationsFragment = null;
-        
     }
 
     /*
@@ -401,7 +398,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      * @see pt.rocket.view.fragments.BaseFragment#onDestroyView()
      */
     @Override
-    public void onDestroyView() {       
+    public void onDestroyView() {
         super.onDestroyView();
         Log.d(TAG, "ON DESTROY VIEW");
     }
@@ -415,8 +412,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "ON DESTROY");
-
-
     }
 
     /**
@@ -574,7 +569,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     }
 
     private void loadProduct() {
-        Log.d(TAG, "LOAD PRODUCT:"+mCompleteProductUrl);
+        Log.d(TAG, "LOAD PRODUCT");
         mBeginRequestMillis = System.currentTimeMillis();
         Bundle bundle = new Bundle();
         bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
@@ -584,8 +579,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         } else {
             showFragmentRetry(this);
         }
-        
-    
     }
 
     private void loadProductPartial() {
@@ -1552,18 +1545,19 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     }
 
     public void onErrorEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-        
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        // Generic errors
-        if(getBaseActivity().handleErrorEvent(bundle)) return;
-        
+
+        if (getBaseActivity().handleErrorEvent(bundle)) {
+            return;
+        }
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             isAddingProductToCart = false;

@@ -820,12 +820,11 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         Bundle args = getArguments();
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetNewAddressHelper.FORM_CONTENT_VALUES, values);
-        if(null != args && args.containsKey(ConstantsIntentExtra.IS_SIGNUP)){            
+        // Validate origin
+        if(null != args && args.containsKey(ConstantsIntentExtra.IS_SIGNUP))
             bundle.putBoolean(SetNewAddressHelper.IS_FROM_SIGNUP,args.getBoolean(ConstantsIntentExtra.IS_SIGNUP, false));
-            triggerContentEvent(new SetNewAddressHelper(), bundle, this);                   
-        } else {
-            triggerContentEvent(new SetNewAddressHelper(), bundle, this);
-        }
+        // Trigger
+        triggerContentEvent(new SetNewAddressHelper(), bundle, this);
 
         // Hide the keyboard
         getBaseActivity().hideKeyboard();

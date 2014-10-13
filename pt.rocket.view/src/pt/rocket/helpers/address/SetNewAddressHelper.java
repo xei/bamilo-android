@@ -5,7 +5,6 @@ package pt.rocket.helpers.address;
 
 import org.json.JSONObject;
 
-import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -31,7 +30,7 @@ public class SetNewAddressHelper extends BaseHelper {
 
     private Parcelable contentValues;
     
-    private static EventType EVENT_TYPE = EventType.CREATE_ADDRESS_EVENT;
+    private EventType mEventType = EventType.CREATE_ADDRESS_EVENT;
     
     /*
      * (non-Javadoc)
@@ -39,24 +38,20 @@ public class SetNewAddressHelper extends BaseHelper {
      */
     @Override
     public Bundle generateRequestBundle(Bundle args) {
-        Log.d(TAG, "REQUEST");     
-        if(null != args && args.containsKey(IS_FROM_SIGNUP)){
-            if(args.getBoolean(IS_FROM_SIGNUP, false)){
-                EVENT_TYPE = EventType.CREATE_ADDRESS_SIGNUP_EVENT;
-            } else {
-                EVENT_TYPE = EventType.CREATE_ADDRESS_EVENT;
-            }
-        } else {
-            EVENT_TYPE = EventType.CREATE_ADDRESS_EVENT;
-        }      
+        Log.d(TAG, "REQUEST");
+        // Validate origin
+        if(null != args && args.getBoolean(IS_FROM_SIGNUP, false)){
+            mEventType = EventType.CREATE_ADDRESS_SIGNUP_EVENT;
+        }
+        // Create bundle
         contentValues = args.getParcelable(FORM_CONTENT_VALUES);
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
+        bundle.putString(Constants.BUNDLE_URL_KEY, mEventType.action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, contentValues);
-        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
+        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(mEventType.name()));
         return bundle;
     }
    
@@ -67,7 +62,7 @@ public class SetNewAddressHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE BUNDLE: " + jsonObject);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
         return bundle;
     }
@@ -79,7 +74,7 @@ public class SetNewAddressHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE ERROR BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -91,7 +86,7 @@ public class SetNewAddressHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE RESPONSE BUNDLE");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }

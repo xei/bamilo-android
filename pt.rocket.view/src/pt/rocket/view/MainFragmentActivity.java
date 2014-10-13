@@ -6,7 +6,6 @@ package pt.rocket.view;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
@@ -119,44 +118,20 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             if (!isValidNotification(getIntent()))
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            currentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);           
+            currentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
+
             Log.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + currentFragmentType.toString());
             fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentType.toString());
             if (null != fragment) {
                 fragment.setActivity(this);
             }
-            ArrayList<String> backstackTypes = new ArrayList<String>();
-            backstackTypes = (ArrayList<String>) savedInstanceState.getSerializable(ConstantsIntentExtra.BACSTACK);
-            List<Fragment> originalFragments = this.getSupportFragmentManager().getFragments();                  
-            List<Fragment> orderedFragments = new ArrayList<Fragment>();
             
-            if(originalFragments.size() > 0 && backstackTypes.size() > 0){                
-                for (int i = 0; i < backstackTypes.size(); i++) {
-                    for (int j = 0; j < originalFragments.size(); j++) {
-                        if(originalFragments.get(j) != null && backstackTypes.get(i).equalsIgnoreCase(originalFragments.get(j).getTag()))
-                            //validating that none of the checkout steps are entered in the new backstack because it will have an empty shopping cart 
-                            //and will redirected to the shopping cart fragment, making it the top one
-                            if(!backstackTypes.get(i).equalsIgnoreCase(FragmentType.ABOUT_YOU.toString()) &&
-                                    !backstackTypes.get(i).equalsIgnoreCase(FragmentType.POLL.toString()) &&
-                                    !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CREATE_ADDRESS.toString()) &&
-                                    !backstackTypes.get(i).equalsIgnoreCase(FragmentType.EDIT_ADDRESS.toString()) &&
-                                    !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ADDRESSES.toString()) &&
-                                    !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ORDER.toString()) &&
-                                    !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_EXTERNAL_PAYMENT.toString()) &&
-                                    !backstackTypes.get(i).equalsIgnoreCase(FragmentType.SHIPPING_METHODS.toString()) &&
-                                    !backstackTypes.get(i).equalsIgnoreCase(FragmentType.PAYMENT_METHODS.toString()) &&
-                                    !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_THANKS.toString()) &&
-                                    !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_BASKET.toString()))
-                                orderedFragments.add(originalFragments.get(j));
-                    }
-                } 
-                //setting specific cases of behavior when we don't want to recover the back stack and set it starting from home screen 
-                if(!currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHANGE_COUNTRY.toString()) &&
-                        !currentFragmentType.toString().equalsIgnoreCase(FragmentType.HOME.toString()) &&
-                        !currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHECKOUT_THANKS.toString()))
-                    FragmentController.getInstance().restoreBackstack(this, orderedFragments);          
-
-            }
+            // Get FC Backstack from saved state and get fragments from FM
+            ArrayList<String> backstackTypes = (ArrayList<String>) savedInstanceState.getStringArrayList(ConstantsIntentExtra.BACK_STACK);
+            List<Fragment> originalFragments = this.getSupportFragmentManager().getFragments();
+            if (backstackTypes != null && backstackTypes.size() > 0)
+                FragmentController.getInstance().validateCurrentState(this, backstackTypes, originalFragments, currentFragmentType);
+            
         }
 
         Intent splashScreenParams = getIntent();
@@ -280,9 +255,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         try {
             String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
             currentFragmentType = FragmentType.valueOf(tag);
-          
+            // Save the current back stack
             Iterator<String> iterator =  FragmentController.getInstance().returnAllEntries().iterator();
-
             while (iterator.hasNext()) {
                 frags.add(iterator.next());
             }
@@ -293,7 +267,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         // Save the current fragment type on orientation change
         outState.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, currentFragmentType);
         // Save the current backstack history
-        outState.putSerializable(ConstantsIntentExtra.BACSTACK, frags);
+        outState.putStringArrayList(ConstantsIntentExtra.BACK_STACK, frags);
     }
 
     /*
@@ -475,11 +449,11 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
     public BaseFragment getActiveFragment() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            Log.d("BACKSTACK","getBackStackEntryCount is 0" );
+            Log.i("BACKSTACK","getBackStackEntryCount is 0" );
             return null;
         }
         String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-        Log.d("BACKSTACK","getActiveFragment:"+tag);
+        Log.i("BACKSTACK","getActiveFragment:"+tag);
         return (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
 

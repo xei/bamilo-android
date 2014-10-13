@@ -1,5 +1,6 @@
 package pt.rocket.controllers.fragments;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -489,14 +490,64 @@ public class FragmentController {
      *   
      * @param fragments the list of current opened fragments
      */
-    public void restoreBackstack(BaseActivity activity, List<Fragment> fragments) {
+    private void restoreBackstack(BaseActivity activity, List<Fragment> fragments) {
+        Log.i(TAG, "ON RESTORE BACKSTACK:");
         for (Fragment fragment : fragments) {
             if (null != fragment && null != fragment.getTag() && !backStack.contains(fragment.getTag())) {
-                Log.d("BACKSTACK","type:"+fragment.getTag());
+                Log.i(TAG, "RESTORE: " + fragment.getTag());
+                // Add to backstack
                 addToBackStack(fragment.getTag());
-                if (fragment instanceof BaseFragment)
-                    ((BaseFragment)fragment).setActivity(activity);
+                // Set activity
+                if (fragment instanceof BaseFragment) ((BaseFragment) fragment).setActivity(activity);
             }
+        }
+    }
+    
+    /**
+     * Validate the current state and try restore the saved state if necessary 
+     * @param activity
+     * @param backstackTypes
+     * @param originalFragments
+     * @param currentFragmentType
+     * @author paulo
+     * @modified sergiopereira
+     */
+    public void validateCurrentState(BaseActivity activity, ArrayList<String> backstackTypes, List<Fragment> originalFragments, FragmentType currentFragmentType) {
+        // Validate the current back stack size
+        if(getBackStackSize() > 0) {
+            Log.i(TAG, "FRAGMENT CONTROLLER: HAS BACKSTACK!");
+            return;
+        }
+        
+        Log.i(TAG, "FRAGMENT CONTROLLER: TRY RECOVER BACKSTACK!");
+        
+        List<Fragment> orderedFragments = new ArrayList<Fragment>();
+        if(originalFragments.size() > 0 && backstackTypes.size() > 0){
+            for (int i = 0; i < backstackTypes.size(); i++) {
+                for (int j = 0; j < originalFragments.size(); j++) {
+                    Log.i(TAG, "LOOP: FRAGMENT: " + originalFragments.get(j).getTag());
+                    if(originalFragments.get(j) != null && backstackTypes.get(i).equalsIgnoreCase(originalFragments.get(j).getTag()))
+                        //validating that none of the checkout steps are entered in the new backstack because it will have an empty shopping cart 
+                        //and will redirected to the shopping cart fragment, making it the top one
+                        if(!backstackTypes.get(i).equalsIgnoreCase(FragmentType.ABOUT_YOU.toString()) &&
+                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.POLL.toString()) &&
+                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CREATE_ADDRESS.toString()) &&
+                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.EDIT_ADDRESS.toString()) &&
+                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ADDRESSES.toString()) &&
+                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ORDER.toString()) &&
+                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_EXTERNAL_PAYMENT.toString()) &&
+                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.SHIPPING_METHODS.toString()) &&
+                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.PAYMENT_METHODS.toString()) &&
+                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_THANKS.toString()) &&
+                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_BASKET.toString()))
+                            orderedFragments.add(originalFragments.get(j));
+                }
+            } 
+            //setting specific cases of behavior when we don't want to recover the back stack and set it starting from home screen 
+            if(!currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHANGE_COUNTRY.toString()) &&
+                    !currentFragmentType.toString().equalsIgnoreCase(FragmentType.HOME.toString()) &&
+                    !currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHECKOUT_THANKS.toString()))
+                restoreBackstack(activity, orderedFragments);          
         }
     }
     
