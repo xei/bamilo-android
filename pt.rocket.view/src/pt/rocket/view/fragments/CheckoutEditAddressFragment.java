@@ -207,25 +207,32 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        // Save values on current address
-        if(mEditFormGenerator != null && mCurrentAddress != null) {
-            // Get data from form
-            ContentValues mContentValues = createContentValues(mEditFormGenerator);
-            // Save it
-            for (Entry<String, Object> entry : mContentValues.valueSet()) {
-                 try {
-                     if(entry.getKey().contains(RestConstants.JSON_FIRST_NAME_TAG)) mCurrentAddress.setFirstName((String) entry.getValue());
-                     else if(entry.getKey().contains(RestConstants.JSON_LAST_NAME_TAG)) mCurrentAddress.setLastName((String) entry.getValue());
-                     else if(entry.getKey().contains(RestConstants.JSON_ADDRESS1_TAG)) mCurrentAddress.setAddress((String) entry.getValue());
-                     else if(entry.getKey().contains(RestConstants.JSON_ADDRESS2_TAG)) mCurrentAddress.setAddress2((String) entry.getValue());
-                     else if(entry.getKey().contains(RestConstants.JSON_PHONE_TAG)) mCurrentAddress.setPhone((String) entry.getValue());
-                     else if(entry.getKey().contains(RestConstants.JSON_REGION_ID_TAG)) mCurrentAddress.setFkCustomerAddressRegion((Integer) entry.getValue());
-                     else if(entry.getKey().contains(RestConstants.JSON_CITY_ID_TAG)) mCurrentAddress.setFkCustomerAddressCity(Integer.valueOf((String) entry.getValue()));
-                     else if (entry.getKey().contains(RestConstants.JSON_CITY_TAG)) mCurrentAddress.setCity((String) entry.getValue());
-                } catch (NumberFormatException e) {
-                    Log.w(TAG, "INVALID FORMAT FOR REGION OR CITY", e);
+        Log.d(TAG, "ON SAVE SATE");
+        try {
+            // Save values on current address
+            if(mEditFormGenerator != null && mCurrentAddress != null) {
+                // Get data from form
+                ContentValues mContentValues = createContentValues(mEditFormGenerator);
+                // Save it
+                for (Entry<String, Object> entry : mContentValues.valueSet()) {
+                     try {
+                         if(entry.getKey().contains(RestConstants.JSON_FIRST_NAME_TAG)) mCurrentAddress.setFirstName((String) entry.getValue());
+                         else if(entry.getKey().contains(RestConstants.JSON_LAST_NAME_TAG)) mCurrentAddress.setLastName((String) entry.getValue());
+                         else if(entry.getKey().contains(RestConstants.JSON_ADDRESS1_TAG)) mCurrentAddress.setAddress((String) entry.getValue());
+                         else if(entry.getKey().contains(RestConstants.JSON_ADDRESS2_TAG)) mCurrentAddress.setAddress2((String) entry.getValue());
+                         else if(entry.getKey().contains(RestConstants.JSON_PHONE_TAG)) mCurrentAddress.setPhone((String) entry.getValue());
+                         else if(entry.getKey().contains(RestConstants.JSON_REGION_ID_TAG)) mCurrentAddress.setFkCustomerAddressRegion((Integer) entry.getValue());
+                         else if(entry.getKey().contains(RestConstants.JSON_CITY_ID_TAG)) mCurrentAddress.setFkCustomerAddressCity(Integer.valueOf((String) entry.getValue()));
+                         else if (entry.getKey().contains(RestConstants.JSON_CITY_TAG)) mCurrentAddress.setCity((String) entry.getValue());
+                    } catch (NumberFormatException e) {
+                        Log.w(TAG, "INVALID FORMAT FOR REGION OR CITY", e);
+                    }
                 }
             }
+        } catch (ClassCastException e) {
+            Log.w(TAG, "INVALID CAST ON CREATE CONTENT VALUES", e);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "SOME VIEW IS NULL", e);
         }
     }
     
@@ -684,15 +691,14 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      * @return boolean
      */
     protected boolean onSuccessEvent(Bundle bundle) {
-        Log.i(TAG, "ON SUCCESS EVENT");
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
-        if(isOnStoppingProcess){
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         switch (eventType) {
         case INIT_FORMS:
@@ -741,21 +747,17 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      * @return boolean
      */
     protected boolean onErrorEvent(Bundle bundle) {
-        
-        if(isOnStoppingProcess){
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
-    	
-        // Generic error
-        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
-            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
-            return true;
-        }
-        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        // Generic errors
+        if(getBaseActivity().handleErrorEvent(bundle)) return true;
         
         switch (eventType) {
         case INIT_FORMS:
