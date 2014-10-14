@@ -46,62 +46,45 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	private String url;
 	private String description;
 	private String ratingsUrl;
-
 	private String price;
-	/*--private String maxPrice;*/
 	private String brand;
-
 	private double priceDouble;
-	/*--private double maxPriceDouble;*/
-
 	private String specialPrice;
 	private double specialPriceDouble;
-	/*--private String maxSpecialPrice;*/
 	private Double maxSavingPercentage;
 	private Double ratingsAverage;
 	private Integer ratingsCount;
-
 	private ArrayList<String> categories;
-
 	private HashMap<String, String> attributes;
-
 	private HashMap<String, String> shipmentData;
-
 	private ArrayList<ProductSimple> simples;
-
 	private ArrayList<String> imageList;
-
 	private ArrayList<Variation> variations;
-
 	private ArrayList<String> known_variations;
-
 	private boolean isNew;
+	private double mPriceConverted;
+	private double mSpecialPriceConverted;
 
 	/**
 	 * Complete product empty constructor.
 	 */
 	public CompleteProduct() {
 		categories = new ArrayList<String>();
-
 		attributes = new HashMap<String, String>();
 		shipmentData = new HashMap<String, String>();
-
 		simples = new ArrayList<ProductSimple>();
 		imageList = new ArrayList<String>();
 		variations = new ArrayList<Variation>();
 		known_variations = new ArrayList<String>();
-
 		url = "";
 		description = "";
-
 		specialPrice = CurrencyFormatter.formatCurrency("0");
-		/*--maxSpecialPrice = CurrencyFormatter.formatCurrency("0");*/
 		maxSavingPercentage = 0.0;
-
 		ratingsAverage = 0.0;
 		ratingsCount = 0;
-
 		isNew = false;
+		mPriceConverted = 0d;
+		mSpecialPriceConverted = 0d;
 	}
 
 	/*
@@ -130,10 +113,11 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			// Throw JSONException if JSON_PRICE_TAG is not present
 			String priceJSON = dataObject.getString(RestConstants.JSON_PRICE_TAG);
 			if (!CurrencyFormatter.isNumber(priceJSON)) {
-			    throw new JSONException("Price is not a number!");
+				throw new JSONException("Price is not a number!");
 			}
 			priceDouble = Double.parseDouble(priceJSON);
 			price = CurrencyFormatter.formatCurrency(priceJSON);
+			mPriceConverted = dataObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
 
 			/*-maxPriceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_PRICE_TAG, "0"));
 			maxPrice = CurrencyFormatter.formatCurrency(maxPriceDouble);*/
@@ -149,12 +133,14 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);*/
 			String specialPriceJSON = dataObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
 			if (!CurrencyFormatter.isNumber(specialPriceJSON)) {
-			    specialPriceJSON = priceJSON;
+				specialPriceJSON = priceJSON;
 			}
 			specialPriceDouble = Double.parseDouble(specialPriceJSON);
-			// specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);
+			// specialPrice =
+			// CurrencyFormatter.formatCurrency(specialPriceDouble);
 			// Fix NAFAMZ-7848
 			specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
+			mSpecialPriceConverted = dataObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
 
 			/*-maxSpecialPrice = CurrencyFormatter.formatCurrency(maxSpecialJSON);*/
 			/*--String maxSpecialJSON = dataObject.optString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG);
@@ -165,9 +151,9 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			/*-maxSavingPercentage = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, "0"));*/
 			String maxSavingPercentageJSON = dataObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
 			if (CurrencyFormatter.isNumber(maxSavingPercentageJSON)) {
-			    maxSavingPercentage = Double.parseDouble(maxSavingPercentageJSON);
+				maxSavingPercentage = Double.parseDouble(maxSavingPercentageJSON);
 			} else {
-			    maxSavingPercentageJSON = "0";
+				maxSavingPercentageJSON = "0";
 			}
 
 			// TODO: ratings need to be completed
@@ -189,8 +175,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			// attributes
 			attributes.clear();
 
-			JSONObject attributesObject = dataObject
-					.optJSONObject(RestConstants.JSON_PROD_ATTRIBUTES_TAG);
+			JSONObject attributesObject = dataObject.optJSONObject(RestConstants.JSON_PROD_ATTRIBUTES_TAG);
 
 			if (attributesObject != null) {
 				JSONArray attributesNames = attributesObject.names();
@@ -203,16 +188,16 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 
 			// simples
 			simples.clear();
-			JSONArray simpleArray = dataObject
-					.getJSONArray(RestConstants.JSON_SIMPLES_TAG);
+			JSONArray simpleArray = dataObject.getJSONArray(RestConstants.JSON_SIMPLES_TAG);
 
 			for (int i = 0; i < simpleArray.length(); ++i) {
 				ProductSimple simple = new ProductSimple();
 				JSONObject simpleObject = simpleArray.getJSONObject(i);
 				simple.initialize(simpleObject);
 
-				//String simpleSKU = simple.getAttributes().get(RestConstants.JSON_SKU_TAG);
-				
+				// String simpleSKU =
+				// simple.getAttributes().get(RestConstants.JSON_SKU_TAG);
+
 				simples.add(simple);
 			}
 
@@ -226,12 +211,12 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 				}
 			}
 
-			if(	dataObject.has(RestConstants.JSON_PROD_UNIQUES_TAG) &&  
-					dataObject.optJSONObject(RestConstants.JSON_PROD_UNIQUES_TAG) != null &&
-					dataObject.optJSONObject(RestConstants.JSON_PROD_UNIQUES_TAG).optJSONObject(RestConstants.JSON_ATTRIBUTES_TAG) != null){
-				
-				JSONObject uniquesObject = dataObject.optJSONObject(
-						RestConstants.JSON_PROD_UNIQUES_TAG).optJSONObject(
+			if (dataObject.has(RestConstants.JSON_PROD_UNIQUES_TAG)
+					&& dataObject.optJSONObject(RestConstants.JSON_PROD_UNIQUES_TAG) != null
+					&& dataObject.optJSONObject(RestConstants.JSON_PROD_UNIQUES_TAG).optJSONObject(
+							RestConstants.JSON_ATTRIBUTES_TAG) != null) {
+
+				JSONObject uniquesObject = dataObject.optJSONObject(RestConstants.JSON_PROD_UNIQUES_TAG).optJSONObject(
 						RestConstants.JSON_ATTRIBUTES_TAG);
 
 				@SuppressWarnings("rawtypes")
@@ -253,8 +238,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 
 			isNew = dataObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
 
-			JSONObject variationsObject = dataObject
-					.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
+			JSONObject variationsObject = dataObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
 			if (variationsObject == null)
 				return true;
 
@@ -262,8 +246,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			Iterator iter = variationsObject.keys();
 			while (iter.hasNext()) {
 				String key = (String) iter.next();
-				JSONObject variationObject = variationsObject
-						.getJSONObject(key);
+				JSONObject variationObject = variationsObject.getJSONObject(key);
 				Variation variation = new Variation();
 				variation.initialize(key, variationObject);
 				this.variations.add(variation);
@@ -343,24 +326,10 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @return the maxPrice
-	 */
-	/*--public String getMaxPrice() {
-		return maxPrice;
-	}*/
-
-	/**
-	 * @return the maxPrice as a Double
-	 */
-	/*--public Double getMaxPriceAsDouble() {
-		return maxPriceDouble;
-	}*/
-
-	/**
 	 * @return the special price as a Double
 	 */
 	public double getSpecialPriceAsDouble() {
-	    return specialPriceDouble;
+		return specialPriceDouble;
 	}
 
 	/**
@@ -498,14 +467,6 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @param maxPrice
-	 *            the maxPrice to set
-	 */
-	/*--public void setMaxPrice(String maxPrice) {
-		this.maxPrice = maxPrice;
-	}*/
-
-	/**
 	 * @param brand
 	 *            the brand to set
 	 */
@@ -561,13 +522,6 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @return the maxSpecialPrice
-	 */
-	/*--public String getMaxSpecialPrice() {
-		return maxSpecialPrice;
-	}*/
-
-	/**
 	 * @return the maxSavingPercentage
 	 */
 	public Double getMaxSavingPercentage() {
@@ -605,30 +559,73 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		return known_variations;
 	}
 
-    public boolean isNew() {
-        return isNew;
-    }
+	public boolean isNew() {
+		return isNew;
+	}
 
-    public void setNew(boolean isNew) {
-        this.isNew = isNew;
-    }
+	public void setNew(boolean isNew) {
+		this.isNew = isNew;
+	}
 
-    /**
-     * Return the paid price for tracking.
-     * @return double
-     * @author sergiopereira
-     */
-    public double getPriceForTracking() {
-    	return specialPriceDouble > 0 ? specialPriceDouble : priceDouble;
-    }
-    
-    
+	/**
+	 * @return the mPriceConverted
+	 */
+	public double getPriceConverted() {
+		return mPriceConverted;
+	}
+
+	/**
+	 * @param priceConverted the mPriceConverted to set
+	 */
+	public void setPriceConverted(double priceConverted) {
+		this.mPriceConverted = priceConverted;
+	}
+
+	/**
+	 * @return the mSpecialPriceConverted
+	 */
+	public double getSpecialPriceConverted() {
+		return mSpecialPriceConverted;
+	}
+
+	/**
+	 * @param specialPriceConverted the mSpecialPriceConverted to set
+	 */
+	public void setSpecialPriceConverted(double specialPriceConverted) {
+		this.mSpecialPriceConverted = specialPriceConverted;
+	}
+
+	/**
+	 * Return the paid price for tracking.
+	 * 
+	 * @return double
+	 * @author sergiopereira
+	 */
+	public double getPriceForTracking() {
+		Log.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
+		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + mPriceConverted + " " + mSpecialPriceConverted);
+		return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceConverted;
+	}
+
+	/*
+	 * ############ PARCELABLE ############
+	 */
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.os.Parcelable#describeContents()
+	 */
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeList(categories);
@@ -640,10 +637,11 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		dest.writeString(url);
 		dest.writeString(description);
 		dest.writeString(specialPrice);
-		/*--dest.writeString(maxSpecialPrice);*/
 		dest.writeDouble(maxSavingPercentage);
 		dest.writeDouble(ratingsAverage);
 		dest.writeInt(ratingsCount);
+		dest.writeDouble(mPriceConverted);
+		dest.writeDouble(mSpecialPriceConverted);
 	}
 
 	private CompleteProduct(Parcel in) {
@@ -665,14 +663,15 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 
 		variations = new ArrayList<Variation>();
 		in.readList(variations, Variation.class.getClassLoader());
-		
+
 		url = in.readString();
 		description = in.readString();
 		specialPrice = in.readString();
-		/*--maxSpecialPrice = in.readString();*/
 		maxSavingPercentage = in.readDouble();
 		ratingsAverage = in.readDouble();
 		ratingsCount = in.readInt();
+		mPriceConverted = in.readDouble();
+		mSpecialPriceConverted = in.readDouble();
 	}
 
 	public static final Parcelable.Creator<CompleteProduct> CREATOR = new Parcelable.Creator<CompleteProduct>() {

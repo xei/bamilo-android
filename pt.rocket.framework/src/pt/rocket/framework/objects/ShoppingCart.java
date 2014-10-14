@@ -29,7 +29,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	private Map<String, ShoppingCartItem> mCartItems = new HashMap<String, ShoppingCartItem>();
 	private String mCartValue;
 	private double mCartValueAsDouble = 0d;
-	private double mCartValueEuroConverted = 0d;
+	private double mCartValueConverted = 0d;
 	private int mCartCount;
 	private String mVatValue;
 	private String mShippingValue;
@@ -66,7 +66,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		mCartValue = jsonObject.getString(RestConstants.JSON_CART_VALUE_TAG);
 		mCartValueAsDouble = jsonObject.optDouble(RestConstants.JSON_CART_VALUE_TAG, 0);
 		// Get cart value converted
-		mCartValueEuroConverted = jsonObject.optDouble(RestConstants.JSON_CART_VALUE_CONVERTED_TAG, 0);
+		mCartValueConverted = jsonObject.optDouble(RestConstants.JSON_CART_VALUE_CONVERTED_TAG, 0d);
 		// Get cart clean value
 		mCartCleanValue = jsonObject.optString(RestConstants.JSON_CART_CLEAN_VALUE_TAG);
 		mCartCount = jsonObject.getInt(RestConstants.JSON_CART_COUNT_TAG);
@@ -100,7 +100,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 			}
 		}
 		
-		Log.i(TAG, "CART INIT: " + mCartValue + " " + mCartValueAsDouble + " " + mCartValueEuroConverted);
+		Log.i(TAG, "CART INIT: " + mCartValue + " " + mCartValueAsDouble + " " + mCartValueConverted);
 		
 		return true;
 	}
@@ -298,14 +298,14 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 * @return the mCartValueEuroConverted
 	 */
 	public double getCartValueEuroConverted() {
-		return mCartValueEuroConverted;
+		return mCartValueConverted;
 	}
 
 	/**
 	 * @param cartValueEuroConverted the mCartValueEuroConverted to set
 	 */
 	public void setCartValueEuroConverted(double cartValueEuroConverted) {
-		this.mCartValueEuroConverted = cartValueEuroConverted;
+		this.mCartValueConverted = cartValueEuroConverted;
 	}
 	
 	/**
@@ -313,9 +313,8 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 * @author sergiopereira
 	 */
 	public double getPriceForTracking() {
-		Log.i(TAG, "GA TRACK PRICE FOR TRACKING: " + mCartValueAsDouble + " " + mCartValueEuroConverted);
-		//return mCartValueEuroConverted > 0 ? mCartValueEuroConverted : mCartValueAsDouble;
-		return mCartValueAsDouble;
+		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + mCartValueAsDouble + " " + mCartValueConverted);
+		return mCartValueConverted;
 	}
 
 	/*
@@ -352,7 +351,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		dest.writeString(mCouponDiscount);
 		dest.writeMap(mPriceRules);
 	    dest.writeDouble(mCartValueAsDouble);
-	    dest.writeDouble(mCartValueEuroConverted);
+	    dest.writeDouble(mCartValueConverted);
 	}
 
 	/**
@@ -376,7 +375,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		mPriceRules = new HashMap<String, String>();
 		in.readMap(mPriceRules, String.class.getClassLoader());
 		mCartValueAsDouble = in.readDouble();
-		mCartValueEuroConverted = in.readDouble();
+		mCartValueConverted = in.readDouble();
 	}
 
 	/**

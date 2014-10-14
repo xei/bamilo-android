@@ -38,8 +38,6 @@ import de.akquinet.android.androlog.Log;
 public class AnalyticsGoogle {
 
 	private static final String TAG = LogTagHelper.create(AnalyticsGoogle.class);
-	
-	// private static final double MICRO_MULTI = 1000000;
 
 	private static AnalyticsGoogle sInstance;
 	
@@ -417,8 +415,8 @@ public class AnalyticsGoogle {
 		// Track each item
 		for (ShoppingCartItem item : items) {
 			String sku = item.getConfigSimpleSKU();
-			long price = item.getPriceVal().longValue() * item.getQuantity();
-			trackEvent(event, sku, price);
+			double price = item.getPriceForTracking() * item.getQuantity();
+			trackEvent(event, sku, (long) price);
 		}
 	}
 	
@@ -487,8 +485,8 @@ public class AnalyticsGoogle {
 		// Validation
 		if (items == null || items.size() == 0) return;
 		// Get euro currency
-		//String currencyCode = CurrencyFormatter.EURO_CODE;
-		String currencyCode = CurrencyFormatter.getCurrencyCode();
+		String currencyCode = CurrencyFormatter.EURO_CODE;
+		//String currencyCode = CurrencyFormatter.getCurrencyCode();
 		// Track transaction
 		trackTransaction(orderNr, (long) cartValue, currencyCode);
 		// Track all items
@@ -542,17 +540,15 @@ public class AnalyticsGoogle {
 	}
 	
 	/**
-	 * 
-	 * @param context
-	 * @param sku
-	 * @param value
-	 * @param ratingType
+	 * Track a page from a string value.
+	 * @param page
+	 * @author sergiopereira
 	 */
-	public void trackCampaign(String campaign){
+	public void trackGenericPage(String page){
 		// Validate
 		if (!isEnabled) return;
 		// Data		
-		trackPage(campaign);
+		trackPage(page);
 	}
 
 	/**

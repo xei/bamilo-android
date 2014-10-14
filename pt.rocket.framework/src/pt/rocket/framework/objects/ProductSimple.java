@@ -18,12 +18,14 @@ import android.os.Parcelable;
  */
 public class ProductSimple implements IJSONSerializable, Parcelable {
 
-    public static final String SKU_TAG = "sku";
-    public static final String PRICE_TAG = "price";
-    public static final String SPECIAL_PRICE_TAG = "special_price";
-    public static final String QUANTITY_TAG = "quantity";
-    public static final String VARIATION_TAG = "variation";
-    public static final String STOCK_TAG = "stock";
+    public static final String SKU_TAG = RestConstants.JSON_SKU_TAG;
+    public static final String PRICE_TAG = RestConstants.JSON_PRICE_TAG;
+    public static final String SPECIAL_PRICE_TAG = RestConstants.JSON_SPECIAL_PRICE_TAG;
+    public static final String PRICE_CONVERTED_TAG = RestConstants.JSON_PRICE_CONVERTED_TAG;
+    public static final String SPECIAL_PRICE_CONVERTED_TAG = RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG;
+    public static final String QUANTITY_TAG = RestConstants.JSON_QUANTITY_TAG;
+    public static final String VARIATION_TAG = RestConstants.JSON_VARIATION_TAG;
+    public static final String STOCK_TAG = RestConstants.JSON_STOCK_TAG;
     public static final String MIN_DELIVERY_TIME_TAG = "min_delivery_time";
     public static final String MAX_DELIVERY_TIME_TAG = "max_delivery_time";
 

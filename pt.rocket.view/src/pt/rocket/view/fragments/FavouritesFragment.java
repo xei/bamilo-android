@@ -364,7 +364,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             if (null != catalogFragment) {
                 catalogFragment.sendValuesToFragment(BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE, addableToCart.getSku());
             }
-            TrackerDelegator.trackRemoveFromFavorites(addableToCart.getSku(), addableToCart.getPriceAsDouble());
+            TrackerDelegator.trackRemoveFromFavorites(addableToCart.getSku(), addableToCart.getPriceForTracking());
 
             // Show Toast
             Toast.makeText(getBaseActivity(), getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
@@ -554,7 +554,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
         bundle.putInt(GetShoppingCartAddItemHelper.PRODUCT_POS_TAG, position);
         bundle.putString(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, addableToCart.getSku());
-        bundle.putDouble(GetShoppingCartAddItemHelper.PRODUCT_PRICE_TAG, addableToCart.getPriceAsDouble());
+        bundle.putDouble(GetShoppingCartAddItemHelper.PRODUCT_PRICE_TAG, addableToCart.getPriceForTracking());
         bundle.putBoolean(keyRemoveTable, true);
         // Trigger
         triggerContentEventWithNoLoading(new GetShoppingCartAddItemHelper(), bundle, (IResponseCallback) this);
@@ -574,8 +574,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             // Tracking
             Bundle bundle = new Bundle();
             bundle.putString(TrackerDelegator.SKU_KEY, sku);
-            long price = addableToCart.getSpecialPriceDouble() > 0 ? addableToCart.getSpecialPriceDouble().longValue() : addableToCart.getPriceAsDouble().longValue();
-            bundle.putLong(TrackerDelegator.PRICE_KEY, price);
+            bundle.putDouble(TrackerDelegator.PRICE_KEY, addableToCart.getPriceForTracking());
             bundle.putString(TrackerDelegator.NAME_KEY, addableToCart.getName());
             bundle.putString(TrackerDelegator.BRAND_KEY, addableToCart.getBrand());
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");

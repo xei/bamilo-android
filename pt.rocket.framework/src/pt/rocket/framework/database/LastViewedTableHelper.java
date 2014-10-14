@@ -40,11 +40,13 @@ public class LastViewedTableHelper {
 	public static final String _PRODUCT_NAME = "product_name";
 	public static final String _PRODUCT_PRICE = "product_price";
 	public static final String _PRODUCT_PRICE_ORIG = "product_price_orig";
+	public static final String _PRODUCT_PRICE_CONVERTED = "product_price_converted";
 	public static final String _PRODUCT_URL = "product_url";
 	public static final String _PRODUCT_IMAGE_URL = "image_url";
 	public static final String _PRODUCT_BRAND = "product_brand";
 	public static final String _PRODUCT_SPECIAL_PRICE = "product_special_price";
 	public static final String _PRODUCT_SPECIAL_PRICE_ORIG = "product_special_price_orig";
+	public static final String _PRODUCT_SPECIAL_PRICE_CONVERTED = "product_special_price_converted";
 	public static final String _PRODUCT_DISCOUNT_PERCENTAGE = "product_discount_percentage";
 	public static final String _PRODUCT_IS_NEW = "product_is_new";
 	public static final String _PRODUCT_SIMPLES_JSON = "product_simples_json";
@@ -63,11 +65,13 @@ public class LastViewedTableHelper {
 				.append(_PRODUCT_NAME).append(" TEXT, ")
 				.append(_PRODUCT_PRICE).append(" TEXT ,")
 				.append(_PRODUCT_PRICE_ORIG).append(" TEXT ,")
+				.append(_PRODUCT_PRICE_CONVERTED).append(" TEXT ,")
 				.append(_PRODUCT_URL).append(" TEXT, ")
 				.append(_PRODUCT_IMAGE_URL).append(" TEXT, ")
 				.append(_PRODUCT_BRAND).append(" TEXT, ")
 				.append(_PRODUCT_SPECIAL_PRICE).append(" TEXT, ")
 				.append(_PRODUCT_SPECIAL_PRICE_ORIG).append(" TEXT ,")
+				.append(_PRODUCT_SPECIAL_PRICE_CONVERTED).append(" TEXT ,")
 				.append(_PRODUCT_DISCOUNT_PERCENTAGE).append(" DOUBLE, ")
 				.append(_PRODUCT_IS_NEW).append(" TEXT, ")
 				.append(_PRODUCT_SIMPLES_JSON).append(" TEXT, ")
@@ -95,8 +99,10 @@ public class LastViewedTableHelper {
 				values.put(LastViewedTableHelper._PRODUCT_NAME, completeProduct.getName());
 				values.put(LastViewedTableHelper._PRODUCT_PRICE, completeProduct.getPrice());
 				values.put(LastViewedTableHelper._PRODUCT_PRICE_ORIG, completeProduct.getPriceAsDouble());
+				values.put(LastViewedTableHelper._PRODUCT_PRICE_CONVERTED, completeProduct.getPriceConverted());
 				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE, completeProduct.getSpecialPrice());
 				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_ORIG, completeProduct.getSpecialPriceAsDouble());
+				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_CONVERTED, completeProduct.getSpecialPriceConverted());
 				values.put(LastViewedTableHelper._PRODUCT_DISCOUNT_PERCENTAGE, completeProduct.getMaxSavingPercentage());
 				values.put(LastViewedTableHelper._PRODUCT_URL, completeProduct.getUrl());
 				values.put(LastViewedTableHelper._PRODUCT_IMAGE_URL, completeProduct.getImageList().size() == 0 ? "" : completeProduct.getImageList().get(0));
@@ -203,45 +209,45 @@ public class LastViewedTableHelper {
 		return result;
 	}
 
-	/**
-	 * Get the last viewed list of entries
-	 * 
-	 * @return
-	 */
-	public static ArrayList<LastViewed> getLastViewedList() {
-		ArrayList<LastViewed> listLastViewed = new ArrayList<LastViewed>();
-		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-		String query = new StringBuilder("select ")
-				.append(_PRODUCT_SKU).append(", ")
-				.append(_PRODUCT_NAME).append(", ")
-				.append(_PRODUCT_PRICE).append(", ")
-				.append(_PRODUCT_URL).append(", ")
-				.append(_PRODUCT_IMAGE_URL)
-				.append(" from ").append(TABLE)
-				.append(" order by ").append(_ID).append(" desc").toString();
-		Log.i(TAG, "SQL RESULT query :  " + query);
-		Cursor cursor = db.rawQuery(query, null);
-		if (cursor != null && cursor.getCount() > 0) {
-			while (cursor.moveToNext()) {
-				int index = 0; // columnIndex is zero-based index
-				LastViewed lastViewed = new LastViewed();
-				lastViewed.setProductSku(cursor.getString(index++));
-				lastViewed.setProductName(cursor.getString(index++));
-				lastViewed.setProductPrice(cursor.getString(index++));
-				lastViewed.setProductUrl(cursor.getString(index++));
-				lastViewed.setImageUrl(cursor.getString(index++));
-				listLastViewed.add(lastViewed);
-			}
-		}
-
-		// Validate cursor
-		if (cursor != null) {
-			cursor.close();
-		}
-
-		db.close();
-		return listLastViewed;
-	}
+//	/**
+//	 * Get the last viewed list of entries
+//	 * 
+//	 * @return
+//	 */
+//	public static ArrayList<LastViewed> getLastViewedList() {
+//		ArrayList<LastViewed> listLastViewed = new ArrayList<LastViewed>();
+//		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+//		String query = new StringBuilder("select ")
+//				.append(_PRODUCT_SKU).append(", ")
+//				.append(_PRODUCT_NAME).append(", ")
+//				.append(_PRODUCT_PRICE).append(", ")
+//				.append(_PRODUCT_URL).append(", ")
+//				.append(_PRODUCT_IMAGE_URL)
+//				.append(" from ").append(TABLE)
+//				.append(" order by ").append(_ID).append(" desc").toString();
+//		Log.i(TAG, "SQL RESULT query :  " + query);
+//		Cursor cursor = db.rawQuery(query, null);
+//		if (cursor != null && cursor.getCount() > 0) {
+//			while (cursor.moveToNext()) {
+//				int index = 0; // columnIndex is zero-based index
+//				LastViewed lastViewed = new LastViewed();
+//				lastViewed.setProductSku(cursor.getString(index++));
+//				lastViewed.setProductName(cursor.getString(index++));
+//				lastViewed.setProductPrice(cursor.getString(index++));
+//				lastViewed.setProductUrl(cursor.getString(index++));
+//				lastViewed.setImageUrl(cursor.getString(index++));
+//				listLastViewed.add(lastViewed);
+//			}
+//		}
+//
+//		// Validate cursor
+//		if (cursor != null) {
+//			cursor.close();
+//		}
+//
+//		db.close();
+//		return listLastViewed;
+//	}
 
 	/**
 	 * Get the last viewed list of entries for list of addable Last Viewed
@@ -262,11 +268,13 @@ public class LastViewedTableHelper {
 				lastViewed.setName(cursor.getString(index++));
 				lastViewed.setPrice(cursor.getString(index++));
 				lastViewed.setPriceAsDouble(cursor.getDouble(index++));
+				lastViewed.setPriceConverted(cursor.getDouble(index++));
 				lastViewed.setUrl(cursor.getString(index++));
 				lastViewed.getImageList().add(cursor.getString(index++));
 				lastViewed.setBrand(cursor.getString(index++));
 				lastViewed.setSpecialPrice(cursor.getString(index++));
 				lastViewed.setSpecialPriceDouble(cursor.getDouble(index++));
+				lastViewed.setSpecialPriceConverted(cursor.getDouble(index++));
 				lastViewed.setMaxSavingPercentage(cursor.getDouble(index++));
 				lastViewed.setNew(cursor.getInt(index++) == 1);
 

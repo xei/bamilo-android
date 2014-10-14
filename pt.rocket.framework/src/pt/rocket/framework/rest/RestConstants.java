@@ -112,6 +112,7 @@ public class RestConstants {
 	public static final String JSON_ACTIVATED_AT_TAG = "activated_at";
 	public static final String JSON_MAX_PRICE_TAG = "max_price";
 	public static final String JSON_PRICE_TAG = "price";
+	public static final String JSON_PRICE_CONVERTED_TAG = "price_euroConverted";
 	public static final String JSON_BRAND_TAG = "brand";
 	public static final String JSON_CATEGORIES_TAG = "categories";
 	public static final String JSON_PROD_ATTRIBUTES_TAG = JSON_ATTRIBUTES_TAG;
@@ -123,6 +124,7 @@ public class RestConstants {
 	public static final String JSON_MAX_SAVING_PERCENTAGE_TAG = "max_saving_percentage";
 	public static final String JSON_MAX_SPECIAL_PRICE_TAG = "max_special_price";
 	public static final String JSON_SPECIAL_PRICE_TAG = "special_price";
+	public static final String JSON_SPECIAL_PRICE_CONVERTED_TAG = "special_price_euroConverted";
 	public static final String JSON_IS_NEW_TAG = "is_new";
 	public static final String JSON_PROD_UNIQUES_TAG = "uniques";
 	public static final String JSON_IS_FAVOURITE_TAG = "is_favourite";
@@ -198,7 +200,7 @@ public class RestConstants {
 	public static final String JSON_ITEM_PRICE_CONVERTED_TAG = "unit_price_euroConverted";
 	public static final String JSON_TAX_AMOUNT_TAG = "tax_amount";
 	public static final String JSON_MAX_QUANTITY = "max_quantity";
-	public static final String JSON_VARIATION = "variation";
+	public static final String JSON_VARIATION_TAG = "variation";
 	public static final String JSON_CART_RULE_DISPLAY_NAMES = "cart_rule_display_names";
 	public static final String JSON_SALES_ORDER_ITEM = "salesOrderItem";
 	public static final String JSON_CART_RULE_DISCOUNT = "cart_rule_discount";
@@ -321,14 +323,12 @@ public class RestConstants {
 	// ProductSimple Tags
 	public static final String JSON_META_TAG = "meta";
 
-	// ProductSimpleUnique Tags
-	public static final String JSON_VARIATION_TAG = "variation";
-
 	// PurchaseItem Tags
 	// public static final String JSON_SKU_TAG = "sku";
 	public static final String JSON_PURCHASE_NAME_TAG = "name";
 	public static final String JSON_CATEGORY_TAG = "category";
 	public static final String JSON_PAIDPRICE_TAG = "paidprice";
+	public static final String JSON_PAIDPRICE_CONVERTED_TAG = "paidprice_euroConverted";
 	// public static final String JSON_QUANTITY_TAG = "quantity";
 
 	// Section Tags

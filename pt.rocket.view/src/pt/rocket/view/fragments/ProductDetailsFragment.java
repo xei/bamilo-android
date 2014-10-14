@@ -776,22 +776,22 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     }
 
-    private long getPriceForTrackingAsLong(ProductSimple simple) {
-        String price;
-
-        price = simple.getAttributeByKey(ProductSimple.SPECIAL_PRICE_TAG);
-        if (price == null)
-            price = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
-
-        long priceLong;
-        try {
-            priceLong = (long) Double.parseDouble(price);
-        } catch (NumberFormatException e) {
-            priceLong = 0l;
-        }
-
-        return priceLong;
-    }
+//    private long getPriceForTrackingAsLong(ProductSimple simple) {
+//        String price;
+//
+//        price = simple.getAttributeByKey(ProductSimple.SPECIAL_PRICE_TAG);
+//        if (price == null)
+//            price = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
+//
+//        long priceLong;
+//        try {
+//            priceLong = (long) Double.parseDouble(price);
+//        } catch (NumberFormatException e) {
+//            priceLong = 0l;
+//        }
+//
+//        return priceLong;
+//    }
 
     private void updateStockInfo() {
         /**
@@ -977,7 +977,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             priceAsString = simple.getAttributeByKey(ProductSimple.PRICE_TAG);
         }
 
-        Long price = getPriceForTrackingAsLong(simple);
+        //Long price = getPriceForTrackingAsLong(simple);
 
         if (TextUtils.isEmpty(sku)) {
             isAddingProductToCart = false;
@@ -987,7 +987,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Add one unity to cart 
         triggerAddItemToCart(mCompleteProduct.getSku(), sku);
 
-        Log.i(TAG, "code1price : " + price);
+        //Log.i(TAG, "code1price : " + price);
 
         Bundle bundle = new Bundle();
         bundle.putString(TrackerDelegator.SKU_KEY, sku);
@@ -1262,7 +1262,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         bundle.putString(TrackerDelegator.PATH_KEY, mNavigationPath);
         bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         bundle.putString(TrackerDelegator.SKU_KEY, mCompleteProduct.getSku());
-        bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceAsDouble());
+        bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceForTracking());
         bundle.putBoolean(TrackerDelegator.RELATED_ITEM, isRelatedItem);
         return bundle;
     }
@@ -1403,14 +1403,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 FavouriteTableHelper.insertFavouriteProduct(mCompleteProduct);
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
                 imageIsFavourite.setSelected(true);
-                TrackerDelegator.trackAddToFavorites(mCompleteProduct.getSku(), mCompleteProduct.getPriceAsDouble());
+                TrackerDelegator.trackAddToFavorites(mCompleteProduct.getSku(), mCompleteProduct.getPriceForTracking());
                 Toast.makeText(mContext, getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
             } else {
                 fragmentMessage = BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE;
                 FavouriteTableHelper.removeFavouriteProduct(mCompleteProduct.getSku());
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
                 imageIsFavourite.setSelected(false);
-                TrackerDelegator.trackRemoveFromFavorites(mCompleteProduct.getSku(), mCompleteProduct.getPriceAsDouble());
+                TrackerDelegator.trackRemoveFromFavorites(mCompleteProduct.getSku(), mCompleteProduct.getPriceForTracking());
                 Toast.makeText(mContext, getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
             }
 

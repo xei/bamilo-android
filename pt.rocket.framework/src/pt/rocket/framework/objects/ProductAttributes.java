@@ -8,6 +8,7 @@
  * Copyright (c) Rocket Internet All Rights Reserved
  */
 package pt.rocket.framework.objects;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,161 +28,146 @@ import de.akquinet.android.androlog.Log;
  */
 public class ProductAttributes implements IJSONSerializable, Parcelable {
 
-    private static final String TAG = ProductAttributes.class.getName();
-    private String sku;
-    private String name;
-    private String url;
-    private String description;
-    private String brand;
-    /*--private String maxPrice;*/
-    private String price;
-
-    private String specialPrice;
-    /*--private String maxSpecialPrice;*/
-    private Double maxSavingPercentage;
-
-    private Integer reviews;
-    private Double rating;
+	private static final String TAG = ProductAttributes.class.getName();
+	private String sku;
+	private String name;
+	private String url;
+	private String description;
+	private String brand;
+	private String price;
+	private String specialPrice;
+	private Double maxSavingPercentage;
+	private Integer reviews;
+	private Double rating;
 	private boolean isNew;
 	private boolean isFavourite;
 	private double specialPriceDouble;
 	private double priceDouble;
+	private double mPriceConverted;
+	private double mSpecialPriceConverted;
 
-    /**
-     * ProductAttributes empty constructor
-     */
-    public ProductAttributes() {
-        sku = "";
-        name = "";
-        url = "";
-        description = "";
-        brand = "";
-        /*--maxPrice = "";*/
-        price = "";
-        specialPrice = "";
-        /*--maxSpecialPrice = "";*/
-        maxSavingPercentage = 0.0;
-        reviews = 0;
-        rating = .0;
-    	specialPriceDouble = .0;
-    	priceDouble = .0;
-        rating = 0.0;
-        specialPriceDouble = 0.0;
-        priceDouble = 0.0;
-    }
+	/**
+	 * ProductAttributes empty constructor
+	 */
+	public ProductAttributes() {
+		sku = "";
+		name = "";
+		url = "";
+		description = "";
+		brand = "";
+		price = "";
+		specialPrice = "";
+		maxSavingPercentage = 0.0;
+		reviews = 0;
+		rating = .0;
+		specialPriceDouble = .0;
+		priceDouble = .0;
+		rating = 0.0;
+		specialPriceDouble = 0.0;
+		priceDouble = 0.0;
+		mPriceConverted = 0d;
+		mSpecialPriceConverted = 0d;
+	}
 
-    /**
-     * @return the reviews
-     */
-    public Integer getReviews() {
-        return reviews;
-    }
+	/**
+	 * @return the reviews
+	 */
+	public Integer getReviews() {
+		return reviews;
+	}
 
-    /**
-     * @return the rating
-     */
-    public Double getRating() {
-        return rating;
-    }
+	/**
+	 * @return the rating
+	 */
+	public Double getRating() {
+		return rating;
+	}
 
-    /**
-     * @return the sku
-     */
-    public String getSku() {
-        return sku;
-    }
+	/**
+	 * @return the sku
+	 */
+	public String getSku() {
+		return sku;
+	}
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
 
-    /**
-     * @return the brand
-     */
-    public String getBrand() {
-        return brand;
-    }
+	/**
+	 * @return the brand
+	 */
+	public String getBrand() {
+		return brand;
+	}
 
-    /**
-     * @return the maxPrice
-     */
-    /*--public String getMaxPrice() {
-        return maxPrice;
-    }*/
+	/**
+	 * @return the price
+	 */
+	public String getPrice() {
+		return price;
+	}
 
-    /**
-     * @return the price
-     */
-    public String getPrice() {
-        return price;
-    }
-    
-    /**
-     * @return the price
-     */
-    public double getPriceAsDouble() {
-        return priceDouble;
-    }
-    
-    /**
-     * @return the price
-     */
-    public double getSpecialPriceAsDouble() {
-        return specialPriceDouble;
-    }
-    
-    /**
-     * @return the url
-     */
-    public String getUrl() {
-        return url;
-    }
+	/**
+	 * @return the price
+	 */
+	public double getPriceAsDouble() {
+		return priceDouble;
+	}
 
-    /**
-     * @return the specialPrice
-     */
-    public String getSpecialPrice() {
-        return specialPrice;
-    }
+	/**
+	 * @return the price
+	 */
+	public double getSpecialPriceAsDouble() {
+		return specialPriceDouble;
+	}
 
-    /**
-     * @return the maxSpecialPrice
-     */
-    /*--public String getMaxSpecialPrice() {
-        return maxSpecialPrice;
-    }*/
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
 
-    /**
-     * @return the discountPercentage
-     */
-    public Double getMaxSavingPercentage() {
-        return maxSavingPercentage;
-    }
-    
-    
-    /**
-     * Is new flag
-     * @return true/false
-     * @author sergiopereira
-     */
-    public boolean isNew() {
+	/**
+	 * @return the specialPrice
+	 */
+	public String getSpecialPrice() {
+		return specialPrice;
+	}
+	
+	/**
+	 * @return the discountPercentage
+	 */
+	public Double getMaxSavingPercentage() {
+		return maxSavingPercentage;
+	}
+
+	/**
+	 * Is new flag
+	 * 
+	 * @return true/false
+	 * @author sergiopereira
+	 */
+	public boolean isNew() {
 		return isNew;
 	}
 
-    /**
-     * Set the is new flag
-     * @author sergiopereira
-     */
+	/**
+	 * Set the is new flag
+	 * 
+	 * @author sergiopereira
+	 */
 	public void setNew(boolean isNew) {
 		this.isNew = isNew;
 	}
@@ -203,226 +189,277 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 	public void setFavourite(boolean isFavourite) {
 		this.isFavourite = isFavourite;
 	}
+	
+	/**
+	 * @param priceConverted
+	 *            the mPriceConverted to set
+	 */
+	public void setPriceConverted(double priceConverted) {
+		this.mPriceConverted = priceConverted;
+	}
+
+	/**
+	 * @param specialPriceConverted
+	 *            the mSpecialPriceConverted to set
+	 */
+	public void setSpecialPriceConverted(double specialPriceConverted) {
+		this.mSpecialPriceConverted = specialPriceConverted;
+	}
+	
+	/**
+	 * @return the mPriceConverted
+	 */
+	public double getPriceConverted() {
+		return mPriceConverted;
+	}
+
+	/**
+	 * @return the mSpecialPriceConverted
+	 */
+	public double getSpecialPriceConverted() {
+		return mSpecialPriceConverted;
+	}
+
+	/**
+	 * Return the paid price for tracking.
+	 * 
+	 * @return double
+	 * @author sergiopereira
+	 */
+	public double getPriceForTracking() {
+		Log.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
+		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + mPriceConverted + " " + mSpecialPriceConverted);
+		return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceConverted;
+	}
+	
 
 	/*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
-     */
-    @Override
-    public boolean initialize(JSONObject jsonObject) {
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
+	 * )
+	 */
+	@Override
+	public boolean initialize(JSONObject jsonObject) {
 
-        try {
-            sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
-            name = jsonObject.optString(RestConstants.JSON_PROD_NAME_TAG);
-            url = jsonObject.optString(RestConstants.JSON_PROD_URL_TAG);
-            description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
-            brand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
+		try {
+			sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
+			name = jsonObject.optString(RestConstants.JSON_PROD_NAME_TAG);
+			url = jsonObject.optString(RestConstants.JSON_PROD_URL_TAG);
+			description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
+			brand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
 
-            /*-String priceString = jsonObject.optString(RestConstants.JSON_PRICE_TAG);
-            
-            priceDouble = -1;
-            try {
-            	 priceDouble = Double.parseDouble(priceString);
-                 price = CurrencyFormatter.formatCurrency(priceDouble);
+			/*-String priceString = jsonObject.optString(RestConstants.JSON_PRICE_TAG);
+			
+			priceDouble = -1;
+			try {
+				 priceDouble = Double.parseDouble(priceString);
+			     price = CurrencyFormatter.formatCurrency(priceDouble);
 			} catch (NumberFormatException e) {
 				price = priceString;
 				e.printStackTrace();
 			}*/
-            // Fix NAFAMZ-7848
-            // Throw JSONException if JSON_PRICE_TAG is not present
-            String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
-            if (CurrencyFormatter.isNumber(priceJSON)) {
-                price = CurrencyFormatter.formatCurrency(priceJSON);
-                priceDouble = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
-            } else {
-                throw new JSONException("Price is not a number!");
-            }
+			// Fix NAFAMZ-7848
+			// Throw JSONException if JSON_PRICE_TAG is not present
+			String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
+			if (CurrencyFormatter.isNumber(priceJSON)) {
+				price = CurrencyFormatter.formatCurrency(priceJSON);
+				priceDouble = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
+			} else {
+				throw new JSONException("Price is not a number!");
+			}
 
-            /*-String maxPriceString = jsonObject.optString(RestConstants.JSON_MAX_PRICE_TAG, price);
-            
-            if (!maxPriceString.equals("")) {
-                maxPrice = price;
-            } else {
-            	try {
-            		double maxPriceDouble = Double.parseDouble(jsonObject.optString(
-                            RestConstants.JSON_MAX_PRICE_TAG, price));
-                     maxPrice = CurrencyFormatter.formatCurrency(maxPriceDouble);
+			mPriceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
+
+			/*-String maxPriceString = jsonObject.optString(RestConstants.JSON_MAX_PRICE_TAG, price);
+			
+			if (!maxPriceString.equals("")) {
+			    maxPrice = price;
+			} else {
+				try {
+					double maxPriceDouble = Double.parseDouble(jsonObject.optString(
+			                RestConstants.JSON_MAX_PRICE_TAG, price));
+			         maxPrice = CurrencyFormatter.formatCurrency(maxPriceDouble);
 				} catch (NumberFormatException e) {
 					maxPrice = jsonObject.optString(
-                            RestConstants.JSON_MAX_PRICE_TAG, price);
+			                RestConstants.JSON_MAX_PRICE_TAG, price);
 					e.printStackTrace();
 				}
-                
-            }*/
-            /*--
-            // Fix NAFAMZ-7848
-            String maxPriceJSON = jsonObject.optString(RestConstants.JSON_MAX_PRICE_TAG);
-            if (CurrencyFormatter.isNumber(maxPriceJSON)) {
-                maxPrice = CurrencyFormatter.formatCurrency(maxPriceJSON);
-            } else {
-                maxPrice = price;
-            }*/
+			    
+			}*/
+			/*--
+			// Fix NAFAMZ-7848
+			String maxPriceJSON = jsonObject.optString(RestConstants.JSON_MAX_PRICE_TAG);
+			if (CurrencyFormatter.isNumber(maxPriceJSON)) {
+			    maxPrice = CurrencyFormatter.formatCurrency(maxPriceJSON);
+			} else {
+			    maxPrice = price;
+			}*/
 
-            /*-specialPriceDouble = 0;
-            if (!jsonObject.isNull(RestConstants.JSON_SPECIAL_PRICE_TAG)) {
-            	try {
-            		 specialPriceDouble = Double.parseDouble(jsonObject
-                             .getString(RestConstants.JSON_SPECIAL_PRICE_TAG));
-            		 specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);
+			/*-specialPriceDouble = 0;
+			if (!jsonObject.isNull(RestConstants.JSON_SPECIAL_PRICE_TAG)) {
+				try {
+					 specialPriceDouble = Double.parseDouble(jsonObject
+			                 .getString(RestConstants.JSON_SPECIAL_PRICE_TAG));
+					 specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);
 				} catch (NumberFormatException e) {
 					specialPrice = jsonObject
-                            .getString(RestConstants.JSON_SPECIAL_PRICE_TAG);
+			                .getString(RestConstants.JSON_SPECIAL_PRICE_TAG);
 					e.printStackTrace();
 				}
-               
-            } else {
-            	specialPrice = price;
-            }*/
-            // Fix NAFAMZ-7848
-            String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
-            if (CurrencyFormatter.isNumber(specialPriceJSON)) {
-            	specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
-            	specialPriceDouble = jsonObject.getDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
-            } else {
-            	specialPrice = price;
-            	specialPriceDouble = priceDouble;
-            }
-            
+			   
+			} else {
+				specialPrice = price;
+			}*/
+			// Fix NAFAMZ-7848
+			String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
+			if (CurrencyFormatter.isNumber(specialPriceJSON)) {
+				specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
+				specialPriceDouble = jsonObject.getDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
+			} else {
+				specialPrice = price;
+				specialPriceDouble = priceDouble;
+			}
 
-            /*-if (!jsonObject.isNull(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG)) {
-            	try {
-            		maxSpecialPrice =
-                            CurrencyFormatter.formatCurrency(Double.parseDouble(jsonObject.getString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG)));	
+			mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
+
+			/*-if (!jsonObject.isNull(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG)) {
+				try {
+					maxSpecialPrice =
+			                CurrencyFormatter.formatCurrency(Double.parseDouble(jsonObject.getString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG)));	
 				} catch (NumberFormatException e) {
 					maxSpecialPrice = jsonObject.getString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG);
 					e.printStackTrace();
 				}
-                 
-            } else {
-                maxSpecialPrice = specialPrice;
-            }*/
-            /*--
-            // Fix NAFAMZ-7848
-            String maxSpecialPriceJSON = jsonObject.optString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG);
-            if (CurrencyFormatter.isNumber(maxSpecialPriceJSON)) {
-                maxSpecialPrice = CurrencyFormatter.formatCurrency(maxSpecialPriceJSON);
-            } else {
-                maxSpecialPrice = specialPrice;
-            }*/
+			     
+			} else {
+			    maxSpecialPrice = specialPrice;
+			}*/
+			/*--
+			// Fix NAFAMZ-7848
+			String maxSpecialPriceJSON = jsonObject.optString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG);
+			if (CurrencyFormatter.isNumber(maxSpecialPriceJSON)) {
+			    maxSpecialPrice = CurrencyFormatter.formatCurrency(maxSpecialPriceJSON);
+			} else {
+			    maxSpecialPrice = specialPrice;
+			}*/
 
-            maxSavingPercentage = jsonObject.optDouble(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, 0);
+			maxSavingPercentage = jsonObject.optDouble(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, 0);
 
-            if (maxSavingPercentage == 0 && !price.equals(specialPrice) && priceDouble >= 0) {
-                maxSavingPercentage = (double) Math.round(specialPriceDouble / priceDouble);
-            }
+			if (maxSavingPercentage == 0 && !price.equals(specialPrice) && priceDouble >= 0) {
+				maxSavingPercentage = (double) Math.round(specialPriceDouble / priceDouble);
+			}
 
-            JSONObject ratings = jsonObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
-            if (ratings != null) {
-                reviews = ratings.optInt(RestConstants.JSON_RATINGS_TOTAL_SUM_TAG);
-                rating = ratings.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG);
-            }
-            
-            // Get the is new JSON tag
-            isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
+			JSONObject ratings = jsonObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
+			if (ratings != null) {
+				reviews = ratings.optInt(RestConstants.JSON_RATINGS_TOTAL_SUM_TAG);
+				rating = ratings.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG);
+			}
 
-            // Get the is favourite JSON tag
-            //isFavourite = jsonObject.optBoolean(RestConstants.JSON_IS_FAVOURITE_TAG, false);
-            
-            try {
-                isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            
-        } catch (JSONException e) {
-            Log.e(TAG, "Error Parsing the product json", e);
-            return false;
-        }
+			// Get the is new JSON tag
+			isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
 
-        return true;
-    }
+			// Get the is favourite JSON tag
+			// isFavourite =
+			// jsonObject.optBoolean(RestConstants.JSON_IS_FAVOURITE_TAG,
+			// false);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
-     */
+			try {
+				isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-    public JSONObject toJSON() {
-        JSONObject jsonObject = new JSONObject();
+		} catch (JSONException e) {
+			Log.e(TAG, "Error Parsing the product json", e);
+			return false;
+		}
 
-        try {
-            jsonObject.put(RestConstants.JSON_SKU_TAG, sku);
-            jsonObject.put(RestConstants.JSON_PROD_NAME_TAG, name);
-            jsonObject.put(RestConstants.JSON_PROD_URL_TAG, url);
-            jsonObject.put(RestConstants.JSON_DESCRIPTION_TAG, description);
-            /*--jsonObject.put(RestConstants.JSON_MAX_PRICE_TAG, maxPrice);*/
-            jsonObject.put(RestConstants.JSON_PRICE_TAG, price);
+		return true;
+	}
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return jsonObject;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
+	 */
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
+	public JSONObject toJSON() {
+		JSONObject jsonObject = new JSONObject();
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(sku);
-        dest.writeString(name);
-        dest.writeString(url);
-        dest.writeString(description);
-        dest.writeString(brand);
-        /*--dest.writeString(maxPrice);*/
-        dest.writeString(price);
-        dest.writeString(specialPrice);
-        /*--dest.writeString(maxSpecialPrice);*/
-        dest.writeDouble(maxSavingPercentage);
-        dest.writeInt(reviews);
-        dest.writeDouble(rating);
-        dest.writeDouble(priceDouble);
-        dest.writeDouble(specialPriceDouble);
-    }
-    
-    
-    private ProductAttributes(Parcel in) {
-        sku = in.readString();
-        name = in.readString();
-        url = in.readString();
-        description = in.readString();
-        brand = in.readString();
-        /*--maxPrice = in.readString();*/
-        price = in.readString();
-        specialPrice = in.readString();
-        /*--maxSpecialPrice = in.readString();*/
-        maxSavingPercentage = in.readDouble();
-        reviews = in.readInt();
-        rating = in.readDouble();
-        priceDouble = in.readDouble();
-        specialPriceDouble = in.readDouble();
-        
-        try {
-            isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
-    }
+		try {
+			jsonObject.put(RestConstants.JSON_SKU_TAG, sku);
+			jsonObject.put(RestConstants.JSON_PROD_NAME_TAG, name);
+			jsonObject.put(RestConstants.JSON_PROD_URL_TAG, url);
+			jsonObject.put(RestConstants.JSON_DESCRIPTION_TAG, description);
+			/*--jsonObject.put(RestConstants.JSON_MAX_PRICE_TAG, maxPrice);*/
+			jsonObject.put(RestConstants.JSON_PRICE_TAG, price);
 
-    public static final Parcelable.Creator<ProductAttributes> CREATOR = new Parcelable.Creator<ProductAttributes>() {
-        public ProductAttributes createFromParcel(Parcel in) {
-            return new ProductAttributes(in);
-        }
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return jsonObject;
+	}
 
-        public ProductAttributes[] newArray(int size) {
-            return new ProductAttributes[size];
-        }
-    };
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(sku);
+		dest.writeString(name);
+		dest.writeString(url);
+		dest.writeString(description);
+		dest.writeString(brand);
+		dest.writeString(price);
+		dest.writeString(specialPrice);
+		dest.writeDouble(maxSavingPercentage);
+		dest.writeInt(reviews);
+		dest.writeDouble(rating);
+		dest.writeDouble(priceDouble);
+		dest.writeDouble(specialPriceDouble);
+		dest.writeDouble(mPriceConverted);
+		dest.writeDouble(mSpecialPriceConverted);
+	}
+
+	private ProductAttributes(Parcel in) {
+		sku = in.readString();
+		name = in.readString();
+		url = in.readString();
+		description = in.readString();
+		brand = in.readString();
+		/*--maxPrice = in.readString();*/
+		price = in.readString();
+		specialPrice = in.readString();
+		/*--maxSpecialPrice = in.readString();*/
+		maxSavingPercentage = in.readDouble();
+		reviews = in.readInt();
+		rating = in.readDouble();
+		priceDouble = in.readDouble();
+		specialPriceDouble = in.readDouble();
+		mPriceConverted = in.readDouble();
+		mSpecialPriceConverted = in.readDouble();
+
+		try {
+			isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static final Parcelable.Creator<ProductAttributes> CREATOR = new Parcelable.Creator<ProductAttributes>() {
+		public ProductAttributes createFromParcel(Parcel in) {
+			return new ProductAttributes(in);
+		}
+
+		public ProductAttributes[] newArray(int size) {
+			return new ProductAttributes[size];
+		}
+	};
 }

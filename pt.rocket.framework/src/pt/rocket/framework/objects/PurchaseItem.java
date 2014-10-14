@@ -65,6 +65,7 @@ public class PurchaseItem implements Parcelable {
 			JSONObject prcObj = itemsJson.getJSONObject(String.valueOf(indexBegin + 3));
 			paidprice = prcObj.getString( RestConstants.JSON_PAIDPRICE_TAG );
 			paidpriceAsDouble = prcObj.optDouble(RestConstants.JSON_PAIDPRICE_TAG, 0);
+			paidPriceForTracking = prcObj.optDouble(RestConstants.JSON_PAIDPRICE_CONVERTED_TAG, 0d);
 			JSONObject qtObj = itemsJson.getJSONObject(String.valueOf(indexBegin + 4));
 			quantity = qtObj.getString( RestConstants.JSON_QUANTITY_TAG);
 			quantityAsInt = qtObj.optInt(RestConstants.JSON_QUANTITY_TAG, 0);
@@ -141,6 +142,7 @@ public class PurchaseItem implements Parcelable {
 	    dest.writeDouble(paidpriceAsDouble);
 	    dest.writeString(quantity);
 	    dest.writeInt(quantityAsInt);
+	    dest.writeDouble(paidPriceForTracking);
 	}
 	
 	/**
@@ -155,6 +157,7 @@ public class PurchaseItem implements Parcelable {
 		paidpriceAsDouble  = in.readDouble();
 		quantity = in.readString();
 		quantityAsInt = in.readInt();
+		paidPriceForTracking = in.readDouble();
     }
 
 	/**

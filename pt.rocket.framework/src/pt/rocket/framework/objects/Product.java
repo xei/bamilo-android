@@ -256,6 +256,30 @@ public class Product implements IJSONSerializable, Parcelable {
     public String getSpecialPrice() {
         return attributes.getSpecialPrice();
     }
+    
+    /**
+     * @return the specialPrice
+     */
+    public double getPriceConverted() {
+        return attributes.getPriceConverted();
+    }
+    
+    /**
+     * @return the specialPrice
+     */
+    public double getSpecialPriceConverted() {
+        return attributes.getSpecialPriceConverted();
+    }
+    
+	/**
+	 * Return the paid price for tracking.
+	 * 
+	 * @return double
+	 * @author sergiopereira
+	 */
+	public double getPriceForTracking() {
+		return attributes.getPriceForTracking();
+	}
 
     /**
      * @return the maxSpecialPrice

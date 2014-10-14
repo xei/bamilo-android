@@ -76,6 +76,7 @@ public class TrackerDelegator {
 
     private static final String JSON_TAG_ORDER_NR = "orderNr";
     private static final String JSON_TAG_GRAND_TOTAL = "grandTotal";
+    private static final String JSON_TAG_GRAND_TOTAL_CONVERTED = "grandTotal_euroConverted";
     private static final String JSON_TAG_ITEMS_JSON = "itemsJson";
 
     private static final Context context = JumiaApplication.INSTANCE.getApplicationContext();
@@ -180,12 +181,12 @@ public class TrackerDelegator {
     
     public final static void trackItemShared(Intent intent) {
         String sku = intent.getExtras().getString(RestConstants.JSON_SKU_TAG);
-        String user_id = "";
+        String userId = "";
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
-            user_id = JumiaApplication.CUSTOMER.getIdAsString();
+            userId = JumiaApplication.CUSTOMER.getIdAsString();
         }
-        AdXTracker.trackShare(context, sku, user_id, JumiaApplication.SHOP_NAME);
-        AnalyticsGoogle.get().trackShare(context, sku, user_id, JumiaApplication.SHOP_NAME);
+        AdXTracker.trackShare(context, sku, userId, JumiaApplication.SHOP_NAME);
+        AnalyticsGoogle.get().trackShare(context, sku, userId, JumiaApplication.SHOP_NAME);
         Ad4PushTracker.get().trackSocialShare();
     }
 
@@ -205,8 +206,6 @@ public class TrackerDelegator {
 
         CompleteProduct product = params.getParcelable(PRODUCT_KEY);
         ProductReviewCommentCreated review = params.getParcelable(REVIEW_KEY);
-        //@SuppressWarnings("unchecked")
-        //HashMap<String, Double> ratings = (HashMap<String, Double>) params.getSerializable(RATINGS_KEY);
 
         String user_id = "";
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
@@ -214,15 +213,16 @@ public class TrackerDelegator {
         }
         AdXTracker.trackProductRate(context, product.getSku(), review, user_id, JumiaApplication.SHOP_NAME);
         for (Entry<String, Double> option : review.getRating().entrySet()) {
-            Long priceLong;
+            Long ratingValue;
             try {
-                priceLong = option.getValue().longValue();
+                ratingValue = option.getValue().longValue();
             } catch (NumberFormatException e) {
-                priceLong = 0l;
+                ratingValue = 0l;
             } catch (NullPointerException e) {
-                priceLong = 0l;
+                ratingValue = 0l;
             }
-            AnalyticsGoogle.get().trackRateProduct(context, product.getSku(), priceLong, option.getKey());
+            
+            AnalyticsGoogle.get().trackRateProduct(context, product.getSku(), ratingValue, option.getKey());
         }
 
     }
@@ -243,7 +243,6 @@ public class TrackerDelegator {
         }
 
         AdXTracker.signup(context, JumiaApplication.SHOP_NAME, customer.getIdAsString());
-        // PushManager.shared().setAlias(customer.getIdAsString());
         Ad4PushTracker.get().trackSignup(customer.getIdAsString(), customer.getGender().toString());
         storeSignupProcess(customer);
     }
@@ -399,10 +398,12 @@ public class TrackerDelegator {
         double value;
         JSONObject itemsJson;
         String coupon = "";
+        double valueConverted = 0d;
         try {
             orderNr = result.getString(JSON_TAG_ORDER_NR);
             value = result.getDouble(JSON_TAG_GRAND_TOTAL);
             itemsJson = result.getJSONObject(JSON_TAG_ITEMS_JSON);
+            valueConverted = result.optDouble(JSON_TAG_GRAND_TOTAL_CONVERTED, 0d);
             Log.d(TAG, "TRACK SALE: RESULT: ORDER=" + orderNr + " VALUE=" + value + " ITEMS=" + result.toString(2));
         } catch (JSONException e) {
             Log.e(TAG, "TRACK SALE: json parsing error: ", e);
@@ -422,7 +423,7 @@ public class TrackerDelegator {
         }
         averageValue = averageValue / items.size();
         
-        AnalyticsGoogle.get().trackPurchase(orderNr, value, items);
+        AnalyticsGoogle.get().trackPurchase(orderNr, valueConverted, items);
 
         if (customer == null) {
             Log.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
@@ -635,7 +636,7 @@ public class TrackerDelegator {
         // AD4Push
         Ad4PushTracker.get().trackCampaignsView();
         // GA
-        AnalyticsGoogle.get().trackCampaign(name);
+        AnalyticsGoogle.get().trackGenericPage(name);
     }
 
     /**

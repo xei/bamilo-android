@@ -71,8 +71,6 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
     private final static String COUNTER_START_TIME = "start_time";
 
     private final static String BANNER_STATE = "banner_state";
-    
-    // private static CampaignPageFragment sCampaignFragment;
 
     private TeaserCampaign mTeaserCampaign;
     
@@ -94,8 +92,6 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
 
     private HeaderGridView mGridView;
 
-    // private CampaignAdapter mArrayAdapter;
-
     private View mBannerView;
 
     private DialogGenericFragment mDialogAddedToCart;
@@ -115,18 +111,6 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
     }
 
     private BannerVisibility bannerState;
-    
-    
-    /**
-     * Constructor via object
-     * @return CampaignFragment
-     * @author sergiopereira
-     */
-    /*-public static CampaignPageFragment getInstance(TeaserCampaign teaserCampaign) {
-        sCampaignFragment = new CampaignPageFragment();
-        sCampaignFragment.mTeaserCampaign = teaserCampaign;
-        return sCampaignFragment;
-    }*/
     
     /**
      * Constructor via bundle
@@ -469,7 +453,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             // Tracking
             Bundle bundle = new Bundle();
             bundle.putString(TrackerDelegator.SKU_KEY, sku);
-            bundle.putLong(TrackerDelegator.PRICE_KEY, (price != null) ? price.longValue() : 0l);
+            bundle.putDouble(TrackerDelegator.PRICE_KEY, (price != null) ? price : 0d);
             bundle.putString(TrackerDelegator.NAME_KEY, name);
             bundle.putString(TrackerDelegator.BRAND_KEY, brand);
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
@@ -1192,7 +1176,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             view.setTag(STOCK, item.hasStock());
             view.setTag(NAME, item.getName());
             view.setTag(BRAND, item.getBrand());
-            view.setTag(PRICE, (item.getSpecialPrice() != 0) ? item.getSpecialPrice() : item.getPrice());
+            view.setTag(PRICE, item.getPriceForTracking());
             //Log.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " +  selectedSize.size);
             // Send to listener
             if(mOnClickParentListener != null)

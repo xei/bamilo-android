@@ -47,12 +47,9 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
             title = jsonObject.getString(RestConstants.JSON_TITLE_TAG);
             comments = jsonObject.getString(RestConstants.JSON_DETAILS_TAG);
             name = jsonObject.getString(RestConstants.JSON_NICKNAME_TAG);
-            // DateFormat dateFormat = DateFormat.getDateTimeInstance();
-            // date = dateFormat.parse(jsonObject.getString(JSON_DATE_TAG));
             date = jsonObject.getString(RestConstants.JSON_DATE_TAG);
 
             JSONArray options = jsonObject.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
-            //JSONObject ratingObject = null;
             int size = options.length();
             Log.i("OPTIONS"," "+size);
             rating = 0 ;
@@ -61,7 +58,6 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
                 option.initialize(options.getJSONObject(i));
                 ratingOptions.add(option);
                 rating += option.getRating();
-//                optionTitle = ratingObject.getString(JSON_TYPE_TITLE_TAG);
             }
             rating /= size;
             //rating = rating * 5 / 100;

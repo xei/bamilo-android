@@ -33,9 +33,11 @@
 
             <!-- VARIATIONS -->
 
-                    <View android:id="@+id/variation_bottom_line"
-                        android:visibility="gone"
-                        style="@style/divider_horizontal"/>
+            <View
+                android:id="@+id/variation_bottom_line"
+                style="@style/divider_horizontal"
+                android:visibility="gone" />
+
             <FrameLayout
                 android:id="@+id/product_detail_variations_container"
                 android:layout_width="match_parent"

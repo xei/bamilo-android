@@ -15,6 +15,8 @@ package pt.rocket.framework.objects;
 
 import java.util.ArrayList;
 
+import de.akquinet.android.androlog.Log;
+
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import android.os.Parcel;
@@ -32,6 +34,8 @@ public class AddableToCart implements Parcelable {
 
 	public final static int NO_SIMPLE_SELECTED = -1;
 
+	private static final String TAG = AddableToCart.class.getSimpleName();
+
 	protected String sku;
 	protected String brand;
 	protected String name;
@@ -42,28 +46,19 @@ public class AddableToCart implements Parcelable {
 	protected boolean isNew;
 	protected int selectedSimple;
 	protected boolean isComplete;
-
 	protected ArrayList<String> imageList;
-
 	protected ArrayList<ProductSimple> simples;
-
 	protected ArrayList<Variation> variations;
-
 	protected ArrayList<String> knownVariations;
-
 	protected int favoriteSelected;
-
 	public Boolean hasVariations;
-
 	protected String mSelectedSimpleValue;
-
 	protected Boolean mChooseVariationWarning = false;
-
 	protected boolean mStockVariationWarning = false;
-
 	private Double priceDouble;
-
 	private Double specialPriceDouble;
+	private double mSpecialPriceConverted;
+	private double mPriceConverted;
 
 	/**
 	 * Complete favourite empty constructor.
@@ -83,6 +78,8 @@ public class AddableToCart implements Parcelable {
 		hasVariations = null;
 		mSelectedSimpleValue = "...";
 		selectedSimple = NO_SIMPLE_SELECTED;
+		mSpecialPriceConverted = 0d;
+		mPriceConverted = 0d;
 	}
 
 	public AddableToCart(CompleteProduct completeProduct) {
@@ -105,7 +102,9 @@ public class AddableToCart implements Parcelable {
 		favoriteSelected = NO_SIMPLE_SELECTED;
 		hasVariations = null;
 		mSelectedSimpleValue = "...";
-
+		// Converted values
+		mPriceConverted = completeProduct.getPriceConverted();
+		mSpecialPriceConverted = completeProduct.getSpecialPriceConverted();
 		// Validate if has only one simple
 		selectedSimple = (simples != null && simples.size() == 1) ? 0 : NO_SIMPLE_SELECTED;
 	}
@@ -169,14 +168,14 @@ public class AddableToCart implements Parcelable {
 	public void setPrice(String price) {
 		this.price = price;
 	}
-	
+
 	/**
 	 * @return the price as a Double
 	 */
 	public Double getPriceAsDouble() {
 		return priceDouble;
 	}
-	
+
 	/**
 	 * 
 	 * @param priceDouble
@@ -184,11 +183,11 @@ public class AddableToCart implements Parcelable {
 	public void setPriceAsDouble(double priceDouble) {
 		this.priceDouble = priceDouble;
 	}
-	
+
 	public void setSpecialPriceDouble(Double priceDouble) {
 		this.specialPriceDouble = priceDouble;
 	}
-	
+
 	public Double getSpecialPriceDouble() {
 		return this.specialPriceDouble;
 	}
@@ -386,13 +385,65 @@ public class AddableToCart implements Parcelable {
 		return mStockVariationWarning;
 	}
 
+	/**
+	 * @return the mSpecialPriceConverted
+	 */
+	public double getSpecialPriceConverted() {
+		return mSpecialPriceConverted;
+	}
 
+	/**
+	 * @param mSpecialPriceConverted the mSpecialPriceConverted to set
+	 */
+	public void setSpecialPriceConverted(double mSpecialPriceConverted) {
+		this.mSpecialPriceConverted = mSpecialPriceConverted;
+	}
 
+	/**
+	 * @return the mPriceConverted
+	 */
+	public double getPriceConverted() {
+		return mPriceConverted;
+	}
+
+	/**
+	 * @param mPriceConverted the mPriceConverted to set
+	 */
+	public void setPriceConverted(double mPriceConverted) {
+		this.mPriceConverted = mPriceConverted;
+	}
+
+	/**
+	 * Return the paid price for tracking.
+	 * 
+	 * @return double
+	 * @author sergiopereira
+	 */
+	public double getPriceForTracking() {
+		Log.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
+		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + mPriceConverted + " " + mSpecialPriceConverted);
+		return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceConverted;
+	}
+
+	/*
+	 * ############ PARCELABLE ############
+	 */
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.os.Parcelable#describeContents()
+	 */
 	@Override
 	public int describeContents() {
 		return 0;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(sku);
@@ -417,6 +468,8 @@ public class AddableToCart implements Parcelable {
 		dest.writeByte((byte) (mStockVariationWarning ? 1 : 0));
 		dest.writeDouble(priceDouble);
 		dest.writeDouble(specialPriceDouble);
+		dest.writeDouble(mPriceConverted);
+		dest.writeDouble(mSpecialPriceConverted);
 	}
 
 	private AddableToCart(Parcel in) {
@@ -446,6 +499,8 @@ public class AddableToCart implements Parcelable {
 		mStockVariationWarning = in.readByte() == 1;
 		priceDouble = in.readDouble();
 		specialPriceDouble = in.readDouble();
+		mPriceConverted = in.readDouble();
+		mSpecialPriceConverted = in.readDouble();	
 	}
 
 	public static final Parcelable.Creator<AddableToCart> CREATOR = new Parcelable.Creator<AddableToCart>() {

@@ -41,8 +41,10 @@ public class FavouriteTableHelper {
 	public static final String _FAVOURITE_NAME = "favourite_name";
 	public static final String _FAVOURITE_PRICE_ORIG = "favourite_price_orig";
 	public static final String _FAVOURITE_PRICE = "favourite_price";
+	public static final String _FAVOURITE_PRICE_CONVERTED = "favourite_price_converted";
 	public static final String _FAVOURITE_SPECIAL_PRICE_ORIG = "favourite_special_price_orig";
 	public static final String _FAVOURITE_SPECIAL_PRICE = "favourite_special_price";
+	public static final String _FAVOURITE_SPECIAL_PRICE_CONVERTED = "favourite_special_price_converted";
 	public static final String _FAVOURITE_DISCOUNT_PERCENTAGE = "favourite_discount_percentage";
 	public static final String _FAVOURITE_URL = "favourite_url";
 	public static final String _FAVOURITE_IMAGE_URL = "favourite_image_url";
@@ -63,8 +65,10 @@ public class FavouriteTableHelper {
 				.append(_FAVOURITE_NAME).append(" TEXT,")
 				.append(_FAVOURITE_PRICE).append(" TEXT,")
 				.append(_FAVOURITE_PRICE_ORIG).append(" TEXT,")
+				.append(_FAVOURITE_PRICE_CONVERTED).append(" TEXT,")
 				.append(_FAVOURITE_SPECIAL_PRICE).append(" TEXT,")
 				.append(_FAVOURITE_SPECIAL_PRICE_ORIG).append(" TEXT,")
+				.append(_FAVOURITE_SPECIAL_PRICE_CONVERTED).append(" TEXT,")
 				.append(_FAVOURITE_DISCOUNT_PERCENTAGE).append(" DOUBLE, ")
 				.append(_FAVOURITE_URL).append(" TEXT,")
 				.append(_FAVOURITE_IMAGE_URL).append(" TEXT, ")
@@ -89,8 +93,10 @@ public class FavouriteTableHelper {
 			values.put(FavouriteTableHelper._FAVOURITE_NAME, completeProduct.getName());
 			values.put(FavouriteTableHelper._FAVOURITE_PRICE, completeProduct.getPrice());
 			values.put(FavouriteTableHelper._FAVOURITE_PRICE_ORIG, completeProduct.getPriceAsDouble());
+			values.put(FavouriteTableHelper._FAVOURITE_PRICE_CONVERTED, completeProduct.getPriceConverted());
 			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE, completeProduct.getSpecialPrice());
 			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE_ORIG, completeProduct.getSpecialPriceAsDouble());
+			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE_CONVERTED, completeProduct.getSpecialPriceConverted());
 			values.put(FavouriteTableHelper._FAVOURITE_DISCOUNT_PERCENTAGE, completeProduct.getMaxSavingPercentage());
 			values.put(FavouriteTableHelper._FAVOURITE_URL, completeProduct.getUrl());
 			values.put(FavouriteTableHelper._FAVOURITE_IMAGE_URL, completeProduct.getImageList().size() == 0 ? "" : completeProduct.getImageList().get(0));
@@ -151,8 +157,10 @@ public class FavouriteTableHelper {
 			values.put(FavouriteTableHelper._FAVOURITE_NAME, product.getName());
 			values.put(FavouriteTableHelper._FAVOURITE_PRICE, product.getPrice());
 			values.put(FavouriteTableHelper._FAVOURITE_PRICE_ORIG, product.getPriceAsDouble());
+			values.put(FavouriteTableHelper._FAVOURITE_PRICE_CONVERTED, product.getPriceConverted());
 			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE, product.getSpecialPrice());
 			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE_ORIG, product.getSpecialPriceAsDouble());
+			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE_CONVERTED, product.getSpecialPriceConverted());
 			values.put(FavouriteTableHelper._FAVOURITE_DISCOUNT_PERCENTAGE, product.getMaxSavingPercentage());
 			values.put(FavouriteTableHelper._FAVOURITE_URL, product.getUrl());
 			values.put(FavouriteTableHelper._FAVOURITE_IMAGE_URL, (product.getImages().size() == 0) ? "" : product.getImages().get(0).getUrl());
@@ -293,8 +301,10 @@ public class FavouriteTableHelper {
 				favourite.setName(cursor.getString(index++));
 				favourite.setPrice(cursor.getString(index++));
 				favourite.setPriceAsDouble(cursor.getDouble(index++));
+				favourite.setPriceConverted(cursor.getDouble(index++));
 				favourite.setSpecialPrice(cursor.getString(index++));
 				favourite.setSpecialPriceDouble(cursor.getDouble(index++));
+				favourite.setSpecialPriceConverted(cursor.getDouble(index++));
 				favourite.setMaxSavingPercentage(cursor.getDouble(index++));
 				favourite.setUrl(cursor.getString(index++));
 				favourite.getImageList().add(cursor.getString(index++));
