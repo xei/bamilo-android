@@ -96,6 +96,8 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
     private boolean completedReview = false;
 
     private String mCompleteProductUrl= "";
+    
+    private LinearLayout mainContainer;
     /**
      * Get instance
      * 
@@ -161,6 +163,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         Log.i(TAG, "ON VIEW CREATED");
         labelsContainer = (LinearLayout) view.findViewById(R.id.label_container);
         ratingBarContainer = (LinearLayout) view.findViewById(R.id.ratingbar_container);
+        mainContainer = (LinearLayout) view.findViewById(R.id.product_rating_container);
 
         
 
@@ -180,7 +183,8 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         if (JumiaApplication.mIsBound) {
             // load complete product url
             if(mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)){
-                mCompleteProductUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL, "");
+                String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
+                mCompleteProductUrl = contentUrl != null ? contentUrl : "";
             }
             if(completeProduct == null) {
                 Bundle bundle = new Bundle();
@@ -266,64 +270,64 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             }
             
         } else {
-
-        if (ratingBarContainer.getChildCount() > 0) return;
-
-        if (getActivity() == null) return;
-
-        LayoutInflater mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        int id = 77;
-        // Only render ratings if available
-        if (ratingOptions != null && !ratingOptions.isEmpty()) {
-            int size = ratingOptions.size();
-            for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
-                View viewRating = mInflater.inflate(R.layout.rating_bar_component, null, false);
-                View viewLabel = mInflater.inflate(R.layout.label_rating_component, null, false);
-                viewRating.setTag(option.getKey());
-                viewRating.setId(id);
-                id++;
-                viewLabel.setTag(option.getKey());
-                
-                // Get the rating label
-                // FIXME : (TEMPORARY) Validate rating label if ins't a number from API
-                String ratingLabel = option.getKey();
-                if (ratingLabel.equals("1")) ratingLabel = size == 1 ? "Rating" : "Price";
-                else if (ratingLabel.equals("2")) ratingLabel = "Appearance";
-                else if (ratingLabel.equals("3")) ratingLabel = "Quality";
-                
-                ((TextView) viewLabel).setText(ratingLabel);
-                ratingBarContainer.addView(viewRating);
-                labelsContainer.addView(viewLabel);
+            mainContainer.setVisibility(View.VISIBLE);
+            if (ratingBarContainer.getChildCount() > 0) return;
+    
+            if (getActivity() == null) return;
+    
+            LayoutInflater mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            int id = 77;
+            // Only render ratings if available
+            if (ratingOptions != null && !ratingOptions.isEmpty()) {
+                int size = ratingOptions.size();
+                for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
+                    View viewRating = mInflater.inflate(R.layout.rating_bar_component, null, false);
+                    View viewLabel = mInflater.inflate(R.layout.label_rating_component, null, false);
+                    viewRating.setTag(option.getKey());
+                    viewRating.setId(id);
+                    id++;
+                    viewLabel.setTag(option.getKey());
+                    
+                    // Get the rating label
+                    // FIXME : (TEMPORARY) Validate rating label if ins't a number from API
+                    String ratingLabel = option.getKey();
+                    if (ratingLabel.equals("1")) ratingLabel = size == 1 ? "Rating" : "Price";
+                    else if (ratingLabel.equals("2")) ratingLabel = "Appearance";
+                    else if (ratingLabel.equals("3")) ratingLabel = "Quality";
+                    
+                    ((TextView) viewLabel).setText(ratingLabel);
+                    ratingBarContainer.addView(viewRating);
+                    labelsContainer.addView(viewLabel);
+                }
             }
-        }
-            productName = (TextView) getView().findViewById(R.id.product_detail_name);
-            TextView productPriceSpecial = (TextView) getView()
-                    .findViewById(R.id.product_price_special);
-            TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
-
-            titleText = (EditText) getView().findViewById(R.id.title_box);
-            nameText = (EditText) getView().findViewById(R.id.name_box);
-            reviewText = (EditText) getView().findViewById(R.id.review_box);
-
-            ((Button) getView().findViewById(R.id.send_review))
-                    .setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (checkReview() && !isExecutingSendReview) {
-                                isExecutingSendReview = true;
-                                executeSendReview();
+                productName = (TextView) getView().findViewById(R.id.product_detail_name);
+                TextView productPriceSpecial = (TextView) getView()
+                        .findViewById(R.id.product_price_special);
+                TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
+    
+                titleText = (EditText) getView().findViewById(R.id.title_box);
+                nameText = (EditText) getView().findViewById(R.id.name_box);
+                reviewText = (EditText) getView().findViewById(R.id.review_box);
+    
+                ((Button) getView().findViewById(R.id.send_review))
+                        .setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (checkReview() && !isExecutingSendReview) {
+                                    isExecutingSendReview = true;
+                                    executeSendReview();
+                                }
                             }
-                        }
-                    });
-
-            productName.setText(completeProduct.getBrand() + " " + completeProduct.getName());
-            displayPriceInformation(productPriceNormal, productPriceSpecial);
-
-            // Load the saved values
-            ContentValues review = JumiaApplication.getReview();
-            if (review != null) {
-                loadReview(review);
-            }
+                        });
+    
+                productName.setText(completeProduct.getBrand() + " " + completeProduct.getName());
+                displayPriceInformation(productPriceNormal, productPriceSpecial);
+    
+                // Load the saved values
+                ContentValues review = JumiaApplication.getReview();
+                if (review != null) {
+                    loadReview(review);
+                }
         }
         
     }

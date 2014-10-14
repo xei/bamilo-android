@@ -525,7 +525,6 @@ public class FragmentController {
         if(originalFragments.size() > 0 && backstackTypes.size() > 0){
             for (int i = 0; i < backstackTypes.size(); i++) {
                 for (int j = 0; j < originalFragments.size(); j++) {
-                    Log.i(TAG, "LOOP: FRAGMENT: " + originalFragments.get(j).getTag());
                     if(originalFragments.get(j) != null && backstackTypes.get(i).equalsIgnoreCase(originalFragments.get(j).getTag()))
                         //validating that none of the checkout steps are entered in the new backstack because it will have an empty shopping cart 
                         //and will redirected to the shopping cart fragment, making it the top one
