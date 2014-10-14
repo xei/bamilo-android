@@ -153,6 +153,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         public Integer max_delivery_time;
         public Map<String, String> simpleData;
         public String variation;
+        public String productUrl;
     }
 
     /**
@@ -717,6 +718,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                 values.max_delivery_time = 99;
                 values.simpleData = item.getSimpleData();
                 values.variation = item.getVariation();
+                values.productUrl = item.getProductUrl();
 
                 Log.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
 
@@ -858,9 +860,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         prodItem.itemName.setText(prodItem.itemValues.product_name);
         prodItem.itemName.setSelected(true);
 
-        String url = prodItem.itemValues.image;
+        String imageUrl = prodItem.itemValues.image;
 
-        RocketImageLoader.instance.loadImage(url, prodItem.productView, prodItem.pBar, R.drawable.no_image_small);
+        RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar, R.drawable.no_image_small);
 
         if (!prodItem.itemValues.price.equals(prodItem.itemValues.price_disc)) {
             prodItem.priceDisc.setText(prodItem.itemValues.price_disc);
@@ -914,18 +916,15 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         });
 
         // Save the position to process the click on item
-        view.setTag(position);
+        view.setTag(R.id.target_url, item.productUrl);
         view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    int position = Integer.parseInt(v.getTag().toString());
-                    goToProducDetails(position);
+                    goToProducDetails((String) v.getTag(R.id.target_url));
                 } catch (NullPointerException e) {
                     Log.w(TAG, "WARNING: NPE ON GET CLICKED TAG");
-                } catch (NumberFormatException e) {
-                    Log.w(TAG, "WARNING: NFE ON GET CLICKED POSITION FROM TAG: " + v.getTag().toString());
-                }
+                } 
             }
         });
 
@@ -951,15 +950,11 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
      * 
      * @param position
      */
-    private void goToProducDetails(int position) {
+    private void goToProducDetails(String productUrl) {
         // Log.d(TAG, "CART COMPLETE PRODUCT URL: " + items.get(position).getProductUrl());
-
-        if (TextUtils.isEmpty(items.get(position).getProductUrl())) {
-            return;
-        }
-
+        if (TextUtils.isEmpty(productUrl)) return;
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, items.get(position).getProductUrl());
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, productUrl);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
