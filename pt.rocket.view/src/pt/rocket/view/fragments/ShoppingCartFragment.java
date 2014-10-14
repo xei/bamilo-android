@@ -381,10 +381,16 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                     if (items != null && items.size() > 0) {
                         checkMinOrderAmount();
                     } else {
+                        // TODO Validate if it is necessary
                         String title = getString(R.string.shoppingcart_alert_header);
                         String message = getString(R.string.shoppingcart_alert_message_no_items);
                         String buttonText = getString(R.string.ok_label);
-                        messageDialog = DialogGenericFragment.newInstance(false, true, false, title, message, buttonText, null, null);
+                        messageDialog = DialogGenericFragment.newInstance(false, true, false, title, message, buttonText, null, new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                messageDialog.dismiss();
+                            }
+                        });
                         messageDialog.show(getActivity().getSupportFragmentManager(), null);
                     }
                     break;
