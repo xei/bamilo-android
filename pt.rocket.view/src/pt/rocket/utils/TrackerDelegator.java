@@ -585,13 +585,13 @@ public class TrackerDelegator {
         String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
 
         // Data
-        long price = bundle.getLong(PRICE_KEY);
+        double price = bundle.getDouble(PRICE_KEY);
         String sku = bundle.getString(SKU_KEY);
         String name = bundle.getString(NAME_KEY);
         String category = bundle.getString(CATEGORY_KEY);
 
         // GA
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_CART, sku, price);
+        AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_CART, sku, (long) price);
         // Adx
         AdXTracker.trackAddToCart(context, "" + price, customerId, sku, JumiaApplication.SHOP_NAME);
         // AD4Push

@@ -11,9 +11,8 @@
     
     <!-- GA -->
     <bool name="ga_debug_mode">false</bool>
-	<!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
+	<!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. -->  
     <integer name="ga_dispatchPeriod">0</integer>
-    --> 
     
     <!-- ADX -->
     <string name="adx_app_name">pt.rocket.jumia</string>

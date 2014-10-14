@@ -613,6 +613,16 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
         this.isNew = isNew;
     }
 
+    /**
+     * Return the paid price for tracking.
+     * @return double
+     * @author sergiopereira
+     */
+    public double getPriceForTracking() {
+    	return specialPriceDouble > 0 ? specialPriceDouble : priceDouble;
+    }
+    
+    
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub

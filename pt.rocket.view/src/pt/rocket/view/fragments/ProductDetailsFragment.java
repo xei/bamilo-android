@@ -991,7 +991,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         Bundle bundle = new Bundle();
         bundle.putString(TrackerDelegator.SKU_KEY, sku);
-        bundle.putLong(TrackerDelegator.PRICE_KEY, price);
+        bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceForTracking());
         bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getName());
         bundle.putString(TrackerDelegator.BRAND_KEY, mCompleteProduct.getBrand());
         bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().size() > 0 ? mCompleteProduct.getCategories().get(0) : "");
