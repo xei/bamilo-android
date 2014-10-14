@@ -371,7 +371,16 @@ public class DatePicker extends FrameLayout {
     }
 
     private void reorderSpinners() {
-        char[] order = DateFormat.getDateFormatOrder(getContext());
+        char[] order;
+        try {
+            order = DateFormat.getDateFormatOrder(getContext());
+        } catch (IllegalArgumentException e) {
+            // Fix java.lang.IllegalArgumentException: Bad pattern character 'E' in E, d MMM yyyy
+            // https://m.google.com/app/basic/stream/z12jfbrziu2qfb1ao04cg3axizabiri41b0
+
+            // Use default order when date format on device is not correclty parsed
+            order = new char[] { 'd', 'M', 'y' };
+        }
         final int spinnerCount = order.length;
         for (int i = 0; i < spinnerCount; i++) {
             switch (order[i]) {
