@@ -104,9 +104,11 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
     public static ReviewWriteFragment getInstance(Bundle bundle) {
         Log.i(TAG, "getInstance");
         writeReviewFragment = new ReviewWriteFragment();
-        if(bundle != null && bundle.containsKey(ConstantsIntentExtra.CONTENT_URL))
-            writeReviewFragment.mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL,"");
-        
+        if (bundle != null) {
+            String contentUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
+            writeReviewFragment.mCompleteProductUrl = contentUrl != null ? contentUrl : "";
+        }
+
         return writeReviewFragment;
     }
 

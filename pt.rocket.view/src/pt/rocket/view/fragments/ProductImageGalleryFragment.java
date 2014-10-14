@@ -99,7 +99,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
         sProductImageGalleryFragment.currentPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
         if (sProductImageGalleryFragment.currentPosition <= 0) sProductImageGalleryFragment.currentPosition = 1;
         sProductImageGalleryFragment.isZoomAvailable = bundle.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
-        sProductImageGalleryFragment.mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL, "");
+        String contentUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
+        sProductImageGalleryFragment.mCompleteProductUrl = contentUrl != null ? contentUrl : "";
         // Return instance
         return sProductImageGalleryFragment;
     }
@@ -270,7 +271,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
         super.onResume();
         mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
         if (mCompleteProduct == null) {
-            if (JumiaApplication.mIsBound && !mCompleteProductUrl.equalsIgnoreCase("")) {
+            if (JumiaApplication.mIsBound && !"".equals(mCompleteProductUrl)) {
                 Bundle bundle = new Bundle();
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, responseCallback);

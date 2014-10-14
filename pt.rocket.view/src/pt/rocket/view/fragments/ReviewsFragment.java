@@ -90,7 +90,8 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
     public static ReviewsFragment getInstance(Bundle bundle) {
         sPopularityFragment = new ReviewsFragment();
         sPopularityFragment.mProductRatingPage = null;
-        sPopularityFragment.mSavedUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL, "");
+        String contentUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
+        sPopularityFragment.mSavedUrl = contentUrl != null ? contentUrl : "";
         sPopularityFragment.setArguments(bundle);
         return sPopularityFragment;
     }
@@ -154,11 +155,11 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         inflater = LayoutInflater.from(getActivity());
         if (selectedProduct == null) {
-            
-            if(mSavedUrl == null && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL))
-                mSavedUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL, "");
-            
-            if (JumiaApplication.mIsBound && !mSavedUrl.equalsIgnoreCase("")) {
+            if (mSavedUrl == null && getArguments() != null) {
+                String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
+                mSavedUrl = contentUrl != null ? contentUrl : "";
+            }
+            if (JumiaApplication.mIsBound && !"".equals(mSavedUrl)) {
                 Bundle bundle = new Bundle();
                 bundle.putString(GetProductHelper.PRODUCT_URL, mSavedUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
@@ -413,15 +414,15 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
     
 
     protected void onSuccessEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
-        }        
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "onErrorEvent: type = " + eventType);
+        }
+        
         switch (eventType) {
         case GET_PRODUCT_REVIEWS_EVENT:
             ProductRatingPage productRatingPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
@@ -458,17 +459,20 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
     }
     
     protected void onErrorEvent(Bundle bundle){
-        if(!isVisible()){
-            return;
-        }
-        
-        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
-        if(getBaseActivity().handleErrorEvent(bundle)){
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
-        }    
+        }
+        // Generic errors
+        if(getBaseActivity().handleErrorEvent(bundle)) return;
+        
+        // Hide Loading from triggers
+        showFragmentContentContainer();
         
         switch (eventType) {
         case GET_PRODUCT_REVIEWS_EVENT:
@@ -479,14 +483,11 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
             // Append the new page to the current
             else mProductRatingPage.appendPageRating(productRatingPage);
                 
-            showFragmentContentContainer();
             displayReviews(productRatingPage);
             break;
         case GET_PRODUCT_EVENT:
             if (!errorCode.isNetworkError()) {
                 Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-
-                showFragmentContentContainer();
 
                 try {
                     getBaseActivity().onBackPressed();
@@ -498,10 +499,6 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         default:
             break;
         }
-        
-        showFragmentContentContainer();
-        
-
     }
     
     

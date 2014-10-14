@@ -63,7 +63,8 @@ public class ProductDetailsDescriptionFragment extends BaseFragment implements O
      */
     public static ProductDetailsDescriptionFragment getInstance(Bundle bundle) {
         sProductDetailsDescriptionFragment = new ProductDetailsDescriptionFragment();
-        sProductDetailsDescriptionFragment.mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL, "");
+        String contentUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
+        sProductDetailsDescriptionFragment.mCompleteProductUrl = contentUrl != null ? contentUrl : "";
         return sProductDetailsDescriptionFragment;
     }
 
