@@ -244,7 +244,7 @@ public class FontLoader {
                     + Integer.toHexString(mRawResourceId)), allowFileReusage);
         }
 
-        private Typeface loadTypeface(File file, boolean allowFileReusage) {
+        /*-private Typeface loadTypeface(File file, boolean allowFileReusage) {
             if (file.exists() && allowFileReusage) {
                 try {
                     Typeface typeface = Typeface.createFromFile(file);
@@ -272,6 +272,45 @@ public class FontLoader {
                     return null;
                 }
             }
+        }*/
+
+        /*--
+         * Replace obsolete loadTypeFace method by newer version in order to avoid StackOverflow
+         * https://github.com/Prototik/HoloEverywhere/issues/667
+         */
+
+        private Typeface loadTypeface(File file, boolean allowFileReusage) {
+            if (file.exists() && allowFileReusage) {
+                try {
+                    return tryToLoadRawTypeface(file);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                InputStream is = getContext().getResources().openRawResource(mRawResourceId);
+                OutputStream os = new FileOutputStream(file);
+                byte[] buffer = new byte[1024];
+                int c;
+                while ((c = is.read(buffer)) > 0) {
+                    os.write(buffer, 0, c);
+                }
+                os.flush();
+                os.close();
+                is.close();
+                return tryToLoadRawTypeface(file);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    
+        private Typeface tryToLoadRawTypeface(File file) throws Exception {
+            Typeface typeface = Typeface.createFromFile(file);
+            if (typeface == null) {
+                throw new NullPointerException();
+            }
+            return typeface;
         }
 
         public void setRawResourceId(int rawResourceId) {
