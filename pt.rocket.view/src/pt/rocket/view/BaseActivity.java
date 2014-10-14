@@ -1070,7 +1070,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param menu
      * @author sergiopereira
      */
-    protected void hideSearchComponent() {
+    public void hideSearchComponent() {
         Log.d(TAG, "SEARCH COMPONENT: HIDE");
         try {
             // Validate if exist search icon and bar

@@ -310,6 +310,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 getBaseActivity().closeDrawerIfOpen();
             }
         }
+        
+        if(null != getBaseActivity())
+            getBaseActivity().hideSearchComponent();
     }
 
     /*

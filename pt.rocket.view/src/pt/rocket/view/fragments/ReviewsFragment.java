@@ -155,11 +155,12 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         inflater = LayoutInflater.from(getActivity());
         if (selectedProduct == null) {
-            if (mSavedUrl == null && getArguments() != null) {
+            
+            if(mSavedUrl == null && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)){
                 String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
                 mSavedUrl = contentUrl != null ? contentUrl : "";
             }
-            if (JumiaApplication.mIsBound && !"".equals(mSavedUrl)) {
+            if (JumiaApplication.mIsBound && !mSavedUrl.equalsIgnoreCase("")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(GetProductHelper.PRODUCT_URL, mSavedUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
