@@ -365,21 +365,20 @@
     <string name="back_label">RETOUR</string>
     <string name="campaing_timer_end">Se termine le:  </string>
     <string name="products_tip_swipe_text">Balayer à la gauche ou droite pour changer de classement</string>
-    
-    
-    <string name="login_remember_user_email">Remember my email</string>
-    <string name="splash_slogan">The biggest online shopping mall in Africa</string>
-    <string name="catalog_no_results">No results match your filter criteria.\nYou can try to use less specific filters</string>
-    <string name="catalog_edit_filters">Edit Filters</string>
+    <string name="login_remember_user_email">Mémoriser mon email</string>
+    <string name="splash_slogan">La boutique en ligne N°1 en Afrique</string>
+    <string name="catalog_no_results">Il n\'y a pas de résultat pour votre criteria. \n Recherche pour une filtre moins générale</string>
+    <string name="catalog_edit_filters">Modifier Filtres</string>
     <string name="color_label">Color</string>
-    <string name="size_label">Size</string>
-    <string name="shoppingcart_remove_products">Do you want to remove the products in the Cart?</string>
-    <string name="track_your_order_tip">Search for your Order ID and every detail about it will show here</string>
-    <string name="your_order">Your Order</string>
-    <string name="reviews_empty">This Product has no ratings, yet!</string>
+    <string name="size_label">Taille</string>
+    <string name="shoppingcart_remove_products">Supprimé les produits dans la Cart?</string>
+    <string name="track_your_order_tip">Recherche votre numéro de commande</string>
+    <string name="your_order">Votre commande</string>
+    <string name="reviews_empty">Ce produit n\'a pas de avis!</string>
     <string name="checkout_label">Checkout</string>
-    <string name="campaigns_label">Campaigns</string>
-    <string name="order_status_label">Order Status</string>
+    <string name="campaigns_label">Offres</string>
+    <string name="order_status_label">Statut de la commande</string>
     <string name="cart_label">Cart</string>
+    <string name="show_more">Plus...</string>
 
 </resources>
