@@ -958,17 +958,25 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         if (id == R.id.products_list_filter_button && isNotShowingDialogFilter) {           
             Log.d(TAG, "ON CLICK: FILTER BUTTON");
             isNotShowingDialogFilter = false;
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, sCatalogFilter);
-            DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
-            newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+            // Validate current catalog filter
+            if(sCatalogFilter == null) return;
+            // TODO: Validate if is necessary Filter as static
+            try {
+                // Show dialog
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, sCatalogFilter);
+                DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
+                newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+            } catch (NullPointerException e) {
+                Log.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
+            }
             
         } else if (id == R.id.viewpager_tips_btn_indicator) {
             WizardPreferences.changeState(getBaseActivity(), WizardType.CATALOG);
             mWizardContainer.findViewById(R.id.viewpager_tips).setVisibility(View.GONE);
             ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.GONE);
 
-        } else if (id == R.id.products_switch_layout_button) { // XXX
+        } else if (id == R.id.products_switch_layout_button) {
             Log.d(TAG, "ON CLICK: SWITCH LAYOUT BUTTON");
             v.setEnabled(false);
 

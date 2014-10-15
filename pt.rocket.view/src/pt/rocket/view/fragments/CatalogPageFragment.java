@@ -318,15 +318,15 @@ public class CatalogPageFragment extends BaseFragment {
         invalidateData(args, forceReload);
     }
     
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#setUserVisibleHint(boolean)
-     */
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        Log.i(TAG, "ON SET USER VISIBLE HINT #" + mPageIndex + " -> " + isVisibleToUser + "[isResumed:" + isResumed() + " isStopping:" + isOnStoppingProcess + "]");
-    }
+//    /*
+//     * (non-Javadoc)
+//     * @see android.support.v4.app.Fragment#setUserVisibleHint(boolean)
+//     */
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//        Log.i(TAG, "ON SET USER VISIBLE HINT #" + mPageIndex + " -> " + isVisibleToUser + "[isResumed:" + isResumed() + " isStopping:" + isOnStoppingProcess + "]");
+//    }
 
     /*
      * (non-Javadoc)

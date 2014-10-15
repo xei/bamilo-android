@@ -1382,9 +1382,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         } else if (id == R.id.tips_got_it_img) {
             WizardPreferences.changeState(getBaseActivity(), WizardType.PRODUCT_DETAIL);
-            getView().findViewById(R.id.viewpager_tips).setVisibility(View.GONE);
-            ((LinearLayout) getView().findViewById(R.id.viewpager_tips_btn_indicator))
-                    .setVisibility(View.GONE);
+            try {
+                getView().findViewById(R.id.viewpager_tips).setVisibility(View.GONE);
+                ((LinearLayout) getView().findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.GONE);
+            } catch (NullPointerException e) {
+                Log.w(TAG, "WARNING: NPE ON HIDE WIZARD");
+            }
 
         } else if (id == R.id.product_detail_image_is_favourite) {
             boolean isFavourite = false;

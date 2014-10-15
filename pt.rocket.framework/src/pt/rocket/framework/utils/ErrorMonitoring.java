@@ -65,11 +65,11 @@ public class ErrorMonitoring {
 		if ( !TextUtils.isEmpty( msgTwo )) {
 			hMap.put( "Content", msgTwo);
 		}
-		try {
+		/*-try {
 			BugSenseHandler.sendExceptionMap(hMap, e);	
 		} catch (ConcurrentModificationException e2) {
 			e2.printStackTrace();
-		}
+		}*/
 		
 	}
 	
