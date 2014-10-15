@@ -56,9 +56,6 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
 
     private static final String TAG = JumiaApplication.class.getSimpleName();
 
-    // TODO : Updated this value for each live release
-    public boolean generateStagingServers = true;
-
     public static String SHOP_ID = null;
     public static String SHOP_NAME = "";
     public static Customer CUSTOMER;

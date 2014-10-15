@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-	<!-- Countries -->
-	<string name="countries_url">http://www.jumia.com/mobapi/availablecountries</string>
-
-    <!-- App -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    
+	<!-- APP -->
     <string name="app_name">Jumia Market Dev</string>
     <string name="package_id">com.jumia.android.live</string>
+    <bool name="rest_host_auth_use_it">true</bool>
+	<bool name="is_to_show_dev_env">true</bool>
+
+	<!-- COUNTRIES -->
+	<string name="countries_url">http://www.jumia.com/mobapi/availablecountries/staging</string>
+
+	<!-- GA -->
+	<!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
+    <integer name="ga_dispatchPeriod">0</integer>
+    --> 
     
     <!-- ADX -->
     <string name="adx_app_name">com.jumia.android.live</string>
     
 	<!-- BUG SENSE -->
     <string name="bugsense_apikey">c05cc696</string>
-
-    <!-- MIX PANEL -->
-    <string name="mixpanel_token">8e9eac00a1c3a6ac871137ff3beca085</string>
-
-    <bool name="rest_host_auth_use_it">true</bool>
 
     <!-- HOCKEY APP -->
     <string name="hockeyapp_token">f05f22556e194a18b883a818ab217f92</string>

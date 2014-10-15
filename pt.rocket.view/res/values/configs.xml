@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- APP -->
+    <bool name="is_to_show_dev_env">false</bool>
+    
     <!-- Countries -->
 	<string name="countries_url">http://www.jumia.com/mobapi/availablecountries/staging</string>
 

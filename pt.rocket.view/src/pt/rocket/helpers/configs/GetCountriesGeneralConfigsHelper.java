@@ -4,7 +4,6 @@
  */
 package pt.rocket.helpers.configs;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 
@@ -95,7 +94,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                 }
             }
             if(mCountries != null && mCountries.size() > 0){
-                // Add the dev servers if is to generateStagingServers
+                // Add the dev servers if is to "app_show_dev_env"
                 addDevServers(mCountries);
                 
                 JumiaApplication.INSTANCE.countriesAvailable = mCountries;
@@ -130,7 +129,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         mCountries = JumiaApplication.INSTANCE.countriesAvailable;
         if(mCountries != null && mCountries.size() > 0){
-            // Add the dev servers if is to generateStagingServers
+            // Add the dev servers if is to "app_show_dev_env"
             addDevServers(mCountries);
             
             JumiaApplication.INSTANCE.countriesAvailable = mCountries;
@@ -158,7 +157,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         mCountries = JumiaApplication.INSTANCE.countriesAvailable;
         if(mCountries != null && mCountries.size() > 0){
-            // Add the dev servers if is to generateStagingServers
+            // Add the dev servers if is to "app_show_dev_env"
             addDevServers(mCountries);
             
             JumiaApplication.INSTANCE.countriesAvailable = mCountries;
@@ -177,50 +176,49 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
     
     
     /**
-     * 
+     * Show dev env only for DEV project
      * @param mCountries
+     * @author manuel
+     * @modified spereira
      */
     private void addDevServers(ArrayList<CountryObject> mCountries) {
-        if(JumiaApplication.INSTANCE.generateStagingServers){
-            ArrayList<CountryObject> stagingServers = new ArrayList<CountryObject>();
-            for (CountryObject countryObject : mCountries) {
-                
-                // Add Integration
-                CountryObject integrationCountryObject = new CountryObject();
-                try {
+        try {
+            Context context = JumiaApplication.INSTANCE.getApplicationContext();
+            if(context.getResources().getBoolean(R.bool.is_to_show_dev_env)){
+                ArrayList<CountryObject> stagingServers = new ArrayList<CountryObject>();
+                for (CountryObject countryObject : mCountries) {
+                    
+                    // Add Integration
+                    CountryObject integrationCountryObject = new CountryObject();
                     integrationCountryObject.setCountryName(URLDecoder.decode(countryObject.getCountryName(), "utf-8")+" Integration");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                integrationCountryObject.setCountryUrl(countryObject.getCountryUrl().replace("alice-staging", "integration-www"));
-                integrationCountryObject.setCountryFlag(countryObject.getCountryFlag());
-                integrationCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
-                integrationCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
-                integrationCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
-                integrationCountryObject.setCountryIso(countryObject.getCountryIso());
-                integrationCountryObject.setCountryForceHttps(countryObject.isCountryForceHttps());
-                integrationCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
-                stagingServers.add(integrationCountryObject);
-                
-                // Add Live
-                CountryObject liveCountryObject = new CountryObject();
-                try {
+                    integrationCountryObject.setCountryUrl(countryObject.getCountryUrl().replace("alice-staging", "integration-www"));
+                    integrationCountryObject.setCountryFlag(countryObject.getCountryFlag());
+                    integrationCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
+                    integrationCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
+                    integrationCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
+                    integrationCountryObject.setCountryIso(countryObject.getCountryIso());
+                    integrationCountryObject.setCountryForceHttps(countryObject.isCountryForceHttps());
+                    integrationCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
+                    stagingServers.add(integrationCountryObject);
+                    
+                    // Add Live
+                    CountryObject liveCountryObject = new CountryObject();
                     liveCountryObject.setCountryName(URLDecoder.decode(countryObject.getCountryName(), "utf-8")+" Live");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                    liveCountryObject.setCountryUrl(countryObject.getCountryUrl().replace("alice-staging", "www"));
+                    liveCountryObject.setCountryFlag(countryObject.getCountryFlag());
+                    liveCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
+                    liveCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
+                    liveCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
+                    liveCountryObject.setCountryIso(countryObject.getCountryIso());
+                    liveCountryObject.setCountryForceHttps(countryObject.isCountryForceHttps());
+                    liveCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
+                    stagingServers.add(liveCountryObject);
+                    
                 }
-                liveCountryObject.setCountryUrl(countryObject.getCountryUrl().replace("alice-staging", "www"));
-                liveCountryObject.setCountryFlag(countryObject.getCountryFlag());
-                liveCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
-                liveCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
-                liveCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
-                liveCountryObject.setCountryIso(countryObject.getCountryIso());
-                liveCountryObject.setCountryForceHttps(countryObject.isCountryForceHttps());
-                liveCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
-                stagingServers.add(liveCountryObject);
-                
+                mCountries.addAll(stagingServers);
             }
-            mCountries.addAll(stagingServers);
+        } catch (Exception e) {
+            Log.w(TAG, "WARNING: ON ADD DEV SERVERS" ,e);
         }
     }
 }
