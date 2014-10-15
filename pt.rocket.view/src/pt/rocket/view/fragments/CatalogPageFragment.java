@@ -22,6 +22,7 @@ import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.helpers.products.GetProductsHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -124,6 +125,8 @@ public class CatalogPageFragment extends BaseFragment {
     private Bundle mReceivedDataInBackgroung = null;
 
     private TrackingEvent mTrackSortEvent = TrackingEvent.CATALOG_FROM_CATEGORIES;
+
+    private final static int POPULARITY_PAGE_NUMBER = 1;
 
     /**
      * 
@@ -774,11 +777,20 @@ public class CatalogPageFragment extends BaseFragment {
         }
     };
 
+    /**
+     * Filter the success response
+     * 
+     * @param bundle
+     */
     private void onSuccessEvent(Bundle bundle) {
-        Log.d(TAG, "ON SUCCESS EVENT");
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
-        // Validate fragment state
-        if (isOnStoppingProcess) return;
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
         
         // Get Products Event
         final ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
@@ -799,31 +811,24 @@ public class CatalogPageFragment extends BaseFragment {
         if (productsPage != null && totalProducts > 0) {
             Log.d(TAG, "onSuccessEvent: products on page = " + numberProducts + " total products = " + totalProducts);
 
+            final int pageNumber = mPageNumber;
+
             new Thread(new Runnable() {
 
                 @Override
                 public void run() {
                     try {
-                        if (mPageIndex == 1 && mPageNumber == 1) {
+                        // Persist related Items when initially loading products for POPULARITY tab
+                        if (mPageIndex == POPULARITY_PAGE_NUMBER && pageNumber == 1) {
                             RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
-                        } else if (mPageIndex == 1 && mPageNumber == 2) {
+                        }/*- else if (mPageIndex == POPULARITY_PAGE_NUMBER && mPageNumber == 2) {
                             RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
-                        }
+                        }*/
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }).start();
-
-//            try {
-//                if (mPageIndex == 1 && mPageNumber == 1) {
-//                    RelatedItemsTableHelper.insertRelatedItemsAndClear(getBaseActivity(), productsPage.getProductsList());
-//                } else if (mPageIndex == 1 && mPageNumber == 2) {
-//                    RelatedItemsTableHelper.insertRelatedItems(getBaseActivity(), productsPage.getProductsList());
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
 
             parentFragment.addProductsCollection(productsPage.getProductsMap(), mTitle, productsPage.getTotalProducts());
 
@@ -916,18 +921,29 @@ public class CatalogPageFragment extends BaseFragment {
         RocketImageLoader.getInstance().startProcessingQueue();
     }
 
+    /**
+     * Filter the error response
+     * 
+     * @param bundle
+     */
     private void onErrorEvent(Bundle bundle) {
-        Log.d(TAG, "ON ERROR EVENT");
-    	
-        // Validate fragment state
-        if (isOnStoppingProcess) return;
-    	
-        RocketImageLoader.getInstance().startProcessingQueue();
-
-        if (getBaseActivity().handleErrorEvent(bundle)) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
+        // Generic errors
+        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
+            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
+            return;
+        }
+        
+        RocketImageLoader.getInstance().startProcessingQueue();
+        
         // Validate the request was performed by Filter
         boolean hasFilter = false;
         if (mFilters != null && parentFragment != null) {
@@ -936,9 +952,7 @@ public class CatalogPageFragment extends BaseFragment {
             parentFragment.onErrorLoadingFilteredCatalog();
             hasFilter = true;
         }
-
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-
+        
         if (errorCode != null && mPageNumber == 1) {
             FeaturedBox featuredBox = null;
 

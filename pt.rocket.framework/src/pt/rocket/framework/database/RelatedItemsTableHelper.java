@@ -78,7 +78,7 @@ public class RelatedItemsTableHelper {
      * @param mProducts
      * @throws InterruptedException 
      */
-	public synchronized static void insertRelatedItems(Context ctx, ArrayList<Product> mProducts) throws InterruptedException {
+	/*-public synchronized static void insertRelatedItems(Context ctx, ArrayList<Product> mProducts) throws InterruptedException {
 
 	    DarwinDatabaseSemaphore.getInstance().getLock();
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
@@ -109,7 +109,7 @@ public class RelatedItemsTableHelper {
 		}
 		DarwinDatabaseSemaphore.getInstance().releaseLock();
 
-	}
+	}*/
 
 	/**
 	 * TODO
