@@ -184,21 +184,41 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         if(JumiaApplication.INSTANCE.generateStagingServers){
             ArrayList<CountryObject> stagingServers = new ArrayList<CountryObject>();
             for (CountryObject countryObject : mCountries) {
-                CountryObject stagingCountryObject = new CountryObject();
+                
+                // Add Integration
+                CountryObject integrationCountryObject = new CountryObject();
                 try {
-                    stagingCountryObject.setCountryName(URLDecoder.decode(countryObject.getCountryName(), "utf-8")+" Integration");
+                    integrationCountryObject.setCountryName(URLDecoder.decode(countryObject.getCountryName(), "utf-8")+" Integration");
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                stagingCountryObject.setCountryUrl(countryObject.getCountryUrl().replace("alice-staging", "integration-www"));
-                stagingCountryObject.setCountryFlag(countryObject.getCountryFlag());
-                stagingCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
-                stagingCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
-                stagingCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
-                stagingCountryObject.setCountryIso(countryObject.getCountryIso());
-                stagingCountryObject.setCountryForceHttps(countryObject.isCountryForceHttps());
-                stagingCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
-                stagingServers.add(stagingCountryObject);
+                integrationCountryObject.setCountryUrl(countryObject.getCountryUrl().replace("alice-staging", "integration-www"));
+                integrationCountryObject.setCountryFlag(countryObject.getCountryFlag());
+                integrationCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
+                integrationCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
+                integrationCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
+                integrationCountryObject.setCountryIso(countryObject.getCountryIso());
+                integrationCountryObject.setCountryForceHttps(countryObject.isCountryForceHttps());
+                integrationCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
+                stagingServers.add(integrationCountryObject);
+                
+                // Add Live
+                CountryObject liveCountryObject = new CountryObject();
+                try {
+                    liveCountryObject.setCountryName(URLDecoder.decode(countryObject.getCountryName(), "utf-8")+" Live");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                liveCountryObject.setCountryUrl(countryObject.getCountryUrl().replace("alice-staging", "www"));
+                liveCountryObject.setCountryFlag(countryObject.getCountryFlag());
+                liveCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
+                liveCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
+                liveCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
+                liveCountryObject.setCountryIso(countryObject.getCountryIso());
+                liveCountryObject.setCountryForceHttps(countryObject.isCountryForceHttps());
+                liveCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
+                stagingServers.add(liveCountryObject);
+                
             }
             mCountries.addAll(stagingServers);
         }
