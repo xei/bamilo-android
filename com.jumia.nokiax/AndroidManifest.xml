@@ -2,8 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jumia.nokiax"
     android:installLocation="auto"
-    android:versionCode="6"
-    android:versionName="2.0" >
+    android:versionCode="7"
+    android:versionName="2.1" >
+    
+	<!-- ######################################## -->
+    <!-- ############# Permissions ############## -->
+    <!-- ######################################## -->
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,14 +15,12 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <!-- Urban Airship. -->
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- Adx additional permissions -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <!-- Location Helper -->
+    <!-- ############# Location: LocationHelper and AD4Push ############# -->
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         android:required="false" />
@@ -30,18 +32,25 @@
         android:name="android.hardware.location.gps"
         android:required="false" />
 
-    <!-- NOKIA X SUPPORT -->
-    <uses-permission android:name="com.nokia.pushnotifications.permission.RECEIVE" />
-    <uses-permission android:name="com.jumia.nokiax.permission.C2D_MESSAGE" />
+    <!-- ############# AD4Push: MESSAGE (Receive) and SEND (PushNotificationReceiver) ############# -->
     <permission
         android:name="com.jumia.nokiax.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.jumia.nokiax.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.nokia.pushnotifications.permission.RECEIVE" />
     
-    <permission
+    <!--
+	<permission
         android:name="com.jumia.nokiax.permission.A4S_SEND"
-        android:protectionLevel="signature" /> 
-    <uses-permission android:name="com.jumia.nokiax.permission.A4S_SEND" />    
-    
+        android:protectionLevel="signature" />
+     
+    <uses-permission android:name="com.jumia.nokiax.permission.A4S_SEND" />
+    -->
+
+    <!-- ######################################## -->
+    <!-- ############# Application ############## -->
+    <!-- ######################################## -->
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -53,7 +62,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:logo="@drawable/actionbar_logo"
+        android:logo="@drawable/logo_ic_icon"
         android:theme="@style/Theme.Jumia" >
         <activity
             android:name="pt.rocket.view.SplashScreenActivity"
@@ -64,26 +73,36 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- ############# DEEP LINK : Accepts URIs ############# -->
+            <intent-filter android:label="@string/dp_intent_label" >
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/dp_app_name_uppercase" />
+                <data android:scheme="@string/dp_app_name_lowercase" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.facebook.LoginActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <!-- Fragment Activities -->
         <activity
             android:name="pt.rocket.view.MainFragmentActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="unspecified" />
+            android:exported="true"
+            android:screenOrientation="unspecified"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name="net.hockeyapp.android.UpdateActivity" />
 
         <service
             android:name="pt.rocket.framework.service.RemoteService"
             android:exported="false" />
-
-        <!-- hockey -->
-        <activity android:name="net.hockeyapp.android.UpdateActivity" />
-
-        <!-- Ad X Tracker -->
+        
+		<!-- ######################################## -->
+        <!-- ############# ADX Tracker ############## -->
+        <!-- ######################################## -->
         <receiver
             android:name="com.AdX.tag.AdXAppTracker"
             android:exported="true" >
@@ -109,6 +128,89 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        
+		<!-- ##################################### -->
+        <!-- ############# FACEBOOK ############## -->
+        <!-- ##################################### -->
+        
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        
+		<!-- ######################################## -->
+        <!-- ############# AD4Push GCM ############## -->
+        <!-- ######################################## -->
+
+
+        <!-- ############# AD4Push: A4SService ############# -->
+        <service
+            android:name="com.ad4screen.sdk.A4SService"
+            android:label="A4S Service"
+            android:process=":A4SService" >
+            <meta-data
+                android:name="com.ad4screen.partnerid"
+                android:value="@string/ad4push_partner_id" />
+            <meta-data
+                android:name="com.ad4screen.privatekey"
+                android:value="@string/ad4push_private_key" />
+            <meta-data
+                android:name="com.ad4screen.senderid"
+                android:value="@string/ad4push_sender_id" />
+            <meta-data
+                android:name="com.ad4screen.logging"
+                android:value="false" />
+        </service>
+        
+        <!-- ############# AD4Push: Basic Integration ############# -->        
+        <receiver
+            android:name="com.ad4screen.sdk.A4SIDFVHandler"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.ad4screen.sdk.intent.action.QUERY" />
+
+                <category android:name="com.ad4screen.sdk.intent.category.ANONYM_ID" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.ad4screen.sdk.ReferrerHandler"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.ad4screen.sdk.A4SPopup"
+            android:taskAffinity=""
+            android:theme="@style/com_ad4screen_sdk_theme_popup" />
+        <activity
+            android:name="com.ad4screen.sdk.A4SInterstitial"
+            android:theme="@style/com_ad4screen_sdk_theme_interstitial" />
+        
+        <!-- ############# AD4Push: Push Notifications For NOKIA X############# -->
+
+        <receiver
+            android:name="com.ad4screen.sdk.GCMHandler"
+            android:permission="com.nokia.pushnotifications.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.nokia.pushnotifications.intent.RECEIVE" />
+                <action android:name="com.nokia.pushnotifications.intent.REGISTRATION" />
+                <category android:name="com.jumia.nokiax" />
+            </intent-filter>
+        </receiver>
+        
+ <!--       <receiver android:name="pt.rocket.utils.PushNotificationIntentReceiver">
+            <intent-filter>
+                <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
+                <action android:name="com.ad4screen.sdk.intent.action.CLICKED" />
+ 
+                <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS" />
+                <category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" />
+                <category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />
+            </intent-filter>
+        </receiver> -->
+        
+        
 
         <!-- Urban Airship GCM -->
 <!--         <receiver android:name="pt.rocket.utils.PushNotificationIntentReceiver" /> -->
@@ -147,68 +249,6 @@
 <!--             android:multiprocess="true" /> -->
         <!-- Urban Airship END -->
         
-        <!-- AD4Push GCM - Start -->
-        <service
-            android:name="com.ad4screen.sdk.A4SService"
-            android:label="A4S Service"
-            android:process=":A4SService" >
-            <meta-data
-                android:name="com.ad4screen.partnerid"
-                android:value="@string/ad4push_partner_id" />
-            <meta-data
-                android:name="com.ad4screen.privatekey"
-                android:value="@string/ad4push_private_key" />
-            <meta-data
-                android:name="com.ad4screen.senderid"
-                android:value="@string/ad4push_sender_id" />
-        </service>
-        
-        <receiver android:name="pt.rocket.utils.PushNotificationIntentReceiver">
-            <intent-filter>
-                <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
-                <action android:name="com.ad4screen.sdk.intent.action.CLICKED" />
- 
-                <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS" />
-                <category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" />
-                <category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />
-            </intent-filter>
-        </receiver>
-        
-        <!-- NOKIA X SUPPORT -->
-        <receiver
-            android:name="com.ad4screen.sdk.GCMHandler"
-            android:permission="com.nokia.pushnotifications.permission.SEND" >
-            <intent-filter>
-				<!-- NOKIA X SUPPORT -->
-                <action android:name="com.nokia.pushnotifications.intent.RECEIVE" />
-                <action android:name="com.nokia.pushnotifications.intent.REGISTRATION" />
-                <category android:name="com.jumia.nokiax" />
-            </intent-filter>
-        </receiver>
-        
-		<receiver
-            android:name="com.ad4screen.sdk.A4SIDFVHandler"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="com.ad4screen.sdk.intent.action.QUERY" />
-                <category android:name="com.ad4screen.sdk.intent.category.ANONYM_ID" />
-            </intent-filter>
-        </receiver>
-
-        <activity
-            android:name="com.ad4screen.sdk.A4SPopup"
-            android:taskAffinity=""
-            android:theme="@style/com_ad4screen_sdk_theme_popup" />
-        <activity
-            android:name="com.ad4screen.sdk.A4SInterstitial"
-            android:theme="@style/com_ad4screen_sdk_theme_interstitial" />
-        
-        <!-- AD4Push GCM - End-->
-        
-        
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
     </application>
 
 </manifest>

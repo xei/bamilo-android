@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jumia.blackberry"
     android:installLocation="auto"
-    android:versionCode="2"
+    android:versionCode="3"
     android:versionName="2.1" >
 
     <!-- ######################################## -->
@@ -60,7 +60,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:logo="@drawable/actionbar_logo"
+        android:logo="@drawable/logo_ic_icon"
         android:theme="@style/Theme.Jumia" >
         <activity
             android:name="pt.rocket.view.SplashScreenActivity"
