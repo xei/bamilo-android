@@ -203,13 +203,13 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
         Log.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
 
         // TODO : Comment for Samsung store
-        //CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
+        CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
 
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
 
         // TODO : Comment for Samsung store
         // TODO : Comment for BlackBerry
-        //CheckVersion.init(getApplicationContext());
+        CheckVersion.init(getApplicationContext());
     }
 
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {

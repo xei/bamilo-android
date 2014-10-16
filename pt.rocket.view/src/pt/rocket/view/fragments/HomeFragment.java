@@ -228,7 +228,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
 
         // TODO : Comment for Samsung store
         // TODO : Comment for BlackBerry
-        //if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
+        if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
 
         // Validate promotions
         SharedPreferences sP = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
