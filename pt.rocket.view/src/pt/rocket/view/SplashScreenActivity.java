@@ -739,11 +739,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
 
     /**
-     * 
+     * Show maintenance page.
      * @param eventType
      * @author sergiopereira
      */
-    private void setLayoutMaintenance(final EventType eventType) { // XXX
+    private void setLayoutMaintenance(final EventType eventType) {
         // Set content
         MaintenancePage.setContentSA(this, new OnClickListener() {
             @Override

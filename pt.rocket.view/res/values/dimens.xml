@@ -82,7 +82,7 @@
     <integer name="wrap_content">-2</integer>
     
     <!-- LOADING -->
-    <dimen name="loading_width">200dp</dimen>
+    <dimen name="loading_width">210dp</dimen>
     <dimen name="loading_height">100dp</dimen>
     <dimen name="loading_gif_layout">50dp</dimen>
 

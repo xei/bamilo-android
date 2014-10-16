@@ -12,7 +12,7 @@
     -->
     
 	<!-- LOADING -->
-    <dimen name="loading_width">300dp</dimen>
+    <dimen name="loading_width">310dp</dimen>
     <dimen name="loading_height">150dp</dimen>
     <dimen name="loading_gif_layout">75dp</dimen>
 
