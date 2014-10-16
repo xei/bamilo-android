@@ -36,11 +36,17 @@
             android:id="@+id/payment_text"
             style="@style/text_normal"
             android:layout_height="wrap_content"
+            android:ellipsize="none"
             android:fontFamily="roboto_light"
             android:paddingBottom="@dimen/margin_20px"
             android:paddingTop="@dimen/margin_20px"
             android:singleLine="false"
             android:visibility="gone" />
+        <!--
+            https://code.google.com/p/android/issues/detail?id=2254
+            FIXED only showing 2 lines
+            by setting android:ellipsize="none" after being set up as end by style="@style/text_normal"
+        -->
     </LinearLayout>
 
 </LinearLayout>

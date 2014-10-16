@@ -19,15 +19,20 @@
             android:layout_above="@+id/checkout_my_order_buttons"
             android:layout_alignParentTop="true" >
 
-            <!-- FORM -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
 
-            <include layout="@layout/checkout_edit_address_form" />
+                <!-- FORM -->
+
+                <include layout="@layout/checkout_edit_address_form" />
+            </LinearLayout>
         </ScrollView>
 
         <!-- BUTTONS -->
 
         <LinearLayout
-            android:id="@+id/checkout_my_order_buttons"
+            android:id="@id/checkout_my_order_buttons"
             android:layout_width="@dimen/inner_container_width"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
