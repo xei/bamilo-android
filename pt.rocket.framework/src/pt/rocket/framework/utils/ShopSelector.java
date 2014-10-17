@@ -2,6 +2,8 @@ package pt.rocket.framework.utils;
 
 import java.util.Locale;
 
+import com.apptimize.Apptimize;
+
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
 import pt.rocket.framework.rest.RestClientSingleton;
@@ -9,6 +11,7 @@ import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.tracking.Ad4PushTracker;
 import pt.rocket.framework.tracking.AdXTracker;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
+import pt.rocket.framework.tracking.ApptimizeTracking;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -61,6 +64,7 @@ public final class ShopSelector {
 		AnalyticsGoogle.startup(context, shopId);
 		AdXTracker.startup(context);
 		Ad4PushTracker.startup(context);
+		ApptimizeTracking.startup(context);
 		
 		sShopId = shopId;
 		sShopName = context.getResources().getString( R.string.global_server_shop_name);

@@ -22,6 +22,10 @@
     <!-- HOCKEY APP -->
     <string name="hockeyapp_token">53cd6b0fa3c881475e0b31e9a9102bbc</string>
 
+    <!-- APPTIMIZE -->
+    <item name="apptimize_enabled" type="bool">false</item>
+    <string name="apptimize_apikey"></string>
+
     <!-- DEEP LINK -->
     <string name="dp_package_id">com.jumia.android</string>
     <string name="dp_app_name_uppercase">JUMIA</string>

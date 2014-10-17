@@ -26,6 +26,10 @@
     <!-- NEW RELIC -->
     <string name="newrelic_token"></string>
 
+    <!-- APPTIMIZE -->
+    <item name="apptimize_enabled" type="bool">false</item>
+    <string name="apptimize_apikey"></string>
+
     <!-- Global Country Configuration -->
     <string name="global_server_shop_name"></string>
     <string name="global_server_host"></string>

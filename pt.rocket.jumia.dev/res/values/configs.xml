@@ -24,6 +24,10 @@
     <string name="hockeyapp_token">5a55f44dbed1b1bdb88f57f6eda07d78</string>
     <item name="hockeyapp_enable_dev" type="bool">true</item>
 
+    <!-- APPTIMIZE -->
+    <item name="apptimize_enabled" type="bool">false</item>
+    <string name="apptimize_apikey"></string>
+
     <!-- DEEP LINK -->
     <string name="dp_package_id">pt.rocket.jumia.dev</string>
     <string name="dp_app_name_uppercase">JUMIA</string>
