@@ -4,78 +4,83 @@
     android:layout_height="match_parent" >
 
     <LinearLayout
-        style="@style/rounded_box"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/margin_large" >
+        android:layout_height="wrap_content" >
 
         <LinearLayout
+            style="@style/rounded_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_huge"
-            android:layout_marginRight="@dimen/margin_huge"
-            android:layout_marginTop="@dimen/margin_huge"
-            android:orientation="vertical" >
-
-            <RatingBar
-                android:id="@+id/review_rating"
-                style="@style/starRatingBarBig"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:isIndicator="true" />
-
-            <org.holoeverywhere.widget.TextView
-                android:id="@+id/review_title"
-                style="@style/text_title"
-                android:layout_marginTop="@dimen/margin_mid"
-                android:text="This is a review title"
-                android:textSize="@dimen/text_m" />
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/margin_large" >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_mid" >
+                android:layout_marginLeft="@dimen/margin_huge"
+                android:layout_marginRight="@dimen/margin_huge"
+                android:layout_marginTop="@dimen/margin_huge"
+                android:orientation="vertical" >
+
+                <RatingBar
+                    android:id="@+id/review_rating"
+                    style="@style/starRatingBarBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="true" />
 
                 <org.holoeverywhere.widget.TextView
-                    android:id="@+id/posted_by"
-                    style="@style/text_normal"
-                    android:text="@string/posted_by"
-                    android:textSize="@dimen/text_s" />
+                    android:id="@+id/review_title"
+                    style="@style/text_title"
+                    android:layout_marginTop="@dimen/margin_mid"
+                    android:text="This is a review title"
+                    android:textSize="@dimen/text_m" />
 
-                <org.holoeverywhere.widget.TextView
-                    android:id="@+id/review_username"
-                    style="@style/text_normal"
-                    android:layout_marginLeft="@dimen/rounded_margin_small"
-                    android:text="User"
-                    android:textSize="@dimen/text_s" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_mid" >
 
-                <org.holoeverywhere.widget.TextView
-                    android:id="@+id/review_date"
-                    style="@style/text_normal"
-                    android:layout_marginLeft="@dimen/rounded_margin_small"
-                    android:text="Date"
-                    android:textSize="@dimen/text_s" />
+                    <org.holoeverywhere.widget.TextView
+                        android:id="@+id/posted_by"
+                        style="@style/text_normal"
+                        android:text="@string/posted_by"
+                        android:textSize="@dimen/text_s" />
+
+                    <org.holoeverywhere.widget.TextView
+                        android:id="@+id/review_username"
+                        style="@style/text_normal"
+                        android:layout_marginLeft="@dimen/rounded_margin_small"
+                        android:text="User"
+                        android:textSize="@dimen/text_s" />
+
+                    <org.holoeverywhere.widget.TextView
+                        android:id="@+id/review_date"
+                        style="@style/text_normal"
+                        android:layout_marginLeft="@dimen/rounded_margin_small"
+                        android:text="Date"
+                        android:textSize="@dimen/text_s" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <View
-            style="@style/divider_horizontal"
-            android:layout_marginTop="@dimen/margin_huge" />
+            <View
+                style="@style/divider_horizontal"
+                android:layout_marginTop="@dimen/margin_huge" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_huge"
-            android:layout_marginRight="@dimen/margin_huge"
-            android:layout_marginTop="@dimen/margin_huge"
-            android:orientation="vertical" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_huge"
+                android:layout_marginRight="@dimen/margin_huge"
+                android:layout_marginTop="@dimen/margin_huge"
+                android:orientation="vertical" >
 
-            <org.holoeverywhere.widget.TextView
-                android:id="@+id/review_comment"
-                style="@style/text_normal"
-                android:singleLine="false"
-                android:text="This is a really interesting comment." />
+                <org.holoeverywhere.widget.TextView
+                    android:id="@+id/review_comment"
+                    style="@style/text_normal"
+                    android:singleLine="false"
+                    android:text="This is a really interesting comment." />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
