@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_root_retry_container"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/grey_background"
-    android:gravity="top"
-    android:orientation="vertical" >
+    android:gravity="top" >
 
     <LinearLayout
-        style="@style/rounded_box"
+        android:id="@+id/fragment_root_retry_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/root_empty_container_height"
-        android:layout_gravity="center"
-        android:layout_marginBottom="0dp"
-        android:gravity="center"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <org.holoeverywhere.widget.TextView
-            android:id="@+id/fragment_root_retry_text"
-            style="@style/text_root"
-            android:layout_marginBottom="12dp"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
-            android:padding="@dimen/rounded_margin_mid"
-            android:text="@string/error_please_try_again" />
+        <LinearLayout
+            style="@style/rounded_box"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/root_empty_container_height"
+            android:layout_gravity="center"
+            android:layout_marginBottom="0dp"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/fragment_root_retry_text"
+                style="@style/text_root"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:layout_marginRight="@dimen/rounded_margin_mid"
+                android:padding="@dimen/rounded_margin_mid"
+                android:text="@string/error_please_try_again" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/button_container" >
+
+            <org.holoeverywhere.widget.Button
+                android:id="@+id/fragment_root_retry_button"
+                style="@style/button_grey_bottom"
+                android:clickable="false"
+                android:text="@string/try_again" />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout style="@style/button_container" >
-
-        <org.holoeverywhere.widget.Button
-            android:id="@+id/fragment_root_retry_button"
-            style="@style/button_grey_bottom"
-            android:clickable="false"
-            android:text="@string/try_again" />
-    </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
