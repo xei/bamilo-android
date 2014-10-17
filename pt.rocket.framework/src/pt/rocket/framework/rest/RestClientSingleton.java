@@ -22,7 +22,6 @@ import pt.rocket.framework.network.LazHttpClientAndroidLog;
 import pt.rocket.framework.service.RemoteService;
 import pt.rocket.framework.tracking.NewRelicTracker;
 import pt.rocket.framework.utils.Constants;
-import pt.rocket.framework.utils.ErrorMonitoring;
 import pt.rocket.framework.utils.EventType;
 import android.content.ContentValues;
 import android.content.Context;
@@ -595,7 +594,7 @@ public final class RestClientSingleton {
 
 	
 	/**
-	 * Method used to move an entry for other key
+	 * Method used to move an entry for other key, (TEASERS)
 	 * @param url1
 	 * @param url2
 	 * @author sergiopereira
@@ -686,7 +685,7 @@ public final class RestClientSingleton {
 		NewRelicTracker.noticeFailureTransaction(uriString, startTimeMillis, System.currentTimeMillis());
 		// Track http failure
 		// Send exception
-		ErrorMonitoring.sendException(mContext, e, uriString, errorCode, msg, null, nonFatal);
+		//ErrorMonitoring.sendException(mContext, e, uriString, errorCode, msg, null, nonFatal);
 	}
 	
 }

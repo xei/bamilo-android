@@ -98,9 +98,9 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     private ImageView mSwitchLayoutButton;
 
-    private static ArrayList<CatalogFilter> sCatalogFilter;
+    private ArrayList<CatalogFilter> mCatalogFilter;
 
-    private static ArrayList<CatalogFilter> sOldCatalogFilterState;
+    private ArrayList<CatalogFilter> mOldCatalogFilterState;
 
     private ContentValues mCatalogFilterValues;
 
@@ -167,7 +167,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
         // Get saved state for filter
         if (savedInstanceState != null) {
-            sCatalogFilter = savedInstanceState.getParcelableArrayList(FILTER_STATE_KEY);
+            mCatalogFilter = savedInstanceState.getParcelableArrayList(FILTER_STATE_KEY);
             mCatalogFilterValues = savedInstanceState.getParcelable(FILTER_VALUES_KEY);
             title = savedInstanceState.getString(TITLE_KEY);
             if (null != mCatalogFilterValues) {
@@ -282,7 +282,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         }
 
         // Set catalog filters
-        if (sCatalogFilter != null) {
+        if (mCatalogFilter != null) {
             Log.i(TAG, "setFilterAction");
             enableFilterButton();
         }
@@ -370,8 +370,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         Log.i(TAG, "ON DESTROY");
 
         // Reset static values
-        sCatalogFilter = null;
-        sOldCatalogFilterState = null;
+        mCatalogFilter = null;
+        mOldCatalogFilterState = null;
         // mCatalogFilterValues = null;
     }
 
@@ -379,7 +379,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelableArrayList(FILTER_STATE_KEY, sCatalogFilter);
+        outState.putParcelableArrayList(FILTER_STATE_KEY, mCatalogFilter);
         outState.putParcelable(FILTER_VALUES_KEY, mCatalogFilterValues);
         outState.putParcelableArrayList(PRODUCTS_LIST, new ArrayList<Product>(mProductsMap.values()));
         outState.putInt(TOTAL_KEY, mTotalProducts);
@@ -431,7 +431,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             return;
         }
         // Validate the current filter object
-        if (sCatalogFilter != null) {
+        if (mCatalogFilter != null) {
             Log.w(TAG, "DISCARTED: CURRENT FILTER IS NOT NULL");
             return;
         }
@@ -449,7 +449,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         Log.d(TAG, " ######## FILTER EXISTING  -> " + mCatalogFilterValues);
 
         // Save filters
-        sCatalogFilter = filters;
+        mCatalogFilter = filters;
         // Restore the old state
         matchFilterStateWithOldState();
         // Save the current catalog data
@@ -476,8 +476,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         if (mOldCatalogFilterValues != null)
             mCatalogFilterValues = mOldCatalogFilterValues;
         // Show the old filter
-        if (sOldCatalogFilterState != null)
-            sCatalogFilter = sOldCatalogFilterState;
+        if (mOldCatalogFilterState != null)
+            mCatalogFilter = mOldCatalogFilterState;
         // Set listener
         mFilterButton.setOnClickListener(this);
         Log.d(TAG, "RECEIVED ERROR ON LOAD CATALOG WITH FILTERS");
@@ -741,9 +741,9 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             productsURL = filterValues.getAsString(GetProductsHelper.PRODUCT_URL);
             mCatalogFilterValues.put(GetProductsHelper.PRODUCT_URL, "");
             // Save the new filters to restore
-            sOldCatalogFilterState = sCatalogFilter;
+            mOldCatalogFilterState = mCatalogFilter;
             // Clean the current category values
-            sCatalogFilter = null;
+            mCatalogFilter = null;
             searchQuery = null;
             title = null;
             mFilterButton.setOnClickListener(null);
@@ -823,12 +823,12 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         Log.i(TAG, "RESTORE THE OLD SELECTED STATE");
         CatalogFilter oldFilter;
         // Validate the old filter state
-        if (sOldCatalogFilterState != null)
+        if (mOldCatalogFilterState != null)
             // Restore the filter if match with the old
-            for (CatalogFilter newFilter : sCatalogFilter) {
+            for (CatalogFilter newFilter : mCatalogFilter) {
                 Log.i(TAG, "RESTORE FILTER: " + newFilter.getName());
                 // Locate the old filter
-                oldFilter = locateFilter(sOldCatalogFilterState, newFilter.getId());
+                oldFilter = locateFilter(mOldCatalogFilterState, newFilter.getId());
                 // Validate old filter
                 if (oldFilter != null) {
                     // Case generic filter
@@ -959,12 +959,12 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             Log.d(TAG, "ON CLICK: FILTER BUTTON");
             isNotShowingDialogFilter = false;
             // Validate current catalog filter
-            if(sCatalogFilter == null) return;
+            if(mCatalogFilter == null) return;
             // TODO: Validate if is necessary Filter as static
             try {
                 // Show dialog
                 Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, sCatalogFilter);
+                bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogFilter);
                 DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
                 newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
             } catch (NullPointerException e) {
@@ -1048,7 +1048,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     }
 
     public ArrayList<CatalogFilter> getCatalogFilter() {
-        return sCatalogFilter;
+        return mCatalogFilter;
     }
 
     // ---------------------------------------------------------------

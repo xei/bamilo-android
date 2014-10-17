@@ -119,6 +119,6 @@
         android:background="@drawable/selector_listitem_highlight"
         android:maxLines="2"
         android:minHeight="@dimen/product_detail_item_title_height"
-        android:text="Specifications" />
+        android:text="@string/product_specifications" />
 
 </LinearLayout>

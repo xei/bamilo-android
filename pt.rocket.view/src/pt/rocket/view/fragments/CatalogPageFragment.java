@@ -420,7 +420,7 @@ public class CatalogPageFragment extends BaseFragment {
                 gridView.setOnScrollListener(onScrollListener);
     
                 if (products == null || products.isEmpty()) {
-                    if (mSavedProductsSKU != null) {
+                    if (mSavedProductsSKU != null && mFilters != null) {
                         showFiltersNoResults();
                     } else {
                         showProductsNotfound();
@@ -503,7 +503,7 @@ public class CatalogPageFragment extends BaseFragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (mSavedProductsSKU != null) {
+                        if (mSavedProductsSKU != null && mFilters != null) {
                             showFiltersNoResults();
                         } else {
                             showProductsNotfound();
@@ -612,11 +612,13 @@ public class CatalogPageFragment extends BaseFragment {
         showFragmentEmpty(R.string.catalog_no_results, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "ON CLICK: FILTER BUTTON");                
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, parentFragment.getCatalogFilter());
-                DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, parentFragment);
-                newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");                
+                Log.d(TAG, "ON CLICK: FILTER BUTTON");
+                if(parentFragment != null && parentFragment.getCatalogFilter() != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, parentFragment.getCatalogFilter());
+                    DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, parentFragment);
+                    newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+                }
             }
         });
     }
@@ -971,7 +973,10 @@ public class CatalogPageFragment extends BaseFragment {
                     @Override
                     public void run() {
                         mSavedProductsSKU = null;
-                        showFiltersNoResults();
+                        // Show layout for filters
+                        if(mFilters != null) showFiltersNoResults();
+                        // Show layout for retry
+                        else showProductsNotfound();
                     }
                 }, 200);
             }
