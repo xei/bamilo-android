@@ -9,9 +9,8 @@
         android:id="@+id/checkout_my_order_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/checkout_my_order_button_enter"
-        android:layout_alignParentTop="true"
-        android:paddingBottom="@dimen/button_container_height" >
+        android:layout_above="@+id/checkout_my_order_button_container"
+        android:layout_alignParentTop="true" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,9 +65,10 @@
     <!-- NEXT STEP BUTTON -->
 
     <LinearLayout
+        android:id="@id/checkout_my_order_button_container"
         style="@style/button_container"
         android:layout_height="@dimen/button_container_height"
-        android:layout_alignBottom="@id/checkout_my_order_container" >
+        android:layout_alignParentBottom="true" >
 
         <org.holoeverywhere.widget.Button
             android:id="@+id/checkout_my_order_button_enter"
