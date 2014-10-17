@@ -65,7 +65,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
 
     //Voucher
     private Button couponButton;
-    private View voucherDivider;
+    // private View voucherDivider;
     private TextView voucherError;
     EditText voucherValue;
     private String mVoucher = null;
@@ -302,7 +302,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             voucherValue.setText(mVoucher);
         }
 
-        voucherDivider = getView().findViewById(R.id.voucher_divider);
+        // voucherDivider = getView().findViewById(R.id.voucher_divider);
         voucherError = (TextView) getView().findViewById(R.id.voucher_error_message);
         couponButton = (Button) getView().findViewById(R.id.voucher_btn);
         if (removeVoucher) {
@@ -438,7 +438,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         case ADD_VOUCHER:
             couponButton.setText(getString(R.string.voucher_remove));
             voucherError.setVisibility(View.GONE);
-            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
+            // voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             hideActivityProgress();
             noPaymentNeeded = false;
             removeVoucher = true;
@@ -448,7 +448,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             noPaymentNeeded = false;
             couponButton.setText(getString(R.string.voucher_use));
             voucherError.setVisibility(View.GONE);
-            voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
+            // voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             hideActivityProgress();
             triggerGetPaymentMethods();
             removeVoucher = false;
@@ -490,7 +490,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         case REMOVE_VOUCHER:
             voucherValue.setText("");
             voucherError.setVisibility(View.VISIBLE);
-            voucherDivider.setBackgroundColor(R.color.red_middle);
+            // voucherDivider.setBackgroundColor(R.color.red_middle);
             hideActivityProgress();
             break;
         default:

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<dimen name="login_margin_small">0dp</dimen>
-<dimen name="margin_40px">0dp</dimen>
-	<dimen name="product_tip_variations_top_margin">100dp</dimen>
-	<dimen name="product_tip_top_margin">100dp</dimen>
+    <dimen name="login_margin_small">0dp</dimen>
+    <dimen name="product_tip_variations_top_margin">100dp</dimen>
+    <dimen name="product_tip_top_margin">100dp</dimen>
+
 </resources>
