@@ -79,7 +79,8 @@
                     android:id="@+id/review_comment"
                     style="@style/text_normal"
                     android:singleLine="false"
-                    android:text="This is a really interesting comment." />
+                    android:text="This is a really interesting comment."
+                    android:ellipsize="none" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

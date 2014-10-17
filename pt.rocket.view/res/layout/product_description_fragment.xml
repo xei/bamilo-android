@@ -14,8 +14,8 @@
     <View
         android:id="@+id/shadow"
         style="@style/shadow"
-        android:visibility="gone"
-        android:layout_below="@id/product_info_container" />
+        android:layout_below="@id/product_info_container"
+        android:visibility="gone" />
 
     <!-- SCROLLABLE -->
 
@@ -53,6 +53,7 @@
                     style="@style/text_normal"
                     android:layout_width="match_parent"
                     android:layout_below="@id/divider"
+                    android:ellipsize="none"
                     android:lineSpacingMultiplier="1.3"
                     android:paddingBottom="@dimen/margin_huge"
                     android:paddingLeft="@dimen/margin_large"
@@ -84,6 +85,7 @@
                     style="@style/text_normal"
                     android:layout_width="match_parent"
                     android:layout_below="@id/divider"
+                    android:ellipsize="none"
                     android:lineSpacingMultiplier="1.3"
                     android:paddingBottom="@dimen/margin_huge"
                     android:paddingLeft="@dimen/margin_large"

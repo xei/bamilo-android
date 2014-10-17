@@ -342,6 +342,7 @@
                         android:paddingLeft="@dimen/margin_large"
                         android:paddingRight="@dimen/margin_large"
                         android:paddingTop="@dimen/margin_huge"
+                        android:ellipsize="none"
                         android:singleLine="false" />
 
                     <LinearLayout
@@ -372,7 +373,6 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginRight="3dp"
                                 android:layout_toLeftOf="@+id/features_arrow"
-                                android:singleLine="false"
                                 android:text="@string/show_more"
                                 android:textColor="@color/orange_basic" />
 
@@ -419,7 +419,8 @@
                         android:paddingLeft="@dimen/margin_large"
                         android:paddingRight="@dimen/margin_large"
                         android:paddingTop="@dimen/margin_huge"
-                        android:singleLine="false" />
+                        android:singleLine="false"
+                        android:ellipsize="none" />
 
                     <LinearLayout
                         android:id="@+id/description_more_container"
@@ -449,7 +450,6 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginRight="3dp"
                                 android:layout_toLeftOf="@+id/description_arrow"
-                                android:singleLine="false"
                                 android:text="@string/show_more"
                                 android:textColor="@color/orange_basic" />
 

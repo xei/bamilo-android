@@ -41,6 +41,7 @@
                     android:layout_marginLeft="@dimen/margin_100px"
                     android:layout_marginRight="@dimen/margin_100px"
                     android:singleLine="false"
+                    android:ellipsize="none"
                     android:text="@string/rating_question" />
 
                 <RelativeLayout
