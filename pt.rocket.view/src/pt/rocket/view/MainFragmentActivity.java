@@ -14,6 +14,7 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.tracking.Ad4PushTracker;
+import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -196,6 +197,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         //Ad4PushTracker.startActivityForInAppMessages(this);
         Ad4PushTracker.startActivity(this);
         //Ad4PushTracker.setPushNotificationLocked(true);
+//        AdjustTracker.onResume(this);
     }
     
     /*
@@ -295,7 +297,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = CategoriesCollectionFragment.getInstance(bundle);
             break;
         case PRODUCT_LIST:
-            fragment = CatalogFragment.getInstance();
+            fragment = CatalogFragment.getInstance(bundle);
             break;
         case PRODUCT_DETAILS:
             fragment = ProductDetailsFragment.getInstance(bundle);

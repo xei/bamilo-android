@@ -19,13 +19,19 @@ public enum TrackingPage {
     
     PRODUCT_LIST(R.string.gproductlist),
     
+    PRODUCT_LIST_SORTED(-1),
+        
     CHECKOUT_THANKS(R.string.gcheckoutfinal),
     
     HOME(R.string.ghomepage),
     
     PRODUCT_DETAIL(R.string.gproductdetail),
     
+    PRODUCT_DETAIL_LOADED(-1),
+    
     CART(R.string.gshoppingcart),
+    
+    CART_LOADED(-1),
     
     EMPTY_CART(R.string.gcartempty),
     

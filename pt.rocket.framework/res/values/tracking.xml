@@ -163,5 +163,37 @@
     <string name="xpaymentmethod">PaymentMethod</string>
     <string name="xdeeplinklaunch">DeepLinkLaunch</string>
     <!-- End of AdX Tracking Parameters -->
+    
+	<!-- Begin of Adjust Tracking Parameters -->
+	<string name="adjust_token_launch"></string>
+	<string name="adjust_token_log_in"></string>
+	<string name="adjust_token_log_out"></string>
+	<string name="adjust_token_sign_up"></string>
+	<string name="adjust_token_sale"></string>
+	<string name="adjust_token_guest_sale"></string>
+	<string name="adjust_token_add_to_cart"></string>
+	<string name="adjust_token_remove_from_cart"></string>
+	<string name="adjust_token_add_to_wishlist"></string>
+	<string name="adjust_token_remove_from_wishlist"></string>
+	<string name="adjust_token_social_share"></string>
+	<string name="adjust_token_call"></string>
+	<string name="adjust_token_product_rate"></string>
+	<string name="adjust_token_fb_connect"></string>
+	<string name="adjust_token_customer"></string>
+	<string name="adjust_token_home"></string>
+	<string name="adjust_token_view_product"></string>
+	<string name="adjust_token_view_listing"></string>
+	<string name="adjust_token_search"></string>
+	<string name="adjust_token_view_cart"></string>
+	<string name="adjust_token_transaction_confirmation"></string>
+	<string name="adjust_token_fb_home"></string>
+	<string name="adjust_token_fb_view_listing"></string>
+	<string name="adjust_token_fb_view_product"></string>
+	<string name="adjust_token_fb_search"></string>
+	<string name="adjust_token_fb_view_wishlist"></string>
+	<string name="adjust_token_fb_view_cart"></string>
+	<string name="adjust_token_fb_transaction_confirmation"></string>
+	
+	<!-- End of Adjust Tracking Parameters -->
 
 </resources>

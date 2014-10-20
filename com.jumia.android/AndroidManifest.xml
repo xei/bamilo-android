@@ -196,6 +196,17 @@
                 <category android:name="com.jumia.android" />
             </intent-filter>
         </receiver>
+        
+		<!-- ######################################## -->
+        <!-- ############### ADJUST ################# -->
+        <!-- ######################################## -->
+        
+        <meta-data android:name="AdjustAppToken"    android:value="@string/adjust_app_token" />
+		<meta-data android:name="AdjustLogLevel"    android:value="verbose" />
+		<meta-data android:name="AdjustEnvironment" android:value="production" />
+<!-- 	<meta-data android:name="AdjustDefaultTracker" android:value="Test" /> -->        
+        
+        
         <!--
              <receiver android:name="pt.rocket.utils.receivers.PushNotificationReceiver" >
             <intent-filter>

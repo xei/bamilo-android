@@ -133,6 +133,8 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
     public int lastPaymentSelected = -1;
 
     public ArrayList<CountryObject> countriesAvailable = null;
+    
+    public boolean trackSearch = true;
 
     @Override
     public void onApplicationCreate() {
@@ -713,5 +715,7 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
         registerSavedInstanceState = null;
         getCustomerUtils().clearCredentials();
     }
+    
+    
     
 }

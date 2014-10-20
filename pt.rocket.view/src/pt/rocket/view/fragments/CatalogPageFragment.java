@@ -6,6 +6,7 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ProductsListAdapter;
@@ -19,7 +20,9 @@ import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.ProductsPage;
 import pt.rocket.framework.rest.RestContract;
+import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.TrackingEvent;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
 import pt.rocket.framework.utils.EventType;
@@ -127,7 +130,13 @@ public class CatalogPageFragment extends BaseFragment {
     private TrackingEvent mTrackSortEvent = TrackingEvent.CATALOG_FROM_CATEGORIES;
 
     private final static int POPULARITY_PAGE_NUMBER = 1;
-
+    
+    private boolean trackViewScreen = false;
+    
+    private String categoryId = "";
+    
+    boolean isFromCategory = true;
+    
     /**
      * 
      * @param bundle
@@ -260,6 +269,9 @@ public class CatalogPageFragment extends BaseFragment {
                 smoothScroll();
             }
         });
+        
+        if(TextUtils.isEmpty(CatalogFragment.categoryId))isFromCategory = false;
+        else isFromCategory = true;
     }
 
     private void smoothScroll() {
@@ -316,6 +328,10 @@ public class CatalogPageFragment extends BaseFragment {
         }
         // Show
         invalidateData(args, forceReload);
+        
+        if (trackViewScreen && isFromCategory) {
+            trackViewCatalog();
+        }
     }
     
 //    /*
@@ -328,6 +344,19 @@ public class CatalogPageFragment extends BaseFragment {
 //        Log.i(TAG, "ON SET USER VISIBLE HINT #" + mPageIndex + " -> " + isVisibleToUser + "[isResumed:" + isResumed() + " isStopping:" + isOnStoppingProcess + "]");
 //    }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser) {
+            if (!isResumed()) {
+                trackViewScreen = true;
+            } else {
+                trackViewCatalog();
+            }
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+    
+    
     /*
      * (non-Javadoc)
      * @see pt.rocket.view.fragments.BaseFragment#onPause()
@@ -356,6 +385,43 @@ public class CatalogPageFragment extends BaseFragment {
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * track catalog view method
+     */
+    private void trackViewCatalog() {
+        final Handler trackHandler = new Handler();
+        final Runnable tracRunnable = new Runnable() {
+            
+            @Override
+            public void run() {
+                ProductsListAdapter adapter = (ProductsListAdapter)gridView.getAdapter();
+                if (null != adapter && null != adapter.getProductsList() && adapter.getProductsList().size() > 0) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+                    bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+                    if (JumiaApplication.CUSTOMER != null) {
+                        bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+                    }                
+                    bundle.putString(AdjustTracker.CATEGORY, mTitle);
+                    if(parentFragment != null){
+                        if(!TextUtils.isEmpty(categoryId) && TextUtils.isEmpty(CatalogFragment.categoryId))
+                            bundle.putString(AdjustTracker.CATEGORY_ID, categoryId);
+                        else bundle.putString(AdjustTracker.CATEGORY_ID, CatalogFragment.categoryId);
+                        
+                        bundle.putString(AdjustTracker.TREE, CatalogFragment.categoryTree);    
+                    }
+                    
+                    bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, adapter.getProductsList());
+                    
+                    TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST_SORTED, bundle);
+                } else {
+                    trackHandler.postDelayed(this, 300);
+                }
+            }
+        };
+        trackHandler.postDelayed(tracRunnable, 300);
+    }
+    
     /*
      * Get total number of products
      */
@@ -676,6 +742,9 @@ public class CatalogPageFragment extends BaseFragment {
                     bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, mNavigationSource);
                     bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, mNavigationPath);
                     bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
+                    if(!TextUtils.isEmpty(CatalogFragment.categoryTree)){
+                        bundle.putString(ConstantsIntentExtra.CATEGORY_TREE_NAME, CatalogFragment.categoryTree);
+                    }
                     // inform PDV that Related Items should be shown
                     bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
                     if (mTitle != null) bundle.putString(ProductDetailsFragment.PRODUCT_CATEGORY, mTitle);
@@ -796,7 +865,7 @@ public class CatalogPageFragment extends BaseFragment {
         
         // Get Products Event
         final ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-
+        categoryId = productsPage.getCategoryId();
         // Get Location
         final String location = bundle.getString(IMetaData.LOCATION);
         Log.d(TAG, "Location = " + location);
@@ -861,13 +930,16 @@ public class CatalogPageFragment extends BaseFragment {
                 else
                     getBaseActivity().setTitle(query);
             }
-            if (mPageNumber == 1) {
+            if (mPageNumber == 1 && JumiaApplication.INSTANCE != null && JumiaApplication.INSTANCE.trackSearch) {
                 params = new Bundle();
                 params.putString(TrackerDelegator.SEARCH_CRITERIA_KEY, query);
                 params.putLong(TrackerDelegator.SEARCH_RESULTS_KEY, totalProducts);
                 params.putString(TrackerDelegator.SORT_KEY, mSort.name());
-
-                //TrackerDelegator.trackSearchViewSortMade(params);
+                params.putString(AdjustTracker.CATEGORY, mTitle);
+                if(!TextUtils.isEmpty(categoryId) && TextUtils.isEmpty(CatalogFragment.categoryId))
+                    params.putString(AdjustTracker.CATEGORY_ID, categoryId);
+                else params.putString(AdjustTracker.CATEGORY_ID, CatalogFragment.categoryId);
+                JumiaApplication.INSTANCE.trackSearch = false;
                 TrackerDelegator.trackSearch(params);
             }
 
@@ -877,12 +949,19 @@ public class CatalogPageFragment extends BaseFragment {
             params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, mPageNumber);
             params.putSerializable(TrackerDelegator.LOCATION_KEY, mTrackSortEvent);
             TrackerDelegator.trackCategoryView(params);
+            
+            if (trackViewScreen && !isFromCategory) {
+                isFromCategory = true;
+                CatalogFragment.categoryId = categoryId;
+                trackViewCatalog();
+            }
         }
 
         try {
             ProductsListAdapter adapter = (ProductsListAdapter) this.gridView.getAdapter();
             if (null != adapter) {
-                adapter.appendProducts(productsPage.getProducts());
+                adapter.appendProducts(productsPage.getProducts());                
+                
             }
         } catch (NullPointerException e) {
             Log.w(TAG, "NPE ON APPEND PRODUCTS: ");

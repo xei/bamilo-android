@@ -28,6 +28,7 @@ import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.Variation;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.AdXTracker;
+import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
@@ -231,6 +232,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     private RelativeLayout mProductDescriptionContainer;
 
     private boolean isRelatedItem = false;
+    
+    private static String categoryTree = "";
 
     /**
      * Empty constructor
@@ -245,6 +248,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     public static ProductDetailsFragment getInstance(Bundle bundle) {
         ProductDetailsFragment.mProductDetailsActivityFragment = new ProductDetailsFragment();
+        
+        if(null != bundle && bundle.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME)){
+            categoryTree = bundle.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME)+",PDV";
+        } else {
+            categoryTree = "";
+        }
         // Clean current product
         JumiaApplication.INSTANCE.setCurrentProduct(null);
         return ProductDetailsFragment.mProductDetailsActivityFragment;
@@ -326,7 +335,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Validate the current product
         mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         if (mCompleteProduct == null) {
-        	init();
+            init();
         } else {
             // Must get other params other than currentProduct
             // Get arguments
@@ -1376,8 +1385,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                     && JumiaApplication.CUSTOMER.getIdAsString() != null) {
                 user_id = JumiaApplication.CUSTOMER.getIdAsString();
             }
-            AdXTracker.trackCall(getActivity().getApplicationContext(), user_id,
+            
+            TrackerDelegator.trackCall(getActivity().getApplicationContext(), user_id,
                     JumiaApplication.SHOP_NAME);
+
             makeCall();
 
         } else if (id == R.id.tips_got_it_img) {
@@ -1531,6 +1542,17 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
                 TrackerDelegator.trackLoadTiming(params);
                 displayProduct(mCompleteProduct);
+                
+                params = new Bundle();
+                params.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);                
+                if (JumiaApplication.CUSTOMER != null) {
+                    params.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+                }                
+                params.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+                params.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
+                params.putParcelable(AdjustTracker.PRODUCT, mCompleteProduct);
+                params.putString(AdjustTracker.TREE, categoryTree);    
+                TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, params);
             }
 
             // Waiting for the fragment comunication

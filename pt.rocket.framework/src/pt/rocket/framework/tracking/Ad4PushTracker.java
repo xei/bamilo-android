@@ -39,13 +39,13 @@ public class Ad4PushTracker {
     private static A4S mA4S;
     private static Context context;
 
-    private final String AD4PUSH_PREFERENCES = "Ad4PushPreferences";
+    public static final String AD4PUSH_PREFERENCES = "Ad4PushPreferences";
 
     private static final String VIEW_STATE = "view";
 
-    private final String PURCHASE_NUMBER = "aggregatedNumberOfPurchases";
-    private final String PURCHASE_VALUE = "aggregatedValueOfPurchases";
-    private final String WISHLIST_NUMBER = "aggregatedNumberOfWishlistItems";
+    public static final String PURCHASE_NUMBER = "aggregatedNumberOfPurchases";
+    private static final String PURCHASE_VALUE = "aggregatedValueOfPurchases";
+    private static final String WISHLIST_NUMBER = "aggregatedNumberOfWishlistItems";
 
     private static final String STATUS_IN_APP = "statusInApp";
     private static final String SHARED_PRODUCT_COUNT = "shareCount";

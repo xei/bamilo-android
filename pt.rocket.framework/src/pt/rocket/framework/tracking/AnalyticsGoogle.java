@@ -341,9 +341,11 @@ public class AnalyticsGoogle {
 	public void trackPage(TrackingPage page) {
 		// Validate
 		if (!isEnabled) return;
-		// Get and send page
-		String path = mContext.getString(page.getName());
-		trackPage(path);
+		if (-1 != page.getName()) {
+    		// Get and send page
+    		String path = mContext.getString(page.getName());
+    		trackPage(path);
+		}
 	}
 	
 	/**

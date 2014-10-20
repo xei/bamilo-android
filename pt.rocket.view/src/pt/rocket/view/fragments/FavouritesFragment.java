@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.holoeverywhere.widget.Toast;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.AddableToCartListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -19,12 +20,15 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.AddableToCart;
+import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.Favourite;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.cart.GetShoppingCartAddItemHelper;
@@ -627,6 +631,20 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             Log.d(TAG, "NUMBER : " + mAddableToCartList.size());
             // Show content
             showContent();
+            
+            Bundle params = new Bundle();
+            Customer customer = JumiaApplication.CUSTOMER;
+            
+            params.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+            params.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
+            
+            if (null != customer) 
+                params.putParcelable(AdjustTracker.CUSTOMER, customer);
+            
+            params.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+            params.putParcelableArrayList(TrackerDelegator.FAVOURITES_KEY, mAddableToCartList);
+            TrackerDelegator.trackViewFavorites(params);         
+            
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             // Update counter

@@ -131,7 +131,11 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     private static final String FEATURED_BOX = "FEATURED_BOX";
 
     private FeaturedBox mFeaturedBox;
-
+    
+    protected static String categoryId = "";
+    
+    protected static String categoryTree = "";
+    
     /**
      * Empty constructor
      */
@@ -145,9 +149,21 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         mProductsMap = new HashMap<String, Product>();
     }
 
-    public static CatalogFragment getInstance() {
+    public static CatalogFragment getInstance(Bundle bundle) {
         Log.i(TAG, "getInstance");
         sCatalogFragment = new CatalogFragment();
+        if(bundle != null && bundle.containsKey(ConstantsIntentExtra.CATEGORY_ID)){
+            if(bundle.containsKey(ConstantsIntentExtra.CATEGORY_ID)){
+                categoryId = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
+            }
+            if(bundle.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME)){
+                categoryTree = bundle.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
+            }
+        } else {
+            categoryId = "";
+            categoryTree = "";
+        }
+            
         return sCatalogFragment;
     }
 

@@ -21,6 +21,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.tracking.AdXTracker;
+import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -138,6 +139,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mLaunchTime = System.currentTimeMillis();
         // Get values from intent
         getDeepLinkView();
+        
+        AdjustTracker.onResume(this);
+        
         // Initialize application
         JumiaApplication.INSTANCE.init(false, initializationHandler);
     }
@@ -327,6 +331,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             
             @Override
             public void onAnimationEnd(Animation animation) {
+                TrackerDelegator.trackAppOpen(mLaunchTime);
                 jumiaMapImage.setVisibility(View.GONE);
                 // ## Google Analytics "General Campaign Measurement" ##
                 TrackerDelegator.trackGACampaign(mUtm);
@@ -946,7 +951,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             sendAdxLaunchEvent = false;
         }
 
-        TrackerDelegator.trackAppOpen();
+//        TrackerDelegator.trackAppOpen(mLaunchTime);
     }
 
     /**

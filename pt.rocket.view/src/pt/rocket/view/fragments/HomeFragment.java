@@ -16,6 +16,7 @@ import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
@@ -80,6 +81,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     private int mPagerSavedPosition = 0;
 
     private boolean mReceivedInBackgroundAndDiscarded = false;
+    
+    private long mLaunchTime;
 
     /**
      * Constructor via bundle
@@ -123,6 +126,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        mLaunchTime = System.currentTimeMillis();
         // Register Hockey
         HockeyStartup.register(getBaseActivity());
         // Get saved state
@@ -195,7 +199,41 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         super.onResume();
         Log.i(TAG, "ON RESUME");
         // Track page
-        TrackerDelegator.trackPage(TrackingPage.HOME);
+        final Handler trackHandler = new Handler();
+        Runnable trackRunnable = new Runnable() {
+            
+            @Override
+            public void run() {
+                Log.i("Adjust Runnable", "HOME - ON RESUME");
+                if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+                    if (JumiaApplication.INSTANCE.isLoggedIn()) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+                        bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);  
+                        bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+                        if (JumiaApplication.CUSTOMER != null) {
+                            bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+                        }
+    
+                        TrackerDelegator.trackPage(TrackingPage.HOME, bundle);
+                    } else {
+                        trackHandler.postDelayed(this, 300);
+                    }                    
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+                    bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);  
+                    bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+                    if (JumiaApplication.CUSTOMER != null) {
+                        bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+                    }
+
+                    TrackerDelegator.trackPage(TrackingPage.HOME, bundle);
+                }
+            }
+        };
+        
+        trackHandler.postDelayed(trackRunnable, 300);
     }
 
     /**

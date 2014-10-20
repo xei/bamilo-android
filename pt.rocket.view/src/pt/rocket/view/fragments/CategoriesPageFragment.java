@@ -77,6 +77,8 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
 
     private Category mCurrentSubCategory;
     
+    private String treeName = "";
+    
     /**
      * Create a new instance and save the bundle data
      * @param bundle
@@ -624,7 +626,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         bundle.putString(ConstantsIntentExtra.CATEGORY_ID, key);
         bundle.putString(ConstantsIntentExtra.CATEGORY_PARENT_NAME, name);
         bundle.putInt(ConstantsIntentExtra.SELECTED_SUB_CATEGORY_INDEX, landscapeCategoryPosition);
-        String treeName = (TextUtils.isEmpty(mTitleCategory))? name : mTitleCategory + "/" + name;
+        treeName = (TextUtils.isEmpty(mTitleCategory))? name : mTitleCategory + "/" + name;
         bundle.putString(ConstantsIntentExtra.CATEGORY_TREE_NAME,  treeName);
         // Switch
         ((CategoriesCollectionFragment) getParentFragment()).onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_SUB_LEVEL, bundle);
@@ -639,6 +641,13 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, category.getName());
+        bundle.putString(ConstantsIntentExtra.CATEGORY_ID, category.getId());
+        String categoryTree = "";
+        if(!TextUtils.isEmpty(getBaseActivity().getCategoriesTitle())){
+            categoryTree = getBaseActivity().getCategoriesTitle()+"/"+category.getName(); 
+            categoryTree = categoryTree.replace("/", ",");
+        }
+        bundle.putString(ConstantsIntentExtra.CATEGORY_TREE_NAME,  categoryTree);
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());

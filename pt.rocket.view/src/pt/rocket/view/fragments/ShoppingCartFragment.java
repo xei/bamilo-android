@@ -23,6 +23,7 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.tracking.AdXTracker;
+import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
@@ -413,7 +414,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                     if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
                         user_id = JumiaApplication.CUSTOMER.getIdAsString();
                     }
-                    AdXTracker.trackCall(getActivity().getApplicationContext(), user_id, JumiaApplication.SHOP_NAME);
+                    TrackerDelegator.trackCall(getActivity().getApplicationContext(), user_id, JumiaApplication.SHOP_NAME);
                     makeCall();
                 }
             });
@@ -493,13 +494,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             params.putString(TrackerDelegator.PRICE_KEY, itemRemoved_price);
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-
             TrackerDelegator.trackProductRemoveFromCart(params);
             TrackerDelegator.trackLoadTiming(params);
             
             if (!isRemovingAllItems) {
                 showFragmentContentContainer();
-				displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+                displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
                 hideActivityProgress();
             }
             return true;
@@ -522,6 +522,16 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
             TrackerDelegator.trackLoadTiming(params);
 
+            params = new Bundle();
+            params.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+            params.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+            if (JumiaApplication.CUSTOMER != null) {
+                params.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+            }
+            params.putParcelable(AdjustTracker.CART, shoppingCart);
+            
+            TrackerDelegator.trackPage(TrackingPage.CART_LOADED, params);
+            
             // verify if "Call to Order" was used
             if (isCallInProgress) {
                 isCallInProgress = false;
@@ -566,7 +576,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                     public void onClick(View v) {
                         int id = v.getId();
                         if (id == R.id.button1) {
-                        	
+                            
                             isRemovingAllItems = true;
 
                             List<ShoppingCartItem> items = new ArrayList<ShoppingCartItem>(shoppingCart.getCartItems().values());

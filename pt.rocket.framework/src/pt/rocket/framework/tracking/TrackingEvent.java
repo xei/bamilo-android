@@ -13,9 +13,15 @@ public enum TrackingEvent {
 	
 	SEARCH_SUGGESTIONS(R.string.gaccount, R.string.gsearchsuggestions),
 	
+	SEARCH(R.string.adjust_token_search, -1),
+	
+	VIEW_WISHLIST(R.string.adjust_token_fb_view_wishlist, -1),
+	
 	ADD_TO_WISHLIST(R.string.gfavourites, R.string.gaddtofavorites),
 	
 	ADD_TO_CART(R.string.gcatalog, R.string.gaddtocart),
+	
+	REMOVE_FROM_CART(R.string.adjust_token_remove_from_cart, -1),	
 	
 	REMOVE_FROM_WISHLIST(R.string.gfavourites, R.string.gremovefromfavorites),
 	
@@ -28,6 +34,14 @@ public enum TrackingEvent {
 	SHOW_PRODUCT_DETAIL(R.string.gcatalog, R.string.gpdv),
 	
 	SHOW_RELATED_PRODUCT_DETAIL(R.string.gproductdetail, R.string.gRelatedProduct),
+	
+	APP_OPEN(R.string.adjust_token_launch, -1),
+	
+	SHARE(R.string.adjust_token_social_share, -1),
+	
+	CALL(R.string.adjust_token_call, -1),
+	
+	ADD_REVIEW(R.string.adjust_token_product_rate, -1),
 	
 	// ### ACTION BAR EVENTS
 	

@@ -22,6 +22,7 @@ import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
+import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.tracking.TrackingPage;
@@ -251,7 +252,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
-
         JumiaApplication.INSTANCE.doBindService();
 
         // Validate if is phone and force orientaion
@@ -339,6 +339,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
         }
 
+        AdjustTracker.onResume(this);
+        
     }
 
     IResponseCallback mIResponseCallback = new IResponseCallback() {
@@ -382,6 +384,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         hideSearchComponent();
         // Dispatch saved hits
         AnalyticsGoogle.get().dispatchHits();
+        AdjustTracker.onPause();
     }
 
     @Override
@@ -945,6 +948,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 mSearchAutoComplete.dismissDropDown();
                 GetSearchSuggestionHelper.saveSearchQuery(text);
                 showSearchCategory(text);
+                if(JumiaApplication.INSTANCE != null)
+                    JumiaApplication.INSTANCE.trackSearch = true;
             }
         });
 
@@ -1457,6 +1462,18 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         findViewById(R.id.header_title).setVisibility(View.GONE);
     }
 
+    /**
+     * get the category tree title
+     * 
+     * @return subtitle
+     */
+    public String getCategoriesTitle() {
+        TextView titleView = (TextView) findViewById(R.id.titleProducts);
+        if(!TextUtils.isEmpty(titleView.getText().toString()))
+            return titleView.getText().toString();
+        else return "";
+    }
+    
     /*
      * (non-Javadoc)
      * 
