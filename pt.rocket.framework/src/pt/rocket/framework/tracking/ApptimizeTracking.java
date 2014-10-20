@@ -19,13 +19,15 @@ public class ApptimizeTracking {
     public static void startup(Context context) {
         Log.d(TAG, "APPTIMIZE Startup");
 
-        boolean isEnabled = context.getResources().getBoolean(R.bool.ad4push_enabled);
+        boolean isEnabled = context.getResources().getBoolean(R.bool.apptimize_enabled);
 
         if (isEnabled) {
             Log.d(TAG, "Apptimize -> INITITALIZED");
             String apptimize_apikey = context.getString(R.string.apptimize_apikey);
 
             Apptimize.setup(context, apptimize_apikey);
+        } else {
+            Log.d(TAG, "Apptimize is not enabled");
         }
     }
 }
