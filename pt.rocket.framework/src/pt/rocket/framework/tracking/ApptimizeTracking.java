@@ -3,6 +3,9 @@ package pt.rocket.framework.tracking;
 import pt.rocket.framework.R;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.content.Context;
+
+import com.apptimize.Apptimize;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -22,7 +25,7 @@ public class ApptimizeTracking {
             Log.d(TAG, "Apptimize -> INITITALIZED");
             String apptimize_apikey = context.getString(R.string.apptimize_apikey);
 
-            // Apptimize.setup(context, apptimize_apikey);
+            Apptimize.setup(context, apptimize_apikey);
         } else {
             Log.d(TAG, "Apptimize is not enabled");
         }
