@@ -23,9 +23,11 @@
 -optimizationpasses 5
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses
--dontwarn com.jumia.dev.R*
+-dontwarn pt.rocket.jumia.dev.R*
 -dontwarn com.ad4screen.R*
 
+-dontwarn org.apache.harmony.**
+-dontwarn org.mockito.**
 -dontwarn sun.reflect.**
 -dontwarn android.test.**
 -dontwarn com.sun.mail.imap.protocol.**
@@ -164,6 +166,10 @@
 -keep class com.newrelic.** { *; }
 -dontwarn com.newrelic.**
 -keepattributes Exceptions, Signature, InnerClasses
+
+-keep class org.apache.harmony.** { *; }
+-dontwarn org.apache.harmony.**
+-keepattributes Signature
 
 -keep class com.facebook.** { *; }
 -keepattributes Signature
