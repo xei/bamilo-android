@@ -218,7 +218,7 @@ public class TrackerDelegator {
         bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));      
         bundle.putString(AdjustTracker.PRODUCT_SKU, sku);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
-        bundle.putDouble(AdjustTracker.VALUE, Double.parseDouble(params.getString(PRICE_KEY)));        
+        bundle.putDouble(AdjustTracker.VALUE, params.getDouble(PRICE_KEY));        
         AdjustTracker.get().trackEvent(context, TrackingEvent.REMOVE_FROM_CART, bundle);
     }
 
@@ -721,7 +721,7 @@ public class TrackerDelegator {
         params.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         params.putString(AdjustTracker.PRODUCT_SKU, sku);
         params.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
-        params.putLong(AdjustTracker.VALUE, (long) price);
+        params.putDouble(AdjustTracker.VALUE, price);
         
         AdjustTracker.get().trackEvent(context, TrackingEvent.ADD_TO_CART, params);
     }

@@ -3,7 +3,6 @@
  */
 package pt.rocket.framework.tracking;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,15 +16,11 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
 import pt.rocket.framework.objects.AddableToCart;
 import pt.rocket.framework.objects.CompleteProduct;
-import pt.rocket.framework.objects.ConversionResult;
-import pt.rocket.framework.objects.CurrencyConversionInput;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.CustomerGender;
-import pt.rocket.framework.objects.Favourite;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
-import pt.rocket.framework.utils.CurrencyConversionTask;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -314,10 +309,10 @@ public class AdjustTracker {
             parameters.put(AdjustKeys.BRAND, prod.getBrand()); 
             parameters.put(AdjustKeys.PRICE, prod.hasDiscount() ? prod.getSpecialPrice() : prod.getPrice());
             if( null != prod.getAttributes() && !TextUtils.isEmpty(prod.getAttributes().get("color"))){
-            	 parameters.put(AdjustKeys.COLOUR, prod.getAttributes().get("color"));
+                 parameters.put(AdjustKeys.COLOUR, prod.getAttributes().get("color"));
             }
             if (bundle.containsKey(AdjustTracker.PRODUCT_SIZE) && !TextUtils.isEmpty(bundle.getString(AdjustTracker.PRODUCT_SIZE))){
-            	parameters.put(AdjustKeys.SIZE,bundle.getString(AdjustTracker.PRODUCT_SIZE)); 
+                parameters.put(AdjustKeys.SIZE,bundle.getString(AdjustTracker.PRODUCT_SIZE)); 
             }
             if (bundle.containsKey(TREE) && !TextUtils.isEmpty(bundle.getString(TREE))){
                 parameters.put(AdjustKeys.CATEGORY_TREE, bundle.getString(TREE));
@@ -362,7 +357,7 @@ public class AdjustTracker {
                 fbParameters.put(AdjustKeys.CATEGORY_ID, bundle.getString(CATEGORY_ID));
             }
             if (bundle.containsKey(TREE) && !TextUtils.isEmpty(bundle.getString(TREE))){
-            	fbParameters.put(AdjustKeys.CATEGORY_TREE, bundle.getString(TREE));
+                fbParameters.put(AdjustKeys.CATEGORY_TREE, bundle.getString(TREE));
             }
    
             Adjust.trackEvent(mContext.getString(R.string.adjust_token_fb_view_listing), fbParameters);
@@ -524,7 +519,9 @@ public class AdjustTracker {
                 String eventString = bundle.getBoolean(IS_GUEST_CUSTOMER) ? mContext.getString(R.string.adjust_token_guest_sale) : mContext.getString(R.string.adjust_token_sale);
                 
                 // Track Revenue (Sale or Gues Sale)
-                convertToEuro(baseActivity, bundle.getDouble(TRANSACTION_VALUE), parameters, eventString, true, bundle.getString(CURRENCY_ISO));
+//                convertToEuro(baseActivity, bundle.getDouble(TRANSACTION_VALUE), parameters, eventString, true, bundle.getString(CURRENCY_ISO));
+                
+                Adjust.trackRevenue(bundle.getDouble(TRANSACTION_VALUE), eventString, parameters);
                 
                 // Trigger also the TRANSACTION_CONFIRMATION event
                 transParameters = new HashMap<String, String>(parameters);
@@ -562,7 +559,9 @@ public class AdjustTracker {
                     fbParameters.put(AdjustKeys.SKU, item.sku );
                     fbParameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO)); 
                     fbParameters.put(AdjustKeys.QUANTITY, item.quantity);
-                    fbParameters.put(AdjustKeys.PRICE, item.paidpriceAsDouble.toString());
+                    if(item.getPriceForTracking() > 0d){
+                        fbParameters.put(AdjustKeys.PRICE, String.valueOf(item.getPriceForTracking()));
+                    }
 //                      fbParameters.put(AdjustKeys.DISCOUNT + countString, hasDiscount ? "true" : "false"); 
 //                      fbParameters.put(AdjustKeys.BRAND + countString, item.get);
 //                      fbParameters.put(AdjustKeys.SIZE + countString, item.);
@@ -585,7 +584,11 @@ public class AdjustTracker {
                 parameters.put(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
                 parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
                 
-                convertToEuro(baseActivity, (double) bundle.getLong(VALUE), parameters, mContext.getString(R.string.adjust_token_add_to_cart), false, bundle.getString(CURRENCY_ISO));
+                if(bundle.getDouble(VALUE) > 0d){
+                    parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+                }
+              Adjust.trackEvent(mContext.getString(R.string.adjust_token_add_to_cart), parameters);
+            
             }
             break;
 
@@ -594,7 +597,11 @@ public class AdjustTracker {
                 parameters = getBaseParameters(parameters, bundle);
                 parameters.put(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
                 parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
-                convertToEuro(baseActivity, bundle.getDouble(VALUE), parameters,mContext.getString(R.string.adjust_token_remove_from_cart), false, bundle.getString(CURRENCY_ISO));
+
+                if(bundle.getDouble(VALUE) > 0d){
+                    parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+                }
+                Adjust.trackEvent(mContext.getString(R.string.adjust_token_remove_from_cart), parameters);
             }
             break;          
             
@@ -604,7 +611,10 @@ public class AdjustTracker {
                 parameters.put(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
                 parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
     
-                convertToEuro(baseActivity, bundle.getDouble(VALUE), parameters, mContext.getString(R.string.adjust_token_add_to_wishlist), false, bundle.getString(CURRENCY_ISO));
+                if(bundle.getDouble(VALUE) > 0d){
+                    parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+                }
+                Adjust.trackEvent(mContext.getString(R.string.adjust_token_add_to_wishlist), parameters);
             }
             break;
 
@@ -614,7 +624,10 @@ public class AdjustTracker {
                 parameters.put(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
                 parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
     
-                convertToEuro(baseActivity, bundle.getDouble(VALUE), parameters, mContext.getString(R.string.adjust_token_remove_from_wishlist), false, bundle.getString(CURRENCY_ISO));
+                if(bundle.getDouble(VALUE) > 0d){
+                    parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+                }
+                Adjust.trackEvent(mContext.getString(R.string.adjust_token_remove_from_wishlist), parameters);            
             }
             break;
             
@@ -703,7 +716,7 @@ public class AdjustTracker {
                         priceValue = (hasDiscount ? fav.getSpecialPrice() : fav.getPrice());
                         parameters.put(AdjustKeys.BRAND, fav.getBrand()); 
 //                        if( null != fav.getAttributes() && !TextUtils.isEmpty(fav.getAttributes().get("color"))){
-//                        	 parameters.put(AdjustKeys.COLOUR, fav.getAttributes().get("color"));
+//                           parameters.put(AdjustKeys.COLOUR, fav.getAttributes().get("color"));
 //                        }
 //                        fbParams.put(AdjustKeys.SKU + countString, fav.getSku());
                         fbParams.put(AdjustKeys.SKU, fav.getSku());
@@ -822,187 +835,6 @@ public class AdjustTracker {
         return isTablet ? TABLET : PHONE; 
     }
 
-    private static void convertToEuro(final Activity activity, final Double originalPrice, final Map<String, String> parameters, final String adjustKey,
-            final boolean isTrackRevenue, final String currencyCode) {
-        convertToEuro(activity, originalPrice, parameters, adjustKey, isTrackRevenue, false, null, currencyCode);
-    }
-
-    private static void convertToEuro(final Activity activity, final Double originalPrice, final Map<String, String> parameters, final String adjustKey,
-            final boolean isTrackRevenue, final boolean buildProductJson, final JSONObject json, final String currencyCode) {
-        CurrencyConversionTask.OnCompleteListener<ArrayList<ConversionResult>> listener = null;
-        CurrencyConversionTask task = null;
-
-        final String targetCurrencyCode = "EUR";
-        try {
-
-            listener = new CurrencyConversionTask.OnCompleteListener<ArrayList<ConversionResult>>() {
-                @Override
-                public void onComplete(ArrayList<ConversionResult> conversionResults) {
-                    if (0 < conversionResults.size()) {
-                        ConversionResult conversionResult = conversionResults.get(0);
-                        if (conversionResult.getError() == null) {
-                            // msg = String.format("%f %s converts to %f %s",
-                            // originalPrice, currencyCode,
-                            // conversionResult.getValue(), targetCurrencyCode);
-                            String amountInCents = null;
-                            double value = 0;
-                            if (conversionResult.getValue() > 0) {
-                                Double cent = (conversionResult.getValue() * 100);
-                                amountInCents = new DecimalFormat("#.0").format(cent);
-                                if (amountInCents.contains(",")) {
-                                    amountInCents = amountInCents.replace(",", ".");
-                                }
-                            }
-                            try {
-                                value = Double.valueOf(amountInCents);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                            if (isTrackRevenue) {
-                                Adjust.trackRevenue(value, adjustKey, parameters);
-                            } else if (buildProductJson) {
-                                try {
-                                    json.put(AdjustKeys.PRICE, amountInCents.toString());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                parameters.put(AdjustKeys.PRODUCT, json.toString());
-                                Adjust.trackEvent(adjustKey, parameters);                                
-                            } else {
-                                parameters.put(AdjustKeys.PRICE, amountInCents);
-                                Adjust.trackEvent(adjustKey, parameters);
-                            }
-
-                        } else {
-                            if (isTrackRevenue) {
-                                Adjust.trackRevenue(originalPrice, adjustKey, parameters);
-                            } else if (buildProductJson) {
-                                try {
-                                    json.put(AdjustKeys.PRICE, originalPrice.toString());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                parameters.put(AdjustKeys.PRODUCT, json.toString());
-                                Adjust.trackEvent(adjustKey, parameters);                                                                
-                            } else {
-                                parameters.put(AdjustKeys.PRICE, originalPrice.toString());
-                                Adjust.trackEvent(adjustKey, parameters);
-                            }
-                        }
-                    }
-                }
-            };
-            
-            CurrencyConversionInput input = new CurrencyConversionInput(originalPrice, currencyCode, targetCurrencyCode);
-            task = new CurrencyConversionTask(activity, listener);
-            task.execute(input);
-        } catch (Exception e) {
-            Adjust.trackEvent(adjustKey, parameters);
-        }
-
-    }
-
-//    private static void convertMultiToEuro(final Activity activity, final CurrencyConversionInput[] originalValues, final Map<String, String> parameters, final String adjustEvent,
-//            final boolean isTrackRevenue, final boolean buildProductJson, final ArrayList<JSONObject> jsons) {
-//        CurrencyConversionTask.OnCompleteListener<ArrayList<ConversionResult>> listener = null;
-//        CurrencyConversionTask task = null;
-//        try {
-//
-//            listener = new CurrencyConversionTask.OnCompleteListener<ArrayList<ConversionResult>>() {
-//                @Override
-//                public void onComplete(ArrayList<ConversionResult> conversionResults) {
-//                  String productNumber = "";                  
-//                  ConversionResult conversionResult;
-//                  JSONObject json;
-//                  Double originalPrice;
-//                  
-//                  for (int pos = 0; pos < conversionResults.size() && pos < jsons.size(); pos++) {
-//                      conversionResult = conversionResults.get(pos);
-//                      json = jsons.get(pos);
-//                      originalPrice = originalValues[pos].getValue();
-//                      
-//                        if (conversionResult.getError() == null) {
-//                          
-//                            String amountInCents = null;
-//                            double value = 0;
-//                            if (conversionResult.getValue() > 0) {
-//                                Double cent = (conversionResult.getValue() * 100);
-//                                amountInCents = new DecimalFormat("#.0").format(cent);
-//                                if (amountInCents.contains(",")) {
-//                                  amountInCents = amountInCents.replace(",", ".");
-//                                }                                
-//                            }
-//                            try {
-//                                value = Double.valueOf(amountInCents);
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                            if (isTrackRevenue) {
-//                                Adjust.trackRevenue(value, adjustEvent, parameters);
-//                                break;
-//                            } else if (buildProductJson) {
-//                                try {
-//                                  if (null == conversionResult.getKey()) {
-//                                      json.put(AdjustKeys.PRICE, originalPrice.toString());
-//                                  } else {
-//                                      json.put(conversionResult.getKey(), originalPrice.toString());
-//                                  }
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//                                parameters.put(AdjustKeys.PRODUCT + productNumber, json.toString());
-//                                productNumber = String.valueOf(pos + 1);
-//                            } else {                              
-//                              if (null == conversionResult.getKey()) {
-//                                  productNumber = String.valueOf(pos + 1);
-//                                  parameters.put(AdjustKeys.PRICE + productNumber, amountInCents);
-//                              } else {
-//                                  parameters.put(conversionResult.getKey(), amountInCents);
-//                              }   
-//                            }
-//                        } else {
-//                            if (isTrackRevenue) {
-//                                Adjust.trackRevenue(originalPrice, adjustEvent, parameters);
-//                                break;
-//                            } else if (buildProductJson) {
-//                                try {
-//                                  if (null == conversionResult.getKey()) {
-//                                      json.put(AdjustKeys.PRICE, originalPrice.toString());
-//                                  } else {
-//                                      json.put(conversionResult.getKey(), originalPrice.toString());
-//                                  }
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//                                parameters.put(AdjustKeys.PRODUCT + productNumber, json.toString());
-//                                productNumber = String.valueOf(pos + 1);                                
-//                            } else {
-//                              if (null == conversionResult.getKey()) {
-//                                  productNumber = String.valueOf(pos + 1);
-//                                  parameters.put(AdjustKeys.PRICE + productNumber, originalPrice.toString());
-//                              } else {
-//                                  parameters.put(conversionResult.getKey(), originalPrice.toString());
-//                              }
-//                            }
-//                        }
-//                  }
-//                  if (!isTrackRevenue) {
-//                      Adjust.trackEvent(adjustEvent, parameters);
-//                  }
-//                }
-//            };
-//
-//            task = new CurrencyConversionTask(activity, listener);
-//            task.execute(originalValues);
-//            
-//        } catch (Exception e) {
-//            Adjust.trackEvent(adjustEvent, parameters);
-//        }
-//
-//    }
-    
     /**
      * gets the number of sessions in the device
      * 

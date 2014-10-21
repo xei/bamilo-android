@@ -136,6 +136,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     private boolean isCallInProgress = false;
 
     private boolean isRemovingAllItems = false;
+    
+    private double itemRemoved_price_tracking = 0d;
 
     public static class CartItemValues {
         public Boolean is_in_wishlist;
@@ -279,6 +281,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         values.put("sku", item.getConfigSimpleSKU());
         itemRemoved_sku = item.getConfigSimpleSKU();
         itemRemoved_price = item.getSpecialPriceVal().toString();
+        itemRemoved_price_tracking = item.getPriceForTracking();
         if (itemRemoved_price == null) {
             itemRemoved_price = item.getPriceVal().toString();
         }
@@ -491,9 +494,11 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             Log.i(TAG, "code1removing and tracking" + itemRemoved_price);
             params = new Bundle();
             params.putString(TrackerDelegator.SKU_KEY, itemRemoved_sku);
-            params.putString(TrackerDelegator.PRICE_KEY, itemRemoved_price);
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
+//            params.putString(TrackerDelegator.PRICE_KEY, itemRemoved_price);
+            params.putDouble(TrackerDelegator.PRICE_KEY, itemRemoved_price_tracking);
+  
             TrackerDelegator.trackProductRemoveFromCart(params);
             TrackerDelegator.trackLoadTiming(params);
             

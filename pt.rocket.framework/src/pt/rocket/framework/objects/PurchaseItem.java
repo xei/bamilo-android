@@ -27,7 +27,7 @@ public class PurchaseItem implements Parcelable {
     public String quantity= "";
     public Integer quantityAsInt = 0;
     public Double paidpriceAsDouble = 0d;
-    private Double paidPriceForTracking = 0d;
+    private double paidPriceForTracking = 0d;
     
     /**
      * Empty constructor
