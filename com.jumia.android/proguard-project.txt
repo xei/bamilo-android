@@ -19,6 +19,7 @@
 #   public *;
 #}
 
+
 -optimizationpasses 5
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses
@@ -60,7 +61,7 @@
 
 #-keep class com.google.android.gms { int location_client_powered_by_google; }
 
-#-keep public class * extends android.support.v4.app.Fragment
+-keep public class * extends android.support.v4.app.Fragment
 -keep class android.support.v4.app.Fragment
 -keep class android.support.v4.app.FragmentManager
 -keep class com.google.ads.AdRequest$Gender
@@ -180,6 +181,7 @@
 -keep class com.google.android.gms.common.** { *; }
 -keep class com.google.android.gms.ads.identifier.** { *; }
 
+-keep class com.apptimize.**
 
 -keepclassmembers class * extends com.apptimize.ApptimizeTest {
     <methods>;
@@ -187,11 +189,9 @@
 
 -keep class android.support.v4.view.ViewPager
 -keepclassmembers class android.support.v4.view.ViewPager$LayoutParams { *; }
--keep class android.support.v4.app.Fragment { *; }
+#-keep class android.support.v4.app.Fragment { *; }
 
 -keep class com.mixpanel.android.mpmetrics.MixpanelAPI { *;}
 -keep class com.google.android.gms.analytics.Tracker { *; }
 -keep class com.google.analytics.tracking.android.Tracker { *; }
 -keep class com.flurry.android.FlurryAgent { *; }
-
--dontwarn android.support.v4.**
