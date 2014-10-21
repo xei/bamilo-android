@@ -19,6 +19,7 @@
 #   public *;
 #}
 
+-dontoptimize
 
 -optimizationpasses 5
 -dontusemixedcaseclassnames
