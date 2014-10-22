@@ -227,7 +227,7 @@
 
 #-keep class com.mixpanel.android.mpmetrics.MixpanelAPI { *;}
 -keep class com.google.android.gms.analytics.Tracker { *; }
--keep class com.google.analytics.tracking.android.Tracker { *; }
+#-keep class com.google.analytics.tracking.android.Tracker { *; }
 #-keep class com.flurry.android.FlurryAgent { *; }
 # END APPTIMIZE
 
