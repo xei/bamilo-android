@@ -1094,9 +1094,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                 mVoucher = voucherValue.getText().toString();
                 getBaseActivity().hideKeyboard();
                 if (mVoucher != null && mVoucher.length() > 0) {
-                    // Test Proguard
-                    mVoucher = null;
-                    mVoucher.equals("");
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
                     Log.i(TAG, "code1coupon : " + mVoucher);

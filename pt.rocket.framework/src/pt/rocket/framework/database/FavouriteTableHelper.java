@@ -86,7 +86,6 @@ public class FavouriteTableHelper {
 	 */
 	public synchronized static void insertFavouriteProduct(CompleteProduct completeProduct) {
 		if (completeProduct != null) {
-		    completeProduct = null;
 			SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 			ContentValues values = new ContentValues();
 			values.put(FavouriteTableHelper._FAVOURITE_SKU, completeProduct.getSku());
