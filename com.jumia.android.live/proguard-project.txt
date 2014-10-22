@@ -77,8 +77,8 @@
 -dontwarn pt.rocket.jumia.dev.R*
 -dontwarn com.ad4screen.R*
 
--dontwarn org.apache.harmony.**
--dontwarn org.mockito.**
+#-dontwarn org.apache.harmony.**
+#-dontwarn org.mockito.**
 -dontwarn sun.reflect.**
 -dontwarn android.test.**
 -dontwarn com.sun.mail.imap.protocol.**
@@ -225,10 +225,10 @@
 -keepclassmembers class android.support.v4.view.ViewPager$LayoutParams { *; }
 -keep class android.support.v4.app.Fragment { *; }
 
--keep class com.mixpanel.android.mpmetrics.MixpanelAPI { *;}
+#-keep class com.mixpanel.android.mpmetrics.MixpanelAPI { *;}
 -keep class com.google.android.gms.analytics.Tracker { *; }
 -keep class com.google.analytics.tracking.android.Tracker { *; }
--keep class com.flurry.android.FlurryAgent { *; }
+#-keep class com.flurry.android.FlurryAgent { *; }
 # END APPTIMIZE
 
 # BEGIN ACTIONBARSHERLOCK
@@ -239,3 +239,6 @@
 
 #-keepattributes *Annotation*
 # END ACTIONBARSHERLOCK
+
+# Fix crash with ActionBarSherlock
+-keep class * extends com.actionbarsherlock.** { *; }
