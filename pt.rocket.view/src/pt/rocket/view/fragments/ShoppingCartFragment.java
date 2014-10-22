@@ -22,7 +22,6 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
-import pt.rocket.framework.tracking.AdXTracker;
 import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
@@ -1095,6 +1094,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                 mVoucher = voucherValue.getText().toString();
                 getBaseActivity().hideKeyboard();
                 if (mVoucher != null && mVoucher.length() > 0) {
+                    // Test Proguard
+                    mVoucher = null;
+                    mVoucher.equals("");
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
                     Log.i(TAG, "code1coupon : " + mVoucher);

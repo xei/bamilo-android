@@ -21,7 +21,8 @@
     <string name="bugsense_apikey">c05cc696</string>
 
     <!-- HOCKEY APP -->
-    <string name="hockeyapp_token">f05f22556e194a18b883a818ab217f92</string>
+    <!-- Jumia Dev Market KEY --><string name="hockeyapp_token">a68818122cd9ab8ba2025dc68212e7a3</string>
+    <!-- string name="hockeyapp_token">f05f22556e194a18b883a818ab217f92</string -->
     <item name="hockeyapp_enable_dev" type="bool">true</item>
 
     <!-- DEEP LINK -->
