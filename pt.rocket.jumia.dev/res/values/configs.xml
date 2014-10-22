@@ -27,8 +27,8 @@
     <item name="hockeyapp_enable_dev" type="bool">true</item>
 
     <!-- APPTIMIZE -->
-    <item name="apptimize_enabled" type="bool">true</item>
-    <string name="apptimize_apikey">BraGp9FgT7ESwKR4Dk5SrkH8ZzBDfGo</string>
+    <item name="apptimize_enabled" type="bool">false</item>
+    <string name="apptimize_apikey"></string>
 
     <!-- DEEP LINK -->
     <string name="dp_package_id">pt.rocket.jumia.dev</string>
