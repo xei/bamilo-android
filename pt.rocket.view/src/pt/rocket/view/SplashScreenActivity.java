@@ -423,7 +423,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         devText.append("\nDevice Model: " + android.os.Build.MODEL);
         devText.append("\nDevice Manufacturer: " + android.os.Build.MANUFACTURER);
         
-        Toast.makeText(getApplicationContext(), System.getProperty("http.agent"), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), System.getProperty("http.agent"), Toast.LENGTH_LONG).show();
     }
 
     /*-private void initBugSense() {
