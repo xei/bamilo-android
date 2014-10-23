@@ -55,6 +55,9 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+
+import com.bugsense.trace.BugSenseHandler;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -227,7 +230,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
             Log.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
             if (eventType == EventType.INITIALIZE) {
-                // initBugSense();
+                initBugSense();
                 showDevInfo();
             }
 
@@ -385,8 +388,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             return;
         }
 
-        // BugSenseHandler.setLogging(true);
-        // BugSenseHandler.setExceptionCallback(JumiaApplication.INSTANCE);
+        BugSenseHandler.setLogging(true);
+        BugSenseHandler.setExceptionCallback(JumiaApplication.INSTANCE);
         PackageInfo pInfo = null;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -422,14 +425,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Device info
         devText.append("\nDevice Model: " + android.os.Build.MODEL);
         devText.append("\nDevice Manufacturer: " + android.os.Build.MANUFACTURER);
-        
-        Toast.makeText(getApplicationContext(), System.getProperty("http.agent"), Toast.LENGTH_LONG).show();
     }
 
-    /*-private void initBugSense() {
+    private void initBugSense() {
         if (HockeyStartup.isDevEnvironment(getApplicationContext())) return;
         BugSenseHandler.initAndStartSession(getApplicationContext(), getString(R.string.bugsense_apikey));
-    }*/
+    }
 
     /*
      * (non-Javadoc)
