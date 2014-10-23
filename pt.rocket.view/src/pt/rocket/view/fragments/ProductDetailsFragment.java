@@ -27,7 +27,6 @@ import pt.rocket.framework.objects.LastViewed;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.Variation;
 import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.tracking.AdXTracker;
 import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
@@ -839,7 +838,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
          * Simple selected
          */
         // Log.d(TAG, "code1stock SIMPLE " + mSelectedSimple);
-        long stockQuantity = 0;
+        /*-long stockQuantity = 0;
         try {
             stockQuantity = Long.valueOf(getSelectedSimple().getAttributeByKey(
                     ProductSimple.QUANTITY_TAG));
@@ -851,7 +850,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             mAddToCartButton.setBackgroundResource(R.drawable.btn_orange);
         } else {
             mAddToCartButton.setBackgroundResource(R.drawable.btn_grey);
-        }
+        }*/
 
         // Log.d(TAG, "code1stock UPDATE STOCK INFO: " + stockQuantity);
 
