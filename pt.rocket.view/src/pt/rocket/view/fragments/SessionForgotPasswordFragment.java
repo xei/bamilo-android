@@ -66,7 +66,7 @@ public class SessionForgotPasswordFragment extends BaseFragment implements OnCli
      */
     public SessionForgotPasswordFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccount,
+                NavigationAction.ForgotPassword,
                 R.layout.forgotpassword,
                 R.string.forgotpass_header,
                 KeyboardState.ADJUST_CONTENT);

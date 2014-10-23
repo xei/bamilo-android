@@ -9,12 +9,25 @@ import android.text.TextUtils;
  * 
  */
 public enum NavigationAction {
-	
-	LoginOut("loginout"), Basket("cartdata"), Brands("brands"), Search("search"), Categories(
-			"categories"), Home("shop"), MyAccount("account"), MyProfile("profile"), Favorite(
-			"favourite"), RecentSearch("recentsearch"), RecentlyView("recentlyview"),Sales("sales"), 
-			Configurator("configurator"), Products("products"), Country(
-			"language"), TrackOrder("trackingorder"), Unknown("unknown"), Checkout("checkout");
+    LoginOut("loginout"),
+    Basket("cartdata"),
+    // Brands("brands"),
+    // Search("search"),
+    Categories("categories"),
+    Home("shop"),
+    MyAccount("account"),
+    MyProfile("profile"),
+    Favorite("favourite"),
+    RecentSearch("recentsearch"),
+    RecentlyView("recentlyview"),
+    // Sales("sales"),
+    // Configurator("configurator"),
+    Products("products"),
+    Country("language"),
+    TrackOrder("trackingorder"),
+    Unknown("unknown"),
+    Checkout("checkout"),
+    ForgotPassword("forgotpassword");
 
 	private final String action;
 
