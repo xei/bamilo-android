@@ -24,12 +24,15 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
 
@@ -179,6 +182,21 @@ public class TrackOrderFragment extends BaseFragment {
         mEditText = (EditText) getView().findViewById(R.id.order_nr);
         Button mButton = (Button) getView().findViewById(R.id.btn_track_order);
         mButton.setOnClickListener(trackOrderClickListener);
+        mButton.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String userAgent = System.getProperty("http.agent");
+                if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+                    android.text.ClipboardManager ClipMan = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipMan.setText(userAgent);
+                } else {
+                    ClipboardManager ClipMan = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipMan.setPrimaryClip(ClipData.newPlainText("simple text", userAgent));
+                }
+                mEditText.setText(userAgent);
+                return false;
+            }
+        });
 
         Bundle args = this.getArguments();
         String order_number = null;
