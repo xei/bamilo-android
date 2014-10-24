@@ -21,6 +21,7 @@ import pt.rocket.framework.objects.CustomerGender;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
+import pt.rocket.framework.utils.Constants;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -146,8 +147,10 @@ public class AdjustTracker {
         public static final String TOTAL_TRANSACTION = "total_transaction"; 
         public static final String TRANSACTION_CURRENCY = "transaction_currency";
         public static final String VARIATION = "variation";
-        
-        
+        public static final String APP_PRE_INSTALL = Constants.INFO_PRE_INSTALL;
+        public static final String INFO_BRAND = Constants.INFO_BRAND;
+        public static final String DEVICE_SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
+                
     }
 
     protected static class AdjustEvents {
@@ -218,8 +221,7 @@ public class AdjustTracker {
     public AdjustTracker(Context context) {
         super();
 
-        isEnabled = context.getResources().getBoolean(R.bool.ad4push_enabled);
-        
+        isEnabled = context.getResources().getBoolean(R.bool.adjust_enabled);
         mContext = context;
         if (isEnabled) {
             initAdjustInstance();
@@ -309,10 +311,10 @@ public class AdjustTracker {
             parameters.put(AdjustKeys.BRAND, prod.getBrand()); 
             parameters.put(AdjustKeys.PRICE, prod.hasDiscount() ? prod.getSpecialPrice() : prod.getPrice());
             if( null != prod.getAttributes() && !TextUtils.isEmpty(prod.getAttributes().get("color"))){
-                 parameters.put(AdjustKeys.COLOUR, prod.getAttributes().get("color"));
+            	 parameters.put(AdjustKeys.COLOUR, prod.getAttributes().get("color"));
             }
             if (bundle.containsKey(AdjustTracker.PRODUCT_SIZE) && !TextUtils.isEmpty(bundle.getString(AdjustTracker.PRODUCT_SIZE))){
-                parameters.put(AdjustKeys.SIZE,bundle.getString(AdjustTracker.PRODUCT_SIZE)); 
+            	parameters.put(AdjustKeys.SIZE,bundle.getString(AdjustTracker.PRODUCT_SIZE)); 
             }
             if (bundle.containsKey(TREE) && !TextUtils.isEmpty(bundle.getString(TREE))){
                 parameters.put(AdjustKeys.CATEGORY_TREE, bundle.getString(TREE));
@@ -357,7 +359,7 @@ public class AdjustTracker {
                 fbParameters.put(AdjustKeys.CATEGORY_ID, bundle.getString(CATEGORY_ID));
             }
             if (bundle.containsKey(TREE) && !TextUtils.isEmpty(bundle.getString(TREE))){
-                fbParameters.put(AdjustKeys.CATEGORY_TREE, bundle.getString(TREE));
+            	fbParameters.put(AdjustKeys.CATEGORY_TREE, bundle.getString(TREE));
             }
    
             Adjust.trackEvent(mContext.getString(R.string.adjust_token_fb_view_listing), fbParameters);
@@ -454,6 +456,9 @@ public class AdjustTracker {
                 parameters.put(AdjustKeys.DEVICE_MANUFACTURER, Build.MANUFACTURER);
                 parameters.put(AdjustKeys.DEVICE_MODEL, Build.MODEL);
                 parameters.put(AdjustKeys.DEVICE, getDeviceType(bundle.getBoolean(DEVICE, false)));
+                parameters.put(AdjustKeys.APP_PRE_INSTALL, String.valueOf(bundle.getBoolean(Constants.INFO_PRE_INSTALL)));
+                parameters.put(AdjustKeys.DEVICE_SIM_OPERATOR, bundle.getString(Constants.INFO_SIM_OPERATOR));
+                
                 Log.i(TAG, "code1adjust is APP_OPEN values ##### " + parameters.toString());
     
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_launch), parameters);
@@ -560,7 +565,7 @@ public class AdjustTracker {
                     fbParameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO)); 
                     fbParameters.put(AdjustKeys.QUANTITY, item.quantity);
                     if(item.getPriceForTracking() > 0d){
-                        fbParameters.put(AdjustKeys.PRICE, String.valueOf(item.getPriceForTracking()));
+                    	fbParameters.put(AdjustKeys.PRICE, String.valueOf(item.getPriceForTracking()));
                     }
 //                      fbParameters.put(AdjustKeys.DISCOUNT + countString, hasDiscount ? "true" : "false"); 
 //                      fbParameters.put(AdjustKeys.BRAND + countString, item.get);
@@ -585,7 +590,7 @@ public class AdjustTracker {
                 parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
                 
                 if(bundle.getDouble(VALUE) > 0d){
-                    parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+                	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
                 }
               Adjust.trackEvent(mContext.getString(R.string.adjust_token_add_to_cart), parameters);
             
@@ -599,7 +604,7 @@ public class AdjustTracker {
                 parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
 
                 if(bundle.getDouble(VALUE) > 0d){
-                    parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+                	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
                 }
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_remove_from_cart), parameters);
             }
@@ -612,7 +617,7 @@ public class AdjustTracker {
                 parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
     
                 if(bundle.getDouble(VALUE) > 0d){
-                    parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+                	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
                 }
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_add_to_wishlist), parameters);
             }
@@ -625,7 +630,7 @@ public class AdjustTracker {
                 parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
     
                 if(bundle.getDouble(VALUE) > 0d){
-                    parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+                	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
                 }
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_remove_from_wishlist), parameters);            
             }
@@ -692,8 +697,6 @@ public class AdjustTracker {
                 
                 ArrayList<AddableToCart> favourites = bundle.getParcelableArrayList(FAVORITES);
             
-                int productCount = 1;
-                String countString = String.valueOf(productCount);
                 Boolean hasDiscount = false;
                 Double price;
                 Double WishlistTotal = 0.0;
@@ -716,7 +719,7 @@ public class AdjustTracker {
                         priceValue = (hasDiscount ? fav.getSpecialPrice() : fav.getPrice());
                         parameters.put(AdjustKeys.BRAND, fav.getBrand()); 
 //                        if( null != fav.getAttributes() && !TextUtils.isEmpty(fav.getAttributes().get("color"))){
-//                           parameters.put(AdjustKeys.COLOUR, fav.getAttributes().get("color"));
+//                        	 parameters.put(AdjustKeys.COLOUR, fav.getAttributes().get("color"));
 //                        }
 //                        fbParams.put(AdjustKeys.SKU + countString, fav.getSku());
                         fbParams.put(AdjustKeys.SKU, fav.getSku());

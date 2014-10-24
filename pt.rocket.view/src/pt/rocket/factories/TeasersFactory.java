@@ -19,7 +19,7 @@ import pt.rocket.framework.objects.TeaserGroupTopBrands;
 import pt.rocket.framework.objects.TeaserGroupTopBrands.TeaserTopBrand;
 import pt.rocket.framework.objects.TeaserImage;
 import pt.rocket.framework.objects.TeaserSpecification;
-import pt.rocket.framework.utils.WindowHelper;
+import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.utils.imageloader.RocketImageLoader.RocketImageLoaderListener;
 import pt.rocket.view.R;
@@ -72,7 +72,7 @@ public class TeasersFactory {
         this.mContext = context;
         this.mInflater = layoutInflater;
         this.onTeaserClickListener = onClickListener;
-        this.mContentWidth = WindowHelper.getWidth(mContext);
+        this.mContentWidth = DeviceInfoHelper.getWidth(mContext);
     }
     
     /**
@@ -158,7 +158,7 @@ public class TeasersFactory {
         ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_banners_group_container);
 
         if (null != mContext) {
-            int width = WindowHelper.getWidth(mContext);
+            int width = DeviceInfoHelper.getWidth(mContext);
             container.requestLayout();
             LayoutParams params = container.getLayoutParams();
             
@@ -493,7 +493,7 @@ public class TeasersFactory {
 
         // Adapts the Image size if needed
         if(size > 0 && imageTeaserView.getLayoutParams() != null) {
-            if(mContentWidth == 0) mContentWidth = WindowHelper.getWidth(mContext);
+            if(mContentWidth == 0) mContentWidth = DeviceInfoHelper.getWidth(mContext);
             imageTeaserView.getLayoutParams().width = mContentWidth / size;
         }
         

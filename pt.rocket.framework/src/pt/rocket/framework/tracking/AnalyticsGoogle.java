@@ -6,10 +6,12 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.R;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCartItem;
+import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -41,6 +43,10 @@ public class AnalyticsGoogle {
 
 	private static AnalyticsGoogle sInstance;
 	
+	private final static int PRE_INSTALL_ID = 1;
+	
+	private final static int SIM_OPERATOR_ID = 2;
+	
 	private GoogleAnalytics mAnalytics;
 	
 	private Tracker mTracker;
@@ -60,6 +66,8 @@ public class AnalyticsGoogle {
 	private SharedPreferences mSharedPreferences;
 
 	private String mGACampaign;
+
+	private Bundle mCustomData;
 
 	private static boolean isCheckoutStarted = false;
 
@@ -211,6 +219,8 @@ public class AnalyticsGoogle {
 		mTracker.setScreenName(path);
 		mTracker.send(new HitBuilders.AppViewBuilder()
 		.setCampaignParamsFromUrl(getGACampaign())
+		.setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
+		.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR))
 		.build());
 	}
 
@@ -230,6 +240,8 @@ public class AnalyticsGoogle {
     	.setLabel(label)
     	.setValue(value)
     	.setCampaignParamsFromUrl(getGACampaign())
+    	.setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
+		.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR))
 		.build());
 	}
 	
@@ -247,6 +259,8 @@ public class AnalyticsGoogle {
         .setAction(action)
         .setTarget(target)
         .setCampaignParamsFromUrl(getGACampaign())
+        .setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
+		.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR))
         .build());
 	}
 	
@@ -266,6 +280,8 @@ public class AnalyticsGoogle {
         .setVariable(name)
         .setLabel(label)
         .setCampaignParamsFromUrl(getGACampaign())
+        .setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
+		.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR))
         .build());
 	}
 	
@@ -283,6 +299,8 @@ public class AnalyticsGoogle {
 		.setRevenue(revenue)
 		.setCurrencyCode(currencyCode)
 		.setCampaignParamsFromUrl(getGACampaign())
+		.setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
+		.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR))
 		.build());
 	}
 	
@@ -308,6 +326,8 @@ public class AnalyticsGoogle {
 	    .setQuantity(quantity)
 	    .setCurrencyCode(currencyCode)
 	    .setCampaignParamsFromUrl(getGACampaign())
+	    .setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
+		.setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR))
 	    .build());
 	}
 	
@@ -580,4 +600,26 @@ public class AnalyticsGoogle {
 		return !TextUtils.isEmpty(mGACampaign) ? mGACampaign : "";
 	}
 
+	/**
+	 * Save the custom data.
+	 * @param data
+	 * @author sergiopereira
+	 */
+	public void setCustomData(Bundle data) {
+		// Validation
+		if (!isEnabled) return;
+		// Set device info
+		mCustomData = data;
+		//mTracker.set("&cd1", ""+info.getBoolean(Constants.INFO_PRE_INSTALL, false));
+		//mTracker.set("&cd2", info.getString(Constants.INFO_SIM_OPERATOR));
+	}
+	
+	/**
+	 * Get the current custom data.
+	 * @return data
+	 * @author sergiopereira
+	 */
+	private Bundle getCustomData() {
+		return mCustomData != null ? mCustomData : new Bundle();
+	}
 }

@@ -157,7 +157,17 @@ public class Ad4PushTracker {
         // CREATE_LISTING_VIEW);
         // screens.put(TrackinelgScreen.LISTING_CREATION_SUCCESS,
         // CREATE_LISTING_DONE_VIEW);
-
+        
+        // Initialize
+        init(context);
+    }
+    
+    /**
+     * ####### BASE ####### 
+     */
+    
+    
+    private void init(Context context) {
         if (isEnabled) {
         	Log.d(TAG, "Ad4PSUH Startup -> INITITALIZED");
             mA4S = A4S.get(context);
@@ -165,12 +175,7 @@ public class Ad4PushTracker {
             prefs.putString(USER_ID, "0");
             mA4S.updateUserPreferences(prefs);
         }
-
     }
-    
-    /**
-     * ####### BASE ####### 
-     */
     
     /**
      * 
@@ -239,8 +244,30 @@ public class Ad4PushTracker {
             mA4S.putState(VIEW_STATE, view);
         }
     }
+    
+    /*
+     * ############## TRACKING ############## 
+     */
+    
+    /**
+     * Method used to set some info about device.
+     * @param context
+     * @author sergiopereira
+     */
+    private void setDeviceInfo(Bundle info) {
+    	if (null != mA4S && isEnabled) {
+    		Log.i(TAG, "SET DEVICE INFO: " + info.toString());
+    		// Set info
+    		mA4S.updateUserPreferences(info);
+    	}
+    }
+    
 
-    public void trackAppFirstOpen() {
+    /**
+     * First open
+     * @param info
+     */
+    public void trackAppFirstOpen(Bundle info) {
         if (isEnabled) {
             SharedPreferences settings = context.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
             boolean alreadyOpened = settings.getBoolean(HAS_OPENED_APP, false);
@@ -256,6 +283,9 @@ public class Ad4PushTracker {
                 editor.commit();
             }
         }
+        
+    	// Set some info
+    	setDeviceInfo(info);
     }
 
     public void trackFacebookConnect(String customerId) {
@@ -695,5 +725,9 @@ public class Ad4PushTracker {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", context.getResources().getConfiguration().locale);
         return sdf.format(new Date());
     }
+    
+    
+    
+
 
 }

@@ -60,10 +60,6 @@ public class DeepLinkManager {
     private static final String RECENT_SEARCHES_TAG = "rc";
     private static final String FAVORITES_TAG = "w";
     
-    
-    
-    public static final String ADX_ID_TAG = "ADXID";
-    
     public static final String FRAGMENT_TYPE_TAG = "fragment_type";
     
     public static final String PDV_SIZE_TAG = "size";
@@ -72,7 +68,6 @@ public class DeepLinkManager {
      * Load the external deep link.
      * Get and set the country
      * Load the deep view and create a bundle
-     * Get and add the ADX value to the bundle
      * <p># Default case -> JUMIA://pt.rocket.jumia.dev/eg/cart/
      * <p># Other case   -> JUMIA://eg/cart/
      * @param intent
@@ -87,9 +82,7 @@ public class DeepLinkManager {
         loadCountryCode(context, segments.get(PATH_CC_POS));
         // Get the tag view
         Bundle deepLinkBundle = loadDeepViewTag(context, segments, data);
-        // Get ADX parameters from URI are set on selectActivity
-        getAdxValues(deepLinkBundle, data);
-        // Return ADX values
+        // Return values
         return deepLinkBundle;
     }
     
@@ -223,7 +216,7 @@ public class DeepLinkManager {
     
     /**
      * Method used to create a bundle for campaign view with the respective campaign id.
-     * JUMIA://com.jumia.android/ng/cam/deals-of-the-day?ADXID=SOMEADXID
+     * JUMIA://com.jumia.android/ng/cam/deals-of-the-day
      * @param campaign id
      * @return {@link Bundle}
      * @author sergiopereira
@@ -245,7 +238,7 @@ public class DeepLinkManager {
     
     /**
      * Method used to create a bundle for category view with the respective category id.
-     * JUMIA://com.jumia.android/ng/n/5121?ADXID=SOMEADXID
+     * JUMIA://com.jumia.android/ng/n/5121
      * @param category id
      * @return {@link Bundle}
      * @author sergiopereira
@@ -262,7 +255,7 @@ public class DeepLinkManager {
     
     /**
      * Method used to create a bundle for track order view with the order id.
-     * JUMIA://com.jumia.android/ng/o/1233?ADXID=XXXX
+     * JUMIA://com.jumia.android/ng/o/1233
      * @param order id
      * @return {@link Bundle}
      * @author sergiopereira
@@ -278,7 +271,7 @@ public class DeepLinkManager {
     
     /**
      * Method used to create a bundle for catalog view with the search query.
-     * <p>JUMIA://pt.rocket.jumia.dev/ng/s/cart?ADXID=web1253325978
+     * <p>JUMIA://pt.rocket.jumia.dev/ng/s/cart
      * <p>key: u value: ng/s/cart
      * @param query
      * @return {@link Bundle}
@@ -299,8 +292,8 @@ public class DeepLinkManager {
     
     /**
      * Method used to create a bundle for cart or headless cart view with the respective SKUs.
-     * JUMIA://com.jumia.android/ng/cart?ADXID=web1253325978
-     * JUMIA://com.jumia.android/ng/cart/sku1_sku2_sku3?ADXID=web1253325978
+     * JUMIA://com.jumia.android/ng/cart
+     * JUMIA://com.jumia.android/ng/cart/sku1_sku2_sku3
      * @param segments
      * @return {@link Bundle}
      * @author sergiopereira
@@ -444,7 +437,7 @@ public class DeepLinkManager {
     
     /**
      * Method used to create a bundle for Catalog view with the respective catalog value. 
-     * JUMIA://com.jumia.android/eg/c/surprise-your-guests?ADXID=XXXX&q=AKOZ--225&price=11720-53620&color_family=Noir--Bleu&size=38--40
+     * JUMIA://com.jumia.android/eg/c/surprise-your-guests?q=AKOZ--225&price=11720-53620&color_family=Noir--Bleu&size=38--40
      * @param segments
      * @return {@link Bundle}
      * @author sergiopereira
@@ -459,7 +452,6 @@ public class DeepLinkManager {
         if(filters.size() > 0) {
             catalogUrlKey += "?";
             for (String key : filters) {
-                if(key.equalsIgnoreCase(ADX_ID_TAG)) continue;
                 catalogUrlKey += key + "=" + data.getQueryParameter(key) + "&";
             }
         }
@@ -475,25 +467,25 @@ public class DeepLinkManager {
         return bundle;
     }
     
-    /**
-     * Get the adx id value and add it to the received bundle
-     * @param deepLinkBundle
-     * @param data
-     * @author sergiopereira
-     */
-    private static void getAdxValues(Bundle deepLinkBundle, Uri data){
-        // Validate current bundle
-        if(deepLinkBundle == null || data == null) return;
-        try {
-            // Get the adx id
-            String adxIdValue = data.getQueryParameter(ADX_ID_TAG);
-            // Add to bundle
-            deepLinkBundle.putString(ADX_ID_TAG, adxIdValue);
-        } catch (UnsupportedOperationException e) {
-            Log.w(TAG, "ON GET ADX VALUE FROM: " + data.toString(), e);
-            deepLinkBundle.putString(ADX_ID_TAG, null);
-        }
-    }
+//    /**
+//     * Get the adx id value and add it to the received bundle
+//     * @param deepLinkBundle
+//     * @param data
+//     * @author sergiopereira
+//     */
+//    private static void getAdxValues(Bundle deepLinkBundle, Uri data){
+//        // Validate current bundle
+//        if(deepLinkBundle == null || data == null) return;
+//        try {
+//            // Get the adx id
+//            String adxIdValue = data.getQueryParameter(ADX_ID_TAG);
+//            // Add to bundle
+//            deepLinkBundle.putString(ADX_ID_TAG, adxIdValue);
+//        } catch (UnsupportedOperationException e) {
+//            Log.w(TAG, "ON GET ADX VALUE FROM: " + data.toString(), e);
+//            deepLinkBundle.putString(ADX_ID_TAG, null);
+//        }
+//    }
     
     /**
      * Load the country and set

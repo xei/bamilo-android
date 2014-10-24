@@ -1091,6 +1091,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
                 if(item.hasSelectedSize()) {
                     view.mSizeSpinner.setSelection(item.getSelectedSizePosition());
                 }
+                // Force reload content to redraw the default selection value
+                adapter.notifyDataSetChanged();
                 // Apply the select listener
                 view.mSizeSpinner.setOnItemSelectedListener(this);
             } else {

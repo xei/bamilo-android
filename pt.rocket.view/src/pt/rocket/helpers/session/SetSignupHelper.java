@@ -3,10 +3,13 @@
  */
 package pt.rocket.helpers.session;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
+import pt.rocket.framework.objects.Customer;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
@@ -71,6 +74,22 @@ public class SetSignupHelper extends BaseHelper {
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
+        if (jsonObject.has(RestConstants.JSON_DATA_TAG)) {
+            
+            try {
+                JSONObject dataObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
+                if (dataObject.has(RestConstants.JSON_USER_TAG)) {
+                    JSONObject customerObject = dataObject.getJSONObject(RestConstants.JSON_USER_TAG);
+                    Customer customer = new Customer(customerObject);
+                    bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, customer);
+  
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        
+        }
+
         return bundle;
     }
     

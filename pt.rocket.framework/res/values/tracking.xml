@@ -116,84 +116,39 @@
 
     <string name="gload">PageLoad</string>
     <!-- End of GA Tracking Parameters -->
-
-
-    <!-- Begin of Urban AirShip Tracking Parameters -->
-    <string name="ua_preisntall">preinstall-</string>
-    <string name="ua_store"></string> <!-- Default -->
-    <!-- End of Urban AirShip Tracking Parameters -->
-
-
-    <!-- Begin of AdX Tracking Parameters -->
-    <bool name="adx_enable">true</bool>
-
-    <string name="xlaunch">Launch</string>
-    <string name="xlogin">Login</string>
-    <string name="xlogout">Logout</string>
-    <string name="xFBlogin">FBConnect</string>
-    <string name="xsignup">Signup</string>
-    <string name="xsale">Sale</string>
-    <string name="xsaledata">SaleData</string>
-    <string name="xcustomer">Customer</string>
-    <string name="xnetwork">NETWORK</string>
-    <string name="xreference">REFERENCE</string>
-    <string name="xpreinstall">PREINSTALL</string>
-    <string name="xreferral">InstallReferral</string>
-    <string name="xreceiver">ReceiverDone</string>
-    <string name="xpreferences">AdXPrefrences</string>
-    <string name="xnativecheckout">NativeCheckout</string>
-    <string name="xnativecheckouterror">NativeCheckoutError</string>
-    <string name="xcustomersignup">CustomerSignUp</string>
-    <string name="xaddtocart">AddToCart</string>
-    <string name="xremovefromcart">RemoveFromCart</string>
-    <string name="xguestsale">GuestSale</string>
-    <string name="xcall">Call</string>
-    <string name="xsocialshare">SocialShare</string>
-    <string name="xproductrate">ProductRate</string>
-    <!-- Checkout Steps -->
-    <string name="xcheckoutaboutyou">CheckoutAboutYou</string>
-    <string name="xcheckoutcreateaddress">CheckoutCreateAddress</string>
-    <string name="xcheckouteditaddress">CheckoutEditAddress</string>
-    <string name="xcheckoutexternalpayment">CheckoutExternalPayment</string>
-    <string name="xcheckoutmyaddresses">CheckoutMyAddresses</string>
-    <string name="xcheckoutmyorder">CheckoutMyOrder</string>
-    <string name="xcheckoutpaymentmethods">CheckoutPaymentMethods</string>
-    <string name="xcheckoutpollquestion">CheckoutPollQuestion</string>
-    <string name="xcheckoutshippingmethods">CheckoutShippingMethods</string>
-    <string name="xpaymentmethod">PaymentMethod</string>
-    <string name="xdeeplinklaunch">DeepLinkLaunch</string>
-    <!-- End of AdX Tracking Parameters -->
     
-	<!-- Begin of Adjust Tracking Parameters -->
-	<string name="adjust_token_launch"></string>
-	<string name="adjust_token_log_in"></string>
-	<string name="adjust_token_log_out"></string>
-	<string name="adjust_token_sign_up"></string>
-	<string name="adjust_token_sale"></string>
-	<string name="adjust_token_guest_sale"></string>
-	<string name="adjust_token_add_to_cart"></string>
-	<string name="adjust_token_remove_from_cart"></string>
-	<string name="adjust_token_add_to_wishlist"></string>
-	<string name="adjust_token_remove_from_wishlist"></string>
-	<string name="adjust_token_social_share"></string>
-	<string name="adjust_token_call"></string>
-	<string name="adjust_token_product_rate"></string>
-	<string name="adjust_token_fb_connect"></string>
-	<string name="adjust_token_customer"></string>
-	<string name="adjust_token_home"></string>
-	<string name="adjust_token_view_product"></string>
-	<string name="adjust_token_view_listing"></string>
-	<string name="adjust_token_search"></string>
-	<string name="adjust_token_view_cart"></string>
-	<string name="adjust_token_transaction_confirmation"></string>
-	<string name="adjust_token_fb_home"></string>
-	<string name="adjust_token_fb_view_listing"></string>
-	<string name="adjust_token_fb_view_product"></string>
-	<string name="adjust_token_fb_search"></string>
-	<string name="adjust_token_fb_view_wishlist"></string>
-	<string name="adjust_token_fb_view_cart"></string>
-	<string name="adjust_token_fb_transaction_confirmation"></string>
-	
-	<!-- End of Adjust Tracking Parameters -->
+    
+    <!-- Begin of Adjust Tracking Parameters -->
+    <string name="adjust_token_launch">hrp47p</string>
+    <string name="adjust_token_log_in">e02cr6</string>
+    <string name="adjust_token_log_out">gxvwpj</string>
+    <string name="adjust_token_sign_up">jvr797</string>
+    <string name="adjust_token_sale">2mzxyy</string>
+    <string name="adjust_token_guest_sale">60p5rq</string>
+    <string name="adjust_token_add_to_cart">9a3y22</string>
+    <string name="adjust_token_remove_from_cart">mbev3i</string>
+    <string name="adjust_token_add_to_wishlist">or10kh</string>
+    <string name="adjust_token_remove_from_wishlist">1umzf5</string>
+    <string name="adjust_token_social_share">izdu5c</string>
+    <string name="adjust_token_call">raztmz</string>
+    <string name="adjust_token_product_rate">kctyuo</string>
+    <string name="adjust_token_fb_connect">xncmnj</string>
+    <string name="adjust_token_customer">lsxsdu</string>
+    <!-- Re-targeting -->
+    <string name="adjust_token_home">o4k36e</string>
+	<string name="adjust_token_view_product">ael3q3</string>
+	<string name="adjust_token_view_listing">90hme6</string>
+    <string name="adjust_token_search">h328i8</string>
+    <string name="adjust_token_view_cart">k220tx</string>
+    <string name="adjust_token_transaction_confirmation">4mrofw</string>
+    <!-- FB audience -->
+    <string name="adjust_token_fb_home">z2ltzy</string>
+    <string name="adjust_token_fb_view_listing">iuvlys</string>
+    <string name="adjust_token_fb_view_product">h375id</string>
+    <string name="adjust_token_fb_search">mlc8i5</string>
+    <string name="adjust_token_fb_view_wishlist">l3zco3</string>
+    <string name="adjust_token_fb_view_cart">cvjbaa</string>
+    <string name="adjust_token_fb_transaction_confirmation">25981k</string>
+    <!-- End of Adjust Tracking Parameters -->
 
 </resources>

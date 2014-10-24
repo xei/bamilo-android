@@ -17,8 +17,8 @@ import pt.rocket.framework.objects.TeaserGroupType;
 import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.tracking.TrackingEvent;
+import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.utils.ScrollViewWithHorizontal;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -266,7 +266,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         Log.i(TAG, "SHOW HOME WITH TEASERS");
         // Create the teaser factory
         TeasersFactory mTeasersFactory = new TeasersFactory(getBaseActivity(), mInflater, (OnClickListener) this);
-        mTeasersFactory.setContainerWidthToLoadImage(WindowHelper.getWidth(getBaseActivity()) / 2); // For product list
+        mTeasersFactory.setContainerWidthToLoadImage(DeviceInfoHelper.getWidth(getBaseActivity()) / 2); // For product list
         // For each teaser create a view and add to container
         for ( TeaserSpecification<?> teaser : homePage.getTeaserSpecification()) {
             switch (teaser.getType()) {

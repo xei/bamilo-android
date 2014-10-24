@@ -686,27 +686,27 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         return sb.toString();
     }
 
-    private HashMap<String, String> createVariantAttributesHashMap(ProductSimple simple) {
-        ArrayList<ProductSimple> simples = mCompleteProduct.getSimples();
-        if (simples.size() <= 1)
-            return null;
-
-        Set<String> foundKeys = scanSimpleAttributesForKnownVariants(simples);
-
-        HashMap<String, String> variationsMap = new HashMap<String, String>();
-        for (String key : foundKeys) {
-            String value = simple.getAttributeByKey(key);
-
-            if (value == null)
-                continue;
-            if (value.equals("\u2026"))
-                continue;
-
-            variationsMap.put(key, value);
-        }
-
-        return variationsMap;
-    }
+//    private HashMap<String, String> createVariantAttributesHashMap(ProductSimple simple) {
+//        ArrayList<ProductSimple> simples = mCompleteProduct.getSimples();
+//        if (simples.size() <= 1)
+//            return null;
+//
+//        Set<String> foundKeys = scanSimpleAttributesForKnownVariants(simples);
+//
+//        HashMap<String, String> variationsMap = new HashMap<String, String>();
+//        for (String key : foundKeys) {
+//            String value = simple.getAttributeByKey(key);
+//
+//            if (value == null)
+//                continue;
+//            if (value.equals("\u2026"))
+//                continue;
+//
+//            variationsMap.put(key, value);
+//        }
+//
+//        return variationsMap;
+//    }
 
     private ProductSimple getSelectedSimple() {
         ProductSimple simple = null;

@@ -4,7 +4,7 @@ import org.holoeverywhere.widget.Button;
 
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
-import pt.rocket.framework.utils.WindowHelper;
+import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -54,7 +54,7 @@ public class MaintenancePage {
             RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_splashmap);
 
             // ImageView for map is between title text and change country button
-            int height = WindowHelper.getHeight(activity.getApplicationContext());
+            int height = DeviceInfoHelper.getHeight(activity.getApplicationContext());
             RelativeLayout.LayoutParams params = (LayoutParams) mapBg.getLayoutParams();
             if (height > 1000) {
                 // Set map image above maintance message for big devices

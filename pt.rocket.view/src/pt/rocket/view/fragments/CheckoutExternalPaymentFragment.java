@@ -161,7 +161,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements OnC
          Bundle params = new Bundle();        
          params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
          params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_EXTERNAL_PAYMENT);
-         params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutexternalpayment);        
          
          TrackerDelegator.trackCheckoutStep(params);
     }

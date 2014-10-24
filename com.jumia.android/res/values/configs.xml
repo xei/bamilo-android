@@ -11,10 +11,7 @@
 	<!-- GA -->
 	<!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
     <integer name="ga_dispatchPeriod">0</integer>
-    --> 
-    
-	<!-- ADX -->
-    <string name="adx_app_name">com.jumia.android</string>
+    -->
     
     <!-- BUG SENSE -->
     <string name="bugsense_apikey">753c3181</string>

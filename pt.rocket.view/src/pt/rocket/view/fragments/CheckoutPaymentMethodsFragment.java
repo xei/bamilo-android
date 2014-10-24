@@ -128,7 +128,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_PAYMENT);
-        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutpaymentmethods);        
         TrackerDelegator.trackCheckoutStep(params);
     }
     

@@ -103,7 +103,6 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_QUESTION);
-        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutpollquestion);   
         TrackerDelegator.trackCheckoutStep(params);
     }
 

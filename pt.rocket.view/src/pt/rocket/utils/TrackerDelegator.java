@@ -17,12 +17,12 @@ import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.Ad4PushTracker;
-import pt.rocket.framework.tracking.AdXTracker;
 import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.view.R;
@@ -60,7 +60,6 @@ public class TrackerDelegator {
     public static final String PURCHASE_KEY = "purchase";
     public static final String EMAIL_KEY = "email";
     public static final String GA_STEP_KEY = "ga_step";
-    public static final String ADX_STEP_KEY = "adx_step";
     public static final String PAYMENT_METHOD_KEY = "payment_method";
     public static final String ERROR_KEY = "error";
     public static final String ORDER_NUMBER_KEY = "order_number";
@@ -119,13 +118,10 @@ public class TrackerDelegator {
         boolean loginAfterRegister = checkLoginAfterSignup(customer);
         Log.d(TAG, "trackLoginSuccessul: loginAfterRegister = " + loginAfterRegister + " wasAutologin = " + wasAutologin);
 
-        // PushManager.shared().setAlias(customer.getIdAsString());
         if (wasFacebookLogin) {
-            AdXTracker.facebookLogin(context, JumiaApplication.SHOP_NAME, customer.getIdAsString());
             Ad4PushTracker.get().trackFacebookConnect(customer.getIdAsString());
-        } else {
-            AdXTracker.login(context, JumiaApplication.SHOP_NAME, customer.getIdAsString());
         }
+        
         Ad4PushTracker.get().trackLogin(customer.getIdAsString(), customer.getFirstName());
         
         Bundle bundle = new Bundle();
@@ -135,6 +131,7 @@ public class TrackerDelegator {
         bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(context, event, bundle);
         
+        storeFirstCustomer(customer);
     }
     
     /**
@@ -156,7 +153,6 @@ public class TrackerDelegator {
         if (JumiaApplication.CUSTOMER != null) {
             customerId = JumiaApplication.CUSTOMER.getIdAsString();
         }
-        AdXTracker.logout(context, JumiaApplication.SHOP_NAME, customerId);
         
         AnalyticsGoogle.get().trackEvent(TrackingEvent.LOGOUT_SUCCESS, customerId, 0l);
         //Adjust
@@ -203,13 +199,11 @@ public class TrackerDelegator {
 
     public final static void trackProductRemoveFromCart(Bundle params) {
         String sku = params.getString(SKU_KEY);
-        String priceAsString = params.getString(PRICE_KEY);
 
         String customer_id = "";
         if (JumiaApplication.CUSTOMER != null) {
             customer_id = JumiaApplication.CUSTOMER.getIdAsString();
         }
-        AdXTracker.trackRemoveFromCart(context, priceAsString, customer_id, sku, JumiaApplication.SHOP_NAME);
         
         //Adjust
         Bundle bundle = new Bundle();
@@ -233,7 +227,6 @@ public class TrackerDelegator {
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
             userId = JumiaApplication.CUSTOMER.getIdAsString();
         }
-        AdXTracker.trackShare(context, sku, userId, JumiaApplication.SHOP_NAME);
         AnalyticsGoogle.get().trackShare(context, sku, userId, JumiaApplication.SHOP_NAME);
         Ad4PushTracker.get().trackSocialShare();
         
@@ -267,7 +260,7 @@ public class TrackerDelegator {
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
             user_id = JumiaApplication.CUSTOMER.getIdAsString();
         }
-        AdXTracker.trackProductRate(context, product.getSku(), review, user_id, JumiaApplication.SHOP_NAME);
+        
         for (Entry<String, Double> option : review.getRating().entrySet()) {
             Long ratingValue;
             try {
@@ -306,7 +299,7 @@ public class TrackerDelegator {
             return;
         }
 
-        AdXTracker.signup(context, JumiaApplication.SHOP_NAME, customer.getIdAsString());
+
         Ad4PushTracker.get().trackSignup(customer.getIdAsString(), customer.getGender().toString());
         // Adjust
         Bundle bundle = new Bundle();
@@ -316,7 +309,7 @@ public class TrackerDelegator {
         bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(context, TrackingEvent.SIGNUP_SUCCESS, bundle);
         
-        storeSignupProcess(customer);
+        storeFirstCustomer(customer);
     }
 
     public static void trackSignupFailed() {
@@ -347,7 +340,6 @@ public class TrackerDelegator {
 
         String email = params.getString(EMAIL_KEY);
         final TrackingEvent event = (TrackingEvent) params.getSerializable(GA_STEP_KEY);
-        final int xstep = params.getInt(ADX_STEP_KEY);
 
         final String hashedemail = Utils.cleanMD5(email);
         new Thread(new Runnable() {
@@ -361,7 +353,6 @@ public class TrackerDelegator {
                 
                 AnalyticsGoogle.get().trackEvent(event, user_id, 0l);
                 
-                AdXTracker.trackCheckoutStep(context, JumiaApplication.SHOP_NAME, user_id, xstep);
             }
 
         }).start();
@@ -379,8 +370,6 @@ public class TrackerDelegator {
                 }
                 // GA
                 AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, user, 0l);
-                // ADX
-                AdXTracker.trackSignUp(context, JumiaApplication.SHOP_NAME, user);
             }
 
         }).start();
@@ -407,7 +396,6 @@ public class TrackerDelegator {
                     user_id = JumiaApplication.CUSTOMER.getIdAsString();
                 }
                 AnalyticsGoogle.get().trackPaymentMethod(user_id, payment);
-                AdXTracker.trackPaymentMethod(context, JumiaApplication.SHOP_NAME, user_id, payment);
             }
 
         }).start();
@@ -427,7 +415,6 @@ public class TrackerDelegator {
                     user_id = JumiaApplication.CUSTOMER.getIdAsString();
                 }
                 AnalyticsGoogle.get().trackNativeCheckoutError(user_id, error);
-                AdXTracker.trackNativeCheckoutError(context, JumiaApplication.SHOP_NAME, user_id, error);
             }
 
         }).start();
@@ -501,20 +488,13 @@ public class TrackerDelegator {
         
         if (customer == null) {
             Log.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
-            // AdXTracker.trackSale(context, value);
-
             // Send the track sale without customer id
-            String customerId = "";
             isFirstCustomer = false;
-            AdXTracker.trackSale(context, "" + value, customerId, orderNr, skus, isFirstCustomer, JumiaApplication.SHOP_NAME, false);
-
         } else {
-            String customerId = customer.getIdAsString();
-            isFirstCustomer = checkCheckoutAfterSignup(customer);
-
-            Log.d(TAG, "TRACK SALE: CUSTOMER ID: " + customerId + " IS FIRST TIME: " + isFirstCustomer);
-
-            AdXTracker.trackSale(context, "" + value, customerId, orderNr, skus, isFirstCustomer, JumiaApplication.SHOP_NAME, customer.isGuest());
+            isFirstCustomer = checkFirstCustomer(customer);
+            
+            if(isFirstCustomer)
+                removeFirstCustomer(customer);
         }
 
         Ad4PushTracker.get().trackCheckoutEnded(orderNr, value, averageValue, items.size(), coupon, favoritesCount);
@@ -539,7 +519,6 @@ public class TrackerDelegator {
     private static void trackNativeCheckoutPurchase(Bundle params, Map<String, ShoppingCartItem> mItems) {
         String orderNr = params.getString(ORDER_NUMBER_KEY);
         double value = params.getDouble(VALUE_KEY);
-        String email = params.getString(EMAIL_KEY);
         Customer customer = params.getParcelable(CUSTOMER_KEY);
         String coupon = params.getString(COUPON_KEY);
 
@@ -566,20 +545,13 @@ public class TrackerDelegator {
         boolean isFirstCustomer = false;
         if (customer == null) {
             Log.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
-            // AdXTracker.trackSale(context, value);
-
             // Send the track sale without customer id
-            String customerId = Utils.cleanMD5(email);
             isFirstCustomer = false;
-            AdXTracker.trackSale(context, "" + value, customerId, orderNr, skus, isFirstCustomer, JumiaApplication.SHOP_NAME, false);
-
         } else {
-            String customerId = customer.getIdAsString();
-            isFirstCustomer = checkCheckoutAfterSignup(customer);
-
-            Log.d(TAG, "TRACK SALE: CUSTOMER ID: " + customerId + " IS FIRST TIME: " + isFirstCustomer);
-
-            AdXTracker.trackSale(context, "" + value, customerId, orderNr, skus, isFirstCustomer, JumiaApplication.SHOP_NAME, customer.isGuest());
+            isFirstCustomer = checkFirstCustomer(customer);
+            
+            if(isFirstCustomer)
+                removeFirstCustomer(customer);
         }
 
         // String transactionId, Double cartValue, Double average, String
@@ -609,30 +581,52 @@ public class TrackerDelegator {
         SharedPreferences prefs = context.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
         prefs.edit().putString(SIGNUP_KEY_FOR_LOGIN, customer.getEmail()).putString(SIGNUP_KEY_FOR_CHECKOUT, customer.getEmail()).commit();
     }
-
-    private static boolean checkLoginAfterSignup(Customer customer) {
-        return checkKeyAfterSignup(customer, SIGNUP_KEY_FOR_LOGIN);
+    
+    public static void removeFirstCustomer(Customer customer) {
+        Log.d(TAG, "remove first customer");
+        SharedPreferences prefs = context.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(customer.getEmail(),false).commit();
     }
 
-    private static boolean checkCheckoutAfterSignup(Customer customer) {
-        return checkKeyAfterSignup(customer, SIGNUP_KEY_FOR_CHECKOUT);
+    public static void storeFirstCustomer(Customer customer) {
+        Log.d(TAG, "store first customer");
+        SharedPreferences prefs = context.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
+        
+        boolean isNewCustomer = prefs.getBoolean(customer.getEmail(), true);
+        if (isNewCustomer) {
+            Log.d(TAG, "store first customer1");
+            prefs.edit().putBoolean(customer.getEmail(),true).commit();
+        }
+        
     }
-
-    private static boolean checkKeyAfterSignup(Customer customer, String key) {
+    
+    private static boolean checkLoginAfterSignup(Customer customer) {        
         SharedPreferences prefs = context.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
 
-        if (!prefs.contains(key)) {
+        if (!prefs.contains(SIGNUP_KEY_FOR_LOGIN)) {
             return false;
         }
 
-        String email = prefs.getString(key, "");
+        String email = prefs.getString(SIGNUP_KEY_FOR_LOGIN, "");
         if (!email.equals(customer.getEmail())) {
             return false;
         }
 
-        prefs.edit().remove(key).commit();
+        prefs.edit().remove(SIGNUP_KEY_FOR_LOGIN).commit();
         return true;
     }
+
+    private static boolean checkFirstCustomer(Customer customer) {
+        SharedPreferences prefs = context.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
+
+        if (!prefs.contains(customer.getEmail())) {
+            return true;
+        }
+
+        return prefs.getBoolean(customer.getEmail(),true);
+
+    }
+
 
     /**
      * Tracking the continue shopping
@@ -709,8 +703,6 @@ public class TrackerDelegator {
 
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_CART, sku, (long) price);
-        // Adx
-        AdXTracker.trackAddToCart(context, "" + price, customerId, sku, JumiaApplication.SHOP_NAME);
         // AD4Push
         Ad4PushTracker.get().trackAddToCart(sku, price, name, category);
         
@@ -880,16 +872,29 @@ public class TrackerDelegator {
     /**
      * 
      */
-    public static void trackAppOpen(long launchtime) {
-        //AD4Push
-        Ad4PushTracker.get().trackAppFirstOpen();
-        //Adjust
-        Bundle params = new Bundle();
+    public static void trackAppOpen(Context context) {
+        // Get device info
+        Bundle info = DeviceInfoHelper.getInfo(context);
+        // AD4Push
+        Ad4PushTracker.get().trackAppFirstOpen(info);
+        // GA
+        AnalyticsGoogle.get().setCustomData(info);
+        
+        countSession();
+    }
+    
+    /**
+     * 
+     */
+    public static void trackAppOpenAdjust(Context context, long launchtime) {
+        // Get device info
+        Bundle info = DeviceInfoHelper.getInfo(context);     
+        // Adjust
+        Bundle params = new Bundle(info);
         params.putLong(AdjustTracker.BEGIN_TIME, launchtime);
         params.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(context, TrackingEvent.APP_OPEN, params);
-        
-        countSession();
+       
     }
     
     /**
@@ -897,9 +902,6 @@ public class TrackerDelegator {
      * @param event
      */
     public static void trackCall(Context context, String user_id, String shop_country) {
-        
-        AdXTracker.trackCall(context, user_id,shop_country);
-        
         //Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);

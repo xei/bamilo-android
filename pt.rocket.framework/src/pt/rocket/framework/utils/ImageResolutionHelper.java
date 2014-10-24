@@ -38,7 +38,7 @@ public class ImageResolutionHelper {
     public static int init(Context context) {
 
     	// Get screen size
-    	Message wm = WindowHelper.getMeasures(context);
+    	Message wm = DeviceInfoHelper.getMeasures(context);
     	// Get heap size available
     	ActivityManager am = (ActivityManager) context.getSystemService(Activity.ACTIVITY_SERVICE);
     	int memoryHeapSize = am.getMemoryClass();

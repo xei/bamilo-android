@@ -62,4 +62,11 @@ public class Constants {
 	
 	public static String PIN="rocket123";
 	
+	/**
+	 * ######## Device Info ######## 
+	 */
+    public static final String INFO_PRE_INSTALL = "preInstalment";
+    public static final String INFO_BRAND = "brand";
+    public static final String INFO_SIM_OPERATOR = "operator";
+	
 }

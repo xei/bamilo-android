@@ -149,7 +149,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ORDER);
-        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutmyorder);
         TrackerDelegator.trackCheckoutStep(params);
     }
 

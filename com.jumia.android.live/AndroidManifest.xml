@@ -2,13 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jumia.android.live"
     android:installLocation="auto"
-    android:versionCode="44"
-    android:versionName="2.2" >
+    android:versionCode="42"
+    android:versionName="2.1" >
 
-     <!-- ######################################## -->
+    <!-- ######################################## -->
     <!-- ############# Permissions ############## -->
     <!-- ######################################## -->
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,9 +20,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-    <!-- Adx additional permissions -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- ############# Location: LocationHelper and AD4Push ############# -->
     <uses-permission
@@ -103,40 +102,6 @@
             android:name="pt.rocket.framework.service.RemoteService"
             android:exported="false" />
 
-        <!-- ######################################## -->
-        <!-- ############# ADX Tracker ############## -->
-        <!-- ######################################## -->
-
-        <receiver
-            android:name="com.AdX.tag.AdXAppTracker"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER" />
-            </intent-filter>
-
-            <!-- AD4SCREEN FORWARD RECEIVER -->
-            <meta-data
-                android:name="ADX_FORWARD_REFERRAL.ad4screen"
-                android:value="com.ad4screen.sdk.ReferrerHandler" />
-        </receiver>
-
-        <meta-data
-            android:name="APP_NAME"
-            android:value="@string/adx_app_name" />
-        <meta-data
-            android:name="ADX_CLIENT_ID"
-            android:value="@string/xid" />
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <!-- REMEMBER TO REMOVE THIS META DATA LINE BEFORE SUBMITTING TO THE APP STORE -->
-        <!--
-        <meta-data
-            android:name="USEQASERVER"
-            android:value="ON" />
-        -->
-
         <!-- ##################################### -->
         <!-- ############# FACEBOOK ############## -->
         <!-- ##################################### -->
@@ -208,18 +173,7 @@
             </intent-filter>
         </receiver>
         
-		<!-- ######################################## -->
-        <!-- ############### ADJUST ################# -->
-        <!-- ######################################## -->
-        
-        <meta-data android:name="AdjustAppToken"    android:value="@string/adjust_app_token" />
-		<meta-data android:name="AdjustLogLevel"    android:value="verbose" />
-		<meta-data android:name="AdjustEnvironment" android:value="sandbox" />
-<!-- 	<meta-data android:name="AdjustDefaultTracker" android:value="Test" /> -->        
-        
-        
-        
-        <!--
+		<!--
              <receiver android:name="pt.rocket.utils.receivers.PushNotificationReceiver" >
             <intent-filter>
                 <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
@@ -230,8 +184,17 @@
                 <category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />
             </intent-filter>
         </receiver>
-
         -->
+        
+		<!-- ######################################## -->
+        <!-- ############### ADJUST ################# -->
+        <!-- ######################################## -->
+        
+        <meta-data android:name="AdjustAppToken"    android:value="@string/adjust_app_token" />
+		<meta-data android:name="AdjustLogLevel"    android:value="verbose" />
+		<meta-data android:name="AdjustEnvironment" android:value="sandbox" />
+		<!-- <meta-data android:name="AdjustDefaultTracker" android:value="Test" /> -->        
+        
     </application>
 
 </manifest>

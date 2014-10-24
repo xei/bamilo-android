@@ -110,7 +110,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_SHIPPING);
-        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutshippingmethods);
         
         TrackerDelegator.trackCheckoutStep(params);
     }

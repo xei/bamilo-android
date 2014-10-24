@@ -13,12 +13,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-    <!-- Urban Airship. -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <!-- Adx additional permissions -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- ############# Location: LocationHelper and AD4Push ############# -->
     <uses-permission
@@ -27,7 +23,6 @@
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
         android:required="false" />
-
     <uses-feature
         android:name="android.hardware.location.gps"
         android:required="false" />
@@ -99,35 +94,6 @@
         <service
             android:name="pt.rocket.framework.service.RemoteService"
             android:exported="false" />
-
-        <!-- ######################################## -->
-        <!-- ############# ADX Tracker ############## -->
-        <!-- ######################################## -->
-        <receiver
-            android:name="com.AdX.tag.AdXAppTracker"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER" />
-            </intent-filter>
-
-            <!-- AD4SCREEN FORWARD RECEIVER -->
-            <meta-data
-                android:name="ADX_FORWARD_REFERRAL.ad4screen"
-                android:value="com.ad4screen.sdk.ReferrerHandler" />
-        </receiver>
-
-        <meta-data
-            android:name="OTHERSTORE"
-            android:value="@string/x_store" />
-        <meta-data
-            android:name="APP_NAME"
-            android:value="@string/adx_app_name" />
-        <meta-data
-            android:name="ADX_CLIENT_ID"
-            android:value="@string/xid" />
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
 
         <!-- ##################################### -->
         <!-- ############# FACEBOOK ############## -->
@@ -210,8 +176,16 @@
                 <category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />
             </intent-filter>
         </receiver>
-
         -->
+        
+		<!-- ######################################## -->
+        <!-- ############### ADJUST ################# -->
+        <!-- ######################################## -->
+        
+        <meta-data android:name="AdjustAppToken"    android:value="@string/adjust_app_token" />
+		<meta-data android:name="AdjustLogLevel"    android:value="info" />
+		<meta-data android:name="AdjustEnvironment" android:value="production" />
+		<!-- <meta-data android:name="AdjustDefaultTracker" android:value="Test" /> -->
     </application>
 
 </manifest>

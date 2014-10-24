@@ -59,7 +59,6 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
     public static String SHOP_ID = null;
     public static String SHOP_NAME = "";
     public static Customer CUSTOMER;
-    public static String SHOP_ID_FOR_ADX = null;
 
     public static JumiaApplication INSTANCE;
     public static boolean mIsBound = false;
@@ -146,9 +145,6 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
 
         SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
-        /**
-         * Force UA clean the previous configurations.
-         */
         // trackerFile = new AndroidFileFunctions();
         doBindService();
 

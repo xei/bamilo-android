@@ -45,7 +45,6 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -175,8 +174,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ABOUT_YOU);
-        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckoutaboutyou);        
+        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_ABOUT_YOU);     
         
         TrackerDelegator.trackCheckoutStep(params);
     }
@@ -865,6 +863,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         case SET_SIGNUP_EVENT:
             cameFromSignUp = true;
             mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+            Customer tempCustomer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            if(null != tempCustomer)
+                TrackerDelegator.storeFirstCustomer(tempCustomer);
+            
             triggerGetCustomer();
             break;
         case FACEBOOK_LOGIN_EVENT:

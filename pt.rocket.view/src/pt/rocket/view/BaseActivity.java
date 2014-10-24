@@ -27,10 +27,10 @@ import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
-import pt.rocket.framework.utils.WindowHelper;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.cart.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.search.GetSearchSuggestionHelper;
@@ -87,7 +87,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnCloseListener;
 import com.actionbarsherlock.widget.SearchView.SearchAutoComplete;
-import com.bugsense.trace.BugSenseHandler;
 
 import de.akquinet.android.androlog.Log;
 
@@ -203,6 +202,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private boolean isBackButtonEnabled = false;
 
+    private long mLaunchTime;
+
     /**
      * Constructor used to initialize the navigation list component and the
      * autocomplete handler
@@ -252,6 +253,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
+
         JumiaApplication.INSTANCE.doBindService();
 
         // Validate if is phone and force orientaion
@@ -272,7 +274,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         isRegistered = true;
         setAppContentLayout();
         setTitle(titleResId);
-        BugSenseHandler.leaveBreadcrumb(TAG + " _onCreate");
+        //BugSenseHandler.leaveBreadcrumb(TAG + " _onCreate");
+        mLaunchTime = System.currentTimeMillis();
     }
 
     /*
@@ -285,7 +288,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        BugSenseHandler.leaveBreadcrumb(TAG + " _onNewIntent");
+        //BugSenseHandler.leaveBreadcrumb(TAG + " _onNewIntent");
         ActivitiesWorkFlow.addStandardTransition(this);
     }
 
@@ -297,7 +300,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
-//        UAirship.shared().getAnalytics().activityStarted(this);
     }
 
     /*
@@ -340,6 +342,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
 
         AdjustTracker.onResume(this);
+        
+        TrackerDelegator.trackAppOpenAdjust(getApplicationContext(), mLaunchTime);
         
     }
 
@@ -391,7 +395,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "ON STOP");
-//        UAirship.shared().getAnalytics().activityStopped(this);
         JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
@@ -910,7 +913,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Get the width of main content
         // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
         // int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
-        int mainContentWidth = WindowHelper.getWidth(getApplicationContext());
+        int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
         int genericIconWidth = getResources().getDimensionPixelSize(R.dimen.item_height_normal);
         // Calculate the search width
         int searchComponentWidth = mainContentWidth - genericIconWidth;

@@ -8,7 +8,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.holoeverywhere.widget.TextView;
-import org.holoeverywhere.widget.Toast;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.BundleConstants;
@@ -21,7 +20,6 @@ import pt.rocket.framework.objects.Section;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.service.IRemoteServiceCallback;
-import pt.rocket.framework.tracking.AdXTracker;
 import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
@@ -55,9 +53,6 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
-
-import com.bugsense.trace.BugSenseHandler;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -100,13 +95,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private String mUtm;
 
-    private boolean sendAdxLaunchEvent = false;
+    // private boolean sendAdxLaunchEvent = false;
 
-    private long mLaunchTime;
+    // private long mLaunchTime;
 
     private Bundle mDeepLinkBundle;
 
-    private boolean isDeepLinkLaunch = false;
+    // private boolean isDeepLinkLaunch = false;
 
     private View jumiaMapImage;
 
@@ -137,7 +132,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get prefs
         sharedPrefs = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         // Keep launch time to compare with newer timestamp later
-        mLaunchTime = System.currentTimeMillis();
+        //mLaunchTime = System.currentTimeMillis();
         // Get values from intent
         getDeepLinkView();
         
@@ -170,7 +165,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         //
         shouldHandleEvent = true;
         // Adx launch event
-        launchEvent();
+        // launchEvent();
+        //track open app event for all tracker but Adjust
+        TrackerDelegator.trackAppOpen(getApplicationContext());
+        
         jumiaMapImage = findViewById(R.id.jumiaMap);
         final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         animationFadeIn.setDuration(1250);
@@ -190,7 +188,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         if (dialog != null)
             dialog.dismiss();
         // Adx launch event
-        sendAdxLaunchEvent = false;
+        //sendAdxLaunchEvent = false;
     }
 
     /*
@@ -202,7 +200,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        // UAirship.shared().getAnalytics().activityStopped(this);
         SharedPreferences.Editor eD = sharedPrefs.edit();
         eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         eD.commit();
@@ -230,7 +227,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
             Log.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
             if (eventType == EventType.INITIALIZE) {
-                initBugSense();
+                //initBugSense();
                 showDevInfo();
             }
 
@@ -257,7 +254,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Log.d(TAG, "DEEP LINK RECEIVED INTENT: " + intent.toString());
         // ## DEEP LINK FROM EXTERNAL URIs ##
         if (hasDeepLinkFromURI(intent));
-        // ## DEEP LINK FROM UA ##
+        // ## DEEP LINK FROM NOTIFICATION ##
         else hasDeepLinkFromGCM(intent);
     }
     
@@ -275,10 +272,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // ## DEEP LINK FROM EXTERNAL URIs ##
         if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
             mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
-            return isDeepLinkLaunch = true;
+            return true; //isDeepLinkLaunch = true;
         }
         Log.i(TAG, "DEEP LINK: NO EXTERNAL URI");
-        return isDeepLinkLaunch = false;
+        return true; //isDeepLinkLaunch = false;
     }
     
     /**
@@ -288,7 +285,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private boolean hasDeepLinkFromGCM(Intent intent) {
-        // ## DEEP LINK FROM UA ##
+        // ## DEEP LINK FROM NOTIFICATION ##
         Bundle payload = intent.getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
         // Get Deep link
         if (null != payload) {
@@ -305,11 +302,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 Log.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
                 // Load deep link
                 mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
-                return isDeepLinkLaunch = true;
+                return true; //isDeepLinkLaunch = true;
             }
         }
         Log.i(TAG, "DEEP LINK: NO GCM TAG");
-        return isDeepLinkLaunch = false;
+        return false; //isDeepLinkLaunch = false;
     }
 
     /**
@@ -332,7 +329,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             
             @Override
             public void onAnimationEnd(Animation animation) {
-                TrackerDelegator.trackAppOpen(mLaunchTime);
+//                TrackerDelegator.trackAppOpen(getApplicationContext(), mLaunchTime);
                 jumiaMapImage.setVisibility(View.GONE);
                 // ## Google Analytics "General Campaign Measurement" ##
                 TrackerDelegator.trackGACampaign(mUtm);
@@ -363,10 +360,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get fragment type
         FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
         Log.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
-        // Get and add Adx value
-        String adxValue = bundle.getString(DeepLinkManager.ADX_ID_TAG);
-        Log.d(TAG, "DEEP LINK ADX VALUE: " + adxValue);
-        AdXTracker.deepLinkLaunch(getApplicationContext(), adxValue);
         // Default Start
         Intent intent = new Intent(this, MainFragmentActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -388,8 +381,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             return;
         }
 
-        BugSenseHandler.setLogging(true);
-        BugSenseHandler.setExceptionCallback(JumiaApplication.INSTANCE);
+        //BugSenseHandler.setLogging(true);
+        //BugSenseHandler.setExceptionCallback(JumiaApplication.INSTANCE);
         PackageInfo pInfo = null;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -427,10 +420,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         devText.append("\nDevice Manufacturer: " + android.os.Build.MANUFACTURER);
     }
 
-    private void initBugSense() {
-        if (HockeyStartup.isDevEnvironment(getApplicationContext())) return;
-        BugSenseHandler.initAndStartSession(getApplicationContext(), getString(R.string.bugsense_apikey));
-    }
+//    private void initBugSense() {
+//        if (HockeyStartup.isDevEnvironment(getApplicationContext())) return;
+//        BugSenseHandler.initAndStartSession(getApplicationContext(), getString(R.string.bugsense_apikey));
+//    }
 
     /*
      * (non-Javadoc)
@@ -917,59 +910,59 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * 
      * @author sergiopereira
      */
-    private void launchEvent() {
-        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        // Get the current shop id
-        String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
-        // Validate shop id and launch the Adx event if is the same country on
-        // start app
-        // First time
-        if (JumiaApplication.SHOP_ID_FOR_ADX == null && shopId != null) {
-            // Log.i(TAG, "ON LAUNCH EVENT: FIRST TIME");
-            sendAdxLaunchEvent = true;
-        }
-        // Current shop is the same
-        if (JumiaApplication.SHOP_ID_FOR_ADX != null && JumiaApplication.SHOP_ID_FOR_ADX.equalsIgnoreCase(shopId)) {
-            // Log.i(TAG, "ON LAUNCH EVENT: SHOP IS SAME");
-            sendAdxLaunchEvent = true;
-        }
+//    private void launchEvent() {
+//        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+//        // Get the current shop id
+//        String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
+//        // Validate shop id and launch the Adx event if is the same country on
+//        // start app
+//        // First time
+//        if (JumiaApplication.SHOP_ID_FOR_ADX == null && shopId != null) {
+//            // Log.i(TAG, "ON LAUNCH EVENT: FIRST TIME");
+//            sendAdxLaunchEvent = true;
+//        }
+//        // Current shop is the same
+//        if (JumiaApplication.SHOP_ID_FOR_ADX != null && JumiaApplication.SHOP_ID_FOR_ADX.equalsIgnoreCase(shopId)) {
+//            // Log.i(TAG, "ON LAUNCH EVENT: SHOP IS SAME");
+//            sendAdxLaunchEvent = true;
+//        }
+//
+//        // Log.i(TAG, "ON LAUNCH EVENT: " + JumiaApplication.SHOP_ID_FOR_ADX +
+//        // " " + shopId);
+//
+//        // Save current shop id
+//        JumiaApplication.SHOP_ID_FOR_ADX = shopId;
+//
+//        // Validate deep link launch
+//        if (isDeepLinkLaunch) {
+//            isDeepLinkLaunch = false;
+//            sendAdxLaunchEvent = true;
+//        }
+//
+//        // Send launch
+//        if (sendAdxLaunchEvent) {
+//            generateAndPerformAdxTrack();
+//            sendAdxLaunchEvent = false;
+//        }
+//        TrackerDelegator.trackAppOpen(getApplicationContext());
+//    }
 
-        // Log.i(TAG, "ON LAUNCH EVENT: " + JumiaApplication.SHOP_ID_FOR_ADX +
-        // " " + shopId);
 
-        // Save current shop id
-        JumiaApplication.SHOP_ID_FOR_ADX = shopId;
-
-        // Validate deep link launch
-        if (isDeepLinkLaunch) {
-            isDeepLinkLaunch = false;
-            sendAdxLaunchEvent = true;
-        }
-
-        // Send launch
-        if (sendAdxLaunchEvent) {
-            generateAndPerformAdxTrack();
-            sendAdxLaunchEvent = false;
-        }
-
-//        TrackerDelegator.trackAppOpen(mLaunchTime);
-    }
-
-    /**
-     * Generate and trigget the adx tracker for splash screen
-     * 
-     * @author sergiopereira
-     */
-    private void generateAndPerformAdxTrack() {
-        String duration = "";
-        // Validate launch time
-        if (mLaunchTime != 0)
-            duration = "" + (System.currentTimeMillis() - mLaunchTime);
-        // Reset the launch time to identify the launch was handled
-        mLaunchTime = 0;
-        // Trigger
-        AdXTracker.launch(this, duration);
-    }
+//    /**
+//     * Generate and trigget the adx tracker for splash screen
+//     * 
+//     * @author sergiopereira
+//     */
+//    private void generateAndPerformAdxTrack() {
+//        String duration = "";
+//        // Validate launch time
+//        if (mLaunchTime != 0)
+//            duration = "" + (System.currentTimeMillis() - mLaunchTime);
+//        // Reset the launch time to identify the launch was handled
+//        mLaunchTime = 0;
+//        // Trigger
+//        // AdXTracker.launch(this, duration);
+//    }
 
     public void setOrientationForHandsetDevices() {
         // Validate if is phone and force portrait orientaion

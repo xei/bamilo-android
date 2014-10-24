@@ -135,7 +135,6 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_EDIT_ADDRESS);
-        params.putInt(TrackerDelegator.ADX_STEP_KEY, R.string.xcheckouteditaddress);       
         
         TrackerDelegator.trackCheckoutStep(params);
     }

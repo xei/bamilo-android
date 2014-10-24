@@ -1,10 +1,7 @@
 package pt.rocket.framework;
 
-import java.util.Set;
-
 import pt.rocket.framework.database.DarwinDatabaseHelper;
 import pt.rocket.framework.tracking.NewRelicTracker;
-import pt.rocket.framework.utils.PreInstallController;
 import pt.rocket.framework.utils.ShopSelector;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -120,9 +117,6 @@ public class Darwin {
 			return true;
 		}
 		
-		// Set pre install tracking
-//		boolean isPreInstallApp = PreInstallController.init(context);
-		PreInstallController.init(context);
 		// Init darwin database
 		DarwinDatabaseHelper.init(context);
 		
@@ -133,8 +127,6 @@ public class Darwin {
 
 		Log.d(TAG, "Darwin is initialized with id " + shopId);
 		SHOP_ID = shopId;
-		
-//		setUAPushTags(context, isPreInstallApp);
 		
 		return true;
 	}
@@ -188,42 +180,6 @@ public class Darwin {
 	public synchronized static Context getContext() {
 		return context;
 	}
-
-//	private static void setUAPushTags(Context context, boolean isPreInstallApp) {
-//		Set<String> tags = new HashSet<String>();
-//		tags.add(TimeZone.getDefault().getID());
-//		tags.add(Locale.getDefault().getLanguage());
-//		tags.add(Locale.getDefault().getCountry());
-//		tags.add(Build.MANUFACTURER.replaceAll(" ", "-"));
-//		tags.add(Build.MODEL.replaceAll(" ", "-"));
-//		tags.add(Build.VERSION.RELEASE.replaceAll(" ", "-"));
-//		tags.add(context.getString(R.string.ua_store));
-//		try {
-//			tags.add("app_version_"+context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode);
-//		} catch (NameNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//		// Check pre-install flag
-//		if(isPreInstallApp) {
-//			preInstallTag(context, tags, Build.MANUFACTURER);
-//		}
-//		// Set tags
-//		PushManager.shared().setTags(tags);
-//	}
-
-	
-    /**
-     * Method that adds the pre install tag for UA
-     * @param value
-     * @author sergiopereira
-     */
-    public static void preInstallTag(Context context, Set<String> tags, String value) {
-        String tag = context.getString(R.string.ua_preisntall) + value;
-        Log.i(TAG, "PRE INSTALL UA TRACKING: " + tag);
-        //Set<String> tags = new HashSet<String>();
-        tags.add(tag);
-        //PushManager.shared().setTags(tags);
-    }
 	
 	
     private static void retrieveVersionCode() {
