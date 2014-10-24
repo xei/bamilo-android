@@ -30,12 +30,17 @@
     <!-- NEW RELIC -->
     <string name="newrelic_token">AA98fd2d4afb23e22282c9bd32372183ce09bebec3</string>
 
-    <!-- AD4Push -->
+    <!-- ACCENGAGE -->
     <item name="ad4push_enabled" type="bool">true</item>
     <string name="ad4push_partner_id">rocketinternet93620eb82cc11e4</string>
     <string name="ad4push_private_key">97661e63ee731caf585fc70d5ce13d9c0fa32513</string>
     
-	<!-- Adjust -->
+	<!-- ADJUST -->
     <item name="adjust_enabled" type="bool">true</item>
     <string name="adjust_app_token">tx59byfttp6z</string>
+    
+	<!-- APPTIMIZE -->
+    <item name="apptimize_enabled" type="bool">false</item>
+    <string name="apptimize_apikey"></string>
+    
 </resources>

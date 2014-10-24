@@ -275,7 +275,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             return true; //isDeepLinkLaunch = true;
         }
         Log.i(TAG, "DEEP LINK: NO EXTERNAL URI");
-        return true; //isDeepLinkLaunch = false;
+        return false; //isDeepLinkLaunch = false;
     }
     
     /**

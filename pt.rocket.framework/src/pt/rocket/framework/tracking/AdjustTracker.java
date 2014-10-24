@@ -196,8 +196,6 @@ public class AdjustTracker {
     public final static String ENCODING_SCHEME = "UTF-8";
 
     public final static String ADJUST_FIRST_TIME_KEY = "adjust_first_time";
-    
-    private static Activity baseActivity;
 
     private Context mContext;
 
@@ -206,7 +204,7 @@ public class AdjustTracker {
             sInstance = new AdjustTracker();
         }
         return sInstance;
-    }    
+    }
     
     public static void startup(Context context) {
         Log.d(TAG, "Adjust Startup");
@@ -254,7 +252,6 @@ public class AdjustTracker {
     }
     
     public static void onResume(Activity activity) {
-        baseActivity = activity;
         Adjust.onResume(activity);
     }
 

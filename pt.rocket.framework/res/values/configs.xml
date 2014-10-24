@@ -28,13 +28,6 @@
 
     <string name="framework_category_label"></string>
 
-    <!-- NEW RELIC -->
-    <string name="newrelic_token"></string>
-
-    <!-- APPTIMIZE -->
-    <item name="apptimize_enabled" type="bool">false</item>
-    <string name="apptimize_apikey"></string>
-
     <!-- Global Country Configuration -->
     <string name="global_server_shop_name"></string>
     <string name="global_server_host"></string>
@@ -42,13 +35,20 @@
     <string name="global_server_user"></string>
     <string name="global_server_password"></string>
 
-    <!-- AD4Push -->
+    <!-- ACCENGAGE -->
     <item name="ad4push_enabled" type="bool"></item>
 	<string name="ad4push_partner_id"></string>
     <string name="ad4push_private_key"></string>
     <string name="ad4push_sender_id">gcm:593252289486</string>
+    
+	<!-- NEW RELIC -->
+    <string name="newrelic_token"></string>
 
     <!-- ADJUST -->
     <item name="adjust_enabled" type="bool"></item>
+    
+	<!-- APPTIMIZE -->
+    <item name="apptimize_enabled" type="bool">false</item>
+    <string name="apptimize_apikey"></string>
     
 </resources>
