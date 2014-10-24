@@ -281,7 +281,11 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
                 break;
             // CASE RIGHT SIDE
             case PRODUCT_LIST:
-                rightView.addView(mTeasersFactory.getSpecificTeaser(rightView, teaser));
+                if (teaser.getTeasers() != null && teaser.getTeasers().size() > 0) {
+                    rightView.addView(mTeasersFactory.getSpecificTeaser(rightView, teaser));
+                } else {
+                    Log.i(TAG, "No Products to show");
+                }
                 break;
             case CATEGORIES:
                 rightViewCategories.addView(mTeasersFactory.getSpecificTeaser(rightViewCategories, teaser));
@@ -311,7 +315,17 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         TeasersFactory mTeasersFactory = new TeasersFactory(getBaseActivity(), mInflater, (OnClickListener) this);
         // For each teaser create a view and add to container
         for ( TeaserSpecification<?> teaser : homePage.getTeaserSpecification()) {
-            mainView.addView(mTeasersFactory.getSpecificTeaser(mainView, teaser));
+            switch (teaser.getType()) {
+            case PRODUCT_LIST:
+                if (teaser.getTeasers() != null && teaser.getTeasers().size() > 0) {
+                    mainView.addView(mTeasersFactory.getSpecificTeaser(mainView, teaser));
+                } else {
+                    Log.i(TAG, "No Products to show");
+                }
+                break;
+            default:
+                mainView.addView(mTeasersFactory.getSpecificTeaser(mainView, teaser));
+            }
             // Save campaigns
             if(teaser.getType() == TeaserGroupType.CAMPAIGNS_LIST) mCampaigns = ((TeaserGroupCampaigns) teaser).getTeasers();
         }

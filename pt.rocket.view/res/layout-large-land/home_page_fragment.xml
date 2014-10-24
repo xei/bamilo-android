@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="1dp"
-                android:paddingLeft="1dp" >
+                android:paddingLeft="@dimen/teaser_margin" >
 
                 <FrameLayout
                     android:id="@+id/home_page_right_container_categpries"
