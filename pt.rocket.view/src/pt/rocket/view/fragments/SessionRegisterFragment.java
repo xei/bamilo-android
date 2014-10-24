@@ -115,7 +115,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
      */
     public SessionRegisterFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccount,
+                NavigationAction.LoginOut,
                 R.layout.register,
                 R.string.register_title,
                 KeyboardState.ADJUST_CONTENT);
