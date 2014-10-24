@@ -38,7 +38,7 @@
     <string name="adjust_app_token">tx59byfttp6z</string>
     
 	<!-- APPTIMIZE -->
-    <item name="apptimize_enabled" type="bool">true</item>
-    <string name="apptimize_apikey">Dk9M9Yl9kllKqeytgP5z0FHoLYgjjYg</string>
+    <item name="apptimize_enabled" type="bool">false</item>
+    <string name="apptimize_apikey"></string>
     
 </resources>

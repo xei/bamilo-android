@@ -209,10 +209,12 @@ public class TeasersFactory {
      * @return
      */
     private View getProductsListTeaser(ViewGroup mainView, ProductTeaserGroup productTeaserGroup) {
-        View rootView = mInflater.inflate(R.layout.teaser_products_group, mainView, false);
-        ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_products_group_container);
-
-        if (productTeaserGroup != null) {
+        // Case empty
+        View rootView = new View(mContext);
+        // Case not empty
+        if (productTeaserGroup != null && productTeaserGroup.getTeasers() != null && productTeaserGroup.getTeasers().size() > 0) {
+            rootView = mInflater.inflate(R.layout.teaser_products_group, mainView, false);
+            ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_products_group_container);
             ((TextView) rootView.findViewById(R.id.teaser_products_group_title)).setText(productTeaserGroup.getTitle());
             for (TeaserProduct product : productTeaserGroup.getTeasers())
                 container.addView(createProductTeaserView(product, container, mInflater, productTeaserGroup.getTeasers().size()));
