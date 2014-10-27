@@ -32,8 +32,6 @@
 
     <!-- PRODUCT DETAIL ITEM -->
     <dimen name="product_detail_item_title_height">55dp</dimen>
-    <dimen name="product_detail_item_discount_percentage_width">60dp</dimen>
-    <dimen name="product_detail_item_discount_percentage_height">40dp</dimen>
 
     <!-- DIALOG CATALOG FILTER -->
     <dimen name="dialog_catalog_filter_width">@integer/match_parent</dimen>
@@ -81,7 +79,6 @@
     <!-- rounded_margin_mid + button_big_height + button_container_height -->
     <dimen name="button_double_container_height">160dp</dimen>
     <dimen name="button_landscape_width">640dp</dimen>
-    <dimen name="product_item_variant_text_size">12sp</dimen>
     <dimen name="product_item_button_height">@dimen/button_small_height</dimen>
     <dimen name="product_item_addtocart_variation_width">65dp</dimen>
     <dimen name="product_item_text_right_margin">75dp</dimen>
@@ -118,7 +115,6 @@
     <!-- (320px-20px-20px) -->
     <dimen name="checkout_address_item_min_height">140dp</dimen>
 
-    <dimen name="checkout_address_button_container_height">@dimen/margin_150px</dimen>
     <dimen name="checkout_shipping_item_height">72dp</dimen>
     <dimen name="checkout_myorder_item_height">150dp</dimen>
     <dimen name="checkout_thanks_image_size">160dp</dimen>

@@ -36,7 +36,6 @@
             style="@style/button_orange_style"
             android:layout_width="@dimen/tips_button_width"
             android:layout_height="@dimen/tips_button_height"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="@string/got_it"

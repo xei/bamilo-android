@@ -6,7 +6,7 @@
     <!-- BUTTONS -->
 
     <include
-        android:id="@+id/product_detail_shop_container"
+        android:id="@+id/product_detail_button_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -18,11 +18,10 @@
         android:id="@+id/product_detail_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/product_detail_shop_container"
+        android:layout_above="@id/product_detail_button_container"
         android:fillViewport="true" >
 
         <LinearLayout
-            android:id="@+id/product_detail_details_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >

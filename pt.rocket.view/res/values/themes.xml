@@ -53,9 +53,9 @@
         <!-- <item name="android:popupMenuStyle">@style/MyPopupMenu</item> -->
         <!-- <item name="popupMenuStyle">@style/MyPopupMenu</item> -->
         <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
-        <item name="android:windowBackground">@color/grey_background</item>
+        <item name="android:windowBackground">@color/background_color</item>
         <item name="actionModeShareDrawable">@drawable/selector_share</item>
-        <item name="android:actionBarItemBackground">@drawable/selector_actionbar_logo</item>
+        <item name="android:actionBarItemBackground" tools:targetApi="14">@drawable/selector_actionbar_logo</item>
         <item name="actionBarItemBackground">@drawable/selector_actionbar_logo</item>
         <!-- For ViewPager IconPageIndicator -->
         <item name="vpiIconPageIndicatorStyle">@style/Widget.TeaserIconPageIndicator</item>

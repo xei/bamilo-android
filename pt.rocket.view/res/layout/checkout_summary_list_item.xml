@@ -28,7 +28,6 @@
         android:id="@+id/order_summary_item_btn_remove"
         android:layout_width="@dimen/delete_button_size"
         android:layout_height="@dimen/delete_button_size"
-        android:layout_alignParentRight="true"
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginRight="@dimen/rounded_margin_mid"

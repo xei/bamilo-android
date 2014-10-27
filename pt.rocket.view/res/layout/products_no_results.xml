@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_above="@id/catalog_viewpager_container"
+    android:background="@android:color/white"
     android:fillViewport="true" >
 
     <LinearLayout
@@ -16,8 +17,6 @@
             android:id="@+id/no_results_search_error_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
             android:layout_marginBottom="@dimen/margin_veryhuge"
             android:layout_marginLeft="@dimen/margin_veryhuge"
             android:layout_marginRight="@dimen/margin_veryhuge"
@@ -33,7 +32,6 @@
         <View style="@style/line_grey_style" />
 
         <RelativeLayout
-            android:id="@+id/no_results_search_terms"
             android:layout_width="@dimen/no_results_search_tips_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -55,7 +53,7 @@
                 android:id="@+id/no_results_search_tips_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/no_results_search_tips_title"
+                android:layout_below="@id/no_results_search_tips_title"
                 android:fontFamily="roboto"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_s" />
@@ -129,8 +127,6 @@
             android:id="@+id/no_results_search_notice_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
             android:layout_margin="@dimen/margin_veryhuge"
             android:fontFamily="roboto"
             android:gravity="center"

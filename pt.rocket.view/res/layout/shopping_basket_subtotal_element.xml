@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/rounded_box"
     android:layout_marginBottom="0dp"
     android:layout_marginTop="@dimen/rounded_margin_small"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/rounded_margin_mid" >
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/title"
         style="@style/rounded_box_title_grey"
         android:text="@string/sub_total_title" />
 
-    <View
-        android:id="@+id/voucher_divider"
-        style="@style/divider_horizontal_orange"
-        android:layout_below="@id/title" />
+    <View style="@style/divider_horizontal_orange" />
 
     <!-- PRODUCTS -->
 
     <RelativeLayout
-        android:id="@+id/price_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/voucher_divider"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_large" >
@@ -52,7 +47,6 @@
         android:id="@+id/price_rules_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/price_container"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_mid"
@@ -65,7 +59,6 @@
         android:id="@+id/vat_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/price_rules_container"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_mid"
@@ -87,7 +80,6 @@
         android:id="@+id/shipping_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/vat_container"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:visibility="gone" >
@@ -109,7 +101,6 @@
         android:id="@+id/extra_costs_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/shipping_container"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:visibility="gone" >
@@ -130,7 +121,6 @@
         android:id="@+id/voucher_info_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/extra_costs_container"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:visibility="visible" >
@@ -153,7 +143,6 @@
         android:id="@+id/total_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/voucher_info_container"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_mid"
@@ -170,4 +159,4 @@
             android:textColor="@color/red_basic" />
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

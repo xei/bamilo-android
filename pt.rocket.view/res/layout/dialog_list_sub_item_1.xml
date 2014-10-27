@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/dialog_item_title"
-        android:layout_toLeftOf="@+id/arrow"
         android:ellipsize="marquee"
         android:fontFamily="roboto_regular"
         android:maxLines="1"

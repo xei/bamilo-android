@@ -21,7 +21,6 @@
         android:layout_below="@id/home_tip_img" />
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/home_tip_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tip_spacer"

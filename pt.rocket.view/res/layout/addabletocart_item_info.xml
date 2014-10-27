@@ -69,8 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/item_regprice"
         android:layout_marginRight="@dimen/rounded_margin_small"
-        android:layout_toLeftOf="@+id/button_shop"
-        android:layout_weight="1" >
+        android:layout_toLeftOf="@+id/button_shop" >
 
         <!-- DUMMY -->
 

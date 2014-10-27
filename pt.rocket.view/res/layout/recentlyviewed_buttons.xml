@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/button_container"
     android:layout_height="@dimen/recently_viewed_button_container_height"
-    android:layout_alignBottom="@id/recentlyviewed_grid"
     android:orientation="vertical" >
 
     <org.holoeverywhere.widget.Button

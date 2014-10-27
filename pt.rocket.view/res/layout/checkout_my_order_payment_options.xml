@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/rounded_box"
     android:layout_marginBottom="0dp"
-    android:layout_marginTop="@dimen/rounded_margin_small"
     android:layout_marginRight="0dp"
+    android:layout_marginTop="@dimen/rounded_margin_small"
     android:orientation="vertical" >
 
     <!-- TITLE -->
@@ -25,7 +25,6 @@
             android:id="@+id/checkout_my_order_payment_options_btn_edit"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignBaseline="@+id/title"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/rounded_margin_mid"
             android:src="@drawable/selector_btn_edit" />

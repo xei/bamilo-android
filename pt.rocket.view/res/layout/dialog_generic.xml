@@ -18,13 +18,11 @@
         <org.holoeverywhere.widget.TextView
             android:id="@+id/dialog_title"
             style="@style/dialog_title"
-			android:text="Title"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:text="Title" />
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/text_container"
-        style="@style/dialog_container_content" >
+    <RelativeLayout style="@style/dialog_container_content" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/dialog_text"

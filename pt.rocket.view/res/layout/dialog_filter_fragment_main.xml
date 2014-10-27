@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialog_filter_one"
     android:layout_width="@dimen/dialog_catalog_filter_width"
     android:layout_height="@dimen/dialog_catalog_filter_height"
     android:orientation="vertical" >
@@ -8,7 +7,6 @@
     <!-- HEADER -->
 
     <LinearLayout
-        android:id="@+id/dialog_filter_header_container"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_gravity="center"

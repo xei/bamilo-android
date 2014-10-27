@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/recentlyviewed_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/grey_background" >
+    android:layout_height="match_parent" >
 
     <GridView
         android:id="@+id/recentlyviewed_grid"
@@ -17,6 +15,8 @@
         android:paddingBottom="@dimen/recently_viewed_button_container_height" />
 
     <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@id/recentlyviewed_grid"
         layout="@layout/recentlyviewed_buttons" />
 

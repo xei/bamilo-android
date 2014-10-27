@@ -5,7 +5,6 @@
     android:layout_height="match_parent" >
 
     <ImageView
-        android:id="@+id/wizard_nav_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/wizard_nav_img_margin_left"
@@ -13,7 +12,6 @@
         android:src="@drawable/img_instructions_arrowcategories" />
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/wizard_nav_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

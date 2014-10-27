@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/voucher_container"
     style="@style/rounded_box"
     android:layout_marginBottom="0dp"
-    android:layout_marginTop="@dimen/rounded_margin_small" >
+    android:layout_marginTop="@dimen/rounded_margin_small"
+    android:orientation="vertical" >
 
     <!-- TITLE -->
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/title"
         style="@style/rounded_box_title_grey"
         android:text="@string/my_order_coupon_label" />
 
     <!-- DIVIDER -->
 
-    <View
-        android:id="@+id/voucher_divider"
-        style="@style/divider_horizontal_orange"
-        android:layout_below="@id/title" />
+    <View style="@style/divider_horizontal_orange" />
 
     <!-- CONTAINER -->
 
     <RelativeLayout
         android:layout_width="@dimen/inner_container_width"
         android:layout_height="@dimen/checkout_voucher_box_height"
-        android:layout_below="@id/voucher_divider"
-        android:layout_centerHorizontal="true" >
+        android:layout_gravity="center_horizontal" >
 
         <!-- RIGHT BUTTON -->
 
@@ -76,4 +72,4 @@
         </LinearLayout>
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

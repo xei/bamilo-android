@@ -34,7 +34,7 @@
     <!-- string name="log_val">Login Validation</string -->
     <!-- string name="register_terms_required">(Required)</string -->
     <string name="forgotpass_header">Password Recovery</string>
-    <string name="forgotpass_title">Your e-mail</string>
+    <!-- string name="forgotpass_title">Your e-mail</string -->
     <string name="forgotten_password">Please type in your email.</string>
     <string name="forgotten_password_sub_text">We will send you a link to change the password.</string>
     <string name="forgotten_password_resulttitle">Password recovery</string>
@@ -46,11 +46,11 @@
     <string name="order_no_items">You have no items in the cart</string>
     <!-- string name="categories_name">Categories</string -->
     <string name="categories_title">Search Categories</string>
-    <string name="categories_name_all">All for</string>
+    <!-- string name="categories_name_all">All for</string -->
     <string name="categories_toplevel_title">All Categories</string>
     <string name="account_name">My Account</string>
     <string name="myaccount_userdata">User Data</string>
-    <string name="personal_data_title">Account Data</string>
+    <!-- string name="personal_data_title">Account Data</string -->
     <string name="personal_data_label">Your Personal Data</string>
     <string name="new_password_label">New Password</string>
     <!-- string name="contact_personal">Anything wrong? Contact your personal support now.</string -->
@@ -64,7 +64,7 @@
     <!-- string name="delivery_time">Delivered in</string -->
     <!-- string name="business_days">business days</string -->
     <string name="your_cart">Your Cart</string>
-    <string name="product_specifications">Specification</string>
+    <string name="product_specifications">Specifications</string>
     <string name="product_variant_placeholder">…</string>
     <string name="product_features_title">Product Features</string>
     <string name="product_description_title">Product Description</string>
@@ -126,8 +126,8 @@
     <string name="sub_total_title">Subtotal</string>
     <!-- string name="shoppingcart_header_description">VAT included</string -->
     <string name="shoppingcart_item_btn_delete">Delete</string>
-    <string name="shoppingcart_instock">In Stock.</string>
-    <string name="shoppingcart_notinstock">Not In Stock.</string>
+    <!-- string name="shoppingcart_instock">In Stock.</string -->
+    <!-- string name="shoppingcart_notinstock">Not In Stock.</string -->
     <!-- string name="order_sent_soon">Your order will be sent out soon.</string -->
     <!-- string name="thank_you_title">Thank You</string -->
     <string name="register_button">Create Account</string>
@@ -142,7 +142,7 @@
     <string name="validation_errortext">There were errors on the data submited, please check your input fields.</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
     <!-- string name="product_sort">Sort by:</string -->
-    <string name="product_sort_button">Sort</string>
+    <!-- string name="product_sort_button">Sort</string -->
     <string name="products_sort_popularity">Popularity</string>
     <string name="products_sort_newin">New in</string>
     <string name="products_sort_priceup">Price up</string>
@@ -158,7 +158,7 @@
     <!-- string name="no_connect_warning_title">Warning</string -->
     <string name="no_internet_access_warning_title">No Internet Access!</string>
     <string name="no_connect_dialog_content">Please check your Internet-Connection and try again!</string>
-    <string name="writereview_page_title">Write Review</string>
+    <!-- string name="writereview_page_title">Write Review</string -->
     <!-- string name="writereview_your_rating">Your Rating</string -->
     <string name="writereview_title_hint">Title</string>
     <string name="writereview_review_hint">Comment</string>
@@ -171,7 +171,7 @@
     <string name="form_texttolong"> text is too long</string>
     <string name="form_passwordsnomatch">Passwords do not match</string>
     <string name="password_changed">Password changed with success</string>
-    <string name="server_error_title">Problem occured</string>
+    <string name="server_error_title">Problem occurred</string>
     <string name="server_error">We have encountered a small problem fetching the data.</string>
     <string name="password_new_mincharacters">The new password has to have at least 6 characters</string>
     <!-- string name="jumia_international_title">JUMIA INTERNATIONAL</string -->
@@ -207,8 +207,8 @@
     <string name="products_could_notloaded">Loading more products failed. Please try again.</string>
     <string name="client_error_title">App error!</string>
     <string name="shoppingcart_items">Items</string>
-    <string name="shoppingcart_minamount">Unfortunately we can not deliver any orders that do not exceed our minimum order amount of %s.</string>
-    <string name="shoppingcart_minamount_waiting">Waiting for information about minimal order amount from server</string>
+    <!-- string name="shoppingcart_minamount">Unfortunately we can not deliver any orders that do not exceed our minimum order amount of %s.</string -->
+    <!-- string name="shoppingcart_minamount_waiting">Waiting for information about minimal order amount from server</string -->
     <string name="notifications">Notifications</string>
     <string name="notifications_summary">Receive exclusive offers and personal updates</string>
     <!-- string name="vibrate">Vibrate</string -->
@@ -255,7 +255,7 @@
     <string name="fallback_doorstep">AT YOUR DOORSTEP</string>
     <string name="shipping">Shipping</string>
     <string name="got_it">Got it</string>
-    <string name="back_level">back level</string>
+    <!-- string name="back_level">back level</string -->
 
     <!-- NIGERIA IS BEING USED AS DEFAULT FACEBOOK APP ID -->
     <!-- Facebook App Id DO NOT TRANSLATE -->
@@ -296,7 +296,7 @@
     <string name="order_summary_subtotal_label">Subtotal:</string>
     <string name="order_summary_total_label">Total:</string>
     <string name="my_order_label">My Order</string>
-    <string name="my_order_ship_fee_label">Shipping Fee</string>
+    <!-- string name="my_order_ship_fee_label">Shipping Fee</string -->
     <string name="my_order_voucher_label">Voucher</string>
     <string name="my_order_total_label">Total</string>
     <string name="my_order_confirm_button">Confirm Order</string>
@@ -361,7 +361,7 @@
     <string name="recentsearch_clear_searches">Clear Recent Searches</string>
     <string name="recentlyview_no_searches">No Recently Viewed Products Here</string>
     <string name="recentlyview_clear_viewed">Clear Recently Viewed</string>
-    <string name="error_occured">An error occured.</string>
+    <string name="error_occured">An error occurred.</string>
     <string name="teaser_campaign_button_first_line">HOT</string>
     <string name="teaser_campaign_button_second_line">OFFERS</string>
     <string name="campaing_offer_ended">Offer Ended!</string>

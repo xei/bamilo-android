@@ -2,11 +2,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/grey_background"
+    android:background="@color/background_color"
     android:gravity="top" >
 
     <LinearLayout
-        android:id="@+id/fragment_root_retry_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -21,7 +20,6 @@
             android:orientation="vertical" >
 
             <org.holoeverywhere.widget.TextView
-                android:id="@+id/fragment_root_retry_text"
                 style="@style/text_root"
                 android:layout_marginBottom="12dp"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"

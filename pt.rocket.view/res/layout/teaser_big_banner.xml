@@ -14,7 +14,6 @@
         android:id="@+id/banner_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/teaser_swipe_banner_height"
-        android:layout_weight="1"
         android:gravity="center"
         android:visibility="gone" >
 

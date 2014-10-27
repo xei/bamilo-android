@@ -12,7 +12,6 @@
         android:text="@string/payment" />
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/checkout_payment_methods_mandatory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

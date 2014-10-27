@@ -18,7 +18,7 @@
             android:gravity="center" >
 
             <ImageView
-                android:id="@+id/icon"
+                android:id="@+id/menu_item_icon"
                 android:layout_width="@dimen/myprofile_item_icon_size"
                 android:layout_height="@dimen/myprofile_item_icon_size"
                 android:adjustViewBounds="true"
@@ -29,8 +29,8 @@
             android:id="@+id/icon_counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/icon_container"
-            android:layout_alignTop="@+id/icon_container"
+            android:layout_alignRight="@id/icon_container"
+            android:layout_alignTop="@id/icon_container"
             android:background="@drawable/favourite_counter_shape"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -39,7 +39,7 @@
     </RelativeLayout>
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/title"
+        android:id="@+id/menu_item_title"
         style="@style/text_header"
         android:layout_width="match_parent"
         android:layout_gravity="center_vertical"

@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/center_point"
+        android:layout_alignRight="@id/center_point"
         android:scrollbars="none" >
 
         <!-- MAIN_ONE_SLIDE, STATIC_BANNER AND CAMPAIGNS_LIST -->
@@ -33,10 +33,9 @@
     <!-- RIGHT SCROLABLE CONTAINER -->
 
     <pt.rocket.utils.ScrollViewWithHorizontal
-        android:id="@+id/home_page_right_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignLeft="@+id/center_point"
+        android:layout_alignLeft="@id/center_point"
         android:layout_alignParentRight="true"
         android:scrollbars="none" >
 
@@ -56,7 +55,7 @@
                 android:paddingLeft="@dimen/teaser_margin" >
 
                 <FrameLayout
-                    android:id="@+id/home_page_right_container_categpries"
+                    android:id="@+id/home_page_right_container_categories"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

@@ -6,9 +6,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="@dimen/button_container_height"
-        android:fillViewport="true" >
+        android:layout_above="@+id/checkout_payment_button_container"
+        android:layout_alignParentTop="true" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,6 +27,7 @@
     <!-- NEXT BUTTON -->
 
     <LinearLayout
+        android:id="@id/checkout_payment_button_container"
         style="@style/button_container"
         android:layout_alignParentBottom="true" >
 

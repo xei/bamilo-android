@@ -13,64 +13,64 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-        <LinearLayout
-            style="@style/rounded_box"
-            android:orientation="vertical" >
-
             <LinearLayout
-                android:layout_width="@dimen/inner_container_width"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/margin_60px"
-                android:gravity="center_horizontal"
+                style="@style/rounded_box"
                 android:orientation="vertical" >
 
-                <ImageView
-                    android:layout_width="@dimen/checkout_thanks_image_size"
-                    android:layout_height="@dimen/checkout_thanks_image_size"
-                    android:layout_marginBottom="@dimen/margin_60px"
-                    android:src="@drawable/img_success" />
+                <LinearLayout
+                    android:layout_width="@dimen/inner_container_width"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="@dimen/margin_60px"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
 
-                <org.holoeverywhere.widget.TextView
-                    style="@style/text_normal"
-                    android:layout_marginBottom="@dimen/margin_60px"
-                    android:text="@string/thank_you_order_title"
-                    android:textColor="@color/grey_middledark"
-                    android:textSize="@dimen/checkout_thanks_thankyou_text_size" />
+                    <ImageView
+                        android:layout_width="@dimen/checkout_thanks_image_size"
+                        android:layout_height="@dimen/checkout_thanks_image_size"
+                        android:layout_marginBottom="@dimen/margin_60px"
+                        android:src="@drawable/img_success" />
 
-                <org.holoeverywhere.widget.TextView
-                    style="@style/text_normal"
-                    android:layout_marginBottom="@dimen/margin_40px"
-                    android:ellipsize="none"
-                    android:gravity="center"
-                    android:singleLine="false"
-                    android:text="@string/order_success"
-                    android:textSize="@dimen/checkout_thanks_message_text_size" />
+                    <org.holoeverywhere.widget.TextView
+                        style="@style/text_normal"
+                        android:layout_marginBottom="@dimen/margin_60px"
+                        android:text="@string/thank_you_order_title"
+                        android:textColor="@color/grey_middledark"
+                        android:textSize="@dimen/checkout_thanks_thankyou_text_size" />
 
-                <org.holoeverywhere.widget.TextView
-                    android:id="@+id/order_number_id"
-                    style="@style/text_bold"
-                    android:layout_width="@dimen/checkout_thanks_order_width"
-                    android:layout_height="@dimen/checkout_thanks_order_height"
-                    android:layout_marginBottom="@dimen/margin_60px"
-                    android:background="@drawable/field_coupon"
-                    android:gravity="center"
-                    android:text="@string/go_shop_text"
-                    android:textColor="@color/grey_middledark"
-                    android:textSize="@dimen/checkout_thanks_order_text_size" />
+                    <org.holoeverywhere.widget.TextView
+                        style="@style/text_normal"
+                        android:layout_marginBottom="@dimen/margin_40px"
+                        android:ellipsize="none"
+                        android:gravity="center"
+                        android:singleLine="false"
+                        android:text="@string/order_success"
+                        android:textSize="@dimen/checkout_thanks_message_text_size" />
 
-                <TextView
-                    android:id="@+id/order_status_text"
-                    style="@style/text_normal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="none"
-                    android:gravity="center"
-                    android:singleLine="false"
-                    android:text="@string/order_track_success"
-                    android:textSize="@dimen/checkout_thanks_message_text_size" />
+                    <org.holoeverywhere.widget.TextView
+                        android:id="@+id/order_number_id"
+                        style="@style/text_bold"
+                        android:layout_width="@dimen/checkout_thanks_order_width"
+                        android:layout_height="@dimen/checkout_thanks_order_height"
+                        android:layout_marginBottom="@dimen/margin_60px"
+                        android:background="@drawable/field_coupon"
+                        android:gravity="center"
+                        android:text="@string/go_shop_text"
+                        android:textColor="@color/grey_middledark"
+                        android:textSize="@dimen/checkout_thanks_order_text_size" />
+
+                    <TextView
+                        android:id="@+id/order_status_text"
+                        style="@style/text_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="none"
+                        android:gravity="center"
+                        android:singleLine="false"
+                        android:text="@string/order_track_success"
+                        android:textSize="@dimen/checkout_thanks_message_text_size" />
+                </LinearLayout>
             </LinearLayout>
-       </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

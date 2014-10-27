@@ -15,11 +15,11 @@
         android:layout_weight="@dimen/checkout_main_container" >
 
         <!-- CONTENT -->
-        
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/checkout_addresses_button_enter"
+            android:layout_above="@+id/checkout_poll_button_enter"
             android:layout_alignParentTop="true"
             android:layout_marginRight="@dimen/margin_mid"
             android:fillViewport="true"
@@ -63,7 +63,7 @@
         <!-- NEXT BUTTON -->
 
         <org.holoeverywhere.widget.Button
-            android:id="@+id/checkout_poll_button_enter"
+            android:id="@id/checkout_poll_button_enter"
             style="@style/button_orange_style"
             android:layout_width="@dimen/inner_container_width"
             android:layout_alignParentBottom="true"

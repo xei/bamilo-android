@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/loading_bar"
-  	android:background="@android:color/white"
     android:layout_width="@dimen/loading_width"
     android:layout_height="@dimen/loading_height"
     android:layout_gravity="center"
+    android:background="@android:color/white"
     android:clickable="true"
     android:gravity="center"
     android:orientation="horizontal" >
@@ -18,7 +18,6 @@
         app:gifResource="@drawable/loading_bar_big" />
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/fragment_root_loading_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"

@@ -16,14 +16,13 @@
         android:paddingTop="@dimen/margin_large" >
 
         <org.holoeverywhere.widget.TextView
-            android:id="@+id/title"
+            android:id="@+id/datepicker_title"
             style="@style/dialog_title"
             android:gravity="center_horizontal" />
-        
     </LinearLayout>
 
-    
     <!-- <net.simonvt.widget.DatePicker -->
+
     <org.holoeverywhere.widget.DatePicker
         android:id="@+id/datePicker"
         android:layout_width="match_parent"

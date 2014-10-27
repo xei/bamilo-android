@@ -70,8 +70,8 @@
                 android:id="@+id/checkout_login_form_button_password"
                 style="@style/text_normal"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/login_margin_small"
                 android:layout_marginBottom="@dimen/rounded_margin_mid"
+                android:layout_marginTop="@dimen/login_margin_small"
                 android:gravity="center"
                 android:text="@string/fgt_pass"
                 android:textColor="@drawable/selector_link_blue" />

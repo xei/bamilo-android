@@ -22,7 +22,6 @@
             android:id="@+id/checkout_summary_products_btn_edit"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignBaseline="@+id/title"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/rounded_margin_mid"
             android:src="@drawable/selector_btn_edit"
@@ -129,7 +128,6 @@
         <!-- SUB TOTAL -->
 
         <LinearLayout
-            android:id="@+id/checkout_summary_products_subtotal_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_mid"
@@ -158,7 +156,6 @@
             android:orientation="horizontal" >
 
             <org.holoeverywhere.widget.TextView
-                android:id="@+id/checkout_summary_extra_costs"
                 style="@style/text_normal"
                 android:layout_width="0dp"
                 android:layout_weight="1"

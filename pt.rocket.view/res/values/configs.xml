@@ -3,12 +3,12 @@
 
     <!-- APP -->
     <bool name="is_to_show_dev_env">false</bool>
-    
-    <!-- Countries -->
-	<string name="countries_url">http://www.jumia.com/mobapi/availablecountries/staging</string>
 
-    <string name="enable_multi_selection">false</string>
-    
+    <!-- Countries -->
+    <string name="countries_url">http://www.jumia.com/mobapi/availablecountries/staging</string>
+
+    <!-- string name="enable_multi_selection">false</string -->
+
     <!-- BUG SENSE -->
     <string name="bugsense_apikey"></string>
 
@@ -20,15 +20,16 @@
 
     <!-- HOCKEY APP -->
     <string name="hockeyapp_token"></string>
+
     <item name="hockeyapp_enable_dev" type="bool">false</item>
 
-	<!-- SERVER CONFS -->
+    <!-- SERVER CONFS -->
     <string name="global_server_shop_name">@string/jumia_global_shopname</string>
     <string name="global_server_host">@string/jumia_global_server</string>
     <string name="global_server_restbase_path">@string/jumia_global_restbase_path</string>
     <string name="global_server_user">@string/jumia_global_user</string>
     <string name="global_server_password">@string/jumia_global_password</string>
-    
+
     <!-- FACEBOOK ID's -->
     <string name="facebook_id_cm">@string/facebook_id_default</string>
     <string name="facebook_id_ci">472507709498904</string>

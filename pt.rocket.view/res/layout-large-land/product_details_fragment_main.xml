@@ -2,18 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_background"
     android:orientation="horizontal" >
+
+    <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
+
+    <View
+        android:id="@+id/center_point"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true" />
 
     <!-- Left Container -->
 
     <RelativeLayout
-        android:id="@+id/details_container"
         style="@style/rounded_box"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/center_point"
+        android:layout_alignRight="@id/center_point"
         android:layout_marginRight="7dp" >
 
         <!--
@@ -77,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/product_detail_product_variant_container"
-            android:layout_below="@+id/product_basicinfo_container"
+            android:layout_below="@id/product_basicinfo_container"
             android:layout_marginBottom="5dp"
             android:background="@android:color/transparent" >
 
@@ -90,7 +96,7 @@
                 android:id="@+id/product_detail_image_gallery_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/gallery_line"
+                android:layout_below="@id/gallery_line"
                 android:background="@android:color/transparent" />
 
             <ImageView
@@ -121,7 +127,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="@dimen/margin_mid"
                 android:layout_marginRight="@dimen/margin_mid"
-                android:layout_marginTop="@dimen/margin_large"/>
+                android:layout_marginTop="@dimen/margin_large" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -132,13 +138,14 @@
             android:layout_alignWithParentIfMissing="true"
             android:background="@android:color/transparent" >
 
-            <View android:id="@+id/variation_top_line" style="@style/divider_horizontal" />
+            <View
+                android:id="@+id/variation_top_line"
+                style="@style/divider_horizontal" />
 
             <RelativeLayout
-                android:id="@+id/product_variantion"
                 android:layout_width="match_parent"
-                android:layout_below="@+id/variation_top_line"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/variation_top_line"
                 android:paddingLeft="@dimen/margin_huge"
                 android:paddingRight="@dimen/margin_huge"
                 android:paddingTop="@dimen/margin_mid" >
@@ -165,15 +172,13 @@
                     android:textColor="@color/grey_middle"
                     android:textSize="@dimen/text_s" />
             </RelativeLayout>
-
-
         </RelativeLayout>
 
-                    <View android:id="@+id/variation_bottom_line"
-                        
-                style="@style/divider_horizontal"
-                android:layout_above="@+id/product_detail_variations_container" />
-        
+        <View
+            android:id="@+id/variation_bottom_line"
+            style="@style/divider_horizontal"
+            android:layout_above="@+id/product_detail_variations_container" />
+
         <FrameLayout
             android:id="@+id/product_detail_variations_container"
             android:layout_width="match_parent"
@@ -189,42 +194,33 @@
             layout="@layout/tips" />
     </RelativeLayout>
 
-    <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
-
-    <View
-        android:id="@+id/center_point"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_centerInParent="true" />
-
     <!-- Right Container -->
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_alignLeft="@+id/center_point"
+        android:layout_alignLeft="@id/center_point"
         android:layout_alignParentRight="true"
         android:layout_marginRight="9dp" >
 
         <!-- <include android:id="@+id/shop_buttons" layout="@layout/product_details_fragment_buttons"/> -->
-
+        
+        
         <LinearLayout
             android:id="@+id/shop_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="7dp"
             android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
-            android:weightSum="2" >
+            android:layout_marginRight="0dp" >
 
             <org.holoeverywhere.widget.Button
                 android:id="@+id/product_detail_call_to_order"
                 style="@style/button_grey_bottom"
                 android:layout_width="match_parent"
-                android:layout_alignParentLeft="true"
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
+                android:layout_marginRight="@dimen/margin_x_small"
                 android:layout_weight="1"
                 android:contentDescription="@string/productdetail_order_button_description"
                 android:ellipsize="marquee"
@@ -237,9 +233,8 @@
                 android:id="@+id/product_detail_shop"
                 style="@style/button_orange_bottom"
                 android:layout_width="match_parent"
-                android:layout_alignParentRight="true"
                 android:layout_marginBottom="0dp"
-                android:layout_marginLeft="0dp"
+                android:layout_marginLeft="@dimen/margin_x_small"
                 android:layout_marginRight="0dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/productdetail_addcart_description"
@@ -249,13 +244,11 @@
         </LinearLayout>
 
         <pt.rocket.utils.ScrollViewWithHorizontal
-            android:id="@+id/scrollview_right"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/shop_buttons" >
 
             <LinearLayout
-                android:id="@+id/shop_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
@@ -302,7 +295,6 @@
                     </RelativeLayout>
 
                     <ImageView
-                        android:id="@+id/reviews_arrow"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_alignParentRight="true"
@@ -328,7 +320,7 @@
                         android:text="@string/product_features_title" />
 
                     <View
-                        android:id="@+id/divider"
+                        android:id="@+id/features_divider"
                         style="@style/divider_horizontal_orange"
                         android:layout_below="@id/features_label" />
 
@@ -336,13 +328,13 @@
                         android:id="@+id/product_features_text"
                         style="@style/text_normal"
                         android:layout_width="match_parent"
-                        android:layout_below="@id/divider"
+                        android:layout_below="@id/features_divider"
+                        android:ellipsize="none"
                         android:lineSpacingMultiplier="1.3"
                         android:paddingBottom="@dimen/margin_huge"
                         android:paddingLeft="@dimen/margin_large"
                         android:paddingRight="@dimen/margin_large"
                         android:paddingTop="@dimen/margin_huge"
-                        android:ellipsize="none"
                         android:singleLine="false" />
 
                     <LinearLayout
@@ -360,14 +352,12 @@
                             android:duplicateParentState="true" />
 
                         <RelativeLayout
-                            android:id="@+id/features_more"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:background="@drawable/selector_item_bottom"
                             android:duplicateParentState="true" >
 
                             <org.holoeverywhere.widget.TextView
-                                android:id="@+id/features_more_text"
                                 style="@style/text_normal"
                                 android:layout_width="wrap_content"
                                 android:layout_centerVertical="true"
@@ -377,7 +367,7 @@
                                 android:textColor="@color/orange_basic" />
 
                             <ImageView
-                                android:id="@+id/features_arrow"
+                                android:id="@id/features_arrow"
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
                                 android:layout_alignParentRight="true"
@@ -405,7 +395,7 @@
                         android:text="@string/product_description_title" />
 
                     <View
-                        android:id="@+id/divider"
+                        android:id="@+id/description_divider"
                         style="@style/divider_horizontal_orange"
                         android:layout_below="@id/description_label" />
 
@@ -413,14 +403,14 @@
                         android:id="@+id/product_description_text"
                         style="@style/text_normal"
                         android:layout_width="match_parent"
-                        android:layout_below="@id/divider"
+                        android:layout_below="@id/description_divider"
+                        android:ellipsize="none"
                         android:lineSpacingMultiplier="1.3"
                         android:paddingBottom="@dimen/margin_huge"
                         android:paddingLeft="@dimen/margin_large"
                         android:paddingRight="@dimen/margin_large"
                         android:paddingTop="@dimen/margin_huge"
-                        android:singleLine="false"
-                        android:ellipsize="none" />
+                        android:singleLine="false" />
 
                     <LinearLayout
                         android:id="@+id/description_more_container"
@@ -437,14 +427,12 @@
                             android:duplicateParentState="true" />
 
                         <RelativeLayout
-                            android:id="@+id/description_more"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:background="@drawable/selector_item_bottom"
                             android:duplicateParentState="true" >
 
                             <org.holoeverywhere.widget.TextView
-                                android:id="@+id/description_more_text"
                                 style="@style/text_normal"
                                 android:layout_width="wrap_content"
                                 android:layout_centerVertical="true"
@@ -454,7 +442,7 @@
                                 android:textColor="@color/orange_basic" />
 
                             <ImageView
-                                android:id="@+id/description_arrow"
+                                android:id="@id/description_arrow"
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
                                 android:layout_alignParentRight="true"

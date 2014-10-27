@@ -145,7 +145,7 @@
     <style name="ShoppingCartCount">
         <item name="android:layout_width">@dimen/action_bar_icon_size</item>
         <item name="android:layout_height">@dimen/action_bar_icon_size</item>
-        <item name="android:textSize">11dp</item>
+        <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/orange_basic</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingLeft">4dp</item>
@@ -259,7 +259,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">49</item>
         <item name="android:background">@drawable/button_dialog_background_selector</item>
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/grey_middle</item>
     </style>
 
@@ -279,7 +279,7 @@
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:paddingLeft">@dimen/form_padding</item>
-        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:textCursorDrawable" targetApi="12">@null</item>
         <item name="android:inputType">text</item>
     </style>
 
@@ -423,8 +423,8 @@
     <style name="button_container">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/button_container_height</item>
-        <item name="android:background">@color/grey_background</item>
-        <item name="android:gravity">center</item>
+        <item name="android:background">@color/background_color</item>
+        <item name="android:gravity">top|center</item>
         <item name="android:paddingBottom">@dimen/rounded_margin_mid</item>
     </style>
 

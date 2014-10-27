@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/price_rules_element_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/margin_huge"
     android:layout_marginRight="@dimen/margin_huge"
-    android:layout_marginTop="10dp"
-     >
+    android:layout_marginTop="10dp" >
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/price_rules_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:fontFamily="roboto_regular"
         android:layout_toLeftOf="@+id/price_rules_value"
-        android:singleLine="true"
         android:ellipsize="end"
+        android:fontFamily="roboto_regular"
+        android:singleLine="true"
         android:text="@string/vat_string"
         android:textColor="@color/grey_middle" />
 

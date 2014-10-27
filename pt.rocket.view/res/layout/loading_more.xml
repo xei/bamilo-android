@@ -17,7 +17,6 @@
         android:layout_gravity="center_vertical" />
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/text_loadmore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"

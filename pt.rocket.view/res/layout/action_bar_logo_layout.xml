@@ -1,32 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ic_text_logo"
+    style="@style/text_actionbar_title"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="false"
-    android:orientation="horizontal" >
-
-    <ImageView
-        android:id="@+id/ic_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_logo_header"
-        android:clickable="true"
-        android:contentDescription="@string/app_name"
-        android:focusable="false"
-        android:longClickable="false"
-        android:src="@drawable/logo_ic_text"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/ic_text_logo"
-        style="@style/text_actionbar_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:contentDescription="@string/app_name"
-        android:focusable="false"
-        android:longClickable="false"
-        android:paddingLeft="@dimen/rounded_margin_mid"
-        android:paddingRight="@dimen/action_bar_margin" />
-
-</LinearLayout>
+    android:contentDescription="@string/app_name"
+    android:paddingLeft="@dimen/rounded_margin_mid"
+    android:paddingRight="@dimen/action_bar_margin" />

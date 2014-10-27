@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="background_color">@color/grey_background</color>
+    <color name="test_color">@color/red_basic</color>
 
     <!-- New Colors for redesign -->
     <!-- color name="strip_title">#e0e0e0</color -->
@@ -16,7 +18,7 @@
     <color name="grey_highlight">#e6e6e6</color>
     <color name="grey_dividerlight">#f0f0f0</color>
     <color name="grey_divider_light_text">#999999</color>
-    <color name="green_stock">#458B00</color>
+    <!-- color name="green_stock">#458B00</color -->
     <color name="grey_light">@color/grey_middlelight</color>
     <color name="black_shadow">#6f251c</color>
     <color name="promotion_dialog_bkg">#80000000</color>

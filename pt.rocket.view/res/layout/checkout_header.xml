@@ -160,7 +160,6 @@
     <View
         style="@style/divider_horizontal"
         android:layout_height="@dimen/checkout_header_divider_height"
-        android:layout_alignParentBottom="true"
         android:background="@color/orange_basic" />
 
 </LinearLayout>

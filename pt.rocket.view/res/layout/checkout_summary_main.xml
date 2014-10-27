@@ -12,9 +12,7 @@
 
         <!-- PRODUCTS -->
 
-        <include
-            android:id="@+id/checkout_summary_include_products"
-            layout="@layout/checkout_summary_products" />
+        <include layout="@layout/checkout_summary_products" />
 
         <!-- SHIPPING ADDRESS -->
 

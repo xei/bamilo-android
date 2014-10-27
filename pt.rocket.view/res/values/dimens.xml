@@ -25,7 +25,6 @@
     <dimen name="margin_midhuge">24dp</dimen>
     <dimen name="margin_veryhuge">32dp</dimen>
     <dimen name="divider_height">1dp</dimen>
-    <dimen name="divider_width">0.5dp</dimen>
     <dimen name="distance_item_small">24dp</dimen>
     <dimen name="navigation_item_divider_height">1dp</dimen>
     <dimen name="navigation_cart_vertical_distance">17dp</dimen>
@@ -67,8 +66,6 @@
      	values-sw320dp and values-sw360dp are used
     -->
     <dimen name="teaser_swipe_banner_height">196dp</dimen>
-    <dimen name="teaser_product_item_width">120dp</dimen>
-    <dimen name="teaser_banners_group_height">96dp</dimen>
     <dimen name="teaser_recently_viewed_height">196dp</dimen>
 
     <!-- actual values for hdpi - are referenced as aliases -->
@@ -107,11 +104,6 @@
 
     <!-- PRODUCT DETAIL ITEM -->
     <dimen name="product_detail_item_title_height">36.67dp</dimen>
-    <dimen name="product_detail_item_discount_percentage_width">45dp</dimen>
-    <dimen name="product_detail_item_discount_percentage_height">25dp</dimen>
-
-    <!-- ABOUT YOU -->
-    <dimen name="about_you_toogle_height">48dp</dimen>
 
     <!-- INNER CONTAINER -->
     <dimen name="inner_container_width">@integer/match_parent</dimen>
@@ -209,7 +201,6 @@
     <!-- rounded_margin_mid + button_big_height + button_container_height -->
     <dimen name="button_double_container_height">106.67dp</dimen>
     <dimen name="button_landscape_width">426.67dp</dimen>
-    <dimen name="product_item_variant_text_size">8sp</dimen>
     <dimen name="product_item_button_height">@dimen/button_small_height</dimen>
     <dimen name="product_item_addtocart_variation_width">43.33dp</dimen>
     <dimen name="product_item_text_right_margin">50dp</dimen>
@@ -242,7 +233,7 @@
     <dimen name="checkout_box_title_height">26.67dp</dimen>
     <dimen name="checkout_voucher_box_height">70dp</dimen>
 
-    <dimen name="delete_button_size">16dp</dimen>
+    <dimen name="delete_button_size">16dp</dimen><!--12.67dp-->
     <dimen name="delete_button_margin">2dp</dimen>
 
     <dimen name="inner_child_height">33.33dp</dimen>
@@ -260,7 +251,6 @@
     <!-- (320px-20px-20px) -->
     <dimen name="checkout_address_item_min_height">93.33dp</dimen>
 
-    <dimen name="checkout_address_button_container_height">@dimen/margin_150px</dimen>
     <dimen name="checkout_shipping_item_height">48dp</dimen>
     <dimen name="checkout_myorder_item_height">100dp</dimen>
     <dimen name="checkout_thanks_image_size">106.67dp</dimen>
@@ -298,8 +288,10 @@
     <dimen name="margin_120px">40dp</dimen>
 
     <dimen name="margin_150px">50dp</dimen>
-    
-	<dimen name="tips_button_width">200dp</dimen>
+
+    <dimen name="tips_button_width">200dp</dimen>
     <dimen name="tips_button_height">50dp</dimen>
+
+    <dimen name="teaser_campaigns_margin_bottom">@dimen/teaser_margin_bottom</dimen>
 
 </resources>

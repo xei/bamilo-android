@@ -25,7 +25,6 @@
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/price_title_option"
                 style="@style/text_title"
-                android:layout_below="@id/top_review_line"
                 android:layout_marginTop="10dp"
                 android:text="Title" />
 
@@ -34,7 +33,6 @@
                 style="@style/starRatingBarSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/price_title_option"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp" />
         </LinearLayout>
@@ -48,7 +46,6 @@
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/appearence_title_option"
                 style="@style/text_title"
-                android:layout_below="@id/top_review_line"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="Title" />
@@ -58,7 +55,6 @@
                 style="@style/starRatingBarSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/appearence_title_option"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp" />
         </LinearLayout>
@@ -72,7 +68,6 @@
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/quality_title_option"
                 style="@style/text_title"
-                android:layout_below="@id/top_review_line"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="quality" />
@@ -82,7 +77,6 @@
                 style="@style/starRatingBarSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/quality_title_option"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp" />
         </LinearLayout>

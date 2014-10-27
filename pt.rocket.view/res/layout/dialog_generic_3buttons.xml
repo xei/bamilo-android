@@ -18,13 +18,11 @@
         <org.holoeverywhere.widget.TextView
             android:id="@+id/dialog_title"
             style="@style/dialog_title"
-			android:text="Title"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:text="Title" />
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/text_container"
-        style="@style/dialog_container_content" >
+    <RelativeLayout style="@style/dialog_container_content" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/dialog_text"
@@ -72,7 +70,7 @@
                 android:id="@+id/button2"
                 style="@style/dialog_button_style"
                 android:text="@string/ok_label" />
-            
+
             <View
                 android:id="@+id/grey_line_vertical2"
                 style="@style/line_dialog_vertical" />
@@ -81,7 +79,6 @@
                 android:id="@+id/button3"
                 style="@style/dialog_button_style"
                 android:text="@string/ok_label" />
-            
         </LinearLayout>
     </RelativeLayout>
 

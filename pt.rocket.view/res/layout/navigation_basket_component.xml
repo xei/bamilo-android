@@ -29,13 +29,13 @@
         <org.holoeverywhere.widget.TextView
             android:id="@+id/nav_basket_empty"
             style="@style/navigation_cart_emptytext"
-            android:layout_below="@+id/nav_basket_title"
+            android:layout_below="@id/nav_basket_title"
             android:text="@string/navigation_cart_empty" />
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/nav_basket_elements"
             style="@style/navigation_cart_price"
-            android:layout_below="@+id/nav_basket_title"
+            android:layout_below="@id/nav_basket_title"
             android:visibility="invisible" />
 
         <org.holoeverywhere.widget.TextView

@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/rounded_margin_small"
-    android:background="@color/grey_background"
     android:paddingBottom="0dp" >
 
     <include

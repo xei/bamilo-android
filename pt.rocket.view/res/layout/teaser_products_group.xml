@@ -25,7 +25,6 @@
     <!-- CONTAINER -->
 
     <pt.rocket.utils.scrolls.HorizontalScrollGroup
-        android:id="@+id/teaser_products_group_horizontal_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/teaser_products_group_title_divider"

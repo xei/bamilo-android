@@ -5,7 +5,6 @@
     android:paddingLeft="@dimen/margin_small"
     android:paddingRight="@dimen/margin_small"
     android:paddingTop="@dimen/margin_small" >
-    
 
     <RelativeLayout
         android:id="@+id/image_container"
@@ -31,8 +30,8 @@
         android:id="@+id/marker"
         android:layout_width="75dp"
         android:layout_height="5dp"
-        android:layout_alignLeft="@+id/image"
-        android:layout_alignRight="@+id/image"
+        android:layout_alignLeft="@id/image_container"
+        android:layout_alignRight="@id/image_container"
         android:layout_below="@+id/image_container"
         android:layout_marginTop="@dimen/margin_small"
         android:background="@drawable/selector_productdetails_item_underline" />

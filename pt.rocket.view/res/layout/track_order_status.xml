@@ -9,16 +9,11 @@
         style="@style/rounded_box_title_grey"
         android:text="@string/your_order" />
 
-    <View
-        android:id="@+id/voucher_divider_status"
-        style="@style/divider_horizontal_orange"
-        android:layout_below="@id/title_status_text" />
+    <View style="@style/divider_horizontal_orange" />
 
     <LinearLayout
-        android:id="@+id/voucher_container_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/voucher_divider"
         android:layout_marginBottom="@dimen/rounded_margin_mid"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
@@ -64,7 +59,6 @@
             android:visibility="gone" >
 
             <org.holoeverywhere.widget.TextView
-                android:id="@+id/error_tracking_order"
                 style="@style/text_normal"
                 android:layout_marginBottom="@dimen/rounded_margin_mid"
                 android:layout_marginTop="@dimen/rounded_margin_mid"

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/product_detail_shop_container"
     style="@style/button_container"
     android:paddingLeft="@dimen/rounded_margin_mid"
     android:paddingRight="@dimen/rounded_margin_mid" >

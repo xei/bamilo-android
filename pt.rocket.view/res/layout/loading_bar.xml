@@ -18,7 +18,6 @@
         app:gifResource="@drawable/loading_bar_big" />
 
     <org.holoeverywhere.widget.TextView
-        android:id="@+id/fragment_root_loading_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"

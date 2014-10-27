@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/teaser_margin_bottom"
+    android:layout_marginBottom="@dimen/teaser_campaigns_margin_bottom"
     android:layout_marginLeft="@dimen/teaser_margin"
     android:layout_marginRight="@dimen/teaser_margin"
     android:layout_marginTop="@dimen/rounded_margin_small"
@@ -23,7 +22,7 @@
     <!-- TITLE -->
 
     <RelativeLayout
-        android:id="@+id/teaser_campaigns_group_title_container"
+        android:id="@id/teaser_campaigns_group_title_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/campaign_title_button_height"
         android:layout_marginLeft="1dp"

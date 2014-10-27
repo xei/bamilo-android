@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/general_container"
     style="@style/list_row_rounded_style"
     android:layout_height="@dimen/catalog_list_item_height" >
 
@@ -29,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/image_loadable" />
+        android:layout_toRightOf="@id/image_loadable" />
 
     <org.holoeverywhere.widget.TextView
         android:id="@+id/item_brand"

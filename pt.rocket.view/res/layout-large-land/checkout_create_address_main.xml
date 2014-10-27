@@ -14,7 +14,7 @@
         <!-- CONTENT -->
 
         <ScrollView
-             android:id="@+id/checkout_address_form_scroll"
+            android:id="@+id/checkout_address_form_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/checkout_address_button_container"
@@ -29,9 +29,7 @@
 
                 <!-- SHIPPING FORM -->
 
-                <include
-                    android:id="@+id/checkout_address_form_include_shipping"
-                    layout="@layout/checkout_create_address_shipping" />
+                <include layout="@layout/checkout_create_address_shipping" />
 
                 <!-- BILLING FORM -->
 
@@ -45,13 +43,11 @@
         <!-- NEXT BUTTON -->
 
         <LinearLayout
-            android:id="@+id/checkout_address_button_container"
-            android:layout_width="match_parent"
+            android:id="@id/checkout_address_button_container"
+            style="@style/button_container"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/rounded_margin_mid" >
+            android:orientation="vertical" >
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/checkout_address_required_text"

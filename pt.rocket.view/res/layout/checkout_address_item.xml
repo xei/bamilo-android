@@ -14,7 +14,6 @@
         <!-- VALUES -->
 
         <LinearLayout
-            android:id="@+id/checkout_address_address_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/margin_100px"
@@ -60,14 +59,12 @@
             android:id="@+id/checkout_address_item_btn_container"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_above="@+id/checkout_address_divider"
             android:layout_marginRight="@dimen/margin_10px"
             android:orientation="vertical" >
 
             <!-- SELECTION RADIOBUTTON -->
 
             <org.holoeverywhere.widget.RadioButton
-                android:id="@+id/checkout_address_item_btn_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
