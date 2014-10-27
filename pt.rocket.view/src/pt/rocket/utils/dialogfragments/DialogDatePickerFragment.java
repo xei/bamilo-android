@@ -126,7 +126,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         View view;
         view = inflater.inflate(R.layout.dialog_datepicker_content, container);
         
-        TextView titleView = (TextView) view.findViewById(R.id.title);
+        TextView titleView = (TextView) view.findViewById(R.id.datepicker_title);
         titleView.setText(this.mTitle);
 
         mDatePicker = (DatePicker) view.findViewById(R.id.datePicker);

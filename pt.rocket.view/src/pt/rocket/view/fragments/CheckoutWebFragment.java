@@ -301,6 +301,7 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
         System.gc();
     }
     
+    @SuppressWarnings("deprecation")
     @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
         //webview = (WebView) findViewById(R.id.webview);
@@ -312,6 +313,7 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
         webview.addJavascriptInterface(new JavaScriptInterface(), "INTERFACE");
     }
     
+    @SuppressWarnings("deprecation")
     private void startCheckout() {
         showFragmentLoading();
         webview.clearView();
@@ -387,6 +389,7 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
                                                 "(document.getElementById('jsonAppObject').innerHTML);";
         private boolean wasLoadingErrorPage;
         
+        @SuppressWarnings("deprecation")
         @Override
         public void onReceivedError(WebView view, int errorCode,
                 String description, final String failingUrl) {
@@ -507,7 +510,7 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
                 handler.proceed();
             } else {
                 Toast.makeText(getActivity(),
-                        "An SSL error occured: " + error, Toast.LENGTH_LONG)
+                        "An SSL error occurred: " + error, Toast.LENGTH_LONG)
                         .show();
             }
         }
@@ -577,16 +580,17 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
     public void onClick(View v) {
         int id = v.getId();
         //retry button
-        Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            
-        } else {
-            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-//            restartAllFragments();
-        } 
-        
+        if (id == R.id.fragment_root_retry_button) {
+            Bundle bundle = new Bundle();
+            if (null != JumiaApplication.CUSTOMER) {
+                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+                
+            } else {
+                getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+                // restartAllFragments();
+            }
+        }
     }
     
 }

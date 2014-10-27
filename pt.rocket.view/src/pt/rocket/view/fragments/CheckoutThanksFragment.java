@@ -459,13 +459,6 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     protected boolean onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
-        
         return true;
     }
 
@@ -478,16 +471,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     protected boolean onErrorEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-        
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
-        // Generic errors
-        if(getBaseActivity().handleErrorEvent(bundle)) return true;
-        
+        Log.i(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         return false;
     }
 

@@ -454,8 +454,9 @@ public class FavouriteTableHelper {
 	 * 
 	 * @param db
 	 */
-	public static void clearFavourite(SQLiteDatabase db) {
+	/*-public static void clearFavourite(SQLiteDatabase db) {
+		Log.d(TAG, "ON CLEAN TABLE");
 		db.delete(TABLE, null, null);
-	}
+	}*/
 
 }

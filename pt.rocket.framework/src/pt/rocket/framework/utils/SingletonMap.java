@@ -24,11 +24,6 @@ public class SingletonMap<T> {
 		}
 	}
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6123827282365410933L;
-	
 	private void add(T singleton) {
 		singletons.put((Class<? extends T>) singleton.getClass(), singleton);
 	}

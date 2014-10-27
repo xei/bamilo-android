@@ -5,8 +5,6 @@ package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
 
-import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ProductImagesAdapter;
@@ -15,7 +13,6 @@ import pt.rocket.framework.objects.Variation;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.HorizontalListView;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,7 +21,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import de.akquinet.android.androlog.Log;
@@ -45,11 +41,11 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
 
     private int mVariationsListPosition = -1;
     
-    private TextView mColorTitle;
+    // private TextView mColorTitle;
 
     private SharedPreferences sharedPreferences;
     
-    private View divider;
+    // private View divider;
 
     /**
      * 

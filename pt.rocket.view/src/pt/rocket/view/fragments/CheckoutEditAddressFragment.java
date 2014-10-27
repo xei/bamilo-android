@@ -690,14 +690,15 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      * @return boolean
      */
     protected boolean onSuccessEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Log.i(TAG, "ON SUCCESS EVENT");
         
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
+        if(isOnStoppingProcess){
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
+        
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         switch (eventType) {
         case INIT_FORMS:
@@ -746,17 +747,21 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      * @return boolean
      */
     protected boolean onErrorEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
+        if(isOnStoppingProcess){
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        // Generic errors
-        if(getBaseActivity().handleErrorEvent(bundle)) return true;
+    	
+        // Generic error
+        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
+            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
+            return true;
+        }
+        
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
         switch (eventType) {
         case INIT_FORMS:

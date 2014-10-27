@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.framework.objects.CompleteProduct;
-import pt.rocket.framework.objects.LastViewed;
 import pt.rocket.framework.objects.LastViewedAddableToCart;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.Variation;
@@ -384,7 +383,8 @@ public class LastViewedTableHelper {
 	 * 
 	 * @param db
 	 */
-	public static void clearLastViewed(SQLiteDatabase db) {
+	/*-public static void clearLastViewed(SQLiteDatabase db) {
+		Log.d(TAG, "ON CLEAN TABLE");
 		db.delete(TABLE, null, null);
-	}
+	}*/
 }

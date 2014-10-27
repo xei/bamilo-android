@@ -1237,12 +1237,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         if (WizardPreferences.isFirstTime(getBaseActivity(), WizardType.PRODUCT_DETAIL)) {
             Log.d(TAG, "Show Wizard");
             mainView.findViewById(R.id.product_detail_tips_container).setVisibility(View.VISIBLE);
-            boolean hasVariations = (mCompleteProduct != null && mCompleteProduct.getVariations() != null && mCompleteProduct.getVariations().size() > 1) ? true : false;
+            // boolean hasVariations = (mCompleteProduct != null && mCompleteProduct.getVariations() != null && mCompleteProduct.getVariations().size() > 1) ? true : false;
             ViewPager viewPagerTips = (ViewPager) mainView.findViewById(R.id.viewpager_tips);
             viewPagerTips.setVisibility(View.VISIBLE);
             int[] tips_pages = { R.layout.tip_swipe_layout, R.layout.tip_tap_layout, R.layout.tip_favourite_layout, R.layout.tip_share_layout };
             TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(getActivity().getApplicationContext(), getActivity().getLayoutInflater(), mainView, tips_pages);
-            mTipsPagerAdapter.setAddVariationsPadding(hasVariations);
+            // mTipsPagerAdapter.setAddVariationsPadding(hasVariations);
             viewPagerTips.setAdapter(mTipsPagerAdapter);
             viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(mainView, tips_pages));
             viewPagerTips.setCurrentItem(0);

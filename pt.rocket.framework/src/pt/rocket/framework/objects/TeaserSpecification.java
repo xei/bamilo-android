@@ -50,6 +50,9 @@ public abstract class TeaserSpecification<T extends ITargeting> implements IJSON
 		case CAMPAIGNS_LIST:
 			teaserSpecification = new TeaserGroupCampaigns();
 			break;
+		default:
+			Log.w(TAG, "Unidentified TeaserGroupType: " + type.toString());
+			break;
 		}
 		teaserSpecification.initialize(jsonObject);
 		return teaserSpecification;

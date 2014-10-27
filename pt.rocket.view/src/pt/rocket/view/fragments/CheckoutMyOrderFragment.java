@@ -143,6 +143,11 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+
+        // TODO
+        // coming back from external methods don't call onViewCreated() again and as such
+        // setOnClickListener won't be setup
+
         // Retain instance for rotation
         setRetainInstance(true);
         // Track

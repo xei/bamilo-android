@@ -21,7 +21,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.account.GetChangePasswordHelper;
-import pt.rocket.helpers.account.GetCustomerHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -29,7 +28,6 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -384,11 +382,11 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
      * TRIGGERS
      * @author sergiopereira
      */
-    private void triggerCustomer(){
+    /*-private void triggerCustomer(){
     	Log.i(TAG,"TRIGGER GET CUSTOMER");
         Bundle bundle = new Bundle();
         triggerContentEvent(new GetCustomerHelper(), bundle, mCallBack);
-    }
+    }*/
     
     private void triggerChangePass(ContentValues values) {
         Bundle bundle = new Bundle();

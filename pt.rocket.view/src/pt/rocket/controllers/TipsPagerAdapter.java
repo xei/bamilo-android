@@ -32,7 +32,7 @@ public class TipsPagerAdapter extends PagerAdapter implements IconPagerAdapter {
     
     private int mPadding = 0;
 
-    private boolean mAddVariationsPadding = false;
+    // private boolean mAddVariationsPadding = false;
 
     private LayoutInflater mLayoutInflater;
 
@@ -90,9 +90,9 @@ public class TipsPagerAdapter extends PagerAdapter implements IconPagerAdapter {
      * 
      * @param addVariationsPadding
      */
-    public void setAddVariationsPadding(boolean addVariationsPadding) {
+    /*-public void setAddVariationsPadding(boolean addVariationsPadding) {
         this.mAddVariationsPadding = addVariationsPadding;
-    }
+    }*/
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {

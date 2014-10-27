@@ -1846,4 +1846,13 @@ public class DynamicFormItem {
         return InputType.meta.equals(this.entry.getInputType());
     }
 
+    /**
+     * Determines if this field doesn't have a <code>type</code>
+     * 
+     * @return True, if the type of the field is <code>null</code>
+     */
+    public boolean hasNoType() {
+        return this.entry.getInputType() == null;
+    }
+
 }

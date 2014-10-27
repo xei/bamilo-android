@@ -59,12 +59,12 @@ public class RestContract {
 	public static final String REST_PARAM_RATING=                      "rating";
 	public static final String REST_PARAM_PAGE=                        "page";
 	
-	private static Context context;
+	// private static Context context;
 
 	public static void init(Context context, String selectedId) {
 		Log.i(TAG, "code1configs initializing RestContract : "+selectedId);
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-		RestContract.context = context;
+		// RestContract.context = context;
 		REQUEST_HOST = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null);
 		Log.i(TAG, "code1configs REQUEST_HOST : "+REQUEST_HOST);
 		if(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false))		
@@ -88,7 +88,7 @@ public class RestContract {
 	
 	public static void init(Context context) {
 		Log.i(TAG, "initializing RestContract");
-		RestContract.context = context;
+		// RestContract.context = context;
 		REQUEST_HOST = context.getResources().getString(R.string.global_server_host);
 		
 		
@@ -109,7 +109,7 @@ public class RestContract {
 	
 	public static void init(Context context, String requestHost, String basePath) {
 		Log.i(TAG, "initializing RestContract");
-		RestContract.context = context;
+		// RestContract.context = context;
 		REQUEST_HOST = requestHost;
 		
 		

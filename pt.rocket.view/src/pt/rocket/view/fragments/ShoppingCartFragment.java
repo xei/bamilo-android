@@ -139,7 +139,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     private double itemRemoved_price_tracking = 0d;
 
     public static class CartItemValues {
-        public Boolean is_in_wishlist;
+        // public Boolean is_in_wishlist;
         public Boolean is_checked;
         public String product_name;
         public String price;
@@ -718,7 +718,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             for (int i = 0; i < items.size(); i++) {
                 ShoppingCartItem item = items.get(i);
                 CartItemValues values = new CartItemValues();
-                values.is_in_wishlist = false;
+                // values.is_in_wishlist = false;
                 values.is_checked = false;
                 values.product_name = item.getName();
                 values.price = item.getPrice();

@@ -127,7 +127,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         // Get landscape containers
         ViewGroup leftContainer = (ViewGroup) view.findViewById(R.id.home_page_left_container);
         ViewGroup rightContainer = (ViewGroup) view.findViewById(R.id.home_page_right_container);
-        ViewGroup rightContainerCategories = (ViewGroup) view.findViewById(R.id.home_page_right_container_categpries);
+        ViewGroup rightContainerCategories = (ViewGroup) view.findViewById(R.id.home_page_right_container_categories);
         ViewGroup rightContainerBrands = (ViewGroup) view.findViewById(R.id.home_page_right_container_brands);
         
         // Validate current home 

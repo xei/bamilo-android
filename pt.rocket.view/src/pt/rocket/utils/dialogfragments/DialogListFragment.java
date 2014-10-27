@@ -197,7 +197,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	        return;
 	    }
 	    
-	    TextView titleView = (TextView) getView().findViewById(R.id.title);
+	    TextView titleView = (TextView) getView().findViewById(R.id.list_title);
         titleView.setText(mTitle);
 
         list = (ListView) getView().findViewById(R.id.list);

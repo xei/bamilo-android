@@ -214,6 +214,7 @@ public class CategoriesTableHelper {
      *            writeable database
      */
     public static void clearCategories(SQLiteDatabase db) {
+        Log.d(TAG, "ON CLEAN TABLE");
         db.delete(TABLE, null, null);
     }
 

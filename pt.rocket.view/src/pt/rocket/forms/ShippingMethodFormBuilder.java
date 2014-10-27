@@ -26,7 +26,7 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
     public String name;
     public String method;
     public String action;
-    private float scale = 1;
+    // private float scale = 1;
 
     public ArrayList<ShippingMethodForm> fields;
     private ArrayList<ShippingRadioGroupList> groupList;
@@ -123,9 +123,9 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
     
     public View generateForm(Context context){
         LinearLayout parent;
-        if(context != null && context.getResources() != null && context.getResources().getDisplayMetrics() != null){
+        /*-if(context != null && context.getResources() != null && context.getResources().getDisplayMetrics() != null){
             scale = context.getResources().getDisplayMetrics().density;
-        }
+        }*/
 
         parent = new LinearLayout(context);
         LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

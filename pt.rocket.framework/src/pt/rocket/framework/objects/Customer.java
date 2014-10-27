@@ -1,11 +1,7 @@
 package pt.rocket.framework.objects;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
-import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -331,8 +327,6 @@ public class Customer implements IJSONSerializable, Parcelable{
             
             mNewsletterSubscriptions = new ArrayList<CustomerNewsletterSubscription>();
             
-            // FIXME: Newsletter subscription NAFAMZ-6146
-            // FIXME: NAFAMZ-6518
             JSONArray newsletterArray = jsonObject.optJSONArray("customer_newsletter_subscription");
             if(newsletterArray != null) {
             	for (int i = 0; i < newsletterArray.length(); i++) {

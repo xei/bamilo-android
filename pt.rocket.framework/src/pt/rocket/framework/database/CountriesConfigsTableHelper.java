@@ -153,8 +153,9 @@ public class CountriesConfigsTableHelper {
 	  * 
 	  * @param db
 	  */
-	 public static void clearCountriesConfigs(SQLiteDatabase db) {
+	 /*-public static void clearCountriesConfigs(SQLiteDatabase db) {
+		 Log.d(TAG, "ON CLEAN TABLE");
 		 db.delete(TABLE, null, null);
-	 }
+	 }*/
     
 }

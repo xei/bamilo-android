@@ -48,11 +48,10 @@ import android.os.Message;
 import android.os.RemoteException;
 
 import com.ad4screen.sdk.A4SApplication;
-import com.bugsense.trace.ExceptionCallback;
 
 import de.akquinet.android.androlog.Log;
 
-public class JumiaApplication extends A4SApplication implements ExceptionCallback {
+public class JumiaApplication extends A4SApplication {
 
     private static final String TAG = JumiaApplication.class.getSimpleName();
 
@@ -384,11 +383,6 @@ public class JumiaApplication extends A4SApplication implements ExceptionCallbac
      * Method called then the activity is connected to the service
      */
     protected void onServiceActivation() {
-
-    }
-
-    @Override
-    public void lastBreath(Exception arg0) {
 
     }
 

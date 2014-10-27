@@ -197,6 +197,7 @@ public class ImageResolutionTableHelper {
 	  * @param db
 	  */
 	 public static void clearImageResolutions(SQLiteDatabase db) {
+		 Log.d(TAG, "ON CLEAN TABLE");
 		 db.delete(_NAME, null, null);
 	 }
     

@@ -186,8 +186,8 @@ public class MyProfileActionProvider extends ActionProvider {
                 view = mLayoutInflater.inflate(R.layout.action_bar_menu_item_layout, parent, false);
             }
 
-            ImageView icon = (ImageView) view.findViewById(R.id.icon);
-            TextView title = (TextView) view.findViewById(R.id.title);
+            ImageView icon = (ImageView) view.findViewById(R.id.menu_item_icon);
+            TextView title = (TextView) view.findViewById(R.id.menu_item_title);
             // counter for favourites total 
             TextView counter = (TextView) view.findViewById(R.id.icon_counter);
             counter.setVisibility(View.INVISIBLE);

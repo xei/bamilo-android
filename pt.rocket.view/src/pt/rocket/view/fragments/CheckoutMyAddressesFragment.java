@@ -162,7 +162,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         mIsSameCheckBox = (CheckBox) view.findViewById(R.id.checkout_address_billing_checkbox);
         mIsSameCheckBox.setOnClickListener(this);
         // Buttons
-        mTopAddContainer = view.findViewById(R.id.checkout_addresses_default_button_container);
+        mTopAddContainer = view.findViewById(R.id.checkout_addresses_top_button_container);
         view.findViewById(R.id.checkout_addresses_default_add).setOnClickListener(this);
         view.findViewById(R.id.checkout_addresses_other_add).setOnClickListener(this);
         view.findViewById(R.id.checkout_addresses_button_enter).setOnClickListener(this);

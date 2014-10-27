@@ -38,6 +38,7 @@ import android.widget.Toast;
     -->
  *
  */
+@SuppressWarnings("deprecation")
 public class GalleryLayout {
 
 	/**

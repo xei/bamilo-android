@@ -209,8 +209,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
                     if (JumiaApplication.INSTANCE.isLoggedIn()) {
                         Bundle bundle = new Bundle();
                         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
-                        bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);  
-                        bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+                        bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
+                        /*-if (isAdded())*/ bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
                         if (JumiaApplication.CUSTOMER != null) {
                             bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
                         }
@@ -222,8 +222,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
                 } else {
                     Bundle bundle = new Bundle();
                     bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
-                    bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);  
-                    bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+                    bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
+                    /*-if (isAdded())*/ bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
                     if (JumiaApplication.CUSTOMER != null) {
                         bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
                     }

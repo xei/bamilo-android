@@ -18,7 +18,7 @@ import android.os.Parcelable;
  * 
  */
 public class NavigationListComponent implements IJSONSerializable, Parcelable {
-	private final static String TAG = "";
+    // private final static String TAG = LogTagHelper.create(NavigationListComponent.class);
 
 //	private static final String JSON_ATTRIBUTES_TAG = "attributes";
 //	private static final String JSON_NAME_TAG = "name";

@@ -57,9 +57,21 @@ public enum ErrorCode {
 		case SSL:
 		case IO:
 		case HTTP_STATUS:
-			return true;
+            return true;
+        case AUTO_COUNTRY_SELECTION:
+        case EMPTY_ENTITY:
+        case ERROR_PARSING_SERVER_DATA:
+        case HTTP_PROTOCOL:
+        case INTERNAL_ERROR:
+        case NO_COUNTRIES_CONFIGS:
+        case NO_COUNTRY_CONFIGS_AVAILABLE:
+        case NO_ERROR:
+        case REQUEST_ERROR:
+        case REQUIRES_USER_INTERACTION:
+        case UNKNOWN_ERROR:
+        default:
+            return false;
 		}
-		return false;
 	}
 
 	public boolean isClientError() {

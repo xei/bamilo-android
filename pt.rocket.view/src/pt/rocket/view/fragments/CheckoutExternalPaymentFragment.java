@@ -294,6 +294,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements OnC
         System.gc();
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
         CustomWebViewClient customWebViewClient = new CustomWebViewClient();
@@ -304,6 +305,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements OnC
         webview.addJavascriptInterface(new JavaScriptInterface(), "INTERFACE");
     }
 
+    @SuppressWarnings("deprecation")
     private void startCheckout() {
         showFragmentLoading();
         webview.clearView();
@@ -439,6 +441,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements OnC
                 "(document.getElementById('jsonAppObject').innerHTML);";
         private boolean wasLoadingErrorPage;
 
+        @SuppressWarnings("deprecation")
         @Override
         public void onReceivedError(WebView view, int errorCode,
                 String description, final String failingUrl) {
@@ -570,7 +573,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements OnC
 
             } else {
                 Toast.makeText(getActivity(),
-                        "An SSL error occured: " + error, Toast.LENGTH_LONG)
+                        "An SSL error occurred: " + error, Toast.LENGTH_LONG)
                         .show();
             }
             handler.proceed();

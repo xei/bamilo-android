@@ -1,6 +1,8 @@
 package pt.rocket.framework.rest;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.UnknownHostException;
@@ -497,12 +499,12 @@ public final class RestClientSingleton {
             Log.d("TRACK", "OutOfMemoryError");
             Log.e(TAG, "OutOfMemoryError calling " + httpRequest.getURI(), e);
             mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority));
-            /*-// Alternative to e.getStackTrace().toString()
+            // Alternative to e.getStackTrace().toString()
             // http://stackoverflow.com/questions/1149703/how-can-i-convert-a-stack-trace-to-a-string
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
-            String exceptionAsString = sw.toString();*/
-            trackError(context, null, httpRequest.getURI(), ErrorCode.IO, e.getStackTrace().toString(), false, startTimeMillis);
+            String exceptionAsString = sw.toString();
+            trackError(context, null, httpRequest.getURI(), ErrorCode.IO, exceptionAsString, false, startTimeMillis);
 		} catch (Exception e) {
 			Log.d("TRACK", "Exception");
 			e.printStackTrace();
@@ -685,7 +687,7 @@ public final class RestClientSingleton {
 		NewRelicTracker.noticeFailureTransaction(uriString, startTimeMillis, System.currentTimeMillis());
 		// Track http failure
 		// Send exception
-		//ErrorMonitoring.sendException(mContext, e, uriString, errorCode, msg, null, nonFatal);
+		// ErrorMonitoring.sendException(mContext, e, uriString, errorCode, msg, null, nonFatal);
 	}
 	
 }

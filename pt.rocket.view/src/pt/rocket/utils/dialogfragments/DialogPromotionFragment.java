@@ -84,6 +84,7 @@ public class DialogPromotionFragment extends DialogFragment {
             ((TextView) getView().findViewById(R.id.promotion_coupon_code)).setText(Html.fromHtml(mPromotion.getCouponCode()));
             ((TextView) getView().findViewById(R.id.promotion_coupon_code)).setOnClickListener(new OnClickListener() {
                 
+                @SuppressWarnings("deprecation")
                 @Override
                 public void onClick(View v) {
                     

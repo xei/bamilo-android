@@ -370,9 +370,9 @@ public class FormFactory {
             	Log.d( TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType() );
                 ctrl = new DynamicFormItem(userForm, context, frmEntry);
                 
-                if (ctrl.isMeta()) {
-                    // Don't waste space with meta fields
-                    Log.i(TAG, "Meta field");
+                if (ctrl.isMeta() || ctrl.hasNoType()) {
+                    // Don't waste space with meta fields nor field without type
+                    Log.i(TAG, "Meta or no type field");
                     userForm.addControl(ctrl, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
                 } else if ( ! ctrl.isDatePart() ) {                
                     userForm.addControl(ctrl, ctrlParams);
