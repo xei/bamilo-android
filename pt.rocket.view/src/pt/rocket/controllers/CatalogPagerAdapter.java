@@ -5,12 +5,15 @@ package pt.rocket.controllers;
 
 import java.util.ArrayList;
 
+import de.akquinet.android.androlog.Log;
+
 import pt.rocket.view.fragments.CatalogPageFragment;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * @author nunocastro
@@ -43,13 +46,19 @@ public class CatalogPagerAdapter extends FragmentPagerAdapter {
      */
     @Override
     public Fragment getItem(int position) {
+        Log.e("FITLER","getItem:"+position);
         Bundle params = (Bundle) fragmentParameters.clone();
         params.putInt(CatalogPageFragment.PARAM_PAGE_INDEX, position);
         params.putBoolean(CatalogPageFragment.PARAM_IS_LANDSCAPE, isLandscape);
-
         return CatalogPageFragment.newInstance(params);
     }
 
+    
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -84,8 +93,27 @@ public class CatalogPagerAdapter extends FragmentPagerAdapter {
                 pageFragment.invalidateData(params, true);
             }
         }
-    }
+    }  
+    
+    public void resetClearProduct() {
+        CatalogPageFragment pageFragment;
+        Bundle params = (Bundle) fragmentParameters.clone();
+        params.putBoolean(CatalogPageFragment.PARAM_IS_LANDSCAPE, isLandscape);
 
+        for (int index = 0; index < mSortOptions.size(); index++) {
+            pageFragment = (CatalogPageFragment) fragmentManager.findFragmentByTag(getFragmentTag(index));
+            if (null != pageFragment) {
+                
+                Log.e("CatalogPage",":"+index);
+//                Bundle bundle = pageFragment.getArguments();
+//                bundle.putBoolean("flag", true);
+//                pageFragment.setArguments(bundle);
+                
+                pageFragment.setProductClear(true);
+            }
+        }
+    }  
+    
     public void restoreFilters(ContentValues filters) {
         CatalogPageFragment pageFragment;
         for (int index = 0; index < mSortOptions.size(); index++) {

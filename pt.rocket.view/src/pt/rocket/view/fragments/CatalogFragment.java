@@ -136,6 +136,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     
     protected static String categoryTree = "";
     
+    protected static boolean hasFilterApllied = false;
+    
+    protected static Bundle filterParams;
+    
     /**
      * Empty constructor
      */
@@ -312,10 +316,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
             params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
             params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
-
+            Log.e("FILTER","point 1");
             mCatalogPagerAdapter = new CatalogPagerAdapter(getChildFragmentManager(), mViewPager.getId(), mSortOptions, params,
                     BaseActivity.isTabletInLandscape(getBaseActivity()));
-
+            Log.e("FILTER","point 2");
         } else {
             Log.d(TAG, "ON RESUME: ADAPTER IS NOT NULL");
             mCatalogPagerAdapter.setLandscapeMode(BaseActivity.isTabletInLandscape(getBaseActivity()));
@@ -332,23 +336,27 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         }
 
         RocketImageLoader.getInstance().startProcessingQueue();
-
+        Log.e("FILTER","point 3");
         mViewPager.setAdapter(mCatalogPagerAdapter);
+        Log.e("FILTER","point 4");
         mPagerTabStrip.setViewPager(mViewPager);
+        Log.e("FILTER","point 5");
         mViewPager.setOffscreenPageLimit(1);
+        Log.e("FILTER","point 6");
         if (null != currentPage && currentPage != SortPages.DEFAULT) {
             mViewPager.setCurrentItem(currentPage.ordinal(), false);
             currentPage = SortPages.DEFAULT;
         } else {
             mViewPager.setCurrentItem(mSavedPagerPosition, false);
         }
+        Log.e("FILTER","point 7");
         if (null != mCatalogPagerAdapter && null != mCatalogFilterValues) {
             mCatalogPagerAdapter.restoreFilters(mCatalogFilterValues);
         }
-
+        Log.e("FILTER","point 8");
         // Show tips
         isToShowWizard();
-
+        Log.e("FILTER","point 9");
     }
 
     /*
@@ -798,11 +806,16 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
         params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
 
-        Log.d(TAG, " ----> FILTER TITLE :" + title);
-
-        mCatalogPagerAdapter.updateParametersBundle(params);
-        mCatalogPagerAdapter.invalidateCatalogPages();
         
+        hasFilterApllied = true;
+        
+        filterParams = params;
+        Log.d(TAG, " ----> FILTER TITLE :" + title);
+     
+        mCatalogPagerAdapter.updateParametersBundle(params);
+        mCatalogPagerAdapter.resetClearProduct();       
+        mCatalogPagerAdapter.notifyDataSetChanged();
+
     }
     
     /**
@@ -1017,6 +1030,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
   
             // Redraw layout
             mCatalogPagerAdapter.invalidateCatalogPages();
+            
             v.setEnabled(true);
         }
     }
@@ -1075,7 +1089,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
         @Override
         public void onPageSelected(int position) {
-            // ...
+            Log.d("FILTER","onPageSelected position:"+position);
         }
 
         @Override

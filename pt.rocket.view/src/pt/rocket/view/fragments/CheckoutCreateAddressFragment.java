@@ -359,8 +359,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Define if CITY is a List or Text
         isCityIdAnEditText = (shippingFormGenerator.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl() instanceof EditText);
         // Hide unused fields form
-        hideSomeFields(shippingFormGenerator);
-        hideSomeFields(billingFormGenerator);
+        hideSomeFields(shippingFormGenerator,false);
+        hideSomeFields(billingFormGenerator, true);
         // Validate Regions
         if(regions == null) {
             FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG);
@@ -410,7 +410,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      * @param dynamicForm
      * @author sergiopereira
      */
-    private void hideSomeFields(DynamicForm dynamicForm) {
+    private void hideSomeFields(DynamicForm dynamicForm, boolean isBilling) {
         DynamicFormItem item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG);
         if (item != null) item.getEditControl().setVisibility(View.GONE);
         item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_BILLING_TAG);
@@ -424,6 +424,15 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
             item.getControl().setVisibility(View.GONE);
         }
+        if(isBilling){
+            item = dynamicForm.getItemByKey(RestConstants.JSON_GENDER_TAG);
+            if (item != null){
+                item.getMandatoryControl().setVisibility(View.GONE);
+                item.getEditControl().setVisibility(View.GONE);
+            } 
+        }
+        
+        
     }
 
     /**
@@ -616,15 +625,16 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             Log.i(TAG, "CREATE ADDRESS: IS SHIPPING AND IS BILLING TOO");
             ContentValues mContentValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
             Log.d(TAG, "CONTENT VALUES: " + mContentValues.toString());
-            triggerCreateAddress(mContentValues);
+            triggerCreateAddress(mContentValues,false);
         } else {
             Log.i(TAG, "CREATE ADDRESS: SHIPPING AND BILLING");
             ContentValues mShipValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, ISNT_DEFAULT_BILLING_ADDRESS);
             Log.d(TAG, "CONTENT SHIP VALUES: " + mShipValues.toString());
-            triggerCreateAddress(mShipValues);
-            ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-            Log.d(TAG, "CONTENT BILL VALUES: " + mBillValues.toString());            
-            triggerCreateAddress(mBillValues);
+            triggerCreateAddress(mShipValues,false);
+            // only to be fired if the first succeds
+//            ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
+//            Log.d(TAG, "CONTENT BILL VALUES: " + mBillValues.toString());            
+//            triggerCreateAddress(mBillValues,true);
         }
     }
             
@@ -813,11 +823,12 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      * @param values
      * @author sergiopereira
      */
-    private void triggerCreateAddress(ContentValues values) {
+    private void triggerCreateAddress(ContentValues values, boolean isBilling) {
         Log.i(TAG, "TRIGGER: CREATE ADDRESS");
         Bundle args = getArguments();
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetNewAddressHelper.FORM_CONTENT_VALUES, values);
+        bundle.putBoolean(SetNewAddressHelper.IS_BILLING, isBilling);
         // Validate origin
         if(null != args && args.containsKey(ConstantsIntentExtra.IS_SIGNUP))
             bundle.putBoolean(SetNewAddressHelper.IS_FROM_SIGNUP,args.getBoolean(ConstantsIntentExtra.IS_SIGNUP, false));
@@ -944,6 +955,11 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             // Waiting for both responses
             if(!mIsSameCheckBox.isChecked() && !oneAddressCreated){
                 oneAddressCreated = true;
+                
+                if (null != billingFormGenerator) {
+                    ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
+                    triggerCreateAddress(mBillValues, true);
+                }
                 break;
             }
             

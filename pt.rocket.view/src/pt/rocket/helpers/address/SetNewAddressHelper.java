@@ -27,6 +27,8 @@ public class SetNewAddressHelper extends BaseHelper {
     public static final String FORM_CONTENT_VALUES = "form_content_values";
     
     public static final String IS_FROM_SIGNUP = "fromSignup";
+    
+    public static final String IS_BILLING = "isBilling";
 
     private Parcelable contentValues;
     
@@ -40,7 +42,7 @@ public class SetNewAddressHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
         // Validate origin
-        if(null != args && args.getBoolean(IS_FROM_SIGNUP, false)){
+        if(null != args && args.getBoolean(IS_FROM_SIGNUP, false) && !args.getBoolean(IS_BILLING, false)){
             mEventType = EventType.CREATE_ADDRESS_SIGNUP_EVENT;
         }
         // Create bundle

@@ -42,4 +42,6 @@
     <item name="apptimize_enabled" type="bool">false</item>
     <string name="apptimize_apikey"></string>
 
+	<!-- GTM -->
+    <string name="gtm_key">GTM-KWJK97</string>
 </resources>

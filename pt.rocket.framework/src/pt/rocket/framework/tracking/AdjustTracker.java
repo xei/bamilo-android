@@ -196,6 +196,8 @@ public class AdjustTracker {
     public final static String ENCODING_SCHEME = "UTF-8";
 
     public final static String ADJUST_FIRST_TIME_KEY = "adjust_first_time";
+    
+    private static double ADJUST_CENT_VALUE = 100d;
 
     private Context mContext;
 
@@ -220,6 +222,7 @@ public class AdjustTracker {
         super();
 
         isEnabled = context.getResources().getBoolean(R.bool.adjust_enabled);
+
         mContext = context;
         if (isEnabled) {
             initAdjustInstance();
@@ -522,8 +525,8 @@ public class AdjustTracker {
                 
                 // Track Revenue (Sale or Gues Sale)
 //                convertToEuro(baseActivity, bundle.getDouble(TRANSACTION_VALUE), parameters, eventString, true, bundle.getString(CURRENCY_ISO));
-                
-                Adjust.trackRevenue(bundle.getDouble(TRANSACTION_VALUE), eventString, parameters);
+                double finalValue = bundle.getDouble(TRANSACTION_VALUE)*ADJUST_CENT_VALUE;
+                Adjust.trackRevenue(finalValue, eventString, parameters);
                 
                 // Trigger also the TRANSACTION_CONFIRMATION event
                 transParameters = new HashMap<String, String>(parameters);
@@ -563,6 +566,7 @@ public class AdjustTracker {
                     fbParameters.put(AdjustKeys.QUANTITY, item.quantity);
                     if(item.getPriceForTracking() > 0d){
                     	fbParameters.put(AdjustKeys.PRICE, String.valueOf(item.getPriceForTracking()));
+                        fbParameters.put(AdjustKeys.CURRENCY_CODE, "EUR"); 
                     }
 //                      fbParameters.put(AdjustKeys.DISCOUNT + countString, hasDiscount ? "true" : "false"); 
 //                      fbParameters.put(AdjustKeys.BRAND + countString, item.get);
@@ -584,10 +588,10 @@ public class AdjustTracker {
             if (isEnabled) {
                 parameters = getBaseParameters(parameters, bundle);
                 parameters.put(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
                 
                 if(bundle.getDouble(VALUE) > 0d){
                 	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+                    parameters.put(AdjustKeys.CURRENCY_CODE, "EUR");
                 }
               Adjust.trackEvent(mContext.getString(R.string.adjust_token_add_to_cart), parameters);
             
@@ -598,10 +602,10 @@ public class AdjustTracker {
             if (isEnabled) {
                 parameters = getBaseParameters(parameters, bundle);
                 parameters.put(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
 
                 if(bundle.getDouble(VALUE) > 0d){
                 	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+                    parameters.put(AdjustKeys.CURRENCY_CODE, "EUR");
                 }
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_remove_from_cart), parameters);
             }
@@ -611,10 +615,10 @@ public class AdjustTracker {
             if (isEnabled) {
                 parameters = getBaseParameters(parameters, bundle);
                 parameters.put(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
-    
+                
                 if(bundle.getDouble(VALUE) > 0d){
                 	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+                    parameters.put(AdjustKeys.CURRENCY_CODE, "EUR");
                 }
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_add_to_wishlist), parameters);
             }
@@ -624,10 +628,10 @@ public class AdjustTracker {
             if (isEnabled) {
                 parameters = getBaseParameters(parameters, bundle);
                 parameters.put(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
     
                 if(bundle.getDouble(VALUE) > 0d){
                 	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+                    parameters.put(AdjustKeys.CURRENCY_CODE, "EUR");
                 }
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_remove_from_wishlist), parameters);            
             }

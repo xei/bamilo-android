@@ -201,7 +201,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private ActionBar supportActionBar;
 
     private boolean isBackButtonEnabled = false;
-
+    
     private long mLaunchTime;
 
     /**
@@ -344,7 +344,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         AdjustTracker.onResume(this);
         
         TrackerDelegator.trackAppOpenAdjust(getApplicationContext(), mLaunchTime);
-        
     }
 
     IResponseCallback mIResponseCallback = new IResponseCallback() {
@@ -1457,6 +1456,29 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             headerTitle.setVisibility(View.VISIBLE);
             subtitleView.setVisibility(View.VISIBLE);
         } else if (TextUtils.isEmpty(title)) {
+            headerTitle.setVisibility(View.GONE);
+        }
+    }
+    
+    /**
+     * Method used to set the number of products
+     * 
+     * @param title
+     * @param subtitle
+     */
+    public void setSubTitle(CharSequence subtitle) {
+        TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
+        View headerTitle = findViewById(R.id.header_title);
+
+        if (subtitleView == null)
+            return;
+        if ( !TextUtils.isEmpty(subtitle)) {
+            // Set text and force measure
+            subtitleView.setText(subtitle);
+
+            headerTitle.setVisibility(View.VISIBLE);
+            subtitleView.setVisibility(View.VISIBLE);
+        } else if (TextUtils.isEmpty(subtitle)) {
             headerTitle.setVisibility(View.GONE);
         }
     }

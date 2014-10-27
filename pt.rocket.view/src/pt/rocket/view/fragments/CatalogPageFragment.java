@@ -58,7 +58,7 @@ import de.akquinet.android.androlog.Log;
  * @author nunocastro
  * 
  */
-public class CatalogPageFragment extends BaseFragment {
+public class CatalogPageFragment extends BaseFragment implements OnClickListener{
 
     public static final String TAG = CatalogPageFragment.class.getSimpleName();
 
@@ -134,8 +134,10 @@ public class CatalogPageFragment extends BaseFragment {
     
     private String categoryId = "";
     
-    boolean isFromCategory = true;
+    private boolean isFromCategory = true;
     
+    private boolean isProductClear = false;
+        
     /**
      * 
      * @param bundle
@@ -179,15 +181,19 @@ public class CatalogPageFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
 
+//        CatalogFragment.hasFilterApllied = false;
+        
+        Bundle args = getArguments();
+        
         parentFragment = (CatalogFragment) getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.PRODUCT_LIST.toString());
 
-        if (null != savedInstanceState) {
-            mSavedProductsSKU = savedInstanceState.getStringArrayList(PRODUCT_LIST);
+        if (null != savedInstanceState) {            
+           mSavedProductsSKU = savedInstanceState.getStringArrayList(PRODUCT_LIST);
             mCurrentListPosition = savedInstanceState.getInt(PRODUCT_LIST_POSITION);
             mTitle = savedInstanceState.getString(LIST_TITLE);
+            Log.d(TAG, "SAVE INSTANCE STATE null != " +mSavedProductsSKU);
         }
-
-        Bundle args = getArguments();
+        
         if (null != args) {
             mPageIndex = args.getInt(PARAM_PAGE_INDEX, 0);
 
@@ -237,8 +243,10 @@ public class CatalogPageFragment extends BaseFragment {
                 mTrackSortEvent = TrackingEvent.CATALOG_SORT_BRAND;
                 break;
             }
+            
 
         }
+
     }
 
     /*
@@ -251,11 +259,17 @@ public class CatalogPageFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED #" + mPageIndex);
-
         if (savedInstanceState != null) {
             reattached = true;
         }
 
+        if(isProductClear){
+            mSavedProductsSKU = null;
+//            isProductClear = false;
+        } else {
+            if (null != savedInstanceState)  mSavedProductsSKU = savedInstanceState.getStringArrayList(PRODUCT_LIST);
+        }
+        
         this.relativeLayoutPc = (RelativeLayout) view.findViewById(R.id.products_content);
         this.linearLayoutLm = (LinearLayout) view.findViewById(R.id.loadmore);
         this.gridView = (GridView) view.findViewById(R.id.middle_productslist_list);
@@ -313,24 +327,25 @@ public class CatalogPageFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME #" + mPageIndex);
-        // Get arguments
-        Bundle args = getArguments();
-        boolean forceReload = false;
-        /**
-         * Validated if was received new arguments from invalidateData() and fragment is not visible.
-         * Clean saved products and force reload.
-         */
-        if(mReceivedDataInBackgroung != null) {
-            args = (Bundle) mReceivedDataInBackgroung.clone();
-            mSavedProductsSKU = null;
-            mReceivedDataInBackgroung = null;
-        }
-        // Show
-        invalidateData(args, forceReload);
-        
-        if (trackViewScreen && isFromCategory) {
-            trackViewCatalog();
-        }
+//        if(!CatalogFragment.hasFilterApllied){
+            // Get arguments
+            Bundle args = getArguments();
+            boolean forceReload = false;
+            /**
+             * Validated if was received new arguments from invalidateData() and fragment is not visible.
+             * Clean saved products and force reload.
+             */
+            if (mReceivedDataInBackgroung != null) {
+                args = (Bundle) mReceivedDataInBackgroung.clone();
+                mSavedProductsSKU = null;
+                mReceivedDataInBackgroung = null;
+            }
+            // Show
+            invalidateData(args, forceReload);
+            if (trackViewScreen && isFromCategory) {
+                trackViewCatalog();
+            }
+//        }
     }
     
 //    /*
@@ -376,7 +391,11 @@ public class CatalogPageFragment extends BaseFragment {
         if (null != this.gridView) {
             ProductsListAdapter adapter = (ProductsListAdapter) this.gridView.getAdapter();
             if (null != adapter) {
-                outState.putStringArrayList(PRODUCT_LIST, adapter.getProductsList());
+//                if(CatalogFragment.hasFilterApllied){
+//                    outState.putStringArrayList(PRODUCT_LIST, null);   
+//                } else {
+                    outState.putStringArrayList(PRODUCT_LIST, adapter.getProductsList());
+//                }
                 outState.putInt(PRODUCT_LIST_POSITION, this.gridView.getFirstVisiblePosition());
             }
             outState.putString(LIST_TITLE, mTitle);
@@ -388,37 +407,44 @@ public class CatalogPageFragment extends BaseFragment {
      * track catalog view method
      */
     private void trackViewCatalog() {
-        final Handler trackHandler = new Handler();
-        final Runnable tracRunnable = new Runnable() {
-            
-            @Override
-            public void run() {
-                ProductsListAdapter adapter = (ProductsListAdapter)gridView.getAdapter();
-                if (null != adapter && null != adapter.getProductsList() && adapter.getProductsList().size() > 0) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
-                    bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-                    if (JumiaApplication.CUSTOMER != null) {
-                        bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
-                    }                
-                    bundle.putString(AdjustTracker.CATEGORY, mTitle);
-                    if(parentFragment != null){
-                        if(!TextUtils.isEmpty(categoryId) && TextUtils.isEmpty(CatalogFragment.categoryId))
-                            bundle.putString(AdjustTracker.CATEGORY_ID, categoryId);
-                        else bundle.putString(AdjustTracker.CATEGORY_ID, CatalogFragment.categoryId);
-                        
-                        bundle.putString(AdjustTracker.TREE, CatalogFragment.categoryTree);    
+
+            final Handler trackHandler = new Handler();
+            final Runnable tracRunnable = new Runnable() {
+                
+                @Override
+                public void run() {
+                    ProductsListAdapter adapter = (ProductsListAdapter)gridView.getAdapter();
+                    try {
+                        if (null != adapter && null != adapter.getProductsList() && adapter.getProductsList().size() > 0 && !isDetached() && isVisible()) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+                            bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+                            if (JumiaApplication.CUSTOMER != null) {
+                                bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+                            }                
+                            bundle.putString(AdjustTracker.CATEGORY, mTitle);
+                            if(parentFragment != null){
+                                if(!TextUtils.isEmpty(categoryId) && TextUtils.isEmpty(CatalogFragment.categoryId))
+                                    bundle.putString(AdjustTracker.CATEGORY_ID, categoryId);
+                                else bundle.putString(AdjustTracker.CATEGORY_ID, CatalogFragment.categoryId);
+                                
+                                bundle.putString(AdjustTracker.TREE, CatalogFragment.categoryTree);    
+                            }
+                            
+                            bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, adapter.getProductsList());
+                            
+                            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST_SORTED, bundle);
+                        } else {
+                            trackHandler.postDelayed(this, 300);
+                        }
+                    } catch (Exception e) {
+                        Log.e("TRACK","EXCEPTION");
+                        e.printStackTrace();
                     }
-                    
-                    bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, adapter.getProductsList());
-                    
-                    TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST_SORTED, bundle);
-                } else {
-                    trackHandler.postDelayed(this, 300);
                 }
-            }
-        };
-        trackHandler.postDelayed(tracRunnable, 300);
+            };
+            trackHandler.postDelayed(tracRunnable, 300);
+
     }
     
     /*
@@ -462,6 +488,7 @@ public class CatalogPageFragment extends BaseFragment {
             if (null == adapter) {
                 Log.i(TAG, "ON RESUME -> Null Adapter");
                 mFilters = newFilters;
+                
                 initializeCatalogPage(showList);
                 
             } else if (newFilters != null && newFilters.getAsInteger("md5") != mFilterMD5) { // Case new filter
@@ -485,7 +512,7 @@ public class CatalogPageFragment extends BaseFragment {
                 gridView.setOnScrollListener(onScrollListener);
     
                 if (products == null || products.isEmpty()) {
-                    if (mSavedProductsSKU != null && mFilters != null) {
+                    if (mFilters != null) {
                         showFiltersNoResults();
                     } else {
                         showProductsNotfound();
@@ -536,14 +563,13 @@ public class CatalogPageFragment extends BaseFragment {
         updateGridColumns(showList);
         Log.d(TAG, "ON RESUME - REQ -> Landscape ? " + mIsLandScape + "; Columns #" + numColumns);
 
-        final boolean hasProducts = (null != mSavedProductsSKU);
+        final boolean hasProducts = (null != mSavedProductsSKU && mSavedProductsSKU.size() > 0 );
 
         // initialize new adapter depending on view choosen
         ProductsListAdapter adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, numColumns, isFrench);
         if (!hasProducts) {
             mPageNumber = 1;
         } else {
-            Log.d(TAG, "ON RESUME - HAS PRODUCTS");
             adapter.updateProducts(mSavedProductsSKU);
         }
 
@@ -617,11 +643,18 @@ public class CatalogPageFragment extends BaseFragment {
             bundle.putInt(GetProductsHelper.TOTAL_COUNT, numItemsToLoad);
             bundle.putInt(GetProductsHelper.SORT, mSort.id);
             bundle.putInt(GetProductsHelper.DIRECTION, mDirection.id);
-            bundle.putParcelable(GetProductsHelper.FILTERS, mFilters);
+            
+            if(CatalogFragment.hasFilterApllied) mFilters = CatalogFragment.filterParams.getParcelable(PARAM_FILTERS);
+            
+            bundle.putParcelable(GetProductsHelper.FILTERS, mFilters );
+            
+            if(JumiaApplication.mIsBound){
+                if(mPageNumber == 1) triggerContentEvent(new GetProductsHelper(), bundle, responseCallback);
+                else triggerContentEventWithNoLoading(new GetProductsHelper(), bundle, responseCallback);
 
-            if(mPageNumber == 1) triggerContentEvent(new GetProductsHelper(), bundle, responseCallback);
-            else triggerContentEventWithNoLoading(new GetProductsHelper(), bundle, responseCallback);
-
+            } else {
+                showFragmentRetry(this);
+            }
         } else {
             hideProductsLoading();
         }
@@ -671,9 +704,14 @@ public class CatalogPageFragment extends BaseFragment {
     }
 
     private void showFiltersNoResults() {
+        mSavedProductsSKU = null;
         Log.d(TAG, "showFiltersNoResults");
         hideProductsLoading(false);
         relativeLayoutPc.setVisibility(View.GONE);
+
+        if (parentFragment.isVisible() && null != getBaseActivity()) {
+            getBaseActivity().setSubTitle(" (" + 0 + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
+        }
         showFragmentEmpty(R.string.catalog_no_results, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -852,7 +890,7 @@ public class CatalogPageFragment extends BaseFragment {
         
         // Validate fragment state
         if (isOnStoppingProcess) return;
-        
+        isProductClear = false;
         // Get Products Event
         final ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         categoryId = productsPage.getCategoryId();
@@ -1053,5 +1091,18 @@ public class CatalogPageFragment extends BaseFragment {
         mIsLoadingMore = false;
         mReceivedError = true;
     }
+    
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.fragment_root_retry_button) {
+            Bundle bundle = new Bundle();
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, getArguments(), FragmentController.ADD_TO_BACK_STACK);
 
+        }
+    }
+    
+    public void setProductClear(boolean toClear){
+        isProductClear = toClear;
+    }
 }
