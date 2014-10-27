@@ -40,6 +40,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 
 	private String mCartCleanValue;
 	private String mCouponDiscount;
+	private String mCouponCode;
 
 	private HashMap<String, String> mPriceRules;
 
@@ -73,6 +74,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		mVatValue = jsonObject.optString(RestConstants.JSON_CART_VAT_VALUE_TAG);
 		mShippingValue = jsonObject.optString(RestConstants.JSON_CART_SHIPPING_VALUE_TAG);
 		mCouponDiscount = jsonObject.optString(RestConstants.JSON_CART_COUPON_VALUE_TAG);
+		mCouponCode = jsonObject.optString(RestConstants.JSON_CART_COUPON_CODE_TAG);
 		String sCosts = jsonObject.optString(RestConstants.JSON_CART_SUM_COSTS_TAG);
 		if (sCosts != null && sCosts.equalsIgnoreCase("0")) {
 			hasSumCosts = false;
@@ -263,7 +265,15 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 */
 	public void setCouponDiscount(String couponDiscount) {
 		this.mCouponDiscount = couponDiscount;
-	}
+    }
+
+    public String getCouponCode() {
+        return mCouponCode;
+    }
+
+    public void setCouponCode(String couponCode) {
+        this.mCouponCode = couponCode;
+    }
 
 	/**
 	 * @return the price_rules
@@ -349,6 +359,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		dest.writeDouble(mExtraCosts);
 		dest.writeString(mSumCostsValue);
 		dest.writeString(mCouponDiscount);
+		dest.writeString(mCouponCode);
 		dest.writeMap(mPriceRules);
 	    dest.writeDouble(mCartValueAsDouble);
 	    dest.writeDouble(mCartValueConverted);
@@ -372,6 +383,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		mExtraCosts = in.readDouble();
 		mSumCostsValue = in.readString();
 		mCouponDiscount = in.readString();
+		mCouponCode = in.readString();
 		mPriceRules = new HashMap<String, String>();
 		in.readMap(mPriceRules, String.class.getClassLoader());
 		mCartValueAsDouble = in.readDouble();

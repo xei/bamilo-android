@@ -80,7 +80,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
     private Handler triggerHander;
 
-    private static ShoppingCartFragment reviewFragment;
+    private static ShoppingCartFragment shoppingCartFragment;
 
     private long mBeginRequestMillis;
 
@@ -118,7 +118,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
     private TextView voucherError;
 
-    EditText voucherValue;
+    EditText voucherCode;
 
     private String mVoucher = null;
 
@@ -164,10 +164,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
      * @return
      */
     public static ShoppingCartFragment getInstance() {
-        if (reviewFragment == null) {
-            reviewFragment = new ShoppingCartFragment();
+        if (shoppingCartFragment == null) {
+            shoppingCartFragment = new ShoppingCartFragment();
         }
-        return reviewFragment;
+        return shoppingCartFragment;
     }
 
     /**
@@ -348,7 +348,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     }
 
     private void releaseVars() {
-        reviewFragment = null;
+        shoppingCartFragment = null;
 
         itemsValues = null;
 
@@ -560,7 +560,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
     /**
      * Present a dialog to remove all items from cart <br>
-     * (Expectly used after user uses "Call to Order")
+     * (Expectly used after user clicks "Call to Order")
      * 
      * @param shoppingCart
      * @author André Lopes
@@ -620,7 +620,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             break;
         case ADD_VOUCHER:
         case REMOVE_VOUCHER:
-            voucherValue.setText("");
+            voucherCode.setText("");
             voucherError.setVisibility(View.VISIBLE);
             // voucherDivider.setBackgroundColor(R.color.red_middle);
             hideActivityProgress();
@@ -651,17 +651,27 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         setTotal(cart);
         // Set voucher
         String couponDiscount = cart.getCouponDiscount();
-        if (couponDiscount != null && !couponDiscount.equals("")) {
+        String couponCope = cart.getCouponCode();
+        if (!TextUtils.isEmpty(couponDiscount)) {
             double couponDiscountValue = Double.parseDouble(couponDiscount);
             if (couponDiscountValue > 0) {
                 // Fix NAFAMZ-7848
                 voucherValue.setText("- " + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue).toString()));
                 voucherContainer.setVisibility(View.VISIBLE);
+
+                if (!TextUtils.isEmpty(couponCope)) {
+                    // Change Coupon
+                    changeVoucher(couponCope);
+                }
             } else {
                 voucherContainer.setVisibility(View.GONE);
+                // Clean Voucher
+                removeVoucher();
             }
         } else {
             voucherContainer.setVisibility(View.GONE);
+            // Clean Voucher
+            removeVoucher();
         }
 
         items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
@@ -789,6 +799,30 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             TrackerDelegator.trackPage(TrackingPage.FILLED_CART);
 
         }
+    }
+
+    /**
+     * Replace voucher and update Coupon field
+     * 
+     * @param voucher
+     */
+    private void changeVoucher(String voucher) {
+        Log.d(TAG, "changeVoucher to " + voucher);
+        mVoucher = voucher;
+        removeVoucher = true;
+        prepareCouponView();
+    }
+
+    /**
+     * Clean Voucher field
+     */
+    private void removeVoucher() {
+        Log.d(TAG, "removeVoucher");
+        mVoucher = null;
+        removeVoucher = false;
+        // Clean Voucher field
+        voucherCode.setText("");
+        prepareCouponView();
     }
 
     /**
@@ -1076,9 +1110,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     };
 
     private void prepareCouponView() {
-        voucherValue = (EditText) getView().findViewById(R.id.voucher_name);
-        if (mVoucher != null && mVoucher.length() > 0) {
-            voucherValue.setText(mVoucher);
+        voucherCode = (EditText) getView().findViewById(R.id.voucher_name);
+        if (!TextUtils.isEmpty(mVoucher)) {
+            voucherCode.setText(mVoucher);
         }
 
         // voucherDivider = getView().findViewById(R.id.voucher_divider);
@@ -1088,21 +1122,19 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             couponButton.setText(getString(R.string.voucher_remove));
         }
         couponButton.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                mVoucher = voucherValue.getText().toString();
+                mVoucher = voucherCode.getText().toString();
                 getBaseActivity().hideKeyboard();
-                if (mVoucher != null && mVoucher.length() > 0) {
+                if (!TextUtils.isEmpty(mVoucher)) {
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
                     Log.i(TAG, "code1coupon : " + mVoucher);
-                    if (couponButton.getText().toString().equalsIgnoreCase(getResources().getString(R.string.voucher_use))) {
+                    if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
                         triggerSubmitVoucher(mContentValues);
                     } else {
                         triggerRemoveVoucher(mContentValues);
                     }
-
                 } else {
                     Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message), Toast.LENGTH_LONG).show();
                 }

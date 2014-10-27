@@ -40,6 +40,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -67,7 +68,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     private Button couponButton;
     // private View voucherDivider;
     private TextView voucherError;
-    EditText voucherValue;
+    EditText voucherCode;
     private String mVoucher = null;
     private boolean noPaymentNeeded = false;
     
@@ -293,12 +294,11 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         paymentMethodsContainer.refreshDrawableState();
         showFragmentContentContainer();
     }
-        
-    private void prepareCouponView() {
 
-        voucherValue = (EditText) getView().findViewById(R.id.voucher_name);
-        if (mVoucher != null && mVoucher.length() > 0) {
-            voucherValue.setText(mVoucher);
+    private void prepareCouponView() {
+        voucherCode = (EditText) getView().findViewById(R.id.voucher_name);
+        if (!TextUtils.isEmpty(mVoucher)) {
+            voucherCode.setText(mVoucher);
         }
 
         // voucherDivider = getView().findViewById(R.id.voucher_divider);
@@ -308,24 +308,21 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             couponButton.setText(getString(R.string.voucher_remove));
         }
         couponButton.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                mVoucher = voucherValue.getText().toString();
+                mVoucher = voucherCode.getText().toString();
                 getBaseActivity().hideKeyboard();
-                if (mVoucher != null && mVoucher.length() > 0) {
+                if (!TextUtils.isEmpty(mVoucher)) {
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
                     Log.i(TAG, "code1coupon : " + mVoucher);
-                    if (couponButton.getText().toString().equalsIgnoreCase(getResources().getString(R.string.voucher_use))) {
+                    if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
                         triggerSubmitVoucher(mContentValues);
                     } else {
                         triggerRemoveVoucher(mContentValues);
                     }
-
                 } else {
-                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message),
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -388,7 +385,26 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
-    
+
+    /**
+     * Fill Coupon field if orderSummary has discountCouponCode
+     * 
+     * @param orderSummary
+     */
+    private void updateVoucher(OrderSummary orderSummary) {
+        if (orderSummary != null) {
+            if (orderSummary.hasCouponCode()) {
+                mVoucher = orderSummary.getDiscountCouponCode();
+                if (!TextUtils.isEmpty(mVoucher)) {
+                    removeVoucher = true;
+                    prepareCouponView();
+                } else {
+                    mVoucher = null;
+                }
+            }
+        }
+    }
+
     /**
      * ############# RESPONSE #############
      */
@@ -419,6 +435,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
                 Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 loadForm(form);                
             }
+
+            updateVoucher(orderSummary);
 
             break;
         case SET_PAYMENT_METHOD_EVENT:
@@ -487,7 +505,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             break;
         case ADD_VOUCHER:
         case REMOVE_VOUCHER:
-            voucherValue.setText("");
+            voucherCode.setText("");
             voucherError.setVisibility(View.VISIBLE);
             // voucherDivider.setBackgroundColor(R.color.red_middle);
             hideActivityProgress();
