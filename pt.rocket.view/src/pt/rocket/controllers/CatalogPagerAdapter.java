@@ -46,7 +46,6 @@ public class CatalogPagerAdapter extends FragmentPagerAdapter {
      */
     @Override
     public Fragment getItem(int position) {
-        Log.e("FITLER","getItem:"+position);
         Bundle params = (Bundle) fragmentParameters.clone();
         params.putInt(CatalogPageFragment.PARAM_PAGE_INDEX, position);
         params.putBoolean(CatalogPageFragment.PARAM_IS_LANDSCAPE, isLandscape);
@@ -103,12 +102,6 @@ public class CatalogPagerAdapter extends FragmentPagerAdapter {
         for (int index = 0; index < mSortOptions.size(); index++) {
             pageFragment = (CatalogPageFragment) fragmentManager.findFragmentByTag(getFragmentTag(index));
             if (null != pageFragment) {
-                
-                Log.e("CatalogPage",":"+index);
-//                Bundle bundle = pageFragment.getArguments();
-//                bundle.putBoolean("flag", true);
-//                pageFragment.setArguments(bundle);
-                
                 pageFragment.setProductClear(true);
             }
         }

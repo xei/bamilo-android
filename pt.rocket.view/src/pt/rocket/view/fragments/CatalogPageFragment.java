@@ -1096,12 +1096,15 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.fragment_root_retry_button) {
-            Bundle bundle = new Bundle();
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, getArguments(), FragmentController.ADD_TO_BACK_STACK);
 
         }
     }
     
+    /**
+     * method used to set flag to after filter is applied to clean all products
+     * @param toClear
+     */
     public void setProductClear(boolean toClear){
         isProductClear = toClear;
     }
