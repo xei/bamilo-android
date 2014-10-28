@@ -92,7 +92,7 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
         Log.d(TAG, "ON PARSE RESPONSE BUNDLE");
         
         JumiaApplication.INSTANCE.setCart(null);
-        ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+        ShoppingCart cart = new ShoppingCart();
         try {
             cart.initialize(jsonObject);
         } catch (JSONException e) {

@@ -6,7 +6,6 @@ package pt.rocket.helpers.checkout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.utils.Constants;
@@ -54,7 +53,7 @@ public class GetMyOrderHelper extends BaseHelper {
         try {
 
             // Get order
-            OrderSummary orderSummary = new OrderSummary(jsonObject, JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+            OrderSummary orderSummary = new OrderSummary(jsonObject);
             
             // Get next step
             bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));

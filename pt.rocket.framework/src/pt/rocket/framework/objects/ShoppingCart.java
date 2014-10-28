@@ -36,7 +36,6 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	private double mExtraCosts;
 	private String mSumCostsValue;
 	private boolean hasSumCosts;
-	private Map<String, Map<String, String>> itemSimpleDataRegistry;
 
 	private String mCartCleanValue;
 	private String mCouponDiscount;
@@ -50,8 +49,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 * Constructor
 	 * @param itemSimpleDataRegistry
 	 */
-	public ShoppingCart(Map<String, Map<String, String>> itemSimpleDataRegistry) {
-		this.itemSimpleDataRegistry = itemSimpleDataRegistry;
+	public ShoppingCart() {
 	}
 
 	/*
@@ -124,8 +122,6 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 				itemObject = cartObject.getJSONObject(key);
 				ShoppingCartItem item = new ShoppingCartItem(key, null);
 				item.initialize(itemObject);
-				if (itemSimpleDataRegistry.containsKey(item.getConfigSKU()))
-					item.setSimpleData(itemSimpleDataRegistry.get(item.getConfigSKU()));
 				mCartItems.put(key, item);
 			} catch (JSONException e) {
 				Log.e(TAG, "fillCartHashMap: error", e);
@@ -267,10 +263,16 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		this.mCouponDiscount = couponDiscount;
     }
 
+	/**
+	 * 
+	 */
     public String getCouponCode() {
         return mCouponCode;
     }
 
+    /**
+     * 
+     */
     public void setCouponCode(String couponCode) {
         this.mCouponCode = couponCode;
     }
@@ -354,7 +356,6 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		dest.writeInt(mCartCount);
 		dest.writeString(mVatValue);
 		dest.writeString(mShippingValue);
-		dest.writeMap(itemSimpleDataRegistry);
 		dest.writeBooleanArray(new boolean[] { hasSumCosts });
 		dest.writeDouble(mExtraCosts);
 		dest.writeString(mSumCostsValue);
@@ -377,8 +378,6 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		mCartCount = in.readInt();
 		mVatValue = in.readString();
 		mShippingValue = in.readString();
-		itemSimpleDataRegistry = new HashMap<String, Map<String, String>>();
-		in.readMap(itemSimpleDataRegistry, String.class.getClassLoader());
 		in.readBooleanArray(new boolean[] { hasSumCosts });
 		mExtraCosts = in.readDouble();
 		mSumCostsValue = in.readString();

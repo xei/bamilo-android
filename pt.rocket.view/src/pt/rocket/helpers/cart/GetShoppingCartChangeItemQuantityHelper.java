@@ -48,7 +48,7 @@ public class GetShoppingCartChangeItemQuantityHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d("TRACK", "parseResponseBundle GetShoppingCartChangeItemQuantityHelper");
         JumiaApplication.INSTANCE.setCart(null);
-        ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+        ShoppingCart cart = new ShoppingCart();
         try {
             cart.initialize(jsonObject);
         } catch (JSONException e) {

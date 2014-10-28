@@ -6,7 +6,6 @@ package pt.rocket.helpers.checkout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.utils.Constants;
@@ -59,7 +58,7 @@ public class SetPaymentMethodHelper extends BaseHelper {
         
         try {
             // Get order
-            OrderSummary orderSummary = new OrderSummary(jsonObject, JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+            OrderSummary orderSummary = new OrderSummary(jsonObject);
             bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
             
         } catch (JSONException e) {

@@ -1,8 +1,6 @@
 
 package pt.rocket.framework.objects;
 
-import java.util.Map;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,8 +42,6 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	
 	private Address mBillingAddress;
 
-	private Map<String, Map<String, String>> simpleData;
-
 	private String mDiscountCouponValue;
 
 	private String mDiscountCouponCode;
@@ -61,8 +57,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	 * @param jsonObject
 	 * @throws JSONException
 	 */
-	public OrderSummary(JSONObject jsonObject, Map<String, Map<String, String>> simpleData) throws JSONException {
-		this.simpleData = simpleData;
+	public OrderSummary(JSONObject jsonObject) throws JSONException {
 		initialize(jsonObject);
 	}
 
@@ -96,7 +91,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
         if(jsonOrder != null && !jsonObject.isNull(RestConstants.JSON_CART_TAG)) {
             JSONObject jsonCart = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
             Log.d(TAG, "CART: " + jsonCart.toString());
-            ShoppingCart cart = new ShoppingCart(simpleData);
+            ShoppingCart cart = new ShoppingCart();
             cart.initialize(jsonCart);
             mCart = cart;
         }

@@ -54,30 +54,30 @@ public final class ShopSelector {
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		setLocale( context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null));
 		RestContract.init(context, shopId);
-		RestClientSingleton.init(context);
-		
+		RestClientSingleton.getSingleton(context).init();
+
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
 		AdjustTracker.startup(context);
 		CurrencyFormatter.initialize(context, currencyCode);
 		AnalyticsGoogle.startup(context, shopId);
 		Ad4PushTracker.startup(context);
         ApptimizeTracking.startup(context);
-        
-        sShopId = shopId;
-        sShopName = context.getResources().getString( R.string.global_server_shop_name);
-        sCountryName = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
-    }
-    
-    /**
-     * Initializing To General Requests
-     * 
-     * @param context
-     * @param shopId
-     */
-    public static void init(Context context) {
-        
-        RestContract.init(context);
-        RestClientSingleton.init(context);
+		
+		sShopId = shopId;
+		sShopName = context.getResources().getString( R.string.global_server_shop_name);
+		sCountryName = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
+	}
+	
+	/**
+	 * Initializing To General Requests
+	 * 
+	 * @param context
+	 * @param shopId
+	 */
+	public static void init(Context context) {
+		
+		RestContract.init(context);
+		RestClientSingleton.getSingleton(context).init();
 
 	}
 
@@ -90,7 +90,7 @@ public final class ShopSelector {
 	public static void init(Context context, String requestHost, String basePath) {
 		
 		RestContract.init(context, requestHost, basePath);
-		RestClientSingleton.init(context);
+		RestClientSingleton.getSingleton(context).init();
 
 	}
 	
@@ -105,7 +105,7 @@ public final class ShopSelector {
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		setLocale(context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null));
 		RestContract.init(context, shopId);
-		RestClientSingleton.init(context);
+		RestClientSingleton.getSingleton(context).init();
 
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
 		CurrencyFormatter.initialize(context, currencyCode);

@@ -70,7 +70,7 @@ public class GetShoppingCartRemoveItemHelper extends BaseHelper {
         if (!isToUpdateCart) return null;
 
         JumiaApplication.INSTANCE.setCart(null);
-        ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+        ShoppingCart cart = new ShoppingCart();
         try {
             cart.initialize(jsonObject);
         } catch (JSONException e) {

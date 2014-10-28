@@ -393,8 +393,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements OnC
     }
 
     private void prepareCookieStore() {
-        List<Cookie> cookies = RestClientSingleton.getSingleton(getBaseActivity()).getCookieStore()
-                .getCookies();
+        List<Cookie> cookies = RestClientSingleton.getSingleton(getBaseActivity()).getCookies();
         CookieManager cookieManager = CookieManager.getInstance();
         if (!cookies.isEmpty()) {
             CookieSyncManager.createInstance(getActivity());

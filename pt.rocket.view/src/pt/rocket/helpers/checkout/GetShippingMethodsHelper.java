@@ -6,7 +6,6 @@ package pt.rocket.helpers.checkout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.forms.ShippingMethodFormBuilder;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.interfaces.IMetaData;
@@ -231,7 +230,7 @@ public class GetShippingMethodsHelper extends BaseHelper {
 //            cart.initialize(cartJSON);
             
             // Get order
-            OrderSummary orderSummary = new OrderSummary(jsonObject, JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+            OrderSummary orderSummary = new OrderSummary(jsonObject);
             bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
             
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);

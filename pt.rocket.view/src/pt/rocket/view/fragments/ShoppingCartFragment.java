@@ -593,7 +593,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                             showNoItems();
 
                             // Update global cart with an empty Cart
-                            ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+                            ShoppingCart cart = new ShoppingCart();
                             JumiaApplication.INSTANCE.setCart(cart);
 
                             // Update cart

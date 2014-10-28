@@ -5,7 +5,6 @@ package pt.rocket.helpers.checkout;
 
 import org.json.JSONObject;
 
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.Addresses;
@@ -64,7 +63,7 @@ public class GetBillingFormHelper extends BaseHelper {
             Addresses addresses = new Addresses(jsonList);
             
             // Get order summary
-            OrderSummary orderSummary = new OrderSummary(jsonObject, JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+            OrderSummary orderSummary = new OrderSummary(jsonObject);
             
             // Add to bundle
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, addresses);

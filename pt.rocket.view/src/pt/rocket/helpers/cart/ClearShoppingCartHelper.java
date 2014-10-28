@@ -51,7 +51,7 @@ public class ClearShoppingCartHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d("TRACK", "parseResponseBundle GetShoppingCartChangeItemQuantityHelper");
         JumiaApplication.INSTANCE.setCart(null);
-        ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+        ShoppingCart cart = new ShoppingCart();
         JumiaApplication.INSTANCE.setCart(cart);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT);

@@ -57,7 +57,7 @@ public class LogOut {
                 if (baseActivity != null) {
                     baseActivity.dismissProgress();
 
-                    RestClientSingleton.getSingleton(baseActivity).getCookieStore().clear();
+                    RestClientSingleton.getSingleton(baseActivity).clearCookieStore();
                     JumiaApplication.INSTANCE.setLoggedIn(false);
                     JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
                     TrackerDelegator.trackLogoutSuccessful();

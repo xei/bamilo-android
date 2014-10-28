@@ -193,7 +193,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         }
         
         // Clean cart and payment
-        JumiaApplication.INSTANCE.setCart(new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry()));
+        JumiaApplication.INSTANCE.setCart(new ShoppingCart());
         JumiaApplication.INSTANCE.setPaymentMethodForm(null);
         // Update cart info
         getBaseActivity().updateCartInfo();

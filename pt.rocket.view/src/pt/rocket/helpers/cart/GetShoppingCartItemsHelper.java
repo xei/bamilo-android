@@ -49,7 +49,7 @@ public class GetShoppingCartItemsHelper extends BaseHelper {
         Log.d(TAG, "ON PARSE REPONSE" + jsonObject.toString());
         JumiaApplication.INSTANCE.setCart(null);
         Log.d(TAG, "CLEAN CART");        
-        ShoppingCart cart = new ShoppingCart(JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+        ShoppingCart cart = new ShoppingCart();
         try {
             cart.initialize(jsonObject);
         } catch (JSONException e) {

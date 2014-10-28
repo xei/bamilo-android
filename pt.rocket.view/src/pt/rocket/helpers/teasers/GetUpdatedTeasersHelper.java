@@ -72,7 +72,7 @@ public class GetUpdatedTeasersHelper extends BaseHelper {
         if(!TextUtils.isEmpty(md5) && !TextUtils.isEmpty(mOldMd5) && mOldMd5.equals(md5))
             return parseResponseErrorBundle(bundle);
         // Remove the old request from cache
-        RestClientSingleton.INSTANCE.moveEntryInCache(EVENT_TYPE.action, EventType.GET_TEASERS_EVENT.action);
+        RestClientSingleton.sRestClientSingleton.moveEntryInCache(EVENT_TYPE.action, EventType.GET_TEASERS_EVENT.action);
         // MD5 are different then parse response
         try {
             parseJson(jsonObject, bundle);

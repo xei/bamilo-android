@@ -1,8 +1,6 @@
 package pt.rocket.framework.rest;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.UnknownHostException;
@@ -36,9 +34,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import ch.boye.httpclientandroidlib.Consts;
-import ch.boye.httpclientandroidlib.Header;
 import ch.boye.httpclientandroidlib.HttpEntity;
-import ch.boye.httpclientandroidlib.HttpHost;
 import ch.boye.httpclientandroidlib.HttpResponse;
 import ch.boye.httpclientandroidlib.HttpStatus;
 import ch.boye.httpclientandroidlib.NameValuePair;
@@ -60,7 +56,7 @@ import ch.boye.httpclientandroidlib.conn.ConnectTimeoutException;
 import ch.boye.httpclientandroidlib.conn.HttpHostConnectException;
 import ch.boye.httpclientandroidlib.conn.scheme.Scheme;
 import ch.boye.httpclientandroidlib.conn.scheme.SchemeRegistry;
-import ch.boye.httpclientandroidlib.impl.client.BasicCookieStore;
+import ch.boye.httpclientandroidlib.cookie.Cookie;
 import ch.boye.httpclientandroidlib.impl.client.DecompressingHttpClient;
 import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
 import ch.boye.httpclientandroidlib.impl.client.cache.CacheConfig;
@@ -71,7 +67,6 @@ import ch.boye.httpclientandroidlib.params.BasicHttpParams;
 import ch.boye.httpclientandroidlib.params.HttpConnectionParams;
 import ch.boye.httpclientandroidlib.params.HttpParams;
 import ch.boye.httpclientandroidlib.protocol.BasicHttpContext;
-import ch.boye.httpclientandroidlib.protocol.ExecutionContext;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
 import de.akquinet.android.androlog.Log;
@@ -89,6 +84,8 @@ import de.akquinet.android.androlog.Log;
  * 
  * notifies the Processor the state of the current REST Methodcall
  * 
+ * @see https://code.google.com/p/httpclientandroidlib/
+ * 
  * @author Jacob Zschunke
  * 
  */
@@ -97,72 +94,86 @@ public final class RestClientSingleton {
 	private static final String TAG = RestClientSingleton.class.getSimpleName();
 	
 	private static final int MAX_CACHE_OBJECT_SIZE = 131072;
+
+    public static RestClientSingleton sRestClientSingleton;
 	
-	//private static final Pattern proxyPattern = Pattern.compile(".*@(.*):[0-9]*$");
+	private DarwinHttpClient mDarwinHttpClient;
 	
-	public static RestClientSingleton INSTANCE;
+	private HttpClient mHttpClient;
 	
-	private DarwinHttpClient darwinHttpClient;
+	private PersistentCookieStore mCookieStore;
 	
-	private final HttpClient httpClient;
+	private HttpContext mHttpContext;
 	
-	private CookieStore cookieStore;
+	private HttpCacheStorage mCacheStore;
 	
-	private HttpContext httpContext;
+	private ConnectivityManager mConnManager;
 	
-	private HttpCacheStorage cache; 	// Handles all database operations
-	
-	private ConnectivityManager connManager;
-	
-	private Context context;
+	private Context mContext;
+
+	/**
+	 * Create a singleton instance
+	 * @param context
+	 * @return RestClientSingleton
+	 * @author spereira
+	 */
+    public static synchronized RestClientSingleton getSingleton(Context context) {
+        // Validate the current reference
+        return sRestClientSingleton == null ? sRestClientSingleton = new RestClientSingleton(context) : sRestClientSingleton;
+    }
 	
 	/**
-	 * 
+	 * Constructor
 	 * @param context
+	 * @author spereira
 	 */
 	private RestClientSingleton(Context context) {
-		this.context = context;
-		connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-		CacheConfig cacheConfig = new CacheConfig();
-		cacheConfig.setMaxCacheEntries(100);
-		cacheConfig.setMaxObjectSize(MAX_CACHE_OBJECT_SIZE);
-		cacheConfig.setSharedCache(false);
-		cache = new DBHttpCacheStorage(context, cacheConfig);
-		darwinHttpClient = new DarwinHttpClient(getHttpParams(context));
-		setAuthentication(context, darwinHttpClient);
-
-		CachingHttpClient cachingClient = new CachingHttpClient(darwinHttpClient, cache, cacheConfig);
-		cachingClient.log = new LazHttpClientAndroidLog("CachingHttpClient");
-		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-			cachingClient.log.enableWarn(true);
-			cachingClient.log.enableInfo(true);
-			cachingClient.log.enableTrace(true);
-		}
-
-		httpClient = new DecompressingHttpClient(cachingClient);
-		httpContext = new BasicHttpContext();
-		cookieStore = new BasicCookieStore();
-		httpContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
-		
-		// Set the default or custom user agent
-		setHttpUserAgent();
-
+	    Log.i(TAG, "CONSTRUCTOR");
+	    // Save context
+	    this.mContext = context;
+	    // Save connectivity manager
+	    this.mConnManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    // Initialize rest client
+	    this.init();
 	}
+	
+	/**
+	 * Initialize all components.
+	 * @author spereira
+	 */
+    public void init(){
+        Log.i(TAG, "ON INITIALIZE");
+        
+        CacheConfig cacheConfig = new CacheConfig();
+        cacheConfig.setMaxCacheEntries(100);
+        cacheConfig.setMaxObjectSize(MAX_CACHE_OBJECT_SIZE);
+        cacheConfig.setSharedCache(false);
+        mCacheStore = new DBHttpCacheStorage(mContext, cacheConfig);
+        mDarwinHttpClient = new DarwinHttpClient(getHttpParams(mContext));
+        setAuthentication(mContext, mDarwinHttpClient);
 
-	public static RestClientSingleton init(Context context) {
-		INSTANCE = new RestClientSingleton(context);
-		return INSTANCE;
-	}
+        CachingHttpClient cachingClient = new CachingHttpClient(mDarwinHttpClient, mCacheStore, cacheConfig);
+        cachingClient.log = new LazHttpClientAndroidLog("CachingHttpClient");
+        if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
+            cachingClient.log.enableWarn(true);
+            cachingClient.log.enableInfo(true);
+            cachingClient.log.enableTrace(true);
+        }
 
-	public static synchronized RestClientSingleton getSingleton(Context context) {
-		if (INSTANCE == null) {
-			Log.w(TAG, "RestClientSingleton needs to be initialized!");
-			return init(context);
-		}
-		INSTANCE.context = context;
-		return INSTANCE;
-	}
+        mHttpClient = new DecompressingHttpClient(cachingClient);
+        mHttpContext = new BasicHttpContext();
+        mCookieStore = new PersistentCookieStore(mContext);
+        mHttpContext.setAttribute(ClientContext.COOKIE_STORE, mCookieStore);
+        
+        // Set the default or custom user agent
+        setHttpUserAgent();
+    }
+
+
+	
+    /*
+     * ############# HTTP PARAMS #############
+     */
 	
 	/**
 	 * Method used to set the user agent
@@ -173,9 +184,52 @@ public final class RestClientSingleton {
 		String defaultUserAgent = System.getProperty("http.agent");
 		Log.i(TAG, "DEFAULT USER AGENT: " + defaultUserAgent);
 		if(!TextUtils.isEmpty(defaultUserAgent)) {
-			httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, defaultUserAgent);
+			mHttpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, defaultUserAgent);
 		}
 	}
+	
+
+    /*
+     * ############# COOKIE #############
+     */
+    
+    /**
+     * Get the Cookie store
+     * @return CookieStore
+     * @author spereira
+     */
+    public CookieStore getCookieStore() {
+        return mCookieStore;
+    }
+    
+    /**
+     * Clear all cookies from Cookie Store.
+     * @author spereira
+     */
+    public void clearCookieStore() {
+        mCookieStore.clear();
+    }
+    
+    /**
+     * Return all cookies from CookieStore.
+     * @return list of cookies
+     * @author spereira
+     */
+    public List<Cookie> getCookies() {
+        return mCookieStore.getCookies();
+    }
+    
+    /**
+     * Persist session cookie.
+     * @author spereira
+     */
+    public void persistSessionCookie() {
+        mCookieStore.saveSessionCookie();
+    }
+	
+    /*
+     * ############# GET #############
+     */
 
 	/**
 	 * Sends a HTTP GET request to the given url and returns the response as
@@ -242,8 +296,7 @@ public final class RestClientSingleton {
 			for (Entry<String, Object> entry : formData.valueSet()) {
 				Object value = entry.getValue();
 				if (value == null) {
-					Log.w(TAG, "entry for key " + entry.getKey()
-							+ " is null - ignoring - form request will fail");
+					Log.w(TAG, "entry for key " + entry.getKey() + " is null - ignoring - form request will fail");
 					continue;
 				}
 	
@@ -258,69 +311,6 @@ public final class RestClientSingleton {
 
 		return executeHttpRequest(httpRequest, mHandler, metaData);
 	}
-
-	/**
-	 * Sends a HTTP PUT request with formData to the given url and returns the
-	 * response as String (e.g. a json string).
-	 * 
-	 * @param ctx
-	 *            Used for the RestProcessor to call getContentResolver and
-	 *            store the state in the database
-	 * @param urlString
-	 *            the URL to send the HTTP request
-	 * @param formData
-	 *            name - value pairs of the form to send with the request
-	 * @return the response as String e.g. a json string
-	 */
-	// public String executePutRestUrlString(Uri uri, ContentValues formData,
-	// ResultReceiver resultReceiver, Bundle metaData) {
-	// httpClient.getParams().setParameter(
-	// ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
-	//
-	// Log.d(TAG, "put: uri = " + uri.toString());
-	// HttpPut httpRequest = new HttpPut(uri.toString());
-	//
-	// List<NameValuePair> params = new ArrayList<NameValuePair>();
-	// for (Entry<String, Object> entry : formData.valueSet()) {
-	// params.add(new BasicNameValuePair(entry.getKey(), (String) entry
-	// .getValue()));
-	// if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-	// Log.d(TAG, "put: " + entry.getKey() + "="
-	// + entry.getValue().toString());
-	// }
-	// }
-	//
-	// try {
-	// httpRequest.setEntity(new UrlEncodedFormEntity(params));
-	// } catch (UnsupportedEncodingException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// return executeHttpRequest(httpRequest, resultReceiver, metaData);
-	// }
-
-	/**
-	 * Sends a HTTP DELETE request to the given url and returns the response as
-	 * String (e.g. a json string).
-	 * 
-	 * @param ctx
-	 *            Used for the RestProcessor to call getContentResolver and
-	 *            store the state in the database
-	 * @param urlString
-	 *            the URL to send the HTTP request
-	 * @return the response as String e.g. a json string
-	 */
-	// public String executeDeleteRestUrlString(Uri uri,
-	// ResultReceiver resultReceiver, Bundle metaData) {
-	// httpClient.getParams().setParameter(
-	// ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
-	//
-	// if (ConfigurationConstants.LOG_DEBUG_ENABLED)
-	// Log.d(TAG, "delete: uri = " + uri.toString());
-	// HttpDelete httpRequest = new HttpDelete(uri.toString());
-	//
-	// return executeHttpRequest(httpRequest, resultReceiver, metaData);
-	// }
 
 	/**
 	 * Executes a HTTPRequest and protocols the state of that request.
@@ -363,7 +353,6 @@ public final class RestClientSingleton {
 		}
 		
 
-		metaData = new Bundle();
 		HttpResponse response = null;
 		HttpEntity entity = null;
 		
@@ -371,17 +360,17 @@ public final class RestClientSingleton {
 		long startTimeMillis = System.currentTimeMillis();
 		
 		try {
-			response = httpClient.execute(httpRequest, httpContext);
+			response = mHttpClient.execute(httpRequest, mHttpContext);
 			int statusCode = response.getStatusLine().getStatusCode();
 			
 			if (statusCode != HttpStatus.SC_OK) {
 				ClientProtocolException e = new ClientProtocolException();
 				if(statusCode == HttpStatus.SC_SERVICE_UNAVAILABLE){
 					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SERVER_IN_MAINTENANCE, result, md5, priority));
-					trackError(context, e, httpRequest.getURI(), ErrorCode.SERVER_IN_MAINTENANCE, result, false, startTimeMillis);
+					trackError(mContext, e, httpRequest.getURI(), ErrorCode.SERVER_IN_MAINTENANCE, result, false, startTimeMillis);
 				} else {
 					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_STATUS, result, md5, priority));	
-					trackError(context, e, httpRequest.getURI(), ErrorCode.HTTP_STATUS, result, false, startTimeMillis);
+					trackError(mContext, e, httpRequest.getURI(), ErrorCode.HTTP_STATUS, result, false, startTimeMillis);
 				}
 				
 				EntityUtils.consumeQuietly(response.getEntity());
@@ -390,7 +379,7 @@ public final class RestClientSingleton {
 				return null;
 			}
 
-			CacheResponseStatus responseStatus = (CacheResponseStatus) httpContext.getAttribute(CachingHttpClient.CACHE_RESPONSE_STATUS);
+			CacheResponseStatus responseStatus = (CacheResponseStatus) mHttpContext.getAttribute(CachingHttpClient.CACHE_RESPONSE_STATUS);
 			switch (responseStatus) {
 			case CACHE_HIT:
 				Log.d(TAG, "CACHE RESPONSE STATUS: A response came from the cache with no requests sent upstream");
@@ -406,50 +395,50 @@ public final class RestClientSingleton {
 				break;
 			}
 			
-			//String cacheWarning = null;
-			if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-				Header[] headers = response.getAllHeaders();
-				if (headers != null && headers.length > 0) {
-					StringBuilder sb = new StringBuilder("ServerHeaders:");
-					for (Header header : headers) {
-						//if (HeaderConstants.WARNING.equals(header.getName())) {
-						//	cacheWarning = header.getValue();
-						//}
-						sb.append("\n").append(header.getName()).append("=").append(header.getValue());
-					}
-					Log.d(TAG, sb.toString());
-				}
-			}
+//			//String cacheWarning = null;
+//			if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
+//				Header[] headers = response.getAllHeaders();
+//				if (headers != null && headers.length > 0) {
+//					StringBuilder sb = new StringBuilder("ServerHeaders:");
+//					for (Header header : headers) {
+//						//if (HeaderConstants.WARNING.equals(header.getName())) {
+//						//	cacheWarning = header.getValue();
+//						//}
+//						sb.append("\n").append(header.getName()).append("=").append(header.getValue());
+//					}
+//					Log.d(TAG, sb.toString());
+//				}
+//			}
 
-			// Detect redirect
-			HttpUriRequest currentReq = (HttpUriRequest) httpContext.getAttribute(ExecutionContext.HTTP_REQUEST);
-			HttpHost currentHost = (HttpHost) httpContext.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
-			String currentUrl = (currentReq.getURI().isAbsolute()) 
-								? currentReq.getURI().toString() 
-								: (currentHost.toURI() + currentReq.getURI());
-								
-			if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-				Log.d(TAG, "currentUrl: " + currentUrl);
-			}
-			metaData.putString(IMetaData.LOCATION, currentUrl);
+//			// Detect redirect
+//			HttpUriRequest currentReq = (HttpUriRequest) httpContext.getAttribute(ExecutionContext.HTTP_REQUEST);
+//			HttpHost currentHost = (HttpHost) httpContext.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+//			String currentUrl = (currentReq.getURI().isAbsolute()) 
+//								? currentReq.getURI().toString() 
+//								: (currentHost.toURI() + currentReq.getURI());
+//								
+//			if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
+//				Log.d(TAG, "currentUrl: " + currentUrl);
+//			}
+			
+			// metaData.putString(IMetaData.LOCATION, currentUrl);
 
 			entity = response.getEntity();
 			if (entity == null || entity.getContentLength() == 0) {
 				mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.EMPTY_ENTITY, result, md5, priority));
 				Exception e = new Exception();
-				trackError(context, e, httpRequest.getURI(), ErrorCode.EMPTY_ENTITY, null, false, startTimeMillis);
+				trackError(mContext, e, httpRequest.getURI(), ErrorCode.EMPTY_ENTITY, null, false, startTimeMillis);
 				Log.w(TAG, "Got empty entity for request: " + httpRequest.getURI() + " -> " + statusCode);
 				EntityUtils.consumeQuietly(entity);
 				return null;
 			}
-
-			// Log.i(TAG, "USER AGENT : " + System.getProperty("http.agent"));
+			
+            // Save the session cookie into preferences
+            persistSessionCookie();
 			
 			// FIXME - OutOfMemoryError
 			result = EntityUtils.toString(entity, Consts.UTF_8);
-			Log.i(TAG, "code1response : "+result.toString());
-			//Log.i(TAG, "code1 request response is: " + result.toString());
-			//result = org.apache.commons.io.IOUtils.toString(entity.getContent());
+			Log.i(TAG, "API RESPONSE : " + result.toString());
 			
 			// Get the byte count response
             int byteCountResponse = result.getBytes().length;
@@ -464,53 +453,48 @@ public final class RestClientSingleton {
 			Log.d("TRACK", "ClientProtocolException");
 			Log.e(TAG, "There was a protocol error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_PROTOCOL, result, md5, priority));
-			trackError(context, e, httpRequest.getURI(), ErrorCode.HTTP_PROTOCOL, null, false, startTimeMillis);
+			trackError(mContext, e, httpRequest.getURI(), ErrorCode.HTTP_PROTOCOL, null, false, startTimeMillis);
 		} catch (HttpHostConnectException e) {
 			Log.d("TRACK", "HttpHostConnectException");
 			Log.w(TAG, "Http host connect error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority));
-			trackError(context, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false, startTimeMillis);
+			trackError(mContext, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false, startTimeMillis);
 		} catch (ConnectTimeoutException e) {
 			Log.d("TRACK", "ConnectTimeoutException");
 			Log.w(TAG, "Connection timeout calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority));
-			trackError(context, e, httpRequest.getURI(), ErrorCode.TIME_OUT, null, false, startTimeMillis);
+			trackError(mContext, e, httpRequest.getURI(), ErrorCode.TIME_OUT, null, false, startTimeMillis);
 		} catch (SocketTimeoutException e) {
 			Log.d("TRACK", "SocketTimeoutException");
 			Log.w(TAG, "Socket timeout calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority));
-			trackError(context, e, httpRequest.getURI(), ErrorCode.TIME_OUT, null, false, startTimeMillis);
+			trackError(mContext, e, httpRequest.getURI(), ErrorCode.TIME_OUT, null, false, startTimeMillis);
 		} catch (UnknownHostException e) {
 			Log.d("TRACK", "UnknownHostException");
 			Log.w(TAG, "Unknown host error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority));
-			trackError(context, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false, startTimeMillis);
+			trackError(mContext, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false, startTimeMillis);
 		} catch (SSLException e) {
 			Log.d("TRACK", "SSLException");
 			Log.e(TAG, "SSL error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SSL, result, md5, priority));
-			trackError(context, e, httpRequest.getURI(), ErrorCode.SSL, null, false, startTimeMillis);
+			trackError(mContext, e, httpRequest.getURI(), ErrorCode.SSL, null, false, startTimeMillis);
 		} catch (IOException e) {
 			Log.d("TRACK", "IOException");
 			Log.e(TAG, "IO error calling " + httpRequest.getURI(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority));
-			trackError(context, e, httpRequest.getURI(), ErrorCode.IO, null, false, startTimeMillis);
+			trackError(mContext, e, httpRequest.getURI(), ErrorCode.IO, null, false, startTimeMillis);
 		} catch (OutOfMemoryError e) {
             Log.d("TRACK", "OutOfMemoryError");
             Log.e(TAG, "OutOfMemoryError calling " + httpRequest.getURI(), e);
             mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority));
-            // Alternative to e.getStackTrace().toString()
-            // http://stackoverflow.com/questions/1149703/how-can-i-convert-a-stack-trace-to-a-string
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            String exceptionAsString = sw.toString();
-            trackError(context, null, httpRequest.getURI(), ErrorCode.IO, exceptionAsString, false, startTimeMillis);
+            trackError(mContext, null, httpRequest.getURI(), ErrorCode.IO, null, false, startTimeMillis);
 		} catch (Exception e) {
 			Log.d("TRACK", "Exception");
 			e.printStackTrace();
 			Log.e(TAG, "Anormal exception " + e.getMessage(), e);
 			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.UNKNOWN_ERROR, result, md5, priority));
-			trackError(context, e, httpRequest.getURI(), ErrorCode.UNKNOWN_ERROR, null, false, startTimeMillis);
+			trackError(mContext, e, httpRequest.getURI(), ErrorCode.UNKNOWN_ERROR, null, false, startTimeMillis);
 		}
 
 		EntityUtils.consumeQuietly(entity);
@@ -522,7 +506,6 @@ public final class RestClientSingleton {
 		HttpParams httpParameters = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParameters, ConfigurationConstants.CONNECTION_TIMEOUT);
 		HttpConnectionParams.setSoTimeout(httpParameters, ConfigurationConstants.SOCKET_TIMEOUT);
-		// setProxy( context, httpParameters );
 		return httpParameters;
 	}
 
@@ -537,16 +520,6 @@ public final class RestClientSingleton {
 		
 		if(RestContract.USE_AUTHENTICATION == null){
 			SharedPreferences sharedPrefs = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-	        
-	        /**
-	         * TODO: Validate
-	         * Fixed crash.
-	         * If shop id isn't present in this point something is wrong, return 0 as default value
-	         * @author sergiopereira 
-	         */
-	        //int shopId = sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_ID, 0);
-	        //if(shopId == -1) shopId = 0;
-			// Old
 	        String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
 	        if(shopId == null){
 	        	throw new NullPointerException(RestClientSingleton.class.getName() + " Shop Id is null!! Cannot initialize!");
@@ -562,13 +535,9 @@ public final class RestClientSingleton {
 							new UsernamePasswordCredentials(RestContract.AUTHENTICATION_USER, RestContract.AUTHENTICATION_PASS));
 		}
 	}
-
-	public CookieStore getCookieStore() {
-		return cookieStore;
-	}
-
+    
 	private boolean checkConnection() {
-		NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
+		NetworkInfo networkInfo = mConnManager.getActiveNetworkInfo();
 		return networkInfo != null && networkInfo.isConnected();
 	}
 
@@ -580,7 +549,7 @@ public final class RestClientSingleton {
 		}
 
 		Uri uri = RemoteService.completeUri(Uri.parse(url));
-		SchemeRegistry sr = darwinHttpClient.getConnectionManager().getSchemeRegistry();
+		SchemeRegistry sr = mDarwinHttpClient.getConnectionManager().getSchemeRegistry();
 		Scheme s = sr.getScheme(uri.getScheme());
 		uri = uri.buildUpon().authority(uri.getAuthority() + ":" + String.valueOf(s.getDefaultPort())).build();
 		String newUrl = Uri.decode(uri.toString());
@@ -588,7 +557,7 @@ public final class RestClientSingleton {
 			Log.d(TAG, "Removing entry from cache: " + newUrl);
 		}
 		try {
-			cache.removeEntry(newUrl);
+			mCacheStore.removeEntry(newUrl);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -607,11 +576,11 @@ public final class RestClientSingleton {
 			String uri1 = RemoteService.completeUri(Uri.parse(url1)).toString();
 			String uri2 = RemoteService.completeUri(Uri.parse(url2)).toString();
 			// Get entry from url1
-			HttpCacheEntry entry = cache.getEntry(uri1);
+			HttpCacheEntry entry = mCacheStore.getEntry(uri1);
 			// Copy entry for url2
-			cache.putEntry(uri2, entry);
+			mCacheStore.putEntry(uri2, entry);
 			// Remove entry for url1
-			cache.removeEntry(uri1);
+			mCacheStore.removeEntry(uri1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (NullPointerException e) {
@@ -685,9 +654,6 @@ public final class RestClientSingleton {
 	private void trackError(Context mContext, Exception e, URI uri, ErrorCode errorCode, String msg, boolean nonFatal, long startTimeMillis) {
 		String uriString = (uri != null) ? uri.toString() : "n.a.";
 		NewRelicTracker.noticeFailureTransaction(uriString, startTimeMillis, System.currentTimeMillis());
-		// Track http failure
-		// Send exception
-		// ErrorMonitoring.sendException(mContext, e, uriString, errorCode, msg, null, nonFatal);
 	}
 	
 }

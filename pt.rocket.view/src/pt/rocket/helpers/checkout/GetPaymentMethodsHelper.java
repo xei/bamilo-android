@@ -6,7 +6,6 @@ package pt.rocket.helpers.checkout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.interfaces.IMetaData;
@@ -68,7 +67,7 @@ public class GetPaymentMethodsHelper extends BaseHelper {
             if (!form.initialize(formJSON))
                 Log.e(TAG, "Error initializing the form using the data");
 
-            OrderSummary orderSummary = new OrderSummary(jsonObject, JumiaApplication.INSTANCE.getItemSimpleDataRegistry());
+            OrderSummary orderSummary = new OrderSummary(jsonObject);
             bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
 
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, form);
