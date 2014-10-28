@@ -285,7 +285,7 @@ public class RocketImageLoader {
                         	imageView.setImageResource(placeHolderImageId);
                         }
                     }
-                }, 0, 0, tag);
+                }, 0, 0/*-, tag*/);
                 imageView.setTag(imgContainer);
             }
         } else if (imageView != null) {
