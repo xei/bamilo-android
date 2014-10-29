@@ -202,12 +202,12 @@ public class HockeyStartup {
 
     private static CrashManagerListener sCml = new CrashManagerListener() {
         
-        public Boolean ignoreDefaultHandler() {
+        public boolean ignoreDefaultHandler() {
             return false;
         };
 
         @Override
-        public Boolean onCrashesFound() {
+        public boolean onCrashesFound() {
             Log.d(TAG, "Crashes found - waiting for dialog to finish");
             sHandler.removeCallbacks(sStartRunnable);
             sDialogWasStarted = true;
