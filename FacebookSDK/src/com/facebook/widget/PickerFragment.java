@@ -16,13 +16,6 @@
 
 package com.facebook.widget;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -38,15 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.AlphaAnimation;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.facebook.FacebookException;
 import com.facebook.Request;
 import com.facebook.Session;
@@ -54,6 +39,8 @@ import com.facebook.SessionState;
 import com.facebook.android.R;
 import com.facebook.internal.SessionTracker;
 import com.facebook.model.GraphObject;
+
+import java.util.*;
 
 /**
  * Provides functionality common to SDK UI elements that allow the user to pick one or more
@@ -531,6 +518,14 @@ public abstract class PickerFragment<T extends GraphObject> extends Fragment {
         return adapter.getGraphObjectsById(selectionStrategy.getSelectedIds());
     }
 
+    void setSelectedGraphObjects(List<String> objectIds) {
+        for(String objectId : objectIds) {
+            if(!this.selectionStrategy.isSelected(objectId)) {
+                this.selectionStrategy.toggleSelection(objectId);
+            }
+        }
+    }
+
     void saveSettingsToBundle(Bundle outState) {
         outState.putBoolean(SHOW_PICTURES_BUNDLE_KEY, showPictures);
         if (!extraFields.isEmpty()) {
@@ -911,7 +906,7 @@ public abstract class PickerFragment<T extends GraphObject> extends Fragment {
 
         public void startLoading(Request request) {
             if (loader != null) {
-                loader.startLoading(request, true);
+                loader.startLoading(request, canSkipRoundTripIfCached());
                 onStartLoading(loader, request);
             }
         }
@@ -934,6 +929,10 @@ public abstract class PickerFragment<T extends GraphObject> extends Fragment {
 
         protected void onLoadFinished(GraphObjectPagingLoader<T> loader, SimpleGraphObjectCursor<T> data) {
             updateAdapter(data);
+        }
+
+        protected boolean canSkipRoundTripIfCached() {
+            return true;
         }
     }
 

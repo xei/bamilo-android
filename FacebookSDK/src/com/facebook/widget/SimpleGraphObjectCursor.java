@@ -16,12 +16,11 @@
 
 package com.facebook.widget;
 
+import android.database.CursorIndexOutOfBoundsException;
+import com.facebook.model.GraphObject;
+
 import java.util.ArrayList;
 import java.util.Collection;
-
-import android.database.CursorIndexOutOfBoundsException;
-
-import com.facebook.model.GraphObject;
 
 class SimpleGraphObjectCursor<T extends GraphObject> implements GraphObjectCursor<T> {
     private int pos = -1;

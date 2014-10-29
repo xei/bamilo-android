@@ -16,14 +16,10 @@
 
 package com.facebook;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import android.os.Handler;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * RequestBatch contains a list of Request objects that can be sent to Facebook in a single round-trip.
@@ -219,6 +215,22 @@ public class RequestBatch extends AbstractList<Request> {
          * @param batch     the RequestBatch containing the Requests which were executed
          */
         void onBatchCompleted(RequestBatch batch);
+    }
+
+    /**
+     * Specifies the interface that consumers of the RequestBatch class can implement in order to be notified when the
+     * batch makes progress. The frequency of the callbacks can be controlled using
+     * {@link com.facebook.Settings#setOnProgressThreshold(long)}.
+     */
+    public interface OnProgressCallback extends Callback {
+        /**
+         * The method that will be called when a batch makes progress.
+         *
+         * @param batch     the RequestBatch containing the Requests which were executed
+         * @param current   the current value of the progress
+         * @param max       the max (target) value of the progress
+         */
+        void onBatchProgress(RequestBatch batch, long current, long max);
     }
 
     List<Response> executeAndWaitImpl() {

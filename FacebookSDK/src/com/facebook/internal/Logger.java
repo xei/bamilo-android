@@ -16,13 +16,12 @@
 
 package com.facebook.internal;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.util.Log;
-
 import com.facebook.LoggingBehavior;
 import com.facebook.Settings;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * com.facebook.internal is solely for the use of other packages within the Facebook SDK for Android. Use of

@@ -16,7 +16,11 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.facebook.android">
-    <application/>
+    package="com.facebook.android"
+    android:versionName="3.19.1" >
+
+    <application />
+
     <uses-sdk android:minSdkVersion="8" />
+
 </manifest>

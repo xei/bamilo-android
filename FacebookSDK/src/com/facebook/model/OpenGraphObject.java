@@ -1,10 +1,10 @@
 package com.facebook.model;
 
+import com.facebook.internal.NativeProtocol;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import com.facebook.internal.NativeProtocol;
 
 /**
  * Provides a strongly-typed representation of an Open Graph Object.

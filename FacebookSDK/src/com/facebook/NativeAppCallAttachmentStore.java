@@ -16,23 +16,18 @@
 
 package com.facebook;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Log;
+import com.facebook.internal.Utility;
+import com.facebook.internal.Validate;
+
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.Log;
-
-import com.facebook.internal.Utility;
-import com.facebook.internal.Validate;
 
 /**
  * <p>This class works in conjunction with {@link NativeAppCallContentProvider} to allow apps to attach binary
@@ -67,7 +62,59 @@ public final class NativeAppCallAttachmentStore implements NativeAppCallContentP
         Validate.containsNoNulls(imageAttachments.values(), "imageAttachments");
         Validate.containsNoNullOrEmpty(imageAttachments.keySet(), "imageAttachments");
 
-        if (imageAttachments.size() == 0) {
+        addAttachments(context, callId, imageAttachments, new ProcessAttachment<Bitmap>() {
+            @Override
+            public void processAttachment(Bitmap attachment, File outputFile) throws IOException {
+                FileOutputStream outputStream = new FileOutputStream(outputFile);
+                try {
+                    attachment.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                } finally {
+                    Utility.closeQuietly(outputStream);
+                }
+            }
+        });
+    }
+
+    /**
+     * Adds a number of bitmap attachment files associated with a native app call. The attachments will be
+     * served via {@link NativeAppCallContentProvider#openFile(android.net.Uri, String) openFile}.
+     *
+     * @param context the Context the call is being made from
+     * @param callId the unique ID of the call
+     * @param imageAttachments a Map of attachment names to Files containing the bitmaps; the attachment names will be
+     *                         part of the URI processed by openFile
+     * @throws java.io.IOException
+     */
+    public void addAttachmentFilesForCall(Context context, UUID callId, Map<String, File> imageAttachmentFiles) {
+        Validate.notNull(context, "context");
+        Validate.notNull(callId, "callId");
+        Validate.containsNoNulls(imageAttachmentFiles.values(), "imageAttachmentFiles");
+        Validate.containsNoNullOrEmpty(imageAttachmentFiles.keySet(), "imageAttachmentFiles");
+
+        addAttachments(context, callId, imageAttachmentFiles, new ProcessAttachment<File>() {
+            @Override
+            public void processAttachment(File attachment, File outputFile) throws IOException {
+                FileOutputStream outputStream = new FileOutputStream(outputFile);
+                FileInputStream inputStream = null;
+                try {
+                    inputStream = new FileInputStream(attachment);
+
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = inputStream.read(buffer)) > 0) {
+                        outputStream.write(buffer, 0, len);
+                    }
+                } finally {
+                    Utility.closeQuietly(outputStream);
+                    Utility.closeQuietly(inputStream);
+                }
+            }
+        });
+    }
+
+    private <T> void addAttachments(Context context, UUID callId, Map<String, T> attachments,
+            ProcessAttachment<T> processor) {
+        if (attachments.size() == 0) {
             return;
         }
 
@@ -81,19 +128,14 @@ public final class NativeAppCallAttachmentStore implements NativeAppCallContentP
         List<File> filesToCleanup = new ArrayList<File>();
 
         try {
-            for (Map.Entry<String, Bitmap> entry : imageAttachments.entrySet()) {
+            for (Map.Entry<String, T> entry : attachments.entrySet()) {
                 String attachmentName = entry.getKey();
-                Bitmap attachment = entry.getValue();
+                T attachment = entry.getValue();
 
                 File file = getAttachmentFile(callId, attachmentName, true);
                 filesToCleanup.add(file);
 
-                FileOutputStream outputStream = new FileOutputStream(file);
-                try {
-                    attachment.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                } finally {
-                    Utility.closeQuietly(outputStream);
-                }
+                processor.processAttachment(attachment, file);
             }
         } catch (IOException exception) {
             Log.e(TAG, "Got unexpected exception:" + exception);
@@ -106,6 +148,11 @@ public final class NativeAppCallAttachmentStore implements NativeAppCallContentP
             }
             throw new FacebookException(exception);
         }
+
+    }
+
+    interface ProcessAttachment<T> {
+        void processAttachment(T attachment, File outputFile) throws IOException;
     }
 
     /**

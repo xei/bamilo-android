@@ -19,12 +19,7 @@ package com.facebook.widget;
 import android.content.Context;
 import android.os.Handler;
 import android.support.v4.content.Loader;
-
-import com.facebook.FacebookException;
-import com.facebook.FacebookRequestError;
-import com.facebook.Request;
-import com.facebook.RequestBatch;
-import com.facebook.Response;
+import com.facebook.*;
 import com.facebook.internal.CacheableRequestBatch;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphObjectList;
@@ -206,7 +201,11 @@ class GraphObjectPagingLoader<T extends GraphObject> extends Loader<SimpleGraphO
             nextRequest = response.getRequestForPagedResults(Response.PagingDirection.NEXT);
 
             cursorToModify.addGraphObjects(data, fromCache);
-            cursorToModify.setMoreObjectsAvailable(true);
+            if (nextRequest != null) {
+                cursorToModify.setMoreObjectsAvailable(true);
+            } else {
+                cursorToModify.setMoreObjectsAvailable(false);
+            }
         }
 
         if (!haveData) {

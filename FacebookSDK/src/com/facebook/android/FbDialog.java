@@ -18,7 +18,6 @@ package com.facebook.android;
 
 import android.content.Context;
 import android.os.Bundle;
-
 import com.facebook.FacebookDialogException;
 import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;

@@ -16,10 +16,6 @@
 
 package com.facebook;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.UUID;
-
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -27,6 +23,10 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.util.Pair;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.UUID;
 
 /**
  * <p>Implements a <a href="http://developer.android.com/reference/android/content/ContentProvider.html">
