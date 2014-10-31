@@ -30,6 +30,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import ch.boye.httpclientandroidlib.Consts;
 import ch.boye.httpclientandroidlib.HttpEntity;
 import ch.boye.httpclientandroidlib.HttpResponse;
@@ -39,30 +40,31 @@ import ch.boye.httpclientandroidlib.auth.AuthScope;
 import ch.boye.httpclientandroidlib.auth.UsernamePasswordCredentials;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 import ch.boye.httpclientandroidlib.client.CookieStore;
-import ch.boye.httpclientandroidlib.client.CredentialsProvider;
 import ch.boye.httpclientandroidlib.client.HttpClient;
 import ch.boye.httpclientandroidlib.client.cache.CacheResponseStatus;
 import ch.boye.httpclientandroidlib.client.cache.HeaderConstants;
-import ch.boye.httpclientandroidlib.client.cache.HttpCacheContext;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheEntry;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheStorage;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import ch.boye.httpclientandroidlib.client.methods.HttpGet;
 import ch.boye.httpclientandroidlib.client.methods.HttpPost;
 import ch.boye.httpclientandroidlib.client.methods.HttpUriRequest;
-import ch.boye.httpclientandroidlib.client.protocol.HttpClientContext;
+import ch.boye.httpclientandroidlib.client.protocol.ClientContext;
 import ch.boye.httpclientandroidlib.conn.ConnectTimeoutException;
 import ch.boye.httpclientandroidlib.conn.HttpHostConnectException;
-import ch.boye.httpclientandroidlib.conn.scheme.Scheme;
-import ch.boye.httpclientandroidlib.conn.scheme.SchemeRegistry;
 import ch.boye.httpclientandroidlib.cookie.Cookie;
-import ch.boye.httpclientandroidlib.impl.client.BasicCredentialsProvider;
-import ch.boye.httpclientandroidlib.impl.client.CloseableHttpClient;
-import ch.boye.httpclientandroidlib.impl.client.HttpClientBuilder;
+import ch.boye.httpclientandroidlib.impl.client.DecompressingHttpClient;
+import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
 import ch.boye.httpclientandroidlib.impl.client.cache.CacheConfig;
-import ch.boye.httpclientandroidlib.impl.client.cache.CachingHttpClientBuilder;
+import ch.boye.httpclientandroidlib.impl.client.cache.CachingHttpClient;
 import ch.boye.httpclientandroidlib.impl.client.cache.DBHttpCacheStorage;
 import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
+import ch.boye.httpclientandroidlib.params.BasicHttpParams;
+import ch.boye.httpclientandroidlib.params.CoreProtocolPNames;
+import ch.boye.httpclientandroidlib.params.HttpConnectionParams;
+import ch.boye.httpclientandroidlib.params.HttpParams;
+import ch.boye.httpclientandroidlib.protocol.BasicHttpContext;
+import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
 import de.akquinet.android.androlog.Log;
 
@@ -88,7 +90,7 @@ public final class RestClientSingleton {
 	
 	private static final String TAG = RestClientSingleton.class.getSimpleName();
 	
-	private static final int MAX_CACHE_OBJECT_SIZE = 131072; //???
+	private static final int MAX_CACHE_OBJECT_SIZE = 131072;
 
     public static RestClientSingleton sRestClientSingleton;
 	
@@ -98,7 +100,7 @@ public final class RestClientSingleton {
 	
 	private PersistentCookieStore mCookieStore;
 	
-	private HttpClientContext mHttpContext;
+	private HttpContext mHttpContext;
 	
 	private HttpCacheStorage mCacheStore;
 	
@@ -139,17 +141,15 @@ public final class RestClientSingleton {
     public void init(){
         Log.i(TAG, "ON INITIALIZE");
         
-        CacheConfig cacheConfig = CacheConfig.custom()
-                .setMaxCacheEntries(100)
-                .setMaxObjectSize(MAX_CACHE_OBJECT_SIZE)
-                .setSharedCache(false)
-                .build();
+        CacheConfig cacheConfig = new CacheConfig();
+        cacheConfig.setMaxCacheEntries(100);
+        cacheConfig.setMaxObjectSize(MAX_CACHE_OBJECT_SIZE);
+        cacheConfig.setSharedCache(false);
         mCacheStore = new DBHttpCacheStorage(mContext, cacheConfig);
+        mDarwinHttpClient = new DarwinHttpClient(getHttpParams(mContext));
+        setAuthentication(mContext, mDarwinHttpClient);
 
-        CloseableHttpClient cachingClient = CachingHttpClientBuilder.create()
-                .setCacheConfig(cacheConfig)
-                .setHttpCacheStorage(mCacheStore)
-                .build();
+        CachingHttpClient cachingClient = new CachingHttpClient(mDarwinHttpClient, mCacheStore, cacheConfig);
         cachingClient.log = new LazHttpClientAndroidLog("CachingHttpClient");
         if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
             cachingClient.log.enableWarn(true);
@@ -157,18 +157,13 @@ public final class RestClientSingleton {
             cachingClient.log.enableTrace(true);
         }
 
-        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-        // Set the default or custom user agent
-        String userAgent = getHttpUserAgent();
-        if (userAgent != null) httpClientBuilder.setUserAgent(userAgent);
-        mHttpClient = httpClientBuilder.build();
-
-        mHttpContext = HttpCacheContext.create();
+        mHttpClient = new DecompressingHttpClient(cachingClient);
+        mHttpContext = new BasicHttpContext();
         mCookieStore = new PersistentCookieStore(mContext);
-        mHttpContext.setCookieStore(mCookieStore);
-
-        // Add credentials to mHttpContext
-        setAuthentication(mContext);
+        mHttpContext.setAttribute(ClientContext.COOKIE_STORE, mCookieStore);
+        
+        // Set the default or custom user agent
+        setHttpUserAgent();
     }
 
 
@@ -176,50 +171,20 @@ public final class RestClientSingleton {
     /*
      * ############# HTTP PARAMS #############
      */
-
-    /**
-     * Method used to get the user agent
-     * 
-     * @return userAgent or <code>null</code>
-     * @author sergiopereira
-     * @modified Andre Lopes
-     */
-    private String getHttpUserAgent() {
-        // CASE Default user agent
-        String userAgent = System.getProperty("http.agent");
-        Log.i(TAG, "DEFAULT USER AGENT: " + userAgent);
-        return userAgent;
-    }
-
-    /**
-     * Authenticate <code>HttpContext</code> with user credentials
-     * 
-     * @param mContext
-     */
-    private void setAuthentication(Context mContext) {
-        CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        AuthScope authScope = new AuthScope(RestContract.REQUEST_HOST, AuthScope.ANY_PORT);
-        UsernamePasswordCredentials credentials = null;
-
-        if (RestContract.RUNNING_TESTS) {
-            credentials = new UsernamePasswordCredentials(RestContract.AUTHENTICATION_USER_TEST, RestContract.AUTHENTICATION_PASS_TEST);
-        }
-        if (RestContract.USE_AUTHENTICATION == null) {
-            SharedPreferences sharedPrefs = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
-            if (shopId == null) {
-                throw new NullPointerException(RestClientSingleton.class.getName() + " Shop Id is null!! Cannot initialize!");
-            }
-
-            RestContract.init(mContext, "" + shopId);
-            Darwin.initialize(DarwinMode.DEBUG, mContext, "" + shopId, false);
-        }
-        if (RestContract.USE_AUTHENTICATION) {
-            credentials = new UsernamePasswordCredentials(RestContract.AUTHENTICATION_USER, RestContract.AUTHENTICATION_PASS);
-        }
-        credentialsProvider.setCredentials(authScope, credentials);
-        mHttpContext.setCredentialsProvider(credentialsProvider);
-    }
+	
+	/**
+	 * Method used to set the user agent
+	 * @author sergiopereira
+	 */
+	private void setHttpUserAgent(){
+		// CASE Default user agent
+		String defaultUserAgent = System.getProperty("http.agent");
+		Log.i(TAG, "DEFAULT USER AGENT: " + defaultUserAgent);
+		if(!TextUtils.isEmpty(defaultUserAgent)) {
+			mHttpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, defaultUserAgent);
+		}
+	}
+	
 
     /*
      * ############# COOKIE #############
@@ -411,9 +376,7 @@ public final class RestClientSingleton {
 				return null;
 			}
 
-			if (mHttpContext instanceof HttpCacheContext) {
-			CacheResponseStatus responseStatus = ((HttpCacheContext) mHttpContext).getCacheResponseStatus();
-			if (responseStatus != null) {
+			CacheResponseStatus responseStatus = (CacheResponseStatus) mHttpContext.getAttribute(CachingHttpClient.CACHE_RESPONSE_STATUS);
 			switch (responseStatus) {
 			case CACHE_HIT:
 				Log.d(TAG, "CACHE RESPONSE STATUS: A response came from the cache with no requests sent upstream");
@@ -427,8 +390,6 @@ public final class RestClientSingleton {
 			case VALIDATED:
 				Log.d(TAG, "CACHE RESPONSE STATUS: The response came from the cache after validating the entry with the origin server");
 				break;
-			}
-			}
 			}
 			
 //			//String cacheWarning = null;
@@ -537,13 +498,47 @@ public final class RestClientSingleton {
 
 		return null;
 	}
+
+	public HttpParams getHttpParams(Context context) {
+		HttpParams httpParameters = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParameters, ConfigurationConstants.CONNECTION_TIMEOUT);
+		HttpConnectionParams.setSoTimeout(httpParameters, ConfigurationConstants.SOCKET_TIMEOUT);
+		return httpParameters;
+	}
+
+	private static void setAuthentication(Context mContext, DefaultHttpClient httpClient) {
+		if(RestContract.RUNNING_TESTS){
+			httpClient.getCredentialsProvider()
+			.setCredentials(
+					new AuthScope(RestContract.REQUEST_HOST, AuthScope.ANY_PORT),
+					new UsernamePasswordCredentials(RestContract.AUTHENTICATION_USER_TEST, RestContract.AUTHENTICATION_PASS_TEST));
+			return;
+		}
+		
+		if(RestContract.USE_AUTHENTICATION == null){
+			SharedPreferences sharedPrefs = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+	        String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
+	        if(shopId == null){
+	        	throw new NullPointerException(RestClientSingleton.class.getName() + " Shop Id is null!! Cannot initialize!");
+	        }
+	        
+			RestContract.init(mContext, "" + shopId);
+			Darwin.initialize(DarwinMode.DEBUG, mContext, "" + shopId, false);
+		}
+		if (RestContract.USE_AUTHENTICATION) {
+			httpClient.getCredentialsProvider()
+					.setCredentials(
+							new AuthScope(RestContract.REQUEST_HOST, AuthScope.ANY_PORT),
+							new UsernamePasswordCredentials(RestContract.AUTHENTICATION_USER, RestContract.AUTHENTICATION_PASS));
+		}
+	}
     
 	private boolean checkConnection() {
 		NetworkInfo networkInfo = mConnManager.getActiveNetworkInfo();
 		return networkInfo != null && networkInfo.isConnected();
 	}
 
-	public void removeEntryFromCache(String url) {
+	/*-public void removeEntryFromCache(String url) {
 
 		if (url == null) {
 			Log.w(TAG, "REMOVE ENTRY FROM CACHE: URL IS NULL !");
@@ -563,7 +558,7 @@ public final class RestClientSingleton {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	
 	/**
@@ -634,7 +629,8 @@ public final class RestClientSingleton {
 		long endTimeMillis = System.currentTimeMillis();
 		// Get the elpsed time
 		long elapsed = endTimeMillis - startTimeMillis;
-		Log.i(TAG, (uri != null) ? uri.toString() : "n.a." + "--------- executeHttpRequest------------: request took " + elapsed + "ms bytes: " + bytesReceived);
+		// Log.i(TAG, (uri != null) ? uri.toString() : "n.a." + "--------- executeHttpRequest------------: request took " + elapsed + "ms bytes: " + bytesReceived);
+		Log.i(TAG, "executeHttpRequest took " + elapsed + "ms | " + ((uri != null) ? uri.toString() : "n.a."));
 		// Track http transaction
 		NewRelicTracker.noticeSuccessTransaction((uri != null) ? uri.toString() : "n.a.", status, startTimeMillis, endTimeMillis, bytesReceived);
 		// Create a message
