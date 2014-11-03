@@ -569,8 +569,8 @@ public class TrackerDelegator {
         bundle.putDouble(AdjustTracker.TRANSACTION_VALUE, value);
         
         AdjustTracker.get().trackEvent(context, TrackingEvent.CHECKOUT_FINISHED, bundle);
-        
-        String paymentMethod = params.getString(PAYMENT_METHOD_KEY,"");
+        String paymentMethod = "";
+        paymentMethod = params.getString(PAYMENT_METHOD_KEY);
         //GTM
         GTMManager.get().gtmTrackTransaction(items,EUR_CURRENCY, value,orderNr, coupon, paymentMethod, "", "");
         
@@ -580,10 +580,14 @@ public class TrackerDelegator {
         String orderNr = params.getString(ORDER_NUMBER_KEY);
         double value = params.getDouble(VALUE_KEY);
         Customer customer = params.getParcelable(CUSTOMER_KEY);
-        String coupon = params.getString(COUPON_KEY,"");
-        String paymentMethod = params.getString(PAYMENT_METHOD_KEY,"");
-        String shippingAmount = params.getString(SHIPPING_KEY, "");
-        String taxAmount = params.getString(TAX_KEY, "");
+        String coupon = "";
+        coupon = params.getString(COUPON_KEY);
+        String paymentMethod = "";
+        paymentMethod = params.getString(PAYMENT_METHOD_KEY);
+        String shippingAmount = "";
+        shippingAmount = params.getString(SHIPPING_KEY);
+        String taxAmount = "";
+        taxAmount = params.getString(TAX_KEY);
 
         Double averageValue = 0d;
 
@@ -765,8 +769,10 @@ public class TrackerDelegator {
 
         // Data
         String brand = bundle.getString(BRAND_KEY);
-        String category = bundle.getString(CATEGORY_KEY,"");
-        String subCategory = bundle.getString(SUBCATEGORY_KEY,"");
+        String category = "";
+        category = bundle.getString(CATEGORY_KEY);
+        String subCategory = "";
+        subCategory = bundle.getString(SUBCATEGORY_KEY);
         double price = bundle.getDouble(PRICE_KEY);
         double discount = bundle.getDouble(DISCOUNT_KEY);
         double rating = bundle.getDouble(RATING_KEY);
@@ -806,8 +812,10 @@ public class TrackerDelegator {
         String name = bundle.getString(NAME_KEY);
         String sku = bundle.getString(SKU_KEY);
         String brand = bundle.getString(BRAND_KEY);
-        String category = bundle.getString(CATEGORY_KEY,"");
-        String subCategory = bundle.getString(SUBCATEGORY_KEY,"");
+        String category = "";
+        category = bundle.getString(CATEGORY_KEY);
+        String subCategory = "";
+        subCategory = bundle.getString(SUBCATEGORY_KEY);
         double price = bundle.getDouble(PRICE_KEY);
         double discount = bundle.getDouble(DISCOUNT_KEY);
         double rating = bundle.getDouble(RATING_KEY);
