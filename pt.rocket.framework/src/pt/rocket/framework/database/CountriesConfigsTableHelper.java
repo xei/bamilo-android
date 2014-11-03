@@ -2,6 +2,7 @@ package pt.rocket.framework.database;
 
 import java.util.ArrayList;
 
+import pt.rocket.framework.database.DarwinDatabaseHelper.TableType;
 import pt.rocket.framework.objects.CountryObject;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -14,12 +15,12 @@ import de.akquinet.android.androlog.Log;
  * @author Manuel Silva
  *
  */
-public class CountriesConfigsTableHelper {
+public class CountriesConfigsTableHelper extends BaseTable {
 	
 	private static final String TAG = CountriesConfigsTableHelper.class.getSimpleName();
 	
 	// Table Name
-	public static final String TABLE = "countries_configs";
+	public static final String TABLE_NAME = "countries_configs";
 	
 	// Table Rows
 	public static final String _ID = "id";
@@ -33,23 +34,47 @@ public class CountriesConfigsTableHelper {
 	public static final String _COUNTRY_FORCE_HTTPS = "country_force_https";
 	public static final String _COUNTRY_IS_LIVE = "country_is_live";
 	
-	// Create table
-    public static final String CREATE = 
-    		"CREATE TABLE " + TABLE + " (" + 
-    				_ID +			" INTEGER PRIMARY KEY, " +
-    				_COUNTRY_NAME +		" TEXT," + 
-    				_COUNTRY_URL +		" TEXT," + 
-    				_COUNTRY_FLAG +		" TEXT," + 
-    				_COUNTRY_MAP_IMAGE_MDPI +		" TEXT," + 
-    				_COUNTRY_MAP_IMAGE_HDPI +	" TEXT," + 
-    				_COUNTRY_MAP_IMAGE_XHDPI +		" TEXT," +
-    				_COUNTRY_ISO +		" TEXT," + 
-    				_COUNTRY_FORCE_HTTPS +		" INTEGER," +
-    				_COUNTRY_IS_LIVE +		" INTEGER" +
-    				 ")";
+	/*
+	 * (non-Javadoc)
+	 * @see pt.rocket.framework.database.BaseTable#getName()
+	 */
+    @Override
+    public String getName() {
+        return TABLE_NAME;
+    }
+	
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#getUpgradeType()
+     */
+    @Override
+    public TableType getUpgradeType() {
+        return TableType.FREEZE;
+    }
 
-    // Drop table
-    public static final String DROP = "DROP TABLE IF EXISTS " + TABLE;
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#create(java.lang.String)
+     */
+    @Override
+    public String create(String table) {
+        return "CREATE TABLE " + table + " (" + 
+                _ID +           " INTEGER PRIMARY KEY, " +
+                _COUNTRY_NAME +     " TEXT," + 
+                _COUNTRY_URL +      " TEXT," + 
+                _COUNTRY_FLAG +     " TEXT," + 
+                _COUNTRY_MAP_IMAGE_MDPI +       " TEXT," + 
+                _COUNTRY_MAP_IMAGE_HDPI +   " TEXT," + 
+                _COUNTRY_MAP_IMAGE_XHDPI +      " TEXT," +
+                _COUNTRY_ISO +      " TEXT," + 
+                _COUNTRY_FORCE_HTTPS +      " INTEGER," +
+                _COUNTRY_IS_LIVE +      " INTEGER" +
+                 ")";
+    }
+    
+    /*
+     * ################## CRUD ##################  
+     */
     
     /**
      * Insert a Country into Country Configurations Table
@@ -78,7 +103,7 @@ public class CountriesConfigsTableHelper {
             values.put(CountriesConfigsTableHelper._COUNTRY_ISO, iso);
             values.put(CountriesConfigsTableHelper._COUNTRY_FORCE_HTTPS, force_https ? 1 : 0);
             values.put(CountriesConfigsTableHelper._COUNTRY_IS_LIVE, is_live ? 1 : 0);
-            db.insert(CountriesConfigsTableHelper.TABLE, null, values);
+            db.insert(CountriesConfigsTableHelper.TABLE_NAME, null, values);
     }
     
     /**
@@ -111,7 +136,7 @@ public class CountriesConfigsTableHelper {
     	SQLiteDatabase db = DarwinDatabaseHelper.getInstance()
 				.getWritableDatabase();
     	
-    	String query = "select * from "+TABLE;
+    	String query = "select * from " + TABLE_NAME;
     	Cursor cursor = db.rawQuery(query, null);
     	if (cursor != null && cursor.getCount() >0 ) {
     		while (cursor.moveToNext()) {
@@ -144,18 +169,8 @@ public class CountriesConfigsTableHelper {
      */
     public static void deleteAllCountriesConfigs() { 
     	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-        db.delete(TABLE, null, null);
+        db.delete(TABLE_NAME, null, null);
         db.close();
     }
-
-	 /**
-	  * Clears the Countries Configs table
-	  * 
-	  * @param db
-	  */
-	 /*-public static void clearCountriesConfigs(SQLiteDatabase db) {
-		 Log.d(TAG, "ON CLEAN TABLE");
-		 db.delete(TABLE, null, null);
-	 }*/
     
 }

@@ -15,6 +15,8 @@ package pt.rocket.framework.objects;
 
 import java.util.ArrayList;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import de.akquinet.android.androlog.Log;
 
 import pt.rocket.framework.rest.RestConstants;
@@ -59,8 +61,8 @@ public class AddableToCart implements Parcelable {
 	private Double specialPriceDouble;
 	private double mSpecialPriceConverted;
 	private double mPriceConverted;
-	private ArrayList<String> categories;
-	private Double ratingsAverage;
+	private ArrayList<String> mCategories;
+	private Double mRatingsAverage;
 
 	/**
 	 * Complete favourite empty constructor.
@@ -82,8 +84,8 @@ public class AddableToCart implements Parcelable {
 		selectedSimple = NO_SIMPLE_SELECTED;
 		mSpecialPriceConverted = 0d;
 		mPriceConverted = 0d;
-		categories = new ArrayList<String>();
-		ratingsAverage = 0.0;
+		mCategories = new ArrayList<String>();
+		mRatingsAverage = 0.0;
 	}
 
 	public AddableToCart(CompleteProduct completeProduct) {
@@ -111,8 +113,8 @@ public class AddableToCart implements Parcelable {
 		mSpecialPriceConverted = completeProduct.getSpecialPriceConverted();
 		// Validate if has only one simple
 		selectedSimple = (simples != null && simples.size() == 1) ? 0 : NO_SIMPLE_SELECTED;
-		if(completeProduct.getCategories().size() > 0) categories = completeProduct.getCategories(); 
-		ratingsAverage = completeProduct.getRatingsAverage();
+		if(CollectionUtils.isNotEmpty(completeProduct.getCategories())) mCategories = completeProduct.getCategories(); 
+		mRatingsAverage = completeProduct.getRatingsAverage();
 	}
 
 	/**
@@ -435,7 +437,7 @@ public class AddableToCart implements Parcelable {
      * @return the categories
      */
     public ArrayList<String> getCategories() {
-        return categories;
+        return mCategories;
     }
     
     /**
@@ -443,14 +445,14 @@ public class AddableToCart implements Parcelable {
      *            the categories to set
      */
     public void setCategories(ArrayList<String> categories) {
-        this.categories = categories;
+        this.mCategories = categories;
     }
     
     /**
      * @return the ratings average
      */
     public Double getRatingsAverage() {
-        return ratingsAverage;
+        return mRatingsAverage;
     }
 
 	/*
@@ -484,7 +486,6 @@ public class AddableToCart implements Parcelable {
 		dest.writeByte((byte) (isNew ? 1 : 0));
 		dest.writeInt(selectedSimple);
 		dest.writeByte((byte) (isComplete ? 1 : 0));
-
 		dest.writeList(imageList);
 		dest.writeList(simples);
 		dest.writeList(variations);
@@ -498,6 +499,8 @@ public class AddableToCart implements Parcelable {
 		dest.writeDouble(specialPriceDouble);
 		dest.writeDouble(mPriceConverted);
 		dest.writeDouble(mSpecialPriceConverted);
+		dest.writeList(mCategories);
+		dest.writeDouble(mRatingsAverage);
 	}
 
 	private AddableToCart(Parcel in) {
@@ -511,7 +514,6 @@ public class AddableToCart implements Parcelable {
 		isNew = in.readByte() == 1;
 		selectedSimple = in.readInt();
 		isComplete = in.readByte() == 1;
-
 		imageList = new ArrayList<String>();
 		in.readList(imageList, String.class.getClassLoader());
 		simples = new ArrayList<ProductSimple>();
@@ -528,7 +530,10 @@ public class AddableToCart implements Parcelable {
 		priceDouble = in.readDouble();
 		specialPriceDouble = in.readDouble();
 		mPriceConverted = in.readDouble();
-		mSpecialPriceConverted = in.readDouble();	
+		mSpecialPriceConverted = in.readDouble();
+        mCategories = new ArrayList<String>();
+        in.readList(mCategories, String.class.getClassLoader());
+        mRatingsAverage = in.readDouble();
 	}
 
 	public static final Parcelable.Creator<AddableToCart> CREATOR = new Parcelable.Creator<AddableToCart>() {

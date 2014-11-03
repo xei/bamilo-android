@@ -2,6 +2,7 @@ package pt.rocket.framework.database;
 
 import java.util.ArrayList;
 
+import pt.rocket.framework.database.DarwinDatabaseHelper.TableType;
 import pt.rocket.framework.objects.LastViewed;
 import pt.rocket.framework.objects.Product;
 import android.content.ContentValues;
@@ -17,12 +18,12 @@ import de.akquinet.android.androlog.Log;
  * @author Manuel Silva
  *
  */
-public class RelatedItemsTableHelper {
+public class RelatedItemsTableHelper extends BaseTable {
 	
 	private static final String TAG = RelatedItemsTableHelper.class.getSimpleName();
 	
 	// Table Name
-	public static final String TABLE_RELATED = "related_items";
+	public static final String TABLE_NAME = "related_items";
 	
 	private static final int MAX_SAVED_PRODUCTS = 20;
 	
@@ -35,17 +36,44 @@ public class RelatedItemsTableHelper {
 	public static final String _PRODUCT_URL = "product_url";
 	public static final String _IMAGE_URL = "image_url";
 	
-	// Create table
-    public static final String CREATE = 
-    		"CREATE TABLE " + TABLE_RELATED + " (" + 
-    				_ID +				" INTEGER PRIMARY KEY, " +
-    				_PRODUCT_SKU +		" TEXT," +
-    				_PRODUCT_BRAND +	" TEXT," + 
-    				_PRODUCT_NAME +		" TEXT," + 
-    				_PRODUCT_PRICE +	" TEXT," + 
-    				_PRODUCT_URL +		" TEXT," + 
-    				_IMAGE_URL +		" TEXT" + 
-    				 ")";
+	/*
+	 * (non-Javadoc)
+	 * @see pt.rocket.framework.database.BaseTable#getUpgradeType()
+	 */
+    @Override
+    public TableType getUpgradeType() {
+        return TableType.FREEZE;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#getName()
+     */
+    @Override
+    public String getName() {
+        return TABLE_NAME;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#create(java.lang.String)
+     */
+    @Override
+    public String create(String table) {
+        return "CREATE TABLE " + table + " (" + 
+                _ID +               " INTEGER PRIMARY KEY, " +
+                _PRODUCT_SKU +      " TEXT," +
+                _PRODUCT_BRAND +    " TEXT," + 
+                _PRODUCT_NAME +     " TEXT," + 
+                _PRODUCT_PRICE +    " TEXT," + 
+                _PRODUCT_URL +      " TEXT," + 
+                _IMAGE_URL +        " TEXT" + 
+                 ")";
+    }
+    
+    /*
+     * ################## CRUD ##################  
+     */
 
     /**
      * Insert related items into database
@@ -69,7 +97,7 @@ public class RelatedItemsTableHelper {
 		values.put(RelatedItemsTableHelper._PRODUCT_PRICE, price);
 		values.put(RelatedItemsTableHelper._PRODUCT_URL, url);
 		values.put(RelatedItemsTableHelper._IMAGE_URL, image);
-		db.insertWithOnConflict(RelatedItemsTableHelper.TABLE_RELATED, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+		db.insertWithOnConflict(RelatedItemsTableHelper.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
     }
     
     /**
@@ -170,7 +198,7 @@ public class RelatedItemsTableHelper {
     public static ArrayList<LastViewed> getRelatedItemsList(){
     	ArrayList<LastViewed> lastViewed = new ArrayList<LastViewed>();
     	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-    	String query ="select * from "+TABLE_RELATED+" order by "+_ID+" desc";
+    	String query ="select * from "+TABLE_NAME+" order by "+_ID+" desc";
     	Cursor cursor = db.rawQuery(query, null);
     	if (cursor != null && cursor.getCount() >0 ) {
     		
@@ -200,7 +228,7 @@ public class RelatedItemsTableHelper {
      */
     public static void deleteAllRelatedItems() { 
     	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-        db.delete(TABLE_RELATED, null, null);
+        db.delete(TABLE_NAME, null, null);
         db.close();
     }
 
@@ -211,7 +239,7 @@ public class RelatedItemsTableHelper {
 	  */
 	 public static void clearRelatedItems(SQLiteDatabase db) {
 		 Log.d(TAG, "ON CLEAN TABLE");
-		 db.delete(TABLE_RELATED, null, null);
+		 db.delete(TABLE_NAME, null, null);
 	 }
     
 }

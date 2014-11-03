@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 import pt.rocket.framework.R;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
-import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.tracking.GTMEvents.GTMKeys;
 import pt.rocket.framework.tracking.GTMEvents.GTMValues;
@@ -41,7 +40,6 @@ public class GTMManager {
     private static String EVENT_TYPE = "event";
     private String CONTAINER_ID = "";
     private static boolean isContainerAvailable = false;
-    private boolean testMode = true;
     private static DataLayer dataLayer;
     private static GTMManager gtmTrackingManager;
 
@@ -137,9 +135,6 @@ public class GTMManager {
         Log.d(TAG, "gtmTrackAppOpen campaignId:"+campaignId);
         Log.d(TAG, "gtmTrackAppOpen source:"+source);
         Log.d(TAG, "gtmTrackAppOpen medium:"+medium);
-        
-        Object notPresent = DataLayer.OBJECT_NOT_PRESENT;
-        
         
         PackageInfo pInfo;
         String version = "";

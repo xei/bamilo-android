@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import pt.rocket.framework.database.DarwinDatabaseHelper.TableType;
 import pt.rocket.framework.objects.SearchSuggestion;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -16,32 +17,53 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  *
  */
-public class SearchRecentQueriesTableHelper {
+public class SearchRecentQueriesTableHelper extends BaseTable {
 	
 	private static final String TAG = SearchRecentQueriesTableHelper.class.getSimpleName();
 	
 	private static final String NUMBER_OF_SUGGESTIONS = "5";
 	
 	// Table Name
-	public static final String _NAME = "search_recent";
+	public static final String TABLE_NAME = "search_recent";
 	
 	// Table Rows
 	public static final String _ID = "id";
 	public static final String _QUERY = "query";
 	public static final String _TIME_STAMP = "timestamp";
-	
-	// Create table
-    public static final String CREATE = 
-    				"CREATE TABLE " + _NAME + " (" + 
-    				_ID +			" INTEGER PRIMARY KEY, " + 
-    				_QUERY +		" TEXT," +  
-    				_TIME_STAMP +	" TIMESTAMP DEFAULT CURRENT_TIMESTAMP" + 
-    				 ")";
-    // Drop table
-    public static final String DROP = "DROP TABLE IF EXISTS " + _NAME;
+    
+	/*
+	 * (non-Javadoc)
+	 * @see pt.rocket.framework.database.BaseTable#getUpgradeType()
+	 */
+    @Override
+    public TableType getUpgradeType() {
+        return TableType.FREEZE;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#getName()
+     */
+    @Override
+    public String getName() {
+        return TABLE_NAME;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#create(java.lang.String)
+     */
+    @Override
+    public String create(String table) {
+        return "CREATE TABLE " + table + " (" + 
+                _ID +           " INTEGER PRIMARY KEY, " + 
+                _QUERY +        " TEXT," +  
+                _TIME_STAMP +   " TIMESTAMP DEFAULT CURRENT_TIMESTAMP" + 
+                 ")";
+    }
     
     /*
-     * ######################### CRUD Operations ######################### 
+     * ################## CRUD ##################  
      */
 
     /**
@@ -57,11 +79,11 @@ public class SearchRecentQueriesTableHelper {
     	// Insert
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         // Delete old entries
-        db.delete(_NAME, _QUERY + " LIKE ?", new String[] {query});
+        db.delete(TABLE_NAME, _QUERY + " LIKE ?", new String[] {query});
 	    // Insert
         ContentValues values = new ContentValues();
         values.put(SearchRecentQueriesTableHelper._QUERY, query);
-        long result = db.insert(SearchRecentQueriesTableHelper._NAME, null, values);
+        long result = db.insert(SearchRecentQueriesTableHelper.TABLE_NAME, null, values);
         db.close();
         return (result == -1) ? false : true;
     }
@@ -76,7 +98,7 @@ public class SearchRecentQueriesTableHelper {
 		Log.d(TAG, "GET LAST " + NUMBER_OF_SUGGESTIONS + " RECENT QUERIES");
 		// Select the best resolution
 		String query =	"SELECT DISTINCT " + _QUERY + " " +
-			    		"FROM " + _NAME + " " +
+			    		"FROM " + TABLE_NAME + " " +
 						"ORDER BY " + _TIME_STAMP + " DESC " +
 						"LIMIT " + NUMBER_OF_SUGGESTIONS;
 		Log.i(TAG, "SQL QUERY: " + query);
@@ -94,7 +116,7 @@ public class SearchRecentQueriesTableHelper {
 		Log.d(TAG, "GET RECENT QUERIES FOR: " + searchText);
 		// Select the best resolution
 		String query =	"SELECT DISTINCT " + _QUERY + " " +
-			    		"FROM " + _NAME + " " +
+			    		"FROM " + TABLE_NAME + " " +
 			    		"WHERE " + _QUERY + " LIKE '%" + searchText + "%' " + 
 						"ORDER BY " + _TIME_STAMP + " DESC " +
 						"LIMIT " + NUMBER_OF_SUGGESTIONS;
@@ -121,7 +143,7 @@ public class SearchRecentQueriesTableHelper {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SearchRecentQueriesTableHelper._TIME_STAMP, timestamp);
-        long result = db.update(_NAME, values, _QUERY + " LIKE ?", new String[] {query});
+        long result = db.update(TABLE_NAME, values, _QUERY + " LIKE ?", new String[] {query});
         db.close();
         return (result == -1) ? false : true;
     }
@@ -138,29 +160,6 @@ public class SearchRecentQueriesTableHelper {
 		// Permission
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
-		
-//		Cursor cursor = db.query(true, 
-//				_NAME, 
-//				new String[] { _QUERY }, 
-//				null, 
-//				null, 
-//				null, 
-//				null, 
-//				_TIME_STAMP + " DESC", 
-//				NUMBER_OF_SUGGESTIONS);
-//		
-//		if(query != null) {
-//			cursor = db.query(true, 
-//					_NAME, 
-//					new String[] { _QUERY }, 
-//					_QUERY + " LIKE ?", 
-//					new String[] { "%" + query + "%" }, 
-//					null, 
-//					null, 
-//					_TIME_STAMP + " DESC", 
-//					NUMBER_OF_SUGGESTIONS);
-//		}
-		
 		// Get results
 		ArrayList<SearchSuggestion> recentSuggestions = new ArrayList<SearchSuggestion>();
 		if (cursor != null && cursor.getCount() >0 ) {
@@ -194,7 +193,7 @@ public class SearchRecentQueriesTableHelper {
 	 */
 	public static int getCount(){
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-	    String query = "SELECT count(*) FROM " + _NAME;
+	    String query = "SELECT count(*) FROM " + TABLE_NAME;
 	    Cursor cursor = db.rawQuery(query, null);
 	    cursor.moveToFirst();
 	    int count = cursor.getInt(0);
@@ -208,7 +207,7 @@ public class SearchRecentQueriesTableHelper {
      */
     public static void deleteAllRecentQueries() { 
     	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-        db.delete(_NAME, null, null);
+        db.delete(TABLE_NAME, null, null);
         db.close();
     }
  

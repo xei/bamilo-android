@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.database.DarwinDatabaseHelper.TableType;
 import pt.rocket.framework.objects.ImageResolution;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -15,12 +16,12 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  *
  */
-public class ImageResolutionTableHelper {
+public class ImageResolutionTableHelper extends BaseTable {
 	
 	private static final String TAG = ImageResolutionTableHelper.class.getSimpleName();
 	
 	// Table Name
-	public static final String _NAME = "image_resolutions";
+	public static final String TABLE_NAME = "image_resolutions";
 	
 	// Table Rows
 	public static final String _ID = "id";
@@ -29,19 +30,43 @@ public class ImageResolutionTableHelper {
 	public static final String _HEIGHT = "height";
 	public static final String _EXTENSION = "extension";
 	
-	// Create table
-    public static final String CREATE = 
-    		"CREATE TABLE " + _NAME + " (" + 
-    				_ID +			" INTEGER PRIMARY KEY, " + 
-    				_IDENTIFIER +	" TEXT," + 
-    				_WIDTH +		" INTEGER," + 
-    				_HEIGHT +		" INTEGER," + 
-    				_EXTENSION +	" TEXT" + 
-    				 ")";
-    
     /*
-     * ######################### CRUD Operations ######################### 
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#getType()
      */
+   @Override
+   public TableType getUpgradeType() {
+       return TableType.CACHE;
+   }
+
+   /*
+    * (non-Javadoc)
+    * @see pt.rocket.framework.database.BaseTable#getName()
+    */
+   @Override
+   public String getName() {
+       return TABLE_NAME;
+   }
+
+   /*
+    * (non-Javadoc)
+    * @see pt.rocket.framework.database.BaseTable#create(java.lang.String)
+    */
+   @Override
+   public String create(String table) {
+       return "CREATE TABLE " + table + " (" + 
+               _ID +           " INTEGER PRIMARY KEY, " + 
+               _IDENTIFIER +   " TEXT," + 
+               _WIDTH +        " INTEGER," + 
+               _HEIGHT +       " INTEGER," + 
+               _EXTENSION +    " TEXT" + 
+                ")";
+   }
+   
+   
+   /*
+    * ################## CRUD ##################  
+    */
     
     /**
      * Method used to save image resolutions on database.
@@ -53,7 +78,7 @@ public class ImageResolutionTableHelper {
     	// Get permission
     	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
     	// Delete old data
-    	db.delete(_NAME, null, null);
+    	db.delete(TABLE_NAME, null, null);
     	// Insert new resolution
 		for (int i = 0; i < resolutionsArray.length(); ++i) {
 			// Get object
@@ -70,7 +95,7 @@ public class ImageResolutionTableHelper {
 	        values.put(ImageResolutionTableHelper._HEIGHT, height);
 	        values.put(ImageResolutionTableHelper._EXTENSION, extension);
 	        // Insert resolution
-	        db.insert(ImageResolutionTableHelper._NAME, null, values);
+	        db.insert(ImageResolutionTableHelper.TABLE_NAME, null, values);
 			Log.i(TAG, "RESOLUTION: " + identifier + " " + width + " " + height + " " + extension);
 		}
 		db.close();
@@ -91,7 +116,7 @@ public class ImageResolutionTableHelper {
         values.put(ImageResolutionTableHelper._WIDTH, width);
         values.put(ImageResolutionTableHelper._HEIGHT, height);
         values.put(ImageResolutionTableHelper._EXTENSION, extension);
-        db.insert(ImageResolutionTableHelper._NAME, null, values);
+        db.insert(ImageResolutionTableHelper.TABLE_NAME, null, values);
         db.close();
     }
     
@@ -100,7 +125,7 @@ public class ImageResolutionTableHelper {
      */
     public static void deleteAllImageResolutions() { 
     	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-        db.delete(_NAME, null, null);
+        db.delete(TABLE_NAME, null, null);
         db.close();
     }
         
@@ -118,9 +143,9 @@ public class ImageResolutionTableHelper {
 		// Select the best resolution
 		String query =     "SELECT " + _IDENTIFIER + ", " + _WIDTH + ", " + _HEIGHT + ", " + _EXTENSION + ", " +
 							"(" + _WIDTH + "*" + _HEIGHT + ") AS mul " + 
-			    			"FROM " + _NAME + " " +
+			    			"FROM " + TABLE_NAME + " " +
 		    				"WHERE mul > ( 	SELECT (" + _WIDTH + "*" + _HEIGHT + ") " + 
-		    								"FROM " + _NAME + " " + 
+		    								"FROM " + TABLE_NAME + " " + 
     										"WHERE " + _IDENTIFIER + " = ? ) " + 
 							"AND " + _IDENTIFIER + " != ? " + 
 							"AND " + _IDENTIFIER + " != ? " + 
@@ -164,7 +189,7 @@ public class ImageResolutionTableHelper {
 		String query = "SELECT " + _IDENTIFIER + "," + _WIDTH + "," + _HEIGHT + "," + _EXTENSION + ", " +
 						"ABS((" + _WIDTH + " - ?) + ( " + _HEIGHT + " - ?)) AS calc, " +
 						"MAX(" + _WIDTH + " * " + _HEIGHT + ") AS mul " +
-						"FROM " + _NAME + " " +
+						"FROM " + TABLE_NAME + " " +
 			 			"GROUP BY calc " +
 			 			"ORDER BY calc ASC " +
 			 			"LIMIT 1";
@@ -188,8 +213,6 @@ public class ImageResolutionTableHelper {
 		// Return
 		return imageResolution;
 	}
-	
-	
 
 	 /**
 	  * Clears the image resolutions table
@@ -198,7 +221,7 @@ public class ImageResolutionTableHelper {
 	  */
 	 public static void clearImageResolutions(SQLiteDatabase db) {
 		 Log.d(TAG, "ON CLEAN TABLE");
-		 db.delete(_NAME, null, null);
-	 }
+		 db.delete(TABLE_NAME, null, null);
+	 }    
     
 }

@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.database.DarwinDatabaseHelper.TableType;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Favourite;
 import pt.rocket.framework.objects.Product;
@@ -25,14 +26,12 @@ import de.akquinet.android.androlog.Log;
  * @author Andre Lopes
  * 
  */
-public class FavouriteTableHelper {
+public class FavouriteTableHelper extends BaseTable {
 
 	private static final String TAG = FavouriteTableHelper.class.getSimpleName();
 
 	// Table Name
-	public static final String TABLE = "favourite";
-
-	// TODO : CONSTANTS
+	public static final String TABLE_NAME = "favourite";
 	
 	// Table Rows
 	public static final String _ID = "id";
@@ -53,31 +52,59 @@ public class FavouriteTableHelper {
 	public static final String _FAVOURITE_VARIATIONS_JSON = "favourite_variations_json";
 	public static final String _FAVOURITE_KNOWN_VARIATIONS_LIST = "favourite_known_variations_list";
 	public static final String _FAVOURITE_IS_COMPLETE = "favourite_is_complete";
+	
 
 	private static String DELIMITER = ":::::";
-	
-	// Create table
-	public static final String CREATE =
-			new StringBuilder("CREATE TABLE ").append(TABLE).append(" (")
-				.append(_ID).append(" INTEGER PRIMARY KEY, ")
-				.append(_FAVOURITE_SKU).append(" TEXT UNIQUE,")
-				.append(_FAVOURITE_BRAND).append(" TEXT,")
-				.append(_FAVOURITE_NAME).append(" TEXT,")
-				.append(_FAVOURITE_PRICE).append(" TEXT,")
-				.append(_FAVOURITE_PRICE_ORIG).append(" TEXT,")
-				.append(_FAVOURITE_PRICE_CONVERTED).append(" TEXT,")
-				.append(_FAVOURITE_SPECIAL_PRICE).append(" TEXT,")
-				.append(_FAVOURITE_SPECIAL_PRICE_ORIG).append(" TEXT,")
-				.append(_FAVOURITE_SPECIAL_PRICE_CONVERTED).append(" TEXT,")
-				.append(_FAVOURITE_DISCOUNT_PERCENTAGE).append(" DOUBLE, ")
-				.append(_FAVOURITE_URL).append(" TEXT,")
-				.append(_FAVOURITE_IMAGE_URL).append(" TEXT, ")
-				.append(_FAVOURITE_IS_NEW).append(" TEXT, ")
-				.append(_FAVOURITE_SIMPLES_JSON).append(" TEXT, ")
-				.append(_FAVOURITE_VARIATIONS_JSON).append(" TEXT, ")
-				.append(_FAVOURITE_KNOWN_VARIATIONS_LIST).append(" TEXT, ")
-				.append(_FAVOURITE_IS_COMPLETE).append(" TEXT")
-				.append(")").toString();
+
+	/*
+	 * (non-Javadoc)
+	 * @see pt.rocket.framework.database.BaseTable#getUpgradeType()
+	 */
+    @Override
+    public TableType getUpgradeType() {
+        return TableType.FREEZE;
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#getName()
+     */
+    @Override
+    public String getName() {
+        return TABLE_NAME;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#create(java.lang.String)
+     */
+    @Override
+    public String create(String table) {
+        return new StringBuilder("CREATE TABLE ").append(table).append(" (")
+                .append(_ID).append(" INTEGER PRIMARY KEY, ")
+                .append(_FAVOURITE_SKU).append(" TEXT UNIQUE,")
+                .append(_FAVOURITE_BRAND).append(" TEXT,")
+                .append(_FAVOURITE_NAME).append(" TEXT,")
+                .append(_FAVOURITE_PRICE).append(" TEXT,")
+                .append(_FAVOURITE_PRICE_ORIG).append(" TEXT,")
+                .append(_FAVOURITE_PRICE_CONVERTED).append(" TEXT,")
+                .append(_FAVOURITE_SPECIAL_PRICE).append(" TEXT,")
+                .append(_FAVOURITE_SPECIAL_PRICE_ORIG).append(" TEXT,")
+                .append(_FAVOURITE_SPECIAL_PRICE_CONVERTED).append(" TEXT,")
+                .append(_FAVOURITE_DISCOUNT_PERCENTAGE).append(" DOUBLE, ")
+                .append(_FAVOURITE_URL).append(" TEXT,")
+                .append(_FAVOURITE_IMAGE_URL).append(" TEXT, ")
+                .append(_FAVOURITE_IS_NEW).append(" TEXT, ")
+                .append(_FAVOURITE_SIMPLES_JSON).append(" TEXT, ")
+                .append(_FAVOURITE_VARIATIONS_JSON).append(" TEXT, ")
+                .append(_FAVOURITE_KNOWN_VARIATIONS_LIST).append(" TEXT, ")
+                .append(_FAVOURITE_IS_COMPLETE).append(" TEXT")
+                .append(")").toString();
+    }
+
+    /*
+     * ################## CRUD ##################  
+     */
 
 	/**
 	 * Insert favourite into database
@@ -138,7 +165,7 @@ public class FavouriteTableHelper {
 
 			values.put(FavouriteTableHelper._FAVOURITE_IS_COMPLETE, true);
 
-			db.insert(FavouriteTableHelper.TABLE, null, values);
+			db.insert(FavouriteTableHelper.TABLE_NAME, null, values);
 			db.close();
 		}
 	}
@@ -169,7 +196,7 @@ public class FavouriteTableHelper {
 			values.put(FavouriteTableHelper._FAVOURITE_VARIATIONS_JSON, "");
 			values.put(FavouriteTableHelper._FAVOURITE_KNOWN_VARIATIONS_LIST, "");
 			values.put(FavouriteTableHelper._FAVOURITE_IS_COMPLETE, false);
-			db.insert(FavouriteTableHelper.TABLE, null, values);
+			db.insert(FavouriteTableHelper.TABLE_NAME, null, values);
 			db.close();
 		}
 	}
@@ -219,7 +246,7 @@ public class FavouriteTableHelper {
 		
 		values.put(FavouriteTableHelper._FAVOURITE_IS_COMPLETE, true);
 
-		db.update(FavouriteTableHelper.TABLE, values, FavouriteTableHelper._FAVOURITE_SKU + "=?", new String[]{sku});
+		db.update(FavouriteTableHelper.TABLE_NAME, values, FavouriteTableHelper._FAVOURITE_SKU + "=?", new String[]{sku});
 		db.close();
 	}
 
@@ -235,7 +262,7 @@ public class FavouriteTableHelper {
 		DarwinDatabaseSemaphore.getInstance().getLock();
 		
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-		String query = new StringBuilder("select count(*) from ").append(TABLE)
+		String query = new StringBuilder("select count(*) from ").append(TABLE_NAME)
 				.append(" where ").append(_FAVOURITE_SKU).append(" = '").append(sku).append("'").toString();
 		Log.i(TAG, "SQL RESULT query :  " + query);
 		Cursor cursor = db.rawQuery(query, null);
@@ -266,7 +293,7 @@ public class FavouriteTableHelper {
 	public static ArrayList<String> getIncompleteFavouriteList() {
 		ArrayList<String> incomplete = new ArrayList<String>();
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-		String query = "SELECT " + _FAVOURITE_URL + " FROM " + TABLE + " WHERE " + _FAVOURITE_IS_COMPLETE + " == '0'";
+		String query = "SELECT " + _FAVOURITE_URL + " FROM " + TABLE_NAME + " WHERE " + _FAVOURITE_IS_COMPLETE + " == '0'";
 		Cursor cursor = db.rawQuery(query, null);
 		if (cursor != null && cursor.getCount() > 0) {
 			while (cursor.moveToNext()) {
@@ -289,7 +316,7 @@ public class FavouriteTableHelper {
 	public static ArrayList<Favourite> getFavouriteList() {
 		ArrayList<Favourite> favourites = new ArrayList<Favourite>();
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-		String query = new StringBuilder("select * from ").append(TABLE).append(" order by ").append(_ID).append(" desc").toString();
+		String query = new StringBuilder("select * from ").append(TABLE_NAME).append(" order by ").append(_ID).append(" desc").toString();
 		Log.i(TAG, "SQL RESULT query :  " + query);
 		Cursor cursor = db.rawQuery(query, null);
 		if (cursor != null && cursor.getCount() > 0) {
@@ -381,7 +408,7 @@ public class FavouriteTableHelper {
 	public static ArrayList<String> getFavouriteSKUList() {
         ArrayList<String> favourites = new ArrayList<String>();
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-        String query = new StringBuilder("select ").append(_FAVOURITE_SKU).append(" from ").append(TABLE).append(" order by ").append(_ID).append(" desc").toString();
+        String query = new StringBuilder("select ").append(_FAVOURITE_SKU).append(" from ").append(TABLE_NAME).append(" order by ").append(_ID).append(" desc").toString();
         Log.i(TAG, "SQL RESULT query :  " + query);
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.getCount() > 0) {
@@ -407,7 +434,7 @@ public class FavouriteTableHelper {
 	 */
 	public synchronized static void removeFavouriteProduct(String sku) {
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-		String query = new StringBuilder("delete from ").append(TABLE)
+		String query = new StringBuilder("delete from ").append(TABLE_NAME)
 				.append(" where ").append(_FAVOURITE_SKU).append(" = '").append(sku).append("'").toString();
 		Log.i(TAG, "SQL RESULT query :  " + query);
 		db.execSQL(query);
@@ -422,7 +449,7 @@ public class FavouriteTableHelper {
 	public static int getTotalFavourites() {
 		int result = 0;
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-		String query = "select count(*) from " + TABLE;
+		String query = "select count(*) from " + TABLE_NAME;
 		Log.i(TAG, "SQL RESULT query :  " + query);
 		Cursor cursor = db.rawQuery(query, null);
 		if (cursor != null && cursor.getCount() > 0) {
@@ -445,18 +472,8 @@ public class FavouriteTableHelper {
 	 */
 	public static void deleteAllFavourite() {
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-		db.delete(TABLE, null, null);
+		db.delete(TABLE_NAME, null, null);
 		db.close();
 	}
-
-	/**
-	 * Clears the Favourite table
-	 * 
-	 * @param db
-	 */
-	/*-public static void clearFavourite(SQLiteDatabase db) {
-		Log.d(TAG, "ON CLEAN TABLE");
-		db.delete(TABLE, null, null);
-	}*/
 
 }

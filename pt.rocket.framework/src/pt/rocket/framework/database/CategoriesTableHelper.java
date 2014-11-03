@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pt.rocket.framework.Darwin;
+import pt.rocket.framework.database.DarwinDatabaseHelper.TableType;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.rest.RestContract;
 import android.content.ContentValues;
@@ -16,43 +17,71 @@ import de.akquinet.android.androlog.Log;
 /**
  * @author ivanschuetz
  */
-public class CategoriesTableHelper {
+public class CategoriesTableHelper extends BaseTable {
 
     private static final String TAG = CategoriesTableHelper.class.getSimpleName();
 
-    public static final String TABLE = "categories";
+    public static final String TABLE_NAME = "categories";
 
     public static interface Columns {
         String ID = "id";
-        String ID_CATALOG = "id_catalog_category"; // backend id- note: not
-                                                   // unique across different
-                                                   // segments
+        String ID_CATALOG = "id_catalog_category"; // backend id- note: not unique across different segments
         String NAME = "name_name";
         String SUBSECTION = "subsection";
         String TEASER_IMAGE = "teaser_image";
         String TEASER_POS = "teaser_pos";
         String TEASER_VISIBLE = "teaser_visible";
-        String SEGMENTS = "segments"; // TODO is this really a list?
+        String SEGMENTS = "segments";
         String API_URL = "api_url";
         String PARENT_ID_CATALOG = "parent_id";
         String API_URL_KEY = "url_key";
         String INFO_URL_KEY = "info_url";
         String PRODUCT_COUNT = "product_count";
         String VIEW_COUNT = "view_count";
-
-        // not used
-        // String IN_NAVIGATION = "in_navigation";
-        // String SHOPS = "shop";
-        // String AGES = "ages";
-        // String GENDERS = "genders";
-        // String COMBINATIONS = "female-shop";
+    }
+    
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#getType()
+     */
+    @Override
+    public TableType getUpgradeType() {
+        return TableType.CACHE;
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#getName()
+     */
+    @Override
+    public String getName() {        
+        return TABLE_NAME;
     }
 
-    public static final String CREATE = "CREATE TABLE " + TABLE + " (" + Columns.ID + " INTEGER PRIMARY KEY, " + Columns.ID_CATALOG + " TEXT, " + Columns.NAME
-            + " TEXT," + Columns.SUBSECTION + " TEXT, " + Columns.TEASER_IMAGE + " TEXT, " + Columns.TEASER_POS + " INTEGER, " + Columns.TEASER_VISIBLE
-            + " INTEGER, " + Columns.SEGMENTS + " TEXT, " + Columns.API_URL + " TEXT , " + Columns.PARENT_ID_CATALOG + " INTEGER, " + Columns.API_URL_KEY
-            + " TEXT, " + Columns.INFO_URL_KEY + " TEXT, " + Columns.PRODUCT_COUNT + " INTEGER NULL, " + Columns.VIEW_COUNT + " INTEGER NULL" + ")";
-
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#create(java.lang.String)
+     */
+    @Override
+    public String create(String tableName) {
+        return "CREATE TABLE " + tableName + " (" + 
+                Columns.ID + " INTEGER PRIMARY KEY, " + 
+                Columns.ID_CATALOG + " TEXT, " + 
+                Columns.NAME + " TEXT," + 
+                Columns.SUBSECTION + " TEXT, " + 
+                Columns.TEASER_IMAGE + " TEXT, " + 
+                Columns.TEASER_POS + " INTEGER, " + 
+                Columns.TEASER_VISIBLE + " INTEGER, " + 
+                Columns.SEGMENTS + " TEXT, " + 
+                Columns.API_URL + " TEXT , " + 
+                Columns.PARENT_ID_CATALOG + " INTEGER, " + 
+                Columns.API_URL_KEY + " TEXT, " + 
+                Columns.INFO_URL_KEY + " TEXT, " + 
+                Columns.PRODUCT_COUNT + " INTEGER NULL, " + 
+                Columns.VIEW_COUNT + " INTEGER NULL" + ")";
+    }
+    
     public static interface Projection {
         int ID = 0;
         int ID_CATALOG_CATEGORY = 1;
@@ -67,6 +96,10 @@ public class CategoriesTableHelper {
         int API_URL_KEY = 10;
         int INFO_URL_KEY = 11;
     }
+    
+    /*
+     * ################## CRUD ##################  
+     */
 
     /**
      * Save category trees recursively
@@ -101,7 +134,7 @@ public class CategoriesTableHelper {
     }
 
     private static void saveCategory(SQLiteDatabase db, Category category, long parentId) {
-        long rowId = db.insertWithOnConflict(TABLE, null, getContentValues(category, parentId), SQLiteDatabase.CONFLICT_IGNORE);
+        long rowId = db.insertWithOnConflict(TABLE_NAME, null, getContentValues(category, parentId), SQLiteDatabase.CONFLICT_IGNORE);
         ArrayList<Category> children = category.getChildren();
         if (children != null) {
             saveCategories(db, children, rowId);
@@ -122,7 +155,7 @@ public class CategoriesTableHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(Columns.PRODUCT_COUNT, productCount);
 
-        db.update(TABLE, contentValues, Columns.API_URL + " =?", new String[] { categoryUrl });
+        db.update(TABLE_NAME, contentValues, Columns.API_URL + " =?", new String[] { categoryUrl });
     }
 
     /**
@@ -137,7 +170,7 @@ public class CategoriesTableHelper {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         Integer viewCount = 0;
 
-        Cursor cursor = db.query(TABLE, new String[] { Columns.VIEW_COUNT }, Columns.API_URL + " =?", new String[] { categoryUrl }, null, null, null);
+        Cursor cursor = db.query(TABLE_NAME, new String[] { Columns.VIEW_COUNT }, Columns.API_URL + " =?", new String[] { categoryUrl }, null, null, null);
 
         db.beginTransaction();
         while (cursor.moveToNext()) {
@@ -150,7 +183,7 @@ public class CategoriesTableHelper {
             ContentValues contentValues = new ContentValues();
             contentValues.put(Columns.VIEW_COUNT, ++viewCount);
 
-            db.update(TABLE, contentValues, Columns.API_URL + " =?", new String[] { categoryUrl });
+            db.update(TABLE_NAME, contentValues, Columns.API_URL + " =?", new String[] { categoryUrl });
         }
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -168,7 +201,7 @@ public class CategoriesTableHelper {
      */
     public synchronized static int getViewCount(final String categoryUrl) {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.query(TABLE, new String[] { Columns.VIEW_COUNT }, Columns.API_URL + " =?", new String[] { categoryUrl }, null, null, null);
+        Cursor cursor = db.query(TABLE_NAME, new String[] { Columns.VIEW_COUNT }, Columns.API_URL + " =?", new String[] { categoryUrl }, null, null, null);
 
         Integer categoryViewCount = 0;
 
@@ -192,7 +225,7 @@ public class CategoriesTableHelper {
         DarwinDatabaseSemaphore.getInstance().getLock();
         
         final SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.query(TABLE, new String[] { Columns.NAME, Columns.VIEW_COUNT }, Columns.PARENT_ID_CATALOG + " =?", new String[] { "-1" }, null,
+        Cursor cursor = db.query(TABLE_NAME, new String[] { Columns.NAME, Columns.VIEW_COUNT }, Columns.PARENT_ID_CATALOG + " =?", new String[] { "-1" }, null,
                 null, Columns.VIEW_COUNT + " DESC");
 
         String category = "";
@@ -215,7 +248,7 @@ public class CategoriesTableHelper {
      */
     public static void clearCategories(SQLiteDatabase db) {
         Log.d(TAG, "ON CLEAN TABLE");
-        db.delete(TABLE, null, null);
+        db.delete(TABLE_NAME, null, null);
     }
 
     /**
@@ -245,7 +278,7 @@ public class CategoriesTableHelper {
             db = DarwinDatabaseHelper.getInstance(Darwin.context).getReadableDatabase();
         }
 
-        Cursor cursor = db.query(TABLE, new String[] { Columns.ID, Columns.ID_CATALOG, Columns.NAME, Columns.SUBSECTION, Columns.TEASER_IMAGE,
+        Cursor cursor = db.query(TABLE_NAME, new String[] { Columns.ID, Columns.ID_CATALOG, Columns.NAME, Columns.SUBSECTION, Columns.TEASER_IMAGE,
                 Columns.TEASER_POS, Columns.TEASER_VISIBLE, Columns.SEGMENTS, Columns.API_URL, Columns.PARENT_ID_CATALOG, Columns.API_URL_KEY,
                 Columns.INFO_URL_KEY }, Columns.PARENT_ID_CATALOG + " =?", new String[] { parentRowId + "" }, null, null, null);
 
@@ -255,23 +288,14 @@ public class CategoriesTableHelper {
             long rowId = cursor.getLong(Projection.ID);
             String catalogIdLoaded = cursor.getString(Projection.ID_CATALOG_CATEGORY);
             String name = cursor.getString(Projection.NAME);
-//            String subsection = cursor.getString(Projection.SUBSECTION);
-//            String teaserImage = cursor.getString(Projection.TEASER_IMAGE);
-//            int teaserPosition = cursor.getInt(Projection.TEASER_POS);
-//            int teaserVisibleInt = cursor.getInt(Projection.TEASER_VISIBLE);
-//            boolean teaserVisible = teaserVisibleInt == 1 ? true : false;
             String segments = cursor.getString(Projection.SEGMENTS);
             String apiFileName = cursor.getString(Projection.API_URL);
             String urlKey = cursor.getString(Projection.API_URL_KEY);
             String infoUrl = cursor.getString(Projection.INFO_URL_KEY);
-            // long parent = cursor.getLong(Projection.PARENT);
 
             String apiUrl = getAbsoluteCategoryUrl(apiFileName);
 
             Category category = new Category(catalogIdLoaded, name, null, null, urlKey, segments, infoUrl, apiUrl, null, parent, false);
-            // Category category = new Category(catalogIdLoaded, name,
-            // subsection, teaserImage, teaserPosition, teaserVisible, , , , );
-
             ArrayList<Category> children = loadCategories(rowId, category);
 
             category.setChildren(children);
@@ -307,21 +331,7 @@ public class CategoriesTableHelper {
     public static String getCategoryUrlForDB(String categoryUrl) {
         String productUrlForDB;
 
-        if (categoryUrl.substring(categoryUrl.length() - 1, categoryUrl.length()).equals("/")) { // remove
-                                                                                                 // possible
-                                                                                                 // /
-                                                                                                 // at
-                                                                                                 // the
-                                                                                                 // end
-                                                                                                 // e.g.
-                                                                                                 // in
-                                                                                                 // new
-                                                                                                 // arrivals
-                                                                                                 // url
-                                                                                                 // FIXME
-                                                                                                 // solve
-                                                                                                 // with
-                                                                                                 // regex
+        if (categoryUrl.substring(categoryUrl.length() - 1, categoryUrl.length()).equals("/")) { 
             categoryUrl = categoryUrl.substring(0, categoryUrl.length() - 1);
         }
 
@@ -357,13 +367,9 @@ public class CategoriesTableHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(Columns.NAME, category.getName());
         contentValues.put(Columns.ID_CATALOG, category.getId());
-        // String firstSegment = category.getSegments();
-        // contentValues.put(Columns.SEGMENTS, firstSegment);
         contentValues.put(Columns.API_URL, getCategoryUrlForDB(category.getApiUrl()));
         contentValues.put(Columns.PARENT_ID_CATALOG, parentId);
         contentValues.put(Columns.API_URL_KEY, category.getUrlKey());
-        // contentValues.put(Columns.INFO_URL_KEY, category.getInfoUrl());
-
         return contentValues;
     }
 
@@ -373,7 +379,9 @@ public class CategoriesTableHelper {
      * @param db
      */
     public static void clear(SQLiteDatabase db) {
-        Log.i(TAG, "codedb deleting table " + TABLE);
-        db.delete(TABLE, null, null);
+        Log.i(TAG, "codedb deleting table " + TABLE_NAME);
+        db.delete(TABLE_NAME, null, null);
     }
+
+
 }

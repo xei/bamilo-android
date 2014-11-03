@@ -171,9 +171,9 @@ public enum EventType {
 	
 	SET_PAYMENT_METHOD_EVENT("https:/multistep/paymentmethod/", RestContract.DEFAULT_CACHE_TIME),
 	
-	GET_MY_ORDER_EVENT("http:/order/status/", RestContract.NO_CACHE), // TODO : Update the url
+	GET_MY_ORDER_EVENT("http:/order/status/", RestContract.NO_CACHE),
 	
-	GET_MY_ORDERS_LIST_EVENT("http:/order/list/", RestContract.NO_CACHE), // TODO : Update the url
+	GET_MY_ORDERS_LIST_EVENT("http:/order/list/", RestContract.NO_CACHE),
 	
 	CHECKOUT_FINISH_EVENT("https:/multistep/finish/", RestContract.NO_CACHE),
 	

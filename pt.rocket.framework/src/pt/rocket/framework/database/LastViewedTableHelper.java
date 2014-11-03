@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.framework.database.DarwinDatabaseHelper.TableType;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.LastViewedAddableToCart;
 import pt.rocket.framework.objects.ProductSimple;
@@ -24,12 +25,12 @@ import de.akquinet.android.androlog.Log;
  * @modified Andre Lopes
  *
  */
-public class LastViewedTableHelper {
+public class LastViewedTableHelper extends BaseTable {
 	
 	private static final String TAG = LastViewedTableHelper.class.getSimpleName();
 	
 	// Table Name
-	public static final String TABLE = "last_viewed";
+	public static final String TABLE_NAME = "last_viewed";
 	
 	private static final int MAX_SAVED_PRODUCTS = 15;
 	
@@ -55,29 +56,56 @@ public class LastViewedTableHelper {
 
 	private static String DELIMITER = ":::::";
 	
-	// Create table
-	public static final String CREATE =
-			new StringBuilder("CREATE TABLE ").append(TABLE)
-				.append(" (")
-				.append(_ID).append(" INTEGER PRIMARY KEY, ")
-				.append(_PRODUCT_SKU).append(" TEXT, ")
-				.append(_PRODUCT_NAME).append(" TEXT, ")
-				.append(_PRODUCT_PRICE).append(" TEXT ,")
-				.append(_PRODUCT_PRICE_ORIG).append(" TEXT ,")
-				.append(_PRODUCT_PRICE_CONVERTED).append(" TEXT ,")
-				.append(_PRODUCT_URL).append(" TEXT, ")
-				.append(_PRODUCT_IMAGE_URL).append(" TEXT, ")
-				.append(_PRODUCT_BRAND).append(" TEXT, ")
-				.append(_PRODUCT_SPECIAL_PRICE).append(" TEXT, ")
-				.append(_PRODUCT_SPECIAL_PRICE_ORIG).append(" TEXT ,")
-				.append(_PRODUCT_SPECIAL_PRICE_CONVERTED).append(" TEXT ,")
-				.append(_PRODUCT_DISCOUNT_PERCENTAGE).append(" DOUBLE, ")
-				.append(_PRODUCT_IS_NEW).append(" TEXT, ")
-				.append(_PRODUCT_SIMPLES_JSON).append(" TEXT, ")
-				.append(_PRODUCT_VARIATIONS_JSON).append(" TEXT, ")
-				.append(_PRODUCT_KNOWN_VARIATIONS_LIST).append(" TEXT, ")
-				.append(_PRODUCT_IS_COMPLETE).append(" TEXT ")
-				.append(")").toString();
+	/*
+	 * (non-Javadoc)
+	 * @see pt.rocket.framework.database.BaseTable#getUpgradeType()
+	 */
+    @Override
+    public TableType getUpgradeType() {
+        return TableType.FREEZE;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#getName()
+     */
+    @Override
+    public String getName() {
+        return TABLE_NAME;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.framework.database.BaseTable#create(java.lang.String)
+     */
+    @Override
+    public String create(String table) {
+        return new StringBuilder("CREATE TABLE ").append(table)
+                .append(" (")
+                .append(_ID).append(" INTEGER PRIMARY KEY, ")
+                .append(_PRODUCT_SKU).append(" TEXT, ")
+                .append(_PRODUCT_NAME).append(" TEXT, ")
+                .append(_PRODUCT_PRICE).append(" TEXT ,")
+                .append(_PRODUCT_PRICE_ORIG).append(" TEXT ,")
+                .append(_PRODUCT_PRICE_CONVERTED).append(" TEXT ,")
+                .append(_PRODUCT_URL).append(" TEXT, ")
+                .append(_PRODUCT_IMAGE_URL).append(" TEXT, ")
+                .append(_PRODUCT_BRAND).append(" TEXT, ")
+                .append(_PRODUCT_SPECIAL_PRICE).append(" TEXT, ")
+                .append(_PRODUCT_SPECIAL_PRICE_ORIG).append(" TEXT ,")
+                .append(_PRODUCT_SPECIAL_PRICE_CONVERTED).append(" TEXT ,")
+                .append(_PRODUCT_DISCOUNT_PERCENTAGE).append(" DOUBLE, ")
+                .append(_PRODUCT_IS_NEW).append(" TEXT, ")
+                .append(_PRODUCT_SIMPLES_JSON).append(" TEXT, ")
+                .append(_PRODUCT_VARIATIONS_JSON).append(" TEXT, ")
+                .append(_PRODUCT_KNOWN_VARIATIONS_LIST).append(" TEXT, ")
+                .append(_PRODUCT_IS_COMPLETE).append(" TEXT ")
+                .append(")").toString();
+    }
+    
+    /*
+     * ################## CRUD ##################  
+     */
 
 	/**
 	 * Insert viewed product into database
@@ -143,7 +171,7 @@ public class LastViewedTableHelper {
 
 				values.put(LastViewedTableHelper._PRODUCT_IS_COMPLETE, true);
 
-				db.insert(LastViewedTableHelper.TABLE, null, values);
+				db.insert(LastViewedTableHelper.TABLE_NAME, null, values);
 				db.close();
 			}
 		}
@@ -158,7 +186,7 @@ public class LastViewedTableHelper {
 	public static boolean verifyIfExist(String sku) {
 		boolean result = false;
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-		String query = new StringBuilder("select count(*) from ").append(TABLE)
+		String query = new StringBuilder("select count(*) from ").append(TABLE_NAME)
 				.append(" where ").append(_PRODUCT_SKU).append(" = '").append(sku).append("'").toString();
 		Log.i(TAG, "SQL RESULT query :  " + query);
 		Cursor cursor = db.rawQuery(query, null);
@@ -191,7 +219,7 @@ public class LastViewedTableHelper {
 	public static int getLastViewedEntriesCount() {
 		int result = 0;
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-		String query = "select count(*) from " + TABLE;
+		String query = "select count(*) from " + TABLE_NAME;
 		Cursor cursor = db.rawQuery(query, null);
 		if (cursor != null && cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -256,7 +284,7 @@ public class LastViewedTableHelper {
 	public static ArrayList<LastViewedAddableToCart> getLastViewedAddableToCartList() {
 		ArrayList<LastViewedAddableToCart> listLastViewed = new ArrayList<LastViewedAddableToCart>();
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-		String query = new StringBuilder("select * from ").append(TABLE).append(" order by ").append(_ID).append(" desc").toString();
+		String query = new StringBuilder("select * from ").append(TABLE_NAME).append(" order by ").append(_ID).append(" desc").toString();
 		Log.i(TAG, "SQL RESULT query :  " + query);
 		Cursor cursor = db.rawQuery(query, null);
 		if (cursor != null && cursor.getCount() > 0) {
@@ -351,7 +379,7 @@ public class LastViewedTableHelper {
 	 */
 	public static void removeLastViewed(String sku) {
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-		String query = new StringBuilder("delete from ").append(TABLE)
+		String query = new StringBuilder("delete from ").append(TABLE_NAME)
 				.append(" where ").append(_PRODUCT_SKU).append(" = '").append(sku).append("'").toString();
 		Log.i(TAG, "SQL RESULT query :  " + query);
 		db.execSQL(query);
@@ -363,8 +391,8 @@ public class LastViewedTableHelper {
 	 */
 	public static void removeOldestEntry() {
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-		String query = new StringBuilder("delete from ").append(TABLE).append(" where id in ")
-				.append("(select id FROM ").append(TABLE).append(" order by id asc limit 1)").toString();
+		String query = new StringBuilder("delete from ").append(TABLE_NAME).append(" where id in ")
+				.append("(select id FROM ").append(TABLE_NAME).append(" order by id asc limit 1)").toString();
 		db.execSQL(query);
 		db.close();
 	}
@@ -374,17 +402,9 @@ public class LastViewedTableHelper {
 	 */
 	public static void deleteAllLastViewed() {
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-		db.delete(TABLE, null, null);
+		db.delete(TABLE_NAME, null, null);
 		db.close();
 	}
 
-	/**
-	 * Clears the Last Viewed table
-	 * 
-	 * @param db
-	 */
-	/*-public static void clearLastViewed(SQLiteDatabase db) {
-		Log.d(TAG, "ON CLEAN TABLE");
-		db.delete(TABLE, null, null);
-	}*/
+
 }
