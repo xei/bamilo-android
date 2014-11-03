@@ -40,7 +40,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 
 	private int mStockPercentage;
 
-	private String mMaxSavingPercentage;
+	private double mMaxSavingPercentage;
 
 	private boolean hasUniqueSize;
 
@@ -91,7 +91,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		mBrand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
 		mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
 		mStockPercentage = jsonObject.optInt(RestConstants.JSON_STOCK_PERCENTAGE_TAG, 0);
-		mMaxSavingPercentage = jsonObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
+		mMaxSavingPercentage = jsonObject.optDouble(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, 0d);
 		hasUniqueSize = jsonObject.optBoolean(RestConstants.JSON_HAS_UNIQUE_SIZE_TAG);
 		mRemainingTime = jsonObject.optInt(RestConstants.JSON_REMAINING_TIME_TAG, -1);
 
@@ -208,7 +208,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	/**
 	 * @return the mMaxSavingPercentage
 	 */
-	public String getMaxSavingPercentage() {
+	public double getMaxSavingPercentage() {
 		return mMaxSavingPercentage;
 	}
 
@@ -376,7 +376,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	 * @param mMaxSavingPercentage
 	 *            the mMaxSavingPercentage to set
 	 */
-	public void setMaxSavingPercentage(String mMaxSavingPercentage) {
+	public void setMaxSavingPercentage(double mMaxSavingPercentage) {
 		this.mMaxSavingPercentage = mMaxSavingPercentage;
 	}
 
@@ -465,7 +465,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		dest.writeString(mImage);
 		dest.writeList(mImages);
 		dest.writeInt(mStockPercentage);
-		dest.writeString(mMaxSavingPercentage);
+		dest.writeDouble(mMaxSavingPercentage);
 		dest.writeBooleanArray(new boolean[] { hasUniqueSize });
 		dest.writeList(mSizes);
 		dest.writeParcelable(mSelectedSize, 0);
@@ -491,7 +491,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		mImages = new ArrayList<String>();
 		in.readList(mImages, String.class.getClassLoader());
 		mStockPercentage = in.readInt();
-		mMaxSavingPercentage = in.readString();
+		mMaxSavingPercentage = in.readDouble();
 		boolean[] bolArray = new boolean[1];
 		in.readBooleanArray(bolArray);
 		hasUniqueSize = bolArray[0];
