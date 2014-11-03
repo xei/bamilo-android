@@ -20,6 +20,7 @@ import pt.rocket.framework.objects.Campaign;
 import pt.rocket.framework.objects.CampaignItem;
 import pt.rocket.framework.objects.CampaignItemSize;
 import pt.rocket.framework.objects.TeaserCampaign;
+import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
@@ -88,6 +89,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
     
     public int STOCK = R.id.stock;
     
+    public int DISCOUNT = R.id.discount;
+    
     private Campaign mCampaign;
 
     private HeaderGridView mGridView;
@@ -103,6 +106,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
     private long mStartTimeInMilliseconds;
 
     private boolean isScrolling;
+    
+    private long loadTime = 0;
     
     private enum BannerVisibility{
         DEFAULT,
@@ -167,6 +172,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         
         // Tracking
         TrackerDelegator.trackCampaignView(mTeaserCampaign != null ? mTeaserCampaign.getTargetTitle() : "n.a.");
+        
+        loadTime = System.currentTimeMillis();
     }
     
     /*
@@ -184,6 +191,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         mGridView.setOnScrollListener(this);
         // Validate the current state
         getAndShowCampaign();
+        
+        if(loadTime == 0) loadTime = System.currentTimeMillis();
     }
         
     /*
@@ -207,7 +216,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         Log.i(TAG, "ON RESUME");
         isScrolling = false;
         // Track page
-        TrackerDelegator.trackPage(TrackingPage.CAMPAIGNS);
+        TrackerDelegator.trackPage(TrackingPage.CAMPAIGNS,loadTime, false);
     }
     
     /*
@@ -425,7 +434,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         Boolean hasStock = (Boolean) view.getTag(STOCK);
         String name = (String) view.getTag(NAME);
         String brand = (String) view.getTag(BRAND);
-        Double price = (Double) view.getTag(PRICE);
+        double price = (Double) view.getTag(PRICE);
+        double discount = (Double) view.getTag(DISCOUNT);
         
         Log.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
         // Validate the remain stock
@@ -440,7 +450,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
             triggerAddToCart(values);
             // Tracking
-            trackAddtoCart(sku, name, brand, price);
+            trackAddtoCart(sku, name, brand, price, discount);
         } 
     }
     
@@ -448,15 +458,20 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      * Track item added to cart
      * @author sergiopereira
      */
-    private void trackAddtoCart(String sku, String name, String brand, Double price){
+    private void trackAddtoCart(String sku, String name, String brand, double price, double discount){
         try {
             // Tracking
             Bundle bundle = new Bundle();
             bundle.putString(TrackerDelegator.SKU_KEY, sku);
-            bundle.putDouble(TrackerDelegator.PRICE_KEY, (price != null) ? price : 0d);
+            bundle.putDouble(TrackerDelegator.PRICE_KEY, price);
             bundle.putString(TrackerDelegator.NAME_KEY, name);
             bundle.putString(TrackerDelegator.BRAND_KEY, brand);
+            bundle.putDouble(TrackerDelegator.RATING_KEY, -1d);
+            bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, discount);
+            bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.CAMPAINGS);
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
+            bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, "");
+            
             TrackerDelegator.trackProductAddedToCart(bundle);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -701,6 +716,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         public int SIZE = R.id.size;
         
         public int STOCK = R.id.stock;
+        
+        public int DISCOUNT = R.id.discount;
         
         private LayoutInflater mInflater;
         
@@ -1179,6 +1196,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             view.setTag(NAME, item.getName());
             view.setTag(BRAND, item.getBrand());
             view.setTag(PRICE, item.getPriceForTracking());
+            view.setTag(DISCOUNT, item.getMaxSavingPercentage());
             //Log.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " +  selectedSize.size);
             // Send to listener
             if(mOnClickParentListener != null)

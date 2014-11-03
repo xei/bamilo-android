@@ -23,6 +23,7 @@ import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.rest.RestConstants;
+import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
@@ -442,7 +443,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             // Validate form
             if (loginForm.validate()) requestLogin();
             // Tracking login failed
-            else TrackerDelegator.trackLoginFailed(TrackerDelegator.ISNT_AUTO_LOGIN);
+            else TrackerDelegator.trackLoginFailed(TrackerDelegator.ISNT_AUTO_LOGIN, GTMValues.CHECKOUT, GTMValues.EMAILAUTH);
         } catch (NullPointerException e) {
             Log.w(TAG, "LOGIN FORM IS NULL", e);
             triggerLoginForm();
@@ -864,9 +865,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             cameFromSignUp = true;
             mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             Customer tempCustomer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            if(null != tempCustomer)
+            if(null != tempCustomer){
                 TrackerDelegator.storeFirstCustomer(tempCustomer);
-            
+                Bundle params = new Bundle();
+                params.putParcelable(TrackerDelegator.CUSTOMER_KEY, tempCustomer);
+                params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.CHECKOUT);
+                TrackerDelegator.trackSignupSuccessful(params);
+            }
             triggerGetCustomer();
             break;
         case FACEBOOK_LOGIN_EVENT:
@@ -974,7 +979,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             break;
         case FACEBOOK_LOGIN_EVENT:
         case LOGIN_EVENT:
-            TrackerDelegator.trackLoginFailed(onAutoLogin);
+            String type = GTMValues.EMAILAUTH;
+            if(eventType == EventType.FACEBOOK_LOGIN_EVENT) type = GTMValues.FACEBOOK;
+            TrackerDelegator.trackLoginFailed(onAutoLogin, GTMValues.CHECKOUT, type);
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 
                 if (onAutoLogin) {
@@ -991,6 +998,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             break;
         case SET_SIGNUP_EVENT:
             Log.w(TAG, "ON ERRER RECEIVED: SET_SIGNUP_EVENT");
+            TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 @SuppressWarnings("unchecked")
                 HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY); 
@@ -1057,6 +1065,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
         params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, onAutoLogin);
         params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, isFacebookLogin);
+        params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.CHECKOUT);
         TrackerDelegator.trackLoginSuccessful(params);
         TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, customer.getIdAsString());
     }

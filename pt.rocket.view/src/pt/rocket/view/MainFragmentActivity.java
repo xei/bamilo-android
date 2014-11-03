@@ -378,7 +378,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = CheckoutMyOrderFragment.getInstance(bundle);
             break;
         case CHECKOUT_THANKS:
-            fragment = CheckoutThanksFragment.getInstance();
+            fragment = CheckoutThanksFragment.getInstance(bundle);
             break;
         case CHECKOUT_EXTERNAL_PAYMENT:
             fragment = CheckoutExternalPaymentFragment.getInstance();

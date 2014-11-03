@@ -29,6 +29,7 @@ import pt.rocket.framework.objects.Variation;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.TrackingPage;
+import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
@@ -233,6 +234,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     private boolean isRelatedItem = false;
     
     private static String categoryTree = "";
+    
+    private long loadTime = 0;
 
     /**
      * Empty constructor
@@ -295,6 +298,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
+        loadTime = System.currentTimeMillis();
         sharedPreferences = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         mVariationsListPosition = sharedPreferences.getInt(VARIATION_LIST_POSITION, -1);
         // mSelectedSimple = sharedPreferences.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
@@ -314,6 +318,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d(TAG, "ON VIEW CREATED");
         super.onViewCreated(view, savedInstanceState);
+        if(loadTime == 0) loadTime = System.currentTimeMillis();
+        
         // Context
         mContext = getBaseActivity();
         // Save view
@@ -343,7 +349,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             displayProduct(mCompleteProduct);
         }
         isAddingProductToCart = false;
-        TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL);
+        TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL, loadTime, false);
     }
 
     /*
@@ -1002,7 +1008,18 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceForTracking());
         bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getName());
         bundle.putString(TrackerDelegator.BRAND_KEY, mCompleteProduct.getBrand());
-        bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().size() > 0 ? mCompleteProduct.getCategories().get(0) : "");
+        bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getRatingsAverage());
+        bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
+        bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
+        if(null != mCompleteProduct && mCompleteProduct.getCategories().size() > 0){
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(0));
+            if(null != mCompleteProduct && mCompleteProduct.getCategories().size() > 1){
+                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategories().get(1));
+            }
+        } else {
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
+        }
+        
         TrackerDelegator.trackProductAddedToCart(bundle);
     }
 
@@ -1272,6 +1289,17 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         bundle.putString(TrackerDelegator.SKU_KEY, mCompleteProduct.getSku());
         bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceForTracking());
         bundle.putBoolean(TrackerDelegator.RELATED_ITEM, isRelatedItem);
+        bundle.putString(TrackerDelegator.BRAND_KEY, mCompleteProduct.getBrand());
+        bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getRatingsAverage());
+        bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
+        
+        if(null != mCompleteProduct && mCompleteProduct.getCategories().size() > 0){
+            bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(0));
+            if(null != mCompleteProduct && mCompleteProduct.getCategories().size() > 1){
+                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategories().get(1));
+            }
+        }
+        
         return bundle;
     }
 
@@ -1416,14 +1444,15 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 FavouriteTableHelper.insertFavouriteProduct(mCompleteProduct);
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
                 imageIsFavourite.setSelected(true);
-                TrackerDelegator.trackAddToFavorites(mCompleteProduct.getSku(), mCompleteProduct.getPriceForTracking());
+                TrackerDelegator.trackAddToFavorites(mCompleteProduct.getSku(), mCompleteProduct.getBrand(),mCompleteProduct.getPriceForTracking(),
+                        mCompleteProduct.getRatingsAverage(),mCompleteProduct.getMaxSavingPercentage(),false, mCompleteProduct.getCategories());
                 Toast.makeText(mContext, getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
             } else {
                 fragmentMessage = BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE;
                 FavouriteTableHelper.removeFavouriteProduct(mCompleteProduct.getSku());
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
                 imageIsFavourite.setSelected(false);
-                TrackerDelegator.trackRemoveFromFavorites(mCompleteProduct.getSku(), mCompleteProduct.getPriceForTracking());
+                TrackerDelegator.trackRemoveFromFavorites(mCompleteProduct.getSku(), mCompleteProduct.getPriceForTracking(),mCompleteProduct.getRatingsAverage());
                 Toast.makeText(mContext, getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
             }
 
@@ -1438,7 +1467,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             try {
                 Intent shareIntent = getBaseActivity().createShareIntent();
                 startActivity(shareIntent);
-                TrackerDelegator.trackItemShared(shareIntent);
+                //GTM
+                String category = "";
+                if(JumiaApplication.INSTANCE.getCurrentProduct() != null &&
+                        JumiaApplication.INSTANCE.getCurrentProduct().getCategories() != null &&
+                        JumiaApplication.INSTANCE.getCurrentProduct().getCategories().size() > 0)
+                    category = JumiaApplication.INSTANCE.getCurrentProduct().getCategories().get(0);
+                TrackerDelegator.trackItemShared(shareIntent,category);
             } catch (NullPointerException e) {
                 Log.w(TAG, "WARNING: NPE ON CLICK SHARE");
             }
@@ -1551,7 +1586,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 params.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
                 params.putParcelable(AdjustTracker.PRODUCT, mCompleteProduct);
                 params.putString(AdjustTracker.TREE, categoryTree);    
-                TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, params);
+                TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, params, loadTime, false);
             }
 
             // Waiting for the fragment comunication

@@ -60,15 +60,19 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     private static String order_number;
 
     Customer mCustomer;
+    
+    private long loadTime = 0;
 
     /**
      * Get instance
      * 
      * @return
      */
-    public static CheckoutThanksFragment getInstance() {
+    public static CheckoutThanksFragment getInstance(Bundle bundle) {
         if (checkoutStep5Fragment == null)
             checkoutStep5Fragment = new CheckoutThanksFragment();
+        
+        checkoutStep5Fragment.setArguments(bundle);
         return checkoutStep5Fragment;
     }
 
@@ -106,6 +110,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        loadTime = System.currentTimeMillis();
     }
 
     /*
@@ -115,6 +120,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if(loadTime == 0)loadTime = System.currentTimeMillis();
         Log.i(TAG, "ON VIEW CREATED");
         //Validate is service is available
         if(JumiaApplication.mIsBound){
@@ -144,7 +150,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.CHECKOUT_THANKS);
+        TrackerDelegator.trackPage(TrackingPage.CHECKOUT_THANKS, loadTime, false);
     }
 
     /*
@@ -251,6 +257,15 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);
             params.putString(TrackerDelegator.COUPON_KEY, JumiaApplication.INSTANCE.getCart().getCouponDiscount());
                         
+
+            
+            if(getArguments() != null && getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING) &&
+                    getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX) &&
+                    getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD)){
+                params.putString(TrackerDelegator.SHIPPING_KEY, getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING));
+                params.putString(TrackerDelegator.TAX_KEY, getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX));
+                params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD));
+            }
             TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems());
         }
 

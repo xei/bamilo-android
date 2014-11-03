@@ -125,21 +125,22 @@ public class GTMEvents {
         
         public static String CHECKOUT = "Checkout";
         public static String MYACCOUNT = "My Account";
-        public static String SIDEMENU = "Side menu";
-        
-        public static String PROPERTYSELECTED = "property selected";
-        
-        public static String CREDIRTCARD = "Credit card";
-        public static String COD = "COD";
-        public static String GIFTCARD = "Giftcard";     
-        
-        public static String PRODUCTPAGE = "Product Page";
+        public static String LOGOUT = "Logout";
+        public static String LOGIN = "Login";
+        public static String REGISTER = "Register";
+        public static String CAMPAINGS = "Campaings Screen";
+        public static String CATALOG = "Catalog";
+        public static String HOME = "Home";
         public static String CONFIRMATIONPAGE = "Purchase confirmation page";
         public static String SEARCHPAGE = "Search Page";
-        
         public static String WISHLISTPAGE = "Wishlist";
         public static String CARTPAGE = "Cart";
         public static String PRODUCTDETAILPAGE = "Product Detail screen";
+        public static String SHOPPINGCART = "Shopping Cart Screen";
+                
+        public static String CREDIRTCARD = "Credit card";
+        public static String COD = "COD";
+        public static String GIFTCARD = "Giftcard";     
         
         public static String PRICE ="Price";
         public static String BRAND ="Brand";

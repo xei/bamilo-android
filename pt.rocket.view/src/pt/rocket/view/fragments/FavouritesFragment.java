@@ -27,6 +27,7 @@ import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.TrackingPage;
+import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
@@ -83,6 +84,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     
     protected TrackingPage mPageName = TrackingPage.FAVORITES;
 
+    private long loadTime = 0;
     /**
      * Empty constructor
      */
@@ -119,6 +121,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        loadTime = System.currentTimeMillis();
         // Set the default value
         isOnAddingAllItemsToCart = false;
         // Retain the instance to receive callbacks from add all to cart
@@ -135,6 +138,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        if(loadTime ==0) loadTime = System.currentTimeMillis();
         // Get grid view
         mAddableToCartGridView = (GridView) view.findViewById(R.id.favourites_grid);
         // Get add to cart button
@@ -165,7 +169,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         super.onResume();
         Log.i(TAG, "ON RESUME");
         // Tracking page
-        TrackerDelegator.trackPage(mPageName);
+        TrackerDelegator.trackPage(mPageName, loadTime, false);
     }
 
     /*
@@ -368,7 +372,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             if (null != catalogFragment) {
                 catalogFragment.sendValuesToFragment(BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE, addableToCart.getSku());
             }
-            TrackerDelegator.trackRemoveFromFavorites(addableToCart.getSku(), addableToCart.getPriceForTracking());
+            TrackerDelegator.trackRemoveFromFavorites(addableToCart.getSku(), addableToCart.getPriceForTracking(), addableToCart.getRatingsAverage());
 
             // Show Toast
             Toast.makeText(getBaseActivity(), getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
@@ -553,6 +557,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         values.put(GetShoppingCartAddItemHelper.PRODUCT_TAG, addableToCart.getSku());
         values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
         values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
+        values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, addableToCart.getRatingsAverage());
         // Request data
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
@@ -581,7 +586,17 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             bundle.putDouble(TrackerDelegator.PRICE_KEY, addableToCart.getPriceForTracking());
             bundle.putString(TrackerDelegator.NAME_KEY, addableToCart.getName());
             bundle.putString(TrackerDelegator.BRAND_KEY, addableToCart.getBrand());
-            bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
+            bundle.putDouble(TrackerDelegator.RATING_KEY, addableToCart.getRatingsAverage());
+            bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, addableToCart.getMaxSavingPercentage());
+            bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);
+            if(null != addableToCart && addableToCart.getCategories().size() > 0){
+                bundle.putString(TrackerDelegator.CATEGORY_KEY, addableToCart.getCategories().get(0));
+                if(null != addableToCart && addableToCart.getCategories().size() > 1){
+                    bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, addableToCart.getCategories().get(1));
+                }
+            } else {
+                bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
+            }
             TrackerDelegator.trackProductAddedToCart(bundle);
         } catch (NullPointerException e) {
             e.printStackTrace();

@@ -22,6 +22,7 @@ import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.tracking.TrackingEvent;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -77,6 +78,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
 
     private ContentValues mSavedState;
     
+    private long loadTime = 0;
+    
     /**
      * 
      * @return
@@ -120,7 +123,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        
+        loadTime = System.currentTimeMillis();
         // Validate the saved values 
         if(savedInstanceState != null){
             // Get the ship content values
@@ -140,6 +143,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        if(loadTime == 0)loadTime = System.currentTimeMillis();
         // Get containers
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         // Buttons
@@ -173,7 +177,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        
+        TrackerDelegator.trackPage(TrackingPage.PAYMENT_SCREEN, loadTime, true);
     }
     
     /*
@@ -501,6 +505,22 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             break;
         case SET_PAYMENT_METHOD_EVENT:
+            //GTM TRACKING
+            ContentValues values = new ContentValues();
+            if(formGenerator != null){
+                values = formGenerator.save();
+                if(values != null){
+                    if(values.containsKey("name")){
+                        String paymentMethod = values.getAsString("name");
+                        if(null != JumiaApplication.INSTANCE.getCart()){
+                            TrackerDelegator.trackFailedPayment(paymentMethod, JumiaApplication.INSTANCE.getCart().getCartValueEuroConverted());
+                        }
+                      
+                    }
+                }
+            }
+            
+
             Log.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
             break;
         case ADD_VOUCHER:

@@ -23,6 +23,7 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.tracking.AdjustTracker;
+import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
@@ -137,6 +138,18 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     private boolean isRemovingAllItems = false;
     
     private double itemRemoved_price_tracking = 0d;
+    
+    private long loadTime = 0;
+    
+    private long itemRemoved_quantity;
+    
+    private double itemRemoved_rating;
+    
+    private String itemRemoved_cart_value;
+    
+    private static String cartValue = "";
+    
+    private ShoppingCart cartForTracking;
 
     public static class CartItemValues {
         // public Boolean is_in_wishlist;
@@ -203,6 +216,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        loadTime = System.currentTimeMillis();
     }
 
     /*
@@ -214,6 +228,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
+        if(loadTime == 0) loadTime = System.currentTimeMillis();
         setAppContentLayout();
 
         // EventManager.getSingleton().triggerRequestEvent(new RequestEvent(
@@ -235,7 +250,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             mBeginRequestMillis = System.currentTimeMillis();
             triggerGetShoppingCart();
             setListeners();
-            TrackerDelegator.trackPage(TrackingPage.CART);
+            TrackerDelegator.trackPage(TrackingPage.CART, loadTime, false);
         } else {
             showFragmentRetry(this);
         }
@@ -281,6 +296,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         itemRemoved_sku = item.getConfigSimpleSKU();
         itemRemoved_price = item.getSpecialPriceVal().toString();
         itemRemoved_price_tracking = item.getPriceForTracking();
+        itemRemoved_quantity = item.getQuantity();
+        itemRemoved_rating = -1d;
+        if(TextUtils.isEmpty(cartValue)){
+            TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
+            itemRemoved_cart_value = totalValue.toString();
+        } else itemRemoved_cart_value = cartValue;
         if (itemRemoved_price == null) {
             itemRemoved_price = item.getPriceVal().toString();
         }
@@ -495,9 +516,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             params.putString(TrackerDelegator.SKU_KEY, itemRemoved_sku);
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-//            params.putString(TrackerDelegator.PRICE_KEY, itemRemoved_price);
             params.putDouble(TrackerDelegator.PRICE_KEY, itemRemoved_price_tracking);
-  
+            params.putLong(TrackerDelegator.QUANTITY_KEY, itemRemoved_quantity);
+            params.putDouble(TrackerDelegator.RATING_KEY, itemRemoved_rating);
+            params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
             TrackerDelegator.trackProductRemoveFromCart(params);
             TrackerDelegator.trackLoadTiming(params);
             
@@ -534,7 +556,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             }
             params.putParcelable(AdjustTracker.CART, shoppingCart);
             
-            TrackerDelegator.trackPage(TrackingPage.CART_LOADED, params);
+            TrackerDelegator.trackPage(TrackingPage.CART_LOADED, params, loadTime, false);
             
             // verify if "Call to Order" was used
             if (isCallInProgress) {
@@ -649,6 +671,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         View voucherContainer = getView().findViewById(R.id.voucher_info_container);
         // Get and set the cart value
         setTotal(cart);
+        //GTM TRACKER
+        cartForTracking = cart;
+        TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getCartValueEuroConverted());
+        
         // Set voucher
         String couponDiscount = cart.getCouponDiscount();
         String couponCope = cart.getCouponCode();
@@ -689,28 +715,30 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             extraCostsMain.setVisibility(View.VISIBLE);
             // Fix NAFAMZ-7848
             extraCostsValue.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart.getExtraCosts()).toString()));
-            String shipping = cart.getShippingValue();
-            if (shipping != null && !shipping.equalsIgnoreCase("null") && !shipping.equals("")) {
-                // Validate the shipping value
-                if (!shipping.equals("0")) {
-                    shippingValue.setText(CurrencyFormatter.formatCurrency(shipping));
-                } else {
-                    shippingValue.setText(getString(R.string.free_label));
-                }
-                shippingMain.setVisibility(View.VISIBLE);
-            }
+           // Do not show shipping fee on cart, NAFAMZ-8843
+//            String shipping = cart.getShippingValue();
+//            if (shipping != null && !shipping.equalsIgnoreCase("null") && !shipping.equals("")) {
+//                // Validate the shipping value
+//                if (!shipping.equals("0")) {
+//                    shippingValue.setText(CurrencyFormatter.formatCurrency(shipping));
+//                } else {
+//                    shippingValue.setText(getString(R.string.free_label));
+//                }
+//                shippingMain.setVisibility(View.VISIBLE);
+//            }
         } else {
             extraCostsMain.setVisibility(View.GONE);
             String sumCosts = cart.getSumCostsValue();
-            if (sumCosts != null && !sumCosts.equalsIgnoreCase("null") && !sumCosts.equals("")) {
-                // Validate the shipping value
-                if (!cart.getShippingValue().equals("0")) {
-                    shippingValue.setText(CurrencyFormatter.formatCurrency(sumCosts));
-                } else {
-                    shippingValue.setText(getString(R.string.free_label));
-                }
-                shippingMain.setVisibility(View.VISIBLE);
-            }
+         // Do not show shipping fee on cart, NAFAMZ-8843
+//            if (sumCosts != null && !sumCosts.equalsIgnoreCase("null") && !sumCosts.equals("")) {
+//                // Validate the shipping value
+//                if (!cart.getShippingValue().equals("0")) {
+//                    shippingValue.setText(CurrencyFormatter.formatCurrency(sumCosts));
+//                } else {
+//                    shippingValue.setText(getString(R.string.free_label));
+//                }
+//                shippingMain.setVisibility(View.VISIBLE);
+//            }
         }
 
         String articleString = getResources().getQuantityString(R.plurals.shoppingcart_text_article, cart.getCartCount());
@@ -796,7 +824,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             }
 
             hideNoItems();
-            TrackerDelegator.trackPage(TrackingPage.FILLED_CART);
+            TrackerDelegator.trackPage(TrackingPage.FILLED_CART, loadTime,false);
 
         }
     }
@@ -837,7 +865,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
         View totalMain = getView().findViewById(R.id.total_container);
         // Set value
-        String cartValue = cart.getCartValue();
+        cartValue = cart.getCartValue();
         if (!TextUtils.isEmpty(cartValue) && !cartValue.equals("null")) {
             totalValue.setText(CurrencyFormatter.formatCurrency(cartValue));
             totalMain.setVisibility(View.VISIBLE);
@@ -990,7 +1018,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             }
         });
 
-        TrackerDelegator.trackPage(TrackingPage.EMPTY_CART);
+        TrackerDelegator.trackPage(TrackingPage.EMPTY_CART, loadTime, false);
     }
 
     /**
@@ -1023,6 +1051,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         if (restbase != null) {
             if (restbase.contains("mobapi/v1")) {
                 triggerIsNativeCheckoutAvailable();
+                //GTM TRACKER
+                if(cartForTracking != null)  TrackerDelegator.trackStartCheckout(cartForTracking.getCartCount(), cartForTracking.getCartValueEuroConverted());
+                
             } else {
                 goToWebCheckout();
             }
@@ -1081,11 +1112,53 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     }
 
     public void changeQuantityOfItem(int position, int quantity) {
+        trackAddToCartGTM(items.get(position), quantity);
         items.get(position).setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
         changeItemQuantityInShoppingCart(items);
     }
 
+    private void trackAddToCartGTM(ShoppingCartItem item, int quantity){
+        try {
+            double prods = item.getQuantity();
+            Bundle params = new Bundle();
+            
+            
+            params.putString(TrackerDelegator.SKU_KEY, item.getConfigSimpleSKU());
+            
+            params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
+            params.putDouble(TrackerDelegator.PRICE_KEY, item.getPriceForTracking());
+            params.putLong(TrackerDelegator.QUANTITY_KEY, 1);
+            params.putDouble(TrackerDelegator.RATING_KEY,-1d);
+            params.putString(TrackerDelegator.NAME_KEY,item.getName());
+            
+            String item_cart_value = "";
+            if(TextUtils.isEmpty(cartValue)){
+                TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
+                item_cart_value = totalValue.toString();
+            } else item_cart_value = cartValue;
+
+            params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
+            
+            if(quantity > prods){
+                prods = quantity - prods;
+                params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.SHOPPINGCART);
+                for (int i = 0; i < prods; i++) {
+                    TrackerDelegator.trackProductAddedToCart(params);
+                }
+            } else {
+                prods = prods - quantity;
+                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
+                for (int i = 0; i < prods; i++) {
+                    TrackerDelegator.trackProductRemoveFromCart(params);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+ 
+    }
+    
     private void changeItemQuantityInShoppingCart(List<ShoppingCartItem> items) {
         Bundle bundle = new Bundle();
         ContentValues values = new ContentValues();

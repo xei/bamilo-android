@@ -21,6 +21,7 @@
     <item type="id" name="name"/>
     <item type="id" name="brand"/>
     <item type="id" name="price"/>
+    <item type="id" name="discount"/>
     
     <!-- ARRAY ADAPTER -->
     <item type="id" name="recycled_view"/>

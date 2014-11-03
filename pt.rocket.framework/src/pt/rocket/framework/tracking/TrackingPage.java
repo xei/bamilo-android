@@ -49,7 +49,17 @@ public enum TrackingPage {
     
     NEWSLETTER_SUBS(R.string.gnewslettersubs),
     
-    RECENT_SEARCHES(R.string.grecentsearches)
+    RECENT_SEARCHES(R.string.grecentsearches),
+    
+    ORDER_CONFIRM(R.string.gtrackconfirmorder),
+    
+    PAYMENT_SCREEN(R.string.gtrackpayment),
+    
+    NEW_ADDRESS(R.string.gtrackaddaddress),
+    
+    ADDRESS_SCREEN(R.string.gtrackaddress),
+    
+    SEARCH_SCREEN(R.string.gtracksearch)
     
     ;
     

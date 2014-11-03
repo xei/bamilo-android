@@ -17,6 +17,7 @@ import pt.rocket.forms.FormField;
 import pt.rocket.forms.NewsletterOption;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.tracking.TrackingPage;
+import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -61,6 +62,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     private LayoutInflater mInflater;
 
     private ArrayList<NewsletterOption> mNewsletterOptionsSaved;
+    
+    private long loadTime = 0;
 
     /**
      * Create new instance
@@ -106,6 +109,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        loadTime = System.currentTimeMillis();
         // Get inflater
         mInflater = LayoutInflater.from(getBaseActivity());
         // Validate the saved state
@@ -125,6 +129,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        if(loadTime == 0) loadTime = System.currentTimeMillis();
         // Get list view
         mNewsletterList = (LinearLayout) view.findViewById(R.id.myaccount_newsletter_list);
         // Get save button
@@ -157,7 +162,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         super.onResume();
         Log.i(TAG, "ON RESUME");
         // Tracking page
-        TrackerDelegator.trackPage(TrackingPage.NEWSLETTER_SUBS);
+        TrackerDelegator.trackPage(TrackingPage.NEWSLETTER_SUBS, loadTime, false);
     }
 
     /*
@@ -313,7 +318,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             Log.d(TAG, "VALUES: " + values.toString());
             triggerSubscribeNewsletters(values);
             // Tracking subscritption
-            TrackerDelegator.trackNewsletterSubscription(isSubscribed);
+            TrackerDelegator.trackNewsletterSubscription(isSubscribed, GTMValues.MYACCOUNT);
         } catch (NullPointerException e) {
             Log.w(TAG, "NPE ON SUBSCRIBE NEWSLETTERS", e);
         }

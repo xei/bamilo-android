@@ -26,6 +26,7 @@ import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.TrackingPage;
+import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -92,6 +93,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
 
     private LinearLayout container;
 
+    private long loadTime = 0;
     /**
      * 
      * @return
@@ -141,9 +143,15 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadTime = System.currentTimeMillis();
         Log.i(TAG, "ON CREATE");
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if(loadTime == 0) loadTime = System.currentTimeMillis();
+    }
     /*
      * (non-Javadoc)
      * 
@@ -165,7 +173,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
         super.onResume();
         Log.i(TAG, "ON RESUME");
 
-        TrackerDelegator.trackPage(TrackingPage.REGISTRATION);
+        TrackerDelegator.trackPage(TrackingPage.REGISTRATION, loadTime, false);
 
         // Used for UG
         forceInputAlignToLeft();
@@ -301,7 +309,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
                 if (serverForm != null && !serverForm.checkRequired()) {
                     registerRequiredText.setVisibility(View.VISIBLE);
                     // Tracking signup failed
-                    TrackerDelegator.trackSignupFailed();
+                    TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
                     return;
                 } else {
                     registerRequiredText.setVisibility(View.GONE);
@@ -315,11 +323,11 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
                     mandatory.setVisibility(View.VISIBLE);
                     getBaseActivity().hideKeyboard();
                     // Tracking signup failed
-                    TrackerDelegator.trackSignupFailed();
+                    TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
                 } else {
                     getBaseActivity().hideKeyboard();
                     // Tracking signup failed
-                    TrackerDelegator.trackSignupFailed();
+                    TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
                 }
             }
         });
@@ -491,12 +499,20 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case REGISTER_ACCOUNT_EVENT:
+            
+            try {
+                if(((CheckBox) newsletterSubscribe.getEditControl()).isChecked()) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
             showFragmentContentContainer();
             // Get Register Completed Event
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.CUSTOMER = customer;
             Bundle params = new Bundle();
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
+            params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.REGISTER);
             TrackerDelegator.trackSignupSuccessful(params);
 
             JumiaApplication.INSTANCE.registerForm = null;
@@ -636,7 +652,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         if (eventType == EventType.REGISTER_ACCOUNT_EVENT) {
-            TrackerDelegator.trackSignupFailed();
+            TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                 // Log.i(TAG, "code1exists : errorMessages : "+errorMessages);

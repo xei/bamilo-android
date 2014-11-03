@@ -322,7 +322,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         params.putParcelable(TrackerDelegator.PRODUCT_KEY,selectedProduct);
         params.putFloat(TrackerDelegator.RATING_KEY, selectedProduct.getRatingsAverage().floatValue());
         
-        //TrackerDelegator.trackViewReview(params);
+        TrackerDelegator.trackViewReview(selectedProduct);
     }
 
     private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {

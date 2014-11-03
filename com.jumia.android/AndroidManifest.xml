@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- ############# Location: LocationHelper and AD4Push ############# -->
@@ -23,7 +23,8 @@
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
         android:required="false" />
-	<uses-feature
+
+    <uses-feature
         android:name="android.hardware.location.gps"
         android:required="false" />
 
@@ -41,8 +42,8 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.jumia.android.permission.A4S_SEND" />
-
     -->
+
 
     <!-- ######################################## -->
     <!-- ############# Application ############## -->
@@ -165,8 +166,8 @@
                 <category android:name="com.jumia.android" />
             </intent-filter>
         </receiver>
-        
-		<!--
+
+        <!--
              <receiver android:name="pt.rocket.utils.receivers.PushNotificationReceiver" >
             <intent-filter>
                 <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
@@ -178,17 +179,40 @@
             </intent-filter>
         </receiver>
         -->
-        
-		<!-- ######################################## -->
+
+
+        <!-- ######################################## -->
         <!-- ############### ADJUST ################# -->
         <!-- ######################################## -->
-        
-        <meta-data android:name="AdjustAppToken"    android:value="@string/adjust_app_token" />
-		<meta-data android:name="AdjustLogLevel"    android:value="info" />
-		<meta-data android:name="AdjustEnvironment" android:value="production" />
-		<!-- PRE INSTALL -->
-		<!-- <meta-data android:name="AdjustDefaultTracker" android:value="5hyvoj" /> -->
 
+        <meta-data
+            android:name="AdjustAppToken"
+            android:value="@string/adjust_app_token" />
+        <meta-data
+            android:name="AdjustLogLevel"
+            android:value="info" />
+        <meta-data
+            android:name="AdjustEnvironment"
+            android:value="production" />
+        <!-- PRE INSTALL -->
+        <!-- <meta-data android:name="AdjustDefaultTracker" android:value="5hyvoj" /> -->
+
+
+        <!-- ######################################## -->
+        <!-- ################# GTM ################## -->
+        <!-- ######################################## -->
+
+
+        <!-- Used for install referrer tracking -->
+        <service android:name="com.google.android.gms.tagmanager.InstallReferrerService" />
+
+        <receiver
+            android:name="pt.rocket.utils.receivers.InstallReceiver"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

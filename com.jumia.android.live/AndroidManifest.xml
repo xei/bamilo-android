@@ -29,7 +29,8 @@
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
         android:required="false" />
-	<uses-feature
+
+    <uses-feature
         android:name="android.hardware.location.gps"
         android:required="false" />
 
@@ -47,7 +48,6 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.jumia.android.live.permission.A4S_SEND" />
-
     -->
 
 
@@ -172,8 +172,8 @@
                 <category android:name="com.jumia.android.live" />
             </intent-filter>
         </receiver>
-        
-		<!--
+
+        <!--
              <receiver android:name="pt.rocket.utils.receivers.PushNotificationReceiver" >
             <intent-filter>
                 <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
@@ -185,16 +185,39 @@
             </intent-filter>
         </receiver>
         -->
-        
-		<!-- ######################################## -->
+
+
+        <!-- ######################################## -->
         <!-- ############### ADJUST ################# -->
         <!-- ######################################## -->
-        
-        <meta-data android:name="AdjustAppToken"    android:value="@string/adjust_app_token" />
-		<meta-data android:name="AdjustLogLevel"    android:value="verbose" />
-		<meta-data android:name="AdjustEnvironment" android:value="sandbox" />
-		<!-- <meta-data android:name="AdjustDefaultTracker" android:value="Test" /> -->        
-        
+
+        <meta-data
+            android:name="AdjustAppToken"
+            android:value="@string/adjust_app_token" />
+        <meta-data
+            android:name="AdjustLogLevel"
+            android:value="verbose" />
+        <meta-data
+            android:name="AdjustEnvironment"
+            android:value="sandbox" />
+        <!-- <meta-data android:name="AdjustDefaultTracker" android:value="Test" /> -->
+
+
+        <!-- ######################################## -->
+        <!-- ################# GTM ################## -->
+        <!-- ######################################## -->
+
+
+        <!-- Used for install referrer tracking -->
+        <service android:name="com.google.android.gms.tagmanager.InstallReferrerService" />
+
+        <receiver
+            android:name="pt.rocket.utils.receivers.InstallReceiver"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

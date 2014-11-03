@@ -203,6 +203,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private boolean isBackButtonEnabled = false;
     
     private long mLaunchTime;
+    
+    private long loadTime = 0;
+    
+    private String trackScreen = "";
 
     /**
      * Constructor used to initialize the navigation list component and the
@@ -263,7 +267,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         fragmentController = FragmentController.getInstance();
 
         ShopSelector.resetConfiguration(getBaseContext());
-
         // Set action bar
         setupActionBar();
         // Set content view
@@ -394,6 +397,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "ON STOP");
+        trackScreen = fragmentController.getLastEntry();
         JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
@@ -403,6 +407,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.setLoggedIn(false);
         isRegistered = false;
+        if(!"".equalsIgnoreCase(trackScreen) && !trackScreen.equalsIgnoreCase(FragmentType.CHOOSE_COUNTRY.toString())
+                && !trackScreen.equalsIgnoreCase(FragmentType.CHANGE_COUNTRY.toString())){
+            Log.d("GTM","trackCloseApp trackScreen:"+trackScreen);
+            TrackerDelegator.trackCloseApp();
+//            TrackerDelegator.trackCloseApp(trackScreen);
+        }
     }
 
     /**
@@ -1679,7 +1689,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         hideSearchComponent();
         hideKeyboard();
         // Update cart
-        TrackerDelegator.trackPage(TrackingPage.NAVIGATION);
+        loadTime = System.currentTimeMillis();
+        TrackerDelegator.trackPage(TrackingPage.NAVIGATION, loadTime, false);
         // Removed Categories TAB
         /*-// Validate
         showWizardNavigation();*/

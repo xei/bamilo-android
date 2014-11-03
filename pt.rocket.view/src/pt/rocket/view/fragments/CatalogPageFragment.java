@@ -137,6 +137,8 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     private boolean isFromCategory = true;
     
     private boolean isProductClear = false;
+    
+    private long loadTime = 0;
         
     /**
      * 
@@ -180,7 +182,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-
+        loadTime = System.currentTimeMillis();
 //        CatalogFragment.hasFilterApllied = false;
         
         Bundle args = getArguments();
@@ -259,6 +261,9 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED #" + mPageIndex);
+        
+        if(loadTime == 0) loadTime = System.currentTimeMillis();
+        
         if (savedInstanceState != null) {
             reattached = true;
         }
@@ -346,6 +351,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 trackViewCatalog();
             }
 //        }
+            
     }
     
 //    /*
@@ -433,7 +439,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                             
                             bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, adapter.getProductsList());
                             
-                            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST_SORTED, bundle);
+                            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST_SORTED, bundle, loadTime, false);
                         } else {
                             trackHandler.postDelayed(this, 300);
                         }
@@ -441,10 +447,13 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                         Log.e("TRACK","EXCEPTION");
                         e.printStackTrace();
                     }
+
+                    
                 }
             };
             trackHandler.postDelayed(tracRunnable, 300);
 
+            TrackerDelegator.trackCatalogSorter(mSort.name().toString());
     }
     
     /*
@@ -969,6 +978,8 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 else params.putString(AdjustTracker.CATEGORY_ID, CatalogFragment.categoryId);
                 JumiaApplication.INSTANCE.trackSearch = false;
                 TrackerDelegator.trackSearch(params);
+                TrackerDelegator.trackPage(TrackingPage.SEARCH_SCREEN, loadTime, true);
+                TrackerDelegator.trackViewCatalog(mTitle,"",mPageNumber);
             }
 
         } else if (mPageNumber == 1) {
@@ -977,11 +988,12 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
             params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, mPageNumber);
             params.putSerializable(TrackerDelegator.LOCATION_KEY, mTrackSortEvent);
             TrackerDelegator.trackCategoryView(params);
-            
+//            TrackerDelegator.trackViewCatalog(mTitle,"",mPageNumber);
             if (trackViewScreen && !isFromCategory) {
                 isFromCategory = true;
                 CatalogFragment.categoryId = categoryId;
                 trackViewCatalog();
+                TrackerDelegator.trackViewCatalog(mTitle,"",mPageNumber);
             }
         }
 
@@ -997,6 +1009,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         }
 
         mPageNumber = numberProducts >= totalProducts ? NO_MORE_PAGES : mPageNumber + 1;
+        TrackerDelegator.trackViewCatalog(mTitle,"",mPageNumber);
         showCatalogContent();
         if (mTotalProducts < ((mPageNumber - 1) * numItemsToLoad)) {
             mPageNumber = NO_MORE_PAGES;

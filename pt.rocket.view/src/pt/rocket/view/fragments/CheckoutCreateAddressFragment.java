@@ -28,6 +28,7 @@ import pt.rocket.framework.objects.AddressRegion;
 import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.TrackingEvent;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -48,6 +49,7 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -136,6 +138,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     
     private ScrollView mScrollViewContainer;
 
+    private long loadTime = 0;
+    
     /**
      * Fragment used to create an address
      * @return CheckoutCreateAddressFragment
@@ -180,7 +184,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        
+        loadTime = System.currentTimeMillis();
         // Validate the saved values 
         if(savedInstanceState != null) {
             // Get the ship content values
@@ -207,6 +211,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        if(loadTime == 0)loadTime = System.currentTimeMillis();
         // Scroll view
         mScrollViewContainer = (ScrollView) view.findViewById(R.id.checkout_address_form_scroll);
         // Shipping title
@@ -223,6 +228,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         mIsSameCheckBox.setChecked(true);
         // Message
         mMsgRequired = view.findViewById(R.id.checkout_address_required_text);
+        mMsgRequired.setOnClickListener(this);
         // Next button
         view.findViewById(R.id.checkout_address_button_enter).setOnClickListener((OnClickListener) this);
         
@@ -261,6 +267,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackPage(TrackingPage.NEW_ADDRESS, loadTime, true);
     }
     
     /*
@@ -577,6 +584,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         if(id == R.id.checkout_address_button_enter) onClickCreateAddressButton();
         //retry button
         else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
+        // message view
+        else if(id == R.id.checkout_address_required_text) if(mMsgRequired != null && mMsgRequired.isShown()) mMsgRequired.setVisibility(View.GONE);
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
@@ -616,7 +625,15 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         if(!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) { 
             Log.w(TAG, "REGION SPINNER NOT FILL YET");
             // Show error message
-            if(mMsgRequired != null) mMsgRequired.setVisibility(View.VISIBLE);
+            if(mMsgRequired != null){
+                mMsgRequired.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMsgRequired.setVisibility(View.GONE);
+                    }
+                }, 5000);
+            }
             return; 
         };
 
@@ -951,7 +968,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         case CREATE_ADDRESS_SIGNUP_EVENT:
         case CREATE_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
-            
+            //GTM
+            TrackerDelegator.trackAddAddress(true);
             // Waiting for both responses
             if(!mIsSameCheckBox.isChecked() && !oneAddressCreated){
                 oneAddressCreated = true;
@@ -1021,7 +1039,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         case CREATE_ADDRESS_SIGNUP_EVENT:
         case CREATE_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
-            
+            //GTM
+            TrackerDelegator.trackAddAddress(false);
             // Clean flag to wait for both different responses
             oneAddressCreated = false;
             
@@ -1096,7 +1115,15 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
         } else {
-            if (mMsgRequired != null) mMsgRequired.setVisibility(View.VISIBLE);
+            if (mMsgRequired != null){
+                mMsgRequired.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMsgRequired.setVisibility(View.GONE);
+                    }
+                }, 5000);
+            }
             else Toast.makeText(getBaseActivity(), getString(R.string.register_required_text), Toast.LENGTH_SHORT).show();
         }
     }

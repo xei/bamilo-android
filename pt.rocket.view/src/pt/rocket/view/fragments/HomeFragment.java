@@ -18,6 +18,7 @@ import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.TrackingPage;
+import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
@@ -82,7 +83,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
 
     private boolean mReceivedInBackgroundAndDiscarded = false;
     
-    private long mLaunchTime;
+    private long mLaunchTime = 0;
 
     /**
      * Constructor via bundle
@@ -133,7 +134,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         if (savedInstanceState != null) mPagerSavedPosition = savedInstanceState.getInt(PAGER_POSITION_KEY);
 
         // Track auto login failed if hasn't saved credentials
-        if (!JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN);
+        if (!JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
     }
 
     /*
@@ -146,6 +147,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        if(mLaunchTime == 0) mLaunchTime = System.currentTimeMillis();
         // Get main content
         mMainContent = view.findViewById(R.id.home_pager_content);
         // Get view pager
@@ -215,7 +217,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
                             bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
                         }
     
-                        TrackerDelegator.trackPage(TrackingPage.HOME, bundle);
+                        TrackerDelegator.trackPage(TrackingPage.HOME, bundle, mLaunchTime, false);
                     } else {
                         trackHandler.postDelayed(this, 300);
                     }                    
@@ -228,7 +230,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
                         bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
                     }
 
-                    TrackerDelegator.trackPage(TrackingPage.HOME, bundle);
+                    TrackerDelegator.trackPage(TrackingPage.HOME, bundle, mLaunchTime, false);
                 }
             }
         };
@@ -568,6 +570,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
             params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, TrackerDelegator.IS_AUTO_LOGIN);
             params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
+            params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.HOME);
             TrackerDelegator.trackLoginSuccessful(params);
             break;
         default:
@@ -623,7 +626,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         case GET_PROMOTIONS:
             break;
         case LOGIN_EVENT:
-            TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN);
+            TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
             break;
         default:
             break;

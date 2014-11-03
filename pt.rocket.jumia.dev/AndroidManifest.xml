@@ -44,7 +44,6 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="pt.rocket.jumia.dev.permission.A4S_SEND" />
-
     -->
 
 
@@ -165,13 +164,13 @@
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                
-				<!-- WARNING: No use value from strings.xml, attribute is not a string value -->
+
+                <!-- WARNING: No use value from strings.xml, attribute is not a string value -->
                 <category android:name="pt.rocket.jumia.dev" />
             </intent-filter>
         </receiver>
-        
-		<!--
+
+        <!--
              <receiver android:name="pt.rocket.utils.receivers.PushNotificationReceiver" >
             <intent-filter>
                 <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
@@ -183,15 +182,35 @@
             </intent-filter>
         </receiver>
         -->
-        
-		<!-- ######################################## -->
+
+
+        <!-- ######################################## -->
         <!-- ############### ADJUST ################# -->
         <!-- ######################################## -->
+
         
         <meta-data android:name="AdjustAppToken"    android:value="@string/adjust_app_token" />
 		<meta-data android:name="AdjustLogLevel"    android:value="info" />
 		<meta-data android:name="AdjustEnvironment" android:value="sandbox" />
 		<!-- <meta-data android:name="AdjustDefaultTracker" android:value="Test" /> -->
+        
+		<!-- ######################################## -->
+        <!-- ################# GTM ################## -->
+        <!-- ######################################## -->
+
+
+        <!-- Used for install referrer tracking -->
+        <service android:name="com.google.android.gms.tagmanager.InstallReferrerService" />
+
+        <!--             android:name="com.google.android.gms.tagmanager.InstallReferrerReceiver" -->
+         <!-- android:name="pt.rocket.utils.receivers.InstallReceiver" -->
+        <receiver
+            android:name="pt.rocket.utils.receivers.InstallReceiver"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
         
     </application>
 

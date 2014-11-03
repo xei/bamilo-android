@@ -212,12 +212,13 @@ public class ProductsListAdapter extends BaseAdapter {
                 if (!isFavourite) {
                     FavouriteTableHelper.insertPartialFavouriteProduct(favProduct);
                     favProduct.getAttributes().setFavourite(true);
-                    TrackerDelegator.trackAddToFavorites(favProduct.getSKU(), favProduct.getPriceForTracking());
+                    TrackerDelegator.trackAddToFavorites(favProduct.getSKU(),favProduct.getBrand(),favProduct.getPriceForTracking(),
+                            favProduct.getRating(),favProduct.getMaxSavingPercentage(), true, null);
                     Toast.makeText(context, context.getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
                 } else {
                     FavouriteTableHelper.removeFavouriteProduct(favProduct.getSKU());
                     favProduct.getAttributes().setFavourite(false);
-                    TrackerDelegator.trackRemoveFromFavorites(favProduct.getSKU(), favProduct.getPriceForTracking());
+                    TrackerDelegator.trackRemoveFromFavorites(favProduct.getSKU(), favProduct.getPriceForTracking(),favProduct.getRating());
                     Toast.makeText(context, context.getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
                 }
                 parentCatalog.invalidatePages();

@@ -25,6 +25,7 @@ import pt.rocket.framework.objects.Addresses;
 import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.TrackingEvent;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -89,6 +90,8 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     
     private static String sameAddress = "";
     
+    private long loadTime = 0;
+    
     /**
      * Get instance
      * @return CheckoutMyAddressesFragment
@@ -131,6 +134,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        loadTime = System.currentTimeMillis();
         setRetainInstance(true);
         // Flag
         sameAddress = "";
@@ -150,6 +154,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        if(loadTime == 0)loadTime = System.currentTimeMillis();
         // Get the main scroll view that can be null
         mMainScrollView = (ScrollView) view.findViewById(R.id.checkout_addresses_one_scroll);
         // Get containers
@@ -189,6 +194,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackPage(TrackingPage.ADDRESS_SCREEN, loadTime, true);
         
     }
 

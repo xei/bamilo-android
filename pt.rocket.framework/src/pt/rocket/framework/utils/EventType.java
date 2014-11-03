@@ -173,6 +173,8 @@ public enum EventType {
 	
 	GET_MY_ORDER_EVENT("http:/order/status/", RestContract.NO_CACHE), // TODO : Update the url
 	
+	GET_MY_ORDERS_LIST_EVENT("http:/order/list/", RestContract.NO_CACHE), // TODO : Update the url
+	
 	CHECKOUT_FINISH_EVENT("https:/multistep/finish/", RestContract.NO_CACHE),
 	
 	NATIVE_CHECKOUT_AVAILABLE("http:/main/getconfig/module/configuration/key/native_checkout_mobile_api/", RestContract.NO_CACHE),

@@ -21,6 +21,7 @@ import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.TrackingEvent;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
@@ -99,6 +100,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     private TextView mVatValue;
 
     private ViewGroup mShipFeeView;
+    
+    private long loadTime = 0;
 
     /**
      * Get CheckoutMyOrderFragment instance
@@ -143,7 +146,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-
+        loadTime = System.currentTimeMillis();
         // TODO
         // coming back from external methods don't call onViewCreated() again and as such
         // setOnClickListener won't be setup
@@ -166,6 +169,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        if(loadTime == 0)loadTime = System.currentTimeMillis();
         // Get product items
         mProductsContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_list);
         // Get sub total
@@ -173,7 +177,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         mSubTotal = (TextView) view.findViewById(R.id.price_total);
         mExtraCosts = (TextView) view.findViewById(R.id.extra_costs_value);
         mExtraCostsContainer = (RelativeLayout) view.findViewById(R.id.extra_costs_container);
-        
         mVatValue = (TextView) view.findViewById(R.id.vat_value);
         mShipFeeView = (ViewGroup) view.findViewById(R.id.shipping_container);
         mShipFeeValue = (TextView) view.findViewById(R.id.shipping_value);
@@ -227,6 +230,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackPage(TrackingPage.ORDER_CONFIRM, loadTime, true);
         
     }
 
@@ -511,6 +515,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             } else {
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
+                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, mOrderFinish.getShippingAmount());
+                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, mOrderFinish.getTaxAmount());
+                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
                 getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK); 
             }
         } else {
@@ -621,6 +628,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             } else {
                 JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(false);
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
+                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, mOrderFinish.getShippingAmount());
+                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, mOrderFinish.getTaxAmount());
+                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
                 getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK); 
             }
             

@@ -59,6 +59,8 @@ public class AddableToCart implements Parcelable {
 	private Double specialPriceDouble;
 	private double mSpecialPriceConverted;
 	private double mPriceConverted;
+	private ArrayList<String> categories;
+	private Double ratingsAverage;
 
 	/**
 	 * Complete favourite empty constructor.
@@ -80,6 +82,8 @@ public class AddableToCart implements Parcelable {
 		selectedSimple = NO_SIMPLE_SELECTED;
 		mSpecialPriceConverted = 0d;
 		mPriceConverted = 0d;
+		categories = new ArrayList<String>();
+		ratingsAverage = 0.0;
 	}
 
 	public AddableToCart(CompleteProduct completeProduct) {
@@ -107,6 +111,8 @@ public class AddableToCart implements Parcelable {
 		mSpecialPriceConverted = completeProduct.getSpecialPriceConverted();
 		// Validate if has only one simple
 		selectedSimple = (simples != null && simples.size() == 1) ? 0 : NO_SIMPLE_SELECTED;
+		if(completeProduct.getCategories().size() > 0) categories = completeProduct.getCategories(); 
+		ratingsAverage = completeProduct.getRatingsAverage();
 	}
 
 	/**
@@ -424,6 +430,28 @@ public class AddableToCart implements Parcelable {
 		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + mPriceConverted + " " + mSpecialPriceConverted);
 		return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceConverted;
 	}
+	
+	   /**
+     * @return the categories
+     */
+    public ArrayList<String> getCategories() {
+        return categories;
+    }
+    
+    /**
+     * @param categories
+     *            the categories to set
+     */
+    public void setCategories(ArrayList<String> categories) {
+        this.categories = categories;
+    }
+    
+    /**
+     * @return the ratings average
+     */
+    public Double getRatingsAverage() {
+        return ratingsAverage;
+    }
 
 	/*
 	 * ############ PARCELABLE ############

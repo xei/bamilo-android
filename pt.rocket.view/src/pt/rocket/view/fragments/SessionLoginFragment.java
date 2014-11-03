@@ -25,10 +25,12 @@ import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.TrackingPage;
+import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.checkout.GetMyOrdersListHelper;
 import pt.rocket.helpers.configs.GetInitFormHelper;
 import pt.rocket.helpers.session.GetFacebookLoginHelper;
 import pt.rocket.helpers.session.GetLoginFormHelper;
@@ -106,6 +108,8 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     private UiLifecycleHelper uiHelper;
 
     private boolean cameFromRegister = false;
+    
+    private long loadTime = 0;
 
     /**
      * 
@@ -167,6 +171,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        loadTime = System.currentTimeMillis();
         setRetainInstance(true);
         // String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);
         uiHelper = new UiLifecycleHelper(getBaseActivity(), callback/*-, appId*/);
@@ -183,7 +188,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-
+        if(loadTime == 0) loadTime = System.currentTimeMillis();
         rememberEmailCheck = (CheckBox) view.findViewById(R.id.login_remember_user_email);
         signinButton = view.findViewById(R.id.middle_login_button_signin);
         forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
@@ -215,7 +220,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGNUP);
+        TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGNUP, loadTime, false);
 
         /*-String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);
         uiHelper.setJumiaAppId(appId);*/
@@ -401,7 +406,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                         requestLogin();
                     }
                     // Tracking login failed
-                    else TrackerDelegator.trackLoginFailed(TrackerDelegator.ISNT_AUTO_LOGIN);
+                    else TrackerDelegator.trackLoginFailed(TrackerDelegator.ISNT_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
                 } else {
                     triggerLoginForm();
                 }
@@ -499,19 +504,23 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
                 params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutologin);
                 params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, true);
+                params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.LOGIN);
+                
+                
+                
+                // Validate the next step
+                if (nextFragmentType != null) {
+                    FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
+                    baseActivity.onSwitchFragment(nextFragmentType, FragmentController.NO_BUNDLE,
+                            FragmentController.ADD_TO_BACK_STACK);
+                } else {
+                    baseActivity.onBackPressed();
+                }
 
                 TrackerDelegator.trackLoginSuccessful(params);
             }
 
-            // Validate the next step
-            if (nextFragmentType != null && baseActivity != null) {
-                FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
-                baseActivity.onSwitchFragment(nextFragmentType, FragmentController.NO_BUNDLE,
-                        FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                baseActivity.onBackPressed();
-            }
-
+          
             return true;
 
         case LOGIN_EVENT:
@@ -530,7 +539,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
                 params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutologin);
                 params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
-
+                params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.LOGIN);
                 TrackerDelegator.trackLoginSuccessful(params);
 
                 // Persist user email or empty that value after successfull login
@@ -539,7 +548,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
             }
 
             cameFromRegister = false;
-
+            triggerContentEvent(new GetMyOrdersListHelper(), bundle, mCallBack);
             // Validate the next step
             if (nextFragmentType != null && baseActivity != null) {
                 Log.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
@@ -652,7 +661,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         } else if (eventType == EventType.LOGIN_EVENT) {
             JumiaApplication.INSTANCE.setLoggedIn(false);
 
-            TrackerDelegator.trackLoginFailed(wasAutologin);
+            TrackerDelegator.trackLoginFailed(wasAutologin, GTMValues.LOGIN, GTMValues.EMAILAUTH);
 
             if (errorCode == ErrorCode.REQUEST_ERROR) {
 
@@ -691,6 +700,8 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 }
                 return true;
             }
+        } else if(eventType == EventType.FACEBOOK_LOGIN_EVENT){
+            TrackerDelegator.trackLoginFailed(wasAutologin, GTMValues.LOGIN, GTMValues.FACEBOOK);
         }
         return false;
     }

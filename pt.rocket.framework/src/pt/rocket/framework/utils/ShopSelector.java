@@ -10,6 +10,7 @@ import pt.rocket.framework.tracking.Ad4PushTracker;
 import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.tracking.ApptimizeTracking;
+import pt.rocket.framework.tracking.GTMManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -62,22 +63,23 @@ public final class ShopSelector {
 		AnalyticsGoogle.startup(context, shopId);
 		Ad4PushTracker.startup(context);
         ApptimizeTracking.startup(context);
-		
-		sShopId = shopId;
-		sShopName = context.getResources().getString( R.string.global_server_shop_name);
-		sCountryName = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
-	}
-	
-	/**
-	 * Initializing To General Requests
-	 * 
-	 * @param context
-	 * @param shopId
-	 */
-	public static void init(Context context) {
-		
-		RestContract.init(context);
-		RestClientSingleton.getSingleton(context).init();
+        GTMManager.init(context, shopId);
+        
+        sShopId = shopId;
+        sShopName = context.getResources().getString( R.string.global_server_shop_name);
+        sCountryName = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
+    }
+    
+    /**
+     * Initializing To General Requests
+     * 
+     * @param context
+     * @param shopId
+     */
+    public static void init(Context context) {
+        
+        RestContract.init(context);
+        RestClientSingleton.getSingleton(context).init();
 
 	}
 

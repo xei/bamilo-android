@@ -10,6 +10,7 @@ import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.objects.CategoryFilterOption;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.products.GetProductsHelper;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.CatalogFragment;
 import android.content.ContentValues;
@@ -19,6 +20,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -352,23 +354,30 @@ public class DialogFilterFragment extends DialogFragment {
         private ContentValues createContentValues(){
             // Create query
             ContentValues contentValues = new ContentValues();
+            String catalogFilters = "";
             // Save all values
             for (CatalogFilter filter : mFilters) {
                 // Get filter id and values
                 String filterId = filter.getId();
                 // Case category filter
-                if(filter.hasOptionSelected() && filterId.equals(CATEGORY_ID))
+                if(filter.hasOptionSelected() && filterId.equals(CATEGORY_ID)) {
                     addCategoryFilter(filter, contentValues);
                 // Case brand filter
-                else if(filter.hasOptionSelected() && filterId.equals(BRAND_ID))
+                } else if(filter.hasOptionSelected() && filterId.equals(BRAND_ID)) {
                     addBrandFilter(filter, contentValues);
                 // Case generic filter
-                else if(filter.hasOptionSelected())
+                } else if(filter.hasOptionSelected()){
                     addGenericFilter(filter, contentValues);
                 // Case price filter, get range value 
-                else if(filter.hasRangeValues())
+                } else if(filter.hasRangeValues()){
                     addPriceFilter(filter, contentValues);
+                }
+                if(TrackerDelegator.FILTER_COLOR.equalsIgnoreCase(filterId)) filterId = COLOR_ID;
+                
+                catalogFilters = catalogFilters + filterId + ",";
             }
+            if(!TextUtils.isEmpty(catalogFilters)) catalogFilters = catalogFilters.substring(0, catalogFilters.length()-1);
+            contentValues.put(TrackerDelegator.CATALOG_FILTER_KEY, catalogFilters);
             return contentValues;
         }
         
