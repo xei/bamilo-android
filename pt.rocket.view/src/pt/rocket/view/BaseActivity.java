@@ -407,8 +407,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.setLoggedIn(false);
         isRegistered = false;
-        if(!"".equalsIgnoreCase(trackScreen) && !trackScreen.equalsIgnoreCase(FragmentType.CHOOSE_COUNTRY.toString())
-                && !trackScreen.equalsIgnoreCase(FragmentType.CHANGE_COUNTRY.toString())){
+        if(!"".equalsIgnoreCase(trackScreen) && !trackScreen.equalsIgnoreCase(FragmentType.CHOOSE_COUNTRY.toString())){
             Log.d("GTM","trackCloseApp trackScreen:"+trackScreen);
             TrackerDelegator.trackCloseApp();
 //            TrackerDelegator.trackCloseApp(trackScreen);

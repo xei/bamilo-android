@@ -14,7 +14,6 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.tracking.Ad4PushTracker;
-import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -23,7 +22,7 @@ import pt.rocket.view.fragments.BaseFragment;
 import pt.rocket.view.fragments.CampaignsFragment;
 import pt.rocket.view.fragments.CatalogFragment;
 import pt.rocket.view.fragments.CategoriesCollectionFragment;
-import pt.rocket.view.fragments.ChangeCountryFragment;
+import pt.rocket.view.fragments.ChooseCountryFragment;
 import pt.rocket.view.fragments.CheckoutAboutYouFragment;
 import pt.rocket.view.fragments.CheckoutCreateAddressFragment;
 import pt.rocket.view.fragments.CheckoutEditAddressFragment;
@@ -35,7 +34,6 @@ import pt.rocket.view.fragments.CheckoutPollAnswerFragment;
 import pt.rocket.view.fragments.CheckoutShippingMethodsFragment;
 import pt.rocket.view.fragments.CheckoutThanksFragment;
 import pt.rocket.view.fragments.CheckoutWebFragment;
-import pt.rocket.view.fragments.ChooseCountryFragment;
 import pt.rocket.view.fragments.FavouritesFragment;
 import pt.rocket.view.fragments.HeadlessAddToCartFragment;
 import pt.rocket.view.fragments.HomeFragment;
@@ -340,9 +338,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case TRACK_ORDER:
             fragment = TrackOrderFragment.getInstance();
-            break;
-        case CHANGE_COUNTRY:
-            fragment = ChangeCountryFragment.getInstance();
             break;
         case CHOOSE_COUNTRY:
             fragment = ChooseCountryFragment.getInstance();

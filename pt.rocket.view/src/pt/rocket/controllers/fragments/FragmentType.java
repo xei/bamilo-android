@@ -37,7 +37,7 @@ public enum FragmentType {
     MY_ACCOUNT, 
     MY_USER_DATA,
     TRACK_ORDER,
-    CHANGE_COUNTRY,
+    CHOOSE_COUNTRY,
     MY_ADDRESSES,
     CREATE_ADDRESS, 
     EDIT_ADDRESS, 
@@ -56,5 +56,4 @@ public enum FragmentType {
     FAVORITE_LIST,
     RECENTSEARCHES_LIST,
     RECENTLYVIEWED_LIST, 
-    CHOOSE_COUNTRY
 }

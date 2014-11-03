@@ -584,7 +584,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 // Show Change country
                 Intent intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHANGE_COUNTRY);
+                intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
                 intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
                 // Start activity
                 startActivity(intent);

@@ -18,6 +18,7 @@ import pt.rocket.framework.objects.CountryObject;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
@@ -39,11 +40,11 @@ import android.widget.ListView;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Frament used to show Jumia countries from server, used on Navigation Drawer and Maintenance page
+ * Fragment used on SplashScreen on First Use
  * 
  * @author sergiopereira
  */
-public class ChooseCountryFragment extends BaseFragment implements IResponseCallback, OnClickListener{
+public class ChooseCountryFragment extends BaseFragment implements IResponseCallback, OnClickListener {
 
     private static final String TAG = LogTagHelper.create(ChooseCountryFragment.class);
 
@@ -54,19 +55,22 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     private Context context;
 
     private DialogGenericFragment dialog;
-    
+
     private int selected = SHOP_NOT_SELECTED;
-    
+
     private CountryAdapter countryAdapter;
-    
+
     private boolean isChangeCountry;
 
     /**
-     * Get new instance
-     * @return ChooseCountryFragment
+     * Get instance
+     * @return ChangeCountryFragment
      */
     public static ChooseCountryFragment getInstance() {
-        sChangeCountryFragment = new ChooseCountryFragment();
+        if (sChangeCountryFragment == null) {
+            sChangeCountryFragment = new ChooseCountryFragment();
+        }
+
         return sChangeCountryFragment;
     }
 
@@ -101,10 +105,11 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setRetainInstance(true);
         Log.i(TAG, "ON CREATE");
-        context = getBaseActivity().getApplicationContext();
+        context = getActivity().getApplicationContext();
     }
-    
+
     /*
      * (non-Javadoc)
      * @see pt.rocket.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
@@ -113,12 +118,12 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        // Hide title
-        // getBaseActivity().hideTitle();
-        // Get countries
-        triggerGetJumiaCountries();
+        
+        if(ShopSelector.getShopId() != null)
+            triggerGetJumiaCountries();
+        
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -139,6 +144,21 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+            setList();    
+        
+        isChangeCountry = true;
+        
+        if(selected == SHOP_NOT_SELECTED) {
+            isChangeCountry = false;
+            // getBaseActivity().hideTitle();
+            getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
+        }
+        
+        if(selected != SHOP_NOT_SELECTED){
+            // getBaseActivity().hideTitle();
+            // getBaseActivity().setCheckoutHeader(R.string.nav_country);
+        }
+        
     }
 
     /*
@@ -171,9 +191,8 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "ON DESTROY VIEW");
     }
-    
+
     /*
      * (non-Javadoc)
      * @see pt.rocket.view.fragments.BaseFragment#allowBackPressed()
@@ -187,11 +206,9 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     }
     
     /**
-     * ############# LAYOUT ############# 
+     * #### METHODS ####
      */
 
-    // TODO: Implement method to use the mem when is necessary
-    // To remove JumiaApplication.INSTANCE.countriesAvailable and database
     private void setList() {
 
         // Data
@@ -247,22 +264,26 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             }
         });
     }
-    
-    // TODO: Validate method
-    private void validateShopSelected(){
-        
-        isChangeCountry = true;
-        
-        if(selected == SHOP_NOT_SELECTED) {
-            isChangeCountry = false;
-            // getBaseActivity().hideTitle();
-            getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
-        }
-        
-        if(selected != SHOP_NOT_SELECTED){
-            // getBaseActivity().hideTitle();
-            // getBaseActivity().setCheckoutHeader(R.string.nav_country);
-        }
+
+    private void showWarningDialog(final int position) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        dialog = DialogGenericFragment.newInstance(true, true, false,
+                getString(R.string.nav_country),
+                getString(R.string.nav_country_warning), getString(R.string.cancel_label),
+                getString(R.string.yes_label), new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        int id = v.getId();
+                        if (id == R.id.button1) {
+                            getBaseActivity().onBackPressed();
+                        } else if (id == R.id.button2) {
+                            setCountry(position);
+                        }
+                    }
+                });
+        dialog.show(fm, null);
     }
 
     protected void setCountry(int position) {
@@ -273,8 +294,8 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             FavouriteTableHelper.deleteAllFavourite();
         }
         
-        //System.gc();
-        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        System.gc();
+        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
@@ -298,10 +319,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         
         
         TrackerDelegator.trackShopchanged();
-        ActivitiesWorkFlow.splashActivityNewTask(getBaseActivity());
-        getBaseActivity().finish();
+        ActivitiesWorkFlow.splashActivityNewTask(getActivity());
+        getActivity().finish();
     }
-
+    
     private String calculateMapImageResolution(CountryObject mCountryObject){
         String mapImage =  mCountryObject.getCountryMapMdpi();
         DisplayMetrics dm = new DisplayMetrics();
@@ -324,14 +345,25 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         return mapImage;
     }
     
+    
     /**
-     * ############# LISTENERS ############# 
+     * ############# TRIGGERS ############# 
      */
     
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
+    /**
+     * Trigger used to get all Jumia Available countries
+     * @author sergiopereira
      */
+    private void triggerGetJumiaCountries() {
+        //Validate is service is available
+        if(JumiaApplication.mIsBound){
+            triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, (IResponseCallback) this);
+        } else {
+            showFragmentRetry(this);
+        }
+        
+    }
+
     @Override
     public void onClick(View v) {
         // Validate the view id
@@ -350,33 +382,8 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         Log.d(TAG, "ON CLICK: RETRY BUTTON");
         triggerGetJumiaCountries();
     }
-
-    /**
-     * ############# TRIGGERS ############# 
-     */
     
-    /**
-     * Trigger used to get all Jumia Available countries
-     * @author sergiopereira
-     */
-    private void triggerGetJumiaCountries() {
-        //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, (IResponseCallback) this);
-        } else {
-            showFragmentRetry(this);
-        }
-        
-    }
     
-    /**
-     * ############# REQUESTS ############# 
-     */
-    
-    /*
-     * (non-Javadoc)
-     * @see pt.rocket.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
-     */
     @Override
     public void onRequestComplete(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS EVENT");
@@ -431,33 +438,23 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             break;
         }
     }
-
     
-    /**
-     * ############# DIALOGS ############# 
-     */
     
-    private void showWarningDialog(final int position) {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        dialog = DialogGenericFragment.newInstance(true, true, false,
-                getString(R.string.nav_country),
-                getString(R.string.nav_country_warning), getString(R.string.cancel_label),
-                getString(R.string.yes_label), new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                        // Validate activity
-                        if(getBaseActivity() == null) return;
-                        // Get view id
-                        int id = v.getId();
-                        // Case cancel
-                        if (id == R.id.button1) getBaseActivity().onBackPressed();
-                        // Case submit
-                        else if (id == R.id.button2) setCountry(position);
-                    }
-                });
-        dialog.show(fm, null);
+    // TODO: Validate method
+    private void validateShopSelected(){
+        
+        isChangeCountry = true;
+        
+        if(selected == SHOP_NOT_SELECTED) {
+            isChangeCountry = false;
+            // getBaseActivity().hideTitle();
+            getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
+        }
+        
+        if(selected != SHOP_NOT_SELECTED){
+            // getBaseActivity().hideTitle();
+            // getBaseActivity().setCheckoutHeader(R.string.nav_country);
+        }
     }
     
 }

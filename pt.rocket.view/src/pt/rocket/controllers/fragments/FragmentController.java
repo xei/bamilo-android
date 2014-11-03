@@ -543,7 +543,7 @@ public class FragmentController {
                 }
             } 
             //setting specific cases of behavior when we don't want to recover the back stack and set it starting from home screen 
-            if(!currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHANGE_COUNTRY.toString()) &&
+            if(!currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHOOSE_COUNTRY.toString()) &&
                     !currentFragmentType.toString().equalsIgnoreCase(FragmentType.HOME.toString()) &&
                     !currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHECKOUT_THANKS.toString()))
                 restoreBackstack(activity, orderedFragments);          
