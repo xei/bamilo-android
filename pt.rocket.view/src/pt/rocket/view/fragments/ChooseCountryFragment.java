@@ -317,8 +317,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.commit();
         
-        
-        TrackerDelegator.trackShopchanged();
         ActivitiesWorkFlow.splashActivityNewTask(getActivity());
         getActivity().finish();
     }
@@ -330,16 +328,16 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         int dpiClassification = dm.densityDpi;
         switch (dpiClassification) {
         case DisplayMetrics.DENSITY_HIGH:
-        	Log.i(TAG, "code1desnsity  DENSITY_HIGH");
+            Log.i(TAG, "code1desnsity  DENSITY_HIGH");
             mapImage =  mCountryObject.getCountryMapHdpi();
             break;
         case DisplayMetrics.DENSITY_XHIGH:
-        	Log.i(TAG, "code1desnsity  DENSITY_XHIGH");
+            Log.i(TAG, "code1desnsity  DENSITY_XHIGH");
             mapImage =  mCountryObject.getCountryMapXhdpi();
             break;
         default:
-        	Log.i(TAG, "code1desnsity  DENSITY_MEDIUM");
-        	mapImage =  mCountryObject.getCountryMapMdpi();
+            Log.i(TAG, "code1desnsity  DENSITY_MEDIUM");
+            mapImage =  mCountryObject.getCountryMapMdpi();
             break;
         }
         return mapImage;
@@ -458,3 +456,4 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     }
     
 }
+

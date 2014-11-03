@@ -10,6 +10,7 @@ import java.util.HashMap;
 import pt.rocket.framework.R;
 import pt.rocket.framework.database.CategoriesTableHelper;
 import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.ShopSelector;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -249,6 +250,20 @@ public class Ad4PushTracker {
      * ############## TRACKING ############## 
      */
     
+    /**
+     * Track a empty user id if not has credentials for auto login.
+     * @param userNeverLoggedIn
+     * @author sergiopereira
+     */
+    public void trackEmptyUserId(boolean userNeverLoggedIn) {
+    	if(isEnabled && userNeverLoggedIn) {
+    		Log.i(TAG, "USER NEVER LOGGED: TRACK EMPTY USER ID");
+            Bundle prefs = new Bundle();
+            prefs.putString(USER_ID, "0");
+            mA4S.updateUserPreferences(prefs);
+    	}
+    }
+
     /**
      * Method used to set some info about device.
      * @param context
@@ -537,8 +552,11 @@ public class Ad4PushTracker {
     //
     // }
 
-    public void trackCountryChange(String newCountryCode) {
+    public void trackShopCountry() {
         if (isEnabled) {
+        	// Get shop country code
+        	String shopCountryCode = ShopSelector.getShopId();
+        	
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             String countryCode = tm.getNetworkCountryIso();
             if (tm.getPhoneType() == TelephonyManager.PHONE_TYPE_CDMA) {
@@ -546,9 +564,9 @@ public class Ad4PushTracker {
             }
 
             countryCode = countryCode.toUpperCase(context.getResources().getConfiguration().locale);
-            Log.d(TAG, "trackCountryChange -> " + newCountryCode + "; Device Country -> " + countryCode);
+            Log.d(TAG, "trackCountryChange -> " + shopCountryCode + "; Device Country -> " + countryCode);
             Bundle prefs = new Bundle();
-            prefs.putString(SHOP_COUNTRY, newCountryCode);
+            prefs.putString(SHOP_COUNTRY, shopCountryCode);
             if (!countryCode.equals("")) {
                 prefs.putString(COUNTRY_CODE, countryCode);
             }
@@ -725,9 +743,5 @@ public class Ad4PushTracker {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", context.getResources().getConfiguration().locale);
         return sdf.format(new Date());
     }
-    
-    
-    
-
 
 }
