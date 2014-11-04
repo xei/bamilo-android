@@ -164,10 +164,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Log.i(TAG, "ON RESUME");
         //
         shouldHandleEvent = true;
-        // Adx launch event
-        // launchEvent();
-        //track open app event for all tracker but Adjust
-        TrackerDelegator.trackAppOpen(getApplicationContext());
         
         jumiaMapImage = findViewById(R.id.jumiaMap);
         final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
@@ -329,7 +325,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             
             @Override
             public void onAnimationEnd(Animation animation) {
-//                TrackerDelegator.trackAppOpen(getApplicationContext(), mLaunchTime);
                 jumiaMapImage.setVisibility(View.GONE);
                 // ## Google Analytics "General Campaign Measurement" ##
                 TrackerDelegator.trackGACampaign(mUtm);
@@ -610,6 +605,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             JumiaApplication.INSTANCE.sendRequest(new GetCountriesConfigsHelper(), null, (IResponseCallback) this);
         } else {
             Log.d(TAG, "START MAIN ACTIVITY");
+            //track open app event for all tracker but Adjust
+            TrackerDelegator.trackAppOpen(getApplicationContext());
             // Show activity
             selectActivity();
         }
@@ -944,7 +941,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 //            generateAndPerformAdxTrack();
 //            sendAdxLaunchEvent = false;
 //        }
-//        TrackerDelegator.trackAppOpen(getApplicationContext());
 //    }
 
 

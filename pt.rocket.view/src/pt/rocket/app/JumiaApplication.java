@@ -41,9 +41,11 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 
@@ -317,15 +319,32 @@ public class JumiaApplication extends A4SApplication {
             Log.w(TAG, " MISSING EVENT TYPE from " + helper.toString());
         }
         final String md5 = bundle.getString(Constants.BUNDLE_MD5_KEY);
+
         Log.d("TRACK", "sendRequest");
         new Thread(new Runnable() {
 
             @Override
             public void run() {
+                
+                //Log.i(TAG, "############ RQ CURRENT THREAD ID: " + Thread.currentThread().getId());
+                //Log.i(TAG, "############ RQ MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());
+                
                 JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
 
                     @Override
                     public void onRequestComplete(Bundle bundle) {
+                        
+                        /**
+                         * ###################################################
+                         * # FIXME: WARNING - THIS IS RUNNING IN MAIN THREAD #
+                         * # - Alternative -> ParseSuccessAsyncTask          #
+                         * # @author sergiopereira                           #
+                         * ###################################################
+                         */
+                        //Log.i(TAG, "############ RP CURRENT THREAD ID: " + Thread.currentThread().getId());
+                        //Log.i(TAG, "############ RP MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());                        
+                        //new ParseSuccessAsyncTask(helper, bundle, responseCallback).execute();
+                        
                         Log.d("TRACK", "onRequestComplete BaseActivity");
                         // We have to parse this bundle to the final one
                         Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle);
@@ -707,5 +726,37 @@ public class JumiaApplication extends A4SApplication {
     }
     
     
-    
+    @SuppressWarnings("unused")
+    @Deprecated
+    private class ParseSuccessAsyncTask extends AsyncTask<Void, Void, Bundle> {
+
+        private BaseHelper helper;
+        private Bundle bundle;
+        private IResponseCallback callback;
+
+        private ParseSuccessAsyncTask(BaseHelper helper, Bundle bundle, IResponseCallback callback) {
+            this.helper = helper;
+            this.bundle = bundle;
+            this.callback = callback;
+        }
+        
+        @Override
+        protected Bundle doInBackground(Void... params) {
+            Log.i(TAG, "############ AS CURRENT THREAD ID: " + Thread.currentThread().getId());
+            Log.i(TAG, "############ AS MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());
+            return helper.checkResponseForStatus(bundle);
+        }
+        
+        @Override
+        protected void onPostExecute(Bundle result) {
+            if (callback != null) {
+                if (result.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
+                    callback.onRequestError(result);
+                } else {
+                    callback.onRequestComplete(result);
+                }
+            }
+        }
+    }
+
 }

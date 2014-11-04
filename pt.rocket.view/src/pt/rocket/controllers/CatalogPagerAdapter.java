@@ -5,15 +5,12 @@ package pt.rocket.controllers;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.view.fragments.CatalogPageFragment;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * @author nunocastro

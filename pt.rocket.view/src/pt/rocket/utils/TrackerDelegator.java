@@ -5,16 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.app.JumiaApplication;
-import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
-import pt.rocket.framework.objects.Product;
-import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCartItem;
@@ -22,10 +20,10 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.Ad4PushTracker;
 import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
+import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.tracking.GTMManager;
 import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.tracking.TrackingPage;
-import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.ShopSelector;
@@ -225,7 +223,6 @@ public class TrackerDelegator {
 
     
     public final static void trackShopchanged() {
-        Ad4PushTracker.get().trackCountryChange(ShopSelector.getShopId());
         //GTM
         GTMManager.get().gtmTrackChangeCountry(ShopSelector.getShopId());
     }
@@ -899,14 +896,11 @@ public class TrackerDelegator {
         if(fromCatalog) location = GTMValues.CATALOG;
         String category = "";
         String subCategory = "";
-        if(null != categories){
-            if( categories.size() > 0){
-               category = categories.get(0);
-                if( categories.size() > 1){
-                    subCategory = categories.get(1);
-                }
+        if(CollectionUtils.isNotEmpty(categories)){
+           category = categories.get(0);
+            if(categories.size() > 1){
+               subCategory = categories.get(1);
             }
-            
         }
         
         //GTM
@@ -1097,13 +1091,17 @@ public class TrackerDelegator {
     }
 
     /**
-     * 
+     * Track first open and shop country
      */
     public static void trackAppOpen(Context context) {
+        // Track app open
+        boolean userNeverLoggedIn = JumiaApplication.INSTANCE.getCustomerUtils().userNeverLoggedIn();
         // Get device info
         Bundle info = DeviceInfoHelper.getInfo(context);
         // AD4Push
+        Ad4PushTracker.get().trackEmptyUserId(userNeverLoggedIn);
         Ad4PushTracker.get().trackAppFirstOpen(info);
+        Ad4PushTracker.get().trackShopCountry();
         // GA
         AnalyticsGoogle.get().setCustomData(info);
         //GTM
@@ -1189,12 +1187,12 @@ public class TrackerDelegator {
         return settings.getString(key, "");
     }
 
-    private static void saveUtmParams(Context context, String key, String value) {
-        Log.d(TAG, "saving saveUtmParams params, key: " + key + ", value : " + value);
-        Log.d("BETA", "saving saveUtmParams params, key: " + key + ", value : " + value);
-        SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(key, value);
-        editor.commit();
-    }
+//    private static void saveUtmParams(Context context, String key, String value) {
+//        Log.d(TAG, "saving saveUtmParams params, key: " + key + ", value : " + value);
+//        Log.d("BETA", "saving saveUtmParams params, key: " + key + ", value : " + value);
+//        SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = settings.edit();
+//        editor.putString(key, value);
+//        editor.commit();
+//    }
 }
