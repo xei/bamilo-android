@@ -56,7 +56,7 @@
     
     
 	<!-- Manual increment of version code and version name -->
-	    <replaceregexp match="android:versionCode=&quot;10108&quot;" 
+	    <replaceregexp match="android:versionCode=&quot;10132&quot;" 
         		replace="android:versionCode = &quot;10${version.code}&quot;" flags="g"> 
         <fileset dir="${basedir}">
         	<include name="AndroidManifest.xml"/>

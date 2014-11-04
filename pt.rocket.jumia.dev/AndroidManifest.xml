@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- ATTENTION: Auto increment of version code via build.xml -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pt.rocket.jumia.dev"
     android:installLocation="auto"
