@@ -104,6 +104,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private View mContentView;
 
     private View mFallBackView;
+    // For tacking
+    protected long mLoadTime = 0l;
 
     /**
      * Constructor with layout to inflate
@@ -193,6 +195,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Get current time
+        mLoadTime = System.currentTimeMillis();
     }
 
     /*
@@ -224,6 +228,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "ON VIEW CREATED");
+        // Get current time
+        if(mLoadTime == 0) mLoadTime = System.currentTimeMillis();
         // Set flag for requests
         isOnStoppingProcess = false;
         // Exist order summary

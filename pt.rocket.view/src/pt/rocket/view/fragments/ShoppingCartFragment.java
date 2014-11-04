@@ -298,10 +298,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         itemRemoved_price_tracking = item.getPriceForTracking();
         itemRemoved_quantity = item.getQuantity();
         itemRemoved_rating = -1d;
+        
         if(TextUtils.isEmpty(cartValue)){
             TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
             itemRemoved_cart_value = totalValue.toString();
         } else itemRemoved_cart_value = cartValue;
+        
         if (itemRemoved_price == null) {
             itemRemoved_price = item.getPriceVal().toString();
         }
@@ -671,7 +673,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         View voucherContainer = getView().findViewById(R.id.voucher_info_container);
         // Get and set the cart value
         setTotal(cart);
+        
         //GTM TRACKER
+        /**
+         * FIXME: User cart.getPriceForTracking()
+         * @author sergiopereira
+         */
         cartForTracking = cart;
         TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getCartValueEuroConverted());
         
@@ -709,36 +716,11 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             priceTotal.setText(cart.getCartCleanValue());
         }
 
-        TextView shippingValue = (TextView) getView().findViewById(R.id.shipping_value);
-        View shippingMain = getView().findViewById(R.id.shipping_container);
         if (!cart.isSumCosts()) {
             extraCostsMain.setVisibility(View.VISIBLE);
-            // Fix NAFAMZ-7848
             extraCostsValue.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart.getExtraCosts()).toString()));
-           // Do not show shipping fee on cart, NAFAMZ-8843
-//            String shipping = cart.getShippingValue();
-//            if (shipping != null && !shipping.equalsIgnoreCase("null") && !shipping.equals("")) {
-//                // Validate the shipping value
-//                if (!shipping.equals("0")) {
-//                    shippingValue.setText(CurrencyFormatter.formatCurrency(shipping));
-//                } else {
-//                    shippingValue.setText(getString(R.string.free_label));
-//                }
-//                shippingMain.setVisibility(View.VISIBLE);
-//            }
         } else {
             extraCostsMain.setVisibility(View.GONE);
-            String sumCosts = cart.getSumCostsValue();
-         // Do not show shipping fee on cart, NAFAMZ-8843
-//            if (sumCosts != null && !sumCosts.equalsIgnoreCase("null") && !sumCosts.equals("")) {
-//                // Validate the shipping value
-//                if (!cart.getShippingValue().equals("0")) {
-//                    shippingValue.setText(CurrencyFormatter.formatCurrency(sumCosts));
-//                } else {
-//                    shippingValue.setText(getString(R.string.free_label));
-//                }
-//                shippingMain.setVisibility(View.VISIBLE);
-//            }
         }
 
         String articleString = getResources().getQuantityString(R.plurals.shoppingcart_text_article, cart.getCartCount());
@@ -1051,7 +1033,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         if (restbase != null) {
             if (restbase.contains("mobapi/v1")) {
                 triggerIsNativeCheckoutAvailable();
+                
                 //GTM TRACKER
+                /**
+                 * FIXME: Use getPriceForTracking
+                 * @author sergiopereira
+                 */
                 if(cartForTracking != null)  TrackerDelegator.trackStartCheckout(cartForTracking.getCartCount(), cartForTracking.getCartValueEuroConverted());
                 
             } else {

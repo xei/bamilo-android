@@ -505,6 +505,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             Log.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             break;
         case SET_PAYMENT_METHOD_EVENT:
+            /**
+             * FIXME: MULTIPLE IFs
+             */
             //GTM TRACKING
             ContentValues values = new ContentValues();
             if(formGenerator != null){

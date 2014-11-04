@@ -258,7 +258,10 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
             params.putString(TrackerDelegator.COUPON_KEY, JumiaApplication.INSTANCE.getCart().getCouponDiscount());
                         
 
-            
+            /**
+             * FIXME: Get Arguments in other place, on create
+             * @author sergiopereira
+             */
             if(getArguments() != null && getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING) &&
                     getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX) &&
                     getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD)){

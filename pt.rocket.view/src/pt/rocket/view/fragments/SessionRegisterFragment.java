@@ -500,6 +500,10 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
         switch (eventType) {
         case REGISTER_ACCOUNT_EVENT:
             
+            /**
+             * FIXME: Not use Exception and try use the tracker in safety way.
+             * @author sergiopereira
+             */
             try {
                 if(((CheckBox) newsletterSubscribe.getEditControl()).isChecked()) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
             } catch (Exception e) {

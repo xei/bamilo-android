@@ -182,12 +182,10 @@
             </intent-filter>
         </receiver>
         -->
-
-
-        <!-- ######################################## -->
+        
+		<!-- ######################################## -->
         <!-- ############### ADJUST ################# -->
         <!-- ######################################## -->
-
         
         <meta-data android:name="AdjustAppToken"    android:value="@string/adjust_app_token" />
 		<meta-data android:name="AdjustLogLevel"    android:value="info" />
@@ -198,12 +196,11 @@
         <!-- ################# GTM ################## -->
         <!-- ######################################## -->
 
-
         <!-- Used for install referrer tracking -->
         <service android:name="com.google.android.gms.tagmanager.InstallReferrerService" />
 
-        <!--             android:name="com.google.android.gms.tagmanager.InstallReferrerReceiver" -->
-         <!-- android:name="pt.rocket.utils.receivers.InstallReceiver" -->
+        <!-- android:name="com.google.android.gms.tagmanager.InstallReferrerReceiver" -->
+        <!-- android:name="pt.rocket.utils.receivers.InstallReceiver" -->
         <receiver
             android:name="pt.rocket.utils.receivers.InstallReceiver"
             android:exported="true" >

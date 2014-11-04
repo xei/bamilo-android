@@ -585,9 +585,17 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         //retry button
         else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // message view
-        else if(id == R.id.checkout_address_required_text) if(mMsgRequired != null && mMsgRequired.isShown()) mMsgRequired.setVisibility(View.GONE);
+        else if(id == R.id.checkout_address_required_text) onClickRequired(view);
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+    
+    /**
+     * Process the click required text.
+     * @author paulo
+     */
+    private void onClickRequired(View view){
+        if(view.isShown()) mMsgRequired.setVisibility(View.GONE);
     }
     
     /**
@@ -602,7 +610,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             
         } else {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-//            restartAllFragments();
         }
     }
     
@@ -625,6 +632,10 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         if(!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) { 
             Log.w(TAG, "REGION SPINNER NOT FILL YET");
             // Show error message
+            /**
+             * FIXME: Please try use mMsgRequired.postDelayed(action, delayMillis)
+             * @author sergiopereira
+             */
             if(mMsgRequired != null){
                 mMsgRequired.setVisibility(View.VISIBLE);
                 new Handler().postDelayed(new Runnable() {
@@ -1115,6 +1126,11 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
         } else {
+            /**
+             * FIXME: Please try use mMsgRequired.postDelayed(action, delayMillis)
+             * and create a method
+             * @author sergiopereira
+             */
             if (mMsgRequired != null){
                 mMsgRequired.setVisibility(View.VISIBLE);
                 new Handler().postDelayed(new Runnable() {
