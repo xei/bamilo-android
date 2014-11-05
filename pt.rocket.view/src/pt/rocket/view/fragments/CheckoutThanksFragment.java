@@ -245,7 +245,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     private void triggerClearCart() {
         Log.i(TAG, "TRIGGER: CHECKOUT FINISH");
         triggerContentEventWithNoLoading(new ClearShoppingCartHelper(), null, this);
-        triggerContentEventWithNoLoading(new SetVoucherHelper(), null, this);
+        //triggerContentEventWithNoLoading(new SetVoucherHelper(), null, this);
     }
 
     private void trackPurchase() {
