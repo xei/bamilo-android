@@ -140,7 +140,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     
     protected static Bundle filterParams;
     
-    private long loadTime = 0;
     /**
      * Empty constructor
      */
@@ -176,7 +175,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        loadTime = System.currentTimeMillis();
         title = "";
         if (null != savedInstanceState && savedInstanceState.containsKey(PRODUCTS_LIST)) {
             mTotalProducts = savedInstanceState.getInt(TOTAL_KEY);
@@ -249,8 +247,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         
-        if(loadTime == 0)loadTime = System.currentTimeMillis();
-        
         mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
 
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_products_list);
@@ -284,7 +280,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         Log.d(TAG, "ON RESUME");
         super.onResume();
 
-        TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, loadTime, false);
+        TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
         
         if (mTotalProducts > 0) {
             getBaseActivity().setTitleAndSubTitle(title,

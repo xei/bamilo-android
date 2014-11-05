@@ -11,6 +11,7 @@ import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.tracking.GTMEvents.GTMKeys;
 import pt.rocket.framework.tracking.GTMEvents.GTMValues;
+import pt.rocket.framework.utils.Constants;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -28,6 +29,7 @@ import com.google.android.gms.tagmanager.ContainerHolder;
 import com.google.android.gms.tagmanager.ContainerHolder.ContainerAvailableListener;
 import com.google.android.gms.tagmanager.DataLayer;
 import com.google.android.gms.tagmanager.TagManager;
+import com.newrelic.agent.android.harvest.crash.DeviceInfo;
 
 import de.akquinet.android.androlog.Log;
 
@@ -129,29 +131,26 @@ public class GTMManager {
      * 
      * @param appOpenContext
      */
-    public void gtmTrackAppOpen(Context context, String isPreinstalled, Bundle bundle, String countryIso, String campaignId, String source, String medium) {
+    public void gtmTrackAppOpen(String version, Bundle deviceInfo, String countryIso, String campaignId, String source, String medium) {
         Log.i(TAG, " GTM TRACKING -> gtmTrackAppOpen ( cointair available ? " + isContainerAvailable + " )");
-        Log.d(TAG, "gtmTrackAppOpen appOpenContext:"+isPreinstalled);
         Log.d(TAG, "gtmTrackAppOpen campaignId:"+campaignId);
         Log.d(TAG, "gtmTrackAppOpen source:"+source);
         Log.d(TAG, "gtmTrackAppOpen medium:"+medium);
         
-        PackageInfo pInfo;
-        String version = "";
-        try {
-            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            version = pInfo.versionName;
-        } catch (Exception e) {
-            Log.e(TAG, "Error getting version info : ", e);
-        }
-        
         Map<String, Object> message = null;
-        
-//        if (TextUtils.isEmpty(campaignId) || TextUtils.isEmpty(getCampaignParams(context, IS_GTM_CAMPAIGN_SET))) {
+        String operator = "";
+        operator = deviceInfo.getString(Constants.INFO_SIM_OPERATOR);
+        String deviceBrand = "";
+        deviceBrand = deviceInfo.getString(Constants.INFO_BRAND);
+        boolean isPreInstall = false;
+        isPreInstall = deviceInfo.getBoolean(Constants.INFO_PRE_INSTALL, false);
+        Log.d(TAG, "gtmTrackAppOpen isPreInstall:"+isPreInstall);
+        if(isPreInstall)
+            source = GTMValues.PRE_INSTALL;
             
             Log.d("BETA", "gtmTrackAppOpen 3");
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMEvents.GTMKeys.CAMPAIGN, campaignId, GTMEvents.GTMKeys.SOURCE, source, GTMEvents.GTMKeys.SHOPCOUNTRY,
-                  countryIso, GTMEvents.GTMKeys.APPVERSION, version);
+                  countryIso, GTMEvents.GTMKeys.APPVERSION, version,GTMEvents.GTMKeys.DEVICEBRAND, deviceBrand, GTMEvents.GTMKeys.OPERATOR, operator);
             sendEvent(message);
             
 //        }

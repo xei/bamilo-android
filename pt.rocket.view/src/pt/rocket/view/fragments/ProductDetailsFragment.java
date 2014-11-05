@@ -235,8 +235,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     
     private static String categoryTree = "";
     
-    private long loadTime = 0;
-
     /**
      * Empty constructor
      */
@@ -298,7 +296,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
-        loadTime = System.currentTimeMillis();
         sharedPreferences = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         mVariationsListPosition = sharedPreferences.getInt(VARIATION_LIST_POSITION, -1);
         // mSelectedSimple = sharedPreferences.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
@@ -318,7 +315,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d(TAG, "ON VIEW CREATED");
         super.onViewCreated(view, savedInstanceState);
-        if(loadTime == 0) loadTime = System.currentTimeMillis();
         
         // Context
         mContext = getBaseActivity();
@@ -349,7 +345,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             displayProduct(mCompleteProduct);
         }
         isAddingProductToCart = false;
-        TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL, loadTime, false);
+        TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL, getLoadTime(), false);
     }
 
     /*
@@ -1439,12 +1435,19 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 return;
             }
             int fragmentMessage = 0;
+            
+            String sku = mCompleteProduct.getSku();
+            if(getSelectedSimple() != null)
+                sku = getSelectedSimple().getAttributeByKey(RestConstants.JSON_SKU_TAG);
+            
             if (!isFavourite) {
                 fragmentMessage = BaseFragment.FRAGMENT_VALUE_SET_FAVORITE;
+//                mCompleteProduct.setSimpleSkuPosition(mSelectedSimple);
                 FavouriteTableHelper.insertFavouriteProduct(mCompleteProduct);
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
                 imageIsFavourite.setSelected(true);
-                TrackerDelegator.trackAddToFavorites(mCompleteProduct.getSku(), mCompleteProduct.getBrand(),mCompleteProduct.getPriceForTracking(),
+                
+                TrackerDelegator.trackAddToFavorites(sku, mCompleteProduct.getBrand(),mCompleteProduct.getPriceForTracking(),
                         mCompleteProduct.getRatingsAverage(),mCompleteProduct.getMaxSavingPercentage(),false, mCompleteProduct.getCategories());
                 Toast.makeText(mContext, getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
             } else {
@@ -1452,7 +1455,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 FavouriteTableHelper.removeFavouriteProduct(mCompleteProduct.getSku());
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
                 imageIsFavourite.setSelected(false);
-                TrackerDelegator.trackRemoveFromFavorites(mCompleteProduct.getSku(), mCompleteProduct.getPriceForTracking(),mCompleteProduct.getRatingsAverage());
+                
+
+                TrackerDelegator.trackRemoveFromFavorites(sku, mCompleteProduct.getPriceForTracking(),mCompleteProduct.getRatingsAverage());
                 Toast.makeText(mContext, getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
             }
 
@@ -1586,7 +1591,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 params.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
                 params.putParcelable(AdjustTracker.PRODUCT, mCompleteProduct);
                 params.putString(AdjustTracker.TREE, categoryTree);    
-                TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, params, loadTime, false);
+                TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, params, getLoadTime(), false);
             }
 
             // Waiting for the fragment comunication

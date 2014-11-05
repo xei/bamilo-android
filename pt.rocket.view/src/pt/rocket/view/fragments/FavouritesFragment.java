@@ -84,7 +84,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     
     protected TrackingPage mPageName = TrackingPage.FAVORITES;
 
-    private long loadTime = 0;
     /**
      * Empty constructor
      */
@@ -121,7 +120,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        loadTime = System.currentTimeMillis();
         // Set the default value
         isOnAddingAllItemsToCart = false;
         // Retain the instance to receive callbacks from add all to cart
@@ -138,7 +136,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        if(loadTime ==0) loadTime = System.currentTimeMillis();
         // Get grid view
         mAddableToCartGridView = (GridView) view.findViewById(R.id.favourites_grid);
         // Get add to cart button
@@ -169,7 +166,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         super.onResume();
         Log.i(TAG, "ON RESUME");
         // Tracking page
-        TrackerDelegator.trackPage(mPageName, loadTime, false);
+        TrackerDelegator.trackPage(mPageName, getLoadTime(), false);
     }
 
     /*
@@ -372,7 +369,11 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             if (null != catalogFragment) {
                 catalogFragment.sendValuesToFragment(BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE, addableToCart.getSku());
             }
-            TrackerDelegator.trackRemoveFromFavorites(addableToCart.getSku(), addableToCart.getPriceForTracking(), addableToCart.getRatingsAverage());
+            String sku = addableToCart.getSku();
+            if(addableToCart.getSelectedSimple() != -1 && addableToCart.getSimples().size() > 0)
+                sku = addableToCart.getSimples().get(addableToCart.getSelectedSimple()).getAttributeByKey(RestConstants.JSON_SKU_TAG);
+            
+            TrackerDelegator.trackRemoveFromFavorites(sku, addableToCart.getPriceForTracking(), addableToCart.getRatingsAverage());
 
             // Show Toast
             Toast.makeText(getBaseActivity(), getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();

@@ -93,7 +93,6 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
 
     private LinearLayout container;
 
-    private long loadTime = 0;
     /**
      * 
      * @return
@@ -143,14 +142,12 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadTime = System.currentTimeMillis();
         Log.i(TAG, "ON CREATE");
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(loadTime == 0) loadTime = System.currentTimeMillis();
     }
     /*
      * (non-Javadoc)
@@ -173,7 +170,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
         super.onResume();
         Log.i(TAG, "ON RESUME");
 
-        TrackerDelegator.trackPage(TrackingPage.REGISTRATION, loadTime, false);
+        TrackerDelegator.trackPage(TrackingPage.REGISTRATION, getLoadTime(), false);
 
         // Used for UG
         forceInputAlignToLeft();
@@ -500,13 +497,11 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
         switch (eventType) {
         case REGISTER_ACCOUNT_EVENT:
             
-            /**
-             * FIXME: Not use Exception and try use the tracker in safety way.
-             * @author sergiopereira
-             */
             try {
                 if(((CheckBox) newsletterSubscribe.getEditControl()).isChecked()) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
-            } catch (Exception e) {
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }catch (ClassCastException e) {
                 e.printStackTrace();
             }
             

@@ -101,8 +101,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
 
     private ViewGroup mShipFeeView;
     
-    private long loadTime = 0;
-
     /**
      * Get CheckoutMyOrderFragment instance
      * @return
@@ -146,7 +144,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        loadTime = System.currentTimeMillis();
         // TODO
         // coming back from external methods don't call onViewCreated() again and as such
         // setOnClickListener won't be setup
@@ -169,7 +166,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        if(loadTime == 0)loadTime = System.currentTimeMillis();
         // Get product items
         mProductsContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_products_list);
         // Get sub total
@@ -230,7 +226,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.ORDER_CONFIRM, loadTime, true);
+        TrackerDelegator.trackPage(TrackingPage.ORDER_CONFIRM, getLoadTime(), true);
         
     }
 

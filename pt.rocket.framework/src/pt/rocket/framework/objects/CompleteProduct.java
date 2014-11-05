@@ -64,6 +64,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	private boolean isNew;
 	private double mPriceConverted;
 	private double mSpecialPriceConverted;
+//	private int simpleSkuPosition;
 
 	/**
 	 * Complete product empty constructor.
@@ -607,11 +608,22 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceConverted;
 	}
 
+
+//    public int getSimpleSkuPosition() {
+//        return simpleSkuPosition;
+//    }
+//
+//    public void setSimpleSkuPosition(int simpleSkuPosition) {
+//        this.simpleSkuPosition = simpleSkuPosition;
+//    }
+//	
+	
 	/*
 	 * ############ PARCELABLE ############
 	 */
 
-	/*
+
+    /*
 	 * (non-Javadoc)
 	 * 
 	 * @see android.os.Parcelable#describeContents()

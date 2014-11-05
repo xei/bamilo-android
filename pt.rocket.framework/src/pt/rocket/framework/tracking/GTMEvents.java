@@ -53,6 +53,8 @@ public class GTMEvents {
         public static String LOGOUTLOCATION = "logoutLocation";
         public static String REGISTRATIONMETHOD = "registrationMethod";
         public static String REGISTRATIONLOCATION = "registrationLocation";
+        public static String DEVICEBRAND= "deviceBrand";
+        public static String OPERATOR= "operator";
         
         public static String FILTERTYPE = "filterType";
         public static String SORTTYPE = "sortType";

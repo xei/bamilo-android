@@ -55,7 +55,6 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
     
     private Button mClearAllButton;
 
-    private long loadTime = 0;
     /**
      * Empty constructor
      */
@@ -79,7 +78,6 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        loadTime = System.currentTimeMillis();
     }
     /*
      * (non-Javadoc)
@@ -91,7 +89,6 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        if(loadTime == 0) loadTime = System.currentTimeMillis();
         mainView = view;
         setAppContentLayout();
         init();
@@ -106,7 +103,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
         super.onResume();
         Log.i(TAG, "ON RESUME");
         // Tracking page
-        TrackerDelegator.trackPage(TrackingPage.RECENT_SEARCHES, loadTime, false);
+        TrackerDelegator.trackPage(TrackingPage.RECENT_SEARCHES, getLoadTime(), false);
     }
 
     /**

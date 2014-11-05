@@ -139,8 +139,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     
     private double itemRemoved_price_tracking = 0d;
     
-    private long loadTime = 0;
-    
     private long itemRemoved_quantity;
     
     private double itemRemoved_rating;
@@ -216,7 +214,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        loadTime = System.currentTimeMillis();
     }
 
     /*
@@ -228,7 +225,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        if(loadTime == 0) loadTime = System.currentTimeMillis();
         setAppContentLayout();
 
         // EventManager.getSingleton().triggerRequestEvent(new RequestEvent(
@@ -250,7 +246,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             mBeginRequestMillis = System.currentTimeMillis();
             triggerGetShoppingCart();
             setListeners();
-            TrackerDelegator.trackPage(TrackingPage.CART, loadTime, false);
+            TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
         } else {
             showFragmentRetry(this);
         }
@@ -558,7 +554,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             }
             params.putParcelable(AdjustTracker.CART, shoppingCart);
             
-            TrackerDelegator.trackPage(TrackingPage.CART_LOADED, params, loadTime, false);
+            TrackerDelegator.trackPage(TrackingPage.CART_LOADED, params, getLoadTime(), false);
             
             // verify if "Call to Order" was used
             if (isCallInProgress) {
@@ -675,12 +671,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         setTotal(cart);
         
         //GTM TRACKER
-        /**
-         * FIXME: User cart.getPriceForTracking()
-         * @author sergiopereira
-         */
         cartForTracking = cart;
-        TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getCartValueEuroConverted());
+        TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getPriceForTracking());
         
         // Set voucher
         String couponDiscount = cart.getCouponDiscount();
@@ -806,7 +798,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             }
 
             hideNoItems();
-            TrackerDelegator.trackPage(TrackingPage.FILLED_CART, loadTime,false);
+            TrackerDelegator.trackPage(TrackingPage.FILLED_CART, getLoadTime(),false);
 
         }
     }
@@ -1000,7 +992,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             }
         });
 
-        TrackerDelegator.trackPage(TrackingPage.EMPTY_CART, loadTime, false);
+        TrackerDelegator.trackPage(TrackingPage.EMPTY_CART, getLoadTime(), false);
     }
 
     /**
@@ -1035,11 +1027,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                 triggerIsNativeCheckoutAvailable();
                 
                 //GTM TRACKER
-                /**
-                 * FIXME: Use getPriceForTracking
-                 * @author sergiopereira
-                 */
-                if(cartForTracking != null)  TrackerDelegator.trackStartCheckout(cartForTracking.getCartCount(), cartForTracking.getCartValueEuroConverted());
+                if(cartForTracking != null)  TrackerDelegator.trackStartCheckout(cartForTracking.getCartCount(), cartForTracking.getPriceForTracking());
                 
             } else {
                 goToWebCheckout();
@@ -1137,6 +1125,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                 prods = prods - quantity;
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
                 for (int i = 0; i < prods; i++) {
+                    Log.e("Adjust","trackProductRemoveFromCart sku:"+item.getConfigSimpleSKU());
                     TrackerDelegator.trackProductRemoveFromCart(params);
                 }
             }

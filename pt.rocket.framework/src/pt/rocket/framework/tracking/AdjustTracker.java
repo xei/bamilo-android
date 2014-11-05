@@ -200,6 +200,8 @@ public class AdjustTracker {
     private static double ADJUST_CENT_VALUE = 100d;
 
     private Context mContext;
+    
+    private static final String EURO_CURRENCY = "EUR";
 
     public static AdjustTracker get() {
         if (sInstance == null) {
@@ -306,10 +308,11 @@ public class AdjustTracker {
             parameters = new HashMap<String, String>();
             parameters = getFBBaseParameters(parameters, bundle);           
             parameters.put(AdjustKeys.SKU, prod.getSku()); 
-            parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));           
+            parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
+            parameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
             parameters.put(AdjustKeys.DISCOUNT, prod.hasDiscount() ? "y" : "n"); 
             parameters.put(AdjustKeys.BRAND, prod.getBrand()); 
-            parameters.put(AdjustKeys.PRICE, prod.hasDiscount() ? prod.getSpecialPrice() : prod.getPrice());
+            parameters.put(AdjustKeys.PRICE, prod.hasDiscount() ? String.valueOf(prod.getSpecialPriceConverted()) : String.valueOf(prod.getPriceForTracking()));
             if( null != prod.getAttributes() && !TextUtils.isEmpty(prod.getAttributes().get("color"))){
             	 parameters.put(AdjustKeys.COLOUR, prod.getAttributes().get("color"));
             }
@@ -390,7 +393,7 @@ public class AdjustTracker {
                     json.put(AdjustKeys.SKU, item.getConfigSKU());
                     json.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
                     json.put(AdjustKeys.QUANTITY, item.getQuantity());
-                    json.put(AdjustKeys.PRICE, item.getSpecialPriceVal());
+                    json.put(AdjustKeys.PRICE, item.getSpecialPriceConverted());
                     
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -402,19 +405,20 @@ public class AdjustTracker {
                 //FB - View Cart
                 fbParameters = getFBBaseParameters(fbParameters, bundle);
 
-                hasDiscount = item.getSpecialPriceVal() != item.getPriceVal();
-                price = (hasDiscount ? item.getSpecialPriceVal() : item.getPriceVal());
+                hasDiscount = item.getSpecialPriceConverted() != item.getPriceValueEuroConverted();
+                price = (hasDiscount ? item.getSpecialPriceConverted() : item.getPriceValueEuroConverted());
 
                 fbParameters.put(AdjustKeys.SKU, item.getConfigSKU() );
-                fbParameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO)); 
+                fbParameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY); 
                 fbParameters.put(AdjustKeys.QUANTITY, String.valueOf(item.getQuantity())); 
                 fbParameters.put(AdjustKeys.DISCOUNT, hasDiscount ? "y" : "n"); 
 
 
                 fbParameters.put(AdjustKeys.PRICE, price.toString());
                 
-                fbParameters.put(AdjustKeys.CART_CURRENCY_CODE, bundle.getString(CURRENCY_ISO));             
-                fbParameters.put(AdjustKeys.TOTAL_CART, cart.getCartValue());
+//                fbParameters.put(AdjustKeys.CART_CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
+                fbParameters.put(AdjustKeys.CART_CURRENCY_CODE, EURO_CURRENCY);
+                fbParameters.put(AdjustKeys.TOTAL_CART, String.valueOf(cart.getCartValueEuroConverted()));
                 
 //              fbParameters.put(AdjustKeys.SIZE, item.getVariation());
 //              fbParameters.put(AdjustKeys.COLOUR, item.getVariation());
@@ -457,8 +461,9 @@ public class AdjustTracker {
                 parameters.put(AdjustKeys.DEVICE_MODEL, Build.MODEL);
                 parameters.put(AdjustKeys.DEVICE, getDeviceType(bundle.getBoolean(DEVICE, false)));
                 parameters.put(AdjustKeys.APP_PRE_INSTALL, String.valueOf(bundle.getBoolean(Constants.INFO_PRE_INSTALL)));
-                parameters.put(AdjustKeys.DEVICE_SIM_OPERATOR, bundle.getString(Constants.INFO_SIM_OPERATOR));
-                
+                if(!TextUtils.isEmpty(bundle.getString(Constants.INFO_SIM_OPERATOR)))
+                    parameters.put(AdjustKeys.DEVICE_SIM_OPERATOR, bundle.getString(Constants.INFO_SIM_OPERATOR));
+
                 Log.i(TAG, "code1adjust is APP_OPEN values ##### " + parameters.toString());
     
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_launch), parameters);
@@ -566,7 +571,7 @@ public class AdjustTracker {
                     fbParameters.put(AdjustKeys.QUANTITY, item.quantity);
                     if(item.getPriceForTracking() > 0d){
                     	fbParameters.put(AdjustKeys.PRICE, String.valueOf(item.getPriceForTracking()));
-                        fbParameters.put(AdjustKeys.CURRENCY_CODE, "EUR"); 
+                        fbParameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY); 
                     }
 //                      fbParameters.put(AdjustKeys.DISCOUNT + countString, hasDiscount ? "true" : "false"); 
 //                      fbParameters.put(AdjustKeys.BRAND + countString, item.get);
@@ -591,7 +596,7 @@ public class AdjustTracker {
                 
                 if(bundle.getDouble(VALUE) > 0d){
                 	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
-                    parameters.put(AdjustKeys.CURRENCY_CODE, "EUR");
+                    parameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
                 }
               Adjust.trackEvent(mContext.getString(R.string.adjust_token_add_to_cart), parameters);
             
@@ -605,7 +610,7 @@ public class AdjustTracker {
 
                 if(bundle.getDouble(VALUE) > 0d){
                 	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
-                    parameters.put(AdjustKeys.CURRENCY_CODE, "EUR");
+                    parameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
                 }
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_remove_from_cart), parameters);
             }
@@ -615,10 +620,10 @@ public class AdjustTracker {
             if (isEnabled) {
                 parameters = getBaseParameters(parameters, bundle);
                 parameters.put(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                
+                Log.e("Adjust","ADD_TO_WISHLIST sku:"+bundle.getString(PRODUCT_SKU));
                 if(bundle.getDouble(VALUE) > 0d){
                 	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
-                    parameters.put(AdjustKeys.CURRENCY_CODE, "EUR");
+                    parameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
                 }
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_add_to_wishlist), parameters);
             }
@@ -631,7 +636,7 @@ public class AdjustTracker {
     
                 if(bundle.getDouble(VALUE) > 0d){
                 	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
-                    parameters.put(AdjustKeys.CURRENCY_CODE, "EUR");
+                    parameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
                 }
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_remove_from_wishlist), parameters);            
             }
@@ -664,7 +669,6 @@ public class AdjustTracker {
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_fb_connect), parameters);
             }
             break;
-            
         case SEARCH:
             if (isEnabled) {
                 parameters = getBaseParameters(parameters, bundle);
@@ -678,11 +682,12 @@ public class AdjustTracker {
                 //FB - Search
                 Map<String, String> fbParameters = new HashMap<String, String>();
                 fbParameters = getFBBaseParameters(fbParameters, bundle);
-            
-                fbParameters.put(AdjustKeys.CATEGORY, bundle.getString(CATEGORY)); 
-                if (bundle.containsKey(CATEGORY_ID) && !TextUtils.isEmpty(bundle.getString(CATEGORY_ID))){
+                if (bundle.containsKey(CATEGORY) && !TextUtils.isEmpty(bundle.getString(CATEGORY)))
+                    fbParameters.put(AdjustKeys.CATEGORY, bundle.getString(CATEGORY));
+                
+                if (bundle.containsKey(CATEGORY_ID) && !TextUtils.isEmpty(bundle.getString(CATEGORY_ID)))
                     fbParameters.put(AdjustKeys.CATEGORY_ID, bundle.getString(CATEGORY_ID));
-                }
+                
                 
                 fbParameters.put(AdjustKeys.QUERY, bundle.getString(SEARCH_TERM)); 
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_fb_search), fbParameters);
@@ -703,8 +708,8 @@ public class AdjustTracker {
                 Double WishlistTotal = 0.0;
                 if (null != favourites) {
                     for (AddableToCart fav : favourites) {
-                        hasDiscount = fav.getSpecialPriceDouble() != fav.getPriceAsDouble();
-                        price = (hasDiscount ? fav.getSpecialPriceDouble() : fav.getPriceAsDouble());
+                        hasDiscount = fav.getSpecialPriceConverted() != fav.getPriceConverted();
+                        price = (hasDiscount ? fav.getSpecialPriceConverted() : fav.getPriceConverted());
                         WishlistTotal += price;
                     }
                 }
@@ -716,15 +721,16 @@ public class AdjustTracker {
                     String priceValue;
                     for (AddableToCart fav : favourites) {
                         fbParams = new HashMap<String, String>(parameters);
-                        hasDiscount = fav.getSpecialPriceDouble() != fav.getPriceAsDouble();
-                        priceValue = (hasDiscount ? fav.getSpecialPrice() : fav.getPrice());
+                        hasDiscount = fav.getSpecialPriceConverted() != fav.getPriceConverted();
+                        priceValue = (hasDiscount ? String.valueOf(fav.getSpecialPriceConverted()) : String.valueOf(fav.getPriceConverted()));
                         parameters.put(AdjustKeys.BRAND, fav.getBrand()); 
 //                        if( null != fav.getAttributes() && !TextUtils.isEmpty(fav.getAttributes().get("color"))){
 //                        	 parameters.put(AdjustKeys.COLOUR, fav.getAttributes().get("color"));
 //                        }
 //                        fbParams.put(AdjustKeys.SKU + countString, fav.getSku());
                         fbParams.put(AdjustKeys.SKU, fav.getSku());
-                        fbParams.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO)); 
+//                        fbParams.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO)); 
+                        fbParams.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
     //                  fbParams.put(AdjustKeys.QUANTITY, "1"); 
                         fbParams.put(AdjustKeys.DISCOUNT, hasDiscount ? "y" : "n"); 
                         fbParams.put(AdjustKeys.BRAND, fav.getBrand());

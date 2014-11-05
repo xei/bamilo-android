@@ -107,8 +107,6 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
 
     private boolean isScrolling;
     
-    private long loadTime = 0;
-    
     private enum BannerVisibility{
         DEFAULT,
         VISIBLE,
@@ -173,7 +171,6 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         // Tracking
         TrackerDelegator.trackCampaignView(mTeaserCampaign != null ? mTeaserCampaign.getTargetTitle() : "n.a.");
         
-        loadTime = System.currentTimeMillis();
     }
     
     /*
@@ -192,7 +189,6 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         // Validate the current state
         getAndShowCampaign();
         
-        if(loadTime == 0) loadTime = System.currentTimeMillis();
     }
         
     /*
@@ -216,7 +212,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         Log.i(TAG, "ON RESUME");
         isScrolling = false;
         // Track page
-        TrackerDelegator.trackPage(TrackingPage.CAMPAIGNS,loadTime, false);
+        TrackerDelegator.trackPage(TrackingPage.CAMPAIGNS,getLoadTime(), false);
     }
     
     /*

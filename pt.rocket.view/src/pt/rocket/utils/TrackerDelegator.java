@@ -34,6 +34,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import de.akquinet.android.androlog.Log;
@@ -214,7 +215,9 @@ public class TrackerDelegator {
         bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
         bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         bundle.putString(AdjustTracker.SEARCH_TERM, criteria);
-        bundle.putString(AdjustTracker.CATEGORY, params.getString(AdjustTracker.CATEGORY));
+        if(params.containsKey(AdjustTracker.CATEGORY))
+            bundle.putString(AdjustTracker.CATEGORY, params.getString(AdjustTracker.CATEGORY));
+        
         bundle.putString(AdjustTracker.CATEGORY_ID, params.getString(AdjustTracker.CATEGORY_ID));
         AdjustTracker.get().trackEvent(context, TrackingEvent.SEARCH, bundle);
         //GTM
@@ -910,7 +913,7 @@ public class TrackerDelegator {
 
     /**
      * Tracking remove product from favorites
-     * 
+     * h375id
      * @param productSku
      */
     public static void trackRemoveFromFavorites(String productSku, double price, double averageRatingTotal) {
@@ -1105,7 +1108,17 @@ public class TrackerDelegator {
         // GA
         AnalyticsGoogle.get().setCustomData(info);
         //GTM
-        GTMManager.get().gtmTrackAppOpen(context,"",info, ShopSelector.getShopId(), getUtmParams(context, GTMManager.CAMPAIGN_ID_KEY),
+        
+        PackageInfo pInfo;
+        String version = "";
+        try {
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            version = pInfo.versionName;
+        } catch (Exception e) {
+            Log.e(TAG, "Error getting version info : ", e);
+        }
+        
+        GTMManager.get().gtmTrackAppOpen(version, info, ShopSelector.getShopId(), getUtmParams(context, GTMManager.CAMPAIGN_ID_KEY),
                 getUtmParams(context, GTMManager.CAMPAIGN_SOURCE), getUtmParams(context, GTMManager.CAMPAIGN_MEDIUM));
         
                 

@@ -14,6 +14,7 @@ import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
+import pt.rocket.framework.objects.OrderTracker;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
@@ -61,8 +62,12 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
 
     Customer mCustomer;
     
-    private long loadTime = 0;
-
+    private String orderShipping;
+    
+    private String orderTax;
+    
+    private String paymentMethod;
+    
     /**
      * Get instance
      * 
@@ -110,7 +115,15 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        loadTime = System.currentTimeMillis();
+        
+        if(getArguments() != null && getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING) &&
+                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX) &&
+                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD)){
+            orderShipping = getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING);
+            orderTax = getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX);
+            paymentMethod = getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD);
+        }
+        
     }
 
     /*
@@ -120,7 +133,6 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(loadTime == 0)loadTime = System.currentTimeMillis();
         Log.i(TAG, "ON VIEW CREATED");
         //Validate is service is available
         if(JumiaApplication.mIsBound){
@@ -150,7 +162,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.CHECKOUT_THANKS, loadTime, false);
+        TrackerDelegator.trackPage(TrackingPage.CHECKOUT_THANKS, getLoadTime(), false);
     }
 
     /*
@@ -257,17 +269,10 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);
             params.putString(TrackerDelegator.COUPON_KEY, JumiaApplication.INSTANCE.getCart().getCouponDiscount());
                         
-
-            /**
-             * FIXME: Get Arguments in other place, on create
-             * @author sergiopereira
-             */
-            if(getArguments() != null && getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING) &&
-                    getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX) &&
-                    getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD)){
-                params.putString(TrackerDelegator.SHIPPING_KEY, getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING));
-                params.putString(TrackerDelegator.TAX_KEY, getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX));
-                params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD));
+            if(!TextUtils.isEmpty(orderShipping) && !TextUtils.isEmpty(orderTax) && !TextUtils.isEmpty(paymentMethod)){
+                params.putString(TrackerDelegator.SHIPPING_KEY, orderShipping);
+                params.putString(TrackerDelegator.TAX_KEY, orderTax);
+                params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, paymentMethod);
             }
             TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems());
         }

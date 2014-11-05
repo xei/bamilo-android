@@ -105,7 +105,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setRetainInstance(true);
+//        this.setRetainInstance(true);
         Log.i(TAG, "ON CREATE");
         context = getActivity().getApplicationContext();
     }

@@ -865,10 +865,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             cameFromSignUp = true;
             mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             Customer tempCustomer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            /**
-             * FIXME: WAY 2 METHODS
-             * @author sergiopereira
-             */
+
             if(null != tempCustomer) {
                 TrackerDelegator.storeFirstCustomer(tempCustomer);
                 Bundle params = new Bundle();
@@ -983,10 +980,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             break;
         case FACEBOOK_LOGIN_EVENT:
         case LOGIN_EVENT:
-            /**
-             * FIXME: VALIDATE THIS ALTERNATIVE
-             * @author sergiopereira
-             */
+
             String type = (eventType == EventType.FACEBOOK_LOGIN_EVENT) ? type = GTMValues.FACEBOOK : GTMValues.EMAILAUTH;
             TrackerDelegator.trackLoginFailed(onAutoLogin, GTMValues.CHECKOUT, type);
             if (errorCode == ErrorCode.REQUEST_ERROR) {

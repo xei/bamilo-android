@@ -135,6 +135,8 @@ public class JumiaApplication extends A4SApplication {
     public ArrayList<CountryObject> countriesAvailable = null;
     
     public boolean trackSearch = true;
+    // for tracking
+    public boolean trackSearchCategory = true;
 
     @Override
     public void onApplicationCreate() {

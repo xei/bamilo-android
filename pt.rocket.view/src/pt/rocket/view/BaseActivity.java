@@ -945,7 +945,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         mSearchAutoComplete.setFocusable(false);
         mSearchAutoComplete.setFocusableInTouchMode(true);
         mSearchView.setOnClickListener(null);
-
         /*
          * On item click listener
          */
@@ -995,6 +994,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             @Override
             public void onImeBackPressed() {
                 Log.d(TAG, "SEARCH ON IME PRESSED BACK");
+                JumiaApplication.INSTANCE.trackSearchCategory = false;
                 hideSearchComponent();
             }
         });
@@ -1058,6 +1058,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected void showSearchCategory(String searchText) {
         Log.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
         // Tracking
+        JumiaApplication.INSTANCE.trackSearchCategory = true;
         TrackerDelegator.trackSearchSuggestions(searchText);
         // Data
         Bundle bundle = new Bundle();

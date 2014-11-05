@@ -138,8 +138,6 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     
     private boolean isProductClear = false;
     
-    private long loadTime = 0;
-        
     /**
      * 
      * @param bundle
@@ -182,7 +180,6 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        loadTime = System.currentTimeMillis();
 //        CatalogFragment.hasFilterApllied = false;
         
         Bundle args = getArguments();
@@ -261,8 +258,6 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED #" + mPageIndex);
-        
-        if(loadTime == 0) loadTime = System.currentTimeMillis();
         
         if (savedInstanceState != null) {
             reattached = true;
@@ -439,7 +434,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                             
                             bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, adapter.getProductsList());
                             
-                            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST_SORTED, bundle, loadTime, false);
+                            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST_SORTED, bundle, getLoadTime(), false);
                         } else {
                             trackHandler.postDelayed(this, 300);
                         }
@@ -972,13 +967,18 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 params.putString(TrackerDelegator.SEARCH_CRITERIA_KEY, query);
                 params.putLong(TrackerDelegator.SEARCH_RESULTS_KEY, totalProducts);
                 params.putString(TrackerDelegator.SORT_KEY, mSort.name());
-                params.putString(AdjustTracker.CATEGORY, mTitle);
+               
+                if(JumiaApplication.INSTANCE.trackSearchCategory)
+                    params.putString(AdjustTracker.CATEGORY, mTitle);
+                
                 if(!TextUtils.isEmpty(categoryId) && TextUtils.isEmpty(CatalogFragment.categoryId))
                     params.putString(AdjustTracker.CATEGORY_ID, categoryId);
                 else params.putString(AdjustTracker.CATEGORY_ID, CatalogFragment.categoryId);
+                
+                JumiaApplication.INSTANCE.trackSearchCategory = false;
                 JumiaApplication.INSTANCE.trackSearch = false;
                 TrackerDelegator.trackSearch(params);
-                TrackerDelegator.trackPage(TrackingPage.SEARCH_SCREEN, loadTime, true);
+                TrackerDelegator.trackPage(TrackingPage.SEARCH_SCREEN, getLoadTime(), true);
                 TrackerDelegator.trackViewCatalog(mTitle,"",mPageNumber);
             }
 

@@ -196,7 +196,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Get current time
-        mLoadTime = System.currentTimeMillis();
     }
 
     /*
@@ -207,6 +206,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Get current time
+        mLoadTime = System.currentTimeMillis();
         if (hasLayoutToInflate()) {
             Log.i(TAG, "ON CREATE VIEW: HAS LAYOUT TO INFLATE");
             View view = inflater.inflate(R.layout.fragment_root_layout, container, false);
@@ -941,8 +942,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if(mLocale != null) Locale.setDefault(mLocale);
     }
     
-    /**
-     * ########### NEXT ########### 
-     */
-
+    protected long getLoadTime(){
+        return mLoadTime;
+    }
 }

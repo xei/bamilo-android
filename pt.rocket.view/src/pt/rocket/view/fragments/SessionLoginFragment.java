@@ -109,8 +109,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
 
     private boolean cameFromRegister = false;
     
-    private long loadTime = 0;
-
     /**
      * 
      * @return
@@ -171,7 +169,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        loadTime = System.currentTimeMillis();
         setRetainInstance(true);
         // String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);
         uiHelper = new UiLifecycleHelper(getBaseActivity(), callback/*-, appId*/);
@@ -188,7 +185,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        if(loadTime == 0) loadTime = System.currentTimeMillis();
         rememberEmailCheck = (CheckBox) view.findViewById(R.id.login_remember_user_email);
         signinButton = view.findViewById(R.id.middle_login_button_signin);
         forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
@@ -220,7 +216,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGNUP, loadTime, false);
+        TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGNUP, getLoadTime(), false);
 
         /*-String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);
         uiHelper.setJumiaAppId(appId);*/

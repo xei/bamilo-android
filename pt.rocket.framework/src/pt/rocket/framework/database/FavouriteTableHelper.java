@@ -52,6 +52,7 @@ public class FavouriteTableHelper extends BaseTable {
 	public static final String _FAVOURITE_VARIATIONS_JSON = "favourite_variations_json";
 	public static final String _FAVOURITE_KNOWN_VARIATIONS_LIST = "favourite_known_variations_list";
 	public static final String _FAVOURITE_IS_COMPLETE = "favourite_is_complete";
+//	public static final String _FAVOURITE_SIMPLE_POSITION = "favourite_simple_postion";
 	
 
 	private static String DELIMITER = ":::::";
@@ -99,6 +100,7 @@ public class FavouriteTableHelper extends BaseTable {
                 .append(_FAVOURITE_VARIATIONS_JSON).append(" TEXT, ")
                 .append(_FAVOURITE_KNOWN_VARIATIONS_LIST).append(" TEXT, ")
                 .append(_FAVOURITE_IS_COMPLETE).append(" TEXT")
+//                .append(_FAVOURITE_SIMPLE_POSITION).append(" INTEGER DEFAULT -1")
                 .append(")").toString();
     }
 
@@ -128,6 +130,7 @@ public class FavouriteTableHelper extends BaseTable {
 			values.put(FavouriteTableHelper._FAVOURITE_URL, completeProduct.getUrl());
 			values.put(FavouriteTableHelper._FAVOURITE_IMAGE_URL, completeProduct.getImageList().size() == 0 ? "" : completeProduct.getImageList().get(0));
 			values.put(FavouriteTableHelper._FAVOURITE_IS_NEW, completeProduct.isNew());
+//			values.put(FavouriteTableHelper._FAVOURITE_SIMPLE_POSITION, completeProduct.getSimpleSkuPosition());
 
 			String simplesJSON = "";
 			ArrayList<ProductSimple> simples = completeProduct.getSimples();
@@ -196,6 +199,7 @@ public class FavouriteTableHelper extends BaseTable {
 			values.put(FavouriteTableHelper._FAVOURITE_VARIATIONS_JSON, "");
 			values.put(FavouriteTableHelper._FAVOURITE_KNOWN_VARIATIONS_LIST, "");
 			values.put(FavouriteTableHelper._FAVOURITE_IS_COMPLETE, false);
+//			values.put(FavouriteTableHelper._FAVOURITE_SIMPLE_POSITION, -1);
 			db.insert(FavouriteTableHelper.TABLE_NAME, null, values);
 			db.close();
 		}
@@ -391,6 +395,7 @@ public class FavouriteTableHelper extends BaseTable {
 				}
 
 				favourite.setComplete(cursor.getInt(index++) == 1);
+//				favourite.setSelectedSimple(cursor.getInt(index++));
 
 				favourites.add(favourite);
 			}

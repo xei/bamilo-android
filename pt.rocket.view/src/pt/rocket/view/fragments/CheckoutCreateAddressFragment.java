@@ -137,9 +137,9 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     private boolean isCityIdAnEditText = false;
     
     private ScrollView mScrollViewContainer;
-
-    private long loadTime = 0;
     
+    private static final long ERROR_DELAY = 5000;
+
     /**
      * Fragment used to create an address
      * @return CheckoutCreateAddressFragment
@@ -161,7 +161,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                 R.string.checkout_label,
                 KeyboardState.ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_BILLING);
-        // ConstantsCheckout.CHECKOUT_BILLING
     }
 
     /*
@@ -184,7 +183,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        loadTime = System.currentTimeMillis();
         // Validate the saved values 
         if(savedInstanceState != null) {
             // Get the ship content values
@@ -211,7 +209,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        if(loadTime == 0)loadTime = System.currentTimeMillis();
         // Scroll view
         mScrollViewContainer = (ScrollView) view.findViewById(R.id.checkout_address_form_scroll);
         // Shipping title
@@ -267,7 +264,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        TrackerDelegator.trackPage(TrackingPage.NEW_ADDRESS, loadTime, true);
+        TrackerDelegator.trackPage(TrackingPage.NEW_ADDRESS, getLoadTime(), true);
     }
     
     /*
@@ -632,18 +629,9 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         if(!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) { 
             Log.w(TAG, "REGION SPINNER NOT FILL YET");
             // Show error message
-            /**
-             * FIXME: Please try use mMsgRequired.postDelayed(action, delayMillis)
-             * @author sergiopereira
-             */
             if(mMsgRequired != null){
                 mMsgRequired.setVisibility(View.VISIBLE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mMsgRequired.setVisibility(View.GONE);
-                    }
-                }, 5000);
+                changeMessageState(mMsgRequired, true, ERROR_DELAY);
             }
             return; 
         };
@@ -1126,21 +1114,32 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
         } else {
-            /**
-             * FIXME: Please try use mMsgRequired.postDelayed(action, delayMillis)
-             * and create a method
-             * @author sergiopereira
-             */
             if (mMsgRequired != null){
                 mMsgRequired.setVisibility(View.VISIBLE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mMsgRequired.setVisibility(View.GONE);
-                    }
-                }, 5000);
+                changeMessageState(mMsgRequired, true, ERROR_DELAY);
+
             }
             else Toast.makeText(getBaseActivity(), getString(R.string.register_required_text), Toast.LENGTH_SHORT).show();
         }
     }
+    
+    
+    /**
+     * 
+     * function that changes visibility state of a view giving a delay 
+     * 
+     * @param view
+     * @param isToHide
+     * @param delay
+     */
+    private void changeMessageState(final View view, final boolean isToHide, long delay){
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(isToHide) view.setVisibility(View.GONE);
+                else view.setVisibility(View.VISIBLE);
+            }
+        }, delay);
+    }
+    
 }
