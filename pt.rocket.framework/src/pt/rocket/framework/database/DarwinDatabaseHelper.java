@@ -60,7 +60,17 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
 	 * @return
 	 */
     public static DarwinDatabaseHelper getInstance() {
-    	return (db == null) ? db = new DarwinDatabaseHelper(DATABASE_VERSION) : db;
+        int version = DATABASE_VERSION;
+    	try {
+    		version = CONTEXT.getPackageManager().getPackageInfo(CONTEXT.getPackageName(), 0).versionCode;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+    
+    	return (db == null) ? db = new DarwinDatabaseHelper(version) : db;
+    	//return (db == null) ? db = new DarwinDatabaseHelper(DATABASE_VERSION) : db;
     }
     
     /**
@@ -68,9 +78,18 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
 	 * @return
 	 */
     public static DarwinDatabaseHelper getInstance(Context ctx) {
+        int version = DATABASE_VERSION;
+    	try {
+    		version = CONTEXT.getPackageManager().getPackageInfo(CONTEXT.getPackageName(), 0).versionCode;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+    
         // Update context
         if(CONTEXT == null) CONTEXT = ctx;
-    	return (db == null) ? db = new DarwinDatabaseHelper(DATABASE_VERSION) : db;
+        
+        return (db == null) ? db = new DarwinDatabaseHelper(version) : db;
+    	//return (db == null) ? db = new DarwinDatabaseHelper(DATABASE_VERSION) : db;
     }
     
     /**
