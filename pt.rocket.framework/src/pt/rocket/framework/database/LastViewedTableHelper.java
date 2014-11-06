@@ -62,7 +62,8 @@ public class LastViewedTableHelper extends BaseTable {
 	 */
     @Override
     public TableType getUpgradeType() {
-        return TableType.FREEZE;
+        //return TableType.FREEZE;
+        return TableType.PERSIST;
     }
 
     /*

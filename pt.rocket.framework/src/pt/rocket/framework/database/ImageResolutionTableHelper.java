@@ -36,7 +36,8 @@ public class ImageResolutionTableHelper extends BaseTable {
      */
    @Override
    public TableType getUpgradeType() {
-       return TableType.CACHE;
+       //return TableType.CACHE;
+       return TableType.PERSIST;
    }
 
    /*

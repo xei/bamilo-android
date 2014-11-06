@@ -63,7 +63,8 @@ public class FavouriteTableHelper extends BaseTable {
 	 */
     @Override
     public TableType getUpgradeType() {
-        return TableType.FREEZE;
+        //return TableType.FREEZE;
+        return TableType.PERSIST;
     }
     
     /*
