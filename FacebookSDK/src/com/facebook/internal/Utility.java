@@ -639,7 +639,7 @@ public final class Utility {
                     SharedPreferences sharedPrefs = context.getSharedPreferences(
                             APP_SETTINGS_PREFS_STORE,
                             Context.MODE_PRIVATE);
-                    sharedPrefs.edit().putString(settingsKey, resultJSON.toString()).apply();
+                    sharedPrefs.edit().putString(settingsKey, resultJSON.toString()).commit();
                 }
 
                 initialAppSettingsLoadTask = null;
