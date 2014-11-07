@@ -75,6 +75,9 @@ public class AdjustTracker {
     public static final String FAVORITES = "favorites";
     public static final String PRODUCT_SIZE = "size";
     
+    private final String ADJUST_PREFERENCES = "AdjustPreferences";
+    private final String PURCHASE_NUMBER = "aggregatedNumberOfPurchases";
+    
     protected static class AdjustConstants {
         public static final String NO_DATA = "";
         public static final String NO_CURRENCY = "";
@@ -312,7 +315,7 @@ public class AdjustTracker {
             parameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
             parameters.put(AdjustKeys.DISCOUNT, prod.hasDiscount() ? "y" : "n"); 
             parameters.put(AdjustKeys.BRAND, prod.getBrand()); 
-            parameters.put(AdjustKeys.PRICE, prod.hasDiscount() ? String.valueOf(prod.getSpecialPriceConverted()) : String.valueOf(prod.getPriceForTracking()));
+            parameters.put(AdjustKeys.PRICE, String.valueOf(prod.getPriceForTracking()));
             if( null != prod.getAttributes() && !TextUtils.isEmpty(prod.getAttributes().get("color"))){
             	 parameters.put(AdjustKeys.COLOUR, prod.getAttributes().get("color"));
             }
@@ -383,8 +386,6 @@ public class AdjustTracker {
             
             int productCount = 0;
             String countString = "";
-            Boolean hasDiscount = false;                
-            Double price = 0.0;
             for (String key : cart.getCartItems().keySet()) {
                 item = cart.getCartItems().get(key);
                 
@@ -404,27 +405,19 @@ public class AdjustTracker {
 
                 //FB - View Cart
                 fbParameters = getFBBaseParameters(fbParameters, bundle);
-
-                hasDiscount = item.getSpecialPriceConverted() != item.getPriceValueEuroConverted();
-                price = (hasDiscount ? item.getSpecialPriceConverted() : item.getPriceValueEuroConverted());
-
                 fbParameters.put(AdjustKeys.SKU, item.getConfigSKU() );
                 fbParameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY); 
                 fbParameters.put(AdjustKeys.QUANTITY, String.valueOf(item.getQuantity())); 
-                fbParameters.put(AdjustKeys.DISCOUNT, hasDiscount ? "y" : "n"); 
-
-
-                fbParameters.put(AdjustKeys.PRICE, price.toString());
-                
-//                fbParameters.put(AdjustKeys.CART_CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
+                fbParameters.put(AdjustKeys.DISCOUNT, item.hasDiscount() ? "y" : "n"); 
+                fbParameters.put(AdjustKeys.PRICE, String.valueOf(item.getPriceForTracking()));
+                // fbParameters.put(AdjustKeys.CART_CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
                 fbParameters.put(AdjustKeys.CART_CURRENCY_CODE, EURO_CURRENCY);
                 fbParameters.put(AdjustKeys.TOTAL_CART, String.valueOf(cart.getCartValueEuroConverted()));
                 
-//              fbParameters.put(AdjustKeys.SIZE, item.getVariation());
-//              fbParameters.put(AdjustKeys.COLOUR, item.getVariation());
-//              fbParameters.put(AdjustKeys.VARIATION, item.getVariation());            
-//                parameters.put(AdjustKeys.BRAND, item.getBrand());               
-          
+                // fbParameters.put(AdjustKeys.SIZE, item.getVariation());
+                // fbParameters.put(AdjustKeys.COLOUR, item.getVariation());
+                // fbParameters.put(AdjustKeys.VARIATION, item.getVariation());            
+                // parameters.put(AdjustKeys.BRAND, item.getBrand());               
                 
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_fb_view_cart), fbParameters);
             }
@@ -620,7 +613,7 @@ public class AdjustTracker {
             if (isEnabled) {
                 parameters = getBaseParameters(parameters, bundle);
                 parameters.put(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                Log.e("Adjust","ADD_TO_WISHLIST sku:"+bundle.getString(PRODUCT_SKU));
+                //Log.e("Adjust","ADD_TO_WISHLIST sku:"+bundle.getString(PRODUCT_SKU));
                 if(bundle.getDouble(VALUE) > 0d){
                 	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
                     parameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
@@ -703,14 +696,10 @@ public class AdjustTracker {
                 
                 ArrayList<AddableToCart> favourites = bundle.getParcelableArrayList(FAVORITES);
             
-                Boolean hasDiscount = false;
-                Double price;
                 Double WishlistTotal = 0.0;
                 if (null != favourites) {
                     for (AddableToCart fav : favourites) {
-                        hasDiscount = fav.getSpecialPriceConverted() != fav.getPriceConverted();
-                        price = (hasDiscount ? fav.getSpecialPriceConverted() : fav.getPriceConverted());
-                        WishlistTotal += price;
+                        WishlistTotal += fav.getPriceForTracking();
                     }
                 }
                 
@@ -718,11 +707,8 @@ public class AdjustTracker {
                 parameters.put(AdjustKeys.TOTAL_WISHLIST, WishlistTotal.toString());
                 
                 if (null != favourites) {
-                    String priceValue;
                     for (AddableToCart fav : favourites) {
                         fbParams = new HashMap<String, String>(parameters);
-                        hasDiscount = fav.getSpecialPriceConverted() != fav.getPriceConverted();
-                        priceValue = (hasDiscount ? String.valueOf(fav.getSpecialPriceConverted()) : String.valueOf(fav.getPriceConverted()));
                         parameters.put(AdjustKeys.BRAND, fav.getBrand()); 
 //                        if( null != fav.getAttributes() && !TextUtils.isEmpty(fav.getAttributes().get("color"))){
 //                        	 parameters.put(AdjustKeys.COLOUR, fav.getAttributes().get("color"));
@@ -732,12 +718,12 @@ public class AdjustTracker {
 //                        fbParams.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO)); 
                         fbParams.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
     //                  fbParams.put(AdjustKeys.QUANTITY, "1"); 
-                        fbParams.put(AdjustKeys.DISCOUNT, hasDiscount ? "y" : "n"); 
+                        fbParams.put(AdjustKeys.DISCOUNT, fav.hasDiscount() ? "y" : "n"); 
                         fbParams.put(AdjustKeys.BRAND, fav.getBrand());
                         if (fav.hasSimples() && AddableToCart.NO_SIMPLE_SELECTED != fav.getSelectedSimple()) {                                              
                             fbParams.put(AdjustKeys.SIZE, fav.getSelectedSimpleValue());
                         }
-                        fbParams.put(AdjustKeys.PRICE, priceValue);
+                        fbParams.put(AdjustKeys.PRICE, String.valueOf(fav.getPriceForTracking()));
                         
                         Adjust.trackEvent(mContext.getString(R.string.adjust_token_fb_view_wishlist), fbParams);
                     }
@@ -856,10 +842,11 @@ public class AdjustTracker {
         String sessionCount = String.valueOf(settings.getInt(SESSION_COUNTER, 0));
         return sessionCount;
     }    
+
     
     private String getTransationCount() {
-        SharedPreferences settings = mContext.getSharedPreferences(Ad4PushTracker.AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
-        int purchasesNumber = settings.getInt(Ad4PushTracker.PURCHASE_NUMBER, 0);
+        SharedPreferences settings = mContext.getSharedPreferences(ADJUST_PREFERENCES, Context.MODE_PRIVATE);
+        int purchasesNumber = settings.getInt(PURCHASE_NUMBER, 0);
         
         return String.valueOf(purchasesNumber);
     }    

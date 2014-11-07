@@ -73,7 +73,6 @@ public class Darwin {
 	public static final String KEY_SELECTED_COUNTRY_ISO = "selected_country_iso";
 	public static final String KEY_SELECTED_COUNTRY_FORCE_HTTP = "selected_country_force_http";
 	public static final String KEY_SELECTED_COUNTRY_IS_LIVE = "selected_country_is_live";
-	public static final String KEY_SELECTED_COUNTRY_REST_BASE = "selected_country_rest_base";
 	
 	public static final String KEY_SELECTED_COUNTRY_CURRENCY_ISO = "selected_country_currency_iso";
 	public static final String KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL = "selected_country_currency_symbol";
@@ -131,6 +130,7 @@ public class Darwin {
 		return true;
 	}
 	
+	// FOR NO_COUNTRIES_CONFIGS
 	public static boolean initialize(DarwinMode mode, Context ctx) {
 		Log.d(TAG, "Initializing Darwin to get global ");
 		context = ctx.getApplicationContext();
@@ -142,6 +142,7 @@ public class Darwin {
 		return true;
 	}
 	
+	// FOR NO_COUNTRY_CONFIGS_AVAILABLE
 	public static boolean initialize(DarwinMode mode, Context ctx, String requestHost, String basePath) {
 		Log.d(TAG, "Initializing Darwin to get global ");
 		context = ctx.getApplicationContext();

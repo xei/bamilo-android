@@ -343,6 +343,15 @@ public class ShoppingCartItem implements IJSONSerializable, Parcelable {
 		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + mPriceValueConverted + " " + mSpecialPriceConverted);
 		return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceValueConverted;
 	}
+	
+	/**
+	 * Validate special price.
+	 * @return true or false
+	 * @author sergiopereira
+	 */
+	public boolean hasDiscount() {
+	    return mSpecialPriceConverted > 0 ? true : false;
+	}
 
 	/**
 	 * ########### Parcelable ###########

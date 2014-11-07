@@ -68,5 +68,6 @@ public class Constants {
     public static final String INFO_PRE_INSTALL = "preInstalment";
     public static final String INFO_BRAND = "brand";
     public static final String INFO_SIM_OPERATOR = "operator";
+    public static final String INFO_BUNDLE_VERSION = "bundleVersion";
 	
 }

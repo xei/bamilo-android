@@ -339,7 +339,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                     } else {
                         intent = new Intent(getApplicationContext(), MainFragmentTabletActivity.class);
                     }
-                    
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }

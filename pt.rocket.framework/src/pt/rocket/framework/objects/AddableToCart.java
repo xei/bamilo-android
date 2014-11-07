@@ -454,6 +454,16 @@ public class AddableToCart implements Parcelable {
     public Double getRatingsAverage() {
         return mRatingsAverage;
     }
+    
+    /**
+     * Validate special price.
+     * @return true or false
+     * @author sergiopereira
+     */
+    public boolean hasDiscount() {
+        return mSpecialPriceConverted > 0 ? true : false;
+    }
+    
 
 	/*
 	 * ############ PARCELABLE ############

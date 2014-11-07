@@ -62,20 +62,18 @@ public class RestContract {
 	// private static Context context;
 
 	public static void init(Context context, String selectedId) {
-		Log.i(TAG, "code1configs initializing RestContract : "+selectedId);
+		Log.i(TAG, "code1configs initializing RestContract : " + selectedId);
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-		// RestContract.context = context;
+		
 		REQUEST_HOST = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null);
-		Log.i(TAG, "code1configs REQUEST_HOST : "+REQUEST_HOST);
-		if(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false))		
-			USE_ONLY_HTTPS = true;
-		else
-			USE_ONLY_HTTPS = false;
+		Log.i(TAG, "code1configs REQUEST_HOST : " + REQUEST_HOST);
 		if (TextUtils.isEmpty(REQUEST_HOST)) {
-			throw new RuntimeException("The rest host has to be set and not beeing empty!");
+		    throw new RuntimeException("The rest host has to be set and not beeing empty!");
 		}
-
-		REST_BASE_PATH = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, null);
+		
+		USE_ONLY_HTTPS = sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false);
+		
+		REST_BASE_PATH = context.getResources().getString(R.string.global_server_api_version);
 		if (TextUtils.isEmpty(REST_BASE_PATH)) {
 			throw new RuntimeException("The rest base path has to be set and not beeing empty!");
 		}
@@ -85,13 +83,11 @@ public class RestContract {
 		USE_AUTHENTICATION = context.getResources().getBoolean(R.bool.rest_host_auth_use_it);
 	}
 	
-	
+	// NO_COUNTRIES_CONFIGS
 	public static void init(Context context) {
 		Log.i(TAG, "initializing RestContract");
-		// RestContract.context = context;
+		
 		REQUEST_HOST = context.getResources().getString(R.string.global_server_host);
-		
-		
 		if (TextUtils.isEmpty(REQUEST_HOST)) {
 			throw new RuntimeException("The rest host has to be set and not beeing empty!");
 		}
@@ -106,18 +102,16 @@ public class RestContract {
 		USE_AUTHENTICATION = context.getResources().getBoolean(R.bool.rest_host_auth_use_it);
 	}
 	
-	
+	// NO_COUNTRY_CONFIGS_AVAILABLE        KEY_SELECTED_COUNTRY_URL
 	public static void init(Context context, String requestHost, String basePath) {
 		Log.i(TAG, "initializing RestContract");
-		// RestContract.context = context;
+		
 		REQUEST_HOST = requestHost;
-		
-		
 		if (TextUtils.isEmpty(REQUEST_HOST)) {
 			throw new RuntimeException("The rest host has to be set and not beeing empty!");
 		}
 
-		REST_BASE_PATH = basePath;
+		REST_BASE_PATH = context.getResources().getString(R.string.global_server_api_version);
 		if (TextUtils.isEmpty(REST_BASE_PATH)) {
 			throw new RuntimeException("The rest base path has to be set and not beeing empty!");
 		}

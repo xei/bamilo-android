@@ -76,11 +76,10 @@ public final class ShopSelector {
      * @param context
      * @param shopId
      */
+	// NO_COUNTRIES_CONFIGS
     public static void init(Context context) {
-        
         RestContract.init(context);
         RestClientSingleton.getSingleton(context).init();
-
 	}
 
 	/**
@@ -89,11 +88,10 @@ public final class ShopSelector {
 	 * @param context
 	 * @param shopId
 	 */
+    // NO_COUNTRY_CONFIGS_AVAILABLE
 	public static void init(Context context, String requestHost, String basePath) {
-		
 		RestContract.init(context, requestHost, basePath);
 		RestClientSingleton.getSingleton(context).init();
-
 	}
 	
 	/**

@@ -146,8 +146,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     private String itemRemoved_cart_value;
     
     private static String cartValue = "";
-    
-    private ShoppingCart cartForTracking;
 
     public static class CartItemValues {
         // public Boolean is_in_wishlist;
@@ -672,7 +670,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         setTotal(cart);
         
         //GTM TRACKER
-        cartForTracking = cart;
         TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getPriceForTracking());
         
         // Set voucher
@@ -791,7 +788,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                 LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
                 Set<String> priceRulesKeys = priceRules.keySet();
                 for (String key : priceRulesKeys) {
-                    View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element, null);
+                    View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element, priceRulesContainer, false);
                     ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
                     ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-" + CurrencyFormatter.formatCurrency(priceRules.get(key)));
                     priceRulesContainer.addView(priceRuleElement);
@@ -1020,16 +1017,11 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
     private void checkMinOrderAmount() {
         TrackerDelegator.trackCheckout(items);
-
-        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String restbase = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, null);
+        
+        String restbase = getResources().getString(R.string.global_server_api_version);
         if (restbase != null) {
             if (restbase.contains("mobapi/v1")) {
                 triggerIsNativeCheckoutAvailable();
-                
-                //GTM TRACKER
-                if(cartForTracking != null)  TrackerDelegator.trackStartCheckout(cartForTracking.getCartCount(), cartForTracking.getPriceForTracking());
-                
             } else {
                 goToWebCheckout();
             }
@@ -1044,9 +1036,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             if (itemsValues.get(position).is_checked) {
                 itemsValues.remove(position);
                 mBeginRequestMillis = System.currentTimeMillis();
-
                 triggerRemoveItem(items.get(position));
-
                 items.remove(position);
             }
         }
@@ -1107,12 +1097,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             params.putLong(TrackerDelegator.QUANTITY_KEY, 1);
             params.putDouble(TrackerDelegator.RATING_KEY,-1d);
             params.putString(TrackerDelegator.NAME_KEY,item.getName());
-            
-            String item_cart_value = "";
-            if(TextUtils.isEmpty(cartValue)){
-                TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
-                item_cart_value = totalValue.toString();
-            } else item_cart_value = cartValue;
 
             params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
             
@@ -1126,7 +1110,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                 prods = prods - quantity;
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
                 for (int i = 0; i < prods; i++) {
-                    Log.e("Adjust","trackProductRemoveFromCart sku:"+item.getConfigSimpleSKU());
                     TrackerDelegator.trackProductRemoveFromCart(params);
                 }
             }

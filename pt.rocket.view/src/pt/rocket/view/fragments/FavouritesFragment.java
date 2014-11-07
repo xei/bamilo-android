@@ -26,8 +26,8 @@ import pt.rocket.framework.objects.Favourite;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.AdjustTracker;
-import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.tracking.GTMEvents.GTMValues;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
@@ -388,7 +388,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author sergiopereira
      */
     protected void onClickAddAllToCart() {
-        Log.i(TAG, "ON CLICK ADD ITEM TO CART");
+        Log.i(TAG, "ON CLICK ADD ALL TO CART");
         try {
             if (validateVariations()) {
                 onAddAllItemsToCart();
@@ -410,7 +410,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author sergiopereira
      */
     protected void onClickAddToCart(View view) {
-        Log.i(TAG, "ON CLICK ADD ALL TO CART");
+        Log.i(TAG, "ON CLICK ADD ITEM TO CART");
         int position = Integer.parseInt(view.getTag().toString());
         AddableToCart addableToCart = (Favourite) mAddableToCartList.get(position);
         // Validate variation
@@ -558,13 +558,13 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         values.put(GetShoppingCartAddItemHelper.PRODUCT_TAG, addableToCart.getSku());
         values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
         values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
-        values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, addableToCart.getRatingsAverage());
         // Request data
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
         bundle.putInt(GetShoppingCartAddItemHelper.PRODUCT_POS_TAG, position);
         bundle.putString(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, addableToCart.getSku());
         bundle.putDouble(GetShoppingCartAddItemHelper.PRODUCT_PRICE_TAG, addableToCart.getPriceForTracking());
+        bundle.putDouble(GetShoppingCartAddItemHelper.PRODUCT_RATING_TAG, addableToCart.getRatingsAverage());
         bundle.putBoolean(keyRemoveTable, true);
         // Trigger
         triggerContentEventWithNoLoading(new GetShoppingCartAddItemHelper(), bundle, (IResponseCallback) this);

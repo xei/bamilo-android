@@ -55,7 +55,6 @@ import pt.rocket.view.fragments.SessionTermsFragment;
 import pt.rocket.view.fragments.ShoppingCartFragment;
 import pt.rocket.view.fragments.TrackOrderFragment;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
@@ -138,7 +137,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         if (splashScreenParams != null && splashScreenParams.getExtras() != null) {
             isInMaintenance = splashScreenParams.getExtras().getBoolean(ConstantsIntentExtra.IN_MAINTANCE, false);
         }
-        
     }
 
     /*
@@ -195,7 +193,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
         // AD4Push activity tracking for in-app messages
         //Ad4PushTracker.startActivityForInAppMessages(this);
-        Ad4PushTracker.startActivity(this);
+        Ad4PushTracker.get().startActivity(this);
         //Ad4PushTracker.setPushNotificationLocked(true);
 //        AdjustTracker.onResume(this);
     }
@@ -220,7 +218,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         Log.i(TAG, "ON STOP");
         super.onStop();
         // AD4Push activity tracking for in-app messages
-        Ad4PushTracker.stopActivity(this);
+        Ad4PushTracker.get().stopActivity(this);
     }
 
     /*

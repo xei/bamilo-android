@@ -65,17 +65,17 @@ public abstract class BaseHelper {
             } else {
                 if (jsonObject.has(JSONConstants.JSON_METADATA_TAG)) {
 
-                    /**
-                     * TODO: Validate if is necessary this step The methods
-                     * GetRegions and GetCities receive a the metadata field as
-                     * json array
-                     */
-                    try {
+//                    /**
+//                     * TODO: Validate if is necessary this step The methods
+//                     * GetRegions and GetCities receive a the metadata field as
+//                     * json array
+//                     */
+//                    try {
                         metaData = jsonObject.getJSONObject(JSONConstants.JSON_METADATA_TAG);
-                    } catch (JSONException e) {
-                        Log.w(TAG, "METADATA IS AN ARRAY: " + e.getMessage());
-                        metaData = jsonObject;
-                    }
+//                    } catch (JSONException e) {
+//                        Log.w(TAG, "METADATA IS AN ARRAY: " + e.getMessage());
+//                        metaData = jsonObject;
+//                    }
 
                 } else {
                     metaData = jsonObject;

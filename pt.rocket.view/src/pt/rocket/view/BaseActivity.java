@@ -260,10 +260,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         JumiaApplication.INSTANCE.doBindService();
 
+        /**
+         * Used other approach:<br>
+         * - Created a new Activity with specific screen orientation
+         */
         // Validate if is phone and force orientation
         //setOrientationForHandsetDevices();
         //setOrientationForTabletDevices();
-        
+
         // Get fragment controller
         fragmentController = FragmentController.getInstance();
 
@@ -720,6 +724,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * ############### ORIENTATION #################
      */
 
+    /**
+     * Used other approach:<br>
+     * - Created a new Activity with specific screen orientation
+     */
+    @Deprecated
     public void setOrientationForHandsetDevices() {
         // Validate if is phone and force portrait orientaion
         if (!getResources().getBoolean(R.bool.isTablet)) {
@@ -727,7 +736,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
-
+    
+    /**
+     * Used other approach:<br>
+     * - Created a new Activity with specific screen orientation
+     */
+    @Deprecated
     public void setOrientationForTabletDevices() {
         // Validate if is tablet and force landscape orientaion
         if (getResources().getBoolean(R.bool.isTablet)) {
@@ -748,11 +762,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             return true;
         return false;
     }
-
-//    public static boolean showSearchOnActionBar(Context context) {
-//        return true;
-//        // return isTabletInLandscape(context)
-//    }
 
     /**
      * ############### OPTIONS MENU #################

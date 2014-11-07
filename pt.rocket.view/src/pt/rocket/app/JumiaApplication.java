@@ -40,7 +40,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -709,14 +708,6 @@ public class JumiaApplication extends A4SApplication {
      */
     public static void setPaymentsInfoList(HashMap<String, PaymentInfo> paymentsInfoList) {
         JumiaApplication.paymentsInfoList = paymentsInfoList;
-    }
-
-    public String getAppVersion() throws Exception {
-        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-        if (null == pInfo) {
-            throw new Exception("Accessing package information failed.");
-        }
-        return pInfo.versionName;
     }
 
     public void cleanAllPreviousCountryValues() {

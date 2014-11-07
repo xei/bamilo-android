@@ -22,6 +22,7 @@ import pt.rocket.forms.Form;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.OrderSummary;
+import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.tracking.TrackingEvent;
@@ -824,14 +825,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private void goToNextStepAfterSignUp(){
         Log.d(TAG, "RECEIVED SET_SIGNUP_EVENT");
         JumiaApplication.INSTANCE.setLoggedIn(true);
-        
-        if(JumiaApplication.CUSTOMER != null){
-            JumiaApplication.CUSTOMER.setGuest(true);    
-        }
-        
-        TrackerDelegator.trackSignUp(JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, JumiaApplication.CUSTOMER.getIdAsString());
-        
+        // Set guest user
+        if(JumiaApplication.CUSTOMER != null) JumiaApplication.CUSTOMER.setGuest(true);
+        // Track signup
+        trackCheckoutStarted(JumiaApplication.CUSTOMER.getIdAsString());
         // Next step
         gotoNextStep();            
     }
@@ -885,6 +882,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             // Tracking login via facebook
             trackLoginSuccess(customerFb, true);
+            trackCheckoutStarted(customerFb.getIdAsString());
             // Force update the cart and after goto next step
             if(!onAutoLogin){
                 triggerGetShoppingCart();
@@ -899,10 +897,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Get next step
             mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-            // Persist user email or empty that value after successfull login
+            // Persist user email or empty that value after successful login
             CustomerPreferences.setRememberedEmail(getBaseActivity(), rememberEmailCheck.isChecked() ? customer.getEmail() : null);
             // Tracking login
             trackLoginSuccess(customer, false);
+            trackCheckoutStarted(customer.getIdAsString());
             // Force update the cart and after goto next step
             if(!onAutoLogin){
                 triggerGetShoppingCart();
@@ -1068,7 +1067,20 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, isFacebookLogin);
         params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.CHECKOUT);
         TrackerDelegator.trackLoginSuccessful(params);
-        TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, customer.getIdAsString());
+    }
+
+    /**
+     * Tracking the Checkout started
+     * @param customerId
+     * @author sergiopereira
+     */
+    private void trackCheckoutStarted(String customerId) {
+        try {
+            ShoppingCart cart = JumiaApplication.INSTANCE.getCart();
+            TrackerDelegator.trackCheckoutStart(TrackingEvent.CHECKOUT_STEP_ABOUT_YOU, customerId, cart.getCartCount(), cart.getPriceForTracking());   
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
     
     /*

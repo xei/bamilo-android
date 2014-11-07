@@ -2,11 +2,13 @@ package pt.rocket.framework.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import pt.rocket.framework.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,6 +52,8 @@ public class DeviceInfoHelper {
     	mDeviceInfo.putString(Constants.INFO_BRAND, getBrand());
     	// Get operator
     	mDeviceInfo.putString(Constants.INFO_SIM_OPERATOR, getSimOperator(context));
+        // Get operator
+        mDeviceInfo.putString(Constants.INFO_BUNDLE_VERSION, getVersionName(context));
     	// Return values
     	return mDeviceInfo;
     }
@@ -175,6 +179,24 @@ public class DeviceInfoHelper {
     	return Build.BRAND;
     }
     
+    /**
+     * Get the version name.
+     * @param context
+     * @return version or n.a.
+     * @author sergiopereira
+     */
+    public static String getVersionName(Context context) {
+        String versionName = "";
+        try {
+            versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG, "GET VERSION NAME: " + versionName);
+        return versionName;
+    }
+    
+    
     /*
      * ############### SIM CARD #################
      */
@@ -189,6 +211,36 @@ public class DeviceInfoHelper {
     	TelephonyManager tel = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
     	Log.i(TAG, "GET SIM OPERATOR: " + tel.getSimOperatorName());
     	return tel.getSimOperatorName();
+    }
+    
+    /**
+     * Get the SIM card country code.
+     * @param context
+     * @return Country code or empty
+     * @author sergiopereira
+     */
+    public static String getSimCountryIso(Context context) {
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        String iso = tm.getPhoneType() == TelephonyManager.PHONE_TYPE_CDMA ? tm.getSimOperatorName().toUpperCase(Locale.getDefault()) : "";
+        Log.i(TAG, "GET SIM CONTRY CODE: " + iso);
+        return iso;
+    }
+    
+    /*
+     * ############### NETWORK #################
+     */
+    
+    /**
+     * Get the network country code.
+     * @param context
+     * @return Country code or empty
+     * @author sergiopereira
+     */
+    public static String getNetworkCountryIso(Context context) {
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        String iso = tm.getPhoneType() == TelephonyManager.PHONE_TYPE_CDMA ? tm.getNetworkCountryIso().toUpperCase(Locale.getDefault()) : "";
+        Log.i(TAG, "GET NETWORK CONTRY CODE: " + iso);
+        return iso;
     }
     
     /*

@@ -8,7 +8,6 @@ import pt.rocket.framework.Darwin;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.utils.TrackerDelegator;
-import pt.rocket.view.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import de.akquinet.android.androlog.Log;
@@ -63,11 +62,10 @@ public class ShopPreferences {
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).isCountryIsLive());
-        editor.putString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, context.getString(R.string.jumia_global_api_version));
         editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.commit();
         
-        TrackerDelegator.trackShopchanged();
+        TrackerDelegator.trackShopChanged();
     }
 
 }

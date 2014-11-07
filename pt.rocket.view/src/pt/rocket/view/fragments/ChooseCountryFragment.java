@@ -15,6 +15,7 @@ import pt.rocket.framework.database.CountriesConfigsTableHelper;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.database.LastViewedTableHelper;
 import pt.rocket.framework.objects.CountryObject;
+import pt.rocket.framework.tracking.Ad4PushTracker;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -23,7 +24,6 @@ import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -294,7 +294,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             FavouriteTableHelper.deleteAllFavourite();
         }
         
-        System.gc();
+        // Clear prefs
+        Ad4PushTracker.clearAllSavedData(getBaseActivity().getApplicationContext());
+        
+        //System.gc();
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
@@ -308,12 +311,11 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryUrl());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryFlag());
-        Log.i(TAG, "code1flag : "+calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)));
+        //Log.i(TAG, "code1flag : "+calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)));
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)));
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryIsLive());
-        editor.putString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, getString(R.string.jumia_global_api_version));
         editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.commit();
         

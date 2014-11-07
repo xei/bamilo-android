@@ -60,7 +60,8 @@ public class DarwinComponent extends ApplicationComponent {
         
         if(!countryConfigsAvailable){
             Log.i(TAG, "DarwinComponent NO_COUNTRY_CONFIGS_AVAILABLE");
-            if(Darwin.initialize(DarwinMode.DEBUG, app.getApplicationContext(), sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null), sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_REST_BASE, null))){
+            
+            if(Darwin.initialize(DarwinMode.DEBUG, app.getApplicationContext(), sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null), null)) {
                 return ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE;   
             }
             Log.i(TAG, "DarwinComponent NO_COUNTRY_CONFIGS_AVAILABLE UNKNOWN_ERROR");

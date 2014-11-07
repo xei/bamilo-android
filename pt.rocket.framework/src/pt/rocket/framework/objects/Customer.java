@@ -34,8 +34,9 @@ public class Customer implements IJSONSerializable, Parcelable{
     private String email;
     private CustomerGender gender;
     private String password;
-    private String created_at;
+    private String createdAt;
     private boolean guest;
+    private String mBirthday;
     
 	private ArrayList<String> addresses;
 
@@ -56,6 +57,7 @@ public class Customer implements IJSONSerializable, Parcelable{
         setCreatedAt("");
         this.addresses = null;
         guest = false;
+        mBirthday = "";
     }
     
     public Customer(JSONObject jsonObject) {
@@ -74,7 +76,7 @@ public class Customer implements IJSONSerializable, Parcelable{
      * @param customerPrefix of the customer.
      */
     public Customer(String id, String firstName, String middleName, String lastName, String email, String password, CustomerGender gender,
-            CustomerPrefix customerPrefix, String createdAt, ArrayList<String> addresses) {
+            CustomerPrefix customerPrefix, String createdAt, ArrayList<String> addresses, String birthday) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -83,9 +85,28 @@ public class Customer implements IJSONSerializable, Parcelable{
         this.gender = gender;
         this.password = password;
         this.prefix = customerPrefix;
-        this.created_at = createdAt;
+        this.createdAt = createdAt;
         this.addresses = addresses;
         this.guest = false;
+        this.mBirthday = birthday;
+    }
+
+    /**
+     * Get user birthday.
+     * @return String or null
+     * @author sergiopereira
+     */
+    public String getBirthday() {
+        return mBirthday;
+    }
+
+    /**
+     * Set user birthday.
+     * @param birthday
+     * @author sergiopereira
+     */
+    public void setBirthday(String birthday) {
+        this.mBirthday = birthday;
     }
 
     /**
@@ -230,7 +251,7 @@ public class Customer implements IJSONSerializable, Parcelable{
      * @return The User Account creation date.
      */
 	public String getCreatedAt() {
-		return created_at;
+		return createdAt;
 	}
 	
 	/**
@@ -238,7 +259,7 @@ public class Customer implements IJSONSerializable, Parcelable{
 	 * @param created_at - The User Account creation date.
 	 */
 	public void setCreatedAt(String created_at) {
-		this.created_at = created_at;
+		this.createdAt = created_at;
 	}
 	
     /**
@@ -289,6 +310,21 @@ public class Customer implements IJSONSerializable, Parcelable{
     public boolean hasNewsletterSubscriptions(){
     	return (mNewsletterSubscriptions != null && mNewsletterSubscriptions.size() > 0) ? true : false;
     }
+    
+    
+    /**
+     * @return the guest
+     */
+    public boolean isGuest() {
+        return guest;
+    }
+    
+    /**
+     * @param guest the guest to set
+     */
+    public void setGuest(boolean guest) {
+        this.guest = guest;
+    }
 
 	/* (non-Javadoc)
      * @see pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
@@ -301,7 +337,8 @@ public class Customer implements IJSONSerializable, Parcelable{
             firstName = jsonObject.getString(RestConstants.JSON_FIRST_NAME_TAG);
             lastName = jsonObject.getString(RestConstants.JSON_LAST_NAME_TAG);
             email = jsonObject.getString(RestConstants.JSON_EMAIL_TAG);
-            created_at = jsonObject.getString(RestConstants.JSON_CREATED_AT_TAG);
+            createdAt = jsonObject.getString(RestConstants.JSON_CREATED_AT_TAG);
+            mBirthday = jsonObject.optString(RestConstants.JSON_BIRTHDAY_TAG, "");
  
             String genderString = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
             if(genderString == null) {
@@ -397,8 +434,9 @@ public class Customer implements IJSONSerializable, Parcelable{
 	    dest.writeValue(gender);
 	    dest.writeString(password);
 	    dest.writeValue(prefix);
-	    dest.writeString(created_at);
+	    dest.writeString(createdAt);
 	    dest.writeBooleanArray(new boolean[]{guest});
+	    dest.writeString(mBirthday);
 	}
 	
 	/**
@@ -414,23 +452,11 @@ public class Customer implements IJSONSerializable, Parcelable{
         this.gender = (CustomerGender) in.readValue(CustomerGender.class.getClassLoader());
         this.password = in.readString();
         this.prefix = (CustomerPrefix) in.readValue(CustomerPrefix.class.getClassLoader());
-        this.created_at = in.readString();
+        this.createdAt = in.readString();
         in.readBooleanArray(new boolean[]{guest});
+        mBirthday = in.readString();
     }
-		
-	/**
-	 * @return the guest
-	 */
-	public boolean isGuest() {
-		return guest;
-	}
 
-	/**
-	 * @param guest the guest to set
-	 */
-	public void setGuest(boolean guest) {
-		this.guest = guest;
-	}
 
 	/**
 	 * Create parcelable 

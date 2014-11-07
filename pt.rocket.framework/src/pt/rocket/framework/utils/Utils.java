@@ -45,7 +45,7 @@ public class Utils {
         String md5String = "";
         try {
             
-           key = key + System.nanoTime();
+           key = key + "_" + System.nanoTime();
            
            Log.i(TAG, "UNIQUE MD5: " + key);
 
