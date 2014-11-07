@@ -30,6 +30,7 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
@@ -320,6 +321,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         
         if(null != getBaseActivity())
             getBaseActivity().hideSearchComponent();
+        
     }
 
     /*
@@ -348,6 +350,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         super.onStop();
         // Set that fragment is on the stopping process
         isOnStoppingProcess = true;
+    }
+    
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
+        
     }
 
     /*

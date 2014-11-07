@@ -554,7 +554,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             }
             params.putParcelable(AdjustTracker.CART, shoppingCart);
             
-            TrackerDelegator.trackPage(TrackingPage.CART_LOADED, params, getLoadTime(), false);
+            TrackerDelegator.trackPage(TrackingPage.CART_LOADED, getLoadTime(), false);
+            TrackerDelegator.trackPageForAdjust(TrackingPage.CART_LOADED, params);
             
             // verify if "Call to Order" was used
             if (isCallInProgress) {

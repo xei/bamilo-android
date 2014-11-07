@@ -731,31 +731,39 @@ public class TrackerDelegator {
         // GA
         AnalyticsGoogle.get().trackLoadTiming(location, start);
     }
-
-    
-    public static void trackPage(TrackingPage screen, long loadTime, boolean justGTM) {
-        trackPage(screen, null, loadTime, justGTM);
-    }
     
     /**
      * Tracking a page
      * 
-     * @param bundle
      */
-    public static void trackPage(TrackingPage screen, Bundle bundle, long loadTime, boolean justGTM) {
+    public static void trackPage(TrackingPage screen, long loadTime, boolean justGTM) {
   
         trackScreenGTM(screen,loadTime);
         
         if (!justGTM) {
             AnalyticsGoogle.get().trackPage(screen);
             Ad4PushTracker.get().trackScreen(screen);
+            /*if (null != bundle) {
+                bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
+                AdjustTracker.get().trackScreen(screen, bundle);
+            }*/
+        }
+
+    }
+    
+    /**
+     * Tracking a page for adjust
+     * 
+     * @param bundle
+     */
+    public static void trackPageForAdjust(TrackingPage screen, Bundle bundle) {
             if (null != bundle) {
                 bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
                 AdjustTracker.get().trackScreen(screen, bundle);
             }
-        }
-
     }
+
+    
 
     /**
      * Tracking a product added to cart

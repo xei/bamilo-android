@@ -39,6 +39,7 @@ import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -135,6 +136,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
 
         // Track auto login failed if hasn't saved credentials
         if (!JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
+        
     }
 
     /*
@@ -200,44 +202,74 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // Track page
-        final Handler trackHandler = new Handler();
-        Runnable trackRunnable = new Runnable() {
-            
-            @Override
-            public void run() {
-                Log.i("Adjust Runnable", "HOME - ON RESUME");
-                if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-                    if (JumiaApplication.INSTANCE.isLoggedIn()) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
-                        bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
-                        /*-if (isAdded())*/ bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-                        if (JumiaApplication.CUSTOMER != null) {
-                            bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
-                        }
-    
-                        TrackerDelegator.trackPage(TrackingPage.HOME, bundle, mLaunchTime, false);
-                    } else {
-                        trackHandler.postDelayed(this, 300);
-                    }                    
-                } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
-                    bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
-                    /*-if (isAdded())*/ bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-                    if (JumiaApplication.CUSTOMER != null) {
-                        bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
-                    }
 
-                    TrackerDelegator.trackPage(TrackingPage.HOME, bundle, mLaunchTime, false);
-                }
-            }
-        };
+        trackPage(false);
+       
         
-        trackHandler.postDelayed(trackRunnable, 300);
+//        
+//        
+//        // Track page
+//        final Handler trackHandler = new Handler();
+//        Runnable trackRunnable = new Runnable() {
+//            
+//            @Override
+//            public void run() {
+//                Log.i("Adjust Runnable", "HOME - ON RESUME");
+//                if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+//                    if (JumiaApplication.INSTANCE.isLoggedIn()) {
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+//                        bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
+//                        /*-if (isAdded())*/ bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+//                        if (JumiaApplication.CUSTOMER != null) {
+//                            bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+//                        }
+//    
+//                        TrackerDelegator.trackPage(TrackingPage.HOME, bundle, mLaunchTime, false);
+//                    } else {
+//                        trackHandler.postDelayed(this, 300);
+//                    }                    
+//                } else {
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+//                    bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
+//                    /*if (isAdded()) */ bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+//                    if (JumiaApplication.CUSTOMER != null) {
+//                        bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+//                    }
+//
+//                    TrackerDelegator.trackPage(TrackingPage.HOME, bundle, mLaunchTime, false);
+//                }
+//            }
+//        };
+//        
+//        trackHandler.postDelayed(trackRunnable, 300);
     }
 
+    /**
+     * Track Page for Home 
+     */
+    private void trackPage(boolean justGTM){
+        TrackerDelegator.trackPage(TrackingPage.HOME, mLaunchTime, justGTM);
+        
+        trackPageAdjust();
+    }
+    
+    /**
+     * Track Page only for adjust
+     */
+    private void trackPageAdjust(){
+        
+            Bundle bundle = new Bundle();
+            bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+            bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
+            bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+            if (JumiaApplication.CUSTOMER != null) {
+                bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+            }
+            TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
+    }
+    
     /**
      * Handler used to receive a message from application
      */
@@ -561,6 +593,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             onGetPromotions(bundle);
             break;
         case LOGIN_EVENT:
+            ContentValues creadentialValues = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
             // Set logged in
             JumiaApplication.INSTANCE.setLoggedIn(true);
             // Get customer
@@ -569,9 +602,16 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             Bundle params = new Bundle();
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
             params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, TrackerDelegator.IS_AUTO_LOGIN);
-            params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
+            
+            if(creadentialValues.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG)){
+                params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, true);
+            } else {
+                params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
+            }
+            
             params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.HOME);
             TrackerDelegator.trackLoginSuccessful(params);
+            trackPageAdjust();
             break;
         default:
             break;

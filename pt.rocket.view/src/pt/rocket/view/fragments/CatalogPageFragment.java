@@ -434,7 +434,8 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                             
                             bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, adapter.getProductsList());
                             
-                            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST_SORTED, bundle, getLoadTime(), false);
+                            TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST_SORTED, getLoadTime(), false);
+                            TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_LIST_SORTED, bundle);
                         } else {
                             trackHandler.postDelayed(this, 300);
                         }

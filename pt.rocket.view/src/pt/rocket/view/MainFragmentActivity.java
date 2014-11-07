@@ -55,6 +55,7 @@ import pt.rocket.view.fragments.SessionTermsFragment;
 import pt.rocket.view.fragments.ShoppingCartFragment;
 import pt.rocket.view.fragments.TrackOrderFragment;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
@@ -137,6 +138,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         if (splashScreenParams != null && splashScreenParams.getExtras() != null) {
             isInMaintenance = splashScreenParams.getExtras().getBoolean(ConstantsIntentExtra.IN_MAINTANCE, false);
         }
+        
     }
 
     /*

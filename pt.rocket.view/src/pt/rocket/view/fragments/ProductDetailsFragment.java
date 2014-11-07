@@ -1591,7 +1591,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 params.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
                 params.putParcelable(AdjustTracker.PRODUCT, mCompleteProduct);
                 params.putString(AdjustTracker.TREE, categoryTree);    
-                TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, params, getLoadTime(), false);
+                TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, getLoadTime(), false);
+                TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_DETAIL_LOADED, params);
             }
 
             // Waiting for the fragment comunication

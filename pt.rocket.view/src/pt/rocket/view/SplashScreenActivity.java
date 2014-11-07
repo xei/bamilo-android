@@ -333,7 +333,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                     startActivityWithDeepLink(mDeepLinkBundle);
                 } else {
                     // Default Start
-                    Intent intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
+                    Intent intent = null;
+                    if (!getResources().getBoolean(R.bool.isTablet)){
+                        intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
+                    } else {
+                        intent = new Intent(getApplicationContext(), MainFragmentTabletActivity.class);
+                    }
+                    
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }

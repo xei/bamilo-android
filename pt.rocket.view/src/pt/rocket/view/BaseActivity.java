@@ -260,9 +260,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         JumiaApplication.INSTANCE.doBindService();
 
-        // Validate if is phone and force orientaion
-        setOrientationForHandsetDevices();
-
+        // Validate if is phone and force orientation
+        //setOrientationForHandsetDevices();
+        //setOrientationForTabletDevices();
+        
         // Get fragment controller
         fragmentController = FragmentController.getInstance();
 
@@ -279,6 +280,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         setTitle(titleResId);
         //BugSenseHandler.leaveBreadcrumb(TAG + " _onCreate");
         mLaunchTime = System.currentTimeMillis();
+
     }
 
     /*
@@ -726,6 +728,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
     }
 
+    public void setOrientationForTabletDevices() {
+        // Validate if is tablet and force landscape orientaion
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            Log.i(TAG, "IS TABLET: FORCE LANDSPAPE ORIENTATION");
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+        }
+    }
     /**
      * Verifies if the current screen orientation is Landscape
      * 
