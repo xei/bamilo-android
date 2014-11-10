@@ -24,6 +24,7 @@ import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.HelperPriorityConfiguration;
 import pt.rocket.helpers.account.GetCustomerHelper;
 import pt.rocket.helpers.cart.GetShoppingCartItemsHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -165,8 +166,10 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
     }
     
     private void triggerGetShoppingCartItems(){
-        
-        triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mCallback);
+        // Defining event as having no priority
+        Bundle args = new Bundle();
+        args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
+        triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), args, mCallback);
     }
     
     IResponseCallback mCallback = new IResponseCallback() {
@@ -535,9 +538,13 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
                 Log.d(TAG, "Got checkout response: " + content);
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
-                    // Measure to escape the webview thread
-                    triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mCallback);
                     
+                    // Defining event as having no priority
+                    Bundle args = new Bundle();
+                    args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
+                    triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), args, mCallback);
+                    
+                    // Measure to escape the webview thread
                     handler.post( new Runnable() {
                         
                         @Override

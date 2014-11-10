@@ -35,7 +35,14 @@ public class GetShoppingCartItemsHelper extends BaseHelper {
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_SHOPPING_CART_ITEMS_EVENT.action);
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
+        
+        // If event hasn't priority IS_NOT_PRIORITARY is defined, otherwise is defined IS_PRIORITY
+        if(args != null && !args.getBoolean(Constants.BUNDLE_PRIORITY_KEY)){
+            bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
+        } else  {
+            bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
+        }
+        
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         String md5 = Utils.uniqueMD5(EVENT_TYPE.name());
         bundle.putString(Constants.BUNDLE_MD5_KEY, md5);
