@@ -77,7 +77,7 @@ import de.akquinet.android.androlog.Log;
  * @version 1.01
  * 
  * @author Michael Kröz
- * @modified Manuel Silva
+ * @modified Sergio Pereira
  * 
  * @date 25/04/2013
  * 
@@ -95,17 +95,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private String mUtm;
 
-    // private boolean sendAdxLaunchEvent = false;
-
-    // private long mLaunchTime;
-
     private Bundle mDeepLinkBundle;
-
-    // private boolean isDeepLinkLaunch = false;
 
     private View jumiaMapImage;
 
     SharedPreferences sharedPrefs;
+
+    private View mMainFallBackStub;
 
     /*
      * (non-Javadoc)
@@ -116,28 +112,18 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-
-        // Validate if is phone and force orientaion
+        // Validate if is phone and force orientation
         setOrientationForHandsetDevices();
-
-        Intent mIntent = getIntent();
-        Bundle mBundle = mIntent.getExtras();
-        Uri data = mIntent.getData();
-
-        Log.i(TAG, "ON CREATE - Bundle -> " + (null != mBundle ? mBundle.keySet().toString() : "null"));
-        Log.i(TAG, "ON CREATE - data -> " + data);
-
         // Set view
         setContentView(R.layout.splash_screen);
+        // Get fall back layout
+        mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
         // Get prefs
         sharedPrefs = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        // Keep launch time to compare with newer timestamp later
-        //mLaunchTime = System.currentTimeMillis();
         // Get values from intent
         getDeepLinkView();
-        
+        // Tracking
         AdjustTracker.onResume(this);
-        
         // Initialize application
         JumiaApplication.INSTANCE.init(false, initializationHandler);
     }
@@ -166,7 +152,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         shouldHandleEvent = true;
         
         jumiaMapImage = findViewById(R.id.jumiaMap);
-        final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         animationFadeIn.setDuration(1250);
         jumiaMapImage.startAnimation(animationFadeIn);
     }
@@ -183,8 +169,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Validate dialog
         if (dialog != null)
             dialog.dismiss();
-        // Adx launch event
-        //sendAdxLaunchEvent = false;
     }
 
     /*
@@ -213,7 +197,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         // Clean push notifications
         cleanIntent(getIntent());
-    }
+    }    
+    
 
     Handler initializationHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -223,7 +208,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
             Log.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
             if (eventType == EventType.INITIALIZE) {
-                //initBugSense();
                 showDevInfo();
             }
 
@@ -268,10 +252,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // ## DEEP LINK FROM EXTERNAL URIs ##
         if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
             mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
-            return true; //isDeepLinkLaunch = true;
+            return true;
         }
         Log.i(TAG, "DEEP LINK: NO EXTERNAL URI");
-        return false; //isDeepLinkLaunch = false;
+        return false;
     }
     
     /**
@@ -298,11 +282,22 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 Log.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
                 // Load deep link
                 mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
-                return true; //isDeepLinkLaunch = true;
+                return true;
             }
         }
         Log.i(TAG, "DEEP LINK: NO GCM TAG");
-        return false; //isDeepLinkLaunch = false;
+        return false;
+    }
+    
+    
+    /**
+     * Get the main class for mobile(Portrait) or tablet(Unspecified).
+     * @return Class
+     * @author sergiopereira
+     */
+    private Class<?> getActivityClassForDevice() {
+        if (!getResources().getBoolean(R.bool.isTablet)) return MainFragmentActivity.class;
+        else return MainFragmentTabletActivity.class;
     }
 
     /**
@@ -311,7 +306,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     public void selectActivity() {
         jumiaMapImage = findViewById(R.id.jumiaMap);
-        final Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         animationFadeOut.setDuration(750);
         animationFadeOut.setAnimationListener(new AnimationListener() {
             
@@ -332,24 +327,28 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 if (mDeepLinkBundle != null) {
                     startActivityWithDeepLink(mDeepLinkBundle);
                 } else {
-                    // Default Start
-                    Intent intent = null;
-                    if (!getResources().getBoolean(R.bool.isTablet)){
-                        intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
-                    } else {
-                        intent = new Intent(getApplicationContext(), MainFragmentTabletActivity.class);
-                    }
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    starMainActivity();
                 }
                 overridePendingTransition(R.animator.activityfadein, R.animator.splashfadeout);
                 finish();
             }
         });
-        
         jumiaMapImage.startAnimation(animationFadeOut);
     }
-
+    
+    /**
+     * Start main fragment activity
+     * @author sergiopereira
+     */
+    private void starMainActivity() {
+        Log.d(TAG, "START MAIN FRAGMENT ACTIVITY");
+        // Default Start
+        Intent intent = null;
+        intent = new Intent(getApplicationContext(), getActivityClassForDevice());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+    
     /**
      * Start deep view with the respective bundle and set the ADX event
      * 
@@ -361,7 +360,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
         Log.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
         // Default Start
-        Intent intent = new Intent(this, MainFragmentActivity.class);
+        Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         // Validate fragment type
         if (fragmentType != FragmentType.HOME || fragmentType != FragmentType.UNKNOWN) {
@@ -381,8 +380,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             return;
         }
 
-        //BugSenseHandler.setLogging(true);
-        //BugSenseHandler.setExceptionCallback(JumiaApplication.INSTANCE);
         PackageInfo pInfo = null;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -412,18 +409,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             e.printStackTrace();
         }
         devText.append("\nServer: " + RestContract.REQUEST_HOST);
-        // devText.append("\nUrban AirShip Device APID: \n" +
-        // PushManager.shared().getAPID());
-        // Log.i(TAG, "UrbanAirShip appid : " + PushManager.shared().getAPID());
         // Device info
         devText.append("\nDevice Model: " + android.os.Build.MODEL);
         devText.append("\nDevice Manufacturer: " + android.os.Build.MANUFACTURER);
     }
-
-//    private void initBugSense() {
-//        if (HockeyStartup.isDevEnvironment(getApplicationContext())) return;
-//        BugSenseHandler.initAndStartSession(getApplicationContext(), getString(R.string.bugsense_apikey));
-//    }
 
     /*
      * (non-Javadoc)
@@ -582,7 +571,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 jumiaMapImage.setVisibility(View.GONE);
                 Log.i(TAG, "ON PROCESS REQUIRES USER INTERACTION");
                 // Show Change country
-                Intent intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
+                Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
                 intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
@@ -602,7 +591,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessApiEvent(Bundle bundle) {
         Log.d(TAG, "ON PROCESS API EVENT");
-        // bundle.getParcelableArrayList(GetApiInfoHelper.API_INFO_OUTDATEDSECTIONS);
         // Validate out dated sections
         if (bundle.getBoolean(Section.SECTION_NAME_COUNTRY_CONFIGS, false)) {
             Log.d(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
@@ -745,15 +733,17 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void setLayoutMaintenance(final EventType eventType) {
+        // Inflate maintenance
+        mMainFallBackStub.setVisibility(View.VISIBLE);
         // Set content
-        MaintenancePage.setContentSA(this, new OnClickListener() {
+        MaintenancePage.setContentForSplash(this, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Get id
                 int id = v.getId();
                 // Case retry
                 if (id == R.id.fallback_retry) {
-                    findViewById(R.id.fallback_content).setVisibility(View.GONE);
+                    mMainFallBackStub.setVisibility(View.GONE);
                     JumiaApplication.INSTANCE.sendRequest(
                             JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), 
                             JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), 
@@ -762,99 +752,17 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 // Case choose
                 else if (id == R.id.fallback_change_country) {
                     // Show Change country
-                    Intent intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
-                    intent.putExtra(ConstantsIntentExtra.IN_MAINTANCE, true);
+                    Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
+                    intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
+                    intent.putExtra(ConstantsIntentExtra.IN_MAINTANCE, true);
                     // Start activity
                     startActivity(intent);
                     finish();
                 }
             }
         });
-        
-
-//        findViewById(R.id.fallback_content).setVisibility(View.VISIBLE);
-//        Button retry = (Button)findViewById(R.id.fallback_retry);
-//        retry.setText(R.string.try_again);
-//        retry.setOnClickListener(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                findViewById(R.id.fallback_content).setVisibility(View.GONE);
-//                JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), JumiaApplication.INSTANCE
-//                        .getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
-//            }
-//        });
-//
-//        Button changeCountry = (Button) findViewById(R.id.fallback_change_country);
-//        changeCountry.setVisibility(View.VISIBLE);
-//        changeCountry.setText(R.string.nav_country);
-//        changeCountry.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Show Change country
-//                Intent intent = new Intent(getApplicationContext(), MainFragmentActivity.class);
-//                intent.putExtra(ConstantsIntentExtra.IN_MAINTANCE, true);
-//                intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
-//
-//                // Start activity
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
-//
-//        ImageView mapBg = (ImageView) findViewById(R.id.fallback_country_map);
-//        RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_splashmap);
-//
-//        // ImageView for map is between title text and change country button
-//        int height = WindowHelper.getHeight(getApplicationContext());
-//        RelativeLayout.LayoutParams params = (LayoutParams) mapBg.getLayoutParams();
-//        if (height > 1000) {
-//            // Set map image above maintance message for big devices
-//            params.addRule(RelativeLayout.ABOVE, R.id.fallback_options_container);
-//        } else if (height < 500) {
-//            // Set map image below MAINTANCE title
-//            params.addRule(RelativeLayout.BELOW, R.id.fallback_title_container);
-//        }
-//
-//        String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
-//        TextView fallbackBest = (TextView) findViewById(R.id.fallback_best);
-//        fallbackBest.setText(R.string.fallback_best);
-//        if (country.split(" ").length == 1) {
-//            TextView tView = (TextView) findViewById(R.id.fallback_country);
-//            tView.setVisibility(View.VISIBLE);
-//            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
-//            txView.setVisibility(View.VISIBLE);
-//            txView.setText(country.toUpperCase());
-//            findViewById(R.id.fallback_country_double).setVisibility(View.GONE);
-//            tView.setText(country.toUpperCase());
-//        } else {
-//            TextView tView = (TextView) findViewById(R.id.fallback_country_top);
-//            tView.setText(country.split(" ")[0].toUpperCase());
-//            TextView tViewBottom = (TextView) findViewById(R.id.fallback_country_bottom);
-//            tViewBottom.setText(country.split(" ")[1].toUpperCase());
-//            fallbackBest.setTextSize(11.88f);
-//            TextView txView = (TextView) findViewById(R.id.fallback_options_bottom);
-//            txView.setVisibility(View.VISIBLE);
-//            txView.setText(country.toUpperCase());
-//            findViewById(R.id.fallback_country_double).setVisibility(View.VISIBLE);
-//            findViewById(R.id.fallback_country).setVisibility(View.GONE);
-//
-//        }
-//
-//        TextView mTextViewBT = (TextView) findViewById(R.id.fallback_country_bottom_text);
-//        mTextViewBT.setText(R.string.fallback_maintenance_text);
-//
-//        TextView mTextViewBT2 = (TextView) findViewById(R.id.fallback_country_bottom_text2);
-//        mTextViewBT2.setText(R.string.fallback_maintenance_text_bottom);
-//
-//        TextView mFallbackChoice = (TextView) findViewById(R.id.fallback_choice);
-//        mFallbackChoice.setText(R.string.fallback_choice);
-//
-//        TextView mFallbackDoorstep = (TextView) findViewById(R.id.fallback_doorstep);
-//        mFallbackDoorstep.setText(R.string.fallback_doorstep);
-//
-//        fallbackBest.setSelected(true);
 
     }
 
@@ -906,67 +814,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
 
     }
-
+    
     /**
-     * Method used to send the adx launch event
-     * 
-     * @author sergiopereira
+     * Set orientation
      */
-//    private void launchEvent() {
-//        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-//        // Get the current shop id
-//        String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
-//        // Validate shop id and launch the Adx event if is the same country on
-//        // start app
-//        // First time
-//        if (JumiaApplication.SHOP_ID_FOR_ADX == null && shopId != null) {
-//            // Log.i(TAG, "ON LAUNCH EVENT: FIRST TIME");
-//            sendAdxLaunchEvent = true;
-//        }
-//        // Current shop is the same
-//        if (JumiaApplication.SHOP_ID_FOR_ADX != null && JumiaApplication.SHOP_ID_FOR_ADX.equalsIgnoreCase(shopId)) {
-//            // Log.i(TAG, "ON LAUNCH EVENT: SHOP IS SAME");
-//            sendAdxLaunchEvent = true;
-//        }
-//
-//        // Log.i(TAG, "ON LAUNCH EVENT: " + JumiaApplication.SHOP_ID_FOR_ADX +
-//        // " " + shopId);
-//
-//        // Save current shop id
-//        JumiaApplication.SHOP_ID_FOR_ADX = shopId;
-//
-//        // Validate deep link launch
-//        if (isDeepLinkLaunch) {
-//            isDeepLinkLaunch = false;
-//            sendAdxLaunchEvent = true;
-//        }
-//
-//        // Send launch
-//        if (sendAdxLaunchEvent) {
-//            generateAndPerformAdxTrack();
-//            sendAdxLaunchEvent = false;
-//        }
-//    }
-
-
-//    /**
-//     * Generate and trigget the adx tracker for splash screen
-//     * 
-//     * @author sergiopereira
-//     */
-//    private void generateAndPerformAdxTrack() {
-//        String duration = "";
-//        // Validate launch time
-//        if (mLaunchTime != 0)
-//            duration = "" + (System.currentTimeMillis() - mLaunchTime);
-//        // Reset the launch time to identify the launch was handled
-//        mLaunchTime = 0;
-//        // Trigger
-//        // AdXTracker.launch(this, duration);
-//    }
-
     public void setOrientationForHandsetDevices() {
-        // Validate if is phone and force portrait orientaion
+        // Validate if is phone and force portrait orientation
         if (!getResources().getBoolean(R.bool.isTablet)) {
             Log.i(TAG, "IS PHONE: FORCE PORTRAIT ORIENTATION");
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

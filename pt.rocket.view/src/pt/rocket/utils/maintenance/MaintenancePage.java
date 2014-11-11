@@ -30,16 +30,15 @@ public class MaintenancePage {
      * 
      * @param activity
      * @param listener
+     * @author manuel
      * @modified sergiopereira
      */
-    public static void setContentSA(Activity activity, OnClickListener listener) {
+    public static void setContentForSplash(Activity activity, OnClickListener listener) {
 
         try {
 
             // Get prefs
             SharedPreferences sharedPrefs = activity.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            // Set layout
-            activity.findViewById(R.id.fallback_content).setVisibility(View.VISIBLE);
             // Set retry
             Button retry = (Button) activity.findViewById(R.id.fallback_retry);
             retry.setText(R.string.try_again);
@@ -113,9 +112,10 @@ public class MaintenancePage {
      * 
      * @param activity
      * @param listener
+     * @author manuel
      * @modified sergiopereira
      */
-    public static void setContentBA(Activity activity, OnClickListener listener) {
+    public static void setContentForBase(Activity activity, OnClickListener listener) {
 
         try {
 

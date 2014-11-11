@@ -88,11 +88,7 @@ public class JumiaApplication extends A4SApplication {
      */
     private HashMap<String, FormData> formDataRegistry = new HashMap<String, FormData>();
 
-//    public static final SingletonMap<ApplicationComponent> COMPONENTS = new SingletonMap<ApplicationComponent>(new UrbanAirshipComponent(),
-//            new DarwinComponent());
-
     public static final SingletonMap<ApplicationComponent> COMPONENTS = new SingletonMap<ApplicationComponent>(new DarwinComponent());
-    
     
     public static ArrayList<NavigationListComponent> navigationListComponents;
     
@@ -136,7 +132,15 @@ public class JumiaApplication extends A4SApplication {
     public boolean trackSearch = true;
     // for tracking
     public boolean trackSearchCategory = true;
+    
+    private PaymentMethodForm paymentMethodForm;
+    
+    private static ContentValues review;
 
+    /*
+     * (non-Javadoc)
+     * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()
+     */
     @Override
     public void onApplicationCreate() {
         Log.d(TAG, "ON CREATE");
@@ -169,8 +173,6 @@ public class JumiaApplication extends A4SApplication {
         ImageResolutionHelper.init(this);
         setFormDataRegistry(new HashMap<String, FormData>());
         navigationListComponents = null;
-
-//        COMPONENTS.get(UrbanAirshipComponent.class).init(this);
 
         /**
          * Fix a crash report, when app try recover from brackground
@@ -663,9 +665,6 @@ public class JumiaApplication extends A4SApplication {
         }
     };
 
-    private PaymentMethodForm paymentMethodForm;
-    private static ContentValues review;
-
     public void setPaymentMethodForm(PaymentMethodForm paymentMethodForm) {
         this.paymentMethodForm = paymentMethodForm;
     }
@@ -710,12 +709,32 @@ public class JumiaApplication extends A4SApplication {
         JumiaApplication.paymentsInfoList = paymentsInfoList;
     }
 
+    /**
+     * Clean current memory.
+     */
     public void cleanAllPreviousCountryValues() {
         setCart(null);
         setFormDataRegistry(new HashMap<String, FormData>());
         registerForm = null;
+        paymentMethodForm = null;
         registerSavedInstanceState = null;
         getCustomerUtils().clearCredentials();
+        review = null;
+        CUSTOMER = null;        
+        mCustomerUtils = null;
+        currentProduct = null;
+        cart = null;
+        ratingOptions = null;
+        navigationListComponents = null;
+        paymentsInfoList = null;
+        itemSimpleDataRegistry.clear();
+        formDataRegistry.clear();
+        requestOrder.clear();       
+        responseCallbacks.clear();
+        requestsRetryBundleList.clear();
+        requestsRetryHelperList.clear();
+        requestsResponseList.clear();
+        countriesAvailable.clear();
     }
     
     

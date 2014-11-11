@@ -250,17 +250,6 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 			description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
 			brand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
 
-			/*-String priceString = jsonObject.optString(RestConstants.JSON_PRICE_TAG);
-			
-			priceDouble = -1;
-			try {
-				 priceDouble = Double.parseDouble(priceString);
-			     price = CurrencyFormatter.formatCurrency(priceDouble);
-			} catch (NumberFormatException e) {
-				price = priceString;
-				e.printStackTrace();
-			}*/
-			// Fix NAFAMZ-7848
 			// Throw JSONException if JSON_PRICE_TAG is not present
 			String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
 			if (CurrencyFormatter.isNumber(priceJSON)) {
@@ -272,47 +261,7 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 
 			mPriceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
 
-			/*-String maxPriceString = jsonObject.optString(RestConstants.JSON_MAX_PRICE_TAG, price);
-			
-			if (!maxPriceString.equals("")) {
-			    maxPrice = price;
-			} else {
-				try {
-					double maxPriceDouble = Double.parseDouble(jsonObject.optString(
-			                RestConstants.JSON_MAX_PRICE_TAG, price));
-			         maxPrice = CurrencyFormatter.formatCurrency(maxPriceDouble);
-				} catch (NumberFormatException e) {
-					maxPrice = jsonObject.optString(
-			                RestConstants.JSON_MAX_PRICE_TAG, price);
-					e.printStackTrace();
-				}
-			    
-			}*/
-			/*--
-			// Fix NAFAMZ-7848
-			String maxPriceJSON = jsonObject.optString(RestConstants.JSON_MAX_PRICE_TAG);
-			if (CurrencyFormatter.isNumber(maxPriceJSON)) {
-			    maxPrice = CurrencyFormatter.formatCurrency(maxPriceJSON);
-			} else {
-			    maxPrice = price;
-			}*/
-
-			/*-specialPriceDouble = 0;
-			if (!jsonObject.isNull(RestConstants.JSON_SPECIAL_PRICE_TAG)) {
-				try {
-					 specialPriceDouble = Double.parseDouble(jsonObject
-			                 .getString(RestConstants.JSON_SPECIAL_PRICE_TAG));
-					 specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);
-				} catch (NumberFormatException e) {
-					specialPrice = jsonObject
-			                .getString(RestConstants.JSON_SPECIAL_PRICE_TAG);
-					e.printStackTrace();
-				}
-			   
-			} else {
-				specialPrice = price;
-			}*/
-			// Fix NAFAMZ-7848
+			// 
 			String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
 			if (CurrencyFormatter.isNumber(specialPriceJSON)) {
 				specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
@@ -324,26 +273,6 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 
 			mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
 
-			/*-if (!jsonObject.isNull(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG)) {
-				try {
-					maxSpecialPrice =
-			                CurrencyFormatter.formatCurrency(Double.parseDouble(jsonObject.getString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG)));	
-				} catch (NumberFormatException e) {
-					maxSpecialPrice = jsonObject.getString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG);
-					e.printStackTrace();
-				}
-			     
-			} else {
-			    maxSpecialPrice = specialPrice;
-			}*/
-			/*--
-			// Fix NAFAMZ-7848
-			String maxSpecialPriceJSON = jsonObject.optString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG);
-			if (CurrencyFormatter.isNumber(maxSpecialPriceJSON)) {
-			    maxSpecialPrice = CurrencyFormatter.formatCurrency(maxSpecialPriceJSON);
-			} else {
-			    maxSpecialPrice = specialPrice;
-			}*/
 
 			maxSavingPercentage = jsonObject.optDouble(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, 0);
 

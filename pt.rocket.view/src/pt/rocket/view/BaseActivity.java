@@ -45,6 +45,7 @@ import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.utils.maintenance.MaintenancePage;
 import pt.rocket.view.fragments.BaseFragment.KeyboardState;
+import pt.rocket.view.fragments.HomeFragment;
 import pt.rocket.view.fragments.NavigationFragment;
 import android.app.Activity;
 import android.content.Context;
@@ -601,6 +602,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             supportActionBar.setDisplayShowHomeEnabled(true);
         }
+    }
+    
+    /**
+     * Method used to validate if is to show the initial country selection or is in maintenance.<br>
+     * Used in {@link HomeFragment#onCreate(Bundle)}.
+     * @return true or false
+     * @author sergiopereira
+     */
+    public boolean isInitialCountry(){
+        return initialCountry;
     }
 
     /**
@@ -2200,7 +2211,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Inflate maintenance
         mMainFallBackStub.setVisibility(View.VISIBLE);
         // Set content
-        MaintenancePage.setContentBA(this, new OnClickListener() {
+        MaintenancePage.setContentForBase(this, new OnClickListener() {
             @Override
             public void onClick(View v) {
               mMainFallBackStub.setVisibility(View.GONE);

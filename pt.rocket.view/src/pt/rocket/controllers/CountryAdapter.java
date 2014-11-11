@@ -78,6 +78,8 @@ public class CountryAdapter extends ArrayAdapter<String> {
      * @param rowView
      * @param position
      */
+    @SuppressWarnings("unused")
+    @Deprecated
     private void setSelector(View rowView,int position){
         
         if(values.length > 0 && position == (values.length - 1) && null != ctx){           

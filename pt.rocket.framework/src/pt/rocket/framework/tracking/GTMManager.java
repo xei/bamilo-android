@@ -15,9 +15,7 @@ import pt.rocket.framework.utils.Constants;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 
 import com.google.android.gms.common.api.PendingResult;
@@ -29,7 +27,6 @@ import com.google.android.gms.tagmanager.ContainerHolder;
 import com.google.android.gms.tagmanager.ContainerHolder.ContainerAvailableListener;
 import com.google.android.gms.tagmanager.DataLayer;
 import com.google.android.gms.tagmanager.TagManager;
-import com.newrelic.agent.android.harvest.crash.DeviceInfo;
 
 import de.akquinet.android.androlog.Log;
 
@@ -54,9 +51,6 @@ public class GTMManager {
     public static final String IS_REFERRER_CAMPAIGN_SET = "isReferrerCampaignSet";
 
     private TagManager mTagManager;
-    private Handler refreshHandler = new Handler();
-
-
 
     private final int REFRESH_INTERVAL = 1000 * 60 * 60; // 60 minutes
 
@@ -87,6 +81,7 @@ public class GTMManager {
         CONTAINER_ID = context.getResources().getString(R.string.gtm_key);
         
         PendingResult<ContainerHolder> pending = mTagManager.loadContainerPreferNonDefault(CONTAINER_ID,R.raw.gtm_default_container);
+        
         
         // The onResult method will be called as soon as one of the following happens:
         //     1. a saved container is loaded
@@ -644,26 +639,6 @@ public class GTMManager {
 //        }
     }
 
-
-
-    Runnable refreshHandlerTask = new Runnable() {
-        @Override
-        public void run() {
-            Log.i(TAG, " GTM TRACKING -> refreshContainer()");
-//            if (null != mTagManager.getContainer(CONTAINER_ID))
-//                mTagManager.getContainer(CONTAINER_ID).refresh();
-
-            ContainerHolderSingleton.getContainerHolder().refresh();
-            
-            refreshHandler.removeCallbacks(refreshHandlerTask);
-            refreshHandler.postDelayed(refreshHandlerTask, REFRESH_INTERVAL);
-        }
-    };
-
-    void refreshContainer() {
-        refreshHandler.removeCallbacks(refreshHandlerTask);
-        refreshHandlerTask.run();
-    }
 
     private void sendEvent(Map<String, Object> event) {
         Log.i(TAG, " sendEvent");

@@ -50,8 +50,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
 
     private static final int SHOP_NOT_SELECTED = -1;
 
-    private static ChooseCountryFragment sChangeCountryFragment;
-
     private Context context;
 
     private DialogGenericFragment dialog;
@@ -67,11 +65,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * @return ChangeCountryFragment
      */
     public static ChooseCountryFragment getInstance() {
-        if (sChangeCountryFragment == null) {
-            sChangeCountryFragment = new ChooseCountryFragment();
-        }
-
-        return sChangeCountryFragment;
+        return new ChooseCountryFragment();
     }
 
     /**
@@ -83,7 +77,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                 R.layout.change_country,
                 R.string.nav_country,
                 KeyboardState.NO_ADJUST_CONTENT);
-        // R.string.nav_country
     }
 
     /*
@@ -105,7 +98,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        this.setRetainInstance(true);
         Log.i(TAG, "ON CREATE");
         context = getActivity().getApplicationContext();
     }
@@ -119,8 +111,17 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         
-        if(ShopSelector.getShopId() != null)
+        // Validate the current shop
+        if(ShopSelector.getShopId() != null) {
+            // Get and show new available countries
+            isChangeCountry = true;
             triggerGetJumiaCountries();
+        } else {
+            // Show available countries from memory/database, loaded in splash screen.
+            isChangeCountry = false;
+            showAvailableCountries();
+            getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
+        }
         
     }
 
@@ -144,21 +145,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-            setList();    
-        
-        isChangeCountry = true;
-        
-        if(selected == SHOP_NOT_SELECTED) {
-            isChangeCountry = false;
-            // getBaseActivity().hideTitle();
-            getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
-        }
-        
-        if(selected != SHOP_NOT_SELECTED){
-            // getBaseActivity().hideTitle();
-            // getBaseActivity().setCheckoutHeader(R.string.nav_country);
-        }
-        
     }
 
     /*
@@ -191,6 +177,8 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        // Clean memory
+        countryAdapter = null;
     }
 
     /*
@@ -209,7 +197,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      * #### METHODS ####
      */
 
-    private void setList() {
+    private void showAvailableCountries() {
 
         // Data
         String[] countries = null;
@@ -218,8 +206,14 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         String selectedCountry = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null);
         
         if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0){
+            // Get countries from database
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
-        }
+            // Validate data from database
+            if(JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
+                triggerGetJumiaCountries();
+                return;   
+            }
+        } 
         
         int countriesAvailable = JumiaApplication.INSTANCE.countriesAvailable.size();
         Log.d(TAG, "COUNTRIES SIZE: " + countriesAvailable);
@@ -286,32 +280,26 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         dialog.show(fm, null);
     }
 
+    /**
+     * Save the selected country
+     * @param position
+     */
     protected void setCountry(int position) {
-        JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
-        getBaseActivity().updateCartInfo();
-        if(isChangeCountry){
-            LastViewedTableHelper.deleteAllLastViewed();
-            FavouriteTableHelper.deleteAllFavourite();
-        }
         
-        // Clear prefs
-        Ad4PushTracker.clearAllSavedData(getBaseActivity().getApplicationContext());
-        
-        //System.gc();
+        // Set new country
         SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
         editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
-        /**
+        /** 
          * Save the Selected Country Configs 
          * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
          */
-        Log.i(TAG, "code1DarwinComponent : selected : "+JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
+        Log.i(TAG, "code1DarwinComponent : selected : " + JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryUrl());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryFlag());
-        //Log.i(TAG, "code1flag : "+calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)));
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)));
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
@@ -319,12 +307,28 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.commit();
         
+        // Clean memory
+        JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
+        // Is changing country
+        if(isChangeCountry){
+            LastViewedTableHelper.deleteAllLastViewed();
+            FavouriteTableHelper.deleteAllFavourite();
+        }
+        // Clear Ad4Push prefs
+        Ad4PushTracker.clearAllSavedData(getBaseActivity().getApplicationContext());
+        // Show splash screen
         ActivitiesWorkFlow.splashActivityNewTask(getActivity());
+        // Finish MainFragmentActivity
         getActivity().finish();
     }
     
+    /**
+     * Get map image for respective device density(dpi).
+     * @param mCountryObject
+     * @return String
+     */
     private String calculateMapImageResolution(CountryObject mCountryObject){
-        String mapImage =  mCountryObject.getCountryMapMdpi();
+        String mapImage =  null;
         DisplayMetrics dm = new DisplayMetrics();
         getBaseActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         int dpiClassification = dm.densityDpi;
@@ -346,7 +350,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     }
     
     
-    /**
+    /*
      * ############# TRIGGERS ############# 
      */
     
@@ -364,6 +368,14 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         
     }
 
+    /*
+     * ############# LISTENERS ############# 
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
     @Override
     public void onClick(View v) {
         // Validate the view id
@@ -383,7 +395,14 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         triggerGetJumiaCountries();
     }
     
+    /*
+     * ############# RESPONSE ############# 
+     */
     
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
+     */
     @Override
     public void onRequestComplete(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS EVENT");
@@ -401,8 +420,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             // Get countries
             JumiaApplication.INSTANCE.countriesAvailable = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             // Show countries
-            setList();
-            validateShopSelected();
+            showAvailableCountries();
             showFragmentContentContainer();
             break;
         default:
@@ -436,24 +454,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         default:
             Log.w(TAG, "WARNING RECEIVED UNKOWN EVENT: " + eventType.toString());
             break;
-        }
-    }
-    
-    
-    // TODO: Validate method
-    private void validateShopSelected(){
-        
-        isChangeCountry = true;
-        
-        if(selected == SHOP_NOT_SELECTED) {
-            isChangeCountry = false;
-            // getBaseActivity().hideTitle();
-            getBaseActivity().getSupportActionBar().setHomeButtonEnabled(false);
-        }
-        
-        if(selected != SHOP_NOT_SELECTED){
-            // getBaseActivity().hideTitle();
-            // getBaseActivity().setCheckoutHeader(R.string.nav_country);
         }
     }
     

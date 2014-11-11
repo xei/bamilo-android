@@ -133,6 +133,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             
         }
 
+        /*
+         * Used for on back pressed
+         */
         Intent splashScreenParams = getIntent();
         if (splashScreenParams != null && splashScreenParams.getExtras() != null) {
             isInMaintenance = splashScreenParams.getExtras().getBoolean(ConstantsIntentExtra.IN_MAINTANCE, false);
@@ -148,7 +151,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     protected void onNewIntent(Intent intent) {
         Log.d(TAG, "ON NEW INTENT");
         super.onNewIntent(intent);
-        // Parse deep link from splashscreen
+        // For AD4 - http://wiki.accengage.com/android/doku.php?id=sub-classing-any-activity-type
+        this.setIntent(intent);
+        // Parse deep link from splash screen
         parseDeeplinkIntent(intent);
         // Validate deep link
         isValidNotification(intent);
@@ -427,9 +432,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         if (isInMaintenance) {
             Intent newIntent = new Intent(this, SplashScreenActivity.class);
             newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
             startActivity(newIntent);
             finish();
+            
         } else {
             fragment = getActiveFragment();
             if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {

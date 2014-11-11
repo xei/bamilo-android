@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/splash_screen_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_dividerlight" >
@@ -37,8 +38,12 @@
 
     <!-- MAINTENANCE PAGE -->
 
-    <include
-        layout="@layout/maintenance_page"
-        android:visibility="gone" />
+    <ViewStub
+        android:id="@+id/splash_screen_maintenance_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/splash_screen_maintenance_stub_inflate"
+        android:layout="@layout/maintenance_page" />
 
 </FrameLayout>
