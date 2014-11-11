@@ -225,7 +225,8 @@ public class DialogFilterFragment extends DialogFragment {
      * @author sergiopereira
      */
     public void onSubmitFilterValues(ContentValues filterValues){
-        if(mParentFrament != null) mParentFrament.onSubmitFilterValues(filterValues);
+        if(mParentFrament != null)
+            mParentFrament.onSubmitFilterValues(filterValues);
     }
     
     /*
@@ -242,7 +243,7 @@ public class DialogFilterFragment extends DialogFragment {
         private ListView mFilterListView;
         
         private ContentValues mContentValues;
-
+        
         /**
          * Constructor
          * @param parent
@@ -372,12 +373,13 @@ public class DialogFilterFragment extends DialogFragment {
                 } else if(filter.hasRangeValues()){
                     addPriceFilter(filter, contentValues);
                 }
-                if(TrackerDelegator.FILTER_COLOR.equalsIgnoreCase(filterId)) filterId = COLOR_ID;
                 
-                catalogFilters = catalogFilters + filterId + ",";
+                if(TrackerDelegator.FILTER_COLOR.equalsIgnoreCase(filterId)) filterId = COLOR_ID;
+              //TODO
+                //catalogFilters = catalogFilters + filterId + ",";
             }
-            if(!TextUtils.isEmpty(catalogFilters)) catalogFilters = catalogFilters.substring(0, catalogFilters.length()-1);
-            contentValues.put(TrackerDelegator.CATALOG_FILTER_KEY, catalogFilters);
+            /*if(!TextUtils.isEmpty(catalogFilters)) catalogFilters = catalogFilters.substring(0, catalogFilters.length()-1);
+            contentValues.put(TrackerDelegator.CATALOG_FILTER_KEY, catalogFilters);*/
             return contentValues;
         }
         
