@@ -300,7 +300,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryUrl());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryFlag());
-        editor.putString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)));
+        //editor.putString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)));
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryIsLive());
@@ -322,33 +322,32 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         getActivity().finish();
     }
     
-    /**
-     * Get map image for respective device density(dpi).
-     * @param mCountryObject
-     * @return String
-     */
-    private String calculateMapImageResolution(CountryObject mCountryObject){
-        String mapImage =  null;
-        DisplayMetrics dm = new DisplayMetrics();
-        getBaseActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int dpiClassification = dm.densityDpi;
-        switch (dpiClassification) {
-        case DisplayMetrics.DENSITY_HIGH:
-            Log.i(TAG, "code1desnsity  DENSITY_HIGH");
-            mapImage =  mCountryObject.getCountryMapHdpi();
-            break;
-        case DisplayMetrics.DENSITY_XHIGH:
-            Log.i(TAG, "code1desnsity  DENSITY_XHIGH");
-            mapImage =  mCountryObject.getCountryMapXhdpi();
-            break;
-        default:
-            Log.i(TAG, "code1desnsity  DENSITY_MEDIUM");
-            mapImage =  mCountryObject.getCountryMapMdpi();
-            break;
-        }
-        return mapImage;
-    }
-    
+//    /**
+//     * Get map image for respective device density(dpi).
+//     * @param mCountryObject
+//     * @return String
+//     */
+//    private String calculateMapImageResolution(CountryObject mCountryObject){
+//        String mapImage =  mCountryObject.getCountryMapMdpi();
+//        DisplayMetrics dm = new DisplayMetrics();
+//        getBaseActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+//        int dpiClassification = dm.densityDpi;
+//        switch (dpiClassification) {
+//        case DisplayMetrics.DENSITY_HIGH:
+//            Log.i(TAG, "code1desnsity  DENSITY_HIGH");
+//            mapImage =  mCountryObject.getCountryMapHdpi();
+//            break;
+//        case DisplayMetrics.DENSITY_XHIGH:
+//            Log.i(TAG, "code1desnsity  DENSITY_XHIGH");
+//            mapImage =  mCountryObject.getCountryMapXhdpi();
+//            break;
+//        default:
+//            Log.i(TAG, "code1desnsity  DENSITY_MEDIUM");
+//            mapImage =  mCountryObject.getCountryMapMdpi();
+//            break;
+//        }
+//        return mapImage;
+//    }
     
     /*
      * ############# TRIGGERS ############# 

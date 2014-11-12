@@ -26,6 +26,26 @@ import android.widget.TextView;
 public class MaintenancePage {
 
     /**
+     * Set map image for maintenance page.
+     * 
+     * @param activity
+     * @param mapImageView
+     */
+    @Deprecated
+    private static void rearrageLayoutForImage(Activity activity, ImageView mapImageView){
+     // ImageView for map is between title text and change country button
+        int height = DeviceInfoHelper.getHeight(activity.getApplicationContext());
+        RelativeLayout.LayoutParams params = (LayoutParams) mapImageView.getLayoutParams();
+        if (height > 1000) {
+            // Set map image above maintenance message for big devices
+            params.addRule(RelativeLayout.ABOVE, R.id.fallback_options_container);
+        } else if (height < 500) {
+            // Set map image below MAINTANCE title
+            params.addRule(RelativeLayout.BELOW, R.id.fallback_title_container);
+        }
+    }
+    
+    /**
      * Set maintenance page content in SplashScreen.
      * 
      * @param activity
@@ -49,19 +69,8 @@ public class MaintenancePage {
             changeCountry.setText(R.string.nav_country);
             changeCountry.setOnClickListener(listener);
             // Set image
-            ImageView mapBg = (ImageView) activity.findViewById(R.id.fallback_country_map);
-            RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_splashmap);
-
-            // ImageView for map is between title text and change country button
-            int height = DeviceInfoHelper.getHeight(activity.getApplicationContext());
-            RelativeLayout.LayoutParams params = (LayoutParams) mapBg.getLayoutParams();
-            if (height > 1000) {
-                // Set map image above maintance message for big devices
-                params.addRule(RelativeLayout.ABOVE, R.id.fallback_options_container);
-            } else if (height < 500) {
-                // Set map image below MAINTANCE title
-                params.addRule(RelativeLayout.BELOW, R.id.fallback_title_container);
-            }
+//            ImageView mapBg = (ImageView) activity.findViewById(R.id.fallback_country_map);
+//            RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_maintenance_map);
 
             String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
             TextView fallbackBest = (TextView) activity.findViewById(R.id.fallback_best);
@@ -124,10 +133,10 @@ public class MaintenancePage {
             retry.setText(R.string.try_again);
             retry.setOnClickListener(listener);
 
-            ImageView mapImageView = (ImageView) activity.findViewById(R.id.fallback_country_map);
             SharedPreferences sharedPrefs = activity.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapImageView, null, R.drawable.img_splashmap);
-
+//            ImageView mapImageView = (ImageView) activity.findViewById(R.id.fallback_country_map);
+//            RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapImageView, null, R.drawable.img_maintenance_map);
+            
             String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
 
             TextView fallbackBest = (TextView) activity.findViewById(R.id.fallback_best);

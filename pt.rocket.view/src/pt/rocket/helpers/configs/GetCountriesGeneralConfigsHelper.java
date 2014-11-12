@@ -193,9 +193,9 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                     integrationCountryObject.setCountryName(URLDecoder.decode(countryObject.getCountryName(), "utf-8")+" Integration");
                     integrationCountryObject.setCountryUrl(countryObject.getCountryUrl().replace("alice-staging", "integration-www"));
                     integrationCountryObject.setCountryFlag(countryObject.getCountryFlag());
-                    integrationCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
-                    integrationCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
-                    integrationCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
+//                    integrationCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
+//                    integrationCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
+//                    integrationCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
                     integrationCountryObject.setCountryIso(countryObject.getCountryIso());
                     integrationCountryObject.setCountryForceHttps(countryObject.isCountryForceHttps());
                     integrationCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
@@ -206,9 +206,9 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                     liveCountryObject.setCountryName(URLDecoder.decode(countryObject.getCountryName(), "utf-8")+" Live");
                     liveCountryObject.setCountryUrl(countryObject.getCountryUrl().replace("alice-staging", "www"));
                     liveCountryObject.setCountryFlag(countryObject.getCountryFlag());
-                    liveCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
-                    liveCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
-                    liveCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
+//                    liveCountryObject.setCountryMapMdpi(countryObject.getCountryMapMdpi());
+//                    liveCountryObject.setCountryMapHdpi(countryObject.getCountryMapHdpi());
+//                    liveCountryObject.setCountryMapXhdpi(countryObject.getCountryMapXhdpi());
                     liveCountryObject.setCountryIso(countryObject.getCountryIso());
                     liveCountryObject.setCountryForceHttps(countryObject.isCountryForceHttps());
                     liveCountryObject.setCountryIsLive(countryObject.isCountryIsLive());
