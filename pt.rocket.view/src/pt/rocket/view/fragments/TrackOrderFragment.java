@@ -329,6 +329,9 @@ public class TrackOrderFragment extends BaseFragment {
         }
         Log.d(TAG, "ON ERROR EVENT");
         mOrderTrackerError = true;
+        if(getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)){
+            return true;
+        }
         proccessError();
         return true;
     }
