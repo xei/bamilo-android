@@ -26,6 +26,7 @@ import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -64,6 +65,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	private boolean isNew;
 	private double mPriceConverted;
 	private double mSpecialPriceConverted;
+	private String mSizeGuideUrl;
 //	private int simpleSkuPosition;
 
 	/**
@@ -86,6 +88,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		isNew = false;
 		mPriceConverted = 0d;
 		mSpecialPriceConverted = 0d;
+		mSizeGuideUrl = "";
 	}
 
 	/*
@@ -102,15 +105,14 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 
 			sku = dataObject.getString(RestConstants.JSON_SKU_TAG);
 			name = dataObject.getString(RestConstants.JSON_PROD_NAME_TAG);
+			brand = dataObject.getString(RestConstants.JSON_BRAND_TAG);
 			idCatalogConfig = dataObject.getString(RestConstants.JSON_ID_CATALOG_CONFIG_TAG);
 			attributeSetId = dataObject.getString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
 			activatedAt = dataObject.getString(RestConstants.JSON_ACTIVATED_AT_TAG);
 			description = dataObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
 			url = dataObject.optString(RestConstants.JSON_PROD_URL_TAG, "");
+			mSizeGuideUrl = dataObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
 
-			/*-priceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_PRICE_TAG, "0"));
-			price = CurrencyFormatter.formatCurrency(priceDouble);*/
-			// Fix NAFAMZ-7848
 			// Throw JSONException if JSON_PRICE_TAG is not present
 			String priceJSON = dataObject.getString(RestConstants.JSON_PRICE_TAG);
 			if (!CurrencyFormatter.isNumber(priceJSON)) {
@@ -120,41 +122,20 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			price = CurrencyFormatter.formatCurrency(priceJSON);
 			mPriceConverted = dataObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
 
-			/*-maxPriceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_PRICE_TAG, "0"));
-			maxPrice = CurrencyFormatter.formatCurrency(maxPriceDouble);*/
-			/*--String maxPriceJSON = dataObject.optString(RestConstants.JSON_MAX_PRICE_TAG);
-			if (!CurrencyFormatter.isNumber(maxPriceJSON)) {
-			    maxPriceJSON = "0";
-			}
-			maxPriceDouble = Double.parseDouble(maxPriceJSON);
-			maxPrice = CurrencyFormatter.formatCurrency(maxPriceJSON);*/
-			brand = dataObject.getString(RestConstants.JSON_BRAND_TAG);
-
-			/*-double specialPriceDouble = Double.parseDouble(dataObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG, "" + priceDouble));
-			specialPrice = CurrencyFormatter.formatCurrency(specialPriceDouble);*/
 			String specialPriceJSON = dataObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
 			if (!CurrencyFormatter.isNumber(specialPriceJSON)) {
 				specialPriceJSON = priceJSON;
 			}
 			specialPriceDouble = Double.parseDouble(specialPriceJSON);
-			// specialPrice =
-			// CurrencyFormatter.formatCurrency(specialPriceDouble);
-			// Fix NAFAMZ-7848
+
 			specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
 			mSpecialPriceConverted = dataObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
 
-			/*-maxSpecialPrice = CurrencyFormatter.formatCurrency(maxSpecialJSON);*/
-			/*--String maxSpecialJSON = dataObject.optString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG);
-			if(!CurrencyFormatter.isNumber(maxSpecialJSON)){
-			    maxSpecialJSON = maxPriceJSON;
-			}
-
-			/*-maxSavingPercentage = Double.parseDouble(dataObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, "0"));*/
 			String maxSavingPercentageJSON = dataObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
 			if (CurrencyFormatter.isNumber(maxSavingPercentageJSON)) {
 				maxSavingPercentage = Double.parseDouble(maxSavingPercentageJSON);
 			} else {
-				maxSavingPercentageJSON = "0";
+				maxSavingPercentage = 0d;
 			}
 
 			// TODO: ratings need to be completed
@@ -163,10 +144,12 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 				ratingsAverage = ratingsTotalObject.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG, .0);
 				ratingsCount = ratingsTotalObject.optInt(RestConstants.JSON_RATINGS_TOTAL_SUM_TAG, 0);
 			}
-
+			
+			/*
 			if (maxSavingPercentage.equals(0D) && !price.equals(specialPrice)) {
 				maxSavingPercentage = (double) Math.round(specialPriceDouble * 100 / priceDouble);
 			}
+			*/
 
 			categories.clear();
 			JSONArray categoriesArray = dataObject.getJSONArray(RestConstants.JSON_CATEGORIES_TAG);
@@ -603,8 +586,8 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	 * @author sergiopereira
 	 */
 	public double getPriceForTracking() {
-		Log.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
-		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + mPriceConverted + " " + mSpecialPriceConverted);
+		//Log.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
+		//Log.i(TAG, "PRICE VALUE FOR TRACKING: " + mPriceConverted + " " + mSpecialPriceConverted);
 		return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceConverted;
 	}
 
@@ -617,6 +600,22 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 //        this.simpleSkuPosition = simpleSkuPosition;
 //    }
 //	
+	
+	/**
+	 * Get size guide URL
+	 * @return
+	 */
+	public String getSizeGuideUrl() {
+	    return mSizeGuideUrl;
+	}
+	
+	/**
+	 * Set size guide
+	 * @return
+	 */
+	public boolean hasSizeGuide() {
+	    return TextUtils.isEmpty(mSizeGuideUrl) ? false : true;
+	}
 	
 	/*
 	 * ############ PARCELABLE ############
@@ -654,6 +653,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		dest.writeInt(ratingsCount);
 		dest.writeDouble(mPriceConverted);
 		dest.writeDouble(mSpecialPriceConverted);
+		dest.writeString(mSizeGuideUrl);
 	}
 
 	private CompleteProduct(Parcel in) {
@@ -684,6 +684,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		ratingsCount = in.readInt();
 		mPriceConverted = in.readDouble();
 		mSpecialPriceConverted = in.readDouble();
+		mSizeGuideUrl = in.readString();
 	}
 
 	public static final Parcelable.Creator<CompleteProduct> CREATOR = new Parcelable.Creator<CompleteProduct>() {

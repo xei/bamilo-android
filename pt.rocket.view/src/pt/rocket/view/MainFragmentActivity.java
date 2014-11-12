@@ -43,6 +43,7 @@ import pt.rocket.view.fragments.MyAccountUserDataFragment;
 import pt.rocket.view.fragments.ProductDetailsDescriptionFragment;
 import pt.rocket.view.fragments.ProductDetailsFragment;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
+import pt.rocket.view.fragments.ProductSizeGuideFragment;
 import pt.rocket.view.fragments.RecentSearchFragment;
 import pt.rocket.view.fragments.RecentlyViewedFragment;
 import pt.rocket.view.fragments.ReviewFragment;
@@ -397,6 +398,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case RECENTLYVIEWED_LIST:
             fragment = RecentlyViewedFragment.getInstance();
+            break;
+        case PRODUCT_SIZE_GUIDE:
+            fragment = ProductSizeGuideFragment.newInstance(bundle);
             break;
         default:
             Log.w(TAG, "INVALIDE FRAGMENT TYPE");

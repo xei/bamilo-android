@@ -56,4 +56,5 @@ public enum FragmentType {
     FAVORITE_LIST,
     RECENTSEARCHES_LIST,
     RECENTLYVIEWED_LIST, 
+    PRODUCT_SIZE_GUIDE 
 }

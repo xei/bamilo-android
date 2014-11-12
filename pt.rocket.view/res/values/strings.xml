@@ -383,5 +383,8 @@
     <string name="order_status_label">Order Status</string>
     <string name="cart_label">Cart</string>
     <string name="show_more">More...</string>
+    
+    
+    <string name="size_guide_label">Size Guide</string>
 
 </resources>

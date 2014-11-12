@@ -39,6 +39,7 @@ public class ConstantsIntentExtra {
     public static final String SHOW_HORIZONTAL_LIST_VIEW    = mPackage + "ShowHorizontalListView";
     public static final String SHOW_RELATED_ITEMS           = mPackage + "ShowRelatedItems";
     public static final String IS_RELATED_ITEM              = mPackage + "RelatedItem";
+    public static final String SIZE_GUIDE_URL               = mPackage + "SizeGuideUrl";
     
     // ########### Checkout ###########
     //

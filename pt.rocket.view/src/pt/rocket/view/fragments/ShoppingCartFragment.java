@@ -1073,7 +1073,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             }
         };
 
-        dialogList = DialogListFragment.newInstance(getActivity(), listener, ID_CHANGE_QUANTITY, getString(R.string.shoppingcart_choose_quantity), quantities, crrQuantity);
+        dialogList = DialogListFragment.newInstance(this, listener, ID_CHANGE_QUANTITY, getString(R.string.shoppingcart_choose_quantity), quantities, (int) crrQuantity);
         dialogList.show(getActivity().getSupportFragmentManager(), null);
     }
 

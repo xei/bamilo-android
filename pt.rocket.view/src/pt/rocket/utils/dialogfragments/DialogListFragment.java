@@ -11,8 +11,10 @@ import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -27,7 +29,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  *
  */
-public class DialogListFragment extends DialogFragment implements OnItemClickListener {
+public class DialogListFragment extends DialogFragment implements OnItemClickListener, OnClickListener {
 	
     private final static String TAG = LogTagHelper.create( DialogListFragment.class );
 	
@@ -38,20 +40,25 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	private String mTitle;
 	
 	private ArrayList<String> mItems;
+	
 	private ArrayList<String> mItemsAvailable;
 	
 	private String mId;
 	
-	private long mInitialPosition;
+	private int mInitialPosition;
 	
 	private Activity mActivity;
 	
-	private OnDialogListListener mListener;
+	private OnDialogListListener mSelectListener;
+	
+	private OnClickListener mClickListener;
 	
 	//private Dialog mDialog;
 	private ListView list;
 	
 	private DialogListAdapter mAdapter;
+
+    private String mSizeGuideUrl;
 
 	
 	/**
@@ -70,55 +77,31 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 
 	
 	/**
-	 * 
-	 * @param activity
+	 * Called from PDV.
+	 * @param fragment
 	 * @param id
 	 * @param title
 	 * @param items
 	 * @param initialPosition
 	 * @return
 	 */
-	public static DialogListFragment newInstance(Fragment activity, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition) {
+	public static DialogListFragment newInstance(Fragment fragment, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition, String sizeGuideUrl) {
 	    Log.d(TAG, "NEW INSTANCE");
 	    DialogListFragment dialogListFragment = new DialogListFragment();
-	    dialogListFragment.mActivity = activity.getActivity();
-        if (activity instanceof OnDialogListListener) {
-            dialogListFragment.mListener = (OnDialogListListener) activity;
-        }
+	    dialogListFragment.mActivity = fragment.getActivity();
+        if (fragment instanceof OnDialogListListener) dialogListFragment.mSelectListener = (OnDialogListListener) fragment;
+        if (fragment instanceof OnClickListener) dialogListFragment.mClickListener = (OnClickListener) fragment;
         dialogListFragment.mId = id;
         dialogListFragment.mTitle = title;
         dialogListFragment.mItems = items;
         dialogListFragment.mItemsAvailable = itemsAvailable;
         dialogListFragment.mInitialPosition = initialPosition;
+        dialogListFragment.mSizeGuideUrl = sizeGuideUrl;
 	    return dialogListFragment;
 	}
 	
 	/**
-     * 
-     * @param activity
-     * @param id
-     * @param title
-     * @param items
-     * @param initialPosition
-     * @return
-     */
-    public static DialogListFragment newInstance(Activity activity, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition) {
-        Log.d(TAG, "NEW INSTANCE");
-        DialogListFragment dialogListFragment = new DialogListFragment();
-        dialogListFragment.mActivity = activity;
-        if (activity instanceof OnDialogListListener) {
-            dialogListFragment.mListener = (OnDialogListListener) activity;
-        }
-        dialogListFragment.mId = id;
-        dialogListFragment.mTitle = title;
-        dialogListFragment.mItems = items;
-        dialogListFragment.mItemsAvailable = itemsAvailable;
-        dialogListFragment.mInitialPosition = initialPosition;
-        return dialogListFragment;
-    }
-	
-	/**
-	 * 
+	 * Called from Shopping cart.
 	 * @param activity
 	 * @param listener
 	 * @param id
@@ -127,11 +110,11 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	 * @param initialPosition
 	 * @return
 	 */
-	public static DialogListFragment newInstance(Activity activity, OnDialogListListener listener, String id, String title, ArrayList<String> items, long initialPosition) {
+	public static DialogListFragment newInstance(Fragment fragment, OnDialogListListener listener, String id, String title, ArrayList<String> items, int initialPosition) {
 	    Log.d(TAG, "NEW INSTANCE");
 	    DialogListFragment dialogListFragment = new DialogListFragment();  
-	    dialogListFragment.mActivity = activity;
-	    dialogListFragment.mListener = listener;
+	    dialogListFragment.mActivity = fragment.getActivity();
+	    dialogListFragment.mSelectListener = listener;
 	    dialogListFragment.mId = id;
 	    dialogListFragment.mTitle = title;
 	    dialogListFragment.mItems = items;
@@ -140,25 +123,28 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	}
     
     /**
-     * 
-     * @param activity
+     * Called from Favorites.
+     * @param fragment
      * @param listener
      * @param id
      * @param title
      * @param items
      * @param initialPosition
+     * @param sizeGuideUrl 
      * @return
      */
-    public static DialogListFragment newInstance(Activity activity, OnDialogListListener listener, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, long initialPosition) {
+    public static DialogListFragment newInstance(Fragment fragment, OnDialogListListener listener, String id, String title, ArrayList<String> items, ArrayList<String> itemsAvailable, int initialPosition, String sizeGuideUrl) {
         Log.d(TAG, "NEW INSTANCE");
         DialogListFragment dialogListFragment = new DialogListFragment();  
-        dialogListFragment.mActivity = activity;
-        dialogListFragment.mListener = listener;
+        dialogListFragment.mActivity = fragment.getActivity();
+        dialogListFragment.mSelectListener = listener; 
+        if (fragment instanceof OnClickListener) dialogListFragment.mClickListener = (OnClickListener) fragment;
         dialogListFragment.mId = id;
         dialogListFragment.mTitle = title;
         dialogListFragment.mItems = items;
         dialogListFragment.mItemsAvailable = itemsAvailable;
         dialogListFragment.mInitialPosition = initialPosition;
+        dialogListFragment.mSizeGuideUrl = sizeGuideUrl; 
         return dialogListFragment;   
     }
 	
@@ -178,73 +164,206 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view;
-        view = inflater.inflate(R.layout.dialog_list_content, container);
-        
-        
-        
-//      if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1)
-//          resizeDialog(mDialog);
-
-	    return view;
+	    return inflater.inflate(R.layout.dialog_list_content, container);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+	 */
 	@Override
-	public void onResume() {
-	    super.onResume();
-	    if(this.mActivity == null){
-	        dismiss();
-	        return;
-	    }
-	    
-	    TextView titleView = (TextView) getView().findViewById(R.id.list_title);
-        titleView.setText(mTitle);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        list = (ListView) getView().findViewById(R.id.list);
-        if(mAdapter == null){
-            mAdapter = new DialogListAdapter();
+        // Validate current activity
+        if (this.mActivity == null) {
+            dismiss();
+            return;
         }
-        mAdapter.setCheckedPosition((int) mInitialPosition);
+
+        // Set title
+        TextView titleView = (TextView) view.findViewById(R.id.dialog_list_title);
+        titleView.setText(mTitle);
+        // Set size guide
+        setSizeGuide(view, mActivity);
+        // Get list
+        list = (ListView) view.findViewById(R.id.dialog_list_view);
+        // Validate adapter
+        mAdapter = new DialogListAdapter();
+        // Add adapter
+        mAdapter.setCheckedPosition(mInitialPosition);
         list.setAdapter(mAdapter);
         list.setOnItemClickListener(this);
-        this.mActivity.getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
-	}
+        // Show pre-selection
+        if (mInitialPosition > 0 && mInitialPosition < mAdapter.getCount())
+            list.setSelection(mInitialPosition);
 
+        this.mActivity.getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
+
+    }
+	
+	/**
+	 * Set the size guide button
+	 * @param view
+	 * @param activity
+	 * @author sergiopereira
+	 */
+    private void setSizeGuide(View view, Activity activity) {
+        Log.i(TAG, "SIZE GUIDE: " + mSizeGuideUrl);
+        // Get views 
+        View divider = view.findViewById(R.id.dialog_list_size_guide_divider);
+        View button = view.findViewById(R.id.dialog_list_size_guide_button);
+        // Set size guide button
+        if (TextUtils.isEmpty(mSizeGuideUrl)) {
+            divider.setVisibility(View.GONE);
+            button.setVisibility(View.GONE);
+            button.setOnClickListener(null);
+        } else {
+            button.setTag(mSizeGuideUrl);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(this);
+            divider.setVisibility(View.VISIBLE);
+        }
+    }
+	
+	/*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onPause()
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        dismiss();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.DialogFragment#onDestroyView()
+     */
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mAdapter = null;
+        mItems = null;
+        mItemsAvailable = null;
+        mActivity = null;
+        mSelectListener = null;
+        mClickListener = null;
+    }
+    
+    /*
+     * ########### LISTENERS ###########
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
+    @Override
+    public void onClick(final View view) {
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Validate listener
+                if(mClickListener != null) {
+                    dismiss();
+                    mClickListener.onClick(view);
+                }
+            }
+        }, DELAY_DISMISS);
+
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+     */
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, final int position, long id) {
+        if(mItemsAvailable == null || mItemsAvailable.contains(mItems.get(position))){
+            mAdapter.setCheckedPosition(position);
+            mAdapter.notifyDataSetChanged();
+
+            view.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    dismiss();
+                    if (mSelectListener != null) {
+                        mSelectListener.onDialogListItemSelect(mId, position, mItems.get(position));
+                    }
+
+                }
+            }, DELAY_DISMISS);
+        }
+    }
+    
+    
+    /*
+     * ########### ADAPTER ###########
+     */
+
+	/**
+	 * 
+	 */
 	private class DialogListAdapter extends BaseAdapter {
+	    
 		private int mCheckedPosition = NO_INITIAL_POSITION;
+		
 		private LayoutInflater mInflater;
+		
+		/**
+		 * Constructor
+		 */
 		public DialogListAdapter() {
 		    mInflater = LayoutInflater.from(mActivity);
         }
 		
+		/*
+		 * (non-Javadoc)
+		 * @see android.widget.BaseAdapter#hasStableIds()
+		 */
 		@Override
 		public boolean hasStableIds() {
 			return true;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * @see android.widget.Adapter#getCount()
+		 */
 		@Override
 		public int getCount() {
-		    if(mItems == null)
-		        return 0;
-			return mItems.size();
+		    return mItems == null ? 0 : mItems.size();
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * @see android.widget.Adapter#getItem(int)
+		 */
 		@Override
 		public Object getItem(int position) {
 			return mItems.get(position);
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * @see android.widget.Adapter#getItemId(int)
+		 */
 		@Override
 		public long getItemId(int position) {
 			return position;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
+		 */
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View view;
 			if (convertView == null) {
-				view = mInflater.inflate(R.layout.dialog_list_item, parent,
-						false);
+				view = mInflater.inflate(R.layout.dialog_list_item, parent, false);
 			} else {
 				view = convertView;
 			}
@@ -252,14 +371,11 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 			TextView textViewUnAvailable = (TextView) view.findViewById(R.id.item_text_unavailable);
 			if(mItemsAvailable != null && !mItemsAvailable.contains(mItems.get(position))){
                 view.setEnabled(false);
-
 			    textView.setVisibility(View.GONE);
-			    
 			    textViewUnAvailable.setVisibility(View.VISIBLE);
 			    textViewUnAvailable.setText(mItems.get(position));
 			} else {
                 view.setEnabled(true);
-
 			    textViewUnAvailable.setVisibility(View.GONE);
 			    textView.setVisibility(View.VISIBLE);
 	            textView.setText(mItems.get(position));
@@ -268,7 +384,6 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 			checkBox.setChecked(position == mCheckedPosition);
 
 			return view;
-
 		}
 
 		public void setCheckedPosition(int position) {
@@ -288,51 +403,4 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> adapterView, View view,
-			final int position, long id) {
-	    if(mItemsAvailable == null || mItemsAvailable.contains(mItems.get(position))){
-	        mAdapter.setCheckedPosition(position);
-	        mAdapter.notifyDataSetChanged();
-
-	        view.postDelayed(new Runnable() {
-
-	            @Override
-	            public void run() {
-	                dismiss();
-	                if (mListener != null) {
-	                    mListener.onDialogListItemSelect(mId, position, mItems.get(position));
-	                }
-
-	            }
-	        }, DELAY_DISMISS);
-	    }
-	    
-		
-
-	}
-	
-	@Override
-	public void onPause() {
-	    super.onPause();
-	    dismiss();
-//	    if (mListener != null) {
-//	        Log.i(TAG, "code1 onpause listener");
-//            mListener.onDialogListItemSelect(mId, 0, mItems.get(0));
-//        }
-	}
-	
-
-//	@SuppressWarnings("deprecation")
-//	public void resizeDialog(Dialog dialog) {
-//		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//		lp.copyFrom(dialog.getWindow().getAttributes());
-//		lp.width = (int) (dialog.getWindow().getWindowManager()
-//				.getDefaultDisplay().getWidth() * 0.9f);
-//		lp.horizontalMargin = 0;
-//		lp.verticalMargin = 0;
-//		dialog.getWindow().setAttributes(lp);
-//		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-//
-//	}
 }

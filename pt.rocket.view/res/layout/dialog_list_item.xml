@@ -28,7 +28,6 @@
         android:layout_centerVertical="true"
         android:button="@drawable/btn_check_orange"
         android:clickable="false"
-        android:focusable="false" >
-    </CheckBox>
+        android:focusable="false" />
 
 </RelativeLayout>

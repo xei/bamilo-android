@@ -82,14 +82,9 @@ public class GetFavouriteHelper implements IResponseCallback {
             Log.d(TAG, "ON RESPONSE COMPLETE: GET_PRODUCT_EVENT");
             // Inc counter
             counter++;
-            // Get complete product
+            // Get complete product and update
             CompleteProduct completeProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            // Update entry
-            FavouriteTableHelper.updateFavouriteProduct(
-                    completeProduct.getSku(),
-                    completeProduct.getSimples(),
-                    completeProduct.getVariations(),
-                    completeProduct.getKnownVariations());
+            FavouriteTableHelper.updateFavouriteProduct(completeProduct);
             // Get all items already update and send to callback
             if (counter == mNumberOfIncomplete) getFavouriteList();
             break;

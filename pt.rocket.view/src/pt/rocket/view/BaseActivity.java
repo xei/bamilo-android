@@ -348,7 +348,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
 
         if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT) && JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null) {
-            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
+            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), bundle, mIResponseCallback);
         }
 
         AdjustTracker.onResume(this);
@@ -521,6 +523,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private void setupContentViews() {
         Log.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
         setContentView(activityLayoutId);
+        
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
@@ -1833,7 +1836,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             break;
         case LOGIN_EVENT:
             JumiaApplication.INSTANCE.setLoggedIn(true);
-            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), null, mIResponseCallback);
+            Bundle b = new Bundle();
+            b.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
+            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), b, mIResponseCallback);
             break;
         default:
             break;
@@ -2003,7 +2008,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param addToBackStack
      * @author sergiopereira
      */
-    public abstract void onSwitchFragment(FragmentType search, Bundle bundle, Boolean addToBackStack);
+    public abstract void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack);
 
     /**
      * Method used to switch fragment on UI with/without back stack support

@@ -52,6 +52,7 @@ public class FavouriteTableHelper extends BaseTable {
 	public static final String _FAVOURITE_VARIATIONS_JSON = "favourite_variations_json";
 	public static final String _FAVOURITE_KNOWN_VARIATIONS_LIST = "favourite_known_variations_list";
 	public static final String _FAVOURITE_IS_COMPLETE = "favourite_is_complete";
+	public static final String _FAVOURITE_SIZE_GUIDE = "favourite_size_guide";
 //	public static final String _FAVOURITE_SIMPLE_POSITION = "favourite_simple_postion";
 	
 
@@ -63,7 +64,7 @@ public class FavouriteTableHelper extends BaseTable {
 	 */
     @Override
     public TableType getUpgradeType() {
-        return TableType.FREEZE;
+        return TableType.PERSIST;
     }
     
     /*
@@ -99,7 +100,8 @@ public class FavouriteTableHelper extends BaseTable {
                 .append(_FAVOURITE_SIMPLES_JSON).append(" TEXT, ")
                 .append(_FAVOURITE_VARIATIONS_JSON).append(" TEXT, ")
                 .append(_FAVOURITE_KNOWN_VARIATIONS_LIST).append(" TEXT, ")
-                .append(_FAVOURITE_IS_COMPLETE).append(" TEXT")
+                .append(_FAVOURITE_IS_COMPLETE).append(" TEXT, ")
+                .append(_FAVOURITE_SIZE_GUIDE).append(" TEXT")
 //                .append(_FAVOURITE_SIMPLE_POSITION).append(" INTEGER DEFAULT -1")
                 .append(")").toString();
     }
@@ -130,6 +132,7 @@ public class FavouriteTableHelper extends BaseTable {
 			values.put(FavouriteTableHelper._FAVOURITE_URL, completeProduct.getUrl());
 			values.put(FavouriteTableHelper._FAVOURITE_IMAGE_URL, completeProduct.getImageList().size() == 0 ? "" : completeProduct.getImageList().get(0));
 			values.put(FavouriteTableHelper._FAVOURITE_IS_NEW, completeProduct.isNew());
+			values.put(FavouriteTableHelper._FAVOURITE_SIZE_GUIDE, completeProduct.getSizeGuideUrl());
 //			values.put(FavouriteTableHelper._FAVOURITE_SIMPLE_POSITION, completeProduct.getSimpleSkuPosition());
 
 			String simplesJSON = "";
@@ -213,7 +216,15 @@ public class FavouriteTableHelper extends BaseTable {
 	 * @param variations
 	 * @param knownVariations
 	 */
-	public static void updateFavouriteProduct(String sku, ArrayList<ProductSimple> simples, List<Variation> variations, ArrayList<String> knownVariations) {
+	public static void updateFavouriteProduct(CompleteProduct completeProduct) {
+	    
+	    // Get data 
+        String sku = completeProduct.getSku();
+        ArrayList<ProductSimple> simples = completeProduct.getSimples();
+        ArrayList<Variation> variations = completeProduct.getVariations();
+        ArrayList<String> knownVariations = completeProduct.getKnownVariations();
+        String sizeGuideUrl = completeProduct.getSizeGuideUrl();
+	    
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
 		ContentValues values = new ContentValues();
 
@@ -249,6 +260,8 @@ public class FavouriteTableHelper extends BaseTable {
 		values.put(FavouriteTableHelper._FAVOURITE_KNOWN_VARIATIONS_LIST, knownVariationsString);
 		
 		values.put(FavouriteTableHelper._FAVOURITE_IS_COMPLETE, true);
+		
+		values.put(FavouriteTableHelper._FAVOURITE_SIZE_GUIDE, sizeGuideUrl);
 
 		db.update(FavouriteTableHelper.TABLE_NAME, values, FavouriteTableHelper._FAVOURITE_SKU + "=?", new String[]{sku});
 		db.close();
@@ -396,6 +409,9 @@ public class FavouriteTableHelper extends BaseTable {
 
 				favourite.setComplete(cursor.getInt(index++) == 1);
 //				favourite.setSelectedSimple(cursor.getInt(index++));
+				
+				favourite.setSizeGuideUrl(cursor.getString(index++));
+				
 
 				favourites.add(favourite);
 			}

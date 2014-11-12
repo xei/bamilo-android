@@ -41,11 +41,7 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
 
     private int mVariationsListPosition = -1;
     
-    // private TextView mColorTitle;
-
     private SharedPreferences sharedPreferences;
-    
-    // private View divider;
 
     /**
      * 
@@ -62,11 +58,6 @@ public class ProductVariationsFragment extends BaseFragment implements OnItemCli
      */
     public ProductVariationsFragment() {
         super(IS_NESTED_FRAGMENT, BaseFragment.NO_INFLATE_LAYOUT);
-        /*-super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
-                0,
-                KeyboardState.NO_ADJUST_CONTENT);*/
-        // R.string.product_details_title
     }
 
     /*

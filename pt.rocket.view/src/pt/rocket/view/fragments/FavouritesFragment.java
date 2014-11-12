@@ -44,6 +44,7 @@ import pt.rocket.view.R;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -263,32 +264,39 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Get view id
         int id = view.getId();
         // Case item
-        if (id == R.id.addabletocart_item_container) {
-            onItemClick(view);
-        }
+        if (id == R.id.addabletocart_item_container) onItemClick(view);
         // Case delete
-        else if (id == R.id.button_delete) {
-            onClickDeleteItem(view);
-        }
+        else if (id == R.id.button_delete) onClickDeleteItem(view);
         // Case add to cart
-        else if (id == R.id.button_shop) {
-            onClickAddToCart(view);
-        }
+        else if (id == R.id.button_shop) onClickAddToCart(view);
         // Case add all
-        else if (id == R.id.button_shop_all) {
-            onClickAddAllToCart();
-        }
+        else if (id == R.id.button_shop_all) onClickAddAllToCart();
         // Case simple
-        else if (id == R.id.button_variant) {
-            onClickVariation(view);
-        }
+        else if (id == R.id.button_variant) onClickVariation(view);
+        // Case size guide
+        else if (id == R.id.dialog_list_size_guide_button) onClickSizeGuide(view);
         // Case continue shopping
-        else if (id == R.id.fragment_root_empty_button) {
-            onClickContinueShopping();
-        }
+        else if (id == R.id.fragment_root_empty_button) onClickContinueShopping();
         // Case unknown
-        else {
-            Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+        else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+    }
+    
+    /**
+     * Process the click on size guide.
+     * @author sergiopereira
+     */
+    protected void onClickSizeGuide(View view){        
+        try {
+            // Get size guide url
+            String url = (String) view.getTag();
+            // Validate url
+            if(!TextUtils.isEmpty(url)) {
+                Bundle bundle = new Bundle();
+                bundle.putString(ConstantsIntentExtra.SIZE_GUIDE_URL, url);
+                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_SIZE_GUIDE, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else Log.w(TAG, "WARNING: SIZE GUIDE URL IS EMPTY");
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON CLICK SIZE GUIDE");
         }
     }
 
@@ -917,13 +925,14 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         ArrayList<String> mSimpleVariantsAvailable = new ArrayList<String>();
         ArrayList<String> mSimpleVariants = createSimpleVariants(addableToCart, mSimpleVariantsAvailable);
         //
-        DialogListFragment dialogListFragment = DialogListFragment.newInstance(getBaseActivity(),
+        DialogListFragment dialogListFragment = DialogListFragment.newInstance(this,
                 new FavouriteOnDialogListListener(addableToCart),
                 VARIATION_PICKER_ID,
                 title,
                 mSimpleVariants,
                 mSimpleVariantsAvailable,
-                addableToCart.getSelectedSimple());
+                addableToCart.getSelectedSimple(),
+                addableToCart.getSizeGuideUrl());
 
         dialogListFragment.show(getFragmentManager(), null);
     }
@@ -950,7 +959,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     protected ArrayList<String> createSimpleVariants(AddableToCart addableToCart, ArrayList<String> mSimpleVariantsAvailable) {
         Log.i(TAG, "scanSimpleForKnownVariations : createSimpleVariants" + addableToCart.getName());
-        ArrayList<ProductSimple> simples = (ArrayList<ProductSimple>) addableToCart.getSimples().clone();
+        ArrayList<ProductSimple> simples = new ArrayList<ProductSimple>(addableToCart.getSimples());
         ArrayList<String> variations = addableToCart.getKnownVariations();
         if (variations == null || variations.size() == 0) {
             variations = new ArrayList<String>();

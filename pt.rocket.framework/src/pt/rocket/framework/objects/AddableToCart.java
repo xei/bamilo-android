@@ -23,6 +23,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 /**
  * Class that manages the full representation of an object that can be added to
@@ -63,6 +64,7 @@ public class AddableToCart implements Parcelable {
 	private double mPriceConverted;
 	private ArrayList<String> mCategories;
 	private Double mRatingsAverage;
+	private String mSizeGuideUrl;
 
 	/**
 	 * Complete favourite empty constructor.
@@ -86,6 +88,7 @@ public class AddableToCart implements Parcelable {
 		mPriceConverted = 0d;
 		mCategories = new ArrayList<String>();
 		mRatingsAverage = 0.0;
+		mSizeGuideUrl = "";
 	}
 
 	public AddableToCart(CompleteProduct completeProduct) {
@@ -115,6 +118,7 @@ public class AddableToCart implements Parcelable {
 		selectedSimple = (simples != null && simples.size() == 1) ? 0 : NO_SIMPLE_SELECTED;
 		if(CollectionUtils.isNotEmpty(completeProduct.getCategories())) mCategories = completeProduct.getCategories(); 
 		mRatingsAverage = completeProduct.getRatingsAverage();
+		mSizeGuideUrl = completeProduct.getSizeGuideUrl();
 	}
 
 	/**
@@ -464,6 +468,32 @@ public class AddableToCart implements Parcelable {
         return mSpecialPriceConverted > 0 ? true : false;
     }
     
+    /**
+     * Set size guide URL
+     * @author sergiopereira
+     */
+    public void setSizeGuideUrl(String url) {
+        mSizeGuideUrl = url;
+    }
+    
+    /**
+     * Get size guide URL
+     * @return String
+     * @author sergiopereira
+     */
+    public String getSizeGuideUrl() {
+        return mSizeGuideUrl;
+    }
+    
+    /**
+     * Validate size guide url
+     * @return true or false
+     * @author sergiopereira
+     */
+    public boolean hasSizeGuide() {
+        return TextUtils.isEmpty(mSizeGuideUrl) ? false : true;
+    }
+    
 
 	/*
 	 * ############ PARCELABLE ############
@@ -511,6 +541,7 @@ public class AddableToCart implements Parcelable {
 		dest.writeDouble(mSpecialPriceConverted);
 		dest.writeList(mCategories);
 		dest.writeDouble(mRatingsAverage);
+		dest.writeString(mSizeGuideUrl);
 	}
 
 	private AddableToCart(Parcel in) {
@@ -544,6 +575,7 @@ public class AddableToCart implements Parcelable {
         mCategories = new ArrayList<String>();
         in.readList(mCategories, String.class.getClassLoader());
         mRatingsAverage = in.readDouble();
+        mSizeGuideUrl = in.readString();
 	}
 
 	public static final Parcelable.Creator<AddableToCart> CREATOR = new Parcelable.Creator<AddableToCart>() {

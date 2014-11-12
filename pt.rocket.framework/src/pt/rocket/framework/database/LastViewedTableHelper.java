@@ -53,6 +53,7 @@ public class LastViewedTableHelper extends BaseTable {
 	public static final String _PRODUCT_VARIATIONS_JSON = "product_variations_json";
 	public static final String _PRODUCT_KNOWN_VARIATIONS_LIST = "product_known_variations_list";
 	public static final String _PRODUCT_IS_COMPLETE = "product_is_complete";
+	public static final String _PRODUCT_SIZE_GUIDE = "product_size_guide";
 
 	private static String DELIMITER = ":::::";
 	
@@ -62,7 +63,7 @@ public class LastViewedTableHelper extends BaseTable {
 	 */
     @Override
     public TableType getUpgradeType() {
-        return TableType.FREEZE;
+        return TableType.PERSIST;
     }
 
     /*
@@ -99,7 +100,8 @@ public class LastViewedTableHelper extends BaseTable {
                 .append(_PRODUCT_SIMPLES_JSON).append(" TEXT, ")
                 .append(_PRODUCT_VARIATIONS_JSON).append(" TEXT, ")
                 .append(_PRODUCT_KNOWN_VARIATIONS_LIST).append(" TEXT, ")
-                .append(_PRODUCT_IS_COMPLETE).append(" TEXT ")
+                .append(_PRODUCT_IS_COMPLETE).append(" TEXT, ")
+                .append(_PRODUCT_SIZE_GUIDE).append(" TEXT ")
                 .append(")").toString();
     }
     
@@ -134,6 +136,7 @@ public class LastViewedTableHelper extends BaseTable {
 				values.put(LastViewedTableHelper._PRODUCT_URL, completeProduct.getUrl());
 				values.put(LastViewedTableHelper._PRODUCT_IMAGE_URL, completeProduct.getImageList().size() == 0 ? "" : completeProduct.getImageList().get(0));
 				values.put(LastViewedTableHelper._PRODUCT_IS_NEW, completeProduct.isNew());
+				values.put(LastViewedTableHelper._PRODUCT_SIZE_GUIDE, completeProduct.getSizeGuideUrl());
 
 				String simplesJSON = "";
 				ArrayList<ProductSimple> simples = completeProduct.getSimples();
@@ -304,7 +307,7 @@ public class LastViewedTableHelper extends BaseTable {
 				lastViewed.setSpecialPriceConverted(cursor.getDouble(index++));
 				lastViewed.setMaxSavingPercentage(cursor.getDouble(index++));
 				lastViewed.setNew(cursor.getInt(index++) == 1);
-
+				
 				// convert simples from JSON to ArrayList
 				String simplesJSON = cursor.getString(index++);
 				if (!TextUtils.isEmpty(simplesJSON)) {
@@ -357,8 +360,12 @@ public class LastViewedTableHelper extends BaseTable {
 					}
 				}
 
+				// Complete product
 				lastViewed.setComplete(true);
-
+				index++;
+				// Size guide
+				lastViewed.setSizeGuideUrl(cursor.getString(index++));
+				// Add item
 				listLastViewed.add(lastViewed);
 			}
 		}

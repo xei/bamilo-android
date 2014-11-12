@@ -643,7 +643,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private ArrayList<String> createSimpleVariants() {
         Log.i(TAG,"scanSimpleForKnownVariations : createSimpleVariants" + mCompleteProduct.getName());
-        ArrayList<ProductSimple> simples = (ArrayList<ProductSimple>) mCompleteProduct.getSimples().clone();
+        ArrayList<ProductSimple> simples = new ArrayList<ProductSimple>(mCompleteProduct.getSimples());
         variations = mCompleteProduct.getKnownVariations();
         if (variations == null || variations.size() == 0) {
             variations = new ArrayList<String>();
@@ -1377,8 +1377,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
+    public void onClick(View view) {
+        int id = view.getId();
 
         if (id == R.id.product_detail_product_rating_container) {
             Bundle bundle = new Bundle();
@@ -1485,7 +1485,29 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         } else if(id == R.id.fragment_root_retry_button){
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, getArguments(), FragmentController.ADD_TO_BACK_STACK);
         }
+        // Case size guide
+        else if (id == R.id.dialog_list_size_guide_button) onClickSizeGuide(view);
     }
+    
+    /**
+     * Process click on size guide.
+     * @author sergiopereira
+     */
+    protected void onClickSizeGuide(View view){        
+        try {
+            // Get size guide url
+            String url = (String) view.getTag();
+            // Validate url
+            if(!TextUtils.isEmpty(url)) {
+                Bundle bundle = new Bundle();
+                bundle.putString(ConstantsIntentExtra.SIZE_GUIDE_URL, url);
+                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_SIZE_GUIDE, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else Log.w(TAG, "WARNING: SIZE GUIDE URL IS EMPTY");
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON CLICK SIZE GUIDE");
+        }
+    }
+    
 
     private void makeCall() {
         // Displays the phone number but the user must press the Call button to begin the phone call
@@ -1510,8 +1532,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     private void showVariantsDialog() {
         getBaseActivity().showWarningVariation(false);
         String title = getString(R.string.product_variance_choose);
-        dialogListFragment = DialogListFragment.newInstance(this, VARIATION_PICKER_ID, title,
-                mSimpleVariants, mSimpleVariantsAvailable, mSelectedSimple);
+        dialogListFragment = DialogListFragment.newInstance(this, 
+                VARIATION_PICKER_ID, 
+                title,
+                mSimpleVariants, 
+                mSimpleVariantsAvailable, 
+                mSelectedSimple,
+                mCompleteProduct.getSizeGuideUrl());
         dialogListFragment.show(getFragmentManager(), null);
     }
 
