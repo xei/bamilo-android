@@ -48,9 +48,9 @@ import de.akquinet.android.androlog.Log;
  * @author Manuel Silva
  * 
  */
-public class GetCountriesConfigsHelper extends BaseHelper {
+public class GetCountryConfigsHelper extends BaseHelper {
 
-    private static String TAG = GetCountriesConfigsHelper.class.getSimpleName();
+    private static String TAG = GetCountryConfigsHelper.class.getSimpleName();
     
     private static final EventType EVENT_TYPE = EventType.GET_COUNTRY_CONFIGURATIONS;
     

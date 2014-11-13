@@ -5,7 +5,6 @@ import org.holoeverywhere.widget.Button;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.utils.DeviceInfoHelper;
-import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -31,6 +30,7 @@ public class MaintenancePage {
      * @param activity
      * @param mapImageView
      */
+    @SuppressWarnings("unused")
     @Deprecated
     private static void rearrageLayoutForImage(Activity activity, ImageView mapImageView){
      // ImageView for map is between title text and change country button
@@ -69,8 +69,8 @@ public class MaintenancePage {
             changeCountry.setText(R.string.nav_country);
             changeCountry.setOnClickListener(listener);
             // Set image
-//            ImageView mapBg = (ImageView) activity.findViewById(R.id.fallback_country_map);
-//            RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_maintenance_map);
+            //ImageView mapBg = (ImageView) activity.findViewById(R.id.fallback_country_map);
+            //RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_maintenance_map);
 
             String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
             TextView fallbackBest = (TextView) activity.findViewById(R.id.fallback_best);
@@ -134,8 +134,8 @@ public class MaintenancePage {
             retry.setOnClickListener(listener);
 
             SharedPreferences sharedPrefs = activity.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-//            ImageView mapImageView = (ImageView) activity.findViewById(R.id.fallback_country_map);
-//            RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapImageView, null, R.drawable.img_maintenance_map);
+            //ImageView mapImageView = (ImageView) activity.findViewById(R.id.fallback_country_map);
+            //RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapImageView, null, R.drawable.img_maintenance_map);
             
             String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
 

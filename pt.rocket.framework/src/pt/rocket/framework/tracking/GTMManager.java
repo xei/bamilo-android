@@ -76,7 +76,7 @@ public class GTMManager {
         mTagManager = TagManager.getInstance(context);
         isContainerAvailable = false;
 
-        mTagManager.setVerboseLoggingEnabled(true);
+        //mTagManager.setVerboseLoggingEnabled(true);
         
         CONTAINER_ID = context.getResources().getString(R.string.gtm_key);
         

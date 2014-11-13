@@ -69,7 +69,7 @@ public class Darwin {
 	public static final String KEY_SELECTED_COUNTRY_NAME = "selected_country_name";
 	public static final String KEY_SELECTED_COUNTRY_URL = "selected_country_url";
 	public static final String KEY_SELECTED_COUNTRY_FLAG = "selected_country_flag";
-	public static final String KEY_SELECTED_COUNTRY_MAP_FLAG = "selected_country_map_flag";
+	//public static final String KEY_SELECTED_COUNTRY_MAP_FLAG = "selected_country_map_flag";
 	public static final String KEY_SELECTED_COUNTRY_ISO = "selected_country_iso";
 	public static final String KEY_SELECTED_COUNTRY_FORCE_HTTP = "selected_country_force_http";
 	public static final String KEY_SELECTED_COUNTRY_IS_LIVE = "selected_country_is_live";

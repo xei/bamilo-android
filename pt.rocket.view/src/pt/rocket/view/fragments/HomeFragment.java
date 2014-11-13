@@ -17,8 +17,8 @@ import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.AdjustTracker;
-import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.tracking.GTMEvents.GTMValues;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
@@ -36,7 +36,6 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogPromotionFragment;
 import pt.rocket.utils.dialogfragments.WizardPreferences;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
-import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -53,7 +52,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
 
@@ -400,9 +398,9 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     private void setLayoutFallback() {
         Log.i(TAG, "ON SHOW FALLBACK");
         try {
-            ImageView mapBg = (ImageView) getView().findViewById(R.id.home_fallback_country_map);
+            //ImageView mapBg = (ImageView) getView().findViewById(R.id.home_fallback_country_map);
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_splashmap);
+            //RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_splashmap);
             String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "Jumia");
             TextView fallbackBest = (TextView) getView().findViewById(R.id.fallback_best);
             fallbackBest.setText(R.string.fallback_best);

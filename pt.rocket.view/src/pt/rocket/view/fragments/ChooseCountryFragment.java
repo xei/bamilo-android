@@ -31,7 +31,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -177,10 +176,21 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.i(TAG, "ON DESTROY VIEW");
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onDestroy()
+     */
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "ON DESTROY");
+        super.onDestroy();
         // Clean memory
         countryAdapter = null;
     }
-
+    
     /*
      * (non-Javadoc)
      * @see pt.rocket.view.fragments.BaseFragment#allowBackPressed()
@@ -324,26 +334,27 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     
 //    /**
 //     * Get map image for respective device density(dpi).
+//     * 
 //     * @param mCountryObject
 //     * @return String
 //     */
-//    private String calculateMapImageResolution(CountryObject mCountryObject){
-//        String mapImage =  mCountryObject.getCountryMapMdpi();
+//    private String calculateMapImageResolution(CountryObject mCountryObject) {
+//        String mapImage = mCountryObject.getCountryMapMdpi();
 //        DisplayMetrics dm = new DisplayMetrics();
 //        getBaseActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
 //        int dpiClassification = dm.densityDpi;
 //        switch (dpiClassification) {
 //        case DisplayMetrics.DENSITY_HIGH:
 //            Log.i(TAG, "code1desnsity  DENSITY_HIGH");
-//            mapImage =  mCountryObject.getCountryMapHdpi();
+//            mapImage = mCountryObject.getCountryMapHdpi();
 //            break;
 //        case DisplayMetrics.DENSITY_XHIGH:
 //            Log.i(TAG, "code1desnsity  DENSITY_XHIGH");
-//            mapImage =  mCountryObject.getCountryMapXhdpi();
+//            mapImage = mCountryObject.getCountryMapXhdpi();
 //            break;
 //        default:
 //            Log.i(TAG, "code1desnsity  DENSITY_MEDIUM");
-//            mapImage =  mCountryObject.getCountryMapMdpi();
+//            mapImage = mCountryObject.getCountryMapMdpi();
 //            break;
 //        }
 //        return mapImage;

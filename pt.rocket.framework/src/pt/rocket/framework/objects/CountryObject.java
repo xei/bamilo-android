@@ -53,9 +53,9 @@ public class CountryObject implements IJSONSerializable, Parcelable {
 		this.setCountryName("");
 		this.setCountryUrl("");
 		this.setCountryFlag("");
-//		this.setCountryMapMdpi("");
-//		this.setCountryMapHdpi("");
-//		this.setCountryMapXhdpi("");
+		//this.setCountryMapMdpi("");
+		//this.setCountryMapHdpi("");
+		//this.setCountryMapXhdpi("");
 		this.setCountryIso("");
 		this.setCountryForceHttps(false);
 		this.setCountryIsLive(false);
@@ -68,23 +68,18 @@ public class CountryObject implements IJSONSerializable, Parcelable {
 	 * @param name
 	 * @param url
 	 * @param flag
-	 * @param map_mdpi
-	 * @param map_hdpi
-	 * @param map_xhdpi
 	 * @param iso
 	 * @param force_https
 	 * @param is_live
 	 */
-	public CountryObject(String id, String name, String url, String flag, String map_mdpi,
-			String map_hdpi, String map_xhdpi, String iso, boolean force_https,
-			boolean is_live) {
+	public CountryObject(String id, String name, String url, String flag, String iso, boolean force_https, boolean is_live) {
 		this.setCountryId(id);
 		this.setCountryName(name);
 		this.setCountryUrl(url);
 		this.setCountryFlag(flag);
-//		this.setCountryMapMdpi(map_mdpi);
-//		this.setCountryMapHdpi(map_hdpi);
-//		this.setCountryMapXhdpi(map_xhdpi);
+		//this.setCountryMapMdpi(map_mdpi);
+		//this.setCountryMapHdpi(map_hdpi);
+		//this.setCountryMapXhdpi(map_xhdpi);
 		this.setCountryIso(iso);
 		this.setCountryForceHttps(force_https);
 		this.setCountryIsLive(is_live);
@@ -186,47 +181,47 @@ public class CountryObject implements IJSONSerializable, Parcelable {
 		this.country_flag = country_flag;
 	}
 
-	/**
-	 * @return the country_map_mdpi
-	 */
+//	/**
+//	 * @return the country_map_mdpi
+//	 */
 //	public String getCountryMapMdpi() {
 //		return country_map_mdpi;
 //	}
-
-	/**
-	 * @param country_map_mdpi
-	 *            the country_map_mdpi to set
-	 */
+//
+//	/**
+//	 * @param country_map_mdpi
+//	 *            the country_map_mdpi to set
+//	 */
 //	public void setCountryMapMdpi(String country_map_mdpi) {
 //		this.country_map_mdpi = country_map_mdpi;
 //	}
-
-	/**
-	 * @return the country_map_hdpi
-	 */
+//
+//	/**
+//	 * @return the country_map_hdpi
+//	 */
 //	public String getCountryMapHdpi() {
 //		return country_map_hdpi;
 //	}
-
-	/**
-	 * @param country_map_hdpi
-	 *            the country_map_hdpi to set
-	 */
+//
+//	/**
+//	 * @param country_map_hdpi
+//	 *            the country_map_hdpi to set
+//	 */
 //	public void setCountryMapHdpi(String country_map_hdpi) {
 //		this.country_map_hdpi = country_map_hdpi;
 //	}
-
-	/**
-	 * @return the country_map_xhdpi
-	 */
+//
+//	/**
+//	 * @return the country_map_xhdpi
+//	 */
 //	public String getCountryMapXhdpi() {
 //		return country_map_xhdpi;
 //	}
-
-	/**
-	 * @param country_map_xhdpi
-	 *            the country_map_xhdpi to set
-	 */
+//
+//	/**
+//	 * @param country_map_xhdpi
+//	 *            the country_map_xhdpi to set
+//	 */
 //	public void setCountryMapXhdpi(String country_map_xhdpi) {
 //		this.country_map_xhdpi = country_map_xhdpi;
 //	}
@@ -328,7 +323,6 @@ public class CountryObject implements IJSONSerializable, Parcelable {
 
 	@Override
 	public JSONObject toJSON() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

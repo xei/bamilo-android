@@ -25,7 +25,7 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.configs.GetApiInfoHelper;
-import pt.rocket.helpers.configs.GetCountriesConfigsHelper;
+import pt.rocket.helpers.configs.GetCountryConfigsHelper;
 import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.HockeyStartup;
@@ -343,8 +343,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     private void starMainActivity() {
         Log.d(TAG, "START MAIN FRAGMENT ACTIVITY");
         // Default Start
-        Intent intent = null;
-        intent = new Intent(getApplicationContext(), getActivityClassForDevice());
+        Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
@@ -523,7 +522,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     private void onProcessNoCountryConfigsError() {
         Log.i(TAG, "ON PROCESS NO COUNTRY CONFIGS");
         JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
-        JumiaApplication.INSTANCE.sendRequest(new GetCountriesConfigsHelper(), null, (IResponseCallback) this);
+        JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, (IResponseCallback) this);
     }
 
     /**
@@ -595,7 +594,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         if (bundle.getBoolean(Section.SECTION_NAME_COUNTRY_CONFIGS, false)) {
             Log.d(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
-            JumiaApplication.INSTANCE.sendRequest(new GetCountriesConfigsHelper(), null, (IResponseCallback) this);
+            JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, (IResponseCallback) this);
         } else {
             Log.d(TAG, "START MAIN ACTIVITY");
             //track open app event for all tracker but Adjust

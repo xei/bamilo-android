@@ -293,7 +293,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/fallback_options_container"
         android:layout_below="@id/fallback_choice_container"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/img_maintenance_map" />
 
     <ImageView
         android:layout_width="wrap_content"
