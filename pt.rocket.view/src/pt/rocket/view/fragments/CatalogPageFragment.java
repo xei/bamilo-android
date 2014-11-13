@@ -342,32 +342,16 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
             }
             // Show
             invalidateData(args, forceReload);
-            if (trackViewScreen && isFromCategory) {
-                trackViewCatalog();
-            }
-//        }
+
             
     }
     
-//    /*
-//     * (non-Javadoc)
-//     * @see android.support.v4.app.Fragment#setUserVisibleHint(boolean)
-//     */
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        Log.i(TAG, "ON SET USER VISIBLE HINT #" + mPageIndex + " -> " + isVisibleToUser + "[isResumed:" + isResumed() + " isStopping:" + isOnStoppingProcess + "]");
-//    }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
-            if (!isResumed()) {
-                trackViewScreen = true;
-            } else {
-                trackViewCatalog();
-            }
-        }
+            trackViewCatalog();
+        } 
         super.setUserVisibleHint(isVisibleToUser);
     }
     

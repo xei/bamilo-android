@@ -6,7 +6,7 @@
 
     <org.holoeverywhere.widget.TextView
         style="@style/rounded_box_title_grey"
-        android:text="@string/track_your_order" />
+        android:text="@string/my_order_tracking_label" />
 
     <View style="@style/divider_horizontal_orange" />
 

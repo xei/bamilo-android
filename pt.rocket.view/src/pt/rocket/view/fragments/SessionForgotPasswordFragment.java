@@ -131,9 +131,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements OnCli
             showFragmentRetry(this);
         }
 
-            
-
-
         setAppContentLayout();
     }
 

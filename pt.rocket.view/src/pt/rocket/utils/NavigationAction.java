@@ -24,7 +24,7 @@ public enum NavigationAction {
     // Configurator("configurator"),
     Products("products"),
     Country("language"),
-    TrackOrder("trackingorder"),
+    MyOrders("trackingorder"),
     Unknown("unknown"),
     Checkout("checkout"),
     ForgotPassword("forgotpassword");

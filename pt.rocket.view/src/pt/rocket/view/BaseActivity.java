@@ -1433,10 +1433,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                     TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
                     onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     break;
-                case TrackOrder:
+                case MyOrders:
                     // TRACK ORDER
                     TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_TRACK_ORDER);
-                    onSwitchFragment(FragmentType.TRACK_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     break;
                 default:
                     Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");

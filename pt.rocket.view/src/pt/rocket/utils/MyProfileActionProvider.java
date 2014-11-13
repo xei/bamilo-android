@@ -40,7 +40,7 @@ public class MyProfileActionProvider extends ActionProvider {
             NavigationAction.RecentSearch,
             NavigationAction.RecentlyView,
             NavigationAction.MyAccount,
-            NavigationAction.TrackOrder
+            NavigationAction.MyOrders
             );
 
     private Context mContext;
@@ -227,8 +227,8 @@ public class MyProfileActionProvider extends ActionProvider {
                 title.setText(R.string.my_account);
                 icon.setImageResource(R.drawable.ic_settings_highlighted);
                 break;
-            case TrackOrder:
-                title.setText(R.string.nav_track_order);
+            case MyOrders:
+                title.setText(R.string.my_orders_label);
                 icon.setImageResource(R.drawable.ic_orderstatuts_highlighted);
                 break;
             default:

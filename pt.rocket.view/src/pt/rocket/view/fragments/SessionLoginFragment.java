@@ -30,7 +30,7 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.checkout.GetMyOrdersListHelper;
+import pt.rocket.helpers.account.GetMyOrdersListHelper;
 import pt.rocket.helpers.configs.GetInitFormHelper;
 import pt.rocket.helpers.session.GetFacebookLoginHelper;
 import pt.rocket.helpers.session.GetLoginFormHelper;
@@ -543,7 +543,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
             }
 
             cameFromRegister = false;
-            triggerContentEvent(new GetMyOrdersListHelper(), bundle, mCallBack);
             // Validate the next step
             if (nextFragmentType != null && baseActivity != null) {
                 Log.d(TAG, "NEXT STEP: " + nextFragmentType.toString());

@@ -97,6 +97,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private Bundle mDeepLinkBundle;
 
+    private boolean isDeepLinkLaunch = false;
+
     private View jumiaMapImage;
 
     SharedPreferences sharedPrefs;
@@ -252,10 +254,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // ## DEEP LINK FROM EXTERNAL URIs ##
         if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
             mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
-            return true;
+            isDeepLinkLaunch = true;
+            return true; 
         }
         Log.i(TAG, "DEEP LINK: NO EXTERNAL URI");
-        return false;
+        isDeepLinkLaunch = false;
+        return false; 
     }
     
     /**
@@ -598,7 +602,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         } else {
             Log.d(TAG, "START MAIN ACTIVITY");
             //track open app event for all tracker but Adjust
-            TrackerDelegator.trackAppOpen(getApplicationContext());
+            TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
             // Show activity
             selectActivity();
         }

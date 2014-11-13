@@ -12,6 +12,7 @@ import org.holoeverywhere.widget.TextView;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsCheckout;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.OrderTracker;
 import pt.rocket.framework.objects.OrderTrackerItem;
 import pt.rocket.framework.utils.Constants;
@@ -48,9 +49,12 @@ public class TrackOrderFragment extends BaseFragment {
     private EditText mEditText;
 
     private static OrderTracker mOrderTracker;
+    
     private static boolean mOrderTrackerError = false;
     
     private boolean mOrderTrackingClicked = false;
+    
+    private MyOrdersFragment parentFragment;
 
     /**
      * Get instance
@@ -67,9 +71,9 @@ public class TrackOrderFragment extends BaseFragment {
      */
     public TrackOrderFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.TrackOrder,
+                NavigationAction.MyOrders,
                 R.layout.track_order_fragment,
-                R.string.order_status_label,
+                R.string.my_orders_label,
                 KeyboardState.ADJUST_CONTENT);
         // R.string.nav_track_order
         this.setRetainInstance(true);
@@ -99,6 +103,8 @@ public class TrackOrderFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        parentFragment = (MyOrdersFragment) getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.MY_ORDERS.toString());
+
     }
 
     /*
@@ -111,6 +117,8 @@ public class TrackOrderFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        if(parentFragment != null)
+            parentFragment.mPositionToStart = 0;
     }
 
     /*

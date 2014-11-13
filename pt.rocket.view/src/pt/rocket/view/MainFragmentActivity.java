@@ -40,6 +40,7 @@ import pt.rocket.view.fragments.HomeFragment;
 import pt.rocket.view.fragments.MyAccountEmailNotificationFragment;
 import pt.rocket.view.fragments.MyAccountFragment;
 import pt.rocket.view.fragments.MyAccountUserDataFragment;
+import pt.rocket.view.fragments.MyOrdersFragment;
 import pt.rocket.view.fragments.ProductDetailsDescriptionFragment;
 import pt.rocket.view.fragments.ProductDetailsFragment;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
@@ -342,8 +343,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         case MY_USER_DATA:
             fragment = MyAccountUserDataFragment.getInstance();
             break;
-        case TRACK_ORDER:
-            fragment = TrackOrderFragment.getInstance();
+        case MY_ORDERS:
+            fragment = MyOrdersFragment.getInstance(bundle);
             break;
         case CHOOSE_COUNTRY:
             fragment = ChooseCountryFragment.getInstance();

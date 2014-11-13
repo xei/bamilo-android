@@ -383,8 +383,15 @@
     <string name="order_status_label">Order Status</string>
     <string name="cart_label">Cart</string>
     <string name="show_more">More...</string>
-    
-    
-    <string name="size_guide_label">Size Guide</string>
 
+	<!-- new for Jumia 2.2 -->
+	<string name="my_orders_label">My Orders</string>
+	<string name="my_order_history_label">My Order History</string>
+	<string name="my_order_number_label">Nr.</string>
+	<string name="my_order_date_label">Date:</string>
+	<string name="my_order_tracking_label">Order Tracking</string>
+	<string name="my_order_quantity_label">Qty.</string>
+	<string name="my_order_no_orders_label">You have placed no orders.</string>
+	<string name="my_order_details_label">Order Details</string>
+    <string name="size_guide_label">Size Guide</string>
 </resources>

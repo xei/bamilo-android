@@ -392,7 +392,7 @@ public class AdjustTracker {
                 json = new JSONObject();
                 try {
                     json.put(AdjustKeys.SKU, item.getConfigSKU());
-                    json.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
+                    json.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
                     json.put(AdjustKeys.QUANTITY, item.getQuantity());
                     json.put(AdjustKeys.PRICE, item.getSpecialPriceConverted());
                     

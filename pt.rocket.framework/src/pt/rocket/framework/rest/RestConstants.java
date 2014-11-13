@@ -350,6 +350,19 @@ public class RestConstants {
 	public static final String JSON_TERMS_CONDITIONS_TAG = "terms_conditions";
 
 	/**
+     * Order History TAGS
+     */
+	public static final String JSON_ORDERS_TAG = "orders";
+	public static final String JSON_ORDER_DATE_TAG = "date";
+	public static final String JSON_ORDER_TOTAL_TAG = "total";
+	public static final String JSON_ORDER_CONF_SKU_TAG = "config_sku";
+	public static final String JSON_ORDER_UNIT_PRICE_TAG = "unit_price";
+	public static final String JSON_ORDER_PAYMENT_TAG = "payment";
+	public static final String JSON_ORDER_TOTAL_NUM_TAG = "total_orders";
+	public static final String JSON_ORDER_PAGINATION_TAG = "pagination";
+	public static final String JSON_ORDER_CURRENT_PAGE_TAG = "current_page";
+	public static final String JSON_ORDER_TOTAL_PAGES_TAG = "total_pages";
+	/**
 	 * Order Tracking TAGS
 	 */
 	public static final String JSON_ORDER_TAG = "order";

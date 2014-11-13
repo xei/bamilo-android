@@ -1085,7 +1085,7 @@ public class TrackerDelegator {
     /**
      * Track first open and shop country
      */
-    public static void trackAppOpen(Context context) {
+    public static void trackAppOpen(Context context, boolean isFromPush) {
         // Track app open
         boolean userNeverLoggedIn = JumiaApplication.INSTANCE.getCustomerUtils().userNeverLoggedIn();
         // Get device info
@@ -1099,7 +1099,7 @@ public class TrackerDelegator {
         // GTM
         String version = DeviceInfoHelper.getVersionName(context);
         GTMManager.get().gtmTrackAppOpen(version, info, ShopSelector.getShopId(), getUtmParams(context, GTMManager.CAMPAIGN_ID_KEY),
-                getUtmParams(context, GTMManager.CAMPAIGN_SOURCE), getUtmParams(context, GTMManager.CAMPAIGN_MEDIUM));
+                getUtmParams(context, GTMManager.CAMPAIGN_SOURCE), getUtmParams(context, GTMManager.CAMPAIGN_MEDIUM),isFromPush);
         
         countSession();
     }

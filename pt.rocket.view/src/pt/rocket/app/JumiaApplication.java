@@ -718,6 +718,7 @@ public class JumiaApplication extends A4SApplication {
         registerForm = null;
         paymentMethodForm = null;
         registerSavedInstanceState = null;
+        JumiaApplication.INSTANCE.CUSTOMER = null;
         getCustomerUtils().clearCredentials();
         review = null;
         CUSTOMER = null;        

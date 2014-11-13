@@ -265,7 +265,7 @@ public class DeepLinkManager {
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, orderId);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.TRACK_ORDER);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.MY_ORDERS);
         return bundle;
     }
     

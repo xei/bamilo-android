@@ -1,192 +1,201 @@
 package pt.rocket.framework.objects;
 
+import java.util.ArrayList;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.newrelic.com.google.gson.JsonObject;
+
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * 
- * @author sergiopereira
- *
+ * @author Paulo Carvalho
+ * 
  */
 public class Order implements IJSONSerializable, Parcelable {
 
-	public final static String TAG = LogTagHelper.create(Order.class);
+    public final static String TAG = LogTagHelper.create(Order.class);
 
-	private String mOrderNumber;
+    private String mOrderNumber;
 
-	private String mFirstName;
+    private String mPayment;
 
-	private String mLastName;
+    private String mDate;
 
-	/**
-	 * OrderTracker empty constructor.
-	 */
-	public Order() {
-	}
+    private String mOrderTotal;
 
-	/**
-	 * OrderTracker empty constructor.
-	 * 
-	 * @throws JSONException
-	 */
-	public Order(JSONObject jsonObject) throws JSONException {
-		initialize(jsonObject);
-	}
+    private ArrayList<OrderItem> mOrderProducts;
+    
+    private int totalOrdersHistory = -1;
 
-	/**
-	 * @return the mOrderNumber
-	 */
-	public String getOrderNumber() {
-		return mOrderNumber;
-	}
+    /**
+     * Order empty constructor.
+     */
+    public Order() {
+        mOrderNumber = "";
+        mPayment = "";
+        mDate = "";
+        mOrderTotal = "";
+        mOrderProducts = new ArrayList<OrderItem>();
+    }
 
-	/**
-	 * @return the mFirstName
-	 */
-	public String getFirstName() {
-		return mFirstName;
-	}
+    /**
+     * Order empty constructor.
+     * 
+     * @throws JSONException
+     */
+    public Order(JSONObject jsonObject) throws JSONException {
+        mOrderNumber = "";
+        mPayment = "";
+        mDate = "";
+        mOrderTotal = "";
+        mOrderProducts = new ArrayList<OrderItem>();
+        initialize(jsonObject);
+    }
 
-	/**
-	 * @return the mLastName
-	 */
-	public String getLastName() {
-		return mLastName;
-	}
+    public String getmOrderNumber() {
+        return mOrderNumber;
+    }
 
-	/**
-	 * @param mOrderNumber
-	 *            the mOrderNumber to set
-	 */
-	public void setOrderNumber(String mOrderNumber) {
-		this.mOrderNumber = mOrderNumber;
-	}
+    public void setmOrderNumber(String mOrderNumber) {
+        this.mOrderNumber = mOrderNumber;
+    }
 
-	/**
-	 * @param mFirstName
-	 *            the mFirstName to set
-	 */
-	public void setFirstName(String mFirstName) {
-		this.mFirstName = mFirstName;
-	}
+    public String getmPayment() {
+        return mPayment;
+    }
 
-	/**
-	 * @param mLastName
-	 *            the mLastName to set
-	 */
-	public void setLastName(String mLastName) {
-		this.mLastName = mLastName;
-	}
+    public void setmPayment(String mPayment) {
+        this.mPayment = mPayment;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-	 * )
-	 */
-	@Override
-	public boolean initialize(JSONObject jsonObject) throws JSONException {
+    public String getmDate() {
+        return mDate;
+    }
 
-		// Metada:
+    public void setmDate(String mDate) {
+        this.mDate = mDate;
+    }
 
-		// Cash On Delivery:
-		// {
-		// "success": true,
-		// "messages": {
-		// "success": [
-		// "ORDER_SUCCESS"
-		// ]
-		// },
-		// "session": {
-		// "id": "hec322fvnb97f0kqp7mv6s2e81",
-		// "expire": null,
-		// "YII_CSRF_TOKEN": "92945c37307600580b25eee7e6d6fa690a9aa126"
-		// },
-		// "metadata": {
-		// "order_nr": "300012712",
-		// "customer_first_name": "mob nsme",
-		// "customer_last_name": "mob last",
-		// "payment": []
-		// }
-		// }
+    public String getmOrderTotal() {
+        return mOrderTotal;
+    }
 
-		// Get order number
-		mOrderNumber = jsonObject.getString("order_nr");
-		// Get first name
-		mFirstName = jsonObject.optString("customer_first_name");
-		// Get last name
-		mLastName = jsonObject.optString("customer_last_name");
+    public void setmOrderTotal(String mOrderTotal) {
+        this.mOrderTotal = mOrderTotal;
+    }
 
-		return true;
+    public ArrayList<OrderItem> getmOrderProducts() {
+        return mOrderProducts;
+    }
 
-	}
+    public void setmOrderProducts(ArrayList<OrderItem> mOrderProducts) {
+        this.mOrderProducts = mOrderProducts;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
-	 */
-	@Override
-	public JSONObject toJSON() {
-		// TODO
-		return null;
-	}
+    public int getTotalOrdersHistory() {
+        return totalOrdersHistory;
+    }
 
-	/**
-	 * ########### Parcelable ###########
-	 * 
-	 * @author sergiopereira
-	 */
+    public void setTotalOrdersHistory(int totalOrdersHistory) {
+        this.totalOrdersHistory = totalOrdersHistory;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.os.Parcelable#describeContents()
-	 */
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
+     * )
+     */
+    @Override
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
-	 */
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(mOrderNumber);
-		dest.writeString(mFirstName);
-		dest.writeString(mLastName);
-	}
+        try {
 
-	/**
-	 * Parcel constructor
-	 * 
-	 * @param in
-	 */
-	private Order(Parcel in) {
-		mOrderNumber = in.readString();
-		mFirstName = in.readString();
-		mLastName = in.readString();
-	}
+            mDate = jsonObject.optString(RestConstants.JSON_ORDER_DATE_TAG);
+            mOrderNumber = jsonObject.optString(RestConstants.JSON_NUMBER_TAG);
+            mOrderTotal = jsonObject.optString(RestConstants.JSON_ORDER_TOTAL_TAG);
+            mPayment = jsonObject.optJSONObject(RestConstants.JSON_ORDER_PAYMENT_TAG).optString(RestConstants.JSON_TITLE_TAG);
 
-	/**
-	 * Create parcelable
-	 */
-	public static final Parcelable.Creator<Order> CREATOR = new Parcelable.Creator<Order>() {
-		public Order createFromParcel(Parcel in) {
-			return new Order(in);
-		}
+            JSONArray productsArray = jsonObject.optJSONArray(RestConstants.JSON_PRODUCTS_TAG);
+            if (null != productsArray && productsArray.length() > 0)
+                for (int j = 0; j < productsArray.length(); j++) {
 
-		public Order[] newArray(int size) {
-			return new Order[size];
-		}
-	};
+                    OrderItem product = new OrderItem(productsArray.optJSONObject(j));
+
+                    mOrderProducts.add(product);
+                }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return true;
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
+     */
+    @Override
+    public JSONObject toJSON() {
+        // TODO
+        return null;
+    }
+
+    protected Order(Parcel in) {
+        mOrderNumber = in.readString();
+        mPayment = in.readString();
+        mDate = in.readString();
+        mOrderTotal = in.readString();
+        if (in.readByte() == 0x01) {
+            mOrderProducts = new ArrayList<OrderItem>();
+            in.readList(mOrderProducts, OrderItem.class.getClassLoader());
+        } else {
+            mOrderProducts = null;
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mOrderNumber);
+        dest.writeString(mPayment);
+        dest.writeString(mDate);
+        dest.writeString(mOrderTotal);
+        if (mOrderProducts == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(mOrderProducts);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Order> CREATOR = new Parcelable.Creator<Order>() {
+        @Override
+        public Order createFromParcel(Parcel in) {
+            return new Order(in);
+        }
+
+        @Override
+        public Order[] newArray(int size) {
+            return new Order[size];
+        }
+    };
 
 }

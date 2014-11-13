@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/order_history_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:id="@+id/order_header"
+        android:layout_width="match_parent"
+        android:background="@drawable/selector_listitem_rounded_margin_highlight" 
+        android:layout_height="@dimen/margin_140px" >
+
+        <ImageView
+            android:id="@+id/order_check"
+            android:layout_width="@dimen/margin_70px"
+            android:layout_height="@dimen/margin_70px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/history_checkmark" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/order_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@+id/order_check"
+            android:fontFamily="roboto_regular"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_xs" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/order_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/order_date"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/order_check"
+            android:fontFamily="roboto_regular"
+            android:gravity="center_vertical"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_m" />
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/order_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/order_arrow"
+            android:layout_toRightOf="@+id/order_number"
+            android:ellipsize="end"
+            android:fontFamily="roboto_regular"
+            android:gravity="center_vertical|right"
+            android:singleLine="true"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_m" />
+
+        <ImageView
+            android:id="@+id/order_arrow"
+            android:layout_width="@dimen/margin_70px"
+            android:layout_height="@dimen/margin_70px"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/selector_order_arrow" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/order_more_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/order_header"
+        android:clickable="false"
+        android:focusable="false"
+        android:duplicateParentState="false"
+        android:focusableInTouchMode="false"
+        android:background="@android:color/white"
+        android:visibility="gone" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/grey_middle" />
+
+        <LinearLayout
+            android:id="@+id/order_list_date_cont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:orientation="horizontal" >
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/order_list_date_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:fontFamily="roboto_bold"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:text="@string/my_order_date_label"
+                android:textColor="@color/grey_middle"
+                android:textSize="@dimen/text_s" />
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/order_list_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="13dp"
+                android:fontFamily="roboto_regular"
+                android:gravity="center_vertical"
+                android:textColor="@color/grey_middle"
+                android:textSize="@dimen/text_s" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/order_list_payment_cont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@+id/order_list_date_cont"
+            android:orientation="horizontal" >
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/order_list_payment_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:fontFamily="roboto_bold"
+                android:gravity="center_vertical"
+                android:text="@string/payment_method"
+                android:textStyle="bold"
+                android:textColor="@color/grey_middle"
+                android:textSize="@dimen/text_s" />
+
+            <org.holoeverywhere.widget.TextView
+                android:id="@+id/order_list_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="13dp"
+                android:fontFamily="roboto_regular"
+                android:gravity="center_vertical"
+                android:textColor="@color/grey_middle"
+                android:textSize="@dimen/text_s" />
+        </LinearLayout>
+
+        <org.holoeverywhere.widget.TextView
+            android:id="@+id/order_list_products_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_list_payment_cont"
+            android:layout_marginBottom="13dp"
+            android:layout_marginTop="25dp"
+            android:fontFamily="roboto_bold"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:layout_marginLeft="8dp"
+            android:textStyle="bold"
+            android:text="@string/order_track_products"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_s" />
+
+        <LinearLayout
+            android:id="@+id/order_product_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_list_products_title"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/order_bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/order_more_info"
+        android:background="@color/grey_middle" />
+
+</RelativeLayout>

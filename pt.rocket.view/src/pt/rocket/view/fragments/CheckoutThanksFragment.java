@@ -74,7 +74,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     public static CheckoutThanksFragment getInstance(Bundle bundle) {
         if (checkoutStep5Fragment == null)
             checkoutStep5Fragment = new CheckoutThanksFragment();
-        
+        //FIXME java.lang.IllegalStateException: Fragment already active
         checkoutStep5Fragment.setArguments(bundle);
         return checkoutStep5Fragment;
     }
@@ -381,7 +381,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         if (!TextUtils.isEmpty(orderNumber)) {
             bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, view.getTag().toString());
         }
-        getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /*
@@ -399,7 +399,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         //retry button
         else if(v.getId() == R.id.fragment_root_retry_button) onClickRetryButton();   
         // CASE default
-        else getBaseActivity().onSwitchFragment(FragmentType.TRACK_ORDER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        else getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         
     }
     

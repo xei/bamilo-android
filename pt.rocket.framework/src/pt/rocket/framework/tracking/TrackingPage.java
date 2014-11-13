@@ -59,7 +59,9 @@ public enum TrackingPage {
     
     ADDRESS_SCREEN(R.string.gtrackaddress),
     
-    SEARCH_SCREEN(R.string.gtracksearch)
+    SEARCH_SCREEN(R.string.gtracksearch),
+    
+    MYORDERS_SCREEN(R.string.gtrackmyorders)
     
     ;
     
