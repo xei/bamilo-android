@@ -82,6 +82,7 @@ public class Ad4PushTracker {
     private static final String PURCHASE_COUNTER_APP = "aggregatedNumberOfPurchase";
     private static final String MOST_VISITED_CATEGORY = "mostVisitedCategory";
     private static final String CAMPAIGN_PAGEVIEW_COUNT = "campaignPageViewCount";
+    private static final String REVIEW_COUNT = "reviewCount";
 
     private static final String FILTER_BRAND = "filterBrand";
     private static final String FILTER_COLOR = "filterColor";
@@ -274,7 +275,7 @@ public class Ad4PushTracker {
     		Log.i(TAG, "USER NEVER LOGGED: TRACK EMPTY USER ID");
             Bundle prefs = new Bundle();
             prefs.putString(USER_ID, "0");
-            mA4S.updateUserPreferences(prefs);
+            mA4S.updateDeviceInfo(prefs);
     	}
     }
 
@@ -288,7 +289,7 @@ public class Ad4PushTracker {
     	if (null != mA4S && isEnabled) {
     		Log.i(TAG, "SET DEVICE INFO: " + info.toString());
     		// Set info
-    		mA4S.updateUserPreferences(info);
+    		mA4S.updateDeviceInfo(info);
     	}
     }
 
@@ -337,7 +338,7 @@ public class Ad4PushTracker {
             prefs.putString(USER_FIRST_NAME, customerName);
             prefs.putString(USER_DOB, customerDob);
             prefs.putString(USER_GENDER, gender);
-            mA4S.updateUserPreferences(prefs);
+            mA4S.updateDeviceInfo(prefs);
             // Track event
             mA4S.trackEvent(EVENT_LOGIN, "loginUserID=" + customerId);
             Log.i(TAG, "TRACK LOGIN: " + prefs.toString());
@@ -369,7 +370,7 @@ public class Ad4PushTracker {
             Log.d(TAG, "TRACK SIGNUP: STARTED");
             Bundle prefs = new Bundle();
             prefs.putString(REGISTRATION, REGISTRATION_STARTED);
-            mA4S.updateUserPreferences(prefs);
+            mA4S.updateDeviceInfo(prefs);
         }
     }
 
@@ -393,7 +394,7 @@ public class Ad4PushTracker {
             prefs.putString(USER_FIRST_NAME, customerName);
             prefs.putString(USER_DOB, customerDob);
             prefs.putString(STATUS_IN_APP, userStatus);
-            mA4S.updateUserPreferences(prefs);
+            mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK SIGNUP: " + prefs.toString());
         }
     }
@@ -409,7 +410,7 @@ public class Ad4PushTracker {
             prefs.putString(ORDER_STATUS, CHECKOUT_STARTED);
             prefs.putDouble(CART_VALUE, cartValue);
             prefs.putInt(CART_COUNTER, cartQt);
-            mA4S.updateUserPreferences(prefs);
+            mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK CHECKOUT STARTED: " + prefs.toString());
         }
     }
@@ -450,7 +451,7 @@ public class Ad4PushTracker {
             prefs.putString(COUPON_STATUS, coupon);
             prefs.putDouble(AVERAGE_CART_VALUE, average);
 
-            mA4S.updateUserPreferences(prefs);
+            mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK CHECKOUT ENDED: " + prefs.toString());
 
             Purchase purchase = new Purchase(transactionId, CurrencyFormatter.getCurrencyCode(), cartValue);
@@ -475,7 +476,7 @@ public class Ad4PushTracker {
             prefs.putInt(WISHLIST_STATUS, wishlistNumber);
             prefs.putString(WISHLIST_DATE, getCurrentDateTime());
             prefs.putString(WISHLIST_PRODUCT, productSKU);
-            mA4S.updateUserPreferences(prefs);
+            mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK ADD TO FAV: " + prefs.toString());
         }
     }
@@ -497,7 +498,7 @@ public class Ad4PushTracker {
             prefs.putInt(WISHLIST_STATUS, wishlistNumber);
             prefs.putString(WISHLIST_DATE, getCurrentDateTime());
             prefs.putString(WISHLIST_PRODUCT, productSKU);
-            mA4S.updateUserPreferences(prefs);
+            mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK REMOVE FROM FAV: " + prefs.toString());
         }
     }
@@ -517,7 +518,7 @@ public class Ad4PushTracker {
             // Track add to cart from fav
             Bundle prefs = new Bundle();
             prefs.putInt(FAVORITES_CART_COUNT, wishlistNumber);
-            mA4S.updateUserPreferences(prefs);
+            mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK ADD TO CART FROM FAV: " + prefs.toString());
             // Track add to cart
             trackAddToCart(sku, price, name, category);
@@ -542,29 +543,50 @@ public class Ad4PushTracker {
     }
 
     /**
-     * 
+     * Track share counter. 
      */
     public void trackSocialShare() {
         if (isEnabled) {
-            Log.d(TAG, "trackSocialShare");
-
+            // Get from prefs
             SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
             int shareNumber = settings.getInt(SHARED_PRODUCT_COUNT, 0);
-
+            // Increment and save
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt(SHARED_PRODUCT_COUNT, ++shareNumber);
             editor.commit();
-
+            // Track
             Bundle prefs = new Bundle();
             prefs.putInt(SHARED_PRODUCT_COUNT, shareNumber);
-            mA4S.updateUserPreferences(prefs);
+            mA4S.updateDeviceInfo(prefs);
+            
+            Log.d(TAG, "TRACK SHARE COUNTER: " + prefs.toString());
+        }
+    }
+    
+    /**
+     * Track review counter.
+     */
+    public void trackReviewCounter() {
+        if (isEnabled) {
+            // Get from prefs
+            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
+            int shareNumber = settings.getInt(REVIEW_COUNT, 0);
+            // Increment and save
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt(REVIEW_COUNT, ++shareNumber);
+            editor.commit();
+            // Track
+            Bundle prefs = new Bundle();
+            prefs.putInt(REVIEW_COUNT, shareNumber);
+            mA4S.updateDeviceInfo(prefs);
+            Log.d(TAG, "TRACK REVIEW COUNTER: " + prefs.toString());
         }
     }
 
     /**
      * Track shop country.
      */
-    public void trackShopCountry() { // XXX COUNTRY_CODE
+    public void trackShopCountry() {
         if (isEnabled) {
         	// Get shop country code
         	String shopCountryCode = ShopSelector.getShopId();
@@ -575,7 +597,7 @@ public class Ad4PushTracker {
             Bundle prefs = new Bundle();
             prefs.putString(SHOP_COUNTRY, shopCountryCode);
             if (!TextUtils.isEmpty(countryCode)) prefs.putString(COUNTRY_CODE, countryCode);
-            mA4S.updateUserPreferences(prefs);
+            mA4S.updateDeviceInfo(prefs);
             Log.d(TAG, "TRACK SHOP COUNTRY: " + prefs.toString());
         }
     }
@@ -586,21 +608,21 @@ public class Ad4PushTracker {
             Bundle prefs = new Bundle();
             prefs.putString(LAST_SEARCH, searchTerm);
             prefs.putString(LAST_SEARCH_DATE, currentDateandTime);
-            mA4S.updateUserPreferences(prefs);
+            mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK SEARCH: " + prefs.toString());
         }
     }
 
     /**
-     * 
+     * Track the top selected category
      */
     public void trackCategorySelection() {
         if (isEnabled) {
             try {
                 Bundle prefs = new Bundle();
-                String category = new String(CategoriesTableHelper.getTopCategory().getBytes(), "UTF-8"); // ISO-8859-1
+                String category = new String(CategoriesTableHelper.getTopCategory().getBytes(), "UTF-8");
                 prefs.putString(MOST_VISITED_CATEGORY, category);
-                mA4S.updateUserPreferences(prefs);
+                mA4S.updateDeviceInfo(prefs);
                 Log.i(TAG, "TRACK TOP CATEGORY: " + prefs.toString());
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -615,16 +637,22 @@ public class Ad4PushTracker {
     /**
      * Track catalog filters.
      * @param filters
+     * @author sergiopereira
      */
     public void trackCatalogFilter(ContentValues filters) {
         if (isEnabled) {
+            String brand = filters.getAsString(FILTER_BRAND_KEY);
+            String color = filters.getAsString(FILTER_COLOR_KEY);
+            String categ = filters.getAsString(FILTER_CATEGORY_KEY);
+            String price = filters.getAsString(FILTER_PRICE_KEY);
+            String size = filters.getAsString(FILTER_SIZE_KEY);
             Bundle prefs = new Bundle();
-            prefs.putString(FILTER_BRAND, filters.getAsString(FILTER_BRAND_KEY));
-            prefs.putString(FILTER_COLOR, filters.getAsString(FILTER_COLOR_KEY));
-            prefs.putString(FILTER_CATEGORY, filters.getAsString(FILTER_CATEGORY_KEY));
-            prefs.putString(FILTER_PRICE, filters.getAsString(FILTER_PRICE_KEY));
-            prefs.putString(FILTER_SIZE, filters.getAsString(FILTER_SIZE_KEY));
-            mA4S.updateUserPreferences(prefs);
+            prefs.putString(FILTER_BRAND, TextUtils.isEmpty(brand) ? "" : brand);
+            prefs.putString(FILTER_COLOR, TextUtils.isEmpty(color) ? "" : color);
+            prefs.putString(FILTER_CATEGORY, TextUtils.isEmpty(categ) ? "" : categ);
+            prefs.putString(FILTER_PRICE, TextUtils.isEmpty(price) ? "" : price);
+            prefs.putString(FILTER_SIZE, TextUtils.isEmpty(size) ? "" : size);
+            mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK CATALOG FILTER: " + prefs.toString());
         }
     }
@@ -641,7 +669,7 @@ public class Ad4PushTracker {
             Bundle prefs = new Bundle();
             prefs.putInt(CAMPAIGN_PAGEVIEW_COUNT, campaignNumber);
 
-            mA4S.updateUserPreferences(prefs);
+            mA4S.updateDeviceInfo(prefs);
 
         }
     }

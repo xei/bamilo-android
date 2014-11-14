@@ -256,16 +256,19 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().trackCheckout(items);
     }
 
-    
+    /**
+     * 
+     */
     public final static void trackItemShared(Intent intent, String category) {
         String sku = intent.getExtras().getString(RestConstants.JSON_SKU_TAG);
         String userId = "";
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
             userId = JumiaApplication.CUSTOMER.getIdAsString();
         }
+        // GA
         AnalyticsGoogle.get().trackShare(context, sku, userId, JumiaApplication.SHOP_NAME);
+        // Ad4
         Ad4PushTracker.get().trackSocialShare();
-        
         //Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
@@ -277,6 +280,9 @@ public class TrackerDelegator {
         GTMManager.get().gtmTrackShare("", sku, category);
     }
 
+    /**
+     * 
+     */
     public final static void trackCategoryView(Bundle params) {
         // Data
         String category = params.getString(CATEGORY_KEY);
@@ -288,7 +294,9 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().trackEvent(event, category, 0l);
     }
 
-    
+    /**
+     * 
+     */
     public final static void trackItemReview(Bundle params) {
 
         CompleteProduct product = params.getParcelable(PRODUCT_KEY);
@@ -320,16 +328,16 @@ public class TrackerDelegator {
         AdjustTracker.get().trackEvent(context, TrackingEvent.ADD_REVIEW, bundle);
         //GTM
         GTMManager.get().gtmTrackRateProduct(product,EUR_CURRENCY);
-        
-
+        // Ad4
+        Ad4PushTracker.get().trackReviewCounter();
     }
     
+    /**
+     * 
+     */
     public final static void trackViewReview(CompleteProduct product) {
-
         //GTM
         GTMManager.get().gtmTrackViewRating(product, EUR_CURRENCY);
-        
-
     }
 
     /**
@@ -1099,7 +1107,7 @@ public class TrackerDelegator {
         // GTM
         String version = DeviceInfoHelper.getVersionName(context);
         GTMManager.get().gtmTrackAppOpen(version, info, ShopSelector.getShopId(), getUtmParams(context, GTMManager.CAMPAIGN_ID_KEY),
-                getUtmParams(context, GTMManager.CAMPAIGN_SOURCE), getUtmParams(context, GTMManager.CAMPAIGN_MEDIUM),isFromPush);
+                getUtmParams(context, GTMManager.CAMPAIGN_SOURCE), getUtmParams(context, GTMManager.CAMPAIGN_MEDIUM), isFromPush);
         
         countSession();
     }

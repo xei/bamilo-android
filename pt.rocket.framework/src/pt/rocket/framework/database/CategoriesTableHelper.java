@@ -1,13 +1,9 @@
 package pt.rocket.framework.database;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import pt.rocket.framework.Darwin;
 import pt.rocket.framework.database.DarwinDatabaseHelper.TableType;
 import pt.rocket.framework.objects.Category;
-import pt.rocket.framework.rest.RestContract;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -15,7 +11,9 @@ import android.database.sqlite.SQLiteDatabase;
 import de.akquinet.android.androlog.Log;
 
 /**
- * @author ivanschuetz
+ * Category table helper.
+ * @author sergiopereira
+ *
  */
 public class CategoriesTableHelper extends BaseTable {
 
@@ -25,19 +23,9 @@ public class CategoriesTableHelper extends BaseTable {
 
     public static interface Columns {
         String ID = "id";
-        String ID_CATALOG = "id_catalog_category"; // backend id- note: not unique across different segments
-        String NAME = "name_name";
-        String SUBSECTION = "subsection";
-        String TEASER_IMAGE = "teaser_image";
-        String TEASER_POS = "teaser_pos";
-        String TEASER_VISIBLE = "teaser_visible";
-        String SEGMENTS = "segments";
-        String API_URL = "api_url";
-        String PARENT_ID_CATALOG = "parent_id";
-        String API_URL_KEY = "url_key";
-        String INFO_URL_KEY = "info_url";
-        String PRODUCT_COUNT = "product_count";
-        String VIEW_COUNT = "view_count";
+        String ID_CATALOG = "category_id";
+        String NAME = "category_name";
+        String VIEW_COUNT = "category_view_counter";
     }
     
     
@@ -65,36 +53,16 @@ public class CategoriesTableHelper extends BaseTable {
      */
     @Override
     public String create(String tableName) {
-        return "CREATE TABLE " + tableName + " (" + 
-                Columns.ID + " INTEGER PRIMARY KEY, " + 
-                Columns.ID_CATALOG + " TEXT, " + 
-                Columns.NAME + " TEXT," + 
-                Columns.SUBSECTION + " TEXT, " + 
-                Columns.TEASER_IMAGE + " TEXT, " + 
-                Columns.TEASER_POS + " INTEGER, " + 
-                Columns.TEASER_VISIBLE + " INTEGER, " + 
-                Columns.SEGMENTS + " TEXT, " + 
-                Columns.API_URL + " TEXT , " + 
-                Columns.PARENT_ID_CATALOG + " INTEGER, " + 
-                Columns.API_URL_KEY + " TEXT, " + 
-                Columns.INFO_URL_KEY + " TEXT, " + 
-                Columns.PRODUCT_COUNT + " INTEGER NULL, " + 
-                Columns.VIEW_COUNT + " INTEGER NULL" + ")";
-    }
-    
-    public static interface Projection {
-        int ID = 0;
-        int ID_CATALOG_CATEGORY = 1;
-        int NAME = 2;
-        int SUBSECTION = 3;
-        int TEASER_IMAGE = 4;
-        int TEASER_POS = 5;
-        int TEASER_VISIBLE = 6;
-        int SEGMENTS = 7;
-        int API_URL = 8;
-        int PARENT = 9;
-        int API_URL_KEY = 10;
-        int INFO_URL_KEY = 11;
+        return new StringBuilder()
+                .append("CREATE TABLE ").append(tableName)
+                .append(" (")
+                .append(Columns.ID).append(" INTEGER PRIMARY KEY, ")
+                .append(Columns.ID_CATALOG).append(" TEXT, ")
+                .append(Columns.NAME).append(" TEXT, ")
+                .append(Columns.VIEW_COUNT).append(" INTEGER NOT NULL DEFAULT 1")
+                .append(" )")
+                .toString();
+        
     }
     
     /*
@@ -102,116 +70,101 @@ public class CategoriesTableHelper extends BaseTable {
      */
 
     /**
-     * Save category trees recursively
-     * 
-     * Existing categories (indentified by API_URL) will not be updated
-     * 
+     * Save category trees recursively.
      * @param categories
+     * @author sergiopereira
      */
+    @Deprecated
     public static void saveCategories(ArrayList<Category> categories) {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-
         try {
-            db.beginTransaction();
-
-            saveCategories(db, categories, -1);
-
-            db.setTransactionSuccessful();
-
+            saveCategories(db, categories);
         } catch (SQLException e) {
             Log.e(e.getMessage());
             e.printStackTrace();
-
         } finally {
-            db.endTransaction();
+            db.close();
         }
     }
 
-    private static void saveCategories(SQLiteDatabase db, ArrayList<Category> categories, long parentId) {
+    /**
+     * Save category and sub categories in database.
+     * @param db
+     * @param categories
+     * @author sergiopereira
+     */
+    @Deprecated
+    private static void saveCategories(SQLiteDatabase db, ArrayList<Category> categories) {
         for (Category category : categories) {
-            saveCategory(db, category, parentId);
-        }
-    }
-
-    private static void saveCategory(SQLiteDatabase db, Category category, long parentId) {
-        long rowId = db.insertWithOnConflict(TABLE_NAME, null, getContentValues(category, parentId), SQLiteDatabase.CONFLICT_IGNORE);
-        ArrayList<Category> children = category.getChildren();
-        if (children != null) {
-            saveCategories(db, children, rowId);
+            saveCategory(db, category);
+            if(category.getHasChildrenInArray()) 
+                saveCategories(category.getChildren());
         }
     }
 
     /**
-     * Saves the product count for a category Assumes the category is already
-     * present in database
-     * 
-     * @param categoryUrl
-     *            api url of category
-     * @param productCount
+     * Save category in database.
+     * @param db
+     * @param category
+     * @author sergiopereira
      */
-    public static void saveProductCount(String categoryUrl, int productCount) {
+    @Deprecated
+    private synchronized static void saveCategory(SQLiteDatabase db, Category category) {
+        ContentValues values = new ContentValues();
+        values.put(Columns.ID_CATALOG, category.getId());
+        values.put(Columns.NAME, category.getName());
+        db.insertWithOnConflict(TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+        Log.i(TAG, "ON SAVE CATEGORY: " + values.toString());
+    }
+
+    /**
+     * Method used to insert the category or increment the counter for respective category.
+     * @param categoryId
+     * @param categoryName
+     * @author sergiopereira
+     */
+    public static void updateCategoryCounter(String categoryId, String categoryName) {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(Columns.PRODUCT_COUNT, productCount);
-
-        db.update(TABLE_NAME, contentValues, Columns.API_URL + " =?", new String[] { categoryUrl });
-    }
-
-    /**
-     * Saves the view count for a category Assumes the category is already
-     * present in database
-     * 
-     * @param categoryUrl
-     *            api url of category
-     * @param viewCount
-     */
-    public synchronized static int increaseViewCount(final String categoryUrl) {
-        SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-        Integer viewCount = 0;
-
-        Cursor cursor = db.query(TABLE_NAME, new String[] { Columns.VIEW_COUNT }, Columns.API_URL + " =?", new String[] { categoryUrl }, null, null, null);
-
-        db.beginTransaction();
-        while (cursor.moveToNext()) {
-            viewCount = cursor.getInt(0);
-
-            if (null == viewCount) {
-                viewCount = 0;
-            }
-
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(Columns.VIEW_COUNT, ++viewCount);
-
-            db.update(TABLE_NAME, contentValues, Columns.API_URL + " =?", new String[] { categoryUrl });
+        try {
+            /*- // Old method only update if exist
+            String update = new StringBuilder()
+                                .append("UPDATE ").append(TABLE_NAME).append(" ")
+                                .append("SET ")
+                                .append(Columns.VIEW_COUNT).append(" = ").append(Columns.VIEW_COUNT).append(" + 1 ")
+                                .append("WHERE ")
+                                .append(Columns.ID_CATALOG).append(" = ").append(categoryId)
+                                .toString();
+            */
+            
+            // Select id to replace
+            String QUERY_ID = "SELECT " + Columns.ID + " " +
+            		            "FROM " + TABLE_NAME + " " +
+    		            		"WHERE " + Columns.ID_CATALOG + " = " + categoryId;
+            // Select counter to replace and increment            
+            String QUERY_CT = "SELECT " + Columns.VIEW_COUNT + " " +
+            		            "FROM " + TABLE_NAME + " " +
+    		            		"WHERE " + Columns.ID_CATALOG + " = " + categoryId;
+            // Create query
+            String insertOrReplace = new StringBuilder()
+            .append("INSERT OR REPLACE INTO ").append(TABLE_NAME)
+            .append("(" + Columns.ID + "," + Columns.ID_CATALOG + "," + Columns.NAME + "," + Columns.VIEW_COUNT + ") ")
+            .append("VALUES ( ")
+            .append("(").append(QUERY_ID).append("), ")
+            .append("(").append(categoryId).append("), ")
+            .append("('").append(categoryName).append("'), ")
+            .append("(").append(QUERY_CT).append(") + 1")
+            .append(" )")
+            .toString();
+            // Execute
+            db.execSQL(insertOrReplace);
+            Log.i(TAG, "ON INCREASE COUNTER: " + categoryId);
+        } catch (SQLException e) {
+            Log.w(TAG, "WARNING: SQE ON INCREASE COUNTER", e);
+        } finally {
+            db.close();
         }
-        db.setTransactionSuccessful();
-        db.endTransaction();
-
-        return viewCount;
     }
-
-    /**
-     * returns the view count for a category Assumes the category is already
-     * present in database
-     * 
-     * @param categoryUrl
-     *            api url of category
-     * @return the viewCount
-     */
-    public synchronized static int getViewCount(final String categoryUrl) {
-        SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, new String[] { Columns.VIEW_COUNT }, Columns.API_URL + " =?", new String[] { categoryUrl }, null, null, null);
-
-        Integer categoryViewCount = 0;
-
-        while (cursor.moveToNext()) {
-            categoryViewCount = cursor.getInt(0);
-        }
-
-        return categoryViewCount;
-    }
-
+    
     /**
      * returns the view count for a category Assumes the category is already
      * present in database
@@ -222,21 +175,39 @@ public class CategoriesTableHelper extends BaseTable {
      * @throws InterruptedException 
      */
     public synchronized static String getTopCategory() throws InterruptedException {
+        
         DarwinDatabaseSemaphore.getInstance().getLock();
         
-        final SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, new String[] { Columns.NAME, Columns.VIEW_COUNT }, Columns.PARENT_ID_CATALOG + " =?", new String[] { "-1" }, null,
-                null, Columns.VIEW_COUNT + " DESC");
-
+        // Get readable access
+        SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
+        // Data
         String category = "";
-
-        while (cursor.moveToNext()) {
-            category = cursor.getString(0);
-            break;
+        String counter = "";
+        // Get top category    
+        try {
+            // Create query
+            Cursor cursor = db.query(TABLE_NAME, 
+                    new String[] { Columns.NAME, Columns.VIEW_COUNT }, 
+                    null, null, null, null, 
+                    Columns.VIEW_COUNT + " DESC",
+                    "1");
+            // Get data
+            if (cursor != null && cursor.getCount() > 0 ) {
+                cursor.moveToFirst();
+                category = cursor.getString(0);
+                counter = cursor.getString(1);
+            }
+            // Close cursor
+            if(cursor != null) cursor.close();
+            
+        } catch (SQLException e) {
+            Log.w(TAG, "WARNING: SQE ON GET TOP VIEWED CATEGORY", e);
+        } finally {
+            db.close();
         }
-        
         DarwinDatabaseSemaphore.getInstance().releaseLock();
-
+        Log.i(TAG, "TOP CATEGORY: " + category + " " + counter);
+        // Return name
         return category;
     }
 
@@ -250,138 +221,5 @@ public class CategoriesTableHelper extends BaseTable {
         Log.d(TAG, "ON CLEAN TABLE");
         db.delete(TABLE_NAME, null, null);
     }
-
-    /**
-     * Get all category trees
-     */
-    public static ArrayList<Category> getCategories() {
-        return loadCategories(-1, null);
-    }
-
-    /**
-     * Get children category trees recursively
-     * 
-     * @param parentRowId
-     * @return
-     */
-    public static ArrayList<Category> loadCategories(long parentRowId, Category parent) {
-
-        /**
-         * Fix the crash report caused by NullPointerException at
-         * SQLiteOpenHelper.getDatabaseLocked The Context passed to sqlite
-         * helper is null.
-         */
-        SQLiteDatabase db = null;
-        try {
-            db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-        } catch (NullPointerException e) {
-            db = DarwinDatabaseHelper.getInstance(Darwin.context).getReadableDatabase();
-        }
-
-        Cursor cursor = db.query(TABLE_NAME, new String[] { Columns.ID, Columns.ID_CATALOG, Columns.NAME, Columns.SUBSECTION, Columns.TEASER_IMAGE,
-                Columns.TEASER_POS, Columns.TEASER_VISIBLE, Columns.SEGMENTS, Columns.API_URL, Columns.PARENT_ID_CATALOG, Columns.API_URL_KEY,
-                Columns.INFO_URL_KEY }, Columns.PARENT_ID_CATALOG + " =?", new String[] { parentRowId + "" }, null, null, null);
-
-        ArrayList<Category> categories = new ArrayList<Category>();
-
-        while (cursor.moveToNext()) {
-            long rowId = cursor.getLong(Projection.ID);
-            String catalogIdLoaded = cursor.getString(Projection.ID_CATALOG_CATEGORY);
-            String name = cursor.getString(Projection.NAME);
-            String segments = cursor.getString(Projection.SEGMENTS);
-            String apiFileName = cursor.getString(Projection.API_URL);
-            String urlKey = cursor.getString(Projection.API_URL_KEY);
-            String infoUrl = cursor.getString(Projection.INFO_URL_KEY);
-
-            String apiUrl = getAbsoluteCategoryUrl(apiFileName);
-
-            Category category = new Category(catalogIdLoaded, name, null, null, urlKey, segments, infoUrl, apiUrl, null, parent, false);
-            ArrayList<Category> children = loadCategories(rowId, category);
-
-            category.setChildren(children);
-
-            categories.add(category);
-        }
-        cursor.close();
-
-        return categories;
-    }
-
-    /**
-     * Returns remote category file name
-     * 
-     * Normally the category url is delivered by the server as an absolute url
-     * 
-     * @param categoryUrl
-     *            valid formats: * complete:
-     *            protocol://host/apipath/categoryfile * file name under
-     *            mobile-api: categoryfile
-     * @return remote category file name
-     * 
-     *         Note: Assumes the category is stored directly under mobile-api -
-     *         no subpath supported TODO store everything after mobile-api, in
-     *         the case subpaths become necessary, refactor with
-     *         ProductTableHelper
-     * 
-     */
-
-    // private static Pattern pattern = Pattern.compile(".*/(.*)(/)?$");
-    private static Pattern pattern = Pattern.compile(".*/(.*)$");
-
-    public static String getCategoryUrlForDB(String categoryUrl) {
-        String productUrlForDB;
-
-        if (categoryUrl.substring(categoryUrl.length() - 1, categoryUrl.length()).equals("/")) { 
-            categoryUrl = categoryUrl.substring(0, categoryUrl.length() - 1);
-        }
-
-        if (categoryUrl.contains("/")) { // with path
-
-            String fileName;
-
-            Matcher matcher = pattern.matcher(categoryUrl);
-            if (matcher.find()) {
-                fileName = matcher.group(1);
-            } else {
-                throw new IllegalStateException("no group found");
-            }
-
-            productUrlForDB = fileName;
-
-        } else { // no path
-            productUrlForDB = categoryUrl;
-        }
-
-        return productUrlForDB;
-    }
-
-    public static String getAbsoluteCategoryUrl(String relativeProductUrl) {
-        return getCategoryUrlPrefix() + relativeProductUrl;
-    }
-
-    private static String getCategoryUrlPrefix() {
-        return RestContract.HTTPS_PROTOCOL + "://" + RestContract.REQUEST_HOST + "/" + RestContract.REST_BASE_PATH + "/";
-    }
-
-    private static ContentValues getContentValues(Category category, long parentId) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(Columns.NAME, category.getName());
-        contentValues.put(Columns.ID_CATALOG, category.getId());
-        contentValues.put(Columns.API_URL, getCategoryUrlForDB(category.getApiUrl()));
-        contentValues.put(Columns.PARENT_ID_CATALOG, parentId);
-        contentValues.put(Columns.API_URL_KEY, category.getUrlKey());
-        return contentValues;
-    }
-
-    /**
-     * Clears this table
-     * 
-     * @param db
-     */
-    public static void clear(SQLiteDatabase db) {
-        Log.i(TAG, "codedb deleting table " + TABLE_NAME);
-        db.delete(TABLE_NAME, null, null);
-    }
-
 
 }

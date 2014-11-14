@@ -9,14 +9,13 @@ import pt.rocket.controllers.CategoriesAdapter;
 import pt.rocket.controllers.SubCategoriesAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.database.CategoriesTableHelper;
 import pt.rocket.framework.objects.Category;
-import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.helpers.categories.GetCategoriesPerLevelsHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -638,6 +637,12 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      * @author sergiopereira
      */
     private void gotoCatalog(Category category) {
+        
+        // Update category counter for tracking
+        CategoriesTableHelper.updateCategoryCounter(category.getId(), category.getName());
+        // Tracking category
+        //trackCategory(category.getName());
+        
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, category.getName());
@@ -653,8 +658,6 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());
         // Goto Catalog
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
-        // Tracking category
-        trackCategory(category.getName());
     }
     
     /**
@@ -713,15 +716,15 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     /**
      * ####### TRACKING ####### 
      */
-    /**
-     * Tracking category
-     * @param name
-     */
-    private void trackCategory(String name){
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.CATEGORY_KEY, name);
-        params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, 1);
-        params.putSerializable(TrackerDelegator.LOCATION_KEY, TrackingEvent.CATALOG_FROM_CATEGORIES);
-        TrackerDelegator.trackCategoryView(params);
-    }
+//    /**
+//     * Tracking category
+//     * @param name
+//     */
+//    private void trackCategory(String name){
+//        Bundle params = new Bundle();
+//        params.putString(TrackerDelegator.CATEGORY_KEY, name);
+//        params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, 1);
+//        params.putSerializable(TrackerDelegator.LOCATION_KEY, TrackingEvent.CATALOG_FROM_CATEGORIES);
+//        TrackerDelegator.trackCategoryView(params);
+//    }
 }

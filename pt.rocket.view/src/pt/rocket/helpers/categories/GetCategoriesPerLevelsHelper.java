@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import pt.rocket.framework.database.CategoriesTableHelper;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.rest.RestConstants;
@@ -81,8 +80,17 @@ public class GetCategoriesPerLevelsHelper extends BaseHelper {
             }
             // Add categories
             bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
+
+            /*-
             // Save categories for tracking
-            CategoriesTableHelper.saveCategories(categories);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    CategoriesTableHelper.saveCategories(categories);
+                }
+            }).start();
+             */
+            
             
         } catch (JSONException e) {
             e.printStackTrace();

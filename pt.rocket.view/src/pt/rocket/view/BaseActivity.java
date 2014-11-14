@@ -1897,8 +1897,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
                     @Override
                     public void onClick(View v) {
-                        JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), JumiaApplication.INSTANCE
-                                .getRequestsRetryBundleList().get(eventType), JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+                        JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), 
+                                                               JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), 
+                                                               JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
                         dialog.dismiss();
                     }
                 }, false);

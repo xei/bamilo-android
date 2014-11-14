@@ -194,7 +194,7 @@
         <!-- ######################################## -->
         
         <meta-data android:name="AdjustAppToken"    android:value="@string/adjust_app_token" />
-		<meta-data android:name="AdjustLogLevel"    android:value="verbose" />
+		<meta-data android:name="AdjustLogLevel"    android:value="info" />
 		<meta-data android:name="AdjustEnvironment" android:value="sandbox" />
 		<!-- <meta-data android:name="AdjustDefaultTracker" android:value="Test" /> -->
         

@@ -1468,34 +1468,49 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 catalogFragment.sendValuesToFragment(fragmentMessage, mCompleteProduct.getSku());
             }
 
-        } else if (id == R.id.product_detail_product_image_share) {
-            try {
-                Intent shareIntent = getBaseActivity().createShareIntent();
-                startActivity(shareIntent);
-                //GTM
-                String category = "";
-                if(JumiaApplication.INSTANCE.getCurrentProduct() != null &&
-                        JumiaApplication.INSTANCE.getCurrentProduct().getCategories() != null &&
-                        JumiaApplication.INSTANCE.getCurrentProduct().getCategories().size() > 0)
-                    category = JumiaApplication.INSTANCE.getCurrentProduct().getCategories().get(0);
-                TrackerDelegator.trackItemShared(shareIntent,category);
-            } catch (NullPointerException e) {
-                Log.w(TAG, "WARNING: NPE ON CLICK SHARE");
-            }
-        } else if(id == R.id.fragment_root_retry_button){
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, getArguments(), FragmentController.ADD_TO_BACK_STACK);
-        }
+
+        } 
+        // Case retry
+        else if(id == R.id.fragment_root_retry_button) onClickRetry();
+        // Case share
+        else if (id == R.id.product_detail_product_image_share) onClickShare(mCompleteProduct);
         // Case size guide
         else if (id == R.id.dialog_list_size_guide_button) onClickSizeGuide(view);
+    }
+    
+    /**
+     * Process the click on retry
+     * @author sergiopereira
+     */
+    private void onClickRetry() {
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, getArguments(), FragmentController.ADD_TO_BACK_STACK);
+    }
+    
+    /**
+     * Process the click on share.
+     * @param completeProduct
+     * @author sergiopereira
+     */
+    private void onClickShare(CompleteProduct completeProduct) {
+        try {
+            Intent shareIntent = getBaseActivity().createShareIntent();
+            startActivity(shareIntent);
+            // Track share
+            TrackerDelegator.trackItemShared(shareIntent, completeProduct.getCategories().get(0));
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON CLICK SHARE");
+        } catch (IndexOutOfBoundsException e) {
+            Log.w(TAG, "WARNING: IOB ON CLICK SHARE");
+        }
     }
     
     /**
      * Process click on size guide.
      * @author sergiopereira
      */
-    protected void onClickSizeGuide(View view){        
+    private void onClickSizeGuide(View view){        
         try {
-            // Get size guide url
+            // Get size guide URL
             String url = (String) view.getTag();
             // Validate url
             if(!TextUtils.isEmpty(url)) {

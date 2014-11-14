@@ -55,7 +55,6 @@ import pt.rocket.view.fragments.SessionLoginFragment;
 import pt.rocket.view.fragments.SessionRegisterFragment;
 import pt.rocket.view.fragments.SessionTermsFragment;
 import pt.rocket.view.fragments.ShoppingCartFragment;
-import pt.rocket.view.fragments.TrackOrderFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -94,7 +93,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 EnumSet.noneOf(EventType.class),
                 EnumSet.noneOf(EventType.class),
                 0,
-                R.layout.teasers_main_fragment);
+                R.layout.main_fragment_activity_layout);
     }
 
     /*
@@ -419,7 +418,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         // Save the current state
         currentFragmentType = type;
         // Transition
-        fragmentManagerTransition(R.id.main_fragment_container, fragment, type.toString(), addToBackStack);
+        fragmentManagerTransition(R.id.rocket_app_content, fragment, type.toString(), addToBackStack);
     }
 
     /*

@@ -50,14 +50,21 @@ public class DrawerLayout extends android.support.v4.widget.DrawerLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
 
-        // https://github.com/chrisbanes/PhotoView/issues/31#issuecomment-19803926
+        // https://github.com/chrisbanes/PhotoView/issues/72
         try {
             return super.onInterceptTouchEvent(event);
-        } catch (Exception ex){
-//            ex.printStackTrace();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            return false;
         }
         
-
-        return false;
+//        try {
+//            return super.onInterceptTouchEvent(event);
+//        } catch (Exception ex){
+////            ex.printStackTrace();
+//        }
+//        
+//
+//        return false;
     }
 }
