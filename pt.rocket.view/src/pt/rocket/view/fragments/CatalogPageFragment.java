@@ -452,7 +452,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
      * force the refresh of the list to update the status of each item
      */
     public void invalidateData(final Bundle arguments, final boolean forceRefresh) {
-        Log.i(TAG, "ON INVALIDATE DATA");
+        Log.i(TAG, "ON INVALIDATE DATA ");
 
         // update GridView when visible or if reattached after a rotation
         if (!isDetached() && (isVisible() || reattached)) {
@@ -633,7 +633,15 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
             bundle.putInt(GetProductsHelper.SORT, mSort.id);
             bundle.putInt(GetProductsHelper.DIRECTION, mDirection.id);
             
-            if(CatalogFragment.hasFilterApllied) mFilters = CatalogFragment.filterParams.getParcelable(PARAM_FILTERS);
+            if(CatalogFragment.hasFilterApllied){
+                
+                mFilters = CatalogFragment.filterParams.getParcelable(PARAM_FILTERS);
+                
+                if(CatalogFragment.filterParams.containsKey(ConstantsIntentExtra.SEARCH_QUERY)){
+                    bundle.putString(GetProductsHelper.SEARCH_QUERY, CatalogFragment.filterParams.getString(ConstantsIntentExtra.SEARCH_QUERY));
+                }
+                
+            }
             
             bundle.putParcelable(GetProductsHelper.FILTERS, mFilters );
             

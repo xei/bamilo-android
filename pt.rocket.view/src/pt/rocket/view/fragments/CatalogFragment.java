@@ -743,7 +743,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
      * @author sergiopereira
      */
     public void onSubmitFilterValues(ContentValues filterValues) {
-        Log.d(TAG, "FILTER VALUES: " + filterValues.toString());
+        Log.e(TAG, "FILTER VALUES: ");
         // Tracking
         trackingCatalogFilters(filterValues);       
         // Save the old data to restore in case of error event
@@ -797,7 +797,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
         params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
 
-        
         hasFilterApllied = true;
         
         filterParams = params;
