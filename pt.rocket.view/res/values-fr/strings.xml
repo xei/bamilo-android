@@ -385,5 +385,9 @@
 	<string name="my_order_history_label">Mes histoire de achats</string>
 	<string name="my_order_number_label">Nr.</string>
 	<string name="my_order_date_label">Date:</string>
+	<string name="my_order_tracking_label">Statut de la commande</string>
+	<string name="my_order_quantity_label">Qté.</string>
+	<string name="my_order_no_orders_label">Vous n\'avez rien commandé.</string>
+	<string name="my_order_details_label">Détails de la commande</string>
 
 </resources>

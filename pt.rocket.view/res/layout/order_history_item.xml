@@ -7,8 +7,8 @@
     <RelativeLayout
         android:id="@+id/order_header"
         android:layout_width="match_parent"
-        android:background="@drawable/selector_listitem_rounded_margin_highlight" 
-        android:layout_height="@dimen/margin_140px" >
+        android:layout_height="@dimen/margin_140px"
+        android:background="@drawable/selector_listitem_rounded_margin_highlight" >
 
         <ImageView
             android:id="@+id/order_check"
@@ -73,11 +73,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/order_header"
-        android:clickable="false"
-        android:focusable="false"
-        android:duplicateParentState="false"
-        android:focusableInTouchMode="false"
         android:background="@android:color/white"
+        android:clickable="false"
+        android:duplicateParentState="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:visibility="gone" >
 
         <View
@@ -100,10 +100,10 @@
                 android:layout_marginTop="13dp"
                 android:fontFamily="roboto_bold"
                 android:gravity="center_vertical"
-                android:textStyle="bold"
                 android:text="@string/my_order_date_label"
                 android:textColor="@color/grey_middle"
-                android:textSize="@dimen/text_s" />
+                android:textSize="@dimen/text_s"
+                android:textStyle="bold" />
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/order_list_date"
@@ -121,8 +121,8 @@
             android:id="@+id/order_list_payment_cont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
             android:layout_below="@+id/order_list_date_cont"
+            android:layout_marginLeft="8dp"
             android:orientation="horizontal" >
 
             <org.holoeverywhere.widget.TextView
@@ -133,9 +133,9 @@
                 android:fontFamily="roboto_bold"
                 android:gravity="center_vertical"
                 android:text="@string/payment_method"
-                android:textStyle="bold"
                 android:textColor="@color/grey_middle"
-                android:textSize="@dimen/text_s" />
+                android:textSize="@dimen/text_s"
+                android:textStyle="bold" />
 
             <org.holoeverywhere.widget.TextView
                 android:id="@+id/order_list_payment"
@@ -155,15 +155,15 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/order_list_payment_cont"
             android:layout_marginBottom="13dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="25dp"
             android:fontFamily="roboto_bold"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:layout_marginLeft="8dp"
-            android:textStyle="bold"
             android:text="@string/order_track_products"
             android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_s" />
+            android:textSize="@dimen/text_s"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/order_product_list"

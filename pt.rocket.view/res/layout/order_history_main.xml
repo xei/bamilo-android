@@ -18,40 +18,36 @@
             style="@style/divider_horizontal_orange"
             android:layout_below="@+id/orders_container_title" />
 
-                        <org.holoeverywhere.widget.TextView
+        <org.holoeverywhere.widget.TextView
             android:id="@+id/no_orders_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="roboto_regular"
             android:layout_below="@+id/orders_container_line"
-            android:gravity="center"
             android:layout_centerHorizontal="true"
-            android:visibility="gone"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="roboto_regular"
+            android:gravity="center"
             android:text="@string/my_order_no_orders_label"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_s"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp" />
-        
-        
+            android:visibility="gone" />
+
         <ListView
             android:id="@+id/orders_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/no_orders_title"
-            android:listSelector="@android:color/transparent"
             android:divider="@color/grey_light"
-            android:dividerHeight="@null"/>
-        
-                    <include
-        android:id="@+id/loadmore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        layout="@layout/loading_more" />
+            android:dividerHeight="@null"
+            android:listSelector="@android:color/transparent" />
+
+        <include
+            android:id="@+id/loadmore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            layout="@layout/loading_more" />
     </RelativeLayout>
 
-    
-
-    
 </RelativeLayout>

@@ -14,6 +14,7 @@
     <dimen name="margin_100px">33.33dp</dimen>
     <dimen name="margin_110px">36.67dp</dimen>
     <dimen name="margin_120px">40dp</dimen>
+    <dimen name="margin_140px">46dp</dimen>
     <dimen name="margin_150px">50dp</dimen>
     
     <!-- BASE DIMENSIONS -->
