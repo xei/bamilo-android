@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class DrawerLayout extends android.support.v4.widget.DrawerLayout {
@@ -44,5 +45,19 @@ public class DrawerLayout extends android.support.v4.widget.DrawerLayout {
         if (VERSION.SDK_INT >= 14) {
             super.setFitsSystemWindows(fitSystemWindows);
         }
+    }
+    
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+
+        // https://github.com/chrisbanes/PhotoView/issues/31#issuecomment-19803926
+        try {
+            return super.onInterceptTouchEvent(event);
+        } catch (Exception ex){
+//            ex.printStackTrace();
+        }
+        
+
+        return false;
     }
 }
