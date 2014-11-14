@@ -16,7 +16,8 @@ public class WizardPreferences {
         CATALOG,
         GALLERY,
         PRODUCT_DETAIL, 
-        NAVIGATION
+        NAVIGATION,
+        SIZE_GUIDE
     }
 
     private static final String TAG = WizardPreferences.class.getSimpleName();
@@ -53,6 +54,9 @@ public class WizardPreferences {
             break;
         case NAVIGATION:
             editor.putBoolean(WizardType.NAVIGATION.toString(), false);
+            break;
+        case SIZE_GUIDE:
+            editor.putBoolean(WizardType.SIZE_GUIDE.toString(), false);
             break;
         default:
             break;
@@ -93,6 +97,8 @@ public class WizardPreferences {
         case NAVIGATION:
             value = sharedPreferences.getBoolean(WizardType.NAVIGATION.toString(), true);
             break;
+        case SIZE_GUIDE:
+            value = sharedPreferences.getBoolean(WizardType.SIZE_GUIDE.toString(), true);
         default:
             break;
         }

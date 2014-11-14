@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<!-- BASE DIMENSIONS: PT TO SP (PT/3)-->
+    <dimen name="dimen_68pt">34sp</dimen>
+    
     <!-- TEXT DIMENSIONS (px/2) -->
     <!-- ACTION BAR Tablet will use dimensions from Phone and upscale -->
     <!-- dimen name="text_actionbar_title">@dimen/text_root</dimen>

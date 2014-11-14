@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+
+    <!-- CONTAINER -->
 
     <RelativeLayout
         style="@style/rounded_box"
@@ -15,4 +17,14 @@
             android:src="@drawable/no_image_large" />
     </RelativeLayout>
 
-</LinearLayout>
+    <!-- WIZARD -->
+
+    <ViewStub
+        android:id="@+id/product_size_wizard_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/product_size_wizard_stub_inflate"
+        android:layout="@layout/product_size_guide_wizard" />
+
+</RelativeLayout>

@@ -8,7 +8,6 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import pt.rocket.view.fragments.BaseFragment;
@@ -55,8 +54,6 @@ public class FragmentController {
     private static FragmentController fragmentController;
     
     private LinkedList<String> backStack = new LinkedList<String>();
-    
-    DialogGenericFragment dialog; 
     
     /**
      * ##################### CONSTRUCTOR #####################

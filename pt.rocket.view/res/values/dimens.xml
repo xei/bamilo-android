@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-	<!-- BASE MARGINS -->
+	<!-- BASE MARGINS PX -->
     <dimen name="margin_10px">3.33dp</dimen>
     <dimen name="margin_20px">6.67dp</dimen>
     <dimen name="margin_30px">10dp</dimen>
@@ -17,7 +17,7 @@
     <dimen name="margin_140px">46dp</dimen>
     <dimen name="margin_150px">50dp</dimen>
     
-    <!-- BASE DIMENSIONS -->
+    <!-- BASE DIMENSIONS: PX TO DP -->
 	<dimen name="dimen_3px">1dp</dimen>
     <dimen name="dimen_6px">2dp</dimen>
     <dimen name="dimen_8px">2.67dp</dimen>
@@ -72,6 +72,34 @@
     <dimen name="dimen_720px">240dp</dimen>
     <dimen name="dimen_780px">260dp</dimen>
     
+    <!-- MATERIAL: Typographic scale & basic styles -->
+    <dimen name="dimen_display_4">112sp</dimen>
+    <dimen name="dimen_display_3">56sp</dimen>
+    <dimen name="dimen_display_2">45sp</dimen>
+    <dimen name="dimen_display_1">34sp</dimen>
+    <dimen name="dimen_headline">24sp</dimen>
+    <dimen name="dimen_title">20sp</dimen>
+    <dimen name="dimen_subhead">16sp</dimen>
+    <dimen name="dimen_body">14sp</dimen>
+    <dimen name="dimen_button">14sp</dimen>
+    <dimen name="dimen_caption">12sp</dimen>
+    
+	<!-- BASE DIMENSIONS: PT TO SP (PT/3)-->
+    <dimen name="dimen_68pt">22sp</dimen>
+    
+	<!-- TEXT DIMENSIONS (px/3) -->
+    <!-- ACTION BAR Tablet will use dimensions from Phone and upscale -->
+    <dimen name="text_actionbar_title">@dimen/text_root</dimen>
+    <dimen name="text_actionbar_search">14sp</dimen>
+    <dimen name="text_root">18sp</dimen>
+    <dimen name="text_header">16sp</dimen>
+    <dimen name="text_form">13sp</dimen>
+    <dimen name="text_title">12sp</dimen>
+    <dimen name="text_subtitle">10.67sp</dimen>
+    <!-- dimen name="text_description">10sp</dimen -->
+    <dimen name="text_button">16.67sp</dimen>
+    <dimen name="text_button_item">10.67sp</dimen>
+
     
 	<!-- OLD MARGINS -->
     <dimen name="margin_x_small">2dp</dimen>
@@ -102,18 +130,7 @@
     <dimen name="text_xl">20sp</dimen>
     <!-- dimen name="text_xxl">22sp</dimen -->
 
-    <!-- TEXT DIMENSIONS (px/3) -->
-    <!-- ACTION BAR Tablet will use dimensions from Phone and upscale -->
-    <dimen name="text_actionbar_title">@dimen/text_root</dimen>
-    <dimen name="text_actionbar_search">14sp</dimen>
-    <dimen name="text_root">18sp</dimen>
-    <dimen name="text_header">16sp</dimen>
-    <dimen name="text_form">13sp</dimen>
-    <dimen name="text_title">12sp</dimen>
-    <dimen name="text_subtitle">10.67sp</dimen>
-    <!-- dimen name="text_description">10sp</dimen -->
-    <dimen name="text_button">16.67sp</dimen>
-    <dimen name="text_button_item">10.67sp</dimen>
+
 
     <item name="dialog_min_width_major" type="dimen">65%</item>
     <item name="dialog_min_width_minor" type="dimen">95%</item>
@@ -340,5 +357,8 @@
     
     <!-- PRODUCT SIZE GUIDE -->
     <dimen name="product_size_guide_main_container_height">@dimen/dimen_720px</dimen>
+    
+    <!-- WIZARDS -->
+    <dimen name="wizard_text_size">@dimen/dimen_68pt</dimen>
 
 </resources>

@@ -10,6 +10,8 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.dialogfragments.WizardPreferences;
+import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.utils.imageloader.RocketImageLoader.RocketImageLoaderListener;
 import pt.rocket.utils.photoview.PhotoView;
@@ -31,6 +33,10 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
     private static final String TAG = LogTagHelper.create(ProductSizeGuideFragment.class);
     
     private String mSizeGuideUrl;
+
+    private View mWizard;
+
+    private PhotoView mImageView;
     
     /**
      * Get a instance of ProductSizeGuideFragment
@@ -93,9 +99,14 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         // Get views
-        PhotoView mImageView = (PhotoView) view.findViewById(R.id.product_size_guide_image);
+        mImageView = (PhotoView) view.findViewById(R.id.product_size_guide_image);
+        mWizard = view.findViewById(R.id.product_size_wizard_stub);
         // Validate URL
-        if(!TextUtils.isEmpty(mSizeGuideUrl)) showSizeGuide(mImageView, mSizeGuideUrl);
+        if(!TextUtils.isEmpty(mSizeGuideUrl)) {
+            showSizeGuide(mImageView, mSizeGuideUrl);
+            showWizard(mWizard);
+        }
+        // Show empty view
         else showContinueShopping();
     }
     
@@ -171,6 +182,8 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
+        mWizard = null;
+        mImageView = null;
     }
     
     /*
@@ -200,6 +213,26 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
             public void onLoadedCancel(String imageUrl) { }
         });
     }
+    
+    /**
+     * Method used to validate if is necessary show the wizard.
+     * @param mWizard
+     * @author sergiopereira
+     */
+    private void showWizard(View mWizard) {
+        // Get flag
+        boolean isFirsttTime = WizardPreferences.isFirstTime(getBaseActivity(), WizardType.SIZE_GUIDE);
+        // Validate
+        if(!isFirsttTime) return;
+        // Inflate stub view
+        mWizard.setVisibility(View.VISIBLE);
+        // Set view
+        try {
+            getView().findViewById(R.id.wizard_product_size_button).setOnClickListener(this);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
+        }   
+    }
 
     /**
      * Show continue
@@ -224,8 +257,25 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
         int id = v.getId();
         // Case retry
         if(id == R.id.fragment_root_empty_button) onClickContinueButton();
+        // Case wizard
+        else if (id == R.id.wizard_product_size_button) onClickWizardButton();
         // Case unknown
         else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+    }
+
+    /**
+     * Process the click on wizard
+     * @author sergiopereira
+     */
+    private void onClickWizardButton() {
+        try {
+            // Set flag
+            WizardPreferences.changeState(getBaseActivity(), WizardType.SIZE_GUIDE);
+            // Hide wizard
+            mWizard.setVisibility(View.GONE);   
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON HIDE WIZARD", e);
+        }
     }
     
     /**

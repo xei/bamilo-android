@@ -59,5 +59,10 @@
     
     <color name="white_50">#80FFFFFF</color>
     <color name="item_highlight_50">#80ecedee</color>
+    
+    <!-- WIZARDS -->
+    <color name="wizard_text_color">#c3c3c3</color>
+    <color name="wizard_text_shadow">#000000</color>
+    <color name="wizard_bck">#90000000</color>
 
 </resources>

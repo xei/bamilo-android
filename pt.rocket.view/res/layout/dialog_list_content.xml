@@ -41,7 +41,7 @@
         style="@style/dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="@drawable/selector_listitem_highlight_dialog"
         android:gravity="center"
         android:paddingBottom="@dimen/margin_large"
         android:paddingLeft="@dimen/dialog_list_margin_horizontal"
