@@ -10,8 +10,9 @@
     <string name="countries_url">http://www.jumia.com/mobapi/availablecountries/staging</string>
     <!-- GA -->
     <bool name="ga_debug_mode">false</bool>
-    <!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. -->
+    <!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
     <integer name="ga_dispatchPeriod">0</integer>
+    -->
 
     <!-- BUG SENSE -->
     <string name="bugsense_apikey">c05cc696</string>
@@ -39,7 +40,7 @@
     <string name="adjust_app_token">tx59byfttp6z</string>
     
 	<!-- APPTIMIZE -->
-    <item name="apptimize_enabled" type="bool">true</item>
+    <item name="apptimize_enabled" type="bool">false</item>
     <string name="apptimize_apikey">BraGp9FgT7ESwKR4Dk5SrkH8ZzBDfGo</string>
 
 	<!-- GTM -->
