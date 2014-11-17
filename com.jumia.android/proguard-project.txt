@@ -19,7 +19,8 @@
 #   public *;
 #}
 
-# BEGIN proguard-android-optimize.txt
+########################### BEGIN proguard-android-optimize.txt ###########################
+
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 -optimizationpasses 5
 -allowaccessmodification
@@ -72,7 +73,8 @@
 # Don't warn about those in case this app is linking against an older
 # platform version.  We know about them, and they are safe.
 -dontwarn android.support.**
-# END proguard-android-optimize.txt
+########################### END proguard-android-optimize.txt ###########################
+
 
 -dontwarn pt.rocket.jumia.dev.R*
 -dontwarn com.ad4screen.R*
