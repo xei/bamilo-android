@@ -4,21 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.holoeverywhere.widget.TextView;
-import org.holoeverywhere.widget.Toast;
 
-import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.Order;
-import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.utils.TrackerDelegator;
-import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
-import pt.rocket.view.fragments.CatalogFragment;
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,12 +19,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-
-import com.android.volley.toolbox.ImageLoader.ImageContainer;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * 
@@ -160,9 +148,7 @@ public class OrdersListAdapter extends BaseAdapter {
         }
 
         item.orderDate.setText(orders.get(position).getmDate());
-//        item.orderTotalPrice.setText(CurrencyFormatter.getCurrencyCode() + " "
-//                + orders.get(position).getmOrderTotal());
-      item.orderTotalPrice.setText(CurrencyFormatter.formatCurrency(orders.get(position).getmOrderTotal()));
+        item.orderTotalPrice.setText(CurrencyFormatter.formatCurrency(orders.get(position).getmOrderTotal()));
         item.orderNumber.setText(context.getString(R.string.my_order_number_label) + " "
                 + orders.get(position).getmOrderNumber());
 

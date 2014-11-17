@@ -24,10 +24,10 @@ public class ApptimizeTracking {
         if (isEnabled) {
             Log.d(TAG, "Apptimize -> INITITALIZED");
             String apptimize_apikey = context.getString(R.string.apptimize_apikey);
-
             Apptimize.setup(context, apptimize_apikey);
         } else {
             Log.d(TAG, "Apptimize is not enabled");
         }
     }
+    
 }

@@ -35,13 +35,8 @@ public class ActivitiesWorkFlow {
 	public static void splashActivityNewTask(Activity activity ) {
 	    Log.i(TAG, "START ACTIVITY: splashActivity");
 	    Intent intent = new Intent(activity.getApplicationContext(), SplashScreenActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        
-        // TODO -Validate this line
-        //TaskStackBuilder.from(activity).addNextIntent(intent).startActivities();
         activity.startActivity(intent);
-        
         addStandardTransition(activity);
 	}
 	

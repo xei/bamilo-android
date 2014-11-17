@@ -9,7 +9,6 @@ import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.tracking.Ad4PushTracker;
 import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
-import pt.rocket.framework.tracking.ApptimizeTracking;
 import pt.rocket.framework.tracking.GTMManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -62,7 +61,6 @@ public final class ShopSelector {
 		CurrencyFormatter.initialize(context, currencyCode);
 		AnalyticsGoogle.startup(context, shopId);
 		Ad4PushTracker.startup(context);
-        ApptimizeTracking.startup(context);
         GTMManager.init(context, shopId);
         
         sShopId = shopId;

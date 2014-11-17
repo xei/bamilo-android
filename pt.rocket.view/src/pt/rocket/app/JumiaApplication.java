@@ -22,6 +22,7 @@ import pt.rocket.framework.service.IRemoteService;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.service.RemoteService;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
+import pt.rocket.framework.tracking.ApptimizeTracking;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.CustomerUtils;
@@ -151,12 +152,12 @@ public class JumiaApplication extends A4SApplication {
 
         SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
-        // trackerFile = new AndroidFileFunctions();
+        // Service
         doBindService();
-
         // Init image loader
         RocketImageLoader.init(this);
-
+        // Init apptimize
+        ApptimizeTracking.startup(getApplicationContext());
         // Init darwin database, set the context
         DarwinDatabaseHelper.init(getApplicationContext());
 

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jumia.android"
     android:installLocation="auto"
-    android:versionCode="43"
+    android:versionCode="44"
     android:versionName="2.2" >
 
     <!-- ######################################## -->
@@ -10,23 +10,23 @@
     <!-- ######################################## -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- ############# Location: LocationHelper and AD4Push ############# -->
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         android:required="false" />
-    <uses-permission
+<!--     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
-        android:required="false" />
+        android:required="false" /> -->
 
-    <uses-feature
+<!--     <uses-feature
         android:name="android.hardware.location.gps"
-        android:required="false" />
+        android:required="false" /> -->
 
     <!-- ############# AD4Push: MESSAGE (Receive) and SEND (PushNotificationReceiver) ############# -->
     <permission
@@ -202,15 +202,15 @@
         <!-- PRE INSTALL -->
         <!-- <meta-data android:name="AdjustDefaultTracker" android:value="5hyvoj" /> -->
 
-
         <!-- ######################################## -->
         <!-- ################# GTM ################## -->
         <!-- ######################################## -->
 
-
         <!-- Used for install referrer tracking -->
         <service android:name="com.google.android.gms.tagmanager.InstallReferrerService" />
 
+		<!-- android:name="com.google.android.gms.tagmanager.InstallReferrerReceiver" -->
+        <!-- android:name="pt.rocket.utils.receivers.InstallReceiver" -->
         <receiver
             android:name="pt.rocket.utils.receivers.InstallReceiver"
             android:exported="true" >
