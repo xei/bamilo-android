@@ -78,6 +78,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
 
     private ContentValues mSavedState;
     
+    private String paymentName = "";
+    
     /**
      * 
      * @return
@@ -371,7 +373,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             if(formGenerator.validate()){
                 ContentValues values = formGenerator.save();
                 // JumiaApplication.INSTANCE.setPaymentMethod(values);
-                // Log.i(TAG, "code1payment : "+values.toString());
+                 paymentName = values.getAsString("name");
                 triggerSubmitPaymentMethod(values);
             } else {
                 Toast.makeText(getActivity(), getString(R.string.please_fill_all_data),Toast.LENGTH_SHORT).show();
@@ -447,10 +449,19 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             // Get next step
             FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
             nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.MY_ORDER;
+            
+            Bundle params = new Bundle();
+            params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+            params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, paymentName);    
+            TrackerDelegator.trackPaymentMethod(params);
+            
             // Switch to FINISH
             bundle.clear();
             bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, orderFinish);
             getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
+            
+
+            
             break;
         case ADD_VOUCHER:
             couponButton.setText(getString(R.string.voucher_remove));

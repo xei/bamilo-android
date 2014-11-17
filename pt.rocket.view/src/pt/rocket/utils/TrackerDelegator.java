@@ -78,8 +78,8 @@ public class TrackerDelegator {
     public static final String FAVOURITES_KEY = "favourites";
     public static final String DISCOUNT_KEY = "discount";
     public static final String SUBCATEGORY_KEY = "sub_category";
-    public static final String QUANTITY_KEY = "sub_category";
-    public static final String CARTVALUE_KEY = "sub_category";
+    public static final String QUANTITY_KEY = "quantity";
+    public static final String CARTVALUE_KEY = "cart_value";
     public static final String CATALOG_FILTER_KEY = "catalog_filter";
     public static final String FILTER_COLOR = "color_family";
     public static final String TAX_KEY = "tax";
@@ -147,7 +147,7 @@ public class TrackerDelegator {
         storeFirstCustomer(customer);
 
         //GTM
-        if(event == TrackingEvent.LOGIN_AUTO_SUCCESS ){
+        if(event.compareTo(TrackingEvent.LOGIN_AUTO_SUCCESS) == 0){
             GTMManager.get().gtmTrackAutoLogin(customer);
         } else {
             GTMManager.get().gtmTrackLogin(customer, event, location);
@@ -160,7 +160,7 @@ public class TrackerDelegator {
      * @param wasAutologin
      */
     public final static void trackLoginFailed(boolean wasAutologin, String location, String method) {
-        Log.i(TAG, "trackAccount: autologin " + wasAutologin);
+        Log.i(TAG, "trackLoginFailed: autologin " + wasAutologin);
         // Case login
         TrackingEvent event = TrackingEvent.LOGIN_FAIL;
         // Case autologin
@@ -169,8 +169,12 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().trackEvent(event, "", 0l);
       
         //GTM
-        if(event == TrackingEvent.LOGIN_AUTO_FAIL) GTMManager.get().gtmTrackAutoLoginFailed();
-        else GTMManager.get().gtmTrackLoginFailed(location,method);
+        if(event.compareTo(TrackingEvent.LOGIN_AUTO_FAIL) == 0){
+            GTMManager.get().gtmTrackAutoLoginFailed();
+        }
+        else {
+            GTMManager.get().gtmTrackLoginFailed(location,method);
+        }
     }
 
     public final static void trackLogoutSuccessful() {

@@ -410,18 +410,20 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.setLoggedIn(false);
         isRegistered = false;
-        if (!TextUtils.isEmpty(trackScreen)
-                && !trackScreen.equals(FragmentType.CHOOSE_COUNTRY.toString())) {
-            Log.d("GTM", "trackCloseApp trackScreen:" + trackScreen);
+//        if(!TextUtils.isEmpty(trackScreen) && !trackScreen.equals(FragmentType.CHOOSE_COUNTRY.toString())){
+//            Log.d("GTM","trackCloseApp trackScreen:"+trackScreen);
+////            TrackerDelegator.trackCloseApp(trackScreen);
+//            TrackerDelegator.trackCloseApp();
+//        }
+        if(TextUtils.isEmpty(trackScreen)){
             TrackerDelegator.trackCloseApp();
-            // TrackerDelegator.trackCloseApp(trackScreen);
         }
+        
     }
 
     /**
      * #### ACTION BAR ####
      */
-
     /**
      * Method used to update the sliding menu and items on action bar. Called from BaseFragment
      * 

@@ -24,6 +24,7 @@ import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -323,6 +324,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         if(isChangeCountry){
             LastViewedTableHelper.deleteAllLastViewed();
             FavouriteTableHelper.deleteAllFavourite();
+            TrackerDelegator.trackShopChanged();
         }
         // Clear Ad4Push prefs
         Ad4PushTracker.clearAllSavedData(getBaseActivity().getApplicationContext());
@@ -330,6 +332,8 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         ActivitiesWorkFlow.splashActivityNewTask(getActivity());
         // Finish MainFragmentActivity
         getActivity().finish();
+        
+        
     }
     
 //    /**

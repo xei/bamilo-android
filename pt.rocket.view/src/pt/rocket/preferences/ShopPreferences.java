@@ -64,8 +64,7 @@ public class ShopPreferences {
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).isCountryIsLive());
         editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.commit();
-        
-        TrackerDelegator.trackShopChanged();
+
     }
 
 }
