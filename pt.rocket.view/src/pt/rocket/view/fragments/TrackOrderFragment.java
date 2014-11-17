@@ -153,10 +153,7 @@ public class TrackOrderFragment extends BaseFragment {
         
         // Show status container if Button "Track Order" was clicked, or if in landscape mode
         if (BaseActivity.isTabletInLandscape(getBaseActivity()) && !mOrderTrackingClicked) {
-            showStatusContainer();
-            
-            // set tip visible if Button "Track Order" wasn't clicked yet
-            setTipVisibility();
+            showTip();
             
             // set loading view as gone
             if (loadingTrackBarView != null) {
@@ -248,10 +245,19 @@ public class TrackOrderFragment extends BaseFragment {
                         onSuccessEvent(bundle);
                     }
                 });
+            } else {
+                showTip();
             }
         }
     };
 
+    private void showTip(){
+        showStatusContainer();
+        
+        // set tip visible if Button "Track Order" wasn't clicked yet
+        setTipVisibility();
+    }
+    
     private void setTipVisibility() {
         if (mOrderTrackingClicked) {
             getView().findViewById(R.id.tip_tracking_order).setVisibility(View.GONE);
