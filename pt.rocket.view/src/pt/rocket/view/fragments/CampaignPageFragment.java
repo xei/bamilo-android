@@ -154,12 +154,6 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        
-        
-        String c = null;
-        Log.i(TAG, "ON GET SAVED STATE" + c.toString());
-        
-        
         // Get campaigns from arguments
         mTeaserCampaign = getArguments().getParcelable(TAG);
         // Validate the saved state

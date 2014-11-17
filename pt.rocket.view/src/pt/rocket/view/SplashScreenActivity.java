@@ -650,6 +650,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                         dialog.dismiss();
                     }
                 },
+                // Cancel listener
                 new OnClickListener(){
 
                     @Override

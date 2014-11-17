@@ -63,8 +63,7 @@ public class ShippingRadioGroupList extends RadioGroup {
     }
 
     public void setItems(ShippingMethodForm form, String defaultSelected) {
-        Log.d(TAG, "setItems: items size = " + form.key + " defaultSelected = "
-                + defaultSelected);
+        Log.d(TAG, "setItems: items size = " + form.key + " defaultSelected = " + defaultSelected);
         mForm = form;
         mItems = mForm.options;
         mDefaultSelected = defaultSelected;
@@ -88,7 +87,7 @@ public class ShippingRadioGroupList extends RadioGroup {
             /**
              * Global Container
              */
-            final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, null, false);
+            final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, mGroup, false);
 
             // Hide first divider
             if (idx == 0) {
@@ -134,60 +133,75 @@ public class ShippingRadioGroupList extends RadioGroup {
             mLinearLayout.setId(idx);
             mLinearLayout.setLayoutParams(mParams);
 
-            final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton_shipping, null, false);
+            final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton_shipping, buttonContainer, false);
             button.setId(idx);
             String optionLabel = mForm.optionsLabel.get(mItems.get(idx));
             //Log.i(TAG, "options jsonobject label: " + optionLabel);
             button.setText(!TextUtils.isEmpty(optionLabel) ? optionLabel : mItems.get(idx));
             RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.checkout_shipping_item_height));
-            if (mItems.get(idx).equalsIgnoreCase(mDefaultSelected)) {
-                button.setChecked(true);
-                mDefaultSelectedId = idx;
-            }
+            
             button.setOnClickListener(new OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
-                    if (button.isChecked()) {
-                        extras.setVisibility(View.VISIBLE);
-                        if (subForms.get(mItems.get(v.getId())) != null) {
-                            if (mItems.get(v.getId()).equalsIgnoreCase("pickupstation")) {
-                                TextView title = (TextView) extras.findViewById(R.id.payment_text);
-                                if(mForm.label != null){
-                                    title.setText(mForm.label.trim());    
-                                }
-                                
-                                title.setVisibility(View.VISIBLE);
-                            }
-                            for (ShippingMethodSubForm element : subForms.get(mItems.get(v.getId()))) {
-                                ((ShippingMethodSubForm) element).dataControl
-                                        .setVisibility(View.VISIBLE);
-                            }
-                        }
-                    } else {
-                        extras.setVisibility(View.GONE);
-                        if (subForms.get(mItems.get(v.getId())) != null) {
-                            if (mItems.get(v.getId()).equalsIgnoreCase("pickupstation")) {
-                                TextView title = (TextView) extras.findViewById(R.id.payment_text);
-                                title.setVisibility(View.GONE);
-                            }
-                            for (ShippingMethodSubForm element : subForms.get(mItems.get(v.getId()))) {
-                                ((ShippingMethodSubForm) element).dataControl
-                                        .setVisibility(View.GONE);
-                            }
-                        }
-                    }
-                    setSelection(mLinearLayout.getId());
-                    mGroup.check(mLinearLayout.getId());
+                    onClickCheckBox((RadioButton) v, extras, mLinearLayout);
                 }
             });
 
             buttonContainer.addView(button, layoutParams);
 
             mGroup.addView(mLinearLayout);
+            
+            // Put the selected radio button from server or default 0
+            if (mItems.get(idx).equalsIgnoreCase(mDefaultSelected) || idx == 0) {
+                // Save selected position
+                mDefaultSelectedId = idx;
+                // Set as checked
+                button.setChecked(true);
+                // Process the click to show the extras if exist
+                onClickCheckBox(button, extras, mLinearLayout);
+            }
+            
         }
 
     }
+ 
+    /**
+     * Process the click on radio button
+     * @param button
+     * @param extras
+     * @param mLinearLayout
+     */
+    private void onClickCheckBox(RadioButton button, View extras, View mLinearLayout) {
+        if (button.isChecked()) {
+            extras.setVisibility(View.VISIBLE);
+            if (subForms.get(mItems.get(button.getId())) != null) {
+                if (mItems.get(button.getId()).equalsIgnoreCase("pickupstation")) {
+                    TextView title = (TextView) extras.findViewById(R.id.payment_text);
+                    if(mForm.label != null){
+                        title.setText(mForm.label.trim());    
+                    }
+                    title.setVisibility(View.VISIBLE);
+                }
+                for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
+                    ((ShippingMethodSubForm) element).dataControl.setVisibility(View.VISIBLE);
+                }
+            }
+        } else {
+            extras.setVisibility(View.GONE);
+            if (subForms.get(mItems.get(button.getId())) != null) {
+                if (mItems.get(button.getId()).equalsIgnoreCase("pickupstation")) {
+                    TextView title = (TextView) extras.findViewById(R.id.payment_text);
+                    title.setVisibility(View.GONE);
+                }
+                for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
+                    ((ShippingMethodSubForm) element).dataControl.setVisibility(View.GONE);
+                }
+            }
+        }
+        setSelection(mLinearLayout.getId());
+        mGroup.check(mLinearLayout.getId());
+    }
+
 
     public int getSelectedIndex() {
         int radioButtonID = mGroup.getCheckedRadioButtonId();
@@ -209,8 +223,7 @@ public class ShippingRadioGroupList extends RadioGroup {
         if (idx >= 0) {
             Log.i(TAG, "code1selection : id is : " + idx);
             if (mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx) instanceof RadioButton) {
-                RadioButton button = (RadioButton) mGroup.getChildAt(idx)
-                        .findViewById(R.id.radio_container).findViewById(idx);
+                RadioButton button = (RadioButton) mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx);
                 button.setChecked(true);
                 Log.i(TAG, "code1selection : id is : " + idx + " second");
             }
@@ -305,19 +318,12 @@ public class ShippingRadioGroupList extends RadioGroup {
             Log.i(TAG, "code1values : adding ");
             for (ShippingMethodSubForm element : subForms.get(mItems.get(idx))) {
                 if (element.options != null && element.options.size() > 0) {
-                    selectedPickup = element.options.get(((IcsSpinner) element.dataControl)
-                            .getSelectedItemPosition());
-                    mContentValues.put(
-                            element.name,
-                            element.options.get(
-                                    ((IcsSpinner) element.dataControl).getSelectedItemPosition())
-                                    .getPickupId());
+                    selectedPickup = element.options.get(((IcsSpinner) element.dataControl).getSelectedItemPosition());
+                    mContentValues.put(element.name, element.options.get(((IcsSpinner) element.dataControl).getSelectedItemPosition()).getPickupId());
                     Log.i(TAG, "code1values : element.name : " + element.name);
                 } else {
-                    if (selectedPickup.getRegions() != null
-                            && selectedPickup.getRegions().size() > 0) {
-                        mContentValues
-                                .put(element.name, selectedPickup.getRegions().get(0).getId());
+                    if (selectedPickup.getRegions() != null && selectedPickup.getRegions().size() > 0) {
+                        mContentValues.put(element.name, selectedPickup.getRegions().get(0).getId());
                     }
                 }
             }

@@ -5,9 +5,7 @@
 package pt.rocket.helpers.configs;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,6 +68,7 @@ public class GetApiInfoHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "ON PARSE RESPONSE");
+        
         JSONArray sessionJSONArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
         ArrayList<Section> outDatedSections = null;
         if (sessionJSONArray != null) {
@@ -79,6 +78,11 @@ public class GetApiInfoHelper extends BaseHelper {
             SectionsTablesHelper.saveSections(sections);
         }
         
+        if (outDatedSections != null && outDatedSections.size() != 0) {
+            clearOutDatedMainSections(outDatedSections, bundle);
+        }
+
+        
         // VERSION
         VersionInfo info = new VersionInfo();
         try {
@@ -87,9 +91,29 @@ public class GetApiInfoHelper extends BaseHelper {
             e.printStackTrace();
         }
         
-        if (outDatedSections != null && outDatedSections.size() != 0) {
-            clearOutDatedMainSections(outDatedSections, bundle);
-        }
+        /**
+         * FIXME : Created a new new method. Needs more tests.
+         * @author sergiopereira
+         */ 
+//      JSONArray sessionJSONArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
+//      // Get new sections
+//      List<Section> sections = new ArrayList<Section>();
+//      if (sessionJSONArray != null) sections = parseSections(sessionJSONArray);
+//      // Get old sections
+//      List<Section> oldSections = SectionsTablesHelper.getSections();
+//      // Get out dated sections
+//      ArrayList<Section> outDatedSections = checkSections(oldSections, sections);
+//      
+//      // Validate sections out of dated
+//      if (CollectionUtils.isEmpty(oldSections)) {
+//          Log.i(TAG, "SECTIONS: EMPTY");
+//          SectionsTablesHelper.saveSections(sections);
+//      } else if (CollectionUtils.isNotEmpty(outDatedSections)) {
+//          Log.i(TAG, "SECTIONS: OUT DATED");
+//          clearOutDatedMainSections(outDatedSections, bundle);
+//      } else {
+//          Log.i(TAG, "SECTIONS: DATED");
+//      }
         
         JumiaApplication.INSTANCE.setVersionInfo(info);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
@@ -106,7 +130,6 @@ public class GetApiInfoHelper extends BaseHelper {
         Log.d(TAG, "ON CLEAR OUT DATED SECTIONS");
 
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-        Set<EventType> eventsToAwait = EnumSet.noneOf(EventType.class);
 
         for (Section section : sections) {
             // Case teasers
@@ -120,7 +143,6 @@ public class GetApiInfoHelper extends BaseHelper {
             // Case categories
             else if (section.getName().equals(Section.SECTION_NAME_CATEGORIES)) {
                 CategoriesTableHelper.clearCategories(db);
-                eventsToAwait.add(EventType.GET_CATEGORIES_EVENT);
             }
             // Case segments
             else if (section.getName().equals(Section.SECTION_NAME_SEGMENTS)) {
@@ -129,12 +151,10 @@ public class GetApiInfoHelper extends BaseHelper {
             // Case static blocks
             else if (section.getName().equals(Section.SECTION_NAME_STATIC_BLOCKS)) {
                 //StaticBlocksTableHelper.clearStaticBlocks(db);
-                //eventsToAwait.add(EventType.GET_STATIC_BLOCKS_EVENT);
             }
             // Case image resolutions
             else if (section.getName().equals(Section.SECTION_NAME_IMAGE_RESOLUTIONS)) {
                 ImageResolutionTableHelper.clearImageResolutions(db);
-                eventsToAwait.add(EventType.GET_RESOLUTIONS);
             }
             // Case zip codes
             else if (section.getName().equals(Section.SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES)) {
@@ -145,8 +165,6 @@ public class GetApiInfoHelper extends BaseHelper {
                 bundle.putBoolean(Section.SECTION_NAME_COUNTRY_CONFIGS, true);
             }
         }
-
-        Log.d(TAG, "Events to watch " + eventsToAwait.toString());
     }
     /**
      * Parses the json array containing the
@@ -210,6 +228,7 @@ public class GetApiInfoHelper extends BaseHelper {
                     Log.d(TAG, "SECTION IS DATED: " + newSection.getName() + " " + newSection.getMd5());
                 }
             }
+        
         } else {
             outdatedSections.addAll(newSections);
         }
@@ -217,6 +236,15 @@ public class GetApiInfoHelper extends BaseHelper {
         for (Section section : outdatedSections) {
             Log.d(TAG, "OUT DATED SECTIONS: " + section.getName());
         }
+        
+        /**
+         * Used with new method
+         * @author sergiopereira
+         */ 
+        //else outdatedSections.addAll(newSections);
+        //for (Section section : outdatedSections) {
+        //    Log.d(TAG, "OUT DATED SECTIONS: " + section.getName());
+        //}
 
         return outdatedSections;
     }

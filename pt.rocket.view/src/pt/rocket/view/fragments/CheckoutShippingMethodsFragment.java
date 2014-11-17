@@ -76,7 +76,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements OnC
                 R.string.checkout_label,
                 KeyboardState.NO_ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_SHIPPING);
-        // ConstantsCheckout.CHECKOUT_SHIPPING
     }
 
     /*

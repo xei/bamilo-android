@@ -82,8 +82,14 @@ public class GetSearchSuggestionHelper extends BaseHelper {
      */
     private void getSearchSuggestionList(IResponseCallback requester) {
         Log.d(TAG, "ON GET_SEARCH_SUGGESTIONS_EVENT");
-        ArrayList<SearchSuggestion> suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
-
+        
+        ArrayList<SearchSuggestion> suggestions = new ArrayList<SearchSuggestion>();
+        try {
+            suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
+        } catch (InterruptedException e) {
+            Log.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
+        }
+        
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY, suggestions);
@@ -136,7 +142,10 @@ public class GetSearchSuggestionHelper extends BaseHelper {
             else suggestions = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);
         } catch (SQLiteException e) {
             Log.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
+        } catch (InterruptedException e) {
+            Log.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
         }
+        
         // Parse response
         try {
             JSONArray suggestionsArray = jsonObject.getJSONArray(RestConstants.JSON_SUGGESTIONS_TAG);
@@ -172,6 +181,8 @@ public class GetSearchSuggestionHelper extends BaseHelper {
             else suggestions = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);
         } catch (SQLiteException e) {
             Log.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
+        } catch (InterruptedException e) {
+            Log.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
         }
         Log.d(TAG, "SUGGESTION: " + suggestions.size());
         
