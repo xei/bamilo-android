@@ -381,6 +381,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         if (!TextUtils.isEmpty(orderNumber)) {
             bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, view.getTag().toString());
         }
+        
         getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 

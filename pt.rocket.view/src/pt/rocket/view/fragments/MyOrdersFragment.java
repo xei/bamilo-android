@@ -5,7 +5,10 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.controllers.fragments.FragmentController;
+import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.components.androidslidingtabstrip.SlidingTabLayout;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
@@ -48,9 +51,6 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener{
         if(bundle != null && bundle.containsKey(ConstantsIntentExtra.MY_ORDER_POS)){
             mPositionToStart = bundle.getInt(ConstantsIntentExtra.MY_ORDER_POS);
         }
-            
-            
-            
         mMyOrdersFragment = new MyOrdersFragment();
         return mMyOrdersFragment;
     }
@@ -181,7 +181,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener{
     public void onDestroyView() {
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
-//        mPositionToStart = 0;
+        mPositionToStart = 0;
     }
  
     
@@ -210,11 +210,11 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener{
 
             switch (position) {
             case 0:
-                return TrackOrderFragment.getInstance();
+                return TrackOrderFragment.getInstance(getArguments());
             case 1:
                 return OrderHistoryFragment.getInstance();
             default:
-                return TrackOrderFragment.getInstance();
+                return TrackOrderFragment.getInstance(getArguments());
                 
             }
             
@@ -263,6 +263,5 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener{
         outState.putInt(ConstantsIntentExtra.MY_ORDER_POS, mPositionToStart);
 
     }
-    
     
 }

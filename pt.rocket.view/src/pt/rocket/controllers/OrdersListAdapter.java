@@ -160,8 +160,9 @@ public class OrdersListAdapter extends BaseAdapter {
         }
 
         item.orderDate.setText(orders.get(position).getmDate());
-        item.orderTotalPrice.setText(CurrencyFormatter.getCurrencyCode() + " "
-                + orders.get(position).getmOrderTotal());
+//        item.orderTotalPrice.setText(CurrencyFormatter.getCurrencyCode() + " "
+//                + orders.get(position).getmOrderTotal());
+      item.orderTotalPrice.setText(CurrencyFormatter.formatCurrency(orders.get(position).getmOrderTotal()));
         item.orderNumber.setText(context.getString(R.string.my_order_number_label) + " "
                 + orders.get(position).getmOrderNumber());
 

@@ -382,8 +382,15 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
                     if(null == JumiaApplication.CUSTOMER){
                         triggerLogin();
                     } else {
-                        setEmptyScreenState(true);
-                        showProductsLoading(false);
+                        Log.w("ORDER","ERROR Visible");
+                        //used for when the user session expires on the server side
+                        if(ordersList != null && ordersList.size() > 0)
+                            triggerLogin();
+                        else{
+                            setEmptyScreenState(true);
+                            showProductsLoading(false);
+                        }
+
                     }
 
                 
@@ -573,7 +580,11 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
                item.productBottomDivider = (View) itemView.findViewById(R.id.order_product_divider);
                item.bottomSpace = (View) itemView.findViewById(R.id.order_product_bottom_space);
                
-               item.productPrice.setText(CurrencyFormatter.getCurrencyCode()+" "+orderItems.get(i).getmProductTotal());
+               if(!"null".equals(orderItems.get(i).getmProductTotalString()))
+                   item.productPrice.setText(CurrencyFormatter.formatCurrency(orderItems.get(i).getmProductTotalString()));
+               else
+                   item.productPrice.setText(CurrencyFormatter.getCurrencyCode()+" "+orderItems.get(i).getmProductTotal());
+               
                item.productName.setText(orderItems.get(i).getmProductName()+" - ");
                item.productQtd.setText(getString(R.string.my_order_quantity_label)+" "+orderItems.get(i).getmProductQuantity());
                if(i == (orderItems.size() - 1)){
@@ -677,5 +688,5 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
         triggerContentEventWithNoLoading(new GetMyOrdersListHelper(), bundle, mCallBack);
         
     }
-    
+
 }

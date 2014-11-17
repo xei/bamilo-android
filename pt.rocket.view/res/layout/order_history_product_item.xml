@@ -22,9 +22,8 @@
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:fontFamily="roboto_regular"
-            android:paddingRight="60dp"
+            android:paddingRight="@dimen/dimen_140px"
             android:singleLine="true"
-            android:text="blackberryfsfdfgd dgfdfgdsdfs fd dgfhf  dfgd  fgtewsf sdfsfwredfg dfgdf  dfgdfg dfg dfgd  dsdfsfsdfsdfd"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_s" />
 
@@ -37,7 +36,6 @@
             android:layout_alignRight="@+id/order_product_name"
             android:layout_marginTop="5dp"
             android:fontFamily="roboto_bold"
-            android:text="qtd.1"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_s"
             android:textStyle="bold" />

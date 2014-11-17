@@ -28,6 +28,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,14 +56,21 @@ public class TrackOrderFragment extends BaseFragment {
     private boolean mOrderTrackingClicked = false;
     
     private MyOrdersFragment parentFragment;
+    
+    private static String order_number = "";
 
     /**
      * Get instance
      * 
      * @return
      */
-    public static TrackOrderFragment getInstance() {
+    public static TrackOrderFragment getInstance(Bundle bundle) {
         mTrackOrderFragment = new TrackOrderFragment();
+        
+        if (bundle != null && bundle.containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR)) 
+            order_number = bundle.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
+        
+        
         return mTrackOrderFragment;
     }
 
@@ -188,12 +196,12 @@ public class TrackOrderFragment extends BaseFragment {
         Button mButton = (Button) getView().findViewById(R.id.btn_track_order);
         mButton.setOnClickListener(trackOrderClickListener);
 
-        Bundle args = this.getArguments();
-        String order_number = null;
-        if (args != null) {
-            order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
-        }
-        if (order_number != null) {
+//        Bundle args = this.getArguments();
+//        String order_number = null;
+//        if (args != null) {
+//            order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
+//        }
+        if (!TextUtils.isEmpty(order_number)) {
             mEditText.setText(order_number);
         }
         Editable text = mEditText.getText();

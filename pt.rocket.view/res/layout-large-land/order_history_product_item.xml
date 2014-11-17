@@ -22,9 +22,8 @@
             android:layout_alignParentLeft="true"
             android:fontFamily="roboto_regular"
             android:singleLine="true"
-            android:text="blackberryfsfdfgd dgfdfgdsdfs fd dgfhf  dfgd  fgtewsf sdfsfwredfg dfgdf  dfgdfg dfg dfgd  dsdfsfsdfsdfd"
             android:ellipsize="end"
-            android:paddingRight="60dp"
+            android:paddingRight="@dimen/dimen_180px"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_s" />
 
@@ -38,7 +37,6 @@
             android:layout_alignEnd="@+id/order_product_name"
             android:layout_alignRight="@+id/order_product_name"
             android:textStyle="bold"
-            android:text="qtd.1"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_s" />
     </RelativeLayout>

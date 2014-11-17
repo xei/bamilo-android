@@ -94,6 +94,13 @@ public class OrderItem implements IJSONSerializable, Parcelable {
     public double getmProductTotal() {
         return mProductTotal;
     }
+    
+    public String getmProductTotalString() {
+        String total = "";
+        
+        total = String.valueOf(mProductTotal);
+        return total;
+    }
 
     public void setmProductTotal(double mProductTotal) {
         this.mProductTotal = mProductTotal;
