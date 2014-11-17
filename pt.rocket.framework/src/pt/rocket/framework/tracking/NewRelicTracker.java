@@ -10,7 +10,7 @@ import com.newrelic.agent.android.util.NetworkFailure;
 
 /**
  * NewRelic class.<br>
- * Current version: 4.95
+ * Current version: 4.98
  * @author sergiopereira
  *
  */

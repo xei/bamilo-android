@@ -93,8 +93,9 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @param searchText
      * @return List of searchSuggestion
      * @author sergiopereira
+     * @throws InterruptedException 
      */
-    public static synchronized ArrayList<SearchSuggestion> getAllRecentQueries(){
+    public static synchronized ArrayList<SearchSuggestion> getAllRecentQueries() throws InterruptedException{
 		Log.d(TAG, "GET LAST " + NUMBER_OF_SUGGESTIONS + " RECENT QUERIES");
 		// Select the best resolution
 		String query =	"SELECT DISTINCT " + _QUERY + " " +
@@ -111,8 +112,9 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @param searchText
      * @return List of searchSuggestion
      * @author sergiopereira
+     * @throws InterruptedException 
      */
-    public static synchronized ArrayList<SearchSuggestion> getFilteredRecentQueries(String searchText){
+    public static synchronized ArrayList<SearchSuggestion> getFilteredRecentQueries(String searchText) throws InterruptedException{
 		Log.d(TAG, "GET RECENT QUERIES FOR: " + searchText);
 		// Select the best resolution
 		String query =	"SELECT DISTINCT " + _QUERY + " " +
@@ -154,9 +156,13 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @param searchText
      * @return List of searchSuggestion
      * @author sergiopereira
+     * @throws InterruptedException 
      */
-    public static synchronized ArrayList<SearchSuggestion> getRecentQueries(String query){
+    public static synchronized ArrayList<SearchSuggestion> getRecentQueries(String query) throws InterruptedException{
     	Log.i(TAG, "SQL QUERY: " + query);
+    	
+    	DarwinDatabaseSemaphore.getInstance().getLock();
+    	
 		// Permission
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
@@ -181,6 +187,9 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
 		}
 		// Validate cursor
 		if(cursor != null) cursor.close();
+		
+		DarwinDatabaseSemaphore.getInstance().releaseLock();
+		
 		// Return
 		return recentSuggestions;
     }
