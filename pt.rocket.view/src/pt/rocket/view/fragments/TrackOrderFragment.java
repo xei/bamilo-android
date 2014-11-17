@@ -150,11 +150,19 @@ public class TrackOrderFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         setupView();
+        
         // Show status container if Button "Track Order" was clicked, or if in landscape mode
-        if (mOrderTrackingClicked || BaseActivity.isTabletInLandscape(getBaseActivity())) {
+        if (BaseActivity.isTabletInLandscape(getBaseActivity()) && !mOrderTrackingClicked) {
             showStatusContainer();
+            
             // set tip visible if Button "Track Order" wasn't clicked yet
             setTipVisibility();
+            
+            // set loading view as gone
+            if (loadingTrackBarView != null) {
+                loadingTrackBarView.stopRendering();
+            }
+            getView().findViewById(R.id.loading_status).setVisibility(View.GONE);
         }
     }
 
@@ -207,8 +215,10 @@ public class TrackOrderFragment extends BaseFragment {
         Editable text = mEditText.getText();
         if (text != null && text.length() > 0 && mOrderTracker != null) {
             proccessSuccess();
-        } else if (text != null && text.length() > 0 && mOrderTrackerError) {
-            proccessError();
+        } 
+        else if (text != null && text.length() > 0 && mOrderTrackerError) {
+            hideStatusContainer();
+            mOrderTrackingClicked = false;
         }
     }
 
@@ -257,6 +267,10 @@ public class TrackOrderFragment extends BaseFragment {
         getView().findViewById(R.id.track_order_status_container).setVisibility(View.VISIBLE);
     }
 
+    private void hideStatusContainer() {
+        getView().findViewById(R.id.track_order_status_container).setVisibility(View.INVISIBLE);
+    }
+    
     private void showLoading() {
         getView().findViewById(R.id.track_order_status_container).setVisibility(View.VISIBLE);
 
@@ -272,6 +286,10 @@ public class TrackOrderFragment extends BaseFragment {
         // ((TextView) getView().findViewById(R.id.title_text)).setText(getString(R.string.track_your_order));
     }
 
+    private void renderAndShowLoading(){
+        
+    }
+    
     private void inflateItemsList(ArrayList<OrderTrackerItem> items) {
         LayoutInflater mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout mLinearLayout = (LinearLayout) getView().findViewById(R.id.products_items_container);
