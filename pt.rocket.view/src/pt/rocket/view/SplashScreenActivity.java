@@ -649,7 +649,16 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                         JumiaApplication.INSTANCE.init(false, initializationHandler);
                         dialog.dismiss();
                     }
-                }, true);
+                },
+                new OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                    
+                },
+                true);
                 try {
                     dialog.show(getSupportFragmentManager(), null);
                     dialog.setCancelable(false);

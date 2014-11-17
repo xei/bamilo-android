@@ -45,7 +45,8 @@ import de.akquinet.android.androlog.Log;
  * 
  * @author sergiopereira
  */
-public class MyAccountEmailNotificationFragment extends BaseFragment implements OnClickListener, IResponseCallback, OnCheckedChangeListener {
+public class MyAccountEmailNotificationFragment extends BaseFragment implements OnClickListener,
+        IResponseCallback, OnCheckedChangeListener {
 
     private static final String TAG = LogTagHelper.create(MyAccountEmailNotificationFragment.class);
 
@@ -62,7 +63,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     private LayoutInflater mInflater;
 
     private ArrayList<NewsletterOption> mNewsletterOptionsSaved;
-    
+
     /**
      * Create new instance
      * 
@@ -80,7 +81,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @author sergiopereira
      */
     public MyAccountEmailNotificationFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET,
+                MyMenuItem.MY_PROFILE),
                 NavigationAction.MyAccount,
                 R.layout.my_account_email_notification_fragment,
                 R.string.myaccount_email_notifications,
@@ -119,8 +121,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     /*
      * (non-Javadoc)
      * 
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -129,12 +130,15 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         // Get list view
         mNewsletterList = (LinearLayout) view.findViewById(R.id.myaccount_newsletter_list);
         // Get save button
-        view.findViewById(R.id.myaccount_newsletter_save).setOnClickListener((OnClickListener) this);
+        view.findViewById(R.id.myaccount_newsletter_save)
+                .setOnClickListener((OnClickListener) this);
         // Get cancel button
-        view.findViewById(R.id.myaccount_newsletter_cancel).setOnClickListener((OnClickListener) this);
+        view.findViewById(R.id.myaccount_newsletter_cancel).setOnClickListener(
+                (OnClickListener) this);
         // Validate data
-        if (mNewslettersForm == null) triggerGetNewslettersForm();
-        else showNewslettersForm();
+        if (mNewslettersForm == null)
+            triggerGetNewslettersForm();
+         else showNewslettersForm();
     }
 
     /*
@@ -157,6 +161,9 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        if (mNewslettersForm != null) {
+            showFragmentContentContainer();
+        }
         // Tracking page
         TrackerDelegator.trackPage(TrackingPage.NEWSLETTER_SUBS, getLoadTime(), false);
     }
@@ -164,8 +171,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -226,8 +232,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     private void showNewslettersForm() {
         try {
             FormField formField = mNewslettersForm.fields.get(0);
-            if (mNewsletterOptionsSaved != null) mNewsletterOptions = mNewsletterOptionsSaved;
-            else mNewsletterOptions = formField.newsletterOptions;
+            if (mNewsletterOptionsSaved != null)
+                mNewsletterOptions = mNewsletterOptionsSaved;
+            else
+                mNewsletterOptions = formField.newsletterOptions;
             generateNewsletterOptions(mNewsletterOptions, mNewsletterList);
             // Show form
             showFragmentContentContainer();
@@ -248,9 +256,11 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @param newsletterOptions
      * @param newsletterList
      */
-    private void generateNewsletterOptions(ArrayList<NewsletterOption> newsletterOptions, LinearLayout newsletterList) {
+    private void generateNewsletterOptions(ArrayList<NewsletterOption> newsletterOptions,
+            LinearLayout newsletterList) {
         for (int i = 0; i < newsletterOptions.size(); i++) {
-            View view = mInflater.inflate(R.layout.simple_email_notification_option, newsletterList, false);
+            View view = mInflater.inflate(R.layout.simple_email_notification_option,
+                    newsletterList, false);
             CheckBox checkBox = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox);
             checkBox.setTag("" + i);
             checkBox.setText(newsletterOptions.get(i).label);
@@ -273,13 +283,17 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         // Get view id
         int id = view.getId();
         // Next button
-        if (id == R.id.myaccount_newsletter_save) onClickSaveButton();
+        if (id == R.id.myaccount_newsletter_save)
+            onClickSaveButton();
         // Cancel button
-        else if (id == R.id.myaccount_newsletter_cancel) onClickCancelButton();
+        else if (id == R.id.myaccount_newsletter_cancel)
+            onClickCancelButton();
         // Retry button
-        else if (id == R.id.fragment_root_retry_button) onClickRetryButton();
+        else if (id == R.id.fragment_root_retry_button)
+            onClickRetryButton();
         // Unknown view
-        else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        else
+            Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
 
     /**
@@ -289,8 +303,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     private void onClickRetryButton() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
+                FragmentType.EMAIL_NOTIFICATION);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle,
+                FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -308,7 +324,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
                 if (option.isSubscrided) {
                     values.put(option.name, option.value);
                     isSubscribed = true;
-                } else values.put(option.name, UNSUBSCRIBE_VALUE);
+                } else
+                    values.put(option.name, UNSUBSCRIBE_VALUE);
             }
             // Trigger
             Log.d(TAG, "VALUES: " + values.toString());
@@ -398,7 +415,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         case SUBSCRIBE_NEWSLETTERS_EVENT:
             Log.d(TAG, "RECEIVED SUBSCRIBE_NEWSLETTERS_EVENT");
             // Show toast
-            Toast.makeText(getBaseActivity(), getString(R.string.newsletter_saved_message), Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseActivity(), getString(R.string.newsletter_saved_message),
+                    Toast.LENGTH_LONG).show();
             // Goto back
             getBaseActivity().onBackPressed();
             break;
@@ -442,7 +460,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             break;
         case SUBSCRIBE_NEWSLETTERS_EVENT:
             Log.d(TAG, "RECEIVED SUBSCRIBE_NEWSLETTERS_EVENT");
-            Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again),
+                    Toast.LENGTH_LONG).show();
             break;
         default:
             break;
@@ -458,7 +477,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     private void goBackWarningUser() {
         getBaseActivity().onBackPressed();
-        Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again),
+                Toast.LENGTH_LONG).show();
     }
 
     /*
@@ -467,8 +487,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * pt.rocket.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
+     * @see pt.rocket.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
     public void onRequestError(Bundle bundle) {
@@ -478,9 +497,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * pt.rocket.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle
-     * )
+     * @see pt.rocket.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle )
      */
     @Override
     public void onRequestComplete(Bundle bundle) {
@@ -490,8 +507,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged
+     * @see android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged
      * (android.widget.CompoundButton, boolean)
      */
     @Override

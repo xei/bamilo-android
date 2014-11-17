@@ -26,27 +26,27 @@ public class DialogGenericFragment extends DialogFragment {
 
     private static DialogGenericFragment dialogGenericFragment;
 
-    //private Boolean hasHeader;
-    
+    // private Boolean hasHeader;
+
     private Boolean mainText;
-    
+
     private Boolean secondaryText;
-    
+
     private String title;
-    
+
     private String content;
-    
+
     private String buttonTitle1;
-    
+
     private String buttonTitle2;
-    
+
     private String buttonTitle3;
-    
+
     private OnClickListener clickListener;
-    
-    
+
     /**
      * Create a new instance
+     * 
      * @param has_header
      * @param main_text
      * @param secondary_text
@@ -65,7 +65,7 @@ public class DialogGenericFragment extends DialogFragment {
         Log.d(TAG, "NEW INSTANCE: 2 Buttons");
 
         dialogGenericFragment = new DialogGenericFragment();
-        //dialogGenericFragment.hasHeader = has_header;
+        // dialogGenericFragment.hasHeader = has_header;
         dialogGenericFragment.mainText = main_text;
         dialogGenericFragment.secondaryText = secondary_text;
         dialogGenericFragment.title = title;
@@ -79,6 +79,7 @@ public class DialogGenericFragment extends DialogFragment {
 
     /**
      * Create a new instance
+     * 
      * @param has_header
      * @param main_text
      * @param secondary_text
@@ -98,7 +99,7 @@ public class DialogGenericFragment extends DialogFragment {
         Log.d(TAG, "NEW INSTANCE: 3 Buttons");
 
         DialogGenericFragment dialogGenericFragment = new DialogGenericFragment();
-        //dialogGenericFragment.hasHeader = has_header;
+        // dialogGenericFragment.hasHeader = has_header;
         dialogGenericFragment.mainText = main_text;
         dialogGenericFragment.secondaryText = secondary_text;
         dialogGenericFragment.title = title;
@@ -119,6 +120,7 @@ public class DialogGenericFragment extends DialogFragment {
 
     /*
      * (non-Javadoc)
+     * 
      * @see android.support.v4.app.DialogFragment#onCreate(android.os.Bundle)
      */
     @Override
@@ -127,10 +129,12 @@ public class DialogGenericFragment extends DialogFragment {
         setStyle(R.style.Theme_Jumia_Dialog_Blue_NoTitle, R.style.Theme_Jumia_Dialog_Blue_NoTitle);
         Log.i(TAG, "ON CREATE");
     }
-    
+
     /*
      * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     * 
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -148,6 +152,7 @@ public class DialogGenericFragment extends DialogFragment {
 
     /**
      * Dialog
+     * 
      * @param view
      */
     private void dialogWith2Buttons(View view) {
@@ -169,13 +174,16 @@ public class DialogGenericFragment extends DialogFragment {
         ((Button) view.findViewById(R.id.button2)).setText(buttonTitle2);
         ((Button) view.findViewById(R.id.button2)).setOnClickListener(clickListener);
         getActivity().getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
-        
-        if(title == null) view.findViewById(R.id.title_container).setVisibility(View.GONE);
-        else ((TextView) view.findViewById(R.id.dialog_title)).setText(title);
+
+        if (title == null)
+            view.findViewById(R.id.title_container).setVisibility(View.GONE);
+        else
+            ((TextView) view.findViewById(R.id.dialog_title)).setText(title);
     }
 
     /**
      * Dialog
+     * 
      * @param view
      */
     private void dialogWith3Buttons(View view) {
@@ -232,7 +240,9 @@ public class DialogGenericFragment extends DialogFragment {
      * @return
      */
     public static DialogGenericFragment createNoNetworkDialog(final Activity activity,
-            final android.view.View.OnClickListener retryClickListener, final boolean finishActivity) {
+            final android.view.View.OnClickListener retryClickListener,
+            final android.view.View.OnClickListener cancelClickListener,
+            final boolean finishActivity) {
 
         Log.d(TAG, "CREATE NO NETWORK DIALOG");
 
@@ -244,7 +254,7 @@ public class DialogGenericFragment extends DialogFragment {
                         .getString(
                                 R.string.cancel_label),
                 activity.getResources().getString(R.string.try_again),
-                
+
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -253,18 +263,21 @@ public class DialogGenericFragment extends DialogFragment {
                             if (finishActivity) {
                                 activity.finish();
                             } else {
-                                dialogGenericFragment.dismiss();
+                                if (cancelClickListener != null) {
+                                    cancelClickListener.onClick(v);
+                                }
                             }
 
                         } else if (id == R.id.button2) {
-                            retryClickListener.onClick(v);
+                            if (retryClickListener != null) {
+                                retryClickListener.onClick(v);
+                            }
                         }
                     }
                 });
-        
+
         return dialog;
     }
-
 
     /**
      * 
@@ -280,14 +293,14 @@ public class DialogGenericFragment extends DialogFragment {
                 R.string.server_error), activity, retryClickListener, finishActivity);
     }
 
-   /**
-    * 
-    * @param message
-    * @param activity
-    * @param retryClickListener
-    * @param finishActivity
-    * @return
-    */
+    /**
+     * 
+     * @param message
+     * @param activity
+     * @param retryClickListener
+     * @param finishActivity
+     * @return
+     */
     public static DialogGenericFragment createServerErrorDialog(String message,
             final Activity activity,
             final android.view.View.OnClickListener retryClickListener, boolean finishActivity) {
@@ -305,14 +318,13 @@ public class DialogGenericFragment extends DialogFragment {
      * @param finishActivity
      * @return
      */
-    public synchronized static DialogGenericFragment createErrorDialog(final String title, final String message,
+    public synchronized static DialogGenericFragment createErrorDialog(final String title,
+            final String message,
             final Activity activity,
             final android.view.View.OnClickListener retryClickListener, final boolean finishActivity) {
 
         Log.d(TAG, "CREATE ERROR DIALOG");
-        
-        
-        
+
         final DialogGenericFragment dialog = DialogGenericFragment.newInstance(true, true, false,
                 title, message, activity
                         .getString(R.string.cancel_label), activity.getString(R.string.try_again),
@@ -332,17 +344,17 @@ public class DialogGenericFragment extends DialogFragment {
                         }
                     }
                 });
-        
+
         return dialog;
     }
-    
-    public static DialogGenericFragment createClientErrorDialog(String message, final Activity activity,
+
+    public static DialogGenericFragment createClientErrorDialog(String message,
+            final Activity activity,
             final android.view.View.OnClickListener retryClickListener, boolean finishActivity) {
         return createErrorDialog(activity.getResources().getString(
                 R.string.client_error_title), message, activity, retryClickListener, finishActivity);
     }
-    
-    
+
     @Override
     public void onPause() {
         super.onPause();

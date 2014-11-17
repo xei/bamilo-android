@@ -24,8 +24,11 @@ import pt.rocket.helpers.account.GetChangePasswordHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.app.Dialog;
+import android.support.v4.app.DialogFragment;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
@@ -43,23 +46,23 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     private static final String TAG = LogTagHelper.create(MyAccountUserDataFragment.class);
 
     private static MyAccountUserDataFragment sMyAccountFragment;
-    
+
     private final static int PASSWORD_MINLENGTH = 6;
-    
+
     private View mainView;
-    
+
     private TextView firstNameText;
-    
+
     private TextView lastNameText;
-    
+
     private TextView emailText;
-    
+
     private EditText newPasswordText;
-    
+
     private EditText newPassword2Text;
-    
+
     private TextView passwordErrorHint;
-    
+
     /**
      * Get instance
      * 
@@ -75,7 +78,8 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
      * Empty constructor
      */
     public MyAccountUserDataFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET,
+                MyMenuItem.MY_PROFILE),
                 NavigationAction.MyAccount,
                 R.layout.my_account_user_data_fragment,
                 R.string.myaccount_userdata,
@@ -116,25 +120,23 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        
+
         mainView = view;
-        
-        if(null != JumiaApplication.CUSTOMER){
+
+        if (null != JumiaApplication.CUSTOMER) {
             setAppContentLayout();
             init();
-        } else {         
+        } else {
             showFragmentRetry(this);
         }
 
-        
-        
     }
-
+    
     private void init() {
-        
+
         // triggerCustomer();
 
-        if ( null != lastNameText ) {
+        if (null != lastNameText) {
             lastNameText.setText(JumiaApplication.CUSTOMER.getLastName());
             firstNameText.setText(JumiaApplication.CUSTOMER.getFirstName());
             emailText.setText(JumiaApplication.CUSTOMER.getEmail());
@@ -142,7 +144,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         } else {
             restartAllFragments();
         }
-        
+
     }
 
     /*
@@ -165,6 +167,10 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        
+        if (null != JumiaApplication.CUSTOMER) {
+            showFragmentContentContainer();
+        }
     }
 
     /*
@@ -199,7 +205,13 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
     }
-    
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "ON SAVE INSTANCE STATE");
+    }
+
     /**
      * Inflates this activity layout into the main template layout
      */
@@ -213,32 +225,33 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         lastNameText = (TextView) mainView.findViewById(R.id.clientLastName);
         lastNameText.setVisibility(View.GONE);
         emailText = (TextView) mainView.findViewById(R.id.clientEmail);
-        
+
         newPasswordText = (EditText) mainView.findViewById(R.id.typeNewPassword);
         newPassword2Text = (EditText) mainView.findViewById(R.id.retypeNewPassword);
         passwordErrorHint = (TextView) mainView.findViewById(R.id.passwordErrorHint);
         passwordErrorHint.setVisibility(View.GONE);
     }
-    
+
     /**
      * This method changes the user's password.
      */
     public void changePassword() {
-        
+
         String newPassword = newPasswordText.getText().toString();
         if (newPassword.length() < PASSWORD_MINLENGTH) {
-            displayErrorHint( getString(R.string.password_new_mincharacters));
+            displayErrorHint(getString(R.string.password_new_mincharacters));
             return;
         }
 
         String newPassword2 = newPassword2Text.getText().toString();
         if (!newPassword.equals(newPassword2)) {
-            displayErrorHint( getString( R.string.form_passwordsnomatch));
+            displayErrorHint(getString(R.string.form_passwordsnomatch));
             return;
         }
 
         /**
          * FIXME: CREATE A TICKET TO FIX THIS METHOD
+         * 
          * @author sergiopereira
          */
         ContentValues values = new ContentValues();
@@ -248,46 +261,47 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
                 newPassword2);
         values.put("Alice_Module_Customer_Model_PasswordForm[email]", emailText.getText()
                 .toString());
-        
 
         triggerChangePass(values);
-        
+
         displayErrorHint(null);
 
     }
 
-    private void displayErrorHint( String hint ) {
-        if ( hint != null) {
+    private void displayErrorHint(String hint) {
+        if (hint != null) {
             passwordErrorHint.setText(hint);
-            passwordErrorHint.setVisibility( View.VISIBLE );
+            passwordErrorHint.setVisibility(View.VISIBLE);
         } else {
             passwordErrorHint.setText("");
-            passwordErrorHint.setVisibility( View.GONE );
+            passwordErrorHint.setVisibility(View.GONE);
         }
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.d(TAG, "ON SUCCESS EVENT");
-        if(!isVisible()){
+        if (!isVisible()) {
             return true;
         }
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        
+
         switch (eventType) {
         case CHANGE_PASSWORD_EVENT:
             Log.d(TAG, "changePasswordEvent: Password changed with success");
-            if (null != getActivity() ) {
-                Toast.makeText(getActivity(), getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
+            if (null != getActivity()) {
+                Toast.makeText(getActivity(), getString(R.string.password_changed),
+                        Toast.LENGTH_SHORT).show();
             }
             finish();
-            
+
             return true;
         case GET_CUSTOMER:
             Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.CUSTOMER = customer;
-            Log.d(TAG, "CUSTOMER: " + customer.getLastName() + " " + customer.getFirstName() + " " + customer.getEmail());
-            if ( null != lastNameText ) {
+            Log.d(TAG, "CUSTOMER: " + customer.getLastName() + " " + customer.getFirstName() + " "
+                    + customer.getEmail());
+            if (null != lastNameText) {
                 lastNameText.setText(customer.getLastName());
                 firstNameText.setText(customer.getFirstName());
                 emailText.setText(customer.getEmail());
@@ -305,16 +319,16 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
 
     protected boolean onErrorEvent(Bundle bundle) {
         Log.i(TAG, "ON ERROR EVENT");
-        if(!isVisible()){
+        if (!isVisible()) {
             return true;
         }
-        
-        if(getBaseActivity().handleErrorEvent(bundle)){
+
+        if (getBaseActivity().handleErrorEvent(bundle)) {
             return true;
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        
+
         switch (eventType) {
         case CHANGE_PASSWORD_EVENT:
             Log.d(TAG, "changePasswordEvent: Password changed was not successful");
@@ -353,33 +367,38 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         int id = v.getId();
         hideKeyboard();
         // Cancel button
-        if (id == R.id.button_cancel) finish();
-        // Save button    
-        else if (id == R.id.button_save) changePassword();
+        if (id == R.id.button_cancel)
+            finish();
+        // Save button
+        else if (id == R.id.button_save)
+            changePassword();
         // Retry button
-        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
+        else if (id == R.id.fragment_root_retry_button)
+            onClickRetryButton();
     }
-    
+
     /**
      * Process the click on retry button.
+     * 
      * @author paulo
      */
     private void onClickRetryButton() {
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle,
+                FragmentController.ADD_TO_BACK_STACK);
     }
-    
+
     /**
      * 
      */
-    private void finish(){
+    private void finish() {
         getActivity().onBackPressed();
     }
-    
-    
+
     /**
      * TRIGGERS
+     * 
      * @author sergiopereira
      */
     /*-private void triggerCustomer(){
@@ -387,24 +406,25 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
         Bundle bundle = new Bundle();
         triggerContentEvent(new GetCustomerHelper(), bundle, mCallBack);
     }*/
-    
+
     private void triggerChangePass(ContentValues values) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, values);
         triggerContentEvent(new GetChangePasswordHelper(), bundle, mCallBack);
     }
-    
+
     /**
      * CALLBACK
+     * 
      * @author sergiopereira
      */
     IResponseCallback mCallBack = new IResponseCallback() {
-        
+
         @Override
         public void onRequestError(Bundle bundle) {
             onErrorEvent(bundle);
         }
-        
+
         @Override
         public void onRequestComplete(Bundle bundle) {
             onSuccessEvent(bundle);
