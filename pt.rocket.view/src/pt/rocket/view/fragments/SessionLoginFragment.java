@@ -507,7 +507,9 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 // Validate the next step
                 if (nextFragmentType != null) {
                     FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
-                    getBaseActivity().onSwitchFragment(nextFragmentType, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    Bundle agrs = new Bundle();
+                    agrs.putBoolean(TrackerDelegator.LOGIN_KEY, true);
+                    getBaseActivity().onSwitchFragment(nextFragmentType, agrs, FragmentController.ADD_TO_BACK_STACK);
                 } else {
                     getBaseActivity().onBackPressed();
                 }
@@ -547,7 +549,9 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
             if (nextFragmentType != null && baseActivity != null) {
                 Log.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
                 FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
-                baseActivity.onSwitchFragment(nextFragmentType, FragmentController.NO_BUNDLE,
+                Bundle agrs = new Bundle();
+                agrs.putBoolean(TrackerDelegator.LOGIN_KEY, true);
+                baseActivity.onSwitchFragment(nextFragmentType, agrs,
                         FragmentController.ADD_TO_BACK_STACK);
             } else {
                 Log.d(TAG, "NEXT STEP: BACK");

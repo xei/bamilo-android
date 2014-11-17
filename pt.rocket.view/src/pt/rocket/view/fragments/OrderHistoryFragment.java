@@ -176,19 +176,24 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
 
     
     private void setEmptyScreenState(boolean isToShow){
+        Log.e("ORDER","setEmptyScreenState:"+isToShow);
         showEmptyScreen = isToShow;
         showFragmentContentContainer();
         
         if(isToShow){
+
             noOrders.setVisibility(View.VISIBLE);
             if(BaseActivity.isTabletInLandscape(getBaseActivity())){
                 productsContainer.setVisibility(View.GONE);
                 ordersListView.setVisibility(View.GONE);
+                Log.e("ORDER","ordersListView: GONE 1");
                 productsLanscapeContainer.setVisibility(View.GONE);
             } else {
                 ordersListView.setVisibility(View.GONE);
+                Log.e("ORDER","ordersListView: GONE 2");
             }
         }else{
+            Log.e("ORDER","noOrders: GONE");
             noOrders.setVisibility(View.GONE);
             
             if(BaseActivity.isTabletInLandscape(getBaseActivity())){
@@ -420,6 +425,10 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
     private void triggerGetOrderList() {
         Bundle bundle = new Bundle();
         if(ordersList != null && ordersList.size() > 0){
+            if(JumiaApplication.CUSTOMER == null){
+                triggerLogin();
+                return;
+            }
             if(ordersAdapter == null){
                 ordersAdapter = new OrdersListAdapter(getActivity().getApplicationContext(), ordersList, this);
                 if(selectedProduct == -1 && BaseActivity.isTabletInLandscape(getBaseActivity())){

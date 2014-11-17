@@ -498,7 +498,7 @@ public class GTMManager {
 //        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_RATE_PRODUCT, GTMKeys.PRODUCTCATEGORY,GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(), GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand(), GTMKeys.RATINGPRICE, notPresent,
 //                GTMKeys.RATINGAPPEARANCE, notPresent,GTMKeys.RATINGQUALITY, notPresent, GTMKeys.PRODUCTRATING, product.getRatingsAverage());
         
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_RATE_PRODUCT, GTMKeys.PRODUCTCATEGORY,GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(),
+        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_RATE_PRODUCT,GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(),
                 GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand(), GTMKeys.PRODUCTRATING, product.getRatingsAverage());
         
         if(!TextUtils.isEmpty(category)) 

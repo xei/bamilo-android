@@ -13,6 +13,7 @@ import pt.rocket.framework.components.androidslidingtabstrip.SlidingTabLayout;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -28,7 +29,7 @@ import de.akquinet.android.androlog.Log;
  * @author Paulo Carvalho
  * 
  */
-public class MyOrdersFragment extends BaseFragment implements OnClickListener{
+public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(MyOrdersFragment.class);
 
@@ -39,18 +40,20 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener{
     private MyOrdersPagerAdapter mMyOrdersPagerAdapter;
 
     private SlidingTabLayout mMyOrdersPagerTabStrip;
-    
+
     public static int mPositionToStart = 0;
-    
+
     /**
      * Get instance
      * 
      * @return
      */
     public static MyOrdersFragment getInstance(Bundle bundle) {
-        if(bundle != null && bundle.containsKey(ConstantsIntentExtra.MY_ORDER_POS)){
-            mPositionToStart = bundle.getInt(ConstantsIntentExtra.MY_ORDER_POS);
-        }
+        if (bundle != null && bundle.containsKey(TrackerDelegator.LOGIN_KEY))
+            mPositionToStart = 1;
+        else
+            mPositionToStart = 0;
+
         mMyOrdersFragment = new MyOrdersFragment();
         return mMyOrdersFragment;
     }
@@ -103,19 +106,19 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        
-        // Get view pager 
+
+        // Get view pager
         mMyOrdersPager = (ViewPager) view.findViewById(R.id.my_orders_pager);
         // Get tab pager
         mMyOrdersPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.my_orders_pager_tab);
         mMyOrdersPagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
         // Validate the current view
         mMyOrdersPagerAdapter = (MyOrdersPagerAdapter) mMyOrdersPager.getAdapter();
-        if(mMyOrdersPagerAdapter != null && mMyOrdersPagerAdapter.getCount() > 0) {
+        if (mMyOrdersPagerAdapter != null && mMyOrdersPagerAdapter.getCount() > 0) {
             // Show the pre selection
             mMyOrdersPager.setCurrentItem(mPositionToStart, true);
         } else {
-            //Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
+            // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
             mMyOrdersPagerAdapter = new MyOrdersPagerAdapter(getChildFragmentManager());
             mMyOrdersPager.setAdapter(mMyOrdersPagerAdapter);
             mMyOrdersPagerTabStrip.setViewPager(mMyOrdersPager);
@@ -124,10 +127,11 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener{
         }
     }
 
-    public void setPagerPosition(int pos){
+    public void setPagerPosition(int pos) {
         mMyOrdersPager.setCurrentItem(pos, true);
-        
+
     }
+
     /*
      * (non-Javadoc)
      * 
@@ -181,19 +185,19 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener{
     public void onDestroyView() {
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
-        mPositionToStart = 0;
+        // mPositionToStart = 0;
     }
- 
-    
+
     /**
      * Class used as an simple pager adapter that represents each fragment
+     * 
      * @author Paulo Carvalho
      */
     private class MyOrdersPagerAdapter extends FragmentPagerAdapter {
-        
-        
+
         /**
          * Constructor
+         * 
          * @param fm
          * @author Paulo Carvalho
          */
@@ -203,6 +207,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener{
 
         /*
          * (non-Javadoc)
+         * 
          * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
          */
         @Override
@@ -215,23 +220,24 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener{
                 return OrderHistoryFragment.getInstance();
             default:
                 return TrackOrderFragment.getInstance(getArguments());
-                
+
             }
-            
 
         }
 
         /*
          * (non-Javadoc)
+         * 
          * @see android.support.v4.view.PagerAdapter#getCount()
          */
         @Override
         public int getCount() {
             return 2;
         }
-        
+
         /*
          * (non-Javadoc)
+         * 
          * @see android.support.v4.view.PagerAdapter#getPageTitle(int)
          */
         @Override
@@ -245,17 +251,15 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener{
                 return getString(R.string.my_orders_label).toUpperCase();
             }
         }
-        
-    }
-    
 
+    }
 
     @Override
     public void onClick(View v) {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Log.i(TAG, "onSaveInstanceState");
@@ -263,5 +267,5 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener{
         outState.putInt(ConstantsIntentExtra.MY_ORDER_POS, mPositionToStart);
 
     }
-    
+
 }

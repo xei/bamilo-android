@@ -84,6 +84,7 @@ public class TrackerDelegator {
     public static final String FILTER_COLOR = "color_family";
     public static final String TAX_KEY = "tax";
     public static final String SHIPPING_KEY = "shipping";
+    public static final String LOGIN_KEY = "source_login";
     
     private static final String TRACKING_PREFS = "tracking_prefs";
     private static final String SIGNUP_KEY_FOR_LOGIN = "signup_for_login";

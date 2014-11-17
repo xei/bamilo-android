@@ -17,6 +17,7 @@ import pt.rocket.framework.tracking.Ad4PushTracker;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.PreferenceListFragment.OnPreferenceAttachedListener;
 import pt.rocket.view.fragments.BaseFragment;
 import pt.rocket.view.fragments.CampaignsFragment;
@@ -286,7 +287,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     public void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack) {
         showWarningVariation(false);
-
+        
         // Validate fragment type
         switch (type) {
         case HOME:

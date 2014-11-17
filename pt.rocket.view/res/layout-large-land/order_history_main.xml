@@ -34,7 +34,7 @@
             android:text="@string/my_order_no_orders_label"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_s"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <ListView
             android:id="@+id/orders_list"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/no_orders_title"
             android:divider="@color/grey_light"
-            android:visibility="gone"
+            android:visibility="visible"
             android:dividerHeight="@null" />
         <!-- android:listSelector="@drawable/selector_listitem_rounded_margin_highlight" -->
         
