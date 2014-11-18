@@ -643,6 +643,11 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
 
     protected boolean onErrorEvent(Bundle bundle) {
         Log.d(TAG, "ON ERROR EVENT");
+        
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
 
         if (getBaseActivity().handleErrorEvent(bundle)) {
             return true;
