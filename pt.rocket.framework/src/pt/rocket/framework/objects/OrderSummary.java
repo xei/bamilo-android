@@ -46,6 +46,8 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 
 	private String mDiscountCouponCode;
 
+    private double mGrandTotalConverted;
+
 	/**
 	 * 
 	 */
@@ -78,6 +80,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
             jsonOrder = jsonObject.optJSONObject(RestConstants.JSON_ORDER_TAG);
             Log.d(TAG, "ORDER: " + jsonOrder.toString());
     		mGrandTotal = jsonOrder.optString(RestConstants.JSON_ORDER_GRAND_TOTAL_TAG);
+    		mGrandTotalConverted = jsonOrder.optDouble(RestConstants.JSON_ORDER_GRAND_TOTAL_CONVERTED_TAG);
     		mShippingAmount = jsonOrder.optString(RestConstants.JSON_ORDER_SHIP_AMOUNT_TAG);
     		mExtraCost = jsonOrder.optString(RestConstants.JSON_ORDER_EXTRA_PAYMENTS_TAG);
     		mInstallmentFees = jsonOrder.optString(RestConstants.JSON_ORDER_INSTALLMENT_FEES_TAG);
@@ -245,6 +248,14 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	 */
 	public Address getBillingAddress() {
 		return mBillingAddress;
+	}
+	
+	/**
+	 * Return the order value for tracking
+	 * @author sergiopereira
+	 */
+	public double getValueForTracking() {
+	    return mGrandTotalConverted;
 	}
 
 	/**
@@ -427,6 +438,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 		 dest.writeString(mPaymentMethod);
 		 dest.writeParcelable(mShippingAddress, 0);
 		 dest.writeParcelable(mBillingAddress, 0);
+		 dest.writeDouble(mGrandTotalConverted);
 	}
 
 	/**
@@ -446,6 +458,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 		 mPaymentMethod = in.readString();
 		 mShippingAddress = in.readParcelable(Address.class.getClassLoader());
 		 mBillingAddress = in.readParcelable(Address.class.getClassLoader());
+		 mGrandTotalConverted = in.readDouble();
 	}
 
 	/**

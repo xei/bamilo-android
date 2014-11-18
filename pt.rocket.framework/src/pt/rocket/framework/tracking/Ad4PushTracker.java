@@ -26,7 +26,6 @@ import com.ad4screen.sdk.A4S;
 import com.ad4screen.sdk.analytics.Cart;
 import com.ad4screen.sdk.analytics.Item;
 import com.ad4screen.sdk.analytics.Lead;
-import com.ad4screen.sdk.analytics.Purchase;
 
 import de.akquinet.android.androlog.Log;
 
@@ -49,8 +48,8 @@ public class Ad4PushTracker {
 
     private static final String VIEW_STATE = "view";
 
-    private static final String PURCHASE_NUMBER = "aggregatedNumberOfPurchases";
-    private static final String PURCHASE_VALUE = "aggregatedValueOfPurchases";
+    private static final String PURCHASES_COUNTER = "aggregatedNumberOfPurchases";
+    private static final String PURCHASES_SUM_VALUE = "aggregatedValueOfPurchases";
     private static final String WISHLIST_NUMBER = "aggregatedNumberOfWishlistItems";
 
     private static final String STATUS_IN_APP = "statusInApp";
@@ -75,15 +74,18 @@ public class Ad4PushTracker {
     private static final String PURCHASE_GRAND_TOTAL = "purchaseGrandTotal";
     private static final String CART_COUNTER = "cartStatus";
     private static final String CART_VALUE = "cartValue";
-    private static final String AVERAGE_CART_VALUE = "avgCartValue";
-    private static final String COUPON_STATUS = "couponStatus";
-    private static final String LASTORDER_DATE = "lastOrderDate";
+    private static final String CART_AVERAGE_VALUE = "avgCartValue";
+    private static final String PURCHASE_COUPON_STATUS = "couponStatus";
+    private static final String PURCHASE_LAST_DATE = "lastOrderDate";
     private static final String FAVORITES_CART_COUNT = "lastMovedFromFavtoCart";
-    private static final String PURCHASE_COUNTER_APP = "aggregatedNumberOfPurchase";
     private static final String MOST_VISITED_CATEGORY = "mostVisitedCategory";
     private static final String CAMPAIGN_PAGEVIEW_COUNT = "campaignPageViewCount";
     private static final String REVIEW_COUNT = "reviewCount";
-
+    private static final String PRE_INSTALL = Constants.INFO_PRE_INSTALL;
+    private static final String BRAND = Constants.INFO_BRAND;
+    private static final String SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
+    private static final String VERSION = Constants.INFO_BUNDLE_VERSION;
+    
     private static final String FILTER_BRAND = "filterBrand";
     private static final String FILTER_COLOR = "filterColor";
     private static final String FILTER_CATEGORY = "filterCategory";
@@ -278,7 +280,7 @@ public class Ad4PushTracker {
             mA4S.updateDeviceInfo(prefs);
     	}
     }
-
+    
     /**
      * Method used to set some info about device.
      * @see {@link Constants} used for device info.
@@ -287,9 +289,15 @@ public class Ad4PushTracker {
      */
     private void setDeviceInfo(Bundle info) {
     	if (null != mA4S && isEnabled) {
-    		Log.i(TAG, "SET DEVICE INFO: " + info.toString());
+    		// Get data from bundle
+    		Bundle bundle = new Bundle();
+    		bundle.putBoolean(PRE_INSTALL, info.getBoolean(Constants.INFO_PRE_INSTALL));
+    		bundle.putString(BRAND, info.getString(Constants.INFO_BRAND));
+    		bundle.putString(SIM_OPERATOR, info.getString(Constants.INFO_SIM_OPERATOR));
+    		bundle.putString(VERSION, info.getString(Constants.INFO_BUNDLE_VERSION));
     		// Set info
-    		mA4S.updateDeviceInfo(info);
+    		mA4S.updateDeviceInfo(bundle);
+            Log.i(TAG, "SET DEVICE INFO: " + bundle.toString());
     	}
     }
 
@@ -415,47 +423,50 @@ public class Ad4PushTracker {
         }
     }
 
-    public void trackCheckoutEnded(String transactionId, Double cartValue, Double average, int orderCount, String coupon) {
-        String currency = CurrencyFormatter.getCurrencyCode();
+    public void trackCheckoutEnded(String transactionId, Double grandTotal, Double cartValue, Double average, int orderCount, String coupon) {
+        
+        //String currency = CurrencyFormatter.getCurrencyCode();
+        String currency = CurrencyFormatter.EURO_CODE ;
+        
         if (isEnabled) {
-            Log.d(TAG, "trackBuyNowPurchase: cartValue = " + cartValue + " currency = " + currency);
+            Log.d(TAG, "trackBuyNowPurchase: grandTotal = " + grandTotal + " cartValue = " + cartValue + " currency = " + currency);
             SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
             String userStatus = settings.getString(STATUS_IN_APP, null);
-            int purchasesNumber = settings.getInt(PURCHASE_NUMBER, 0);
-            double ordersSum = settings.getFloat(PURCHASE_VALUE, 0);
-
-            ordersSum += cartValue;
-
+            
+            // Get purchases data
+            int purchasesNumber = settings.getInt(PURCHASES_COUNTER, 0);
+            double ordersSum = settings.getFloat(PURCHASES_SUM_VALUE, 0);
+            // Add the new purchase value
+            ordersSum += grandTotal;
+            // Save purchases data
             SharedPreferences.Editor editor = settings.edit();
             if (!STATUS_CUSTOMER.equals(userStatus)) {
                 userStatus = STATUS_CUSTOMER;
                 editor.putString(STATUS_IN_APP, userStatus);
             }
-
-            editor.putInt(PURCHASE_NUMBER, ++purchasesNumber);
-            editor.putFloat(PURCHASE_VALUE, (float) ordersSum);
+            editor.putInt(PURCHASES_COUNTER, ++purchasesNumber);
+            editor.putFloat(PURCHASES_SUM_VALUE, (float) ordersSum);
             editor.commit();
 
-            String currentDateandTime = getCurrentDateTime();
-
+            // Create bundle
             Bundle prefs = new Bundle();
             prefs.putString(ORDER_STATUS, CHECKOUT_FINISHED);
-
-            prefs.putString(LASTORDER_DATE, currentDateandTime);
-            prefs.putInt(PURCHASE_COUNTER_APP, purchasesNumber);
+            // Cart
             prefs.putInt(CART_COUNTER, orderCount);
             prefs.putDouble(CART_VALUE, cartValue);
-
-            prefs.putDouble(PURCHASE_GRAND_TOTAL, ordersSum);
+            prefs.putDouble(CART_AVERAGE_VALUE, average);
+            // Order
+            prefs.putDouble(PURCHASE_GRAND_TOTAL, grandTotal);
+            prefs.putString(PURCHASE_LAST_DATE, getCurrentDateTime());
+            prefs.putString(PURCHASE_COUPON_STATUS, coupon);
+            prefs.putDouble(PURCHASES_SUM_VALUE, ordersSum);
+            prefs.putInt(PURCHASES_COUNTER, purchasesNumber);
+            // Clean other values
             prefs.putInt(FAVORITES_CART_COUNT, 0);
-            prefs.putString(COUPON_STATUS, coupon);
-            prefs.putDouble(AVERAGE_CART_VALUE, average);
-
             mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK CHECKOUT ENDED: " + prefs.toString());
-
-            Purchase purchase = new Purchase(transactionId, CurrencyFormatter.getCurrencyCode(), cartValue);
-            mA4S.trackPurchase(purchase);
+            //Purchase purchase = new Purchase(transactionId, CurrencyFormatter.getCurrencyCode(), cartValue);
+            //mA4S.trackPurchase(purchase);
         }
     }
 
@@ -558,8 +569,7 @@ public class Ad4PushTracker {
             Bundle prefs = new Bundle();
             prefs.putInt(SHARED_PRODUCT_COUNT, shareNumber);
             mA4S.updateDeviceInfo(prefs);
-            
-            Log.d(TAG, "TRACK SHARE COUNTER: " + prefs.toString());
+            Log.i(TAG, "TRACK SHARE COUNTER: " + prefs.toString());
         }
     }
     
@@ -679,6 +689,18 @@ public class Ad4PushTracker {
             if(screen == TrackingPage.REGISTRATION) trackSignupStarted();
             else trackView(screens.get(screen));
         }
+    }
+    
+    /**
+     * Track the new cart.
+     * @param cartValue
+     * @author sergiopereira
+     */
+    public void trackCart(double cartValue) {
+        Bundle prefs = new Bundle();
+        prefs.putDouble(CART_VALUE, cartValue);
+        mA4S.updateDeviceInfo(prefs);
+        Log.i(TAG, "TRACK CART VALUE: "  + cartValue);
     }
 
     private String getCurrentDateTime() {

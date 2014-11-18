@@ -514,6 +514,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, mOrderFinish.getShippingAmount());
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, mOrderFinish.getTaxAmount());
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
+                bundle.putDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL, mOrderFinish.getValueForTracking());
                 getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK); 
             }
         } else {

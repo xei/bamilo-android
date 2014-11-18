@@ -1051,14 +1051,16 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         RocketImageLoader.getInstance().startProcessingQueue();
 
 
-        
-        final EventType eventType = (EventType) bundle
-                .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        /**
+         * Show the retry layout for ErrorCode.NO_NETWORK
+         * TODO: Update this method to use the new layout for NO_NETWORK_CONNECTION
+         * @author ricardo
+         */
+        final EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         if(eventType != null){
             ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
             if(errorCode == ErrorCode.NO_NETWORK){
                 showFragmentRetry(new OnClickListener() {
-                    
                     @Override
                     public void onClick(View v) {
                         getMoreProducts();

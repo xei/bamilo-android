@@ -769,7 +769,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Show the retry view from the root layout
      * @param listener button
      * @param retry message
-     * @author sergiopereira
+     * @author ricardo
      */
     protected void showFragmentRetry(OnClickListener listener, int retryMessage){
         showFragmentRetry(listener);

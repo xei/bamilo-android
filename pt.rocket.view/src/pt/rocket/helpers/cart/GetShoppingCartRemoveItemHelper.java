@@ -15,6 +15,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
+import pt.rocket.utils.TrackerDelegator;
 import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
 
@@ -79,6 +80,10 @@ public class GetShoppingCartRemoveItemHelper extends BaseHelper {
         JumiaApplication.INSTANCE.setCart(cart);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT);
+        
+        // Track the new cart value
+        TrackerDelegator.trackCart(cart.getPriceForTracking());
+        
         return bundle;
     }
 

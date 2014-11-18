@@ -65,6 +65,8 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
     private String orderTax;
     
     private String paymentMethod;
+
+    private double mGrandTotalValue;
     
     /**
      * Get instance
@@ -72,7 +74,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
      * @return
      */
     public static CheckoutThanksFragment getInstance(Bundle bundle) {
-        if (checkoutStep5Fragment == null)
+        //if (checkoutStep5Fragment == null)
             checkoutStep5Fragment = new CheckoutThanksFragment();
         //FIXME java.lang.IllegalStateException: Fragment already active
         checkoutStep5Fragment.setArguments(bundle);
@@ -89,7 +91,6 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
                 R.string.checkout_label,
                 KeyboardState.NO_ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_THANKS);
-        // ConstantsCheckout.CHECKOUT_THANKS
         this.setRetainInstance(true);
     }
 
@@ -114,12 +115,16 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         
-        if(getArguments() != null && getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING) &&
+        if(getArguments() != null && 
+                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING) &&
                 getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX) &&
-                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD)){
+                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD) &&
+                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL)){
+            
             orderShipping = getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING);
             orderTax = getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX);
             paymentMethod = getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD);
+            mGrandTotalValue = getArguments().getDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL);
         }
         
     }
@@ -266,6 +271,8 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
             params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);
             params.putString(TrackerDelegator.COUPON_KEY, JumiaApplication.INSTANCE.getCart().getCouponDiscount());
+            params.putInt(TrackerDelegator.CART_COUNT, JumiaApplication.INSTANCE.getCart().getCartCount());
+            params.putDouble(TrackerDelegator.GRAND_TOTAL, mGrandTotalValue);
                         
             if(!TextUtils.isEmpty(orderShipping) && !TextUtils.isEmpty(orderTax) && !TextUtils.isEmpty(paymentMethod)){
                 params.putString(TrackerDelegator.SHIPPING_KEY, orderShipping);

@@ -21,7 +21,8 @@ public class ConstantsCheckout {
     public static final String CHECKOUT_THANKS_ORDER_NR = "order_nr";  
     public static final String CHECKOUT_THANKS_ORDER_SHIPPING = "transaction_shipping"; 
     public static final String CHECKOUT_THANKS_ORDER_TAX = "transaction_tax"; 
-    public static final String CHECKOUT_THANKS_PAYMENT_METHOD = "payment_method"; 
+    public static final String CHECKOUT_THANKS_PAYMENT_METHOD = "payment_method";
+    public static final String CHECKOUT_THANKS_ORDER_TOTAL = "order_grand_total";
     
     public static final int CHECKOUT_ABOUT_YOU = -1;
     public static final int CHECKOUT_BILLING = -2;
