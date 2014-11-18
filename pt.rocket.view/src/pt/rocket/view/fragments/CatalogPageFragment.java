@@ -638,7 +638,10 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 mFilters = CatalogFragment.filterParams.getParcelable(PARAM_FILTERS);
                 
                 if(CatalogFragment.filterParams.containsKey(ConstantsIntentExtra.SEARCH_QUERY)){
+//                    parentFragment.setCatalogTitle(CatalogFragment.filterParams.getString(ConstantsIntentExtra.SEARCH_QUERY));
                     bundle.putString(GetProductsHelper.SEARCH_QUERY, CatalogFragment.filterParams.getString(ConstantsIntentExtra.SEARCH_QUERY));
+                    
+                    //CATEGORY URL FIX
                 }
                 
             }
@@ -926,6 +929,9 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 }
             }).start();
 
+            
+            Log.e("FITLER","Title:"+mTitle);
+            
             parentFragment.addProductsCollection(productsPage.getProductsMap(), mTitle, productsPage.getTotalProducts());
 
             mTotalProducts = totalProducts;

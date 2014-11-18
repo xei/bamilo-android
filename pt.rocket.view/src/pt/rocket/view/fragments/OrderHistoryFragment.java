@@ -176,7 +176,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
 
     
     private void setEmptyScreenState(boolean isToShow){
-        Log.e("ORDER","setEmptyScreenState:"+isToShow);
         showEmptyScreen = isToShow;
         showFragmentContentContainer();
         
@@ -186,14 +185,11 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
             if(BaseActivity.isTabletInLandscape(getBaseActivity())){
                 productsContainer.setVisibility(View.GONE);
                 ordersListView.setVisibility(View.GONE);
-                Log.e("ORDER","ordersListView: GONE 1");
                 productsLanscapeContainer.setVisibility(View.GONE);
             } else {
                 ordersListView.setVisibility(View.GONE);
-                Log.e("ORDER","ordersListView: GONE 2");
             }
         }else{
-            Log.e("ORDER","noOrders: GONE");
             noOrders.setVisibility(View.GONE);
             
             if(BaseActivity.isTabletInLandscape(getBaseActivity())){
@@ -284,6 +280,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
     
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.d(TAG, "ON SUCCESS EVENT");
+        mReceivedError = false;
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -373,7 +370,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
 
         BaseActivity baseActivity = getBaseActivity();
         if (baseActivity != null) {
-            baseActivity.handleSuccessEvent(bundle);
+            baseActivity.handleErrorEvent(bundle);
         }
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
@@ -403,10 +400,12 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
                 Log.w("ORDER","ERROR notVisible");
                 if(null != JumiaApplication.CUSTOMER){
                     Log.w("ORDER","ERROR CUSTOMER != null");
-                    setEmptyScreenState(true);
-                    showProductsLoading(false);
+                    mReceivedError = true;
+//                    setEmptyScreenState(true);
+//                    showProductsLoading(false);
                 }else{
                     Log.w("ORDER","ERROR CUSTOMER == null");
+                    mReceivedError = true;
                 }
             }
 
@@ -466,10 +465,16 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
                 if(null == JumiaApplication.CUSTOMER){
                     triggerLogin();
                 } else {
-                    if(showEmptyScreen){
-                        setEmptyScreenState(true);
-                        showProductsLoading(false);
+                    if(mReceivedError){
+                        mReceivedError = false;
+                        triggerGetOrderList();
+                    } else {
+                        if(showEmptyScreen){
+                            setEmptyScreenState(true);
+                            showProductsLoading(false);
+                        }  
                     }
+                    
                 }
             }
         } else {

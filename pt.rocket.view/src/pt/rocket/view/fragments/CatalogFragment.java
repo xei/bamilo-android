@@ -212,6 +212,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         Bundle arguments = getArguments();
 
         if (TextUtils.isEmpty(title)) {
+            Log.e("FILTER","ONCREATE title:"+title);
             title = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
         }
 
@@ -283,9 +284,11 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
         
         if (mTotalProducts > 0) {
+            Log.e("FILTER"," ON RESUME 1 setTitle:"+title);
             getBaseActivity().setTitleAndSubTitle(title,
                     " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
         } else {
+            Log.e("FILTER"," ON RESUME 2 setTitle:"+title);
             getBaseActivity().setTitle(title);
         }
 
@@ -310,6 +313,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         if (mCatalogPagerAdapter == null) {
             Log.d(TAG, "ON RESUME: ADAPTER IS NULL");
             Bundle params = new Bundle();
+            Log.e("FILTER"," ON RESUME 3 setTitle:"+title);
             params.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
             params.putString(ConstantsIntentExtra.CONTENT_URL, productsURL);
             params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
@@ -398,6 +402,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         outState.putParcelable(FILTER_VALUES_KEY, mCatalogFilterValues);
         outState.putParcelableArrayList(PRODUCTS_LIST, new ArrayList<Product>(mProductsMap.values()));
         outState.putInt(TOTAL_KEY, mTotalProducts);
+        Log.e("FILTER"," onSaveInstanceState 4 setTitle:"+title);
         outState.putString(TITLE_KEY, title);
 
         // save current page to be restored after a rotation
@@ -1041,6 +1046,11 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         return mProductsMap.get(sku);
     }
 
+    public void setCatalogTitle(String title){
+        Log.e("FILTER","setTitle:"+title);
+        getBaseActivity().setTitle(title);
+    }
+    
     public void addProductsCollection(Map<String, Product> products, String categoryTitle, int totalProductsCount) {
         title = categoryTitle;
         mTotalProducts = totalProductsCount;

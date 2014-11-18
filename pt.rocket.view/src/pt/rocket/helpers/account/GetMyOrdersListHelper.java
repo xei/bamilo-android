@@ -79,7 +79,7 @@ public class GetMyOrdersListHelper extends BaseHelper {
                 uriBuilder.appendQueryParameter(PER_PAGE, "" + totalCount);
             }
         }
-        Log.e(TAG, "REQUEST: " + uriBuilder.build().toString());
+        Log.w(TAG, "REQUEST: " + uriBuilder.build().toString());
 
         return uriBuilder.build().toString();
     }
@@ -144,16 +144,16 @@ public class GetMyOrdersListHelper extends BaseHelper {
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
         Log.d(TAG, "PARSE RESPONSE BUNDLE");
-        try {
-            if (bundle.containsKey(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY)) {
-                HashMap<String, List<String>> errorsmap = (HashMap<String, List<String>>) bundle
-                        .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-                bundle.putSerializable(Constants.BUNDLE_ERROR_KEY,
-                        errorsmap.get(RestConstants.JSON_ERROR_TAG).get(0));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            if (bundle.containsKey(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY)) {
+//                HashMap<String, List<String>> errorsmap = (HashMap<String, List<String>>) bundle
+//                        .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+//                bundle.putSerializable(Constants.BUNDLE_ERROR_KEY,
+//                        errorsmap.get(RestConstants.JSON_ERROR_TAG).get(0));
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
