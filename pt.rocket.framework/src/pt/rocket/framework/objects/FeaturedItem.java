@@ -112,55 +112,39 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
 		return jsonObject;
 	}
 
-	/**
+	/*
 	 * ########### Parcelable ###########
 	 */
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.os.Parcelable#describeContents()
-	 */
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+    protected FeaturedItem(Parcel in) {
+        id = in.readString();
+        url = in.readString();
+        name = in.readString();
+        imageUrl = in.readString();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
-	 */
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(id);
-		dest.writeString(url);
-		dest.writeString(name);
-		dest.writeValue(imageUrl);
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	/**
-	 * Parcel constructor
-	 * 
-	 * @param in
-	 */
-	protected FeaturedItem(Parcel in) {
-		id = in.readString();
-		url = in.readString();
-		name = in.readString();
-		imageUrl = in.readString();
-	}
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(url);
+        dest.writeString(name);
+        dest.writeString(imageUrl);
+    }
 
-	/**
-	 * Create parcelable
-	 */
-	public static final Parcelable.Creator<FeaturedItem> CREATOR = new Parcelable.Creator<FeaturedItem>() {
-		public FeaturedItem createFromParcel(Parcel in) {
-			return new FeaturedItem(in);
-		}
+    public static final Parcelable.Creator<FeaturedItem> CREATOR = new Parcelable.Creator<FeaturedItem>() {
+        @Override
+        public FeaturedItem createFromParcel(Parcel in) {
+            return new FeaturedItem(in);
+        }
 
-		public FeaturedItem[] newArray(int size) {
-			return new FeaturedItem[size];
-		}
-	};
+        @Override
+        public FeaturedItem[] newArray(int size) {
+            return new FeaturedItem[size];
+        }
+    };
 }

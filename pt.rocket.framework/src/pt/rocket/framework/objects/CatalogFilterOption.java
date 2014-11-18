@@ -209,7 +209,13 @@ public class CatalogFilterOption implements IJSONSerializable, Parcelable {
     public void setSectionBrand(Boolean bool) {
         this.isSectionBrand = bool;
     }
-
+    
+    @Override
+    public String toString() {
+        return "" + mId + "; " + mLabel + "; " + mValue + "; " + mCount + "; " + mHex + "; " + mImg + "; " + mMax + "; " + mMin + "; " + mInterval + "; "
+                + isSelected + "; " + isSectionBrand;
+    };
+    
     /**
      * ############### Parcelable ###############
      */
@@ -231,7 +237,6 @@ public class CatalogFilterOption implements IJSONSerializable, Parcelable {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
         String json = toJSON().toString();
         dest.writeString(json);
     }
@@ -241,21 +246,14 @@ public class CatalogFilterOption implements IJSONSerializable, Parcelable {
      * 
      * @param in
      */
-    private CatalogFilterOption(Parcel in) {
+    protected CatalogFilterOption(Parcel in) {
         String json = in.readString();
         try {
             initialize(new JSONObject(json));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
-
-    @Override
-    public String toString() {
-        return "" + mId + "; " + mLabel + "; " + mValue + "; " + mCount + "; " + mHex + "; " + mImg + "; " + mMax + "; " + mMin + "; " + mInterval + "; "
-                + isSelected + "; " + isSectionBrand;
-    };
 
     /**
      * The creator

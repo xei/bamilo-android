@@ -176,7 +176,7 @@ public class Ad4PushTracker {
     private void init() {
         // Create screen map
         if (isEnabled) {
-            Log.d(TAG, "Ad4PSUH Startup -> INITITALIZED");
+            Log.i(TAG, "Ad4PSUH Startup -> INITITALIZED");
             mA4S = A4S.get(mContext);
         }
     }
@@ -191,7 +191,7 @@ public class Ad4PushTracker {
      */
     public void startActivity(Activity activity) {
         if (null != mA4S && isEnabled) {
-            Log.d(TAG, "Started Activity -> " + activity.getLocalClassName());
+            Log.i(TAG, "Started Activity -> " + activity.getLocalClassName());
             mA4S.startActivity(activity);
         }
     }
@@ -202,7 +202,7 @@ public class Ad4PushTracker {
      */
     public void stopActivity(Activity activity) {
         if (null != mA4S && isEnabled) {
-            Log.d(TAG, "Stoped Activity -> " + activity.getLocalClassName());
+            Log.i(TAG, "Stoped Activity -> " + activity.getLocalClassName());
             mA4S.stopActivity(activity);
         }
     }
@@ -375,7 +375,7 @@ public class Ad4PushTracker {
      */
     public void trackSignupStarted() {
         if (isEnabled) {
-            Log.d(TAG, "TRACK SIGNUP: STARTED");
+            Log.i(TAG, "TRACK SIGNUP: STARTED");
             Bundle prefs = new Bundle();
             prefs.putString(REGISTRATION, REGISTRATION_STARTED);
             mA4S.updateDeviceInfo(prefs);
@@ -545,7 +545,7 @@ public class Ad4PushTracker {
      */
     public void trackAddToCart(String sku, double price, String name, String category) {
         if (isEnabled) {
-            Log.d(TAG, "trackAddToCart: productSKU = " + sku);
+            Log.i(TAG, "trackAddToCart: productSKU = " + sku);
             String currency = CurrencyFormatter.getCurrencyCode();
             Item productAdded = new Item(sku, name, category, currency, price, 1);
             Cart cart = new Cart("1", productAdded);
@@ -589,7 +589,7 @@ public class Ad4PushTracker {
             Bundle prefs = new Bundle();
             prefs.putInt(REVIEW_COUNT, shareNumber);
             mA4S.updateDeviceInfo(prefs);
-            Log.d(TAG, "TRACK REVIEW COUNTER: " + prefs.toString());
+            Log.i(TAG, "TRACK REVIEW COUNTER: " + prefs.toString());
         }
     }
 
@@ -608,7 +608,7 @@ public class Ad4PushTracker {
             prefs.putString(SHOP_COUNTRY, shopCountryCode);
             if (!TextUtils.isEmpty(countryCode)) prefs.putString(COUNTRY_CODE, countryCode);
             mA4S.updateDeviceInfo(prefs);
-            Log.d(TAG, "TRACK SHOP COUNTRY: " + prefs.toString());
+            Log.i(TAG, "TRACK SHOP COUNTRY: " + prefs.toString());
         }
     }
 

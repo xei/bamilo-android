@@ -19,7 +19,7 @@ import android.os.Parcelable;
  * @author Andre Lopes
  * 
  */
-public class FeaturedProduct extends FeaturedItem {
+public class FeaturedProduct extends FeaturedItem implements Parcelable {
 
 	private String price;
 
@@ -28,7 +28,6 @@ public class FeaturedProduct extends FeaturedItem {
 	 */
 	public FeaturedProduct() {
 		super();
-
 		this.price = "";
 	}
 
@@ -110,6 +109,11 @@ public class FeaturedProduct extends FeaturedItem {
 		return jsonObject;
 	}
 
+	
+    /*
+     * ########### Parcelable ###########
+     */
+	
 	@Override
 	public int describeContents() {
 		return 0;
@@ -118,8 +122,7 @@ public class FeaturedProduct extends FeaturedItem {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		super.writeToParcel(dest, flags);
-
-		dest.writeValue(price);
+		dest.writeString(price);
 	}
 
 	private FeaturedProduct(Parcel in) {

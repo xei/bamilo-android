@@ -16,184 +16,211 @@ import android.text.TextUtils;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Class used to fill the sugestions screen when no results are found after a search
+ * Class used to fill the sugestions screen when no results are found after a
+ * search
  * 
  * @author Andre Lopes
+ * @modified sergiopereira
  * 
  */
 public class FeaturedBox implements IJSONSerializable, Parcelable {
 
-	private static final String TAG = FeaturedBox.class.getSimpleName();
+    private static final String TAG = FeaturedBox.class.getSimpleName();
 
-	private String productsTitle;
-	private ArrayList<FeaturedItem> products;
-	private String brandsTitle;
-	private ArrayList<FeaturedItem> brands;
-	private String searchTips;
-	private String errorMessage;
-	private String noticeMessage;
+    private String productsTitle;
+    private ArrayList<FeaturedItem> products;
+    private String brandsTitle;
+    private ArrayList<FeaturedItem> brands;
+    private String searchTips;
+    private String errorMessage;
+    private String noticeMessage;
 
-	public FeaturedBox() {
+    public FeaturedBox() {
 
-	}
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-	 * )
-	 */
-	@Override
-	public boolean initialize(JSONObject metadataObject) throws JSONException {
-		Log.d(TAG, "FILTER: FEATURED BOX");
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * pt.rocket.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
+     * )
+     */
+    @Override
+    public boolean initialize(JSONObject metadataObject) throws JSONException {
+        Log.d(TAG, "FILTER: FEATURED BOX");
 
-		JSONObject data = metadataObject.getJSONObject(RestConstants.JSON_DATA_TAG);
-		if (data != null) {
-			//one List for all products
-			products = new ArrayList<FeaturedItem>();
+        JSONObject data = metadataObject.getJSONObject(RestConstants.JSON_DATA_TAG);
+        if (data != null) {
+            // one List for all products
+            products = new ArrayList<FeaturedItem>();
 
-			JSONArray featuredBoxObject = data.getJSONArray(RestConstants.JSON_FEATURED_BOX_TAG);
-			if (featuredBoxObject != null && featuredBoxObject.length() > 0) {
-				// get products only from the first list
-				JSONObject productsCategoryObject = featuredBoxObject.getJSONObject(0);
-				if (productsCategoryObject != null) {
-					// get title
-					if (TextUtils.isEmpty(productsTitle)) {
-						productsTitle = productsCategoryObject.optString(RestConstants.JSON_TITLE_TAG);
-					}
+            JSONArray featuredBoxObject = data.getJSONArray(RestConstants.JSON_FEATURED_BOX_TAG);
+            if (featuredBoxObject != null && featuredBoxObject.length() > 0) {
+                // get products only from the first list
+                JSONObject productsCategoryObject = featuredBoxObject.getJSONObject(0);
+                if (productsCategoryObject != null) {
+                    // get title
+                    if (TextUtils.isEmpty(productsTitle)) {
+                        productsTitle = productsCategoryObject.optString(RestConstants.JSON_TITLE_TAG);
+                    }
 
-					JSONArray productsObject = productsCategoryObject.getJSONArray(RestConstants.JSON_PRODUCTS_TAG);
-					if (productsObject != null && productsObject.length() > 0) {
-						// get products
-						for (int j = 0; j < productsObject.length(); j++) {
-							JSONObject productObject = productsObject.getJSONObject(j);
-							FeaturedProduct product = new FeaturedProduct();
+                    JSONArray productsObject = productsCategoryObject.getJSONArray(RestConstants.JSON_PRODUCTS_TAG);
+                    if (productsObject != null && productsObject.length() > 0) {
+                        // get products
+                        for (int j = 0; j < productsObject.length(); j++) {
+                            JSONObject productObject = productsObject.getJSONObject(j);
+                            FeaturedProduct product = new FeaturedProduct();
 
-							// only use products properly initialized
-							if (product.initialize(productObject)) {
-								products.add(product);
-							}
-						}
-					}
-				}
-			}
+                            // only use products properly initialized
+                            if (product.initialize(productObject)) {
+                                products.add(product);
+                            }
+                        }
+                    }
+                }
+            }
 
-			// one list for all brands
-			brands = new ArrayList<FeaturedItem>();
+            // one list for all brands
+            brands = new ArrayList<FeaturedItem>();
 
-			JSONArray featuredBrandboxObject = data.getJSONArray(RestConstants.JSON_FEATURED_BRANDBOX_TAG);
-			if (featuredBrandboxObject != null && featuredBrandboxObject.length() > 0) {
-				// get brands only from the first list
-				JSONObject brandsCategoryObject = featuredBrandboxObject.getJSONObject(0);
-				if (brandsCategoryObject != null) {
-					// get title from fist list of brands
-					if (TextUtils.isEmpty(brandsTitle)) {
-						brandsTitle = brandsCategoryObject.optString(RestConstants.JSON_TITLE_TAG);
-					}
+            JSONArray featuredBrandboxObject = data.getJSONArray(RestConstants.JSON_FEATURED_BRANDBOX_TAG);
+            if (featuredBrandboxObject != null && featuredBrandboxObject.length() > 0) {
+                // get brands only from the first list
+                JSONObject brandsCategoryObject = featuredBrandboxObject.getJSONObject(0);
+                if (brandsCategoryObject != null) {
+                    // get title from fist list of brands
+                    if (TextUtils.isEmpty(brandsTitle)) {
+                        brandsTitle = brandsCategoryObject.optString(RestConstants.JSON_TITLE_TAG);
+                    }
 
-					JSONArray brandsObject = brandsCategoryObject.getJSONArray(RestConstants.JSON_BRANDS_TAG);
-					if (brandsObject != null && brandsObject.length() > 0) {
-						// get brands
-						for (int j = 0; j < brandsObject.length(); j++) {
-							JSONObject brandObject = brandsObject.getJSONObject(j);
-							FeaturedBrand brand = new FeaturedBrand();
+                    JSONArray brandsObject = brandsCategoryObject.getJSONArray(RestConstants.JSON_BRANDS_TAG);
+                    if (brandsObject != null && brandsObject.length() > 0) {
+                        // get brands
+                        for (int j = 0; j < brandsObject.length(); j++) {
+                            JSONObject brandObject = brandsObject.getJSONObject(j);
+                            FeaturedBrand brand = new FeaturedBrand();
 
-							// only use brands properly initialized
-							if (brand.initialize(brandObject)) {
-								brands.add(brand);
-							}
-						}
-					}
-				}
-			}
+                            // only use brands properly initialized
+                            if (brand.initialize(brandObject)) {
+                                brands.add(brand);
+                            }
+                        }
+                    }
+                }
+            }
 
-			JSONObject searchTipsObject = data.getJSONObject(RestConstants.JSON_FEATURED_SEARCH_TIPS_TAG);
-			if (searchTipsObject != null) {
-				searchTips = searchTipsObject.getString(RestConstants.JSON_TEXT_TAG);
-			}
+            JSONObject searchTipsObject = data.getJSONObject(RestConstants.JSON_FEATURED_SEARCH_TIPS_TAG);
+            if (searchTipsObject != null) {
+                searchTips = searchTipsObject.getString(RestConstants.JSON_TEXT_TAG);
+            }
 
-			errorMessage = data.getString(RestConstants.JSON_ERROR_MESSAGE_TAG);
+            errorMessage = data.getString(RestConstants.JSON_ERROR_MESSAGE_TAG);
 
-			noticeMessage = data.getString(RestConstants.JSON_NOTICE_MESSAGE_TAG);
-		}
+            noticeMessage = data.getString(RestConstants.JSON_NOTICE_MESSAGE_TAG);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
-	 */
-	@Override
-	public JSONObject toJSON() {
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see pt.rocket.framework.objects.IJSONSerializable#toJSON()
+     */
+    @Override
+    public JSONObject toJSON() {
+        return null;
+    }
 
-	public String getProductsTitle() {
-		return productsTitle;
-	}
+    public String getProductsTitle() {
+        return productsTitle;
+    }
 
-	public ArrayList<FeaturedItem> getProducts() {
-		return products;
-	}
+    public ArrayList<FeaturedItem> getProducts() {
+        return products;
+    }
 
-	public String getBrandsTitle() {
-		return brandsTitle;
-	}
+    public String getBrandsTitle() {
+        return brandsTitle;
+    }
 
-	public ArrayList<FeaturedItem> getBrands() {
-		return brands;
-	}
+    public ArrayList<FeaturedItem> getBrands() {
+        return brands;
+    }
 
-	public String getSearchTips() {
-		return searchTips;
-	}
+    public String getSearchTips() {
+        return searchTips;
+    }
 
-	public String getErrorMessage() {
-		return errorMessage;
-	}
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 
-	public String getNoticeMessage() {
-		return noticeMessage;
-	}
+    public String getNoticeMessage() {
+        return noticeMessage;
+    }
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+    /*
+     * ########### Parcelable ###########
+     */
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(productsTitle);
-		dest.writeList(products);
-		dest.writeString(brandsTitle);
-		dest.writeList(brands);
-		dest.writeString(searchTips);
-		dest.writeString(errorMessage);
-		dest.writeString(noticeMessage);
-	}
+    protected FeaturedBox(Parcel in) {
+        productsTitle = in.readString();
+        if (in.readByte() == 0x01) {
+            products = new ArrayList<FeaturedItem>();
+            in.readList(products, FeaturedItem.class.getClassLoader());
+        } else {
+            products = null;
+        }
+        brandsTitle = in.readString();
+        if (in.readByte() == 0x01) {
+            brands = new ArrayList<FeaturedItem>();
+            in.readList(brands, FeaturedItem.class.getClassLoader());
+        } else {
+            brands = null;
+        }
+        searchTips = in.readString();
+        errorMessage = in.readString();
+        noticeMessage = in.readString();
+    }
 
-	private FeaturedBox(Parcel in) {
-		productsTitle = in.readString();
-		products = new ArrayList<FeaturedItem>();
-		in.readList(products, FeaturedProduct.class.getClassLoader());
-		brandsTitle = in.readString();
-		brands = new ArrayList<FeaturedItem>();
-		in.readList(brands, FeaturedBrand.class.getClassLoader());
-		searchTips = in.readString();
-		errorMessage = in.readString();
-		noticeMessage = in.readString();
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	public static final Parcelable.Creator<FeaturedBox> CREATOR = new Parcelable.Creator<FeaturedBox>() {
-		public FeaturedBox createFromParcel(Parcel in) {
-			return new FeaturedBox(in);
-		}
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(productsTitle);
+        if (products == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(products);
+        }
+        dest.writeString(brandsTitle);
+        if (brands == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(brands);
+        }
+        dest.writeString(searchTips);
+        dest.writeString(errorMessage);
+        dest.writeString(noticeMessage);
+    }
 
-		public FeaturedBox[] newArray(int size) {
-			return new FeaturedBox[size];
-		}
-	};
+    public static final Parcelable.Creator<FeaturedBox> CREATOR = new Parcelable.Creator<FeaturedBox>() {
+        @Override
+        public FeaturedBox createFromParcel(Parcel in) {
+            return new FeaturedBox(in);
+        }
+
+        @Override
+        public FeaturedBox[] newArray(int size) {
+            return new FeaturedBox[size];
+        }
+    };
+
 }
