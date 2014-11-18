@@ -521,34 +521,46 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         } else {
             mCallToOrderButton.setVisibility(View.GONE);
         }
-
-
-      
-      
-      if(BaseActivity.isTabletInLandscape(getBaseActivity())){
-          mProductFeaturesContainer = (RelativeLayout) mainView.findViewById(R.id.features_container);
-          mProductDescriptionContainer = (RelativeLayout) mainView.findViewById(R.id.description_container);
-          mProductFeaturesText = (TextView) mainView.findViewById(R.id.product_features_text);
-          mProductDescriptionText = (TextView) mainView.findViewById(R.id.product_description_text);
-          mProductFeaturesMore = (LinearLayout) mainView.findViewById(R.id.features_more_container);
-          mProductFeaturesMore.setOnClickListener(this);
-          mProductDescriptionMore = (LinearLayout) mainView.findViewById(R.id.description_more_container);
-          mProductDescriptionMore.setOnClickListener(this);
-          
-          // Title
-          mTitleText = (TextView) view.findViewById(R.id.product_detail_name);
-          mTitleText.setOnClickListener((OnClickListener) this);
-      } else {
-          
-          // Title
-          mTitleText = (TextView) view.findViewById(R.id.product_name);
-          mTitleText.setOnClickListener((OnClickListener) this);
-          // Button specification
-          view.findViewById(R.id.product_detail_specifications).setOnClickListener((OnClickListener) this);
-      }
-     
         
+        // Get title from portrait or landscape
+        mTitleText = (TextView) view.findViewById(R.id.product_name);
+        if(mTitleText == null) mTitleText = (TextView) view.findViewById(R.id.product_detail_name);
+        mTitleText.setOnClickListener((OnClickListener) this);
+       
+        // Get and set portrait views
+        checkPortraitLayout(view);
+        // Get and set landscape views
+        checkLanscapeLayout(view);
     }
+    
+    /**
+     * Get and set the portrait views
+     * @param view
+     * @author sergiopereira
+     */
+    private void checkPortraitLayout(View view) {
+        View specs = view.findViewById(R.id.product_detail_specifications);
+        if(specs != null) specs.setOnClickListener((OnClickListener) this);
+    }
+    
+    /**
+     * Get and set the landscape views
+     * @param view
+     * @author sergiopereira
+     */
+    private void checkLanscapeLayout(View view) {
+        // Get landscape views
+        mProductFeaturesContainer = (RelativeLayout) view.findViewById(R.id.features_container);
+        mProductDescriptionContainer = (RelativeLayout) view.findViewById(R.id.description_container);
+        mProductFeaturesText = (TextView) view.findViewById(R.id.product_features_text);
+        mProductDescriptionText = (TextView) view.findViewById(R.id.product_description_text);
+        mProductFeaturesMore = (LinearLayout) view.findViewById(R.id.features_more_container);
+        mProductDescriptionMore = (LinearLayout) view.findViewById(R.id.description_more_container);
+        // Set listeners
+        if(mProductDescriptionMore != null) mProductDescriptionMore.setOnClickListener(this);
+        if(mProductFeaturesMore != null) mProductFeaturesMore.setOnClickListener(this);
+    }    
+    
 
     private void startFragmentCallbacks() {
         // Log.i(TAG, "code1 starting callbacks!!!");
