@@ -279,7 +279,7 @@ public class GTMManager {
         Log.d(TAG, "gtmTrackAutoLogin"+" customer.getIdAsString():"+customer.getIdAsString()+" customer.getCreatedAt():"+customer.getCreatedAt()+" customer.getGender():"+customer.getGender());
 
       Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_AUTOLOGIN, GTMKeys.CUSTOMERID, customer.getIdAsString(),
-              GTMKeys.ACCOUNTCREATIONDATE, customer.getCreatedAt(), GTMKeys.USERGENDER, customer.getGender());
+              GTMKeys.ACCOUNTCREATIONDATE, customer.getCreatedAt(), GTMKeys.USERGENDER, customer.getGender().toString());
 
       sendEvent(message);
     }
