@@ -67,8 +67,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
     protected static boolean isOnAddingAllItemsToCart = false;
 
-    private static FavouritesFragment sFavouritesFragment;
-
     protected AddableToCartListAdapter mAddableToCartAdapter;
 
     protected ArrayList<AddableToCart> mAddableToCartList;
@@ -94,7 +92,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 R.layout.favourites,
                 R.string.favourites,
                 KeyboardState.NO_ADJUST_CONTENT);
-        // R.string.favourites
     }
 
     protected FavouritesFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action,
@@ -108,8 +105,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @return FavouritesFragment
      */
     public static FavouritesFragment getInstance() {
-        sFavouritesFragment = new FavouritesFragment();
-        return sFavouritesFragment;
+        return new FavouritesFragment();
     }
 
     /*
@@ -123,7 +119,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         Log.i(TAG, "ON CREATE");
         // Set the default value
         isOnAddingAllItemsToCart = false;
-        // Retain the instance to receive callbacks from add all to cart
+        // Retain the instance to receive callback from add all to cart
         setRetainInstance(true);
     }
 
@@ -419,15 +415,24 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      */
     protected void onClickAddToCart(View view) {
         Log.i(TAG, "ON CLICK ADD ITEM TO CART");
-        int position = Integer.parseInt(view.getTag().toString());
-        AddableToCart addableToCart = (Favourite) mAddableToCartList.get(position);
-        // Validate variation
-        if (hasSelectedVariation(addableToCart)) {
-            Log.i(TAG, "SELECTED VARIATION");
-            onAddItemToCart(addableToCart, position);
-        } else {
-            Log.i(TAG, "NOT SELECTED VARIATION");
-            mAddableToCartAdapter.notifyDataSetChanged();
+        try {
+            int position = Integer.parseInt(view.getTag().toString());
+            AddableToCart addableToCart = (Favourite) mAddableToCartList.get(position);
+            // Validate variation
+            if (hasSelectedVariation(addableToCart)) {
+                Log.i(TAG, "SELECTED VARIATION");
+                onAddItemToCart(addableToCart, position);
+            } else {
+                Log.i(TAG, "NOT SELECTED VARIATION");
+                mAddableToCartAdapter.notifyDataSetChanged();
+            }
+        } catch (IndexOutOfBoundsException e) {
+            Log.w(TAG, "WARNING: IOB ON ADD ITEM TO CART", e);
+            if(mAddableToCartAdapter != null) mAddableToCartAdapter.notifyDataSetChanged();
+            Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON ADD ITEM TO CART", e);
+            view.setEnabled(false);
         }
     }
 
