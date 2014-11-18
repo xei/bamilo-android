@@ -103,6 +103,7 @@ public class CategoryFilterOption extends CatalogFilterOption implements IJSONSe
 	 * @param in
 	 */
 	private CategoryFilterOption(Parcel in) {
+	    super(in);
         mUrl = in.readString();
         mNumber = in.readInt();
     }
