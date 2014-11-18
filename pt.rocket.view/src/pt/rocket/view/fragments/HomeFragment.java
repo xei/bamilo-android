@@ -66,8 +66,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
 
     private static final String PAGER_POSITION_KEY = "current_position";
 
-    private static HomeFragment sHomeFragment;
-
     private ViewPager mHomePager;
 
     private HomePagerAdapter mHomePagerAdapter;
@@ -75,8 +73,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     private SlidingTabLayout mHomePagerTabStrip;
 
     private String mCurrentMd5Collection;
-
-    private View mMainContent;
 
     private int mPagerSavedPosition = 0;
 
@@ -91,8 +87,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
      * @author sergiopereira
      */
     public static HomeFragment newInstance() {
-        sHomeFragment = new HomeFragment();
-        return sHomeFragment;
+        return new HomeFragment();
     }
 
     /**
@@ -148,8 +143,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         if(mLaunchTime == 0) mLaunchTime = System.currentTimeMillis();
-        // Get main content
-        mMainContent = view.findViewById(R.id.home_pager_content);
         // Get view pager
         mHomePager = (ViewPager) view.findViewById(R.id.home_pager);
         // Get tab pager
@@ -359,7 +352,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
      * @author sergiopereira
      */
     private void showContent() {
-        mMainContent.setVisibility(View.VISIBLE);
         mHomePager.setVisibility(View.VISIBLE);
         mHomePagerTabStrip.setVisibility(View.VISIBLE);
         showFragmentContentContainer();

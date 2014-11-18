@@ -103,7 +103,7 @@ public enum EventType {
         
 	GET_CUSTOMER("https:/customer/getdetails?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
 	
-	STORE_LOGIN,
+	//STORE_LOGIN,
 	
 	GET_MIN_ORDER_AMOUNT("http:/main/getstatic?key=api_cartminorderamount", RestContract.MAX_CACHE_TIME),
 	
