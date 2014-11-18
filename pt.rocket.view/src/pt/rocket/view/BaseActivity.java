@@ -1917,7 +1917,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             case TIME_OUT:
             case HTTP_STATUS:
             case NO_NETWORK:
-                // Remove dialog if exist
                 createNoNetworkDialog(eventType);
                 return true;
             case SERVER_IN_MAINTENANCE:
@@ -1954,11 +1953,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                                 }
                             }
                         });
-
+                
                 dialog.show(getSupportFragmentManager(), null);
                 return true;
             default:
-                // Remove dialog if exist
                 createNoNetworkDialog(eventType);
                 return true;
             }
@@ -1969,6 +1967,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     private void createNoNetworkDialog(final EventType eventType) {
+        // Remove dialog if exist
         if (dialog != null) {
             try {
                 dialog.dismiss();

@@ -25,6 +25,7 @@ import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.Direction;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.helpers.products.GetProductsHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -999,8 +1000,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         try {
             ProductsListAdapter adapter = (ProductsListAdapter) this.gridView.getAdapter();
             if (null != adapter) {
-                adapter.appendProducts(productsPage.getProducts());                
-                
+                adapter.appendProducts(productsPage.getProducts());
             }
         } catch (NullPointerException e) {
             Log.w(TAG, "NPE ON APPEND PRODUCTS: ");
@@ -1050,10 +1050,26 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     	
         RocketImageLoader.getInstance().startProcessingQueue();
 
-        if (getBaseActivity().handleErrorEvent(bundle)) {
-            return;
-        }
 
+        
+        final EventType eventType = (EventType) bundle
+                .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        if(eventType != null){
+            ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+            if(errorCode == ErrorCode.NO_NETWORK){
+                showFragmentRetry(new OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        getMoreProducts();
+                    }
+                }, R.string.no_connect_dialog_content);
+                return;
+            } else if (getBaseActivity().handleErrorEvent(bundle)) {
+                return;
+            }
+        }
+        
         // Validate the request was performed by Filter
         boolean hasFilter = false;
         if (mFilters != null && parentFragment != null) {

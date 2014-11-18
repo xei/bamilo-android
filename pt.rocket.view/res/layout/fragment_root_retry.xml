@@ -25,8 +25,9 @@
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
                 android:padding="@dimen/rounded_margin_mid"
-                android:text="@string/error_please_try_again" />
-        </LinearLayout>
+                android:text="@string/error_please_try_again"
+                android:id="@+id/fragment_root_retry_message"/>
+                    </LinearLayout>
 
         <LinearLayout style="@style/button_container" >
 
