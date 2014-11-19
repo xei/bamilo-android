@@ -1981,10 +1981,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                     public void onClick(View v) {
                         JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE
                                 .getRequestsRetryHelperList().get(eventType),
-                                JumiaApplication.INSTANCE
-                                        .getRequestsRetryBundleList().get(eventType),
+                                JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
                                 JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
-                        dialog.dismiss();
+                        if (dialog != null) dialog.dismiss();
                         dialog = null;
                     }
                 },
@@ -1992,7 +1991,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
                     @Override
                     public void onClick(View v) {
-                        dialog.dismiss();
+                        if (dialog != null) dialog.dismiss();
                         dialog = null;
                     }
                 },

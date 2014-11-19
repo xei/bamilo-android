@@ -60,7 +60,7 @@ public class GetShoppingCartChangeItemQuantityHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT);
         
         // Track the new cart value
-        TrackerDelegator.trackCart(cart.getPriceForTracking());
+        TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
         
         return bundle;
     }

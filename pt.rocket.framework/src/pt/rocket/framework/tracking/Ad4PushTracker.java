@@ -84,7 +84,7 @@ public class Ad4PushTracker {
     private static final String PRE_INSTALL = Constants.INFO_PRE_INSTALL;
     private static final String BRAND = Constants.INFO_BRAND;
     private static final String SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
-    private static final String VERSION = Constants.INFO_BUNDLE_VERSION;
+    //private static final String VERSION = Constants.INFO_BUNDLE_VERSION;
     
     private static final String FILTER_BRAND = "filterBrand";
     private static final String FILTER_COLOR = "filterColor";
@@ -294,7 +294,8 @@ public class Ad4PushTracker {
     		bundle.putBoolean(PRE_INSTALL, info.getBoolean(Constants.INFO_PRE_INSTALL));
     		bundle.putString(BRAND, info.getString(Constants.INFO_BRAND));
     		bundle.putString(SIM_OPERATOR, info.getString(Constants.INFO_SIM_OPERATOR));
-    		bundle.putString(VERSION, info.getString(Constants.INFO_BUNDLE_VERSION));
+    		// WARNING: Ad4push takes the info directly from the application
+    		// bundle.putString(VERSION, info.getString(Constants.INFO_BUNDLE_VERSION));
     		// Set info
     		mA4S.updateDeviceInfo(bundle);
             Log.i(TAG, "SET DEVICE INFO: " + bundle.toString());
@@ -360,7 +361,6 @@ public class Ad4PushTracker {
     private String statusInApp() {
         SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
         String userStatus = settings.getString(STATUS_IN_APP, null);
-
         if (TextUtils.isEmpty(userStatus)) {
             userStatus = STATUS_PROSPECT;
             SharedPreferences.Editor editor = settings.edit();
@@ -431,7 +431,6 @@ public class Ad4PushTracker {
         if (isEnabled) {
             Log.d(TAG, "trackBuyNowPurchase: grandTotal = " + grandTotal + " cartValue = " + cartValue + " currency = " + currency);
             SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
-            String userStatus = settings.getString(STATUS_IN_APP, null);
             
             // Get purchases data
             int purchasesNumber = settings.getInt(PURCHASES_COUNTER, 0);
@@ -440,10 +439,7 @@ public class Ad4PushTracker {
             ordersSum += grandTotal;
             // Save purchases data
             SharedPreferences.Editor editor = settings.edit();
-            if (!STATUS_CUSTOMER.equals(userStatus)) {
-                userStatus = STATUS_CUSTOMER;
-                editor.putString(STATUS_IN_APP, userStatus);
-            }
+            editor.putString(STATUS_IN_APP, STATUS_CUSTOMER);
             editor.putInt(PURCHASES_COUNTER, ++purchasesNumber);
             editor.putFloat(PURCHASES_SUM_VALUE, (float) ordersSum);
             editor.commit();
@@ -696,11 +692,12 @@ public class Ad4PushTracker {
      * @param cartValue
      * @author sergiopereira
      */
-    public void trackCart(double cartValue) {
+    public void trackCart(double cartValue, int cartCount) {
         Bundle prefs = new Bundle();
         prefs.putDouble(CART_VALUE, cartValue);
+        prefs.putInt(CART_COUNTER, cartCount);
         mA4S.updateDeviceInfo(prefs);
-        Log.i(TAG, "TRACK CART VALUE: "  + cartValue);
+        Log.i(TAG, "TRACK CART VALUE: "  + prefs.toString());
     }
 
     private String getCurrentDateTime() {

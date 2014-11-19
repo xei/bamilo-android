@@ -1197,9 +1197,9 @@ public class TrackerDelegator {
      * @param cartValue
      * @author sergiopereira
      */
-    public static void trackCart(double cartValue) { 
+    public static void trackCart(double cartValue, int cartCount) { 
         // Ad4
-        Ad4PushTracker.get().trackCart(cartValue);
+        Ad4PushTracker.get().trackCart(cartValue, cartCount);
     }
 
 //    private static void saveUtmParams(Context context, String key, String value) {

@@ -108,7 +108,7 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
         
         // Track the new cart value
-        TrackerDelegator.trackCart(cart.getPriceForTracking());
+        TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
         
         /**
          * Favourites 
