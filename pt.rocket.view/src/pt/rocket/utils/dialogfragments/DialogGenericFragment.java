@@ -149,6 +149,30 @@ public class DialogGenericFragment extends DialogFragment {
         }
         return view;
     }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.DialogFragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle arg0) {
+        /**
+         * FIXME: 
+         * Try fix: https://rink.hockeyapp.net/manage/apps/85532/app_versions/31/crash_reasons/21454355?type=crashes
+         */
+        //super.onSaveInstanceState(arg0);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onPause()
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        this.dismiss();
+    }
+    
 
     /**
      * Dialog
@@ -355,9 +379,5 @@ public class DialogGenericFragment extends DialogFragment {
                 R.string.client_error_title), message, activity, retryClickListener, finishActivity);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        this.dismiss();
-    }
+
 }
