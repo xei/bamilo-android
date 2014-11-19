@@ -103,13 +103,17 @@ public class CheckVersion {
         
         fm = activity.getSupportFragmentManager();
         
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                sDialog.show(fm, null);
-            }
-        }, 1000l);
+        try {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    sDialog.show(fm, null);
+                }
+            }, 1000l);
+        } catch (IllegalStateException e) {
+            Log.w(TAG, "WARNING: ISE ON SHOW VERSION DIALOG", e);
+        } 
+        
     }
 
     public static boolean runEvents(Context context) {

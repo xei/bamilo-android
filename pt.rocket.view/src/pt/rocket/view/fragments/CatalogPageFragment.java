@@ -350,10 +350,12 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser) {
-            trackViewCatalog();
-        } 
-        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) trackViewCatalog();
+        try {
+            super.setUserVisibleHint(isVisibleToUser);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON android.support.v4.app.Fragment.setUserVisibleHint");
+        }
     }
     
     
@@ -399,37 +401,29 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 
                 @Override
                 public void run() {
-                    ProductsListAdapter adapter = (ProductsListAdapter)gridView.getAdapter();
+                    
                     try {
+                        ProductsListAdapter adapter = (ProductsListAdapter) gridView.getAdapter();
                         if (null != adapter && null != adapter.getProductsList() && adapter.getProductsList().size() > 0 && !isDetached() && isVisible()) {
                             Bundle bundle = new Bundle();
                             bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
                             bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-                            if (JumiaApplication.CUSTOMER != null) {
-                                bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
-                            }                
+                            if (JumiaApplication.CUSTOMER != null) bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
                             bundle.putString(AdjustTracker.CATEGORY, mTitle);
-                            if(parentFragment != null){
-                                if(!TextUtils.isEmpty(categoryId) && TextUtils.isEmpty(CatalogFragment.categoryId))
-                                    bundle.putString(AdjustTracker.CATEGORY_ID, categoryId);
-                                else bundle.putString(AdjustTracker.CATEGORY_ID, CatalogFragment.categoryId);
-                                
-                                bundle.putString(AdjustTracker.TREE, CatalogFragment.categoryTree);    
-                            }
-                            
+                            if(!TextUtils.isEmpty(categoryId) && TextUtils.isEmpty(CatalogFragment.categoryId)) bundle.putString(AdjustTracker.CATEGORY_ID, categoryId);
+                            else bundle.putString(AdjustTracker.CATEGORY_ID, CatalogFragment.categoryId);
+                            bundle.putString(AdjustTracker.TREE, CatalogFragment.categoryTree);    
                             bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, adapter.getProductsList());
-                            
                             TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST_SORTED, getLoadTime(), false);
                             TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_LIST_SORTED, bundle);
-                        } else {
-                            trackHandler.postDelayed(this, 300);
                         }
+                        //else {
+                        //    trackHandler.postDelayed(this, 300);
+                        //}
                     } catch (Exception e) {
                         Log.e("TRACK","EXCEPTION");
                         e.printStackTrace();
                     }
-
-                    
                 }
             };
             trackHandler.postDelayed(tracRunnable, 300);

@@ -1557,16 +1557,20 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     }
 
     private void showVariantsDialog() {
-        getBaseActivity().showWarningVariation(false);
-        String title = getString(R.string.product_variance_choose);
-        dialogListFragment = DialogListFragment.newInstance(this, 
-                VARIATION_PICKER_ID, 
-                title,
-                mSimpleVariants, 
-                mSimpleVariantsAvailable, 
-                mSelectedSimple,
-                mCompleteProduct.getSizeGuideUrl());
-        dialogListFragment.show(getFragmentManager(), null);
+        try {
+            getBaseActivity().showWarningVariation(false);
+            String title = getString(R.string.product_variance_choose);
+            dialogListFragment = DialogListFragment.newInstance(this, 
+                    VARIATION_PICKER_ID, 
+                    title,
+                    mSimpleVariants, 
+                    mSimpleVariantsAvailable, 
+                    mSelectedSimple,
+                    mCompleteProduct.getSizeGuideUrl());
+            dialogListFragment.show(getFragmentManager(), null);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
+        }
     }
 
     /*
