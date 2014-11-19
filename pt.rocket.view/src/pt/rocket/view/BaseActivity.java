@@ -381,6 +381,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent e) {
+        if (keyCode == KeyEvent.KEYCODE_MENU && ShopSelector.getShopId() == null) {
+            // intercept menu button click when on first choose country, and return true on order to do nothing
+            return true;
+        }
+        return super.onKeyDown(keyCode, e);
+    }
+    
+    
     /*
      * (non-Javadoc)
      * 

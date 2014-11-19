@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.CatalogPagerAdapter;
@@ -139,6 +140,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     
     protected static Bundle filterParams;
     
+    protected static String firstCatalogRequest = "";
+    
     /**
      * Empty constructor
      */
@@ -161,7 +164,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         categoryTree = "";
         hasFilterApllied = false;
         filterParams = null;
-        
+        firstCatalogRequest = "";
         if(bundle != null && bundle.containsKey(ConstantsIntentExtra.CATEGORY_ID)){
             if(bundle.containsKey(ConstantsIntentExtra.CATEGORY_ID)){
                 categoryId = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
@@ -220,7 +223,11 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         }
 
         productsURL = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-
+        
+        if(TextUtils.isEmpty(firstCatalogRequest)){
+            firstCatalogRequest = productsURL;    
+        }
+        
         searchQuery = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
 
         navigationSource = arguments.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
@@ -751,7 +758,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
      * @author sergiopereira
      */
     public void onSubmitFilterValues(ContentValues filterValues) {
-        Log.e(TAG, "FILTER VALUES: ");
         // Tracking
         trackingCatalogFilters(filterValues);       
         // Save the old data to restore in case of error event
@@ -773,10 +779,11 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         }
         // Send the last saved catalog data that works
         else if (mSavedOldCatalogData != null) {
-            productsURL = mSavedOldCatalogData[0];
+//            productsURL = mSavedOldCatalogData[0];
+            productsURL = firstCatalogRequest;
             searchQuery = mSavedOldCatalogData[1];
             navigationPath = mSavedOldCatalogData[2];
-            title = mSavedOldCatalogData[3];
+//            title = mSavedOldCatalogData[3];
         }
 
         // Contains the new search query (Brand filter)
@@ -1050,7 +1057,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     }
 
     public void setCatalogTitle(String title){
-        Log.e("FILTER","setTitle:"+title);
         getBaseActivity().setTitle(title);
     }
     

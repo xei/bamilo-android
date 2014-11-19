@@ -76,7 +76,7 @@ public class GTMManager {
         mTagManager = TagManager.getInstance(context);
         isContainerAvailable = false;
 
-        mTagManager.setVerboseLoggingEnabled(true);
+//        mTagManager.setVerboseLoggingEnabled(true);
         
         dataLayer = TagManager.getInstance(context).getDataLayer();
         

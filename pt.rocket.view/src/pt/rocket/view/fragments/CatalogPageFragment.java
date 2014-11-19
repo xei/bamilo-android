@@ -343,8 +343,6 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
             }
             // Show
             invalidateData(args, forceReload);
-
-            
     }
     
 
@@ -509,7 +507,6 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     
                 mSwitchMD5 = switchMD5;
             } else {
-                Log.e(TAG, "ON RESUME -> UNKNOWN!");
             }
     
             if (forceRefresh) {
@@ -632,12 +629,12 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 
                 mFilters = CatalogFragment.filterParams.getParcelable(PARAM_FILTERS);
                 
-                if(CatalogFragment.filterParams.containsKey(ConstantsIntentExtra.SEARCH_QUERY)){
-//                    parentFragment.setCatalogTitle(CatalogFragment.filterParams.getString(ConstantsIntentExtra.SEARCH_QUERY));
+                if(CatalogFragment.filterParams.containsKey(ConstantsIntentExtra.CONTENT_URL))
+                    bundle.putString(GetProductsHelper.PRODUCT_URL, CatalogFragment.filterParams.getString(ConstantsIntentExtra.CONTENT_URL));
+                
+                if(CatalogFragment.filterParams.containsKey(ConstantsIntentExtra.SEARCH_QUERY))
                     bundle.putString(GetProductsHelper.SEARCH_QUERY, CatalogFragment.filterParams.getString(ConstantsIntentExtra.SEARCH_QUERY));
-                    
-                    //CATEGORY URL FIX
-                }
+                
                 
             }
             
@@ -894,9 +891,14 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         Log.d(TAG, "Location = " + location);
 
         // Validate title
-        if (TextUtils.isEmpty(mTitle)) {
+//        if (TextUtils.isEmpty(mTitle)) {
             mTitle = productsPage.getName();
-        }
+           
+            if(CatalogFragment.filterParams != null && CatalogFragment.filterParams.containsKey(ConstantsIntentExtra.SEARCH_QUERY) &&
+                    !TextUtils.isEmpty(CatalogFragment.filterParams.getString(ConstantsIntentExtra.SEARCH_QUERY)) ){
+                   mTitle = CatalogFragment.filterParams.getString(ConstantsIntentExtra.SEARCH_QUERY);
+            }
+//        }
 
         int totalProducts = productsPage == null ? 0 : productsPage.getTotalProducts();
         int numberProducts = (productsPage == null || productsPage.getProducts() == null) ? 0 : productsPage.getProducts().size();
@@ -924,9 +926,6 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 }
             }).start();
 
-            
-            Log.e("FITLER","Title:"+mTitle);
-            
             parentFragment.addProductsCollection(productsPage.getProductsMap(), mTitle, productsPage.getTotalProducts());
 
             mTotalProducts = totalProducts;

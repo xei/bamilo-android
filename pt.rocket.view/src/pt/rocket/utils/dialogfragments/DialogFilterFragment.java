@@ -339,7 +339,6 @@ public class DialogFilterFragment extends DialogFragment {
             Log.d(TAG, "CLICKED ON: DONE");
             // Create query
             mContentValues = createContentValues();
-            Log.d(TAG, "FILTER QUERY: " + mContentValues.toString());
             // Validate and send to catalog fragment
             mParent.onSubmitFilterValues(mContentValues);
             // Dismiss dialog
