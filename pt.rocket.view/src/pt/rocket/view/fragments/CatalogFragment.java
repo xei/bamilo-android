@@ -74,7 +74,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public static String requestTag = "CTLG_REQUEST";
     private static String PRODUCTS_LIST = "CTLG_PRODUCTS";
 
-    private static CatalogFragment sCatalogFragment;
     private CatalogPagerAdapter mCatalogPagerAdapter;
     private ViewPager mViewPager;
     private ViewPager mFeaturedProductsViewPager;
@@ -155,7 +154,14 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     public static CatalogFragment getInstance(Bundle bundle) {
         Log.i(TAG, "getInstance");
-        sCatalogFragment = new CatalogFragment();
+        CatalogFragment catalogFragment = new CatalogFragment();
+        
+        // Clean static data
+        categoryId = "";
+        categoryTree = "";
+        hasFilterApllied = false;
+        filterParams = null;
+        
         if(bundle != null && bundle.containsKey(ConstantsIntentExtra.CATEGORY_ID)){
             if(bundle.containsKey(ConstantsIntentExtra.CATEGORY_ID)){
                 categoryId = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
@@ -163,12 +169,9 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             if(bundle.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME)){
                 categoryTree = bundle.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
             }
-        } else {
-            categoryId = "";
-            categoryTree = "";
         }
             
-        return sCatalogFragment;
+        return catalogFragment;
     }
 
     @Override
@@ -391,9 +394,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         // Reset static values
         mCatalogFilter = null;
         mOldCatalogFilterState = null;
-        hasFilterApllied = false;
-        filterParams.clear();
-        // mCatalogFilterValues = null;
+        mCatalogPagerAdapter = null;
     }
 
     @Override

@@ -1041,7 +1041,15 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
 
         RocketImageLoader.getInstance().startProcessingQueue();
     }
-
+    /**
+     * Show continue
+     * @author sergiopereira
+     */
+    private void showContinueShopping() {
+        Log.i(TAG, "ON SHOW RETRY LAYOUT");
+        showFragmentEmpty(R.string.server_error, android.R.color.transparent, R.string.continue_shopping, this);
+    }
+    
     private void onErrorEvent(Bundle bundle) {
         Log.d(TAG, "ON ERROR EVENT");
     	
@@ -1059,6 +1067,9 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         final EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         if(eventType != null){
             ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+            
+            Log.d(TAG, "ERROR CODE: " + errorCode.toString());
+            
             if(errorCode == ErrorCode.NO_NETWORK){
                 showFragmentRetry(new OnClickListener() {
                     @Override
@@ -1066,6 +1077,9 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                         getMoreProducts();
                     }
                 }, R.string.no_connect_dialog_content);
+                return;
+            } else if (errorCode == ErrorCode.HTTP_STATUS) {
+                showContinueShopping();
                 return;
             } else if (getBaseActivity().handleErrorEvent(bundle)) {
                 return;
@@ -1122,13 +1136,35 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         mReceivedError = true;
     }
     
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.fragment_root_retry_button) {
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, getArguments(), FragmentController.ADD_TO_BACK_STACK);
-
-        }
+        // Case retry
+        if (id == R.id.fragment_root_retry_button) onClickRetryButton();
+        // Case continue
+        else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
+        // Case unknown
+        else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+    }
+    
+    /**
+     * Process the click in retry button
+     * @author sergiopereira
+     */
+    private void onClickRetryButton() {
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, getArguments(), FragmentController.ADD_TO_BACK_STACK);
+    }
+    
+    /**
+     * Process the click in continue shopping
+     * @author sergiopereira
+     */
+    private void onClickContinueButton() {
+        getBaseActivity().onBackPressed();
     }
     
     /**
