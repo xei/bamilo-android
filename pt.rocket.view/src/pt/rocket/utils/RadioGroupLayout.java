@@ -56,13 +56,16 @@ public class RadioGroupLayout extends LinearLayout {
     }
 
     public void setItems(ArrayList<String> items, int defaultSelected) {
-        Log.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = "
-                + defaultSelected);
+        Log.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = " + defaultSelected);
         mItems = items;
         mDefaultSelected = defaultSelected;
         updateRadioGroup();
     }
 
+    
+    /**
+     * TODO: Validate this method to use the R.layout.form_radiobutton and not button.setPadding()
+     */
     private void updateRadioGroup() {
         try {
             mGroup.removeAllViews();
@@ -70,19 +73,15 @@ public class RadioGroupLayout extends LinearLayout {
             e.printStackTrace();
         }
         
-
         int idx;
         for (idx = 0; idx < mItems.size(); idx++) {
             Log.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
-            RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, mGroup,
-                    false);
+            RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, mGroup, false);
             button.setId(idx);
             button.setText(mItems.get(idx));
-            if (idx == mDefaultSelected)
-                button.setChecked(true);
-            button.setPadding(0, 0, 100, 0);
-            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
-                    RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
+            if (idx == mDefaultSelected) button.setChecked(true);
+            button.setPadding(0, 0, 50, 0);
+            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
             mGroup.addView(button, idx, layoutParams);
         }
 

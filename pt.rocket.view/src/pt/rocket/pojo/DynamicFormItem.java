@@ -1064,18 +1064,15 @@ public class DynamicFormItem {
         ((ViewGroup) this.control).addView(dataContainer);
     }
 
-    private void buildRadioGroup(RelativeLayout dataContainer, RelativeLayout.LayoutParams params,
-            int controlWidth) {
+    private void buildRadioGroup(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         // data controls
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
 
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         if (this.entry.getDataSet().size() > 2
                 || this.parent.getForm().fields.get(0).getPaymentMethodsField() != null) {
@@ -1508,11 +1505,9 @@ public class DynamicFormItem {
     private void createRadioGroup(final int MANDATORYSIGNALSIZE,
             RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
 
-        RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context,
-                R.layout.form_radiolayout, null);
+        RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null);
 
-        radioGroup.setItems(new ArrayList<String>(this.entry.getDataSet().values()),
-                RadioGroupLayout.NO_DEFAULT_SELECTION);
+        radioGroup.setItems(new ArrayList<String>(this.entry.getDataSet().values()), RadioGroupLayout.NO_DEFAULT_SELECTION);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
@@ -1529,8 +1524,7 @@ public class DynamicFormItem {
         this.dataControl.setLayoutParams(params);
         dataContainer.addView(this.dataControl);
 
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = MANDATORYSIGNALMARGIN;
@@ -1539,8 +1533,7 @@ public class DynamicFormItem {
         this.mandatoryControl.setText("*");
         this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
-                : View.GONE);
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.mandatoryControl);
 
         ((ViewGroup) this.control).addView(dataContainer);
