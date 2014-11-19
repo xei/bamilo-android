@@ -476,7 +476,7 @@ public class JumiaApplication extends A4SApplication {
      * @return the cart
      */
     public ShoppingCart getCart() {
-        return cart;
+        return this.cart;
     }
 
     /**

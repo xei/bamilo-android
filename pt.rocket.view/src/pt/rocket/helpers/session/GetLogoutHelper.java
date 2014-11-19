@@ -61,7 +61,7 @@ public class GetLogoutHelper extends BaseHelper {
         Log.i(TAG,"parseResponseBundle");
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.LOGOUT_EVENT);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+        //bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
 //        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.LOGOUT_EVENT);
 //        Log.i("REQUEST", "event EVENT_TYPE response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
 //        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;

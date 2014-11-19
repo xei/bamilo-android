@@ -704,8 +704,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     public void updateNavigationMenu() {
         Log.d(TAG, "UPDATE SLIDE MENU");
-        NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_navigation);
+        NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
         if (slideMenuFragment != null)
             slideMenuFragment.onUpdateMenu();
     }
@@ -714,8 +713,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * Update the sliding menu
      */
     public void updateSlidingMenuCompletly() {
-        NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_navigation);
+        NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
         if (slideMenuFragment != null) {
             slideMenuFragment.onUpdateCart();
             slideMenuFragment.onUpdateMenu();
@@ -1346,8 +1344,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private void updateCartInfoInNavigation() {
         Log.d(TAG, "ON UPDATE CART IN NAVIGATION");
-        NavigationFragment navigation = (NavigationFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_navigation);
+        NavigationFragment navigation = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
         if (navigation != null)
             navigation.onUpdateCart();
         else
@@ -1426,8 +1423,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                                     @Override
                                     public void onClick(View v) {
                                         if (v.getId() == R.id.button2) {
-                                            LogOut.performLogOut(new WeakReference<Activity>(
-                                                    BaseActivity.this));
+                                            LogOut.performLogOut(new WeakReference<Activity>(BaseActivity.this));
                                         }
                                         dialogLogout.dismiss();
                                     }
@@ -1435,8 +1431,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                         dialogLogout.show(fm, null);
                     } else {
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_SIGN_IN);
-                        onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE,
-                                FragmentController.ADD_TO_BACK_STACK);
+                        onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     }
                     break;
                 case Favorite:
@@ -1861,18 +1856,21 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             break;
         case LOGOUT_EVENT:
             Log.i(TAG, "LOGOUT EVENT");
-            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,
-                    FragmentController.ADD_TO_BACK_STACK);
-            JumiaApplication.INSTANCE.setCart(null);
-            updateNavigationMenu();
+            /*
+             * NOTE: Others sign out methods are performed in {@link LogOut}.
+             */
+            // Track logout
+            TrackerDelegator.trackLogoutSuccessful();
+            // Goto Home
+            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            // Hide progress
             dismissProgress();
             break;
         case LOGIN_EVENT:
             JumiaApplication.INSTANCE.setLoggedIn(true);
             Bundle b = new Bundle();
             b.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
-            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), b,
-                    mIResponseCallback);
+            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), b, mIResponseCallback);
             break;
         default:
             break;

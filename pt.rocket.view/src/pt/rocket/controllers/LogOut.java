@@ -3,10 +3,10 @@ package pt.rocket.controllers;
 import java.lang.ref.WeakReference;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.rest.RestClientSingleton;
 import pt.rocket.helpers.session.GetLogoutHelper;
 import pt.rocket.interfaces.IResponseCallback;
-import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.BaseActivity;
 import android.app.Activity;
 import android.os.Bundle;
@@ -38,10 +38,11 @@ public class LogOut {
      * 
      * @param activity
      *            The activity where the logout is called from
+     *            
+     * TODO: Improve this method, if is being discarded the server response why we perform a request...
+     * 
      */
     public static void performLogOut(final WeakReference<Activity> activityRef) {
-//        final DialogProgressFragment dialog = DialogProgressFragment.newInstance();
-//        dialog.show(((FragmentActivity) activityRef.get()).getSupportFragmentManager(), null);
 
         BaseActivity baseActivity = (BaseActivity) activityRef.get();
         if (baseActivity != null) {
@@ -53,36 +54,38 @@ public class LogOut {
             @Override
             public void onRequestError(Bundle bundle) {
                 BaseActivity baseActivity = (BaseActivity) activityRef.get();
-
                 if (baseActivity != null) {
-                    baseActivity.dismissProgress();
-
-                    RestClientSingleton.getSingleton(baseActivity).clearCookieStore();
-                    JumiaApplication.INSTANCE.setLoggedIn(false);
-                    JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-                    TrackerDelegator.trackLogoutSuccessful();
-                    baseActivity.updateSlidingMenuCompletly();
-                    baseActivity.handleSuccessEvent(bundle);
+                    cleanCartData(baseActivity, bundle);
                 }
             }
 
             @Override
             public void onRequestComplete(Bundle bundle) {
                 BaseActivity baseActivity = (BaseActivity) activityRef.get();
-
                 if (baseActivity != null) {
-                    baseActivity.dismissProgress();
-
-                    JumiaApplication.INSTANCE.setLoggedIn(false);
-                    TrackerDelegator.trackLogoutSuccessful();
-                    JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-                    baseActivity.updateSlidingMenuCompletly();
-                    baseActivity.handleSuccessEvent(bundle);
+                    cleanCartData(baseActivity, bundle);
                 }
-                
-                //dialog.dismiss();
             }
         });
+    }
+    
+    /**
+     * Clear cart data from memory and other components.
+     * @param baseActivity
+     * @param bundle
+     * @author sergiopereira
+     */
+    private static void cleanCartData(BaseActivity baseActivity, Bundle bundle) {
+        // Clear cookies, cart, credentials
+        RestClientSingleton.getSingleton(baseActivity).clearCookieStore();
+        JumiaApplication.INSTANCE.setCart(new ShoppingCart());
+        JumiaApplication.INSTANCE.setLoggedIn(false);
+        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+        // Update layouts to clean cart info
+        baseActivity.updateCartInfo();
+        baseActivity.updateSlidingMenuCompletly();
+        // Inform parent activity
+        baseActivity.handleSuccessEvent(bundle);
     }
 
 }
