@@ -391,6 +391,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         // Reset static values
         mCatalogFilter = null;
         mOldCatalogFilterState = null;
+        hasFilterApllied = false;
+        filterParams.clear();
         // mCatalogFilterValues = null;
     }
 
