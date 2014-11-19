@@ -110,7 +110,7 @@
     <string name="continue_shopping">Continuer votre shopping!</string>
     <string name="buy_now">Acheter maintenant</string>
     <string name="add_to_shopping_cart">Ajouter au panier</string>
-    <string name="call_to_order">Appeler pour commander</string>
+    <string name="call_to_order">Appeler</string>
     <string name="shoppingcart_title">Mon panier</string>
     <string name="shoppingcart_dialog_title">Panier </string>
     <string name="checkout_button_text">Valider la commande</string>
