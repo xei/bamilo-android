@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_subject">Partage Daraz</string>
+    <string name="action_label_search_hint">Chercher sur Daraz</string>
+    <string name="jumia_international_title">Daraz International</string>
+    <string name="upgrade_optional_text">Des mises à jour sont disponibles pour un shopping encore plus simple sur Daraz! Mettez à jour votre application ici! </string>
+    <string name="splash_slogan">The only online shopping destination you will need!</string>
+</resources>
