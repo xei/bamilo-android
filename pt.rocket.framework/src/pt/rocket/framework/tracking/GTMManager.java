@@ -387,11 +387,10 @@ public class GTMManager {
     public void gtmTrackShare(String location, String productSKU, String category) {
         Log.i(TAG, " GTM TRACKING -> gtmTrackShare " + " categoy " + category  + " SHARELOCATION " + location+" productSku "+productSKU);
 
-
         Log.d(TAG, "gtmTrackShare"+" productSKU:"+productSKU);
 
         Map<String, Object> message = null;
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SHARE_PRODUCT, GTMKeys.PRODUCTSKU, productSKU);
+            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SHARE_PRODUCT, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.SHARELOCATION, GTMValues.PRODUCTDETAILPAGE);
 
             if(!TextUtils.isEmpty(category))
                 message.put( GTMKeys.PRODUCTCATEGORY, category);
