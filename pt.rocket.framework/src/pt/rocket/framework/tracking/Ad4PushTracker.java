@@ -447,6 +447,7 @@ public class Ad4PushTracker {
             // Create bundle
             Bundle prefs = new Bundle();
             prefs.putString(ORDER_STATUS, CHECKOUT_FINISHED);
+            prefs.putString(STATUS_IN_APP, STATUS_CUSTOMER);
             // Cart
             prefs.putInt(CART_COUNTER, orderCount);
             prefs.putDouble(CART_VALUE, cartValue);
