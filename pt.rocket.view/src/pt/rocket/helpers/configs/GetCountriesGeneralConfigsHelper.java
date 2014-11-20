@@ -215,6 +215,61 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                     stagingServers.add(liveCountryObject);
                     
                 }
+                
+                CountryObject liveCountryObject = new CountryObject();
+                liveCountryObject.setCountryName("Daraz DB Live");
+                liveCountryObject.setCountryUrl("www.daraz.com.bd");
+                liveCountryObject.setCountryFlag("");
+                liveCountryObject.setCountryIso("BDT");
+                liveCountryObject.setCountryForceHttps(false);
+                liveCountryObject.setCountryIsLive(true);
+                stagingServers.add(liveCountryObject);
+                
+                CountryObject liveCountryObject1 = new CountryObject();
+                liveCountryObject1.setCountryName("Daraz PK Live");
+                liveCountryObject1.setCountryUrl("www.daraz.pk");
+                liveCountryObject1.setCountryFlag("");
+                liveCountryObject1.setCountryIso("PKT");
+                liveCountryObject1.setCountryForceHttps(false);
+                liveCountryObject1.setCountryIsLive(true);
+                stagingServers.add(liveCountryObject1);
+                
+                CountryObject liveCountryObject2 = new CountryObject();
+                liveCountryObject2.setCountryName("Daraz MM Live");
+                liveCountryObject2.setCountryUrl("www.shop.com.mm");
+                liveCountryObject2.setCountryFlag("");
+                liveCountryObject2.setCountryIso("MMT");
+                liveCountryObject2.setCountryForceHttps(false);
+                liveCountryObject2.setCountryIsLive(true);
+                stagingServers.add(liveCountryObject2);
+                
+                CountryObject liveCountryObject3 = new CountryObject();
+                liveCountryObject3.setCountryName("Daraz DB Staging");
+                liveCountryObject3.setCountryUrl("alice-staging.daraz.com.bd");
+                liveCountryObject3.setCountryFlag("");
+                liveCountryObject3.setCountryIso("BDT");
+                liveCountryObject3.setCountryForceHttps(false);
+                liveCountryObject3.setCountryIsLive(true);
+                stagingServers.add(liveCountryObject3);
+                
+                CountryObject liveCountryObject4 = new CountryObject();
+                liveCountryObject4.setCountryName("Daraz PK Staging");
+                liveCountryObject4.setCountryUrl("alice-staging.daraz.pk");
+                liveCountryObject4.setCountryFlag("");
+                liveCountryObject4.setCountryIso("PKT");
+                liveCountryObject4.setCountryForceHttps(false);
+                liveCountryObject4.setCountryIsLive(true);
+                stagingServers.add(liveCountryObject4);
+                
+                CountryObject liveCountryObject5 = new CountryObject();
+                liveCountryObject5.setCountryName("Daraz MM Staging");
+                liveCountryObject5.setCountryUrl("alice-staging.shop.com.mm");
+                liveCountryObject5.setCountryFlag("");
+                liveCountryObject5.setCountryIso("PKT");
+                liveCountryObject5.setCountryForceHttps(false);
+                liveCountryObject5.setCountryIsLive(true);
+                stagingServers.add(liveCountryObject5);
+                
                 mCountries.addAll(stagingServers);
             }
         } catch (Exception e) {
