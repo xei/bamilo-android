@@ -60,9 +60,9 @@ public class CheckVersion {
     
     public static void init(Context context) {
         // Get if is enabled
-        isEnabled  = context.getResources().getBoolean(R.bool.check_version_enabled); // XXX
+        isEnabled  = context.getResources().getBoolean(R.bool.check_version_enabled);
         // Validate flag
-        if(!isEnabled) {
+        if(isEnabled) {
             Log.i(TAG, "CHECK VERSION: ENABLED");
             sLastUpdate = 0;
             runEvents(context);
