@@ -176,7 +176,10 @@
             android:layout_height="wrap_content"
             android:fontFamily="roboto_light"
             android:text="@string/fallback_maintenance_text_bottom"
+            android:layout_marginLeft="@dimen/margin_20px"
+            android:layout_marginRight="6sp"
             android:textColor="#000000"
+            android:gravity="center"
             android:textSize="@dimen/text_s" />
     </LinearLayout>
 
