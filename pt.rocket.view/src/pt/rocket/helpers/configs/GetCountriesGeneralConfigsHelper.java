@@ -244,7 +244,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                 stagingServers.add(liveCountryObject2);
                 
                 CountryObject liveCountryObject3 = new CountryObject();
-                liveCountryObject3.setCountryName("Daraz DB Staging");
+                liveCountryObject3.setCountryName("Daraz BD Staging");
                 liveCountryObject3.setCountryUrl("alice-staging.daraz.com.bd");
                 liveCountryObject3.setCountryFlag("");
                 liveCountryObject3.setCountryIso("BDT");
