@@ -7,17 +7,23 @@ Given I call the variables
 Scenario: Choose Country
 Given I select the country
 
+@login_2.1_1
 Scenario: New Checkbox to remember user email
 Given I wait to see the home
 When I click on the overflow button
+* I wait for 1 seconds
 And I choose the Sign In option
+* I wait for 1 seconds
 Then I should see login screen
 And I should see the remember user email checkbox
 
+@login_2.1_2
 Scenario: Login with checkbox unchecked
 Given I wait to see the home
 When I click on the overflow button
+* I wait for 1 seconds
 And I choose the Sign In option
+* I wait for 1 seconds
 Then I should see login screen
 When I click on remember user email
 And I enter a valid username
@@ -30,15 +36,19 @@ When I press Logout Button
 And I press Yes
 Then I wait to see the home
 When I click on the overflow button
+* I wait for 1 seconds
 Then I should see the login button 
 When I choose the Sign In option
+* I wait for 1 seconds
 Then I should see login screen
 And I should not see email
 
 Scenario: Login with checkbox checked
 Given I wait to see the home
 When I click on the overflow button
+* I wait for 1 seconds
 And I choose the Sign In option
+* I wait for 1 seconds
 Then I should see login screen
 And I should see the remember user email checkbox
 And I enter a valid username
@@ -51,8 +61,10 @@ When I press Logout Button
 And I press Yes
 Then I wait to see the home
 When I click on the overflow button
+* I wait for 1 seconds
 Then I should see the login button 
 When I choose the Sign In option
+* I wait for 1 seconds
 Then I should see login screen
 And I should see email
 

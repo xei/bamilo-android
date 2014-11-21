@@ -21,6 +21,7 @@ def initvars
   @venture_kenya= "Kenya"
   @venture_uganda= "Uganda"
   @venture_ghana= "Ghana"
+  @venture_camerron= "Cameroon"
   
   @username="testcalabash@mailinator.com"
   @password="password1"
@@ -81,7 +82,8 @@ def initvars
   
   @country_choose="Choose Country"
   
-  
+  @sound = "Sound"
+  @vibrate = "Vibrate"
   
   #initializes the country variables
   case $country.to_s
@@ -89,7 +91,7 @@ def initvars
     when "ke"
     @venture_name= @venture_kenya
 
-    @sign_in="Sign In"
+    @sign_in="Sign"
     @wrong_username="faketester@tester.tt"
     @invalidsearch= "addddd" 
     @search_p= "nikon" 
@@ -224,6 +226,14 @@ def initvars
     @track_my_order = "Track My Order"
     @number_items="Items"
     @remember_my_email= "Remember my email"
+    
+    @add_new_address = "Add new address"
+    @size= "Size"
+    @call_to_order = "Call to order"
+    @add_all_items_to_cart = "Add All Items to Cart"
+    @continue_shopping = "Continue Shopping"
+    @signup = "Signup"
+    @female = "female"
     
     ##### Ivory Coast ####################################### IC ##############################################################################          
     when "ic"
@@ -369,6 +379,14 @@ def initvars
     @track_my_order = "Suivi de commande"
     @number_items="Articles"
     @remember_my_email= "Remember my email"
+    
+    @add_new_address = "Add new address"
+    @size= "Size"
+    @call_to_order = "Call to order"
+    @add_all_items_to_cart = "Add All Items to Cart"
+    @continue_shopping = "Continue Shopping"
+    @signup = "Signup"
+    @female = "female"
       
     ##### Morocco ########################################### MA ##############################################################################
     when "ma"
@@ -512,6 +530,14 @@ def initvars
     @track_my_order = "Suivre la commande"
     @number_items="Articles"
     @remember_my_email= "Remember my email"
+    
+    @add_new_address = "Add new address"
+    @size= "Size"
+    @call_to_order = "Call to order"
+    @add_all_items_to_cart = "Add All Items to Cart"
+    @continue_shopping = "Continue Shopping"
+    @signup = "Signup"
+    @female = "female"
         
     ##### Nigeria ########################################### NG ##############################################################################
     when "ng"
@@ -651,6 +677,14 @@ def initvars
     @number_items="Items"
     @remember_my_email= "Remember my email"
     
+    @add_new_address = "Add new address"
+    @size= "Size"
+    @call_to_order = "Call to order"
+    @add_all_items_to_cart = "Add All Items to Cart"
+    @continue_shopping = "Continue Shopping"
+    @signup = "Signup"
+    @female = "female"
+    
     ##### Egypt ############################################# EG ##############################################################################
     when "eg"
     @venture_name= @venture_egypt
@@ -789,6 +823,14 @@ def initvars
     @number_items="Items"
     @remember_my_email= "Remember my email"
     
+    @add_new_address = "Add new address"
+    @size= "Size"
+    @call_to_order = "Call to order"
+    @add_all_items_to_cart = "Add All Items to Cart"
+    @continue_shopping = "Continue Shopping"
+    @signup = "Signup"
+    @female = "female"
+    
     ##### Uganda  ############################################ UG ##############################################################################
     when "ug"
     @venture_name= @venture_uganda
@@ -802,7 +844,7 @@ def initvars
     @myaccount="My Account"
     @myinfo="User Data"
     @categories="CATEGORIES"
-    @categoryfashion="Tablets"
+    @categoryfashion="Mobile"
     @choose_country="Choose Country"
     @order_status="Order Status"
     
@@ -852,7 +894,7 @@ def initvars
     @second_tip="Tap to open the product gallery"
     @specification="Specification"
     @please_choose="Please choose"
-    @search_v="flip flops"
+    @search_v="sandal"
     @product_features="Product Features"
     @product_description="Product Description"
     @write_review="Write a Review"
@@ -926,6 +968,14 @@ def initvars
     @track_my_order = "Track My Order"
     @number_items="Items"
     @remember_my_email= "Remember my email"
+    
+    @add_new_address = "Add new address"
+    @size= "Size"
+    @call_to_order = "Call to order"
+    @add_all_items_to_cart = "Add All Items to Cart"
+    @continue_shopping = "Continue Shopping"
+    @signup = "Signup"
+    @female = "female"
     
     ##### Ghana   ############################################ GH ##############################################################################
     when "gh"
@@ -1064,5 +1114,13 @@ def initvars
     @track_my_order = "Track My Order"
     @number_items="Items"
     @remember_my_email= "Remember my email"
+    
+    @add_new_address = "Add new address"
+    @size= "Size"
+    @call_to_order = "Call to order"
+    @add_all_items_to_cart = "Add All Items to Cart"
+    @continue_shopping = "Continue Shopping"
+    @signup = "Signup"
+    @female = "female"
   end
 end
