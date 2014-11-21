@@ -3,6 +3,7 @@
     android:id="@+id/fallback_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     android:background="@drawable/bckgrndfallback" >
 
     <LinearLayout
@@ -102,6 +103,7 @@
         android:layout_below="@id/fallback_country_container"
         android:layout_marginTop="10.56dp"
         android:ellipsize="marquee"
+        android:fontFamily="roboto_regular"
         android:gravity="center_horizontal"
         android:singleLine="true"
         android:text="@string/fallback_best"
@@ -165,14 +167,14 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/fallback_button_container"
         android:layout_marginBottom="26.4dp"
-        android:layout_marginLeft="26.4dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal" >
 
         <org.holoeverywhere.widget.TextView
             android:id="@+id/fallback_country_bottom_text2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="6.6dp"
+            android:fontFamily="roboto_light"
             android:text="@string/fallback_maintenance_text_bottom"
             android:textColor="#000000"
             android:textSize="@dimen/text_s" />
@@ -183,7 +185,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/fallback_options_bottom_container"
-        android:layout_marginLeft="26.4dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:weightSum="2" >
 
@@ -191,8 +193,7 @@
             android:id="@+id/fallback_options_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="6.6dp"
-            android:fontFamily="roboto_bold"
+            android:fontFamily="roboto_regular"
             android:text="@string/fallback_fashion"
             android:textColor="#000000"
             android:textSize="@dimen/text_s" />
@@ -201,10 +202,11 @@
             android:id="@+id/fallback_country_bottom_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="6.6dp"
+            android:fontFamily="roboto_light"
             android:text="@string/fallback_maintenance_text"
             android:textColor="#000000"
-            android:textSize="13.2sp" />
-    </LinearLayout>
+            android:layout_marginLeft="@dimen/margin_10px"
+            android:textSize="@dimen/text_s" />
+    	</LinearLayout>
 
 </RelativeLayout>
