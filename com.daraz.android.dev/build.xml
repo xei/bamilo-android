@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="DarazDev" default="help">
 
-    <!-- The local.properties file is created and updated by the 'android' tool.
+   <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
          Version Control Systems. -->
     <property file="local.properties" />
@@ -56,20 +56,12 @@
     
     
 	<!-- Manual increment of version code and version name -->
-	    <replaceregexp match="android:versionCode=&quot;10108&quot;" 
-        		replace="android:versionCode = &quot;10${version.code}&quot;" flags="g"> 
+	    <replaceregexp match="android:versionCode=&quot;(.*)&quot;" 
+        		replace="android:versionCode = &quot;${version.code}&quot;" flags="g"> 
         <fileset dir="${basedir}">
         	<include name="AndroidManifest.xml"/>
     	</fileset>
     	</replaceregexp>
-    	
-<!-- 	    <replaceregexp match="android:versionName=&quot;1.0.2&quot;"  -->
-<!--         		replace="android:versionName = &quot;${version.name}&quot;" flags="g">  -->
-<!--         <fileset dir="${basedir}"> -->
-<!--         	<include name="AndroidManifest.xml"/> -->
-<!--     	</fileset> -->
-<!--     	</replaceregexp> -->
-
 
     <!-- The project.properties file is created and updated by the 'android'
          tool, as well as ADT.

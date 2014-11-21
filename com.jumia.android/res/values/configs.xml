@@ -13,9 +13,6 @@
     <integer name="ga_dispatchPeriod">0</integer>
     -->
     
-    <!-- BUG SENSE -->
-    <string name="bugsense_apikey">753c3181</string>
-    
     <!-- HOCKEY APP -->
     <string name="hockeyapp_token">53cd6b0fa3c881475e0b31e9a9102bbc</string>
 
@@ -39,8 +36,8 @@
     
 	<!-- APPTIMIZE -->
     <item name="apptimize_enabled" type="bool">false</item>
-    <string name="apptimize_apikey">CTbngwXi_7DNjjfYwEj\u2013\u2013L_JYKHHUug</string>
+    <string name="apptimize_apikey"></string>
     
 	<!-- GTM -->
-    <string name="gtm_key">GTM-NJ8Q4T</string>
+    <string name="gtm_key"></string>
 </resources>

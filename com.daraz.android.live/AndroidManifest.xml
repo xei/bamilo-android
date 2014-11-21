@@ -26,12 +26,37 @@
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         android:required="false" />
-<!--     <uses-permission
+	<!--     
+	<uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:required="false" /> 
+     -->
+    
+	<!-- ##################################### -->
+    <!-- ############# Features ############## -->
+    <!-- ##################################### -->
+    <!-- http://android-developers.blogspot.co.uk/2010/10/five-steps-to-future-hardware-happiness.html -->
+    
+	<uses-feature
+        android:name="android.hardware.location"
         android:required="false" />
 	<uses-feature
+        android:name="android.hardware.location.network"
+        android:required="false" />	
+	<uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false" />
+	<uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+	<uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+	<!-- 	
+	<uses-feature
         android:name="android.hardware.location.gps"
-        android:required="false" /> -->
+        android:required="false" />
+	-->
 
     <!-- ############# AD4Push: MESSAGE (Receive) and SEND (PushNotificationReceiver) ############# -->
     <permission
@@ -47,7 +72,6 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.daraz.android.live.permission.A4S_SEND" />
-
     -->
 
 
@@ -177,8 +201,8 @@
                 <category android:name="com.daraz.android.live" />
             </intent-filter>
         </receiver>
-        
-		<!--
+
+        <!--
              <receiver android:name="pt.rocket.utils.receivers.PushNotificationReceiver" >
             <intent-filter>
                 <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
@@ -190,12 +214,12 @@
             </intent-filter>
         </receiver>
         -->
-        
-        
+
+
         <!-- ######################################## -->
         <!-- ############### ADJUST ################# -->
         <!-- ######################################## -->
-
+        
         <meta-data
             android:name="AdjustAppToken"
             android:value="@string/adjust_app_token" />
@@ -204,18 +228,18 @@
             android:value="info" />
         <meta-data
             android:name="AdjustEnvironment"
-            android:value="production" />
-        <!-- PRE INSTALL -->
-        <!-- <meta-data android:name="AdjustDefaultTracker" android:value="5hyvoj" /> -->
-
-        <!-- ######################################## -->
+            android:value="sandbox" />
+		<!-- PRE INSTALL -->
+		<!-- <meta-data android:name="AdjustDefaultTracker" android:value="Test" /> -->
+        
+		<!-- ######################################## -->
         <!-- ################# GTM ################## -->
         <!-- ######################################## -->
 
         <!-- Used for install referrer tracking -->
         <service android:name="com.google.android.gms.tagmanager.InstallReferrerService" />
 
-		<!-- android:name="com.google.android.gms.tagmanager.InstallReferrerReceiver" -->
+        <!-- android:name="com.google.android.gms.tagmanager.InstallReferrerReceiver" -->
         <!-- android:name="pt.rocket.utils.receivers.InstallReceiver" -->
         <receiver
             android:name="pt.rocket.utils.receivers.InstallReceiver"
@@ -224,6 +248,7 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
+        
     </application>
 
 </manifest>

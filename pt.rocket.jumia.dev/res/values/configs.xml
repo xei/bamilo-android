@@ -8,14 +8,12 @@
 
     <!-- COUNTRIES -->
     <string name="countries_url">http://www.jumia.com/mobapi/availablecountries/staging</string>
+    
     <!-- GA -->
     <bool name="ga_debug_mode">false</bool>
     <!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
     <integer name="ga_dispatchPeriod">0</integer>
     -->
-
-    <!-- BUG SENSE -->
-    <string name="bugsense_apikey">c05cc696</string>
 
     <!-- HOCKEY APP -->
     <string name="hockeyapp_token">5a55f44dbed1b1bdb88f57f6eda07d78</string>

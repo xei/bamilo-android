@@ -6,6 +6,6 @@
     <!-- <string name="jumia_global_user">rocket</string> -->
     <!-- <string name="jumia_global_password">rock4me</string> -->
     <!-- <string name="jumia_global_restbase_path">mobapi</string> -->
-    <string name="jumia_global_api_version">mobapi/v1.4</string>
+    <!-- <string name="jumia_global_api_version">mobapi/v1.4</string> -->
 
 </resources>

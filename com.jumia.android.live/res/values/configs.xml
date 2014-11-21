@@ -12,10 +12,7 @@
 	<!-- GA -->
 	<!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
     <integer name="ga_dispatchPeriod">0</integer>
-    --> 
-    
-	<!-- BUG SENSE -->
-    <string name="bugsense_apikey">c05cc696</string>
+    -->
 
     <!-- HOCKEY APP -->
     <string name="hockeyapp_token">a68818122cd9ab8ba2025dc68212e7a3</string>
