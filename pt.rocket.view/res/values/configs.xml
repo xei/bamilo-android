@@ -29,6 +29,7 @@
     <item name="hockeyapp_enable_dev" type="bool">false</item>
 
     <!-- FACEBOOK ID's -->
+    <!-- Daraz facebook id is equal for all Daraz countries, defined on Daraz builds. -->
     <string name="facebook_id_cm">@string/facebook_id_default</string>
     <string name="facebook_id_ci">472507709498904</string>
     <string name="facebook_id_eg">390085037744566</string>
