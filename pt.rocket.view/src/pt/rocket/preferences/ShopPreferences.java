@@ -7,7 +7,6 @@ import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.database.LastViewedTableHelper;
-import pt.rocket.utils.TrackerDelegator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import de.akquinet.android.androlog.Log;
@@ -41,11 +40,7 @@ public class ShopPreferences {
      * @author sergiopereira
      */
     public static void setShopId(Context context, int shopPosition) {
-        JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
-        LastViewedTableHelper.deleteAllLastViewed();
-        FavouriteTableHelper.deleteAllFavourite();
         
-        //System.gc();
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryIso().toLowerCase());
@@ -65,6 +60,11 @@ public class ShopPreferences {
         editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.commit();
 
+        // Clean other
+        JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
+        LastViewedTableHelper.deleteAllLastViewed();
+        FavouriteTableHelper.deleteAllFavourite();
+        
     }
 
 }

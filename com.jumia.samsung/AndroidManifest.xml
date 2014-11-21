@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jumia.android"
     android:installLocation="auto"
-    android:versionCode="43"
+    android:versionCode="45"
     android:versionName="2.2" >
 
     <!-- ######################################## -->
@@ -19,12 +19,37 @@
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         android:required="false" />
-    <uses-permission
+	<!--     
+	<uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:required="false" /> 
+     -->
+    
+	<!-- ##################################### -->
+    <!-- ############# Features ############## -->
+    <!-- ##################################### -->
+    <!-- http://android-developers.blogspot.co.uk/2010/10/five-steps-to-future-hardware-happiness.html -->
+    
+	<uses-feature
+        android:name="android.hardware.location"
         android:required="false" />
+	<uses-feature
+        android:name="android.hardware.location.network"
+        android:required="false" />	
+	<uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false" />
+	<uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+	<uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+	<!-- 	
 	<uses-feature
         android:name="android.hardware.location.gps"
         android:required="false" />
+	-->
 
     <!-- ############# AD4Push: MESSAGE (Receive) and SEND (PushNotificationReceiver) ############# -->
     <permission
@@ -85,6 +110,11 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="pt.rocket.view.MainFragmentActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="pt.rocket.view.MainFragmentTabletActivity"
             android:exported="true"
             android:screenOrientation="unspecified"
             android:windowSoftInputMode="adjustPan" />
@@ -177,15 +207,38 @@
         </receiver>
         -->
         
-		<!-- ######################################## -->
+        <!-- ######################################## -->
         <!-- ############### ADJUST ################# -->
         <!-- ######################################## -->
-        
-        <meta-data android:name="AdjustAppToken"    android:value="@string/adjust_app_token" />
-		<meta-data android:name="AdjustLogLevel"    android:value="info" />
-		<meta-data android:name="AdjustEnvironment" android:value="production" />
-		<!-- <meta-data android:name="AdjustDefaultTracker" android:value="Test" /> -->
-        
+
+        <meta-data
+            android:name="AdjustAppToken"
+            android:value="@string/adjust_app_token" />
+        <meta-data
+            android:name="AdjustLogLevel"
+            android:value="info" />
+        <meta-data
+            android:name="AdjustEnvironment"
+            android:value="production" />
+        <!-- PRE INSTALL -->
+        <!-- <meta-data android:name="AdjustDefaultTracker" android:value="5hyvoj" /> -->
+
+        <!-- ######################################## -->
+        <!-- ################# GTM ################## -->
+        <!-- ######################################## -->
+
+        <!-- Used for install referrer tracking -->
+        <service android:name="com.google.android.gms.tagmanager.InstallReferrerService" />
+
+		<!-- android:name="com.google.android.gms.tagmanager.InstallReferrerReceiver" -->
+        <!-- android:name="pt.rocket.utils.receivers.InstallReceiver" -->
+        <receiver
+            android:name="pt.rocket.utils.receivers.InstallReceiver"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

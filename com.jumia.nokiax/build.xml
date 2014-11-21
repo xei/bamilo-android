@@ -36,40 +36,6 @@
     <condition property="sdk.dir" value="${env.ANDROID_HOME}">
         <isset property="env.ANDROID_HOME" />
     </condition>
-    
-    <condition property="version.code" value="${env.BUILD_VERSION_NUMBER}">
-        <isset property="env.BUILD_VERSION_NUMBER" />
-    </condition>
-    
-    <condition property="version.name" value="1.0.${env.BUILD_VERSION_NUMBER}">
-        <isset property="env.BUILD_VERSION_NUMBER" />
-    </condition>
-    
-    <condition property="version.code.set" else="false">
-      <isset property="version.code"/>
-    </condition>
-    
-	<!--     To remove -->
-    <echo>${version.code}</echo>
-    <echo>1.0.${version.code}</echo>
-    <echo>${version.name}&quot;&quot;</echo>
-    
-    
-	<!-- Manual increment of version code and version name -->
-	    <replaceregexp match="android:versionCode=&quot;10108&quot;" 
-        		replace="android:versionCode = &quot;10${version.code}&quot;" flags="g"> 
-        <fileset dir="${basedir}">
-        	<include name="AndroidManifest.xml"/>
-    	</fileset>
-    	</replaceregexp>
-    	
-<!-- 	    <replaceregexp match="android:versionName=&quot;1.0.2&quot;"  -->
-<!--         		replace="android:versionName = &quot;${version.name}&quot;" flags="g">  -->
-<!--         <fileset dir="${basedir}"> -->
-<!--         	<include name="AndroidManifest.xml"/> -->
-<!--     	</fileset> -->
-<!--     	</replaceregexp> -->
-
 
     <!-- The project.properties file is created and updated by the 'android'
          tool, as well as ADT.

@@ -19,7 +19,7 @@
 #######################
 ##### ENVIRONMENT #####
 #######################
-HOSTNAME_JENKINS="Mobiles-Mac-mini"
+HOSTNAME_JENKINS="jenkinsmastermobile"
 
 #########################
 ##### DEF CONSTANTS #####
@@ -34,7 +34,8 @@ CERT_FOLDER="$PCK_NAME/assets/blackberry/certificate"
 #####################
 CNF_PATH="$PCK_NAME/assets/blackberry/android.cfg"
 MNF_PATH="$PCK_NAME/assets/blackberry/MANIFEST.MF"
-# HOCKEY_FILE="$BAR_FOLDER/com.jumia.blackberry.zip"
+#ICON_PATH="$PCK_NAME/res/drawable-ldpi/ic_launcher.png"
+#HOCKEY_FILE="$BAR_FOLDER/com.jumia.blackberry.zip"
 
 ########################
 ##### VALIDATE ENV #####
@@ -49,7 +50,8 @@ else
 	echo "> Release environment"
 	APK_FILE="$PCK_NAME/bin/Jumia-release.apk"
 	BAR_FILE="$BAR_FOLDER/Jumia-release.bar"
-	STORE_CRT_FOLDER=~/Library/Research\ In\ Motion/
+	#STORE_CRT_FOLDER=~/Library/Research\ In\ Motion/
+	STORE_CRT_FOLDER=~/.rim/
 	#### Reload PATH (MAC OS)
 	. ~/.bash_profile
 fi
@@ -73,6 +75,7 @@ cp $CERT_FOLDER/* "$STORE_CRT_FOLDER"
 ##### REPACKING #####
 #####################
 echo "3 - Repacking apk to bar"
+#blackberry-apkpackager $APK_FILE $CNF_PATH -m $MNF_PATH -ci $ICON_PATH -t $BAR_FOLDER -r
 blackberry-apkpackager $APK_FILE $CNF_PATH -m $MNF_PATH -t $BAR_FOLDER -r
 
 ################

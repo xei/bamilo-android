@@ -55,14 +55,25 @@ public class CheckVersion {
     private static boolean sNeedsToShowDialog;
 
     private static FragmentManager fm;
+
+    private static boolean isEnabled = false;
     
     public static void init(Context context) {
-        sLastUpdate = 0;
-        runEvents(context);
+        // Get if is enabled
+        isEnabled  = context.getResources().getBoolean(R.bool.check_version_enabled); // XXX
+        // Validate flag
+        if(!isEnabled) {
+            Log.i(TAG, "CHECK VERSION: ENABLED");
+            sLastUpdate = 0;
+            runEvents(context);
+        } else Log.i(TAG, "CHECK VERSION: DISABLED");
     }
 
     public static boolean run(Context context) {
-        Log.i(TAG, "code1checkversion");
+        // Validate check version
+        if(!isEnabled) return false;
+        else Log.i(TAG, "RUN CHECK VERSION"); 
+        
         sContext = context;
         if (runEvents(context))
             return false;
@@ -115,8 +126,15 @@ public class CheckVersion {
         } 
         
     }
+    
+    public static void clearDialogSeenInLaunch(Context context) {
+        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putBoolean(DIALOG_SEEN_AFTER_THIS_LAUNCH_KEY, false);
+        editor.commit();
+    }
 
-    public static boolean runEvents(Context context) {
+    private static boolean runEvents(Context context) {
         long now = System.currentTimeMillis();
         Log.d( TAG, "runEvents: lastUpdate = " + sLastUpdate + " passed = " + (now - sLastUpdate) + " intervall = " + UPDATE_INTERVALL_MILLIS);
         if (sLastUpdate == 0 || (now - sLastUpdate) > UPDATE_INTERVALL_MILLIS) {
@@ -126,7 +144,7 @@ public class CheckVersion {
         }
 
         return false;
-    }
+    }    
 
     private static DialogFragment createOptionalUpdateDialog(Activity activity) {
         return DialogGenericFragment.newInstance(true, true, false,
@@ -218,15 +236,6 @@ public class CheckVersion {
     private static void storeRemindMeLater() {
         SharedPreferences.Editor editor = sSharedPrefs.edit();
         editor.putBoolean(DIALOG_SEEN_AFTER_THIS_LAUNCH_KEY, true);
-        editor.commit();
-    }
-
-    public static void clearDialogSeenInLaunch(Context context) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES,
-                Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPrefs.edit();
-        editor.putBoolean(DIALOG_SEEN_AFTER_THIS_LAUNCH_KEY, false);
         editor.commit();
     }
 

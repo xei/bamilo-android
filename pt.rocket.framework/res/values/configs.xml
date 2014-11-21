@@ -12,6 +12,9 @@
         <item>/data/cust/delap</item>
     </string-array>
     
+	<!-- CHECK VERSION -->
+    <item name="check_version_enabled" type="bool">true</item>
+    
     <!-- These arrays are intentionally left empty as the are overridden in the toplevel project -->
     <string-array name="servers"></string-array>
     <string-array name="users"></string-array>
