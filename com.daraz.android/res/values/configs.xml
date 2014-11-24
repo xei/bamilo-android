@@ -15,7 +15,7 @@
     -->
 
     <!-- HOCKEY APP -->
-    <string name="hockeyapp_token">938d9c976f8b4c6ca6779c49416a4972</string>
+    <string name="hockeyapp_token">53c4446c9cc6e2442dad05030963d3ff</string>
 
     <!-- DEEP LINK -->
     <string name="dp_package_id">com.daraz.android</string>
