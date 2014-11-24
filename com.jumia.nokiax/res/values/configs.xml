@@ -41,4 +41,6 @@
 	<!-- GTM -->
     <string name="gtm_key">GTM-NJ8Q4T</string>
 
+	<!-- Specific -->
+    <item name="is_daraz_specific" type="bool">false</item>
 </resources>

@@ -40,4 +40,6 @@
     <string name="facebook_id_gh">@string/facebook_id_default</string>
     <string name="facebook_id_default">@string/facebook_id_ng</string>
 
+	<!-- Specific -->
+    <item name="is_daraz_specific" type="bool">false</item>
 </resources>

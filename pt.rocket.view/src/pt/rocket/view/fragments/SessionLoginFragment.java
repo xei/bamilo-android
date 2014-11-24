@@ -145,6 +145,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 R.layout.login,
                 titleResId,
                 KeyboardState.ADJUST_CONTENT);
+
     }
 
     /*
@@ -183,6 +184,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+
         rememberEmailCheck = (CheckBox) view.findViewById(R.id.login_remember_user_email);
         signinButton = view.findViewById(R.id.middle_login_button_signin);
         forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
@@ -213,6 +215,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     @Override
     public void onResume() {
         super.onResume();
+        
         Log.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGNUP, getLoadTime(), false);
 
@@ -590,7 +593,13 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     private void loadForm(Form form) {
         // Set title when Login form is displayed to allow access to other fragments
         if (null != sLoginFragment && sLoginFragment.nextFragmentType != null) {
-            getBaseActivity().setActionBarTitle(R.string.login_label);
+            
+            if(!getResources().getBoolean(R.bool.is_daraz_specific)){
+                getBaseActivity().setActionBarTitle(R.string.login_label);
+            } else {
+                getBaseActivity().hideActionBarTitle();
+                getBaseActivity().setTitle(R.string.login_label);
+            }
         }
 
         dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM,

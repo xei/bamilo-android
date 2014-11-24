@@ -43,4 +43,7 @@
 
 	<!-- GTM -->
     <string name="gtm_key">GTM-NXV7V2</string>  
+    
+	<!-- Specific -->
+    <item name="is_daraz_specific" type="bool">true</item>
 </resources>
