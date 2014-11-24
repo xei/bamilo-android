@@ -17,7 +17,8 @@
     -->
 
     <!-- HOCKEY APP -->
-    <string name="hockeyapp_token">690c5b640ab245fc8ef7439612070fcb</string>
+    <string name="hockeyapp_token">1db15daf688eafb0671e279a02e3a6ed</string>
+    <!-- <string name="hockeyapp_token">690c5b640ab245fc8ef7439612070fcb</string> -->
     <item name="hockeyapp_enable_dev" type="bool">true</item>
 
     <!-- DEEP LINK -->
