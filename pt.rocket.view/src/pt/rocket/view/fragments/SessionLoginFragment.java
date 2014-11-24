@@ -145,7 +145,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 R.layout.login,
                 titleResId,
                 KeyboardState.ADJUST_CONTENT);
-        // R.string.login_title
     }
 
     /*
@@ -172,9 +171,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         // String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);
         uiHelper = new UiLifecycleHelper(getBaseActivity(), callback/*-, appId*/);
         uiHelper.onCreate(savedInstanceState);
-        
-        String c = null;
-        Log.d(TAG, "" + c.equals(""));
     }
 
     /*

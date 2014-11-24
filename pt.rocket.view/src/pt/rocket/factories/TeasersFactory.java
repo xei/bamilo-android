@@ -44,6 +44,7 @@ import de.akquinet.android.androlog.Log;
  * Object that generates the Teasers based on the Teaser specification
  * 
  * @author manuelsilva
+ * @modified sergiopereira
  * 
  */
 public class TeasersFactory {
@@ -61,6 +62,20 @@ public class TeasersFactory {
     private LayoutInflater mInflater;
     
     private int mContentWidth;
+    
+    private static TeasersFactory sTeasersFactory;
+   
+    /**
+     * Singleton method
+     * @param context
+     * @param layoutInflater
+     * @param onClickListener
+     * @return TeasersFactory
+     * @author sergiopereira
+     */
+    public static TeasersFactory getSingleton(Context context, LayoutInflater layoutInflater, OnClickListener onClickListener) {
+        return sTeasersFactory == null ? sTeasersFactory = new TeasersFactory(context, layoutInflater, onClickListener) : sTeasersFactory;
+    }
 
     /**
      * Constructor with parameters
@@ -150,6 +165,20 @@ public class TeasersFactory {
             
             attachTeaserListener(teaserImageArrayList.get(0), imageContainer);
         }
+            
+        /*- NEW METHOD
+        final View imageContainer = rootView.findViewById(R.id.banner_view);
+        if(CollectionUtils.isNotEmpty(teaserImageArrayList)) {
+            imageContainer.setVisibility(View.VISIBLE);
+            // Validate device and orientation
+            if(mContext.getResources().getBoolean(R.bool.isTablet) && teaserImageArrayList.get(0).getImageTableUrl() != null) {
+                setImageToLoad(teaserImageArrayList.get(0).getImageTableUrl(),imageContainer, 0, R.drawable.no_image_large);
+            } else {
+                setImageToLoad(teaserImageArrayList.get(0).getImageUrl(),imageContainer, 0, R.drawable.no_image_large);
+            }
+            attachTeaserListener(teaserImageArrayList.get(0), imageContainer);
+        }*/
+            
         return rootView;
     }
 
@@ -185,6 +214,14 @@ public class TeasersFactory {
             }
 
         }
+        
+        /*- // NEW METHOD
+        if (teaserImageArrayList != null) {
+            for (TeaserImage teaserImage : teaserImageArrayList) {
+                container.addView(createImageTeaserView(teaserImage, container, mInflater, 0));
+            }
+        }*/
+        
         return rootView;
     }
 
@@ -259,6 +296,21 @@ public class TeasersFactory {
         }
         
         attachTeaserListener(teaserImage, imageTeaserView);
+
+        /*- // NEW METHOD
+        View imageTeaserView = mInflater.inflate(R.layout.teaser_banner_image_loadable, vg, false);
+        final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
+        final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
+        String imageUrl = "";
+        // Validate device and orientation
+        if(mContext.getResources().getBoolean(R.bool.isTablet) && teaserImage.getImageTableUrl() != null) {
+            imageUrl = teaserImage.getImageTableUrl();
+        } else {
+            imageUrl = teaserImage.getImageUrl();
+        }
+        RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
+        attachTeaserListener(teaserImage, imageTeaserView); */
+        
         return imageTeaserView;
     }
     

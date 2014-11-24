@@ -308,7 +308,8 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      */
     private void createAndShowTeasers(Homepage homePage, LinearLayout mainView){
         // Create the teaser factory
-        TeasersFactory mTeasersFactory = new TeasersFactory(getBaseActivity(), mInflater, (OnClickListener) this);
+        //TeasersFactory mTeasersFactory = new TeasersFactory(getBaseActivity(), mInflater, (OnClickListener) this);
+        TeasersFactory mTeasersFactory = TeasersFactory.getSingleton(getBaseActivity(), mInflater, this);
         // For each teaser create a view and add to container
         for ( TeaserSpecification<?> teaser : homePage.getTeaserSpecification()) {
             mainView.addView(mTeasersFactory.getSpecificTeaser(mainView, teaser));
