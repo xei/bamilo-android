@@ -17,13 +17,11 @@ import pt.rocket.framework.tracking.Ad4PushTracker;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.PreferenceListFragment.OnPreferenceAttachedListener;
 import pt.rocket.view.fragments.BaseFragment;
 import pt.rocket.view.fragments.CampaignsFragment;
 import pt.rocket.view.fragments.CatalogFragment;
 import pt.rocket.view.fragments.CategoriesCollectionFragment;
-import pt.rocket.view.fragments.ChooseCountryFragment;
 import pt.rocket.view.fragments.CheckoutAboutYouFragment;
 import pt.rocket.view.fragments.CheckoutCreateAddressFragment;
 import pt.rocket.view.fragments.CheckoutEditAddressFragment;
@@ -35,6 +33,7 @@ import pt.rocket.view.fragments.CheckoutPollAnswerFragment;
 import pt.rocket.view.fragments.CheckoutShippingMethodsFragment;
 import pt.rocket.view.fragments.CheckoutThanksFragment;
 import pt.rocket.view.fragments.CheckoutWebFragment;
+import pt.rocket.view.fragments.ChooseCountryFragment;
 import pt.rocket.view.fragments.FavouritesFragment;
 import pt.rocket.view.fragments.HeadlessAddToCartFragment;
 import pt.rocket.view.fragments.HomeFragment;
@@ -106,9 +105,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
-        
-        String c = null;
-        Log.d(TAG, "" + c.equals(""));
         
         // Parse deep link from service
         parseDeeplinkIntent(getIntent());

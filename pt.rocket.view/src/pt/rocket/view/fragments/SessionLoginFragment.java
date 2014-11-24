@@ -24,13 +24,12 @@ import pt.rocket.forms.FormData;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.tracking.GTMEvents.GTMValues;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.account.GetMyOrdersListHelper;
 import pt.rocket.helpers.configs.GetInitFormHelper;
 import pt.rocket.helpers.session.GetFacebookLoginHelper;
 import pt.rocket.helpers.session.GetLoginFormHelper;
@@ -173,6 +172,9 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         // String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);
         uiHelper = new UiLifecycleHelper(getBaseActivity(), callback/*-, appId*/);
         uiHelper.onCreate(savedInstanceState);
+        
+        String c = null;
+        Log.d(TAG, "" + c.equals(""));
     }
 
     /*
