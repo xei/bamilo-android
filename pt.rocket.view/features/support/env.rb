@@ -223,7 +223,7 @@ def initvars
     @shopping_cart = "Shopping Cart"
     @my_cart = "My Cart"
     @back_button= "BACK"
-    @track_my_order = "Track My Order"
+    @track_my_order = "My Orders"
     @number_items="Items"
     @remember_my_email= "Remember my email"
     
@@ -234,6 +234,9 @@ def initvars
     @continue_shopping = "Continue Shopping"
     @signup = "Signup"
     @female = "female"
+    
+    @my_order_history = "MY ORDER HISTORY"
+    @my_order_history_2 = "My Order History"
     
     ##### Ivory Coast ####################################### IC ##############################################################################          
     when "ic"
@@ -387,6 +390,9 @@ def initvars
     @continue_shopping = "Continue Shopping"
     @signup = "Signup"
     @female = "female"
+    
+    @my_order_history = "MY ORDER HISTORY"
+    @my_order_history_2 = "My Order History"
       
     ##### Morocco ########################################### MA ##############################################################################
     when "ma"
@@ -538,6 +544,9 @@ def initvars
     @continue_shopping = "Continue Shopping"
     @signup = "Signup"
     @female = "female"
+    
+    @my_order_history = "MY ORDER HISTORY"
+    @my_order_history_2 = "My Order History"
         
     ##### Nigeria ########################################### NG ##############################################################################
     when "ng"
@@ -673,7 +682,7 @@ def initvars
     @shopping_cart = "Shopping Cart"
     @my_cart = "My Cart"
     @back_button= "BACK"
-    @track_my_order = "Track My Order"
+    @track_my_order = "My Orders"
     @number_items="Items"
     @remember_my_email= "Remember my email"
     
@@ -684,6 +693,9 @@ def initvars
     @continue_shopping = "Continue Shopping"
     @signup = "Signup"
     @female = "female"
+    
+    @my_order_history = "MY ORDER HISTORY"
+    @my_order_history_2 = "My Order History"
     
     ##### Egypt ############################################# EG ##############################################################################
     when "eg"
@@ -819,7 +831,7 @@ def initvars
     @shopping_cart = "Shopping Cart"
     @my_cart = "My Cart"
     @back_button= "BACK"
-    @track_my_order = "Track My Order"
+    @track_my_order = "My Orders"
     @number_items="Items"
     @remember_my_email= "Remember my email"
     
@@ -830,6 +842,9 @@ def initvars
     @continue_shopping = "Continue Shopping"
     @signup = "Signup"
     @female = "female"
+    
+    @my_order_history = "MY ORDER HISTORY"
+    @my_order_history_2 = "My Order History"
     
     ##### Uganda  ############################################ UG ##############################################################################
     when "ug"
@@ -965,7 +980,7 @@ def initvars
     @shopping_cart = "Shopping Cart"
     @my_cart = "My Cart"
     @back_button= "BACK"
-    @track_my_order = "Track My Order"
+    @track_my_order = "My Orders"
     @number_items="Items"
     @remember_my_email= "Remember my email"
     
@@ -976,6 +991,9 @@ def initvars
     @continue_shopping = "Continue Shopping"
     @signup = "Signup"
     @female = "female"
+    
+    @my_order_history = "MY ORDER HISTORY"
+    @my_order_history_2 = "My Order History"
     
     ##### Ghana   ############################################ GH ##############################################################################
     when "gh"
@@ -1111,7 +1129,7 @@ def initvars
     @shopping_cart = "Shopping Cart"
     @my_cart = "My Cart"
     @back_button= "BACK"
-    @track_my_order = "Track My Order"
+    @track_my_order = "My Orders"
     @number_items="Items"
     @remember_my_email= "Remember my email"
     
@@ -1122,5 +1140,8 @@ def initvars
     @continue_shopping = "Continue Shopping"
     @signup = "Signup"
     @female = "female"
+    
+    @my_order_history = "MY ORDER HISTORY"
+    @my_order_history_2 = "My Order History"
   end
 end

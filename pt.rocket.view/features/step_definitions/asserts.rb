@@ -526,7 +526,7 @@ Then /^I should see the back button$/ do
 end
 
 Then /^I should see the overflow options$/ do
-  assert_text(@sign_in.to_s)
+  #assert_text(@sign_in.to_s)
 #  performAction('assert_text', @sign_in.to_s, true)
   assert_text(@my_favourites.to_s)
 #  performAction('assert_text', @my_favourites.to_s, true)
@@ -588,4 +588,8 @@ Then /^I should not see the (sound|vibrate) option$/ do |option|
   when "vibrate"
     assert_text(@vibrate.to_s,false)
   end
+end
+
+Then /^I should see my order history$/ do
+  assert_text(@my_order_history_2.to_s)
 end

@@ -529,3 +529,7 @@ end
 Then /^I touch the female button$/ do
   touch("* {text CONTAINS '"+@female+"'}")
 end
+
+Then /^I press my order history$/ do
+  touch("* {text CONTAINS '"+@my_order_history+"'}")
+end
