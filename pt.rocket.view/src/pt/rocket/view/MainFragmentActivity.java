@@ -107,6 +107,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
         
+        String c = null;
+        Log.d(TAG, "" + c.equals(""));
+        
         // Parse deep link from service
         parseDeeplinkIntent(getIntent());
         
