@@ -44,6 +44,10 @@
 	<!-- GTM -->
     <string name="gtm_key">GTM-NXV7V2</string>  
     
+	<!-- Facebook App Id -->
+    <string name="facebook_app_id">590570504382479</string>
+    
 	<!-- Specific -->
     <item name="is_daraz_specific" type="bool">true</item>
+    <item name="is_shop_specific" type="bool">true</item>
 </resources>

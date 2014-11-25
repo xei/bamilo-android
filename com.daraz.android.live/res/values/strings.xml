@@ -7,6 +7,4 @@
 	<string name="upgrade_forced_text">We found something that we needed to fix to make shopping on Daraz even better! You will need to update before you continue using.</string>
 	<string name="splash_slogan">The only online shopping destination you will need!</string>
 	
-	<!-- Facebook App Id -->
-    <string name="facebook_app_id">590570504382479</string>
 </resources>

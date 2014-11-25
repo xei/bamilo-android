@@ -46,4 +46,5 @@
     
 	<!-- Specific -->
     <item name="is_daraz_specific" type="bool">false</item>
+    <item name="is_shop_specific" type="bool">false</item>
 </resources>
