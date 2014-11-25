@@ -1,4 +1,4 @@
-<org.holoeverywhere.widget.TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<pt.rocket.components.customfontviews.TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text2"
     style="@style/form_style"
     android:layout_height="@dimen/form_item_height"

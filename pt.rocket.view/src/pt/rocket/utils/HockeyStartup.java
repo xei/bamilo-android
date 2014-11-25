@@ -22,7 +22,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.os.Handler;
-import de.akquinet.android.androlog.Log;
 import android.view.ActionMode;
 import android.view.ActionMode.Callback;
 import android.view.KeyEvent;
@@ -33,6 +32,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
+import de.akquinet.android.androlog.Log;
 
 public class HockeyStartup {
     private static final String TAG = HockeyStartup.class.getSimpleName();

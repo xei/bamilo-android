@@ -10,9 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.holoeverywhere.widget.Toast;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.Toast;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.AddableToCartListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;

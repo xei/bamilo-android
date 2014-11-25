@@ -8,12 +8,12 @@
     android:paddingRight="@dimen/dialog_list_margin_horizontal"
     android:paddingTop="@dimen/margin_mid" >
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_text"
         style="@style/dialog_list_itemtext"
         android:text="ListItem text" />
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_text_unavailable"
         style="@style/dialog_list_itemtext"
         android:text="ListItem text 2"

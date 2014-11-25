@@ -17,14 +17,14 @@
         android:gravity="left|center"
         android:orientation="horizontal" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/product_price_special"
             style="@style/text_header"
             android:layout_marginRight="@dimen/margin_mid"
             android:fontFamily="roboto_bold"
             android:textColor="@color/red_basic" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/product_price_normal"
             style="@style/text_header"
             android:textColor="@color/grey_middlelight" />
@@ -42,12 +42,12 @@
         android:gravity="left|center"
         android:orientation="horizontal" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/product_detail_product_variant_text"
             style="@style/text_header"
             android:text="@string/size_label" />
 
-        <org.holoeverywhere.widget.Button
+        <pt.rocket.components.customfontviews.Button
             android:id="@+id/product_detail_product_variant_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
             android:layout_centerVertical="true"
             android:isIndicator="true" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/product_detail_product_rating_count"
             style="@style/text_header"
             android:layout_centerVertical="true"
@@ -104,7 +104,7 @@
 
     <!-- SPECICATIONS -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/product_detail_specifications"
         style="@style/text_header"
         android:layout_width="match_parent"

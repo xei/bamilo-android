@@ -17,13 +17,12 @@ import java.util.ArrayList;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Class that manages the full representation of an object that can be added to

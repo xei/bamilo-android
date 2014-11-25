@@ -846,9 +846,11 @@ public class TrackerDelegator {
      * 
      * @param utm
      */
-    public static void trackGACampaign(String utm) {
+    public static void trackGACampaign(Context context, String utm) {
         // GA
         AnalyticsGoogle.get().setGACampaign(utm);
+        // GTM
+        GTMManager.saveCampaignParams(context, GTMManager.CAMPAIGN_ID_KEY, utm);
     }
 
     /**

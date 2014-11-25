@@ -13,7 +13,7 @@
     <!--
          STOCK OFF SPACER
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.holo_font_views.TextView
         android:layout_width="@dimen/campaign_discount_flag_width"
         android:layout_height="match_parent"
         android:visibility="invisible" />
@@ -33,7 +33,7 @@
 
     <!-- TIMER TITLE -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ico_clock"
@@ -46,7 +46,7 @@
 
     <!-- TIMER -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/campaign_item_stock_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

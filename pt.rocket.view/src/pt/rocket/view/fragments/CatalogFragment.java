@@ -6,7 +6,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.CatalogPagerAdapter;

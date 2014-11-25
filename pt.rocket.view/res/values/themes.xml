@@ -29,9 +29,9 @@
     </style>
 
     <style name="Theme.Jumia.Dialog.Blue.NoTitle.DatePicker">
-        <item name="calendarViewStyle">@style/Holo.CalendarView.Light</item>
-        <item name="datePickerStyle">@style/Holo.DatePicker</item>
-        <item name="numberPickerStyle">@style/Holo.NumberPicker</item>
+        <!-- <item name="calendarViewStyle">@style/Holo.CalendarView.Light</item> -->
+        <!-- <item name="datePickerStyle">@style/Holo.DatePicker</item> -->
+        <!-- <item name="numberPickerStyle">@style/Holo.NumberPicker</item> -->
         <item name="android:windowFrame">@null</item>
     </style>
 

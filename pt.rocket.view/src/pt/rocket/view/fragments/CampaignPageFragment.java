@@ -5,12 +5,11 @@ package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
 
-import org.holoeverywhere.widget.AdapterView;
-import org.holoeverywhere.widget.AdapterView.OnItemSelectedListener;
-import org.holoeverywhere.widget.Spinner;
-import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.TextView;
+import pt.rocket.components.icsspinner.IcsAdapterView;
+import pt.rocket.components.icsspinner.IcsAdapterView.OnItemSelectedListener;
+import pt.rocket.components.icsspinner.IcsSpinner;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -729,7 +728,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             private ImageView mImage;
             private View progress;
             private View mSizeContainer;
-            private Spinner mSizeSpinner;
+            private IcsSpinner mSizeSpinner;
             private TextView mPrice;
             private TextView mDiscount;
             private TextView mSave;
@@ -819,7 +818,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
                 // Get size container
                 item.mSizeContainer = view.findViewById(R.id.campaign_item_size_container);
                 // Get size spinner
-                item.mSizeSpinner = (Spinner) view.findViewById(R.id.campaign_item_size_spinner);
+                item.mSizeSpinner = (IcsSpinner) view.findViewById(R.id.campaign_item_size_spinner);
                 // Get price
                 item.mPrice = (TextView) view.findViewById(R.id.campaign_item_price);
                 // Get discount
@@ -1149,12 +1148,9 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         /**
          * ######### LISTENERS #########
          */
-        /*
-         * (non-Javadoc)
-         * @see org.holoeverywhere.widget.AdapterView.OnItemSelectedListener#onItemSelected(org.holoeverywhere.widget.AdapterView, android.view.View, int, long)
-         */
+        
         @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
             String parentPosition = parent.getTag().toString();
             CampaignItemSize size = (CampaignItemSize) parent.getItemAtPosition(position);
             //Log.d(TAG, "CAMPAIGN ON ITEM SELECTED: " + size.simpleSku + " " +  position + " " + parentPosition);
@@ -1162,15 +1158,35 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             campaignItem.setSelectedSizePosition(position);
             campaignItem.setSelectedSize(size);
         }
-        
-        /*
-         * (non-Javadoc)
-         * @see org.holoeverywhere.widget.AdapterView.OnItemSelectedListener#onNothingSelected(org.holoeverywhere.widget.AdapterView)
-         */
+
         @Override
-        public void onNothingSelected(AdapterView<?> parent) {
+        public void onNothingSelected(IcsAdapterView<?> parent) {
             // ...
+            
         }
+        
+//        /*
+//         * (non-Javadoc)
+//         * @see org.holoeverywhere.widget.AdapterView.OnItemSelectedListener#onItemSelected(org.holoeverywhere.widget.AdapterView, android.view.View, int, long)
+//         */
+//        @Override
+//        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//            String parentPosition = parent.getTag().toString();
+//            CampaignItemSize size = (CampaignItemSize) parent.getItemAtPosition(position);
+//            //Log.d(TAG, "CAMPAIGN ON ITEM SELECTED: " + size.simpleSku + " " +  position + " " + parentPosition);
+//            CampaignItem campaignItem = getItem(Integer.valueOf(parentPosition));
+//            campaignItem.setSelectedSizePosition(position);
+//            campaignItem.setSelectedSize(size);
+//        }
+//        
+//        /*
+//         * (non-Javadoc)
+//         * @see org.holoeverywhere.widget.AdapterView.OnItemSelectedListener#onNothingSelected(org.holoeverywhere.widget.AdapterView)
+//         */
+//        @Override
+//        public void onNothingSelected(AdapterView<?> parent) {
+//            // ...
+//        }
 
         /*
          * (non-Javadoc)
@@ -1198,6 +1214,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             if(mOnClickParentListener != null)
                 mOnClickParentListener.onClick(view);
         }
+
+
         
     }
     

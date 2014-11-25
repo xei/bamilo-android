@@ -5,7 +5,7 @@
     android:background="@color/wizard_bck"
     android:clickable="true" >
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/wizard_product_size_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:layout_marginBottom="@dimen/dimen_180px"
         android:src="@drawable/img_instructions_pinch" />
 
-    <org.holoeverywhere.widget.Button
+    <pt.rocket.components.customfontviews.Button
         android:id="@+id/wizard_product_size_button"
         style="@style/button_orange_style"
         android:layout_width="@dimen/tips_button_width"

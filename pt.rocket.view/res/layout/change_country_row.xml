@@ -20,7 +20,7 @@
             android:src="@drawable/ic_launcher" >
         </ImageView>
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/country_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

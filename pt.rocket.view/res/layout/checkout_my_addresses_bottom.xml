@@ -7,7 +7,7 @@
 
     <!-- TITLE -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/checkout_addresses_other_title"
         style="@style/rounded_box_title_grey"
         android:text="@string/billing_others_label" />

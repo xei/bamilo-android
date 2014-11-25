@@ -22,7 +22,7 @@
         android:src="@drawable/img_newarrival_en"
         android:visibility="gone" />
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_percentage"
         style="@style/discount_percentage"
         android:layout_gravity="bottom|right"

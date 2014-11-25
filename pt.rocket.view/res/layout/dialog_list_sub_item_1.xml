@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/margin_large"
     android:paddingTop="@dimen/margin_mid" >
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/dialog_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:textColor="@color/grey_dark"
         android:textSize="@dimen/text_xl" />
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/dialog_item_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         android:textSize="@dimen/text_xl" />
 
     <!--
-         <org.holoeverywhere.widget.CheckBox
+         <pt.rocket.components.holo_font_views.CheckBox
         android:id="@+id/dialog_item_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

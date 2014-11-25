@@ -2,8 +2,7 @@ package pt.rocket.controllers;
 
 import java.util.ArrayList;
 
-import org.holoeverywhere.widget.TextView;
-
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.objects.AddableToCart;
 import pt.rocket.framework.objects.Favourite;
 import pt.rocket.framework.objects.LastViewedAddableToCart;

@@ -29,7 +29,7 @@
                     android:layout_height="wrap_content"
                     android:isIndicator="true" />
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     android:id="@+id/review_title"
                     style="@style/text_title"
                     android:layout_marginTop="@dimen/margin_mid"
@@ -41,20 +41,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_mid" >
 
-                    <org.holoeverywhere.widget.TextView
+                    <pt.rocket.components.customfontviews.TextView
                         android:id="@+id/posted_by"
                         style="@style/text_normal"
                         android:text="@string/posted_by"
                         android:textSize="@dimen/text_s" />
 
-                    <org.holoeverywhere.widget.TextView
+                    <pt.rocket.components.customfontviews.TextView
                         android:id="@+id/review_username"
                         style="@style/text_normal"
                         android:layout_marginLeft="@dimen/rounded_margin_small"
                         android:text="User"
                         android:textSize="@dimen/text_s" />
 
-                    <org.holoeverywhere.widget.TextView
+                    <pt.rocket.components.customfontviews.TextView
                         android:id="@+id/review_date"
                         style="@style/text_normal"
                         android:layout_marginLeft="@dimen/rounded_margin_small"
@@ -75,7 +75,7 @@
                 android:layout_marginTop="@dimen/margin_huge"
                 android:orientation="vertical" >
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     android:id="@+id/review_comment"
                     style="@style/text_normal"
                     android:singleLine="false"

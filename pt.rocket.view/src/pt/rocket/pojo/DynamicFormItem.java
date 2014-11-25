@@ -14,12 +14,12 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.holoeverywhere.FontLoader;
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.CheckBox;
-import org.holoeverywhere.widget.Spinner;
-import org.holoeverywhere.widget.TextView;
-
+import pt.rocket.components.customfontviews.Button;
+import pt.rocket.components.customfontviews.CheckBox;
+import pt.rocket.components.customfontviews.HoloFontLoader;
+import pt.rocket.components.customfontviews.TextView;
+import pt.rocket.components.icsspinner.IcsAdapterView;
+import pt.rocket.components.icsspinner.IcsSpinner;
 import pt.rocket.forms.Form;
 import pt.rocket.forms.FormField;
 import pt.rocket.forms.IFormField;
@@ -51,11 +51,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.actionbarsherlock.internal.widget.IcsAdapterView;
-import com.actionbarsherlock.internal.widget.IcsSpinner;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -1396,7 +1393,7 @@ public class DynamicFormItem {
 
         ((ViewGroup) this.control).addView(dataContainer);
 
-        FontLoader.applyDefaultFont(dataContainer);
+        HoloFontLoader.applyDefaultFont(dataContainer);
         // Listeners
         ((IcsSpinner) this.dataControl)
                 .setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
@@ -1728,7 +1725,7 @@ public class DynamicFormItem {
             textDataControl.setTextAppearance(context, R.style.form_edittext_style);
         }
 
-        FontLoader.apply(textDataControl, FontLoader.ROBOTO_REGULAR);
+        HoloFontLoader.apply(textDataControl, HoloFontLoader.ROBOTO_REGULAR);
 
         return textDataControl;
     }

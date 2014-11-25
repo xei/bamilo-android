@@ -10,15 +10,15 @@
         android:layout_weight="1"
         android:orientation="vertical" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/order_summary_item_name"
             style="@style/text_normal" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/order_summary_item_quantity"
             style="@style/text_normal" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/order_summary_item_variation"
             style="@style/text_normal"
             android:visibility="gone" />

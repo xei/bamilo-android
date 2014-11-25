@@ -6,9 +6,8 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import org.holoeverywhere.widget.CheckBox;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.CheckBox;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -16,8 +15,8 @@ import pt.rocket.forms.Form;
 import pt.rocket.forms.FormField;
 import pt.rocket.forms.NewsletterOption;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.tracking.GTMEvents.GTMValues;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/component_text"
         style="@style/navigation_generic_component_text"
         android:background="@drawable/selector_navigation_generic_component"

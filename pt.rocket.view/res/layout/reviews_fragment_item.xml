@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/price_title_option"
                 style="@style/text_title"
                 android:layout_marginTop="10dp"
@@ -43,7 +43,7 @@
             android:layout_marginLeft="@dimen/margin_veryhuge"
             android:orientation="vertical" >
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/appearence_title_option"
                 style="@style/text_title"
                 android:layout_marginTop="10dp"
@@ -65,7 +65,7 @@
             android:layout_marginLeft="@dimen/margin_veryhuge"
             android:orientation="vertical" >
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/quality_title_option"
                 style="@style/text_title"
                 android:layout_marginTop="10dp"
@@ -82,7 +82,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/title_review"
         style="@style/text_title"
         android:layout_width="match_parent"
@@ -91,7 +91,7 @@
         android:layout_marginRight="32dp"
         android:text="Title" />
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/textreview"
         style="@style/text_normal"
         android:layout_width="match_parent"
@@ -102,14 +102,14 @@
         android:singleLine="false"
         android:text="Review" />
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/posted_by"
         style="@style/text_subtitle"
         android:layout_below="@id/textreview"
         android:layout_marginLeft="@dimen/margin_huge"
         android:text="@string/posted_by" />
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/user_review"
         style="@style/text_subtitle"
         android:layout_below="@id/textreview"
@@ -117,7 +117,7 @@
         android:layout_toRightOf="@id/posted_by"
         android:text="User" />
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/date_review"
         style="@style/text_subtitle"
         android:layout_below="@id/textreview"

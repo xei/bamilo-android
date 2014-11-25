@@ -20,7 +20,7 @@
             android:paddingLeft="@dimen/margin_large"
             android:src="@drawable/ic_recentsearch" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/item_text_suggestion"
             style="@style/text_header"
             android:layout_width="0dp"

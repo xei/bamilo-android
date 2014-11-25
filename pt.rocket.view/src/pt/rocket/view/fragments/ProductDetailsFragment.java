@@ -7,10 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.Button;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.TipsPagerAdapter;
@@ -28,8 +27,8 @@ import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.Variation;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.AdjustTracker;
-import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.tracking.GTMEvents.GTMValues;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;

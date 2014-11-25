@@ -13,7 +13,7 @@
         android:layout_marginTop="19.8dp"
         android:orientation="vertical" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/logo_jumiafallback" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/fallback_country"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             android:orientation="vertical"
             android:visibility="gone" >
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/fallback_country_top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 android:textColor="#000000"
                 android:textSize="17.14sp" />
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/fallback_country_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/fallback_best"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/fallback_choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
             android:textColor="#ffffff"
             android:textSize="9.9sp" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/fallback_doorstep"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
             android:textSize="9.9sp" />
     </LinearLayout>
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/fallback_bottom_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
         android:textColor="#ffffff"
         android:textSize="13.2sp" />
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/fallback_bottom_text2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/img_tickfallback" />
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6.6dp"
@@ -193,7 +193,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/img_tickfallback" />
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6.6dp"
@@ -212,7 +212,7 @@
                     android:layout_height="13.2dp"
                     android:src="@drawable/img_tickfallback" />
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6.6dp"
@@ -238,7 +238,7 @@
                     android:layout_height="13.2dp"
                     android:src="@drawable/img_tickfallback" />
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6.6dp"
@@ -257,7 +257,7 @@
                     android:layout_height="13.2dp"
                     android:src="@drawable/img_tickfallback" />
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6.6dp"
@@ -276,7 +276,7 @@
                     android:layout_height="13.2dp"
                     android:src="@drawable/img_tickfallback" />
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6.6dp"

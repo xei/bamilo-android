@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import pt.rocket.components.icsspinner.IcsAdapterView;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.InputType;
@@ -13,9 +14,6 @@ import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
-import com.actionbarsherlock.internal.widget.IcsAdapterView;
-
 import de.akquinet.android.androlog.Log;
 
 /**

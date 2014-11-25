@@ -7,10 +7,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.EditText;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -24,11 +23,8 @@ import pt.rocket.helpers.account.GetChangePasswordHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
-import android.app.Dialog;
-import android.support.v4.app.DialogFragment;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;

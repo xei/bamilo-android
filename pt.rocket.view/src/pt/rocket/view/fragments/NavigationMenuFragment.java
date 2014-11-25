@@ -6,7 +6,7 @@
 //import java.lang.ref.WeakReference;
 //import java.util.ArrayList;
 //
-//import org.holoeverywhere.widget.TextView;
+//import pt.rocket.components.holo_font_views.TextView;
 //
 //import pt.rocket.app.JumiaApplication;
 //import pt.rocket.constants.ConstantsIntentExtra;

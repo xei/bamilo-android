@@ -2,9 +2,8 @@ package pt.rocket.utils.dialogfragments;
 
 import java.util.List;
 
-import org.holoeverywhere.widget.CheckBox;
-import org.holoeverywhere.widget.TextView;
-
+import pt.rocket.components.customfontviews.CheckBox;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.components.PinnedSectionListView;
 import pt.rocket.framework.components.PinnedSectionListView.PinnedSectionListAdapter;
 import pt.rocket.framework.objects.CatalogFilter;

@@ -6,9 +6,8 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.Toast;
-
+import pt.rocket.components.customfontviews.Button;
+import pt.rocket.components.customfontviews.Toast;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.AddableToCartListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;

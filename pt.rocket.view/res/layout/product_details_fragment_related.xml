@@ -6,7 +6,7 @@
     android:layout_marginTop="@dimen/rounded_margin_small"
     android:visibility="gone" >
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/related_label"
         style="@style/rounded_box_title_grey"
         android:text="@string/related_items" />

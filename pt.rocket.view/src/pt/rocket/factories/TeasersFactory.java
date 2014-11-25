@@ -3,8 +3,7 @@ package pt.rocket.factories;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.holoeverywhere.widget.TextView;
-
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
 import pt.rocket.framework.objects.BrandsTeaserGroup;
 import pt.rocket.framework.objects.CategoryTeaserGroup;
@@ -63,7 +62,7 @@ public class TeasersFactory {
     
     private int mContentWidth;
     
-    private static TeasersFactory sTeasersFactory;
+    //private static TeasersFactory sTeasersFactory;
    
     /**
      * Singleton method
@@ -74,7 +73,8 @@ public class TeasersFactory {
      * @author sergiopereira
      */
     public static TeasersFactory getSingleton(Context context, LayoutInflater layoutInflater, OnClickListener onClickListener) {
-        return sTeasersFactory == null ? sTeasersFactory = new TeasersFactory(context, layoutInflater, onClickListener) : sTeasersFactory;
+        //return sTeasersFactory == null ? sTeasersFactory = new TeasersFactory(context, layoutInflater, onClickListener) : sTeasersFactory;
+        return new TeasersFactory(context, layoutInflater, onClickListener);
     }
 
     /**

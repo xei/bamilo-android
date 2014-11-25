@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.holoeverywhere.widget.RadioButton xmlns:android="http://schemas.android.com/apk/res/android"
+<pt.rocket.components.customfontviews.RadioButton xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/form_style"
     android:layout_height="@dimen/checkout_shipping_item_height"
     android:layout_marginRight="@dimen/form_radiobutton_shipping_margin"

@@ -1,7 +1,6 @@
 package pt.rocket.controllers;
 
-import org.holoeverywhere.widget.TextView;
-
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
 import android.content.Context;

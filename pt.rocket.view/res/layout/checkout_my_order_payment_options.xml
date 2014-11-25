@@ -15,7 +15,7 @@
         android:gravity="left|center"
         android:orientation="horizontal" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             style="@style/rounded_box_title_grey"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
@@ -43,18 +43,18 @@
         android:layout_marginTop="@dimen/margin_40px"
         android:orientation="vertical" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/checkout_my_order_payment_name"
             style="@style/text_normal" />
 
         <!--
-             org.holoeverywhere.widget.TextView
+             pt.rocket.components.holo_font_views.TextView
             android:id="@+id/checkout_my_order_payment_extra"
             style="@style/text_normal"
             android:visibility="gone" /
         -->
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/checkout_my_order_payment_coupon"
             style="@style/text_normal"
             android:layout_marginTop="@dimen/margin_60px"

@@ -12,7 +12,7 @@
         android:layout_below="@+id/order_list_date_cont"
         android:orientation="horizontal" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/order_product_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_s" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/order_product_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             android:textSize="@dimen/text_s" />
     </RelativeLayout>
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/order_product_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

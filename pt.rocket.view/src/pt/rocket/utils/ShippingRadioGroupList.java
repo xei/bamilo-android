@@ -3,8 +3,8 @@ package pt.rocket.utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.holoeverywhere.widget.TextView;
-
+import pt.rocket.components.customfontviews.TextView;
+import pt.rocket.components.icsspinner.IcsSpinner;
 import pt.rocket.forms.ShippingMethodForm;
 import pt.rocket.forms.ShippingMethodSubForm;
 import pt.rocket.framework.objects.PickUpStationObject;
@@ -20,9 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-
-import com.actionbarsherlock.internal.widget.IcsSpinner;
-
 import de.akquinet.android.androlog.Log;
 
 public class ShippingRadioGroupList extends RadioGroup {

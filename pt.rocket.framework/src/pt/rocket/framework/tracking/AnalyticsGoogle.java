@@ -302,6 +302,24 @@ public class AnalyticsGoogle {
 	}
 	
 	/**
+	 * Build and send a GA campaign.
+	 * @param campaign
+	 * @author sergiopereira
+	 */
+	protected void trackGACampaign() {
+		// Track
+		// String utmURI = (!mGACampaign.contains("utm_source")) ? "utm_campaign=" + mGACampaign + "&utm_source=push&utm_medium=referrer" : mGACampaign;
+		// Log.i(TAG, "TRACK CAMPAIGN: campaign->" + utmURI);
+		// mTracker.send(new HitBuilders.AppViewBuilder()
+		// .setCampaignParamsFromUrl(utmURI)
+		// .build());
+		
+		//mTracker.set("&cn", campaign);
+		//mTracker.set("&cs", "push");
+		//mTracker.set("&cm", "referrer");
+	}
+		
+	/**
 	 * ################## SPECIFIC TRACKING ################## 
 	 */
 	

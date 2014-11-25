@@ -23,7 +23,7 @@
         android:listSelector="@color/transparent"
         android:numColumns="3" />
 
-    <org.holoeverywhere.widget.Button
+    <pt.rocket.components.customfontviews.Button
         android:id="@+id/btn_toplist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -20,7 +20,6 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
-import pt.rocket.helpers.configs.GetApiInfoHelper;
 import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
@@ -111,6 +110,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        
         // Validate the current shop
         if(ShopSelector.getShopId() != null) {
             // Get and show new available countries

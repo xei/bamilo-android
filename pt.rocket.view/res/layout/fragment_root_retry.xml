@@ -19,7 +19,7 @@
             android:gravity="center"
             android:orientation="vertical" >
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/fragment_root_retry_message"
                 style="@style/text_root"
                 android:layout_marginBottom="12dp"
@@ -31,7 +31,7 @@
 
         <LinearLayout style="@style/button_container" >
 
-            <org.holoeverywhere.widget.Button
+            <pt.rocket.components.customfontviews.Button
                 android:id="@+id/fragment_root_retry_button"
                 style="@style/button_grey_bottom"
                 android:clickable="false"

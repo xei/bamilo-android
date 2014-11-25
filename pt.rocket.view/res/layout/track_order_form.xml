@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         style="@style/rounded_box_title_grey"
         android:text="@string/my_order_tracking_label" />
 
@@ -26,7 +26,7 @@
             android:paddingBottom="@dimen/login_margin_medium"
             android:paddingTop="@dimen/rounded_margin_double_mid" >
 
-            <org.holoeverywhere.widget.EditText
+            <pt.rocket.components.customfontviews.EditText
                 android:id="@+id/order_nr"
                 style="@style/form_edittext_style"
                 android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
                 android:inputType="textAutoComplete" />
         </LinearLayout>
 
-        <org.holoeverywhere.widget.Button
+        <pt.rocket.components.customfontviews.Button
             android:id="@+id/btn_track_order"
             style="@style/button_orange_bottom"
             android:layout_width="match_parent"

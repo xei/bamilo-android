@@ -25,7 +25,6 @@ import android.database.DataSetObservable;
 import android.database.DataSetObserver;
 import android.os.Build;
 import android.util.AttributeSet;
-import de.akquinet.android.androlog.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,6 +35,7 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.WrapperListAdapter;
+import de.akquinet.android.androlog.Log;
 
 /**
  * A {@link GridView} that supports adding header rows in a

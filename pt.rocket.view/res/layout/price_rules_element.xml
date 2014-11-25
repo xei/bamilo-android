@@ -6,7 +6,7 @@
     android:layout_marginRight="@dimen/margin_huge"
     android:layout_marginTop="10dp" >
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/price_rules_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         android:text="@string/vat_string"
         android:textColor="@color/grey_middle" />
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/price_rules_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

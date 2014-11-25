@@ -18,7 +18,7 @@
             android:layout_marginLeft="8dp"
             android:background="@drawable/history_checkmark" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/order_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_xs" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/order_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_m" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/order_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
             android:layout_marginLeft="8dp"
             android:orientation="horizontal" >
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/order_list_date_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
                 android:textSize="@dimen/text_s"
                 android:textStyle="bold" />
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/order_list_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
             android:layout_marginLeft="8dp"
             android:orientation="horizontal" >
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/order_list_payment_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                 android:textSize="@dimen/text_s"
                 android:textStyle="bold" />
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/order_list_payment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                 android:textSize="@dimen/text_s" />
         </LinearLayout>
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/order_list_products_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

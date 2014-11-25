@@ -15,7 +15,7 @@
         android:paddingRight="@dimen/margin_small"
         android:paddingTop="@dimen/margin_large" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/datepicker_title"
             style="@style/dialog_title"
             android:gravity="center_horizontal" />
@@ -23,14 +23,14 @@
 
     <!-- <net.simonvt.widget.DatePicker -->
 
-    <org.holoeverywhere.widget.DatePicker
+<!--     <org.holoeverywhere.widget.DatePicker
         android:id="@+id/datePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:background="@android:color/white"
         holo:calendarViewShown="false"
-        holo:spinnersShown="true" />
+        holo:spinnersShown="true" /> -->
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
             android:layout_below="@id/grey_line"
             android:orientation="horizontal" >
 
-            <org.holoeverywhere.widget.Button
+            <pt.rocket.components.customfontviews.Button
                 android:id="@+id/button1"
                 style="@style/dialog_button_style"
                 android:text="@string/cancel_label" />
@@ -58,7 +58,7 @@
                 android:id="@+id/grey_line_vertical"
                 style="@style/line_dialog_vertical" />
 
-            <org.holoeverywhere.widget.Button
+            <pt.rocket.components.customfontviews.Button
                 android:id="@+id/button2"
                 style="@style/dialog_button_style"
                 android:text="@string/ok_label" />

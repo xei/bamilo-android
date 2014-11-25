@@ -34,7 +34,7 @@
                 android:visibility="gone"
                 android:padding="@dimen/rounded_margin_mid" >
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     style="@style/text_normal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -71,7 +71,7 @@
                     </LinearLayout>
                 </RelativeLayout>
 
-                <org.holoeverywhere.widget.EditText
+                <pt.rocket.components.customfontviews.EditText
                     android:id="@+id/name_box"
                     style="@style/form_edittext_style"
                     android:layout_marginLeft="@dimen/margin_100px"
@@ -80,7 +80,7 @@
                     android:contentDescription="review_name"
                     android:hint="@string/name" />
 
-                <org.holoeverywhere.widget.EditText
+                <pt.rocket.components.customfontviews.EditText
                     android:id="@+id/title_box"
                     style="@style/form_edittext_style"
                     android:layout_marginLeft="@dimen/margin_100px"
@@ -89,7 +89,7 @@
                     android:contentDescription="review_title"
                     android:hint="@string/writereview_title_hint" />
 
-                <org.holoeverywhere.widget.EditText
+                <pt.rocket.components.customfontviews.EditText
                     android:id="@+id/review_box"
                     style="@style/form_edittext_style"
                     android:layout_marginBottom="@dimen/rounded_margin_small"
@@ -102,7 +102,7 @@
 
             <LinearLayout style="@style/button_container" >
 
-                <org.holoeverywhere.widget.Button
+                <pt.rocket.components.customfontviews.Button
                     android:id="@+id/send_review"
                     style="@style/button_orange_bottom"
                     android:layout_marginLeft="@dimen/rounded_margin_mid"

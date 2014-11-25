@@ -2,7 +2,7 @@
 //
 //import java.util.ArrayList;
 //
-//import org.holoeverywhere.widget.TextView;
+//import pt.rocket.components.holo_font_views.TextView;
 //
 //import pt.rocket.constants.ConstantsIntentExtra;
 //import pt.rocket.controllers.fragments.FragmentController;

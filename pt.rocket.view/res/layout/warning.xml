@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.holoeverywhere.widget.TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<pt.rocket.components.customfontviews.TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/warning_text"
     style="@style/white_text_16sp_normal"
     android:layout_width="match_parent"

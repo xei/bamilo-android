@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.content.Context;
 import android.util.AttributeSet;
-import de.akquinet.android.androlog.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import de.akquinet.android.androlog.Log;
 
 
 /**

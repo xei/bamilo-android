@@ -6,21 +6,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.holoeverywhere.widget.DatePicker;
-
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import de.akquinet.android.androlog.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
+import de.akquinet.android.androlog.Log;
+//import org.holoeverywhere.widget.DatePicker;
 
 /**
  * 
@@ -36,7 +35,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     private Activity mActivity;
     private OnDatePickerDialogListener mListener;
     //private Dialog mDialog;
-    private static DatePicker mDatePicker;
+    //private static DatePicker mDatePicker;
     private int mDay;
     private int mMonth;
     private int mYear;
@@ -129,26 +128,26 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         TextView titleView = (TextView) view.findViewById(R.id.datepicker_title);
         titleView.setText(this.mTitle);
 
-        mDatePicker = (DatePicker) view.findViewById(R.id.datePicker);
-        if (this.mYear != 0){
-            mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
-            Calendar mCal =Calendar.getInstance();
-
-            int currentYear = mCal.get(Calendar.YEAR) - 1;
-            int currentMonth = mCal.get(Calendar.MONTH);
-            int currentDay = mCal.get(Calendar.DAY_OF_MONTH);
-
-            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
-        } else {
-            Calendar cal=Calendar.getInstance();
-
-            this.mYear = cal.get(Calendar.YEAR) - 1;
-            this.mMonth = cal.get(Calendar.MONTH);
-            this.mDay = cal.get(Calendar.DAY_OF_MONTH);
-
-            mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
-            mDatePicker.setMaxDate(new GregorianCalendar(this.mYear, this.mMonth, this.mDay).getTimeInMillis());
-        }
+//        mDatePicker = (DatePicker) view.findViewById(R.id.datePicker);
+//        if (this.mYear != 0){
+//            mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
+//            Calendar mCal =Calendar.getInstance();
+//
+//            int currentYear = mCal.get(Calendar.YEAR) - 1;
+//            int currentMonth = mCal.get(Calendar.MONTH);
+//            int currentDay = mCal.get(Calendar.DAY_OF_MONTH);
+//
+//            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
+//        } else {
+//            Calendar cal=Calendar.getInstance();
+//
+//            this.mYear = cal.get(Calendar.YEAR) - 1;
+//            this.mMonth = cal.get(Calendar.MONTH);
+//            this.mDay = cal.get(Calendar.DAY_OF_MONTH);
+//
+//            mDatePicker.updateDate(this.mYear, this.mMonth, this.mDay);
+//            mDatePicker.setMaxDate(new GregorianCalendar(this.mYear, this.mMonth, this.mDay).getTimeInMillis());
+//        }
 
         view.findViewById(R.id.button1).setOnClickListener(this);
         view.findViewById(R.id.button2).setOnClickListener(this);
@@ -175,9 +174,9 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
             this.dismiss();
         } else if (id == R.id.button2) {
             isSetOnce = true;
-            mDay = mDatePicker.getDayOfMonth();
-            mMonth = mDatePicker.getMonth();
-            mYear = mDatePicker.getYear();
+//            mDay = mDatePicker.getDayOfMonth();
+//            mMonth = mDatePicker.getMonth();
+//            mYear = mDatePicker.getYear();
             if (mListener != null) {
                 mListener.onDatePickerDialogSelect(mId, mYear, mMonth, mDay);
             }
@@ -217,16 +216,16 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         mMonth = cal.get(Calendar.MONTH);
         mDay = cal.get(Calendar.DAY_OF_MONTH);
 
-        if (mDatePicker != null){
-            mDatePicker.updateDate(mYear, mMonth, mDay);
-            Calendar mCal =Calendar.getInstance();
-
-            int currentYear = mCal.get(Calendar.YEAR) - 1;
-            int currentMonth = mCal.get(Calendar.MONTH);
-            int currentDay = mCal.get(Calendar.DAY_OF_MONTH);
-
-            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
-        }
+//        if (mDatePicker != null){
+//            mDatePicker.updateDate(mYear, mMonth, mDay);
+//            Calendar mCal =Calendar.getInstance();
+//
+//            int currentYear = mCal.get(Calendar.YEAR) - 1;
+//            int currentMonth = mCal.get(Calendar.MONTH);
+//            int currentDay = mCal.get(Calendar.DAY_OF_MONTH);
+//
+//            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
+//        }
        isSetOnce = true;
     }
 
@@ -235,16 +234,16 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
         mMonth = month;
         mDay = day;
 
-        if (mDatePicker != null){
-            mDatePicker.updateDate(mYear, mMonth, mDay);
-            Calendar mCal =Calendar.getInstance();
-
-            int currentYear = mCal.get(Calendar.YEAR) - 1;
-            int currentMonth = mCal.get(Calendar.MONTH);
-            int currentDay = mCal.get(Calendar.DAY_OF_MONTH);
-
-            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
-        }
+//        if (mDatePicker != null){
+//            mDatePicker.updateDate(mYear, mMonth, mDay);
+//            Calendar mCal =Calendar.getInstance();
+//
+//            int currentYear = mCal.get(Calendar.YEAR) - 1;
+//            int currentMonth = mCal.get(Calendar.MONTH);
+//            int currentDay = mCal.get(Calendar.DAY_OF_MONTH);
+//
+//            mDatePicker.setMaxDate(new GregorianCalendar(currentYear, currentMonth, currentDay).getTimeInMillis());
+//        }
     }
 
     public String getDate() {

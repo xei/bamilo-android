@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/checkout_login_toogle"
         style="@style/rounded_box_title_grey"
         android:layout_height="@dimen/checkout_box_title_height"
@@ -58,7 +58,7 @@
 
             <!-- LOGIN -->
 
-            <org.holoeverywhere.widget.Button
+            <pt.rocket.components.customfontviews.Button
                 android:id="@+id/checkout_login_form_button_enter"
                 style="@style/button_orange_bottom"
                 android:contentDescription="@string/login_button_description"
@@ -66,7 +66,7 @@
 
             <!-- FORGOT -->
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/checkout_login_form_button_password"
                 style="@style/text_normal"
                 android:layout_gravity="center"
@@ -89,7 +89,7 @@
                     android:layout_centerInParent="true"
                     android:background="@color/grey_divider_light_text" />
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     style="@style/text_header"
                     android:layout_centerInParent="true"
                     android:background="@android:color/white"

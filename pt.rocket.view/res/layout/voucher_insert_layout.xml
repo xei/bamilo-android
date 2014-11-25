@@ -8,7 +8,7 @@
 
     <!-- TITLE -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         style="@style/rounded_box_title_grey"
         android:text="@string/my_order_coupon_label" />
 
@@ -25,7 +25,7 @@
 
         <!-- RIGHT BUTTON -->
 
-        <org.holoeverywhere.widget.Button
+        <pt.rocket.components.customfontviews.Button
             android:id="@+id/voucher_btn"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/button_big_height"
@@ -52,16 +52,16 @@
             android:layout_toLeftOf="@id/voucher_btn"
             android:orientation="vertical" >
 
-            <org.holoeverywhere.widget.EditText
+            <pt.rocket.components.customfontviews.EditText
                 android:id="@+id/voucher_name"
                 style="@style/form_edittext_style"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
                 android:layout_marginTop="@dimen/login_margin_medium"
-                android:hint="@string/voucher_message_hint" >
-            </org.holoeverywhere.widget.EditText>
+                android:hint="@string/voucher_message_hint" />
+            
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/voucher_error_message"
                 style="@style/text_normal"
                 android:layout_width="match_parent"

@@ -1,7 +1,6 @@
 package pt.rocket.utils.maintenance;
 
-import org.holoeverywhere.widget.Button;
-
+import pt.rocket.components.customfontviews.Button;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.utils.DeviceInfoHelper;

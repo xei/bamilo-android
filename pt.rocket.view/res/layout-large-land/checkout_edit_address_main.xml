@@ -39,7 +39,7 @@
             android:layout_centerInParent="true"
             android:orientation="vertical" >
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/checkout_edit_address_required_text"
                 style="@style/text_header"
                 android:layout_margin="@dimen/rounded_margin_mid"
@@ -51,14 +51,14 @@
                 style="@style/button_container"
                 android:orientation="horizontal" >
 
-                <org.holoeverywhere.widget.Button
+                <pt.rocket.components.customfontviews.Button
                     android:id="@+id/checkout_edit_button_cancel"
                     style="@style/button_grey_bottom"
                     android:layout_marginRight="@dimen/margin_x_small"
                     android:layout_weight="1"
                     android:text="@string/cancel_label" />
 
-                <org.holoeverywhere.widget.Button
+                <pt.rocket.components.customfontviews.Button
                     android:id="@+id/checkout_edit_button_enter"
                     style="@style/button_orange_bottom"
                     android:layout_marginLeft="@dimen/margin_x_small"

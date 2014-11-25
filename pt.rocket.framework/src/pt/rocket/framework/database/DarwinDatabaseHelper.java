@@ -1,14 +1,16 @@
 package pt.rocket.framework.database;
 
 import java.util.ArrayList;
+
 import org.apache.commons.collections4.CollectionUtils;
-import de.akquinet.android.androlog.Log;
+
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import de.akquinet.android.androlog.Log;
 
 /**
  * Database helper.

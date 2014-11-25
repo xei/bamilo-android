@@ -18,7 +18,7 @@
         android:src="@drawable/shape_border_flag"
         android:visibility="gone" />
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/dialog_item_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:textColor="@color/grey_dark"
         android:textSize="@dimen/text_xl" />
 
-    <org.holoeverywhere.widget.CheckBox
+    <pt.rocket.components.customfontviews.CheckBox
         android:id="@+id/dialog_item_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

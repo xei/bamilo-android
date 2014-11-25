@@ -19,7 +19,7 @@
 
             <!-- TITLE -->
 
-            <org.holoeverywhere.widget.TextView
+            <pt.rocket.components.customfontviews.TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_large"
@@ -49,7 +49,7 @@
 
     <!-- NEXT BUTTON -->
 
-    <org.holoeverywhere.widget.Button
+    <pt.rocket.components.customfontviews.Button
         android:id="@+id/checkout_poll_button_enter"
         style="@style/button_orange_style"
         android:layout_alignParentBottom="true"

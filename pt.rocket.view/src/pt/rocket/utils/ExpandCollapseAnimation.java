@@ -1,10 +1,10 @@
 package pt.rocket.utils;
 
-import de.akquinet.android.androlog.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.ScrollView;
+import de.akquinet.android.androlog.Log;
 
 /**
  * This Class implements and manage the Expandable and Collapse Animation <p/><br> 

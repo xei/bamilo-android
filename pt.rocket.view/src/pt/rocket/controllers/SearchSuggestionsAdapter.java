@@ -2,8 +2,7 @@ package pt.rocket.controllers;
 
 import java.util.List;
 
-import org.holoeverywhere.widget.TextView;
-
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.view.R;
 import android.content.Context;

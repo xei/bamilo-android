@@ -38,7 +38,7 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginTop="@dimen/rounded_margin_small" >
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     android:id="@+id/features_color_label"
                     style="@style/rounded_box_title_grey"
                     android:text="@string/product_features_title" />
@@ -48,7 +48,7 @@
                     style="@style/divider_horizontal_orange"
                     android:layout_below="@id/features_color_label" />
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     android:id="@+id/product_features_text"
                     style="@style/text_normal"
                     android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginTop="@dimen/rounded_margin_small" >
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     android:id="@+id/description_color_label"
                     style="@style/rounded_box_title_grey"
                     android:text="@string/product_description_title" />
@@ -80,7 +80,7 @@
                     style="@style/divider_horizontal_orange"
                     android:layout_below="@id/description_color_label" />
 
-                <org.holoeverywhere.widget.TextView
+                <pt.rocket.components.customfontviews.TextView
                     android:id="@+id/product_description_text"
                     style="@style/text_normal"
                     android:layout_width="match_parent"

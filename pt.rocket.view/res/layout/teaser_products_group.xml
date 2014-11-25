@@ -11,7 +11,7 @@
 
     <!-- TITLE -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/teaser_products_group_title"
         style="@style/rounded_box_title_grey"
         android:text="Product list"

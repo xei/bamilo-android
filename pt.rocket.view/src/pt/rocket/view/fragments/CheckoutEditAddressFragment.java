@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.icsspinner.IcsAdapterView;
+import pt.rocket.components.icsspinner.IcsAdapterView.OnItemSelectedListener;
+import pt.rocket.components.icsspinner.IcsSpinner;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
@@ -52,11 +55,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.actionbarsherlock.internal.widget.IcsAdapterView;
-import com.actionbarsherlock.internal.widget.IcsAdapterView.OnItemSelectedListener;
-import com.actionbarsherlock.internal.widget.IcsSpinner;
-
 import de.akquinet.android.androlog.Log;
 
 /**

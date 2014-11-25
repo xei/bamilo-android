@@ -4,12 +4,12 @@
     android:layout_height="@dimen/recently_viewed_button_container_height"
     android:orientation="vertical" >
 
-    <org.holoeverywhere.widget.Button
+    <pt.rocket.components.customfontviews.Button
         android:id="@+id/button_shop_all"
         style="@style/button_orange_bottom"
         android:text="@string/favourite_addalltocart" />
 
-    <org.holoeverywhere.widget.Button
+    <pt.rocket.components.customfontviews.Button
         android:id="@+id/recentlyviewed_button_grey"
         style="@style/button_grey_bottom"
         android:layout_marginTop="0dp"

@@ -4,10 +4,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.EditText;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -490,6 +489,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         }
     }
 
+    // XXX
     private void cleanForm(){
         
         titleText.setText("");
@@ -540,6 +540,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                             dialog_review_submitted.dismiss();
                             isExecutingSendReview = false;
                             if (getBaseActivity() != null) {
+                                // XXX
                                 if(BaseActivity.isTabletInLandscape(getBaseActivity())){
                                     cleanForm();
                                 } else {

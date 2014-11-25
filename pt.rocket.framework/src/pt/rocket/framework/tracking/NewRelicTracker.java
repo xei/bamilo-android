@@ -3,10 +3,11 @@ package pt.rocket.framework.tracking;
 import pt.rocket.framework.R;
 import android.content.Context;
 import android.text.TextUtils;
-import de.akquinet.android.androlog.Log;
 
 import com.newrelic.agent.android.NewRelic;
 import com.newrelic.agent.android.util.NetworkFailure;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * NewRelic class.<br>

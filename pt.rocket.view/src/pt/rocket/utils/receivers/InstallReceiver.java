@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pt.rocket.framework.tracking.GTMManager;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;

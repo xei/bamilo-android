@@ -10,10 +10,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.holoeverywhere.widget.CheckBox;
-import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.CheckBox;
+import pt.rocket.components.customfontviews.TextView;
+import pt.rocket.components.icsspinner.IcsAdapterView;
+import pt.rocket.components.icsspinner.IcsAdapterView.OnItemSelectedListener;
+import pt.rocket.components.icsspinner.IcsSpinner;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
@@ -49,7 +51,6 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -60,11 +61,6 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
-
-import com.actionbarsherlock.internal.widget.IcsAdapterView;
-import com.actionbarsherlock.internal.widget.IcsAdapterView.OnItemSelectedListener;
-import com.actionbarsherlock.internal.widget.IcsSpinner;
-
 import de.akquinet.android.androlog.Log;
 
 /**

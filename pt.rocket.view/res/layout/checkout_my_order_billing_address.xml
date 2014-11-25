@@ -15,7 +15,7 @@
         android:gravity="left|center"
         android:orientation="horizontal" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             style="@style/rounded_box_title_grey"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
@@ -42,7 +42,7 @@
 
     <!-- SAME ADDRESS -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/checkout_my_order_billing_address_is_same"
         style="@style/text_normal"
         android:layout_marginBottom="@dimen/margin_40px"

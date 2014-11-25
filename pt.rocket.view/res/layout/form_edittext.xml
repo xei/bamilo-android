@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.holoeverywhere.widget.EditText xmlns:android="http://schemas.android.com/apk/res/android"
+<pt.rocket.components.customfontviews.EditText xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/form_edittext_style" />

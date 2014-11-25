@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:paddingBottom="@dimen/rounded_margin_mid" >
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         style="@style/rounded_box_title_grey"
         android:text="@string/sub_total_title" />
 
@@ -21,20 +21,20 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_large" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/articles_count"
             style="@style/text_normal"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/price_unreduced" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/price_unreduced"
             style="@style/text_normal"
             android:layout_marginRight="@dimen/rounded_margin_mid"
             android:layout_toLeftOf="@+id/price_total"
             android:textColor="@color/grey_light" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/price_total"
             style="@style/text_title"
             android:layout_alignParentRight="true"
@@ -64,11 +64,11 @@
         android:layout_marginTop="@dimen/margin_mid"
         android:visibility="visible" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             style="@style/text_normal"
             android:text="@string/vat_string" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/vat_value"
             style="@style/text_normal"
             android:layout_alignParentRight="true" />
@@ -84,11 +84,11 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:visibility="gone" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             style="@style/text_normal"
             android:text="@string/shipping" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/shipping_value"
             style="@style/text_normal"
             android:layout_alignParentRight="true"
@@ -105,11 +105,11 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:visibility="gone" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             style="@style/text_normal"
             android:text="@string/extra_costs_label" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/extra_costs_value"
             style="@style/text_normal"
             android:layout_alignParentRight="true" />
@@ -125,12 +125,12 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:visibility="visible" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             style="@style/text_normal"
             android:text="@string/my_order_voucher_label"
             android:textColor="@color/green_basic" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/text_voucher"
             style="@style/text_normal"
             android:layout_alignParentRight="true"
@@ -148,11 +148,11 @@
         android:layout_marginTop="@dimen/margin_mid"
         android:visibility="visible" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             style="@style/text_normal"
             android:text="@string/my_order_total_label" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/total_value"
             style="@style/text_title"
             android:layout_alignParentRight="true"

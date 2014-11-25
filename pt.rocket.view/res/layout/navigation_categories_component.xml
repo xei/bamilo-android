@@ -5,7 +5,7 @@
     android:background="@color/grey_tab_background"
     android:orientation="horizontal" >
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/component_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"

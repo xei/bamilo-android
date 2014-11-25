@@ -57,7 +57,7 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/teaser_campaigns_group_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

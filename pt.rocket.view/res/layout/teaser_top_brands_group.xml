@@ -8,7 +8,7 @@
     android:layout_marginTop="@dimen/rounded_margin_small"
     android:background="@drawable/background_content" >
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/teaser_top_brands_group_title"
         style="@style/rounded_box_title_grey"
         android:text="@string/brands_label"

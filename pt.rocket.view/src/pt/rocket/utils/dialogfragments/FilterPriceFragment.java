@@ -1,8 +1,7 @@
 package pt.rocket.utils.dialogfragments;
 
-import org.holoeverywhere.widget.CheckBox;
-import org.holoeverywhere.widget.TextView;
-
+import pt.rocket.components.customfontviews.CheckBox;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.components.RangeSeekBar;
 import pt.rocket.framework.components.RangeSeekBar.OnRangeSeekBarChangeListener;
 import pt.rocket.framework.objects.CatalogFilter;

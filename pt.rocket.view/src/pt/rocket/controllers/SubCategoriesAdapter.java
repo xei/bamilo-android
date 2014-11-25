@@ -3,8 +3,7 @@ package pt.rocket.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.holoeverywhere.widget.TextView;
-
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;

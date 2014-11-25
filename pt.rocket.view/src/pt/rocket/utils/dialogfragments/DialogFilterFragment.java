@@ -3,8 +3,7 @@ package pt.rocket.utils.dialogfragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.holoeverywhere.widget.TextView;
-
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.objects.CategoryFilterOption;

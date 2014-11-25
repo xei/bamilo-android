@@ -11,7 +11,7 @@
 
     <!-- DELETE BUTTON -->
 
-    <org.holoeverywhere.widget.Button
+    <pt.rocket.components.customfontviews.Button
         android:id="@+id/button_delete"
         android:layout_width="@dimen/delete_button_size"
         android:layout_height="@dimen/delete_button_size"
@@ -23,7 +23,7 @@
 
     <!-- BRAND -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_brand"
         style="@style/text_title"
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
 
     <!-- NAME -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_name"
         style="@style/text_normal"
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
 
     <!-- DISCOUNT -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_discount"
         style="@style/text_price"
         android:layout_alignLeft="@id/item_name"
@@ -57,7 +57,7 @@
 
     <!-- PRICE -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_regprice"
         style="@style/text_price"
         android:layout_alignTop="@id/item_discount"
@@ -68,7 +68,7 @@
 
     <!-- VARIATION -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/variances_container"
         style="@style/text_subtitle"
         android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
         android:layout_below="@id/item_discount"
         android:visibility="gone" />
 
-    <org.holoeverywhere.widget.Button
+    <pt.rocket.components.customfontviews.Button
         android:id="@+id/changequantity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

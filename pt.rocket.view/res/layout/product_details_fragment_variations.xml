@@ -11,7 +11,7 @@
     layout_gravity added to fix bug on 2.2
     -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/color_label"
         style="@style/rounded_box_title_grey"
         android:text="@string/color_label" />

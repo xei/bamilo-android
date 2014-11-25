@@ -15,12 +15,12 @@ import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.ListFragment;
-import de.akquinet.android.androlog.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ListView;
+import de.akquinet.android.androlog.Log;
 
 public class PreferenceListFragment extends ListFragment{
     

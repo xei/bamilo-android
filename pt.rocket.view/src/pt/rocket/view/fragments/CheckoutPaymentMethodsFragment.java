@@ -6,12 +6,11 @@ package pt.rocket.view.fragments;
 import java.util.EnumSet;
 import java.util.Iterator;
 
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.TextView;
-import org.holoeverywhere.widget.Toast;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.Button;
+import pt.rocket.components.customfontviews.EditText;
+import pt.rocket.components.customfontviews.TextView;
+import pt.rocket.components.customfontviews.Toast;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;

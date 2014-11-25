@@ -1,14 +1,13 @@
 package pt.rocket.utils.dialogfragments;
 
-import org.holoeverywhere.widget.TextView;
-import org.holoeverywhere.widget.Toast;
-
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 /**
  * Class used to create a custom toast

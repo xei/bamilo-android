@@ -17,7 +17,7 @@
 
         <!-- DISCOUNT -->
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/campaign_item_discount"
             style="@style/product_price_current_single_item"
             android:layout_marginRight="@dimen/margin_small"
@@ -30,7 +30,7 @@
 
         <!-- PRICE -->
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/campaign_item_price"
             style="@style/product_price_old_single_item"
             android:layout_alignBottom="@id/campaign_item_discount"
@@ -46,7 +46,7 @@
 
         <!-- SAVE VALUE -->
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/campaign_item_save_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
 
         <!-- STOCK LABEL -->
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/campaign_item_stock_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
 
         <!-- STOCK VALUE -->
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/campaign_item_stock_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
 
     <!-- BUTTON -->
 
-    <org.holoeverywhere.widget.Button
+    <pt.rocket.components.customfontviews.Button
         android:id="@+id/campaign_item_button_buy"
         style="@style/button_orange_style"
         android:layout_width="0dp"

@@ -15,6 +15,16 @@
  *******************************************************************************/
 package pt.rocket.utils.photoview;
 
+import static android.view.MotionEvent.ACTION_CANCEL;
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
+
+import java.lang.ref.WeakReference;
+
+import pt.rocket.utils.photoview.gestures.OnGestureListener;
+import pt.rocket.utils.photoview.gestures.VersionedGestureDetector;
+import pt.rocket.utils.photoview.log.LogManager;
+import pt.rocket.utils.photoview.scrollerproxy.ScrollerProxy;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -33,17 +43,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-
-import java.lang.ref.WeakReference;
-
-import pt.rocket.utils.photoview.gestures.OnGestureListener;
-import pt.rocket.utils.photoview.gestures.VersionedGestureDetector;
-import pt.rocket.utils.photoview.log.LogManager;
-import pt.rocket.utils.photoview.scrollerproxy.ScrollerProxy;
-
-import static android.view.MotionEvent.ACTION_CANCEL;
-import static android.view.MotionEvent.ACTION_DOWN;
-import static android.view.MotionEvent.ACTION_UP;
 
 public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         OnGestureListener,

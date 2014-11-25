@@ -2,8 +2,7 @@ package pt.rocket.utils.dialogfragments;
 
 import java.util.ArrayList;
 
-import org.holoeverywhere.widget.TextView;
-
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.app.Activity;

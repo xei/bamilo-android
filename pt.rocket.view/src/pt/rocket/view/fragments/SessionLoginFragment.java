@@ -10,9 +10,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.holoeverywhere.widget.CheckBox;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.CheckBox;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.LogOut;
@@ -145,7 +144,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 R.layout.login,
                 titleResId,
                 KeyboardState.ADJUST_CONTENT);
-
     }
 
     /*
@@ -184,7 +182,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-
         rememberEmailCheck = (CheckBox) view.findViewById(R.id.login_remember_user_email);
         signinButton = view.findViewById(R.id.middle_login_button_signin);
         forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
@@ -215,7 +212,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     @Override
     public void onResume() {
         super.onResume();
-        
         Log.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGNUP, getLoadTime(), false);
 

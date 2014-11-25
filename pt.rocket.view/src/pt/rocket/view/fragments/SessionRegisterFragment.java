@@ -9,11 +9,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.holoeverywhere.FontLoader;
-import org.holoeverywhere.widget.CheckBox;
-import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.CheckBox;
+import pt.rocket.components.customfontviews.HoloFontLoader;
+import pt.rocket.components.customfontviews.TextView;
+import pt.rocket.components.icsspinner.IcsAdapterView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -25,8 +25,8 @@ import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.rest.RestConstants;
-import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.tracking.GTMEvents.GTMValues;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -54,9 +54,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
-import com.actionbarsherlock.internal.widget.IcsAdapterView;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -277,7 +274,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
         registerRequiredText = (TextView) getView().findViewById(R.id.register_required_text);
 
         registerButton.setTextAppearance(getActivity(), R.style.text_normal_programatically);
-        FontLoader.apply(registerButton, FontLoader.ROBOTO_REGULAR);
+        HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_REGULAR);
 
         // checkTerms.setOnClickListener(click);
     }
@@ -451,11 +448,11 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
             // Log.d( TAG, "checkInputFieds: check passed" );
             registerRequiredText.setVisibility(View.GONE);
             registerButton.setTextAppearance(getActivity(), R.style.text_bold_programatically);
-            FontLoader.apply(registerButton, FontLoader.ROBOTO_BOLD);
+            HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_BOLD);
         } else {
             // Log.d( TAG, "checkInputFieds: check not passed" );
             registerButton.setTextAppearance(getActivity(), R.style.text_normal_programatically);
-            FontLoader.apply(registerButton, FontLoader.ROBOTO_REGULAR);
+            HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_REGULAR);
         }
     }
 
@@ -631,10 +628,10 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
 
                 if (serverForm != null && serverForm.checkRequired()) {
                     registerButton.setTextAppearance(getActivity(), R.style.text_bold_programatically);
-                    FontLoader.apply(registerButton, FontLoader.ROBOTO_BOLD);
+                    HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_BOLD);
                 } else {
                     registerButton.setTextAppearance(getActivity(), R.style.text_normal_programatically);
-                    FontLoader.apply(registerButton, FontLoader.ROBOTO_REGULAR);
+                    HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_REGULAR);
                 }
             }
         });

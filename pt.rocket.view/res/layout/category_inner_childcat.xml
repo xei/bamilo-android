@@ -4,7 +4,7 @@
     android:layout_height="@dimen/item_height_normal"
     android:background="@drawable/selector_listitem_highlight" >
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/text"
         style="@style/text_normal"
         android:layout_width="match_parent"

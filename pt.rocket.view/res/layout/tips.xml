@@ -31,7 +31,7 @@
             android:layout_marginTop="5dp" /
         -->
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/tips_got_it_img"
             style="@style/button_orange_style"
             android:layout_width="@dimen/tips_button_width"

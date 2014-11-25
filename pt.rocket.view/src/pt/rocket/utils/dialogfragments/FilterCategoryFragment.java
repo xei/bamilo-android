@@ -1,7 +1,6 @@
 package pt.rocket.utils.dialogfragments;
 
-import org.holoeverywhere.widget.TextView;
-
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.controllers.FilterOptionArrayAdapter;
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;

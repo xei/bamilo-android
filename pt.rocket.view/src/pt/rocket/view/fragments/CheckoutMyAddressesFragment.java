@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.holoeverywhere.widget.CheckBox;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.CheckBox;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;

@@ -2,12 +2,11 @@ package pt.rocket.utils;
 
 import java.util.ArrayList;
 
-import org.holoeverywhere.widget.AutoCompleteTextView;
-
 import android.content.Context;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.widget.AutoCompleteTextView;
 import de.akquinet.android.androlog.Log;
 
 /**

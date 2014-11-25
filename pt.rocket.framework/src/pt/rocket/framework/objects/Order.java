@@ -2,12 +2,9 @@ package pt.rocket.framework.objects;
 
 import java.util.ArrayList;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.newrelic.com.google.gson.JsonObject;
 
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.LogTagHelper;

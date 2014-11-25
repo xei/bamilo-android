@@ -15,7 +15,7 @@
         android:gravity="left|center"
         android:orientation="horizontal" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             style="@style/rounded_box_title_grey"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"

@@ -7,9 +7,8 @@ import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.BundleConstants;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
@@ -21,13 +20,12 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.tracking.AdjustTracker;
-import pt.rocket.framework.tracking.GTMManager;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.configs.GetApiInfoHelper;
-import pt.rocket.helpers.configs.GetCountryConfigsHelper;
 import pt.rocket.helpers.configs.GetCountriesGeneralConfigsHelper;
+import pt.rocket.helpers.configs.GetCountryConfigsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.HockeyStartup;
 import pt.rocket.utils.LocationHelper;
@@ -255,12 +253,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // ## DEEP LINK FROM EXTERNAL URIs ##
         if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
             mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
-            isDeepLinkLaunch = true;
-            return true; 
+            return isDeepLinkLaunch = true;
         }
         Log.i(TAG, "DEEP LINK: NO EXTERNAL URI");
-        isDeepLinkLaunch = false;
-        return false; 
+        return isDeepLinkLaunch = false; 
     }
     
     /**
@@ -287,11 +283,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 Log.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
                 // Load deep link
                 mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
-                return true;
+                return isDeepLinkLaunch = true;
             }
         }
         Log.i(TAG, "DEEP LINK: NO GCM TAG");
-        return false;
+        return isDeepLinkLaunch = false;
     }
     
     
@@ -327,11 +323,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             public void onAnimationEnd(Animation animation) {
                 jumiaMapImage.setVisibility(View.GONE);
                 // ## Google Analytics "General Campaign Measurement" ##
-                TrackerDelegator.trackGACampaign(mUtm);
-                GTMManager.saveCampaignParams(getApplicationContext(), GTMManager.CAMPAIGN_ID_KEY, mUtm);
+                TrackerDelegator.trackGACampaign(getApplicationContext(), mUtm);
+                //track open app event for all tracker but Adjust
+                TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
                 // Validate deep link bundle    
                 if (mDeepLinkBundle != null) {
-                    TrackerDelegator.trackAppOpen(getApplicationContext(), true);
                     startActivityWithDeepLink(mDeepLinkBundle);
                 } else {
                     starMainActivity();
@@ -604,8 +600,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, (IResponseCallback) this);
         } else {
             Log.d(TAG, "START MAIN ACTIVITY");
-            //track open app event for all tracker but Adjust
-            TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
             // Show activity
             selectActivity();
         }

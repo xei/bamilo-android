@@ -26,7 +26,7 @@
         android:layout_marginTop="@dimen/rounded_margin_small"
         android:layout_weight="1" >
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+android:id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             android:textColor="@color/grey_middledark"
             android:textSize="@dimen/text_title" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+android:id/summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

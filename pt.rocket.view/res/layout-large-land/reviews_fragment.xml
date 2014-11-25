@@ -79,7 +79,7 @@
                         android:layout_gravity="center_vertical|center_horizontal"
                         android:src="@drawable/img_noratings" />
 
-                    <org.holoeverywhere.widget.TextView
+                    <pt.rocket.components.customfontviews.TextView
                         android:id="@+id/fragment_root_empty_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

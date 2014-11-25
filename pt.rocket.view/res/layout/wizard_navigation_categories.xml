@@ -11,7 +11,7 @@
         android:layout_marginTop="@dimen/wizard_nav_img_margin_top"
         android:src="@drawable/img_instructions_arrowcategories" />
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -24,7 +24,7 @@
         android:textColor="#c3c3c3"
         android:textSize="@dimen/text_xl" />
 
-    <org.holoeverywhere.widget.Button
+    <pt.rocket.components.customfontviews.Button
         android:id="@+id/wizard_nav_button"
         style="@style/button_orange_style"
         android:layout_width="200dp"

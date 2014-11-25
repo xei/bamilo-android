@@ -7,7 +7,7 @@
 
     <!-- TITLE -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         style="@style/rounded_box_title_grey"
         android:text="@string/my_order_label" />
 

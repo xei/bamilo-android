@@ -2,11 +2,13 @@ package pt.rocket.forms;
 
 import java.util.ArrayList;
 
-import org.holoeverywhere.FontLoader;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.rocket.components.customfontviews.HoloFontLoader;
+import pt.rocket.components.icsspinner.IcsAdapterView;
+import pt.rocket.components.icsspinner.IcsSpinner;
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.objects.PickUpStationObject;
 import pt.rocket.framework.rest.RestConstants;
@@ -19,10 +21,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
-import com.actionbarsherlock.internal.widget.IcsAdapterView;
-import com.actionbarsherlock.internal.widget.IcsSpinner;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -169,7 +167,7 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
         this.dataControl.setVisibility(View.GONE);
 
 
-        FontLoader.applyDefaultFont( this.dataControl );
+        HoloFontLoader.applyDefaultFont(this.dataControl);
         // Listeners
         ((IcsSpinner) this.dataControl)
                 .setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {

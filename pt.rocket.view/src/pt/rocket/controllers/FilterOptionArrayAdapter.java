@@ -2,9 +2,8 @@ package pt.rocket.controllers;
 
 import java.util.List;
 
-import org.holoeverywhere.widget.CheckBox;
-import org.holoeverywhere.widget.TextView;
-
+import pt.rocket.components.customfontviews.CheckBox;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.view.R;
 import android.content.Context;

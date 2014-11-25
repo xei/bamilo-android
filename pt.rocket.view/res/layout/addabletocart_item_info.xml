@@ -10,7 +10,7 @@
 
     <!-- DELETE BUTTON -->
 
-    <org.holoeverywhere.widget.Button
+    <pt.rocket.components.customfontviews.Button
         android:id="@+id/button_delete"
         android:layout_width="@dimen/delete_button_size"
         android:layout_height="@dimen/delete_button_size"
@@ -22,7 +22,7 @@
 
     <!-- BRAND -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_brand"
         style="@style/text_title"
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
 
     <!-- NAME -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_name"
         style="@style/text_subtitle"
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
 
     <!-- DISCOUNT -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_discount"
         style="@style/text_price"
         android:layout_alignLeft="@id/item_name"
@@ -53,7 +53,7 @@
 
     <!-- PRICE -->
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_regprice"
         style="@style/text_price"
         android:layout_alignTop="@id/item_discount"
@@ -73,7 +73,7 @@
 
         <!-- DUMMY -->
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/product_outof_stock"
@@ -83,7 +83,7 @@
 
         <!-- STOCK WARNING -->
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/error_stock"
             style="@style/text_subtitle"
             android:layout_width="match_parent"
@@ -93,7 +93,7 @@
 
         <!-- CHOOSE WARNING -->
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/error_variant"
             style="@style/text_subtitle"
             android:layout_width="match_parent"
@@ -104,7 +104,7 @@
 
     <!-- VARIATION BUTTON -->
 
-    <org.holoeverywhere.widget.Button
+    <pt.rocket.components.customfontviews.Button
         android:id="@+id/button_variant"
         android:layout_width="@dimen/product_item_addtocart_variation_width"
         android:layout_height="@dimen/product_item_button_height"
@@ -121,7 +121,7 @@
 
     <!-- ADD BUTTON -->
 
-    <org.holoeverywhere.widget.Button
+    <pt.rocket.components.customfontviews.Button
         android:id="@id/button_shop"
         style="@style/button_orange_style"
         android:layout_width="wrap_content"

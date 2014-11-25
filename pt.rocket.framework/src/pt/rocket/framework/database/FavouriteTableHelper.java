@@ -2,7 +2,6 @@ package pt.rocket.framework.database;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;

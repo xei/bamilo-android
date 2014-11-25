@@ -3,7 +3,7 @@
 // */
 //package pt.rocket.view.fragments;
 //
-//import org.holoeverywhere.widget.TextView;
+//import pt.rocket.components.holo_font_views.TextView;
 //
 //import pt.rocket.framework.objects.ITargeting;
 //import pt.rocket.framework.objects.ProductTeaserGroup;

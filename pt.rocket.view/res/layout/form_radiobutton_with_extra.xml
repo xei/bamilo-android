@@ -32,7 +32,7 @@
             android:layout_gravity="center_horizontal"
             android:visibility="gone" />
 
-        <org.holoeverywhere.widget.TextView
+        <pt.rocket.components.customfontviews.TextView
             android:id="@+id/payment_text"
             style="@style/text_normal"
             android:layout_height="wrap_content"

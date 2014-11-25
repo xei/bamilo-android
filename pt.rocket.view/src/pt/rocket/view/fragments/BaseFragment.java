@@ -6,10 +6,9 @@ import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Set;
 
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.Button;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;

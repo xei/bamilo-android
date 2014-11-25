@@ -3,10 +3,9 @@
  */
 package pt.rocket.utils;
 
+import pt.rocket.components.icsspinner.IcsSpinner;
 import android.content.Context;
 import android.util.AttributeSet;
-
-import com.actionbarsherlock.internal.widget.IcsSpinner;
 
 /**
  * <code>IcsSpinner</code> that allows to call method <code>onDetachedFromWindow()</code> which will

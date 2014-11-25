@@ -3,9 +3,8 @@ package pt.rocket.utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.holoeverywhere.widget.TextView;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.factories.FormFactory;
 import pt.rocket.forms.Form;

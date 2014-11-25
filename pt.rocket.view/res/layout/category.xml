@@ -6,7 +6,7 @@
     android:background="@drawable/selector_listitem_highlight"
     android:paddingTop="6dp" >
 
-    <org.holoeverywhere.widget.TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/category_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

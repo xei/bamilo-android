@@ -1,11 +1,10 @@
 package pt.rocket.utils.dialogfragments;
 
-import org.holoeverywhere.drawable.ColorDrawable;
-
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
