@@ -1112,7 +1112,13 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().setCustomData(info);
         // GTM
         String version = DeviceInfoHelper.getVersionName(context);
-        GTMManager.get().gtmTrackAppOpen(version, info, ShopSelector.getShopId(), getUtmParams(context, GTMManager.CAMPAIGN_ID_KEY),
+        
+        String campaingId = getUtmParams(context, GTMManager.CAMPAIGN_ID_KEY);
+
+        //reset clean campaing id
+        saveUtmParameters(context, GTMManager.CAMPAIGN_ID_KEY, "");
+        
+        GTMManager.get().gtmTrackAppOpen(version, info, ShopSelector.getShopId(), campaingId,
                 getUtmParams(context, GTMManager.CAMPAIGN_SOURCE), getUtmParams(context, GTMManager.CAMPAIGN_MEDIUM), isFromPush);
         
         countSession();
@@ -1192,6 +1198,13 @@ public class TrackerDelegator {
         return settings.getString(key, "");
     }
 
+    public static void saveUtmParameters(Context context, String key, String value) {
+        Log.d(TAG, "saving INSTALL_REFERRAL params, key: " + key + ", value : " + value);
+        SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
     /**
      * Track the new cart for each user interaction, add or remove.
      * @param cartValue

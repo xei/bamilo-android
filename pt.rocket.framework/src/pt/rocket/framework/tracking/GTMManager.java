@@ -149,14 +149,20 @@ public class GTMManager {
         if(isPreInstall) source = GTMValues.PRE_INSTALL;
         else source = GTMValues.ORGANIC;
         
-        Log.d(TAG, "gtmTrackAppOpen PUSH:"+GTMValues.PUSH);
         if(isFromPush){
             source = GTMValues.PUSH;
         }
             
             Log.d(TAG, "gtmTrackAppOpen"+" campaignId:"+campaignId+" source:"+source+" countryIso:"+countryIso+" version:"+version+" deviceBrand:"+deviceBrand);
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMEvents.GTMKeys.CAMPAIGN, campaignId, GTMEvents.GTMKeys.SOURCE, source, GTMEvents.GTMKeys.SHOPCOUNTRY,
-                  countryIso, GTMEvents.GTMKeys.APPVERSION, version,GTMEvents.GTMKeys.DEVICEBRAND, deviceBrand);
+//            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMEvents.GTMKeys.CAMPAIGN, campaignId, GTMEvents.GTMKeys.SOURCE, source, GTMEvents.GTMKeys.SHOPCOUNTRY,
+//                  countryIso, GTMEvents.GTMKeys.APPVERSION, version,GTMEvents.GTMKeys.DEVICEBRAND, deviceBrand);
+            
+            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP,  GTMEvents.GTMKeys.SHOPCOUNTRY, countryIso,GTMEvents.GTMKeys.SOURCE, source,
+                    GTMEvents.GTMKeys.APPVERSION, version,GTMEvents.GTMKeys.DEVICEBRAND, deviceBrand);
+            
+            if(!TextUtils.isEmpty(campaignId)){
+                message.put(GTMEvents.GTMKeys.CAMPAIGN, campaignId);
+            }
             
             if(!TextUtils.isEmpty(operator))
                 message.put(GTMEvents.GTMKeys.OPERATOR, operator);
@@ -727,7 +733,7 @@ public class GTMManager {
         return settings.getString(key, "");
     }
 
-    private void saveCampaignParams(Context context, String key, String value) {
+    public static void saveCampaignParams(Context context, String key, String value) {
         SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);

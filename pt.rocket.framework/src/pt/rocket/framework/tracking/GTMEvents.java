@@ -39,6 +39,7 @@ public class GTMEvents {
     public static class GTMKeys {
         public static String SOURCE = "source";
         public static String CAMPAIGN = "campaign";
+        public static String MEDIUM = "medium";
         public static String APPVERSION = "appVersion";
         public static String SHOPCOUNTRY = "shopCountry";
         public static String LOADTIME = "loadTime";

@@ -463,7 +463,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         setCheckoutHeader(checkoutStep);
         // Set actionbarTitle
         if (actionBarTitleResId == 0) {
-            Log.e("DARAZ", "TITLE IS ZERO");
             hideTitle();
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
             hideActionBarTitle();
@@ -1503,7 +1502,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     @Override
     public void setTitle(CharSequence title) {
-        Log.e("DARAZ","setTitle:"+title);
         TextView titleView = (TextView) findViewById(R.id.titleProducts);
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
         View headerTitle = findViewById(R.id.header_title);
@@ -1512,7 +1510,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             return;
 
         if (!TextUtils.isEmpty(title)) {
-            Log.e("DARAZ"," 1setTitle:"+title);
             titleView.setText(title);
             headerTitle.setVisibility(View.VISIBLE);
         } else if (TextUtils.isEmpty(title)) {
@@ -1595,7 +1592,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     public void setTitle(int titleId) {
         if (titleId != 0) {
-            Log.e("DARAZ"," ID setTitle:"+titleId);
             setTitle(getString(titleId));
         }
     }
@@ -1606,7 +1602,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param actionBarTitleResId
      */
     public void setActionBarTitle(int actionBarTitleResId) {
-        Log.e("DARAZ","setActionBarTitle:"+actionBarTitleResId);
         // supportActionBar.setTitle(getString(actionBarTitleResId));
         logoTextView.setVisibility(View.VISIBLE);
         logoTextView.setText(getString(actionBarTitleResId));

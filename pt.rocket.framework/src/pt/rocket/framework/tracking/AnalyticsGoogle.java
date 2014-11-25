@@ -53,10 +53,6 @@ public class AnalyticsGoogle {
 	
 	private Context mContext;
 	
-	private String mTestKey;
-	
-	private String mLiveKey;
-	
 	private String mCurrentKey;
 	
 	private boolean isEnabled;
@@ -114,8 +110,6 @@ public class AnalyticsGoogle {
 		mAnalytics = GoogleAnalytics.getInstance(mContext);
 		// Load live and test key
 		loadKeys();
-		// Set test mode to set key
-		validateTestMode(context.getResources().getBoolean(R.bool.ga_testmode));
 		// Set debug mode
 		validateDebugMode(context.getResources().getBoolean(R.bool.ga_debug_mode));
 		// Set key
@@ -140,17 +134,6 @@ public class AnalyticsGoogle {
 	 */
 	
 	/**
-	 * Validate the current envirment to load the respective key
-	 * @param testMode
-	 * @author sergiopereira
-	 */
-	private void validateTestMode(boolean testMode) {
-		// Case debug mode
-		mCurrentKey = (testMode) ? mTestKey : mLiveKey;
-		Log.d(TAG, "TRACK TEST MODE: " + testMode + " KEY: " + mCurrentKey);
-	}
-	
-	/**
 	 * When dry run is set, hits will not be dispatched, but will still be logged as though they were dispatched.
 	 * @param testMode
 	 * @author sergiopereira
@@ -171,24 +154,11 @@ public class AnalyticsGoogle {
 	private void loadKeys() {
 		// Load keys
 		mSharedPreferences = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-		mLiveKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
-		mTestKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_TEST_ID, null);
-		Log.d(TAG, "TRACK LOAD KEYS: test-> " + mTestKey + " live->" + mLiveKey);
+		mCurrentKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
+		Log.d(TAG, "TRACK LOAD KEYS: mCurrentKey-> " + mCurrentKey);
 	}
 
-	/**
-	 * Switch mode
-	 * @param testing
-	 * @author sergiopereira
-	 */
-	public void switchMode(boolean testing) {
-		// Validation
-		if (!isEnabled) return;
-		// Mode
-		validateTestMode(testing);
-		// Update
-		updateTracker();
-	}
+
 
 	/**
 	 * Update the tracker using the current key
@@ -331,24 +301,6 @@ public class AnalyticsGoogle {
 	    .build());
 	}
 	
-	/**
-	 * Build and send a GA campaign.
-	 * @param campaign
-	 * @author sergiopereira
-	 */
-	protected void trackGACampaign() {
-		// Track
-		// String utmURI = (!mGACampaign.contains("utm_source")) ? "utm_campaign=" + mGACampaign + "&utm_source=push&utm_medium=referrer" : mGACampaign;
-		// Log.i(TAG, "TRACK CAMPAIGN: campaign->" + utmURI);
-		// mTracker.send(new HitBuilders.AppViewBuilder()
-		// .setCampaignParamsFromUrl(utmURI)
-		// .build());
-		
-		//mTracker.set("&cn", campaign);
-		//mTracker.set("&cs", "push");
-		//mTracker.set("&cm", "referrer");
-	}
-		
 	/**
 	 * ################## SPECIFIC TRACKING ################## 
 	 */

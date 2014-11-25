@@ -21,6 +21,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.rest.RestContract;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.tracking.AdjustTracker;
+import pt.rocket.framework.tracking.GTMManager;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -327,8 +328,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 jumiaMapImage.setVisibility(View.GONE);
                 // ## Google Analytics "General Campaign Measurement" ##
                 TrackerDelegator.trackGACampaign(mUtm);
+                GTMManager.saveCampaignParams(getApplicationContext(), GTMManager.CAMPAIGN_ID_KEY, mUtm);
                 // Validate deep link bundle    
                 if (mDeepLinkBundle != null) {
+                    TrackerDelegator.trackAppOpen(getApplicationContext(), true);
                     startActivityWithDeepLink(mDeepLinkBundle);
                 } else {
                     starMainActivity();

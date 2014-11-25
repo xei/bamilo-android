@@ -133,7 +133,6 @@ public class GetCountryConfigsHelper extends BaseHelper {
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, lang_code);
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, lang_name);
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, ga_id);
-        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_GA_TEST_ID, ga_id);
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, phone_number);
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, cs_email);
         
