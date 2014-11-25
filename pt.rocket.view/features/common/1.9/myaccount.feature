@@ -10,6 +10,7 @@ Given I select the country
 Then I wait to see the home
 When I click on the overflow button
 And I enter My Account
+* I wait for 3 seconds
 Then I should see my account
 And I should see the email notifications section
 
@@ -18,6 +19,7 @@ Scenario: See the email notifications without login
 Given I wait to see the home
 When I click on the overflow button
 And I enter My Account
+* I wait for 3 seconds
 Then I should see my account
 When I enter email notifications
 Then I should see login screen
@@ -28,6 +30,7 @@ Scenario: Email notification page
 Given I wait to see the home
 When I click on the overflow button
 And I choose the Sign In option
+* I wait for 5 seconds
 Then I should see login screen
 When I enter a valid username
 And I enter the password
@@ -37,8 +40,10 @@ And I click on the overflow button
 Then I should see sign out button
 #
 When I enter My Account
+* I wait for 3 seconds
 Then I should see my account
 When I enter email notifications
+* I wait for 2 seconds
 Then I should see the email notifications section
 And I should see newsletter title
 And I should see newsletter header
@@ -49,10 +54,12 @@ Scenario: Save newsletter changes
 Given I wait to see the home
 When I click on the overflow button
 And I enter My Account
+* I wait for 3 seconds
 Then I should see my account
 And I enter email notifications
 And I toggle checkbox number 1
 And I enter save
+* I wait for 4 seconds
 Then I should see the notification newsletter changes
 
 
