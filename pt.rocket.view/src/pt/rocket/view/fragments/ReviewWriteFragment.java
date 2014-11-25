@@ -28,6 +28,7 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -489,6 +490,24 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         }
     }
 
+    private void cleanForm(){
+        
+        titleText.setText("");
+        nameText.setText("");
+        reviewText.setText(""); 
+        
+        int childs = ratingBarContainer.getChildCount();
+
+        for(int i = 0; i<childs ; i++){
+            
+            View view = ratingBarContainer.getChildAt(i);
+            if(view instanceof RatingBar){
+                ((RatingBar)view).setRating(0f);
+            }
+            
+        }
+    }
+    
     protected boolean onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
@@ -521,18 +540,20 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                             dialog_review_submitted.dismiss();
                             isExecutingSendReview = false;
                             if (getBaseActivity() != null) {
-                                getBaseActivity().onBackPressed();
+                                if(BaseActivity.isTabletInLandscape(getBaseActivity())){
+                                    cleanForm();
+                                } else {
+                                    getBaseActivity().onBackPressed();
+                                }
                             }
                         }
                     });
             // Fixed back bug
             dialog_review_submitted.setCancelable(false);
-            titleText.setText("");
-            nameText.setText("");
-            reviewText.setText("");
             dialog_review_submitted.show(getActivity().getSupportFragmentManager(), null);
             hideActivityProgress();
             completedReview = true;
+            ratings.clear();
             JumiaApplication.setReview(null);
             return false;
 
