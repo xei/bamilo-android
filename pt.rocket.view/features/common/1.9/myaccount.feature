@@ -35,7 +35,7 @@ Scenario: Email notification page
 * I enter a valid username
 * I enter the password
 * I press Login Button
-*  I wait to see the home
+* I wait to see the home
 * I click on the overflow button
 * I should see sign out button
 #

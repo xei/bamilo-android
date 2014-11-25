@@ -2,14 +2,14 @@
 Feature: 2.0 Features - Search
 
 Background: 
-Given I call the variables
+* I call the variables
 
 Scenario: Choose Country
-Given I select the country
+* I select the country
 
 Scenario: Search bar
-Given I wait to see the home
-When I click on search
-And I enter a valid search on the text field
+* I wait to see the home
+* I click on search
+* I enter a valid search on the text field
 
 
