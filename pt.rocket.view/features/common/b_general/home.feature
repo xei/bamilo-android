@@ -1,40 +1,41 @@
-Feature: Initial app features @f_pre_1.9
+@f_pre_1.9 @app_initial
+Feature: Initial app features 
 Install app, open, choose country
 
 Background: 
-Given I call the variables
+* I call the variables
 
 @country_check @Calabash_Tests @teste_init
 Scenario: Initial country checker
 * I wait for 5 seconds
-Given I should see the countries
+* I should see the countries
 
 @splash_check @Calabash_Tests @teste_init
 Scenario: Check the splash screen
 #Given I start the app 
-Then I sould see the splash screen
+#* I sould see the splash screen
 
 @home_check @Calabash_Tests @teste_init
 Scenario: Home should appear when i open the app
-Given I select the country
-Then I wait to see the home
+* I select the country
+* I wait to see the home
 
 @sidebar_check @Calabash_Tests @teste_init
 Scenario: Check the sidebar layout
-Given I wait to see the home
-And I open the navigation menu
+* I wait to see the home
+* I open the navigation menu
 * I wait for 5 seconds
-Then I should see the sidebar
+* I should see the sidebar
 
 ##
 
-@server_check
-Scenario: Check selected server
-And I select the country
-Then I should see the corresponding server
+#@server_check
+#Scenario: Check selected server
+#* I select the country
+#* I should see the corresponding server
 
-@language_check
-Scenario: Check language
-And I select the country
-When I open the navigation menu
-And I should see the login button
+#@language_check
+#Scenario: Check language
+#* I select the country
+#* I open the navigation menu
+#* I should see the login button
