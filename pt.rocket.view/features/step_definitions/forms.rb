@@ -44,49 +44,49 @@ end
 Then /^I enter a random email$/ do 
   @unique_random_email= rand(899999999) + 100000000
   @email='Tester' + @unique_random_email.to_s + '@mailinator.com'
-  enter_text("android.widget.EditText marked:'"+@login_username.to_s+"'", '')
+#  enter_text("android.widget.EditText marked:'"+@login_username.to_s+"'", '')
 #  performAction('enter_text_into_named_field',"", @login_username.to_s)
   enter_text("android.widget.EditText marked:'"+@login_username.to_s+"'", @email)
 #  performAction('enter_text_into_named_field',@email, @login_username.to_s)
 end
 
 Then /^I enter the password$/ do 
-  enter_text("android.widget.EditText marked:'"+@login_password.to_s+"'", '')
+#  enter_text("android.widget.EditText marked:'"+@login_password.to_s+"'", '')
 #  performAction('enter_text_into_named_field',"", @login_password.to_s)
   enter_text("android.widget.EditText marked:'"+@login_password.to_s+"'", @password.to_s)
 #  performAction('enter_text_into_named_field',@password.to_s, @login_password.to_s)
 end
 
 Then /^I enter the wrong password$/ do
-  enter_text("android.widget.EditText marked:'"+@login_password.to_s+"'", '')
+#  enter_text("android.widget.EditText marked:'"+@login_password.to_s+"'", '')
 #  performAction('enter_text_into_named_field',"", @login_password.to_s)
   enter_text("android.widget.EditText marked:'"+@login_password.to_s+"'", @wrong_password)
 #  performAction('enter_text_into_named_field',@wrong_password, @login_password.to_s)
 end
 
 Then /^I enter the repeated password$/ do 
-  enter_text("android.widget.EditText marked:'"+@register_password2.to_s+"'", '')
+#  enter_text("android.widget.EditText marked:'"+@register_password2.to_s+"'", '')
 #  performAction('enter_text_into_named_field',"", @register_password2.to_s)
   enter_text("android.widget.EditText marked:'"+@register_password2.to_s+"'", @password.to_s)
 #  performAction('enter_text_into_named_field',@password.to_s, @register_password2.to_s)
 end
 
 Then /^I enter the wrong repeated password$/ do 
-  enter_text("android.widget.EditText marked:'"+@register_password2.to_s+"'", '')
+#  enter_text("android.widget.EditText marked:'"+@register_password2.to_s+"'", '')
 #  performAction('enter_text_into_named_field',"", @register_password2.to_s)
   enter_text("android.widget.EditText marked:'"+@register_password2.to_s+"'", @password.to_s+"x")
 #  performAction('enter_text_into_named_field',@password.to_s+"x", @register_password2.to_s)
 end
 
 Then /^I enter the first name$/ do 
-  enter_text("android.widget.EditText marked:'"+@register_first_name.to_s+"'", '')
+#  enter_text("android.widget.EditText marked:'"+@register_first_name.to_s+"'", '')
 #  performAction('enter_text_into_named_field',"", @register_first_name.to_s)
   enter_text("android.widget.EditText marked:'"+@register_first_name.to_s+"'", @firstname.to_s)
 #  performAction('enter_text_into_named_field',@firstname.to_s, @register_first_name.to_s)
 end
 
 Then /^I enter the last name$/ do 
-  enter_text("android.widget.EditText marked:'"+@register_last_name.to_s+"'", '')
+#  enter_text("android.widget.EditText marked:'"+@register_last_name.to_s+"'", '')
 #  performAction('enter_text_into_named_field',"", @register_last_name.to_s)
   enter_text("android.widget.EditText marked:'"+@register_last_name.to_s+"'", @lastname.to_s)
 #  performAction('enter_text_into_named_field',@lastname.to_s, @register_last_name.to_s)

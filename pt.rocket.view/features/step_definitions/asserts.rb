@@ -465,15 +465,15 @@ end
 Then /^I should see the menu sections$/ do
   assert_text(@home.to_s)
 #  performAction('assert_text', @home.to_s, true)
-  assert_text(@myprofile.to_s)
+#  assert_text(@myprofile.to_s)
 #  performAction('assert_text', @myprofile.to_s, true)
-  assert_text(@settings.to_s)
+#  assert_text(@settings.to_s)
 #  performAction('assert_text', @settings.to_s, true)
   assert_text(@choose_country.to_s)
 #  performAction('assert_text', @choose_country.to_s, true)
-  assert_text(@order_status.to_s)
+#  assert_text(@order_status.to_s)
 #  performAction('assert_text', @order_status.to_s, true)
-  assert_text(@sign_in.to_s)
+#  assert_text(@sign_in.to_s)
 #  performAction('assert_text', @sign_in.to_s, true)
 end
 

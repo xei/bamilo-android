@@ -2,65 +2,66 @@
 Feature: 1.9 Features - My Account
 
 Background: 
-Given I call the variables
+* I call the variables
 
 @account_email_section
 Scenario: See the email notifications section
-Given I select the country
-Then I wait to see the home
-When I click on the overflow button
-And I enter My Account
+* I select the country
+* I wait to see the home
+* I click on the overflow button
+* I enter My Account
 * I wait for 3 seconds
-Then I should see my account
-And I should see the email notifications section
+* I should see my account
+* I should see the email notifications section
 
 @account_email_not_logged
 Scenario: See the email notifications without login
-Given I wait to see the home
-When I click on the overflow button
-And I enter My Account
+* I wait to see the home
+* I click on the overflow button
+* I enter My Account
 * I wait for 3 seconds
-Then I should see my account
-When I enter email notifications
-Then I should see login screen
+* I should see my account
+* I enter email notifications
+* I should see login screen
 
 @account_newsletter_page
 Scenario: Email notification page
 #Login
-Given I wait to see the home
-When I click on the overflow button
-And I choose the Sign In option
+* I wait to see the home
+* I click on the overflow button
+* I choose the Sign In option
 * I wait for 5 seconds
-Then I should see login screen
-When I enter a valid username
-And I enter the password
-And I press Login Button
-And  I wait to see the home
-And I click on the overflow button
-Then I should see sign out button
+* I should see login screen
+* I enter a valid username
+* I enter the password
+* I press Login Button
+*  I wait to see the home
+* I click on the overflow button
+* I should see sign out button
 #
-When I enter My Account
+* I enter My Account
 * I wait for 3 seconds
-Then I should see my account
-When I enter email notifications
+* I should see my account
+* I enter email notifications
 * I wait for 2 seconds
-Then I should see the email notifications section
-And I should see newsletter title
-And I should see newsletter header
-And I should see newsletter options
+* I should see the email notifications section
+* I should see newsletter title
+* I should see newsletter header
+* I should see newsletter options
 
 @account_newsletter_save
 Scenario: Save newsletter changes
-Given I wait to see the home
-When I click on the overflow button
-And I enter My Account
+* I wait to see the home
+* I click on the overflow button
+* I enter My Account
 * I wait for 3 seconds
-Then I should see my account
-And I enter email notifications
-And I toggle checkbox number 1
-And I enter save
+* I should see my account
+* I enter email notifications
+* I wait for 2 seconds
+* I toggle checkbox number 1
+* I enter save
 * I wait for 4 seconds
-Then I should see the notification newsletter changes
+* I should see the notification newsletter changes
 
 
 	

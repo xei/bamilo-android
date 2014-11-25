@@ -142,8 +142,11 @@ Then /^I press male$/ do
 end
 
 Then /^I press birthday$/ do
-  touch("* marked:'"+@birthday.to_s+"'")
+#  touch("* marked:'"+@birthday.to_s+"'")
 #  performAction('press',@birthday.to_s)
+  enter_text("android.widget.EditText marked:'day'", '1')
+  enter_text("android.widget.EditText marked:'month'", '1')
+  enter_text("android.widget.EditText marked:'year'", '1987')
 end
 
 Then /^I check Terms and Conditions$/ do
@@ -482,6 +485,12 @@ end
 Then /^I press gridview item number (\d+)$/ do |number|
   touch("* {text CONTAINS '"+@currency+"'}")
 #  tap_when_element_exists("android.widget.GridView index:1")
+end
+
+Then /^I press grid item number (\d+)$/ do |number|
+  #touch("* {text CONTAINS '"+@currency+"'}")
+  #tap_when_element_exists("android.widget.GridView index:1")
+  touch("GridView")
 end
 
 Then /^I press Add new address$/ do
