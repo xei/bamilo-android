@@ -2,29 +2,29 @@
 Feature: 2.1 Features - My Account
 
 Background: 
-Given I call the variables
+* I call the variables
 
 Scenario: Choose Country
-Given I select the country
+* I select the country
 
 Scenario: Notification Settings
 #Login
-Given I wait to see the home
-When I click on the overflow button
+* I wait to see the home
+* I click on the overflow button
 * I wait for 1 seconds
-And I choose the Sign In option
+* I choose the Sign In option
 * I wait for 1 seconds
-Then I should see login screen
-And I enter a valid username
-And I enter the password
-And I press Login Button
-Then I wait to see the home
+* I should see login screen
+* I enter a valid username
+* I enter the password
+* I press Login Button
+* I wait to see the home
 
-When I click on the overflow button
+* I click on the overflow button
 * I wait for 1 seconds
-And I enter My Account
+* I enter My Account
 * I wait for 1 seconds
-Then I should see my account
+* I should see my account
 * I wait for 1 seconds
-And I should not see the vibrate option
-And I should not see the sound option
+* I should not see the vibrate option
+* I should not see the sound option

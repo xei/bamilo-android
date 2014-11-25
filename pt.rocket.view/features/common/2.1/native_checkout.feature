@@ -9,37 +9,38 @@ Given I select the country
 
 Scenario: In UG create an address, with city manualy
 #Login
-Given I wait to see the home
-When I click on the overflow button
+* I wait to see the home
+* I click on the overflow button
 * I wait for 1 seconds
-And I choose the Sign In option
+* I choose the Sign In option
 * I wait for 1 seconds
-Then I should see login screen
-And I enter a valid username
-And I enter the password
-And I press Login Button
-Then I wait to see the home
+* I should see login screen
+* I enter a valid username
+* I enter the password
+* I press Login Button
+* I wait to see the home
 #Add product
-When I open the navigation menu
-* I wait for 1 seconds
-And I enter a valid Category
-* I wait for 1 seconds
-And I enter a valid Category
+* I open the navigation menu
+* I should see the menu sections
+* I wait for 2 seconds
+* I enter a valid Category
+* I wait for 2 seconds
+* I enter a valid Category
 * I wait for 3 seconds
-And I press Got it
-And I press gridview item number 1
+* I press Got it
+* I press grid item number 2
 * I wait for 5 seconds
-Then I press Got it
-And I add product to cart
+* I press Got it
+* I add product to cart
 * I wait for 10 seconds
-Then I should see the item was added to shopping cart message
-When I go to cart
-Then I should not see the no items message
+* I should see the item was added to shopping cart message
+* I go to cart
+* I should not see the no items message
 #Checkout
 * I wait for 5 seconds
-And I press Proceed to Checkout
+* I press Proceed to Checkout
 * I wait for 5 seconds
-And I press Add new address
-And I fill the new address form
-And I press Next
+* I press Add new address
+* I fill the new address form
+* I press Next
 
