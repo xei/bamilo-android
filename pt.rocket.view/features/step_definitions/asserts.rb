@@ -130,7 +130,7 @@ end
 Then /^I should see the countries$/ do
   assert_text(@venture_maroc)
 #  performAction('assert_text', @venture_maroc, true)
-  assert_text(@venture_cotedivoire)
+#  assert_text(@venture_cotedivoire)
 #  performAction('assert_text', @venture_cotedivoire, true)
   assert_text(@venture_nigeria)
 #  performAction('assert_text', @venture_nigeria, true)

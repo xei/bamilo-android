@@ -15,13 +15,13 @@ def initvars
   
   #ventures names
   @venture_maroc= "Maroc"
-  @venture_cotedivoire= "Côte d'Ivoire"
+  @venture_cotedivoire= "Côte d'ivoire"
   @venture_nigeria= "Nigeria"
   @venture_egypt= "Egypt"
   @venture_kenya= "Kenya"
   @venture_uganda= "Uganda"
   @venture_ghana= "Ghana"
-  @venture_camerron= "Cameroon"
+  @venture_camerron= "Cameroun"
   
   @username="testcalabash@mailinator.com"
   @password="password1"
