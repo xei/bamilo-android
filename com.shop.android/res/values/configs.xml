@@ -15,7 +15,7 @@
     -->
 
     <!-- HOCKEY APP -->
-    <string name="hockeyapp_token">2862a701a9704ecaad48c9fb9e67365e</string>
+    <string name="hockeyapp_token">1c230a5c12bdff33953e46ef96feb6ea</string>
 
     <!-- DEEP LINK -->
     <string name="dp_package_id">com.shop.android</string>
@@ -46,7 +46,5 @@
     <string name="facebook_app_id">590570504382479</string>
     
 	<!-- Specific -->
-	<item name="is_daraz_specific" type="bool">false</item>
     <item name="is_shop_specific" type="bool">true</item>
-    
 </resources>

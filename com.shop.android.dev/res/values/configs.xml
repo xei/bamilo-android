@@ -17,7 +17,7 @@
     -->
 
     <!-- HOCKEY APP -->
-    <string name="hockeyapp_token">cc3cb7c50e7248f98ab8c92dd325e985</string>
+    <string name="hockeyapp_token">fac54ab87e513673212fe6f468bd1354</string>
     <item name="hockeyapp_enable_dev" type="bool">true</item>
 
     <!-- DEEP LINK -->
@@ -49,6 +49,5 @@
     <string name="facebook_app_id">590570504382479</string>
     
 	<!-- Specific -->
-	<item name="is_daraz_specific" type="bool">false</item>
     <item name="is_shop_specific" type="bool">true</item>
 </resources>
