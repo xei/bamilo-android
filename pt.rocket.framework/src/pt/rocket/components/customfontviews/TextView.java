@@ -1,6 +1,8 @@
 
 package pt.rocket.components.customfontviews;
 
+import de.akquinet.android.androlog.Log;
+import pt.rocket.components.customfontviews.HoloFontLoader.Font;
 import pt.rocket.components.customfontviews.HoloFontLoader.FontStyleProvider;
 import pt.rocket.framework.R;
 import android.annotation.SuppressLint;
@@ -39,6 +41,33 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
         a = context.obtainStyledAttributes(attrs, R.styleable.TextAppearance, defStyle, 0);
         TextView.setTextAppearance(textView, a);
         a.recycle();
+        
+//        a = context.obtainStyledAttributes(attrs, R.styleable.CustomFontType);
+//        for (int i = 0; i < a.getIndexCount(); i++) {
+//            int attr = a.getIndex(i);
+//            Log.e("FONT","ATTR");
+//            if (R.styleable.CustomFontType_fontType == attr) {           
+//                Log.e("FONT","has font type");
+//                int fontTypeInt = a.getInt(attr, 0);
+//                Font font = HoloFontLoader.ROBOTO_REGULAR;
+//                switch (fontTypeInt) {
+//                case 1:
+//                    font = HoloFontLoader.ROBOTO_BOLD;
+//                    Log.e("FONT","has font type BOLD");
+//                    break;
+//                case 4:
+//                    font = HoloFontLoader.ROBOTO_LIGHT;
+//                    break;
+//                case 5:
+//                    font = HoloFontLoader.ROBOTO_MEDIUM;
+//                    break;
+//                default:
+//                    break;
+//                }
+//                HoloFontLoader.apply(textView, font);
+//            }
+//        }
+//        a.recycle();
     }
 
     /**

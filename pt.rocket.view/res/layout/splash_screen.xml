@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/splash_screen_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="35dp"
+        android:fontFamily="burmese_regular"
         android:text="@string/splash_slogan"
         android:textColor="@color/grey_middledark"
         android:textSize="12sp" />

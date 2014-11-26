@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import pt.rocket.components.customfontviews.HoloFontLoader;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.forms.Form;
 import pt.rocket.forms.FormData;
@@ -35,6 +36,7 @@ import pt.rocket.preferences.ShopPreferences;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.ServiceSingleton;
 import pt.rocket.utils.imageloader.RocketImageLoader;
+import pt.rocket.view.R;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -213,6 +215,14 @@ public class JumiaApplication extends A4SApplication {
         // TODO : Comment for Samsung store
         // TODO : Comment for BlackBerry
         CheckVersion.init(getApplicationContext());
+        
+        //set Font
+        Log.e("FONT","initFont");
+        if(getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific)){
+            HoloFontLoader.initFont(true);
+        } else {
+            HoloFontLoader.initFont(false);
+        }
     }
 
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {

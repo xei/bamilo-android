@@ -8,6 +8,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.HoloFontLoader;
 import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.BundleConstants;
 import pt.rocket.constants.ConstantsIntentExtra;
@@ -113,6 +114,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        //set Font
+        Log.e("FONT","splash initFont");
+        if(getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific)){
+            HoloFontLoader.initFont(true);
+        } else {
+            HoloFontLoader.initFont(false);
+        }
         // Validate if is phone and force orientation
         setOrientationForHandsetDevices();
         // Set view

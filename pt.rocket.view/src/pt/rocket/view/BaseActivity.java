@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.HoloFontLoader;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
@@ -258,6 +259,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         JumiaApplication.INSTANCE.doBindService();
 
+        Log.e("FONT","base initFont");
+        if(getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific)){
+            HoloFontLoader.initFont(true);
+        } else {
+            HoloFontLoader.initFont(false);
+        }
         /**
          * Used other approach:<br>
          * - Created a new Activity with specific screen orientation
