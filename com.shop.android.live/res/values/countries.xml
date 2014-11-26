@@ -1,0 +1,11 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Global Country Configuration -->
+    <!-- <string name="jumia_global_shopname">Jumia</string> -->
+    <!-- <string name="jumia_global_server">www.jumia.com</string> -->
+    <!-- <string name="jumia_global_user">rocket</string> -->
+    <!-- <string name="jumia_global_password">rock4me</string> -->
+    <!-- <string name="jumia_global_restbase_path">mobapi</string> -->
+    <!-- <string name="jumia_global_api_version">mobapi/v1.4</string> -->
+
+</resources>
