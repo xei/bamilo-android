@@ -3,7 +3,7 @@
  */
 package pt.rocket.utils;
 
-import pt.rocket.components.icsspinner.IcsSpinner;
+import pt.rocket.components.absspinner.IcsSpinner;
 import android.content.Context;
 import android.util.AttributeSet;
 

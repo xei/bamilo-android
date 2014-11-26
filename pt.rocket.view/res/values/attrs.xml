@@ -144,24 +144,6 @@
     -->
 
 
-    <!-- ############ Start styleable definition block  ############ -->
-
-
-    <!-- TEXT -->
-    <declare-styleable name="TextAppearance">
-        <attr name="android:fontFamily" />
-        <attr name="android:textAllCaps" />
-        <attr name="android:textColor" />
-        <attr name="android:textColorHighlight" />
-        <attr name="android:textColorHint" />
-        <attr name="android:textColorLink" />
-        <attr name="android:textSize" />
-        <attr name="android:textStyle" />
-        <attr name="android:typeface" />
-    </declare-styleable>
-    <declare-styleable name="TextView">
-        <attr name="android:textAppearance" />
-    </declare-styleable>
 
     <!--
     <declare-styleable name="AbsListView">

@@ -2,8 +2,8 @@ package pt.rocket.utils.dialogfragments;
 
 import pt.rocket.components.customfontviews.CheckBox;
 import pt.rocket.components.customfontviews.TextView;
-import pt.rocket.framework.components.RangeSeekBar;
-import pt.rocket.framework.components.RangeSeekBar.OnRangeSeekBarChangeListener;
+import pt.rocket.components.RangeSeekBar;
+import pt.rocket.components.RangeSeekBar.OnRangeSeekBarChangeListener;
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.view.R;
@@ -140,7 +140,7 @@ class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListen
     
     /*
      * (non-Javadoc)
-     * @see pt.rocket.framework.components.RangeSeekBar.OnRangeSeekBarChangeListener#onRangeSeekBarValuesChanged(pt.rocket.framework.components.RangeSeekBar, java.lang.Object, java.lang.Object)
+     * @see pt.rocket.components.RangeSeekBar.OnRangeSeekBarChangeListener#onRangeSeekBarValuesChanged(pt.rocket.components.RangeSeekBar, java.lang.Object, java.lang.Object)
      */
     @Override
     public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {

@@ -13,7 +13,7 @@ import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.customfontviews.CheckBox;
 import pt.rocket.components.customfontviews.HoloFontLoader;
 import pt.rocket.components.customfontviews.TextView;
-import pt.rocket.components.icsspinner.IcsAdapterView;
+import pt.rocket.components.absspinner.IcsAdapterView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;

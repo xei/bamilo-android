@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import pt.rocket.components.customfontviews.TextView;
-import pt.rocket.components.icsspinner.IcsSpinner;
+import pt.rocket.components.absspinner.IcsSpinner;
 import pt.rocket.forms.ShippingMethodForm;
 import pt.rocket.forms.ShippingMethodSubForm;
 import pt.rocket.framework.objects.PickUpStationObject;

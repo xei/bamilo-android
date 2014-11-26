@@ -322,10 +322,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             @Override
             public void onAnimationEnd(Animation animation) {
                 jumiaMapImage.setVisibility(View.GONE);
-                // ## Google Analytics "General Campaign Measurement" ##
-                TrackerDelegator.trackGACampaign(getApplicationContext(), mUtm);
-                //track open app event for all tracker but Adjust
-                TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
                 // Validate deep link bundle    
                 if (mDeepLinkBundle != null) {
                     startActivityWithDeepLink(mDeepLinkBundle);
@@ -600,6 +596,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, (IResponseCallback) this);
         } else {
             Log.d(TAG, "START MAIN ACTIVITY");
+            // ## Google Analytics "General Campaign Measurement" ##
+            TrackerDelegator.trackGACampaign(getApplicationContext(), mUtm);
+            //track open app event for all tracker but Adjust
+            TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
             // Show activity
             selectActivity();
         }

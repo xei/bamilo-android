@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import pt.rocket.app.JumiaApplication;
-import pt.rocket.components.icsspinner.IcsAdapterView;
-import pt.rocket.components.icsspinner.IcsAdapterView.OnItemSelectedListener;
-import pt.rocket.components.icsspinner.IcsSpinner;
+import pt.rocket.components.absspinner.IcsAdapterView;
+import pt.rocket.components.absspinner.IcsAdapterView.OnItemSelectedListener;
+import pt.rocket.components.absspinner.IcsSpinner;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;

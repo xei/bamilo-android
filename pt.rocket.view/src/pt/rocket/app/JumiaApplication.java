@@ -10,7 +10,7 @@ import pt.rocket.forms.FormData;
 import pt.rocket.forms.PaymentMethodForm;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.components.NavigationListComponent;
+import pt.rocket.components.NavigationListComponent;
 import pt.rocket.framework.database.DarwinDatabaseHelper;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.CountryObject;

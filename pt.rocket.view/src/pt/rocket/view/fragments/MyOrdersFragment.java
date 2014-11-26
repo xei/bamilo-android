@@ -6,7 +6,7 @@ package pt.rocket.view.fragments;
 import java.util.EnumSet;
 
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.framework.components.androidslidingtabstrip.SlidingTabLayout;
+import pt.rocket.components.androidslidingtabstrip.SlidingTabLayout;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;

@@ -7,8 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pt.rocket.components.customfontviews.HoloFontLoader;
-import pt.rocket.components.icsspinner.IcsAdapterView;
-import pt.rocket.components.icsspinner.IcsSpinner;
+import pt.rocket.components.absspinner.IcsAdapterView;
+import pt.rocket.components.absspinner.IcsSpinner;
 import pt.rocket.framework.objects.IJSONSerializable;
 import pt.rocket.framework.objects.PickUpStationObject;
 import pt.rocket.framework.rest.RestConstants;

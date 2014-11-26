@@ -10,7 +10,7 @@ import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.components.NavigationListComponent;
+import pt.rocket.components.NavigationListComponent;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;

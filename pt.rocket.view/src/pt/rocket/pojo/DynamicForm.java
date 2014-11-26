@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import pt.rocket.components.icsspinner.IcsAdapterView;
+import pt.rocket.components.absspinner.IcsAdapterView;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.InputType;

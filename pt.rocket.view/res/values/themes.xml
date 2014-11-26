@@ -70,7 +70,11 @@
         <item name="android:textColorHint">@color/green_basic</item>
         <!-- ACTION BAR Tablet will use dimensions from actionBarSherlock -->
         <!-- item name="actionBarSize">@dimen/action_bar_height</item -->
-    </style>
+    
+    	<!-- CUSTOM SPINNER STYLE -->    
+        <item name="actionCustomSpinnerDropDownStyle">@style/Widget.Jumia.Spinner.Style</item>
+        
+    </style>    
 
     <style name="Widget.Jumia.ActionBar" parent="Widget.Sherlock.ActionBar">
         <item name="android:background">@drawable/actionbar_drawable</item>

@@ -12,7 +12,7 @@ import pt.rocket.controllers.CatalogPagerAdapter;
 import pt.rocket.controllers.FeaturedItemsAdapter;
 import pt.rocket.controllers.TipsPagerAdapter;
 import pt.rocket.framework.Darwin;
-import pt.rocket.framework.components.androidslidingtabstrip.SlidingTabLayout;
+import pt.rocket.components.androidslidingtabstrip.SlidingTabLayout;
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.objects.FeaturedBox;

@@ -6,7 +6,7 @@
 
     <!-- TABS -->
 
-    <pt.rocket.framework.components.androidslidingtabstrip.SlidingTabLayout
+    <pt.rocket.components.androidslidingtabstrip.SlidingTabLayout
         android:id="@+id/home_pager_tab"
         android:layout_width="match_parent"
         android:layout_height="@dimen/sliding_tab_height"

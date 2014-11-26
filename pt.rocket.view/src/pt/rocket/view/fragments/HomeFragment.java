@@ -10,7 +10,7 @@ import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
-import pt.rocket.framework.components.androidslidingtabstrip.SlidingTabLayout;
+import pt.rocket.components.androidslidingtabstrip.SlidingTabLayout;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.Promotion;

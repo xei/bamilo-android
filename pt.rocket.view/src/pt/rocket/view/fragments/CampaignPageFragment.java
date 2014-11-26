@@ -7,14 +7,14 @@ import java.util.ArrayList;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.customfontviews.TextView;
-import pt.rocket.components.icsspinner.IcsAdapterView;
-import pt.rocket.components.icsspinner.IcsAdapterView.OnItemSelectedListener;
-import pt.rocket.components.icsspinner.IcsSpinner;
+import pt.rocket.components.absspinner.IcsAdapterView;
+import pt.rocket.components.absspinner.IcsAdapterView.OnItemSelectedListener;
+import pt.rocket.components.absspinner.IcsSpinner;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.framework.components.HeaderGridView;
+import pt.rocket.components.HeaderGridView;
 import pt.rocket.framework.objects.Campaign;
 import pt.rocket.framework.objects.CampaignItem;
 import pt.rocket.framework.objects.CampaignItemSize;

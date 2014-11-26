@@ -23,7 +23,7 @@
 
         <ProgressBar
             android:id="@+id/campaign_loading_progress"
-            android:layout_width="30dp"
+            android:layout_width="@dimen/campaign_banner_height"
             android:layout_height="@dimen/campaign_banner_height"
             android:layout_centerHorizontal="true"
             android:visibility="gone" />
@@ -78,7 +78,7 @@
 
         <!-- SIZE SPINNER -->
 
-        <pt.rocket.components.icsspinner.IcsSpinner
+        <pt.rocket.components.absspinner.IcsSpinner
             android:id="@+id/campaign_item_size_spinner"
             android:layout_width="@dimen/campaign_size_spinner_width"
             android:layout_height="match_parent"

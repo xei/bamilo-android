@@ -4,8 +4,8 @@ import java.util.List;
 
 import pt.rocket.components.customfontviews.CheckBox;
 import pt.rocket.components.customfontviews.TextView;
-import pt.rocket.framework.components.PinnedSectionListView;
-import pt.rocket.framework.components.PinnedSectionListView.PinnedSectionListAdapter;
+import pt.rocket.components.PinnedSectionListView;
+import pt.rocket.components.PinnedSectionListView.PinnedSectionListAdapter;
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.view.R;
