@@ -27,7 +27,7 @@
     <string name="dp_intent_label">Shop Live</string>
 
     <!-- NEW RELIC --> 
-    <string name="newrelic_token">AA08ccfd12adb63ba92f55f3b02ed596cc9aa9e768</string>
+    <string name="newrelic_token">AA1dc780f596814337d00c9055b473e9742277043a</string>
 
     <!-- ACCENGAGE -->
     <item name="ad4push_enabled" type="bool">true</item>

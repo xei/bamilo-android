@@ -25,7 +25,7 @@
     <string name="dp_intent_label">Shop</string>
 
     <!-- NEW RELIC -->
-    <string name="newrelic_token">AA5021de247cc665931a33e042b1dca26d74ef0eaa</string>
+    <string name="newrelic_token">AA1dc780f596814337d00c9055b473e9742277043a</string>
     
 	<!-- ACCENGAGE -->
     <item name="ad4push_enabled" type="bool">true</item>    
