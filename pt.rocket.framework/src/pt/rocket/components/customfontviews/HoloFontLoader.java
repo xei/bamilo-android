@@ -64,10 +64,10 @@ public class HoloFontLoader {
         TEXT_STYLE_MEDIUM = registerTextStyle("medium");
         TEXT_STYLE_THIN = registerTextStyle("thin");
 
-        ROBOTO_REGULAR = new RobotoRawFont(R.raw.roboto_regular).setFontStyle(TEXT_STYLE_NORMAL);
-        ROBOTO_BOLD = new RobotoRawFont(R.raw.roboto_bold).setFontStyle(TEXT_STYLE_BOLD);
-        ROBOTO_ITALIC = new RobotoRawFont(R.raw.roboto_italic).setFontStyle(TEXT_STYLE_ITALIC);
-        ROBOTO_BOLDITALIC = new RobotoRawFont(R.raw.roboto_bolditalic).setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_ITALIC);
+        ROBOTO_REGULAR = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_NORMAL);
+        ROBOTO_BOLD = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_BOLD);
+        ROBOTO_ITALIC = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_ITALIC);
+        ROBOTO_BOLDITALIC = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_ITALIC);
         //ROBOTO_CONDENSED = new RobotoRawFont(R.raw.roboto_condensed).setFontStyle(TEXT_STYLE_CONDENDSED);
         
         ROBOTO_CONDENSED = new RobotoRawLazyFont("roboto_condensed").setFontStyle(TEXT_STYLE_CONDENDSED);
@@ -84,27 +84,27 @@ public class HoloFontLoader {
         ROBOTO_THINITALIC = new RobotoRawLazyFont("roboto_thinitalic").setFontStyle(TEXT_STYLE_THIN | TEXT_STYLE_ITALIC);
 
         
-        BURMESE =  new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_ITALIC);
+        BURMESE =  new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_NORMAL);
         
-        BURMESE = new RobotoRawLazyFont("burmese_regular").setFontStyle(TEXT_STYLE_THIN | TEXT_STYLE_ITALIC);
+//        BURMESE = new RobotoRawLazyFont("burmese_regular").setFontStyle(TEXT_STYLE_NORMAL);
         sDefaultFont = ROBOTO = new FontCollector().allowAnyFontFamily();
-        ROBOTO.register(ROBOTO_REGULAR).asDefaultFont();
-        ROBOTO.register(ROBOTO_BOLD);
-        ROBOTO.register(ROBOTO_ITALIC);
-        ROBOTO.register(ROBOTO_BOLDITALIC);
-        ROBOTO.register(ROBOTO_BLACK);
-        ROBOTO.register(ROBOTO_BLACKITALIC);
-        ROBOTO.register(ROBOTO_BOLDCONDENSED);
-        ROBOTO.register(ROBOTO_BOLDCONDENSEDITALIC);
-        ROBOTO.register(ROBOTO_CONDENSED);
-        ROBOTO.register(ROBOTO_CONDENSEDITALIC);
-        ROBOTO.register(ROBOTO_LIGHT);
-        ROBOTO.register(ROBOTO_LIGHTITALIC);
-        ROBOTO.register(ROBOTO_MEDIUM);
-        ROBOTO.register(ROBOTO_MEDIUMITALIC);
-        ROBOTO.register(ROBOTO_THIN);
-        ROBOTO.register(ROBOTO_THINITALIC);
-        ROBOTO.register(BURMESE);
+//        ROBOTO.register(ROBOTO_REGULAR).asDefaultFont();
+//        ROBOTO.register(ROBOTO_BOLD);
+//        ROBOTO.register(ROBOTO_ITALIC);
+//        ROBOTO.register(ROBOTO_BOLDITALIC);
+//        ROBOTO.register(ROBOTO_BLACK);
+//        ROBOTO.register(ROBOTO_BLACKITALIC);
+//        ROBOTO.register(ROBOTO_BOLDCONDENSED);
+//        ROBOTO.register(ROBOTO_BOLDCONDENSEDITALIC);
+//        ROBOTO.register(ROBOTO_CONDENSED);
+//        ROBOTO.register(ROBOTO_CONDENSEDITALIC);
+//        ROBOTO.register(ROBOTO_LIGHT);
+//        ROBOTO.register(ROBOTO_LIGHTITALIC);
+//        ROBOTO.register(ROBOTO_MEDIUM);
+//        ROBOTO.register(ROBOTO_MEDIUMITALIC);
+//        ROBOTO.register(ROBOTO_THIN);
+//        ROBOTO.register(ROBOTO_THINITALIC);
+        ROBOTO.register(BURMESE).asDefaultFont();
     }
     
     

@@ -29,9 +29,38 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
 
     public TextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        TextView.construct(this, context, attrs, defStyle);
+//        TextView.construct(this, context, attrs, defStyle);
+        applyAttributes(context, attrs);
     }
 
+    
+    private void applyAttributes(Context context, AttributeSet attrs) {
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CustomFontType);
+        for (int i = 0; i < a.getIndexCount(); i++) {
+            int attr = a.getIndex(i);
+
+            if (R.styleable.CustomFontType_fontType == attr) {            
+                int fontTypeInt = a.getInt(attr, 0);
+                Font font = HoloFontLoader.ROBOTO_REGULAR;
+                switch (fontTypeInt) {
+                case 1:
+                    font = HoloFontLoader.ROBOTO_BOLD;
+                    break;
+                case 4:
+                    font = HoloFontLoader.ROBOTO_LIGHT;
+                    break;
+                case 5:
+                    font = HoloFontLoader.ROBOTO_MEDIUM;
+                    break;
+                default:
+                    break;
+                }
+                HoloFontLoader.apply(this, font);
+            } 
+        }
+        a.recycle();
+    }
+    
     public static <T extends android.widget.TextView & FontStyleProvider> void construct(T textView, Context context, AttributeSet attrs, int defStyle) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextView, defStyle, 0);
         final int textAppearance = a.getResourceId(R.styleable.TextView_android_textAppearance, 0);

@@ -17,6 +17,7 @@
         android:layout_marginRight="8dp"
         android:ellipsize="end"
          android:fontFamily="burmese_regular"
+         app:fontType="burmese_regular"
         android:gravity="center_vertical"
         android:maxLines="1"
         android:singleLine="true"

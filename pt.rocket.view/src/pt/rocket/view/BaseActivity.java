@@ -475,14 +475,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             hideActionBarTitle();
         } else {
             
-            if(!getResources().getBoolean(R.bool.is_daraz_specific)){
-                hideTitle();
-                findViewById(R.id.totalProducts).setVisibility(View.GONE);
-                setActionBarTitle(actionBarTitleResId);
-            }else{
+            if(getResources().getBoolean(R.bool.is_daraz_specific) || getResources().getBoolean(R.bool.is_shop_specific)){
                 hideActionBarTitle();
                 findViewById(R.id.totalProducts).setVisibility(View.GONE);
                 setTitle(actionBarTitleResId);
+            }else{
+                hideTitle();
+                findViewById(R.id.totalProducts).setVisibility(View.GONE);
+                setActionBarTitle(actionBarTitleResId);
             }
         }
     }

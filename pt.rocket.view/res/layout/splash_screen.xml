@@ -27,6 +27,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="35dp"
         android:fontFamily="burmese_regular"
+        app:fontType="burmese_regular"
         android:text="@string/splash_slogan"
         android:textColor="@color/grey_middledark"
         android:textSize="12sp" />
