@@ -25,30 +25,17 @@ import android.view.ViewGroup;
 public class HoloFontLoader {
     
     public static FontCollector ROBOTO;
-    public static final Font ROBOTO_BLACK;
-    public static final Font ROBOTO_BLACKITALIC;
     public static  Font ROBOTO_BOLD;
-    public static final Font ROBOTO_BOLDCONDENSED;
-    public static final Font ROBOTO_BOLDCONDENSEDITALIC;
     public static final Font ROBOTO_BOLDITALIC;
-    public static final Font ROBOTO_CONDENSED;
-    public static final Font ROBOTO_CONDENSEDITALIC;
     public static final Font ROBOTO_ITALIC;
     public static  Font ROBOTO_LIGHT;
-    public static final Font ROBOTO_LIGHTITALIC;
     public static  Font ROBOTO_MEDIUM;
-    public static final Font ROBOTO_MEDIUMITALIC;
     public static  Font ROBOTO_REGULAR;
-    public static final Font ROBOTO_THIN;
-    public static final Font ROBOTO_THINITALIC;
     public static final int TEXT_STYLE_BLACK;
     public static final int TEXT_STYLE_BOLD;
-    public static final int TEXT_STYLE_CONDENDSED;
     public static final int TEXT_STYLE_ITALIC;
     public static final int TEXT_STYLE_LIGHT;
-    public static final int TEXT_STYLE_MEDIUM;
     public static final int TEXT_STYLE_NORMAL;
-    public static final int TEXT_STYLE_THIN;
     
     public static Font BURMESE;
 
@@ -59,51 +46,25 @@ public class HoloFontLoader {
         TEXT_STYLE_BOLD = registerTextStyle("bold");
         TEXT_STYLE_ITALIC = registerTextStyle("italic");
         TEXT_STYLE_BLACK = registerTextStyle("black");
-        TEXT_STYLE_CONDENDSED = registerTextStyle("condensed");
         TEXT_STYLE_LIGHT = registerTextStyle("light");
-        TEXT_STYLE_MEDIUM = registerTextStyle("medium");
-        TEXT_STYLE_THIN = registerTextStyle("thin");
 
-        ROBOTO_REGULAR = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_NORMAL);
-        ROBOTO_BOLD = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_BOLD);
-        ROBOTO_ITALIC = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_ITALIC);
-        ROBOTO_BOLDITALIC = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_ITALIC);
-        //ROBOTO_CONDENSED = new RobotoRawFont(R.raw.roboto_condensed).setFontStyle(TEXT_STYLE_CONDENDSED);
+        ROBOTO_REGULAR = new RobotoRawFont(R.raw.roboto_regular).setFontStyle(TEXT_STYLE_NORMAL);
+        ROBOTO_BOLD = new RobotoRawFont(R.raw.roboto_bold).setFontStyle(TEXT_STYLE_BOLD);
+        ROBOTO_ITALIC = new RobotoRawFont(R.raw.roboto_italic).setFontStyle(TEXT_STYLE_ITALIC);
+        ROBOTO_BOLDITALIC = new RobotoRawFont(R.raw.roboto_bolditalic).setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_ITALIC);
+        ROBOTO_LIGHT = new RobotoRawFont(R.raw.roboto_light).setFontStyle(TEXT_STYLE_LIGHT);
         
-        ROBOTO_CONDENSED = new RobotoRawLazyFont("roboto_condensed").setFontStyle(TEXT_STYLE_CONDENDSED);
-        ROBOTO_BLACK = new RobotoRawLazyFont("roboto_black").setFontStyle(TEXT_STYLE_BLACK);
-        ROBOTO_BLACKITALIC = new RobotoRawLazyFont("roboto_blackitalic").setFontStyle(TEXT_STYLE_BLACK | TEXT_STYLE_ITALIC);
-        ROBOTO_BOLDCONDENSED = new RobotoRawLazyFont("roboto_boldcondensed").setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_CONDENDSED);
-        ROBOTO_BOLDCONDENSEDITALIC = new RobotoRawLazyFont("roboto_boldcondenseditalic").setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_CONDENDSED | TEXT_STYLE_ITALIC);
-        ROBOTO_CONDENSEDITALIC = new RobotoRawLazyFont("roboto_condenseditalic").setFontStyle(TEXT_STYLE_CONDENDSED | TEXT_STYLE_ITALIC);
-        ROBOTO_LIGHT = new RobotoRawLazyFont("roboto_light").setFontStyle(TEXT_STYLE_LIGHT);
-        ROBOTO_LIGHTITALIC = new RobotoRawLazyFont("roboto_lightitalic").setFontStyle(TEXT_STYLE_LIGHT | TEXT_STYLE_ITALIC);
-        ROBOTO_MEDIUM = new RobotoRawLazyFont("roboto_medium").setFontStyle(TEXT_STYLE_MEDIUM);
-        ROBOTO_MEDIUMITALIC = new RobotoRawLazyFont("roboto_mediumitalic").setFontStyle(TEXT_STYLE_MEDIUM | TEXT_STYLE_ITALIC);
-        ROBOTO_THIN = new RobotoRawLazyFont("roboto_thin").setFontStyle(TEXT_STYLE_THIN);
-        ROBOTO_THINITALIC = new RobotoRawLazyFont("roboto_thinitalic").setFontStyle(TEXT_STYLE_THIN | TEXT_STYLE_ITALIC);
-
+//        ROBOTO_LIGHT = new RobotoRawLazyFont("roboto_light").setFontStyle(TEXT_STYLE_LIGHT);
         
-        BURMESE =  new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_NORMAL);
+        BURMESE =  new BurmeseRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_NORMAL);        
+//        BURMESE = new BurmeseRawLazyFont("burmese_regular").setFontStyle(TEXT_STYLE_NORMAL);
         
-//        BURMESE = new RobotoRawLazyFont("burmese_regular").setFontStyle(TEXT_STYLE_NORMAL);
         sDefaultFont = ROBOTO = new FontCollector().allowAnyFontFamily();
-//        ROBOTO.register(ROBOTO_REGULAR).asDefaultFont();
-//        ROBOTO.register(ROBOTO_BOLD);
-//        ROBOTO.register(ROBOTO_ITALIC);
-//        ROBOTO.register(ROBOTO_BOLDITALIC);
-//        ROBOTO.register(ROBOTO_BLACK);
-//        ROBOTO.register(ROBOTO_BLACKITALIC);
-//        ROBOTO.register(ROBOTO_BOLDCONDENSED);
-//        ROBOTO.register(ROBOTO_BOLDCONDENSEDITALIC);
-//        ROBOTO.register(ROBOTO_CONDENSED);
-//        ROBOTO.register(ROBOTO_CONDENSEDITALIC);
-//        ROBOTO.register(ROBOTO_LIGHT);
-//        ROBOTO.register(ROBOTO_LIGHTITALIC);
-//        ROBOTO.register(ROBOTO_MEDIUM);
-//        ROBOTO.register(ROBOTO_MEDIUMITALIC);
-//        ROBOTO.register(ROBOTO_THIN);
-//        ROBOTO.register(ROBOTO_THINITALIC);
+        ROBOTO.register(ROBOTO_REGULAR);
+        ROBOTO.register(ROBOTO_BOLD);
+        ROBOTO.register(ROBOTO_ITALIC);
+        ROBOTO.register(ROBOTO_BOLDITALIC);
+        ROBOTO.register(ROBOTO_LIGHT);
         ROBOTO.register(BURMESE).asDefaultFont();
     }
     
@@ -624,6 +585,13 @@ public class HoloFontLoader {
         public RobotoRawLazyFont(String rawResourceName) {
             super(rawResourceName);
             setFontFamily("roboto");
+        }
+    }
+    
+    private static final class BurmeseRawFont extends RawFont {
+        public BurmeseRawFont(int rawResourceId) {
+            super(rawResourceId);
+            setFontFamily("burmese");
         }
     }
     
