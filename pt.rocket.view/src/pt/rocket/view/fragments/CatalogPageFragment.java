@@ -882,6 +882,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         
         // Validate fragment state
         if (isOnStoppingProcess) return;
+        
         isProductClear = false;
         // Get Products Event
         final ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
@@ -1048,7 +1049,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     	
         // Validate fragment state
         if (isOnStoppingProcess) return;
-    	
+        
         RocketImageLoader.getInstance().startProcessingQueue();
 
 
