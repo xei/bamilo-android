@@ -25,12 +25,11 @@ import android.view.ViewGroup;
 public class HoloFontLoader {
     
     public static FontCollector ROBOTO;
-    public static  Font ROBOTO_BOLD;
-    public static final Font ROBOTO_BOLDITALIC;
-    public static final Font ROBOTO_ITALIC;
-    public static  Font ROBOTO_LIGHT;
-    public static  Font ROBOTO_MEDIUM;
-    public static  Font ROBOTO_REGULAR;
+    public static Font ROBOTO_BOLD;
+    public static Font ROBOTO_BOLDITALIC;
+    public static Font ROBOTO_ITALIC;
+    public static Font ROBOTO_LIGHT;
+    public static Font ROBOTO_REGULAR;
     public static final int TEXT_STYLE_BLACK;
     public static final int TEXT_STYLE_BOLD;
     public static final int TEXT_STYLE_ITALIC;
@@ -54,55 +53,47 @@ public class HoloFontLoader {
         ROBOTO_BOLDITALIC = new RobotoRawFont(R.raw.roboto_bolditalic).setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_ITALIC);
         ROBOTO_LIGHT = new RobotoRawFont(R.raw.roboto_light).setFontStyle(TEXT_STYLE_LIGHT);
         
-//        ROBOTO_LIGHT = new RobotoRawLazyFont("roboto_light").setFontStyle(TEXT_STYLE_LIGHT);
-        
-        BURMESE =  new BurmeseRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_NORMAL);        
+//        ROBOTO_LIGHT = new RobotoRawLazyFont("roboto_light").setFontStyle(TEXT_STYLE_LIGHT);        
+//        BURMESE =  new BurmeseRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_NORMAL);        
 //        BURMESE = new BurmeseRawLazyFont("burmese_regular").setFontStyle(TEXT_STYLE_NORMAL);
         
         sDefaultFont = ROBOTO = new FontCollector().allowAnyFontFamily();
-        ROBOTO.register(ROBOTO_REGULAR);
+        ROBOTO.register(ROBOTO_REGULAR).asDefaultFont();
         ROBOTO.register(ROBOTO_BOLD);
         ROBOTO.register(ROBOTO_ITALIC);
         ROBOTO.register(ROBOTO_BOLDITALIC);
         ROBOTO.register(ROBOTO_LIGHT);
-        ROBOTO.register(BURMESE).asDefaultFont();
     }
     
     
 
     public static void initFont(boolean isBurmese) {
-//        JumiaApplication.INSTANCE.getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific)
- 
-//        if (isBurmese) {
-//            Log.e("FONT","INIT BURMESE FONT");
-//            sDefaultFont = ROBOTO = new FontCollector().allowAnyFontFamily();
-//
-//            ROBOTO_REGULAR = new RobotoRawFont(R.raw.zawgyione2008).setFontStyle(TEXT_STYLE_NORMAL);
-//            ROBOTO_BOLD = new RobotoRawFont(R.raw.zawgyione2008).setFontStyle(TEXT_STYLE_BOLD);
-//            ROBOTO_MEDIUM = new RobotoRawFont(R.raw.zawgyione2008).setFontStyle(TEXT_STYLE_MEDIUM);
-//            ROBOTO_LIGHT = new RobotoRawFont(R.raw.zawgyione2008).setFontStyle(TEXT_STYLE_LIGHT);
-////            BURMESE = new BurmeseRawLazyFont("zawgyione2008").setFontStyle(TEXT_STYLE_NORMAL);
-//            
-//            ROBOTO.register(ROBOTO_REGULAR).asDefaultFont();
-//            ROBOTO.register(ROBOTO_BOLD);
-//            ROBOTO.register(ROBOTO_MEDIUM);
-//            ROBOTO.register(ROBOTO_LIGHT);
-////            ROBOTO.register(BURMESE);
-//            
-//        } else {
-//            Log.i("FONT"," DEFAULT ROBOTO");
-//            sDefaultFont = ROBOTO = new FontCollector().allowAnyFontFamily();
-//            ROBOTO_REGULAR = new RobotoRawFont(R.raw.roboto_regular).setFontStyle(TEXT_STYLE_NORMAL);
-//            ROBOTO_BOLD = new RobotoRawFont(R.raw.roboto_bold).setFontStyle(TEXT_STYLE_BOLD);        
-//            ROBOTO_LIGHT = new RobotoRawFont(R.raw.roboto_light).setFontStyle(TEXT_STYLE_LIGHT);
-////            BURMESE = new BurmeseRawLazyFont("zawgyione2008").setFontStyle(TEXT_STYLE_NORMAL);
-//            
-//            ROBOTO.register(ROBOTO_REGULAR).asDefaultFont();
-//            ROBOTO.register(ROBOTO_BOLD);
-//            ROBOTO.register(ROBOTO_LIGHT);
-//            ROBOTO.register(ROBOTO_MEDIUM);
-////            ROBOTO.register(BURMESE);
-//        }
+        if (isBurmese) {
+            sDefaultFont = ROBOTO = new FontCollector().allowAnyFontFamily();
+
+            ROBOTO_REGULAR = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_NORMAL);
+            ROBOTO_BOLD = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_BOLD);
+            ROBOTO_LIGHT = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_LIGHT);
+            ROBOTO_ITALIC = new RobotoRawFont(R.raw.roboto_italic).setFontStyle(TEXT_STYLE_ITALIC);
+            ROBOTO_BOLDITALIC = new RobotoRawFont(R.raw.roboto_bolditalic).setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_ITALIC);
+            
+            ROBOTO.register(ROBOTO_REGULAR).asDefaultFont();
+            ROBOTO.register(ROBOTO_BOLD);
+            ROBOTO.register(ROBOTO_LIGHT);
+            
+        } else {
+            sDefaultFont = ROBOTO = new FontCollector().allowAnyFontFamily();
+            
+            ROBOTO_REGULAR = new RobotoRawFont(R.raw.roboto_regular).setFontStyle(TEXT_STYLE_NORMAL);
+            ROBOTO_BOLD = new RobotoRawFont(R.raw.roboto_bold).setFontStyle(TEXT_STYLE_BOLD);        
+            ROBOTO_LIGHT = new RobotoRawFont(R.raw.roboto_light).setFontStyle(TEXT_STYLE_LIGHT);
+            ROBOTO_ITALIC = new RobotoRawFont(R.raw.roboto_italic).setFontStyle(TEXT_STYLE_ITALIC);
+            ROBOTO_BOLDITALIC = new RobotoRawFont(R.raw.roboto_bolditalic).setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_ITALIC);
+            
+            ROBOTO.register(ROBOTO_REGULAR).asDefaultFont();
+            ROBOTO.register(ROBOTO_BOLD);
+            ROBOTO.register(ROBOTO_LIGHT);
+        }
     }
     
     

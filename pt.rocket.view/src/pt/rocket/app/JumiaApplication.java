@@ -215,14 +215,7 @@ public class JumiaApplication extends A4SApplication {
         // TODO : Comment for Samsung store
         // TODO : Comment for BlackBerry
         CheckVersion.init(getApplicationContext());
-        
-        //set Font
-        Log.e("FONT","initFont");
-        if(getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific)){
-            HoloFontLoader.initFont(true);
-        } else {
-            HoloFontLoader.initFont(false);
-        }
+
     }
 
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {

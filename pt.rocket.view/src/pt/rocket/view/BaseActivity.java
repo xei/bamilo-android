@@ -258,8 +258,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         Log.d(TAG, "ON CREATE");
 
         JumiaApplication.INSTANCE.doBindService();
-
-        Log.e("FONT","base initFont");
+        
+        // in case app is killed in background needs to restore font type
         if(getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific)){
             HoloFontLoader.initFont(true);
         } else {

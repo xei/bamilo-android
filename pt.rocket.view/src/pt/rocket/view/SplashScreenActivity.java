@@ -115,7 +115,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         //set Font
-        Log.e("FONT","splash initFont");
         if(getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific)){
             HoloFontLoader.initFont(true);
         } else {
