@@ -408,8 +408,8 @@ public final class RestClientSingleton {
 //			}
 
 //			// Detect redirect
-//			HttpUriRequest currentReq = (HttpUriRequest) httpContext.getAttribute(ExecutionContext.HTTP_REQUEST);
-//			HttpHost currentHost = (HttpHost) httpContext.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+//			HttpUriRequest currentReq = (HttpUriRequest) mHttpContext.getAttribute(ExecutionContext.HTTP_REQUEST);
+//			HttpHost currentHost = (HttpHost) mHttpContext.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
 //			String currentUrl = (currentReq.getURI().isAbsolute()) 
 //								? currentReq.getURI().toString() 
 //								: (currentHost.toURI() + currentReq.getURI());

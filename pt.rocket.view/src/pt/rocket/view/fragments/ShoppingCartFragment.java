@@ -337,12 +337,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         super.onPause();
         Log.i(TAG, "ON PAUSE");
     }
-    
-    @Override
-    public void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
-    }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -469,6 +464,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
     protected boolean onSuccessEvent(Bundle bundle) {
         
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return true;
+        }
+        
         Bundle params;
         
         // Update cart info
@@ -476,12 +477,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         // ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
 
         Log.d(TAG, "onSuccessEvent: eventType = " + eventType);
         switch (eventType) {
@@ -636,10 +631,13 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
+        
+        // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case NATIVE_CHECKOUT_AVAILABLE:

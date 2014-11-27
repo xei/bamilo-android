@@ -1,8 +1,6 @@
 
 package pt.rocket.components.customfontviews;
 
-import de.akquinet.android.androlog.Log;
-import pt.rocket.components.customfontviews.HoloFontLoader.Font;
 import pt.rocket.components.customfontviews.HoloFontLoader.FontStyleProvider;
 import pt.rocket.framework.R;
 import android.annotation.SuppressLint;
@@ -32,7 +30,7 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
         TextView.construct(this, context, attrs, defStyle);
     }
 
-
+    
     public static <T extends android.widget.TextView & FontStyleProvider> void construct(T textView, Context context, AttributeSet attrs, int defStyle) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextView, defStyle, 0);
         final int textAppearance = a.getResourceId(R.styleable.TextView_android_textAppearance, 0);
@@ -42,7 +40,6 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
         a = context.obtainStyledAttributes(attrs, R.styleable.TextAppearance, defStyle, 0);
         TextView.setTextAppearance(textView, a);
         a.recycle();
-        
     }
 
     /**
@@ -75,9 +72,7 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
         final int defaultStyle = fontStyle & (HoloFontLoader.TEXT_STYLE_BOLD | HoloFontLoader.TEXT_STYLE_ITALIC);
         fontStyle &= ~defaultStyle;
         fontStyle |= a.getInt(R.styleable.TextAppearance_android_textStyle, defaultStyle);
-        return new Object[]{
-                force, fontStyle, fontFamily
-        };
+        return new Object[]{force, fontStyle, fontFamily};
     }
 
     public static void setAllCaps(android.widget.TextView textView, boolean allCaps) {
@@ -127,8 +122,7 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
             textView.setTransformationMethod(new AllCapsTransformationMethod(textView.getContext()));
         }
         Object[] font = parseFontStyle(appearance);
-        textView.setFontStyle((String) font[2], (Integer) font[1]
-                | ((Boolean) font[0] ? 0 : textView.getFontStyle()));
+        textView.setFontStyle((String) font[2], (Integer) font[1] | ((Boolean) font[0] ? 0 : textView.getFontStyle()));
     }
 
     @Override

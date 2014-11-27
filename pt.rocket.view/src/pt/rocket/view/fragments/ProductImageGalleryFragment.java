@@ -6,6 +6,8 @@ package pt.rocket.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.GalleryPagerAdapter;
@@ -34,7 +36,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
@@ -75,8 +76,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
     private View mIndicatorRightView;
     
     private String mCompleteProductUrl;
-    
-    private ImageView imageView;
 
     /**
      * Constructor using a nested flag
@@ -341,8 +340,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
     
 
     private void createViewPager() {
-        // setted in order to show the no image placeholder on PDV view
-        if(mCompleteProduct.getImageList().size() <= 0 ){
+        // Setted in order to show the no image placeholder on PDV view
+        if(CollectionUtils.isEmpty(mCompleteProduct.getImageList())){
             ArrayList<String> temp = new ArrayList<String>();
             temp.add("");
             mCompleteProduct.setImageList(temp);

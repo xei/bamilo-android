@@ -23,9 +23,9 @@
 
         <ProgressBar
             android:id="@+id/campaign_loading_progress"
-            android:layout_width="@dimen/campaign_banner_height"
-            android:layout_height="@dimen/campaign_banner_height"
-            android:layout_centerHorizontal="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
             android:visibility="gone" />
 
         <pt.rocket.components.customfontviews.TextView
