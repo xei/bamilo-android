@@ -1815,6 +1815,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      * display product description on landscape
      */
     private void displayDescription() {
+        if(mProductDescriptionContainer == null) {
+            Log.w(TAG,"Product details container is null on landscape");
+            return;
+        }
         String longDescription = mCompleteProduct.getDescription();
         if(longDescription.isEmpty()){
             mProductDescriptionContainer.setVisibility(View.GONE); 
