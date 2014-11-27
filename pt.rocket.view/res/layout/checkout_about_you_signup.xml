@@ -78,13 +78,22 @@
 
             <!-- FACEBOOK -->
 
-            <com.facebook.widget.LoginButton
+            <pt.rocket.components.customfontviews.FacebookTextView
                 xmlns:fb="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/checkout_signup_form_button_facebook"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_big_height"
                 android:layout_margin="@dimen/rounded_margin_mid"
+                android:background="@drawable/com_facebook_button_blue"
+                android:drawableLeft="@drawable/com_facebook_inverse_icon"
+                android:fontFamily="roboto_bold"
+                android:gravity="center"
+                android:paddingLeft="12dp"
+                android:paddingRight="16dp"
                 android:text="@string/facebook_signup_button_text"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 fb:login_text="@string/facebook_signup_button_text" />
         </LinearLayout>
     </LinearLayout>

@@ -11,6 +11,7 @@ import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.customfontviews.CheckBox;
+import pt.rocket.components.customfontviews.FacebookTextView;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
@@ -214,8 +215,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         view.findViewById(R.id.checkout_signup_form_button_enter).setOnClickListener(this);
         
         // FACEBOOK
-        LoginButton facebookButton1 = (LoginButton) view.findViewById(R.id.checkout_login_form_button_facebook);
-        LoginButton facebookButton2 = (LoginButton) view.findViewById(R.id.checkout_signup_form_button_facebook);
+        FacebookTextView facebookButton1 = (FacebookTextView) view.findViewById(R.id.checkout_login_form_button_facebook);
+        FacebookTextView facebookButton2 = (FacebookTextView) view.findViewById(R.id.checkout_signup_form_button_facebook);
+
         setFacebookButton(facebookButton1);
         setFacebookButton(facebookButton2);
         

@@ -27,10 +27,19 @@
                 android:layout_marginTop="@dimen/login_margin_medium"
                 android:orientation="vertical" >
 
-                <com.facebook.widget.LoginButton
+                <pt.rocket.components.customfontviews.FacebookTextView
                     xmlns:fb="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/authButton"
                     android:layout_width="match_parent"
+                    android:fontFamily="roboto_bold"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:background="@drawable/com_facebook_button_blue"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="16dp"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/white"
+                    android:drawableLeft="@drawable/com_facebook_inverse_icon"
                     android:layout_height="@dimen/button_big_height"
                     android:layout_margin="@dimen/rounded_margin_mid"
                     android:text="@string/facebook_login_button_text"

@@ -12,6 +12,7 @@ import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.customfontviews.CheckBox;
+import pt.rocket.components.customfontviews.FacebookTextView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.LogOut;
@@ -61,7 +62,6 @@ import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
-import com.facebook.widget.LoginButton;
 
 import de.akquinet.android.androlog.Log;
 
@@ -187,7 +187,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
         register = view.findViewById(R.id.middle_login_link_register);
         container = (ViewGroup) view.findViewById(R.id.form_container);
-        LoginButton authButton = (LoginButton) view.findViewById(R.id.authButton);
+        FacebookTextView authButton = (FacebookTextView) view.findViewById(R.id.authButton);
         authButton.setFragment(this);
         authButton.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);
         authButton.setReadPermissions(Arrays.asList("email"));
