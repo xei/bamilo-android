@@ -5,6 +5,7 @@
     <string name="app_name">Shop.com.mm Live</string>
     <bool name="rest_host_auth_use_it">true</bool>
 	<bool name="is_to_show_dev_env">true</bool>
+	<item name="is_shop_specific" type="bool">true</item>
 
 	<!-- COUNTRIES -->
 	<!-- <string name="countries_url">http://www.daraz.com/mobapi/availablecountries</string>     -->
@@ -47,6 +48,4 @@
 	<!-- Facebook App Id -->
     <string name="facebook_app_id">590570504382479</string>
     
-	<!-- Specific -->
-    <item name="is_shop_specific" type="bool">true</item>
 </resources>

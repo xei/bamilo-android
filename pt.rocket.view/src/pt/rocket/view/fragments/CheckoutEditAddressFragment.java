@@ -106,7 +106,6 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
                 R.string.checkout_label,
                 KeyboardState.ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_BILLING);
-        // ConstantsCheckout.CHECKOUT_BILLING
     }
 
     /*
