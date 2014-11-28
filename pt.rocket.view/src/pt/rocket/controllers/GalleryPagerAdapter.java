@@ -10,7 +10,6 @@ import pt.rocket.utils.photoview.PhotoViewAttacher;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.text.TextUtils;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,22 +110,12 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
         final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
         if (this.isZoomAvailable) {
             final PhotoView imageView = (PhotoView) imageTeaserView.findViewById(R.id.image_view);
-            imageView.setImageResource(R.drawable.no_image_large);
-            Log.i(TAG, "LOAD PHOTO: " + imageView.getId() + " " + imageUrl);
-            if (!TextUtils.isEmpty(imageUrl)) {
-                RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
-            } else {
-                progressBar.setVisibility(View.GONE);
-            }
+            //Log.i(TAG, "LOAD PHOTO: " + imageView.getId() + " " + imageUrl);
+            RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
         } else {
             final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
-            Log.i(TAG, "LOAD PDV PHOTO: " + imageView.getId() + " " + imageUrl);
-            imageView.setImageResource(R.drawable.no_image_large);
-            if (!TextUtils.isEmpty(imageUrl)) {
-                RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
-            } else {
-                progressBar.setVisibility(View.GONE);
-            }
+            //Log.i(TAG, "LOAD PDV PHOTO: " + imageView.getId() + " " + imageUrl);
+            RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
         }
 
     }

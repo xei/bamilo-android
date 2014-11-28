@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -201,7 +202,7 @@ public class RocketImageLoader {
     public void loadImage(final String imageUrl, boolean isFilePathList, final ImageView imageView, final View progressView, int targetWidth,
             final int placeHolderImageId, final boolean hideImageView, final RocketImageLoaderListener listener, boolean isDraftImage, String tag) {
 
-        if (null != imageUrl && !imageUrl.equals("") && null != imageView) {
+        if (!TextUtils.isEmpty(imageUrl) && null != imageView) {
             if(isDraftImage) {
             	imageView.setImageBitmap(decodeSampledBitmapFromResource(imageUrl, imageView.getWidth(), imageView.getHeight()));
 
@@ -236,6 +237,8 @@ public class RocketImageLoader {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        
+                        //Log.i("IMAGE LOADER", "ON ERROR RESPONSE: " + imageUrl);
  
                         if (progressView != null) {
                             progressView.setVisibility(View.GONE);
@@ -267,6 +270,9 @@ public class RocketImageLoader {
                         
                         if (null != response.getBitmap() && response.getBitmap().getWidth() != -1) {
                             if (response.getRequestUrl().equals(imageUrl)) {
+                                if (progressView != null) {
+                                    progressView.setVisibility(View.GONE);
+                                }
                                 
                                 imageView.setImageBitmap(response.getBitmap());
                                 
@@ -280,9 +286,6 @@ public class RocketImageLoader {
                         } else {
                             //imageView.setImageBitmap(null);
                             imageView.setImageResource(placeHolderImageId);
-                        }
-                        if (progressView != null) {
-                            progressView.setVisibility(View.GONE);
                         }
                     }
                 }, 0, 0/*-, tag*/);

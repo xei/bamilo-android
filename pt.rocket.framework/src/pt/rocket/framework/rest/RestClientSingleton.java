@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 import javax.net.ssl.SSLException;
 
 import pt.rocket.framework.Darwin;
-import pt.rocket.framework.DarwinMode;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.interfaces.IMetaData;
 import pt.rocket.framework.network.ConfigurationConstants;
@@ -523,7 +522,7 @@ public final class RestClientSingleton {
 	        }
 	        
 			RestContract.init(mContext, "" + shopId);
-			Darwin.initialize(DarwinMode.DEBUG, mContext, "" + shopId, false);
+			Darwin.initialize(mContext, "" + shopId, false);
 		}
 		if (RestContract.USE_AUTHENTICATION) {
 			httpClient.getCredentialsProvider()

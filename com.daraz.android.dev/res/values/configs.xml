@@ -45,7 +45,7 @@
 	<!-- GTM -->
     <string name="gtm_key">GTM-THW976</string>
     
-	<!-- Facebook App Id -->
+	<!-- FACEBOOK -->
     <string name="facebook_app_id">590570504382479</string>
 
 </resources>

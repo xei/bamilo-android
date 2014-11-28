@@ -1,4 +1,4 @@
-package pt.rocket.utils;
+package pt.rocket.utils.location;
 
 import java.util.List;
 import java.util.Locale;

@@ -14,20 +14,16 @@
         <item>/data/cust/delap</item>
     </string-array>
     
-    <!-- These arrays are intentionally left empty as the are overridden in the toplevel project -->
-    <string-array name="servers"></string-array>
-    <string-array name="users"></string-array>
-    <string-array name="passwords"></string-array>
-    <string-array name="restbase_paths"></string-array>
-    <string-array name="country_protocol"></string-array>
+	<!-- SINGLE SHOP CONFIG -->
+    <string name="single_shop_country_name"></string>
+    <string name="single_shop_country_url"></string>
+    <string name="single_shop_country_flag"></string>
+    <string name="single_shop_country_iso"></string>
+    <bool name="single_shop_country_force_https">false</bool>
+    <bool name="single_shop_country_is_live">false</bool>
+    <bool name="is_single_shop_country">false</bool>
 
-    <integer-array name="icons"></integer-array>
-
-    <string-array name="ga_testkeys"></string-array>
-    <string-array name="ga_livekeys"></string-array>
-    <string-array name="fkey_testkeys"></string-array>
-    <string-array name="fkey_livekeys"></string-array>
-
+	<!-- LABEL USED FOR FILTER -->
     <string name="framework_category_label"></string>
 
     <!-- Global Country Configuration -->

@@ -44,7 +44,7 @@ import de.akquinet.android.androlog.Log;
 public class Darwin {
 
 	private static final String TAG = Darwin.class.getSimpleName();
-	private static DarwinMode mode = DarwinMode.DEBUG;
+	
 	private static String SHOP_ID = null;
 
 	public static Context context = null;
@@ -107,7 +107,7 @@ public class Darwin {
 	 * @return return true is Darwin is initializes and false if it is already
 	 *         intialized
 	 */
-	public static boolean initialize(DarwinMode mode, Context ctx, String shopId, boolean isChangeShop) {
+	public static boolean initialize(Context ctx, String shopId, boolean isChangeShop) {
 		Log.d(TAG, "Initializing Darwin with id " + shopId);
 		context = ctx.getApplicationContext();
 		if (SHOP_ID != null && SHOP_ID.equalsIgnoreCase(shopId)) {
@@ -131,7 +131,7 @@ public class Darwin {
 	}
 	
 	// FOR NO_COUNTRIES_CONFIGS
-	public static boolean initialize(DarwinMode mode, Context ctx) {
+	public static boolean initialize(Context ctx) {
 		Log.d(TAG, "Initializing Darwin to get global ");
 		context = ctx.getApplicationContext();
 		// Init darwin database
@@ -143,7 +143,7 @@ public class Darwin {
 	}
 	
 	// FOR NO_COUNTRY_CONFIGS_AVAILABLE
-	public static boolean initialize(DarwinMode mode, Context ctx, String requestHost, String basePath) {
+	public static boolean initialize(Context ctx, String requestHost, String basePath) {
 		Log.d(TAG, "Initializing Darwin to get global ");
 		context = ctx.getApplicationContext();
 		// Init darwin database
@@ -156,17 +156,6 @@ public class Darwin {
 	
 	public static String getShopId(){
 		return SHOP_ID;
-	}
-	
-
-	/**
-	 * Gets the mode on which the framework is running
-	 * 
-	 * @return DEBUG or RELEASE depending on the mode that was set vy the
-	 *         application
-	 */
-	public static DarwinMode getMode() {
-		return mode;
 	}
 
 	/**

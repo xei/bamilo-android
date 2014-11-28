@@ -2,11 +2,16 @@ package pt.rocket.preferences;
 
 
 
+import java.util.ArrayList;
+
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
+import pt.rocket.framework.database.CountriesConfigsTableHelper;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.database.LastViewedTableHelper;
+import pt.rocket.framework.objects.CountryObject;
+import pt.rocket.view.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import de.akquinet.android.androlog.Log;
@@ -65,6 +70,42 @@ public class ShopPreferences {
         LastViewedTableHelper.deleteAllLastViewed();
         FavouriteTableHelper.deleteAllFavourite();
         
+    }
+    
+    /**
+     * Method used to set a shop country from xml
+     * @param context
+     * @author sergiopereira
+     */
+    public static void setShopFromConfigs(Context context) {
+        // Create country
+        CountryObject countryObject = new CountryObject();
+        countryObject.setCountryName(context.getString(R.string.single_shop_country_name));
+        countryObject.setCountryUrl(context.getString(R.string.single_shop_country_url));
+        countryObject.setCountryIso(context.getString(R.string.single_shop_country_iso));
+        countryObject.setCountryFlag(context.getString(R.string.single_shop_country_flag));
+        countryObject.setCountryForceHttps(context.getResources().getBoolean(R.bool.single_shop_country_force_https));
+        countryObject.setCountryIsLive(context.getResources().getBoolean(R.bool.single_shop_country_is_live));
+        // Save in shared preferences
+        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, countryObject.getCountryIso().toLowerCase());
+        editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, countryObject.getCountryIso().toLowerCase());
+        editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, countryObject.getCountryName());
+        editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, countryObject.getCountryUrl());
+        editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, countryObject.getCountryFlag());
+        editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, countryObject.isCountryForceHttps());
+        editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, countryObject.isCountryIsLive());
+        editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
+        editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, true);
+        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
+        editor.commit();
+        // Delete old data
+        CountriesConfigsTableHelper.deleteAllCountriesConfigs();
+        // Save in database
+        ArrayList<CountryObject> mCountries = new ArrayList<CountryObject>();
+        mCountries.add(countryObject);
+        CountriesConfigsTableHelper.insertCountriesConfigs(mCountries);
     }
 
 }

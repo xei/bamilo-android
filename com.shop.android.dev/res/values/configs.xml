@@ -8,8 +8,7 @@
 	<item name="is_shop_specific" type="bool">true</item>
 
 	<!-- COUNTRIES -->
-	<!-- <string name="countries_url">http://www.Shop.com/mobapi/availablecountries/staging</string> -->
-	<string name="countries_url">http://www.jumia.com/mobapi/availablecountries/staging</string>
+	<!-- <string name="countries_url">http://www.shop.com/mobapi/availablecountries/staging</string> -->
 	
 	<!-- GA -->
     <bool name="ga_debug_mode">false</bool>
@@ -46,7 +45,7 @@
 	<!-- GTM -->
     <string name="gtm_key">GTM-NX2RQW</string>
     
-	<!-- Facebook App Id -->
+	<!-- FACEBOOK -->
     <string name="facebook_app_id">1548038308764210</string>
     
 </resources>

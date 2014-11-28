@@ -974,7 +974,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         // Set hint
         mSearchView.setQueryHint(getString(R.string.action_label_search_hint));
-        
         HoloFontLoader.applyDefaultFont(mSearchView);
         
         // Set colorhint

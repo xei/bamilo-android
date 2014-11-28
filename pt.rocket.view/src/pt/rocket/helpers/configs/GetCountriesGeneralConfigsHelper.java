@@ -265,7 +265,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                 liveCountryObject2.setCountryName("Shop.com.mm Live");
                 liveCountryObject2.setCountryUrl("www.shop.com.mm");
                 liveCountryObject2.setCountryFlag("");
-                liveCountryObject2.setCountryIso("K");
+                liveCountryObject2.setCountryIso("MMK");
                 liveCountryObject2.setCountryForceHttps(false);
                 liveCountryObject2.setCountryIsLive(true);
                 stagingServers.add(liveCountryObject2);
@@ -274,7 +274,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                 liveCountryObject5.setCountryName("Shop.com.mm Staging");
                 liveCountryObject5.setCountryUrl("alice-staging.shop.com.mm");
                 liveCountryObject5.setCountryFlag("");
-                liveCountryObject5.setCountryIso("K");
+                liveCountryObject5.setCountryIso("MMK");
                 liveCountryObject5.setCountryForceHttps(false);
                 liveCountryObject5.setCountryIsLive(true);
                 stagingServers.add(liveCountryObject5);
@@ -283,7 +283,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                 liveCountryObject6.setCountryName("Shop.com.mm Integration");
                 liveCountryObject6.setCountryUrl("integration-www.shop.com.mm");
                 liveCountryObject6.setCountryFlag("");
-                liveCountryObject6.setCountryIso("K");
+                liveCountryObject6.setCountryIso("MMK");
                 liveCountryObject6.setCountryForceHttps(false);
                 liveCountryObject6.setCountryIsLive(true);
                 stagingServers.add(liveCountryObject6);

@@ -62,11 +62,14 @@ public class MaintenancePage {
             Button retry = (Button) activity.findViewById(R.id.fallback_retry);
             retry.setText(R.string.try_again);
             retry.setOnClickListener(listener);
-            // Set choose country
-            Button changeCountry = (Button) activity.findViewById(R.id.fallback_change_country);
-            changeCountry.setVisibility(View.VISIBLE);
-            changeCountry.setText(R.string.nav_country);
-            changeCountry.setOnClickListener(listener);
+            // Set choose country case multi shops
+            if (!activity.getResources().getBoolean(R.bool.is_single_shop_country)) {
+                Button changeCountry = (Button) activity.findViewById(R.id.fallback_change_country);
+                changeCountry.setVisibility(View.VISIBLE);
+                changeCountry.setText(R.string.nav_country);
+                changeCountry.setOnClickListener(listener);
+            }
+
             // Set image
             //ImageView mapBg = (ImageView) activity.findViewById(R.id.fallback_country_map);
             //RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_maintenance_map);

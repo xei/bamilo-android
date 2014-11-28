@@ -192,7 +192,7 @@ public class JumiaApplication extends A4SApplication {
         AnalyticsGoogle.clearCheckoutStarted();
 
         for (ApplicationComponent component : COMPONENTS.values()) {
-            ErrorCode result = component.init(JumiaApplication.this);
+            ErrorCode result = component.init(getApplicationContext());
             if (result != ErrorCode.NO_ERROR) {
                 Log.i(TAG, "code1configs : " + result);
                 handleEvent(result, null, initializationHandler);
