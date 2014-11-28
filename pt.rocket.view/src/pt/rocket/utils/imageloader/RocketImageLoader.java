@@ -236,11 +236,11 @@ public class RocketImageLoader {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+ 
                         if (progressView != null) {
                             progressView.setVisibility(View.GONE);
                         }
-
+                        
                         if (listener != null) {
                             listener.onLoadedError();
                         }
@@ -263,13 +263,10 @@ public class RocketImageLoader {
 //                                }
 //                            });
 //                            return;
-//                        }                        
+//                        }         
                         
                         if (null != response.getBitmap() && response.getBitmap().getWidth() != -1) {
                             if (response.getRequestUrl().equals(imageUrl)) {
-                                if (progressView != null) {
-                                    progressView.setVisibility(View.GONE);
-                                }
                                 
                                 imageView.setImageBitmap(response.getBitmap());
                                 
@@ -281,14 +278,22 @@ public class RocketImageLoader {
                                     imageView.setVisibility(View.VISIBLE);
                             }
                         } else {
-                        	//imageView.setImageBitmap(null);
-                        	imageView.setImageResource(placeHolderImageId);
+                            //imageView.setImageBitmap(null);
+                            imageView.setImageResource(placeHolderImageId);
+                        }
+                        if (progressView != null) {
+                            progressView.setVisibility(View.GONE);
                         }
                     }
                 }, 0, 0/*-, tag*/);
                 imageView.setTag(imgContainer);
             }
         } else if (imageView != null) {
+
+            if (progressView != null) {
+                progressView.setVisibility(View.GONE);
+            } 
+            
             // clear any previous image
             imageView.setImageResource(placeHolderImageId);
             if (listener != null) {
