@@ -22,7 +22,7 @@ import android.view.View;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Class used to show all campaigns
+ * Class used to show all campaigns 
  * @author sergiopereira
  */
 public class CampaignsFragment extends BaseFragment {

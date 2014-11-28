@@ -9,6 +9,7 @@ import java.util.Set;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.customfontviews.HoloFontLoader;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.ActivitiesWorkFlow;
@@ -75,10 +76,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
-
 import com.actionbarsherlock.ActionBarSherlock;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -975,6 +974,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         // Set hint
         mSearchView.setQueryHint(getString(R.string.action_label_search_hint));
+        
+        HoloFontLoader.applyDefaultFont(mSearchView);
+        
         // Set colorhint
         mSearchAutoComplete.setHintTextColor(getResources().getColor(R.color.search_hint));
         // Set search

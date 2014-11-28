@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 import pt.rocket.components.customfontviews.Button;
-import pt.rocket.components.customfontviews.Toast;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.AddableToCartListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -24,6 +23,7 @@ import pt.rocket.helpers.products.GetRecentlyViewedHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.Toast;
 import pt.rocket.view.R;
 import android.os.Bundle;
 import android.text.TextUtils;

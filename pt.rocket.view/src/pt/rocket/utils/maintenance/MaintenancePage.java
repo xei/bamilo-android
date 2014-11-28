@@ -1,6 +1,7 @@
 package pt.rocket.utils.maintenance;
 
 import pt.rocket.components.customfontviews.Button;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.utils.DeviceInfoHelper;
@@ -13,7 +14,6 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
-import android.widget.TextView;
 
 /**
  * Class used to set the content for maintenance page.

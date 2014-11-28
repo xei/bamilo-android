@@ -9,7 +9,6 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Gallery;
-import android.widget.Toast;
 
 
 /**
@@ -57,7 +56,7 @@ public class GalleryLayout {
 	    // Set Listener
 	    gallery.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Toast.makeText(activity, "Image: " + position, Toast.LENGTH_SHORT).show();
+			    Toast.makeText(activity, "Image: " + position, Toast.LENGTH_SHORT).show();
 			}
 		});    
 	}

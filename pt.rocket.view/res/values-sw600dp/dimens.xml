@@ -156,5 +156,8 @@
     <dimen name="margin_120px">60dp</dimen>
 
     <dimen name="margin_150px">75dp</dimen>
+    
+	<!-- Toast -->
+    <dimen name="toast_hover">75dp</dimen>
 
 </resources>

@@ -19,6 +19,7 @@ import pt.rocket.helpers.products.GetProductHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.Toast;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Paint;
@@ -32,7 +33,6 @@ import android.text.style.MetricAffectingSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**

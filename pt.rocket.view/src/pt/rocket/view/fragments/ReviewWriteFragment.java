@@ -25,6 +25,7 @@ import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
@@ -43,7 +44,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -286,9 +286,9 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                     // Get the rating label
                     // FIXME : (TEMPORARY) Validate rating label if ins't a number from API
                     String ratingLabel = option.getKey();
-                    if (ratingLabel.equals("1")) ratingLabel = size == 1 ? "Rating" : "Price";
-                    else if (ratingLabel.equals("2")) ratingLabel = "Appearance";
-                    else if (ratingLabel.equals("3")) ratingLabel = "Quality";
+                    if (ratingLabel.equals("1")) ratingLabel = size == 1 ? getString(R.string.string_price) : getString(R.string.string_price);
+                    else if (ratingLabel.equals("2")) ratingLabel = getString(R.string.string_appearance);
+                    else if (ratingLabel.equals("3")) ratingLabel = getString(R.string.rating_quality);
                     
                     ((TextView) viewLabel).setText(ratingLabel);
                     ratingBarContainer.addView(viewRating);

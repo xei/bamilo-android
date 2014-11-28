@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Set;
 
 import pt.rocket.app.JumiaApplication;
-import pt.rocket.components.customfontviews.Toast;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.AddableToCartListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -36,6 +35,7 @@ import pt.rocket.helpers.products.GetFavouriteHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;

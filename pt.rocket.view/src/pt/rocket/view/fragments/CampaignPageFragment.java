@@ -29,6 +29,7 @@ import pt.rocket.helpers.campaign.GetCampaignHelper;
 import pt.rocket.helpers.cart.GetShoppingCartAddItemHelper;
 import pt.rocket.helpers.search.GetSearchProductHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.UIUtils;
 import pt.rocket.utils.deeplink.DeepLinkManager;
@@ -57,7 +58,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**

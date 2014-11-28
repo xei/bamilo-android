@@ -41,6 +41,7 @@ import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.ScrollViewWithHorizontal;
+import pt.rocket.utils.Toast;
 import pt.rocket.utils.TipsOnPageChangeListener;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.deeplink.DeepLinkManager;
@@ -81,7 +82,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -985,7 +985,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         }
 
         if (quantity == 0) {
-            Toast.makeText(mContext, R.string.product_outof_stock, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseActivity(), R.string.product_outof_stock, Toast.LENGTH_SHORT).show();
             isAddingProductToCart = false;
             return;
         }
@@ -1460,7 +1460,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 
                 TrackerDelegator.trackAddToFavorites(sku, mCompleteProduct.getBrand(),mCompleteProduct.getPriceForTracking(),
                         mCompleteProduct.getRatingsAverage(),mCompleteProduct.getMaxSavingPercentage(),false, mCompleteProduct.getCategories());
-                Toast.makeText(mContext, getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
+                Log.e("TOAST","USE SuperToast");
+                Toast.makeText(getBaseActivity(), getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
             } else {
                 fragmentMessage = BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE;
                 FavouriteTableHelper.removeFavouriteProduct(mCompleteProduct.getSku());
@@ -1469,7 +1470,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 
 
                 TrackerDelegator.trackRemoveFromFavorites(sku, mCompleteProduct.getPriceForTracking(),mCompleteProduct.getRatingsAverage());
-                Toast.makeText(mContext, getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseActivity(), getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
             }
 
             BaseFragment catalogFragment = (BaseFragment) getBaseActivity()

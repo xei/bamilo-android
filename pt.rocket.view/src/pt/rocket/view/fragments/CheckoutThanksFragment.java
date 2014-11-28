@@ -22,6 +22,7 @@ import pt.rocket.helpers.cart.ClearShoppingCartHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -42,7 +43,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView.BufferType;
-import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**

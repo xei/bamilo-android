@@ -59,7 +59,7 @@
                         android:textColor="@color/grey_middledark"
                         android:textSize="@dimen/checkout_thanks_order_text_size" />
 
-                    <TextView
+                    <pt.rocket.components.customfontviews.TextView
                         android:id="@+id/order_status_text"
                         style="@style/text_normal"
                         android:layout_width="match_parent"

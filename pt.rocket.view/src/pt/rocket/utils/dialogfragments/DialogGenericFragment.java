@@ -1,5 +1,6 @@
 package pt.rocket.utils.dialogfragments;
 
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -12,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 /**

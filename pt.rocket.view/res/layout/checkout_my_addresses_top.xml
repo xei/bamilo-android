@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_30px" >
 
-            <TextView
+            <pt.rocket.components.customfontviews.TextView
                 style="@style/text_form"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

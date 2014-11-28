@@ -30,6 +30,7 @@ import pt.rocket.helpers.cart.GetShoppingCartItemsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.view.R;
 import android.annotation.SuppressLint;
@@ -49,7 +50,6 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 import ch.boye.httpclientandroidlib.cookie.Cookie;
 import de.akquinet.android.androlog.Log;
 

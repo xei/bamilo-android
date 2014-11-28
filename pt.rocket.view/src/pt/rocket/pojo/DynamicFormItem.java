@@ -27,6 +27,7 @@ import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.InputType;
 import pt.rocket.utils.RadioGroupLayout;
 import pt.rocket.utils.RadioGroupLayoutVertical;
+import pt.rocket.utils.Toast;
 import pt.rocket.utils.UIUtils;
 import pt.rocket.utils.dialogfragments.DialogDatePickerFragment;
 import pt.rocket.utils.dialogfragments.DialogDatePickerFragment.OnDatePickerDialogListener;
@@ -52,7 +53,6 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**

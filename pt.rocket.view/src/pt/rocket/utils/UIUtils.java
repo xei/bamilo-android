@@ -1,12 +1,12 @@
 package pt.rocket.utils;
 
+import pt.rocket.components.customfontviews.TextView;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.widget.TextView;
 
 /**
  * A general Class with UI utils such as set the font <p/><br> 

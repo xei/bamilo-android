@@ -151,4 +151,5 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
     public void setTextAppearance(Context context, int resid) {
         TextView.setTextAppearance(this, context, resid);
     }
+
 }

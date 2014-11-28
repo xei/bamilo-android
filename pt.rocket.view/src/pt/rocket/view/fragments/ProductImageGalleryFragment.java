@@ -24,6 +24,7 @@ import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.JumiaViewPagerWithZoom;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.Toast;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -37,7 +38,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**

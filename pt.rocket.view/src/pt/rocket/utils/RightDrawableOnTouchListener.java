@@ -1,12 +1,12 @@
 package pt.rocket.utils;
 
 
+import pt.rocket.components.customfontviews.TextView;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.TextView;
 
 public abstract class RightDrawableOnTouchListener implements OnTouchListener {
     Drawable drawable;

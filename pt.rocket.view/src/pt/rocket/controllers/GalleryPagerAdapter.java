@@ -111,7 +111,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
         final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
         if (this.isZoomAvailable) {
             final PhotoView imageView = (PhotoView) imageTeaserView.findViewById(R.id.image_view);
-            imageView.setImageResource(R.drawable.no_image_small);
+            imageView.setImageResource(R.drawable.no_image_large);
             Log.i(TAG, "LOAD PHOTO: " + imageView.getId() + " " + imageUrl);
             if (!TextUtils.isEmpty(imageUrl)) {
                 RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
@@ -121,7 +121,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
         } else {
             final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
             Log.i(TAG, "LOAD PDV PHOTO: " + imageView.getId() + " " + imageUrl);
-            imageView.setImageResource(R.drawable.no_image_small);
+            imageView.setImageResource(R.drawable.no_image_large);
             if (!TextUtils.isEmpty(imageUrl)) {
                 RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
             } else {

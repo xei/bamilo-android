@@ -29,6 +29,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.ProductSort;
 import pt.rocket.helpers.products.GetProductsHelper;
 import pt.rocket.interfaces.IResponseCallback;
+import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogFilterFragment;
 import pt.rocket.utils.imageloader.RocketImageLoader;
@@ -52,7 +53,6 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**

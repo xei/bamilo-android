@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import pt.rocket.components.customfontviews.TextView;
-import pt.rocket.components.customfontviews.Toast;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;

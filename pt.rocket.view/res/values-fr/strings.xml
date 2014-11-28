@@ -390,5 +390,9 @@
 	<string name="my_order_quantity_label">Qté.</string>
 	<string name="my_order_no_orders_label">Vous n\'avez rien commandé.</string>
 	<string name="my_order_details_label">Détails de la commande</string>
+	<string name="string_price">Prix</string>
+	<string name="string_appearance">Apparence</string>
+	<string name="string_rating"></string>
+	<string name="discount_only"></string>
 
 </resources>

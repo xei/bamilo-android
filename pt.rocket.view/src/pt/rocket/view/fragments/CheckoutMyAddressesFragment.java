@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.customfontviews.CheckBox;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -34,6 +35,7 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.GenericRadioGroup;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
+import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.R;
@@ -47,8 +49,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**

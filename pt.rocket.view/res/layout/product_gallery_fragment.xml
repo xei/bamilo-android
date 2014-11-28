@@ -33,7 +33,7 @@
         android:background="@drawable/selector_btn_close"
         android:visibility="gone" />
 
-    <TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/gallery_button_indicator_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         android:background="@drawable/btn_galleryscroll_left"
         android:visibility="gone" />
 
-    <TextView
+    <pt.rocket.components.customfontviews.TextView
         android:id="@+id/gallery_button_indicator_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

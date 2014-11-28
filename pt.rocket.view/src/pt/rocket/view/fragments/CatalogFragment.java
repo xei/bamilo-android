@@ -13,6 +13,7 @@ import pt.rocket.controllers.FeaturedItemsAdapter;
 import pt.rocket.controllers.TipsPagerAdapter;
 import pt.rocket.framework.Darwin;
 import pt.rocket.components.androidslidingtabstrip.SlidingTabLayout;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.objects.FeaturedBox;
@@ -48,7 +49,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 
 public class CatalogFragment extends BaseFragment implements OnClickListener {

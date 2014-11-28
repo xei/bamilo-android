@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -17,7 +18,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.TextView;
 import de.akquinet.android.androlog.Log;
 //import org.holoeverywhere.widget.DatePicker;
 
