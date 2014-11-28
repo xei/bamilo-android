@@ -962,8 +962,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         MenuItem mSearchMenuItem = menu.findItem(R.id.menu_search);
         // Get search views
         mSearchView = (SearchView) mSearchMenuItem.getActionView();
-        mSearchAutoComplete = (SearchAutoComplete) mSearchView
-                .findViewById(R.id.abs__search_src_text);
+        mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.abs__search_src_text);
+        HoloFontLoader.applyDefaultFont(mSearchAutoComplete);
         mSearchButton = mSearchView.findViewById(R.id.abs__search_button);
         // Set the ime options
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);

@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.framework.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,6 +19,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class HoloFontLoader {
     
@@ -52,7 +51,7 @@ public class HoloFontLoader {
         ROBOTO_ITALIC = new RobotoRawFont(R.raw.roboto_italic).setFontStyle(TEXT_STYLE_ITALIC);
         ROBOTO_BOLDITALIC = new RobotoRawFont(R.raw.roboto_bolditalic).setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_ITALIC);
         ROBOTO_LIGHT = new RobotoRawFont(R.raw.roboto_light).setFontStyle(TEXT_STYLE_LIGHT);
-        
+                
 //        ROBOTO_LIGHT = new RobotoRawLazyFont("roboto_light").setFontStyle(TEXT_STYLE_LIGHT);        
 //        BURMESE =  new BurmeseRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_NORMAL);        
 //        BURMESE = new BurmeseRawLazyFont("burmese_regular").setFontStyle(TEXT_STYLE_NORMAL);
@@ -128,6 +127,7 @@ public class HoloFontLoader {
                 applyInternal(vg.getChildAt(i), font);
             }
         }
+        // Case View with interface FontStyleProvider
         if (view instanceof FontStyleProvider) {
             final FontStyleProvider provider = (FontStyleProvider) view;
             final int fontStyle = provider.getFontStyle();
@@ -141,6 +141,10 @@ public class HoloFontLoader {
             view.setTag(R.id.fontLoaderFont, font);
             view.setTag(R.id.fontLoaderFontStyle, fontStyle);
             view.setTag(R.id.fontLoaderFontFamily, fontFamily);
+        }
+        // Case TextView
+        else  if (view instanceof TextView) {
+            ((TextView) view).setTypeface(font.getTypeface(font.mFontFamily, font.mFontStyle));
         }
     }
 
@@ -571,25 +575,25 @@ public class HoloFontLoader {
             setFontFamily("roboto");
         }
     }
-
-    private static final class RobotoRawLazyFont extends RawLazyFont {
-        public RobotoRawLazyFont(String rawResourceName) {
-            super(rawResourceName);
-            setFontFamily("roboto");
-        }
-    }
     
-    private static final class BurmeseRawFont extends RawFont {
-        public BurmeseRawFont(int rawResourceId) {
-            super(rawResourceId);
-            setFontFamily("burmese");
-        }
-    }
-    
-    private static final class BurmeseRawLazyFont extends RawLazyFont {
-        public BurmeseRawLazyFont(String rawResourceName) {
-            super(rawResourceName);
-            setFontFamily("burmese");
-        }
-    }
+//    private static final class RobotoRawLazyFont extends RawLazyFont {
+//        public RobotoRawLazyFont(String rawResourceName) {
+//            super(rawResourceName);
+//            setFontFamily("roboto");
+//        }
+//    }
+//    
+//    private static final class BurmeseRawFont extends RawFont {
+//        public BurmeseRawFont(int rawResourceId) {
+//            super(rawResourceId);
+//            setFontFamily("burmese");
+//        }
+//    }
+//    
+//    private static final class BurmeseRawLazyFont extends RawLazyFont {
+//        public BurmeseRawLazyFont(String rawResourceName) {
+//            super(rawResourceName);
+//            setFontFamily("burmese");
+//        }
+//    }
 }
