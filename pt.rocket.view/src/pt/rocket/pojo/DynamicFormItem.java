@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 
 import pt.rocket.components.customfontviews.Button;
 import pt.rocket.components.customfontviews.CheckBox;
+import pt.rocket.components.customfontviews.EditText;
 import pt.rocket.components.customfontviews.HoloFontLoader;
 import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.components.absspinner.IcsAdapterView;
@@ -45,7 +46,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;

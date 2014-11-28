@@ -105,7 +105,7 @@
                 xmlns:fb="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/checkout_login_form_button_facebook"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/button_big_height"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/rounded_margin_mid"
                 android:background="@drawable/com_facebook_button_blue"
                 android:drawableLeft="@drawable/com_facebook_inverse_icon"

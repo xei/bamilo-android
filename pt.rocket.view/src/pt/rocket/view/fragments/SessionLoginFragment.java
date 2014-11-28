@@ -12,6 +12,7 @@ import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.customfontviews.CheckBox;
+import pt.rocket.components.customfontviews.EditText;
 import pt.rocket.components.customfontviews.FacebookTextView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
@@ -54,7 +55,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.facebook.Request;
 import com.facebook.Session;

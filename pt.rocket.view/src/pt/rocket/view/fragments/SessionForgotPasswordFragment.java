@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.customfontviews.EditText;
 import pt.rocket.constants.FormConstants;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -33,7 +34,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
 

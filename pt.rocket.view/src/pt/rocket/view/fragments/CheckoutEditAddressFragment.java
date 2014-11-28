@@ -13,6 +13,7 @@ import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.absspinner.IcsAdapterView;
 import pt.rocket.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import pt.rocket.components.absspinner.IcsSpinner;
+import pt.rocket.components.customfontviews.EditText;
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.FormConstants;
@@ -53,7 +54,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
 
