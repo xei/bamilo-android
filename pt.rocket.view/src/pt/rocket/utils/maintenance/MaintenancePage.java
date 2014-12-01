@@ -73,6 +73,9 @@ public class MaintenancePage {
             // Set image
             //ImageView mapBg = (ImageView) activity.findViewById(R.id.fallback_country_map);
             //RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_maintenance_map);
+            
+            // Get flag for single shop
+            boolean isSingleShop = activity.getResources().getBoolean(R.bool.is_single_shop_country);
 
             String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
             TextView fallbackBest = (TextView) activity.findViewById(R.id.fallback_best);
@@ -80,11 +83,12 @@ public class MaintenancePage {
             if (country.split(" ").length == 1) {
                 TextView tView = (TextView) activity.findViewById(R.id.fallback_country);
                 tView.setVisibility(View.VISIBLE);
+                tView.setText(isSingleShop ? "" : country.toUpperCase());
                 TextView txView = (TextView) activity.findViewById(R.id.fallback_options_bottom);
                 txView.setVisibility(View.VISIBLE);
                 txView.setText(country.toUpperCase());
                 activity.findViewById(R.id.fallback_country_double).setVisibility(View.GONE);
-                tView.setText(country.toUpperCase());
+                
             } else {
                 TextView tView = (TextView) activity.findViewById(R.id.fallback_country_top);
                 tView.setText(country.split(" ")[0].toUpperCase());
@@ -139,14 +143,18 @@ public class MaintenancePage {
             //ImageView mapImageView = (ImageView) activity.findViewById(R.id.fallback_country_map);
             //RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapImageView, null, R.drawable.img_maintenance_map);
             
+            // Get flag for single shop
+            boolean isSingleShop = activity.getResources().getBoolean(R.bool.is_single_shop_country);
+            
             String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "");
 
             TextView fallbackBest = (TextView) activity.findViewById(R.id.fallback_best);
             fallbackBest.setText(R.string.fallback_best);
             if (country.split(" ").length == 1) {
+                // Set the country name
                 TextView tView = (TextView) activity.findViewById(R.id.fallback_country);
                 tView.setVisibility(View.VISIBLE);
-                tView.setText(country.toUpperCase());
+                tView.setText(isSingleShop ? "" : country.toUpperCase());
                 TextView txView = (TextView) activity.findViewById(R.id.fallback_options_bottom);
                 txView.setVisibility(View.VISIBLE);
                 txView.setText(country.toUpperCase());
