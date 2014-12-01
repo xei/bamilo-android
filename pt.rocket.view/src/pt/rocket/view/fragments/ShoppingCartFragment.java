@@ -638,6 +638,11 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             return true;
         }
         
+        // Validate generic errors
+        if (getBaseActivity().handleErrorEvent(bundle)) {
+            return true;
+        }
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case NATIVE_CHECKOUT_AVAILABLE:
@@ -656,9 +661,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             break;
         default:
             break;
-        }
-        if (getBaseActivity().handleErrorEvent(bundle)) {
-            return true;
         }
 
         mBeginRequestMillis = System.currentTimeMillis();
