@@ -1748,14 +1748,21 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         if (baseActivityProgressDialog != null) {
             return;
         }
-
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(new Runnable() {
-            public void run() {
-                baseActivityProgressDialog = DialogProgressFragment.newInstance();
-                baseActivityProgressDialog.show(getSupportFragmentManager(), null);
-            }
-        });
+        
+        // New implementation to fix
+        // FIXME: Try fix android.view.WindowManager$BadTokenException: Unable to add window -- token android.os.BinderProxy@42128698 is not valid; is your activity running?
+        if (!isFinishing()) {
+            baseActivityProgressDialog = DialogProgressFragment.newInstance();
+            baseActivityProgressDialog.show(getSupportFragmentManager(), null);
+        }
+        // Old implementation
+//        Handler handler = new Handler(Looper.getMainLooper());
+//        handler.post(new Runnable() {
+//            public void run() {
+//                baseActivityProgressDialog = DialogProgressFragment.newInstance();
+//                baseActivityProgressDialog.show(getSupportFragmentManager(), null);
+//            }
+//        });
 
     }
 
@@ -2179,8 +2186,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
         // First time show toast
         this.backPressedOnce = true;
-        CustomToastView.makeText(this, getString(R.string.exit_press_back_again),
-                Toast.LENGTH_SHORT).show();
+        CustomToastView.makeText(this, getString(R.string.exit_press_back_again), Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

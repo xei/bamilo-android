@@ -264,7 +264,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             showFragmentLoading();
             // Singleton for handler
             if (triggerHander == null) triggerHander = new Handler();
-            // Remove peding posts
+            // Remove pending posts
             else triggerHander.removeCallbacks(triggerRunnable);
             // Remove trigger
             triggerHander.postDelayed(triggerRunnable, FAVOURITE_DELAY);
