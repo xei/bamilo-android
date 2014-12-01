@@ -248,7 +248,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         SpannableString link = new SpannableString(mainText);
         link.setSpan(new TouchableSpan(R.color.yellow_dark, R.color.grey_middle), index, index + text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         // Set text for order status
-        android.widget.TextView textView = (android.widget.TextView) getView().findViewById(R.id.order_status_text);
+        TextView textView = (TextView) getView().findViewById(R.id.order_status_text);
         textView.setTag(orderNumber);
         // Make ClickableSpans and URLSpans work
         textView.setMovementMethod(new LinkTouchMovementMethod());

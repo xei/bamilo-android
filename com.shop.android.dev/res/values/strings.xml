@@ -162,7 +162,7 @@
     <string name="option2_description">Password ေျပာင္းလဲၿပီး အီးေမးလ္အား စီမံခန္႔ခြဲရန္</string>
     <string name="option3_description">Subscribe or Unsubscribe</string>
     <string name="or_text">သုိ႔မဟုတ္</string>
-    <string name="order_notiems">သင္၏လွည္းအတြင္းဘာမွ်မရွိပါ</string>
+    <string name="order_no_items">သင္၏လွည္းအတြင္းဘာမွ်မရွိပါ</string>
     <string name="order_status_label">,ေအာ္ဒါအေျခအေန</string>
     <string name="order_success">ဤနံပါတ္ျဖင့္ သင့္ေအာ္ဒါအား စာရင္းသြင္းၿပီးပါၿပီ။</string>
     <string name="order_summary_label">,ေအာ္ဒါအက်ဥ္းခ်ဳပ္</string>
@@ -315,6 +315,10 @@
     <string name="my_order_no_orders_label">သင္ မည္သည္႔ ေအာ္ဒါမွ်မွာယူထားျခင္းမရွိပါ</string>
     <string name="my_order_details_label">,ေအာ္ဒါအေသးစိတ္အခ်က္အလက္မ်ား</string>
     <string name="size_guide_label">အရြယ္အစားလမ္းညႊန္</string>
-    <string name="pinch_to_zoom_label"></string>
+	<string name="string_price">ေစ်းႏႈန္း</string>
+	<string name="string_appearance">အသြင္အျပင္</string>
+    <string name="pinch_to_zoom_label">Pinch to zoom</string>
+    <string name="string_rating">အမွတ္ေပးျခင္း</string>
+    <string name="discount_only">Discountျဖင့္သာ</string>
 
 </resources>

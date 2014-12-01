@@ -317,8 +317,8 @@
     <string name="size_guide_label">အရြယ္အစားလမ္းညႊန္</string>
 	<string name="string_price">ေစ်းႏႈန္း</string>
 	<string name="string_appearance">အသြင္အျပင္</string>
-    <string name="pinch_to_zoom_label"></string>
-    <string name="string_rating"></string>
-    <string name="discount_only"></string>
+    <string name="pinch_to_zoom_label">Pinch to zoom</string>
+    <string name="string_rating">အမွတ္ေပးျခင္း</string>
+    <string name="discount_only">Discountျဖင့္သာ</string>
 
 </resources>

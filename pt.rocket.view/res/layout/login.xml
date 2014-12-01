@@ -41,6 +41,7 @@
                     android:textColor="@android:color/white"
                     android:drawableLeft="@drawable/com_facebook_inverse_icon"
                     android:layout_height="wrap_content"
+                    android:minHeight="@dimen/button_big_height"
                     android:layout_margin="@dimen/rounded_margin_mid"
                     android:text="@string/facebook_login_button_text"
                     fb:login_text="@string/facebook_login_button_text" />

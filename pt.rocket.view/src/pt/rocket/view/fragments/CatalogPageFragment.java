@@ -348,7 +348,9 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser) trackViewCatalog();
+        if (isVisibleToUser){
+            trackViewCatalog();
+        } 
         try {
             super.setUserVisibleHint(isVisibleToUser);
         } catch (NullPointerException e) {
@@ -399,7 +401,6 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 
                 @Override
                 public void run() {
-                    
                     try {
                         ProductsListAdapter adapter = (ProductsListAdapter) gridView.getAdapter();
                         if (null != adapter && null != adapter.getProductsList() && adapter.getProductsList().size() > 0 && !isDetached() && isVisible()) {
@@ -414,10 +415,10 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                             bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, adapter.getProductsList());
                             TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST_SORTED, getLoadTime(), false);
                             TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_LIST_SORTED, bundle);
+                        } 
+                        else {
+                            trackHandler.postDelayed(this, 300);
                         }
-                        //else {
-                        //    trackHandler.postDelayed(this, 300);
-                        //}
                     } catch (Exception e) {
                         Log.e("TRACK","EXCEPTION");
                         e.printStackTrace();
@@ -425,7 +426,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 }
             };
             trackHandler.postDelayed(tracRunnable, 300);
-
+            
             TrackerDelegator.trackCatalogSorter(mSort.name().toString());
     }
     
