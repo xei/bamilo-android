@@ -7,8 +7,7 @@
     <item name="is_shop_specific" type="bool">true</item>
     
 	<!-- COUNTRIES -->
-	<!--<string name="countries_url">http://www.Shop.com/mobapi/availablecountries</string> -->
-	<string name="countries_url">http://www.jumia.com/mobapi/availablecountries</string>
+	<!-- country.xml -->
 
 	<!-- GA -->
 	<!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
@@ -29,8 +28,8 @@
     
 	<!-- ACCENGAGE -->
     <item name="ad4push_enabled" type="bool">true</item>    
-    <string name="ad4push_partner_id">rocketinternet36de03b5c5f7f5e</string>
-    <string name="ad4push_private_key">72b4c66f78e58f36d289db3d64a37d27b7444898</string>
+    <string name="ad4push_partner_id">rocketinternet4c59788e3e3cf25</string>
+    <string name="ad4push_private_key">191661bd078426ce7512f49c72d4b25d4ed142fe</string>
 
     <!-- ADJUST -->
     <item name="adjust_enabled" type="bool">true</item>
