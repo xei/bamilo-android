@@ -42,7 +42,7 @@ import de.akquinet.android.androlog.Log;
 public class ProductDetailsDescriptionFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(ProductDetailsDescriptionFragment.class);
-    
+
     private static ProductDetailsDescriptionFragment sProductDetailsDescriptionFragment;
 
     private TextView mProductName;
@@ -115,6 +115,9 @@ public class ProductDetailsDescriptionFragment extends BaseFragment implements O
         mainView = view;
         
         getViews();
+        if(savedInstanceState != null){
+            mCompleteProductUrl = savedInstanceState.getString(GetProductHelper.PRODUCT_URL);
+        }
     }
 
     /*
@@ -146,7 +149,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment implements O
             getViews();
             displayProductInformation(mainView);
         }else{
-            if (JumiaApplication.mIsBound && !mCompleteProductUrl.equalsIgnoreCase("")) {
+            if (JumiaApplication.mIsBound && !TextUtils.isEmpty(mCompleteProductUrl)) {
                 Bundle bundle = new Bundle();
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
@@ -167,6 +170,13 @@ public class ProductDetailsDescriptionFragment extends BaseFragment implements O
         Log.i(TAG, "ON PAUSE");
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(outState != null)
+            outState.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+        super.onSaveInstanceState(outState);
+    }
+    
     /*
      * (non-Javadoc)
      * 
