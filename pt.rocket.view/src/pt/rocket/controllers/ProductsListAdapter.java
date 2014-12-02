@@ -220,7 +220,7 @@ public class ProductsListAdapter extends BaseAdapter {
                     TrackerDelegator.trackRemoveFromFavorites(favProduct.getSKU(), favProduct.getPriceForTracking(),favProduct.getRating());
                     Toast.makeText(context, context.getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
                 }
-                parentCatalog.invalidatePages();
+                notifyDataSetChanged();
             }
         });
 

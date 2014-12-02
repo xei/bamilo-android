@@ -172,6 +172,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment implements O
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        Log.i(TAG, "ON SAVE INSTANCE STATE");
         if(outState != null)
             outState.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
         super.onSaveInstanceState(outState);
