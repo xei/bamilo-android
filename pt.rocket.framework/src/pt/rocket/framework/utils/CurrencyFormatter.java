@@ -60,6 +60,10 @@ public class CurrencyFormatter {
         if(currCode.equalsIgnoreCase("USH")){
         	currCode = "UGX";
         }
+        
+        // TODO: BAMILO TEST
+        if(currCode.equalsIgnoreCase("ريال")) currCode = "IRR";
+        
         currency = Currency.getInstance(currCode);
         Log.d( TAG, "currency: currency code = " + currency.getCurrencyCode() + " fraction dicits = " + currency.getDefaultFractionDigits());
         formatter = getNumberFormatter();
