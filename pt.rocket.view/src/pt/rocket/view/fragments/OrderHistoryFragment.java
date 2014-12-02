@@ -672,7 +672,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
                     });
                 }
             } else {
-                mReceivedError = false;
+//                mReceivedError = false;
             }
 
         }

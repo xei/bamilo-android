@@ -396,6 +396,6 @@
     <string name="string_price">Price</string>
     <string name="string_appearance">Appearance</string>
     <string name="string_rating">Rating</string>
-    <string name="discount_only">With discount only</string>
+    <string name="string_with_discount_only">With discount only</string>
 
 </resources>

@@ -16,6 +16,7 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.forms.PaymentMethodForm;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.rest.RestClientSingleton;
@@ -32,6 +33,7 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -408,6 +410,13 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
             Log.e(TAG, "Received error: " + errorCode + " " + description + " "
                     + failingUrl);
 
+//            Bundle bundle = new Bundle();
+//                
+//            bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.NO_NETWORK);
+//            bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, true);
+//            bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SHIPPING_METHODS_EVENT);
+//            getBaseActivity().handleErrorEvent(bundle);
+            
             failedPageRequest = failingUrl;
             webview.stopLoading();
             webview.clearView();
