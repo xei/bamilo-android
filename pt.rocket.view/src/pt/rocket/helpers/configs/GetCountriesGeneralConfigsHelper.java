@@ -288,6 +288,15 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                 liveCountryObject6.setCountryIsLive(true);
                 stagingServers.add(liveCountryObject6);
                 
+                CountryObject liveCountryObject8 = new CountryObject();
+                liveCountryObject8.setCountryName("Bamilo Live");
+                liveCountryObject8.setCountryUrl("www.bamilo.com");
+                liveCountryObject8.setCountryFlag("");
+                liveCountryObject8.setCountryIso("IRR");
+                liveCountryObject8.setCountryForceHttps(false);
+                liveCountryObject8.setCountryIsLive(true);
+                stagingServers.add(liveCountryObject8);
+                
                 mCountries.addAll(stagingServers);
             }
         } catch (Exception e) {
