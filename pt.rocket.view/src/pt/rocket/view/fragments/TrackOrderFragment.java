@@ -48,9 +48,9 @@ public class TrackOrderFragment extends BaseFragment {
 
     private EditText mEditText;
 
-    private static OrderTracker mOrderTracker;
+    private OrderTracker mOrderTracker;
     
-    private static boolean mOrderTrackerError = false;
+    private boolean mOrderTrackerError = false;
     
     private MyOrdersFragment parentFragment;
     
