@@ -3,6 +3,7 @@ package pt.rocket.utils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import pt.rocket.framework.tracking.Ad4PushTracker;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -11,18 +12,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import de.akquinet.android.androlog.Log;
 
-public class PreferenceListFragment extends ListFragment{
+public class PreferenceListFragment extends ListFragment implements OnPreferenceClickListener{
     
     private static final String TAG = PreferenceListFragment.class.getSimpleName();
     
@@ -78,7 +84,12 @@ public class PreferenceListFragment extends ListFragment{
         mPreferenceManager = onCreatePreferenceManager();
         lv = (ListView) LayoutInflater.from(getActivity()).inflate(R.layout.preference_list_content, null);
         lv.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        
         addPreferencesFromResource(xmlId);
+        
+        Preference pNotification = (Preference) findPreference(getString(R.string.pref_notification));
+        pNotification.setOnPreferenceClickListener(this);
+        pNotification.setDefaultValue((boolean) Ad4PushTracker.getActiveAd4Push(getActivity().getApplicationContext()));
         postBindPreferences();
         ((OnPreferenceAttachedListener)getActivity()).onPreferenceAttached(getPreferenceScreen(), xmlId);
     }
@@ -247,6 +258,19 @@ public class PreferenceListFragment extends ListFragment{
     
     public interface OnPreferenceAttachedListener{
         public void onPreferenceAttached(PreferenceScreen root, int xmlId);
+    }
+
+    @Override
+    public boolean onPreferenceClick(Preference preference) {
+        String key = preference.getKey();
+        if(key.equals(getString(R.string.pref_notification))){
+            if(Ad4PushTracker.getActiveAd4Push(getActivity().getApplicationContext())){
+                Ad4PushTracker.setActiveAd4Push(getActivity().getApplicationContext(), false);
+            } else {
+                Ad4PushTracker.setActiveAd4Push(getActivity().getApplicationContext(), true);
+            }
+        }
+        return true;
     }
     
 }

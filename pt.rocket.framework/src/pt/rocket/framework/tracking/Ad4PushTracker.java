@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4S;
+import com.ad4screen.sdk.A4S.Callback;
 import com.ad4screen.sdk.analytics.Cart;
 import com.ad4screen.sdk.analytics.Item;
 import com.ad4screen.sdk.analytics.Lead;
@@ -41,7 +42,7 @@ public class Ad4PushTracker {
     private static Ad4PushTracker sInstance;
 
     private A4S mA4S;
-    
+
     private Context mContext;
 
     private static final String AD4PUSH_PREFERENCES = "Ad4PushPreferences";
@@ -84,14 +85,14 @@ public class Ad4PushTracker {
     private static final String PRE_INSTALL = Constants.INFO_PRE_INSTALL;
     private static final String BRAND = Constants.INFO_BRAND;
     private static final String SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
-    //private static final String VERSION = Constants.INFO_BUNDLE_VERSION;
-    
+    // private static final String VERSION = Constants.INFO_BUNDLE_VERSION;
+
     private static final String FILTER_BRAND = "filterBrand";
     private static final String FILTER_COLOR = "filterColor";
     private static final String FILTER_CATEGORY = "filterCategory";
     private static final String FILTER_PRICE = "filterPrice";
     private static final String FILTER_SIZE = "filterSize";
-    
+
     private final String FILTER_BRAND_KEY = "searchQuery";
     private final String FILTER_COLOR_KEY = "color_family";
     private final String FILTER_PRICE_KEY = "price";
@@ -104,7 +105,7 @@ public class Ad4PushTracker {
     private static final int EVENT_LOGIN = 1001;
     private static final int EVENT_FACEBOOK_CONNECT = 1002;
     private static final int EVENT_FIRST_OPEN_APP = 1003;
-    //private static final int EVENT_ADD_TO_WHISHLIST = 1005;
+    // private static final int EVENT_ADD_TO_WHISHLIST = 1005;
 
     private static final String HAS_OPENED_APP = "app_opened";
 
@@ -115,21 +116,25 @@ public class Ad4PushTracker {
     private String LOGIN_SIGNUP_VIEW = "ACCOUNT";
     private String FAVORITES_VIEW = "MYFAVORITES";
     private String CART_VIEW = "CART";
-    
+
+    private static final String IS_ENABLED = "Enabled";
+    private static final String AD4PUSH_PREFERENCES_PERSIST = "Ad4PushPreferencesPersist";
     
     HashMap<TrackingPage, String> screens;
 
     /**
      * Get singleton instance of Ad4PushTracker.
+     * 
      * @return Ad4PushTracker
      * @author sergiopereira
      */
     public static Ad4PushTracker get() {
         return sInstance == null ? sInstance = new Ad4PushTracker() : sInstance;
     }
-    
+
     /**
      * Startup the Ad4PushTracker.
+     * 
      * @param context
      * @author sergiopereira
      */
@@ -140,6 +145,7 @@ public class Ad4PushTracker {
 
     /**
      * Empty constructor.
+     * 
      * @author sergiopereira
      */
     private Ad4PushTracker() {
@@ -148,7 +154,9 @@ public class Ad4PushTracker {
 
     /**
      * Constructor.
-     * @param Aplication context
+     * 
+     * @param Aplication
+     *            context
      * @author sergiopereira
      */
     private Ad4PushTracker(Context context) {
@@ -168,9 +176,10 @@ public class Ad4PushTracker {
         // Get A4S
         init();
     }
-    
+
     /**
      * Initialize Ad4S.
+     * 
      * @author sergiopereira
      */
     private void init() {
@@ -178,13 +187,21 @@ public class Ad4PushTracker {
         if (isEnabled) {
             Log.i(TAG, "Ad4PSUH Startup -> INITITALIZED");
             mA4S = A4S.get(mContext);
+            boolean isActive = getActiveAd4Push(mContext);
+//            setPushNotificationLocked(!isActive);
+//            setInAppDisplayLocked(!isActive);
+//            stopingSDK(mContext,!isActive);
+            setGCMEnabled(isActive);
+            setInAppDisplayLocked(!isActive);
+            
+            
         }
     }
-    
+
     /**
-     * ####### BASE ####### 
+     * ####### BASE #######
      */
-    
+
     /**
      * 
      * @param activity
@@ -206,45 +223,47 @@ public class Ad4PushTracker {
             mA4S.stopActivity(activity);
         }
     }
-    
+
     /**
      * Mark this activity to receive in app messages from Ad4Push service.
+     * 
      * @param activity
      * @author sergiopereira
      */
     public void startActivityForInAppMessages(Activity activity) {
-    	if (null != mA4S && isEnabled) {
+        if (null != mA4S && isEnabled) {
             Log.d(TAG, "ON START ACTIVITY ONLY FOR IN-APP MSG: " + activity.getLocalClassName());
             startActivity(activity);
             setPushNotificationLocked(true);
-        } else Log.w(TAG, "WARNING: A4S IS NULL OR IS DISABLED"); 
+        } else
+            Log.w(TAG, "WARNING: A4S IS NULL OR IS DISABLED");
     }
-    
+
     /**
      * Lock or unlock the push notifications.
+     * 
      * @param true/false
      * @author sergiopereira
      */
     public void setPushNotificationLocked(boolean bool) {
-    	if (null != mA4S && isEnabled) {
-    		Log.d(TAG, "LOCK PUSH NOTIFICATIONS: " + bool);
-        	mA4S.setPushNotificationLocked(bool);
-    	}
+         if (null != mA4S && isEnabled) {
+            Log.d(TAG, "LOCK PUSH NOTIFICATIONS: " + bool);
+            mA4S.setPushNotificationLocked(bool);
+        }
     }
-    
+
     /**
-     * Lock or unlock the in-app messages. 
+     * Lock or unlock the in-app messages.
+     * 
      * @param true/false
      * @author sergiopereira
      */
-	public void setInAppDisplayLocked(boolean bool) {
-		if (null != mA4S && isEnabled) {
-			Log.d(TAG, "LOCK IN APP MESSAGE: " + bool);
-			mA4S.setInAppDisplayLocked(bool);
-		}
+    public void setInAppDisplayLocked(boolean bool) {
+        if (null != mA4S && isEnabled) {
+            Log.d(TAG, "LOCK IN APP MESSAGE: " + bool);
+            mA4S.setInAppDisplayLocked(bool);
+        }
     }
-    
-    
 
     private void trackView(String view) {
         if (null != mA4S && isEnabled) {
@@ -254,61 +273,90 @@ public class Ad4PushTracker {
     }
     
     /**
+     * Stop all services from ad4push SDK
+     * @param context
+     * @param isToStop
+     */
+    private void stopingSDK(Context context, boolean isToStop) {
+        if (null != mA4S) {
+            Log.d(TAG, "Stop SDK:" + isToStop);
+            mA4S.setDoNotTrackEnabled(context, isToStop);
+        }
+    }
+
+    /**
+     * Enables or disables GCM Push notifications for this device.
+     * @param enabled - True to enable push and try to register to GCM. False to unregister from GCM
+     */
+    private void setGCMEnabled(boolean enabled) {
+        if (null != mA4S) {
+            Log.d(TAG, "setGCMEnabled:" + enabled);
+            mA4S.setGCMEnabled(enabled);
+        }
+    }
+    
+    
+    /**
      * Clear the shared prefs.
+     * 
      * @param context
      * @author sergiopereira
      */
     public static void clearAllSavedData(Context context) {
-        SharedPreferences settings = context.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
+        SharedPreferences settings = context.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
         settings.edit().clear().commit();
     }
-    
+
     /*
-     * ############## TRACKING ############## 
+     * ############## TRACKING ##############
      */
-    
+
     /**
      * Track a empty user id if not has credentials for auto login.
+     * 
      * @param userNeverLoggedIn
      * @author sergiopereira
      */
     public void trackEmptyUserId(boolean userNeverLoggedIn) {
-    	if(isEnabled && userNeverLoggedIn) {
-    		Log.i(TAG, "USER NEVER LOGGED: TRACK EMPTY USER ID");
+        if (isEnabled && userNeverLoggedIn) {
+            Log.i(TAG, "USER NEVER LOGGED: TRACK EMPTY USER ID");
             Bundle prefs = new Bundle();
             prefs.putString(USER_ID, "0");
             mA4S.updateDeviceInfo(prefs);
-    	}
+        }
     }
-    
+
     /**
      * Method used to set some info about device.
+     * 
      * @see {@link Constants} used for device info.
      * @param mContext
      * @author sergiopereira
      */
     private void setDeviceInfo(Bundle info) {
-    	if (null != mA4S && isEnabled) {
-    		// Get data from bundle
-    		Bundle bundle = new Bundle();
-    		bundle.putBoolean(PRE_INSTALL, info.getBoolean(Constants.INFO_PRE_INSTALL));
-    		bundle.putString(BRAND, info.getString(Constants.INFO_BRAND));
-    		bundle.putString(SIM_OPERATOR, info.getString(Constants.INFO_SIM_OPERATOR));
-    		// WARNING: Ad4push takes the info directly from the application
-    		// bundle.putString(VERSION, info.getString(Constants.INFO_BUNDLE_VERSION));
-    		// Set info
-    		mA4S.updateDeviceInfo(bundle);
+        if (null != mA4S && isEnabled) {
+            // Get data from bundle
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(PRE_INSTALL, info.getBoolean(Constants.INFO_PRE_INSTALL));
+            bundle.putString(BRAND, info.getString(Constants.INFO_BRAND));
+            bundle.putString(SIM_OPERATOR, info.getString(Constants.INFO_SIM_OPERATOR));
+            // WARNING: Ad4push takes the info directly from the application
+            // bundle.putString(VERSION,
+            // info.getString(Constants.INFO_BUNDLE_VERSION));
+            // Set info
+            mA4S.updateDeviceInfo(bundle);
             Log.i(TAG, "SET DEVICE INFO: " + bundle.toString());
-    	}
+        }
     }
 
     /**
      * First open
+     * 
      * @param info
      */
     public void trackAppFirstOpen(Bundle info) {
         if (isEnabled) {
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
+            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
             boolean alreadyOpened = settings.getBoolean(HAS_OPENED_APP, false);
 
             if (!alreadyOpened) {
@@ -322,9 +370,9 @@ public class Ad4PushTracker {
                 editor.commit();
             }
         }
-        
-    	// Set some info
-    	setDeviceInfo(info);
+
+        // Set some info
+        setDeviceInfo(info);
     }
 
     public void trackFacebookConnect(String customerId) {
@@ -333,6 +381,7 @@ public class Ad4PushTracker {
 
     /**
      * Track login.
+     * 
      * @param customerId
      * @param customerName
      */
@@ -356,10 +405,11 @@ public class Ad4PushTracker {
 
     /**
      * Get the current status in application.
+     * 
      * @return String
      */
     private String statusInApp() {
-        SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
+        SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
         String userStatus = settings.getString(STATUS_IN_APP, null);
         if (TextUtils.isEmpty(userStatus)) {
             userStatus = STATUS_PROSPECT;
@@ -369,7 +419,7 @@ public class Ad4PushTracker {
         }
         return userStatus;
     }
-    
+
     /**
      * Track signup started.
      */
@@ -384,6 +434,7 @@ public class Ad4PushTracker {
 
     /**
      * Track register and guest signup.
+     * 
      * @param customerId
      * @param customerGender
      * @param customerName
@@ -409,6 +460,7 @@ public class Ad4PushTracker {
 
     /**
      * Track checkout started.
+     * 
      * @param cartQt
      * @param cartValue
      */
@@ -424,14 +476,14 @@ public class Ad4PushTracker {
     }
 
     public void trackCheckoutEnded(String transactionId, Double grandTotal, Double cartValue, Double average, int orderCount, String coupon) {
-        
-        //String currency = CurrencyFormatter.getCurrencyCode();
-        String currency = CurrencyFormatter.EURO_CODE ;
-        
+
+        // String currency = CurrencyFormatter.getCurrencyCode();
+        String currency = CurrencyFormatter.EURO_CODE;
+
         if (isEnabled) {
             Log.d(TAG, "trackBuyNowPurchase: grandTotal = " + grandTotal + " cartValue = " + cartValue + " currency = " + currency);
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
-            
+            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
+
             // Get purchases data
             int purchasesNumber = settings.getInt(PURCHASES_COUNTER, 0);
             double ordersSum = settings.getFloat(PURCHASES_SUM_VALUE, 0);
@@ -462,19 +514,21 @@ public class Ad4PushTracker {
             prefs.putInt(FAVORITES_CART_COUNT, 0);
             mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK CHECKOUT ENDED: " + prefs.toString());
-            //Purchase purchase = new Purchase(transactionId, CurrencyFormatter.getCurrencyCode(), cartValue);
-            //mA4S.trackPurchase(purchase);
+            // Purchase purchase = new Purchase(transactionId,
+            // CurrencyFormatter.getCurrencyCode(), cartValue);
+            // mA4S.trackPurchase(purchase);
         }
     }
 
     /**
      * Track the add item to favorites.
+     * 
      * @param productSKU
      */
     public void trackAddToFavorites(String productSKU) {
         if (isEnabled) {
             // Get count
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
+            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
             int wishlistNumber = settings.getInt(WISHLIST_NUMBER, 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt(WISHLIST_NUMBER, ++wishlistNumber);
@@ -491,12 +545,13 @@ public class Ad4PushTracker {
 
     /**
      * Track the remove item from favorites.
+     * 
      * @param productSKU
      */
     public void trackRemoveFromWishlist(String productSKU) {
         if (isEnabled) {
             // Get count
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
+            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
             int wishlistNumber = settings.getInt(WISHLIST_NUMBER, 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt(WISHLIST_NUMBER, --wishlistNumber);
@@ -510,9 +565,10 @@ public class Ad4PushTracker {
             Log.i(TAG, "TRACK REMOVE FROM FAV: " + prefs.toString());
         }
     }
-    
+
     /**
      * Track the add item to cart from favorites.
+     * 
      * @param sku
      * @param price
      * @param name
@@ -521,7 +577,7 @@ public class Ad4PushTracker {
     public void trackAddToCartFromFav(String sku, double price, String name, String category) {
         if (isEnabled) {
             // Get the number of favorites
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
+            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
             int wishlistNumber = settings.getInt(WISHLIST_NUMBER, 0);
             // Track add to cart from fav
             Bundle prefs = new Bundle();
@@ -535,6 +591,7 @@ public class Ad4PushTracker {
 
     /**
      * Track the add item to cart.
+     * 
      * @param sku
      * @param price
      * @param name
@@ -551,12 +608,12 @@ public class Ad4PushTracker {
     }
 
     /**
-     * Track share counter. 
+     * Track share counter.
      */
     public void trackSocialShare() {
         if (isEnabled) {
             // Get from prefs
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
+            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
             int shareNumber = settings.getInt(SHARED_PRODUCT_COUNT, 0);
             // Increment and save
             SharedPreferences.Editor editor = settings.edit();
@@ -569,14 +626,14 @@ public class Ad4PushTracker {
             Log.i(TAG, "TRACK SHARE COUNTER: " + prefs.toString());
         }
     }
-    
+
     /**
      * Track review counter.
      */
     public void trackReviewCounter() {
         if (isEnabled) {
             // Get from prefs
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
+            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
             int shareNumber = settings.getInt(REVIEW_COUNT, 0);
             // Increment and save
             SharedPreferences.Editor editor = settings.edit();
@@ -595,15 +652,17 @@ public class Ad4PushTracker {
      */
     public void trackShopCountry() {
         if (isEnabled) {
-        	// Get shop country code
-        	String shopCountryCode = ShopSelector.getShopId();
+            // Get shop country code
+            String shopCountryCode = ShopSelector.getShopId();
             // Get country code
             String countryCode = DeviceInfoHelper.getNetworkCountryIso(mContext);
-            if(TextUtils.isEmpty(countryCode)) countryCode = DeviceInfoHelper.getSimCountryIso(mContext);
+            if (TextUtils.isEmpty(countryCode))
+                countryCode = DeviceInfoHelper.getSimCountryIso(mContext);
             // Create bundle
             Bundle prefs = new Bundle();
             prefs.putString(SHOP_COUNTRY, shopCountryCode);
-            if (!TextUtils.isEmpty(countryCode)) prefs.putString(COUNTRY_CODE, countryCode);
+            if (!TextUtils.isEmpty(countryCode))
+                prefs.putString(COUNTRY_CODE, countryCode);
             mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK SHOP COUNTRY: " + prefs.toString());
         }
@@ -643,6 +702,7 @@ public class Ad4PushTracker {
 
     /**
      * Track catalog filters.
+     * 
      * @param filters
      * @author sergiopereira
      */
@@ -666,7 +726,7 @@ public class Ad4PushTracker {
 
     public void trackCampaignsView() {
         if (isEnabled) {
-            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, 0);
+            SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
             int campaignNumber = settings.getInt(CAMPAIGN_PAGEVIEW_COUNT, 0);
 
             SharedPreferences.Editor editor = settings.edit();
@@ -683,13 +743,16 @@ public class Ad4PushTracker {
 
     public void trackScreen(TrackingPage screen) {
         if (null != screens && screens.containsKey(screen)) {
-            if(screen == TrackingPage.REGISTRATION) trackSignupStarted();
-            else trackView(screens.get(screen));
+            if (screen == TrackingPage.REGISTRATION)
+                trackSignupStarted();
+            else
+                trackView(screens.get(screen));
         }
     }
-    
+
     /**
      * Track the new cart.
+     * 
      * @param cartValue
      * @author sergiopereira
      */
@@ -698,7 +761,7 @@ public class Ad4PushTracker {
         prefs.putDouble(CART_VALUE, cartValue);
         prefs.putInt(CART_COUNTER, cartCount);
         mA4S.updateDeviceInfo(prefs);
-        Log.i(TAG, "TRACK CART VALUE: "  + prefs.toString());
+        Log.i(TAG, "TRACK CART VALUE: " + prefs.toString());
     }
 
     private String getCurrentDateTime() {
@@ -706,4 +769,18 @@ public class Ad4PushTracker {
         return sdf.format(new Date());
     }
 
+    public static boolean getActiveAd4Push(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(AD4PUSH_PREFERENCES_PERSIST, Context.MODE_PRIVATE);
+        return settings.getBoolean(IS_ENABLED, context.getResources().getBoolean(R.bool.ad4push_enabled));
+    }
+
+    public static void setActiveAd4Push(Context context, boolean isActive) {
+        SharedPreferences settings = context.getSharedPreferences(AD4PUSH_PREFERENCES_PERSIST, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(IS_ENABLED, isActive);
+        editor.commit();
+
+        Ad4PushTracker.startup(context);
+    }
 }
