@@ -83,7 +83,7 @@ public class HockeyStartup {
             Log.d(TAG, "start: starting CrashManager" );
             CrashManager.register(activity, hockeyTocken, sCml);
         }
-        if (resultCheckSignature == RESULT_KEY_HOCKEY || enableDevVersion) {
+        if (resultCheckSignature == RESULT_KEY_HOCKEY) {
             Log.d( TAG, "start: starting UpdateManager" );
             UpdateManager.register(activity, hockeyTocken, sUml);
         }
