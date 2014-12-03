@@ -348,9 +348,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser){
-            trackViewCatalog();
-        } 
+        if (isVisibleToUser) trackViewCatalog();
         try {
             super.setUserVisibleHint(isVisibleToUser);
         } catch (NullPointerException e) {
@@ -401,6 +399,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 
                 @Override
                 public void run() {
+                    
                     try {
                         ProductsListAdapter adapter = (ProductsListAdapter) gridView.getAdapter();
                         if (null != adapter && null != adapter.getProductsList() && adapter.getProductsList().size() > 0 && !isDetached() && isVisible()) {
@@ -415,7 +414,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                             bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, adapter.getProductsList());
                             TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST_SORTED, getLoadTime(), false);
                             TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_LIST_SORTED, bundle);
-                        } 
+                        }
                         else {
                             trackHandler.postDelayed(this, 300);
                         }
@@ -426,7 +425,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 }
             };
             trackHandler.postDelayed(tracRunnable, 300);
-            
+
             TrackerDelegator.trackCatalogSorter(mSort.name().toString());
     }
     
@@ -1029,7 +1028,6 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                         gridView.setSelection(0);
                     }
                 }, 2 * SCROLL_DELAY);
-                // Toast.makeText(getBaseActivity(), "FORCE SCROLL ON SUCCESS!", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -1065,9 +1063,11 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
             Log.d(TAG, "ERROR CODE: " + errorCode.toString());
             
             if(errorCode == ErrorCode.NO_NETWORK){
+                ((CatalogFragment) getParentFragment()).disableCatalogButtons();
                 showFragmentRetry(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        ((CatalogFragment) getParentFragment()).enableCatalogButtons();
                         getMoreProducts();
                     }
                 }, R.string.no_connect_dialog_content);

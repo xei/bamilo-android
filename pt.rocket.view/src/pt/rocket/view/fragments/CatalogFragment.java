@@ -992,12 +992,29 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             if (!selectable) {
                 mSwitchLayoutButton.setOnClickListener(null);
                 mSwitchLayoutButton.setEnabled(false);
-            }
-            else {
+            } else {
                 mSwitchLayoutButton.setOnClickListener(this);
                 mSwitchLayoutButton.setEnabled(true);
             }
         }
+    }
+    
+    /**
+     * Disable catalog buttons.
+     * @author sergiopereira
+     */
+    public void disableCatalogButtons() {
+        setSwitchLayoutButtonState(false);
+        disableFilterButton();
+    }
+    
+    /**
+     * Enable catalog buttons.
+     * @author sergiopereira
+     */
+    public void enableCatalogButtons() {
+        setSwitchLayoutButtonState(true);
+        enableFilterButton();
     }
 
     /*

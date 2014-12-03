@@ -29,6 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_30px"
+        android:layout_marginBottom="@dimen/margin_30px"
         android:background="@drawable/selector_btn_toplist"
         android:visibility="invisible" />
 
