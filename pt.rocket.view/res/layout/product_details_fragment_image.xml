@@ -32,6 +32,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/product_list_item_image_side_margin"
         android:layout_marginTop="@dimen/product_list_item_image_margin"
+        android:padding="@dimen/rounded_margin_mid"
         android:src="@drawable/selector_productdetails_share" />
 
     <!-- FAVOURITE -->
@@ -44,6 +45,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="@dimen/product_list_item_image_side_margin"
         android:layout_marginTop="@dimen/product_list_item_image_margin"
+        android:padding="@dimen/rounded_margin_mid"
         android:src="@drawable/selector_favorite" />
 
     <!-- DIVIDER -->
