@@ -14,11 +14,14 @@ import pt.rocket.view.R;
 import pt.rocket.view.fragments.CatalogFragment;
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -109,6 +112,7 @@ public class ProductsListAdapter extends BaseAdapter {
         this.isNewResource = !isFrench ? R.drawable.selector_is_new_en : R.drawable.selector_is_new_fr;
 
         this.parentCatalog = parent;
+        
     }
 
     /*
@@ -153,9 +157,10 @@ public class ProductsListAdapter extends BaseAdapter {
 
         final View itemView;
         final Item prodItem;
-
+        final Product product = parentCatalog.getProduct(products.get(position));
+        
         // Validate view
-        if (convertView != null) {
+        if (convertView != null) { 
             // if the view already exists there is no need to inflate it again
             itemView = convertView;
         } else {
@@ -163,7 +168,7 @@ public class ProductsListAdapter extends BaseAdapter {
 
             itemView = inflater.inflate(layoutId, parent, false);
         }
-
+        
         if ((Item) itemView.getTag() == null) {
             prodItem = new Item();
             prodItem.image = (ImageView) itemView.findViewById(R.id.image_view);
@@ -192,72 +197,88 @@ public class ProductsListAdapter extends BaseAdapter {
                 imgContainer.cancelRequest();
             }
         }
-
-        final Product product = parentCatalog.getProduct(products.get(position));
+        
         prodItem.image.setImageDrawable(context.getResources().getDrawable(R.drawable.no_image_small));
-        RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image, prodItem.progress, R.drawable.no_image_small, CatalogFragment.requestTag);
 
-        // Set is new image
-        prodItem.newFlag.setSelected(product.getAttributes().isNew());
-
-        // Set is favourite image
-        prodItem.isFavourite.setSelected(product.getAttributes().isFavourite());
-
-        prodItem.isFavourite.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Product favProduct = parentCatalog.getProduct(products.get(position));
-                final boolean isFavourite = favProduct.getAttributes().isFavourite();
-                if (!isFavourite) {
-                    FavouriteTableHelper.insertPartialFavouriteProduct(favProduct);
-                    favProduct.getAttributes().setFavourite(true);
-                    TrackerDelegator.trackAddToFavorites(favProduct.getSKU(),favProduct.getBrand(),favProduct.getPriceForTracking(),
-                            favProduct.getRating(),favProduct.getMaxSavingPercentage(), true, null);
-                    Toast.makeText(context, context.getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
-                } else {
-                    FavouriteTableHelper.removeFavouriteProduct(favProduct.getSKU());
-                    favProduct.getAttributes().setFavourite(false);
-                    TrackerDelegator.trackRemoveFromFavorites(favProduct.getSKU(), favProduct.getPriceForTracking(),favProduct.getRating());
-                    Toast.makeText(context, context.getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
-                }
-                notifyDataSetChanged();
-            }
-        });
-
-        // Set brand
-        prodItem.brand.setText(product.getBrand().toUpperCase());
-
-        prodItem.name.setText(product.getName());
-        prodItem.price.setText(product.getPrice());
-
-        if (showList) {
-            if (product.getRating() != null && product.getRating() > 0) {
-                prodItem.rating.setRating(product.getRating().floatValue());
-                prodItem.rating.setVisibility(View.VISIBLE);
-                if(product.getReviews() == 1){
-                    prodItem.reviews.setText(product.getReviews() + " " + reviewLabel);    
-                } else {
-                    prodItem.reviews.setText(product.getReviews() + " " + reviewsLabel);    
-                }
-                
-                
-            } else {
-                prodItem.rating.setVisibility(View.INVISIBLE);
-                prodItem.reviews.setText("");
-            }
-        }
-
-        if (null != product.getSpecialPrice() && !product.getSpecialPrice().equals(product.getPrice())) {
-            prodItem.discount.setText(product.getSpecialPrice());
-            prodItem.price.setText(product.getPrice());
-            prodItem.discountPercentage.setText("-" + product.getMaxSavingPercentage().intValue() + "%");
-            prodItem.discountPercentage.setVisibility(View.VISIBLE);
-        } else {
-            prodItem.discount.setText(product.getSpecialPrice());
+        if(product == null){
+            prodItem.progress.setVisibility(View.GONE);
+            prodItem.brand.setText(itemView.getResources().getString(R.string.invalid_product).toUpperCase());
+            prodItem.brand.setTextColor(Color.RED);
+            prodItem.isFavourite.setVisibility(View.GONE);
+            prodItem.isFavourite.setOnClickListener(null);
+            prodItem.name.setText("");
+            prodItem.newFlag.setSelected(false);
+            prodItem.discount.setText("");
             prodItem.price.setText("");
             prodItem.discountPercentage.setVisibility(View.GONE);
+            prodItem.rating.setVisibility(View.INVISIBLE);
+            prodItem.reviews.setText("");
+        } else {
+            
+            RocketImageLoader.instance.loadImage(product.getFirstImageURL(), prodItem.image, prodItem.progress, R.drawable.no_image_small, CatalogFragment.requestTag);
+    
+            // Set is new image
+            prodItem.newFlag.setSelected(product.getAttributes().isNew());
+    
+            // Set is favourite image
+            prodItem.isFavourite.setSelected(product.getAttributes().isFavourite());
+    
+            prodItem.isFavourite.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Product favProduct = parentCatalog.getProduct(products.get(position));
+                    final boolean isFavourite = favProduct.getAttributes().isFavourite();
+                    if (!isFavourite) {
+                        FavouriteTableHelper.insertPartialFavouriteProduct(favProduct);
+                        favProduct.getAttributes().setFavourite(true);
+                        TrackerDelegator.trackAddToFavorites(favProduct.getSKU(),favProduct.getBrand(),favProduct.getPriceForTracking(),
+                                favProduct.getRating(),favProduct.getMaxSavingPercentage(), true, null);
+                        Toast.makeText(context, context.getString(R.string.products_added_favourite), Toast.LENGTH_SHORT).show();
+                    } else {
+                        FavouriteTableHelper.removeFavouriteProduct(favProduct.getSKU());
+                        favProduct.getAttributes().setFavourite(false);
+                        TrackerDelegator.trackRemoveFromFavorites(favProduct.getSKU(), favProduct.getPriceForTracking(),favProduct.getRating());
+                        Toast.makeText(context, context.getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
+                    }
+                    notifyDataSetChanged();
+                }
+            });
+    
+            // Set brand
+            prodItem.brand.setText(product.getBrand().toUpperCase());
+            prodItem.brand.setTextColor(Color.BLACK);
+            
+            prodItem.name.setText(product.getName());
+            prodItem.price.setText(product.getPrice());
+    
+            if (showList) {
+                if (product.getRating() != null && product.getRating() > 0) {
+                    prodItem.rating.setRating(product.getRating().floatValue());
+                    prodItem.rating.setVisibility(View.VISIBLE);
+                    if(product.getReviews() == 1){
+                        prodItem.reviews.setText(product.getReviews() + " " + reviewLabel);    
+                    } else {
+                        prodItem.reviews.setText(product.getReviews() + " " + reviewsLabel);    
+                    }
+                    
+                    
+                } else {
+                    prodItem.rating.setVisibility(View.INVISIBLE);
+                    prodItem.reviews.setText("");
+                }
+            }
+    
+            if (null != product.getSpecialPrice() && !product.getSpecialPrice().equals(product.getPrice())) {
+                prodItem.discount.setText(product.getSpecialPrice());
+                prodItem.price.setText(product.getPrice());
+                prodItem.discountPercentage.setText("-" + product.getMaxSavingPercentage().intValue() + "%");
+                prodItem.discountPercentage.setVisibility(View.VISIBLE);
+            } else {
+                prodItem.discount.setText(product.getSpecialPrice());
+                prodItem.price.setText("");
+                prodItem.discountPercentage.setVisibility(View.GONE);
+            }
         }
-
         return itemView;
     }
 

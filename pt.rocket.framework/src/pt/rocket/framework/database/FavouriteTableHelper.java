@@ -284,11 +284,8 @@ public class FavouriteTableHelper extends BaseTable {
 		Cursor cursor = db.rawQuery(query, null);
 		if (db.isOpen() && cursor != null && cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			if (cursor.getInt(0) >= 1) {
-				result = true;
-			} else {
-				result = false;
-			}
+			
+			result = cursor.getInt(0) >= 1 ? true : false;
 			// Log result
 			Log.i(TAG, "SQL RESULT: " + cursor.getInt(0) + " result is : " + result);
 		}
