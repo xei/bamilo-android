@@ -94,9 +94,6 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                 }
             }
             if(mCountries != null && mCountries.size() > 0){
-                // Add the dev servers if is to "app_show_dev_env"
-                addDevServers(mCountries);
-                
                 JumiaApplication.INSTANCE.countriesAvailable = mCountries;
                 CountriesConfigsTableHelper.insertCountriesConfigs(mCountries);
                 Log.i(TAG, "INSERT INTO DB FROM JSON");
@@ -129,9 +126,6 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         mCountries = JumiaApplication.INSTANCE.countriesAvailable;
         if(mCountries != null && mCountries.size() > 0){
-            // Add the dev servers if is to "app_show_dev_env"
-            addDevServers(mCountries);
-            
             JumiaApplication.INSTANCE.countriesAvailable = mCountries;
             SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor mEditor = sharedPrefs.edit();
@@ -157,9 +151,6 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         mCountries = JumiaApplication.INSTANCE.countriesAvailable;
         if(mCountries != null && mCountries.size() > 0){
-            // Add the dev servers if is to "app_show_dev_env"
-            addDevServers(mCountries);
-            
             JumiaApplication.INSTANCE.countriesAvailable = mCountries;
             SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor mEditor = sharedPrefs.edit();
@@ -181,6 +172,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
      * @author manuel
      * @modified spereira
      */
+    @SuppressWarnings("unused")
     private void addDevServers(ArrayList<CountryObject> mCountries) {
         try {
             Context context = JumiaApplication.INSTANCE.getApplicationContext();

@@ -108,7 +108,6 @@ public class JumiaApplication extends A4SApplication {
     /**
      * Fallback and retry backups
      */
-
     private HashMap<EventType, Bundle> requestsRetryBundleList = new HashMap<EventType, Bundle>();
     private HashMap<EventType, BaseHelper> requestsRetryHelperList = new HashMap<EventType, BaseHelper>();
     private HashMap<EventType, IResponseCallback> requestsResponseList = new HashMap<EventType, IResponseCallback>();

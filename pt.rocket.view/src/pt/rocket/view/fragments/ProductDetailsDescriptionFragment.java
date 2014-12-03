@@ -112,12 +112,13 @@ public class ProductDetailsDescriptionFragment extends BaseFragment implements O
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        mainView = view;
-        
-        getViews();
+        // Validate saved instance
         if(savedInstanceState != null){
             mCompleteProductUrl = savedInstanceState.getString(GetProductHelper.PRODUCT_URL);
         }
+        // Load views
+        mainView = view;
+        getViews();
     }
 
     /*

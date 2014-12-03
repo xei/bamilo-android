@@ -56,7 +56,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.RemoteException;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.DialogFragment;
@@ -78,6 +77,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+
 import com.actionbarsherlock.ActionBarSherlock;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -1743,14 +1743,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         contentContainer = stub.inflate();
     }
 
+    /**
+     * Show progress.
+     * @modified sergiopereira
+     */
     public final void showProgress() {
-
-        if (baseActivityProgressDialog != null) {
-            return;
-        }
-        
-        // New implementation to fix
-        // FIXME: Try fix android.view.WindowManager$BadTokenException: Unable to add window -- token android.os.BinderProxy@42128698 is not valid; is your activity running?
+        // Validate current progress dialog
+        if (baseActivityProgressDialog != null) return;
+        // FIXME: New implementation
+        // Try fix android.view.WindowManager$BadTokenException: Unable to add window -- token android.os.BinderProxy@42128698 is not valid; is your activity running?
         if (!isFinishing()) {
             baseActivityProgressDialog = DialogProgressFragment.newInstance();
             baseActivityProgressDialog.show(getSupportFragmentManager(), null);
@@ -1763,7 +1764,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 //                baseActivityProgressDialog.show(getSupportFragmentManager(), null);
 //            }
 //        });
-
     }
 
     public final void dismissProgress() {
