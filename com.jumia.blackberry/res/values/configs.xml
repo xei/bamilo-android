@@ -17,7 +17,7 @@
     -->
     
     <!-- HOCKEY APP -->
-    <string name="hockeyapp_token">40d442de8b92541d5a07b991d8942eb4</string>
+    <string name="hockey_app_id">40d442de8b92541d5a07b991d8942eb4</string>
 
     <!-- DEEP LINK -->
     <string name="dp_package_id">com.jumia.blackberry</string>

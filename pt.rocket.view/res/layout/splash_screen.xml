@@ -28,7 +28,7 @@
         android:fontFamily="roboto_regular"
         android:text="@string/splash_slogan"
         android:textColor="@color/grey_middledark"
-        android:textSize="12sp" />
+        android:textSize="@dimen/text_title" />
 
     <pt.rocket.components.customfontviews.TextView
         android:id="@+id/dev_text"

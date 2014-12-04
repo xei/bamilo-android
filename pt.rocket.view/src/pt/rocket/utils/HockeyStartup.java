@@ -37,7 +37,7 @@ import de.akquinet.android.androlog.Log;
 public class HockeyStartup {
     private static final String TAG = HockeyStartup.class.getSimpleName();
     private static final String MESSAGEDIGEST = "SHA1";
-    private static final int HOCKEY_APP_TOKEN_RES = R.string.hockeyapp_token;
+    private static final int HOCKEY_APP_TOKEN_RES = R.string.hockey_app_id;
     
     private static final int HOCKEY_APP_DEV_BOOL = R.bool.hockeyapp_enable_dev;
     

@@ -805,8 +805,10 @@ public class AdjustTracker {
     private String getAppVersion() {
         PackageInfo pInfo = null;
         try {
-            pInfo = (mContext != null && mContext.getPackageManager() != null) ? mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0) : null;
+            pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
         } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 

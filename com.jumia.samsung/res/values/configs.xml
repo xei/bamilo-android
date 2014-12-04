@@ -17,7 +17,7 @@
     -->
     
 	<!-- HOCKEY APP -->
-	<string name="hockeyapp_token">53cd6b0fa3c881475e0b31e9a9102bbc</string>
+	<string name="hockey_app_id">53cd6b0fa3c881475e0b31e9a9102bbc</string>
 
     <!-- DEEP LINK -->
     <string name="dp_package_id">com.jumia.android</string>

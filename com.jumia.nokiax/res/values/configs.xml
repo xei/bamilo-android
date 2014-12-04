@@ -14,7 +14,7 @@
     -->
     
 	<!-- HOCKEY APP -->
-	<string name="hockeyapp_token">f3711b5d6c6e0b16819c7a1fe011d077</string>
+	<string name="hockey_app_id">f3711b5d6c6e0b16819c7a1fe011d077</string>
     
 	<!-- DEEP LINK -->
     <string name="dp_package_id">com.jumia.nokiax</string>

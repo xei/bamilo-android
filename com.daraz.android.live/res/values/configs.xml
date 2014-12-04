@@ -8,7 +8,7 @@
 	<item name="is_daraz_specific" type="bool">true</item>
 
 	<!-- COUNTRIES -->
-	<string name="countries_url">http://kaymu.com/dtmobapi/</string>
+	<string name="countries_url">http://www.daraz.com/mobapi/availablecountries</string>
 
 	<!-- GA -->
 	<!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
@@ -16,7 +16,7 @@
     -->
     
     <!-- HOCKEY APP -->
-    <string name="hockeyapp_token">ff6f925528a2c72ef85cac8908c7ee94</string>
+    <string name="hockey_app_id">ff6f925528a2c72ef85cac8908c7ee94</string>
     <item name="hockeyapp_enable_dev" type="bool">true</item>
 
     <!-- DEEP LINK -->

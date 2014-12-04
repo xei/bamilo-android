@@ -73,8 +73,8 @@ public class HoloFontLoader {
             ROBOTO_REGULAR = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_NORMAL);
             ROBOTO_BOLD = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_BOLD);
             ROBOTO_LIGHT = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_LIGHT);
-            ROBOTO_ITALIC = new RobotoRawFont(R.raw.roboto_italic).setFontStyle(TEXT_STYLE_ITALIC);
-            ROBOTO_BOLDITALIC = new RobotoRawFont(R.raw.roboto_bolditalic).setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_ITALIC);
+            //ROBOTO_ITALIC = new RobotoRawFont(R.raw.roboto_italic).setFontStyle(TEXT_STYLE_ITALIC);
+            //ROBOTO_BOLDITALIC = new RobotoRawFont(R.raw.roboto_bolditalic).setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_ITALIC);
             
             ROBOTO.register(ROBOTO_REGULAR).asDefaultFont();
             ROBOTO.register(ROBOTO_BOLD);

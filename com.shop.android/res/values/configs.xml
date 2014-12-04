@@ -15,7 +15,7 @@
     -->
 
     <!-- HOCKEY APP -->
-    <string name="hockeyapp_token">1c230a5c12bdff33953e46ef96feb6ea</string>
+    <string name="hockey_app_id">1c230a5c12bdff33953e46ef96feb6ea</string>
 
     <!-- DEEP LINK -->
     <string name="dp_package_id">com.shop.android</string>

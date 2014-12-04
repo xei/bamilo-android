@@ -14,7 +14,7 @@
     -->
 
     <!-- HOCKEY APP -->
-    <string name="hockeyapp_token">94b6aa10e40af096671abd89dfa6b3c5</string>
+    <string name="hockey_app_id">94b6aa10e40af096671abd89dfa6b3c5</string>
 
     <!-- DEEP LINK -->
     <string name="dp_package_id">com.jumia.mtnng</string>
