@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ATTENTION: Auto increment of version code via build.xml -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jumia.android.dev"
+    android:installLocation="auto"
+    android:versionCode="1"
+    android:versionName="2.2" >
+
+    <!-- ######################################## -->
+    <!-- ############# Permissions ############## -->
+    <!-- ######################################## -->
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- ############# Location: LocationHelper and AD4Push ############# -->
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:required="false" />
+	<!--     
+	<uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:required="false" /> 
+     -->
+    
+	<!-- ##################################### -->
+    <!-- ############# Features ############## -->
+    <!-- ##################################### -->
+    <!-- http://android-developers.blogspot.co.uk/2010/10/five-steps-to-future-hardware-happiness.html -->
+    
+	<uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
+	<uses-feature
+        android:name="android.hardware.location.network"
+        android:required="false" />	
+	<uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false" />
+	<uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+	<uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+	<!-- 	
+	<uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+	-->
+
+    <!-- ############# AD4Push: MESSAGE (Receive) and SEND (PushNotificationReceiver) ############# -->
+    <permission
+        android:name="com.jumia.android.dev.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.jumia.android.dev.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <!--
+         <permission
+        android:name="com.jumia.android.dev.permission.A4S_SEND"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.jumia.android.dev.permission.A4S_SEND" />
+    -->
+
+
+    <!-- ######################################## -->
+    <!-- ############# Application ############## -->
+    <!-- ######################################## -->
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19" />
+
+    <application
+        android:name="pt.rocket.app.JumiaApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:logo="@drawable/logo_ic_icon"
+        android:theme="@style/Theme.Jumia" >
+        <activity
+            android:name="pt.rocket.view.SplashScreenActivity"
+            android:noHistory="true"
+            android:screenOrientation="unspecified" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- ############# DEEP LINK : Accepts URIs############# -->
+            <intent-filter android:label="@string/dp_intent_label" >
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/dp_app_name_uppercase" />
+                <data android:scheme="@string/dp_app_name_lowercase" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="pt.rocket.view.MainFragmentActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="pt.rocket.view.MainFragmentTabletActivity"
+            android:exported="true"
+            android:screenOrientation="unspecified"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name="net.hockeyapp.android.UpdateActivity" />
+
+        <service
+            android:name="pt.rocket.framework.service.RemoteService"
+            android:exported="false" />
+
+        <!-- ##################################### -->
+        <!-- ############# FACEBOOK ############## -->
+        <!-- ##################################### -->
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <!-- ######################################## -->
+        <!-- ############# AD4Push GCM ############## -->
+        <!-- ######################################## -->
+
+
+        <!-- ############# AD4Push: A4SService ############# -->
+        <service
+            android:name="com.ad4screen.sdk.A4SService"
+            android:label="A4S Service"
+            android:process=":A4SService" >
+            <meta-data
+                android:name="com.ad4screen.partnerid"
+                android:value="@string/ad4push_partner_id" />
+            <meta-data
+                android:name="com.ad4screen.privatekey"
+                android:value="@string/ad4push_private_key" />
+            <meta-data
+                android:name="com.ad4screen.senderid"
+                android:value="@string/ad4push_sender_id" />
+            <meta-data
+                android:name="com.ad4screen.logging"
+                android:value="false" />
+        </service>
+
+        <!-- ############# AD4Push: Basic Integration ############# -->
+        <receiver
+            android:name="com.ad4screen.sdk.A4SIDFVHandler"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.ad4screen.sdk.intent.action.QUERY" />
+
+                <category android:name="com.ad4screen.sdk.intent.category.ANONYM_ID" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.ad4screen.sdk.ReferrerHandler"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.ad4screen.sdk.A4SPopup"
+            android:taskAffinity=""
+            android:theme="@style/com_ad4screen_sdk_theme_popup" />
+        <activity
+            android:name="com.ad4screen.sdk.A4SInterstitial"
+            android:theme="@style/com_ad4screen_sdk_theme_interstitial" />
+
+        <!-- ############# AD4Push: Push Notifications ############# -->
+
+        <receiver
+            android:name="com.ad4screen.sdk.GCMHandler"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <!-- WARNING: No use value from strings.xml, attribute is not a string value -->
+                <category android:name="com.jumia.android.dev" />
+            </intent-filter>
+        </receiver>
+
+        <!--
+             <receiver android:name="pt.rocket.utils.receivers.PushNotificationReceiver" >
+            <intent-filter>
+                <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
+                <action android:name="com.ad4screen.sdk.intent.action.CLICKED" />
+
+                <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS" />
+                <category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" />
+                <category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />
+            </intent-filter>
+        </receiver>
+        -->
+        
+        
+        <!-- ######################################## -->
+        <!-- ############### ADJUST ################# -->
+        <!-- ######################################## -->
+        
+        <meta-data
+            android:name="AdjustAppToken"
+            android:value="@string/adjust_app_token" />
+        <meta-data
+            android:name="AdjustLogLevel"
+            android:value="info" />
+        <meta-data
+            android:name="AdjustEnvironment"
+            android:value="sandbox" />
+		<!-- PRE INSTALL -->
+		<!-- <meta-data android:name="AdjustDefaultTracker" android:value="Test" /> -->
+        
+		<!-- ######################################## -->
+        <!-- ################# GTM ################## -->
+        <!-- ######################################## -->
+
+        <!-- Used for install referrer tracking -->
+        <service android:name="com.google.android.gms.tagmanager.InstallReferrerService" />
+
+        <!-- android:name="com.google.android.gms.tagmanager.InstallReferrerReceiver" -->
+        <!-- android:name="pt.rocket.utils.receivers.InstallReceiver" -->
+        <receiver
+            android:name="pt.rocket.utils.receivers.InstallReceiver"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        
+    </application>
+
+</manifest>

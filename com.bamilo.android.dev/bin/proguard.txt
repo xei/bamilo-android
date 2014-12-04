@@ -1,0 +1,692 @@
+# view res/layout/campaign_fragment_main.xml #generated:22
+# view res/layout/catalog_fragment_main.xml #generated:29
+# view res/layout/home_fragment_main.xml #generated:19
+# view res/layout/myorders_fragment_main.xml #generated:22
+# view res/layout/products_no_results.xml #generated:107
+# view res/layout/products_no_results.xml #generated:76
+# view res/layout/teaser_big_banner.xml #generated:8
+# view res/layout/tips.xml #generated:47
+-keep class android.support.v4.view.ViewPager { <init>(...); }
+
+# view res/layout/main.xml #generated:2
+-keep class android.support.v4.widget.DrawerLayout { <init>(...); }
+
+# view res/layout/abs__screen_action_bar.xml #generated:23
+# view res/layout/abs__screen_action_bar_overlay.xml #generated:27
+# view res/layout/abs__screen_simple.xml #generated:32
+# view res/layout/abs__screen_simple_overlay_action_mode.xml #generated:27
+# view xlarge-v4/res/layout-xlarge-v4/abs__screen_action_bar.xml #generated:43
+# view xlarge-v4/res/layout-xlarge-v4/abs__screen_action_bar_overlay.xml #generated:24
+-keep class com.actionbarsherlock.internal.nineoldandroids.widget.NineFrameLayout { <init>(...); }
+
+# view large-v4/res/layout-large-v4/abs__action_mode_close_item.xml #generated:17
+# view res/layout/abs__action_mode_close_item.xml #generated:17
+-keep class com.actionbarsherlock.internal.nineoldandroids.widget.NineLinearLayout { <init>(...); }
+
+# view res/layout/abs__action_menu_item_layout.xml #generated:17
+-keep class com.actionbarsherlock.internal.view.menu.ActionMenuItemView { <init>(...); }
+
+# view res/layout/abs__action_menu_layout.xml #generated:17
+-keep class com.actionbarsherlock.internal.view.menu.ActionMenuView { <init>(...); }
+
+# view res/layout/abs__popup_menu_item_layout.xml #generated:17
+-keep class com.actionbarsherlock.internal.view.menu.ListMenuItemView { <init>(...); }
+
+# view res/layout/abs__screen_action_bar.xml #generated:30
+# view res/layout/abs__screen_action_bar.xml #generated:6
+# view res/layout/abs__screen_action_bar_overlay.xml #generated:30
+# view res/layout/abs__screen_action_bar_overlay.xml #generated:53
+# view xlarge-v4/res/layout-xlarge-v4/abs__screen_action_bar.xml #generated:26
+# view xlarge-v4/res/layout-xlarge-v4/abs__screen_action_bar_overlay.xml #generated:27
+-keep class com.actionbarsherlock.internal.widget.ActionBarContainer { <init>(...); }
+
+# view res/layout/abs__action_mode_bar.xml #generated:19
+# view res/layout/abs__screen_action_bar.xml #generated:16
+# view res/layout/abs__screen_action_bar_overlay.xml #generated:41
+# view xlarge-v4/res/layout-xlarge-v4/abs__screen_action_bar.xml #generated:36
+# view xlarge-v4/res/layout-xlarge-v4/abs__screen_action_bar_overlay.xml #generated:37
+-keep class com.actionbarsherlock.internal.widget.ActionBarContextView { <init>(...); }
+
+# view res/layout/abs__screen_action_bar.xml #generated:11
+# view res/layout/abs__screen_action_bar_overlay.xml #generated:36
+# view xlarge-v4/res/layout-xlarge-v4/abs__screen_action_bar.xml #generated:31
+# view xlarge-v4/res/layout-xlarge-v4/abs__screen_action_bar_overlay.xml #generated:32
+-keep class com.actionbarsherlock.internal.widget.ActionBarView { <init>(...); }
+
+# view res/layout/abs__action_bar_home.xml #generated:17
+-keep class com.actionbarsherlock.internal.widget.ActionBarView$HomeView { <init>(...); }
+
+# view res/layout/abs__action_menu_item_layout.xml #generated:40
+-keep class com.actionbarsherlock.internal.widget.CapitalizingButton { <init>(...); }
+
+# view res/layout/abs__dialog_title_holo.xml #generated:23
+-keep class com.actionbarsherlock.internal.widget.FakeDialogPhoneWindow { <init>(...); }
+
+# view res/layout/abs__action_bar_tab_bar_view.xml #generated:3
+# view res/layout/abs__activity_chooser_view.xml #generated:19
+-keep class com.actionbarsherlock.internal.widget.IcsLinearLayout { <init>(...); }
+
+# view res/layout/abs__action_bar_tab.xml #generated:3
+-keep class com.actionbarsherlock.internal.widget.ScrollingTabContainerView$TabView { <init>(...); }
+
+# view res/layout/abs__search_view.xml #generated:87
+-keep class com.actionbarsherlock.widget.SearchView$SearchAutoComplete { <init>(...); }
+
+# view AndroidManifest.xml #generated:168
+-keep class com.ad4screen.sdk.A4SIDFVHandler { <init>(...); }
+
+# view AndroidManifest.xml #generated:189
+-keep class com.ad4screen.sdk.A4SInterstitial { <init>(...); }
+
+# view AndroidManifest.xml #generated:185
+-keep class com.ad4screen.sdk.A4SPopup { <init>(...); }
+
+# view AndroidManifest.xml #generated:149
+-keep class com.ad4screen.sdk.A4SService { <init>(...); }
+
+# view AndroidManifest.xml #generated:195
+-keep class com.ad4screen.sdk.GCMHandler { <init>(...); }
+
+# view AndroidManifest.xml #generated:177
+-keep class com.ad4screen.sdk.ReferrerHandler { <init>(...); }
+
+# view res/layout/com_ad4screen_sdk_banner.xml #generated:2
+-keep class com.ad4screen.sdk.service.modules.inapp.DisplayView { <init>(...); }
+
+# view AndroidManifest.xml #generated:115
+-keep class com.facebook.LoginActivity { <init>(...); }
+
+# view res/layout/com_facebook_usersettingsfragment.xml #generated:48
+-keep class com.facebook.widget.LoginButton { <init>(...); }
+
+# view AndroidManifest.xml #generated:242
+-keep class com.google.android.gms.tagmanager.InstallReferrerService { <init>(...); }
+
+# view AndroidManifest.xml #generated:129
+-keep class net.hockeyapp.android.UpdateActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:86
+-keep class pt.rocket.app.JumiaApplication { <init>(...); }
+
+# view res/layout/campaign_fragment_pager_item.xml #generated:2
+-keep class pt.rocket.components.HeaderGridView { <init>(...); }
+
+# view res/layout/dialog_filter_fragment_brand.xml #generated:43
+-keep class pt.rocket.components.PinnedSectionListView { <init>(...); }
+
+# view large-land-v4/res/layout-large-land-v4/reviews_fragment.xml #generated:2
+# view res/layout/reviews_fragment.xml #generated:2
+-keep class pt.rocket.components.ScrollViewEx { <init>(...); }
+
+# view res/layout/campaign_fragment_list_item_middle.xml #generated:81
+# view res/layout/form_icsspinner.xml #generated:3
+# view res/layout/form_icsspinner_shipping.xml #generated:3
+-keep class pt.rocket.components.absspinner.IcsSpinner { <init>(...); }
+
+# view res/layout/campaign_fragment_main.xml #generated:11
+# view res/layout/catalog_fragment_main.xml #generated:17
+# view res/layout/home_fragment_main.xml #generated:9
+# view res/layout/myorders_fragment_main.xml #generated:11
+-keep class pt.rocket.components.androidslidingtabstrip.SlidingTabLayout { <init>(...); }
+
+# view large-land-v4/res/layout-large-land-v4/checkout_create_address_main.xml #generated:70
+# view large-land-v4/res/layout-large-land-v4/checkout_edit_address_main.xml #generated:54
+# view large-land-v4/res/layout-large-land-v4/checkout_edit_address_main.xml #generated:61
+# view large-land-v4/res/layout-large-land-v4/checkout_my_addresses.xml #generated:43
+# view large-land-v4/res/layout-large-land-v4/checkout_my_order_main.xml #generated:88
+# view large-land-v4/res/layout-large-land-v4/checkout_payment_main.xml #generated:45
+# view large-land-v4/res/layout-large-land-v4/checkout_poll_question.xml #generated:65
+# view large-land-v4/res/layout-large-land-v4/checkout_shipping_main.xml #generated:36
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:160
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:217
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:232
+# view large-land-v4/res/layout-large-land-v4/recentlyviewed_buttons.xml #generated:14
+# view large-land-v4/res/layout-large-land-v4/recentlyviewed_buttons.xml #generated:7
+# view large-land-v4/res/layout-large-land-v4/shopping_basket.xml #generated:74
+# view large-land-v4/res/layout-large-land-v4/shopping_basket.xml #generated:79
+# view res/layout/addabletocart_item_info.xml #generated:107
+# view res/layout/addabletocart_item_info.xml #generated:124
+# view res/layout/addabletocart_item_info.xml #generated:13
+# view res/layout/campaign_fragment_list_item_info.xml #generated:113
+# view res/layout/catalog_fragment_page.xml #generated:26
+# view res/layout/checkout_about_you_login.xml #generated:61
+# view res/layout/checkout_about_you_signup.xml #generated:50
+# view res/layout/checkout_create_address_main.xml #generated:45
+# view res/layout/checkout_edit_address_main.xml #generated:46
+# view res/layout/checkout_edit_address_main.xml #generated:53
+# view res/layout/checkout_my_addresses.xml #generated:37
+# view res/layout/checkout_my_order_main.xml #generated:61
+# view res/layout/checkout_payment_main.xml #generated:34
+# view res/layout/checkout_poll_question.xml #generated:52
+# view res/layout/checkout_shipping_main.xml #generated:29
+# view res/layout/checkout_thanks.xml #generated:82
+# view res/layout/dialog_datepicker_content.xml #generated:52
+# view res/layout/dialog_datepicker_content.xml #generated:61
+# view res/layout/dialog_generic.xml #generated:60
+# view res/layout/dialog_generic.xml #generated:70
+# view res/layout/dialog_generic_3buttons.xml #generated:60
+# view res/layout/dialog_generic_3buttons.xml #generated:69
+# view res/layout/dialog_generic_3buttons.xml #generated:78
+# view res/layout/favourites.xml #generated:21
+# view res/layout/forgotpassword.xml #generated:49
+# view res/layout/form_button.xml #generated:2
+# view res/layout/fragment_root_empty.xml #generated:36
+# view res/layout/fragment_root_retry.xml #generated:34
+# view res/layout/login.xml #generated:75
+# view res/layout/login.xml #generated:90
+# view res/layout/maintenance_page.xml #generated:149
+# view res/layout/maintenance_page.xml #generated:155
+# view res/layout/my_account_email_notification_fragment.xml #generated:50
+# view res/layout/my_account_email_notification_fragment.xml #generated:57
+# view res/layout/my_account_user_data_fragment.xml #generated:126
+# view res/layout/my_account_user_data_fragment.xml #generated:133
+# view res/layout/product_details_fragment_buttons.xml #generated:20
+# view res/layout/product_details_fragment_buttons.xml #generated:9
+# view res/layout/product_details_fragment_info.xml #generated:50
+# view res/layout/product_gallery_fragment.xml #generated:25
+# view res/layout/product_size_guide_wizard.xml #generated:29
+# view res/layout/recentlyviewed_buttons.xml #generated:12
+# view res/layout/recentlyviewed_buttons.xml #generated:7
+# view res/layout/recentsearches.xml #generated:27
+# view res/layout/register.xml #generated:68
+# view res/layout/review_write_fragment.xml #generated:105
+# view res/layout/reviews_fragment.xml #generated:52
+# view res/layout/shopping_basket.xml #generated:59
+# view res/layout/shopping_basket.xml #generated:64
+# view res/layout/shopping_basket_product_element.xml #generated:14
+# view res/layout/shopping_basket_product_element.xml #generated:79
+# view res/layout/track_order_form.xml #generated:38
+# view res/layout/voucher_insert_layout.xml #generated:28
+# view res/layout/wizard_navigation_categories.xml #generated:27
+-keep class pt.rocket.components.customfontviews.Button { <init>(...); }
+
+# view res/layout/checkout_sameaddress_checkbox.xml #generated:7
+# view res/layout/dialog_filter_fragment_price.xml #generated:81
+# view res/layout/dialog_list_sub_item_2.xml #generated:31
+# view res/layout/form_checkbox.xml #generated:2
+# view res/layout/login_remember_checkbox.xml #generated:2
+# view res/layout/simple_email_notification_option.xml #generated:12
+-keep class pt.rocket.components.customfontviews.CheckBox { <init>(...); }
+
+# view res/layout/form_edittext.xml #generated:2
+# view res/layout/my_account_user_data_fragment.xml #generated:106
+# view res/layout/my_account_user_data_fragment.xml #generated:114
+# view res/layout/review_write_fragment.xml #generated:74
+# view res/layout/review_write_fragment.xml #generated:83
+# view res/layout/review_write_fragment.xml #generated:92
+# view res/layout/track_order_form.xml #generated:29
+# view res/layout/voucher_insert_layout.xml #generated:55
+-keep class pt.rocket.components.customfontviews.EditText { <init>(...); }
+
+# view res/layout/checkout_about_you_login.xml #generated:104
+# view res/layout/checkout_about_you_signup.xml #generated:81
+# view res/layout/login.xml #generated:30
+-keep class pt.rocket.components.customfontviews.FacebookTextView { <init>(...); }
+
+# view res/layout/checkout_address_item.xml #generated:67
+# view res/layout/form_radiobutton.xml #generated:2
+# view res/layout/form_radiobutton_shipping.xml #generated:2
+-keep class pt.rocket.components.customfontviews.RadioButton { <init>(...); }
+
+# view large-land-v4/res/layout-large-land-v4/checkout_create_address_main.xml #generated:32
+# view large-land-v4/res/layout-large-land-v4/checkout_create_address_main.xml #generated:79
+# view large-land-v4/res/layout-large-land-v4/checkout_edit_address_main.xml #generated:42
+# view large-land-v4/res/layout-large-land-v4/checkout_poll_question.xml #generated:35
+# view large-land-v4/res/layout-large-land-v4/element_last_viewed.xml #generated:115
+# view large-land-v4/res/layout-large-land-v4/element_last_viewed.xml #generated:127
+# view large-land-v4/res/layout-large-land-v4/element_last_viewed.xml #generated:28
+# view large-land-v4/res/layout-large-land-v4/element_last_viewed.xml #generated:40
+# view large-land-v4/res/layout-large-land-v4/element_last_viewed.xml #generated:72
+# view large-land-v4/res/layout-large-land-v4/element_last_viewed.xml #generated:84
+# view large-land-v4/res/layout-large-land-v4/order_history_item.xml #generated:21
+# view large-land-v4/res/layout-large-land-v4/order_history_item.xml #generated:33
+# view large-land-v4/res/layout-large-land-v4/order_history_item.xml #generated:46
+# view large-land-v4/res/layout-large-land-v4/order_history_main.xml #generated:103
+# view large-land-v4/res/layout-large-land-v4/order_history_main.xml #generated:123
+# view large-land-v4/res/layout-large-land-v4/order_history_main.xml #generated:135
+# view large-land-v4/res/layout-large-land-v4/order_history_main.xml #generated:14
+# view large-land-v4/res/layout-large-land-v4/order_history_main.xml #generated:147
+# view large-land-v4/res/layout-large-land-v4/order_history_main.xml #generated:24
+# view large-land-v4/res/layout-large-land-v4/order_history_main.xml #generated:65
+# view large-land-v4/res/layout-large-land-v4/order_history_main.xml #generated:91
+# view large-land-v4/res/layout-large-land-v4/order_history_product_item.xml #generated:15
+# view large-land-v4/res/layout-large-land-v4/order_history_product_item.xml #generated:30
+# view large-land-v4/res/layout-large-land-v4/order_history_product_item.xml #generated:44
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:123
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:153
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:278
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:317
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:327
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:360
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:392
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:402
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:435
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:50
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:59
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:68
+# view large-land-v4/res/layout-large-land-v4/reviews_fragment.xml #generated:82
+# view large-land-v4/res/layout-large-land-v4/shopping_basket.xml #generated:19
+# view large-land-v4/res/layout-large-land-v4/shopping_basket.xml #generated:24
+# view res/layout/action_bar_logo_layout.xml #generated:2
+# view res/layout/action_bar_menu_item_layout.xml #generated:28
+# view res/layout/action_bar_menu_item_layout.xml #generated:41
+# view res/layout/addabletocart_item_image.xml #generated:16
+# view res/layout/addabletocart_item_info.xml #generated:25
+# view res/layout/addabletocart_item_info.xml #generated:36
+# view res/layout/addabletocart_item_info.xml #generated:46
+# view res/layout/addabletocart_item_info.xml #generated:56
+# view res/layout/addabletocart_item_info.xml #generated:76
+# view res/layout/addabletocart_item_info.xml #generated:86
+# view res/layout/addabletocart_item_info.xml #generated:96
+# view res/layout/campaign_fragment_list_item_info.xml #generated:20
+# view res/layout/campaign_fragment_list_item_info.xml #generated:33
+# view res/layout/campaign_fragment_list_item_info.xml #generated:49
+# view res/layout/campaign_fragment_list_item_info.xml #generated:81
+# view res/layout/campaign_fragment_list_item_info.xml #generated:97
+# view res/layout/campaign_fragment_list_item_middle.xml #generated:31
+# view res/layout/campaign_fragment_list_item_middle.xml #generated:63
+# view res/layout/campaign_fragment_list_item_timer.xml #generated:36
+# view res/layout/campaign_fragment_list_item_timer.xml #generated:49
+# view res/layout/campaign_fragment_list_item_title.xml #generated:11
+# view res/layout/campaign_fragment_list_item_title.xml #generated:26
+# view res/layout/campaign_spinner_dropdown_item.xml #generated:2
+# view res/layout/campaign_spinner_item.xml #generated:2
+# view res/layout/catalog_item_grid_rounded.xml #generated:32
+# view res/layout/catalog_item_grid_rounded.xml #generated:40
+# view res/layout/catalog_item_grid_rounded.xml #generated:50
+# view res/layout/catalog_item_grid_rounded.xml #generated:59
+# view res/layout/catalog_item_grid_rounded.xml #generated:67
+# view res/layout/catalog_item_rounded.xml #generated:104
+# view res/layout/catalog_item_rounded.xml #generated:33
+# view res/layout/catalog_item_rounded.xml #generated:42
+# view res/layout/catalog_item_rounded.xml #generated:51
+# view res/layout/catalog_item_rounded.xml #generated:59
+# view res/layout/catalog_item_rounded.xml #generated:83
+# view res/layout/category.xml #generated:9
+# view res/layout/category_inner_childcat.xml #generated:7
+# view res/layout/category_inner_currentcat.xml #generated:7
+# view res/layout/category_inner_top_back.xml #generated:7
+# view res/layout/change_country_row.xml #generated:23
+# view res/layout/checkout_about_you_login.xml #generated:69
+# view res/layout/checkout_about_you_login.xml #generated:8
+# view res/layout/checkout_about_you_login.xml #generated:92
+# view res/layout/checkout_about_you_signup.xml #generated:69
+# view res/layout/checkout_about_you_signup.xml #generated:9
+# view res/layout/checkout_address_item.xml #generated:25
+# view res/layout/checkout_address_item.xml #generated:29
+# view res/layout/checkout_address_item.xml #generated:33
+# view res/layout/checkout_address_item.xml #generated:37
+# view res/layout/checkout_address_item.xml #generated:41
+# view res/layout/checkout_create_address_billing.xml #generated:9
+# view res/layout/checkout_create_address_main.xml #generated:53
+# view res/layout/checkout_create_address_shipping.xml #generated:10
+# view res/layout/checkout_edit_address_form.xml #generated:11
+# view res/layout/checkout_edit_address_main.xml #generated:34
+# view res/layout/checkout_header.xml #generated:109
+# view res/layout/checkout_header.xml #generated:143
+# view res/layout/checkout_header.xml #generated:37
+# view res/layout/checkout_header.xml #generated:73
+# view res/layout/checkout_my_addresses_bottom.xml #generated:10
+# view res/layout/checkout_my_addresses_bottom.xml #generated:40
+# view res/layout/checkout_my_addresses_top.xml #generated:56
+# view res/layout/checkout_my_addresses_top.xml #generated:9
+# view res/layout/checkout_my_order_billing_address.xml #generated:18
+# view res/layout/checkout_my_order_billing_address.xml #generated:45
+# view res/layout/checkout_my_order_payment_options.xml #generated:18
+# view res/layout/checkout_my_order_payment_options.xml #generated:46
+# view res/layout/checkout_my_order_payment_options.xml #generated:57
+# view res/layout/checkout_my_order_product_item.xml #generated:23
+# view res/layout/checkout_my_order_product_item.xml #generated:30
+# view res/layout/checkout_my_order_product_item.xml #generated:36
+# view res/layout/checkout_my_order_product_item.xml #generated:42
+# view res/layout/checkout_my_order_products.xml #generated:10
+# view res/layout/checkout_my_order_shipping_address.xml #generated:18
+# view res/layout/checkout_my_order_shipping_method.xml #generated:17
+# view res/layout/checkout_my_order_shipping_method.xml #generated:36
+# view res/layout/checkout_payment_methods.xml #generated:14
+# view res/layout/checkout_payment_methods.xml #generated:8
+# view res/layout/checkout_poll_question.xml #generated:22
+# view res/layout/checkout_shipping_methods.xml #generated:7
+# view res/layout/checkout_summary_list_item.xml #generated:13
+# view res/layout/checkout_summary_list_item.xml #generated:17
+# view res/layout/checkout_summary_list_item.xml #generated:21
+# view res/layout/checkout_summary_products.xml #generated:100
+# view res/layout/checkout_summary_products.xml #generated:115
+# view res/layout/checkout_summary_products.xml #generated:122
+# view res/layout/checkout_summary_products.xml #generated:137
+# view res/layout/checkout_summary_products.xml #generated:143
+# view res/layout/checkout_summary_products.xml #generated:15
+# view res/layout/checkout_summary_products.xml #generated:158
+# view res/layout/checkout_summary_products.xml #generated:164
+# view res/layout/checkout_summary_products.xml #generated:41
+# view res/layout/checkout_summary_products.xml #generated:73
+# view res/layout/checkout_summary_products.xml #generated:79
+# view res/layout/checkout_summary_products.xml #generated:94
+# view res/layout/checkout_summary_shipping_address.xml #generated:16
+# view res/layout/checkout_summary_shipping_method.xml #generated:16
+# view res/layout/checkout_summary_shipping_method.xml #generated:35
+# view res/layout/checkout_summary_total.xml #generated:10
+# view res/layout/checkout_summary_total.xml #generated:15
+# view res/layout/checkout_thanks.xml #generated:34
+# view res/layout/checkout_thanks.xml #generated:41
+# view res/layout/checkout_thanks.xml #generated:50
+# view res/layout/checkout_thanks.xml #generated:62
+# view res/layout/dialog_datepicker_content.xml #generated:18
+# view res/layout/dialog_filter_bottom_buttons.xml #generated:11
+# view res/layout/dialog_filter_bottom_buttons.xml #generated:25
+# view res/layout/dialog_filter_fragment_brand.xml #generated:17
+# view res/layout/dialog_filter_fragment_brand.xml #generated:29
+# view res/layout/dialog_filter_fragment_category.xml #generated:17
+# view res/layout/dialog_filter_fragment_category.xml #generated:29
+# view res/layout/dialog_filter_fragment_color.xml #generated:17
+# view res/layout/dialog_filter_fragment_color.xml #generated:29
+# view res/layout/dialog_filter_fragment_main.xml #generated:19
+# view res/layout/dialog_filter_fragment_main.xml #generated:30
+# view res/layout/dialog_filter_fragment_price.xml #generated:17
+# view res/layout/dialog_filter_fragment_price.xml #generated:29
+# view res/layout/dialog_filter_fragment_price.xml #generated:62
+# view res/layout/dialog_filter_fragment_size.xml #generated:17
+# view res/layout/dialog_filter_fragment_size.xml #generated:29
+# view res/layout/dialog_generic.xml #generated:18
+# view res/layout/dialog_generic.xml #generated:27
+# view res/layout/dialog_generic.xml #generated:35
+# view res/layout/dialog_generic_3buttons.xml #generated:18
+# view res/layout/dialog_generic_3buttons.xml #generated:27
+# view res/layout/dialog_generic_3buttons.xml #generated:35
+# view res/layout/dialog_list_content.xml #generated:39
+# view res/layout/dialog_list_content.xml #generated:9
+# view res/layout/dialog_list_header_item.xml #generated:10
+# view res/layout/dialog_list_item.xml #generated:11
+# view res/layout/dialog_list_item.xml #generated:16
+# view res/layout/dialog_list_sub_item_1.xml #generated:11
+# view res/layout/dialog_list_sub_item_1.xml #generated:20
+# view res/layout/dialog_list_sub_item_2.xml #generated:21
+# view res/layout/element_last_viewed.xml #generated:115
+# view res/layout/element_last_viewed.xml #generated:127
+# view res/layout/element_last_viewed.xml #generated:28
+# view res/layout/element_last_viewed.xml #generated:40
+# view res/layout/element_last_viewed.xml #generated:72
+# view res/layout/element_last_viewed.xml #generated:84
+# view res/layout/element_last_viewed_landscape.xml #generated:115
+# view res/layout/element_last_viewed_landscape.xml #generated:127
+# view res/layout/element_last_viewed_landscape.xml #generated:158
+# view res/layout/element_last_viewed_landscape.xml #generated:170
+# view res/layout/element_last_viewed_landscape.xml #generated:201
+# view res/layout/element_last_viewed_landscape.xml #generated:213
+# view res/layout/element_last_viewed_landscape.xml #generated:28
+# view res/layout/element_last_viewed_landscape.xml #generated:40
+# view res/layout/element_last_viewed_landscape.xml #generated:72
+# view res/layout/element_last_viewed_landscape.xml #generated:84
+# view res/layout/forgotpassword.xml #generated:31
+# view res/layout/forgotpassword.xml #generated:35
+# view res/layout/form_radiobutton_with_extra.xml #generated:35
+# view res/layout/form_spinner_dropdown_item.xml #generated:1
+# view res/layout/form_spinner_item.xml #generated:1
+# view res/layout/fragment_root_empty.xml #generated:24
+# view res/layout/fragment_root_fallback.xml #generated:110
+# view res/layout/fragment_root_fallback.xml #generated:119
+# view res/layout/fragment_root_fallback.xml #generated:129
+# view res/layout/fragment_root_fallback.xml #generated:141
+# view res/layout/fragment_root_fallback.xml #generated:16
+# view res/layout/fragment_root_fallback.xml #generated:177
+# view res/layout/fragment_root_fallback.xml #generated:196
+# view res/layout/fragment_root_fallback.xml #generated:215
+# view res/layout/fragment_root_fallback.xml #generated:241
+# view res/layout/fragment_root_fallback.xml #generated:260
+# view res/layout/fragment_root_fallback.xml #generated:279
+# view res/layout/fragment_root_fallback.xml #generated:47
+# view res/layout/fragment_root_fallback.xml #generated:68
+# view res/layout/fragment_root_fallback.xml #generated:77
+# view res/layout/fragment_root_fallback.xml #generated:89
+# view res/layout/fragment_root_retry.xml #generated:22
+# view res/layout/header_title.xml #generated:12
+# view res/layout/header_title.xml #generated:25
+# view res/layout/label_rating_component.xml #generated:2
+# view res/layout/loading_bar.xml #generated:20
+# view res/layout/loading_bar_no_box.xml #generated:20
+# view res/layout/loading_more.xml #generated:19
+# view res/layout/login.xml #generated:17
+# view res/layout/login.xml #generated:81
+# view res/layout/maintenance_page.xml #generated:121
+# view res/layout/maintenance_page.xml #generated:130
+# view res/layout/maintenance_page.xml #generated:17
+# view res/layout/maintenance_page.xml #generated:173
+# view res/layout/maintenance_page.xml #generated:195
+# view res/layout/maintenance_page.xml #generated:204
+# view res/layout/maintenance_page.xml #generated:57
+# view res/layout/maintenance_page.xml #generated:78
+# view res/layout/maintenance_page.xml #generated:87
+# view res/layout/maintenance_page.xml #generated:99
+# view res/layout/menu_basket_button.xml #generated:7
+# view res/layout/my_account_email_notification_fragment.xml #generated:22
+# view res/layout/my_account_fragment.xml #generated:17
+# view res/layout/my_account_fragment.xml #generated:47
+# view res/layout/my_account_list_item.xml #generated:21
+# view res/layout/my_account_list_item.xml #generated:29
+# view res/layout/my_account_user_data_fragment.xml #generated:21
+# view res/layout/my_account_user_data_fragment.xml #generated:44
+# view res/layout/my_account_user_data_fragment.xml #generated:52
+# view res/layout/my_account_user_data_fragment.xml #generated:61
+# view res/layout/my_account_user_data_fragment.xml #generated:80
+# view res/layout/my_account_user_data_fragment.xml #generated:96
+# view res/layout/navigation_basket_component.xml #generated:12
+# view res/layout/navigation_basket_component.xml #generated:24
+# view res/layout/navigation_basket_component.xml #generated:29
+# view res/layout/navigation_basket_component.xml #generated:35
+# view res/layout/navigation_basket_component.xml #generated:41
+# view res/layout/navigation_categories_component.xml #generated:8
+# view res/layout/navigation_fragment_tabs.xml #generated:26
+# view res/layout/navigation_fragment_tabs.xml #generated:8
+# view res/layout/navigation_generic_component.xml #generated:7
+# view res/layout/no_payment_layout.xml #generated:6
+# view res/layout/order_history_item.xml #generated:108
+# view res/layout/order_history_item.xml #generated:128
+# view res/layout/order_history_item.xml #generated:140
+# view res/layout/order_history_item.xml #generated:152
+# view res/layout/order_history_item.xml #generated:21
+# view res/layout/order_history_item.xml #generated:33
+# view res/layout/order_history_item.xml #generated:46
+# view res/layout/order_history_item.xml #generated:96
+# view res/layout/order_history_main.xml #generated:11
+# view res/layout/order_history_main.xml #generated:21
+# view res/layout/order_history_product_item.xml #generated:15
+# view res/layout/order_history_product_item.xml #generated:30
+# view res/layout/order_history_product_item.xml #generated:44
+# view res/layout/preference_list_item.xml #generated:29
+# view res/layout/preference_list_item.xml #generated:40
+# view res/layout/price_rules_element.xml #generated:21
+# view res/layout/price_rules_element.xml #generated:9
+# view res/layout/price_rules_summary_element.xml #generated:22
+# view res/layout/price_rules_summary_element.xml #generated:9
+# view res/layout/product_description_fragment.xml #generated:41
+# view res/layout/product_description_fragment.xml #generated:51
+# view res/layout/product_description_fragment.xml #generated:73
+# view res/layout/product_description_fragment.xml #generated:83
+# view res/layout/product_details_fragment_header.xml #generated:11
+# view res/layout/product_details_fragment_header.xml #generated:20
+# view res/layout/product_details_fragment_header.xml #generated:29
+# view res/layout/product_details_fragment_header.xml #generated:56
+# view res/layout/product_details_fragment_image.xml #generated:16
+# view res/layout/product_details_fragment_image.xml #generated:59
+# view res/layout/product_details_fragment_info.xml #generated:107
+# view res/layout/product_details_fragment_info.xml #generated:20
+# view res/layout/product_details_fragment_info.xml #generated:27
+# view res/layout/product_details_fragment_info.xml #generated:45
+# view res/layout/product_details_fragment_info.xml #generated:85
+# view res/layout/product_details_fragment_related.xml #generated:9
+# view res/layout/product_details_fragment_variations.xml #generated:14
+# view res/layout/product_gallery_fragment.xml #generated:36
+# view res/layout/product_gallery_fragment.xml #generated:45
+# view res/layout/product_item_small.xml #generated:22
+# view res/layout/product_item_small.xml #generated:30
+# view res/layout/product_item_small.xml #generated:39
+# view res/layout/product_size_guide_wizard.xml #generated:8
+# view res/layout/products_no_results.xml #generated:101
+# view res/layout/products_no_results.xml #generated:126
+# view res/layout/products_no_results.xml #generated:16
+# view res/layout/products_no_results.xml #generated:43
+# view res/layout/products_no_results.xml #generated:52
+# view res/layout/products_no_results.xml #generated:70
+# view res/layout/products_tip_favourite_layout.xml #generated:21
+# view res/layout/products_tip_swipe_layout.xml #generated:20
+# view res/layout/promotion_layout.xml #generated:18
+# view res/layout/promotion_layout.xml #generated:30
+# view res/layout/promotion_layout.xml #generated:41
+# view res/layout/promotion_layout.xml #generated:54
+# view res/layout/promotion_layout.xml #generated:64
+# view res/layout/promotion_layout.xml #generated:73
+# view res/layout/recentsearch_suggestion_list_item.xml #generated:23
+# view res/layout/register.xml #generated:17
+# view res/layout/register.xml #generated:37
+# view res/layout/register.xml #generated:75
+# view res/layout/review_fragment.xml #generated:32
+# view res/layout/review_fragment.xml #generated:44
+# view res/layout/review_fragment.xml #generated:50
+# view res/layout/review_fragment.xml #generated:57
+# view res/layout/review_fragment.xml #generated:78
+# view res/layout/review_write_fragment.xml #generated:37
+# view res/layout/reviews_fragment.xml #generated:45
+# view res/layout/reviews_fragment.xml #generated:85
+# view res/layout/reviews_fragment_item.xml #generated:105
+# view res/layout/reviews_fragment_item.xml #generated:112
+# view res/layout/reviews_fragment_item.xml #generated:120
+# view res/layout/reviews_fragment_item.xml #generated:25
+# view res/layout/reviews_fragment_item.xml #generated:46
+# view res/layout/reviews_fragment_item.xml #generated:68
+# view res/layout/reviews_fragment_item.xml #generated:85
+# view res/layout/reviews_fragment_item.xml #generated:94
+# view res/layout/search_suggestion_list_item.xml #generated:18
+# view res/layout/search_suggestion_list_item.xml #generated:33
+# view res/layout/shopping_basket.xml #generated:16
+# view res/layout/shopping_basket.xml #generated:21
+# view res/layout/shopping_basket_item_image.xml #generated:25
+# view res/layout/shopping_basket_product_element.xml #generated:26
+# view res/layout/shopping_basket_product_element.xml #generated:37
+# view res/layout/shopping_basket_product_element.xml #generated:49
+# view res/layout/shopping_basket_product_element.xml #generated:60
+# view res/layout/shopping_basket_product_element.xml #generated:71
+# view res/layout/shopping_basket_subtotal_element.xml #generated:108
+# view res/layout/shopping_basket_subtotal_element.xml #generated:112
+# view res/layout/shopping_basket_subtotal_element.xml #generated:128
+# view res/layout/shopping_basket_subtotal_element.xml #generated:133
+# view res/layout/shopping_basket_subtotal_element.xml #generated:151
+# view res/layout/shopping_basket_subtotal_element.xml #generated:155
+# view res/layout/shopping_basket_subtotal_element.xml #generated:24
+# view res/layout/shopping_basket_subtotal_element.xml #generated:30
+# view res/layout/shopping_basket_subtotal_element.xml #generated:37
+# view res/layout/shopping_basket_subtotal_element.xml #generated:67
+# view res/layout/shopping_basket_subtotal_element.xml #generated:71
+# view res/layout/shopping_basket_subtotal_element.xml #generated:87
+# view res/layout/shopping_basket_subtotal_element.xml #generated:9
+# view res/layout/shopping_basket_subtotal_element.xml #generated:91
+# view res/layout/splash_screen.xml #generated:23
+# view res/layout/splash_screen.xml #generated:33
+# view res/layout/supertoast.xml #generated:11
+# view res/layout/tab_simple_item.xml #generated:2
+# view res/layout/teaser_campaigns_group.xml #generated:38
+# view res/layout/teaser_campaigns_group.xml #generated:49
+# view res/layout/teaser_campaigns_group.xml #generated:60
+# view res/layout/teaser_categories_group.xml #generated:11
+# view res/layout/teaser_inner_childcat.xml #generated:7
+# view res/layout/teaser_inner_currentcat.xml #generated:7
+# view res/layout/teaser_products_group.xml #generated:14
+# view res/layout/teaser_top_brands_group.xml #generated:11
+# view res/layout/terms_conditions_fragment.xml #generated:15
+# view res/layout/terms_conditions_fragment.xml #generated:22
+# view res/layout/tip_favourite_layout.xml #generated:21
+# view res/layout/tip_share_layout.xml #generated:20
+# view res/layout/tip_swipe_layout.xml #generated:21
+# view res/layout/tip_tap_layout.xml #generated:22
+# view res/layout/tips.xml #generated:34
+# view res/layout/toast_exit.xml #generated:10
+# view res/layout/toast_notification.xml #generated:8
+# view res/layout/track_order_form.xml #generated:7
+# view res/layout/track_order_item.xml #generated:25
+# view res/layout/track_order_item.xml #generated:30
+# view res/layout/track_order_item.xml #generated:40
+# view res/layout/track_order_item.xml #generated:47
+# view res/layout/track_order_status.xml #generated:102
+# view res/layout/track_order_status.xml #generated:110
+# view res/layout/track_order_status.xml #generated:25
+# view res/layout/track_order_status.xml #generated:61
+# view res/layout/track_order_status.xml #generated:7
+# view res/layout/track_order_status.xml #generated:81
+# view res/layout/track_order_status.xml #generated:88
+# view res/layout/track_order_status.xml #generated:95
+# view res/layout/voucher_insert_layout.xml #generated:11
+# view res/layout/voucher_insert_layout.xml #generated:64
+# view res/layout/warning.xml #generated:2
+# view res/layout/warning_variations.xml #generated:2
+# view res/layout/wizard_home_page.xml #generated:23
+# view res/layout/wizard_navigation_categories.xml #generated:14
+-keep class pt.rocket.components.customfontviews.TextView { <init>(...); }
+
+# view AndroidManifest.xml #generated:131
+-keep class pt.rocket.framework.service.RemoteService { <init>(...); }
+
+# view res/layout/loading_bar.xml #generated:13
+# view res/layout/loading_bar_no_box.xml #generated:13
+-keep class pt.rocket.framework.utils.LoadingBarView { <init>(...); }
+
+# view res/layout/change_country_row.xml #generated:2
+-keep class pt.rocket.utils.CheckableRelativeLayout { <init>(...); }
+
+# view res/layout/action_bar_myprofile_layout.xml #generated:19
+-keep class pt.rocket.utils.DismissibleSpinner { <init>(...); }
+
+# view res/layout/checkout_my_addresses_bottom.xml #generated:17
+# view res/layout/checkout_my_addresses_top.xml #generated:18
+-keep class pt.rocket.utils.GenericRadioGroup { <init>(...); }
+
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_variations.xml #generated:7
+# view res/layout/product_details_fragment_variations.xml #generated:24
+-keep class pt.rocket.utils.HorizontalListView { <init>(...); }
+
+# view res/layout/product_gallery_fragment.xml #generated:7
+-keep class pt.rocket.utils.JumiaViewPagerWithZoom { <init>(...); }
+
+# view res/layout/form_radiolayout.xml #generated:2
+-keep class pt.rocket.utils.RadioGroupLayout { <init>(...); }
+
+# view res/layout/form_radiolistlayout.xml #generated:2
+-keep class pt.rocket.utils.RadioGroupLayoutVertical { <init>(...); }
+
+# view large-land-v4/res/layout-large-land-v4/home_page_fragment.xml #generated:16
+# view large-land-v4/res/layout-large-land-v4/home_page_fragment.xml #generated:35
+# view large-land-v4/res/layout-large-land-v4/product_details_fragment_main.xml #generated:246
+# view res/layout/home_page_fragment.xml #generated:2
+# view res/layout/product_details_fragment_main.xml #generated:17
+# view res/layout/products_no_results.xml #generated:2
+-keep class pt.rocket.utils.ScrollViewWithHorizontal { <init>(...); }
+
+# view res/layout/full_screen_gallery.xml #generated:6
+# view res/layout/product_size_guide_main.xml #generated:12
+-keep class pt.rocket.utils.photoview.PhotoView { <init>(...); }
+
+# view AndroidManifest.xml #generated:246
+-keep class pt.rocket.utils.receivers.InstallReceiver { <init>(...); }
+
+# view res/layout/product_details_fragment_related.xml #generated:21
+# view res/layout/teaser_products_group.xml #generated:27
+-keep class pt.rocket.utils.scrolls.HorizontalScrollGroup { <init>(...); }
+
+# view AndroidManifest.xml #generated:119
+-keep class pt.rocket.view.MainFragmentActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:124
+-keep class pt.rocket.view.MainFragmentTabletActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:94
+-keep class pt.rocket.view.SplashScreenActivity { <init>(...); }
+
+# view res/layout/my_account_fragment.xml #generated:52
+-keep class pt.rocket.view.fragments.MyAccountPushPreferences { <init>(...); }
+
+# view res/layout/main.xml #generated:79
+-keep class pt.rocket.view.fragments.NavigationFragment { <init>(...); }
+
+# onClick res/layout/checkout_header.xml #generated:20
+# onClick res/layout/checkout_header.xml #generated:55
+# onClick res/layout/checkout_header.xml #generated:91
+-keepclassmembers class * { *** onCheckoutHeaderClickListener(...); }
+
