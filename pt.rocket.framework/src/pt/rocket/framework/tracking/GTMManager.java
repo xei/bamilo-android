@@ -76,14 +76,13 @@ public class GTMManager {
         mTagManager = TagManager.getInstance(context);
         isContainerAvailable = false;
 
-//        mTagManager.setVerboseLoggingEnabled(true);
+        mTagManager.setVerboseLoggingEnabled(true);
         
         dataLayer = TagManager.getInstance(context).getDataLayer();
         
         CONTAINER_ID = context.getResources().getString(R.string.gtm_key);
-        
+        Log.e(TAG,"init id:"+CONTAINER_ID);
         PendingResult<ContainerHolder> pending = mTagManager.loadContainerPreferNonDefault(CONTAINER_ID,R.raw.gtm_default_container);
-        
         
         // The onResult method will be called as soon as one of the following happens:
         //     1. a saved container is loaded
@@ -92,11 +91,11 @@ public class GTMManager {
         pending.setResultCallback(new ResultCallback<ContainerHolder>() {
             @Override
             public void onResult(ContainerHolder containerHolder) {
-                Log.d("GTM", "onResult");
+                Log.e(TAG, "onResult");
                 ContainerHolderSingleton.setContainerHolder(containerHolder);
                 mContainer = containerHolder.getContainer();
                 if (!containerHolder.getStatus().isSuccess()) {
-                    Log.e("GTM", "failure loading container");
+                    Log.e(TAG, "failure loading container");
 //                    displayErrorToUser(R.string.load_error);
                     return;
                 }
@@ -106,7 +105,7 @@ public class GTMManager {
                     
                     @Override
                     public void onContainerAvailable(ContainerHolder arg0, String arg1) {
-                        Log.d("GTM", "onContainerAvailable");
+                        Log.e(TAG, "onContainerAvailable");
                         isContainerAvailable = true;      
                         processPendingEvents();
                     }
@@ -133,8 +132,7 @@ public class GTMManager {
         Log.d(TAG, "gtmTrackAppOpen campaignId:"+campaignId);
         Log.d(TAG, "gtmTrackAppOpen source:"+source);
         Log.d(TAG, "gtmTrackAppOpen medium:"+medium);
-        
-        
+
         Map<String, Object> message = null;
         String operator = "";
         operator = deviceInfo.getString(Constants.INFO_SIM_OPERATOR);        
@@ -701,7 +699,13 @@ public class GTMManager {
     private void sendEvent(Map<String, Object> event) {
         Log.i(TAG, " sendEvent");
         if (isContainerAvailable) {
-            Log.i(TAG, " PUSH DATA");
+            Log.i(TAG, " PUSH DATA:"+event.get(EVENT_TYPE));
+            Log.i(TAG, " PUSH DATA PENDING SIZE:"+pendingEvents.size());
+
+            if(pendingEvents != null && pendingEvents.size() > 0){
+                processPendingEvents();
+                pendingEvents.clear();
+            }
             dataLayer.push(event);
         } else {
             Log.i(TAG, " PENDING");

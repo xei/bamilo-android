@@ -320,5 +320,6 @@
     <string name="pinch_to_zoom_label">Pinch to zoom</string>
     <string name="string_rating">အမွတ္ေပးျခင္း</string>
     <string name="string_with_discount_only">ေလွ်ာ့ေစ်းျဖင့္သာ</string>
+    <string name="invalid_product"></string>
 
 </resources>
