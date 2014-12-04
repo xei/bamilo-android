@@ -53,10 +53,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import de.akquinet.android.androlog.Log;
 
@@ -854,10 +856,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         private void setData(ItemView view, CampaignItem item, int position) {
             //Log.d(TAG, "SET DATA");
             // Set stock off
-            if(getString(R.string.off_label).equals("-"))
-                view.mStockOff.setText(getString(R.string.off_label) + item.getMaxSavingPercentage() + "%");
-            else
-                view.mStockOff.setText(item.getMaxSavingPercentage() + "%\n" + getString(R.string.off_label));
+            setStockOff(view, item);
+            
             // Set name
             view.mName.setText(item.getName());
             setClickableView(view.mName, position);
@@ -1035,15 +1035,17 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
          */
         private void setPriceContainer(ItemView view, CampaignItem item){
             // Set price
-            view.mPrice.setText(CurrencyFormatter.formatCurrency(""+item.getPrice()));
-            view.mPrice.setPaintFlags(view.mPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             view.mPrice.setSelected(true);
             // Validate special price
             if(item.getSpecialPrice() != 0) {
+                view.mPrice.setVisibility(View.VISIBLE);
                 // Set discount
                 view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getSpecialPrice()));
+                view.mPrice.setText(CurrencyFormatter.formatCurrency(""+item.getPrice()));
+                view.mPrice.setPaintFlags(view.mPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 // Set discount
+                view.mPrice.setVisibility(View.GONE);
                 view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getPrice()));
             }
         }
@@ -1055,14 +1057,19 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
          * @author sergiopereira
          */
         private void setSaveContainer(ItemView view, CampaignItem item){
-            String label = getString(R.string.campaign_save);
-            String value = CurrencyFormatter.formatCurrency( "" + item.getSavePrice());
-            String mainText = label + " " + value;
-            SpannableString greenValue = new SpannableString(mainText);
-            greenValue.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.grey_middle)), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            greenValue.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.green_campaign_bar)), label.length() + 1, mainText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            view.mSave.setText(greenValue);
-            view.mSave.setSelected(true);
+            if(item.getSpecialPrice()>0){
+                String label = getString(R.string.campaign_save);
+                String value = CurrencyFormatter.formatCurrency( "" + item.getSavePrice());
+                String mainText = label + " " + value;
+                SpannableString greenValue = new SpannableString(mainText);
+                greenValue.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.grey_middle)), 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                greenValue.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.green_campaign_bar)), label.length() + 1, mainText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                view.mSave.setVisibility(View.VISIBLE);
+                view.mSave.setText(greenValue);
+                view.mSave.setSelected(true);
+            } else {
+                view.mSave.setVisibility(View.GONE);
+            }
         }
         
         /**
@@ -1077,6 +1084,31 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             view.setOnClickListener(this);
         }
  
+        /**
+         * Hide or show the stock off
+         * @param view
+         * @param item
+         * @author ricardosoares
+         */
+        private void setStockOff(ItemView view, CampaignItem item){
+            if(item.getMaxSavingPercentage() == 0){
+                view.mStockOff.setVisibility(View.GONE);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+                params.setMargins(0, 0, 0, 0);
+                view.mName.setLayoutParams(params);
+                
+            }else{
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+                params.setMargins((int)getResources().getDimension(R.dimen.margin_large), 0, 0, 0);
+                view.mName.setLayoutParams(params);
+                view.mStockOff.setVisibility(View.VISIBLE);
+                if(getString(R.string.off_label).equals("-"))
+                    view.mStockOff.setText(getString(R.string.off_label) + item.getMaxSavingPercentage() + "%");
+                else
+                    view.mStockOff.setText(item.getMaxSavingPercentage() + "%\n" + getString(R.string.off_label));
+            }
+        }
+        
         /**
          * Hide or show the size container
          * @param container
