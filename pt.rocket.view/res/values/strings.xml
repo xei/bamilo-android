@@ -398,5 +398,6 @@
     <string name="string_rating">Rating</string>
     <string name="string_with_discount_only">With discount only</string>
     <string name="invalid_product">Invalid Product</string>
+    <string name="category_filter_error">It was not possible to apply category filter</string>
 
 </resources>

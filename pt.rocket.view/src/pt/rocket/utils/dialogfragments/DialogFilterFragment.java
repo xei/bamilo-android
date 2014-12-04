@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -381,6 +382,32 @@ public class DialogFilterFragment extends DialogFragment {
         }
         
         /**
+         * Clean all saved values from filters
+         * 
+         */
+        private void cleanAllFilters(){
+            for (CatalogFilter filter : mFilters) {
+                cleanFilter(filter);
+               
+              //Log.d(TAG, "FILTER: " + filter.getId() + " VALUE:" + filter.getMinRangeValue() + " " + filter.getMaxRangeValue() + " " + filter.isRangeWithDiscount());
+            }
+        }
+        
+        /**
+         * Clean values of specified filter
+         * @param filter
+         * 
+         */
+        private void cleanFilter(CatalogFilter filter){
+            // Generic filter: Get filter id and values, clean and disable old selection
+            if(filter.hasOptionSelected())
+                filter.cleanSelectedOption();
+            // Price filter: Get range value 
+            if(filter.hasRangeValues())
+                filter.cleanRangeValues();
+        }
+        
+        /**
          * Add to content values the selected category into the PRODUCT_URL tag
          * @param filter
          * @param contentValues
@@ -388,10 +415,15 @@ public class DialogFilterFragment extends DialogFragment {
          */
         private void addCategoryFilter(CatalogFilter filter, ContentValues contentValues){
             CatalogFilterOption selectedOption = filter.getSelectedOption().valueAt(0);
-            String url = ((CategoryFilterOption) selectedOption).getUrl();
-            Log.d(TAG, "SELECTED A NEW CATEGORY: " + url );
-            if(url != null)
-                contentValues.put(GetProductsHelper.PRODUCT_URL, url);
+            if(selectedOption != null && selectedOption instanceof CategoryFilterOption){
+                String url = ((CategoryFilterOption) selectedOption).getUrl();
+                Log.d(TAG, "SELECTED A NEW CATEGORY: " + url );
+                if(url != null)
+                    contentValues.put(GetProductsHelper.PRODUCT_URL, url);
+            } else {
+                cleanFilter(filter);
+                Toast.makeText(getActivity(), getResources().getString(R.string.category_filter_error), Toast.LENGTH_SHORT).show();
+            }
         }
         
         /**
@@ -448,15 +480,7 @@ public class DialogFilterFragment extends DialogFragment {
         private void processOnClickClean(){
             Log.d(TAG, "CLICKED ON: CLEAR");
             // Clean all saved values
-            for (CatalogFilter filter : mFilters) {
-                // Generic filter: Get filter id and values, clean and disable old selection
-                if(filter.hasOptionSelected())
-                    filter.cleanSelectedOption();
-                // Price filter: Get range value 
-                if(filter.hasRangeValues())
-                    filter.cleanRangeValues();
-              //Log.d(TAG, "FILTER: " + filter.getId() + " VALUE:" + filter.getMinRangeValue() + " " + filter.getMaxRangeValue() + " " + filter.isRangeWithDiscount());
-            }
+            cleanAllFilters();
             // Update adapter
             ((FiltersArrayAdapter) mFilterListView.getAdapter()).notifyDataSetChanged();
         }
