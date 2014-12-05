@@ -16,6 +16,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 
 import com.google.android.gms.common.api.PendingResult;
@@ -76,7 +77,7 @@ public class GTMManager {
         mTagManager = TagManager.getInstance(context);
         isContainerAvailable = false;
 
-        mTagManager.setVerboseLoggingEnabled(true);
+        mTagManager.setVerboseLoggingEnabled(context.getResources().getBoolean(R.bool.gtm_debug));
         
         dataLayer = TagManager.getInstance(context).getDataLayer();
         

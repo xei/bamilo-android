@@ -39,6 +39,7 @@
     <string name="apptimize_apikey"></string>
     
 	<!-- GTM -->
-    <string name="gtm_key"></string>
+    <string name="gtm_key">GTM-NJ8Q4T</string>
+    <item name="gtm_debug" type="bool">false</item>
     
 </resources>

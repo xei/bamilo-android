@@ -43,4 +43,5 @@
 
 	<!-- GTM -->
     <string name="gtm_key">GTM-KWJK97</string>
+    <item name="gtm_debug" type="bool">false</item>
 </resources>

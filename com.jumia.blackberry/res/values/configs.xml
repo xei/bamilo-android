@@ -43,5 +43,6 @@
     
 	<!-- GTM -->
     <string name="gtm_key">GTM-NJ8Q4T</string>
+    <item name="gtm_debug" type="bool">false</item>
     
 </resources>

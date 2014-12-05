@@ -5,6 +5,7 @@
     <bool name="rest_host_auth_use_it">false</bool>
 	<item name="is_daraz_specific" type="bool">false</item>
 	<item name="is_shop_specific" type="bool">false</item>
+	<item name="is_bamilo_specific" type="bool">false</item>
 	<!-- WARNING: PRE INSTALL ONLY FOR HUAWEI -->
 	<bool name="create_pre_install_file">false</bool>
 	<!-- CUSTOM PRE INSTALL FOLDERS -->
@@ -52,5 +53,6 @@
     
     <!-- GTM -->
     <string name="gtm_key"></string>
+    <item name="gtm_debug" type="bool">false</item>
     
 </resources>
