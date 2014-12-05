@@ -585,6 +585,17 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
+        
+        if(errorCode == ErrorCode.NO_NETWORK){
+            showFragmentRetry(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getAndShowCampaign();
+                }
+            }, R.string.no_connect_dialog_content);
+            return true;
+        }
+        
         // Generic errors
         if(getBaseActivity().handleErrorEvent(bundle)) return true;
         
