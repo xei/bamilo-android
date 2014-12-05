@@ -5,8 +5,10 @@
     android:layout_height="wrap_content"
     android:background="@drawable/selector_navigation_basket_background"
     android:orientation="horizontal"
+    android:layoutDirection="locale"
     android:paddingBottom="@dimen/margin_mid"
     android:paddingLeft="@dimen/margin_mid"
+    android:paddingStart="@dimen/margin_mid"
     android:paddingTop="@dimen/margin_small" >
 
     <pt.rocket.components.customfontviews.TextView
@@ -18,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/navigation_cart_vertical_distance"
+        android:layout_marginStart="@dimen/navigation_cart_vertical_distance"
         android:layout_marginTop="@dimen/margin_small"
         android:orientation="vertical" >
 

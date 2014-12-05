@@ -149,6 +149,7 @@
         <item name="android:textColor">@color/orange_basic</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingStart">4dp</item>
         <item name="android:background">@drawable/selector_shop</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
@@ -348,6 +349,8 @@
         <item name="android:layout_marginBottom">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
+		<item name="android:layout_marginStart">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginEnd">@dimen/rounded_margin_mid</item>
         <item name="android:background">@drawable/background_content</item>
     </style>
 

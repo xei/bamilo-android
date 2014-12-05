@@ -379,7 +379,12 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         String text = getString(stringId);
         tVSearch.setText(text);
         tVSearch.setContentDescription("calabash_" + text);
-        tVSearch.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);
+        if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+            tVSearch.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconRes, 0);
+        } else {
+            tVSearch.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);            
+        }
+        
         tVSearch.setOnClickListener(listener);
         return navComponent;
     }

@@ -6,6 +6,7 @@
     android:layout_width="@dimen/loading_width"
     android:layout_height="@dimen/loading_height"
     android:layout_gravity="center"
+    android:layoutDirection="locale"
     android:clickable="true"
     android:gravity="center"
     android:orientation="horizontal" >
@@ -21,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
+        android:paddingStart="8dp"
         android:text="@string/loading_message"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/grey_light" />

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_height_normal"
+    android:layoutDirection="locale"
     android:background="@drawable/selector_listitem_highlight"
     android:paddingTop="6dp" >
 
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginStart="@dimen/margin_huge"
         android:ellipsize="end"
         android:fontFamily="roboto_regular"
         android:maxLines="1"

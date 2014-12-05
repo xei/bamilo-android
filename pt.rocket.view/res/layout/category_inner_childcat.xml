@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_height_normal"
+    android:layoutDirection="locale"
     android:background="@drawable/selector_listitem_highlight" >
 
     <pt.rocket.components.customfontviews.TextView
@@ -10,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/home_items_margin"
+        android:layout_marginStart="@dimen/home_items_margin"
         android:fontFamily="roboto_light"
         android:gravity="center_vertical"
         android:text="Category"
