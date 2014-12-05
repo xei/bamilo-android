@@ -15,6 +15,7 @@
         android:layout_marginLeft="@dimen/margin_huge"
         android:layout_marginStart="@dimen/margin_huge"
         android:ellipsize="end"
+        android:gravity="center_vertical"
         android:fontFamily="roboto_regular"
         android:maxLines="1"
         android:singleLine="true"

@@ -12,6 +12,7 @@ import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.tracking.GTMManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import de.akquinet.android.androlog.Log;
 
@@ -34,8 +35,6 @@ import de.akquinet.android.androlog.Log;
 public final class ShopSelector {
 	
 	private final static String TAG = ShopSelector.class.getSimpleName();
-	
-	private static Locale sLocale;
 
 	private static String sShopId = null;
 	
@@ -118,16 +117,22 @@ public final class ShopSelector {
 	 * 
 	 * @param context
 	 * @param language
+	 * @modified sergiopereira
 	 */
 	private static void setLocale(Context context, String language) {
-		Log.i(TAG, "setLocale language: " + language);
-		Resources res = context.getResources();
+		Log.i(TAG, "ON SET LOCALE: language " + language);
+		// Get language and country code
 		String[] languageCountry = language.split("_");
-		sLocale = languageCountry.length >= 2 ? new Locale(languageCountry[0], languageCountry[1]) : new Locale(language);
-		res.getConfiguration().locale = sLocale;
-		res.updateConfiguration(res.getConfiguration(), res.getDisplayMetrics());
-		Locale.setDefault(sLocale);
-        Log.i(TAG, "setLocale " + res.getConfiguration().toString());
+		// Create new locale
+		Locale locale = languageCountry.length >= 2 ? new Locale(languageCountry[0], languageCountry[1]) : new Locale(language);
+		// Set as default
+		Locale.setDefault(locale);
+		// Create and update configuration
+		Configuration config = new Configuration();
+		config.locale = locale;
+		Resources res = context.getResources();
+		res.updateConfiguration(config, res.getDisplayMetrics());
+        Log.i(TAG, "setLocale " + res.getConfiguration().toString() + " " + Locale.getDefault().toString());
 	}
 
 	/**
@@ -137,17 +142,17 @@ public final class ShopSelector {
 		// empty
 	}
 	
-	public static void resetConfiguration( Context context ) {
-		if ( sLocale == null)
-			return;
-		
-		Resources res = context.getResources();
-        Log.i(TAG, "resetConfiguration: old config = " + res.getConfiguration().toString());
-		res.getConfiguration().locale = sLocale;
-		res.updateConfiguration(res.getConfiguration(), res.getDisplayMetrics());
-		Locale.setDefault(sLocale);
-        Log.i(TAG, "resetConfiguration: new config = " + res.getConfiguration().toString());
-	}
+//	public static void resetConfiguration( Context context ) {
+//		if ( sLocale == null)
+//			return;
+//		
+//		Resources res = context.getResources();
+//        Log.i(TAG, "resetConfiguration: old config = " + res.getConfiguration().toString());
+//		res.getConfiguration().locale = sLocale;
+//		res.updateConfiguration(res.getConfiguration(), res.getDisplayMetrics());
+//		Locale.setDefault(sLocale);
+//        Log.i(TAG, "resetConfiguration: new config = " + res.getConfiguration().toString());
+//	}
 	
 	public static String getShopId() {
 		return sShopId;

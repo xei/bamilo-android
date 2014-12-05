@@ -275,7 +275,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Get fragment controller
         fragmentController = FragmentController.getInstance();
 
-        ShopSelector.resetConfiguration(getBaseContext());
+        //ShopSelector.resetConfiguration(getBaseContext());
         // Set action bar
         setupActionBar();
         // Set content view

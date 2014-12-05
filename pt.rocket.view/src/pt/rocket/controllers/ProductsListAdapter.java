@@ -19,9 +19,7 @@ import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -58,8 +56,6 @@ public class ProductsListAdapter extends BaseAdapter {
 
     private ArrayList<String> products;
 
-    int counter = 1;
-
     private final String reviewLabel;
     
     private final String reviewsLabel;
@@ -67,7 +63,6 @@ public class ProductsListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
 
     private Context context;
-    private int isNewResource;
 
     private boolean showList;
 
@@ -98,21 +93,14 @@ public class ProductsListAdapter extends BaseAdapter {
      *            show list (or grid)
      * @param numColumns
      */
-    public ProductsListAdapter(Context context, CatalogFragment parent, boolean showList, int numColumns, boolean isFrench) {
-
+    public ProductsListAdapter(Context context, CatalogFragment parent, boolean showList, int numColumns) {
         this.context = context.getApplicationContext();
         this.products = new ArrayList<String>();
         this.showList = showList;
-
         this.inflater = LayoutInflater.from(context);
-        reviewLabel = context.getString(R.string.review);
-        reviewsLabel = context.getString(R.string.reviews);
-
-        // Get is new image for respective country
-        this.isNewResource = !isFrench ? R.drawable.selector_is_new_en : R.drawable.selector_is_new_fr;
-
+        this.reviewLabel = context.getString(R.string.review);
+        this.reviewsLabel = context.getString(R.string.reviews);
         this.parentCatalog = parent;
-        
     }
 
     /*
@@ -186,7 +174,6 @@ public class ProductsListAdapter extends BaseAdapter {
 
             prodItem.brand = (TextView) itemView.findViewById(R.id.item_brand);
             prodItem.newFlag = (ImageView) itemView.findViewById(R.id.image_is_new);
-            prodItem.newFlag.setImageResource(isNewResource);
 
             prodItem.isFavourite = (ImageView) itemView.findViewById(R.id.image_is_favourite);
             itemView.setTag(prodItem);

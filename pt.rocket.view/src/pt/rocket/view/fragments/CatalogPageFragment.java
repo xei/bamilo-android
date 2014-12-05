@@ -8,11 +8,9 @@ import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
-import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.ProductsListAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.database.RelatedItemsTableHelper;
 import pt.rocket.framework.interfaces.IMetaData;
@@ -37,8 +35,6 @@ import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -105,7 +101,6 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
 
     // Flag used to stop the loading more when an error occurs
     private boolean mReceivedError = false;
-    private boolean isFrench = false;
 
     // pc products_content
     private RelativeLayout relativeLayoutPc;
@@ -167,9 +162,6 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
-
-        SharedPreferences sharedPrefs = activity.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        isFrench = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, "en").contains("fr");
     }
 
     /*
@@ -487,7 +479,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     
                 List<String> products = adapter.getProductsList();
                 updateGridColumns(showList);
-                adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, numColumns, isFrench);
+                adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, numColumns);
                 adapter.appendProducts(products);
                 gridView.setAdapter(adapter);
                 gridView.setSelection(mCurrentListPosition);
@@ -547,7 +539,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         final boolean hasProducts = (null != mSavedProductsSKU && mSavedProductsSKU.size() > 0 );
 
         // initialize new adapter depending on view choosen
-        ProductsListAdapter adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, numColumns, isFrench);
+        ProductsListAdapter adapter = new ProductsListAdapter(getBaseActivity(), parentFragment, showList, numColumns);
         if (!hasProducts) {
             mPageNumber = 1;
         } else {

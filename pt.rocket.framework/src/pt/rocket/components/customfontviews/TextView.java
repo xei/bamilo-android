@@ -151,5 +151,19 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
     public void setTextAppearance(Context context, int resid) {
         TextView.setTextAppearance(this, context, resid);
     }
+    
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        if (true) {
+//            int width = getMeasuredWidth();
+//            int height = getMeasuredHeight();
+//            Log.d("TAG", "########## TEXT: " + width + " " + height);
+//            //width = MeasureSpec.getSize(widthMeasureSpec);
+//            //height = MeasureSpec.getSize(heightMeasureSpec);
+//            //Log.d("TAG", "########## TEXT: " + width + " " + height);
+//            this.setMeasuredDimension(width, height + 15);
+//        }
+//    }
 
 }

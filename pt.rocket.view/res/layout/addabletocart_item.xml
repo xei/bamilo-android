@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|left"
-        android:src="@drawable/img_newarrival_en" />
+        android:src="@drawable/selector_is_new"/>
 
     <!-- INFO CONTAINER -->
 

@@ -19,7 +19,7 @@
         android:layout_gravity="top|left"
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_small"
-        android:src="@drawable/img_newarrival_en"
+        android:src="@drawable/img_newarrival"
         android:visibility="gone" />
 
     <pt.rocket.components.customfontviews.TextView
