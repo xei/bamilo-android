@@ -274,29 +274,18 @@ public class FavouriteTableHelper extends BaseTable {
 	 * @throws InterruptedException 
 	 */
 	public synchronized static boolean verifyIfFavourite(String sku) throws InterruptedException {
-		boolean result = false;
+		 
 		DarwinDatabaseSemaphore.getInstance().getLock();
 		
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-		String query = new StringBuilder("select count(*) from ").append(TABLE_NAME)
-				.append(" where ").append(_FAVOURITE_SKU).append(" = '").append(sku).append("'").toString();
+		String query = new StringBuilder("SELECT 1 FROM ").append(TABLE_NAME).append(" WHERE ").append(_FAVOURITE_SKU).append(" = ?").toString();
 		Log.i(TAG, "SQL RESULT query :  " + query);
-		Cursor cursor = db.rawQuery(query, null);
-		if (db.isOpen() && cursor != null && cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			
-			result = cursor.getInt(0) >= 1 ? true : false;
-			// Log result
-			Log.i(TAG, "SQL RESULT: " + cursor.getInt(0) + " result is : " + result);
-		}
-
-		// Validate cursor
-		if (cursor != null) {
-			cursor.close();
-		}
-
-		if (db.isOpen())
-		    db.close();
+		Cursor cursor = db.rawQuery(query, new String[] {sku});
+		boolean result = (cursor != null && cursor.getCount() > 0 ) ? true : false;
+		Log.i(TAG, "SQL RESULT: " + (cursor != null ? cursor.getCount() : 0) + " result is : " + result);
+		// Validate cursor and db
+		if (cursor != null) cursor.close();
+		if (db != null && db.isOpen()) db.close();
 
 		DarwinDatabaseSemaphore.getInstance().releaseLock();
 		
