@@ -362,7 +362,8 @@ public class TrackOrderFragment extends BaseFragment {
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
-        if (!isVisible()) {
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
         Log.d(TAG, "ON SUCCESS EVENT");
@@ -372,7 +373,8 @@ public class TrackOrderFragment extends BaseFragment {
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
-        if (!isVisible()) {
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
         Log.d(TAG, "ON ERROR EVENT");
