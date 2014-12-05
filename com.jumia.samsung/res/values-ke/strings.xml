@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="call_to_order_number">0205230600</string>
+    <string name="fallback_best">Kenya\'s No.1 Online Retailer</string>
+    <!-- Facebook App Id DO NOT TRANSLATE -->
+    <string name="facebook_app_id">@string/facebook_id_ke</string>
+
+</resources>

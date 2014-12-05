@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Fall back -->
+    <string name="call_to_order_number">0522456750</string>
+    <string name="fallback_best">Premier site de e-commerce au Maroc</string>
+    <!-- Facebook App Id DO NOT TRANSLATE -->
+    <string name="facebook_app_id">@string/facebook_id_ma</string>
+
+</resources>
