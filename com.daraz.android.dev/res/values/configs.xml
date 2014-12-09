@@ -8,7 +8,8 @@
     <item name="is_daraz_specific" type="bool">true</item>
 
 	<!-- COUNTRIES -->
-	<string name="countries_url">http://kaymu.com/dtmobapi/</string>
+	<!-- <string name="countries_url">http://kaymu.com/dtmobapi/</string> -->
+	<string name="countries_url">https://cld.pt/dl/download/06052f3c-c6ac-4a91-ae88-b739c1e08d91/dtmobapi?download=true</string>
 	
 	<!-- GA -->
     <bool name="ga_debug_mode">false</bool>
