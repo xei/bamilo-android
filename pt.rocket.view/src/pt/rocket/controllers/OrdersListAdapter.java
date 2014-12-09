@@ -156,7 +156,7 @@ public class OrdersListAdapter extends BaseAdapter {
         else
             item.orderLine.setVisibility(View.VISIBLE);
 
-        if (!BaseActivity.isTabletInLandscape(context)) {
+        if (item.productsCont != null) {
             item.productPaymentMethod.setText(orders.get(position).getmPayment());
             item.productDate.setText(orders.get(position).getmDate());
 
