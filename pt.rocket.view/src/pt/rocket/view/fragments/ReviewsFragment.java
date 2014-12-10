@@ -503,7 +503,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
     
     
     private void displayReviews(ProductRatingPage productRatingPage) {
-        ArrayList<ProductReviewComment> reviews = productRatingPage.getReviewComments();
+        ArrayList<ProductReviewComment> reviews = (productRatingPage != null) ? productRatingPage.getReviewComments(): new ArrayList<ProductReviewComment>();
         LinearLayout reviewsLin = (LinearLayout) getView().findViewById(R.id.linear_reviews);
         if(pageNumber == 1){
             try {
