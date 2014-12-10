@@ -198,16 +198,16 @@ public class FormFactory {
         return createGenericForm(context, form, loginForm, ctrlParams);
     }
 
-    /**
-     * Create the payment methods edit form 
-     * 
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    private DynamicForm createPaymentMethodsForm(Context context, Form form) {
-        return createPaymentMethodsForm(context, form, null);
-    }
+//    /**
+//     * Create the payment methods edit form 
+//     * 
+//     * @param context The context where the form is to be inserted
+//     * @param form The definition provided by the framework
+//     * @return An instance of a DynamicForm with the form representation implemented
+//     */
+//    private DynamicForm createPaymentMethodsForm(Context context, Form form) {
+//        return createPaymentMethodsForm(context, form, null);
+//    }
     
     /**
      * Create the payment methods edit form 

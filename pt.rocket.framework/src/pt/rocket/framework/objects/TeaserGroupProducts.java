@@ -5,7 +5,7 @@ package pt.rocket.framework.objects;
 
 import org.json.JSONObject;
 
-import pt.rocket.framework.objects.ProductTeaserGroup.TeaserProduct;
+import pt.rocket.framework.objects.TeaserGroupProducts.TeaserProduct;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -13,12 +13,12 @@ import android.os.Parcelable;
  * @author nutzer2
  * 
  */
-public class ProductTeaserGroup extends TeaserSpecification<TeaserProduct> {
+public class TeaserGroupProducts extends TeaserSpecification<TeaserProduct> {
 
 	/**
 	 * @param type
 	 */
-	public ProductTeaserGroup() {
+	public TeaserGroupProducts() {
 		super(TeaserGroupType.PRODUCT_LIST);
 	}
 
@@ -95,20 +95,20 @@ public class ProductTeaserGroup extends TeaserSpecification<TeaserProduct> {
 	 * Parcel constructor
 	 * @param in
 	 */
-	public ProductTeaserGroup(Parcel in) {
+	public TeaserGroupProducts(Parcel in) {
 		super(in);
 	}
 		
 	/**
 	 * Create parcelable 
 	 */
-	public static final Parcelable.Creator<ProductTeaserGroup> CREATOR = new Parcelable.Creator<ProductTeaserGroup>() {
-        public ProductTeaserGroup createFromParcel(Parcel in) {
-            return new ProductTeaserGroup(in);
+	public static final Parcelable.Creator<TeaserGroupProducts> CREATOR = new Parcelable.Creator<TeaserGroupProducts>() {
+        public TeaserGroupProducts createFromParcel(Parcel in) {
+            return new TeaserGroupProducts(in);
         }
 
-        public ProductTeaserGroup[] newArray(int size) {
-            return new ProductTeaserGroup[size];
+        public TeaserGroupProducts[] newArray(int size) {
+            return new TeaserGroupProducts[size];
         }
     };
 

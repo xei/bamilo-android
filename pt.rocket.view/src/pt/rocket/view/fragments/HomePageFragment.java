@@ -24,6 +24,7 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,8 +43,6 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
     public static final String HOME_PAGE_KEY = "homepage";
     
     public static final String SCROLL_STATE_KEY = "scroll";
-
-    // private static HomePageFragment sHomePageFragment;
 
     private LayoutInflater mInflater;
 
@@ -394,6 +393,8 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         TargetType targetType = (TargetType) view.getTag(R.id.target_type);
         // Get title
         String targetTitle = (String) view.getTag(R.id.target_title);
+        // Get origin
+        TeaserGroupType originType = (TeaserGroupType) view.getTag(R.id.origin_type);
         // Validate type
         if (targetType != null) {
             Bundle bundle = new Bundle();
@@ -412,7 +413,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
                 onClickBrand(targetUrl, bundle);
                 break;
             case CAMPAIGN:
-                onClickCampaign(view, targetUrl, targetTitle, bundle);
+                onClickCampaign(view, originType, targetUrl, targetTitle, bundle);
                 break;
             default:
                 Log.w(TAG, "WARNING ON CLICK: UNKNOWN VIEW");
@@ -485,29 +486,66 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
     }
     
     /**
-     * Process the campaignclick
+     * Process the campaign click.
      * @param view
      * @param targetUrl
      * @param targetTitle
      * @param bundle
      */
-    private void onClickCampaign(View view, String targetUrl, String targetTitle, Bundle bundle) {
-        String targetPosition = "0";
-        if (view.getTag(R.id.position) != null) {
-            targetPosition = view.getTag(R.id.position).toString();
-        }
-        if (targetUrl != null && targetPosition != null && hasSavedTeaserCampaigns()) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
+    private void onClickCampaign(View view, TeaserGroupType origin, String targetUrl, String targetTitle, Bundle bundle) {
+        // Get selected position
+        String targetPosition = view.getTag(R.id.position) != null ? view.getTag(R.id.position).toString() : "0";
+        // Case teaser campaign
+        if (origin == TeaserGroupType.CAMPAIGNS_LIST && hasSavedTeaserCampaigns()) {
+            Log.i(TAG, "ON CLICK CAMPAIGN FROM CAMPAIGN TEASER: " + targetTitle + " " + targetUrl + " " + targetPosition);
             // Tracking event
             AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, targetTitle, 0l);
-            // Selected campaign position
-            Log.d(TAG, "ON CLICK CAMPAIGN: " + targetTitle + " " + targetUrl + " " + targetPosition);
-            bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, mCampaigns);
-            bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, Integer.valueOf(targetPosition));
-            getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else 
-            Log.w(TAG, "WARNING: NPE ON CLICK CAMPAIGN: " + targetTitle + " " + targetUrl + " " + targetPosition + " " + hasSavedTeaserCampaigns());
+            // Show campaigns 
+            gotoCampaigns(mCampaigns, targetPosition, bundle);
+        }
+        // Case teaser image
+        else if((origin == TeaserGroupType.MAIN_ONE_SLIDE || origin == TeaserGroupType.STATIC_BANNER) && !TextUtils.isEmpty(targetUrl)) {
+            Log.i(TAG, "ON CLICK CAMPAIGN FROM IMAGE TEASER: " + targetTitle + " " + targetUrl + " " + targetPosition);
+            // Tracking event
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, targetTitle, 0l);
+            // Create campaign using the URL
+            ArrayList<TeaserCampaign> campaigns = createSignleCampaign(targetTitle, targetUrl);
+            // Default position
+            targetPosition = "0";
+            // Show campaign
+            gotoCampaigns(campaigns, targetPosition, bundle);
+        }
+        // Case unknown
+        else Log.w(TAG, "WARNING: NPE OR UNKNOWN CLICK FOR CAMPAIGNS: " + targetTitle + " " + targetUrl + " " + targetPosition + " " + hasSavedTeaserCampaigns());
+    }
+    
+    /**
+     * Show {@link CampaignsFragment}
+     * @param campaigns
+     * @param targetPosition
+     * @param bundle
+     * @author sergiopereira
+     */
+    private void gotoCampaigns(ArrayList<TeaserCampaign> campaigns, String targetPosition, Bundle bundle) {
+        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
+        bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, Integer.valueOf(targetPosition));
+        getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);     
+    }
+
+    /**
+     * Create an array with a single campaign
+     * @param targetTitle
+     * @param targetUrl
+     * @return ArrayList with one campaign
+     * @author sergiopereira
+     */
+    private ArrayList<TeaserCampaign> createSignleCampaign(String targetTitle, String targetUrl) {
+        ArrayList<TeaserCampaign> campaigns = new ArrayList<TeaserCampaign>();
+        TeaserCampaign campaign = new TeaserCampaign();
+        campaign.setTitle(targetTitle);
+        campaign.setUrl(targetUrl);
+        campaigns.add(campaign);
+        return campaigns; 
     }
     
     /**

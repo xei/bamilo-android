@@ -13,12 +13,12 @@ import android.os.Parcelable;
  * @author nutzer2
  * 
  */
-public class ImageTeaserGroup extends TeaserSpecification<TeaserImage> {
+public class TeaserGroupImages extends TeaserSpecification<TeaserImage> {
 
 	/**
 	 * @param type
 	 */
-	public ImageTeaserGroup(TeaserGroupType type) {
+	public TeaserGroupImages(TeaserGroupType type) {
 		super(type);
 	}
 
@@ -66,20 +66,20 @@ public class ImageTeaserGroup extends TeaserSpecification<TeaserImage> {
 	 * Parcel constructor
 	 * @param in
 	 */
-	public ImageTeaserGroup(Parcel in) {
+	public TeaserGroupImages(Parcel in) {
 		super(in);
 	}
 		
 	/**
 	 * Create parcelable 
 	 */
-	public static final Parcelable.Creator<ImageTeaserGroup> CREATOR = new Parcelable.Creator<ImageTeaserGroup>() {
-        public ImageTeaserGroup createFromParcel(Parcel in) {
-            return new ImageTeaserGroup(in);
+	public static final Parcelable.Creator<TeaserGroupImages> CREATOR = new Parcelable.Creator<TeaserGroupImages>() {
+        public TeaserGroupImages createFromParcel(Parcel in) {
+            return new TeaserGroupImages(in);
         }
 
-        public ImageTeaserGroup[] newArray(int size) {
-            return new ImageTeaserGroup[size];
+        public TeaserGroupImages[] newArray(int size) {
+            return new TeaserGroupImages[size];
         }
     };
 

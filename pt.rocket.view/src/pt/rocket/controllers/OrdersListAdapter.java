@@ -7,7 +7,6 @@ import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.objects.Order;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -155,7 +154,8 @@ public class OrdersListAdapter extends BaseAdapter {
             item.orderLine.setVisibility(View.GONE);
         else
             item.orderLine.setVisibility(View.VISIBLE);
-
+        
+        // Case portrait view
         if (item.productsCont != null) {
             item.productPaymentMethod.setText(orders.get(position).getmPayment());
             item.productDate.setText(orders.get(position).getmDate());
@@ -186,7 +186,7 @@ public class OrdersListAdapter extends BaseAdapter {
                     }
                 }
             });
-
+        // Case landscape view
         } else {
             if(selectedPosition != -1 && position == selectedPosition){
                 item.orderHeader.setActivated(true);

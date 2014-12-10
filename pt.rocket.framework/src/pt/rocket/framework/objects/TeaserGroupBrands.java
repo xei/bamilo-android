@@ -11,12 +11,12 @@ import android.os.Parcelable;
  * @author Manuel Silva
  * 
  */
-public class BrandsTeaserGroup extends TeaserSpecification<TeaserBrand> {
+public class TeaserGroupBrands extends TeaserSpecification<TeaserBrand> {
 
 	/**
 	 * @param type
 	 */
-	public BrandsTeaserGroup() {
+	public TeaserGroupBrands() {
 		super(TeaserGroupType.BRANDS_LIST);
 	}
 
@@ -43,20 +43,20 @@ public class BrandsTeaserGroup extends TeaserSpecification<TeaserBrand> {
 	 * Parcel constructor
 	 * @param in
 	 */
-	public BrandsTeaserGroup(Parcel in) {
+	public TeaserGroupBrands(Parcel in) {
 		super(in);
 	}
 		
 	/**
 	 * Create parcelable 
 	 */
-	public static final Parcelable.Creator<BrandsTeaserGroup> CREATOR = new Parcelable.Creator<BrandsTeaserGroup>() {
-        public BrandsTeaserGroup createFromParcel(Parcel in) {
-            return new BrandsTeaserGroup(in);
+	public static final Parcelable.Creator<TeaserGroupBrands> CREATOR = new Parcelable.Creator<TeaserGroupBrands>() {
+        public TeaserGroupBrands createFromParcel(Parcel in) {
+            return new TeaserGroupBrands(in);
         }
 
-        public BrandsTeaserGroup[] newArray(int size) {
-            return new BrandsTeaserGroup[size];
+        public TeaserGroupBrands[] newArray(int size) {
+            return new TeaserGroupBrands[size];
         }
     };
 	

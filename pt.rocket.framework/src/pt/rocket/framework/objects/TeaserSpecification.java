@@ -33,16 +33,16 @@ public abstract class TeaserSpecification<T extends ITargeting> implements IJSON
 		switch (type) {
 		case MAIN_ONE_SLIDE:
 		case STATIC_BANNER:
-			teaserSpecification = new ImageTeaserGroup(type);
+			teaserSpecification = new TeaserGroupImages(type);
 			break;
 		case PRODUCT_LIST:
-			teaserSpecification = new ProductTeaserGroup();
+			teaserSpecification = new TeaserGroupProducts();
 			break;
 		case CATEGORIES:
-			teaserSpecification = new CategoryTeaserGroup();
+			teaserSpecification = new TeaserGroupCategories();
 			break;
 		case BRANDS_LIST:
-			teaserSpecification = new BrandsTeaserGroup();
+			teaserSpecification = new TeaserGroupBrands();
 			break;
 		case TOP_BRANDS_LIST:
 			teaserSpecification = new TeaserGroupTopBrands();

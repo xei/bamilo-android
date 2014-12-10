@@ -31,11 +31,7 @@ public class CampaignsFragment extends BaseFragment {
     
     public static final String CAMPAIGNS_TAG = "campaigns";
     
-    public static final String CAMPAIGN_DEEP_LINK = "campaign_url_key";
-    
     public static final String CAMPAIGN_POSITION_TAG = "campaign_position";
-    
-    private static CampaignsFragment sCampaignsFragment;
 
     private ViewPager mCampaignPager;
 
@@ -51,8 +47,7 @@ public class CampaignsFragment extends BaseFragment {
      * @author sergiopereira
      */
     public static CampaignsFragment newInstance(Bundle bundle) {
-        sCampaignsFragment = new CampaignsFragment();
-        return sCampaignsFragment;
+        return new CampaignsFragment();
     }
 
     /**
@@ -64,7 +59,6 @@ public class CampaignsFragment extends BaseFragment {
                 R.layout.campaign_fragment_main,
                 R.string.campaigns_label,
                 KeyboardState.NO_ADJUST_CONTENT);
-        // 0
     }
 
     /*
