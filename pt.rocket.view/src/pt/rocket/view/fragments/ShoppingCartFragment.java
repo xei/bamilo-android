@@ -1042,7 +1042,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
      */
     public void deleteSelectedElements() {
         for (int position = items.size() - 1; position >= 0; position--) {
-            if (itemsValues.get(position).is_checked) {
+            if (itemsValues.get(position) != null && itemsValues.get(position).is_checked) {
                 itemsValues.remove(position);
                 mBeginRequestMillis = System.currentTimeMillis();
                 triggerRemoveItem(items.get(position));
