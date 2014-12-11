@@ -235,6 +235,15 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 linkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
                 Log.d(TAG, "FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario);
                 
+                
+                /**
+                 * Validate the city key for create/edit address form.
+                 * WARNING: In UG, sometimes the city comes as a list and crashes the application.
+                 * @author sergiopereira 
+                 */
+                if(key != null && key.equals(RestConstants.JSON_CITY_TAG)) inputType = InputType.text;
+                
+                
                 // Get rules
                 JSONObject validationObject = jsonObject.optJSONObject(RestConstants.JSON_VALIDATION_TAG);
 
