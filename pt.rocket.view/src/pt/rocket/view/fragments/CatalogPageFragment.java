@@ -356,13 +356,34 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     @Override
     public void onPause() {
         super.onPause();
+        Log.i(TAG, "ON PAUSE #" + mPageIndex);
         ProductsListAdapter adapter = (ProductsListAdapter) this.gridView.getAdapter();
         if (mTotalProducts > 0 && adapter != null) {
             mSavedProductsSKU = adapter.getProductsList();
             mCurrentListPosition = this.gridView.getFirstVisiblePosition();
         }
     }
+    
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onPause()
+     */
+    @Override
+    public void onStop() {
+        Log.i(TAG, "ON STOP #" + mPageIndex);
+        super.onStop();
+    }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onPause()
+     */
+    @Override
+    public void onDestroyView() {
+        Log.i(TAG, "ON DESTROY VIEW #" + mPageIndex);
+        super.onDestroyView();
+    }
+    
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Log.d(TAG, "ON SAVE INSTANCE STATE #" + mPageIndex);
@@ -460,20 +481,20 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     
             // Case no content
             if (null == adapter) {
-                Log.i(TAG, "ON RESUME -> Null Adapter");
+                Log.i(TAG, "ON INVALIDATE DATA -> Null Adapter");
                 mFilters = newFilters;
                 
                 initializeCatalogPage(showList);
                 
             } else if (newFilters != null && newFilters.getAsInteger("md5") != mFilterMD5) { // Case new filter
-                Log.i(TAG, "ON RESUME -> FILTER IS DIFF: " + newFilters.getAsInteger("md5") + " " + mFilterMD5);
+                Log.i(TAG, "ON INVALIDATE DATA -> FILTER IS DIFF: " + newFilters.getAsInteger("md5") + " " + mFilterMD5);
                 mFilterMD5 = newFilters.getAsInteger("md5");
                 mFilters = newFilters;
                 mSavedProductsSKU = null;
                 initializeCatalogPage(showList);
     
             } else if (mSwitchMD5 != switchMD5) {
-                Log.i(TAG, "ON RESUME -> SWITCH LAYOUT");
+                Log.i(TAG, "ON INVALIDATE DATA -> SWITCH LAYOUT");
     
                 mCurrentListPosition = this.gridView.getFirstVisiblePosition();
     
@@ -873,7 +894,10 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         Log.d(TAG, "ON SUCCESS EVENT");
         
         // Validate fragment state
-        if (isOnStoppingProcess) return;
+        if (isOnStoppingProcess){
+            Log.w(TAG,"ON SUCCESS EVENT: CONTENT DISCARTED");
+            return;
+        } 
         isProductClear = false;
         // Get Products Event
         final ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);

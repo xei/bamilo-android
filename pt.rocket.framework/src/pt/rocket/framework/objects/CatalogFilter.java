@@ -407,5 +407,9 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
             }
         }
     }
+    
+    public String toString(){
+        return "id: "+mId + ", name: "+mName + ", options:" +mFilterOptions.size()+", multi: "+mMulti+";";
+    }
 
 }

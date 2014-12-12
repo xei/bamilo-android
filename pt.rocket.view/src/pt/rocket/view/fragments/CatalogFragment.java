@@ -256,6 +256,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "ON VIEW CREATED");
         
         mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
 
@@ -348,7 +349,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                     totalItems.setVisibility(View.VISIBLE);
                 }
             }
-            mCatalogPagerAdapter.invalidateCatalogPages();
+//            mCatalogPagerAdapter.invalidateCatalogPages();
+            mCatalogPagerAdapter.notifyDataSetChanged();
         }
 
         RocketImageLoader.getInstance().startProcessingQueue();
