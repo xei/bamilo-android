@@ -200,6 +200,15 @@ public class TrackOrderFragment extends BaseFragment {
     private void setupView() {
         
         mEditText = (EditText) getView().findViewById(R.id.order_nr);
+        mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus && getBaseActivity() != null)
+                    getBaseActivity().hideKeyboard();
+                
+            }
+        });
         Button mButton = (Button) getView().findViewById(R.id.btn_track_order);
         mButton.setOnClickListener(trackOrderClickListener);
         if (!TextUtils.isEmpty(order_number)) {

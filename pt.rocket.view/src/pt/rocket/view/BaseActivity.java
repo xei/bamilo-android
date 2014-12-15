@@ -1826,7 +1826,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     public void hideKeyboard() {
-        // Log.d( TAG , "hideKeyboard" );
+//         Log.d(TAG , "hideKeyboard" );
         InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         View v = mDrawerLayout;

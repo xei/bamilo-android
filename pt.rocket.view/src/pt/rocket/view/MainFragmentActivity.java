@@ -55,12 +55,14 @@ import pt.rocket.view.fragments.SessionLoginFragment;
 import pt.rocket.view.fragments.SessionRegisterFragment;
 import pt.rocket.view.fragments.SessionTermsFragment;
 import pt.rocket.view.fragments.ShoppingCartFragment;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.view.inputmethod.InputMethodManager;
 
 import com.ad4screen.sdk.Tag;
 
@@ -275,7 +277,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         // Save the current backstack history
         outState.putStringArrayList(ConstantsIntentExtra.BACK_STACK, frags);
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -287,6 +289,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack) {
         showWarningVariation(false);
         
+        hideKeyboard(); 
         // Validate fragment type
         switch (type) {
         case HOME:
