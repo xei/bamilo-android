@@ -13,6 +13,7 @@ import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.OrderSummary;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.utils.Constants;
@@ -763,7 +764,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         setVisibility(mFallBackView, false);
         hideLoadingInfo(mLoadingView);
     }
-
+    
     /**
      * Show the retry view from the root layout
      * @param listener button
@@ -849,6 +850,23 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING NPE ON SHOW EMPTY LAYOUT");
         }
+    }
+    
+    /**
+     * Show continue
+     * @author sergiopereira
+     */
+    protected void showContinueShopping(OnClickListener listener) {
+        Log.i(TAG, "ON SHOW RETRY LAYOUT");
+        showFragmentEmpty(R.string.server_error, android.R.color.transparent, R.string.continue_shopping, listener);
+    }
+    
+    /**
+     * Process the click in continue shopping
+     * @author sergiopereira
+     */
+    protected void onClickContinueButton() {
+        getBaseActivity().onBackPressed();
     }
     
     /**
@@ -961,9 +979,5 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected long getLoadTime(){
         return mLoadTime;
     }
-    
-    /**
-     * ########### NEXT ########### 
-     */
 
 }

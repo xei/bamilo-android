@@ -586,14 +586,28 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             return true;
         }
         
-        if(errorCode == ErrorCode.NO_NETWORK){
-            showFragmentRetry(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getAndShowCampaign();
-                }
-            }, R.string.no_connect_dialog_content);
-            return true;
+        if(eventType != null){
+            if(errorCode == ErrorCode.NO_NETWORK){
+                ((CatalogFragment) getParentFragment()).disableCatalogButtons();
+                showFragmentRetry(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getAndShowCampaign();
+                    }
+                }, R.string.no_connect_dialog_content);
+                return true;
+            } else if (errorCode == ErrorCode.HTTP_STATUS) {
+                showContinueShopping(new OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        onClickContinueButton();
+                    }
+                });
+                return true;
+            } else if (getBaseActivity().handleErrorEvent(bundle)) {
+                return true;
+            }
         }
         
         // Generic errors

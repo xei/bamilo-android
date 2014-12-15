@@ -1049,14 +1049,6 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
 
         RocketImageLoader.getInstance().startProcessingQueue();
     }
-    /**
-     * Show continue
-     * @author sergiopereira
-     */
-    private void showContinueShopping() {
-        Log.i(TAG, "ON SHOW RETRY LAYOUT");
-        showFragmentEmpty(R.string.server_error, android.R.color.transparent, R.string.continue_shopping, this);
-    }
     
     private void onErrorEvent(Bundle bundle) {
         Log.d(TAG, "ON ERROR EVENT");
@@ -1089,7 +1081,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 }, R.string.no_connect_dialog_content);
                 return;
             } else if (errorCode == ErrorCode.HTTP_STATUS) {
-                showContinueShopping();
+                showContinueShopping(this);
                 return;
             } else if (getBaseActivity().handleErrorEvent(bundle)) {
                 return;
@@ -1167,14 +1159,6 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
      */
     private void onClickRetryButton() {
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, getArguments(), FragmentController.ADD_TO_BACK_STACK);
-    }
-    
-    /**
-     * Process the click in continue shopping
-     * @author sergiopereira
-     */
-    private void onClickContinueButton() {
-        getBaseActivity().onBackPressed();
     }
     
     /**

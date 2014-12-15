@@ -277,13 +277,5 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
             Log.w(TAG, "WARNING: NPE ON HIDE WIZARD", e);
         }
     }
-    
-    /**
-     * Process the click in continue shopping
-     * @author sergiopereira
-     */
-    private void onClickContinueButton() {
-        getBaseActivity().onBackPressed();
-    }
 
 }
