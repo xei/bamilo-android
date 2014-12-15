@@ -908,7 +908,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
 
         // Validate title
 //        if (TextUtils.isEmpty(mTitle)) {
-            mTitle = productsPage.getName();
+            mTitle = (!TextUtils.isEmpty(productsPage.getName())) ? productsPage.getName() : CatalogFragment.title;
            
             if(CatalogFragment.filterParams != null && CatalogFragment.filterParams.containsKey(ConstantsIntentExtra.SEARCH_QUERY) &&
                     !TextUtils.isEmpty(CatalogFragment.filterParams.getString(ConstantsIntentExtra.SEARCH_QUERY)) ){

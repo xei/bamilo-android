@@ -297,14 +297,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
 
-        if (mTotalProducts > 0) {
-            Log.d("FILTER"," ON RESUME 1 setTitle:"+title);
-            getBaseActivity().setTitleAndSubTitle(title,
-                    " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
-        } else {
-            Log.d("FILTER"," ON RESUME 2 setTitle:"+title);
-            getBaseActivity().setTitle(title);
-        }
+        setTitleAndOrSubTitle(title);
 
         Log.i(TAG, "DATA :  " + productsURL + " " + searchQuery + " " + navigationSource + " " + navigationPath);
 
@@ -413,12 +406,12 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
+        Log.d(TAG, "ON SAVED INSTANCE");
+        
         outState.putParcelableArrayList(FILTER_STATE_KEY, mCatalogFilter);
         outState.putParcelable(FILTER_VALUES_KEY, mCatalogFilterValues);
         outState.putParcelableArrayList(PRODUCTS_LIST, new ArrayList<Product>(mProductsMap.values()));
         outState.putInt(TOTAL_KEY, mTotalProducts);
-        Log.d("FILTER", " onSaveInstanceState 4 setTitle:" + title);
         outState.putString(TITLE_KEY, title);
 
         // save current page to be restored after a rotation
@@ -1105,11 +1098,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         mTotalProducts = totalProductsCount;
         mProductsMap.putAll(products);
 
-        if (mTotalProducts > 0)
-            getBaseActivity().setTitleAndSubTitle(title,
-                    " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
-        else
-            getBaseActivity().setTitle(title);
+        setTitleAndOrSubTitle(title);
 
         Bundle args = getArguments();
         if (null != args) {
@@ -1118,6 +1107,14 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     }
 
+    public void setTitleAndOrSubTitle(String title){
+        if (mTotalProducts > 0)
+            getBaseActivity().setTitleAndSubTitle(title,
+                    " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
+        else
+            getBaseActivity().setTitle(title);
+    }
+    
     public void invalidatePages() {
         CatalogPagerAdapter adapter = (CatalogPagerAdapter) mViewPager.getAdapter();
         if (null != adapter) {
