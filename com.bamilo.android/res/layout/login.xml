@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            style="@style/rounded_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <pt.rocket.components.customfontviews.TextView
+                style="@style/rounded_box_title_grey"
+                android:text="@string/login_sectiontitle" />
+
+            <View style="@style/divider_horizontal_orange" />
+
+            <LinearLayout
+                android:layout_width="@dimen/login_container_width"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/login_margin_medium"
+                android:orientation="vertical" >
+
+                <pt.rocket.components.customfontviews.FacebookTextView
+                    xmlns:fb="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/authButton"
+                    android:layout_width="match_parent"
+                    android:fontFamily="roboto_bold"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:background="@drawable/com_facebook_button_blue"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="16dp"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/white"
+                    android:drawableLeft="@drawable/com_facebook_inverse_icon"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/button_big_height"
+                    android:layout_margin="@dimen/rounded_margin_mid"
+                    android:text="@string/facebook_login_button_text"
+                    fb:login_text="@string/facebook_login_button_text"
+                    android:visibility="gone" />
+
+                <!-- android:layout_height="@dimen/button_big_height" -->
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/login_margin_medium"
+                    android:layout_marginLeft="@dimen/rounded_margin_mid"
+                    android:layout_marginRight="@dimen/rounded_margin_mid"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:id="@+id/form_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/form_item_height"
+                        android:layout_marginTop="@dimen/login_margin_medium" >
+
+                        <include layout="@layout/login_remember_checkbox" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <pt.rocket.components.customfontviews.Button
+                    android:id="@+id/middle_login_button_signin"
+                    style="@style/button_orange_bottom"
+                    android:contentDescription="@string/login_button_description"
+                    android:text="@string/login_label" />
+
+                <pt.rocket.components.customfontviews.TextView
+                    android:id="@+id/middle_login_link_fgtpassword"
+                    style="@style/text_normal"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/login_margin_high"
+                    android:layout_marginTop="@dimen/login_margin_small"
+                    android:text="@string/fgt_pass"
+                    android:textColor="@drawable/selector_link_blue" />
+
+                <pt.rocket.components.customfontviews.Button
+                    android:id="@+id/middle_login_link_register"
+                    style="@style/button_grey_bottom"
+                    android:layout_marginBottom="@dimen/rounded_margin_mid"
+                    android:contentDescription="@string/register_button_description"
+                    android:text="@string/register_button" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

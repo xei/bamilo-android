@@ -26,12 +26,12 @@
     <string name="dp_intent_label">Bamilo Live</string>
 
     <!-- NEW RELIC --> 
-    <string name="newrelic_token">AA08ccfd12adb63ba92f55f3b02ed596cc9aa9e768</string>
+    <string name="newrelic_token">AA55031c37ca1a1c324d8d7e92de9b51723114e240</string>
 
     <!-- ACCENGAGE -->
-    <item name="ad4push_enabled" type="bool">true</item>
-    <string name="ad4push_partner_id">rocketinternet05ece8cf759603d</string>
-    <string name="ad4push_private_key">d9c63ea8fd390b92e62277d3e2bfedb06228be00</string>
+    <item name="ad4push_enabled" type="bool">false</item>
+    <string name="ad4push_partner_id"></string>
+    <string name="ad4push_private_key"></string>
 
     <!-- ADJUST -->
     <item name="adjust_enabled" type="bool">true</item>
@@ -42,10 +42,10 @@
     <string name="apptimize_apikey"></string>
 
 	<!-- GTM -->
-    <string name="gtm_key">GTM-NXV7V2</string>  
+    <string name="gtm_key">GTM-5WLGHK</string>  
     <item name="gtm_debug" type="bool">false</item>
     
 	<!-- FACEBOOK -->
-    <string name="facebook_app_id">590570504382479</string>
+    <string name="facebook_app_id"></string>
 
 </resources>
