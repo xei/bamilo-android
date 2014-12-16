@@ -78,18 +78,18 @@ public class CatalogPagerAdapter extends FragmentPagerAdapter {
         this.isLandscape = isLandscape;
     }
 
-    public void invalidateCatalogPages() {
-        CatalogPageFragment pageFragment;
-        Bundle params = (Bundle) fragmentParameters.clone();
-        params.putBoolean(CatalogPageFragment.PARAM_IS_LANDSCAPE, isLandscape);
-
-        for (int index = 0; index < mSortOptions.size(); index++) {
-            pageFragment = (CatalogPageFragment) fragmentManager.findFragmentByTag(getFragmentTag(index));
-            if (null != pageFragment) {
-                pageFragment.invalidateData(params, true);
-            }
-        }
-    }  
+//    public void invalidateCatalogPages() {
+//        CatalogPageFragment pageFragment;
+//        Bundle params = (Bundle) fragmentParameters.clone();
+//        params.putBoolean(CatalogPageFragment.PARAM_IS_LANDSCAPE, isLandscape);
+//
+//        for (int index = 0; index < mSortOptions.size(); index++) {
+//            pageFragment = (CatalogPageFragment) fragmentManager.findFragmentByTag(getFragmentTag(index));
+//            if (null != pageFragment) {
+//                pageFragment.invalidateData(params, true);
+//            }
+//        }
+//    }  
     
     public void resetClearProduct() {
         CatalogPageFragment pageFragment;

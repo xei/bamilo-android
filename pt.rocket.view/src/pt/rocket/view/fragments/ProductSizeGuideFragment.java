@@ -239,8 +239,7 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
      * @author sergiopereira
      */
     private void showContinueShopping() {
-        Log.i(TAG, "ON SHOW RETRY LAYOUT");
-        showFragmentEmpty(R.string.server_error, android.R.color.transparent, R.string.continue_shopping, this);
+        showContinueShopping(this);
     }
     
     /*

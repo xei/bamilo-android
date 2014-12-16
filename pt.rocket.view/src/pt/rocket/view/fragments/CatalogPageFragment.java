@@ -370,19 +370,20 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
      */
     @Override
     public void onStop() {
-        Log.i(TAG, "ON STOP #" + mPageIndex);
         super.onStop();
+        Log.i(TAG, "ON STOP #" + mPageIndex);
     }
-
+    
     /*
      * (non-Javadoc)
-     * @see pt.rocket.view.fragments.BaseFragment#onPause()
+     * @see pt.rocket.view.fragments.BaseFragment#onDestroyView()
      */
     @Override
     public void onDestroyView() {
-        Log.i(TAG, "ON DESTROY VIEW #" + mPageIndex);
         super.onDestroyView();
+        Log.i(TAG, "ON DESTROY VIEW #" + mPageIndex);
     }
+    
     
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -895,9 +896,10 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         
         // Validate fragment state
         if (isOnStoppingProcess){
-            Log.w(TAG,"ON SUCCESS EVENT: CONTENT DISCARTED");
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         } 
+        
         isProductClear = false;
         // Get Products Event
         final ProductsPage productsPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);

@@ -605,8 +605,6 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
                     }
                 });
                 return true;
-            } else if (getBaseActivity().handleErrorEvent(bundle)) {
-                return true;
             }
         }
         

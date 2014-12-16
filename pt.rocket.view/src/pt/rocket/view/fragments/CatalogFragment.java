@@ -342,7 +342,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                     totalItems.setVisibility(View.VISIBLE);
                 }
             }
-//            mCatalogPagerAdapter.invalidateCatalogPages();
             mCatalogPagerAdapter.notifyDataSetChanged();
         }
 
@@ -406,7 +405,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "ON SAVED INSTANCE");
+        Log.i(TAG, "ON SAVED INSTANCE");
         
         outState.putParcelableArrayList(FILTER_STATE_KEY, mCatalogFilter);
         outState.putParcelable(FILTER_VALUES_KEY, mCatalogFilterValues);
@@ -430,6 +429,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
     @Override
     public void sendValuesToFragment(int identifier, Object values) {
+        // Update the product
         Product product = mProductsMap.get(values);
         if (null != product) {
             if (BaseFragment.FRAGMENT_VALUE_SET_FAVORITE == identifier) {
@@ -437,10 +437,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             } else if (BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE == identifier) {
                 product.getAttributes().setFavourite(false);
             }
-            if (null != mCatalogPagerAdapter) {
-                mCatalogPagerAdapter.invalidateCatalogPages();
-            }
-
         }
     }
 
@@ -1047,8 +1043,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             Log.d(TAG, "ON CLICK: SWITCH LAYOUT BUTTON");
             v.setEnabled(false);
 
-            // getBaseActivity().showProgress();
-
             showList = !showList;
 
             // Track
@@ -1061,13 +1055,12 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
             setSwitchLayoutButtonIcon();
 
-            // TODO: Valdiate this
-            // update totalUpdates
+            // Update switch md5
             mSwitchMD5++;
             Log.i(TAG, "Updating totalUpdates: " + mSwitchMD5);
 
             // Redraw layout
-            mCatalogPagerAdapter.invalidateCatalogPages();
+            mCatalogPagerAdapter.notifyDataSetChanged();
 
             v.setEnabled(true);
         }
@@ -1106,7 +1099,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         }
 
     }
-
+    
+    // Set Title or subtitle
     public void setTitleAndOrSubTitle(String title){
         if (mTotalProducts > 0)
             getBaseActivity().setTitleAndSubTitle(title,
@@ -1115,13 +1109,14 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             getBaseActivity().setTitle(title);
     }
     
-    public void invalidatePages() {
-        CatalogPagerAdapter adapter = (CatalogPagerAdapter) mViewPager.getAdapter();
-        if (null != adapter) {
-            adapter.invalidateCatalogPages();
-            adapter.notifyDataSetChanged();
-        }
-    }
+    
+//    public void invalidatePages() {
+//        CatalogPagerAdapter adapter = (CatalogPagerAdapter) mViewPager.getAdapter();
+//        if (null != adapter) {
+//            adapter.invalidateCatalogPages();
+//            adapter.notifyDataSetChanged();
+//        }
+//    }
 
     public ArrayList<CatalogFilter> getCatalogFilter() {
         return mCatalogFilter;

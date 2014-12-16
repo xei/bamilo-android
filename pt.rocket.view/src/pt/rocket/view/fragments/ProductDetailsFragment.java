@@ -1473,9 +1473,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 Toast.makeText(getBaseActivity(), getString(R.string.products_removed_favourite), Toast.LENGTH_SHORT).show();
             }
 
-            BaseFragment catalogFragment = (BaseFragment) getBaseActivity()
-                    .getSupportFragmentManager().
-                    findFragmentByTag(FragmentType.PRODUCT_LIST.toString());
+            BaseFragment catalogFragment = (BaseFragment) getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.PRODUCT_LIST.toString());
             if (null != catalogFragment) {
                 catalogFragment.sendValuesToFragment(fragmentMessage, mCompleteProduct.getSku());
             }
