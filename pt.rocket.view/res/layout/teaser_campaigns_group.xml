@@ -3,8 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/teaser_campaigns_margin_bottom"
+    android:layout_marginEnd="@dimen/teaser_margin"
     android:layout_marginLeft="@dimen/teaser_margin"
     android:layout_marginRight="@dimen/teaser_margin"
+    android:layout_marginStart="@dimen/teaser_margin"
     android:layout_marginTop="@dimen/rounded_margin_small"
     android:orientation="vertical" >
 
@@ -25,11 +27,15 @@
         android:id="@id/teaser_campaigns_group_title_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/campaign_title_button_height"
+        android:layout_marginEnd="1dp"
         android:layout_marginLeft="1dp"
         android:layout_marginRight="1dp"
+        android:layout_marginStart="1dp"
         android:background="@drawable/btn_campaign" >
 
         <LinearLayout
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_width="62.67dp"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -63,6 +69,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="93.33dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="93.33dp"
             android:fontFamily="roboto_bold"
             android:text="Categories"
             android:textColor="#fff"

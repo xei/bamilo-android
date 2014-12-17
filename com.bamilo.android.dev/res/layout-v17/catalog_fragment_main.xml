@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="ltr"
+    android:paddingBottom="0dp" >
+
+    <RelativeLayout
+        android:id="@+id/catalog_viewpager_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:duplicateParentState="true" >
+
+        <!-- TABS -->
+
+        <pt.rocket.components.androidslidingtabstrip.SlidingTabLayout
+            android:id="@+id/catalog_pager_tag"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sliding_tab_height"
+            android:layout_marginStart="@dimen/catalog_button_filter_width"
+            android:layout_marginLeft="@dimen/catalog_button_filter_width"
+            android:background="@drawable/background_tabs"
+            android:layoutDirection="ltr"
+            app:stsBottomBorderThickness="0dp"
+            app:stsIndicatorColor="@color/orange_tab_bar"
+            app:stsIndicatorThickness="@dimen/sliding_tab_inidicator_thickness" />
+
+        <!-- PAGER -->
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager_products_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/catalog_pager_tag"
+            android:duplicateParentState="true"
+            android:layoutDirection="ltr" />
+
+        <!-- BUTTONS CONTAINER -->
+
+        <RelativeLayout
+            android:id="@+id/products_buttons_container"
+            android:layout_width="@dimen/catalog_button_filter_width"
+            android:layout_height="@dimen/sliding_tab_height"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/white"
+            android:gravity="center|left|start"
+            android:visibility="visible" >
+
+            <!-- FILTER -->
+
+            <View
+                android:id="@+id/first_divider"
+                style="@style/divider_vertical"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@color/grey_middlelight" />
+
+            <ImageView
+                android:id="@+id/products_list_filter_button"
+                android:layout_width="37dp"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@id/first_divider"
+                android:layout_toRightOf="@id/first_divider"
+                android:scaleType="centerInside"
+                android:src="@drawable/selector_catalog_filter" />
+
+            <!-- SWITCH -->
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="25dp"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="0dp"
+                android:background="@color/grey_middlelight" />
+
+            <ImageView
+                android:id="@+id/products_switch_layout_button"
+                android:layout_width="37dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="false"
+                android:scaleType="centerInside"
+                android:src="@drawable/selector_catalog_gridview" />
+
+            <View
+                style="@style/divider_horizontal"
+                android:layout_height="0.75dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/grey_middlelight" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!-- NO RESULTS CONTAINER -->
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/catalog_viewpager_container"
+        layout="@layout/products_no_results" />
+
+    <!-- WIZARD CONTAINER -->
+
+    <include
+        android:id="@+id/tips_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/tips"
+        android:duplicateParentState="false"
+        android:visibility="visible" />
+
+</RelativeLayout>

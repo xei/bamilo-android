@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:gravity="center_vertical"
+        android:gravity="start|left|center_vertical"
+        android:layout_marginStart="@dimen/rounded_margin_mid"
         android:text="Inner category"
         android:textSize="@dimen/text_form" />
 

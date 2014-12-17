@@ -4,7 +4,6 @@
     android:paddingEnd="@dimen/rounded_margin_mid"
     android:paddingLeft="@dimen/rounded_margin_mid"
     android:paddingRight="@dimen/rounded_margin_mid"
-    android:layoutDirection="locale"
     android:paddingStart="@dimen/rounded_margin_mid" >
 
     <!-- CALL -->
