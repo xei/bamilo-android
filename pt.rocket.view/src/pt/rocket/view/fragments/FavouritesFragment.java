@@ -63,6 +63,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     protected final static int SINGLE_ITEM = 1;
 
     protected final static int NO_ERROR = -1;
+    
+    protected final static int OUT_OF_STOCK_ERROR = -2;
 
     protected static boolean isOnAddingAllItemsToCart = false;
 
@@ -760,7 +762,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 // Return string out of stock. Commented due to error already being visible to user.
                 //error = R.string.product_outof_stock; 
                 
-                error = NO_ERROR;
+                error = OUT_OF_STOCK_ERROR;
                 
                 // CASE ERROR ADDING
             } else if (errorMessages != null && errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
@@ -773,7 +775,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 /// Return string out of stock. Commented due to error already being visible to user.
                 //error = R.string.product_outof_stock; 
                 
-                error = NO_ERROR;
+                error = OUT_OF_STOCK_ERROR;
                 
                 // CASE UNKNOWN
             } else {
@@ -843,11 +845,11 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             }
         }
         // Case not added to cart and no error to display
-        else if (error != NO_ERROR){
+        else if (error != OUT_OF_STOCK_ERROR){
             message = getString(error);
         }
         // Show toast
-        if (!isOnStoppingProcess && error != NO_ERROR) {
+        if (!isOnStoppingProcess && error != OUT_OF_STOCK_ERROR) {
             Toast.makeText(getBaseActivity(), message, Toast.LENGTH_SHORT).show();
         }
     }
