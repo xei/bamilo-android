@@ -75,6 +75,7 @@
 -dontwarn android.support.**
 ########################### END proguard-android-optimize.txt ###########################
 
+-dontskipnonpubliclibraryclassmembers
 
 -dontwarn pt.rocket.jumia.dev.R*
 -dontwarn com.ad4screen.R*
