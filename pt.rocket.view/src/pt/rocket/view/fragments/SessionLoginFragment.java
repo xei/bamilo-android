@@ -51,12 +51,13 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.LayoutDirection;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.Request;
 import com.facebook.Session;
 import com.facebook.SessionLoginBehavior;
@@ -107,6 +108,8 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     private UiLifecycleHelper uiHelper;
 
     private boolean cameFromRegister = false;
+    
+    private FacebookTextView authButton;
     
     /**
      * 
@@ -188,7 +191,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
         register = view.findViewById(R.id.middle_login_link_register);
         container = (ViewGroup) view.findViewById(R.id.form_container);
-        FacebookTextView authButton = (FacebookTextView) view.findViewById(R.id.authButton);
+        authButton = (FacebookTextView) view.findViewById(R.id.authButton);
         authButton.setFragment(this);
         authButton.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);
         authButton.setReadPermissions(Arrays.asList("email"));
@@ -299,6 +302,12 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
      * @param exception
      */
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+        // Exception handling for no network error
+        if(exception instanceof FacebookAuthorizationException){
+            createNoNetworkDialog();
+            return;
+        }
+        
         if (state.isOpened()) {
             showFragmentLoading();
             // make request to the /me API
@@ -328,6 +337,33 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
             onSessionStateChange(session, state, exception);
         }
     };
+    
+    /**
+     * No network dialog for facebook exception handling
+     */
+    private void createNoNetworkDialog(){
+        dialog = DialogGenericFragment.createNoNetworkDialog(getActivity(), 
+                new OnClickListener() { 
+                    @Override
+                    public void onClick(View v) {                      
+                        authButton.performClick();
+                        if(dialog != null) dialog.dismiss();
+                        
+                    }
+                }, new OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        if(dialog != null) dialog.dismiss();
+                        
+                    }
+                }, false);
+         try {
+             dialog.show(getActivity().getSupportFragmentManager(), null);
+         } catch (Exception e) {
+             
+         }
+    }
 
     /*
      * (non-Javadoc)
