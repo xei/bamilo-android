@@ -757,8 +757,11 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 if (mAddableToCartList != null && !mAddableToCartList.isEmpty()) {
                     mAddableToCartList.get(pos).setVariationStockWarning(true);
                 }
-                // Return string out of stock
-                error = R.string.product_outof_stock;
+                // Return string out of stock. Commented due to error already being visible to user.
+                //error = R.string.product_outof_stock; 
+                
+                error = NO_ERROR;
+                
                 // CASE ERROR ADDING
             } else if (errorMessages != null && errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
                 Log.i(TAG, "ON RESPONSE ERROR: CODE_ORDER_PRODUCT_ERROR_ADDING");
@@ -767,8 +770,11 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 if (mAddableToCartList != null && !mAddableToCartList.isEmpty()) {
                     mAddableToCartList.get(pos).setVariationStockWarning(true);
                 }
-                // Return string out of stock
-                error = R.string.product_outof_stock;
+                /// Return string out of stock. Commented due to error already being visible to user.
+                //error = R.string.product_outof_stock; 
+                
+                error = NO_ERROR;
+                
                 // CASE UNKNOWN
             } else {
                 Log.i(TAG, "ON RESPONSE ERROR: " + errorCode.toString());
@@ -836,12 +842,12 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 message = getString(error);
             }
         }
-        // Case not added to cart
-        else {
+        // Case not added to cart and no error to display
+        else if (error != NO_ERROR){
             message = getString(error);
         }
         // Show toast
-        if (!isOnStoppingProcess) {
+        if (!isOnStoppingProcess && error != NO_ERROR) {
             Toast.makeText(getBaseActivity(), message, Toast.LENGTH_SHORT).show();
         }
     }
