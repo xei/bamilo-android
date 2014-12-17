@@ -17,26 +17,34 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/rounded_margin_mid"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginStart="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_large" >
 
         <pt.rocket.components.customfontviews.TextView
             android:id="@+id/articles_count"
             style="@style/text_normal"
+            android:gravity="center_vertical|left|start"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/price_unreduced" />
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/price_unreduced"
+            android:layout_toStartOf="@+id/price_unreduced" />
 
         <pt.rocket.components.customfontviews.TextView
             android:id="@+id/price_unreduced"
             style="@style/text_normal"
+            android:layout_marginEnd="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
             android:layout_toLeftOf="@+id/price_total"
+            android:layout_toStartOf="@+id/price_total"
             android:textColor="@color/grey_light" />
 
         <pt.rocket.components.customfontviews.TextView
             android:id="@+id/price_total"
             style="@style/text_title"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:textColor="@color/red_basic" />
     </RelativeLayout>
@@ -47,8 +55,10 @@
         android:id="@+id/price_rules_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/rounded_margin_mid"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginStart="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_mid"
         android:orientation="vertical"
         android:visibility="gone" />
@@ -59,8 +69,10 @@
         android:id="@+id/vat_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/rounded_margin_mid"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginStart="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_mid"
         android:visibility="visible" >
 
@@ -71,6 +83,7 @@
         <pt.rocket.components.customfontviews.TextView
             android:id="@+id/vat_value"
             style="@style/text_normal"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true" />
     </RelativeLayout>
 
@@ -80,8 +93,10 @@
         android:id="@+id/shipping_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/rounded_margin_mid"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginStart="@dimen/rounded_margin_mid"
         android:visibility="gone" >
 
         <pt.rocket.components.customfontviews.TextView
@@ -91,6 +106,7 @@
         <pt.rocket.components.customfontviews.TextView
             android:id="@+id/shipping_value"
             style="@style/text_normal"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="@string/free_label" />
     </RelativeLayout>
@@ -101,8 +117,10 @@
         android:id="@+id/extra_costs_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/rounded_margin_mid"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginStart="@dimen/rounded_margin_mid"
         android:visibility="gone" >
 
         <pt.rocket.components.customfontviews.TextView
@@ -112,6 +130,7 @@
         <pt.rocket.components.customfontviews.TextView
             android:id="@+id/extra_costs_value"
             style="@style/text_normal"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true" />
     </RelativeLayout>
 
@@ -121,8 +140,10 @@
         android:id="@+id/voucher_info_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/rounded_margin_mid"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginStart="@dimen/rounded_margin_mid"
         android:visibility="visible" >
 
         <pt.rocket.components.customfontviews.TextView
@@ -133,6 +154,7 @@
         <pt.rocket.components.customfontviews.TextView
             android:id="@+id/text_voucher"
             style="@style/text_normal"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:textColor="@color/green_basic" />
     </RelativeLayout>
@@ -143,8 +165,10 @@
         android:id="@+id/total_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/rounded_margin_mid"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginStart="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_mid"
         android:visibility="visible" >
 
@@ -155,6 +179,7 @@
         <pt.rocket.components.customfontviews.TextView
             android:id="@+id/total_value"
             style="@style/text_title"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:textColor="@color/red_basic" />
     </RelativeLayout>

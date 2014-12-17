@@ -21,7 +21,9 @@
             <pt.rocket.components.customfontviews.TextView
                 style="@style/text_normal"
                 android:layout_alignBaseline="@+id/shoppingcart_title"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_marginEnd="@dimen/rounded_margin_mid"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
                 android:text="@string/shoppingcart_quantity"
                 android:textColor="@color/grey_middlelight" />
@@ -45,8 +47,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/rounded_margin_small"
+            android:layout_marginEnd="@dimen/rounded_margin_mid"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_marginStart="@dimen/rounded_margin_mid"
             android:layout_marginTop="@dimen/rounded_margin_small"
             layout="@layout/shopping_basket_subtotal_element" />
 

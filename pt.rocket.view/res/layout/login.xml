@@ -6,12 +6,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layoutDirection="locale"
         android:orientation="vertical" >
 
         <LinearLayout
             style="@style/rounded_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layoutDirection="locale"
             android:orientation="vertical" >
 
             <pt.rocket.components.customfontviews.TextView
@@ -25,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/login_margin_medium"
+                android:layoutDirection="locale"
                 android:orientation="vertical" >
 
                 <pt.rocket.components.customfontviews.FacebookTextView
@@ -37,9 +40,12 @@
                     android:background="@drawable/com_facebook_button_blue"
                     android:paddingLeft="12dp"
                     android:paddingRight="16dp"
+					android:paddingStart="12dp"
+                    android:paddingEnd="16dp"
                     android:textSize="16sp"
                     android:textColor="@android:color/white"
                     android:drawableLeft="@drawable/com_facebook_inverse_icon"
+                    android:drawableStart="@drawable/com_facebook_inverse_icon"
                     android:layout_height="wrap_content"
                     android:minHeight="@dimen/button_big_height"
                     android:layout_margin="@dimen/rounded_margin_mid"
@@ -54,10 +60,14 @@
                     android:layout_marginBottom="@dimen/login_margin_medium"
                     android:layout_marginLeft="@dimen/rounded_margin_mid"
                     android:layout_marginRight="@dimen/rounded_margin_mid"
+					android:layout_marginStart="@dimen/rounded_margin_mid"
+                    android:layout_marginEnd="@dimen/rounded_margin_mid"
+                    android:layoutDirection="locale"
                     android:orientation="vertical" >
 
                     <LinearLayout
                         android:id="@+id/form_container"
+                        android:layoutDirection="locale"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical" >
@@ -66,9 +76,10 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/form_item_height"
+                        android:gravity="start|left|center_vertical"
                         android:layout_marginTop="@dimen/login_margin_medium" >
 
-                        <include layout="@layout/login_remember_checkbox" />
+                        <include layout="@layout/login_remember_checkbox"/>
                     </LinearLayout>
                 </LinearLayout>
 

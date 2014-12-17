@@ -25,11 +25,11 @@
     <string name="call_to_order">,ေအာ္ဒါမွာရန္ဖုန္းေခၚမည္</string>
     <string name="campaign_choose_size">သင္၏ဆိုဒ္နံပါတ္ေရြးခ်ယ္ပါ</string>
     <string name="campaign_ramaining_stock">ကုန္ပစၥည္းလက္က်န္ :</string>
-    <string name="campaign_save">သင္ .... သက္သာၿပီး</string>
+    <string name="campaign_save">သင္ သက္သာၿပီး</string>
     <string name="campaign_stock_alert">သင္ေရြးခ်ယ္ထားေသာ ကုန္ပစၥည္းမွာ လက္က်န္မရွိေတာ့ပါ</string>
     <string name="campaigns_label">ပြဲလမ္းသဘင္မ်ား</string>
     <string name="campaing_offer_ended">ကမ္းလွမ္းခ်က္မ်ား ၿပီးဆံုးသြားပါၿပီ!</string>
-    <string name="campaing_timer_end">       :တြင္ ၿပီးဆံုးပါၿပီ</string>
+    <string name="campaing_timer_end">:တြင္ ၿပီးဆံုးပါၿပီ</string>
     <string name="cancel_label">ပယ္ဖ်က္ရန္</string>
     <string name="cart_label">,ေစ်း၀ယ္တြန္းလွည္း</string>
     <string name="catalog_edit_filters">စစ္ထုတ္ျခင္းမ်ားကို ျပင္ဆင္ရန္</string>
@@ -58,14 +58,14 @@
     <string name="creation_date">စတင္ျပဳလုပ္ေသာေန႔စြဲ :</string>
     <string name="dialog_to_reviews">သံုးသပ္ခ်က္မ်ားကိုၾကည္႕ရွဳရန္</string>
     <string name="done_label">ၿပီးပါၿပီ</string>
-    <string name="dynamic_errortext">&#8230; သည္ မမွန္ကန္ပါ။</string>
+    <string name="dynamic_errortext">သည္ မမွန္ကန္ပါ။</string>
     <string name="edit_address">လိပ္စာအား ျပင္ဆင္မည္</string>
     <string name="edit_address_success">လိပ္စာျပန္ျပင္ဆင္ၿပီးပါၿပီ</string>
     <string name="error_add_to_cart_failed">,ေစ်း၀ယ္လွည္းအတြင္းထည္႔သြင္း၍မရပါ</string>
     <string name="error_add_to_shopping_cart">ဤပစၥည္းအား ေစ်း၀ယ္လွည္းအတြင္းထည္႔သြင္းမရပါ။ ေက်းဇူးျပဳ၍ ထပ္မံႀကိဳးစားပါ။</string>
     <string name="error_add_to_shopping_cart_quantity">ခြင့္ျပဳထားေသာပမာဏထက္ ပိုမိုမွာယူ၍မရပါ။</string>
     <string name="error_forgotpassword_title">Password ျပန္လည္ရယူျခင္း မေအာင္ျမင္ပါ။</string>
-    <string name="error_ismandatory">&#8230; တြင္ ေက်းဇူးျပဳ၍ ျဖည္႔သြင္းပါ။</string>
+    <string name="error_ismandatory">တြင္ ေက်းဇူးျပဳ၍ ျဖည္႔သြင္းပါ။</string>
     <string name="error_login_title">Login မေအာင္ျမင္ပါ</string>
     <string name="error_no_connection">No connection</string>
     <string name="error_occured">တစ္စံုတရာ မွားယြင္းေနပါသည္။</string>
@@ -76,7 +76,7 @@
     <string name="error_tracking_order_text">ရွာေဖြေနေသာေအာ္ဒါ ID ရွာမေတြ႔ပါ။ ေက်းဇူးျပဳ၍ ေအာ္ဒါIDအား ျပန္စစ္ေဆးၿပီး ထပ္မံႀကိဳးစားပါ။</string>
     <string name="exit_press_back_again">App မွ ထြက္လိုပါက " ေနာက္သို႔" ခလုတ္အားထပ္ႏွိပ္ပါ။</string>
     <string name="extra_costs">အပိုကုန္က်စရိတ္ :</string>
-    <string name="extra_costs_label">အပိုကုန္က်စရိတ္ </string>
+    <string name="extra_costs_label">အပိုကုန္က်စရိတ္ &#160;</string>
     <string name="facebook_login_button_text">Facebook အေကာင့္ျဖင့္ Login ၀င္ရန္</string>
     <string name="facebook_signup_button_text">Facebook အေကာင့္ျဖင့္ Sign Up လုပ္ရန္</string>
     <string name="fallback_audio">အသံပိုင္းဆိုင္ရာပစၥည္းမ်ား ႏွင္႔ ဗီဒီယို</string>
@@ -90,7 +90,7 @@
     <string name="fallback_health">အလွအပ ႏွင့္ က်န္းမာေရး</string>
     <string name="fallback_home_office">အိမ္သံုး၊ရုံးသံုး ပစၥည္းမ်ား</string>
     <string name="fallback_maintenance">ထိန္းသိမ္းေစာင့္ေရွာက္မႈ</string>
-    <string name="fallback_maintenance_text">... သည္ ယခုလက္ရွိတြင္ ျပဳျပင္မႈမ်ား ျပဳလုပ္ေနပါသည္။</string>
+    <string name="fallback_maintenance_text">&#8230; သည္ ယခုလက္ရွိတြင္ ျပဳျပင္မႈမ်ား ျပဳလုပ္ေနပါသည္။</string>
     <string name="fallback_maintenance_text_bottom">အခ်ိန္တိုအတြင္းၿပီးစီးရန္ ၾကိဳးစားေနပါသည္။ ေနာက္ထပ္ႀကိဳးစားၾကည္႔ပါ။</string>
     <string name="fallback_mobile">မိုဘိုင္းလ္ဖုန္းမ်ား</string>
     <string name="fallback_welcome">မွႀကိဳဆိုပါသည္။</string>
@@ -137,7 +137,7 @@
     <string name="my_order_qty">Qty</string>
     <string name="my_order_ship_fee_label">သယ္ယူပို႔ေဆာင္ေရးကုန္က်စရိတ္</string>
     <string name="my_order_total_label">စုစုေပါင္း</string>
-    <string name="my_order_voucher_label">,ေဘာက္ခ်ာ</string>
+    <string name="my_order_voucher_label">,ေဘာက္ခ်ာ &#160;</string>
     <string name="my_profile">ကြ်ႏု္ပ္၏ Profile</string>
     <string name="myaccount_email_notifications">Email Notifications</string>
     <string name="myaccount_userdata">သံုးစြဲသူအခ်က္အလက္</string>
@@ -192,17 +192,17 @@
     <string name="product_variance_choose">,ေက်းဇူးျပဳ၍ ေရြးခ်ယ္ပါ</string>
     <string name="product_variance_choose_error">,ေက်းဇူးျပဳ၍ တစ္ခုေရြးခ်ယ္ပါ</string>
     <string name="product_variant_placeholder">&#8230;</string>
-    <string name="products_added_favourite">ကြ်ႏု္ပ္အႀကိဳက္ဆံုးစာရင္းသို႔ထည္႔သြင္းၿပီးပါၿပီ</string>
+    <string name="products_added_favourite">ကြ်ႏု္ပ္အႀကိဳက္ဆံုးစာရင္းသို႔ထည္႔သြင္းၿပီးပါၿပီ&#160;</string>
     <string name="products_could_notloaded">ပစၥည္းမ်ား Loading ျပဳလုပ္၍မရပါ။ ေက်းဇူးျပဳ၍ ထပ္မံႀကိဳးစားပါ။</string>
     <string name="products_label">ကုန္ပစၥည္းမ်ား</string>
-    <string name="products_removed_favourite">ကြ်ႏု္ပ္အႀကိဳက္ဆံုးစာရင္းမွ ဖယ္ရွားၿပီးပါၿပီ</string>
-    <string name="products_sort_bestrated">အေကာင္းဆံုးအမွတ္ေပးခ်က္</string>
-    <string name="products_sort_brand">Brand</string>
-    <string name="products_sort_name">အမည္</string>
-    <string name="products_sort_newin">အသစ္ျဖစ္ပါသည္</string>
-    <string name="products_sort_popularity">လူႀကိဳက္မ်ားေက်ာ္ၾကားမႈ</string>
-    <string name="products_sort_pricedown">,ေစ်းႏႈန္းအက်</string>
-    <string name="products_sort_priceup">,ေစ်းႏႈန္းအတက္</string>
+    <string name="products_removed_favourite">ကြ်ႏု္ပ္အႀကိဳက္ဆံုးစာရင္းမွ ဖယ္ရွားၿပီးပါၿပီ&#160;</string>
+    <string name="products_sort_bestrated">အေကာင္းဆံုးအမွတ္ေပးခ်က္&#160;</string>
+    <string name="products_sort_brand">Brand&#160;</string>
+    <string name="products_sort_name">အမည္&#160;</string>
+    <string name="products_sort_newin">အသစ္ျဖစ္ပါသည္&#160;</string>
+    <string name="products_sort_popularity">လူႀကိဳက္မ်ားေက်ာ္ၾကားမႈ&#160;</string>
+    <string name="products_sort_pricedown">,ေစ်းႏႈန္းအက်&#160;</string>
+    <string name="products_sort_priceup">,ေစ်းႏႈန္းအတက္&#160;</string>
     <string name="products_tip_favourite_text">အႀကိဳက္ဆံုးကုန္ပစၥည္းမ်ားကို ကလစ္ႏွိပ္လိုက္ပါ!</string>
     <string name="products_tip_swipe_text">အမ်ိဳးအစားခြဲျခားပံုေျပာင္းရန္ဘယ္ညာ တစ္ဘက္ဘက္သို႔ေရႊ႕ပါ</string>
     <string name="promotion_tip_tap_text">ကုဒ္အားclipboardသို႕ ေကာ္ပီကူးရန္ အေပၚရွိအကြက္ကို ႏွိပ္ျပီး လြယ္ကူစြာ ေငြေပးေခ်ပါ။</string>
@@ -219,7 +219,7 @@
     <string name="register_dialog_birthday">သင္၏ေမြးရက္</string>
     <string name="register_required_text">,ေက်းဇူးျပဳ၍ လိုအပ္ေသာကြက္လပ္မ်ားေတြ ျဖည္႔ပါ</string>
     <string name="register_sectiontitle">အေကာင့္အခ်က္အလက္</string>
-    <string name="register_text_terms_a">... အား ကြ်ႏု္ပ္သေဘာတူ ပါသည္။</string>
+    <string name="register_text_terms_a">အား ကြ်ႏု္ပ္သေဘာတူ ပါသည္။</string>
     <string name="register_text_terms_b">စည္းမ်ဥ္းစည္းကမ္းမ်ား</string>
     <string name="register_title">အေကာင့္ျပဳလုပ္ရန္</string>
     <string name="registration_text">စာရင္းသြင္းရန္</string>
@@ -227,7 +227,7 @@
     <string name="retype_new_password_hint">Password အတည္ျပဳ ရန္</string>
     <string name="review">သံုးသပ္ခ်က္</string>
     <string name="reviews">သံုးသပ္ခ်က္မ်ား</string>
-    <string name="reviews_empty">ဤပစၥည္းအားအမွတ္ေပးျခင္းမရွိေသးပါ!</string>
+    <string name="reviews_empty">ဤပစၥည္းအား အမွတ္ေပးျခင္း မရွိေသးပါ</string>
     <string name="save_changes_label">,ေျပာင္းလဲမႈမ်ားအားသိမ္းဆည္းမည္</string>
     <string name="save_label">သိမ္းဆည္းရန္</string>
     <string name="search_label">ရွာေဖြရန္</string>
@@ -247,7 +247,7 @@
     <string name="shoppingcart_dialog_title">,ေစ်း၀ယ္တြန္းလွည္း</string>
     <string name="shoppingcart_instock">ကုန္ပစၥည္းရွိပါေသးသည္။</string>
     <string name="shoppingcart_item_btn_delete">ဖ်က္ရန္</string>
-    <string name="shoppingcart_items">ကုန္ပစၥည္းမ်ား</string>
+    <string name="shoppingcart_items">ကုန္ပစၥည္းမ်ား </string>
     <string name="shoppingcart_minamount">ကြ်ႏု္ပ္တို႔၏အနည္းဆံုးေအာ္ဒါအေရအတြက္ေအာက္ ျဖစ္ပါက သယ္ယူပို႔ေဆာင္ေပး၍မရပါ။</string>
     <string name="shoppingcart_minamount_waiting">Waiting for information about minimal order amount from server</string>
     <string name="shoppingcart_notinstock">ကုန္ပစၥည္းလက္က်န္မရွိပါ</string>
@@ -291,7 +291,7 @@
     <string name="voucher_error_message">,ေက်းဇူးျပဳ ၍ မွန္ကန္ေသာကူပြန္နံပါတ္ျဖည္႔ပါ</string>
     <string name="voucher_message_hint">ဤေနရာတြင္သင္၏ကူပြန္နံပါတ္ျဖည္႔ပါ</string>
     <string name="voucher_remove">ဖယ္ရွားရန္</string>
-    <string name="voucher_use">အသံုးျပဳရန္</string>
+    <string name="voucher_use">အသံုးျပဳရန္ &#160;</string>
     <string name="wizard_navigation">သင္အႀကိဳက္ဆံုးက႑သုိ႔ အျမန္ေရာက္ရွိရန္</string>
     <string name="write_comment">သံုးသပ္ခ်က္ေရးရန္</string>
     <string name="writereview_page_title">သံုးသပ္ခ်က္ေရးရန္</string>
@@ -315,10 +315,11 @@
     <string name="my_order_no_orders_label">သင္ မည္သည္႔ ေအာ္ဒါမွ်မွာယူထားျခင္းမရွိပါ</string>
     <string name="my_order_details_label">,ေအာ္ဒါအေသးစိတ္အခ်က္အလက္မ်ား</string>
     <string name="size_guide_label">အရြယ္အစားလမ္းညႊန္</string>
-	<string name="string_price">ေစ်းႏႈန္း</string>
-	<string name="string_appearance">အသြင္အျပင္</string>
+    <string name="string_price">ေစ်းႏႈန္း</string>
+    <string name="string_appearance">အသြင္အျပင္</string>
     <string name="pinch_to_zoom_label">Pinch to zoom</string>
     <string name="string_rating">အမွတ္ေပးျခင္း</string>
     <string name="string_with_discount_only">ေလွ်ာ့ေစ်းျဖင့္သာ</string>
+    <string name="invalid_product"></string>
 
 </resources>

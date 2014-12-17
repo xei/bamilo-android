@@ -134,6 +134,13 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     
     private boolean isProductClear = false;
     
+//    private final int sortRating = 0;
+//    private final int sortPopularity = 1;
+//    private final int sortNewIn = 2;
+//    private final int sortPriceUp = 3;
+//    private final int sortPriceDown = 4;
+//    private final int sortName = 5;
+//    private final int sortBrand = 6;
     /**
      * 
      * @param bundle
@@ -188,6 +195,10 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         
         if (null != args) {
             mPageIndex = args.getInt(PARAM_PAGE_INDEX, 0);
+            //TODO
+//            if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+//                mPageIndex = 6 - mPageIndex;
+//            }
 
             switch (mPageIndex) {
             case 0: // <item > Copy of Best Rating for infinite scroll</item>

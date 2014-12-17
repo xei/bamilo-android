@@ -41,6 +41,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.LayoutDirection;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -293,6 +295,7 @@ public class DynamicFormItem {
         case number:
             String text = null == value ? "" : (String) value;
             ((EditText) this.dataControl).setText(text);
+            ((EditText) this.dataControl).setLayoutDirection(LayoutDirection.LOCALE);
             this.errorControl.setVisibility(View.GONE);
             ((View) this.dataControl).setContentDescription(this.entry.getId());
 
@@ -1188,13 +1191,22 @@ public class DynamicFormItem {
     private void buildText(RelativeLayout dataContainer, RelativeLayout.LayoutParams params,
             int controlWidth) {
         this.control.setLayoutParams(params);
+        
         dataContainer = createTextDataContainer(controlWidth);
         int dataControlId = dataContainer.getId();
         this.errorControl = createErrorControl(dataControlId, controlWidth);
+        
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+        }
+        
         ((ViewGroup) this.control).addView(dataContainer);
         ((ViewGroup) this.control).addView(this.errorControl);
 
         final CharSequence editText = ((EditText) this.dataControl).getHint();
+        
         ((View) this.dataControl).setContentDescription(this.entry.getKey());
         // Listeners
         this.dataControl.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -1284,8 +1296,17 @@ public class DynamicFormItem {
 
             // form item container
             this.control = (View) new RelativeLayout(this.context);
+            
             this.control.setId(parent.getNextId());
 
+            //#RTL
+            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                this.control.setLayoutDirection(LayoutDirection.LOCALE);
+                params.setLayoutDirection(LayoutDirection.LOCALE);
+            }
+            
+            
             switch (this.entry.getInputType()) {
             case checkBox:
                 buildCheckBoxInflated(dataContainer, params, controlWidth);
@@ -1378,6 +1399,12 @@ public class DynamicFormItem {
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            params.addRule(RelativeLayout.ALIGN_PARENT_END);
+        }
+        
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
@@ -1666,6 +1693,20 @@ public class DynamicFormItem {
         params.setMargins(
                 (int) context.getResources().getDimension(R.dimen.form_errormessage_margin), 0, 0,
                 0);
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                params.setLayoutDirection(LayoutDirection.LOCALE);
+                params.addRule(RelativeLayout.ALIGN_START, dataControlId);
+                params.setMarginStart((int) context.getResources().getDimension(R.dimen.form_errormessage_margin));
+            } else {
+                //<4.2
+                params.addRule(RelativeLayout.ALIGN_RIGHT, dataControlId);
+                params.setMargins(0, 0, (int) context.getResources().getDimension(R.dimen.form_errormessage_margin), 0);
+            }
+        }
+
 
         ImageView errImage = new ImageView(this.context);
         errImage.setId(parent.getNextId());
@@ -1677,6 +1718,20 @@ public class DynamicFormItem {
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         params.addRule(RelativeLayout.RIGHT_OF, errImage.getId());
         params.setMargins(5, 0, 0, 0);
+        
+        //#RTL
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                params.addRule(RelativeLayout.END_OF, errImage.getId());
+                params.setMarginStart(5);
+            } else {
+                //<4.2
+                params.addRule(RelativeLayout.LEFT_OF, errImage.getId());
+                params.setMargins(0, 0, 5, 0);
+            }
+        }
+
+        
         this.errorTextControl = new TextView(this.context);
         this.errorTextControl.setId(parent.getNextId());
         this.errorTextControl.setText(this.errorText);
@@ -1684,6 +1739,10 @@ public class DynamicFormItem {
         this.errorTextControl.setTextColor(errorColor);
         this.errorTextControl.setTextSize(ERRORTEXTSIZE);
 
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            this.errorTextControl.setLayoutDirection(LayoutDirection.LOCALE);
+        }
+        
         errorControl.addView(this.errorTextControl);
         errorControl.addView(errImage);
 
@@ -1704,6 +1763,9 @@ public class DynamicFormItem {
                     .getValidation().max) });
         }
 
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        
         // specifics
         if (this.entry.getInputType() == InputType.number) {
             int inputType = android.text.InputType.TYPE_CLASS_NUMBER;
@@ -1712,16 +1774,33 @@ public class DynamicFormItem {
             int inputType = android.text.InputType.TYPE_CLASS_TEXT
                     | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD;
             textDataControl.setInputType(inputType);
+            //#RTL
+            if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+                textDataControl.setGravity(Gravity.RIGHT);
+                if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                    textDataControl.setGravity(Gravity.END);
+                }
+            }
+            
+
             textDataControl.setTextAppearance(context, R.style.form_edittext_style);
         } else if (this.entry.getInputType() == InputType.email) {
             int inputType = android.text.InputType.TYPE_CLASS_TEXT
                     | android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                     | android.text.InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS;
             textDataControl.setInputType(inputType);
+            //#RTL
+            if(context.getResources().getBoolean(R.bool.is_bamilo_specific))
+                textDataControl.setGravity(Gravity.RIGHT);
+            
             textDataControl.setTextAppearance(context, R.style.form_edittext_style);
         } else {
             int inputType = android.text.InputType.TYPE_CLASS_TEXT;
             textDataControl.setInputType(inputType);
+            //#RTL
+            if(context.getResources().getBoolean(R.bool.is_bamilo_specific))
+                textDataControl.setGravity(Gravity.RIGHT);
+            
             textDataControl.setTextAppearance(context, R.style.form_edittext_style);
         }
 
@@ -1770,12 +1849,25 @@ public class DynamicFormItem {
         this.dataControl.setLayoutParams(params);
         int formPadding = context.getResources().getDimensionPixelSize(R.dimen.form_padding);
         this.dataControl.setPadding(formPadding, 0, formPadding, 0);
-
+        
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = MANDATORYSIGNALMARGIN;
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                params.addRule(RelativeLayout.ALIGN_PARENT_END);
+                params.setMarginEnd(MANDATORYSIGNALMARGIN);
+            } else {
+                //<4.2
+                params.leftMargin = MANDATORYSIGNALMARGIN;
+                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            }
+        }
+        
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
@@ -1783,9 +1875,16 @@ public class DynamicFormItem {
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
                 : View.GONE);
-
+        
         dataContainer.addView(this.dataControl);
         dataContainer.addView(this.mandatoryControl);
+        //#RTL
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                dataContainer.setLayoutDirection(LayoutDirection.RTL);
+            }
+        }
+        
         if (isDatePart()) {
             dataContainer.setPadding(0, 0, 10, 0);
         }

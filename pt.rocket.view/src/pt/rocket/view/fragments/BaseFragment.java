@@ -957,10 +957,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     protected void forceInputAlignToLeft(){
-        // Save the default locale
-        mLocale = Locale.getDefault();
-        // Force align to left
-        Locale.setDefault(Locale.US);
+        if(getBaseActivity() != null && !getBaseActivity().getApplicationContext().getResources().getBoolean(R.bool.is_bamilo_specific)){
+            // Save the default locale
+            mLocale = Locale.getDefault();
+            // Force align to left
+            Locale.setDefault(Locale.US);
+        }
+
     }
     
     /**

@@ -4,15 +4,19 @@
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:paddingBottom="@dimen/login_margin_small"
+    android:paddingEnd="@dimen/rounded_margin_double_mid"
     android:paddingLeft="@dimen/rounded_margin_double_mid"
     android:paddingRight="@dimen/rounded_margin_double_mid"
+    android:paddingStart="@dimen/rounded_margin_double_mid"
     android:paddingTop="@dimen/login_margin_small" >
 
     <pt.rocket.components.customfontviews.TextView
         android:id="@+id/product_detail_name"
         style="@style/text_header"
         android:layout_width="match_parent"
+        android:layout_marginEnd="@dimen/margin_huge"
         android:layout_marginRight="@dimen/margin_huge"
+        android:gravity="left|center_vertical|start"
         android:maxLines="2"
         android:singleLine="false"
         android:text="Product" />
@@ -21,6 +25,7 @@
         android:id="@+id/product_price_special"
         style="@style/text_header"
         android:layout_below="@+id/product_detail_name"
+        android:layout_marginEnd="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"
         android:fontFamily="roboto_bold"
         android:text="Discount Price"
@@ -31,6 +36,7 @@
         style="@style/text_header"
         android:layout_alignBaseline="@+id/product_price_special"
         android:layout_below="@+id/product_detail_name"
+        android:layout_toEndOf="@+id/product_price_special"
         android:layout_toRightOf="@+id/product_price_special"
         android:text="Normal Price"
         android:textColor="@color/grey_middlelight" />
@@ -50,6 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/margin_mid"
             android:layout_marginRight="@dimen/margin_mid"
             android:isIndicator="true" />
 
@@ -57,6 +64,7 @@
             android:id="@+id/reviews"
             style="@style/text_header"
             android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/rating"
             android:layout_toRightOf="@id/rating"
             android:textColor="@color/grey_light" />
     </RelativeLayout>

@@ -14,12 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginStart="@dimen/margin_huge"
         android:layout_marginTop="10dp"
+        android:layoutDirection="locale"
         android:orientation="horizontal" >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="left|start"
             android:orientation="vertical" >
 
             <pt.rocket.components.customfontviews.TextView
@@ -40,7 +43,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="left|start"
             android:layout_marginLeft="@dimen/margin_veryhuge"
+            android:layout_marginStart="@dimen/margin_veryhuge"
             android:orientation="vertical" >
 
             <pt.rocket.components.customfontviews.TextView
@@ -62,7 +67,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="left|start"
             android:layout_marginLeft="@dimen/margin_veryhuge"
+            android:layout_marginStart="@dimen/margin_veryhuge"
             android:orientation="vertical" >
 
             <pt.rocket.components.customfontviews.TextView
@@ -87,8 +94,11 @@
         style="@style/text_title"
         android:layout_width="match_parent"
         android:layout_below="@id/ratings_container"
+        android:gravity="left|start"
+        android:layout_marginEnd="32dp"
         android:layout_marginLeft="@dimen/margin_huge"
         android:layout_marginRight="32dp"
+        android:layout_marginStart="@dimen/margin_huge"
         android:text="Title" />
 
     <pt.rocket.components.customfontviews.TextView
@@ -96,8 +106,11 @@
         style="@style/text_normal"
         android:layout_width="match_parent"
         android:layout_below="@id/title_review"
+        android:gravity="left|start"
+        android:layout_marginEnd="32dp"
         android:layout_marginLeft="@dimen/margin_huge"
         android:layout_marginRight="32dp"
+        android:layout_marginStart="@dimen/margin_huge"
         android:maxLines="5"
         android:singleLine="false"
         android:text="Review" />
@@ -106,7 +119,9 @@
         android:id="@+id/posted_by"
         style="@style/text_subtitle"
         android:layout_below="@id/textreview"
+        android:gravity="left|start"
         android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginStart="@dimen/margin_huge"
         android:text="@string/posted_by" />
 
     <pt.rocket.components.customfontviews.TextView
@@ -114,6 +129,8 @@
         style="@style/text_subtitle"
         android:layout_below="@id/textreview"
         android:layout_marginLeft="@dimen/rounded_margin_small"
+        android:layout_marginStart="@dimen/rounded_margin_small"
+        android:layout_toEndOf="@id/posted_by"
         android:layout_toRightOf="@id/posted_by"
         android:text="User" />
 
@@ -122,6 +139,8 @@
         style="@style/text_subtitle"
         android:layout_below="@id/textreview"
         android:layout_marginLeft="@dimen/rounded_margin_small"
+        android:layout_marginStart="@dimen/rounded_margin_small"
+        android:layout_toEndOf="@id/user_review"
         android:layout_toRightOf="@id/user_review"
         android:text="Date" />
 

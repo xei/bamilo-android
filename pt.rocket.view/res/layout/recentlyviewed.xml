@@ -12,6 +12,7 @@
         android:layout_marginTop="@dimen/rounded_margin_small"
         android:listSelector="@drawable/selector_listitem_highlight"
         android:numColumns="@integer/favourite_num_columns"
+        android:layoutDirection="locale"
         android:paddingBottom="@dimen/recently_viewed_button_container_height" />
 
     <include

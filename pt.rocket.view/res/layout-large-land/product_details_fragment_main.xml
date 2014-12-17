@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="locale"
     android:orientation="horizontal" >
 
     <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
@@ -18,8 +19,11 @@
         style="@style/rounded_box"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_alignEnd="@id/center_point"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignRight="@id/center_point"
+        android:layout_marginEnd="7dp"
         android:layout_marginRight="7dp" >
 
         <!--
@@ -43,15 +47,19 @@
             android:background="@android:color/transparent"
             android:minHeight="50dp"
             android:paddingBottom="5dp"
+            android:paddingEnd="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:paddingStart="10dp"
             android:paddingTop="5dp" >
 
             <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/product_detail_name"
                 style="@style/text_header"
                 android:layout_width="match_parent"
+                android:layout_marginEnd="@dimen/margin_huge"
                 android:layout_marginRight="@dimen/margin_huge"
+                android:gravity="left|center_horizontal|start"
                 android:maxLines="2"
                 android:singleLine="false"
                 android:text="Product" />
@@ -60,6 +68,7 @@
                 android:id="@+id/product_price_special"
                 style="@style/text_header"
                 android:layout_below="@+id/product_detail_name"
+                android:layout_marginEnd="@dimen/margin_mid"
                 android:layout_marginRight="@dimen/margin_mid"
                 android:fontFamily="roboto_bold"
                 android:text="Discount Price"
@@ -70,6 +79,7 @@
                 style="@style/text_header"
                 android:layout_alignBaseline="@+id/product_price_special"
                 android:layout_below="@+id/product_detail_name"
+                android:layout_toEndOf="@+id/product_price_special"
                 android:layout_toRightOf="@+id/product_price_special"
                 android:text="Normal Price"
                 android:textColor="@color/grey_middlelight" />
@@ -104,8 +114,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="@dimen/product_list_item_image_side_margin"
+                android:layout_marginStart="@dimen/product_list_item_image_side_margin"
                 android:layout_marginTop="@dimen/product_list_item_image_margin"
                 android:src="@drawable/selector_productdetails_share" />
 
@@ -113,9 +125,11 @@
                 android:id="@+id/product_detail_image_is_favourite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_centerInParent="false"
+                android:layout_marginEnd="@dimen/product_list_item_image_side_margin"
                 android:layout_marginRight="@dimen/product_list_item_image_side_margin"
                 android:layout_marginTop="@dimen/product_list_item_image_margin"
                 android:src="@drawable/selector_favorite" />
@@ -124,8 +138,10 @@
                 android:id="@+id/product_detail_discount_percentage"
                 style="@style/discount_percentage"
                 android:layout_alignBottom="@id/product_detail_image_gallery_container"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="@dimen/margin_mid"
+                android:layout_marginEnd="@dimen/margin_mid"
                 android:layout_marginRight="@dimen/margin_mid"
                 android:layout_marginTop="@dimen/margin_large" />
         </RelativeLayout>
@@ -146,14 +162,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/variation_top_line"
+                android:paddingEnd="@dimen/margin_huge"
                 android:paddingLeft="@dimen/margin_huge"
                 android:paddingRight="@dimen/margin_huge"
+                android:paddingStart="@dimen/margin_huge"
                 android:paddingTop="@dimen/margin_mid" >
 
                 <pt.rocket.components.customfontviews.TextView
                     android:id="@+id/product_detail_product_variant_text"
                     style="@style/text_header"
                     android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:text="@string/size_label" />
 
@@ -163,6 +182,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/margin_mid"
+                    android:layout_marginStart="@dimen/margin_mid"
+                    android:layout_toEndOf="@+id/product_detail_product_variant_text"
                     android:layout_toRightOf="@+id/product_detail_product_variant_text"
                     android:background="@drawable/spinnerbutton_background_holo_light"
                     android:ellipsize="end"
@@ -183,7 +204,8 @@
             android:id="@+id/product_detail_variations_container"
             android:layout_width="match_parent"
             android:layout_height="63dp"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            android:layoutDirection="locale" />
 
         <!-- TIPS -->
 
@@ -200,27 +222,33 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_alignLeft="@id/center_point"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_alignStart="@id/center_point"
+        android:layout_marginEnd="9dp"
         android:layout_marginRight="9dp" >
 
         <!-- <include android:id="@+id/shop_buttons" layout="@layout/product_details_fragment_buttons"/> -->
-        
-        
+
         <LinearLayout
             android:id="@+id/shop_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="7dp"
+            android:layout_marginEnd="0dp"
             android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp" >
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="0dp" >
 
             <pt.rocket.components.customfontviews.Button
                 android:id="@+id/product_detail_call_to_order"
                 style="@style/button_grey_bottom"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="0dp"
+                android:layout_marginEnd="@dimen/margin_x_small"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="@dimen/margin_x_small"
+                android:layout_marginStart="0dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/productdetail_order_button_description"
                 android:ellipsize="marquee"
@@ -234,8 +262,10 @@
                 style="@style/button_orange_bottom"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="0dp"
+                android:layout_marginEnd="0dp"
                 android:layout_marginLeft="@dimen/margin_x_small"
                 android:layout_marginRight="0dp"
+                android:layout_marginStart="@dimen/margin_x_small"
                 android:layout_weight="1"
                 android:contentDescription="@string/productdetail_addcart_description"
                 android:marqueeRepeatLimit="marquee_forever"
@@ -259,10 +289,7 @@
                     style="@style/rounded_box"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginTop="0dp"
+                    android:layout_margin="0dp"
                     android:background="@drawable/selector_item_box" >
 
                     <RatingBar
@@ -272,15 +299,21 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/margin_large"
+                        android:layout_marginStart="@dimen/margin_large"
                         android:isIndicator="true"
                         android:numStars="5" />
 
                     <pt.rocket.components.customfontviews.TextView
                         android:id="@+id/product_detail_product_rating_count"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/margin_mid"
+                        android:layout_marginStart="@dimen/margin_mid"
+                        android:layout_toLeftOf="@+id/review_arrow"
+                        android:gravity="center_vertical|left|start"
+                        android:layout_toStartOf="@+id/review_arrow"
+                        android:layout_toEndOf="@+id/product_detail_product_rating"
                         android:layout_toRightOf="@+id/product_detail_product_rating"
                         android:textColor="@color/grey_light"
                         android:textSize="@dimen/text_s" />
@@ -295,10 +328,13 @@
                     </RelativeLayout>
 
                     <ImageView
+                        android:id="@+id/review_arrow"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginRight="10dp"
                         android:src="@drawable/arrow_side" />
                 </RelativeLayout>
@@ -310,8 +346,10 @@
                     style="@style/rounded_box"
                     android:layout_height="170dp"
                     android:layout_marginBottom="0dp"
+                    android:layout_marginEnd="0dp"
                     android:layout_marginLeft="0dp"
                     android:layout_marginRight="0dp"
+                    android:layout_marginStart="0dp"
                     android:layout_marginTop="9dp" >
 
                     <pt.rocket.components.customfontviews.TextView
@@ -332,8 +370,10 @@
                         android:ellipsize="none"
                         android:lineSpacingMultiplier="1.3"
                         android:paddingBottom="@dimen/margin_huge"
+                        android:paddingEnd="@dimen/margin_large"
                         android:paddingLeft="@dimen/margin_large"
                         android:paddingRight="@dimen/margin_large"
+                        android:paddingStart="@dimen/margin_large"
                         android:paddingTop="@dimen/margin_huge"
                         android:singleLine="false" />
 
@@ -347,7 +387,7 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="15dp"
+                            android:layout_height="5dp"
                             android:background="@drawable/selector_more_button_50"
                             android:duplicateParentState="true" />
 
@@ -361,8 +401,10 @@
                                 style="@style/text_normal"
                                 android:layout_width="wrap_content"
                                 android:layout_centerVertical="true"
+                                android:layout_marginEnd="3dp"
                                 android:layout_marginRight="3dp"
                                 android:layout_toLeftOf="@+id/features_arrow"
+                                android:layout_toStartOf="@+id/features_arrow"
                                 android:text="@string/show_more"
                                 android:textColor="@color/orange_basic" />
 
@@ -370,8 +412,10 @@
                                 android:id="@id/features_arrow"
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
+                                android:layout_alignParentEnd="true"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
+                                android:layout_marginEnd="10dp"
                                 android:layout_marginRight="10dp"
                                 android:src="@drawable/arrow_side" />
                         </RelativeLayout>
@@ -385,8 +429,10 @@
                     style="@style/rounded_box"
                     android:layout_height="170dp"
                     android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="0dp"
                     android:layout_marginLeft="0dp"
                     android:layout_marginRight="0dp"
+                    android:layout_marginStart="0dp"
                     android:layout_marginTop="9dp" >
 
                     <pt.rocket.components.customfontviews.TextView
@@ -407,8 +453,10 @@
                         android:ellipsize="none"
                         android:lineSpacingMultiplier="1.3"
                         android:paddingBottom="@dimen/margin_huge"
+                        android:paddingEnd="@dimen/margin_large"
                         android:paddingLeft="@dimen/margin_large"
                         android:paddingRight="@dimen/margin_large"
+                        android:paddingStart="@dimen/margin_large"
                         android:paddingTop="@dimen/margin_huge"
                         android:singleLine="false" />
 
@@ -422,7 +470,7 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="15dp"
+                            android:layout_height="5dp"
                             android:background="@drawable/selector_more_button_50"
                             android:duplicateParentState="true" />
 
@@ -436,8 +484,10 @@
                                 style="@style/text_normal"
                                 android:layout_width="wrap_content"
                                 android:layout_centerVertical="true"
+                                android:layout_marginEnd="3dp"
                                 android:layout_marginRight="3dp"
                                 android:layout_toLeftOf="@+id/description_arrow"
+                                android:layout_toStartOf="@+id/description_arrow"
                                 android:text="@string/show_more"
                                 android:textColor="@color/orange_basic" />
 
@@ -445,8 +495,10 @@
                                 android:id="@id/description_arrow"
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
+                                android:layout_alignParentEnd="true"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
+                                android:layout_marginEnd="10dp"
                                 android:layout_marginRight="10dp"
                                 android:src="@drawable/arrow_side" />
                         </RelativeLayout>
@@ -460,7 +512,8 @@
                     android:layout_marginLeft="0dp"
                     android:layout_marginRight="0dp"
                     android:layout_marginTop="0dp"
-                    layout="@layout/product_details_fragment_related" />
+                    layout="@layout/product_details_fragment_related"
+                    android:layoutDirection="locale" />
             </LinearLayout>
         </pt.rocket.utils.ScrollViewWithHorizontal>
     </RelativeLayout>

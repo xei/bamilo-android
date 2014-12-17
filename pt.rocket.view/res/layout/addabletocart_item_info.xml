@@ -14,6 +14,7 @@
         android:id="@+id/button_delete"
         android:layout_width="@dimen/delete_button_size"
         android:layout_height="@dimen/delete_button_size"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/top_spacer"
         android:layout_margin="@dimen/delete_button_margin"
@@ -25,9 +26,11 @@
     <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_brand"
         style="@style/text_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_below="@id/top_spacer"
+        android:layout_marginEnd="@dimen/product_item_text_right_margin"
         android:layout_marginRight="@dimen/product_item_text_right_margin"
+        android:gravity="center_vertical|left|start"
         android:text="BRAND"
         android:visibility="visible" />
 
@@ -38,7 +41,9 @@
         style="@style/text_subtitle"
         android:layout_width="match_parent"
         android:layout_below="@id/item_brand"
+        android:layout_marginEnd="@dimen/product_item_text_right_margin"
         android:layout_marginRight="@dimen/product_item_text_right_margin"
+        android:gravity="center_vertical|left|start"
         android:text="Name" />
 
     <!-- DISCOUNT -->
@@ -47,7 +52,11 @@
         android:id="@+id/item_discount"
         style="@style/text_price"
         android:layout_alignLeft="@id/item_name"
+        android:layout_alignStart="@id/item_name"
         android:layout_below="@id/item_name"
+        android:layout_marginEnd="4dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_marginRight="4dp"
         android:text="Discount" />
 
@@ -68,8 +77,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_regprice"
+        android:layout_marginEnd="@dimen/rounded_margin_small"
         android:layout_marginRight="@dimen/rounded_margin_small"
-        android:layout_toLeftOf="@+id/button_shop" >
+        android:layout_toLeftOf="@+id/button_shop"
+        android:layout_toStartOf="@+id/button_shop" >
 
         <!-- DUMMY -->
 
@@ -110,6 +121,7 @@
         android:layout_height="@dimen/product_item_button_height"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_marginBottom="@dimen/rounded_margin_small"
         android:background="@drawable/spinnerbutton_background_holo_light"
         android:ellipsize="end"
@@ -127,13 +139,16 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/product_item_button_height"
         android:layout_above="@+id/bottom_spacer"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="0dp"
         android:layout_marginTop="0dp"
         android:contentDescription="@string/productdetail_addcart_description"
         android:fontFamily="roboto_bold"
+        android:paddingEnd="@dimen/rounded_margin_mid"
         android:paddingLeft="@dimen/rounded_margin_mid"
         android:paddingRight="@dimen/rounded_margin_mid"
+        android:paddingStart="@dimen/rounded_margin_mid"
         android:singleLine="true"
         android:text="@string/add_to_shopping_cart"
         android:textColor="@color/grey_dark"
@@ -145,6 +160,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/rounded_margin_mid"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>

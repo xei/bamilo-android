@@ -52,6 +52,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.LayoutDirection;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -450,6 +451,11 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
             return;
         }
         user = (EditText) emailItem.getEditControl();
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            user.setLayoutDirection(LayoutDirection.LOCALE);
+        }
         user.setId(21);
 
         DynamicFormItem passwordItem = dynamicForm.getItemByKey(FORM_ITEM_PASSWORD);
@@ -458,6 +464,10 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         }
         pass_p = (EditText) passwordItem.getEditControl();
         pass_p.setId(22);
+        //#RTL
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            pass_p.setLayoutDirection(LayoutDirection.LOCALE);
+        }
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
@@ -605,6 +615,13 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
+        
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            container.setLayoutDirection(LayoutDirection.LOCALE);
+        }
+        
         container.addView(dynamicForm.getContainer());
         setFormClickDetails();
 

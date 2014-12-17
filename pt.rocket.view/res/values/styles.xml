@@ -244,6 +244,8 @@
         <item name="android:paddingTop">@dimen/distance_item_small</item>
         <item name="android:paddingLeft">@dimen/margin_veryhuge</item>
         <item name="android:paddingRight">@dimen/margin_veryhuge</item>
+        <item name="android:paddingStart">@dimen/margin_veryhuge</item>
+        <item name="android:paddingEnd">@dimen/margin_veryhuge</item>
     </style>
 
     <style name="dialog_list_itemtext">
@@ -252,6 +254,7 @@
         <item name="android:textColor">@color/grey_middle</item>
         <item name="android:textSize">@dimen/text_m</item>
         <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentStart">true</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
 
@@ -280,6 +283,7 @@
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:paddingLeft">@dimen/form_padding</item>
+        <item name="android:paddingStart">@dimen/form_padding</item>
         <item name="android:textCursorDrawable" targetApi="12">@null</item>
         <item name="android:inputType">text</item>
     </style>
@@ -287,12 +291,16 @@
     <style name="form_checkbox_style" parent="form_style">
         <item name="android:layout_marginLeft">@dimen/form_check_padding</item>
         <item name="android:layout_marginRight">@dimen/form_check_padding</item>
-        <item name="android:layout_gravity">top</item>
+        <item name="android:layout_marginStart">@dimen/form_check_padding</item>
+        <item name="android:layout_marginEnd">@dimen/form_check_padding</item>
+        <item name="android:layout_gravity">left|start|top</item>
     </style>
 
     <style name="form_radiobutton_style" parent="form_style">
         <item name="android:layout_marginLeft">@dimen/form_check_padding</item>
         <item name="android:layout_marginRight">@dimen/form_check_padding</item>
+        <item name="android:layout_marginStart">@dimen/form_check_padding</item>
+        <item name="android:layout_marginEnd">@dimen/form_check_padding</item>
         <item name="android:layout_gravity">top</item>
     </style>
 
@@ -349,7 +357,7 @@
         <item name="android:layout_marginBottom">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
-		<item name="android:layout_marginStart">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginStart">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginEnd">@dimen/rounded_margin_mid</item>
         <item name="android:background">@drawable/background_content</item>
     </style>
@@ -359,10 +367,12 @@
         <item name="android:layout_height">@dimen/title_box_height</item>
         <item name="android:textColor">@color/grey_middledark</item>
         <item name="android:textSize">@dimen/text_title</item>
-        <item name="android:gravity">left|center</item>
+        <item name="android:gravity">left|start|center</item>
         <item name="android:layout_marginBottom">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginLeft">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginStart">@dimen/rounded_margin_mid</item>
+        <item name="android:layout_marginEnd">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginTop">@dimen/rounded_margin_mid</item>
         <item name="android:fontFamily">roboto_regular</item>
         <item name="android:ellipsize">end</item>
@@ -516,15 +526,14 @@
         <item name="android:minHeight">@dimen/action_bar_icon_size</item>
         <item name="android:minWidth">@dimen/action_bar_icon_size</item>
     </style>
-    
-	<style name="Widget">
-    </style>
-    
-	<!-- CUSTOM SPINNER STYLE -->
-	<style name="Widget.Jumia.Spinner.Style" parent="Widget">
-	    <item name="android:background">@drawable/custom_spinner_light</item>
-	    <item name="android:dropDownSelector">@drawable/custom_list_selector_holo_dark</item>
-		<item name="android:popupBackground">@drawable/custom_menu_dropdown_panel_holo_light</item>
+
+    <style name="Widget"></style>
+
+    <!-- CUSTOM SPINNER STYLE -->
+    <style name="Widget.Jumia.Spinner.Style" parent="Widget">
+        <item name="android:background">@drawable/custom_spinner_light</item>
+        <item name="android:dropDownSelector">@drawable/custom_list_selector_holo_dark</item>
+        <item name="android:popupBackground">@drawable/custom_menu_dropdown_panel_holo_light</item>
         <item name="android:dropDownVerticalOffset">0dip</item>
         <item name="android:dropDownHorizontalOffset">0dip</item>
         <item name="android:dropDownWidth">wrap_content</item>

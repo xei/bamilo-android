@@ -13,8 +13,11 @@
         android:background="@drawable/modal_dialog_header"
         android:gravity="center"
         android:orientation="horizontal"
+        android:layoutDirection="locale"
+        android:paddingEnd="@dimen/margin_large"
         android:paddingLeft="@dimen/margin_large"
-        android:paddingRight="@dimen/margin_large" >
+        android:paddingRight="@dimen/margin_large"
+        android:paddingStart="@dimen/margin_large" >
 
         <pt.rocket.components.customfontviews.TextView
             android:id="@+id/dialog_filter_header_title"
@@ -22,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="roboto_bold"
-            android:gravity="left"
+            android:gravity="left|start"
             android:text="@string/filter_label"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_xl" />
@@ -32,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="roboto_regular"
-            android:gravity="right"
+            android:gravity="right|end"
             android:text="@string/clear_all_uppercase_label"
             android:textColor="@drawable/selector_clearall"
             android:textSize="@dimen/text_l" />

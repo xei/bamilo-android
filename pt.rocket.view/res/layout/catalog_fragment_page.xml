@@ -3,6 +3,7 @@
     android:id="@+id/products_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="locale"
     android:layout_margin="@dimen/rounded_margin_small"
     android:paddingBottom="0dp" >
 
@@ -29,7 +30,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginRight="@dimen/margin_30px"
+        android:layout_marginEnd="@dimen/margin_30px"
         android:layout_marginBottom="@dimen/margin_30px"
         android:background="@drawable/selector_btn_toplist"
         android:visibility="invisible" />

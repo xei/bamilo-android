@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/sliding_tab_height"
             android:layout_marginRight="@dimen/catalog_button_filter_width"
+            android:layout_marginEnd="@dimen/catalog_button_filter_width"
             android:background="@drawable/background_tabs"
             app:stsBottomBorderThickness="0dp"
             app:stsIndicatorColor="@color/orange_tab_bar"
@@ -40,9 +41,10 @@
             android:layout_width="@dimen/catalog_button_filter_width"
             android:layout_height="@dimen/sliding_tab_height"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:background="@android:color/white"
-            android:gravity="center|left"
+            android:gravity="center|left|start"
             android:visibility="visible" >
 
             <!-- FILTER -->
@@ -51,6 +53,7 @@
                 android:id="@+id/first_divider"
                 style="@style/divider_vertical"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:background="@color/grey_middlelight" />
 
             <ImageView
@@ -58,6 +61,7 @@
                 android:layout_width="37dp"
                 android:layout_height="match_parent"
                 android:layout_toRightOf="@id/first_divider"
+                android:layout_toEndOf="@id/first_divider"
                 android:scaleType="centerInside"
                 android:src="@drawable/selector_catalog_filter" />
 
@@ -75,6 +79,7 @@
                 android:layout_width="37dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerInParent="false"
                 android:scaleType="centerInside"
                 android:src="@drawable/selector_catalog_gridview" />

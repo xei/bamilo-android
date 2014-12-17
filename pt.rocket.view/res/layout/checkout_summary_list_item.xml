@@ -12,6 +12,9 @@
 
         <pt.rocket.components.customfontviews.TextView
             android:id="@+id/order_summary_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical|start"
             style="@style/text_normal" />
 
         <pt.rocket.components.customfontviews.TextView

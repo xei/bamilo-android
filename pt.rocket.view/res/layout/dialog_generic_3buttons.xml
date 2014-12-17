@@ -11,8 +11,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/modal_dialog_header"
         android:paddingBottom="@dimen/margin_large"
+        android:paddingEnd="@dimen/margin_veryhuge"
         android:paddingLeft="@dimen/margin_veryhuge"
         android:paddingRight="@dimen/margin_veryhuge"
+        android:paddingStart="@dimen/margin_veryhuge"
         android:paddingTop="@dimen/margin_large" >
 
         <pt.rocket.components.customfontviews.TextView
@@ -55,6 +57,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_below="@id/grey_line"
+            android:layoutDirection="locale"
             android:orientation="horizontal" >
 
             <pt.rocket.components.customfontviews.Button

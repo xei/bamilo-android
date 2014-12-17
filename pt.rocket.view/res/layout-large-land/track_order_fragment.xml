@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layoutDirection="locale"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 
@@ -10,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_small"
+        android:layout_marginEnd="@dimen/rounded_margin_small"
         android:layout_weight="1" >
 
         <include layout="@layout/track_order_form" />
@@ -27,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/rounded_margin_small"
+            android:layout_marginStart="@dimen/rounded_margin_small"
             android:visibility="gone" >
 
             <include layout="@layout/track_order_status" />

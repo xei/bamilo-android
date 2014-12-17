@@ -36,6 +36,9 @@
     <pt.rocket.components.customfontviews.TextView
         android:id="@+id/checkout_my_order_shipping_method_name"
         style="@style/text_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center_vertical|start"
         android:layout_marginBottom="@dimen/margin_40px"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_clickableitem_highlight"
+    android:layoutDirection="locale"
     android:orientation="horizontal" >
 
     <ImageView
@@ -13,6 +14,7 @@
         android:contentDescription="@string/app_name"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/margin_huge"
+        android:paddingStart="@dimen/margin_huge"
         android:src="@drawable/magnlens" />
 
     <pt.rocket.components.customfontviews.TextView
@@ -20,10 +22,12 @@
         style="@style/text_header"
         android:layout_width="0dp"
         android:layout_height="@dimen/item_height_normal"
+        android:layout_marginEnd="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"
         android:layout_weight="1"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|left"
         android:paddingLeft="@dimen/margin_mid"
+        android:paddingStart="@dimen/margin_mid"
         android:text="Search suggestion"
         android:textColor="@color/grey_dark"
         tools:ignore="HardcodedText" />
@@ -35,8 +39,11 @@
         style="@style/text_normal"
         android:layout_height="@dimen/item_height_normal"
         android:ellipsize="none"
+        android:paddingEnd="@dimen/margin_huge"
         android:paddingLeft="@dimen/margin_huge"
         android:paddingRight="@dimen/margin_huge"
+        android:paddingStart="@dimen/margin_huge"
+        android:gravity="center_vertical|left"
         android:text="(9000 items)"
         android:textColor="@color/grey_dividerlight"
         android:textSize="@dimen/text_s"

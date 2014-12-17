@@ -11,6 +11,8 @@ import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.pojo.MetaFormExtractor;
 import pt.rocket.view.R;
 import android.content.Context;
+import android.text.Layout;
+import android.util.LayoutDirection;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
@@ -153,7 +155,13 @@ public class FormFactory {
 
         LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
-
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            ctrlParams.setLayoutDirection(LayoutDirection.LOCALE);
+            ctrlParams.setMarginStart(CTRLMARGIN_LEFT);
+            ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
+        }
         return createGenericForm(context, form, addressForm, ctrlParams);
 
     }
@@ -174,7 +182,13 @@ public class FormFactory {
 
         LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
-
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            ctrlParams.setLayoutDirection(LayoutDirection.LOCALE);
+            ctrlParams.setMarginStart(CTRLMARGIN_LEFT);
+            ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
+        }
         return createGenericForm(context, form, addressEditForm, ctrlParams);
 
     }
@@ -193,8 +207,17 @@ public class FormFactory {
         final int CTRLMARGIN_BOTTOM = 0;
 
         LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            ctrlParams.setLayoutDirection(LayoutDirection.LOCALE);
+            ctrlParams.setMarginStart(CTRLMARGIN_LEFT);
+            ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
+        }
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
-
+        
+        
         return createGenericForm(context, form, loginForm, ctrlParams);
     }
 
@@ -225,6 +248,13 @@ public class FormFactory {
             final int CTRLMARGIN_BOTTOM = 0;
             ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
+            //#RTL
+            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                ctrlParams.setLayoutDirection(LayoutDirection.LOCALE);
+                ctrlParams.setMarginStart(CTRLMARGIN_LEFT);
+                ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
+            }
         }
 
         return createGenericForm(context, form, paymentForm, ctrlParams);
@@ -245,7 +275,13 @@ public class FormFactory {
 
         LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
-
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            ctrlParams.setLayoutDirection(LayoutDirection.LOCALE);
+            ctrlParams.setMarginStart(CTRLMARGIN_LEFT);
+            ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
+        }
         return createGenericForm(context, form, registerForm, ctrlParams);
     }
     
@@ -264,7 +300,13 @@ public class FormFactory {
 
         LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
-
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            ctrlParams.setLayoutDirection(LayoutDirection.LOCALE);
+            ctrlParams.setMarginStart(CTRLMARGIN_LEFT);
+            ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
+        }
         return createGenericForm(context, form, registerForm, ctrlParams);
     }
     
@@ -284,7 +326,13 @@ public class FormFactory {
 
         LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
-
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            ctrlParams.setLayoutDirection(LayoutDirection.LOCALE);
+            ctrlParams.setMarginStart(CTRLMARGIN_LEFT);
+            ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
+        }
         return createGenericForm(context, form, pollForm, ctrlParams);
     }
     
@@ -305,7 +353,13 @@ public class FormFactory {
 
         LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
-
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            ctrlParams.setLayoutDirection(LayoutDirection.LOCALE);
+            ctrlParams.setMarginStart(CTRLMARGIN_LEFT);
+            ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
+        }
         return createGenericForm(context, form, signupForm, ctrlParams);
     }
     
@@ -347,6 +401,11 @@ public class FormFactory {
         }
         if (null == userForm) {
             parent = new LinearLayout(context);
+            //#RTL
+            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                parent.setLayoutDirection(LayoutDirection.LOCALE);
+            }
             LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             parent.setOrientation(LinearLayout.VERTICAL);
             parent.setLayoutParams(frmParams);
@@ -357,6 +416,10 @@ public class FormFactory {
             // Used for dates with day/moth/year
             LinearLayout groupLayout = new LinearLayout(context);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            //#RTL
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                groupLayout.setLayoutDirection(LayoutDirection.LOCALE);
+            }
             groupLayout.setId( userForm.getNextId() );
             groupLayout.setOrientation(LinearLayout.HORIZONTAL);
             groupLayout.setLayoutParams(params);

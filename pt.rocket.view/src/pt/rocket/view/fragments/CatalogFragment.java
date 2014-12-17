@@ -2,6 +2,7 @@ package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -260,6 +261,11 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         
         mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
 
+        //TODO
+//        if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+//            Collections.reverse(mSortOptions);
+//        }
+        
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_products_list);
         // Associate the listener to tab strip
         // mViewPager.setOnPageChangeListener(onPageChangeListener);
@@ -328,6 +334,17 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
             params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
             params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
+            
+            Log.e("FILTER", " CONTENT_TITLE:" + title);
+            Log.d("FILTER", " CONTENT_URL:" + productsURL);
+            Log.d("FILTER", " SEARCH_QUERY:" + searchQuery);
+            Log.d("FILTER", " NAVIGATION_SOURCE:" + navigationSource);
+            Log.d("FILTER", " NAVIGATION_PATH:" + navigationPath);
+            Log.d("FILTER", " PARAM_FILTERS:" + mCatalogFilterValues);
+//            if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+//                Collections.reverse(params)
+//            }
+            
             mCatalogPagerAdapter = new CatalogPagerAdapter(getChildFragmentManager(), mViewPager.getId(), mSortOptions, params,
                     BaseActivity.isTabletInLandscape(getBaseActivity()));
         } else {
@@ -336,7 +353,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             int totalProducts = mCatalogPagerAdapter.getCatalogPageTotalItems(mViewPager.getCurrentItem());
             if (totalProducts > 0 && getView() != null) {
                 TextView totalItems = (TextView) getView().findViewById(R.id.totalProducts);
-                StringBuilder total = new StringBuilder(" (").append(totalProducts).append(" ").append(getString(R.string.shoppingcart_items)).append(")");
+                StringBuilder total = new StringBuilder(" (").append(totalProducts).append("  ").append(getString(R.string.shoppingcart_items)).append(") ");
                 if (null != totalItems) {
                     totalItems.setText(total.toString());
                     totalItems.setVisibility(View.VISIBLE);
@@ -1093,6 +1110,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
         setTitleAndOrSubTitle(title);
 
+
         Bundle args = getArguments();
         if (null != args) {
             args.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
@@ -1104,7 +1122,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public void setTitleAndOrSubTitle(String title){
         if (mTotalProducts > 0)
             getBaseActivity().setTitleAndSubTitle(title,
-                    " (" + String.valueOf(mTotalProducts) + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
+                    " (" + String.valueOf(mTotalProducts) + "  " + getBaseActivity().getString(R.string.shoppingcart_items) + ") ");
         else
             getBaseActivity().setTitle(title);
     }

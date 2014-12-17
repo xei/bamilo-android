@@ -38,7 +38,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignEnd="@id/center_point"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignRight="@id/center_point"
             android:layout_below="@id/shadow" >
 
@@ -47,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/rounded_margin_mid"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:layout_marginStart="@dimen/rounded_margin_mid"
                 android:layout_marginTop="@dimen/rounded_margin_small"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/rounded_margin_mid" >
@@ -83,8 +86,10 @@
                         android:id="@+id/fragment_root_empty_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_mid"
                         android:layout_marginLeft="@dimen/margin_mid"
                         android:layout_marginRight="@dimen/margin_mid"
+                        android:layout_marginStart="@dimen/margin_mid"
                         android:layout_marginTop="@dimen/root_empty_drawable_padding"
                         android:gravity="center"
                         android:text="@string/reviews_empty"
@@ -94,6 +99,8 @@
             </LinearLayout>
 
             <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 layout="@layout/loading_more" />
         </RelativeLayout>
@@ -105,7 +112,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignLeft="@id/center_point"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_alignStart="@id/center_point"
             android:layout_below="@id/shadow" />
     </RelativeLayout>
 

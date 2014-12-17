@@ -85,7 +85,7 @@
     <dimen name="product_item_button_height">@dimen/button_small_height</dimen>
     <dimen name="product_item_addtocart_variation_width">65dp</dimen>
     <dimen name="product_item_text_right_margin">75dp</dimen>
-    <dimen name="title_box_height">25dp</dimen>
+    <dimen name="title_box_height">27dp</dimen>
 
     <!--  TRACK ORDER REDESIGN -->
     <dimen name="track_order_margin_small">15dp</dimen>

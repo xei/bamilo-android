@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:layoutDirection="locale" >
 
     <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
 
@@ -17,7 +18,9 @@
         android:id="@+id/sub_categories_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignEnd="@id/center_point"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignRight="@id/center_point"
         android:background="@android:color/white"
         android:headerDividersEnabled="true"
@@ -31,6 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignLeft="@id/center_point"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:background="@android:color/white"
         android:headerDividersEnabled="true"
@@ -44,7 +48,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignLeft="@id/center_point"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_alignStart="@id/center_point"
         layout="@layout/fragment_root_loading"
         android:visibility="gone" />
 

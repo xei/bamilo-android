@@ -23,6 +23,9 @@
     <pt.rocket.components.customfontviews.TextView
         android:id="@+id/my_order_item_name"
         style="@style/text_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center_vertical|start"
         android:layout_marginBottom="@dimen/margin_60px"
         android:layout_marginTop="@dimen/margin_30px"
         android:layout_toRightOf="@+id/image_view" />

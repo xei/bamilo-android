@@ -29,8 +29,10 @@
             android:layout_height="match_parent"
             android:layout_below="@id/shadow"
             android:layout_marginBottom="@dimen/rounded_margin_mid"
+            android:layout_marginEnd="@dimen/rounded_margin_mid"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_marginStart="@dimen/rounded_margin_mid"
             android:layout_marginTop="@dimen/rounded_margin_small"
             android:paddingBottom="@dimen/rounded_margin_mid"
             android:visibility="visible" >
@@ -44,9 +46,12 @@
 
                 <pt.rocket.components.customfontviews.TextView
                     style="@style/text_normal"
+                    android:layout_marginEnd="@dimen/rounded_margin_mid"
                     android:layout_marginLeft="@dimen/rounded_margin_mid"
                     android:layout_marginRight="@dimen/rounded_margin_mid"
+                    android:layout_marginStart="@dimen/rounded_margin_mid"
                     android:paddingLeft="3dp"
+                    android:paddingStart="3dp"
                     android:text="@string/rating_question" />
 
                 <pt.rocket.components.customfontviews.Button
@@ -85,15 +90,25 @@
                     <pt.rocket.components.customfontviews.TextView
                         style="@style/text_root"
                         android:layout_width="match_parent"
+                        android:layout_marginEnd="@dimen/margin_mid"
                         android:layout_marginLeft="@dimen/margin_mid"
                         android:layout_marginRight="@dimen/margin_mid"
+                        android:layout_marginStart="@dimen/margin_mid"
                         android:layout_marginTop="@dimen/root_empty_drawable_padding"
+                        android:gravity="center"
+                        android:paddingEnd="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingStart="10dp"
+                        android:singleLine="false"
                         android:text="@string/reviews_empty" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
 
         <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             layout="@layout/loading_more" />
     </RelativeLayout>

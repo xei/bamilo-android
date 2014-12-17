@@ -17,7 +17,9 @@
         android:id="@+id/home_page_single_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignEnd="@id/center_point"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignRight="@id/center_point"
         android:scrollbars="none" >
 
@@ -36,7 +38,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignLeft="@id/center_point"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_alignStart="@id/center_point"
         android:scrollbars="none" >
 
         <LinearLayout
@@ -52,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="1dp"
-                android:paddingLeft="@dimen/teaser_margin" >
+                android:paddingLeft="@dimen/teaser_margin"
+                android:paddingStart="@dimen/teaser_margin" >
 
                 <FrameLayout
                     android:id="@+id/home_page_right_container_categories"
