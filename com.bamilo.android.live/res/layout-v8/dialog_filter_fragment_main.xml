@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dialog_catalog_filter_width"
+    android:layout_height="@dimen/dialog_catalog_filter_height"
+    android:orientation="vertical" >
+
+    <!-- HEADER -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:background="@drawable/modal_dialog_header"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin_large"
+        android:paddingRight="@dimen/margin_large" >
+
+        <pt.rocket.components.customfontviews.TextView
+            android:id="@+id/dialog_filter_header_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="roboto_regular"
+            android:gravity="left"
+            android:text="@string/clear_all_uppercase_label"
+            android:textColor="@drawable/selector_clearall"
+            android:textSize="@dimen/text_l" />
+
+        <pt.rocket.components.customfontviews.TextView
+            android:id="@+id/dialog_filter_header_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="roboto_bold"
+            android:gravity="right"
+            android:text="@string/filter_label"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_xl" />
+    </LinearLayout>
+
+    <!-- MAIN CONTAINER -->
+
+    <ListView
+        android:id="@+id/dialog_filter_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white"
+        android:divider="@color/grey_dividerlight"
+        android:dividerHeight="0.75dp"
+        android:footerDividersEnabled="false"
+        android:listSelector="@android:color/transparent"
+        android:visibility="visible" />
+
+    <!-- android:entries="@array/formatter_currency_codes" -->
+
+
+    <!-- BUTTONS -->
+
+    <include layout="@layout/dialog_filter_bottom_buttons" />
+
+</LinearLayout>

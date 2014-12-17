@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <include
+            android:id="@+id/product_info_container"
+            layout="@layout/product_details_fragment_header" />
+
+        <!-- SHADOW -->
+
+        <View
+            android:id="@+id/shadow"
+            style="@style/shadow"
+            android:layout_below="@id/product_info_container"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shadow"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/product_rating_container"
+                style="@style/rounded_box"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="@dimen/rounded_margin_small"
+                android:orientation="vertical"
+                android:padding="@dimen/rounded_margin_mid"
+                android:visibility="visible" >
+
+                <pt.rocket.components.customfontviews.TextView
+                    style="@style/text_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|right"
+                    android:layout_marginLeft="@dimen/margin_100px"
+                    android:layout_marginRight="@dimen/margin_100px"
+                    android:ellipsize="none"
+                    android:singleLine="false"
+                    android:text="@string/rating_question" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_100px"
+                    android:layout_marginRight="@dimen/margin_100px"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/form_padding" >
+
+                    <LinearLayout
+                        android:id="@+id/label_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="@dimen/margin_huge"
+                        android:orientation="vertical" >
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ratingbar_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginTop="@dimen/margin_huge"
+                        android:layout_toLeftOf="@id/label_container"
+                        android:orientation="vertical" >
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <pt.rocket.components.customfontviews.EditText
+                    android:id="@+id/name_box"
+                    style="@style/form_edittext_style"
+                    android:layout_marginLeft="@dimen/margin_100px"
+                    android:layout_marginRight="@dimen/margin_100px"
+                    android:layout_marginTop="@dimen/margin_midhuge"
+                    android:gravity="center_vertical|right"
+                    android:contentDescription="review_name"
+                    android:hint="@string/name" />
+
+                <pt.rocket.components.customfontviews.EditText
+                    android:id="@+id/title_box"
+                    style="@style/form_edittext_style"
+                    android:layout_marginLeft="@dimen/margin_100px"
+                    android:layout_marginRight="@dimen/margin_100px"
+                    android:layout_marginTop="@dimen/margin_mid"
+                    android:gravity="center_vertical|right"
+                    android:contentDescription="review_title"
+                    android:hint="@string/writereview_title_hint" />
+
+                <pt.rocket.components.customfontviews.EditText
+                    android:id="@+id/review_box"
+                    style="@style/form_edittext_style"
+                    android:layout_marginBottom="@dimen/rounded_margin_small"
+                    android:layout_marginLeft="@dimen/margin_100px"
+                    android:layout_marginRight="@dimen/margin_100px"
+                    android:layout_marginTop="@dimen/margin_mid"
+                    android:gravity="center_vertical|right"
+                    android:contentDescription="review_comment"
+                    android:hint="@string/writereview_review_hint" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/button_container" >
+
+                <pt.rocket.components.customfontviews.Button
+                    android:id="@+id/send_review"
+                    style="@style/button_orange_bottom"
+                    android:layout_marginLeft="@dimen/rounded_margin_mid"
+                    android:layout_marginRight="@dimen/rounded_margin_mid"
+                    android:text="@string/writereview_send" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>

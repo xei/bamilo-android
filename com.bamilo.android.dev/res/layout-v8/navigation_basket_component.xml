@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nav_basket"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_navigation_basket_background"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/margin_mid"
+    android:paddingRight="@dimen/margin_mid"
+    android:paddingTop="@dimen/margin_small" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_marginRight="@dimen/navigation_cart_vertical_distance"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_toLeftOf="@+id/nav_cart_count"
+            android:orientation="vertical" >
+
+            <pt.rocket.components.customfontviews.TextView
+                android:id="@+id/nav_basket_title"
+                android:layout_alignParentRight="true"
+                style="@style/navigation_cart_titletext"
+                android:text="@string/shopping_cart" />
+
+            <pt.rocket.components.customfontviews.TextView
+                android:id="@+id/nav_basket_empty"
+                android:layout_alignParentRight="true"
+                style="@style/navigation_cart_emptytext"
+                android:layout_below="@id/nav_basket_title"
+                android:text="@string/navigation_cart_empty" />
+
+            <pt.rocket.components.customfontviews.TextView
+                android:id="@+id/nav_basket_elements"
+                style="@style/navigation_cart_price"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/nav_basket_title"
+                android:visibility="invisible" />
+
+            <pt.rocket.components.customfontviews.TextView
+                android:id="@+id/nav_basket_vat"
+                android:layout_alignParentRight="true"
+                style="@style/navigation_cart_vattext"
+                android:layout_below="@+id/nav_basket_elements"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <pt.rocket.components.customfontviews.TextView
+            android:id="@+id/nav_cart_count"
+            style="@style/ShoppingCartCount"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/margin_mid" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -279,7 +279,7 @@
     <string name="track_order_hint">کد سفارش</string>
     <string name="track_your_order">ردیابی سفارش شما</string>
     <string name="track_your_order_tip">جستجو برای کد سفارش و تمامی جزییات مربوط به آن در این بخش به نمایش در خواهد آمد.</string>
-    <string name="try_again">تکرار</string>
+    <string name="try_again">دوباره امتحان کنید</string>
     <string name="upgrade_forced_text">ما موردی یافته ایم که باید برطرف شده و تجربه شما را از فروشگاه بامیلو باز هم بهبود دهد! برای ادامه باید برنامه را بروزرسانی کنید.</string>
     <string name="upgrade_forced_title">بروزرسانی لازم است.</string>
     <string name="upgrade_optional_text">یک بروزرسانی جدید برای بهبود بیشتر تجربه فروشگاه بامیلو وجود دارد. حتما برنامه خود را بروزرسانی کنید.</string>
@@ -319,6 +319,8 @@
     <string name="pinch_to_zoom_label">باز و بسته کردن دو انگشت برای تغییر بزرگنمایی</string>
     <string name="string_rating">امتیازدهی</string>
     <string name="string_with_discount_only">تنها با تخفیف</string>
+	<string name="bamilo_not_available">بامیلو در حال حاضر در دسترس نمی باشد.</string>    
+        
     <string name="invalid_product"></string>
 
 </resources>

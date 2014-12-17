@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/rounded_box"
+    android:layout_marginBottom="0dp"
+    android:paddingTop="@dimen/rounded_margin_mid" >
+
+    <!-- IMAGE -->
+
+    <FrameLayout
+        android:id="@+id/product_detail_image_gallery_container"
+        android:layout_width="match_parent"
+        android:layout_height="283.33dp" />
+
+    <!-- DISCOUNT -->
+
+    <pt.rocket.components.customfontviews.TextView
+        android:id="@+id/product_detail_discount_percentage"
+        style="@style/discount_percentage"
+        android:layout_alignBottom="@id/product_detail_image_gallery_container"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/margin_mid"
+        android:layout_marginTop="@dimen/margin_large"
+        android:paddingBottom="@dimen/margin_small" />
+
+    <!-- SHARE -->
+
+    <ImageView
+        android:id="@+id/product_detail_product_image_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/product_list_item_image_side_margin"
+        android:layout_marginTop="@dimen/product_list_item_image_margin"
+        android:padding="@dimen/rounded_margin_mid"
+        android:src="@drawable/selector_productdetails_share" />
+
+    <!-- FAVOURITE -->
+
+    <ImageView
+        android:id="@+id/product_detail_image_is_favourite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/product_list_item_image_side_margin"
+        android:layout_marginTop="@dimen/product_list_item_image_margin"
+        android:padding="@dimen/rounded_margin_mid"
+        android:src="@drawable/selector_favorite" />
+
+    <!-- DIVIDER -->
+
+    <View
+        android:id="@+id/product_detail_div_title"
+        style="@style/divider_horizontal"
+        android:layout_below="@id/product_detail_image_gallery_container"
+        android:layout_marginTop="@dimen/margin_mid" />
+
+    <!-- TITLE -->
+
+    <pt.rocket.components.customfontviews.TextView
+        android:id="@+id/product_name"
+        style="@style/text_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/product_detail_div_title"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/rounded_margin_mid"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginTop="@dimen/rounded_margin_mid"
+        android:background="@drawable/selector_listitem_highlight"
+        android:gravity="right|center_vertical"
+        android:maxLines="2"
+        android:minHeight="@dimen/product_detail_item_title_height"
+        android:singleLine="false" />
+
+</RelativeLayout>
