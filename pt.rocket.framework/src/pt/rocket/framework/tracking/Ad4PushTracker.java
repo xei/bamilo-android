@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4S;
-import com.ad4screen.sdk.A4S.Callback;
 import com.ad4screen.sdk.analytics.Cart;
 import com.ad4screen.sdk.analytics.Item;
 import com.ad4screen.sdk.analytics.Lead;
@@ -35,6 +34,7 @@ import de.akquinet.android.androlog.Log;
  * @modified sergiopereira
  */
 public class Ad4PushTracker {
+    
     private final static String TAG = Ad4PushTracker.class.getSimpleName();
 
     private boolean isEnabled = false;
@@ -376,7 +376,9 @@ public class Ad4PushTracker {
     }
 
     public void trackFacebookConnect(String customerId) {
-        mA4S.trackEvent(EVENT_FACEBOOK_CONNECT, "loginUserID=" + customerId);
+        if (isEnabled) {
+            mA4S.trackEvent(EVENT_FACEBOOK_CONNECT, "loginUserID=" + customerId);
+        }
     }
 
     /**
@@ -757,11 +759,13 @@ public class Ad4PushTracker {
      * @author sergiopereira
      */
     public void trackCart(double cartValue, int cartCount) {
-        Bundle prefs = new Bundle();
-        prefs.putDouble(CART_VALUE, cartValue);
-        prefs.putInt(CART_COUNTER, cartCount);
-        mA4S.updateDeviceInfo(prefs);
-        Log.i(TAG, "TRACK CART VALUE: " + prefs.toString());
+        if (isEnabled) {
+            Bundle prefs = new Bundle();
+            prefs.putDouble(CART_VALUE, cartValue);
+            prefs.putInt(CART_COUNTER, cartCount);
+            mA4S.updateDeviceInfo(prefs);
+            Log.i(TAG, "TRACK CART VALUE: " + prefs.toString());
+        }
     }
 
     private String getCurrentDateTime() {

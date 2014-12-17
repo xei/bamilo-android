@@ -27,7 +27,7 @@
     <string name="dp_intent_label">Daraz Dev</string>
 
     <!-- NEW RELIC --> 
-    <string name="newrelic_token">AA08ccfd12adb63ba92f55f3b02ed596cc9aa9e768</string>
+    <string name="newrelic_token">AA5021de247cc665931a33e042b1dca26d74ef0eaa</string>
 
     <!-- ACCENGAGE -->
     <item name="ad4push_enabled" type="bool">true</item>

@@ -752,36 +752,62 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     private void setLayoutMaintenance(final EventType eventType) {
         // Inflate maintenance
         mMainFallBackStub.setVisibility(View.VISIBLE);
-        // Set content
-        MaintenancePage.setContentForSplash(this, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get id
-                int id = v.getId();
-                // Case retry
-                if (id == R.id.fallback_retry) {
-                    mMainFallBackStub.setVisibility(View.GONE);
-                    JumiaApplication.INSTANCE.sendRequest(
-                            JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType), 
-                            JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType), 
-                            JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+        
+        // Case BAMILO
+        if(getResources().getBoolean(R.bool.is_bamilo_specific)) {
+            MaintenancePage.setMaintenancePageBamilo(this, new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickMaintenanceRetryButton(eventType);
                 }
-                // Case choose
-                else if (id == R.id.fallback_change_country) {
-                    // Show Change country
-                    Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
-                    intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
-                    intent.putExtra(ConstantsIntentExtra.IN_MAINTANCE, true);
-                    // Start activity
-                    startActivity(intent);
-                    finish();
+            });
+        }
+        // Case JUMIA
+        else {
+            // Set content
+            MaintenancePage.setMaintenancePageSplashScreen(this, new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Get id
+                    int id = v.getId();
+                    // Case retry
+                    if (id == R.id.fallback_retry) onClickMaintenanceRetryButton(eventType);
+                    // Case choose
+                    else if (id == R.id.fallback_change_country) onClickMaitenanceChooseCountry();
                 }
-            }
-        });
-
+            });
+        }
     }
+    
+    /**
+     * Process the click on retry button in maintenance page.
+     * @param eventType
+     * @modified sergiopereira
+     */
+    private void onClickMaintenanceRetryButton(EventType eventType) {
+        mMainFallBackStub.setVisibility(View.GONE);
+        JumiaApplication.INSTANCE.sendRequest(
+                JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
+                JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
+                JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+    }
+    
+    /**
+     * Process the click on choose country button in maintenance page.
+     * @author sergiopereira
+     */
+    private void onClickMaitenanceChooseCountry() {
+        // Show Change country
+        Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
+        intent.putExtra(ConstantsIntentExtra.IN_MAINTANCE, true);
+        // Start activity
+        startActivity(intent);
+        finish();
+    }
+    
 
     /**
      * Requests and Callbacks methods

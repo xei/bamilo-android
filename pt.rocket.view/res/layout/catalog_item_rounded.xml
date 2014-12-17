@@ -51,13 +51,13 @@
         android:id="@+id/item_name"
         style="@style/text_normal"
         android:layout_width="match_parent"
-        android:gravity="left|center_vertical|start"
         android:layout_alignLeft="@+id/center_view"
         android:layout_alignStart="@+id/center_view"
         android:layout_below="@+id/item_brand"
-        android:ellipsize="end"
         android:layout_marginEnd="@dimen/product_item_text_right_margin"
         android:layout_marginRight="@dimen/product_item_text_right_margin"
+        android:ellipsize="end"
+        android:gravity="left|center_vertical|start"
         android:text="Name" />
 
     <pt.rocket.components.customfontviews.TextView
@@ -84,9 +84,9 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_name"
         android:layout_alignStart="@id/item_name"
+        android:layout_below="@id/item_regprice"
         android:gravity="start|left|center_vertical"
         android:layoutDirection="locale"
-        android:layout_below="@id/item_regprice"
         android:orientation="horizontal" >
 
         <RatingBar
@@ -103,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
-			android:gravity="start|left|center_vertical"
+            android:gravity="start|left|center_vertical"
             android:includeFontPadding="false"
             android:text="Reviews"
             android:textColor="@color/grey_light" />

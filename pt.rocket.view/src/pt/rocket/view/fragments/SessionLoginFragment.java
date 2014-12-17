@@ -732,8 +732,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
     private void triggerAutoLogin() {
         wasAutologin = true;
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE
-                .getCustomerUtils().getCredentials());
+        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, wasAutologin);
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }

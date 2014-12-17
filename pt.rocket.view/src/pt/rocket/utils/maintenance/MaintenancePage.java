@@ -52,7 +52,7 @@ public class MaintenancePage {
      * @author manuel
      * @modified sergiopereira
      */
-    public static void setContentForSplash(Activity activity, OnClickListener listener) {
+    public static void setMaintenancePageSplashScreen(Activity activity, OnClickListener listener) {
 
         try {
 
@@ -130,7 +130,7 @@ public class MaintenancePage {
      * @author manuel
      * @modified sergiopereira
      */
-    public static void setContentForBase(Activity activity, OnClickListener listener) {
+    public static void setMaintenancePageBaseActivity(Activity activity, OnClickListener listener) {
 
         try {
 
@@ -193,4 +193,20 @@ public class MaintenancePage {
 
     }
 
+    /**
+     * Set the maintenance page for Bamilo.
+     * @param activity
+     * @param listener
+     * @author sergiopereira
+     */
+    public static void setMaintenancePageBamilo(Activity activity, OnClickListener listener) {
+        try {
+            // Get retry button
+            Button retry = (Button) activity.findViewById(R.id.fallback_retry);
+            retry.setOnClickListener(listener);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+    
 }

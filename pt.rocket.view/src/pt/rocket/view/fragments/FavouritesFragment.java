@@ -761,7 +761,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 }
                 // Return string out of stock. Commented due to error already being visible to user.
                 //error = R.string.product_outof_stock; 
-                
                 error = OUT_OF_STOCK_ERROR;
                 
                 // CASE ERROR ADDING
@@ -773,8 +772,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                     mAddableToCartList.get(pos).setVariationStockWarning(true);
                 }
                 /// Return string out of stock. Commented due to error already being visible to user.
-                //error = R.string.product_outof_stock; 
-                
+                //error = R.string.product_outof_stock;
                 error = OUT_OF_STOCK_ERROR;
                 
                 // CASE UNKNOWN

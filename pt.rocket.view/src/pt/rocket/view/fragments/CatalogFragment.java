@@ -2,7 +2,6 @@ package pt.rocket.view.fragments;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -261,11 +260,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         
         mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
 
-        //TODO
-//        if(getResources().getBoolean(R.bool.is_bamilo_specific)){
-//            Collections.reverse(mSortOptions);
-//        }
-        
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_products_list);
         // Associate the listener to tab strip
         // mViewPager.setOnPageChangeListener(onPageChangeListener);
@@ -334,17 +328,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
             params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
             params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
-            
-            Log.e("FILTER", " CONTENT_TITLE:" + title);
-            Log.d("FILTER", " CONTENT_URL:" + productsURL);
-            Log.d("FILTER", " SEARCH_QUERY:" + searchQuery);
-            Log.d("FILTER", " NAVIGATION_SOURCE:" + navigationSource);
-            Log.d("FILTER", " NAVIGATION_PATH:" + navigationPath);
-            Log.d("FILTER", " PARAM_FILTERS:" + mCatalogFilterValues);
-//            if(getResources().getBoolean(R.bool.is_bamilo_specific)){
-//                Collections.reverse(params)
-//            }
-            
             mCatalogPagerAdapter = new CatalogPagerAdapter(getChildFragmentManager(), mViewPager.getId(), mSortOptions, params,
                     BaseActivity.isTabletInLandscape(getBaseActivity()));
         } else {
@@ -1109,7 +1092,6 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         mProductsMap.putAll(products);
 
         setTitleAndOrSubTitle(title);
-
 
         Bundle args = getArguments();
         if (null != args) {

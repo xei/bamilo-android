@@ -175,8 +175,6 @@ public class ProductsListAdapter extends BaseAdapter {
             prodItem.brand = (TextView) itemView.findViewById(R.id.item_brand);
             prodItem.newFlag = (ImageView) itemView.findViewById(R.id.image_is_new);
 
-            prodItem.newFlag.setImageResource(R.drawable.selector_is_new);
-
             prodItem.isFavourite = (ImageView) itemView.findViewById(R.id.image_is_favourite);
             itemView.setTag(prodItem);
         } else {
@@ -260,12 +258,7 @@ public class ProductsListAdapter extends BaseAdapter {
             if (null != product.getSpecialPrice() && !product.getSpecialPrice().equals(product.getPrice())) {
                 prodItem.discount.setText(product.getSpecialPrice());
                 prodItem.price.setText(product.getPrice());
-//                if(context != null && context.getResources().getBoolean(R.bool.is_bamilo_specific)){
-//                    //TODO img_newarrival
-//                    prodItem.discountPercentage.setText("%" + product.getMaxSavingPercentage().intValue() + "-");
-//                } else {
-                    prodItem.discountPercentage.setText("-" + product.getMaxSavingPercentage().intValue() + "%");
-//                }
+                prodItem.discountPercentage.setText("-" + product.getMaxSavingPercentage().intValue() + "%");
                 prodItem.discountPercentage.setVisibility(View.VISIBLE);
             } else {
                 prodItem.discount.setText(product.getSpecialPrice());
