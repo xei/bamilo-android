@@ -20,8 +20,7 @@
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_small"
-        android:src="@drawable/img_newarrival"
-        android:visibility="gone" />
+        android:src="@drawable/selector_is_new" />
 
     <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_percentage"

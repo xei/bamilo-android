@@ -228,8 +228,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
      */
     private void setImage(Item prodItem, AddableToCart addableToCart){
         // Set is new image
-        if (addableToCart.isNew()) prodItem.isNew.setVisibility(View.VISIBLE);
-        else prodItem.isNew.setVisibility(View.GONE);
+        prodItem.isNew.setSelected(addableToCart.isNew());
         // Set image
         String imageURL = (addableToCart.getImageList().size() > 0) ? imageURL = addableToCart.getImageList().get(0) : "";
         RocketImageLoader.instance.loadImage(imageURL, prodItem.image,  null, R.drawable.no_image_small);

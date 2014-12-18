@@ -10,10 +10,12 @@
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/rounded_margin_small"
+        android:layoutDirection="locale"
         android:listSelector="@drawable/selector_listitem_highlight"
         android:numColumns="@integer/favourite_num_columns"
-        android:layoutDirection="locale"
-        android:paddingBottom="@dimen/recently_viewed_button_container_height" />
+        android:paddingBottom="@dimen/button_container_height" />
+
+    <!-- android:paddingBottom="@dimen/recently_viewed_button_container_height" -->
 
     <include
         android:layout_width="match_parent"

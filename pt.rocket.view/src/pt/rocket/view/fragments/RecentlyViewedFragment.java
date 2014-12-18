@@ -100,7 +100,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         mClearAllButton.setOnClickListener((OnClickListener) this);
         // Get add to cart button
         mAddAllToCartButton = (Button) view.findViewById(R.id.button_shop_all);
-        mAddAllToCartButton.setOnClickListener((OnClickListener) this);
+        //mAddAllToCartButton.setOnClickListener((OnClickListener) this);
+        mAddAllToCartButton.setVisibility(View.GONE);
 
         // Validate current state
         if (isOnAddingAllItemsToCart) {

@@ -251,6 +251,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         this.contentLayoutId = contentLayoutId;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -299,6 +303,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        Log.i(TAG, "ON NEW INTENT");
         // BugSenseHandler.leaveBreadcrumb(TAG + " _onNewIntent");
         ActivitiesWorkFlow.addStandardTransition(this);
     }
@@ -311,17 +316,17 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i(TAG, "ON START");
     }
 
     /*
      * (non-Javadoc)
-     * 
-     * @see android.app.Activity#onResume()
+     * @see android.support.v4.app.FragmentActivity#onResume()
      */
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "ON RESUME");
+        Log.i(TAG, "ON RESUME");
 
         if (!isRegistered) {
             // OLD FRAMEWORK
@@ -342,17 +347,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
          *           -can-not-perform -this-action-after-onsaveinstancestate-h
          */
         if (mOnActivityResultIntent != null && getIntent().getExtras() != null) {
-            initialCountry = getIntent().getExtras().getBoolean(
-                    ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
             mOnActivityResultIntent = null;
         }
 
-        if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT)
-                && JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null) {
+        if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT) && 
+                JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null) {
             Bundle bundle = new Bundle();
             bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
-            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), bundle,
-                    mIResponseCallback);
+            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), bundle, mIResponseCallback);
         }
 
         AdjustTracker.onResume(this);
@@ -387,6 +390,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onKeyDown(int, android.view.KeyEvent)
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent e) {
         if (keyCode == KeyEvent.KEYCODE_MENU && ShopSelector.getShopId() == null) {
@@ -396,7 +403,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         return super.onKeyDown(keyCode, e);
     }
     
-    
     /*
      * (non-Javadoc)
      * 
@@ -405,6 +411,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     public void onPause() {
         super.onPause();
+        Log.i(TAG, "ON PAUSE");
         // Hide search component
         hideSearchComponent();
         // Dispatch saved hits
@@ -412,31 +419,82 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         AdjustTracker.onPause();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onStop()
+     */
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "ON STOP");
+        Log.i(TAG, "ON STOP");
         trackScreen = fragmentController.getLastEntry();
         JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onDestroy()
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "ON DESTROY");
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.setLoggedIn(false);
         isRegistered = false;
-//        if(!TextUtils.isEmpty(trackScreen) && !trackScreen.equals(FragmentType.CHOOSE_COUNTRY.toString())){
-//            Log.d("GTM","trackCloseApp trackScreen:"+trackScreen);
-////            TrackerDelegator.trackCloseApp(trackScreen);
-//            TrackerDelegator.trackCloseApp();
-//        }
+        // Tracking
         if(TextUtils.isEmpty(trackScreen)){
             TrackerDelegator.trackCloseApp();
         }
         
     }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onBackPressed()
+     */
+    @Override
+    public void onBackPressed() {
+        Log.i(TAG, "ON BACK PRESSED");
+        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)
+                && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
+            mDrawerLayout.closeDrawer(mDrawerNavigation);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
+    /**
+     * Using the ActionBarDrawerToggle, you must call it during onPostCreate() and
+     * onConfigurationChanged()...
+     */
+    /*
+     * (non-Javadoc)
+     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onPostCreate(android.os.Bundle)
+     */
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        Log.i(TAG, "ON POST CREATE: DRAWER");
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+        // Removed Categories TAB
+        /*-// Validate if navigation is open (on orientation change)
+        if(mDrawerLayout.isDrawerOpen(mDrawerNavigation)) showWizardNavigation();*/
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onConfigurationChanged(android.content.res.Configuration)
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+      super.onConfigurationChanged(newConfig);
+      Log.i(TAG, "ON CONFIGURATION CHANGED");
+      // Pass any configuration change to the drawer toggles
+      mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+    
     /**
      * #### ACTION BAR ####
      */
@@ -532,16 +590,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void setupActionBar() {
         ActionBarSherlock.unregisterImplementation(ActionBarSherlockNative.class);
         supportActionBar = getSupportActionBar();
-
         supportActionBar.setHomeButtonEnabled(true);
         supportActionBar.setDisplayHomeAsUpEnabled(true);
         // Set custom view
         supportActionBar.setDisplayShowCustomEnabled(true);
-
         supportActionBar.setCustomView(R.layout.action_bar_logo_layout);
         // logoView = supportActionBar.getCustomView().findViewById(R.id.ic_logo);
         // logoView.setOnClickListener(onActionBarClickListener);
-
         logoTextView = (TextView) supportActionBar.getCustomView().findViewById(R.id.ic_text_logo);
         logoTextView.setOnClickListener(onActionBarClickListener);
     }
@@ -679,46 +734,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.app.Activity#onBackPressed()
-     */
-    @Override
-    public void onBackPressed() {
-        Log.i(TAG, "ON BACK PRESSED");
-        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)
-                && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
-
-            mDrawerLayout.closeDrawer(mDrawerNavigation);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during onPostCreate() and
-     * onConfigurationChanged()...
-     */
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        Log.d(TAG, "ON POST CREATE: DRAWER");
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-        // Removed Categories TAB
-        /*-// Validate if navigation is open (on orientation change)
-        if(mDrawerLayout.isDrawerOpen(mDrawerNavigation)) showWizardNavigation();*/
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        Log.d(TAG, "ON ORIENTATION CHANGED: DRAWER");
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
 
     /**
      * ############### SLIDE MENU #################

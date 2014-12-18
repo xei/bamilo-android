@@ -32,6 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|right"
         android:layout_alignParentRight="true"
-        android:src="@drawable/img_newarrival" />
+        android:src="@drawable/selector_is_new" />
 
 </RelativeLayout>
