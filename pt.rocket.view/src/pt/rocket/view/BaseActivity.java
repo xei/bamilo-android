@@ -1410,8 +1410,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         if (null != prod) {
             // For tracking when sharing
             sharingIntent.putExtra(RestConstants.JSON_SKU_TAG, prod.getSku());
-            String msg = getString(R.string.share_checkout_this_product) + "\n"
-                    + prod.getUrl().replace("/mobapi", "");
+            String apiVersion = getString(R.string.jumia_global_api_version) + "/";
+            String msg = getString(R.string.share_checkout_this_product) + "\n" + prod.getUrl().replace(apiVersion, "");
             sharingIntent.putExtra(Intent.EXTRA_TEXT, msg);
         }
         return sharingIntent;
