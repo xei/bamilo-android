@@ -48,35 +48,40 @@
 
     <!-- DISCOUNT -->
 
-    <pt.rocket.components.customfontviews.TextView
-        android:id="@+id/item_discount"
-        style="@style/text_price"
+    <RelativeLayout
+        android:id="@+id/price_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center_vertical|start"
         android:layout_alignLeft="@id/item_name"
         android:layout_alignStart="@id/item_name"
-        android:layout_below="@id/item_name"
-        android:layout_marginEnd="4dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginRight="4dp"
-        android:text="Discount" />
+        android:layout_below="@id/item_name" >
 
-    <!-- PRICE -->
+        <pt.rocket.components.customfontviews.TextView
+            android:id="@+id/item_discount"
+            style="@style/text_price"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:text="Discount" />
 
-    <pt.rocket.components.customfontviews.TextView
-        android:id="@+id/item_regprice"
-        style="@style/text_price"
-        android:layout_alignTop="@id/item_discount"
-        android:layout_below="@id/item_name"
-        android:layout_toRightOf="@id/item_discount"
-        android:text="Price" />
+        <!-- PRICE -->
 
+        <pt.rocket.components.customfontviews.TextView
+            android:id="@+id/item_regprice"
+            style="@style/text_price"
+            android:layout_alignTop="@id/item_discount"
+            android:layout_toRightOf="@id/item_discount"
+            android:text="Price" />
+    </RelativeLayout>
     <!-- WARNINGS -->
 
     <RelativeLayout
         android:id="@+id/warning_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/item_regprice"
+        android:layout_below="@id/price_container"
         android:layout_marginEnd="@dimen/rounded_margin_small"
         android:layout_marginRight="@dimen/rounded_margin_small"
         android:layout_toLeftOf="@+id/button_shop"

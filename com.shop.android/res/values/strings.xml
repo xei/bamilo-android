@@ -8,8 +8,8 @@
     <string name="action_label_share">ေ၀မွ်ရန္</string>
     <string name="action_label_wishlist">ရရွိလိုေသာ ပစၥည္းစာရင္း</string>
     <string name="add_address">လိပ္စာ ျဖည္႔ရန္</string>
-    <string name="add_to_shopping_cart">,ေစ်း၀ယ္လွည္းသို႔ထည္႔ရန္</string>
-    <string name="added_to_shop_cart_dialog_text">ေစ်း၀ယ္လွည္းသို႔ ထည္႔သြင္းၿပီးပါၿပီၿပီ</string>
+    <string name="add_to_shopping_cart">ေစ်း၀ယ္လွည္းသို႔ထည္႔ရန္</string>
+    <string name="added_to_shop_cart_dialog_text">ေစ်း၀ယ္လွည္းသို႔ ထည္႔သြင္းၿပီးပါၿပီၿပီ   &#160;</string>
     <string name="all_label">အားလံုး</string>
     <string name="back_label">ေနာက္သို႔</string>
     <string name="back_level">ၿပီးခဲ့ေသာအဆင့္သို႔ ျပန္သြားရန္</string>
@@ -137,7 +137,7 @@
     <string name="my_order_qty">Qty</string>
     <string name="my_order_ship_fee_label">သယ္ယူပို႔ေဆာင္ေရးကုန္က်စရိတ္</string>
     <string name="my_order_total_label">စုစုေပါင္း</string>
-    <string name="my_order_voucher_label">,ေဘာက္ခ်ာ &#160;</string>
+    <string name="my_order_voucher_label">ေဘာက္ခ်ာ &#160;</string>
     <string name="my_profile">ကြ်ႏု္ပ္၏ Profile</string>
     <string name="myaccount_email_notifications">Email Notifications</string>
     <string name="myaccount_userdata">သံုးစြဲသူအခ်က္အလက္</string>
@@ -179,7 +179,7 @@
     <string name="payment_method">ေငြေပးေခ်မႈနည္းလမ္း</string>
     <string name="personal_data_label">သင္၏ ကုိယ္ေရးအခ်က္အလက္မ်ား</string>
     <string name="personal_data_title">အေကာင့္အခ်က္အလက္မ်ား</string>
-    <string name="please_fill_all_data">ေက်းဇူးျပဳ၍ အခ်က္အလက္မ်ားျဖည့္ပါ</string>
+    <string name="please_fill_all_data">ေက်းဇူးျပဳ၍ အခ်က္အလက္မ်ားျဖည့္ပါ &#160;</string>
     <string name="poll_question_label">Poll Question</string>
     <string name="posted_by">မွတင္သည္။</string>
     <string name="product_could_not_retrieved">ကုန္ပစၥည္းအခ်က္အလက္ျပန္လည္မရယူႏိုင္ပါ!</string>

@@ -967,7 +967,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
             if (parentFragment.isVisible()) {
                 if (mTotalProducts > 0)
                     getBaseActivity().setTitleAndSubTitle(query,
-                            " (" + productsPage.getTotalProducts() + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
+                            " (" + productsPage.getTotalProducts() + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ") ");
                 else
                     getBaseActivity().setTitle(query);
             }

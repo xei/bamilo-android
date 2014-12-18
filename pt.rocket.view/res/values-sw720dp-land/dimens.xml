@@ -56,4 +56,6 @@
     <integer name="catalog_list_num_columns">3</integer>
     <integer name="catalog_grid_num_columns">4</integer>
 
+    
+    <dimen name="login_container_width">@integer/match_parent</dimen>
 </resources>

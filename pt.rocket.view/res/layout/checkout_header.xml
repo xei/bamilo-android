@@ -37,7 +37,7 @@
             <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/checkout_header_step_1_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:ellipsize="end"
                 android:fontFamily="roboto_bold"
                 android:gravity="left|center"
@@ -47,7 +47,7 @@
                 android:text="@string/checkout_header_step_1"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_s"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </LinearLayout>
 
         <!-- STEP 2 -->

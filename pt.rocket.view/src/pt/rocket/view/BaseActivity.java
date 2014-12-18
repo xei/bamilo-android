@@ -1536,7 +1536,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             return;
 
         if (!TextUtils.isEmpty(title)) {
-            titleView.setText(title);
+            titleView.setText(title+" ");
             headerTitle.setVisibility(View.VISIBLE);
         } else if (TextUtils.isEmpty(title)) {
             headerTitle.setVisibility(View.GONE);
