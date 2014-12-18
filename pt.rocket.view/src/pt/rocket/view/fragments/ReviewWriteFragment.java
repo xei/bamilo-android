@@ -186,7 +186,8 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
-                triggerAutoLogin();
+//                triggerAutoLogin();
+                setReviewName();
                 triggerCustomer();
                 triggerRatingOptions();
             }
@@ -250,7 +251,27 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
     }
-
+    
+    /*
+     * Set review name by user name if is logged.
+     * 
+     */
+    private void setReviewName(){
+        Customer customer = JumiaApplication.CUSTOMER;
+        if(customer != null && JumiaApplication.INSTANCE.isLoggedIn()){
+            if (nameText == null) {
+                nameText = (EditText) getView().findViewById(R.id.name_box);
+            }
+            if (nameText != null && customer != null && customer.getFirstName() != null) {
+                // Set Customer Name only if name field is not yet filled in
+                Editable name = nameText.getText();
+                if (name == null || TextUtils.isEmpty(name.toString())) {
+                    nameText.setText(customer.getFirstName());
+                }
+            }
+        }
+    }
+    
     /**
      * Set the Products layout using inflate
      */
@@ -578,16 +599,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             // TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true,
             // getActivity().getString(R.string.mixprop_loginlocationreview), false);
             // Make sure name field is available
-            if (nameText == null) {
-                nameText = (EditText) getView().findViewById(R.id.name_box);
-            }
-            if (nameText != null && customer != null && customer.getFirstName() != null) {
-                // Set Customer Name only if name field is not yet filled in
-                Editable name = nameText.getText();
-                if (name == null || TextUtils.isEmpty(name.toString())) {
-                    nameText.setText(customer.getFirstName());
-                }
-            }
+            setReviewName();
             return false;
         case GET_CUSTOMER:
             Log.i(TAG, "GET_CUSTOMER");
@@ -602,7 +614,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                 return true;
             } else {
                 completeProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                triggerAutoLogin();
+//                triggerAutoLogin();
                 triggerCustomer();
                 triggerRatingOptions();
                 // Waiting for the fragment comunication
@@ -699,13 +711,15 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
 
     /**
      * TRIGGERS
-     * 
+     *  
      * @author sergiopereira
+     * @deprecated
      */
     private void triggerAutoLogin() {
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
+        
     }
 
     private void triggerCustomer() {
