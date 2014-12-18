@@ -42,6 +42,10 @@ public class Toast  {
 
         mRootLayout = (LinearLayout) mToastView.findViewById(R.id.root_layout);
         
+        //added empty space to prevent string from being cutted on burmese
+        if(activity.getResources().getBoolean(R.bool.is_shop_specific))
+            s = s + " ";
+        
         mMessageTextView.setText(s);
         
         android.widget.Toast toast = new  android.widget.Toast(activity);

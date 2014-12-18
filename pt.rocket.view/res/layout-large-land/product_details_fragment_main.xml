@@ -57,10 +57,11 @@
                 android:id="@+id/product_detail_name"
                 style="@style/text_header"
                 android:layout_width="match_parent"
-                android:layout_marginEnd="@dimen/margin_huge"
-                android:layout_marginRight="@dimen/margin_huge"
+                android:layout_marginEnd="@dimen/margin_x_small"
+                android:layout_marginRight="@dimen/margin_x_small"
                 android:gravity="left|center_horizontal|start"
                 android:maxLines="2"
+                android:ellipsize="end"
                 android:singleLine="false"
                 android:text="Product" />
 

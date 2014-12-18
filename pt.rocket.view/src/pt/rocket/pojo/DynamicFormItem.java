@@ -720,27 +720,32 @@ public class DynamicFormItem {
 
     private boolean validateStringToPattern(String value) {
         boolean result;
+      //added empty space to prevent string from being cutted on burmese
+        String space = "";
+        if(context!= null && context.getResources().getBoolean(R.bool.is_shop_specific))
+            space = " ";
+        
         if (value.length() == 0) {
             result = !this.entry.getValidation().isRequired();
             setErrorText(context.getString(R.string.error_ismandatory) + " "
-                    + this.entry.getLabel());
+                    + this.entry.getLabel()+space);
         } else {
             if (this.entry.getValidation().min > 0
                     && value.length() < this.entry.getValidation().min) {
                 setErrorText(this.entry.getLabel() + " "
-                        + context.getResources().getString(R.string.form_texttoshort));
+                        + context.getResources().getString(R.string.form_texttoshort)+space);
                 result = false;
             } else if (this.entry.getValidation().max > 0
                     && value.length() > this.entry.getValidation().max) {
                 setErrorText(this.entry.getLabel() + " "
-                        + context.getResources().getString(R.string.form_texttolong));
+                        + context.getResources().getString(R.string.form_texttolong)+space);
                 result = false;
             } else {
 
                 Pattern pattern = Pattern.compile(this.entry.getValidation().regex,
                         Pattern.CASE_INSENSITIVE);
                 setErrorText("The " + this.entry.getLabel() + " "
-                        + context.getString(R.string.dynamic_errortext));
+                        + context.getString(R.string.dynamic_errortext)+space);
 
                 Matcher matcher = pattern.matcher(value);
                 result = matcher.find();
