@@ -276,7 +276,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             if (ratingOptions != null && !ratingOptions.isEmpty()) {
                 int size = ratingOptions.size();
                 for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
-                    boolean toAdd = true;
+                    
                     View viewRating = mInflater.inflate(R.layout.rating_bar_component, null, false);
                     View viewLabel = mInflater.inflate(R.layout.label_rating_component, null, false);
                     viewRating.setTag(option.getKey());
@@ -286,6 +286,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                     
                     // Get the rating label
                     // FIXME : (TEMPORARY) Validate rating label if ins't a number from API
+                    boolean toAdd = true;
                     String ratingLabel = option.getKey();
                     if (ratingLabel.equals("1")) ratingLabel = size == 1 ? getString(R.string.string_price) : getString(R.string.string_price);
                     else if (ratingLabel.equals("2")) ratingLabel = getString(R.string.string_appearance);
