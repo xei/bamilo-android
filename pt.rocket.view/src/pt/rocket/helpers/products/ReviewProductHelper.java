@@ -49,9 +49,13 @@ public class ReviewProductHelper extends BaseHelper {
         }
         
         for (Entry<String, HashMap<String, String>> option : JumiaApplication.INSTANCE.getRatingOptions().entrySet()) {
-            
-            values.put(RestConstants.REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf(productReviewCreated.getRating().get(option.getKey()).intValue())));
-
+            int value = 5;
+            try {
+                value = productReviewCreated.getRating().get(option.getKey()).intValue();
+            } catch (NullPointerException e) { 
+                Log.w(TAG, "WARNING: NPE ON GET RATING VALUE", e);
+            }
+            values.put(RestConstants.REVIEW_OPTION_FIELD + option.getKey(), option.getValue().get(String.valueOf(value)));
         }
         
         Bundle bundle = new Bundle();
