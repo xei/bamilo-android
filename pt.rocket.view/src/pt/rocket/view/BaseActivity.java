@@ -531,7 +531,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
             hideActionBarTitle();
         } else {
-            
+            //#specific_shop
             if(getResources().getBoolean(R.bool.is_daraz_specific)  || 
                getResources().getBoolean(R.bool.is_shop_specific)   ||
                getResources().getBoolean(R.bool.is_bamilo_specific)){

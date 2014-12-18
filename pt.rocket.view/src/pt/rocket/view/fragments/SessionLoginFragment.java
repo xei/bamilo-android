@@ -51,12 +51,12 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.LayoutDirection;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+
 import com.facebook.FacebookAuthorizationException;
 import com.facebook.Request;
 import com.facebook.Session;
@@ -545,8 +545,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, true);
                 params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.LOGIN);
                 
-                
-                
                 // Validate the next step
                 if (nextFragmentType != null) {
                     FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
@@ -636,11 +634,14 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         // Set title when Login form is displayed to allow access to other fragments
         if (null != sLoginFragment && sLoginFragment.nextFragmentType != null) {
             
-            if(!getResources().getBoolean(R.bool.is_daraz_specific)){
-                getBaseActivity().setActionBarTitle(R.string.login_label);
-            } else {
+            //#specific_shop
+            if(getResources().getBoolean(R.bool.is_daraz_specific) ||
+                    getResources().getBoolean(R.bool.is_shop_specific) ||
+                    getResources().getBoolean(R.bool.is_bamilo_specific) ){
                 getBaseActivity().hideActionBarTitle();
                 getBaseActivity().setTitle(R.string.login_label);
+            } else {
+                getBaseActivity().setActionBarTitle(R.string.login_label);
             }
         }
 

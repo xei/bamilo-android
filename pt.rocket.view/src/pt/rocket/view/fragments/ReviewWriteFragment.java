@@ -494,7 +494,6 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         }
     }
 
-    // XXX
     private void cleanForm(){
         
         titleText.setText("");
@@ -545,7 +544,6 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                             dialog_review_submitted.dismiss();
                             isExecutingSendReview = false;
                             if (getBaseActivity() != null) {
-                                // XXX
                                 if(BaseActivity.isTabletInLandscape(getBaseActivity())){
                                     cleanForm();
                                 } else {
