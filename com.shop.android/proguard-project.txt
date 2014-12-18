@@ -32,7 +32,6 @@
 
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses
--dontskipnonpubliclibraryclassmembers
 -verbose
 
 #-keepattributes *Annotation*
