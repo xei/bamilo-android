@@ -535,6 +535,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                     Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
                     // Dismiss
                     hideActivityProgress();
+                    // Set flag as default
+                    isOnAddingAllItemsToCart = false;
                 }
             }
         }

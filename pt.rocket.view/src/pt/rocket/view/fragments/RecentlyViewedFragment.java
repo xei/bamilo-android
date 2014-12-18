@@ -302,6 +302,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
                     Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
                     // Dismiss
                     hideActivityProgress();
+                    // Set flag as default
+                    isOnAddingAllItemsToCart = false;
                 }
             }
         }

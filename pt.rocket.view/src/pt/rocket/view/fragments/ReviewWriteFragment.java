@@ -704,8 +704,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
      */
     private void triggerAutoLogin() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE
-                .getCustomerUtils().getCredentials());
+        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
 

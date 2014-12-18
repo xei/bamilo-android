@@ -437,6 +437,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             } else if (BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE == identifier) {
                 product.getAttributes().setFavourite(false);
             }
+            // Indicates the to update the content
+            if(mCatalogPagerAdapter != null) mCatalogPagerAdapter.notifyDataSetChanged();
         }
     }
 
