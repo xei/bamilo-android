@@ -142,6 +142,14 @@ public class RemoteService extends Service {
 			builder.scheme("https");
 		}
 		
+		/**
+		 * Temporary: Force http for Bamilo.
+		 * TODO: Remove me if Bamilo supports https.
+		 */
+		if(RestContract.IS_BAMILO) {
+		    Log.i(TAG, "BAMILO REQUEST: force http.");
+		    builder.scheme("http");
+		}
 		
 		uri = builder.build();
 		if ( Darwin.logDebugEnabled) {
