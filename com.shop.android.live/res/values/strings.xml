@@ -24,7 +24,7 @@
     <string name="buy_now">ယခု၀ယ္ယူရန္</string>
     <string name="call_to_order">ေအာ္ဒါမွာရန္ဖုန္းေခၚမည္</string>
     <string name="campaign_choose_size">သင္၏ဆိုဒ္နံပါတ္ေရြးခ်ယ္ပါ</string>
-    <string name="campaign_ramaining_stock">ကုန္ပစၥည္းလက္က်န္ :</string>
+    <string name="campaign_ramaining_stock">ကုန္လက္က်န္:</string> 
     <string name="campaign_save">သင္ သက္သာၿပီး</string>
     <string name="campaign_stock_alert">သင္ေရြးခ်ယ္ထားေသာ ကုန္ပစၥည္းမွာ လက္က်န္မရွိေတာ့ပါ</string>
     <string name="campaigns_label">ပြဲလမ္းသဘင္မ်ား</string>
@@ -119,7 +119,7 @@
     <string name="home_tip_text">အမ်ိဳးအစားေျပာင္းလဲရန္ ဘယ္ညာတစ္ဘက္ဘက္သို႔ ေရြ႕ပါ</string>
     <string name="incomplete_alert">မျပည္႔စံုေသးပါ!</string>
     <string name="loading_message">Loading &#8230;</string>
-    <string name="loading_more">အျခားပစၥည္းမ်ားအား Loading &#8230; ပဳလုပ္ေနပါသည္။</string>
+    <string name="loading_more">အျခားပစၥည္းမ်ားအား Loading &#8230; ပဳလုပ္ေနပါသည္။ &#160;</string>
     <string name="login_label">Login</string>
     <string name="login_remember_user_email">ကြ်ႏု္ပ္၏အီးေမးလ္အား မွတ္သားထားရန္</string>
     <string name="login_sectiontitle">သက္ေသခံလက္မွတ္မ်ား</string>
