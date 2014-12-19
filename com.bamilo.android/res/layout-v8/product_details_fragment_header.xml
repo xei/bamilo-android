@@ -21,9 +21,9 @@
     <pt.rocket.components.customfontviews.TextView
         android:id="@+id/product_price_special"
         style="@style/text_header"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/product_detail_name"
         android:layout_marginLeft="@dimen/margin_mid"
-        android:layout_alignParentRight="true"
         android:fontFamily="roboto_bold"
         android:text="Discount Price"
         android:textColor="@color/red_middle" />
@@ -51,16 +51,18 @@
             style="@style/starRatingBarBig"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_mid"
             android:isIndicator="true" />
 
         <pt.rocket.components.customfontviews.TextView
             android:id="@+id/reviews"
             style="@style/text_header"
+            android:layout_width="match_parent"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/rating"
+            android:gravity="center_vertical|right"
             android:textColor="@color/grey_light" />
     </RelativeLayout>
 

@@ -43,7 +43,7 @@
     <string name="checkout_header_step_1">သင့္အေၾကာင္း</string>
     <string name="checkout_header_step_2">လိပ္စာ</string>
     <string name="checkout_header_step_3">သယ္ယူပို႔ေဆာင္မႈ</string>
-    <string name="checkout_header_step_4">ေငြေပးေခ်မႈ</string>
+    <string name="checkout_header_step_4">ေငြေပးေခ်မႈ &#160;</string>
     <string name="checkout_label">ေငြေပးေခ်သည္</string>
     <string name="clear_all_uppercase_label">အားလံုးရွင္းလင္းရန္</string>
     <string name="clear_uppercase_label">ရွင္းလင္းၿပီးပါၿပီ</string>
@@ -225,8 +225,8 @@
     <string name="registration_text">စာရင္းသြင္းရန္</string>
     <string name="related_items">ဆက္စပ္ကုန္ပစၥည္းမ်ား</string>
     <string name="retype_new_password_hint">Password အတည္ျပဳ ရန္</string>
-    <string name="review">သံုးသပ္ခ်က္</string>
-    <string name="reviews">သံုးသပ္ခ်က္မ်ား</string>
+    <string name="review">သံုးသပ္ခ်က္ &#160;</string>
+    <string name="reviews">သံုးသပ္ခ်က္မ်ား &#160;</string>
     <string name="reviews_empty">ဤပစၥည္းအား အမွတ္ေပးျခင္း မရွိေသးပါ</string>
     <string name="save_changes_label">ေျပာင္းလဲမႈမ်ားအားသိမ္းဆည္းမည္</string>
     <string name="save_label">သိမ္းဆည္းရန္</string>
