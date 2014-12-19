@@ -150,9 +150,6 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        if(JumiaApplication.INSTANCE.isLoggedIn()){
-            
-        }
     }
 
     /*
