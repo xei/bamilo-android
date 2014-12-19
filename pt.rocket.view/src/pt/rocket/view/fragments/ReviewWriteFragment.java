@@ -186,9 +186,9 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
-//                triggerAutoLogin();
-                setReviewName();
-                triggerCustomer();
+                /* Commented due to unnecessary data being fetched
+                triggerAutoLogin();
+                triggerCustomer();*/
                 triggerRatingOptions();
             }
         } else {
@@ -350,6 +350,8 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                     loadReview(review);
                 }
         }
+        
+        setReviewName();
         
     }
 
@@ -592,20 +594,20 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             return true;
 
             // case GET_CUSTOMER:
-        case LOGIN_EVENT:
-            Log.i(TAG, "LOGIN_EVENT");
-            JumiaApplication.INSTANCE.setLoggedIn(true);
-            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            // TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true,
-            // getActivity().getString(R.string.mixprop_loginlocationreview), false);
-            // Make sure name field is available
-            setReviewName();
-            return false;
-        case GET_CUSTOMER:
-            Log.i(TAG, "GET_CUSTOMER");
-            customerCred = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            JumiaApplication.CUSTOMER = customerCred;
-            return true;
+//        case LOGIN_EVENT:
+//            Log.i(TAG, "LOGIN_EVENT");
+//            JumiaApplication.INSTANCE.setLoggedIn(true);
+////            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+//            // TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true,
+//            // getActivity().getString(R.string.mixprop_loginlocationreview), false);
+//            // Make sure name field is available
+//            setReviewName();
+//            return false;
+//        case GET_CUSTOMER:
+//            Log.i(TAG, "GET_CUSTOMER");
+//            customerCred = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+//            JumiaApplication.CUSTOMER = customerCred;
+//            return true;
         case GET_PRODUCT_EVENT:
             Log.d(TAG,"GOT GET_PRODUCT_EVENT");
             if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
@@ -615,7 +617,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             } else {
                 completeProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 //                triggerAutoLogin();
-                triggerCustomer();
+//                triggerCustomer();
                 triggerRatingOptions();
                 // Waiting for the fragment comunication
                 new Handler().postDelayed(new Runnable() {
@@ -653,15 +655,15 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         // return true;
         // }
         // return false;
-        case LOGIN_EVENT:
-            // don't care
-            return true;
-
-        case GET_CUSTOMER:
-            // don't care
-            // customerCred = null;
-            // Log.i("DIDNT GET CUSTOMER"," HERE ");
-            return true;
+//        case LOGIN_EVENT:
+//            // don't care
+//            return true;
+//
+//        case GET_CUSTOMER:
+//            // don't care
+//            // customerCred = null;
+//            // Log.i("DIDNT GET CUSTOMER"," HERE ");
+//            return true;
         case GET_RATING_OPTIONS_EVENT:
             dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
                     new OnClickListener() {
@@ -711,7 +713,11 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
 
     /**
      * TRIGGERS
-     *  
+     */
+    
+    /**     
+     * Trigger auto login
+     * 
      * @author sergiopereira
      * @deprecated
      */
@@ -722,6 +728,12 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         
     }
 
+    /**     
+     * Trigger customer
+     * 
+     * @author sergiopereira
+     * @deprecated
+     */
     private void triggerCustomer() {
         triggerContentEvent(new GetCustomerHelper(), null, mCallBack);
     }
