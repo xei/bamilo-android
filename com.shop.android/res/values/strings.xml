@@ -265,8 +265,8 @@
     <string name="submit_label">စာရင္းသြင္းရန္</string>
     <string name="submit_text">သင္၏ထင္ျမင္ခ်က္အား စာရင္းသြင္းၿပီးပါျပီ။ ယခုအတည္ျပဳရန္ျပဳလုပ္ေနပါသည္။</string>
     <string name="submit_title">သံုးသပ္ခ်က္ ေပးပို႔ၿပီးပါျပီ</string>
-    <string name="teaser_campaign_button_first_line">ေခတ္စားေသာ</string>
-    <string name="teaser_campaign_button_second_line">ကမ္းလွမ္းခ်က္မ်ား</string>
+    <string name="teaser_campaign_button_first_line">HOT</string>
+    <string name="teaser_campaign_button_second_line">OFFERS</string>
     <string name="terms_and_conditions">စည္းမ်ဥ္းစည္းကမ္းမ်ား</string>
     <string name="thank_you_order_title">ေက်းဇူးတင္ပါသည္!</string>
     <string name="tip_favourite_text">ဤပစၥည္းအား အႀကိဳက္ဆံုးစာရင္းသို႔ထည္႔ရန္ကလစ္ႏွိပ္ၿပီး My profile တြင္စာရင္းအားျပန္ၾကည္႕ပါ။</string>

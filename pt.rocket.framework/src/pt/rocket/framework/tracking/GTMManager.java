@@ -92,7 +92,6 @@ public class GTMManager {
         pending.setResultCallback(new ResultCallback<ContainerHolder>() {
             @Override
             public void onResult(ContainerHolder containerHolder) {
-                Log.e(TAG, "onResult");
                 ContainerHolderSingleton.setContainerHolder(containerHolder);
                 mContainer = containerHolder.getContainer();
                 if (!containerHolder.getStatus().isSuccess()) {
