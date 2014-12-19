@@ -34,7 +34,6 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +44,7 @@ import android.widget.RatingBar;
 import de.akquinet.android.androlog.Log;
 
 /**
- * @author sergiopereira rating-option--
+ * @author sergiopereira
  * 
  */
 public class ReviewWriteFragment extends BaseFragment implements OnClickListener {
@@ -251,18 +250,11 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
      * Set review name by user name if is logged.
      */
     private void setReviewName() {
-        Customer customer = JumiaApplication.CUSTOMER;
-        if (customer != null && JumiaApplication.INSTANCE.isLoggedIn()) {
-            if (nameText == null) {
-                nameText = (EditText) getView().findViewById(R.id.name_box);
-            }
-            if (nameText != null && customer != null && customer.getFirstName() != null) {
-                // Set Customer Name only if name field is not yet filled in
-                Editable name = nameText.getText();
-                if (name == null || TextUtils.isEmpty(name.toString())) {
-                    nameText.setText(customer.getFirstName());
-                }
-            }
+        Log.i(TAG, "SET REVIEW: FIRST NAME");
+        if(nameText != null) {
+            Customer customer = JumiaApplication.CUSTOMER;
+            String firstname = (customer != null && !TextUtils.isEmpty(customer.getFirstName())) ? customer.getFirstName() : ""; 
+            nameText.setText(firstname);
         }
     }
     
@@ -270,6 +262,8 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
      * Set the Products layout using inflate
      */
     private void setLayout() {
+        Log.i(TAG, "SET LAYOUT");
+        
         if (completeProduct == null) {
             if (!mCompleteProductUrl.equalsIgnoreCase("")) {
                 Bundle bundle = new Bundle();
@@ -283,9 +277,9 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             mainContainer.setVisibility(View.VISIBLE);
             if (ratingBarContainer.getChildCount() > 0) return;
     
-            if (getActivity() == null) return;
+            if (getBaseActivity() == null) return;
     
-            LayoutInflater mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater mInflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             int id = 77;
             // Only render ratings if available
             if (ratingOptions != null && !ratingOptions.isEmpty()) {
@@ -317,10 +311,8 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             }
 
             productName = (TextView) getView().findViewById(R.id.product_detail_name);
-            TextView productPriceSpecial = (TextView) getView().findViewById(
-                    R.id.product_price_special);
-            TextView productPriceNormal = (TextView) getView().findViewById(
-                    R.id.product_price_normal);
+            TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
+            TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
 
             titleText = (EditText) getView().findViewById(R.id.title_box);
             nameText = (EditText) getView().findViewById(R.id.name_box);
@@ -345,10 +337,13 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             if (review != null) {
                 loadReview(review);
             }
+            
+            setReviewName();
+            
+            Log.i(TAG, "SET LAYOUT WITH CONTENT");
+            
         }
 
-        setReviewName();
-        
     }
 
     private void saveReview() {
@@ -514,10 +509,13 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
     }
 
     private void cleanForm() {
-
         titleText.setText("");
-        nameText.setText("");
+        titleText.setHintTextColor(getResources().getColor(R.color.form_text_hint));
         reviewText.setText("");
+        reviewText.setHintTextColor(getResources().getColor(R.color.form_text_hint));
+        // Set name from customer
+        setReviewName();
+        nameText.setHintTextColor(getResources().getColor(R.color.form_text_hint));        
 
         int childs = ratingBarContainer.getChildCount();
 
