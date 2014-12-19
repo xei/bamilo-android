@@ -320,7 +320,8 @@
     <string name="string_rating">امتیازدهی</string>
     <string name="string_with_discount_only">تنها با تخفیف</string>
 	<string name="bamilo_not_available">بامیلو در حال حاضر در دسترس نمی باشد.</string>    
-        
-    <string name="invalid_product"></string>
+	<string name="invalid_product"></string>
+    <string name="category_filter_error"></string>    
+
 
 </resources>

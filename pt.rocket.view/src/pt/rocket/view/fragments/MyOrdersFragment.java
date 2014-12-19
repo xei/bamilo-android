@@ -5,6 +5,7 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.components.androidslidingtabstrip.SlidingTabLayout;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -149,6 +150,9 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        if(JumiaApplication.INSTANCE.isLoggedIn()){
+            
+        }
     }
 
     /*
