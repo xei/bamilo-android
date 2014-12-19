@@ -3,29 +3,26 @@ package pt.rocket.utils;
 
 import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.view.R;
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 
 public class Toast  {
     public static final int LENGTH_LONG = android.widget.Toast.LENGTH_LONG;
     public static final int LENGTH_SHORT = android.widget.Toast.LENGTH_SHORT;
-    private int mDuration = LENGTH_SHORT;
-    private static ViewGroup mViewGroup;
+    //private int mDuration = LENGTH_SHORT;
+    //private static ViewGroup mViewGroup;
     private static View mToastView;
     private static LayoutInflater mLayoutInflater;
-    private Context mActivity;
+    //private Context mActivity;
     private static TextView mMessageTextView;
-    private static LinearLayout mRootLayout;
+    //private static LinearLayout mRootLayout;
     
     public Toast(Context activity) {
 //        super(activity);
         
-        this.mActivity = activity;
+        //this.mActivity = activity;
 
       
     }
@@ -40,9 +37,9 @@ public class Toast  {
         
         mMessageTextView = (TextView) mToastView.findViewById(R.id.message_textview);
 
-        mRootLayout = (LinearLayout) mToastView.findViewById(R.id.root_layout);
+        //mRootLayout = (LinearLayout) mToastView.findViewById(R.id.root_layout);
         
-        //added empty space to prevent string from being cutted on burmese
+        // SHOP: added empty space to prevent string from being cutted on burmese
         if(activity.getResources().getBoolean(R.bool.is_shop_specific))
             s = s + " ";
         

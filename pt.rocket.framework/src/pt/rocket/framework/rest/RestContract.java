@@ -74,7 +74,7 @@ public class RestContract {
 		
 		USE_ONLY_HTTPS = sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false);
 		
-		// Temporary flag
+		// SHOP: Temporary flag
 		IS_BAMILO  = context.getResources().getBoolean(R.bool.is_bamilo_specific);
 		
 		REST_BASE_PATH = context.getResources().getString(R.string.global_server_api_version);

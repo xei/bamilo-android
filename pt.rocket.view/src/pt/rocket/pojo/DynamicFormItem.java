@@ -720,7 +720,8 @@ public class DynamicFormItem {
 
     private boolean validateStringToPattern(String value) {
         boolean result;
-      //added empty space to prevent string from being cutted on burmese
+
+        // SHOP: added empty space to prevent string from being cutted on burmese
         String space = "";
         if(context!= null && context.getResources().getBoolean(R.bool.is_shop_specific))
             space = " ";

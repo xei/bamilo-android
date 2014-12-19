@@ -17,11 +17,9 @@ import pt.rocket.framework.objects.ProductReviewCommentCreated;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
-import pt.rocket.helpers.account.GetCustomerHelper;
 import pt.rocket.helpers.configs.GetRatingOptionsHelper;
 import pt.rocket.helpers.products.GetProductHelper;
 import pt.rocket.helpers.products.ReviewProductHelper;
-import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -90,9 +88,10 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
 
     private boolean completedReview = false;
 
-    private String mCompleteProductUrl= "";
+    private String mCompleteProductUrl = "";
     
     private LinearLayout mainContainer;
+
     /**
      * Get instance
      * 
@@ -159,10 +158,6 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         labelsContainer = (LinearLayout) view.findViewById(R.id.label_container);
         ratingBarContainer = (LinearLayout) view.findViewById(R.id.ratingbar_container);
         mainContainer = (LinearLayout) view.findViewById(R.id.product_rating_container);
-
-        
-
-
     }
 
     /*
@@ -173,15 +168,15 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "ON START");        
-        //Validate is service is available
+        Log.i(TAG, "ON START");
+        // Validate is service is available
         if (JumiaApplication.mIsBound) {
-            // load complete product url
-            if(mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)){
+            // load complete product URL
+            if (mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
                 String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
                 mCompleteProductUrl = contentUrl != null ? contentUrl : "";
             }
-            if(completeProduct == null) {
+            if (completeProduct == null) {
                 Bundle bundle = new Bundle();
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
@@ -251,14 +246,13 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
     }
-    
+
     /*
      * Set review name by user name if is logged.
-     * 
      */
-    private void setReviewName(){
+    private void setReviewName() {
         Customer customer = JumiaApplication.CUSTOMER;
-        if(customer != null && JumiaApplication.INSTANCE.isLoggedIn()){
+        if (customer != null && JumiaApplication.INSTANCE.isLoggedIn()) {
             if (nameText == null) {
                 nameText = (EditText) getView().findViewById(R.id.name_box);
             }
@@ -277,7 +271,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
      */
     private void setLayout() {
         if (completeProduct == null) {
-            if(!mCompleteProductUrl.equalsIgnoreCase("")) {
+            if (!mCompleteProductUrl.equalsIgnoreCase("")) {
                 Bundle bundle = new Bundle();
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
@@ -297,14 +291,14 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             if (ratingOptions != null && !ratingOptions.isEmpty()) {
                 int size = ratingOptions.size();
                 for (Entry<String, HashMap<String, String>> option : ratingOptions.entrySet()) {
-                    
-                    View viewRating = mInflater.inflate(R.layout.rating_bar_component, null, false);
-                    View viewLabel = mInflater.inflate(R.layout.label_rating_component, null, false);
+
+                    View viewRating = mInflater.inflate(R.layout.rating_bar_component, ratingBarContainer, false);
+                    View viewLabel = mInflater.inflate(R.layout.label_rating_component, labelsContainer, false);
                     viewRating.setTag(option.getKey());
                     viewRating.setId(id);
                     id++;
                     viewLabel.setTag(option.getKey());
-                    
+
                     // Get the rating label
                     // FIXME : (TEMPORARY) Validate rating label if ins't a number from API
                     boolean toAdd = true;
@@ -321,36 +315,38 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                     }
                 }
             }
-                productName = (TextView) getView().findViewById(R.id.product_detail_name);
-                TextView productPriceSpecial = (TextView) getView()
-                        .findViewById(R.id.product_price_special);
-                TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
-    
-                titleText = (EditText) getView().findViewById(R.id.title_box);
-                nameText = (EditText) getView().findViewById(R.id.name_box);
-                reviewText = (EditText) getView().findViewById(R.id.review_box);
-    
-                ((Button) getView().findViewById(R.id.send_review))
-                        .setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (checkReview() && !isExecutingSendReview) {
-                                    isExecutingSendReview = true;
-                                    executeSendReview();
-                                }
+
+            productName = (TextView) getView().findViewById(R.id.product_detail_name);
+            TextView productPriceSpecial = (TextView) getView().findViewById(
+                    R.id.product_price_special);
+            TextView productPriceNormal = (TextView) getView().findViewById(
+                    R.id.product_price_normal);
+
+            titleText = (EditText) getView().findViewById(R.id.title_box);
+            nameText = (EditText) getView().findViewById(R.id.name_box);
+            reviewText = (EditText) getView().findViewById(R.id.review_box);
+
+            ((Button) getView().findViewById(R.id.send_review))
+                    .setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (checkReview() && !isExecutingSendReview) {
+                                isExecutingSendReview = true;
+                                executeSendReview();
                             }
-                        });
-    
-                productName.setText(completeProduct.getBrand() + " " + completeProduct.getName());
-                displayPriceInformation(productPriceNormal, productPriceSpecial);
-    
-                // Load the saved values
-                ContentValues review = JumiaApplication.getReview();
-                if (review != null) {
-                    loadReview(review);
-                }
+                        }
+                    });
+
+            productName.setText(completeProduct.getBrand() + " " + completeProduct.getName());
+            displayPriceInformation(productPriceNormal, productPriceSpecial);
+
+            // Load the saved values
+            ContentValues review = JumiaApplication.getReview();
+            if (review != null) {
+                loadReview(review);
+            }
         }
-        
+
         setReviewName();
         
     }
@@ -517,34 +513,33 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         }
     }
 
-    private void cleanForm(){
-        
+    private void cleanForm() {
+
         titleText.setText("");
         nameText.setText("");
-        reviewText.setText(""); 
-        
+        reviewText.setText("");
+
         int childs = ratingBarContainer.getChildCount();
 
-        for(int i = 0; i<childs ; i++){
-            
+        for (int i = 0; i < childs; i++) {
             View view = ratingBarContainer.getChildAt(i);
-            if(view instanceof RatingBar){
-                ((RatingBar)view).setRating(0f);
+            if (view instanceof RatingBar) {
+                ((RatingBar) view).setRating(0f);
             }
-            
+
         }
     }
-    
+
     protected boolean onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        
+
         Log.i(TAG, "onSuccessEvent eventType : " + eventType);
         switch (eventType) {
         case REVIEW_PRODUCT_EVENT:
@@ -567,7 +562,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                             dialog_review_submitted.dismiss();
                             isExecutingSendReview = false;
                             if (getBaseActivity() != null) {
-                                if(BaseActivity.isTabletInLandscape(getBaseActivity())){
+                                if (BaseActivity.isTabletInLandscape(getBaseActivity())) {
                                     cleanForm();
                                 } else {
                                     getBaseActivity().onBackPressed();
@@ -586,47 +581,46 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
 
         case GET_RATING_OPTIONS_EVENT:
             Log.i(TAG, "GET_RATING_OPTIONS_EVENT");
-            ratingOptions = (HashMap<String, HashMap<String, String>>) bundle
-                    .getSerializable(Constants.BUNDLE_RESPONSE_KEY);
+            ratingOptions = (HashMap<String, HashMap<String, String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.INSTANCE.setRatingOptions(ratingOptions);
             showFragmentContentContainer();
             setLayout();
             return true;
 
+            // // case GET_CUSTOMER:
+            // case LOGIN_EVENT:
+            // Log.i(TAG, "LOGIN_EVENT");
+            // JumiaApplication.INSTANCE.setLoggedIn(true);
+            // Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            // // TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true,
+            // // getActivity().getString(R.string.mixprop_loginlocationreview), false);
+            // // Make sure name field is available
+            // setReviewName();
+            // return false;
             // case GET_CUSTOMER:
-//        case LOGIN_EVENT:
-//            Log.i(TAG, "LOGIN_EVENT");
-//            JumiaApplication.INSTANCE.setLoggedIn(true);
-////            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-//            // TrackerDelegator.trackLoginSuccessful(getActivity(), customer, true,
-//            // getActivity().getString(R.string.mixprop_loginlocationreview), false);
-//            // Make sure name field is available
-//            setReviewName();
-//            return false;
-//        case GET_CUSTOMER:
-//            Log.i(TAG, "GET_CUSTOMER");
-//            customerCred = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-//            JumiaApplication.CUSTOMER = customerCred;
-//            return true;
+            // Log.i(TAG, "GET_CUSTOMER");
+            // customerCred = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            // JumiaApplication.CUSTOMER = customerCred;
+            // return true;
         case GET_PRODUCT_EVENT:
-            Log.d(TAG,"GOT GET_PRODUCT_EVENT");
+            Log.d(TAG, "GOT GET_PRODUCT_EVENT");
             if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
                 Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getActivity().onBackPressed();
                 return true;
             } else {
                 completeProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-//                triggerAutoLogin();
-//                triggerCustomer();
+                // triggerAutoLogin();
+                // triggerCustomer();
                 triggerRatingOptions();
-                // Waiting for the fragment comunication
+                // Waiting for the fragment communication
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         showFragmentContentContainer();
                     }
                 }, 300);
-            }          
+            }
 
             return true;
         default:
@@ -638,7 +632,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-        
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -655,15 +649,15 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         // return true;
         // }
         // return false;
-//        case LOGIN_EVENT:
-//            // don't care
-//            return true;
-//
-//        case GET_CUSTOMER:
-//            // don't care
-//            // customerCred = null;
-//            // Log.i("DIDNT GET CUSTOMER"," HERE ");
-//            return true;
+        // case LOGIN_EVENT:
+        // // don't care
+        // return true;
+        //
+        // case GET_CUSTOMER:
+        // // don't care
+        // // customerCred = null;
+        // // Log.i("DIDNT GET CUSTOMER"," HERE ");
+        // return true;
         case GET_RATING_OPTIONS_EVENT:
             dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
                     new OnClickListener() {
@@ -711,32 +705,23 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         return false;
     }
 
-    /**
-     * TRIGGERS
-     */
-    
-    /**     
-     * Trigger auto login
-     * 
-     * @author sergiopereira
-     * @deprecated
-     */
-    private void triggerAutoLogin() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
-        triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
-        
-    }
-
-    /**     
-     * Trigger customer
-     * 
-     * @author sergiopereira
-     * @deprecated
-     */
-    private void triggerCustomer() {
-        triggerContentEvent(new GetCustomerHelper(), null, mCallBack);
-    }
+    // /**
+    // * TRIGGERS
+    // *
+    // * @author sergiopereira
+    // * @deprecated
+    // */
+    // private void triggerAutoLogin() {
+    // Bundle bundle = new Bundle();
+    // bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES,
+    // JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+    // triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
+    //
+    // }
+    //
+    // private void triggerCustomer() {
+    // triggerContentEvent(new GetCustomerHelper(), null, mCallBack);
+    // }
 
     private void triggerRatingOptions() {
         triggerContentEvent(new GetRatingOptionsHelper(), null, mCallBack);
@@ -784,6 +769,5 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
 
         }
     }
-    
 
 }

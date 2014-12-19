@@ -5,7 +5,6 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
-import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.components.androidslidingtabstrip.SlidingTabLayout;
 import pt.rocket.framework.utils.LogTagHelper;
