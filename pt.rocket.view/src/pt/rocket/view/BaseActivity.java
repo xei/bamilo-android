@@ -54,6 +54,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
@@ -63,8 +65,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.ImageSpan;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -74,7 +79,10 @@ import android.view.ViewStub;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
@@ -980,6 +988,32 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Get search views
         mSearchView = (SearchView) mSearchMenuItem.getActionView();
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.abs__search_src_text);
+        ImageView closeSearch = (ImageView) mSearchView.findViewById(R.id.abs__search_close_btn);
+        mSearchAutoComplete.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+        
+      // Set hint
+      mSearchView.setQueryHint(getString(R.string.action_label_search_hint));
+      HoloFontLoader.applyDefaultFont(mSearchView);
+        
+        //#RTL abs__ic_search_api_holo_light
+        if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            mSearchAutoComplete.setLayoutParams(params);
+            
+            RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            param.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            closeSearch.setLayoutParams(param);
+            mSearchAutoComplete.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+
+            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB){
+                mSearchAutoComplete.setHint(getDecoratedHint(getString(R.string.action_label_search_hint)));
+            }
+            
+        }
+            
         HoloFontLoader.applyDefaultFont(mSearchAutoComplete);
         mSearchButton = mSearchView.findViewById(R.id.abs__search_button);
         // Set the ime options
@@ -990,16 +1024,28 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         setSearchWidth();
 
-        // Set hint
-        mSearchView.setQueryHint(getString(R.string.action_label_search_hint));
-        HoloFontLoader.applyDefaultFont(mSearchView);
-        
         // Set colorhint
         mSearchAutoComplete.setHintTextColor(getResources().getColor(R.color.search_hint));
         // Set search
         setActionBarSearchBehavior();
     }
 
+    /**
+     *  method to position the drawable inside the span in hte right position when in #RTL and on <3.0 Android version
+     * @param hintText
+     * @return formated Hint
+     */
+    private CharSequence getDecoratedHint(CharSequence hintText) {
+        SpannableStringBuilder ssb = new SpannableStringBuilder(hintText); 
+        ssb.append("  ");// for the icon
+        Drawable searchIcon = getResources().getDrawable(R.drawable.abs__ic_search_api_holo_light);
+        int textSize = (int) (mSearchAutoComplete.getTextSize() * 1.25);
+        searchIcon.setBounds(0,0,textSize,textSize);
+//        ssb.setSpan(new ImageSpan(searchIcon), textSize-4,textSize-3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new ImageSpan(searchIcon), hintText.length()+1,hintText.length()+2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ssb;
+    }
+    
     private void setSearchWidth() {
         // Get the width of main content
         // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
@@ -1169,7 +1215,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     /**
      * Hide the search component
      * 
-     * @param menu
+     * @param menu 
      * @author sergiopereira
      */
     public void hideSearchComponent() {
@@ -1181,7 +1227,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 mSearchView.onActionViewCollapsed();
                 // Clean autocomplete
                 mSearchAutoComplete.setText("");
-                // show hidden items
+                // show hidden items 
                 setItemsVisibility(true);
                 // Forced the ime option on collapse
                 mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);

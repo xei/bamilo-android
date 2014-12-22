@@ -21,7 +21,6 @@
         android:fontFamily="roboto_bold"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:text="ssfsdff sdfs"
         android:singleLine="true"
         android:textColor="@android:color/white"
         android:textSize="12sp" />
@@ -36,7 +35,6 @@
         android:fontFamily="roboto_regular"
         android:gravity="center_vertical"
         android:maxLines="1"
-        android:text="(345 products)"
         android:singleLine="true"
         android:textColor="@color/orange_basic"
         android:textSize="12sp" />
