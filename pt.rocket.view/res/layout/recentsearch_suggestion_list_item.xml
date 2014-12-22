@@ -9,7 +9,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-		android:layoutDirection="locale"
         android:background="@drawable/selector_listitem_rounded_margin_highlight"
         android:orientation="horizontal" >
 

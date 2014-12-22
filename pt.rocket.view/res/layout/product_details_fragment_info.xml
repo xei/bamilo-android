@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/rounded_box"
     android:layout_marginBottom="0dp"
-    android:layoutDirection="locale"
     android:layout_marginTop="@dimen/rounded_margin_small"
     android:orientation="vertical" >
 
@@ -50,7 +49,6 @@
         android:layout_height="@dimen/product_detail_item_title_height"
         android:layout_margin="@dimen/rounded_margin_mid"
         android:gravity="start|left|center_vertical"
-        android:layoutDirection="locale"
         android:orientation="horizontal" >
 
         <pt.rocket.components.customfontviews.TextView

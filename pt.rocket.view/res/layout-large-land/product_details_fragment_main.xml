@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layoutDirection="locale"
     android:orientation="horizontal" >
 
     <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
@@ -205,8 +204,7 @@
             android:id="@+id/product_detail_variations_container"
             android:layout_width="match_parent"
             android:layout_height="63dp"
-            android:layout_alignParentBottom="true"
-            android:layoutDirection="locale" />
+            android:layout_alignParentBottom="true" />
 
         <!-- TIPS -->
 
@@ -513,8 +511,7 @@
                     android:layout_marginLeft="0dp"
                     android:layout_marginRight="0dp"
                     android:layout_marginTop="0dp"
-                    layout="@layout/product_details_fragment_related"
-                    android:layoutDirection="locale" />
+                    layout="@layout/product_details_fragment_related" />
             </LinearLayout>
         </pt.rocket.utils.ScrollViewWithHorizontal>
     </RelativeLayout>

@@ -18,24 +18,31 @@
         android:clickable="false"
         android:focusable="false" />
 
-    <pt.rocket.components.customfontviews.TextView
-        android:id="@+id/item_text"
-        style="@style/dialog_list_itemtext"
+    <RelativeLayout
+        android:id="@+id/dialog_title_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/dialog_item_checkbox"
-        android:gravity="right|center_vertical"
-        android:text="ListItem text" />
+        android:gravity="right|center_vertical" >
 
-    <pt.rocket.components.customfontviews.TextView
-        android:id="@+id/item_text_unavailable"
-        style="@style/dialog_list_itemtext"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/dialog_item_checkbox"
-        android:text="ListItem text 2"
-        android:gravity="right|center_vertical"
-        android:textColor="@color/grey_light"
-        android:visibility="gone" />
+        <pt.rocket.components.customfontviews.TextView
+            android:id="@+id/item_text"
+            style="@style/dialog_list_itemtext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right|center_vertical"
+            android:text="ListItem text" />
+
+        <pt.rocket.components.customfontviews.TextView
+            android:id="@+id/item_text_unavailable"
+            style="@style/dialog_list_itemtext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right|center_vertical"
+            android:text="ListItem text 2"
+            android:textColor="@color/grey_light"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 </RelativeLayout>
