@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.text.TextUtils;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -51,7 +52,7 @@ public final class ShopSelector {
 	 */
 	public static void init(Context context, String shopId, boolean isChangeShop) {
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-		setLocale( context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null));
+		setLocale(context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null));
 		RestContract.init(context, shopId);
 		RestClientSingleton.getSingleton(context).init();
 
@@ -90,7 +91,7 @@ public final class ShopSelector {
 		RestContract.init(context, requestHost, basePath);
 		RestClientSingleton.getSingleton(context).init();
 	}
-	
+
 	/**
 	 * Update the country selector to a certain country code. This also
 	 * updates the currency formatter to the related currency code.
@@ -98,7 +99,8 @@ public final class ShopSelector {
 	 * @param context
 	 * @param shopId
 	 */
-	public static void update(Context context, String shopId) {
+	public static void updateLocale(Context context, String shopId) {
+	    //Log.i(TAG, "UPDATE LOCALE");
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		setLocale(context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null));
 		RestContract.init(context, shopId);
@@ -110,6 +112,18 @@ public final class ShopSelector {
 		sShopId = shopId;
 		sShopName = context.getResources().getString( R.string.global_server_shop_name);
 		sCountryName = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
+	}
+	
+	/**
+	 * These method forces the saved locale used before the rotation.
+	 * @param context
+	 * @author spereira
+	 */
+	public static void setLocaleOnOritentationChanged(Context context) {
+	    //Log.i(TAG, "SET LOCALE ON ORIENTATION CHANGED");
+	    SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+	    String language = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null);
+	    if(!TextUtils.isEmpty(language)) setLocale(context, language);
 	}
 	
 	/**
@@ -141,18 +155,6 @@ public final class ShopSelector {
 	private ShopSelector() {
 		// empty
 	}
-	
-//	public static void resetConfiguration( Context context ) {
-//		if ( sLocale == null)
-//			return;
-//		
-//		Resources res = context.getResources();
-//        Log.i(TAG, "resetConfiguration: old config = " + res.getConfiguration().toString());
-//		res.getConfiguration().locale = sLocale;
-//		res.updateConfiguration(res.getConfiguration(), res.getDisplayMetrics());
-//		Locale.setDefault(sLocale);
-//        Log.i(TAG, "resetConfiguration: new config = " + res.getConfiguration().toString());
-//	}
 	
 	public static String getShopId() {
 		return sShopId;

@@ -238,7 +238,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 
                 /**
                  * Validate the city key for create/edit address form.
-                 * WARNING: In UG, sometimes the city comes as a list and crashes the application.
+                 * WARNING: In Uganda(Jumia) and Pakistan(Daraz), sometimes the city comes as a list and crashes the application.
                  * @author sergiopereira 
                  */
                 if(key != null && key.equals(RestConstants.JSON_CITY_TAG)) inputType = InputType.text;

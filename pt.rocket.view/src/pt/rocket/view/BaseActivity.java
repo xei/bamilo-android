@@ -55,7 +55,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
@@ -79,9 +78,8 @@ import android.view.ViewStub;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -267,10 +265,17 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
-
-        JumiaApplication.INSTANCE.doBindService();
-        
-        // in case app is killed in background needs to restore font type
+        /*
+         * In case of rotation the activity is restarted and the locale too.<br>
+         * These method forces the right locale used before the rotation.
+         * @author spereira
+         */
+        ShopSelector.setLocaleOnOritentationChanged(getApplicationContext());
+        // Bind service
+        JumiaApplication.INSTANCE.doBindService(); 
+        /*
+         * In case app is killed in background needs to restore font type
+         */
         if(getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific)){
             HoloFontLoader.initFont(true);
         } else {
@@ -286,8 +291,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
         // Get fragment controller
         fragmentController = FragmentController.getInstance();
-
-        //ShopSelector.resetConfiguration(getBaseContext());
         // Set action bar
         setupActionBar();
         // Set content view
@@ -296,11 +299,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         updateContentViewsIfInitialCountrySelection();
 
         isRegistered = true;
+        // Set main layout
         setAppContentLayout();
+        // Set title in AB or TitleBar
         setTitle(titleResId);
-        // BugSenseHandler.leaveBreadcrumb(TAG + " _onCreate");
+        // For tracking
         mLaunchTime = System.currentTimeMillis();
-
     }
 
     /*
@@ -312,7 +316,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.i(TAG, "ON NEW INTENT");
-        // BugSenseHandler.leaveBreadcrumb(TAG + " _onNewIntent");
         ActivitiesWorkFlow.addStandardTransition(this);
     }
 
@@ -1215,7 +1218,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     /**
      * Hide the search component
      * 
-     * @param menu 
+     * @param menu
      * @author sergiopereira
      */
     public void hideSearchComponent() {
@@ -1227,7 +1230,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 mSearchView.onActionViewCollapsed();
                 // Clean autocomplete
                 mSearchAutoComplete.setText("");
-                // show hidden items 
+                // show hidden items
                 setItemsVisibility(true);
                 // Forced the ime option on collapse
                 mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);

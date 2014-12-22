@@ -112,7 +112,7 @@ public class Darwin {
 		context = ctx.getApplicationContext();
 		if (SHOP_ID != null && SHOP_ID.equalsIgnoreCase(shopId)) {
 			Log.d(TAG, "Allready initialized for id " + shopId);
-			ShopSelector.update(ctx, shopId);
+			ShopSelector.updateLocale(ctx, shopId);
 			return true;
 		}
 		
