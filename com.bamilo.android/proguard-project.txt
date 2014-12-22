@@ -75,6 +75,10 @@
 -dontwarn android.support.**
 ########################### END proguard-android-optimize.txt ###########################
 
+#-dontwarn pt.rocket.view.R$id
+#-dontwarn pt.rocket.utils.maintenance.MaintenancePage
+#-dontwarn pt.rocket.view.SplashScreenActivity
+#-dontwarn pt.rocket.view.fragments.HomeFragment
 
 -dontwarn pt.rocket.jumia.dev.R*
 -dontwarn com.ad4screen.R*
