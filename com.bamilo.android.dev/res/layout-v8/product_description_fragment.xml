@@ -54,13 +54,12 @@
                     android:layout_width="match_parent"
                     android:layout_below="@id/features_divider"
                     android:ellipsize="none"
-                    android:gravity="left|start"
+                    android:gravity="right"
+                    android:text="ssfsdfsfsfsdfsdf"
                     android:lineSpacingMultiplier="1.3"
                     android:paddingBottom="@dimen/margin_huge"
-                    android:paddingEnd="@dimen/margin_large"
                     android:paddingLeft="@dimen/margin_large"
                     android:paddingRight="@dimen/margin_large"
-                    android:paddingStart="@dimen/margin_large"
                     android:paddingTop="@dimen/margin_huge"
                     android:singleLine="false" />
             </RelativeLayout>
@@ -89,13 +88,12 @@
                     android:layout_width="match_parent"
                     android:layout_below="@id/description_divider"
                     android:ellipsize="none"
-                    android:gravity="left|start"
+                    android:gravity="right"
+                    android:text="ssfsdfsfsfsdfsdf"
                     android:lineSpacingMultiplier="1.3"
                     android:paddingBottom="@dimen/margin_huge"
-                    android:paddingEnd="@dimen/margin_large"
                     android:paddingLeft="@dimen/margin_large"
                     android:paddingRight="@dimen/margin_large"
-                    android:paddingStart="@dimen/margin_large"
                     android:paddingTop="@dimen/margin_huge"
                     android:singleLine="false" />
             </RelativeLayout>

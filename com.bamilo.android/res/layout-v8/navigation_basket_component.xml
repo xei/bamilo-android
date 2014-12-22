@@ -16,36 +16,38 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
             android:layout_marginRight="@dimen/navigation_cart_vertical_distance"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_toLeftOf="@+id/nav_cart_count"
+            android:gravity="right"
             android:orientation="vertical" >
 
             <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/nav_basket_title"
-                android:layout_alignParentRight="true"
                 style="@style/navigation_cart_titletext"
+                android:layout_alignParentRight="true"
                 android:text="@string/shopping_cart" />
 
             <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/nav_basket_empty"
-                android:layout_alignParentRight="true"
                 style="@style/navigation_cart_emptytext"
+                android:layout_alignParentRight="true"
                 android:layout_below="@id/nav_basket_title"
                 android:text="@string/navigation_cart_empty" />
 
             <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/nav_basket_elements"
                 style="@style/navigation_cart_price"
+                android:layout_width="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/nav_basket_title"
+                android:gravity="right"
                 android:visibility="invisible" />
 
             <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/nav_basket_vat"
-                android:layout_alignParentRight="true"
                 style="@style/navigation_cart_vattext"
+                android:layout_alignParentRight="true"
                 android:layout_below="@+id/nav_basket_elements"
                 android:visibility="invisible" />
         </RelativeLayout>

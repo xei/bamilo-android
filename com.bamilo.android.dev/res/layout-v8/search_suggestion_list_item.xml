@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_clickableitem_highlight"
-    android:orientation="horizontal" >
+    android:background="@drawable/selector_clickableitem_highlight" >
 
     <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_text_suggestion"
         style="@style/text_header"
-        android:layout_width="0dp"
         android:layout_height="@dimen/item_height_normal"
         android:layout_marginRight="@dimen/margin_mid"
         android:layout_weight="1"
+        android:layout_toLeftOf="@+id/item_img"
         android:gravity="center_vertical|right"
         android:paddingLeft="@dimen/margin_mid"
         android:text="Search suggestion"
@@ -26,6 +25,7 @@
         style="@style/text_normal"
         android:layout_height="@dimen/item_height_normal"
         android:ellipsize="none"
+        android:layout_toLeftOf="@+id/item_img"
         android:paddingLeft="@dimen/margin_huge"
         android:paddingRight="@dimen/margin_huge"
         android:gravity="center_vertical|right"
@@ -38,10 +38,11 @@
     <ImageView
         android:id="@+id/item_img"
         android:layout_width="30dp"
+        android:layout_alignParentRight="true"
         android:layout_height="@dimen/item_height_normal"
         android:contentDescription="@string/app_name"
         android:gravity="center_vertical"
         android:paddingRight="@dimen/margin_huge"
         android:src="@drawable/magnlens" />
 
-</LinearLayout>
+</RelativeLayout>

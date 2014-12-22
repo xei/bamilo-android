@@ -1071,7 +1071,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         mCompleteProductUrl = product.getUrl();
 
         // Set Title
-        mTitleText.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct.getBrand() + " " + mCompleteProduct.getName() : "");
+       
+        //#RTL
+        if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+            mTitleText.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct.getName() + " " + mCompleteProduct.getBrand() : "");
+        } else {
+            mTitleText.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct.getBrand() + " " + mCompleteProduct.getName() : "");
+        }
+        
 
         // Set favourite
         try {

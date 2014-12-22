@@ -19,6 +19,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
+import pt.rocket.view.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -124,6 +125,11 @@ public class GetCountryConfigsHelper extends BaseHelper {
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, currency_iso);
         if(currency_position != null && currency_position.equalsIgnoreCase(POSITION_LEFT)){
             mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, "%s "+currency_symbol);
+            //#RTL
+            if(JumiaApplication.INSTANCE.getResources().getBoolean(R.bool.is_bamilo_specific) &&
+                    android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB){
+                mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, currency_symbol+" %s");
+            }
         } else {
             mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, currency_symbol+" %s");
         }

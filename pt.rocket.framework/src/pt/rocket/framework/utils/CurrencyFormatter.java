@@ -111,6 +111,7 @@ public class CurrencyFormatter {
             NumberFormat format = NumberFormat.getInstance(apiLocale);
             Number number = format.parse(value);
             Double valueDouble = number.doubleValue();
+            
         	return String.format(currencyUnitPattern, formatter.format(valueDouble));
         	
         } catch (NumberFormatException e) {

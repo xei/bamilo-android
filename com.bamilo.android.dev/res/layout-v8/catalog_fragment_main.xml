@@ -111,6 +111,6 @@
         android:layout_height="match_parent"
         layout="@layout/tips"
         android:duplicateParentState="false"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </RelativeLayout>

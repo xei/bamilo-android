@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/selector_navigation_basket_background"
     android:orientation="horizontal"
-    android:layoutDirection="locale"
     android:paddingBottom="@dimen/margin_mid"
     android:paddingLeft="@dimen/margin_mid"
     android:paddingStart="@dimen/margin_mid"
@@ -38,6 +37,8 @@
         <pt.rocket.components.customfontviews.TextView
             android:id="@+id/nav_basket_elements"
             style="@style/navigation_cart_price"
+            android:layout_width="match_parent"
+            android:gravity="left|start"
             android:layout_below="@id/nav_basket_title"
             android:visibility="invisible" />
 
