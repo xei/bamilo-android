@@ -7,40 +7,7 @@
 
     <!-- HEADER -->
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="@drawable/modal_dialog_header"
-        android:paddingEnd="@dimen/margin_mid"
-        android:paddingLeft="@dimen/margin_mid"
-        android:paddingRight="@dimen/margin_mid"
-        android:paddingStart="@dimen/margin_mid" >
-
-        <pt.rocket.components.customfontviews.TextView
-            android:id="@+id/dialog_filter_header_title"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:drawablePadding="@dimen/margin_mid"
-            android:fontFamily="roboto_bold"
-            android:gravity="left|center|start"
-            android:text="Brand"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_xl" />
-
-        <pt.rocket.components.customfontviews.TextView
-            android:id="@+id/dialog_filter_header_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:fontFamily="roboto_regular"
-            android:gravity="end|right|center"
-            android:text="@string/clear_uppercase_label"
-            android:textColor="@drawable/selector_clearall"
-            android:textSize="@dimen/text_l" />
-    </RelativeLayout>
+    <include layout="@layout/dialog_filter_header" />
 
     <!-- MAIN CONTAINER -->
 

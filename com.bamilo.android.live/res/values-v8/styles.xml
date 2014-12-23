@@ -25,7 +25,6 @@
         <item name="android:layout_centerVertical">true</item>
     </style>
 
-    
     <style name="rounded_box">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -35,5 +34,11 @@
         <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
         <item name="android:background">@drawable/background_content</item>
     </style>
-    
+
+    <style name="checkbox_base" parent="Widget">
+        <item name="android:layout_gravity">right|end|center_vertical</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableRight">@drawable/selector_btn_check_holo_orange</item>
+    </style>
+
 </resources>

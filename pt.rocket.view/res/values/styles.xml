@@ -287,7 +287,7 @@
         <item name="android:textCursorDrawable" targetApi="12">@null</item>
         <item name="android:inputType">text</item>
     </style>
-
+    
     <style name="form_checkbox_style" parent="form_style">
         <item name="android:layout_marginLeft">@dimen/form_check_padding</item>
         <item name="android:layout_marginRight">@dimen/form_check_padding</item>
@@ -540,6 +540,12 @@
         <item name="android:gravity">left|center_vertical|start</item>
         <item name="android:spinnerMode">dropdown</item>
         <item name="android:clickable">true</item>
+    </style>
+    
+	<!-- BASE STYLE -->
+    <style name="checkbox_base" parent="Widget">
+        <item name="android:layout_gravity">left|start|top</item>
+        <item name="android:layoutDirection">locale</item>
     </style>
 
 </resources>

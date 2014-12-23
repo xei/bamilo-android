@@ -7,40 +7,8 @@
 
     <!-- HEADER -->
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="@drawable/modal_dialog_header"
-        android:paddingEnd="@dimen/margin_mid"
-        android:paddingLeft="@dimen/margin_mid"
-        android:paddingRight="@dimen/margin_mid"
-        android:paddingStart="@dimen/margin_mid" >
+    <include layout="@layout/dialog_filter_header" />
 
-        <pt.rocket.components.customfontviews.TextView
-            android:id="@+id/dialog_filter_header_title"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:drawablePadding="@dimen/margin_mid"
-            android:fontFamily="roboto_bold"
-            android:gravity="start|left|center"
-            android:text="@string/string_price"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_xl" />
-
-        <pt.rocket.components.customfontviews.TextView
-            android:id="@+id/dialog_filter_header_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:fontFamily="roboto_regular"
-            android:gravity="end|right|center"
-            android:text="@string/clear_uppercase_label"
-            android:textColor="@drawable/selector_clearall"
-            android:textSize="@dimen/text_l" />
-    </RelativeLayout>
     <!-- MAIN CONTAINER -->
 
     <ScrollView
@@ -86,11 +54,11 @@
 
             <pt.rocket.components.customfontviews.CheckBox
                 android:id="@+id/dialog_filter_check_discount"
+                style="@style/checkbox_base"          
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_midhuge"
                 android:fontFamily="roboto_regular"
-                android:layoutDirection="locale"
                 android:text="@string/string_with_discount_only"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_l" />

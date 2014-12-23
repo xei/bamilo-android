@@ -4,6 +4,6 @@
     style="@style/form_checkbox_style"
     android:checked="true"    
     android:button="@null"
-    android:gravity="right"
+    android:gravity="right|center_vertical"
     android:drawableRight="@drawable/selector_btn_check_holo_orange"
     android:text="@string/login_remember_user_email" />
