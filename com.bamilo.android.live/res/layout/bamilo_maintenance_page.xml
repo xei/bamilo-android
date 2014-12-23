@@ -43,4 +43,58 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_title" />
 
+    <!-- Added Unused id's for proguard -->
+
+    <View
+        android:id="@+id/fallback_options_container"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/fallback_title_container"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/fallback_change_country"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/fallback_best"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/fallback_country"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/fallback_options_bottom"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/fallback_country_double"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/fallback_country_top"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/fallback_country_bottom"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/fallback_country_bottom_text"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/fallback_country_bottom_text2"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/fallback_choice"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/fallback_doorstep"
+        android:visibility="gone" />
+
 </RelativeLayout>
