@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.commons.collections4.CollectionUtils;
 
 import pt.rocket.components.customfontviews.TextView;
+import pt.rocket.controllers.TeaserProductsAdapter;
 import pt.rocket.framework.objects.ITargeting;
 import pt.rocket.framework.objects.TeaserBrand;
 import pt.rocket.framework.objects.TeaserCampaign;
@@ -23,10 +24,11 @@ import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.utils.imageloader.RocketImageLoader.RocketImageLoaderListener;
-import pt.rocket.utils.scrolls.HorizontalScrollGroup;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,6 +133,7 @@ public class TeasersFactory {
             break;
         case CAMPAIGNS_LIST:
         	mView = getTeaserCampaigns(main, (TeaserGroupCampaigns) teaserSpecification);
+        	break;
         default:
             break;
         }
@@ -262,15 +265,30 @@ public class TeasersFactory {
         // Case not empty
         if (productTeaserGroup != null && productTeaserGroup.getTeasers() != null && productTeaserGroup.getTeasers().size() > 0) {
             rootView = mInflater.inflate(R.layout.teaser_products_group, mainView, false);
-            // #RTL: set horizontal scroll with RTL orientation
-            Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-            ((HorizontalScrollGroup) rootView.findViewById(R.id.teaser_products_group_scroll)).setReverseLayout(isRTL);
-            // Fill group
-            ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_products_group_container);
+            // Title
             ((TextView) rootView.findViewById(R.id.teaser_products_group_title)).setText(productTeaserGroup.getTitle());
-            TeaserGroupType type = productTeaserGroup.getType();
-            for (TeaserProduct product : productTeaserGroup.getTeasers())
-                container.addView(createProductTeaserView(type, product, container, mInflater, productTeaserGroup.getTeasers().size()));
+            
+            // #### NEW approach
+            RecyclerView horizontalScrollView = (RecyclerView) rootView.findViewById(R.id.teaser_products_horizontal_grid_view);
+            // use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
+            horizontalScrollView.setHasFixedSize(true);
+            // use a linear layout manager
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+            Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
+            mLayoutManager.setReverseLayout(isRTL);
+            horizontalScrollView.setLayoutManager(mLayoutManager);
+            horizontalScrollView.setAdapter(new TeaserProductsAdapter(mContext, productTeaserGroup, onTeaserClickListener));
+            
+//          // #RTL: set horizontal scroll with RTL orientation
+//          Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
+//          ((HorizontalScrollGroup) rootView.findViewById(R.id.teaser_products_group_scroll)).setReverseLayout(isRTL);
+//          // Fill group
+//          ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_products_group_container);
+//          TeaserGroupType type = productTeaserGroup.getType();
+//          for (TeaserProduct product : productTeaserGroup.getTeasers())
+//              container.addView(createProductTeaserView(type, product, container, mInflater, productTeaserGroup.getTeasers().size()));
+            
+            
         }
         return rootView;
     }

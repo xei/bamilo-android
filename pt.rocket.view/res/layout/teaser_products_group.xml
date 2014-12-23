@@ -23,9 +23,18 @@
         android:layout_below="@id/teaser_products_group_title" />
 
     <!-- CONTAINER -->
+    
+    <pt.rocket.components.HorizontalListView
+        android:id="@+id/teaser_products_horizontal_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/teaser_product_item_width"
+        android:layout_below="@id/teaser_products_group_title_divider"
+        android:layout_marginBottom="@dimen/margin_10px"
+        android:layout_marginTop="@dimen/margin_10px"
+        android:scrollbars="none" />
 
-    <pt.rocket.utils.scrolls.HorizontalScrollGroup
-        android:id="@+id/teaser_products_group_scroll"
+<!--     <pt.rocket.utils.scrolls.HorizontalScrollGroup
+		android:id="@+id/teaser_products_group_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/teaser_products_group_title_divider"
@@ -37,6 +46,6 @@
             android:id="@+id/teaser_products_group_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </pt.rocket.utils.scrolls.HorizontalScrollGroup>
+    </pt.rocket.utils.scrolls.HorizontalScrollGroup> -->
 
 </RelativeLayout>

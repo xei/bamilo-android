@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Set;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.HorizontalListView;
 import pt.rocket.components.customfontviews.Button;
 import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
+import pt.rocket.controllers.RelatedItemsListAdapter;
 import pt.rocket.controllers.TipsPagerAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
@@ -50,8 +52,6 @@ import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.utils.dialogfragments.WizardPreferences;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
-import pt.rocket.utils.imageloader.RocketImageLoader;
-import pt.rocket.utils.scrolls.HorizontalScrollGroup;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.ContentValues;
@@ -69,11 +69,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.style.MetricAffectingSpan;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -215,9 +215,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private View mRelatedContainer;
 
-    private HorizontalScrollGroup mRelatedHorizontalScroll;
+    // private HorizontalScrollGroup mRelatedHorizontalScroll;
 
-    private ViewGroup mRelatedHorizontalGroup;
+    // private ViewGroup mRelatedHorizontalGroup;
     
     private RelativeLayout mProductFeaturesContainer;
     
@@ -232,6 +232,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     private RelativeLayout mProductDescriptionContainer;
 
     private boolean isRelatedItem = false;
+
+    private HorizontalListView mHorizontalListView;
     
     private static String categoryTree = "";
     
@@ -505,8 +507,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         loadingRating = (RelativeLayout) view.findViewById(R.id.product_detail_loading_rating);
         // Related
         mRelatedContainer = view.findViewById(R.id.product_detail_product_related_container);
-        mRelatedHorizontalScroll = (HorizontalScrollGroup) view.findViewById(R.id.product_detail_horizontal_scroll);
-        mRelatedHorizontalGroup = (ViewGroup) view.findViewById(R.id.product_detail_horizontal_group_container);
+        
+        // NEW
+        mHorizontalListView = (HorizontalListView) view.findViewById(R.id.product_detail_horizontal_list_view);
+        //mRelatedHorizontalScroll = (HorizontalScrollGroup) view.findViewById(R.id.product_detail_horizontal_scroll);
+        //mRelatedHorizontalGroup = (ViewGroup) view.findViewById(R.id.product_detail_horizontal_group_container);
+        
         mRelatedLoading = view.findViewById(R.id.loading_related);        
         // Bottom Button
         mAddToCartButton = (Button) view.findViewById(R.id.product_detail_shop);
@@ -1204,38 +1210,30 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      */
     private void showRelatedItemsLayout(ArrayList<LastViewed> relatedItemsList){
         mRelatedContainer.setVisibility(View.VISIBLE);
-        // Get Layout inflator
-        LayoutInflater inflator = LayoutInflater.from(getBaseActivity());
-        // For each related item
-        for (LastViewed lastViewed : relatedItemsList) {
-            // Create view for related item
-            View itemView = createRelatedItemView(inflator, lastViewed);
-            // Add view
-            mRelatedHorizontalGroup.addView(itemView);
-        }
-        // #RTL: set horizontal scroll with RTL orientation
-        Boolean isRTL = getBaseActivity().getResources().getBoolean(R.bool.is_bamilo_specific);
-        mRelatedHorizontalScroll.setReverseLayout(isRTL);
-        // Show container
-        mRelatedHorizontalScroll.setVisibility(View.VISIBLE);
-        // Hide loading
-        mRelatedLoading.setVisibility(View.GONE);
-    }
-    
-    /**
-     * Create a related item with respective layout
-     * @param inflator
-     * @param lastViewed
-     * @return View
-     * @author sergiopereira
-     */
-    private View createRelatedItemView(LayoutInflater inflator, LastViewed lastViewed) {
-        // Inflate
-        View view = inflator.inflate(R.layout.product_item_small, mRelatedHorizontalGroup, false);
-        // Get clickable view
-        RelativeLayout mElement1 = (RelativeLayout) view.findViewById(R.id.item_container);
-        mElement1.setTag(lastViewed.getProductUrl());
-        mElement1.setOnClickListener(new OnClickListener() {
+//        // Get Layout inflator
+//        LayoutInflater inflator = LayoutInflater.from(getBaseActivity());
+//        // For each related item
+//        for (LastViewed lastViewed : relatedItemsList) {
+//            // Create view for related item
+//            View itemView = createRelatedItemView(inflator, lastViewed);
+//            // Add view
+//            mRelatedHorizontalGroup.addView(itemView);
+//        }
+//        // #RTL: set horizontal scroll with RTL orientation
+//        Boolean isRTL = getBaseActivity().getResources().getBoolean(R.bool.is_bamilo_specific);
+//        mRelatedHorizontalScroll.setReverseLayout(isRTL);
+//        // Show container
+//        mRelatedHorizontalScroll.setVisibility(View.VISIBLE);
+        
+        // NEW 
+        // use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
+        mHorizontalListView.setHasFixedSize(true);
+        // use a linear layout manager
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+        Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
+        mLayoutManager.setReverseLayout(isRTL);
+        mHorizontalListView.setLayoutManager(mLayoutManager);
+        mHorizontalListView.setAdapter(new RelatedItemsListAdapter(mContext, relatedItemsList, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Show related item
@@ -1249,21 +1247,54 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
                 ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
             }
-        });
-        // Set data
-        TextView brand = (TextView) mElement1.findViewById(R.id.item_brand);
-        TextView name = (TextView) mElement1.findViewById(R.id.item_title);
-        TextView price = (TextView) mElement1.findViewById(R.id.item_price);
-        ImageView image = (ImageView) mElement1.findViewById(R.id.image_view);
-        View progress = mElement1.findViewById(R.id.image_loading_progress);
-        brand.setText(lastViewed.getProductBrand());
-        name.setText(lastViewed.getProductName());
-        price.setText(lastViewed.getProductPrice());
-        // Load image
-        RocketImageLoader.instance.loadImage(lastViewed.getImageUrl(), image, progress, R.drawable.no_image_large);
-        // Return the current view
-        return view;
+        }));
+        
+        // Hide loading
+        mRelatedLoading.setVisibility(View.GONE);
     }
+    
+//    /**
+//     * Create a related item with respective layout
+//     * @param inflator
+//     * @param lastViewed
+//     * @return View
+//     * @author sergiopereira
+//     */
+//    private View createRelatedItemView(LayoutInflater inflator, LastViewed lastViewed) {
+//        // Inflate
+//        View view = inflator.inflate(R.layout.product_item_small, mRelatedHorizontalGroup, false);
+//        // Get clickable view
+//        RelativeLayout mElement1 = (RelativeLayout) view.findViewById(R.id.item_container);
+//        mElement1.setTag(lastViewed.getProductUrl());
+//        mElement1.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Show related item
+//                Bundle bundle = new Bundle();
+//                bundle.putString(ConstantsIntentExtra.CONTENT_URL, (String) v.getTag());
+//                bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.grelateditem_prefix);
+//                bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+//                // For tracking as a related item
+//                bundle.putBoolean(ConstantsIntentExtra.IS_RELATED_ITEM, true);
+//                // inform PDV that Related Items should be shown
+//                bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
+//                ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+//            }
+//        });
+//        // Set data
+//        TextView brand = (TextView) mElement1.findViewById(R.id.item_brand);
+//        TextView name = (TextView) mElement1.findViewById(R.id.item_title);
+//        TextView price = (TextView) mElement1.findViewById(R.id.item_price);
+//        ImageView image = (ImageView) mElement1.findViewById(R.id.image_view);
+//        View progress = mElement1.findViewById(R.id.image_loading_progress);
+//        brand.setText(lastViewed.getProductBrand());
+//        name.setText(lastViewed.getProductName());
+//        price.setText(lastViewed.getProductPrice());
+//        // Load image
+//        RocketImageLoader.instance.loadImage(lastViewed.getImageUrl(), image, progress, R.drawable.no_image_large);
+//        // Return the current view
+//        return view;
+//    }
     
 
     /**
