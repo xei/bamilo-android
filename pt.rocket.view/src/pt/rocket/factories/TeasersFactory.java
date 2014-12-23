@@ -23,6 +23,7 @@ import pt.rocket.framework.objects.TeaserSpecification;
 import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.utils.imageloader.RocketImageLoader.RocketImageLoaderListener;
+import pt.rocket.utils.scrolls.HorizontalScrollGroup;
 import pt.rocket.view.R;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -261,6 +262,10 @@ public class TeasersFactory {
         // Case not empty
         if (productTeaserGroup != null && productTeaserGroup.getTeasers() != null && productTeaserGroup.getTeasers().size() > 0) {
             rootView = mInflater.inflate(R.layout.teaser_products_group, mainView, false);
+            // #RTL: set horizontal scroll with RTL orientation
+            Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
+            ((HorizontalScrollGroup) rootView.findViewById(R.id.teaser_products_group_scroll)).setReverseLayout(isRTL);
+            // Fill group
             ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_products_group_container);
             ((TextView) rootView.findViewById(R.id.teaser_products_group_title)).setText(productTeaserGroup.getTitle());
             TeaserGroupType type = productTeaserGroup.getType();
