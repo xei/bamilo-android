@@ -300,6 +300,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                     if (ratingLabel.equals("1")) ratingLabel = size == 1 ? getString(R.string.string_price) : getString(R.string.string_price);
                     else if (ratingLabel.equals("2")) ratingLabel = getString(R.string.string_appearance);
                     else if (ratingLabel.equals("3")) ratingLabel = getString(R.string.rating_quality);
+                    else if (ratingLabel.equals("4")) ratingLabel = getString(R.string.string_rating);
                     else toAdd = false;
                     
                     if(toAdd){

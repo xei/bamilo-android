@@ -412,6 +412,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             fallbackBest.setSelected(true);
         } catch (NullPointerException e) {
             e.printStackTrace();
+        } catch (ClassCastException e) {
+            e.printStackTrace();
         }
     }
 
