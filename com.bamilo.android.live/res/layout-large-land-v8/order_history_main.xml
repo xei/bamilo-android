@@ -31,13 +31,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/order_list_date_cont"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="8dp"
-                    android:orientation="horizontal" >
+                    android:layout_marginRight="8dp" >
 
                     <pt.rocket.components.customfontviews.TextView
                         android:id="@+id/order_list_date_title"
@@ -45,6 +44,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="13dp"
                         android:fontFamily="roboto_bold"
+                        android:layout_alignParentRight="true"
                         android:gravity="center_vertical"
                         android:text="@string/my_order_date_label"
                         android:textColor="@color/grey_middle"
@@ -53,24 +53,24 @@
 
                     <pt.rocket.components.customfontviews.TextView
                         android:id="@+id/order_list_date"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="2dp"
+                        android:layout_toLeftOf="@+id/order_list_date_title"
                         android:layout_marginTop="13dp"
                         android:fontFamily="roboto_regular"
-                        android:gravity="center_vertical"
+                        android:gravity="center_vertical|right"
                         android:textColor="@color/grey_middle"
                         android:textSize="@dimen/text_s" />
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/order_list_payment_cont"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/order_list_date_cont"
-                    android:layout_marginRight="8dp"
-                    android:orientation="horizontal" >
+                    android:layout_marginRight="8dp" >
 
                     <pt.rocket.components.customfontviews.TextView
                         android:id="@+id/order_list_payment_title"
@@ -79,6 +79,7 @@
                         android:layout_marginTop="13dp"
                         android:fontFamily="roboto_bold"
                         android:gravity="center_vertical"
+                        android:layout_alignParentRight="true"
                         android:text="@string/payment_method"
                         android:textColor="@color/grey_middle"
                         android:textSize="@dimen/text_s"
@@ -90,12 +91,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="2dp"
                         android:singleLine="true"
+                        android:layout_toLeftOf="@+id/order_list_payment_title"
                         android:layout_marginTop="13dp"
                         android:fontFamily="roboto_regular"
-                        android:gravity="center_vertical"
+                        android:gravity="center_vertical|right"
                         android:textColor="@color/grey_middle"
                         android:textSize="@dimen/text_s" />
-                </LinearLayout>
+                </RelativeLayout>
 
                 <pt.rocket.components.customfontviews.TextView
                     android:id="@+id/order_list_products_title"

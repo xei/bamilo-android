@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/button_container"
-    android:layoutDirection="locale"
     android:layout_height="@dimen/recently_viewed_button_container_height"
     android:orientation="horizontal" >
 

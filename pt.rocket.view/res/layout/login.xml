@@ -6,14 +6,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layoutDirection="locale"
         android:orientation="vertical" >
 
         <LinearLayout
             style="@style/rounded_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layoutDirection="locale"
             android:orientation="vertical" >
 
             <pt.rocket.components.customfontviews.TextView
@@ -27,7 +25,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/login_margin_medium"
-                android:layoutDirection="locale"
                 android:orientation="vertical" >
 
                 <pt.rocket.components.customfontviews.FacebookTextView
@@ -62,12 +59,10 @@
                     android:layout_marginRight="@dimen/rounded_margin_mid"
 					android:layout_marginStart="@dimen/rounded_margin_mid"
                     android:layout_marginEnd="@dimen/rounded_margin_mid"
-                    android:layoutDirection="locale"
                     android:orientation="vertical" >
 
                     <LinearLayout
                         android:id="@+id/form_container"
-                        android:layoutDirection="locale"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical" >

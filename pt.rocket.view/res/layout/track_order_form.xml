@@ -33,8 +33,7 @@
                 android:drawableEnd="@drawable/ic_star_formular"
                 android:drawableRight="@drawable/ic_star_formular"
                 android:hint="@string/track_order_hint"
-                android:inputType="textAutoComplete"
-                android:layoutDirection="locale" />
+                android:inputType="textAutoComplete"/>
         </LinearLayout>
 
         <pt.rocket.components.customfontviews.Button

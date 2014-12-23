@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layoutDirection="locale"
     android:orientation="horizontal" >
 
     <RelativeLayout
@@ -84,15 +83,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/order_list_date_cont"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
-                    android:layoutDirection="locale"
                     android:orientation="horizontal" >
 
                     <pt.rocket.components.customfontviews.TextView
@@ -100,6 +98,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="13dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:fontFamily="roboto_bold"
                         android:gravity="center_vertical"
                         android:text="@string/my_order_date_label"
@@ -109,17 +109,19 @@
 
                     <pt.rocket.components.customfontviews.TextView
                         android:id="@+id/order_list_date"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"
                         android:layout_marginTop="13dp"
+                        android:layout_toRightOf="@+id/order_list_date_title"
+                        android:layout_toEndOf="@+id/order_list_date_title"
                         android:fontFamily="roboto_regular"
-                        android:gravity="center_vertical"
+                        android:gravity="center_vertical|left|start"
                         android:textColor="@color/grey_middle"
                         android:textSize="@dimen/text_s" />
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/order_list_payment_cont"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -130,7 +132,6 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="20dp"
-                    android:layoutDirection="locale"
                     android:orientation="horizontal" >
 
                     <pt.rocket.components.customfontviews.TextView
@@ -138,6 +139,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="roboto_bold"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:gravity="center_vertical"
                         android:text="@string/payment_method"
                         android:textColor="@color/grey_middle"
@@ -151,11 +154,12 @@
                         android:layout_marginLeft="2dp"
                         android:layout_marginStart="2dp"
                         android:singleLine="true"
-                        android:fontFamily="roboto_regular"
+                        android:layout_toRightOf="@+id/order_list_payment_title"
+                        android:fontFamily="roboto_regular|left|start"
                         android:gravity="center_vertical"
                         android:textColor="@color/grey_middle"
                         android:textSize="@dimen/text_s" />
-                </LinearLayout>
+                </RelativeLayout>
 
                 <pt.rocket.components.customfontviews.TextView
                     android:id="@+id/order_list_products_title"
