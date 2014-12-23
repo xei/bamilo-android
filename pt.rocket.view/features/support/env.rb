@@ -21,7 +21,7 @@ def initvars
   @venture_kenya= "Kenya"
   @venture_uganda= "Uganda"
   @venture_ghana= "Ghana"
-  @venture_camerron= "Cameroun"
+  @venture_camerron= "Cameroun" 
   
   @username="testcalabash@mailinator.com"
   @password="password1"
@@ -72,7 +72,8 @@ def initvars
   @pass_rec_email=""
   
   #rating
-  @rating="product_rating_container"
+  @rating = "product_detail_product_rating_count";
+  #@rating="product_rating_container"
   @review_name="review_name"
   @review_title="review_title"
   @review_title_t="Great Product"
@@ -84,6 +85,17 @@ def initvars
   
   @sound = "Sound"
   @vibrate = "Vibrate"
+  @notifications = "Notifications"
+  
+  @product_detail_shop = "product_detail_shop"
+  @newsletter_cat_sub = "newsletter_categories_subscribed"
+  @nav_basket_title = "nav_basket_title"
+  @fragment_root_empty_message = "fragment_root_empty_text"
+  @orders_container_title = "orders_container_title"
+  @toast_exit_message = "toast_exit_message"
+  # country change
+  @dialog_text = "dialog_text"
+  @tips_got_it = "tips_got_it_img"
   
   #initializes the country variables
   case $country.to_s
@@ -91,24 +103,26 @@ def initvars
     when "ke"
     @venture_name= @venture_kenya
 
-    @sign_in="Sign"
+    @sign_in="Sign In"
     @wrong_username="faketester@tester.tt"
-    @invalidsearch= "addddd" 
+    @invalidsearch= "adddddf" 
     @search_p= "nikon" 
     @search_word="samsung"
     @search="Search"
     @myaccount="My Account"
     @myinfo="User Data"
     @categories="CATEGORIES"
-    @categoryfashion="Mobile Phones"
+    @categoryfashion="Computing"
     @choose_country="Choose Country"
     @order_status="Order Status"
+    
+    @newsletter_receive="Newsletter"
     
     @checkoutNext="Next"
     @checkout1="TestPayment"
     @checkout3="Confirm Order"
     
-    @emailerrormessage="Please fill in";
+    @emailerrormessage="Please fill in the E-Mail";
     @passerrormessage="Please fill in the Password";
     
     @loginerror="Login failed"
@@ -117,12 +131,12 @@ def initvars
     @sameemail="This email already exists."
     @searchdefault="Please enter a term for suggestions!"
     @nosuggest="No suggestions for your search term!"
-     
+    
     @addtocart="Add to Cart"
     @home="Home"
     @home_c="HOME"
     @new_pass_short="The new password has to have at least 6 characters"
-   
+        
     #password recovery
     @forgot_password="Forgot Password?"
     @password_recovery="Password Recovery"
@@ -150,23 +164,23 @@ def initvars
     @second_tip="Tap to open the product gallery"
     @specification="Specification"
     @please_choose="Please choose"
-    @search_v="flip flops"
+    @search_v="sandal"
     @product_features="Product Features"
     @product_description="Product Description"
     @write_review="Write a Review"
-    @rating_t="posted by"
+    @posted_by="posted by"
     @write_review="Write a Review"
     @send_review="Send Review"
     @to_reviews="To reviews"
     @messaging="Messaging"
-    
+      
     #cart
     @delete="Delete"
     
     #native checkout
+    @cod="Cash on delivery"
     @proceed_to_checkout="Proceed to Checkout"
     @next="Next"
-    @pay_on_delivery="Cash On Delivery"
     @confirm_order="Confirm Order"
     
     @popular_categories="Popular"
@@ -181,24 +195,22 @@ def initvars
     @new_in="NEW IN"
     @best_rating="BEST RATING"
     @back="Please press back again if you wish to leave the app"
-    
     @search_r="samsung"
     
     @valid_order="300095859"
     @no_track_results="No results found"
     
-    #related items
     @related_items="Related Items"
     
     @newsletter_checkbox="Newsletter"
     
     @email_notifications="Email Notifications"
     
-    @newsletter="Newsletters"
-    @newsletter_male="Newsletter Male"
-    @newsletter_female="Newsletter Female"
-    
     @login="Login"
+    
+    @newsletter="Newsletters"
+    @newsletter_male="Male"
+    @newsletter_female="Newsletter Female"
     
     @register="Register"
     
@@ -237,7 +249,10 @@ def initvars
     
     @my_order_history = "MY ORDER HISTORY"
     @my_order_history_2 = "My Order History"
-    
+  
+    # shopping cart
+    #@items_count = "items_count"
+
     ##### Ivory Coast ####################################### IC ##############################################################################          
     when "ic"
     @venture_name= @venture_cotedivoire
@@ -251,7 +266,7 @@ def initvars
     @myaccount="Mon compte"
     @myinfo="Les données de"
     @categories="CATÉGORIES"
-    @categoryfashion="Mobile"
+    @categoryfashion="Téléphonie"
     @choose_country="Choisir le pays"
     @order_status="Suivi de commande"
      
@@ -262,7 +277,8 @@ def initvars
     @emailerrormessage="dans le Email";
     @passerrormessage="dans le Mot de passe";
      
-    @loginerror="L'authentification a échoué"
+    @loginerror="authentification a échoué"
+    #@loginerror="L'authentification a échoué"
     @signout="Se déconnecter"
     @mandatory="Veillez remplir les champs obligatoires"
     @sameemail="Cet email existe déjà."
@@ -282,14 +298,16 @@ def initvars
     #password recovery
     @forgot_password="Mot de passe oublié ?"
     @password_recovery="Récupération de mot de passe"
-    @pass_rec_empty_email="S'il vous plait écrire dans le"
+    @pass_rec_empty_email="vous plait écrire dans le"
+    #@pass_rec_empty_email="S'il vous plait écrire dans le"
     @pass_rec_failed="Le renouvellement du mot de passe a échoué"
     @pass_rec_sent="Email envoyé"
     
     #cart
     @item_was_added="a été ajouté au panier"
     @no_items="Vous n'avez pas d'articles dans le panier"
-    @got_it="J'ai Compris"
+    @got_it="Compris"
+    #@got_it="J'ai Compris"
     @clear_cart_message="Ceci efface le panier"
     
     #catalog
@@ -303,7 +321,8 @@ def initvars
     
     #product detail
     @first_tip="vers la gauche ou la droite pour"
-    @second_tip="Cliquez pour voir l'ensemble"
+    @second_tip="Cliquez pour voir"
+    #@second_tip="Cliquez pour voir l'ensemble"
     @specification="Caractéristiques"
     @please_choose="Choisissez"
     @search_v="sandal"
@@ -315,11 +334,13 @@ def initvars
     @send_review="Envoyer votre avis"
     @to_reviews="Pour revue"
     @messaging="Messaging"
+    @size= "Taille"
     
     #cart
     @delete="Effacer"
     
     #native checkout
+    @cod="COD"
     @proceed_to_checkout="Valider la commande"
     @next="Suivant"
     @pay_on_delivery="Payer cash à la livraison"
@@ -337,7 +358,8 @@ def initvars
     @clear_all="TOUT EFFACER"
     @new_in="NOUVEAUTÉS"
     @best_rating="MIEUX NOTÉS"
-    @back="Appuyez de nouveau sur retour si vous souhaitez quitter l'app"
+    @back="Appuyez de nouveau sur retour si vous souhaitez quitter"
+    #@back="Appuyez de nouveau sur retour si vous souhaitez quitter l'app"
     @search_r="nokia"
     
     @valid_order="300028219"
@@ -345,7 +367,10 @@ def initvars
     
     @related_items="Produits Similaires"
     
-    @newsletter_checkbox="Je m'inscris à la newsletter"
+    @newsletter_receive = "Recevoir la newsletter?"
+    #@newsletter_checkbox="Newsletter"
+    @newsletter_checkbox="inscris à la newsletter"
+    #@newsletter_checkbox="Je m'inscris à la newsletter"
     
     @email_notifications="Préférence eMails"
     
@@ -360,7 +385,8 @@ def initvars
     @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
     
     @no_result_found="n'a donné aucun résultat"
-    @search_tips="Conseils d'utilisation de la barre de recherche"
+    @search_tips="utilisation de la barre de recherche"
+    #@search_tips="Conseils d'utilisation de la barre de recherche"
     
     @newsletter_subscription="Newsletter"
     
@@ -376,61 +402,63 @@ def initvars
     
     @item_added = "Produit ajouté"
     @item_removed = "Produit supprimé"
-    @shopping_cart = "Panier d'achat"
+    @shopping_cart = "Panier"
+    #@shopping_cart = "Panier d'achat"
     @my_cart = "Mon panier" 
     @back_button= "RETOUR"
-    @track_my_order = "Suivi de commande"
+    @track_my_order = "Mes achats"
+    #@track_my_order = "Suivi de commande"
     @number_items="Articles"
     @remember_my_email= "Remember my email"
     
     @add_new_address = "Add new address"
-    @size= "Size"
-    @call_to_order = "Call to order"
-    @add_all_items_to_cart = "Add All Items to Cart"
-    @continue_shopping = "Continue Shopping"
+    @call_to_order = "Valider la commande"
+    @add_all_items_to_cart = "Tout ajouter au Panier"
+    @continue_shopping = "Continuer votre shopping!"
     @signup = "Signup"
     @female = "female"
     
     @my_order_history = "MY ORDER HISTORY"
-    @my_order_history_2 = "My Order History"
-      
-    ##### Morocco ########################################### MA ##############################################################################
-    when "ma"
-    @venture_name= @venture_maroc
+    @my_order_history_2 = "My Order History"  
     
+    ##### Cameroon ####################################### CM ##############################################################################          
+    when "cm"
+    @venture_name= @venture_camerron
+     
     @sign_in="Accéder au compte"
     @wrong_username="faketester@tester.tt"
-    @invalidsearch= "addddf" 
-    @search_p= "surf" 
+    @invalidsearch= "addddd" 
+    @search_p= "caresse Sava" 
     @search_word="samsung"
     @search="Rechercher"
     @myaccount="Mon compte"
     @myinfo="Les données de"
     @categories="CATÉGORIES"
-    @categoryfashion="Tablettes"
+    @categoryfashion="Téléphonie"
     @choose_country="Choisir le pays"
-    @order_status="Suivre la commande"
-    
+    @order_status="Suivi de commande"
+     
     @checkoutNext="Next"
     @checkout1="TestPayment"
     @checkout3="Confirm Order"
-    
-    @emailerrormessage="dans le E-mail";
+      
+    @emailerrormessage="dans le Email";
     @passerrormessage="dans le Mot de passe";
-    
-    @loginerror="L'authentification a échoué"
+     
+    @loginerror="authentification a échoué"
+    #@loginerror="L'authentification a échoué"
     @signout="Se déconnecter"
     @mandatory="Veillez remplir les champs obligatoires"
     @sameemail="Cet email existe déjà."
     @searchdefault="Entrer votre recherche ici!"
     @nosuggest="Aucune suggestion pour votre recherche!"
-    
+    @differentpassword="Le mot de passe ne correspond pas"
+      
     @addtocart="Ajouter au panier"
-    
+     
     @yes="Oui"
     @termsandconditions="Termes et conditions"
     @password_changed_message="Le mot de passe a été modifié avec succès"
-    @differentpassword="Le mot de passe ne correspond pas"
     @home="Accueil"
     @home_c="ACCUEIL"
     @new_pass_short="Le nouveau mot de passe doit comprendre au moins 6 caractères"
@@ -438,18 +466,20 @@ def initvars
     #password recovery
     @forgot_password="Mot de passe oublié ?"
     @password_recovery="Récupération de mot de passe"
-    @pass_rec_empty_email="S'il vous plait écrire dans le"
+    @pass_rec_empty_email="vous plait écrire dans le"
+    #@pass_rec_empty_email="S'il vous plait écrire dans le"
     @pass_rec_failed="Le renouvellement du mot de passe a échoué"
     @pass_rec_sent="Email envoyé"
     
     #cart
     @item_was_added="a été ajouté au panier"
     @no_items="Vous n'avez pas d'articles dans le panier"
-    @got_it="J'ai Compris"
+    @got_it="Compris"
+    #@got_it="J'ai Compris"
     @clear_cart_message="Ceci efface le panier"
     
     #catalog
-    @currency= "Dhs"
+    @currency= "FCFA"
     @loading_items="Charger plus de produits"
     @popularity="POPULARITÉ"
     @price_up="PRIX CROISSANT"
@@ -459,11 +489,12 @@ def initvars
     
     #product detail
     @first_tip="vers la gauche ou la droite pour"
-    @second_tip="Cliquez pour voir l'ensemble"
+    @second_tip="Cliquez pour voir"
+    #@second_tip="Cliquez pour voir l'ensemble"
     @specification="Caractéristiques"
     @please_choose="Choisissez"
     @search_v="sandal"
-    @product_features="Spécificités du produit"
+    @product_features="du produit"
     @product_description="Description du produit"
     @write_review="Donnez-nous notre avis"
     @posted_by="Posté"
@@ -471,17 +502,20 @@ def initvars
     @send_review="Envoyer votre avis"
     @to_reviews="Pour revue"
     @messaging="Messaging"
-      
+    @size= "Taille"
+    
     #cart
     @delete="Effacer"
     
     #native checkout
+    @cod="COD"
     @proceed_to_checkout="Valider la commande"
     @next="Suivant"
-    @pay_on_delivery="Paiement à la livraison"
+    @pay_on_delivery="Payer cash à la livraison"
     @confirm_order="Confirmer la commande"
     
-    @popular_categories="Nos Meilleures Catégories"
+    #@popular_categories="Nos Meilleures Catégories"
+    @popular_categories="Meilleures ventes"
     @filter="Filtre"
     @filter_brand="Brand"
     @filter_size="Size"
@@ -492,15 +526,19 @@ def initvars
     @clear_all="TOUT EFFACER"
     @new_in="NOUVEAUTÉS"
     @best_rating="MIEUX NOTÉS"
-    @back="Appuyez de nouveau sur retour si vous souhaitez quitter l'app"
-    @search_r="dane elec"
+    @back="Appuyez de nouveau sur retour si vous souhaitez quitter"
+    #@back="Appuyez de nouveau sur retour si vous souhaitez quitter l'app"
+    @search_r="nokia"
     
-    @valid_order="300452452"
+    @valid_order="300028219"
     @no_track_results="Aucun résultat pour le numéro"
     
     @related_items="Produits Similaires"
     
-    @newsletter_checkbox="Je m'inscris à la newsletter"
+    @newsletter_receive = "Recevoir la newsletter?"
+    #@newsletter_checkbox="Newsletter"
+    @newsletter_checkbox="inscris à la newsletter"
+    #@newsletter_checkbox="Je m'inscris à la newsletter"
     
     @email_notifications="Préférence eMails"
     
@@ -514,8 +552,9 @@ def initvars
     
     @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
     
-    @no_result_found="n'y a pas de résultat"
-    @search_tips="Conseils d'utilisation de la barre de recherche"
+    @no_result_found="n'a donné aucun résultat"
+    @search_tips="utilisation de la barre de recherche"
+    #@search_tips="Conseils d'utilisation de la barre de recherche"
     
     @newsletter_subscription="Newsletter"
     
@@ -528,20 +567,190 @@ def initvars
     @recente_searches = "Recherches Récentes"
     @recently_viewed = "Derniers Produits Vus"
     @menu = "MENU"
+    
     @item_added = "Produit ajouté"
     @item_removed = "Produit supprimé"
-    @shopping_cart = "Panier d'achat"
+    @shopping_cart = "Panier"
+    #@shopping_cart = "Panier d'achat"
     @my_cart = "Mon panier" 
     @back_button= "RETOUR"
-    @track_my_order = "Suivre la commande"
+    @track_my_order = "Mes achats"
+    #@track_my_order = "Suivi de commande"
     @number_items="Articles"
     @remember_my_email= "Remember my email"
     
     @add_new_address = "Add new address"
-    @size= "Size"
-    @call_to_order = "Call to order"
-    @add_all_items_to_cart = "Add All Items to Cart"
-    @continue_shopping = "Continue Shopping"
+    @call_to_order = "Valider la commande"
+    @add_all_items_to_cart = "Tout ajouter au Panier"
+    @continue_shopping = "Continuer votre shopping!"
+    @signup = "Signup"
+    @female = "female"
+    
+    @my_order_history = "MY ORDER HISTORY"
+    @my_order_history_2 = "My Order History"
+      
+    ##### Morocco ########################################### MA ##############################################################################
+    when "ma"
+    @venture_name= @venture_maroc
+    
+    @sign_in="Accéder au compte"
+    @wrong_username="faketester@tester.tt"
+    @invalidsearch= "addddd" 
+    @search_p= "caresse Sava" 
+    @search_word="samsung"
+    @search="Rechercher"
+    @myaccount="Mon compte"
+    @myinfo="Les données de"
+    @categories="CATÉGORIES"
+    @categoryfashion="Téléphonie"
+    @choose_country="Choisir le pays"
+    @order_status="Suivi de commande"
+     
+    @checkoutNext="Next"
+    @checkout1="TestPayment"
+    @checkout3="Confirm Order"
+      
+    @emailerrormessage="dans le Email";
+    @passerrormessage="dans le Mot de passe";
+     
+    @loginerror="authentification a échoué"
+    #@loginerror="L'authentification a échoué"
+    @signout="Se déconnecter"
+    @mandatory="Veillez remplir les champs obligatoires"
+    @sameemail="Cet email existe déjà."
+    @searchdefault="Entrer votre recherche ici!"
+    @nosuggest="Aucune suggestion pour votre recherche!"
+    @differentpassword="Le mot de passe ne correspond pas"
+      
+    @addtocart="Ajouter au panier"
+     
+    @yes="Oui"
+    @termsandconditions="Termes et conditions"
+    @password_changed_message="Le mot de passe a été modifié avec succès"
+    @home="Accueil"
+    @home_c="ACCUEIL"
+    @new_pass_short="Le nouveau mot de passe doit comprendre au moins 6 caractères"
+    
+    #password recovery
+    @forgot_password="Mot de passe oublié ?"
+    @password_recovery="Récupération de mot de passe"
+    @pass_rec_empty_email="vous plait écrire dans le"
+    #@pass_rec_empty_email="S'il vous plait écrire dans le"
+    @pass_rec_failed="Le renouvellement du mot de passe a échoué"
+    @pass_rec_sent="Email envoyé"
+    
+    #cart
+    @item_was_added="a été ajouté au panier"
+    @no_items="Vous n'avez pas d'articles dans le panier"
+    @got_it="Compris"
+    #@got_it="J'ai Compris"
+    @clear_cart_message="Ceci efface le panier"
+    
+    #catalog
+    @currency= "Dhs"
+    @loading_items="Charger plus de produits"
+    @popularity="POPULARITÉ"
+    @price_up="PRIX CROISSANT"
+    @price_down="PRIX DÉCROISSANT"
+    @name="NOM"
+    @brand="MARQUE"
+    
+    #product detail
+    @first_tip="vers la gauche ou la droite pour"
+    @second_tip="Cliquez pour voir"
+    #@second_tip="Cliquez pour voir l'ensemble"
+    @specification="Caractéristiques"
+    @please_choose="Choisissez"
+    @search_v="sandal"
+    @product_features="du produit"
+    @product_description="Description du produit"
+    @write_review="Donnez-nous notre avis"
+    @posted_by="Posté"
+    @write_review="Donnez-nous notre avis"
+    @send_review="Envoyer votre avis"
+    @to_reviews="Pour revue"
+    @messaging="Messaging"
+    @size= "Taille"
+    
+    #cart
+    @delete="Effacer"
+    
+    #native checkout
+    @cod="COD"
+    @proceed_to_checkout="Valider la commande"
+    @next="Suivant"
+    @pay_on_delivery="Payer cash à la livraison"
+    @confirm_order="Confirmer la commande"
+    
+    #@popular_categories="Nos Meilleures Catégories"
+    @popular_categories="Meilleures ventes"
+    @filter="Filtre"
+    @filter_brand="Brand"
+    @filter_size="Size"
+    @filter_color_family="Color family"
+    @filter_price="Price"
+    
+    @done="Valider"
+    @clear_all="TOUT EFFACER"
+    @new_in="NOUVEAUTÉS"
+    @best_rating="MIEUX NOTÉS"
+    @back="Appuyez de nouveau sur retour si vous souhaitez quitter"
+    #@back="Appuyez de nouveau sur retour si vous souhaitez quitter l'app"
+    @search_r="nokia"
+    
+    @valid_order="300452452"
+    @no_track_results="Aucun résultat pour le numéro"
+    
+    @related_items="Produits Similaires"
+    
+    @newsletter_receive = "Recevoir la newsletter?"
+    #@newsletter_checkbox="Newsletter"
+    @newsletter_checkbox="inscris à la newsletter"
+    #@newsletter_checkbox="Je m'inscris à la newsletter"
+    
+    @email_notifications="Préférence eMails"
+    
+    @login="Connectez-vous"
+    
+    @newsletter="Newsletters"
+    @newsletter_male="Newsletter Homme"
+    @newsletter_female="Newsletter Femme"
+    
+    @register="Enregistrer"
+    
+    @notification_newsletter_changes="Vos préférences eMails ont été enregistrées"
+    
+    @no_result_found="n'a donné aucun résultat"
+    @search_tips="utilisation de la barre de recherche"
+    #@search_tips="Conseils d'utilisation de la barre de recherche"
+    
+    @newsletter_subscription="Newsletter"
+    
+    @invalid_email_message="Email non valide"
+    
+    @save="Enregistrer"
+    @settings = "Settings"
+    @myprofile = "Mon Profil"
+    @my_favourites = "Mes Favoris"
+    @recente_searches = "Recherches Récentes"
+    @recently_viewed = "Derniers Produits Vus"
+    @menu = "MENU"
+    
+    @item_added = "Produit ajouté"
+    @item_removed = "Produit supprimé"
+    @shopping_cart = "Panier"
+    #@shopping_cart = "Panier d'achat"
+    @my_cart = "Mon panier" 
+    @back_button= "RETOUR"
+    @track_my_order = "Mes achats"
+    #@track_my_order = "Suivi de commande"
+    @number_items="Articles"
+    @remember_my_email= "Remember my email"
+    
+    @add_new_address = "Add new address"
+    @call_to_order = "Valider la commande"
+    @add_all_items_to_cart = "Tout ajouter au Panier"
+    @continue_shopping = "Continuer votre shopping!"
     @signup = "Signup"
     @female = "female"
     
@@ -564,6 +773,8 @@ def initvars
     @categoryfashion="Computing"
     @choose_country="Choose Country"
     @order_status="Order Status"
+    
+    @newsletter_receive="Newsletter"
     
     @checkoutNext="Next"
     @checkout1="TestPayment"
@@ -625,9 +836,9 @@ def initvars
     @delete="Delete"
     
     #native checkout
+    @cod="Cash on delivery"
     @proceed_to_checkout="Proceed to Checkout"
     @next="Next"
-    @pay_on_delivery="Pay On Delivery"
     @confirm_order="Confirm Order"
     
     @popular_categories="Popular"
@@ -696,6 +907,9 @@ def initvars
     
     @my_order_history = "MY ORDER HISTORY"
     @my_order_history_2 = "My Order History"
+  
+    # shopping cart
+    #@items_count = "items_count"
     
     ##### Egypt ############################################# EG ##############################################################################
     when "eg"
@@ -706,13 +920,15 @@ def initvars
     @invalidsearch= "adddddf" 
     @search_p= "nikon" 
     @search_word="samsung"
-    @search="Search" 
+    @search="Search"
     @myaccount="My Account"
     @myinfo="User Data"
     @categories="CATEGORIES"
-    @categoryfashion="Mobiles"
+    @categoryfashion="Computing"
     @choose_country="Choose Country"
     @order_status="Order Status"
+    
+    @newsletter_receive="Newsletter"
     
     @checkoutNext="Next"
     @checkout1="TestPayment"
@@ -732,7 +948,7 @@ def initvars
     @home="Home"
     @home_c="HOME"
     @new_pass_short="The new password has to have at least 6 characters"
-    
+        
     #password recovery
     @forgot_password="Forgot Password?"
     @password_recovery="Password Recovery"
@@ -769,14 +985,14 @@ def initvars
     @send_review="Send Review"
     @to_reviews="To reviews"
     @messaging="Messaging"
-    
+      
     #cart
     @delete="Delete"
     
     #native checkout
+    @cod="Cash on delivery"
     @proceed_to_checkout="Proceed to Checkout"
     @next="Next"
-    @pay_on_delivery="Cash On Delivery"
     @confirm_order="Confirm Order"
     
     @popular_categories="Popular"
@@ -845,6 +1061,9 @@ def initvars
     
     @my_order_history = "MY ORDER HISTORY"
     @my_order_history_2 = "My Order History"
+  
+    # shopping cart
+    #@items_count = "items_count"
     
     ##### Uganda  ############################################ UG ##############################################################################
     when "ug"
@@ -852,22 +1071,24 @@ def initvars
     
     @sign_in="Sign In"
     @wrong_username="faketester@tester.tt"
-    @invalidsearch= "addddd" 
+    @invalidsearch= "adddddf" 
     @search_p= "nikon" 
     @search_word="samsung"
     @search="Search"
     @myaccount="My Account"
     @myinfo="User Data"
     @categories="CATEGORIES"
-    @categoryfashion="Mobile"
+    @categoryfashion="Computing"
     @choose_country="Choose Country"
     @order_status="Order Status"
+    
+    @newsletter_receive="Newsletter"
     
     @checkoutNext="Next"
     @checkout1="TestPayment"
     @checkout3="Confirm Order"
     
-    @emailerrormessage="Please fill in";
+    @emailerrormessage="Please fill in the E-Mail";
     @passerrormessage="Please fill in the Password";
     
     @loginerror="Login failed"
@@ -876,12 +1097,12 @@ def initvars
     @sameemail="This email already exists."
     @searchdefault="Please enter a term for suggestions!"
     @nosuggest="No suggestions for your search term!"
-     
+    
     @addtocart="Add to Cart"
     @home="Home"
     @home_c="HOME"
     @new_pass_short="The new password has to have at least 6 characters"
-   
+        
     #password recovery
     @forgot_password="Forgot Password?"
     @password_recovery="Password Recovery"
@@ -913,19 +1134,19 @@ def initvars
     @product_features="Product Features"
     @product_description="Product Description"
     @write_review="Write a Review"
-    @rating_t="posted by"
+    @posted_by="posted by"
     @write_review="Write a Review"
     @send_review="Send Review"
     @to_reviews="To reviews"
     @messaging="Messaging"
-    
+      
     #cart
     @delete="Delete"
     
     #native checkout
+    @cod="Cash on delivery"
     @proceed_to_checkout="Proceed to Checkout"
     @next="Next"
-    @pay_on_delivery="Cash on Delivery"
     @confirm_order="Confirm Order"
     
     @popular_categories="Popular"
@@ -954,7 +1175,7 @@ def initvars
     @login="Login"
     
     @newsletter="Newsletters"
-    @newsletter_male="Newsletter Male"
+    @newsletter_male="Male"
     @newsletter_female="Newsletter Female"
     
     @register="Register"
@@ -994,6 +1215,9 @@ def initvars
     
     @my_order_history = "MY ORDER HISTORY"
     @my_order_history_2 = "My Order History"
+  
+    # shopping cart
+    #@items_count = "items_count"
     
     ##### Ghana   ############################################ GH ##############################################################################
     when "gh"
@@ -1001,22 +1225,24 @@ def initvars
     
     @sign_in="Sign In"
     @wrong_username="faketester@tester.tt"
-    @invalidsearch= "addddd" 
+    @invalidsearch= "adddddf" 
     @search_p= "nikon" 
     @search_word="samsung"
     @search="Search"
     @myaccount="My Account"
     @myinfo="User Data"
     @categories="CATEGORIES"
-    @categoryfashion="Mobile"
+    @categoryfashion="Computing"
     @choose_country="Choose Country"
     @order_status="Order Status"
+    
+    @newsletter_receive="Newsletter"
     
     @checkoutNext="Next"
     @checkout1="TestPayment"
     @checkout3="Confirm Order"
     
-    @emailerrormessage="Please fill in";
+    @emailerrormessage="Please fill in the E-Mail";
     @passerrormessage="Please fill in the Password";
     
     @loginerror="Login failed"
@@ -1025,12 +1251,12 @@ def initvars
     @sameemail="This email already exists."
     @searchdefault="Please enter a term for suggestions!"
     @nosuggest="No suggestions for your search term!"
-     
+    
     @addtocart="Add to Cart"
     @home="Home"
-    @home_c="Top Sellers"
+    @home_c="HOME"
     @new_pass_short="The new password has to have at least 6 characters"
-   
+        
     #password recovery
     @forgot_password="Forgot Password?"
     @password_recovery="Password Recovery"
@@ -1058,23 +1284,23 @@ def initvars
     @second_tip="Tap to open the product gallery"
     @specification="Specification"
     @please_choose="Please choose"
-    @search_v="jersey"
+    @search_v="sandal"
     @product_features="Product Features"
     @product_description="Product Description"
     @write_review="Write a Review"
-    @rating_t="posted by"
+    @posted_by="posted by"
     @write_review="Write a Review"
     @send_review="Send Review"
     @to_reviews="To reviews"
     @messaging="Messaging"
-    
+      
     #cart
     @delete="Delete"
     
     #native checkout
+    @cod="Cash on delivery"
     @proceed_to_checkout="Proceed to Checkout"
     @next="Next"
-    @pay_on_delivery="Cash On Delivery"
     @confirm_order="Confirm Order"
     
     @popular_categories="Popular"
@@ -1103,7 +1329,7 @@ def initvars
     @login="Login"
     
     @newsletter="Newsletters"
-    @newsletter_male="Newsletter Male"
+    @newsletter_male="Male"
     @newsletter_female="Newsletter Female"
     
     @register="Register"
@@ -1143,5 +1369,8 @@ def initvars
     
     @my_order_history = "MY ORDER HISTORY"
     @my_order_history_2 = "My Order History"
+  
+    # shopping cart
+    #@items_count = "items_count"
   end
 end

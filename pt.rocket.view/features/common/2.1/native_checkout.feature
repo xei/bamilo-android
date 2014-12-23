@@ -14,7 +14,7 @@ Scenario: In UG create an address, with city manualy
 * I wait for 1 seconds
 * I choose the Sign In option
 * I wait for 1 seconds
-* I should see login screen
+* I should wait and see login screen
 * I enter a valid username
 * I enter the password
 * I press Login Button
@@ -32,7 +32,6 @@ Scenario: In UG create an address, with city manualy
 * I wait for 5 seconds
 * I press Got it
 * I add product to cart
-* I wait for 10 seconds
 * I should see the item was added to shopping cart message
 * I go to cart
 * I should not see the no items message

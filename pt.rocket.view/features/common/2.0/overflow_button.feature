@@ -9,20 +9,22 @@ Scenario: Choose Country
 
 Scenario: Check the overflow dropdown options 
 * I wait to see the home
-* I click on the overflow button
 * I wait for 2 seconds
+* I click on the overflow button
+* I wait for 5 seconds
 * I should see the overflow options
 
 Scenario: Sign in
 * I wait to see the home
+* I wait for 2 seconds
 * I click on the overflow button
 * I wait for 2 seconds
 * I choose the Sign In option
-* I wait for 2 seconds
-* I should see login screen
+* I should wait and see login screen
 
 Scenario: My Favourites
 * I wait to see the home
+* I wait for 2 seconds
 * I click on the overflow button
 * I wait for 2 seconds
 * I enter my favorites
@@ -31,6 +33,7 @@ Scenario: My Favourites
 
 Scenario: Recent Searches
 * I wait to see the home
+* I wait for 2 seconds
 * I click on the overflow button
 * I wait for 2 seconds
 * I enter recent searches
@@ -39,6 +42,7 @@ Scenario: Recent Searches
 
 Scenario: Recently Viewed
 * I wait to see the home
+* I wait for 2 seconds
 * I click on the overflow button
 * I wait for 2 seconds
 * I enter recently viewed
@@ -47,14 +51,16 @@ Scenario: Recently Viewed
 
 Scenario: My Account
 * I wait to see the home
+* I wait for 3 seconds
 * I click on the overflow button
-* I wait for 2 seconds
+* I wait for 3 seconds
 * I enter My Account
-* I wait for 2 seconds
+* I wait for 3 seconds
 * I should see my account
 
 Scenario: Track My Order
 * I wait to see the home
+* I wait for 2 seconds
 * I click on the overflow button
 * I wait for 2 seconds
 * I enter track my order

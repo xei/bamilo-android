@@ -9,7 +9,7 @@ Scenario: Choose Country
 
 Scenario: Delete button
 * I wait to see the home
-* I open the navigation menu
+* I wait for the navigation menu
 * I should see the menu sections
 * I wait for 2 seconds
 * I enter a valid Category
@@ -20,8 +20,8 @@ Scenario: Delete button
 * I press grid item number 2
 * I wait for 5 seconds
 * I press Got it
+* I wait for 2 seconds
 * I add product to cart
-* I wait for 10 seconds
 * I should see the item was added to shopping cart message
 * I go to cart
 * I should not see the no items message
@@ -30,7 +30,7 @@ Scenario: Delete button
 
 Scenario: Call to order
 * I wait to see the home
-* I open the navigation menu
+* I wait for the navigation menu
 * I should see the menu sections
 * I wait for 2 seconds
 * I enter a valid Category
@@ -38,10 +38,8 @@ Scenario: Call to order
 * I enter a valid Category
 * I wait for 3 seconds
 * I press grid item number 2
-* I wait for 5 seconds
-#Then I press Got it
+* I wait for 2 seconds
 * I add product to cart
-* I wait for 10 seconds
 * I should see the item was added to shopping cart message
 * I go to cart
 * I should not see the no items message

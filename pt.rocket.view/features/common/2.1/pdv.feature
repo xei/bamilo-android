@@ -31,6 +31,8 @@ Scenario: Size section
 * I wait for 3 seconds
 * I press gridview item number 1
 * I wait for 3 seconds
+* I scroll down
+* I wait for 3 seconds
 * I should see size
 
 Scenario: Specifications

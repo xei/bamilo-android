@@ -10,6 +10,7 @@ Scenario: Choose Country
 Scenario: Search bar
 * I wait to see the home
 * I click on search
+* I wait for 1 seconds
 * I enter a valid search on the text field
 
 

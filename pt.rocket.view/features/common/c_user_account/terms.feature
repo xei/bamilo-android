@@ -12,7 +12,7 @@ Scenario: I check the Terms and Conditions page.
 * I wait for 1 seconds
 * I choose the Sign In option
 * I wait for 1 seconds
-* I should see login screen
+* I should wait and see login screen
 * I press the create account button
 * I wait for 5 seconds
 * I check Terms and Conditions

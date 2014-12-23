@@ -2,10 +2,13 @@
 Feature: Cart - Empty Cart
 
 Background: 
-Given I call the variables
-And I select the country
+* I call the variables
+* I select the country
 
 Scenario: See the empty cart
-Given I wait to see the home
-When I go to cart
-Then I should see the empty cart message
+* I wait for 2 seconds
+* I wait to see the home
+* I wait for 2 seconds
+* I go to cart
+* I wait for 2 seconds
+* I should see the empty cart message

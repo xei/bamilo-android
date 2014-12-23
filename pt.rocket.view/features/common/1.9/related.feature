@@ -1,5 +1,5 @@
 @Calabash_Tests @related @f_1.9
-Feature: 1.9 Features - Realted Items
+Feature: 1.9 Features - Related Items
 
 Background: 
 * I call the variables
@@ -20,6 +20,7 @@ Scenario: Situation
 * I press grid item number 2
 * I wait for 5 seconds
 * I press Got it
+* I wait for 2 seconds
 * I scroll down
 * I should see the related items
 
@@ -80,6 +81,6 @@ Scenario: Open a product by search
 @related_home
 Scenario: Open a product on home
 * I wait to see the home
+* I wait for 2 seconds
 * I press on a related item
-#Then I should not see the related items
 	

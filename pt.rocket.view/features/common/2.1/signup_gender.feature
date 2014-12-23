@@ -22,7 +22,6 @@ Scenario: Choose gender
 * I wait for 5 seconds
 * I press Got it
 * I add product to cart
-* I wait for 10 seconds
 * I should see the item was added to shopping cart message
 * I go to cart
 * I should not see the no items message

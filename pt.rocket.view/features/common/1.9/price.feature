@@ -14,9 +14,11 @@ Scenario: Validate the prices
 * I enter a valid Category
 * I wait for 3 seconds
 * I press Got it
-* I press grid item number 2
-* I wait for 5 seconds
-* I press Got it
+* I wait for 2 seconds
 * I should see the price
+#* I press grid item number 2
+#* I wait for 5 seconds
+#* I press Got it
+#* I should see the price
 
 	

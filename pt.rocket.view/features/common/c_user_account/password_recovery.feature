@@ -14,7 +14,7 @@ Scenario: Request a link with empty field
 * I wait for 1 seconds
 * I choose the Sign In option
 * I wait for 1 seconds
-* I should see login screen
+* I should wait and see login screen
 * I should see the forgot password link
 * I click forgot password
 * I should see the password recovery screen
@@ -29,7 +29,7 @@ Scenario: Request a link with a non registered email
 * I wait for 1 seconds
 * I choose the Sign In option
 * I wait for 1 seconds
-* I should see login screen
+* I should wait and see login screen
 * I should see the forgot password link
 * I click forgot password
 * I wait for 5 seconds
@@ -50,7 +50,7 @@ Scenario: Request a link successfully
 * I wait for 1 seconds
 * I choose the Sign In option
 * I wait for 1 seconds
-* I should see login screen
+* I should wait and see login screen
 * I should see the forgot password link
 * I click forgot password
 * I should see the password recovery screen

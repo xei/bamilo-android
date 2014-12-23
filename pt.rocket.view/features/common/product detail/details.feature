@@ -1,94 +1,119 @@
-@Calabash_Tests @teste5 @f_pre_1.9
+@Calabash_Tests @details @f_pre_1.9
 Feature: PDV - Navigate to a product with different variations
 
 Background: 
-Given I call the variables
+* I call the variables
     
 @product_size
 Scenario: I see the variations on a product
-Given I select the country
-And I wait to see the home
-When I click on search
-When I enter a variation search
+* I select the country
+* I wait to see the home
+* I click on search
+* I wait for 2 seconds
+* I enter a variation search
 * I wait for 5 seconds
-And I press list item number 1
+* I press list item number 1
 * I wait for 5 seconds 
-And I press Got it
-And I press list item number 1
+* I press Got it
+* I wait for 2 seconds
+* I press grid item number 1
 * I wait for 2 seconds 
-And I press Got it
-   	Then I should see the variations
+* I press Got it
+* I wait for 2 seconds
+* I scroll down
+* I should see the variations
+ 
+Scenario: I see the related items
+* I wait to see the home
+* I click on search
+* I enter a variation search
+* I wait for 5 seconds
+* I press list item number 1
+* I wait for 5 seconds 
+* I press grid item number 1
+* I wait for 2 seconds 
+* I scroll down
+* I scroll down
+* I should see the related items
    	
 @product_spec
 Scenario: I See the product details
-Given I wait to see the home
-When I click on the search bar
-When I enter a variation search
+* I wait to see the home
+* I click on the search bar
+* I enter a variation search
 * I wait for 2 seconds 
-And I press list item number 1
+* I press list item number 1
 * I wait for 5 seconds 
-And I press list item number 1
+* I press grid item number 1
 * I wait for 3 seconds
-When I press product specifications
+* I scroll down
+* I press product specifications
 * I wait for 10 seconds
-#Then I should see the product features
-And I should see the product description
+* I should see the product features
+* I wait for 2 seconds
+* I should see the product description
 
 @review_overview
 Scenario: I see the product rating overview
-Given I wait to see the home
-When I click on the search bar
-When I enter a variation search
+* I wait to see the home
+* I click on the search bar
+* I enter a variation search
 * I wait for 2 seconds 
-And I press list item number 1
+* I press list item number 1
 * I wait for 5 seconds 
-And I press list item number 1
+* I press grid item number 1
 * I wait for 2 seconds 
-When I press Rating
+* I scroll down
+* I press Rating
 * I wait for 10 seconds 
-Then I should see the write a review button
+* I should see the write a review button
 
 @review_detail
 Scenario: I see the rating details
-Given I wait to see the home
-When I click on the search bar
-When I enter a rated search
+* I wait to see the home
+* I click on the search bar
+* I wait for 2 seconds
+* I enter a rated search
 * I wait for 5 seconds 
-And I press list item number 1
+* I press list item number 1
 * I wait for 5 seconds 
-And I press list item number 1
-When I press Rating
+* I press grid item number 1
+* I wait for 4 seconds
+* I scroll down
+* I wait for 2 seconds
+* I press Rating
    	
 @write_review
 Scenario: I write a review
-Given I wait to see the home
-When I click on the search bar
-When I enter a variation search
+* I wait to see the home
+* I click on the search bar
+* I wait for 2 seconds
+* I enter a variation search
 * I wait for 3 seconds
-And I press list item number 1
+* I press list item number 1
 * I wait for 5 seconds 
-And I press list item number 1
+* I press grid item number 1
 * I wait for 3 seconds
-When I press Rating
+* I scroll down
+* I press Rating
 * I wait for 10 seconds 	
-And I press Write a Review
+* I press Write a Review
 * I wait for 2 seconds
-And I fill the review information
+* I fill the review information
 * I wait for 2 seconds
-And I press rating
-* I wait for 2 seconds
-And I press Send Review
-* I wait for 2 seconds
-#And I press to reviews
+#* I press rating
+#* I wait for 2 seconds
+* I press Send Review
    	
 @sharing
 Scenario: I share a product by sms
-Given I wait to see the home
-When I click on the search bar
-When I enter a variation search
+* I wait to see the home
+* I click on the search bar
+* I wait for 2 seconds
+* I enter a variation search
 * I wait for 5 seconds 
-And I press list item number 1
+* I press list item number 1
 * I wait for 5 seconds 
-And I press list item number 1
-When I press share 
-#And I press list item number 2
+* I press grid item number 1
+* I wait for 2 seconds
+* I press share 

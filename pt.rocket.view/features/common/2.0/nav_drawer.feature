@@ -16,19 +16,22 @@ Scenario: Navigation Drawer Tabs
 Scenario: Click in the Cart
 * I wait to see the home
 * I open the navigation menu
+* I wait for 5 seconds
 * I click on cart
 * I wait for 2 seconds
-* I wait to see the cart
+* I should see the empty cart message
 
 Scenario: Click in home section
 * I wait to see the home
 * I open the navigation menu
+* I wait for 2 seconds
 * I click on home
 * I wait to see the home
 
 Scenario: Click in choose country section
 * I wait to see the home
 * I open the navigation menu
+* I wait for 2 seconds
 * I press Choose Country
 * I wait for 2 seconds
 * I should see the choose country page
@@ -40,4 +43,5 @@ Scenario: Click in one category
 * I enter a valid Category
 * I wait for 2 seconds
 * I should see the back button
+* I wait for 2 seconds
 * I press the back button

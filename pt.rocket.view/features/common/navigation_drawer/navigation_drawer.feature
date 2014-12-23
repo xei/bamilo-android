@@ -6,32 +6,34 @@ Given I call the variables
 
 @navigation_drawer_a
 Scenario: Swipe to open/close
-Given I select the country
-And I wait to see the home
-When I swipe right moving with 15 steps
-Then I should see the sidebar
-When I swipe left moving with 15 steps
-Then I should not see the sidebar
+* I select the country
+* I wait to see the home
+* I swipe right moving with 15 steps
+* I wait for 2 seconds
+* I should see the sidebar
+* I swipe left moving with 15 steps
+* I wait for 2 seconds
+* I should not see the sidebar
 
 @navigation_drawer_b
 Scenario: Click on the drawer icon
-Given I wait to see the home
-When I open the navigation menu
-And I wait for 3 seconds
-Then I should see the sidebar
-And I wait for 3 seconds
-When I open the navigation menu
-And I wait for 5 seconds
-Then I should not see the sidebar
+* I wait to see the home
+* I open the navigation menu
+* I wait for 3 seconds
+* I should see the sidebar
+* I wait for 3 seconds
+* I open the navigation menu
+* I wait for 5 seconds
+* I should not see the sidebar
 
-@navigation_drawer_c
-Scenario: Click on the Jumia logo
-Given I wait to see the home
-When I press the Jumia logo
-And I wait for 3 seconds
-Then I should not see the sidebar
-When I open the navigation menu
-And I wait for 5 seconds
-Then I should see the sidebar
-When I press the Jumia logo
-Then I should not see the sidebar
+#@navigation_drawer_c
+#Scenario: Click on the Jumia logo
+#* I wait to see the home
+#* I press the Jumia logo
+#* I wait for 3 seconds
+#* I should not see the sidebar
+#* I open the navigation menu
+#* I wait for 5 seconds
+#* I should see the sidebar
+#* I press the Jumia logo
+#* I should not see the sidebar
