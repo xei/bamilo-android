@@ -998,7 +998,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
       mSearchView.setQueryHint(getString(R.string.action_label_search_hint));
       HoloFontLoader.applyDefaultFont(mSearchView);
         
-        //#RTL abs__ic_search_api_holo_light
+        //#RTL
         if(getResources().getBoolean(R.bool.is_bamilo_specific)){
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT);

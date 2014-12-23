@@ -1687,30 +1687,33 @@ public class DynamicFormItem {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.BELOW, dataControlId);
+
+//            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        
         errorControl = new RelativeLayout(this.context);
         errorControl.setId(parent.getNextId());
         errorControl.setLayoutParams(params);
         errorControl.setVisibility(View.GONE);
-
+        
+        
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.addRule(RelativeLayout.ALIGN_LEFT, dataControlId);
-        params.setMargins(
-                (int) context.getResources().getDimension(R.dimen.form_errormessage_margin), 0, 0,
-                0);
+
         //#RTL
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
-            if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-                params.setLayoutDirection(LayoutDirection.LOCALE);
-                params.addRule(RelativeLayout.ALIGN_START, dataControlId);
-                params.setMarginStart((int) context.getResources().getDimension(R.dimen.form_errormessage_margin));
-            } else {
-                //<4.2
-                params.addRule(RelativeLayout.ALIGN_RIGHT, dataControlId);
-                params.setMargins(0, 0, (int) context.getResources().getDimension(R.dimen.form_errormessage_margin), 0);
-            }
+
+            params.addRule(RelativeLayout.RIGHT_OF, dataControlId);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            params.setMargins(0, 0, (int) context.getResources().getDimension(R.dimen.form_errormessage_margin), 0);
+            
+        } else {
+            params.addRule(RelativeLayout.LEFT_OF, dataControlId);
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            params.setMargins(
+                    (int) context.getResources().getDimension(R.dimen.form_errormessage_margin), 0, 0,
+                    0);
         }
 
 
@@ -1719,22 +1722,20 @@ public class DynamicFormItem {
         errImage.setLayoutParams(params);
         errImage.setImageResource(R.drawable.indicator_input_error);
 
+        //ErrorText params
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        params.addRule(RelativeLayout.RIGHT_OF, errImage.getId());
-        params.setMargins(5, 0, 0, 0);
+//        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         
         //#RTL
         if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
-            if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-                params.addRule(RelativeLayout.END_OF, errImage.getId());
-                params.setMarginStart(5);
-            } else {
-                //<4.2
-                params.addRule(RelativeLayout.LEFT_OF, errImage.getId());
-                params.setMargins(0, 0, 5, 0);
-            }
+
+          params.addRule(RelativeLayout.LEFT_OF, errImage.getId());
+          params.setMargins(0, 0, 5, 0);
+            
+        } else {
+          params.addRule(RelativeLayout.RIGHT_OF, errImage.getId());
+          params.setMargins(5, 0, 0, 0);
         }
 
         
@@ -1744,10 +1745,6 @@ public class DynamicFormItem {
         this.errorTextControl.setLayoutParams(params);
         this.errorTextControl.setTextColor(errorColor);
         this.errorTextControl.setTextSize(ERRORTEXTSIZE);
-
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-            this.errorTextControl.setLayoutDirection(LayoutDirection.LOCALE);
-        }
         
         errorControl.addView(this.errorTextControl);
         errorControl.addView(errImage);
