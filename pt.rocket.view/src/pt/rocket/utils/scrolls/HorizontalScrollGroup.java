@@ -22,6 +22,8 @@ public class HorizontalScrollGroup extends HorizontalScrollView {
     private float mLastX;
 
     private float mLastY;
+    
+    private boolean isRTL = false;
 
     /**
      * Constructor
@@ -112,6 +114,45 @@ public class HorizontalScrollGroup extends HorizontalScrollView {
             this.getParent().requestDisallowInterceptTouchEvent(false);
             break;
         }
+    }
+    
+    /*
+     * ########### RTL ###########
+     */
+    
+    /**
+     * Flag that represents if layout is in RTL.
+     * @return true or false
+     * @author sergiopereira
+     */
+    public boolean isReverseLayout(){
+        return isRTL;
+    }
+    
+    /**
+     * Set the layout with RTL orientation or not. 
+     * @param isRTL
+     * @author sergiopereira
+     */
+    public void setReverseLayout(boolean isRTL) {
+        // Save flag
+        this.isRTL = isRTL;
+        // Reverse layout case is RTL
+        if(isRTL) reverseLayout();
+    }
+    
+    /**
+     * Simulate the reverse layout moving the focus to right.
+     * @author sergiopereira
+     */
+    private void reverseLayout() {
+        // Move focus to right
+        post(new Runnable() {
+            @Override
+            public void run() {
+                fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+            }
+        });
     }
 
 }

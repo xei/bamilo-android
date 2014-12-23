@@ -41,8 +41,8 @@ import pt.rocket.utils.FragmentCommunicatorForProduct;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.ScrollViewWithHorizontal;
-import pt.rocket.utils.Toast;
 import pt.rocket.utils.TipsOnPageChangeListener;
+import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.deeplink.DeepLinkManager;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
@@ -51,6 +51,7 @@ import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.utils.dialogfragments.WizardPreferences;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import pt.rocket.utils.imageloader.RocketImageLoader;
+import pt.rocket.utils.scrolls.HorizontalScrollGroup;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.ContentValues;
@@ -214,7 +215,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private View mRelatedContainer;
 
-    private View mRelatedHorizontalScroll;
+    private HorizontalScrollGroup mRelatedHorizontalScroll;
 
     private ViewGroup mRelatedHorizontalGroup;
     
@@ -504,7 +505,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         loadingRating = (RelativeLayout) view.findViewById(R.id.product_detail_loading_rating);
         // Related
         mRelatedContainer = view.findViewById(R.id.product_detail_product_related_container);
-        mRelatedHorizontalScroll = view.findViewById(R.id.product_detail_horizontal_scroll);
+        mRelatedHorizontalScroll = (HorizontalScrollGroup) view.findViewById(R.id.product_detail_horizontal_scroll);
         mRelatedHorizontalGroup = (ViewGroup) view.findViewById(R.id.product_detail_horizontal_group_container);
         mRelatedLoading = view.findViewById(R.id.loading_related);        
         // Bottom Button
@@ -1212,8 +1213,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             // Add view
             mRelatedHorizontalGroup.addView(itemView);
         }
+        // #RTL: set horizontal scroll with RTL orientation
+        Boolean isRTL = getBaseActivity().getResources().getBoolean(R.bool.is_bamilo_specific);
+        mRelatedHorizontalScroll.setReverseLayout(isRTL);
         // Show container
         mRelatedHorizontalScroll.setVisibility(View.VISIBLE);
+        // Hide loading
         mRelatedLoading.setVisibility(View.GONE);
     }
     
