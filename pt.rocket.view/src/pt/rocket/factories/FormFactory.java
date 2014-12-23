@@ -13,6 +13,7 @@ import pt.rocket.view.R;
 import android.content.Context;
 import android.text.Layout;
 import android.util.LayoutDirection;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import de.akquinet.android.androlog.Log;
@@ -278,7 +279,7 @@ public class FormFactory {
         //#RTL
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-            ctrlParams.setLayoutDirection(LayoutDirection.LOCALE);
+//            ctrlParams.setLayoutDirection(LayoutDirection.LOCALE);
             ctrlParams.setMarginStart(CTRLMARGIN_LEFT);
             ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
         }
@@ -404,7 +405,7 @@ public class FormFactory {
             //#RTL
             int currentapiVersion = android.os.Build.VERSION.SDK_INT;
             if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-                parent.setLayoutDirection(LayoutDirection.LOCALE);
+//                parent.setLayoutDirection(LayoutDirection.LOCALE);
             }
             LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             parent.setOrientation(LinearLayout.VERTICAL);
@@ -417,8 +418,15 @@ public class FormFactory {
             LinearLayout groupLayout = new LinearLayout(context);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             //#RTL
+            if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+                Log.e("FORM","1");
+                groupLayout.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+            }
+            
+            
+            
             if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-                groupLayout.setLayoutDirection(LayoutDirection.LOCALE);
+//                groupLayout.setLayoutDirection(LayoutDirection.LOCALE);
             }
             groupLayout.setId( userForm.getNextId() );
             groupLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -436,10 +444,13 @@ public class FormFactory {
                 if (ctrl.isMeta() || ctrl.hasNoType()) {
                     // Don't waste space with meta fields nor field without type
                     Log.i(TAG, "Meta or no type field");
+                    Log.e("FORM","2");
                     userForm.addControl(ctrl, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
-                } else if ( ! ctrl.isDatePart() ) {                
+                } else if ( ! ctrl.isDatePart() ) {
+                    Log.e("FORM","3");
                     userForm.addControl(ctrl, ctrlParams);
                 } else {
+                    Log.e("FORM","4");
                     userForm.addGroupedControl(groupLayout, ctrl, ctrlParams);
                 }
             }

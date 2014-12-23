@@ -1032,7 +1032,14 @@ public class DynamicFormItem {
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
 
-        params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);
+//        dataContainer.setBackgroundColor(R.color.blue_basic);
+        
+//        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+//            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+//        } else {
+            params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);    
+//        }
+        
         int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
         params.leftMargin = formPadding;
         params.rightMargin = formPadding;
@@ -1045,7 +1052,12 @@ public class DynamicFormItem {
         this.dataControl.setFocusable(false);
         this.dataControl.setFocusableInTouchMode(false);
         ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
-
+        
+//        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+//            ((CheckBox) this.dataControl).setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+//        }
+//        
+        
         if (this.entry.getValue().equals("1")) {
             ((CheckBox) this.dataControl).setChecked(true);
         }
@@ -1053,7 +1065,13 @@ public class DynamicFormItem {
         this.dataControl.setVisibility(View.VISIBLE);
         
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        //#RTL
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        } else {
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        }
+        
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
@@ -1073,13 +1091,20 @@ public class DynamicFormItem {
     private void buildRadioGroup(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         // data controls
+
         params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
+        
+
         dataContainer.setLayoutParams(params);
-
-        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
+        //#RTL
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        } else {
+            params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        }
+        
         if (this.entry.getDataSet().size() > 2
                 || this.parent.getForm().fields.get(0).getPaymentMethodsField() != null) {
             Log.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_VERTICAL");
@@ -1308,8 +1333,8 @@ public class DynamicFormItem {
             //#RTL
             int currentapiVersion = android.os.Build.VERSION.SDK_INT;
             if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-                this.control.setLayoutDirection(LayoutDirection.LOCALE);
-                params.setLayoutDirection(LayoutDirection.LOCALE);
+//                this.control.setLayoutDirection(LayoutDirection.LOCALE);
+//                params.setLayoutDirection(LayoutDirection.LOCALE);
             }
             
             
@@ -1536,7 +1561,7 @@ public class DynamicFormItem {
             RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
 
         RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null);
-
+        //TODO create xml for radio item in order to fully support #RTL
         radioGroup.setItems(new ArrayList<String>(this.entry.getDataSet().values()), RadioGroupLayout.NO_DEFAULT_SELECTION);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -1545,17 +1570,33 @@ public class DynamicFormItem {
                 DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
             }
         });
-
+        //#RTL
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+            Log.e("FORM","RIGHT");
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            radioGroup.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+        }
+        
         this.dataControl = radioGroup;
         this.dataControl.setId(parent.getNextId());
         int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
         params.leftMargin = formPadding;
         params.rightMargin = formPadding;
+        
+
+        
         this.dataControl.setLayoutParams(params);
         dataContainer.addView(this.dataControl);
 
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+            Log.e("FORM"," MANDATORY ALIGN_PARENT_LEFT");
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        } else {
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        }
+
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
