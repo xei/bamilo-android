@@ -40,5 +40,11 @@
         <item name="android:button">@null</item>
         <item name="android:drawableRight">@drawable/selector_btn_check_holo_orange</item>
     </style>
+    
+	<style name="_base_text" parent="text_regular">
+        <item name="android:ellipsize">start</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">right|center_vertical</item>
+    </style>
 
 </resources>
