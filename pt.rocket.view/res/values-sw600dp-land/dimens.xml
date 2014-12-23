@@ -26,7 +26,7 @@
     <dimen name="navigation_cart_vertical_distance">17dp</dimen>
 
     <!-- INNER CONTAINER -->
-    <dimen name="inner_container_width">420dp</dimen>
+    <dimen name="inner_container_width">560dp</dimen>
 
     <!-- CHECKOUT HEADER -->
     <dimen name="checkout_header_height">32dp</dimen>
@@ -71,8 +71,6 @@
 
     <!-- rounded_margin_mid + button_big_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
     <dimen name="recently_viewed_button_container_height">90dp</dimen>
-
-    <dimen name="login_container_width">640dp</dimen>
 
     <dimen name="track_order_error_content_height">@dimen/track_order_content_height</dimen>
 

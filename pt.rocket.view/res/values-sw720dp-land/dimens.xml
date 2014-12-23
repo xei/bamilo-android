@@ -25,7 +25,7 @@
     <dimen name="navigation_cart_vertical_distance">17dp</dimen>
 
     <!-- INNER CONTAINER -->
-    <dimen name="inner_container_width">560dp</dimen>
+    <dimen name="inner_container_width">640dp</dimen>
 
     <!-- CHECKOUT HEADER -->
     <dimen name="checkout_header_height">32dp</dimen>
@@ -56,6 +56,4 @@
     <integer name="catalog_list_num_columns">3</integer>
     <integer name="catalog_grid_num_columns">4</integer>
 
-    
-    <dimen name="login_container_width">@integer/match_parent</dimen>
 </resources>
