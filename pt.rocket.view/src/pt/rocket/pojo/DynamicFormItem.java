@@ -1024,21 +1024,32 @@ public class DynamicFormItem {
 
     private void buildCheckBoxInflated(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
 
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        
         this.control.setLayoutParams(params);
-
-        // data controls
-        params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        //#RTL
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        } else {
+            // data controls
+            params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        }
+        
         dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
+        
         dataContainer.setLayoutParams(params);
 
 //        dataContainer.setBackgroundColor(R.color.blue_basic);
         
-//        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
-//            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-//        } else {
+
+        //#RTL
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        } else {
             params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);    
-//        }
+        }
         
         int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
         params.leftMargin = formPadding;
@@ -1052,12 +1063,7 @@ public class DynamicFormItem {
         this.dataControl.setFocusable(false);
         this.dataControl.setFocusableInTouchMode(false);
         ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
-        
-//        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
-//            ((CheckBox) this.dataControl).setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
-//        }
-//        
-        
+              
         if (this.entry.getValue().equals("1")) {
             ((CheckBox) this.dataControl).setChecked(true);
         }
