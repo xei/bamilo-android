@@ -103,7 +103,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
                 NavigationAction.Products,
                 R.layout.reviews_fragment,
                 0,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.ADJUST_CONTENT);
     }
 
     /*

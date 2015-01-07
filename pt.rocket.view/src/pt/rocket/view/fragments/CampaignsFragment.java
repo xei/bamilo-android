@@ -58,7 +58,7 @@ public class CampaignsFragment extends BaseFragment {
                 NavigationAction.Unknown,
                 R.layout.campaign_fragment_main,
                 R.string.campaigns_label,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.ADJUST_CONTENT);
     }
 
     /*

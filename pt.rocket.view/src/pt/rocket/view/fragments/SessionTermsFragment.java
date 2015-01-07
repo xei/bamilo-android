@@ -56,7 +56,7 @@ public class SessionTermsFragment extends BaseFragment {
                 NavigationAction.Unknown,
                 R.layout.terms_conditions_fragment,
                 R.string.terms_and_conditions,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.ADJUST_CONTENT);
         // 0
     }
 

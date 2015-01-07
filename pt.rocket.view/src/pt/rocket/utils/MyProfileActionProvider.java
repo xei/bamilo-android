@@ -11,6 +11,7 @@ import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.content.Context;
+import android.support.v4.view.ActionProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,9 +19,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
-
-import com.actionbarsherlock.view.ActionProvider;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -42,7 +40,6 @@ public class MyProfileActionProvider extends ActionProvider {
             NavigationAction.MyOrders
             );
 
-    private Context mContext;
     private DismissibleSpinner mSpinner;
     private MyProfileAdapter mAdapter;
     private OnClickListener mAdapterOnClickListener;
@@ -50,38 +47,39 @@ public class MyProfileActionProvider extends ActionProvider {
     
     private int mTotalFavourites = 0;
 
+    /**
+     * Constructor
+     * @param context
+     */
     public MyProfileActionProvider(Context context) {
         super(context);
-
-        mContext = context;
     }
-
+    
     /*
      * (non-Javadoc)
-     * 
-     * @see com.actionbarsherlock.view.ActionProvider#onCreateActionView()
+     * @see android.support.v4.view.ActionProvider#onCreateActionView()
      */
     @Override
     public View onCreateActionView() {
-        View spinnerContainer = LayoutInflater.from(mContext).inflate(R.layout.action_bar_myprofile_layout, null);
-
+        // Get context
+        Context context = getContext();
+        //
+        View spinnerContainer = LayoutInflater.from(context).inflate(R.layout.action_bar_myprofile_layout, null);
         mSpinner = (DismissibleSpinner) spinnerContainer.findViewById(R.id.spinner_myprofile);
         mIcon = spinnerContainer.findViewById(R.id.image_myprofile);
-
         mIcon.setTag(R.id.nav_action, NavigationAction.MyProfile);
-
+        // Validate listener
         if (mAdapterOnClickListener != null) {
             mIcon.setOnClickListener(mAdapterOnClickListener);
-            mAdapter = new MyProfileAdapter(mContext, R.layout.action_bar_menu_item_layout, subMenuItems, mAdapterOnClickListener);
+            mAdapter = new MyProfileAdapter(context, R.layout.action_bar_menu_item_layout, subMenuItems, mAdapterOnClickListener);
         } else {
-            mAdapter = new MyProfileAdapter(mContext, R.layout.action_bar_menu_item_layout, subMenuItems);
+            mAdapter = new MyProfileAdapter(context, R.layout.action_bar_menu_item_layout, subMenuItems);
         }
-
         mSpinner.setAdapter(mAdapter);
-
+        // Return view
         return spinnerContainer;
     }
-
+    
     /**
      * Update <code>OnClickListener</code> to be used on <code>MyProfileAdapter</code><br>
      * set such <code>OnClickListener</code> if <code>MyProfileAdapter</code> is already set

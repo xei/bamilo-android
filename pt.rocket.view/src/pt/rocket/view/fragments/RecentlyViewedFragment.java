@@ -53,7 +53,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
                 NavigationAction.RecentlyView,
                 R.layout.recentlyviewed,
                 R.string.recently_viewed,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.ADJUST_CONTENT);
     }
 
     /**

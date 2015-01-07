@@ -1,67 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (C) 2011 The Android Open Source Project
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-  
-          http://www.apache.org/licenses/LICENSE-2.0
-  
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
-
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <!--
-     SEARCH VIEW
-     NOTE: icon setted on themes.xml - searchViewSearchIcon
+         SEARCH VIEW 
+   		 NOTE: icon setted on themes.xml - searchViewSearchIcon
     -->
     <item
         android:id="@+id/menu_search"
-        android:actionViewClass="com.actionbarsherlock.widget.SearchView"
-        android:showAsAction="always"
+        android:icon="@drawable/selector_search_edit_icon"
         android:title="@string/search_label"
-        android:visible="false"/>
+        android:visible="false"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:queryHint="@string/action_label_search_hint"
+        app:showAsAction="always|collapseActionView"/>
 
-    <!--
-        item
-        android:id="@+id/menu_share"
-        android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider"
-        android:icon="@drawable/ic_share_highlight"
-        android:showAsAction="always"
-        android:title="@string/action_label_share"
-        android:visible="false"/
-    -->
-
+    <!-- CART -->
     <item
         android:id="@+id/menu_basket"
-        android:actionLayout="@layout/menu_basket_button"
-        android:showAsAction="always"
         android:title="@string/action_label_basket"
-        android:visible="false"/>
-
-    <!-- icon -->
-    <!--
-         item
-        android:id="@+id/menu_wishlist"
-        android:icon="@drawable/selector_header_wishlist"
-        android:showAsAction="never"
-        android:title="@string/action_label_wishlist"
-        android:visible="false"/
-    -->
-
+        android:visible="false"
+        app:actionLayout="@layout/menu_basket_button"
+        app:showAsAction="always"/>
 
     <!-- MY PROFILE PROVIDER -->
     <item
         android:id="@+id/menu_myprofile"
-        android:actionProviderClass="pt.rocket.utils.MyProfileActionProvider"
-        android:showAsAction="always"
+        android:icon="@drawable/selector_navigation_overflow"
         android:title="@string/my_profile"
-        android:visible="false"/>
+        android:visible="false"
+        app:actionProviderClass="pt.rocket.utils.MyProfileActionProvider"
+        app:showAsAction="always"/>
+
+    <!--
+    SHARE VIEW
+    <item
+        android:id="@+id/menu_share"
+        android:title="Share"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        app:showAsAction="always"/>
+    -->
 
 </menu>

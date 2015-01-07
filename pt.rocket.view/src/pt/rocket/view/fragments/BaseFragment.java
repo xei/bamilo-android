@@ -274,7 +274,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if(this.action == NavigationAction.Country){
             // Hide search component
             getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
-            // getBaseActivity().updateActionForCountry(this.action);
         }
         
         // Update base components, like items on action bar
@@ -322,8 +321,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.actionbarsherlock.app.SherlockActivity#onPause()
+     * @see android.support.v4.app.Fragment#onPause()
      */
     @Override
     public void onPause() {

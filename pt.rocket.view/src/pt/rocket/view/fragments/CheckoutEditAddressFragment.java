@@ -582,14 +582,14 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      */
     /*
      * (non-Javadoc)
-     * @see com.actionbarsherlock.internal.widget.IcsAdapterView.OnItemSelectedListener#onNothingSelected(com.actionbarsherlock.internal.widget.IcsAdapterView)
+     * @see pt.rocket.components.absspinner.IcsAdapterView.OnItemSelectedListener#onNothingSelected(pt.rocket.components.absspinner.IcsAdapterView)
      */
     @Override
     public void onNothingSelected(IcsAdapterView<?> parent) { }
     
     /*
      * (non-Javadoc)
-     * @see com.actionbarsherlock.internal.widget.IcsAdapterView.OnItemSelectedListener#onItemSelected(com.actionbarsherlock.internal.widget.IcsAdapterView, android.view.View, int, long)
+     * @see pt.rocket.components.absspinner.IcsAdapterView.OnItemSelectedListener#onItemSelected(pt.rocket.components.absspinner.IcsAdapterView, android.view.View, int, long)
      */
     @Override
     public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {

@@ -432,28 +432,39 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         Log.i(TAG, "ON BACK PRESSED");
 
         /*-
-         * This situation only occurs when user goes to Choose Country screen on maintance page and presses back
+         * This situation only occurs when user goes to Choose Country screen on maintenance page and presses back
          */
         if (isInMaintenance) {
             Intent newIntent = new Intent(this, SplashScreenActivity.class);
             newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(newIntent);
             finish();
-            
+            return;
+        }
+        
+        /*-
+         * Default
+         */
+        fragment = getActiveFragment();
+        // Case navigation opened
+        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
+            Log.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
+            mDrawerLayout.closeDrawer(mDrawerNavigation);
+        }
+        // Case fragment not allow back pressed
+        else if (fragment == null || !fragment.allowBackPressed()) {
+            Log.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
+            fragmentManagerBackPressed();
+        // Case fragment allow back pressed    
         } else {
-            fragment = getActiveFragment();
-            if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
-
-                mDrawerLayout.closeDrawer(mDrawerNavigation);
-            } else if (fragment == null || !fragment.allowBackPressed()) {
-                Log.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
-                fragmentManagerBackPressed();
-            } else {
-                Log.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
-            }
+            Log.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
         }
     }
 
+    /**
+     * Get the active fragment
+     * @return
+     */
     public BaseFragment getActiveFragment() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             Log.i("BACKSTACK","getBackStackEntryCount is 0" );

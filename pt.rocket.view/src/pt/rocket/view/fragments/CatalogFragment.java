@@ -149,7 +149,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                 NavigationAction.Products,
                 R.layout.catalog_fragment_main,
                 0,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.ADJUST_CONTENT);
 
         mProductsMap = new HashMap<String, Product>();
     }

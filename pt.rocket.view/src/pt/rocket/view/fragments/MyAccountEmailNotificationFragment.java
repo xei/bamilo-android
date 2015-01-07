@@ -85,7 +85,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
                 NavigationAction.MyAccount,
                 R.layout.my_account_email_notification_fragment,
                 R.string.myaccount_email_notifications,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.ADJUST_CONTENT);
     }
 
     /*

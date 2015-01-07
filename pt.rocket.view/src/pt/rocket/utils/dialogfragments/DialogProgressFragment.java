@@ -70,8 +70,14 @@ public class DialogProgressFragment extends DialogFragment {
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // Create dialog
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // Hide title divider
+        int dividerId = dialog.getContext().getResources().getIdentifier("titleDivider","id", "android");
+        View divider = dialog.findViewById(dividerId);
+        if(divider != null) divider.setBackgroundColor(getResources().getColor(R.color.transparent));
+        // Return layout
         return dialog;
     }
     

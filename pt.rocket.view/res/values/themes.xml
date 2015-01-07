@@ -1,6 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
+    <!--
+         <style name="Theme.Jumia" parent="@style/Theme.Sherlock.Light">
+        <item name="actionBarStyle">@style/Widget.Jumia.ActionBar</item>
+        <item name="android:actionBarStyle" tools:targetApi="11">@style/Widget.Jumia.ActionBar</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_sidemenu</item>
+        <item name="homeAsUpIndicator">@drawable/ic_sidemenu</item>
+        <item name="android:popupMenuStyle">@style/MyPopupMenu</item>
+        <item name="popupMenuStyle">@style/MyPopupMenu</item>
+        <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
+        <item name="android:windowBackground">@color/background_color</item>
+        <item name="actionModeShareDrawable">@drawable/selector_share</item>
+        <item name="android:actionBarItemBackground" tools:targetApi="14">@drawable/selector_actionbar_logo</item>
+        <item name="actionBarItemBackground">@drawable/selector_actionbar_logo</item>
+        For ViewPager IconPageIndicator
+        <item name="vpiIconPageIndicatorStyle">@style/Widget.TeaserIconPageIndicator</item>
+        <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
+        <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
+        <item name="searchViewTextField">@drawable/selector_textfield_orange</item>
+        <item name="searchViewSearchIcon">@drawable/selector_search_edit_icon</item>
+        <item name="searchViewCloseIcon">@drawable/btn_clearsearchfield</item>
+        <item name="textColorPrimary">@color/grey_middle</item>
+        <item name="searchAutoCompleteTextView">@style/text_actionbar_search</item>
+        <item name="actionButtonStyle">@style/action_button</item>
+        <item name="android:textColorHint">@color/green_basic</item>
+        ACTION BAR Tablet will use dimensions from actionBarSherlock
+        item name="actionBarSize">@dimen/action_bar_height</item
+
+
+        CUSTOM SPINNER STYLE
+        <item name="actionCustomSpinnerDropDownStyle">@style/Widget.Jumia.Spinner.Style</item>
+        Widget.Sherlock.ActionBar
+    </style>
+    -->
+
+
+    <!-- ####################################################################### -->
+
+
+    <!-- Jumia -->
+    <style name="Theme.Jumia" parent="@style/Theme.AppCompat.Light">
+        <!-- Base -->
+        <item name="android:windowBackground">@color/background_color</item>
+        <!-- Text -->
+        <item name="android:textColorPrimary">@color/grey_middle</item>
+        <item name="android:textColorSecondary">@color/grey_middle</item>
+        <item name="android:textColorTertiary">@color/grey_middle</item>
+        <item name="android:editTextColor">@color/grey_middle</item>
+        <item name="editTextColor">@color/grey_middle</item>
+        <!-- Base Action Bar -->
+        <item name="android:actionBarTheme">@style/Widget.Jumia.ActionBar</item>
+        <item name="actionBarTheme">@style/Widget.Jumia.ActionBar</item>
+        <!-- Search View -->
+        <item name="searchViewStyle">@style/Widget.Jumia.SearchView</item>
+        <item name="android:searchViewStyle">@style/Widget.Jumia.SearchView</item>
+        <!-- Check Box View -->
+        <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
+        <!-- List View -->
+        <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
+		<!-- Custom Spinner -->
+        <item name="actionCustomSpinnerDropDownStyle">@style/Widget.Jumia.Spinner.Style</item>
+    </style>
+
+    <!-- Action Bar from support library compatibility -->
+    <style name="Widget.Jumia.ActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:colorControlNormal">@color/grey_middledark</item>
+        <item name="colorControlNormal">@color/grey_middledark</item>
+        <item name="android:actionBarStyle">@style/Widget.Jumia.ActionBarStyle</item>
+        <item name="actionBarStyle">@style/Widget.Jumia.ActionBarStyle</item>
+    </style>
+
+    <!-- <style name="Widget.Jumia.ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar"> -->
+    <!-- <style name="Widget.Jumia.ActionBarStyle" parent="@style/Theme.AppCompat.Light"> -->
+    <!-- <style name="Widget.Jumia.ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse"> -->
+    <style name="Widget.Jumia.ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <!--
+		<item name="android:background">@drawable/actionbar_drawable</item>
+        <item name="background">@drawable/actionbar_drawable</item>
+        -->
+        <item name="android:background">@color/white_50</item>
+        <item name="background">@color/white_50</item>
+    </style>
+
+    <!-- Search view from support library compatibility -->
+    <style name="Widget.Jumia.SearchView" parent="Widget.AppCompat.Light.SearchView">
+        <item name="queryBackground">@drawable/selector_textfield_orange</item>
+        <item name="queryHint">@string/action_label_search_hint</item>
+        <item name="closeIcon">@drawable/btn_clearsearchfield</item>
+        <item name="searchIcon">@drawable/selector_search_edit_icon</item>
+        <!-- <item name="android:imeOptions">actionSearch</item> -->
+    </style>
+
+    <!-- Check Box -->
+    <style name="Widget.Jumia.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/selector_btn_check_holo_orange</item>
+    </style>
+
+    <!-- List View -->
+    <style name="Widget.Jumia.ListView" parent="android:Widget.ListView.White">
+        <!-- <item name="android:listSelector">@drawable/selector_listitem_highlight</item> -->
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+        <item name="android:divider">@color/grey_light</item>
+    </style>
+
+    <!-- Base Dialog -->
     <style name="Theme.Jumia.Dialog" parent="@android:style/Theme.Dialog">
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowActionBar" tools:targetApi="honeycomb">false</item>
@@ -8,16 +112,11 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
-        <item name="android:windowMinWidthMajor" tools:targetApi="honeycomb">?windowMinWidthMajor</item>
-        <item name="android:windowMinWidthMinor" tools:targetApi="honeycomb">?windowMinWidthMinor</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="listPreferredItemPaddingLeft">16dip</item>
         <item name="listPreferredItemPaddingRight">16dip</item>
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
-        <item name="windowContentOverlay">@null</item>
-        <item name="windowMinWidthMajor">@dimen/dialog_min_width_major</item>
-        <item name="windowMinWidthMinor">@dimen/dialog_min_width_minor</item>
         <item name="android:windowBackground">@color/transparent</item>
     </style>
 
@@ -35,63 +134,13 @@
         <item name="android:windowFrame">@null</item>
     </style>
 
-    <style name="Theme.Jumia.Dialog.Progress">
+    <!-- Progress dialog -->
+    <style name="Theme.Jumia.Dialog.Progress" parent="@android:style/Theme.Material.Dialog.NoActionBar">
         <item name="android:windowBackground">@drawable/dialog_shadow</item>
-        <item name="windowMinWidthMajor">@null</item>
-        <item name="windowMinWidthMinor">@null</item>
         <item name="android:windowMinWidthMajor" tools:targetApi="honeycomb">@null</item>
         <item name="android:windowMinWidthMinor" tools:targetApi="honeycomb">@null</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.Jumia" parent="@style/Theme.Sherlock.Light">
-        <item name="actionBarStyle">@style/Widget.Jumia.ActionBar</item>
-        <item name="android:actionBarStyle" tools:targetApi="11">@style/Widget.Jumia.ActionBar</item>
-        <!-- <item name="android:homeAsUpIndicator">@drawable/ic_sidemenu</item> -->
-        <!-- <item name="homeAsUpIndicator">@drawable/ic_sidemenu</item> -->
-        <!-- <item name="android:popupMenuStyle">@style/MyPopupMenu</item> -->
-        <!-- <item name="popupMenuStyle">@style/MyPopupMenu</item> -->
-        <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
-        <item name="android:windowBackground">@color/background_color</item>
-        <item name="actionModeShareDrawable">@drawable/selector_share</item>
-        <item name="android:actionBarItemBackground" tools:targetApi="14">@drawable/selector_actionbar_logo</item>
-        <item name="actionBarItemBackground">@drawable/selector_actionbar_logo</item>
-        <!-- For ViewPager IconPageIndicator -->
-        <item name="vpiIconPageIndicatorStyle">@style/Widget.TeaserIconPageIndicator</item>
-        <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
-        <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
-        <item name="searchViewTextField">@drawable/selector_textfield_orange</item>
-        <item name="searchViewSearchIcon">@drawable/selector_search_edit_icon</item>
-        <item name="searchViewCloseIcon">@drawable/btn_clearsearchfield</item>
-        <item name="textColorPrimary">@color/grey_middle</item>
-        <item name="searchAutoCompleteTextView">@style/text_actionbar_search</item>
-        <item name="actionButtonStyle">@style/action_button</item>
-        <item name="android:textColorHint">@color/green_basic</item>
-        <!-- ACTION BAR Tablet will use dimensions from actionBarSherlock -->
-        <!-- item name="actionBarSize">@dimen/action_bar_height</item -->
-    
-    	<!-- CUSTOM SPINNER STYLE -->    
-        <item name="actionCustomSpinnerDropDownStyle">@style/Widget.Jumia.Spinner.Style</item>
-        
-    </style>    
-
-    <style name="Widget.Jumia.ActionBar" parent="Widget.Sherlock.ActionBar">
-        <item name="android:background">@drawable/actionbar_drawable</item>
-        <item name="background">@drawable/actionbar_drawable</item>
-        <item name="android:displayOptions" tools:targetApi="11">useLogo|homeAsUp|showHome</item>
-        <item name="displayOptions">useLogo|homeAsUp|showHome</item>
-    </style>
-    
-    <style name="Widget.Jumia.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
-        <item name="android:button">@drawable/selector_btn_check_holo_orange</item>
-    </style>
-    
-    <style name="Widget.Jumia.ListView" parent="android:Widget.ListView.White">
-        <!-- WHY??? -->
-        <!-- item name="android:listSelector">@drawable/selector_listitem_highlight</item -->
-        <item name="android:cacheColorHint">@android:color/transparent</item>
-        <item name="android:divider">@color/grey_light</item>
     </style>
 
 </resources>

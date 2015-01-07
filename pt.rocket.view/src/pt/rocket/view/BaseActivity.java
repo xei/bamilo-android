@@ -54,47 +54,38 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.text.Editable;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.style.ImageSpan;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
-
-import com.actionbarsherlock.ActionBarSherlock;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.interfaces.SearchViewImeBackListener;
-import com.actionbarsherlock.internal.ActionBarSherlockNative;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
-import com.actionbarsherlock.widget.SearchView.OnCloseListener;
-import com.actionbarsherlock.widget.SearchView.SearchAutoComplete;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -120,7 +111,7 @@ import de.akquinet.android.androlog.Log;
  *          2012/06/19
  * 
  */
-public abstract class BaseActivity extends SherlockFragmentActivity {
+public abstract class BaseActivity extends ActionBarActivity {
 
     private static final String TAG = LogTagHelper.create(BaseActivity.class);
 
@@ -149,15 +140,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private boolean backPressedOnce = false;
 
-    // private View logoView = null;
-
-    private TextView logoTextView = null;
-
     public View mDrawerNavigation;
     /**
      * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
-     * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception
-     *           -can-not-perform-this -action-after-onsaveinstancestate-h
+     * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this -action-after-onsaveinstancestate-h
      */
     private Intent mOnActivityResultIntent = null;
 
@@ -189,7 +175,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @SuppressWarnings("unused")
     private Set<EventType> userEvents;
 
-    private Menu currentMenu;
+    private Menu mCurrentMenu;
 
     private long beginInMillis;
 
@@ -203,7 +189,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     private ViewStub mMainFallBackStub;
 
-    private ActionBar supportActionBar;
+    private ActionBar mSupportActionBar;
 
     private boolean isBackButtonEnabled = false;
 
@@ -212,6 +198,8 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private long loadTime = 0;
 
     private String trackScreen = "";
+    
+    public MenuItem mSearchMenuItem;
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
@@ -259,6 +247,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     /*
      * (non-Javadoc)
+     * 
      * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
      */
     @Override
@@ -272,11 +261,11 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
          */
         ShopSelector.setLocaleOnOritentationChanged(getApplicationContext());
         // Bind service
-        JumiaApplication.INSTANCE.doBindService(); 
+        JumiaApplication.INSTANCE.doBindService();
         /*
          * In case app is killed in background needs to restore font type
          */
-        if(getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific)){
+        if (getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific)) {
             HoloFontLoader.initFont(true);
         } else {
             HoloFontLoader.initFont(false);
@@ -332,6 +321,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     /*
      * (non-Javadoc)
+     * 
      * @see android.support.v4.app.FragmentActivity#onResume()
      */
     @Override
@@ -362,7 +352,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             mOnActivityResultIntent = null;
         }
 
-        if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT) && 
+        if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT) &&
                 JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null) {
             Bundle bundle = new Bundle();
             bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
@@ -403,6 +393,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     /*
      * (non-Javadoc)
+     * 
      * @see android.support.v4.app.FragmentActivity#onKeyDown(int, android.view.KeyEvent)
      */
     @Override
@@ -413,7 +404,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
         return super.onKeyDown(keyCode, e);
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -432,6 +423,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     /*
      * (non-Javadoc)
+     * 
      * @see com.actionbarsherlock.app.SherlockFragmentActivity#onStop()
      */
     @Override
@@ -444,6 +436,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     /*
      * (non-Javadoc)
+     * 
      * @see com.actionbarsherlock.app.SherlockFragmentActivity#onDestroy()
      */
     @Override
@@ -454,26 +447,30 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         JumiaApplication.INSTANCE.setLoggedIn(false);
         isRegistered = false;
         // Tracking
-        if(TextUtils.isEmpty(trackScreen)){
+        if (TextUtils.isEmpty(trackScreen)) {
             TrackerDelegator.trackCloseApp();
         }
-        
+
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.FragmentActivity#onBackPressed()
-     */
-    @Override
-    public void onBackPressed() {
-        Log.i(TAG, "ON BACK PRESSED");
-        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)
-                && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
-            mDrawerLayout.closeDrawer(mDrawerNavigation);
-        } else {
-            super.onBackPressed();
-        }
-    }
+
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see android.support.v4.app.FragmentActivity#onBackPressed()
+//     */
+//    @Override
+//    public void onBackPressed() {
+//        Log.i(TAG, "ON BACK PRESSED");
+//        // Case navigation opened
+//        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)
+//                && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
+//            mDrawerLayout.closeDrawer(mDrawerNavigation);
+//        }
+//        // Case default
+//        else {
+//            super.onBackPressed();
+//        }
+//    }
 
     /**
      * Using the ActionBarDrawerToggle, you must call it during onPostCreate() and
@@ -481,6 +478,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     /*
      * (non-Javadoc)
+     * 
      * @see com.actionbarsherlock.app.SherlockFragmentActivity#onPostCreate(android.os.Bundle)
      */
     @Override
@@ -489,23 +487,21 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         Log.i(TAG, "ON POST CREATE: DRAWER");
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
-        // Removed Categories TAB
-        /*-// Validate if navigation is open (on orientation change)
-        if(mDrawerLayout.isDrawerOpen(mDrawerNavigation)) showWizardNavigation();*/
     }
-    
+
     /*
      * (non-Javadoc)
-     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onConfigurationChanged(android.content.res.Configuration)
+     * 
+     * @see android.support.v7.app.ActionBarActivity#onConfigurationChanged(android.content.res.Configuration)
      */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-      super.onConfigurationChanged(newConfig);
-      Log.i(TAG, "ON CONFIGURATION CHANGED");
-      // Pass any configuration change to the drawer toggles
-      mDrawerToggle.onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(newConfig);
+        Log.i(TAG, "ON CONFIGURATION CHANGED");
+        // Pass any configuration change to the drawer toggles
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
-    
+
     /**
      * #### ACTION BAR ####
      */
@@ -522,8 +518,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @author sergiopereira
      * @modified Andre Lopes
      */
-    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action,
-            int actionBarTitleResId, int checkoutStep) {
+    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int actionBarTitleResId, int checkoutStep) {
         Log.i(TAG, "ON UPDATE BASE COMPONENTS");
 
         // Update options menu and search bar
@@ -533,7 +528,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Update the sliding menu
         this.action = action != null ? action : NavigationAction.Unknown;
         updateNavigationMenu();
-        
+
         // Select step on Checkout
         setCheckoutHeader(checkoutStep);
         // Set actionbarTitle
@@ -542,15 +537,15 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
             hideActionBarTitle();
         } else {
-            //#specific_shop
-            if(getResources().getBoolean(R.bool.is_daraz_specific)  || 
-               getResources().getBoolean(R.bool.is_shop_specific)   ||
-               getResources().getBoolean(R.bool.is_bamilo_specific)){
+            // #specific_shop
+            if (getResources().getBoolean(R.bool.is_daraz_specific) ||
+                    getResources().getBoolean(R.bool.is_shop_specific) ||
+                    getResources().getBoolean(R.bool.is_bamilo_specific)) {
                 // Remove text from AB and show title bar
                 hideActionBarTitle();
                 findViewById(R.id.totalProducts).setVisibility(View.GONE);
                 setTitle(actionBarTitleResId);
-            }else{
+            } else {
                 hideTitle();
                 findViewById(R.id.totalProducts).setVisibility(View.GONE);
                 setActionBarTitle(actionBarTitleResId);
@@ -571,8 +566,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Validate flag
         switch (showActionBar) {
         case View.VISIBLE:
-            if (!actionBarVisible)
-                getSupportActionBar().show();
+            if (!actionBarVisible) getSupportActionBar().show();
             break;
         case View.GONE:
             getSupportActionBar().hide();
@@ -589,8 +583,14 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param upButton
      * @author sergiopereira
      */
-    private void setActionBarUpButton(int upButton) {
-        supportActionBar.setUpIcon(upButton);
+    private void setActionBarUpButton() {
+        if(isBackButtonEnabled) {
+            Log.i(TAG, "SHOW UP BUTTON");
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+        } else {
+            Log.i(TAG, "NO SHOW UP BUTTON");
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+        }
     }
 
     public void updateActionForCountry(NavigationAction action) {
@@ -598,51 +598,81 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         updateNavigationMenu();
     }
 
+    /**
+     * 
+     */
     public void setupActionBar() {
-        ActionBarSherlock.unregisterImplementation(ActionBarSherlockNative.class);
-        supportActionBar = getSupportActionBar();
-        supportActionBar.setHomeButtonEnabled(true);
-        supportActionBar.setDisplayHomeAsUpEnabled(true);
-        // Set custom view
-        supportActionBar.setDisplayShowCustomEnabled(true);
-        supportActionBar.setCustomView(R.layout.action_bar_logo_layout);
-        // logoView = supportActionBar.getCustomView().findViewById(R.id.ic_logo);
-        // logoView.setOnClickListener(onActionBarClickListener);
-        logoTextView = (TextView) supportActionBar.getCustomView().findViewById(R.id.ic_text_logo);
-        logoTextView.setOnClickListener(onActionBarClickListener);
+        mSupportActionBar = getSupportActionBar();
+        mSupportActionBar.setDisplayHomeAsUpEnabled(true);
+        mSupportActionBar.setHomeButtonEnabled(true);
+        mSupportActionBar.setDisplayShowTitleEnabled(true);
+//        // Set custom view
+//        supportActionBar.setDisplayShowCustomEnabled(true);
+//        supportActionBar.setCustomView(R.layout.action_bar_logo_layout);
+//        logoTextView = (TextView) supportActionBar.getCustomView().findViewById(R.id.ic_text_logo);
+//        logoTextView.setOnClickListener(onActionBarClickListener);
     }
 
     private void setupContentViews() {
         Log.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
+        
         setContentView(activityLayoutId);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
-                R.string.app_name, R.string.app_name) {
+        
+        // XXX
+        
+        // mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
+        // R.string.app_name, R.string.app_name) {
+        // public void onDrawerClosed(View view) {
+        // onClosed();
+        // //supportActionBar.updateUpState(true);
+        // }
+        //
+        // public void onDrawerOpened(View drawerView) {
+        // onOpened();
+        // //supportActionBar.updateUpState(false);
+        // }
+        //
+        // @Override
+        // public void onDrawerStateChanged(int newState) {
+        // // Log.d(TAG, "SEARCH: ON STATE CHANGED " + newState);
+        // mDrawableState = newState;
+        // super.onDrawerStateChanged(newState);
+        // }
+        // };
+        
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.drawable.ic_drawer) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            @Override
             public void onDrawerClosed(View view) {
-                onClosed();
-                supportActionBar.updateUpState(true);
+                super.onDrawerClosed(view);
+                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
+            /** Called when a drawer has settled in a completely open state. */
+            @Override
             public void onDrawerOpened(View drawerView) {
-                onOpened();
-                supportActionBar.updateUpState(false);
+                super.onDrawerOpened(drawerView);
+                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
-
+            
             @Override
             public void onDrawerStateChanged(int newState) {
                 // Log.d(TAG, "SEARCH: ON STATE CHANGED " + newState);
                 mDrawableState = newState;
                 super.onDrawerStateChanged(newState);
             }
+            
         };
+
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         contentContainer = (ViewGroup) findViewById(R.id.rocket_app_content);
-        // loadingBarContainer = findViewById(R.id.loading_bar);
-        // loadingBarView = (LoadingBarView)
-        // findViewById(R.id.loading_bar_view);
+
         warningView = findViewById(R.id.warning);
         warningVariationView = findViewById(R.id.warning_variations);
         warningView.setOnClickListener(new OnClickListener() {
@@ -679,8 +709,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
          *           -can-not-perform -this-action-after-onsaveinstancestate-h
          */
         if (getIntent().getExtras() != null) {
-            initialCountry = getIntent().getExtras().getBoolean(
-                    ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
             mOnActivityResultIntent = null;
         }
 
@@ -691,11 +720,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
          */
         if (initialCountry) {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            supportActionBar.setDisplayShowHomeEnabled(false);
-            supportActionBar.setCustomView(R.layout.action_bar_initial_logo_layout);
+            mSupportActionBar.setDisplayHomeAsUpEnabled(false);
+            mSupportActionBar.setDisplayShowCustomEnabled(true);
+            mSupportActionBar.setCustomView(R.layout.action_bar_initial_logo_layout);
         } else {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-            supportActionBar.setDisplayShowHomeEnabled(true);
+            mSupportActionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -736,15 +766,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             return result;
         }
 
-        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU
-                && event.getAction() == KeyEvent.ACTION_DOWN) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU && event.getAction() == KeyEvent.ACTION_DOWN) {
             toggle();
             return true;
         }
 
         return result;
     }
-
 
     /**
      * ############### SLIDE MENU #################
@@ -783,8 +811,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 // Hide search component and keyboard
                 hideSearchComponent();
                 hideKeyboard();
-                /*-// Goto home
-                onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);*/
             }
         }
     };
@@ -854,55 +880,49 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, "ON OPTION ITEM SELECTED: " + item.getTitle());
-
         // Get item id
         int itemId = item.getItemId();
-
-        // HOME
+        // NAV or ARROW
         if (itemId == android.R.id.home) {
             // Go back or toggle between opened and closed drawer
-            if (isBackButtonEnabled)
-                onBackPressed();
-            else
-                toggle();
+            if (isBackButtonEnabled) onBackPressed();
+            else toggle();
             return true;
-
-            // CART
-        } else if (itemId == R.id.menu_basket) {
-            Log.i(TAG, "code1state : " + mDrawerLayout.getDrawableState()[0] + " : idle : "
-                    + DrawerLayout.STATE_IDLE + " : dragging :  "
-                    + DrawerLayout.STATE_DRAGGING + "  : settling : " + DrawerLayout.STATE_SETTLING);
+        }
+        // CART
+        else if (itemId == R.id.menu_basket) {
+            Log.i(TAG, "code1state : " + 
+                    mDrawerLayout.getDrawableState()[0] + " : idle : " + 
+                    DrawerLayout.STATE_IDLE + " : dragging :  " + 
+                    DrawerLayout.STATE_DRAGGING + "  : settling : " + 
+                    DrawerLayout.STATE_SETTLING);
             if (mDrawableState == DrawerLayout.STATE_IDLE) {
                 closeDrawerIfOpen();
-                onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
-                        FragmentController.ADD_TO_BACK_STACK);
+                onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
             return false;
-
-            // DEFAULT:
-        } else {
+        }
+        // DEFAULT:
+        else {
             return super.onOptionsItemSelected(item);
         }
     }
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onCreateOptionsMenu
-     * (android.view.Menu)
+     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
      */
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         Log.d(TAG, "ON OPTIONS MENU: CREATE");
-        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
 
         // Save the current menu
-        currentMenu = menu;
+        mCurrentMenu = menu;
 
         // Flag used to show action bar as default
         int showActionBar = View.VISIBLE;
-        // Default drawable for UP Button
-        int actionBarUpButton = R.drawable.ic_drawer;
+
         isBackButtonEnabled = false;
 
         /**
@@ -914,7 +934,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                 showActionBar = View.GONE;
                 break;
             case UP_BUTTON_BACK:
-                actionBarUpButton = R.drawable.abs__ic_ab_back_holo_light;
                 isBackButtonEnabled = true;
                 break;
             case SEARCH_VIEW:
@@ -953,14 +972,13 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         }
 
         // Set AB UP button
-        setActionBarUpButton(actionBarUpButton);
+        setActionBarUpButton();
         // Set AB visibility
         setActionBarVisibility(showActionBar);
 
         // Validate country
         if (!initialCountry) {
-            tvActionCartCount = (TextView) menu.findItem(R.id.menu_basket).getActionView()
-                    .findViewById(R.id.cart_count);
+            tvActionCartCount = (TextView) MenuItemCompat.getActionView(menu.findItem(R.id.menu_basket)).findViewById(R.id.cart_count);
             tvActionCartCount.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -976,80 +994,69 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    /**
+    /*
      * ############### SEARCH COMPONENT #################
      */
-
+    
     /**
      * Method used to set the search bar in the Action bar.
      * 
      * @param menu
      * @author Andre Lopes
+     * @modified sergiopereira
      */
     private void setActionBarSearch(Menu menu) {
-        MenuItem mSearchMenuItem = menu.findItem(R.id.menu_search);
-        // Get search views
-        mSearchView = (SearchView) mSearchMenuItem.getActionView();
-        mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.abs__search_src_text);
-        ImageView closeSearch = (ImageView) mSearchView.findViewById(R.id.abs__search_close_btn);
-        mSearchAutoComplete.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-        
-      // Set hint
-      mSearchView.setQueryHint(getString(R.string.action_label_search_hint));
-      HoloFontLoader.applyDefaultFont(mSearchView);
-        
+        // Get search menu item
+        mSearchMenuItem = menu.findItem(R.id.menu_search);
+        // Get search action view
+        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
+        // Get edit text
+        mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
         //#RTL
-        if(getResources().getBoolean(R.bool.is_bamilo_specific)){
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            mSearchAutoComplete.setLayoutParams(params);
-            
-            RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT);
-            param.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            closeSearch.setLayoutParams(param);
-            mSearchAutoComplete.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
-
-            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB){
-                mSearchAutoComplete.setHint(getDecoratedHint(getString(R.string.action_label_search_hint)));
-            }
-            
+        if(getResources().getBoolean(R.bool.is_bamilo_specific)) {
+            mSearchAutoComplete.setGravity(Gravity.RIGHT|Gravity.BOTTOM);
         }
-            
+        // Set font
+        HoloFontLoader.applyDefaultFont(mSearchView);
         HoloFontLoader.applyDefaultFont(mSearchAutoComplete);
-        mSearchButton = mSearchView.findViewById(R.id.abs__search_button);
         // Set the ime options
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-
-        mSearchMenuItem.setVisible(true);
-
-        setSearchWidth();
-
-        // Set colorhint
-        mSearchAutoComplete.setHintTextColor(getResources().getColor(R.color.search_hint));
+        // Set text color for old android versions
+        mSearchAutoComplete.setTextColor(getResources().getColor(R.color.grey_middle));
+        // Initial state
+        MenuItemCompat.collapseActionView(mSearchMenuItem);
+        //mSearchAutoComplete.dismissDropDown();
+        //mSearchAutoComplete.setFocusable(false);
+        //mSearchAutoComplete.setFocusableInTouchMode(true);
+        //mSearchView.setOnClickListener(null);    
+        // Calculate the max width to fill action bar
+        setSearchWidthToFillOnExpand();
         // Set search
-        setActionBarSearchBehavior();
+        setActionBarSearchBehavior(mSearchMenuItem);
+        // Set visibility
+        mSearchMenuItem.setVisible(true);
     }
 
-    /**
-     *  method to position the drawable inside the span in hte right position when in #RTL and on <3.0 Android version
-     * @param hintText
-     * @return formated Hint
-     */
-    private CharSequence getDecoratedHint(CharSequence hintText) {
-        SpannableStringBuilder ssb = new SpannableStringBuilder(hintText); 
-        ssb.append("  ");// for the icon
-        Drawable searchIcon = getResources().getDrawable(R.drawable.abs__ic_search_api_holo_light);
-        int textSize = (int) (mSearchAutoComplete.getTextSize() * 1.25);
-        searchIcon.setBounds(0,0,textSize,textSize);
-//        ssb.setSpan(new ImageSpan(searchIcon), textSize-4,textSize-3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ssb.setSpan(new ImageSpan(searchIcon), hintText.length()+1,hintText.length()+2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return ssb;
-    }
-    
-    private void setSearchWidth() {
+//    /**
+//     * method to position the drawable inside the span in hte right position when in #RTL and on
+//     * <3.0 Android version
+//     * 
+//     * @param hintText
+//     * @return formated Hint
+//     */
+//    private CharSequence getDecoratedHint(CharSequence hintText) {
+//        SpannableStringBuilder ssb = new SpannableStringBuilder(hintText);
+//        ssb.append("  ");// for the icon
+//        Drawable searchIcon = getResources().getDrawable(R.drawable.abs__ic_search_api_holo_light);
+//        int textSize = (int) (mSearchAutoComplete.getTextSize() * 1.25);
+//        searchIcon.setBounds(0, 0, textSize, textSize);
+//        // ssb.setSpan(new ImageSpan(searchIcon), textSize-4,textSize-3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        ssb.setSpan(new ImageSpan(searchIcon), hintText.length() + 1, hintText.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        return ssb;
+//    }
+
+    private void setSearchWidthToFillOnExpand() {
         // Get the width of main content
         // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
         // int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
@@ -1065,34 +1072,36 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     /**
      * Set the search component
+     * @param mSearchMenuItem 
      */
-    public void setActionBarSearchBehavior() {
+    public void setActionBarSearchBehavior(final MenuItem mSearchMenuItem) {
         Log.d(TAG, "SEARCH MODE: NEW BEHAVIOUR");
         if (mSearchAutoComplete == null) {
             Log.w(TAG, "SEARCH COMPONENT IS NULL");
             return;
         }
-
-        mSearchAutoComplete.dismissDropDown();
-        mSearchAutoComplete.setFocusable(false);
-        mSearchAutoComplete.setFocusableInTouchMode(true);
-        mSearchView.setOnClickListener(null);
+        
         /*
-         * On item click listener
+         * Set on item click listener
          */
         mSearchAutoComplete.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
                 Log.d(TAG, "SEARCH: CLICKED ITEM " + position);
-                SearchSuggestion selectedSuggestion = (SearchSuggestion) adapter
-                        .getItemAtPosition(position);
+                // Get suggestion
+                SearchSuggestion selectedSuggestion = (SearchSuggestion) adapter.getItemAtPosition(position);
+                // Get text suggestion
                 String text = selectedSuggestion.getResult();
+                // Clean edit text
                 mSearchAutoComplete.setText("");
                 mSearchAutoComplete.dismissDropDown();
+                // Collapse search view
+                MenuItemCompat.collapseActionView(mSearchMenuItem);
+                // Save query
                 GetSearchSuggestionHelper.saveSearchQuery(text);
+                // Show query
                 showSearchCategory(text);
-                if (JumiaApplication.INSTANCE != null)
-                    JumiaApplication.INSTANCE.trackSearch = true;
+                if (JumiaApplication.INSTANCE != null) JumiaApplication.INSTANCE.trackSearch = true;
             }
         });
 
@@ -1120,59 +1129,22 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         });
 
         /*
-         * Hide the search component on back pressed
-         */
-        mSearchView.setOnImeBackListener(new SearchViewImeBackListener() {
-            @Override
-            public void onImeBackPressed() {
-                Log.d(TAG, "SEARCH ON IME PRESSED BACK");
-                JumiaApplication.INSTANCE.trackSearchCategory = false;
-                hideSearchComponent();
-            }
-        });
-
-        /*
-         * Hide the search component on click on close button
-         */
-        mSearchView.setOnCloseListener(new OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                Log.d(TAG, "SEARCH ON CLOSE PRESSED");
-                isSearchComponentOpened = false;
-                hideSearchComponent();
-                return true;
-            }
-        });
-
-        /*
-         * Show the search component on click on search button
-         */
-        mSearchView.setOnSearchClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "SEARCH ON CLICK VIEW");
-                // Validate menu state
-                if (mDrawableState == DrawerLayout.STATE_IDLE)
-                    closeDrawerIfOpen();
-                isSearchComponentOpened = true;
-                setItemsVisibility(false);
-            }
-        });
-
-        /*
-         * Editor
+         * Set IME action listener
          */
         mSearchAutoComplete.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(android.widget.TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH
-                        || actionId == EditorInfo.IME_ACTION_GO) {
-                    String searchTerm = mSearchAutoComplete.getText().toString();
+            public boolean onEditorAction(android.widget.TextView textView, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO) {
+                    String searchTerm = textView.getText().toString();
                     Log.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
-                    if (TextUtils.isEmpty(searchTerm))
-                        return false;
-                    mSearchAutoComplete.setText("");
+                    if (TextUtils.isEmpty(searchTerm)) return false;
+                    // Clean edit text
+                    textView.setText("");
+                    // Collapse search view
+                    MenuItemCompat.collapseActionView(mSearchMenuItem);
+                    // Save query
                     GetSearchSuggestionHelper.saveSearchQuery(searchTerm);
+                    // Show query
                     showSearchCategory(searchTerm);
                     return true;
                 }
@@ -1180,6 +1152,41 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             }
         });
 
+        /*
+         * Set expand listener
+         */
+        MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, new OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                Log.d(TAG, "SEARCH ON EXPAND");
+                if (mDrawableState == DrawerLayout.STATE_IDLE) closeDrawerIfOpen();
+                isSearchComponentOpened = true;
+                setItemsVisibility(false);
+                return true;
+            }
+            
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                Log.d(TAG, "SEARCH ON COLLAPSE");
+                isSearchComponentOpened = false;
+                setItemsVisibility(true);
+                return true;
+            }
+        });
+        
+        /*
+         * Set focus listener, for back pressed with IME
+         */
+        mSearchAutoComplete.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    MenuItemCompat.collapseActionView(mSearchMenuItem);
+                    setItemsVisibility(true);
+                } 
+            }
+        });
+        
     }
 
     /**
@@ -1211,7 +1218,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected void setItemsVisibility(boolean visible) {
         for (MyMenuItem item : menuItems) {
             if (item != MyMenuItem.SEARCH_VIEW && item.resId != -1)
-                currentMenu.findItem(item.resId).setVisible(visible);
+                mCurrentMenu.findItem(item.resId).setVisible(visible);
         }
     }
 
@@ -1227,12 +1234,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             // Validate if exist search icon and bar
             if (menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
                 // Hide search bar
-                mSearchView.onActionViewCollapsed();
+                MenuItemCompat.collapseActionView(mSearchMenuItem);
                 // Clean autocomplete
                 mSearchAutoComplete.setText("");
-                // show hidden items
+                // Show hidden items
                 setItemsVisibility(true);
-                // Forced the ime option on collapse
+                // Forced the IME option on collapse
                 mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
                 mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
             }
@@ -1248,12 +1255,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param enumSet
      */
     public void hideActionBarItemsForChangeCountry(EnumSet<MyMenuItem> enumSet) {
-        // Validate if the current menu options contains the search bar item
-        // TODO : Validate if is necessary the setIconified
-        if (menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
-            // Hide search bar
-            mSearchView.setIconified(true);
-        }
         this.menuItems = enumSet;
         this.action = NavigationAction.Country;
         updateActionForCountry(NavigationAction.Country);
@@ -1325,7 +1326,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             Log.w(TAG, "SEARCH ERROR: WAS DISCARTED FOR QUERY " + requestQuery);
             return;
         }
-        if (!currentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible())
+        if (!mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible())
             return;
         // Hide dropdown
         mSearchAutoComplete.dismissDropDown();
@@ -1346,12 +1347,12 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         Log.d(TAG, "RECEIVED SEARCH EVENT: " + sug.size() + " " + requestQuery);
 
         // Validate current objects
-        if (menuItems == null && currentMenu == null && mSearchAutoComplete == null)
+        if (menuItems == null && mCurrentMenu == null && mSearchAutoComplete == null)
             return;
         // Validate current menu items
         if (menuItems != null && !menuItems.contains(MyMenuItem.SEARCH_VIEW))
             return;
-        if (!currentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible())
+        if (!mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible())
             return;
         // Validate current search
         if (mSearchAutoComplete.getText().length() < SEARCH_EDIT_SIZE
@@ -1477,7 +1478,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      */
     private void setMyProfile(MenuItem myProfile) {
         if (myProfile != null) {
-            myProfileActionProvider = (MyProfileActionProvider) myProfile.getActionProvider();
+            myProfileActionProvider = (MyProfileActionProvider) MenuItemCompat.getActionProvider(myProfile);
             myProfileActionProvider.setAdapterOnClickListener(myProfileClickListener);
         }
     }
@@ -1585,7 +1586,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             return;
 
         if (!TextUtils.isEmpty(title)) {
-            titleView.setText(title+" ");
+            titleView.setText(title + " ");
             headerTitle.setVisibility(View.VISIBLE);
         } else if (TextUtils.isEmpty(title)) {
             headerTitle.setVisibility(View.GONE);
@@ -1677,17 +1678,21 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
      * @param actionBarTitleResId
      */
     public void setActionBarTitle(int actionBarTitleResId) {
-        // supportActionBar.setTitle(getString(actionBarTitleResId));
-        logoTextView.setVisibility(View.VISIBLE);
-        logoTextView.setText(getString(actionBarTitleResId));
+//        logoTextView.setVisibility(View.VISIBLE);
+//        logoTextView.setText(getString(actionBarTitleResId));
+        //getSupportActionBar().setDisplayShowTitleEnabled(true);
+        //getSupportActionBar().setTitle(getString(actionBarTitleResId));
+        mSupportActionBar.setTitle(getString(actionBarTitleResId));
     }
 
     /**
      * Hide title on actionbar
      */
     public void hideActionBarTitle() {
-        // supportActionBar.setTitle("");
-        logoTextView.setVisibility(View.GONE);
+        //logoTextView.setVisibility(View.GONE);
+        //getSupportActionBar().setTitle("");
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mSupportActionBar.setTitle("");
     }
 
     /**
@@ -1701,94 +1706,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 
-    //
-    // private final void triggerContentEvent(final BaseHelper helper, Bundle
-    // args, final IResponseCallback responseCallback) {
-    // showLoading(false);
-    // sendRequest(helper, args, responseCallback);
-    // }
-
-    // protected final void triggerContentEventProgress(final BaseHelper helper,
-    // Bundle args,
-    // final IResponseCallback responseCallback) {
-    // showProgress();
-    // sendRequest(helper, args, responseCallback);
-    // }
-
-    // private final void showLoadingInfo() {
-    // Log.d(TAG, "Showing loading info");
-    // if (loadingBarContainer != null) {
-    // loadingBarContainer.setVisibility(View.VISIBLE);
-    // } else {
-    // Log.w(TAG, "Did not find loading bar container, check layout!");
-    // }
-    // if (loadingBarView != null) {
-    // loadingBarView.startRendering();
-    // }
-    // }
-
-    // /**
-    // * Hides the loading screen that appears on the front of the activity
-    // while it waits for the
-    // * data to arrive from the server
-    // */
-    // private void hideLoadingInfo() {
-    // Log.d(TAG, "Hiding loading info");
-    // if (loadingBarView != null) {
-    // loadingBarView.stopRendering();
-    // }
-    // if (loadingBarContainer != null) {
-    // loadingBarContainer.setVisibility(View.GONE);
-    // }
-    // }
-    //
-    // private static void setVisibility(View view, boolean show) {
-    // if (view != null) {
-    // view.setVisibility(show ? View.VISIBLE : View.GONE);
-    // }
-    // }
-
-    // public void showError(final BaseHelper helper, final Bundle bundle,
-    // final IResponseCallback responseCallback) {
-    // showError(new OnClickListener() {
-    //
-    // @Override
-    // public void onClick(View v) {
-    // showWarning(false);
-    // triggerContentEvent(helper, bundle, responseCallback);
-    // }
-    // }, false);
-    // }
-
-    // public void showLoading(boolean fromCheckout) {
-    // setVisibility(errorView, false);
-    // if (!fromCheckout) {
-    // setVisibility(contentContainer, false);
-    // }
-    //
-    // showLoadingInfo();
-    // }
-
-    // protected void showError(OnClickListener clickListener, boolean
-    // fromCheckout) {
-    // Log.d(TAG, "Showing error view");
-    // hideLoadingInfo();
-    // if (!fromCheckout) {
-    // setVisibility(contentContainer, false);
-    // }
-    // setVisibility(errorView, true);
-    // errorView.setOnClickListener(clickListener);
-    // }
-
-    // public final void showContentContainer() {
-    // if (processShow) {
-    // Log.d(TAG, "Showing the content container");
-    // hideLoadingInfo();
-    // dismissProgress();
-    // setVisibility(errorView, false);
-    // setVisibility(contentContainer, true);
-    // }
-    // }
 
     public final void showWarning(boolean show) {
         Log.d(TAG, "Showing warning: " + show);
@@ -1812,25 +1729,19 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 
     /**
      * Show progress.
+     * 
      * @modified sergiopereira
      */
     public final void showProgress() {
         // Validate current progress dialog
         if (baseActivityProgressDialog != null) return;
         // FIXME: New implementation
-        // Try fix android.view.WindowManager$BadTokenException: Unable to add window -- token android.os.BinderProxy@42128698 is not valid; is your activity running?
+        // Try fix android.view.WindowManager$BadTokenException: Unable to add window -- token
+        // android.os.BinderProxy@42128698 is not valid; is your activity running?
         if (!isFinishing()) {
             baseActivityProgressDialog = DialogProgressFragment.newInstance();
             baseActivityProgressDialog.show(getSupportFragmentManager(), null);
         }
-        // Old implementation
-//        Handler handler = new Handler(Looper.getMainLooper());
-//        handler.post(new Runnable() {
-//            public void run() {
-//                baseActivityProgressDialog = DialogProgressFragment.newInstance();
-//                baseActivityProgressDialog.show(getSupportFragmentManager(), null);
-//            }
-//        });
     }
 
     public final void dismissProgress() {
@@ -1848,9 +1759,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Update cart
         loadTime = System.currentTimeMillis();
         TrackerDelegator.trackPage(TrackingPage.NAVIGATION, loadTime, false);
-        // Removed Categories TAB
-        /*-// Validate
-        showWizardNavigation();*/
     }
 
     public void onClosed() {
@@ -1893,7 +1801,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     }
 
     public void hideKeyboard() {
-        Log.i( TAG , "HIDE KEYBOARD");
+        Log.i(TAG, "HIDE KEYBOARD");
         InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         View v = mDrawerLayout;
         if (v == null) v = getWindow().getCurrentFocus();
@@ -1910,27 +1818,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // InputMethodManager.SHOW_IMPLICIT);
     }
 
-    // /**
-    // * Use this variable to have a more precise control on when to show the
-    // content container. The
-    // * content will show by default after finishing the event request.
-    // *
-    // * @param b
-    // */
-    // public void setProcessShow(boolean b) {
-    // processShow = b;
-    // }
 
     public void finishFromAdapter() {
         finish();
     }
-
-    // /**
-    // * Method called then the activity is connected to the service
-    // */
-    // protected void onServiceActivation() {
-    //
-    // }
 
     /**
      * Handles a successful event and reflects necessary changes on the UI.
@@ -2046,7 +1937,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
                                 }
                             }
                         });
-                
+
                 dialog.show(getSupportFragmentManager(), null);
                 return true;
             default:
@@ -2188,18 +2079,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         public boolean allowBackPressed();
     }
 
-    // public void onFragmentSelected(FragmentType fragmentIdentifier) {
-    // }
-    //
-    // public void onFragmentElementSelected(int position) {
-    // }
-    //
-    // public void sendClickListenerToActivity(OnClickListener clickListener) {
-    // }
-    //
-    // public void sendValuesToActivity(int identifier, Object values) {
-    // }
-
     /**
      * Confirm backPress to exit application
      * 
@@ -2337,9 +2216,9 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     private void setLayoutMaintenance(final EventType eventType) {
         // Inflate maintenance
         mMainFallBackStub.setVisibility(View.VISIBLE);
-        
+
         // Case BAMILO
-        if(getResources().getBoolean(R.bool.is_bamilo_specific)) {
+        if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
             MaintenancePage.setMaintenancePageBamilo(this, new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -2358,9 +2237,10 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             });
         }
     }
-    
+
     /**
      * Process the click on retry button in maintenance page
+     * 
      * @param eventType
      * @modified sergiopereira
      */
@@ -2375,7 +2255,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
             onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
- 
 
     /**
      * ########## CHECKOUT HEADER ##########
@@ -2476,11 +2355,6 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         // Hide title and prod
         hideTitle();
         findViewById(R.id.totalProducts).setVisibility(View.GONE);
-        // Validate device and orientation
-        // if (showSearchOnActionBar(getApplicationContext())) {
-        // // Update with for main content
-        // findViewById(R.id.main_layout).getLayoutParams().width = LayoutParams.MATCH_PARENT;
-        // }
     }
 
     /**
@@ -2645,9 +2519,5 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     /**
      * ##### WIZARDS #####
      */
-    // Removed Categories TAB
-    /*-private void showWizardNavigation() {
-        WizardFactory.show(WizardType.NAVIGATION, getApplicationContext(), getSupportFragmentManager(), null);
-    }*/
-    
+
 }

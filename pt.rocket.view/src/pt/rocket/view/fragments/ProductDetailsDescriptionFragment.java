@@ -75,7 +75,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment implements O
                 NavigationAction.Products,
                 R.layout.product_description_fragment,
                 0,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.ADJUST_CONTENT);
         // super(IS_NESTED_FRAGMENT, R.layout.product_description_fragment);
         // R.string.product_details_title
         this.mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();

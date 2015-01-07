@@ -45,7 +45,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
                 NavigationAction.Categories,
                 R.layout.categories_collection_fragment,
                 R.string.categories_title,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.ADJUST_CONTENT);
     }
 
     /*

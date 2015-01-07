@@ -58,7 +58,7 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
                 NavigationAction.Products,
                 R.layout.product_size_guide_main,
                 R.string.size_guide_label,
-                KeyboardState.NO_ADJUST_CONTENT,
+                KeyboardState.ADJUST_CONTENT,
                 ConstantsCheckout.NO_CHECKOUT);
     }
 

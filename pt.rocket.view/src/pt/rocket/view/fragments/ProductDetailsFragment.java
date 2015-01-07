@@ -245,7 +245,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 NavigationAction.Products,
                 R.layout.product_details_fragment_main,
                 0,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.ADJUST_CONTENT);
     }
 
     public static ProductDetailsFragment getInstance(Bundle bundle) {

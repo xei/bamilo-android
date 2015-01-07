@@ -97,7 +97,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
                 NavigationAction.Home,
                 R.layout.home_fragment_main,
                 R.string.home_label,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.ADJUST_CONTENT);
     }
 
     /*

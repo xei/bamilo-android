@@ -46,7 +46,7 @@ public class ReviewFragment extends BaseFragment {
                 NavigationAction.Products,
                 R.layout.review_fragment,
                 0,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.ADJUST_CONTENT);
         
         this.setRetainInstance(true);
     }

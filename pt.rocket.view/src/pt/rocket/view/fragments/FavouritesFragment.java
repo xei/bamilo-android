@@ -92,7 +92,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 NavigationAction.Favorite,
                 R.layout.favourites,
                 R.string.favourites,
-                KeyboardState.NO_ADJUST_CONTENT);
+                KeyboardState.ADJUST_CONTENT);
     }
 
     protected FavouritesFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action,

@@ -519,7 +519,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="action_button" parent="Widget.Sherlock.ActionButton">
+    <style name="action_button" parent="@style/Widget.AppCompat.ActionButton">
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
         <item name="android:layout_marginRight">@dimen/action_bar_margin</item>
