@@ -346,15 +346,16 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
                 dataOptions.clear();
                 if(dataOptionsArray != null){
+                    extrasValues.clear();
                     for (int i = 0; i < dataOptionsArray.length(); ++i) {
                         if(scenario != null){
-                            extrasValues.clear();
-                            for (int j = 0; j < dataOptionsArray.length(); j++) {
+                            //extrasValues.clear();
+                            //for (int j = 0; j < dataOptionsArray.length(); j++) {
                                 PickUpStationObject pStation = new PickUpStationObject();
-                                pStation.initialize(dataOptionsArray.getJSONObject(j));
+                                pStation.initialize(dataOptionsArray.getJSONObject(i));
                                 extrasValues.put(pStation.getIdPickupstation(), pStation);
                                 dataSet.put(pStation.getName(), pStation.getName());
-                            }
+                            //}
                             
                         } else {
                             dataSet.put(dataOptionsArray.getString(i), dataOptionsArray.getString(i));    
