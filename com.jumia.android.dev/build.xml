@@ -94,7 +94,6 @@
     -->
     <import file="custom_rules.xml" optional="true" />
 	<import file="../FacebookSDK/build.xml"/>
-	<import file="../android-support-v7-appcompat/build.xml"/>
     <!-- Import the actual build file.
 
          To customize existing targets, there are two options:
