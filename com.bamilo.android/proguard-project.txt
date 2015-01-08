@@ -232,19 +232,7 @@
 #-keep class com.flurry.android.FlurryAgent { *; }
 ############################################
 
-## BEGIN ACTIONBARSHERLOCK
-#-keep class android.support.v4.app.** { *; }
-#-keep interface android.support.v4.app.** { *; }
-#-keep class com.actionbarsherlock.** { *; }
-#-keep interface com.actionbarsherlock.** { *; }
-#
-##-keepattributes *Annotation*
-## END ACTIONBARSHERLOCK
-#
-## Fix crash with ActionBarSherlock
-#-keep class * extends com.actionbarsherlock.** { *; }
-
-############# SUPPORT LIBRARY #############
+############# SUPPORT LIBRARY (v?) #############
 -keep class android.support.** { *; }
 -keep interface android.support.** { *; }
 ###########################################
