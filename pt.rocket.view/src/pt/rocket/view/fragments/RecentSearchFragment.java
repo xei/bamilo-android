@@ -226,7 +226,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
 
         if (isOnStoppingProcess) return;
 
-        getBaseActivity().handleSuccessEvent(bundle);
+        super.handleSuccessEvent(bundle);
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {

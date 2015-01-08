@@ -1656,7 +1656,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         
         if (getBaseActivity() == null) return;
         
-        getBaseActivity().handleSuccessEvent(bundle);
+        super.handleSuccessEvent(bundle);
         
         switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
@@ -1715,8 +1715,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
-        if (getBaseActivity().handleErrorEvent(bundle)) {
+        
+        if (super.handleErrorEvent(bundle)) {
             return;
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);

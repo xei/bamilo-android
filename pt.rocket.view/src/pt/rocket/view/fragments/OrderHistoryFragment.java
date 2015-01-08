@@ -286,13 +286,10 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
             return true;
         }
 
-        BaseActivity baseActivity = getBaseActivity();
-        if (baseActivity != null) {
-            baseActivity.handleSuccessEvent(bundle);
-        } else {
+        if(super.handleSuccessEvent(bundle))
             return true;
-        }
-
+        
+            
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 
         switch (eventType) {
@@ -367,10 +364,8 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
             return true;
         }
 
-        BaseActivity baseActivity = getBaseActivity();
-        if (baseActivity != null) {
-            baseActivity.handleErrorEvent(bundle);
-        }
+        super.handleErrorEvent(bundle);
+        
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 

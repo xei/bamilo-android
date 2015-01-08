@@ -577,7 +577,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         }
 
         // Check base errors
-        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) return;
+        if (super.handleErrorEvent(bundle)) return;
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {

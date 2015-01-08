@@ -1006,7 +1006,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         }
     	
         // Generic error
-        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(bundle)) {
             Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }

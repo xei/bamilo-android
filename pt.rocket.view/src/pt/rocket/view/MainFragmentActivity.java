@@ -91,7 +91,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         super(NavigationAction.Unknown,
                 EnumSet.noneOf(MyMenuItem.class),
                 EnumSet.noneOf(EventType.class),
-                EnumSet.noneOf(EventType.class),
                 0,
                 R.layout.main_fragment_activity_layout);
     }

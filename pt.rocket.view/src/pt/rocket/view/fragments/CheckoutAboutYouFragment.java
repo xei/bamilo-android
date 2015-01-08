@@ -959,8 +959,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     	}
     	
     	// Generic error
-        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
-            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
+        if (super.handleErrorEvent(bundle)) {
+            Log.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             return true;
         }
     	
@@ -1019,10 +1019,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             gotoNextStep();
             break;
         default:
-            if(getBaseActivity().handleErrorEvent(bundle)){
-                Log.w(TAG, "BASE ACTIVITY HANDLE ERROR EVENT!");
-                return true;
-            }
             break;
         }
         return true;

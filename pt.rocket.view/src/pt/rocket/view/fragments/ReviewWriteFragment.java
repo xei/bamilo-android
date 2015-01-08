@@ -638,7 +638,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             return true;
         }
         // Generic errors
-        if(getBaseActivity().handleErrorEvent(bundle)) return true;
+        if(super.handleErrorEvent(bundle)) return true;
         
         isExecutingSendReview = false;
         switch (eventType) {

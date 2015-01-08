@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/rectangle_rounded_drawable"
+        >
+<ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/img_connect"
+        android:layout_marginTop="@dimen/margin_116px"
+        android:layout_marginBottom="@dimen/margin_70px"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/error_no_connection"
+            android:textSize="@dimen/text_l"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/margin_32px"
+            android:textColor="@color/text_root"
+            android:fontFamily="roboto_regular"
+            />
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="false"
+            android:ellipsize="middle"
+            android:text="@string/connect_to_internet"
+            android:textSize="@dimen/text_s"
+            android:gravity="center"
+            android:textColor="@color/text_root"
+            android:fontFamily="roboto_regular"
+            />
+</LinearLayout>

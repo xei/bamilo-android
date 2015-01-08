@@ -391,9 +391,7 @@ public class TrackOrderFragment extends BaseFragment {
         if(TextUtils.isEmpty(order_number))
             proccessError();
         
-        if(getBaseActivity() != null){
-            getBaseActivity().handleErrorEvent(bundle);
-        }
+        super.handleErrorEvent(bundle);
         
         return true;
     }

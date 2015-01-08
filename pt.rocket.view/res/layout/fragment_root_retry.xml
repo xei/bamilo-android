@@ -5,38 +5,54 @@
     android:background="@color/background_color"
     android:gravity="top" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+    <LinearLayout 
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="@dimen/margin_20px"
+              android:background="@color/grey_background"
+              >
 
-        <LinearLayout
-            style="@style/rounded_box"
+    <include    
+        	android:id="@+id/no_connection_layout"
+            layout="@layout/no_connection_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/root_empty_container_height"
-            android:layout_gravity="center"
-            android:layout_marginBottom="0dp"
+            android:layout_height="@dimen/retry_layout_height"
+            android:layout_marginBottom="@dimen/margin_20px"
+            
+            />
+
+    <LinearLayout
+            android:id="@+id/fragment_root_retry_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            style="@style/button_fallback_retry"
             android:gravity="center"
-            android:orientation="vertical" >
-
-            <pt.rocket.components.customfontviews.TextView
-                android:id="@+id/fragment_root_retry_message"
-                style="@style/text_root"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="@dimen/rounded_margin_mid"
-                android:layout_marginRight="@dimen/rounded_margin_mid"
-                android:padding="@dimen/rounded_margin_mid"
-                android:text="@string/error_please_try_again" />
-        </LinearLayout>
-
-        <LinearLayout style="@style/button_container" >
-
-            <pt.rocket.components.customfontviews.Button
-                android:id="@+id/fragment_root_retry_button"
-                style="@style/button_grey_bottom"
+            android:layout_gravity="center"
+            android:clickable="true">
+            
+        <ImageView
+                android:id="@+id/fragment_root_retry_spinning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+               	android:background="@drawable/img_tryagain"
+               	android:layout_marginRight="@dimen/margin_24px"
+               	android:layout_marginEnd="@dimen/margin_24px"
+                />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/try_again_retry"
                 android:clickable="false"
-                android:text="@string/try_again" />
-        </LinearLayout>
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_m"
+                android:fontFamily="roboto_bold"
+                />
+
     </LinearLayout>
+
+</LinearLayout>
+
 
 </ScrollView>

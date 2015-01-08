@@ -85,7 +85,7 @@ public class LogOut {
         baseActivity.updateCartInfo();
         baseActivity.updateSlidingMenuCompletly();
         // Inform parent activity
-        baseActivity.handleSuccessEvent(bundle);
+        baseActivity.onLogOut();
     }
 
 }

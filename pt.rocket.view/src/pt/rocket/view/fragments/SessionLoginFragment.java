@@ -516,7 +516,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
 
         BaseActivity baseActivity = getBaseActivity();
         if (baseActivity != null) {
-            baseActivity.handleSuccessEvent(bundle);
+            super.handleSuccessEvent(bundle);
         } else {
             return true;
         }
@@ -700,7 +700,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
             return true;
         }
 
-        if (getBaseActivity().handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(bundle)) {
             return true;
         }
 

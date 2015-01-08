@@ -654,7 +654,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         }
         
         // Generic error
-        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(bundle)) {
             Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }

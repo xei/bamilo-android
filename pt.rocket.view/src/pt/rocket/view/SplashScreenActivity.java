@@ -49,10 +49,14 @@ import android.os.RemoteException;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.view.View.OnClickListener;
+import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -104,6 +108,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     SharedPreferences sharedPrefs;
 
     private View mMainFallBackStub;
+    
+    private View mRetryFallBackStub;
 
     /*
      * (non-Javadoc)
@@ -126,6 +132,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         setContentView(R.layout.splash_screen);
         // Get fall back layout
         mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
+        
+        mRetryFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
         // Get prefs
         sharedPrefs = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         // Get values from intent
@@ -636,40 +644,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             case TIME_OUT:
             case HTTP_STATUS:
             case NO_NETWORK:
-                // Log.i(TAG, "code1 no network "+eventType);
-                // Remove dialog if exist
-                if (dialog != null) {
-                    try {
-                        dialog.dismiss();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                dialog = DialogGenericFragment.createNoNetworkDialog(SplashScreenActivity.this, new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Re-send initialize event
-                        JumiaApplication.INSTANCE.init(false, initializationHandler);
-                        dialog.dismiss();
-                    }
-                },
-                // Cancel listener
-                new OnClickListener(){
-
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                    
-                },
-                true);
-                try {
-                    dialog.show(getSupportFragmentManager(), null);
-                    dialog.setCancelable(false);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                showFragmentRetry();
                 break;
             case SERVER_IN_MAINTENANCE:
                 setLayoutMaintenance(eventType);
@@ -721,11 +696,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                             @Override
                             public void onClick(View v) {
                                 // Re-send initialize event
-                                JumiaApplication.INSTANCE.init(false, initializationHandler);
+                                retryRequest();
                                 dialog.dismiss();
                             }
                         }, true);
                 dialog.show(getSupportFragmentManager(), null);
+                
                 break;
             }
             
@@ -868,5 +844,43 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
+    
+    /*
+     * ########### RETRY ###########
+     */
+    
+    /**
+     * Show the retry view from the root layout
+     * @param listener button
+     * @author sergiopereira
+     */
+    protected void showFragmentRetry(OnClickListener listener) {
+        if(mMainFallBackStub.getVisibility() == View.VISIBLE){
+            mMainFallBackStub.setVisibility(View.GONE);
+        }
+        
+        mRetryFallBackStub.setVisibility(View.VISIBLE);
+        // Set view
+        try {
+            (findViewById(R.id.fragment_root_retry_button)).setOnClickListener(listener);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
+        }
+    }
+    
+    protected void showFragmentRetry(){
+        showFragmentRetry(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+               retryRequest();
+               Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
+               ((ImageView)SplashScreenActivity.this.findViewById(R.id.fragment_root_retry_spinning)).setAnimation(animation);
+            }
+        });
+    }
 
+    protected void retryRequest(){
+        JumiaApplication.INSTANCE.init(false, initializationHandler);
+    }
 }

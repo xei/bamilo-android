@@ -8,4 +8,6 @@
     <item name="checkout_order_summary" format="float" type="dimen">0.30</item>
             
     <dimen name="margin_140px">60dp</dimen>
+    
+    <dimen name="retry_layout_height">@dimen/dimen_780px</dimen>
 </resources>

@@ -42,6 +42,16 @@
         android:layout_gravity="bottom|center_horizontal"
         android:textColor="@color/grey_middle" />
 
+        <!-- RETRY LAYOUT -->
+
+    <ViewStub
+        android:id="@+id/splash_fragment_retry_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/fragment_retry_stub_inflate"
+        android:layout="@layout/fragment_root_retry" />
+    
     <!-- MAINTENANCE PAGE -->
 
     <ViewStub

@@ -469,7 +469,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
             return;
         }
         // Generic errors
-        if(getBaseActivity().handleErrorEvent(bundle)) return;
+        if(super.handleErrorEvent(bundle)) return;
         
         // Hide Loading from triggers
         showFragmentContentContainer();

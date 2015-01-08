@@ -305,7 +305,7 @@ public class SessionForgotPasswordFragment extends BaseFragment implements OnCli
             return true;
         }
 
-        if (getBaseActivity().handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(bundle)) {
             return true;
         }
 

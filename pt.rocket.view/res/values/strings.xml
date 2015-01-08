@@ -399,5 +399,7 @@
     <string name="string_with_discount_only">With discount only</string>
     <string name="invalid_product">Invalid Product</string>
     <string name="category_filter_error">It was not possible to apply category filter</string>
+    <string name="try_again_retry">Try Again</string>
+    <string name="connect_to_internet">An internet error occurred, please try again.</string>
 
 </resources>

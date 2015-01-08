@@ -175,7 +175,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements OnC
 
         @Override
         public void onRequestError(Bundle bundle) {
-            getBaseActivity().handleErrorEvent(bundle);
+            CheckoutExternalPaymentFragment.super.handleErrorEvent(bundle);
         }
 
         @Override

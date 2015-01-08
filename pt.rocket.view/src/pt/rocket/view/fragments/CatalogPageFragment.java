@@ -1049,6 +1049,12 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
 
         RocketImageLoader.getInstance().startProcessingQueue();
     }
+   
+    @Override
+    protected void onRetryRequest(final EventType eventType){
+        ((CatalogFragment) getParentFragment()).enableCatalogButtons();
+        getMoreProducts();
+    }
     
     private void onErrorEvent(Bundle bundle) {
         Log.d(TAG, "ON ERROR EVENT");
@@ -1070,20 +1076,21 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
             
             Log.d(TAG, "ERROR CODE: " + errorCode.toString());
             
-            if(errorCode == ErrorCode.NO_NETWORK){
-                ((CatalogFragment) getParentFragment()).disableCatalogButtons();
-                showFragmentRetry(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ((CatalogFragment) getParentFragment()).enableCatalogButtons();
-                        getMoreProducts();
-                    }
-                }, R.string.no_connect_dialog_content);
-                return;
-            } else if (errorCode == ErrorCode.HTTP_STATUS) {
+//            if(errorCode == ErrorCode.NO_NETWORK){
+//                ((CatalogFragment) getParentFragment()).disableCatalogButtons();
+//                showFragmentRetry(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        ((CatalogFragment) getParentFragment()).enableCatalogButtons();
+//                        getMoreProducts();
+//                    }
+//                }, R.string.no_connect_dialog_content);
+//                return;
+//            } else 
+            if (errorCode == ErrorCode.HTTP_STATUS) {
                 showContinueShopping(this);
                 return;
-            } else if (getBaseActivity().handleErrorEvent(bundle)) {
+            } else if (super.handleErrorEvent(bundle)) {
                 return;
             }
         }
@@ -1147,10 +1154,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         int id = v.getId();
         // Case retry
         if (id == R.id.fragment_root_retry_button) onClickRetryButton();
-        // Case continue
-        else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
-        // Case unknown
-        else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+        else super.onClick(v);
     }
     
     /**

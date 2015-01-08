@@ -4,7 +4,9 @@
 	<!-- BASE MARGINS PX -->
     <dimen name="margin_10px">3.33dp</dimen>
     <dimen name="margin_20px">6.67dp</dimen>
+    <dimen name="margin_24px">8dp</dimen>
     <dimen name="margin_30px">10dp</dimen>
+    <dimen name="margin_32px">10.67dp</dimen>
     <dimen name="margin_40px">13.33dp</dimen>
     <dimen name="margin_50px">16.67dp</dimen>
     <dimen name="margin_60px">20dp</dimen>
@@ -13,6 +15,7 @@
     <dimen name="margin_90px">30dp</dimen>
     <dimen name="margin_100px">33.33dp</dimen>
     <dimen name="margin_110px">36.67dp</dimen>
+    <dimen name="margin_116px">38.67dp</dimen>
     <dimen name="margin_120px">40dp</dimen>
     <dimen name="margin_140px">46dp</dimen>
     <dimen name="margin_150px">50dp</dimen>
@@ -365,4 +368,6 @@
     <dimen name="toast_hover">64dp</dimen>
     <dimen name="buttontoast_hover">24dp</dimen>
     <dimen name="buttontoast_x_padding">12dp</dimen>
+    
+    <dimen name="retry_layout_height">@dimen/dimen_720px</dimen>
 </resources>

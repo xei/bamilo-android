@@ -8,6 +8,8 @@ import java.util.EnumSet;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import com.viewpagerindicator.CirclePageIndicator;
+
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.GalleryPagerAdapter;
@@ -173,6 +175,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
         mainView = view;
         mProductImageLoading = (RelativeLayout) view.findViewById(R.id.loading_gallery);
         mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.viewpager);
+        
         mCloseView = view.findViewById(R.id.gallery_button_close);
         mIndicatorLeftView = view.findViewById(R.id.gallery_button_indicator_left);
         mIndicatorRightView = view.findViewById(R.id.gallery_button_indicator_right);
@@ -368,8 +371,12 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
             mViewPager.setPageMargin((int) getActivity().getResources().getDimension(R.dimen.margin_large));
         }
 
-        mViewPager.setAdapter(galleryAdapter);
-
+       mViewPager.setAdapter(galleryAdapter);
+//        if(!super.isNestedFragment){
+            CirclePageIndicator view_pager_indicator = (CirclePageIndicator)getView().findViewById(R.id.view_pager_indicator);
+            view_pager_indicator.setViewPager(mViewPager);
+            view_pager_indicator.setFillColor(getView().getResources().getColor(R.color.orange_basic));
+//        }
         mViewPager.setCurrentItem(currentPosition);
 
         final GestureDetector tapGestureDetector = new GestureDetector(getActivity(), new TapGestureListener(mViewPager));
@@ -560,10 +567,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
             return;
         }
 
-        if (getBaseActivity() == null)
-            return;
-
-        getBaseActivity().handleSuccessEvent(bundle);
+        super.handleSuccessEvent(bundle);
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
@@ -598,7 +603,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
             return;
         }
 
-        if (getBaseActivity().handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(bundle)) {
             return;
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);

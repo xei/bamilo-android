@@ -388,6 +388,12 @@ public class JumiaApplication extends A4SApplication {
 
     // TODO : Validate recover
     public boolean sendRequest(Bundle bundle) {
+//        try {
+//            Thread.sleep(10);
+//        } catch (InterruptedException e1) {
+//            // TODO Auto-generated catch block
+//            e1.printStackTrace();
+//        }
         if(ServiceSingleton.getInstance().getService() != null){
             try {
                 ServiceSingleton.getInstance().getService().sendRequest(bundle);

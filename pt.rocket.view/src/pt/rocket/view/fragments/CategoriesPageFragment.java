@@ -11,6 +11,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.database.CategoriesTableHelper;
 import pt.rocket.framework.objects.Category;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.helpers.categories.GetCategoriesPerLevelsHelper;
@@ -421,25 +422,8 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     /**
      * ####### LISTENERS ####### 
      */
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-    @Override
-    public void onClick(View view) {
-        // Get view id
-        int id = view.getId();
-        // Case retry
-        if (id == R.id.fragment_root_retry_button) onClickRetryButton();
-        // Case Unknown
-        else Log.w(TAG, "WARNING: UNKNOWN BUTTON");
-    }
-    
-    /**
-     * Process the click on retry
-     * @author sergiopereira
-     */
-    private void onClickRetryButton(){
+
+    protected void onRetryRequest(EventType eventType){
         Log.d(TAG, "ON CLICK RETRY");
         triggerGetCategories(mCategoryKey);
     }
@@ -707,9 +691,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         // Validate fragment state
         if(isOnStoppingProcess) return;
         // Generic errors
-        if(getBaseActivity().handleErrorEvent(bundle)) return;
-        // Show retry
-        showRetry();
+        if(super.handleErrorEvent(bundle)) return;
     }
     
     /**

@@ -319,7 +319,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
             return true;
         }
 
-        if (getBaseActivity().handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(bundle)) {
             return true;
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);

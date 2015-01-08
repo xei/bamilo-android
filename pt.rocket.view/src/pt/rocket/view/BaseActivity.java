@@ -153,8 +153,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     private int mDrawableState = DrawerLayout.STATE_IDLE;
 
-    private final Set<EventType> contentEvents;
-
     private boolean isRegistered = false;
 
     private View warningView;
@@ -211,13 +209,12 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param titleResId
      * @param contentLayoutId
      */
-    public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems,
-            Set<EventType> contentEvents, Set<EventType> userEvents, int titleResId,
+    public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems, 
+            Set<EventType> userEvents, int titleResId,
             int contentLayoutId) {
         this(R.layout.main,
                 action,
                 enabledMenuItems,
-                contentEvents,
                 userEvents,
                 titleResId,
                 contentLayoutId);
@@ -234,10 +231,9 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param contentLayoutId
      */
     public BaseActivity(int activityLayoutId, NavigationAction action,
-            Set<MyMenuItem> enabledMenuItems, Set<EventType> contentEvents,
+            Set<MyMenuItem> enabledMenuItems,
             Set<EventType> userEvents, int titleResId, int contentLayoutId) {
         this.activityLayoutId = activityLayoutId;
-        this.contentEvents = contentEvents;
         this.userEvents = userEvents;
         this.action = action != null ? action : NavigationAction.Unknown;
         this.menuItems = enabledMenuItems;
@@ -352,31 +348,33 @@ public abstract class BaseActivity extends ActionBarActivity {
             mOnActivityResultIntent = null;
         }
 
-        if (!contentEvents.contains(EventType.GET_SHOPPING_CART_ITEMS_EVENT) &&
-                JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null) {
-            Bundle bundle = new Bundle();
-            bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
-            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), bundle, mIResponseCallback);
+        if (JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null) {
+                triggerGetShoppingCartItemsHelper();
         }
 
         AdjustTracker.onResume(this);
 
         TrackerDelegator.trackAppOpenAdjust(getApplicationContext(), mLaunchTime);
     }
-
-    IResponseCallback mIResponseCallback = new IResponseCallback() {
-
-        @Override
-        public void onRequestError(Bundle bundle) {
-            handleErrorEvent(bundle);
-
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            handleSuccessEvent(bundle);
-        }
-    };
+    
+    public void triggerGetShoppingCartItemsHelper(){
+        Log.i(TAG, "TRIGGER SHOPPING CART ITEMS");
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
+        triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), bundle, new IResponseCallback() {
+            
+            @Override
+            public void onRequestError(Bundle bundle) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void onRequestComplete(Bundle bundle) {
+                updateCartInfo();
+            }
+        });
+    }
 
     /**
      * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
@@ -1822,7 +1820,19 @@ public abstract class BaseActivity extends ActionBarActivity {
     public void finishFromAdapter() {
         finish();
     }
-
+    
+    public void onLogOut(){
+        /*
+         * NOTE: Others sign out methods are performed in {@link LogOut}.
+         */
+        // Track logout
+        TrackerDelegator.trackLogoutSuccessful();
+        // Goto Home
+        onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        // Hide progress
+        dismissProgress();
+    }
+    
     /**
      * Handles a successful event and reflects necessary changes on the UI.
      * 
@@ -1830,38 +1840,38 @@ public abstract class BaseActivity extends ActionBarActivity {
      *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
      */
 
-    public void handleSuccessEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-
-        switch (eventType) {
-        case GET_SHOPPING_CART_ITEMS_EVENT:
-        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-            updateCartInfo();
-            break;
-        case LOGOUT_EVENT:
-            Log.i(TAG, "LOGOUT EVENT");
-            /*
-             * NOTE: Others sign out methods are performed in {@link LogOut}.
-             */
-            // Track logout
-            TrackerDelegator.trackLogoutSuccessful();
-            // Goto Home
-            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            // Hide progress
-            dismissProgress();
-            break;
-        case LOGIN_EVENT:
-            JumiaApplication.INSTANCE.setLoggedIn(true);
-            Bundle b = new Bundle();
-            b.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
-            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), b, mIResponseCallback);
-            break;
-        default:
-            break;
-        }
-    }
+//    public void handleSuccessEvent(Bundle bundle) {
+//        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+//
+//        switch (eventType) {
+//        case GET_SHOPPING_CART_ITEMS_EVENT:
+//        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+//        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+//        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+//            updateCartInfo();
+//            break;
+//        case LOGOUT_EVENT:
+//            Log.i(TAG, "LOGOUT EVENT");
+//            /*
+//             * NOTE: Others sign out methods are performed in {@link LogOut}.
+//             */
+//            // Track logout
+//            TrackerDelegator.trackLogoutSuccessful();
+//            // Goto Home
+//            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+//            // Hide progress
+//            dismissProgress();
+//            break;
+//        case LOGIN_EVENT:
+//            JumiaApplication.INSTANCE.setLoggedIn(true);
+//            Bundle b = new Bundle();
+//            b.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
+//            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), b, mIResponseCallback);
+//            break;
+//        default:
+//            break;
+//        }
+//    }
 
     /**
      * Handles a failed event and shows dialogs to the user.
@@ -1869,126 +1879,126 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param event
      *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
      */
-    @SuppressWarnings("unchecked")
-    public boolean handleErrorEvent(final Bundle bundle) {
+//    @SuppressWarnings("unchecked")
+//    public boolean handleErrorEvent(final Bundle bundle) {
+//
+//        Log.i(TAG, "ON HANDLE ERROR EVENT");
+//
+//        final EventType eventType = (EventType) bundle
+//                .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+//        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+//
+//        if (eventType == EventType.LOGIN_EVENT) {
+//            JumiaApplication.INSTANCE.setLoggedIn(false);
+//            JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+//            updateNavigationMenu();
+//        }
+//
+//        if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
+//            return false;
+//        }
+//
+//        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
+//                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+//        if (errorCode == null) {
+//            return false;
+//        }
+//        if (errorCode.isNetworkError()) {
+//            switch (errorCode) {
+//            case SSL:
+//            case IO:
+//            case CONNECT_ERROR:
+//            case TIME_OUT:
+//            case HTTP_STATUS:
+//            case NO_NETWORK:
+//                createNoNetworkDialog(eventType);
+//                return true;
+//            case SERVER_IN_MAINTENANCE:
+//                setLayoutMaintenance(eventType);
+//                return true;
+//            case REQUEST_ERROR:
+//                List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+//                String dialogMsg = "";
+//                if (validateMessages == null || validateMessages.isEmpty()) {
+//                    validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
+//                }
+//                if (validateMessages != null) {
+//                    for (String message : validateMessages) {
+//                        dialogMsg += message + "\n";
+//                    }
+//                } else {
+//                    for (Entry<String, ? extends List<String>> entry : errorMessages.entrySet()) {
+//                        dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
+//                    }
+//                }
+//                if (dialogMsg.equals("")) {
+//                    dialogMsg = getString(R.string.validation_errortext);
+//                }
+//                // showContentContainer();
+//                dialog = DialogGenericFragment.newInstance(true, true, false,
+//                        getString(R.string.validation_title), dialogMsg,
+//                        getResources().getString(R.string.ok_label), "", new OnClickListener() {
+//
+//                            @Override
+//                            public void onClick(View v) {
+//                                int id = v.getId();
+//                                if (id == R.id.button1) {
+//                                    dialog.dismiss();
+//                                }
+//                            }
+//                        });
+//                
+//                dialog.show(getSupportFragmentManager(), null);
+//                return true;
+//            default:
+//                createNoNetworkDialog(eventType);
+//                return true;
+//            }
+//
+//        }
+//        return false;
+//
+//    }
 
-        Log.i(TAG, "ON HANDLE ERROR EVENT");
-
-        final EventType eventType = (EventType) bundle
-                .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-
-        if (eventType == EventType.LOGIN_EVENT) {
-            JumiaApplication.INSTANCE.setLoggedIn(false);
-            JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-            updateNavigationMenu();
-        }
-
-        if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
-            return false;
-        }
-
-        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
-                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-        if (errorCode == null) {
-            return false;
-        }
-        if (errorCode.isNetworkError()) {
-            switch (errorCode) {
-            case SSL:
-            case IO:
-            case CONNECT_ERROR:
-            case TIME_OUT:
-            case HTTP_STATUS:
-            case NO_NETWORK:
-                createNoNetworkDialog(eventType);
-                return true;
-            case SERVER_IN_MAINTENANCE:
-                setLayoutMaintenance(eventType);
-                return true;
-            case REQUEST_ERROR:
-                List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                String dialogMsg = "";
-                if (validateMessages == null || validateMessages.isEmpty()) {
-                    validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
-                }
-                if (validateMessages != null) {
-                    for (String message : validateMessages) {
-                        dialogMsg += message + "\n";
-                    }
-                } else {
-                    for (Entry<String, ? extends List<String>> entry : errorMessages.entrySet()) {
-                        dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
-                    }
-                }
-                if (dialogMsg.equals("")) {
-                    dialogMsg = getString(R.string.validation_errortext);
-                }
-                // showContentContainer();
-                dialog = DialogGenericFragment.newInstance(true, true, false,
-                        getString(R.string.validation_title), dialogMsg,
-                        getResources().getString(R.string.ok_label), "", new OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                int id = v.getId();
-                                if (id == R.id.button1) {
-                                    dialog.dismiss();
-                                }
-                            }
-                        });
-
-                dialog.show(getSupportFragmentManager(), null);
-                return true;
-            default:
-                createNoNetworkDialog(eventType);
-                return true;
-            }
-
-        }
-        return false;
-
-    }
-
-    private void createNoNetworkDialog(final EventType eventType) {
-        // Remove dialog if exist
-        if (dialog != null) {
-            try {
-                dialog.dismiss();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        dialog = DialogGenericFragment.createNoNetworkDialog(this,
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE
-                                .getRequestsRetryHelperList().get(eventType),
-                                JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
-                                JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
-                        if (dialog != null) dialog.dismiss();
-                        dialog = null;
-                    }
-                },
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        if (dialog != null) dialog.dismiss();
-                        dialog = null;
-                    }
-                },
-                false);
-
-        try {
-            dialog.show(getSupportFragmentManager(), null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    private void createNoNetworkDialog(final EventType eventType) {
+//        // Remove dialog if exist
+//        if (dialog != null) {
+//            try {
+//                dialog.dismiss();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        dialog = DialogGenericFragment.createNoNetworkDialog(this,
+//                new OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE
+//                                .getRequestsRetryHelperList().get(eventType),
+//                                JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
+//                                JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+//                        if (dialog != null) dialog.dismiss();
+//                        dialog = null;
+//                    }
+//                },
+//                new OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        if (dialog != null) dialog.dismiss();
+//                        dialog = null;
+//                    }
+//                },
+//                false);
+//
+//        try {
+//            dialog.show(getSupportFragmentManager(), null);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
      * @return the action
@@ -2213,7 +2223,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Sets Maintenance page
      */
-    private void setLayoutMaintenance(final EventType eventType) {
+    public void setLayoutMaintenance(final EventType eventType) {
         // Inflate maintenance
         mMainFallBackStub.setVisibility(View.VISIBLE);
 

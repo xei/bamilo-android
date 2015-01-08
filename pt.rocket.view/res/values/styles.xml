@@ -403,7 +403,7 @@
         <item name="android:textColor">@color/grey_dark</item>
         <item name="android:textSize">@dimen/text_button</item>
     </style>
-
+    
     <style name="button_grey_bottom" parent="_parent_button_bottom_container">
         <item name="android:background">@drawable/btn_grey</item>
     </style>
@@ -420,6 +420,9 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
+    <style name="button_fallback_retry">
+        <item name="android:background">@drawable/btn_grey</item>
+    </style>
     <!--
     style name="button_facebook">
         <item name="android:layout_width">match_parent</item>

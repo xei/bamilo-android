@@ -3,8 +3,11 @@ package pt.rocket.view.fragments;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.customfontviews.Button;
@@ -13,21 +16,26 @@ import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.objects.OrderSummary;
+import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.BaseHelper;
+import pt.rocket.helpers.cart.GetShoppingCartItemsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.OnActivityFragmentInteraction;
 import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
+import pt.rocket.view.SplashScreenActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -42,6 +50,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -52,7 +63,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction {
+public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction, OnClickListener {
     
     protected static final String TAG = LogTagHelper.create(BaseFragment.class);
     
@@ -82,7 +93,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     
     private int checkoutStep;
     
-    private Boolean isNestedFragment = false;
+    protected Boolean isNestedFragment = false;
     
     private boolean isOrderSummaryPresent;
     
@@ -243,6 +254,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         mRetryView = view.findViewById(R.id.fragment_retry_stub);
         // Get fall back layout
         mFallBackView = view.findViewById(R.id.fragment_fall_back_stub);
+        
     }
     
     /**
@@ -760,28 +772,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         setVisibility(mRetryView, false);
         setVisibility(mFallBackView, false);
         hideLoadingInfo(mLoadingView);
-    }
-    
-    /**
-     * Show the retry view from the root layout
-     * @param listener button
-     * @param retry message
-     * @author ricardo
-     */
-    protected void showFragmentRetry(OnClickListener listener, int retryMessage){
-        showFragmentRetry(listener);
-        
-        TextView fragment_root_retry_message = ((TextView)getView().findViewById(R.id.fragment_root_retry_message));
-        
-        if (fragment_root_retry_message != null) fragment_root_retry_message.setText(retryMessage);
-    }
+    } 
     
     /**
      * Show the retry view from the root layout
      * @param listener button
      * @author sergiopereira
      */
-    protected void showFragmentRetry(OnClickListener listener) {
+    protected void showFragmentRetry(final OnClickListener listener) {
         setVisibility(mContentView, false);
         setVisibility(mEmptyView, false);
         hideLoadingInfo(mLoadingView);
@@ -789,9 +787,38 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         setVisibility(mRetryView, true);
         // Set view
         try {
-            ((Button) getView().findViewById(R.id.fragment_root_retry_button)).setOnClickListener(listener);
+            (getView().findViewById(R.id.fragment_root_retry_button)).setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(v);
+                    Animation animation = AnimationUtils.loadAnimation(BaseFragment.this.getActivity(), R.anim.anim_rotate);
+                    ((ImageView)getView().findViewById(R.id.fragment_root_retry_spinning)).setAnimation(animation);
+                    
+                }
+            });
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
+        }
+    }
+    
+    protected void showFragmentRetry(final EventType eventType){
+        showFragmentRetry(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                   onRetryRequest(eventType);
+            }
+        });
+    }
+    
+    protected void onRetryRequest(EventType eventType){
+        Log.i(TAG, "ON RETRY REQUEST");
+        if(eventType != null){
+            JumiaApplication.INSTANCE.sendRequest(
+                    JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
+                    JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
+                    JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
         }
     }
     
@@ -983,5 +1010,119 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * ########### NEXT ########### 
      */
+    
+    public boolean handleSuccessEvent(Bundle bundle) {
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 
+        switch (eventType) {
+        case GET_SHOPPING_CART_ITEMS_EVENT:
+        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            getBaseActivity().updateCartInfo();
+            return true;
+        case LOGOUT_EVENT:
+            Log.i(TAG, "LOGOUT EVENT");
+            getBaseActivity().onLogOut();
+            return true;
+        case LOGIN_EVENT:
+            JumiaApplication.INSTANCE.setLoggedIn(true);
+            getBaseActivity().triggerGetShoppingCartItemsHelper();
+            return true;
+        default:
+            break;
+        }
+        return false;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public boolean handleErrorEvent(final Bundle bundle) {
+
+        Log.i(TAG, "ON HANDLE ERROR EVENT");
+        
+        final EventType eventType = (EventType) bundle
+                .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        
+        if (eventType == EventType.LOGIN_EVENT) {
+            JumiaApplication.INSTANCE.setLoggedIn(false);
+            JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+            getBaseActivity().updateNavigationMenu();
+        }
+
+        if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
+            return false;
+        }
+
+        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
+                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        if (errorCode == null) {
+            return false;
+        }
+        if (errorCode.isNetworkError()) {
+            switch (errorCode) {
+            case SSL:
+            case IO:
+            case CONNECT_ERROR:
+            case TIME_OUT:
+            case HTTP_STATUS:
+            case NO_NETWORK:
+                showFragmentRetry(eventType);
+                return true;
+            case SERVER_IN_MAINTENANCE:
+                getBaseActivity().setLayoutMaintenance(eventType);
+                return true;
+            case REQUEST_ERROR:
+                List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+                String dialogMsg = "";
+                if (validateMessages == null || validateMessages.isEmpty()) {
+                    validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
+                }
+                if (validateMessages != null) {
+                    for (String message : validateMessages) {
+                        dialogMsg += message + "\n";
+                    }
+                } else {
+                    for (Entry<String, ? extends List<String>> entry : errorMessages.entrySet()) {
+                        dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
+                    }
+                }
+                if (dialogMsg.equals("")) {
+                    dialogMsg = getString(R.string.validation_errortext);
+                }
+                // showContentContainer();
+                dialog = DialogGenericFragment.newInstance(true, true, false,
+                        getString(R.string.validation_title), dialogMsg,
+                        getResources().getString(R.string.ok_label), "", new OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                int id = v.getId();
+                                if (id == R.id.button1) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                
+                dialog.show(getActivity().getSupportFragmentManager(), null);
+                return true;
+            default:
+                showFragmentRetry(eventType);
+                return true;
+            }
+
+        }
+        return false;
+
+    }
+    
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        // Case retry
+        if (id == R.id.fragment_root_retry_button) onRetryRequest(null);
+        else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
+        else Log.w(TAG, "WARNING: UNKNOWN BUTTON");
+        
+    }
 }

@@ -399,24 +399,14 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      */
     @Override
     public void onClick(View view) {
-        // Get view id
+        super.onClick(view);
         int id = view.getId();
         // Buy button
         if(id == R.id.campaign_item_button_buy) onClickBuyButton(view);
         // Product name and image container
         else if (id == R.id.image_container || id == R.id.campaign_item_name) onClickProduct(view);
-        // Retry button
-        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
-    }
-    
-    /**
-     * Process the click on the retry button
-     * @author sergiopereira
-     */
-    private void onClickRetryButton(){
-        getAndShowCampaign();
     }
     
     /**
@@ -587,16 +577,17 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         }
         
         if(eventType != null){
-            if(errorCode == ErrorCode.NO_NETWORK){
-                ((CatalogFragment) getParentFragment()).disableCatalogButtons();
-                showFragmentRetry(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getAndShowCampaign();
-                    }
-                }, R.string.no_connect_dialog_content);
-                return true;
-            } else if (errorCode == ErrorCode.HTTP_STATUS) {
+//            if(errorCode == ErrorCode.NO_NETWORK){
+//                ((CatalogFragment) getParentFragment()).disableCatalogButtons();
+//                showFragmentRetry(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        getAndShowCampaign();
+//                    }
+//                }, R.string.no_connect_dialog_content);
+//                return true;
+//            } else 
+                if (errorCode == ErrorCode.HTTP_STATUS) {
                 showContinueShopping(new OnClickListener() {
                     
                     @Override
@@ -609,7 +600,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         }
         
         // Generic errors
-        if(getBaseActivity().handleErrorEvent(bundle)) return true;
+        if(super.handleErrorEvent(bundle)) return true;
         
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
@@ -629,7 +620,9 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         return false;
     }
     
-   
+   protected void onRetryRequest(EventType eventType){
+       getAndShowCampaign();
+   }
     
     /**
      * ########### RESPONSE LISTENER ###########  

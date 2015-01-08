@@ -176,7 +176,7 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
         
         @Override
         public void onRequestError(Bundle bundle) {
-            getBaseActivity().handleErrorEvent(bundle);
+            CheckoutWebFragment.super.handleErrorEvent(bundle);
         }
         
         @Override

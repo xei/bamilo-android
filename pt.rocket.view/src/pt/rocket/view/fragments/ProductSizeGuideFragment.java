@@ -5,8 +5,11 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
+import com.google.android.gms.internal.mc;
+
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -197,16 +200,24 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
      */
     private void showSizeGuide(PhotoView mImageView, String url) {
         Log.i(TAG, "ON SHOW SIZE GUIDE");
-        // Load image        
+     // Load image        
         RocketImageLoader.getInstance().loadImage(url, mImageView, null, R.drawable.no_image_large, new RocketImageLoaderListener() {
             
             @Override
-            public void onLoadedSuccess(Bitmap bitmap) { }
+            public void onLoadedSuccess(Bitmap bitmap) { 
+                showFragmentContentContainer();
+            }
             
             @Override
             public void onLoadedError() {
                 // Show continue shopping
-                showContinueShopping();
+                showFragmentRetry(new OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        onRetryRequest(null);
+                    }
+                });
             }
             
             @Override
@@ -277,4 +288,10 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
         }
     }
 
+    
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        Log.i(TAG, "ON RETRY REQUEST");
+        showSizeGuide(mImageView, mSizeGuideUrl);
+    }
 }

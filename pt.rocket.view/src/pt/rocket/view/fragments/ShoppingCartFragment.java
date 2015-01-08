@@ -473,7 +473,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         Bundle params;
         
         // Update cart info
-        getBaseActivity().handleSuccessEvent(bundle);
+        super.handleSuccessEvent(bundle);
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         // ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
@@ -639,7 +639,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         }
         
         // Validate generic errors
-        if (getBaseActivity().handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(bundle)) {
             return true;
         }
         

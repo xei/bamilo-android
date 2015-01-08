@@ -379,8 +379,8 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
         }
         
         // Generic error
-        if (getBaseActivity() != null && getBaseActivity().handleErrorEvent(bundle)) {
-            Log.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
+        if (super.handleErrorEvent(bundle)) {
+            Log.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             return true;
         }
         

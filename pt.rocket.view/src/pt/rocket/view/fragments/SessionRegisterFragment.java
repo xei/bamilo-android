@@ -486,7 +486,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
         }
 
         if (getBaseActivity() != null) {
-            getBaseActivity().handleSuccessEvent(bundle);
+            super.handleSuccessEvent(bundle);
         } else {
             return true;
         }
@@ -646,7 +646,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
             return true;
         }
 
-        if (getBaseActivity().handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(bundle)) {
             return true;
         }
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);

@@ -322,5 +322,8 @@
 	<string name="bamilo_not_available">بامیلو در حال حاضر در دسترس نمی باشد.</string>    
         
     <string name="invalid_product"></string>
+    
+   	<string name="try_again_retry">دوباره امتحان کنید</string>
+    <string name="connect_to_internet">An internet error occurred, please try again.</string>
 
 </resources>
