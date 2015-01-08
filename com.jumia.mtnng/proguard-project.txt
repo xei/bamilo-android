@@ -97,7 +97,7 @@
 -dontnote com.google.vending.licensing.ILicensingService
 -dontnote com.android.vending.licensing.ILicensingService
 
--libraryjars ../pt.rocket.framework/libs/newrelic.android.jar(!sun.misc.Unsafe)
+#-libraryjars ../pt.rocket.framework/libs/newrelic.android.jar(!sun.misc.Unsafe)
 -libraryjars bin/classes(com/google/android/gms/R*.class)
 
 -libraryjars bin/classes(com/ad4screen/sdk/R*.class)
