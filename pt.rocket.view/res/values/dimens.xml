@@ -38,6 +38,7 @@
     <dimen name="dimen_60px">20dp</dimen>
     <dimen name="dimen_70px">23.33dp</dimen>
     <dimen name="dimen_71px">23.66dp</dimen>
+    <dimen name="dimen_78px">26dp</dimen>
     <dimen name="dimen_80px">26.67dp</dimen>
     <dimen name="dimen_90px">30dp</dimen>
     <dimen name="dimen_100px">33.33dp</dimen>

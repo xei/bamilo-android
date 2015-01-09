@@ -39,6 +39,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
 
@@ -78,6 +79,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
     private View mIndicatorRightView;
     
     private String mCompleteProductUrl;
+
+    private CirclePageIndicator view_pager_indicator;
 
     /**
      * Constructor using a nested flag
@@ -185,37 +188,35 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
         // Set indicators
         setIndicators();
         
-        // set page listener to handler infinite scrool event.
-        mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+      mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
-            @Override
-            public void onPageSelected(int arg0) {
-                
-                currentPosition = arg0;
-            }
+          @Override
+          public void onPageSelected(int arg0) {
+              currentPosition = arg0;
+          }
 
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
+          @Override
+          public void onPageScrolled(int arg0, float arg1, int arg2) {
+          }
 
-            }
+          @Override
+          public void onPageScrollStateChanged(int arg0) {
+              //int pageCount = galleryAdapter.getCount();
 
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
+              if (arg0 == ViewPager.SCROLL_STATE_SETTLING) {
+                  if (mViewPager != null)
+                      mViewPager.setPagingEnabled(false);
+              }
 
-                //int pageCount = galleryAdapter.getCount();
+              if (arg0 == ViewPager.SCROLL_STATE_IDLE) {
+                  //new ChangePageTask().execute(arg0);
+                  
+                  changePage();
+              }
 
-                if (arg0 == ViewPager.SCROLL_STATE_SETTLING) {
-                    if (mViewPager != null)
-                        mViewPager.setPagingEnabled(false);
-                }
-
-                if (arg0 == ViewPager.SCROLL_STATE_IDLE) {
-                    //new ChangePageTask().execute(arg0);
-                    changePage();
-                }
-
-            }
-        });
+          }
+      });
+        
     }
     
     private void changePage() {
@@ -230,12 +231,14 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
                         if (currentPosition == 0) {
                             // mViewPager.toggleJumiaScroller(false);
                             mViewPager.setCurrentItem(pageCount - 2, false);
-
+                            view_pager_indicator.onPageSelected(pageCount - 2);
                             //
                         } else if (currentPosition == pageCount - 1) {
                             // mViewPager.toggleJumiaScroller(false);
                             mViewPager.setCurrentItem(1, false);
-                        }
+                            view_pager_indicator.onPageSelected(1);
+                        } else 
+                            view_pager_indicator.onPageSelected(currentPosition);
                     } catch (NullPointerException e) {
                         Log.w(TAG, "WARNING NPE IN CHANGE PAGE");
                     }
@@ -372,11 +375,10 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
         }
 
        mViewPager.setAdapter(galleryAdapter);
-//        if(!super.isNestedFragment){
-            CirclePageIndicator view_pager_indicator = (CirclePageIndicator)getView().findViewById(R.id.view_pager_indicator);
-            view_pager_indicator.setViewPager(mViewPager);
-            view_pager_indicator.setFillColor(getView().getResources().getColor(R.color.orange_basic));
-//        }
+
+//        setIndicatorForViewPager();
+            
+
         mViewPager.setCurrentItem(currentPosition);
 
         final GestureDetector tapGestureDetector = new GestureDetector(getActivity(), new TapGestureListener(mViewPager));
@@ -401,6 +403,48 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
 
     }
 
+//    private void setIndicatorForViewPager(){
+//        view_pager_indicator = (CirclePageIndicator)getView().findViewById(R.id.view_pager_indicator);
+//        view_pager_indicator.setViewPager(mViewPager);
+//        if(isZoomAvailable){
+//            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view_pager_indicator.getLayoutParams();
+//            p.setMargins(0, 0, 0, (int)getView().getResources().getDimension(R.dimen.dimen_78px));
+//            view_pager_indicator.requestLayout();
+//        }
+//        
+//        mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+//
+//            @Override
+//            public void onPageSelected(int arg0) {
+//                view_pager_indicator.onPageSelected(arg0);
+//                currentPosition = arg0;
+//            }
+//
+//            @Override
+//            public void onPageScrolled(int arg0, float arg1, int arg2) {
+//                //view_pager_indicator.onPageScrolled(arg0, arg1, arg2);
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int arg0) {
+//                view_pager_indicator.onPageScrollStateChanged(arg0);
+//                //int pageCount = galleryAdapter.getCount();
+//
+//                if (arg0 == ViewPager.SCROLL_STATE_SETTLING) {
+//                    if (mViewPager != null)
+//                        mViewPager.setPagingEnabled(false);
+//                }
+//
+//                if (arg0 == ViewPager.SCROLL_STATE_IDLE) {
+//                    //new ChangePageTask().execute(arg0);
+//                    
+//                    changePage();
+//                }
+//
+//            }
+//        });
+//        
+//    }
 
     private void showImageLoading() {
         mProductImageLoading.setVisibility(View.VISIBLE);

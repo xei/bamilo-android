@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" >
+    android:background="@android:color/white" xmlns:app="http://schemas.android.com/apk/res-auto">
         
     <pt.rocket.utils.JumiaViewPagerWithZoom
         android:id="@+id/viewpager"
@@ -11,15 +11,19 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_gravity="center_vertical"
         android:background="@drawable/selector_listitem_highlight" />
-    
+    <!-- 
     	<com.viewpagerindicator.CirclePageIndicator
        	android:id="@+id/view_pager_indicator"
-       	android:layout_height="10dp"
+       	android:layout_height="wrap_content"
 		android:layout_width="match_parent"
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true"
+		app:fillColor="@color/orange_basic"
+		app:pageColor="@color/grey_middlelight"
+		android:layout_marginBottom="11.67dp"
+		app:extraSpacing="@dimen/margin_10px"
 		 />
-
+ -->
     <RelativeLayout
         android:id="@+id/loading_gallery"
         android:layout_width="match_parent"
