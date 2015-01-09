@@ -80,7 +80,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
     
     private String mCompleteProductUrl;
 
-    private CirclePageIndicator view_pager_indicator;
+//    private CirclePageIndicator view_pager_indicator;
 
     /**
      * Constructor using a nested flag
@@ -192,15 +192,18 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
 
           @Override
           public void onPageSelected(int arg0) {
+//              view_pager_indicator.onPageSelected(arg0);
               currentPosition = arg0;
           }
 
           @Override
           public void onPageScrolled(int arg0, float arg1, int arg2) {
+              //view_pager_indicator.onPageScrolled(arg0, arg1, arg2);
           }
 
           @Override
           public void onPageScrollStateChanged(int arg0) {
+//              view_pager_indicator.onPageScrollStateChanged(arg0);
               //int pageCount = galleryAdapter.getCount();
 
               if (arg0 == ViewPager.SCROLL_STATE_SETTLING) {
@@ -231,14 +234,14 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
                         if (currentPosition == 0) {
                             // mViewPager.toggleJumiaScroller(false);
                             mViewPager.setCurrentItem(pageCount - 2, false);
-                            view_pager_indicator.onPageSelected(pageCount - 2);
+//                            view_pager_indicator.onPageSelected(pageCount - 2);
                             //
-                        } else if (currentPosition == pageCount - 1) {
+                        } else if (currentPosition == pageCount - 1) 
                             // mViewPager.toggleJumiaScroller(false);
                             mViewPager.setCurrentItem(1, false);
-                            view_pager_indicator.onPageSelected(1);
-                        } else 
-                            view_pager_indicator.onPageSelected(currentPosition);
+//                            view_pager_indicator.onPageSelected(1);
+//                        } else 
+//                            view_pager_indicator.onPageSelected(currentPosition);
                     } catch (NullPointerException e) {
                         Log.w(TAG, "WARNING NPE IN CHANGE PAGE");
                     }
