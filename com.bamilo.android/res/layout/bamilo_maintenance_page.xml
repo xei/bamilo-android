@@ -47,54 +47,80 @@
 
     <View
         android:id="@+id/fallback_options_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <View
         android:id="@+id/fallback_title_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <View
         android:id="@+id/fallback_change_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <View
         android:id="@+id/fallback_best"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <View
         android:id="@+id/fallback_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <View
         android:id="@+id/fallback_options_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <View
         android:id="@+id/fallback_country_double"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <View
         android:id="@+id/fallback_country_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <View
         android:id="@+id/fallback_country_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <View
         android:id="@+id/fallback_country_bottom_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <View
         android:id="@+id/fallback_country_bottom_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <View
         android:id="@+id/fallback_choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <View
         android:id="@+id/fallback_doorstep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
 </RelativeLayout>
