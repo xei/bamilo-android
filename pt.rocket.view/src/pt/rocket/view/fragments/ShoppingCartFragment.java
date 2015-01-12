@@ -632,6 +632,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
     protected boolean onErrorEvent(Bundle bundle) {
         
+        hideActivityProgress();
+        
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -654,10 +656,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             voucherCode.setText("");
             voucherError.setVisibility(View.VISIBLE);
             // voucherDivider.setBackgroundColor(R.color.red_middle);
-            hideActivityProgress();
             break;
         case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-            hideActivityProgress();
             break;
         default:
             break;

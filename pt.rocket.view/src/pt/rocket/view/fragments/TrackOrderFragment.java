@@ -15,6 +15,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.OrderTracker;
 import pt.rocket.framework.objects.OrderTrackerItem;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.checkout.GetTrackOrderHelper;
@@ -245,33 +246,37 @@ public class TrackOrderFragment extends BaseFragment {
 
         @Override
         public void onClick(View v) {
-            getBaseActivity().hideKeyboard();
-            String orderNumber = mEditText.getText().toString();
-            if (orderNumber != null && orderNumber.length() > 0) {
-                // set status container visible from this point on
-                showStatusContainer();
-                setTipVisibility(false);
-                order_number = "";
-                showLoading();
-                Bundle args = new Bundle();
-                args.putString(GetTrackOrderHelper.ORDER_NR, orderNumber);
-                JumiaApplication.INSTANCE.sendRequest(new GetTrackOrderHelper(), args, new IResponseCallback() {
-                    @Override
-                    public void onRequestError(Bundle bundle) {
-                        onErrorEvent(bundle);
-                    }
-                    
-                    @Override
-                    public void onRequestComplete(Bundle bundle) {
-                        onSuccessEvent(bundle);
-                    }
-                });
-            } else {
-                showTip();
-            }
+            onClickTrackOrder();
         }
     };
 
+    private void onClickTrackOrder(){
+        getBaseActivity().hideKeyboard();
+        String orderNumber = mEditText.getText().toString();
+        if (orderNumber != null && orderNumber.length() > 0) {
+            // set status container visible from this point on
+            showStatusContainer();
+            setTipVisibility(false);
+            order_number = "";
+            showLoading();
+            Bundle args = new Bundle();
+            args.putString(GetTrackOrderHelper.ORDER_NR, orderNumber);
+            JumiaApplication.INSTANCE.sendRequest(new GetTrackOrderHelper(), args, new IResponseCallback() {
+                @Override
+                public void onRequestError(Bundle bundle) {
+                    onErrorEvent(bundle);
+                }
+                
+                @Override
+                public void onRequestComplete(Bundle bundle) {
+                    onSuccessEvent(bundle);
+                }
+            });
+        } else {
+            showTip();
+        }
+    }
+    
     private void showTip(){
         showStatusContainer();
         if(mOrderTracker == null)
@@ -284,6 +289,12 @@ public class TrackOrderFragment extends BaseFragment {
         } else {
             getView().findViewById(R.id.tip_tracking_order).setVisibility(View.VISIBLE);
         }
+    }
+    
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        super.onRetryRequest(eventType);
+        showFragmentContentContainer();
     }
     
     /**
@@ -374,9 +385,10 @@ public class TrackOrderFragment extends BaseFragment {
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
-        }
+        };
         Log.d(TAG, "ON SUCCESS EVENT");
         mOrderTracker = (OrderTracker) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        showFragmentContentContainer();
         proccessSuccess();
         return true;
     }

@@ -638,7 +638,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             return true;
         }
         // Generic errors
-        if(super.handleErrorEvent(bundle)) return true;
+        super.handleErrorEvent(bundle);
         
         isExecutingSendReview = false;
         switch (eventType) {
@@ -669,19 +669,19 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
             return false;
         case REVIEW_PRODUCT_EVENT:
-            dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
-                    new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (checkReview() && !isExecutingSendReview) {
-                                isExecutingSendReview = true;
-                                executeSendReview();
-                            }
-                            dialog.dismiss();
-                        }
-                    }, false);
-            dialog.setCancelable(false);
-            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+//            dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
+//                    new OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            if (checkReview() && !isExecutingSendReview) {
+//                                isExecutingSendReview = true;
+//                                executeSendReview();
+//                            }
+//                            dialog.dismiss();
+//                        }
+//                    }, false);
+//            dialog.setCancelable(false);
+//            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
             hideActivityProgress();
             isExecutingSendReview = false;
             return false;
@@ -767,6 +767,12 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             getBaseActivity().onSwitchFragment(FragmentType.WRITE_REVIEW, getArguments(), FragmentController.ADD_TO_BACK_STACK);
 
         }
+    }
+    
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        isExecutingSendReview = true;
+        executeSendReview();
     }
 
 }

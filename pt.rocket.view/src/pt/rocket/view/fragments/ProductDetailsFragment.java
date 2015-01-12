@@ -1399,6 +1399,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                             }
 
                         } else if (id == R.id.button2) {
+                            showFragmentContentContainer();
                             mDialogAddedToCart.dismiss();
                         }
                     }
@@ -1710,6 +1711,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     public void onErrorEvent(Bundle bundle) {
 
+        hideActivityProgress();
+        
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");

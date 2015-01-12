@@ -13,7 +13,7 @@
         android:layout_marginTop="@dimen/margin_116px"
         android:layout_marginBottom="@dimen/margin_70px"/>
 
-    <TextView
+    <pt.rocket.components.customfontviews.TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/error_no_connection"
@@ -23,7 +23,7 @@
             android:textColor="@color/text_root"
             android:fontFamily="roboto_regular"
             />
-    <TextView
+    <pt.rocket.components.customfontviews.TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="false"

@@ -364,7 +364,9 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
             return true;
         }
 
-        super.handleErrorEvent(bundle);
+        boolean errorHandled = false;
+        if(super.handleErrorEvent(bundle))
+            errorHandled = true;
         
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
@@ -373,7 +375,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
         case GET_MY_ORDERS_LIST_EVENT:
 
            
-            if(isVisible){
+            if(isVisible && !errorHandled){
                 Log.w("ORDER","ERROR Visible");
                     if(null == JumiaApplication.CUSTOMER){
                         triggerLogin();
