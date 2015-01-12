@@ -1,13 +1,14 @@
 package pt.rocket.utils;
 
+import pt.rocket.components.infiniteviewpager.InfiniteViewPager;
 import pt.rocket.framework.utils.LogTagHelper;
 import android.content.Context;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import de.akquinet.android.androlog.Log;
 
-public class JumiaViewPagerWithZoom extends ViewPager {
+//public class JumiaViewPagerWithZoom extends ViewPager {
+public class JumiaViewPagerWithZoom extends InfiniteViewPager {
     private boolean isPagingEnabled = true;
     private String TAG = LogTagHelper.create(JumiaViewPagerWithZoom.class);
 

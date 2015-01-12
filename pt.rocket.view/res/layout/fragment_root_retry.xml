@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/background_color"
-    android:gravity="top" >
+    android:gravity="top" 
+    >
 
     <LinearLayout 
               android:orientation="vertical"
@@ -30,7 +31,9 @@
             style="@style/button_fallback_retry"
             android:gravity="center"
             android:layout_gravity="center"
-            android:clickable="true">
+            android:clickable="true"
+            android:layoutDirection="locale"
+            >
             
         <ImageView
                 android:id="@+id/fragment_root_retry_spinning"

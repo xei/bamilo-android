@@ -1,0 +1,2 @@
+InfinitePageIndicator 1.0
+https://github.com/surfstudio/InfinitePageIndicator

@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 import org.apache.commons.collections4.CollectionUtils;
-
-import com.viewpagerindicator.CirclePageIndicator;
-
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.infiniteviewpager.InfiniteCirclePageIndicator;
+import pt.rocket.components.infiniteviewpager.InfinitePagerAdapter;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.GalleryPagerAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -55,9 +54,13 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
     private static ProductImageGalleryFragment sProductImageGalleryFragment;
 
     private JumiaViewPagerWithZoom mViewPager;
+    
+//    private InfiniteViewPager mViewPager;
 
     private GalleryPagerAdapter galleryAdapter;
 
+//    private GalleryPhotosPagerAdapter galleryAdapter;
+    
     private RelativeLayout mProductImageLoading;
 
     private CompleteProduct mCompleteProduct;
@@ -68,15 +71,11 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
 
     private int mVariationsListPosition = 1;
 
-    private int currentPosition = 1;
+    private int currentPosition = 0;
     
     private ArrayList<String> imagesList;
 
     private View mCloseView;
-
-    private View mIndicatorLeftView;
-
-    private View mIndicatorRightView;
     
     private String mCompleteProductUrl;
 
@@ -95,7 +94,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
         // Save arguments
         sProductImageGalleryFragment.mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, 1);
         sProductImageGalleryFragment.currentPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
-        if (sProductImageGalleryFragment.currentPosition <= 0) sProductImageGalleryFragment.currentPosition = 1;
+        if (sProductImageGalleryFragment.currentPosition <= 0) sProductImageGalleryFragment.currentPosition = 0;
         sProductImageGalleryFragment.isZoomAvailable = bundle.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
         String contentUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
         sProductImageGalleryFragment.mCompleteProductUrl = contentUrl != null ? contentUrl : "";
@@ -178,13 +177,14 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
         mainView = view;
         mProductImageLoading = (RelativeLayout) view.findViewById(R.id.loading_gallery);
         mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.viewpager);
+//        mViewPager = (InfiniteViewPager) view.findViewById(R.id.viewpager);
         
         mCloseView = view.findViewById(R.id.gallery_button_close);
-        mIndicatorLeftView = view.findViewById(R.id.gallery_button_indicator_left);
-        mIndicatorRightView = view.findViewById(R.id.gallery_button_indicator_right);
 
         // Set close button
         setCloseButton();
+        
+        /* Necessary for adding virtual positions (older implementation)
         // Set indicators
         setIndicators();
         
@@ -192,18 +192,15 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
 
           @Override
           public void onPageSelected(int arg0) {
-//              view_pager_indicator.onPageSelected(arg0);
               currentPosition = arg0;
           }
 
           @Override
           public void onPageScrolled(int arg0, float arg1, int arg2) {
-              //view_pager_indicator.onPageScrolled(arg0, arg1, arg2);
           }
 
           @Override
           public void onPageScrollStateChanged(int arg0) {
-//              view_pager_indicator.onPageScrollStateChanged(arg0);
               //int pageCount = galleryAdapter.getCount();
 
               if (arg0 == ViewPager.SCROLL_STATE_SETTLING) {
@@ -219,9 +216,13 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
 
           }
       });
-        
+        */
     }
     
+    /** Older implementation of infinite view pager.
+     * 
+     */
+    @Deprecated
     private void changePage() {
         try {
             getBaseActivity().runOnUiThread(new Runnable() {
@@ -339,13 +340,13 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
     
     /**
      * Set the indicators
-     */
+     
     private void setIndicators() {
         if(isZoomAvailable) {
             mIndicatorLeftView.setVisibility(View.VISIBLE);
             mIndicatorRightView.setVisibility(View.VISIBLE);
         }
-    }
+    }*/
     
 
     private void createViewPager() {
@@ -359,15 +360,20 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
         if (galleryAdapter != null) {
             imagesList = (ArrayList<String>) mCompleteProduct.getImageList().clone();
 
+            /* Necessary for adding virtual positions (older implementation)
+             
             imagesList.add(0, imagesList.get(imagesList.size() - 1));
-            imagesList.add(imagesList.get(1));
+            imagesList.add(imagesList.get(1));*/
 
             galleryAdapter.replaceAll(imagesList);
         } else {
             imagesList = (ArrayList<String>) mCompleteProduct.getImageList().clone();
+            
+            /* Necessary for adding virtual positions (older implementation)
+             
             imagesList.add(0, imagesList.get(imagesList.size() - 1));
             imagesList.add(imagesList.get(1));
-
+             */
             galleryAdapter = new GalleryPagerAdapter(getActivity(), imagesList, isZoomAvailable);
 
         }
@@ -376,10 +382,10 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
             mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
             mViewPager.setPageMargin((int) getActivity().getResources().getDimension(R.dimen.margin_large));
         }
-
-       mViewPager.setAdapter(galleryAdapter);
-
-//        setIndicatorForViewPager();
+        InfinitePagerAdapter infinitePagerAdapter = new InfinitePagerAdapter(galleryAdapter);
+        infinitePagerAdapter.setOneItemMode();
+       mViewPager.setAdapter(infinitePagerAdapter);
+        setIndicatorForViewPager();
             
 
         mViewPager.setCurrentItem(currentPosition);
@@ -406,48 +412,18 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
 
     }
 
-//    private void setIndicatorForViewPager(){
-//        view_pager_indicator = (CirclePageIndicator)getView().findViewById(R.id.view_pager_indicator);
-//        view_pager_indicator.setViewPager(mViewPager);
-//        if(isZoomAvailable){
-//            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view_pager_indicator.getLayoutParams();
-//            p.setMargins(0, 0, 0, (int)getView().getResources().getDimension(R.dimen.dimen_78px));
-//            view_pager_indicator.requestLayout();
-//        }
-//        
-//        mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
-//
-//            @Override
-//            public void onPageSelected(int arg0) {
-//                view_pager_indicator.onPageSelected(arg0);
-//                currentPosition = arg0;
-//            }
-//
-//            @Override
-//            public void onPageScrolled(int arg0, float arg1, int arg2) {
-//                //view_pager_indicator.onPageScrolled(arg0, arg1, arg2);
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int arg0) {
-//                view_pager_indicator.onPageScrollStateChanged(arg0);
-//                //int pageCount = galleryAdapter.getCount();
-//
-//                if (arg0 == ViewPager.SCROLL_STATE_SETTLING) {
-//                    if (mViewPager != null)
-//                        mViewPager.setPagingEnabled(false);
-//                }
-//
-//                if (arg0 == ViewPager.SCROLL_STATE_IDLE) {
-//                    //new ChangePageTask().execute(arg0);
-//                    
-//                    changePage();
-//                }
-//
-//            }
-//        });
-//        
-//    }
+    private void setIndicatorForViewPager(){
+        InfiniteCirclePageIndicator view_pager_indicator = (InfiniteCirclePageIndicator)getView().findViewById(R.id.view_pager_indicator);
+        view_pager_indicator.setFillColor(getView().getResources().getColor(R.color.orange_basic));
+        view_pager_indicator.setPageColor(getView().getResources().getColor(R.color.grey_middlelight));
+        if(isZoomAvailable){
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view_pager_indicator.getLayoutParams();
+            p.setMargins(0, 0, 0, (int)getView().getResources().getDimension(R.dimen.dimen_78px));
+            view_pager_indicator.requestLayout();
+        }
+        view_pager_indicator.setSnap(true);
+        view_pager_indicator.setViewPager(mViewPager);
+    }
 
     private void showImageLoading() {
         mProductImageLoading.setVisibility(View.VISIBLE);
@@ -517,7 +493,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
                 Log.i(TAG, "onSingleTapConfirmed");
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
-                bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, currentPosition);
+               bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, currentPosition);
                 bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
                 bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
                 bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
