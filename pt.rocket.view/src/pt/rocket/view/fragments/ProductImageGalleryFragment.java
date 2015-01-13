@@ -54,12 +54,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
     private static ProductImageGalleryFragment sProductImageGalleryFragment;
 
     private JumiaViewPagerWithZoom mViewPager;
-    
-//    private InfiniteViewPager mViewPager;
 
     private GalleryPagerAdapter galleryAdapter;
-
-//    private GalleryPhotosPagerAdapter galleryAdapter;
     
     private RelativeLayout mProductImageLoading;
 
@@ -384,7 +380,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
         }
         InfinitePagerAdapter infinitePagerAdapter = new InfinitePagerAdapter(galleryAdapter);
         infinitePagerAdapter.setOneItemMode();
-       mViewPager.setAdapter(infinitePagerAdapter);
+        mViewPager.setAdapter(infinitePagerAdapter);
         setIndicatorForViewPager();
             
 
@@ -554,8 +550,10 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
         }
 
         createViewPager();
-        if (currentPosition <= 0) currentPosition = 1;
-        updateImage(currentPosition);
+        if (currentPosition <= 0) currentPosition = 0;
+        
+//        Line was commented due to bad behavior on infinite view pager that it was causing
+//        updateImage(currentPosition);
     }
 
     @Override
