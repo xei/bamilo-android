@@ -411,6 +411,7 @@ public class HeadlessAddToCartFragment extends BaseFragment implements IResponse
         switch (eventType) {
         case LOGIN_EVENT:
             Log.d(TAG, "RECEIVED LOGIN_EVENT");
+            clearCredentials();
             startAddToCartThread();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:

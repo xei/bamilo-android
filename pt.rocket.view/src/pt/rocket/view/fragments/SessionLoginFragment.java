@@ -714,7 +714,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 return true;
             }
         } else if (eventType == EventType.LOGIN_EVENT) {
-            JumiaApplication.INSTANCE.setLoggedIn(false);
+            clearCredentials();
 
             TrackerDelegator.trackLoginFailed(wasAutologin, GTMValues.LOGIN, GTMValues.EMAILAUTH);
 

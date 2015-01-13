@@ -1044,12 +1044,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         
-        if (eventType == EventType.LOGIN_EVENT) {
-            JumiaApplication.INSTANCE.setLoggedIn(false);
-            JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-            getBaseActivity().updateNavigationMenu();
-        }
-
         if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
             return false;
         }
@@ -1106,9 +1100,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 
                 dialog.show(getActivity().getSupportFragmentManager(), null);
                 return true;
-            default:
-                showFragmentRetry(eventType);
-                return true;
+//            default:
+//                Log.i(TAG, "DEFAULT HANDLE ERROR EVENT");
+//                showFragmentRetry(eventType);
+//                return true;
             }
 
         }
@@ -1124,5 +1119,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
         else Log.w(TAG, "WARNING: UNKNOWN BUTTON");
         
+    }
+    
+    protected void clearCredentials(){
+        JumiaApplication.INSTANCE.setLoggedIn(false);
+        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+        getBaseActivity().updateNavigationMenu();
     }
 }

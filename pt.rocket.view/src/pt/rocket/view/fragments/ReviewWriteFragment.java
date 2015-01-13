@@ -637,10 +637,12 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
+        isExecutingSendReview = false;
         // Generic errors
         super.handleErrorEvent(bundle);
         
-        isExecutingSendReview = false;
+        
+        
         switch (eventType) {
         // case GET_CUSTOMER:
         // List<String> errors = event.errorMessages.get( Errors.JSON_ERROR_TAG);
@@ -658,15 +660,15 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         // // Log.i("DIDNT GET CUSTOMER"," HERE ");
         // return true;
         case GET_RATING_OPTIONS_EVENT:
-            dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
-                    new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            triggerRatingOptions();
-                            dialog.dismiss();
-                        }
-                    }, false);
-            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+//            dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
+//                    new OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            triggerRatingOptions();
+//                            dialog.dismiss();
+//                        }
+//                    }, false);
+//            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
             return false;
         case REVIEW_PRODUCT_EVENT:
 //            dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
@@ -771,8 +773,19 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
     
     @Override
     protected void onRetryRequest(EventType eventType) {
-        isExecutingSendReview = true;
-        executeSendReview();
+        switch(eventType){
+        case GET_RATING_OPTIONS_EVENT:
+            triggerRatingOptions();
+            return;
+        case REVIEW_PRODUCT_EVENT:
+            isExecutingSendReview = true;
+            executeSendReview();
+            return;
+        default:
+            super.onRetryRequest(eventType);
+            return;
+        }
+        
     }
 
 }

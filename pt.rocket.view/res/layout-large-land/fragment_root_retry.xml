@@ -37,7 +37,8 @@
             style="@style/button_fallback_retry"
             android:gravity="center"
             android:layout_gravity="center"
-            android:clickable="true">
+            android:clickable="true"
+            android:layoutDirection="locale">
             
         <ImageView
                 android:id="@+id/fragment_root_retry_spinning"

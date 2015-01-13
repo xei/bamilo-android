@@ -592,6 +592,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         case GET_PROMOTIONS:
             break;
         case LOGIN_EVENT:
+            clearCredentials();
             TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
             break;
         default:

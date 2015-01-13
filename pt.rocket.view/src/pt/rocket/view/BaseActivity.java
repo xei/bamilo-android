@@ -1429,7 +1429,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 tvActionCartCount.setText(quantity);
             }
         });
-
+        hideKeyboard();
     }
 
     private void updateCartInfoInNavigation() {

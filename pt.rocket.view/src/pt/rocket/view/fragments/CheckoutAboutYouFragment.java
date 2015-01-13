@@ -978,7 +978,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             break;
         case FACEBOOK_LOGIN_EVENT:
         case LOGIN_EVENT:
-
+            
+            clearCredentials();
+            
             String type = (eventType == EventType.FACEBOOK_LOGIN_EVENT) ? type = GTMValues.FACEBOOK : GTMValues.EMAILAUTH;
             TrackerDelegator.trackLoginFailed(onAutoLogin, GTMValues.CHECKOUT, type);
             if (errorCode == ErrorCode.REQUEST_ERROR) {
