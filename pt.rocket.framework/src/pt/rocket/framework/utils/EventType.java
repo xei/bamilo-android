@@ -203,7 +203,11 @@ public enum EventType {
 	
 	GET_FAVOURITE_LIST,
 	
-	GET_RECENLTLYVIEWED_LIST;
+	GET_RECENLTLYVIEWED_LIST,
+	
+	GET_PRODUCT_BUNDLE("http:/catalog/bundle/sku/", RestContract.NO_CACHE),
+	
+	ADD_PRODUCT_BUNDLE("http:/order/addbundle/", RestContract.NO_CACHE);
 
     public final String action;
     public final Integer cacheTime;

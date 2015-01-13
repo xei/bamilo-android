@@ -47,7 +47,8 @@
         android:layout_gravity="center_vertical"
         android:gravity="left|start"
         android:marqueeRepeatLimit="marquee_forever"
-        android:text="Menu item"
-        android:layout_marginRight="@dimen/margin_20px" />
+        android:layout_marginRight="@dimen/margin_20px"
+        android:layout_marginEnd="@dimen/margin_20px"
+        android:text="Menu item" />
 
 </LinearLayout>

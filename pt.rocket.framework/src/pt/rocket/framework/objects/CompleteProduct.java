@@ -66,6 +66,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	private double mPriceConverted;
 	private double mSpecialPriceConverted;
 	private String mSizeGuideUrl;
+	private ProductBundle productBundle;
 //	private int simpleSkuPosition;
 
 	/**
@@ -89,6 +90,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		mPriceConverted = 0d;
 		mSpecialPriceConverted = 0d;
 		mSizeGuideUrl = "";
+		productBundle = null;
 	}
 
 	/*
@@ -617,11 +619,19 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	    return TextUtils.isEmpty(mSizeGuideUrl) ? false : true;
 	}
 	
-	/*
-	 * ############ PARCELABLE ############
-	 */
+    public ProductBundle getProductBundle() {
+        return productBundle;
+    }
 
+    public void setProductBundle(ProductBundle productBundle) {
+        this.productBundle = productBundle;
+    }
 
+    /*
+     * ############ PARCELABLE ############
+     */
+
+    
     /*
 	 * (non-Javadoc)
 	 * 

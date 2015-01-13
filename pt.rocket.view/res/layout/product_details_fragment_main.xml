@@ -47,6 +47,10 @@
 
             <include layout="@layout/product_details_fragment_info" />
 
+            <!-- BUNDLE PRODUCTS -->
+
+            <include layout="@layout/product_details_fragment_bundle" />
+
             <!-- RELATED PRODUCTS -->
 
             <include layout="@layout/product_details_fragment_related" />

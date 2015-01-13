@@ -151,6 +151,7 @@
     <dimen name="teaser_swipe_banner_height_sw320dp">171dp</dimen>
     <dimen name="teaser_banners_group_height_sw320dp">171dp</dimen>
     <dimen name="teaser_banners_brands_list_height">88dp</dimen>
+    <dimen name="teaser_product_bundle_item_width_sw320dp">190dp</dimen>
 
     <!-- BASE -->
     <integer name="match_parent">-1</integer>
@@ -163,6 +164,7 @@
 
     <!-- HOME -->
     <dimen name="teaser_product_item_width">140dp</dimen>
+    <dimen name="teaser_product_bundle_item_width">190dp</dimen>
     <dimen name="teaser_banners_group_height">100dp</dimen>
     <dimen name="teaser_margin_bottom">0dp</dimen>
     <dimen name="teaser_margin_left">6.5dp</dimen>

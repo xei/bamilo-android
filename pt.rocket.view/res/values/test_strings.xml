@@ -18,6 +18,7 @@
 		<string name="myaccount_newpass_description">New Password</string>
 		<string name="myaccount_repeatpass_description">New Repeated Password</string>
 		<string name="productdetail_addcart_description">Add to Cart</string>
+		<string name="productdetail_addbundlecart_description">Add Bundle to Cart</string>
 		<string name="productdetail_gotocart_description">Go to Cart</string>
 		<string name="productdetail_order_button_description">Call to order</string>
 		<string name="shopping_cart_button_description">Proceed to checkout</string>    

@@ -25,6 +25,7 @@
     <!-- TEASER -->
     <dimen name="teaser_swipe_banner_height">326dp</dimen>
     <dimen name="teaser_product_item_width">200dp</dimen>
+    <dimen name="teaser_product_bundle_item_width">240dp</dimen>
     <dimen name="teaser_banners_group_height">160dp</dimen>
     <dimen name="teaser_recently_viewed_height">236dp</dimen>
 

@@ -484,5 +484,21 @@ public class RestConstants {
 
 	public static final String JSON_ITEM_TAG = "item";
 	public static final String JSON_RELEVANCE_TAG = "relevance";
+	
+	
+	/**
+	 * BUNDLES
+	 */
+	
+	public static final String JSON_BUNDLE_ID = "bundle_id";
+	public static final String JSON_BUNDLE_NAME = "bundle_name";
+	public static final String JSON_BUNDLE_PRICE = "bundle_price";
+	public static final String JSON_BUNDLE_PRICE_CONVERTED = "bundle_price_euroConverted";
+	public static final String JSON_BUNDLE_LEADER_POS = "bundle_leader_config_position";
+	public static final String JSON_BUNDLE_PRODUCTS = "bundle_products";
+	
+	public static final String JSON_MAX_PRICE_CONVERTED_TAG = "max_price_euroConverted";
+	public static final String JSON_BUNDLE_PRODUCT_LEADER_POS = "leader_simple_position";
+	public static final String JSON_MAX_SPECIAL_PRICE_CONVERTED_TAG = "max_special_price_euroConverted";
 
 }

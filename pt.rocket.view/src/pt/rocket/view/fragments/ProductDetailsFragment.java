@@ -9,10 +9,16 @@ import java.util.Set;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.HorizontalListView;
+import pt.rocket.components.absspinner.IcsAdapterView;
+import pt.rocket.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import pt.rocket.components.customfontviews.Button;
 import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
+import pt.rocket.controllers.BundleItemsListAdapter;
+import pt.rocket.controllers.BundleItemsListAdapter.ViewHolder.OnItemChecked;
+import pt.rocket.controllers.BundleItemsListAdapter.ViewHolder.OnItemSelected;
+import pt.rocket.controllers.BundleItemsListAdapter.ViewHolder.OnSimplePressed;
 import pt.rocket.controllers.RelatedItemsListAdapter;
 import pt.rocket.controllers.TipsPagerAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -25,6 +31,9 @@ import pt.rocket.framework.database.RelatedItemsTableHelper;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Errors;
 import pt.rocket.framework.objects.LastViewed;
+import pt.rocket.framework.objects.ProductBundle;
+import pt.rocket.framework.objects.ProductBundleProduct;
+import pt.rocket.framework.objects.ProductBundleSimple;
 import pt.rocket.framework.objects.ProductSimple;
 import pt.rocket.framework.objects.Variation;
 import pt.rocket.framework.rest.RestConstants;
@@ -35,7 +44,9 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.cart.GetShoppingCartAddBundleHelper;
 import pt.rocket.helpers.cart.GetShoppingCartAddItemHelper;
+import pt.rocket.helpers.products.GetProductBundleHelper;
 import pt.rocket.helpers.products.GetProductHelper;
 import pt.rocket.helpers.search.GetSearchProductHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -115,7 +126,8 @@ import de.akquinet.android.androlog.Log;
  * @description This class displays the product detail screen
  * 
  */
-public class ProductDetailsFragment extends BaseFragment implements OnClickListener, OnDialogListListener {
+public class ProductDetailsFragment extends BaseFragment implements OnClickListener, OnDialogListListener, OnItemChecked, OnItemSelected, OnSimplePressed,
+OnItemSelectedListener {
 
     private final static String TAG = LogTagHelper.create(ProductDetailsFragment.class);
 
@@ -133,6 +145,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     public final static String PRODUCT_CATEGORY = "product_category";
 
+    public final static String PRODUCT_BUNDLE = "product_bundle";
+    
     private Context mContext;
 
     private DialogFragment mDialogAddedToCart;
@@ -237,6 +251,21 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     
     private static String categoryTree = "";
     
+    private ProductBundle mProductBundle;
+    
+    private View mBundleContainer;
+    
+    private HorizontalListView mHorizontalBundleListView;
+    
+    private View mBundleLoading;
+    
+    private View mDividerBundle;
+    
+    private TextView mBundleTextTotal;
+    
+    private Button mBundleButton;
+    
+    
     /**
      * Empty constructor
      */
@@ -302,8 +331,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         mVariationsListPosition = sharedPreferences.getInt(VARIATION_LIST_POSITION, -1);
         // mSelectedSimple = sharedPreferences.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
         //
-        if (savedInstanceState != null)
+        if (savedInstanceState != null){
             mSelectedSimple = savedInstanceState.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
+            if(savedInstanceState.containsKey(PRODUCT_BUNDLE))
+                mProductBundle = savedInstanceState.getParcelable(PRODUCT_BUNDLE);
+        }
         Log.d(TAG, "CURRENT SELECTED SIMPLE: " + mSelectedSimple);
     }
 
@@ -365,6 +397,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Save the current fragment type on orientation change
         if (!mHideVariationSelection)
             outState.putInt(SELECTED_SIMPLE_POSITION, mSelectedSimple);
+        // save product bundle
+        if(mProductBundle != null)
+            outState.putParcelable(PRODUCT_BUNDLE, mProductBundle);
     }
 
     
@@ -452,6 +487,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Determine if related items should be shown
         mShowRelatedItems = bundle.getBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS);
         isRelatedItem = bundle.getBoolean(ConstantsIntentExtra.IS_RELATED_ITEM);
+//        if(bundle.containsKey(PRODUCT_BUNDLE))
+//            mProductBundle = bundle.getParcelable(PRODUCT_BUNDLE);
     }
 
     /**
@@ -512,6 +549,15 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         mHorizontalListView = (HorizontalListView) view.findViewById(R.id.product_detail_horizontal_list_view);
         //mRelatedHorizontalScroll = (HorizontalScrollGroup) view.findViewById(R.id.product_detail_horizontal_scroll);
         //mRelatedHorizontalGroup = (ViewGroup) view.findViewById(R.id.product_detail_horizontal_group_container);
+        
+        //BUNDLE
+        mBundleContainer = view.findViewById(R.id.product_detail_product_bundle_container);
+        mHorizontalBundleListView = (HorizontalListView) view.findViewById(R.id.product_detail_horizontal_bundle_list_view);
+        mBundleLoading = view.findViewById(R.id.loading_related_bundle); 
+        mBundleButton = (Button) view.findViewById(R.id.bundle_add_cart);
+        mBundleTextTotal = (TextView) view.findViewById(R.id.bundle_total);
+        mDividerBundle = view.findViewById(R.id.divider_bundle); 
+        mBundleButton.setSelected(true);
         
         mRelatedLoading = view.findViewById(R.id.loading_related);        
         // Bottom Button
@@ -1129,6 +1175,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 Log.d(TAG, "ON GET RELATED ITEMS FOR: " + product.getSku());
                 getRelatedItems(product.getSku());
             }
+            if(mProductBundle != null){
+                displayBundle(mProductBundle);
+            } else if(product.getProductBundle() != null){
+                displayBundle(product.getProductBundle());
+            }
 
             FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);
             Bundle bundle = new Bundle();
@@ -1230,8 +1281,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         mHorizontalListView.setHasFixedSize(true);
         // use a linear layout manager
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-        Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-        mLayoutManager.setReverseLayout(isRTL);
+        mLayoutManager.setReverseLayout(mContext.getResources().getBoolean(R.bool.is_bamilo_specific));
         mHorizontalListView.setLayoutManager(mLayoutManager);
         mHorizontalListView.setAdapter(new RelatedItemsListAdapter(mContext, relatedItemsList, new OnClickListener() {
             @Override
@@ -1349,7 +1399,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategories().get(1));
             }
         }
-        
         return bundle;
     }
 
@@ -1703,6 +1752,34 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 }
             }, 300);
 
+//            if(mCompleteProduct.getSku().equals("AX377AAAC5V3NGAMZ")){
+                Log.e("BUNDLE","FIRE REQUEST");
+                Bundle arg = new Bundle();
+                arg.putString(GetProductBundleHelper.PRODUCT_SKU, "AX377AAAC5V3NGAMZ");
+                triggerContentEvent(new GetProductBundleHelper(), arg, responseCallback);
+//            }
+            
+            break;
+        case GET_PRODUCT_BUNDLE:
+            
+            
+            mProductBundle = (ProductBundle) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            
+            if(mProductBundle != null){
+                displayBundle(mProductBundle);    
+            } else {
+                mBundleContainer.setVisibility(View.GONE);
+            }
+            
+            
+            break;
+        case ADD_PRODUCT_BUNDLE:
+            isAddingProductToCart = false;
+            getBaseActivity().updateCartInfo();
+            hideActivityProgress();
+            mBundleButton.setEnabled(true);
+            mAddToCartButton.setEnabled(true);
+            executeAddToShoppingCartCompleted();
             break;
         default:
             break;
@@ -1726,7 +1803,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
+        case ADD_PRODUCT_BUNDLE:
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+            mBundleButton.setEnabled(true);
             isAddingProductToCart = false;
             hideActivityProgress();
             if (errorCode == ErrorCode.REQUEST_ERROR) {
@@ -1793,6 +1872,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 }
                 return;
             }
+        case GET_PRODUCT_BUNDLE:
+            mBundleContainer.setVisibility(View.GONE);
+            break;
+
         default:
             break;
         }
@@ -1917,6 +2000,212 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             moreView.setVisibility(View.VISIBLE);
             e.printStackTrace();
         }
+        
+    }
+    
+    /**
+     * 
+     * Function responsible for showing the product bundle if it exists
+     * 
+     * @param bundle
+     */
+    private void displayBundle(ProductBundle bundle){
+        
+       mBundleContainer.setVisibility(View.VISIBLE);
+        
+       CompleteProduct curProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+       curProduct.setProductBundle(bundle);
+       JumiaApplication.INSTANCE.setCurrentProduct(curProduct);
+       
+       //calculate the bundle total without the plead product
+       double total = 0.0;
+       // validate if any product has simples do adjust item size
+       boolean hasSimples = false;
+       ArrayList<ProductBundleProduct> bundleProducts = bundle.getBundleProducts();
+       for (int i = 0; i < bundleProducts.size(); i++) {
+           
+           if(bundleProducts.get(i).getBundleSimples() != null && bundleProducts.get(i).getBundleSimples().size() > 0){
+               hasSimples = true;
+           }
+           
+           if(bundleProducts.get(i).isChecked()){
+               if(bundleProducts.get(i).hasDiscount()){
+                   total = total + bundleProducts.get(i).getBundleProductSpecialPriceDouble();
+               } else {
+                   total = total + bundleProducts.get(i).getBundleProductPriceDouble();
+               }
+           } 
+    }
+       
+       validateBundleButton();
+       
+       mBundleTextTotal.setText(mContext.getString(R.string.bundle_total_price)+" "+CurrencyFormatter.formatCurrency(String.valueOf(total)));
+       
+       mBundleTextTotal.setTag(total);
+       
+       
+       //remove the main product from the bundle ( leader pos == 0)
+       ArrayList<ProductBundleProduct> bundleWithoutLead = new ArrayList<ProductBundleProduct>();
+       if(bundleProducts.size() > 1){
+           for (int i = 0; i < bundleProducts.size(); i++) {
+               if(bundleProducts.get(i).getBundleProductLeaderPos() != 0){
+                   bundleWithoutLead.add(bundleProducts.get(i));
+               } 
+        }
+       } 
+       
+       if(hasSimples){
+           RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (int)getResources().getDimension(R.dimen.teaser_product_bundle_item_width) );
+           params.addRule(RelativeLayout.BELOW,mDividerBundle.getId());
+           mHorizontalBundleListView.setLayoutParams(params);
+       }
+
+       
+       mHorizontalBundleListView.setHasFixedSize(true);
+       // use a linear layout manager
+       LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+       mLayoutManager.setReverseLayout(mContext.getResources().getBoolean(R.bool.is_bamilo_specific));
+       mHorizontalBundleListView.setLayoutManager(mLayoutManager);
+       mHorizontalBundleListView.setAdapter(new BundleItemsListAdapter(mContext, bundleWithoutLead,
+                (OnItemSelected)this, (OnItemChecked)this, (OnSimplePressed)this, (OnItemSelectedListener) this));
+       
+       mBundleLoading.setVisibility(View.GONE);
+
+       
+       mBundleButton.setOnClickListener(new OnClickListener() {
+        
+        @Override
+        public void onClick(View v) {
+            triggerAddBundleToCart(mProductBundle);
+            
+        }
+    });
+       
+    }
+
+    /**
+     * validate if theres any product selected to enable or not the buy now button
+     */
+    private void validateBundleButton(){
+        boolean hasSomeProdSelected = false;
+        if(mProductBundle != null){
+            
+            for (int i = 0; i < mProductBundle.getBundleProducts().size(); i++) {
+                if(mProductBundle.getBundleProducts().get(i).getBundleProductLeaderPos() != 0 && mProductBundle.getBundleProducts().get(i).isChecked()){
+                    hasSomeProdSelected = true;
+                }
+            }
+            
+            if(hasSomeProdSelected){
+                mBundleButton.setEnabled(true);
+            } else {
+                mBundleButton.setEnabled(false);
+            }
+           
+        }
+            
+    }
+    
+    
+    /**
+     * function responsible for handling the item click of the bundle
+     * @param selectedOrder
+     */
+    @Override
+    public void SelectedItem(ProductBundleProduct selectedProduct) {
+        // TODO TO BE IMPLEMENTED
+        Log.d("BUNDLE","GO TO PDV");
+    }
+
+    /**
+     *
+     * function responsible for handling on item of the bundle
+     *
+     * @param selectedOrder
+     * @param productsContainer
+     * @param toShow
+     * @param selectedProd
+     */
+    @Override
+    public void checkItem(ProductBundleProduct selectedProduct, boolean isChecked, int pos) {
+        // TODO Auto-generated method stub
+        
+        // if isChecked is false then item was deselected
+        double priceChange = selectedProduct.getBundleProductMaxSpecialPriceDouble();
+        double totalPrice = (Double) mBundleTextTotal.getTag();
+        if(!isChecked){
+            totalPrice = totalPrice - priceChange;
+//            CurrencyFormatter.formatCurrency(String.valueOf(totalPrice));
+            mBundleTextTotal.setTag(totalPrice);
+            mBundleTextTotal.setText(mContext.getString(R.string.bundle_total_price)+" "+CurrencyFormatter.formatCurrency(String.valueOf(totalPrice)));
+            if(mProductBundle != null)
+                mProductBundle.getBundleProducts().get(pos+1).setChecked(false);
+            
+            validateBundleButton();
+            
+        } else {
+            totalPrice = totalPrice + priceChange;
+//            CurrencyFormatter.formatCurrency(String.valueOf(totalPrice));
+            mBundleTextTotal.setTag(totalPrice);
+            mBundleTextTotal.setText(mContext.getString(R.string.bundle_total_price)+" "+CurrencyFormatter.formatCurrency(String.valueOf(totalPrice)));
+            if(mProductBundle != null)
+                mProductBundle.getBundleProducts().get(pos+1).setChecked(true);
+            
+            mBundleButton.setEnabled(true);
+        }
+        
+        
+        
+    }
+
+    /**
+     * function to catch the user click on the size button within the bundle product
+     */
+    @Override
+    public void PressedSimple(ProductBundleProduct selectedProduct) {
+        showBundleSimples(selectedProduct);
+    }
+    
+    /**
+     * function responsible for showing the the pop with the simples
+     * @param selectedProduct
+     */
+    private void showBundleSimples(ProductBundleProduct selectedProduct){
+        
+    }
+    
+    private void triggerAddBundleToCart(ProductBundle mProductBundle) {
+        mBundleButton.setEnabled(false);
+        int count = 0;
+        ContentValues values = new ContentValues();
+        values.put(GetShoppingCartAddBundleHelper.BUNDLE_ID, mProductBundle.getBundleId());
+        for (int i = 0; i < mProductBundle.getBundleProducts().size(); i++) {
+            if(mProductBundle.getBundleProducts().get(i).isChecked() && mProductBundle.getBundleProducts().get(i).getBundleProductLeaderPos() != 0){
+                values.put(GetShoppingCartAddBundleHelper.PRODUCT_SKU_TAG+count+"]", mProductBundle.getBundleProducts().get(i).getBundleProductSku());
+                values.put(GetShoppingCartAddBundleHelper.PRODUCT_SIMPLE_SKU_TAG+count+"]",mProductBundle.getBundleProducts().get(i).getBundleSimples()
+                        .get(mProductBundle.getBundleProducts().get(i).getSimpleSelectedPos()).getSimpleSku());
+                count++;
+            }
+        }
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(GetShoppingCartAddBundleHelper.ADD_BUNDLE, values);
+        triggerContentEventProgress(new GetShoppingCartAddBundleHelper(), bundle, responseCallback);
+    }
+
+    @Override
+    public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+       Object object = parent.getItemAtPosition(position);
+       if (object instanceof ProductBundleSimple) {
+           ProductBundleSimple productSimple = (ProductBundleSimple) object;
+           if(mProductBundle != null){
+               mProductBundle.getBundleProducts().get(productSimple.getProductParentPos()+1).setSimpleSelectedPos(position);
+            }
+       }
+    }
+
+    @Override
+    public void onNothingSelected(IcsAdapterView<?> parent) {
+        // TODO Auto-generated method stub
         
     }
     

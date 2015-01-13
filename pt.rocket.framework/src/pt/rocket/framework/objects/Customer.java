@@ -265,9 +265,9 @@ public class Customer implements IJSONSerializable, Parcelable{
     /**
 	 * @return the addresses
 	 */
-	public ArrayList<String> getAddresses() {
-		return addresses;
-	}
+//	public ArrayList<String> getAddresses() {
+//		return addresses;
+//	}
 
 	/**
 	 * @param addresses the addresses to set

@@ -13,6 +13,7 @@
     <!-- HOME -->
     <dimen name="teaser_swipe_banner_height">435dp</dimen>
     <dimen name="teaser_product_item_width">208dp</dimen>
+    <dimen name="teaser_product_bundle_item_width">260dp</dimen>
     <dimen name="teaser_banners_group_height">220dp</dimen>
 
     <!-- SLIDING MENU -->
