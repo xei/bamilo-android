@@ -50,7 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/voucher_btn"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:focusableInTouchMode="true">
 
             <pt.rocket.components.customfontviews.EditText
                 android:id="@+id/voucher_name"
