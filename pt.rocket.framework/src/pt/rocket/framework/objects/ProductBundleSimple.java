@@ -70,7 +70,7 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
 
             simpleSku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
             simpleQuantity = jsonObject.getString(RestConstants.JSON_QUANTITY_TAG);
-            simpleSize = jsonObject.getString(RestConstants.JSON_SIZE_TAG);
+            simpleSize = jsonObject.optString(RestConstants.JSON_SIZE_TAG,"");
             
             String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
             

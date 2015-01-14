@@ -555,7 +555,7 @@ OnItemSelectedListener {
         mHorizontalBundleListView = (HorizontalListView) view.findViewById(R.id.product_detail_horizontal_bundle_list_view);
         mBundleLoading = view.findViewById(R.id.loading_related_bundle); 
         mBundleButton = (Button) view.findViewById(R.id.bundle_add_cart);
-        mBundleTextTotal = (TextView) view.findViewById(R.id.bundle_total);
+        mBundleTextTotal = (TextView) view.findViewById(R.id.bundle_total_value);
         mDividerBundle = view.findViewById(R.id.divider_bundle); 
         mBundleButton.setSelected(true);
         
@@ -1281,7 +1281,10 @@ OnItemSelectedListener {
         mHorizontalListView.setHasFixedSize(true);
         // use a linear layout manager
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-        mLayoutManager.setReverseLayout(mContext.getResources().getBoolean(R.bool.is_bamilo_specific));
+        if(mContext.getResources().getBoolean(R.bool.is_bamilo_specific) && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            mLayoutManager.setReverseLayout(true);    
+        }
+        
         mHorizontalListView.setLayoutManager(mLayoutManager);
         mHorizontalListView.setAdapter(new RelatedItemsListAdapter(mContext, relatedItemsList, new OnClickListener() {
             @Override
@@ -1753,10 +1756,10 @@ OnItemSelectedListener {
             }, 300);
 
 //            if(mCompleteProduct.isHasBundle()){
-                Log.e("BUNDLE","FIRE REQUEST");
                 Bundle arg = new Bundle();
 //                arg.putString(GetProductBundleHelper.PRODUCT_SKU, mCompleteProduct.getSku());
-                arg.putString(GetProductBundleHelper.PRODUCT_SKU, "AX377AAAC5V3NGAMZ");
+                //TODO For BAMILO
+                arg.putString(GetProductBundleHelper.PRODUCT_SKU, "TO430HBADWKVMEAMZ");
                 triggerContentEvent(new GetProductBundleHelper(), arg, responseCallback);
 //            }
             
@@ -2040,7 +2043,7 @@ OnItemSelectedListener {
        
        validateBundleButton();
        
-       mBundleTextTotal.setText(mContext.getString(R.string.bundle_total_price)+" "+CurrencyFormatter.formatCurrency(String.valueOf(total)));
+       mBundleTextTotal.setText(CurrencyFormatter.formatCurrency(String.valueOf(total)));
        
        mBundleTextTotal.setTag(total);
        
@@ -2065,7 +2068,11 @@ OnItemSelectedListener {
        mHorizontalBundleListView.setHasFixedSize(true);
        // use a linear layout manager
        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-       mLayoutManager.setReverseLayout(mContext.getResources().getBoolean(R.bool.is_bamilo_specific));
+       
+       if(mContext.getResources().getBoolean(R.bool.is_bamilo_specific) && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+           mLayoutManager.setReverseLayout(true);
+       }
+       
        mHorizontalBundleListView.setLayoutManager(mLayoutManager);
        mHorizontalBundleListView.setAdapter(new BundleItemsListAdapter(mContext, bundleWithoutLead,
                 (OnItemSelected)this, (OnItemChecked)this, (OnSimplePressed)this, (OnItemSelectedListener) this));
@@ -2133,22 +2140,32 @@ OnItemSelectedListener {
         
         // if isChecked is false then item was deselected
         double priceChange = selectedProduct.getBundleProductMaxSpecialPriceDouble();
+        if(priceChange == 0){
+            priceChange = selectedProduct.getBundleProductMaxPriceDouble();
+        }
         double totalPrice = (Double) mBundleTextTotal.getTag();
+        
+        Log.e("BUNDLE","totalPrice:"+totalPrice);
+        
         if(!isChecked){
+            Log.e("BUNDLE","INCREASE totalPrice:"+totalPrice);
+            Log.e("BUNDLE","INCREASE priceChange:"+priceChange);
             totalPrice = totalPrice - priceChange;
 //            CurrencyFormatter.formatCurrency(String.valueOf(totalPrice));
             mBundleTextTotal.setTag(totalPrice);
-            mBundleTextTotal.setText(mContext.getString(R.string.bundle_total_price)+" "+CurrencyFormatter.formatCurrency(String.valueOf(totalPrice)));
+            mBundleTextTotal.setText(CurrencyFormatter.formatCurrency(String.valueOf(totalPrice)));
             if(mProductBundle != null)
                 mProductBundle.getBundleProducts().get(pos+1).setChecked(false);
             
             validateBundleButton();
             
         } else {
+            Log.e("BUNDLE","DECREASE totalPrice:"+totalPrice);
+            Log.e("BUNDLE","DECREASE priceChange:"+priceChange);
             totalPrice = totalPrice + priceChange;
 //            CurrencyFormatter.formatCurrency(String.valueOf(totalPrice));
             mBundleTextTotal.setTag(totalPrice);
-            mBundleTextTotal.setText(mContext.getString(R.string.bundle_total_price)+" "+CurrencyFormatter.formatCurrency(String.valueOf(totalPrice)));
+            mBundleTextTotal.setText(CurrencyFormatter.formatCurrency(String.valueOf(totalPrice)));
             if(mProductBundle != null)
                 mProductBundle.getBundleProducts().get(pos+1).setChecked(true);
             

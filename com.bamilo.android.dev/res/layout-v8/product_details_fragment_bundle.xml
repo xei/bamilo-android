@@ -69,19 +69,48 @@
             android:layout_alignParentTop="true"
             android:layout_below="@+id/product_detail_seller_name" />
 
-        <pt.rocket.components.customfontviews.TextView
-            android:id="@+id/bundle_total"
-            style="@style/text_subtitle"
+               <RelativeLayout
+            android:id="@+id/bundle_total_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center_horizontal"
-            android:gravity="right|center_vertical"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
             android:layout_toRightOf="@+id/bundle_add_cart"
-            android:ellipsize="end"
-            android:lines="1"
-            android:text="Total:" />
+            android:gravity="right|center_vertical" >
+
+            <pt.rocket.components.customfontviews.TextView
+                android:id="@+id/bundle_total"
+                style="@style/text_subtitle"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:layout_marginRight="@dimen/rounded_margin_mid"
+                android:ellipsize="end"
+                android:gravity="right|center_vertical"
+                android:lines="1"
+                android:text="@string/bundle_total_price"
+                android:visibility="visible" />
+
+            <pt.rocket.components.customfontviews.TextView
+                android:id="@+id/bundle_total_value"
+                style="@style/text_subtitle"
+                android:layout_width="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:layout_toLeftOf="@+id/bundle_total"
+                android:ellipsize="end"
+                android:gravity="right|center_vertical"
+                android:lines="1"
+                android:text="500 DHn"
+                android:visibility="visible" />
+        </RelativeLayout>
+
 
         <pt.rocket.components.customfontviews.Button
             android:id="@+id/bundle_add_cart"

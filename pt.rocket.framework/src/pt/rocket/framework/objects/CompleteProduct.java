@@ -243,7 +243,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			}
 			
 		hasBundle =	dataObject.optBoolean(RestConstants.JSON_HAS_BUNDLE_TAG, false);
-		
+
 		hasSeller =   dataObject.optBoolean(RestConstants.JSON_HAS_SELLER_TAG, false);
 
 		} catch (JSONException e) {

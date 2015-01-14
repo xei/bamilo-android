@@ -542,13 +542,14 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
                 final TextView userName = (TextView) theInflatedView.findViewById(R.id.user_review);
                 final TextView userDate = (TextView) theInflatedView.findViewById(R.id.date_review);
                 final TextView textReview = (TextView) theInflatedView.findViewById(R.id.textreview);
-                final RatingBar userRating = (RatingBar) theInflatedView.findViewById(R.id.quality_rating);
+                
                 final TextView titleReview = (TextView) theInflatedView.findViewById(R.id.title_review);
 
                 final TextView optionTitle = (TextView) theInflatedView.findViewById(R.id.quality_title_option);
                 final TextView appearenceTitle = (TextView) theInflatedView.findViewById(R.id.appearence_title_option);
                 final TextView priceTitle = (TextView) theInflatedView.findViewById(R.id.price_title_option);
 
+                final RatingBar userRating = (RatingBar) theInflatedView.findViewById(R.id.quality_rating);
                 final RatingBar appearenceRating = (RatingBar) theInflatedView.findViewById(R.id.appearence_rating);
                 final RatingBar priceRating = (RatingBar) theInflatedView.findViewById(R.id.price_rating);
 

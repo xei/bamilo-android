@@ -194,8 +194,8 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
     }
     
     private void setSizeContainer(ViewHolder view, ProductBundleProduct item, int position){
-        // Campaign has sizes except itself (>1)
-        if(item.getBundleSimples().size() > 0) {
+        // all products have at least one simple
+        if(item.getBundleSimples().size() > 1) {
             view.mSizeSpinnerContainer.setVisibility(View.VISIBLE);
             // Show container
 //            view.mSizeContainer.setVisibility(View.VISIBLE);
