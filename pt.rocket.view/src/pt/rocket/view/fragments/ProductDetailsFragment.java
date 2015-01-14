@@ -1755,13 +1755,13 @@ OnItemSelectedListener {
                 }
             }, 300);
 
-//            if(mCompleteProduct.isHasBundle()){
+            if(mCompleteProduct.isHasBundle()){
                 Bundle arg = new Bundle();
-//                arg.putString(GetProductBundleHelper.PRODUCT_SKU, mCompleteProduct.getSku());
+                arg.putString(GetProductBundleHelper.PRODUCT_SKU, mCompleteProduct.getSku());
                 //TODO For BAMILO
-                arg.putString(GetProductBundleHelper.PRODUCT_SKU, "TO430HBADWKVMEAMZ");
+//                arg.putString(GetProductBundleHelper.PRODUCT_SKU, "TO430HBADWKVMEAMZ");
                 triggerContentEvent(new GetProductBundleHelper(), arg, responseCallback);
-//            }
+            }
             
             break;
         case GET_PRODUCT_BUNDLE:
