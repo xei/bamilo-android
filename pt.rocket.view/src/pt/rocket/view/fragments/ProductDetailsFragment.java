@@ -2145,11 +2145,8 @@ OnItemSelectedListener {
         }
         double totalPrice = (Double) mBundleTextTotal.getTag();
         
-        Log.e("BUNDLE","totalPrice:"+totalPrice);
         
         if(!isChecked){
-            Log.e("BUNDLE","INCREASE totalPrice:"+totalPrice);
-            Log.e("BUNDLE","INCREASE priceChange:"+priceChange);
             totalPrice = totalPrice - priceChange;
 //            CurrencyFormatter.formatCurrency(String.valueOf(totalPrice));
             mBundleTextTotal.setTag(totalPrice);
@@ -2160,8 +2157,6 @@ OnItemSelectedListener {
             validateBundleButton();
             
         } else {
-            Log.e("BUNDLE","DECREASE totalPrice:"+totalPrice);
-            Log.e("BUNDLE","DECREASE priceChange:"+priceChange);
             totalPrice = totalPrice + priceChange;
 //            CurrencyFormatter.formatCurrency(String.valueOf(totalPrice));
             mBundleTextTotal.setTag(totalPrice);
