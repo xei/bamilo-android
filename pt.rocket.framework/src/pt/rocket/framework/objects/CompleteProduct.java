@@ -67,6 +67,8 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	private double mSpecialPriceConverted;
 	private String mSizeGuideUrl;
 	private ProductBundle productBundle;
+	private boolean hasSeller;
+	private boolean hasBundle;
 //	private int simpleSkuPosition;
 
 	/**
@@ -91,6 +93,8 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		mSpecialPriceConverted = 0d;
 		mSizeGuideUrl = "";
 		productBundle = null;
+		hasSeller = false;
+		hasBundle = false;
 	}
 
 	/*
@@ -237,6 +241,10 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 				variation.initialize(key, variationObject);
 				this.variations.add(variation);
 			}
+			
+		hasBundle =	dataObject.optBoolean(RestConstants.JSON_HAS_BUNDLE_TAG, false);
+		
+		hasSeller =   dataObject.optBoolean(RestConstants.JSON_HAS_SELLER_TAG, false);
 
 		} catch (JSONException e) {
 
@@ -627,11 +635,31 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
         this.productBundle = productBundle;
     }
 
+    public boolean isHasSeller() {
+        return hasSeller;
+    }
+
+    public void setHasSeller(boolean hasSeller) {
+        this.hasSeller = hasSeller;
+    }
+
+    public boolean isHasBundle() {
+        return hasBundle;
+    }
+
+    public void setHasBundle(boolean hasBundle) {
+        this.hasBundle = hasBundle;
+    }
+    
+    
+    
+    
     /*
      * ############ PARCELABLE ############
      */
 
-    
+
+
     /*
 	 * (non-Javadoc)
 	 * 

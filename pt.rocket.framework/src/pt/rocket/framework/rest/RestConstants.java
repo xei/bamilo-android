@@ -135,6 +135,8 @@ public class RestConstants {
 	public static final String JSON_RATINGS_TOTAL_AVG_TAG = "avr";
 
 	public static final String JSON_VARIATIONS_TAG = "variations";
+	public static final String JSON_HAS_BUNDLE_TAG = "bundle";
+	public static final String JSON_HAS_SELLER_TAG = "has_seller";
 
 	// Variation Tags
 	public static final String JSON_LINK_TAG = "link";

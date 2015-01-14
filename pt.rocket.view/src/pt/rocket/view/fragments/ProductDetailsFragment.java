@@ -1175,9 +1175,9 @@ OnItemSelectedListener {
                 Log.d(TAG, "ON GET RELATED ITEMS FOR: " + product.getSku());
                 getRelatedItems(product.getSku());
             }
-            if(mProductBundle != null){
+            if(mProductBundle != null && mProductBundle.getBundleProducts().size() > 0){
                 displayBundle(mProductBundle);
-            } else if(product.getProductBundle() != null){
+            } else if(product.getProductBundle() != null && product.getProductBundle().getBundleProducts().size() > 0){
                 displayBundle(product.getProductBundle());
             }
 
@@ -1752,9 +1752,10 @@ OnItemSelectedListener {
                 }
             }, 300);
 
-//            if(mCompleteProduct.getSku().equals("AX377AAAC5V3NGAMZ")){
+//            if(mCompleteProduct.isHasBundle()){
                 Log.e("BUNDLE","FIRE REQUEST");
                 Bundle arg = new Bundle();
+//                arg.putString(GetProductBundleHelper.PRODUCT_SKU, mCompleteProduct.getSku());
                 arg.putString(GetProductBundleHelper.PRODUCT_SKU, "AX377AAAC5V3NGAMZ");
                 triggerContentEvent(new GetProductBundleHelper(), arg, responseCallback);
 //            }
