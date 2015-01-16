@@ -400,14 +400,25 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
     @Override
     public void onClick(View view) {
         super.onClick(view);
+        // Get view id
         int id = view.getId();
         // Buy button
         if(id == R.id.campaign_item_button_buy) onClickBuyButton(view);
         // Product name and image container
         else if (id == R.id.image_container || id == R.id.campaign_item_name) onClickProduct(view);
+//        // Retry button
+//        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
+    
+//    /**
+//     * Process the click on the retry button
+//     * @author sergiopereira
+//     */
+//    private void onClickRetryButton(){
+//        getAndShowCampaign();
+//    }
     
     /**
      * Process the click on the buy button
@@ -1084,7 +1095,8 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
                 view.mSave.setText(greenValue);
                 view.mSave.setSelected(true);
             } else {
-                view.mSave.setVisibility(View.GONE);
+            	// Set as invisible to occupy the its space
+                view.mSave.setVisibility(View.INVISIBLE);
             }
         }
         

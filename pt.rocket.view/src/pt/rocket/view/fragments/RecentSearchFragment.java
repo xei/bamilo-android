@@ -63,7 +63,6 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
                 R.layout.recentsearches,
                 R.string.recent_searches,
                 KeyboardState.ADJUST_CONTENT);
-        // R.string.recent_searches
     }
     
     /**
@@ -227,6 +226,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
         if (isOnStoppingProcess) return;
 
         super.handleSuccessEvent(bundle);
+        
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {

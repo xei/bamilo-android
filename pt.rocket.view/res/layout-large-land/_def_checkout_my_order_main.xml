@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
+
+    <View
+        android:id="@+id/center_point"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true" />
+
+    <!-- LEFT CONTAINER -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/checkout_my_order_button_container"
+        android:layout_alignEnd="@id/center_point"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@id/center_point"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/rounded_margin_mid"
+            android:layout_marginStart="@dimen/rounded_margin_mid"
+            android:orientation="vertical" >
+
+            <!-- PRODUCTS -->
+
+            <include layout="@layout/checkout_my_order_products" />
+
+            <!-- SUB TOTAL -->
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="@dimen/rounded_margin_small"
+                layout="@layout/shopping_basket_subtotal_element" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- RIGHT CONTAINER -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/checkout_my_order_button_container"
+        android:layout_alignLeft="@id/center_point"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignStart="@id/center_point"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/rounded_margin_mid"
+            android:paddingRight="@dimen/rounded_margin_mid"
+            android:paddingTop="@dimen/rounded_margin_small" >
+
+            <!-- SHIPPING ADDRESS -->
+
+            <include layout="@layout/checkout_my_order_shipping_address" />
+
+            <!-- BILLING ADDRESS -->
+
+            <include layout="@layout/checkout_my_order_billing_address" />
+
+            <!-- SHIPPING METHOD -->
+
+            <include layout="@layout/checkout_my_order_shipping_method" />
+
+            <!-- PAYMENT OPTIONS -->
+
+            <include layout="@layout/checkout_my_order_payment_options" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- NEXT STEP BUTTON -->
+
+    <LinearLayout
+        android:id="@id/checkout_my_order_button_container"
+        style="@style/button_container"
+        android:layout_alignParentBottom="true" >
+
+        <pt.rocket.components.customfontviews.Button
+            android:id="@+id/checkout_my_order_button_enter"
+            style="@style/button_orange_landscape"
+            android:layout_width="@dimen/inner_container_width"
+            android:contentDescription="@string/login_button_description"
+            android:text="@string/my_order_confirm_button" />
+    </LinearLayout>
+
+</RelativeLayout>

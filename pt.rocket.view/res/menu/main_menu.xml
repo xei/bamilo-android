@@ -2,10 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
-    <!--
-         SEARCH VIEW 
-   		 NOTE: icon setted on themes.xml - searchViewSearchIcon
-    -->
+    <!-- SEARCH VIEW -->
     <item
         android:id="@+id/menu_search"
         android:icon="@drawable/selector_search_edit_icon"
@@ -20,7 +17,7 @@
         android:id="@+id/menu_basket"
         android:title="@string/action_label_basket"
         android:visible="false"
-        app:actionLayout="@layout/menu_basket_button"
+        app:actionLayout="@layout/action_bar_cart_button"
         app:showAsAction="always"/>
 
     <!-- MY PROFILE PROVIDER -->

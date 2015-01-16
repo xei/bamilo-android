@@ -29,10 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal" >
 
-        <include
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
-            layout="@layout/checkout_sameaddress_checkbox" />
+        <include layout="@layout/checkout_sameaddress_checkbox" />
     </LinearLayout>
 
     <!-- ADD NEW ADDRESS -->
@@ -47,7 +44,12 @@
         android:orientation="vertical"
         android:visibility="visible" >
 
-        <LinearLayout
+        <include
+            android:id="@+id/checkout_addresses_default_add"
+            layout="@layout/checkout_my_addresses_add_new" />
+
+        <!--
+             <LinearLayout
             android:id="@+id/checkout_addresses_default_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,6 +71,7 @@
                 android:padding="@dimen/margin_30px"
                 android:src="@drawable/selector_btn_addaddress" />
         </LinearLayout>
+        -->
 
         <View
             style="@style/divider_horizontal"

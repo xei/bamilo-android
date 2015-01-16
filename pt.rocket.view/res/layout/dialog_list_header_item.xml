@@ -5,7 +5,7 @@
     android:background="@color/grey_dividerlight"
     android:orientation="horizontal"
     android:layoutDirection="locale"
-        android:paddingStart="@dimen/margin_large"
+	android:paddingStart="@dimen/margin_large"
     android:paddingEnd="@dimen/margin_large"
     android:paddingLeft="@dimen/margin_large"
     android:paddingRight="@dimen/margin_large" >

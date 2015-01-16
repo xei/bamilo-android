@@ -427,7 +427,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         case GET_PRODUCT_REVIEWS_EVENT:
             ProductRatingPage productRatingPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             
-            // Valdiate current rating page
+            // Validate the current rating page
             if(mProductRatingPage == null) mProductRatingPage = productRatingPage;
             // Append the new page to the current
             else mProductRatingPage.appendPageRating(productRatingPage);

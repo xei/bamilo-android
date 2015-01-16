@@ -109,7 +109,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
 
     private boolean cameFromRegister = false;
     
-    private FacebookTextView authButton;
+    private FacebookTextView mFacebookButton;
     
     /**
      * 
@@ -191,10 +191,24 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
         register = view.findViewById(R.id.middle_login_link_register);
         container = (ViewGroup) view.findViewById(R.id.form_container);
-        authButton = (FacebookTextView) view.findViewById(R.id.authButton);
-        authButton.setFragment(this);
-        authButton.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);
-        authButton.setReadPermissions(Arrays.asList("email"));
+        // Facebook
+        mFacebookButton = (FacebookTextView) view.findViewById(R.id.authButton);
+        // #RTL
+        Boolean hideFacebook = getResources().getBoolean(R.bool.is_bamilo_specific);
+        if(hideFacebook) mFacebookButton.setVisibility(View.GONE);
+        else setFacebookButton(mFacebookButton);
+
+    }
+    
+    /**
+     * Set the Facebook button
+     * @param facebookButton
+     * @modified sergiopereira
+     */
+    private void setFacebookButton(FacebookTextView facebookButton) {
+        facebookButton.setFragment(this);
+        facebookButton.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);
+        facebookButton.setReadPermissions(Arrays.asList("email"));
     }
 
     /*
@@ -346,7 +360,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 new OnClickListener() { 
                     @Override
                     public void onClick(View v) {                      
-                        authButton.performClick();
+                        mFacebookButton.performClick();
                         if(dialog != null) dialog.dismiss();
                         
                     }

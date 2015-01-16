@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" xmlns:app="http://schemas.android.com/apk/res-auto">
-           
+    android:background="@android:color/white" >
+
     <pt.rocket.utils.JumiaViewPagerWithZoom
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
@@ -10,14 +11,14 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_gravity="center_vertical"
         android:background="@drawable/selector_listitem_highlight" />
- 
-     <pt.rocket.components.infiniteviewpager.InfiniteCirclePageIndicator
+
+    <pt.rocket.components.infiniteviewpager.InfiniteCirclePageIndicator
         android:id="@+id/view_pager_indicator"
-       	android:layout_height="wrap_content"
-		android:layout_width="match_parent"
-		android:layout_alignParentBottom="true"
-		android:layout_centerHorizontal="true" />
-     
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
     <RelativeLayout
         android:id="@+id/loading_gallery"
         android:layout_width="match_parent"
@@ -27,19 +28,17 @@
         <include layout="@layout/loading_bar_simple" />
     </RelativeLayout>
 
-    <pt.rocket.components.customfontviews.Button
+    <ImageView
         android:id="@+id/gallery_button_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="20dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/selector_btn_close"
         android:visibility="gone" />
-
-
 
 </RelativeLayout>

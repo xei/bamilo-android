@@ -117,7 +117,6 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
                 R.layout.register,
                 R.string.register_title,
                 KeyboardState.ADJUST_CONTENT);
-        // R.string.register_title
     }
 
     /*

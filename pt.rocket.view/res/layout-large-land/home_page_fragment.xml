@@ -57,7 +57,8 @@
                 android:orientation="horizontal"
                 android:paddingBottom="1dp"
                 android:paddingLeft="@dimen/teaser_margin"
-                android:paddingStart="@dimen/teaser_margin" >
+                android:paddingStart="@dimen/teaser_margin"
+                android:baselineAligned="false" >
 
                 <FrameLayout
                     android:id="@+id/home_page_right_container_categories"

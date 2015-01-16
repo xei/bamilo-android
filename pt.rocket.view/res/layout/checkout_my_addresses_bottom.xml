@@ -31,7 +31,12 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:orientation="vertical" >
 
-        <LinearLayout
+        <include
+            android:id="@+id/checkout_addresses_other_add"
+            layout="@layout/checkout_my_addresses_add_new" />
+
+        <!--
+             <LinearLayout
             android:id="@+id/checkout_addresses_other_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,6 +61,7 @@
                 android:paddingTop="@dimen/margin_30px"
                 android:src="@drawable/selector_btn_addaddress" />
         </LinearLayout>
+        -->
 
         <View
             style="@style/divider_horizontal"

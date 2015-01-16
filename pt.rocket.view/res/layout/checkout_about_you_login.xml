@@ -7,9 +7,7 @@
 
     <pt.rocket.components.customfontviews.TextView
         android:id="@+id/checkout_login_toogle"
-        style="@style/rounded_box_title_grey"
-        android:layout_height="@dimen/checkout_box_title_height"
-        android:drawableRight="@drawable/selector_dropdown_indicator"
+        style="@style/checkout_about_you_title"
         android:text="@string/login_label" />
 
     <LinearLayout
@@ -38,7 +36,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:layout_marginStart="@dimen/rounded_margin_mid"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
+                android:layout_marginEnd="@dimen/rounded_margin_mid"
                 android:layout_marginTop="@dimen/login_margin_small"
                 android:orientation="vertical" >
             </LinearLayout>
@@ -50,7 +50,9 @@
                 android:layout_height="@dimen/form_item_height"
                 android:layout_marginBottom="@dimen/login_margin_medium"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:layout_marginStart="@dimen/rounded_margin_mid"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
+                android:layout_marginEnd="@dimen/rounded_margin_mid"
                 android:layout_marginTop="@dimen/login_margin_medium" >
 
                 <include layout="@layout/login_remember_checkbox" />
@@ -79,6 +81,7 @@
             <!-- DIVIDER -->
 
             <RelativeLayout
+                android:id="@+id/checkout_login_form_divider_facebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/rounded_margin_mid" >
@@ -94,7 +97,9 @@
                     android:layout_centerInParent="true"
                     android:background="@android:color/white"
                     android:paddingLeft="@dimen/login_margin_small"
+                    android:paddingStart="@dimen/login_margin_small"
                     android:paddingRight="@dimen/login_margin_small"
+                    android:paddingEnd="@dimen/login_margin_small"
                     android:text="@string/or_text"
                     android:textColor="@color/grey_divider_light_text" />
             </RelativeLayout>

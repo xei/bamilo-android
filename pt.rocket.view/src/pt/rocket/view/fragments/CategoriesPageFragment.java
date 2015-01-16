@@ -422,6 +422,29 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     /**
      * ####### LISTENERS ####### 
      */
+//    /*
+//     * (non-Javadoc)
+//     * @see android.view.View.OnClickListener#onClick(android.view.View)
+//     */
+//    @Override
+//    public void onClick(View view) {
+//        // Get view id
+//        int id = view.getId();
+//        // Case retry
+//        if (id == R.id.fragment_root_retry_button) onClickRetryButton();
+//        // Case Unknown
+//        else Log.w(TAG, "WARNING: UNKNOWN BUTTON");
+//    }
+//    
+//    /**
+//     * Process the click on retry
+//     * @author sergiopereira
+//     */
+//    private void onClickRetryButton(){
+//        Log.d(TAG, "ON CLICK RETRY");
+//        triggerGetCategories(mCategoryKey);
+//    }
+    
 
     protected void onRetryRequest(EventType eventType){
         Log.d(TAG, "ON CLICK RETRY");
@@ -690,6 +713,11 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         Log.i(TAG, "ON ERROR EVENT");
         // Validate fragment state
         if(isOnStoppingProcess) return;
+//        // Generic errors
+//        if(getBaseActivity().handleErrorEvent(bundle)) return;
+//        // Show retry
+//        showRetry();
+        
         // Generic errors
         if(super.handleErrorEvent(bundle)) return;
     }

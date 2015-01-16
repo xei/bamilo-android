@@ -140,7 +140,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     public CheckoutAboutYouFragment() {
         super(EnumSet.noneOf(MyMenuItem.class),
                 NavigationAction.Checkout,
-                R.layout.checkout_about_you,
+                R.layout.checkout_about_you_main,
                 R.string.checkout_label,
                 KeyboardState.ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_ABOUT_YOU);
@@ -216,8 +216,20 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         // FACEBOOK
         LoginButton facebookButton1 = (LoginButton) view.findViewById(R.id.checkout_login_form_button_facebook);
         LoginButton facebookButton2 = (LoginButton) view.findViewById(R.id.checkout_signup_form_button_facebook);
-        setFacebookButton(facebookButton1);
-        setFacebookButton(facebookButton2);
+        View facebookDivider1 = view.findViewById(R.id.checkout_login_form_divider_facebook);
+        View facebookDivider2 = view.findViewById(R.id.checkout_signup_form_divider_facebook);
+                
+        // #RTL
+        Boolean hideFacebook = getResources().getBoolean(R.bool.is_bamilo_specific);
+        if(hideFacebook) {
+            facebookButton1.setVisibility(View.GONE);
+            facebookDivider1.setVisibility(View.GONE);
+            facebookButton2.setVisibility(View.GONE);
+            facebookDivider2.setVisibility(View.GONE);
+        } else {
+            setFacebookButton(facebookButton1);
+            setFacebookButton(facebookButton2);
+        }
         
         // Validate current state
         if(JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()){
@@ -958,7 +970,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     		return true;
     	}
     	
-    	// Generic error
+        // Generic error
         if (super.handleErrorEvent(bundle)) {
             Log.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             return true;
@@ -978,9 +990,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             break;
         case FACEBOOK_LOGIN_EVENT:
         case LOGIN_EVENT:
-            
+            // Clear credentials case auto login failed
             clearCredentials();
-            
+            // Validate type
             String type = (eventType == EventType.FACEBOOK_LOGIN_EVENT) ? type = GTMValues.FACEBOOK : GTMValues.EMAILAUTH;
             TrackerDelegator.trackLoginFailed(onAutoLogin, GTMValues.CHECKOUT, type);
             if (errorCode == ErrorCode.REQUEST_ERROR) {
@@ -1021,6 +1033,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             gotoNextStep();
             break;
         default:
+            Log.w(TAG, "WARNING: UNEXPECTED ERROR EVENT: " + eventType.toString() + " " + errorCode);
             break;
         }
         return true;

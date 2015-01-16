@@ -287,7 +287,7 @@
         <item name="android:textCursorDrawable" targetApi="12">@null</item>
         <item name="android:inputType">text</item>
     </style>
-    
+
     <style name="form_checkbox_style" parent="form_style">
         <item name="android:layout_marginLeft">@dimen/form_check_padding</item>
         <item name="android:layout_marginRight">@dimen/form_check_padding</item>
@@ -304,7 +304,7 @@
         <item name="android:layout_gravity">top</item>
     </style>
 
-    <style name="starRatingBarSmall">
+    <style name="starRatingBarSmall" parent="@android:style/Widget.RatingBar">
         <item name="android:indeterminateOnly">false</item>
         <item name="android:thumb">@null</item>
         <item name="android:isIndicator">true</item>
@@ -403,7 +403,7 @@
         <item name="android:textColor">@color/grey_dark</item>
         <item name="android:textSize">@dimen/text_button</item>
     </style>
-    
+
     <style name="button_grey_bottom" parent="_parent_button_bottom_container">
         <item name="android:background">@drawable/btn_grey</item>
     </style>
@@ -419,6 +419,7 @@
     <style name="button_orange_landscape" parent="button_orange_bottom">
         <item name="android:layout_width">match_parent</item>
     </style>
+
 
     <style name="button_fallback_retry">
         <item name="android:background">@drawable/btn_grey</item>
@@ -455,6 +456,7 @@
         <item name="android:text">-99%</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/product_list_item_discount_percentage_text_size</item>
+        <item name="android:layoutDirection">ltr</item>
     </style>
 
     <!-- TEXT STYLES -->
@@ -544,11 +546,19 @@
         <item name="android:spinnerMode">dropdown</item>
         <item name="android:clickable">true</item>
     </style>
-    
-	<!-- BASE STYLE -->
+
+    <!-- BASE STYLE -->
     <style name="checkbox_base" parent="Widget">
         <item name="android:layout_gravity">left|start|top</item>
         <item name="android:layoutDirection">locale</item>
+    </style>
+
+    <!-- ################# CHECKOUT ################# -->
+    
+    <style name="checkout_about_you_title" parent="rounded_box_title_grey">
+        <item name="android:layout_height">@dimen/checkout_box_title_height</item>
+        <item name="android:drawableRight">@drawable/selector_dropdown_indicator</item>
+        <item name="android:drawableEnd">@drawable/selector_dropdown_indicator</item>
     </style>
 
 </resources>

@@ -331,7 +331,7 @@ OnItemSelectedListener {
         mVariationsListPosition = sharedPreferences.getInt(VARIATION_LIST_POSITION, -1);
         // mSelectedSimple = sharedPreferences.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
         //
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             mSelectedSimple = savedInstanceState.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
             if(savedInstanceState.containsKey(PRODUCT_BUNDLE))
                 mProductBundle = savedInstanceState.getParcelable(PRODUCT_BUNDLE);
@@ -397,7 +397,7 @@ OnItemSelectedListener {
         // Save the current fragment type on orientation change
         if (!mHideVariationSelection)
             outState.putInt(SELECTED_SIMPLE_POSITION, mSelectedSimple);
-        // save product bundle
+        // Save product bundle
         if(mProductBundle != null)
             outState.putParcelable(PRODUCT_BUNDLE, mProductBundle);
     }
@@ -487,8 +487,6 @@ OnItemSelectedListener {
         // Determine if related items should be shown
         mShowRelatedItems = bundle.getBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS);
         isRelatedItem = bundle.getBoolean(ConstantsIntentExtra.IS_RELATED_ITEM);
-//        if(bundle.containsKey(PRODUCT_BUNDLE))
-//            mProductBundle = bundle.getParcelable(PRODUCT_BUNDLE);
     }
 
     /**
@@ -550,7 +548,7 @@ OnItemSelectedListener {
         //mRelatedHorizontalScroll = (HorizontalScrollGroup) view.findViewById(R.id.product_detail_horizontal_scroll);
         //mRelatedHorizontalGroup = (ViewGroup) view.findViewById(R.id.product_detail_horizontal_group_container);
         
-        //BUNDLE
+        // BUNDLE
         mBundleContainer = view.findViewById(R.id.product_detail_product_bundle_container);
         mHorizontalBundleListView = (HorizontalListView) view.findViewById(R.id.product_detail_horizontal_bundle_list_view);
         mBundleLoading = view.findViewById(R.id.loading_related_bundle); 
@@ -825,13 +823,6 @@ OnItemSelectedListener {
             mSpecialPriceText.setText(unitPrice);
             mSpecialPriceText.setTextColor(getResources().getColor(R.color.red_basic));
             mPriceText.setVisibility(View.GONE);
-            // Set discount percentage value
-            if (discountPercentage > 0) {
-                mDiscountPercentageText.setText("-" + discountPercentage + "%");
-                mDiscountPercentageText.setVisibility(View.VISIBLE);
-            } else {
-                mDiscountPercentageText.setVisibility(View.GONE);
-            }
         } else {
             // display reduced and special price
             mSpecialPriceText.setText(specialPrice);
@@ -839,15 +830,16 @@ OnItemSelectedListener {
             mPriceText.setText(unitPrice);
             mPriceText.setPaintFlags(mPriceText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             mPriceText.setVisibility(View.VISIBLE);
-            // Set discount percentage value
-            if (discountPercentage > 0) {
-                mDiscountPercentageText.setText("-" + discountPercentage + "%");
-                mDiscountPercentageText.setVisibility(View.VISIBLE);
-            } else {
-                mDiscountPercentageText.setVisibility(View.GONE);
-            }
         }
-
+        // Set discount percentage value
+        if (discountPercentage > 0) {
+            String discount = String.format(getString(R.string.format_discount_percentage), discountPercentage);
+            Log.i(TAG, "displayPriceInfo:" + discount);
+            mDiscountPercentageText.setText(discount);
+            mDiscountPercentageText.setVisibility(View.VISIBLE);
+        } else {
+            mDiscountPercentageText.setVisibility(View.GONE);
+        }
     }
 
 //    private long getPriceForTrackingAsLong(ProductSimple simple) {
@@ -1281,6 +1273,8 @@ OnItemSelectedListener {
         mHorizontalListView.setHasFixedSize(true);
         // use a linear layout manager
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+        
+        // #RTL TODO: please use the layout for v8 and v18
         if(mContext.getResources().getBoolean(R.bool.is_bamilo_specific) && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
             mLayoutManager.setReverseLayout(true);    
         }
@@ -1762,20 +1756,14 @@ OnItemSelectedListener {
 //                arg.putString(GetProductBundleHelper.PRODUCT_SKU, "TO430HBADWKVMEAMZ");
                 triggerContentEvent(new GetProductBundleHelper(), arg, responseCallback);
             }
-            
             break;
         case GET_PRODUCT_BUNDLE:
-            
-            
             mProductBundle = (ProductBundle) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            
             if(mProductBundle != null){
                 displayBundle(mProductBundle);    
             } else {
                 mBundleContainer.setVisibility(View.GONE);
             }
-            
-            
             break;
         case ADD_PRODUCT_BUNDLE:
             isAddingProductToCart = false;
@@ -1792,13 +1780,13 @@ OnItemSelectedListener {
 
     public void onErrorEvent(Bundle bundle) {
 
-        hideActivityProgress();
-        
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+        
+        hideActivityProgress();
         
         if (super.handleErrorEvent(bundle)) {
             return;

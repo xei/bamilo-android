@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <!-- CREATE ADDRESS -->
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="@dimen/checkout_main_container" >
+
+        <!-- CONTENT -->
+
+        <ScrollView
+            android:id="@+id/checkout_address_form_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/checkout_address_button_container"
+            android:layout_alignParentTop="true" >
+
+            <!-- FORMS -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <!-- WARNING -->
+
+                <pt.rocket.components.customfontviews.TextView
+                    android:id="@+id/checkout_address_required_text"
+                    style="@style/white_text_16sp_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginStart="0dp"
+                    android:background="@drawable/titlebar_noaccess"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:shadowColor="@color/black_shadow"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="2"
+                    android:text="@string/register_required_text"
+                    android:visibility="gone" />
+
+                <!-- SHIPPING FORM -->
+
+                <include layout="@layout/checkout_create_address_shipping" />
+
+                <!-- BILLING FORM -->
+
+                <include
+                    android:id="@+id/checkout_address_form_include_billing"
+                    layout="@layout/checkout_create_address_billing"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- NEXT BUTTON -->
+
+        <LinearLayout
+            android:id="@id/checkout_address_button_container"
+            style="@style/button_container"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
+
+            <pt.rocket.components.customfontviews.Button
+                android:id="@+id/checkout_address_button_enter"
+                style="@style/button_orange_landscape"
+                android:text="@string/next_button" />
+        </LinearLayout>
+
+        <!-- WARNING -->
+
+        <pt.rocket.components.customfontviews.TextView
+            android:id="@+id/checkout_address_required_text"
+            style="@style/white_text_16sp_normal"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:background="@drawable/titlebar_noaccess"
+            android:gravity="center_horizontal|center_vertical"
+            android:shadowColor="@color/black_shadow"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="2"
+            android:text="@string/register_required_text"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <!-- ORDER SUMMARY -->
+
+    <FrameLayout
+        android:id="@+id/order_summary_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="@dimen/checkout_order_summary" />
+
+</LinearLayout>

@@ -19,7 +19,7 @@
     <!-- CONTAINER -->
 
     <RelativeLayout
-        android:layout_width="@dimen/inner_container_width"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/checkout_voucher_box_height"
         android:layout_gravity="center_horizontal" >
 
@@ -68,7 +68,7 @@
                 android:layout_marginStart="@dimen/rounded_margin_mid"
                 android:layout_marginTop="@dimen/login_margin_medium"
                 android:hint="@string/voucher_message_hint"
-                android:layoutDirection="locale"/>
+                android:layoutDirection="locale" />
 
             <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/voucher_error_message"

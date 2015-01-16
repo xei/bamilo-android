@@ -113,7 +113,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        setStyle(R.style.Theme_Jumia_Dialog_Blue_NoTitle_DatePicker, R.style.Theme_Jumia_Dialog_Blue_NoTitle_DatePicker);
+        setStyle(R.style.Theme_Jumia_Dialog_NoTitle_DatePicker, R.style.Theme_Jumia_Dialog_NoTitle_DatePicker);
     }
 
     /*

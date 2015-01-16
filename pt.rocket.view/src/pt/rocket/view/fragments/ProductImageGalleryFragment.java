@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 import org.apache.commons.collections4.CollectionUtils;
+
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.infiniteviewpager.InfiniteCirclePageIndicator;
 import pt.rocket.components.infiniteviewpager.InfinitePagerAdapter;
@@ -31,12 +32,9 @@ import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -47,7 +45,7 @@ import de.akquinet.android.androlog.Log;
  * @modified sergiopereria
  * 
  */
-public class ProductImageGalleryFragment extends BaseFragment implements OnClickListener {
+public class ProductImageGalleryFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(ProductImageGalleryFragment.class);
 
@@ -70,12 +68,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
     private int currentPosition = 0;
     
     private ArrayList<String> imagesList;
-
-    private View mCloseView;
     
     private String mCompleteProductUrl;
-
-//    private CirclePageIndicator view_pager_indicator;
 
     /**
      * Constructor using a nested flag
@@ -123,7 +117,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
      */
     public ProductImageGalleryFragment() {  
         super(EnumSet.of(MyMenuItem.HIDE_AB, MyMenuItem.UP_BUTTON_BACK), NavigationAction.Products,R.layout.product_gallery_fragment, 0, KeyboardState.NO_ADJUST_CONTENT);
-//        super(
     }
 
     /**
@@ -173,81 +166,77 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
         mainView = view;
         mProductImageLoading = (RelativeLayout) view.findViewById(R.id.loading_gallery);
         mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.viewpager);
-//        mViewPager = (InfiniteViewPager) view.findViewById(R.id.viewpager);
-        
-        mCloseView = view.findViewById(R.id.gallery_button_close);
-
+        View closeView = view.findViewById(R.id.gallery_button_close);
         // Set close button
-        setCloseButton();
+        setCloseButton(closeView);
         
         /* Necessary for adding virtual positions (older implementation)
         // Set indicators
         setIndicators();
-        
-      mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
-
-          @Override
-          public void onPageSelected(int arg0) {
-              currentPosition = arg0;
-          }
-
-          @Override
-          public void onPageScrolled(int arg0, float arg1, int arg2) {
-          }
-
-          @Override
-          public void onPageScrollStateChanged(int arg0) {
-              //int pageCount = galleryAdapter.getCount();
-
-              if (arg0 == ViewPager.SCROLL_STATE_SETTLING) {
-                  if (mViewPager != null)
-                      mViewPager.setPagingEnabled(false);
-              }
-
-              if (arg0 == ViewPager.SCROLL_STATE_IDLE) {
-                  //new ChangePageTask().execute(arg0);
-                  
-                  changePage();
-              }
-
-          }
-      });
+        setPageListener();
         */
     }
     
-    /** Older implementation of infinite view pager.
-     * 
-     */
-    @Deprecated
-    private void changePage() {
-        try {
-            getBaseActivity().runOnUiThread(new Runnable() {
-                public void run() {
-                    int pageCount = galleryAdapter.getCount();
-                    try {
-                        mViewPager.setPagingEnabled(true);
-                        // mViewPager.toggleJumiaScroller(true);
-
-                        if (currentPosition == 0) {
-                            // mViewPager.toggleJumiaScroller(false);
-                            mViewPager.setCurrentItem(pageCount - 2, false);
-//                            view_pager_indicator.onPageSelected(pageCount - 2);
-                            //
-                        } else if (currentPosition == pageCount - 1) 
-                            // mViewPager.toggleJumiaScroller(false);
-                            mViewPager.setCurrentItem(1, false);
-//                            view_pager_indicator.onPageSelected(1);
-//                        } else 
-//                            view_pager_indicator.onPageSelected(currentPosition);
-                    } catch (NullPointerException e) {
-                        Log.w(TAG, "WARNING NPE IN CHANGE PAGE");
-                    }
-                }
-            });
-        } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON CHANGE PAGE", e);
-        }
-    }
+//    @Deprecated
+//    private void setPageListener(){
+//        mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+//
+//            @Override
+//            public void onPageSelected(int arg0) {
+//                currentPosition = arg0;
+//            }
+//
+//            @Override
+//            public void onPageScrolled(int arg0, float arg1, int arg2) {
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int arg0) {
+//                if (arg0 == ViewPager.SCROLL_STATE_SETTLING) {
+//                    if (mViewPager != null)
+//                        mViewPager.setPagingEnabled(false);
+//                }
+//                if (arg0 == ViewPager.SCROLL_STATE_IDLE) {   
+//                    changePage();
+//                }
+//            }
+//        });
+//    }
+//    
+//    /** Older implementation of infinite view pager.
+//     * 
+//     */
+//    @Deprecated
+//    private void changePage() {
+//        try {
+//            getBaseActivity().runOnUiThread(new Runnable() {
+//                public void run() {
+//                    int pageCount = galleryAdapter.getCount();
+//                    try {
+//                        mViewPager.setPagingEnabled(true);
+//                        // mViewPager.toggleJumiaScroller(true);
+//
+//                        if (currentPosition == 0) {
+//                            // mViewPager.toggleJumiaScroller(false);
+//                            mViewPager.setCurrentItem(pageCount - 2, false);
+////                            view_pager_indicator.onPageSelected(pageCount - 2);
+//                            //
+//                        } else if (currentPosition == pageCount - 1) 
+//                            // mViewPager.toggleJumiaScroller(false);
+//                            mViewPager.setCurrentItem(1, false);
+////                            view_pager_indicator.onPageSelected(1);
+////                        } else 
+////                            view_pager_indicator.onPageSelected(currentPosition);
+//                    } catch (NullPointerException e) {
+//                        Log.w(TAG, "WARNING NPE IN CHANGE PAGE");
+//                    }
+//                }
+//            });
+//        } catch (NullPointerException e) {
+//            Log.w(TAG, "WARNING NPE ON CHANGE PAGE", e);
+//        }
+//    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -319,17 +308,12 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
     
     /**
      * Set the close button
+     * @modified sergiopereira
      */
-    private void setCloseButton() {
-        if(mCloseView != null && isZoomAvailable) {
-            //mCloseView.setOnClickListener((OnClickListener) this);
-            mCloseView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getBaseActivity().onBackPressed();
-                }
-            });
-            mCloseView.setVisibility(View.VISIBLE);
+    private void setCloseButton(View closeButton) {
+        if(closeButton != null && isZoomAvailable) {
+            closeButton.setOnClickListener(this);
+            closeButton.setVisibility(View.VISIBLE);
         }
     }
     
@@ -353,25 +337,21 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
             mCompleteProduct.setImageList(temp);
 
         }
+         
+        // Clone image list - TODO Validate if this is necessary
+        imagesList = new ArrayList<String>(mCompleteProduct.getImageList());
+        
         if (galleryAdapter != null) {
-            imagesList = (ArrayList<String>) mCompleteProduct.getImageList().clone();
-
             /* Necessary for adding virtual positions (older implementation)
-             
             imagesList.add(0, imagesList.get(imagesList.size() - 1));
             imagesList.add(imagesList.get(1));*/
-
             galleryAdapter.replaceAll(imagesList);
         } else {
-            imagesList = (ArrayList<String>) mCompleteProduct.getImageList().clone();
-            
             /* Necessary for adding virtual positions (older implementation)
-             
             imagesList.add(0, imagesList.get(imagesList.size() - 1));
             imagesList.add(imagesList.get(1));
              */
             galleryAdapter = new GalleryPagerAdapter(getActivity(), imagesList, isZoomAvailable);
-
         }
 
         if (mViewPager == null) {
@@ -410,14 +390,14 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
 
     private void setIndicatorForViewPager(){
         InfiniteCirclePageIndicator view_pager_indicator = (InfiniteCirclePageIndicator)getView().findViewById(R.id.view_pager_indicator);
-        view_pager_indicator.setFillColor(getView().getResources().getColor(R.color.orange_basic));
-        view_pager_indicator.setPageColor(getView().getResources().getColor(R.color.grey_middlelight));
+        //view_pager_indicator.setFillColor(getView().getResources().getColor(R.color.orange_basic));
+        //view_pager_indicator.setPageColor(getView().getResources().getColor(R.color.grey_middlelight));
         if(isZoomAvailable){
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view_pager_indicator.getLayoutParams();
             p.setMargins(0, 0, 0, (int)getView().getResources().getDimension(R.dimen.dimen_78px));
             view_pager_indicator.requestLayout();
         }
-        view_pager_indicator.setSnap(true);
+        //view_pager_indicator.setSnap(true);
         view_pager_indicator.setViewPager(mViewPager);
     }
 
@@ -431,11 +411,11 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
         mViewPager.setVisibility(View.VISIBLE);
     }
 
-    private void updateImage(int index) {
-        if (mViewPager != null && mViewPager.getAdapter() != null && mViewPager.getAdapter().getCount() > 0) {
-            mViewPager.setCurrentItem(index, true);
-        }
-    }
+//    private void updateImage(int index) {
+//        if (mViewPager != null && mViewPager.getAdapter() != null && mViewPager.getAdapter().getCount() > 0) {
+//            mViewPager.setCurrentItem(index, true);
+//        }
+//    }
 
 //    @Override
 //    public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
@@ -556,14 +536,32 @@ public class ProductImageGalleryFragment extends BaseFragment implements OnClick
 //        updateImage(currentPosition);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onClick(android.view.View)
+     */
     @Override
     public void onClick(View v) {
+        // Get id
         int id = v.getId();
+        // Case retry
         if(id == R.id.fragment_root_retry_button){
             Log.d(TAG,"RETRY");
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_GALLERY, getArguments(), FragmentController.ADD_TO_BACK_STACK);
         }
-        
+        // Case close button
+        else if (id == R.id.gallery_button_close) onClickCloseButton();
+        // Unknown
+        else Log.w(TAG, "WARNING: UNEXPECTED CLICK EVENT");
+    }
+    
+    /**
+     * Process the click on close button
+     * @author sergiopereira
+     */
+    private void onClickCloseButton() {
+        Log.i(TAG,"ON CLICK CLOSE BUTTON");
+        getBaseActivity().onBackPressed();
     }
 
     

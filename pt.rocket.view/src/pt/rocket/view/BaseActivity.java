@@ -2,9 +2,7 @@ package pt.rocket.view;
 
 import java.lang.ref.WeakReference;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import pt.rocket.app.JumiaApplication;
@@ -17,7 +15,6 @@ import pt.rocket.controllers.LogOut;
 import pt.rocket.controllers.SearchDropDownAdapter;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
-import pt.rocket.framework.ErrorCode;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.SearchSuggestion;
@@ -162,7 +159,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     private final int contentLayoutId;
 
-    private TextView tvActionCartCount;
+    private TextView mActionCartCount;
 
     private MyProfileActionProvider myProfileActionProvider;
 
@@ -518,7 +515,6 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int actionBarTitleResId, int checkoutStep) {
         Log.i(TAG, "ON UPDATE BASE COMPONENTS");
-
         // Update options menu and search bar
         menuItems = enabledMenuItems;
         hideKeyboard();
@@ -526,78 +522,23 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Update the sliding menu
         this.action = action != null ? action : NavigationAction.Unknown;
         updateNavigationMenu();
-
         // Select step on Checkout
         setCheckoutHeader(checkoutStep);
         // Set actionbarTitle
-        if (actionBarTitleResId == 0) {
-            hideTitle();
-            findViewById(R.id.totalProducts).setVisibility(View.GONE);
-            hideActionBarTitle();
-        } else {
-            // #specific_shop
-            if (getResources().getBoolean(R.bool.is_daraz_specific) ||
-                    getResources().getBoolean(R.bool.is_shop_specific) ||
-                    getResources().getBoolean(R.bool.is_bamilo_specific)) {
-                // Remove text from AB and show title bar
-                hideActionBarTitle();
-                findViewById(R.id.totalProducts).setVisibility(View.GONE);
-                setTitle(actionBarTitleResId);
-            } else {
-                hideTitle();
-                findViewById(R.id.totalProducts).setVisibility(View.GONE);
-                setActionBarTitle(actionBarTitleResId);
-            }
-        }
+        setActionTitle(actionBarTitleResId);
     }
 
     /**
-     * Change actionBar visibility if necessary
      * 
-     * @param showActionBar
-     * @author andre
-     * @modified sergiopereira
      */
-    public void setActionBarVisibility(int showActionBar) {
-        // Get current visibility
-        boolean actionBarVisible = getSupportActionBar().isShowing();
-        // Validate flag
-        switch (showActionBar) {
-        case View.VISIBLE:
-            if (!actionBarVisible) getSupportActionBar().show();
-            break;
-        case View.GONE:
-            getSupportActionBar().hide();
-            break;
-        default:
-            Log.w(TAG, "WARNING: INVALIDE FLAG, USE VISIBLE/INVISIBLE FROM View.");
-            break;
-        }
-    }
-
-    /**
-     * Set the up button in ActionBar
-     * 
-     * @param upButton
-     * @author sergiopereira
-     */
-    private void setActionBarUpButton() {
-        if(isBackButtonEnabled) {
-            Log.i(TAG, "SHOW UP BUTTON");
-            mDrawerToggle.setDrawerIndicatorEnabled(false);
-        } else {
-            Log.i(TAG, "NO SHOW UP BUTTON");
-            mDrawerToggle.setDrawerIndicatorEnabled(true);
-        }
-    }
-
     public void updateActionForCountry(NavigationAction action) {
         this.action = action != null ? action : NavigationAction.Unknown;
         updateNavigationMenu();
     }
 
     /**
-     * 
+     * Set the Action bar style
+     * @modified sergiopereira
      */
     public void setupActionBar() {
         mSupportActionBar = getSupportActionBar();
@@ -610,6 +551,35 @@ public abstract class BaseActivity extends ActionBarActivity {
 //        logoTextView = (TextView) supportActionBar.getCustomView().findViewById(R.id.ic_text_logo);
 //        logoTextView.setOnClickListener(onActionBarClickListener);
     }
+    
+    /**
+     * Set Action bar title
+     * @param actionBarTitleResId
+     */
+    private void setActionTitle(int actionBarTitleResId) {
+        // Case hide all
+        if (actionBarTitleResId == 0) {
+            hideTitle();
+            findViewById(R.id.totalProducts).setVisibility(View.GONE);
+            hideActionBarTitle();
+        }
+        // Case #specific_shop
+        else if (getResources().getBoolean(R.bool.is_daraz_specific) || 
+                getResources().getBoolean(R.bool.is_shop_specific) ||
+                getResources().getBoolean(R.bool.is_bamilo_specific)) {
+            // Show the application name in the action bar
+            setActionBarTitle(R.string.app_name);
+            findViewById(R.id.totalProducts).setVisibility(View.GONE);
+            setTitle(actionBarTitleResId);
+        }
+        // Case Jumia
+        else {
+            hideTitle();
+            findViewById(R.id.totalProducts).setVisibility(View.GONE);
+            setActionBarTitle(actionBarTitleResId);
+        }
+    }
+    
 
     private void setupContentViews() {
         Log.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
@@ -914,15 +884,13 @@ public abstract class BaseActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(final Menu menu) {
         Log.d(TAG, "ON OPTIONS MENU: CREATE");
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
         // Save the current menu
         mCurrentMenu = menu;
-
         // Flag used to show action bar as default
         int showActionBar = View.VISIBLE;
-
+        // Flag to show home or back button
         isBackButtonEnabled = false;
-
+        
         /**
          * Setting Menu Options
          */
@@ -935,33 +903,13 @@ public abstract class BaseActivity extends ActionBarActivity {
                 isBackButtonEnabled = true;
                 break;
             case SEARCH_VIEW:
-                Log.i(TAG, "ON OPTIONS MENU: CREATE SEARCH VIEW");
-                setActionBarSearch(menu);
+                setActionSearch(menu);
                 break;
             case BASKET:
-                MenuItem basket = menu.findItem(item.resId);
-                basket.setVisible(true);
-                basket.setEnabled(true);
+                setActionCart(menu);
                 break;
-            /*-case SHARE:
-                menu.findItem(item.resId).setVisible(true);
-                menu.findItem(item.resId).setEnabled(true);
-                mShareActionProvider = (ShareActionProvider) menu.findItem(item.resId).getActionProvider();
-                mShareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
-                            @Override
-                            public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
-                                getApplicationContext().startActivity(intent);
-                                TrackerDelegator.trackItemShared(getApplicationContext(), intent);
-                                return true;
-                            }
-                        });
-                setShareIntent(createShareIntent());
-                break;*/
             case MY_PROFILE:
-                MenuItem myProfile = menu.findItem(item.resId);
-                myProfile.setVisible(true);
-                myProfile.setEnabled(true);
-                setMyProfile(myProfile);
+                setActionProfile(menu);
                 break;
             default:
                 menu.findItem(item.resId).setVisible(true);
@@ -973,25 +921,101 @@ public abstract class BaseActivity extends ActionBarActivity {
         setActionBarUpButton();
         // Set AB visibility
         setActionBarVisibility(showActionBar);
-
-        // Validate country
-        if (!initialCountry) {
-            tvActionCartCount = (TextView) MenuItemCompat.getActionView(menu.findItem(R.id.menu_basket)).findViewById(R.id.cart_count);
-            tvActionCartCount.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    menu.performIdentifierAction(R.id.menu_basket, 0);
-                }
-            });
-            updateCartInfoInActionBar();
-
-        } else {
-            menu.findItem(R.id.menu_basket).setVisible(false);
-        }
-
+        // Return current menu
         return super.onCreateOptionsMenu(menu);
     }
 
+    /*
+     * ############### ACTION BAR MENU ITEMS #################
+     */
+    
+    /**
+     * Change actionBar visibility if necessary
+     * 
+     * @param showActionBar
+     * @author andre
+     * @modified sergiopereira
+     */
+    public void setActionBarVisibility(int showActionBar) {
+        // Get current visibility
+        boolean actionBarVisible = getSupportActionBar().isShowing();
+        // Validate flag
+        switch (showActionBar) {
+        case View.VISIBLE:
+            if (!actionBarVisible) getSupportActionBar().show();
+            break;
+        case View.GONE:
+            getSupportActionBar().hide();
+            break;
+        default:
+            Log.w(TAG, "WARNING: INVALIDE FLAG, USE VISIBLE/INVISIBLE FROM View.");
+            break;
+        }
+    }
+    
+    /**
+     * Set the up button in ActionBar
+     * 
+     * @param upButton
+     * @author sergiopereira
+     */
+    private void setActionBarUpButton() {
+        if(isBackButtonEnabled) {
+            Log.i(TAG, "SHOW UP BUTTON");
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+        } else {
+            Log.i(TAG, "NO SHOW UP BUTTON");
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+        }
+    }
+    
+    /**
+     * Set the share menu item
+     * @modified sergiopereira
+     */
+    @SuppressWarnings("unused")
+    private void setActionShare() {
+        //menu.findItem(MyMenuItem.BASKET.resId).setVisible(true);
+        //menu.findItem(item.resId).setEnabled(true);
+        //mShareActionProvider = (ShareActionProvider) menu.findItem(item.resId).getActionProvider();
+        //mShareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
+        //            @Override
+        //            public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
+        //                getApplicationContext().startActivity(intent);
+        //                TrackerDelegator.trackItemShared(getApplicationContext(), intent);
+        //                return true;
+        //            }
+        //        });
+        //setShareIntent(createShareIntent());
+    }
+    
+    /**
+     * Set the cart menu item
+     * @param menu
+     * @modified sergiopereira
+     */
+    private void setActionCart(final Menu menu) {
+        MenuItem basket = menu.findItem(MyMenuItem.BASKET.resId);
+        // Validate country
+        if (!initialCountry) {
+            basket.setVisible(true);
+            basket.setEnabled(true);
+            View actionCartView = MenuItemCompat.getActionView(basket);
+            mActionCartCount = (TextView) actionCartView.findViewById(R.id.action_cart_count);
+            View actionCartImage = actionCartView.findViewById(R.id.action_cart_image);
+            actionCartImage.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu.performIdentifierAction(MyMenuItem.BASKET.resId, 0);
+                }
+            });
+            updateCartInfoInActionBar();
+        } else {
+            basket.setVisible(false);
+        }
+    }
+    
+    
     /*
      * ############### SEARCH COMPONENT #################
      */
@@ -1003,7 +1027,8 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @author Andre Lopes
      * @modified sergiopereira
      */
-    private void setActionBarSearch(Menu menu) {
+    private void setActionSearch(Menu menu) {
+        Log.i(TAG, "ON OPTIONS MENU: CREATE SEARCH VIEW");
         // Get search menu item
         mSearchMenuItem = menu.findItem(R.id.menu_search);
         // Get search action view
@@ -1413,23 +1438,24 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     public void updateCartInfoInActionBar() {
         Log.d(TAG, "ON UPDATE CART IN ACTION BAR");
-        if (tvActionCartCount == null) {
+        if (mActionCartCount == null) {
             Log.w(TAG, "updateCartInfoInActionBar: cant find quantity in actionbar");
             return;
         }
 
         ShoppingCart currentCart = JumiaApplication.INSTANCE.getCart();
         // Show 0 while the cart is not updated
-        final String quantity = currentCart == null ? "0" : String.valueOf(currentCart
-                .getCartCount());
+        final String quantity = currentCart == null ? "0" : String.valueOf(currentCart.getCartCount());
 
-        tvActionCartCount.post(new Runnable() {
+        mActionCartCount.post(new Runnable() {
             @Override
             public void run() {
-                tvActionCartCount.setText(quantity);
+                mActionCartCount.setText(quantity);
             }
         });
-        hideKeyboard();
+        
+        // XXX ?
+        // hideKeyboard();
     }
 
     private void updateCartInfoInNavigation() {
@@ -1473,8 +1499,12 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Method used to set the myProfile Menu
      * 
      * @author Andre Lopes
+     * @modified sergiopereira
      */
-    private void setMyProfile(MenuItem myProfile) {
+    private void setActionProfile(Menu menu) {
+        MenuItem myProfile = menu.findItem(MyMenuItem.MY_PROFILE.resId);
+        myProfile.setVisible(true);
+        myProfile.setEnabled(true);
         if (myProfile != null) {
             myProfileActionProvider = (MyProfileActionProvider) MenuItemCompat.getActionProvider(myProfile);
             myProfileActionProvider.setAdapterOnClickListener(myProfileClickListener);

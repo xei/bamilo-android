@@ -6,8 +6,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.customfontviews.Button;
@@ -25,7 +25,6 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.BaseHelper;
-import pt.rocket.helpers.cart.GetShoppingCartItemsHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -35,7 +34,6 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
-import pt.rocket.view.SplashScreenActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -52,7 +50,6 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -254,7 +251,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         mRetryView = view.findViewById(R.id.fragment_retry_stub);
         // Get fall back layout
         mFallBackView = view.findViewById(R.id.fragment_fall_back_stub);
-        
     }
     
     /**
@@ -772,7 +768,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         setVisibility(mRetryView, false);
         setVisibility(mFallBackView, false);
         hideLoadingInfo(mLoadingView);
-    } 
+    }
     
     /**
      * Show the retry view from the root layout
@@ -1111,19 +1107,30 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     }
     
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        // Case retry
-        if (id == R.id.fragment_root_retry_button) onRetryRequest(null);
-        else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
-        else Log.w(TAG, "WARNING: UNKNOWN BUTTON");
-        
-    }
     
     protected void clearCredentials(){
         JumiaApplication.INSTANCE.setLoggedIn(false);
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         getBaseActivity().updateNavigationMenu();
     }
+    
+    /*
+     * ########### LISTENERS ########### 
+     */
+    
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        // Case retry button
+        if (id == R.id.fragment_root_retry_button) onRetryRequest(null);
+        // Case continue button
+        else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
+        // Case continue button
+        else Log.w(TAG, "WARNING: UNKNOWN CLICK EVENT");
+    }
+
 }

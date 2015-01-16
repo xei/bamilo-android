@@ -38,7 +38,6 @@
 
     <!-- ####################################################################### -->
 
-
     <!-- Jumia -->
     <style name="Theme.Jumia" parent="@style/Theme.AppCompat.Light">
         <!-- Base -->
@@ -52,6 +51,7 @@
         <!-- Base Action Bar -->
         <item name="android:actionBarTheme">@style/Widget.Jumia.ActionBar</item>
         <item name="actionBarTheme">@style/Widget.Jumia.ActionBar</item>
+        <item name="actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
         <!-- Search View -->
         <item name="searchViewStyle">@style/Widget.Jumia.SearchView</item>
         <item name="android:searchViewStyle">@style/Widget.Jumia.SearchView</item>
@@ -61,6 +61,8 @@
         <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
 		<!-- Custom Spinner -->
         <item name="actionCustomSpinnerDropDownStyle">@style/Widget.Jumia.Spinner.Style</item>
+		<!-- View Page Indicator -->
+        <item name="vpiCirclePageIndicatorStyle">@style/Widget.JumiaCirclePageIndicator</item>
     </style>
 
     <!-- Action Bar from support library compatibility -->
@@ -71,16 +73,18 @@
         <item name="actionBarStyle">@style/Widget.Jumia.ActionBarStyle</item>
     </style>
 
-    <!-- <style name="Widget.Jumia.ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar"> -->
-    <!-- <style name="Widget.Jumia.ActionBarStyle" parent="@style/Theme.AppCompat.Light"> -->
-    <!-- <style name="Widget.Jumia.ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse"> -->
+    <!-- Action Bar style -->
     <style name="Widget.Jumia.ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
-        <!--
-		<item name="android:background">@drawable/actionbar_drawable</item>
-        <item name="background">@drawable/actionbar_drawable</item>
-        -->
         <item name="android:background">@color/white_50</item>
         <item name="background">@color/white_50</item>
+    </style>
+
+    <!-- Action Bar Button from support library compatibility -->    
+	<style name="Widget.Jumia.ActionButton" parent="Base.Widget.AppCompat.ActionButton">
+	    <item name="android:layout_marginTop">4dip</item>
+	    <item name="android:layout_marginBottom">4dip</item>
+        <item name="android:paddingLeft">8dip</item>
+        <item name="android:paddingRight">8dip</item>
     </style>
 
     <!-- Search view from support library compatibility -->
@@ -120,14 +124,14 @@
         <item name="android:windowBackground">@color/transparent</item>
     </style>
 
-    <style name="Theme.Jumia.Dialog.Blue.NoTitle" parent="@android:style/Theme.Dialog">
+    <style name="Theme.Jumia.Dialog.NoTitle" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/dialog_shadow</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFrame">@null</item>
     </style>
 
-    <style name="Theme.Jumia.Dialog.Blue.NoTitle.DatePicker">
+    <style name="Theme.Jumia.Dialog.NoTitle.DatePicker">
         <!-- <item name="calendarViewStyle">@style/Holo.CalendarView.Light</item> -->
         <!-- <item name="datePickerStyle">@style/Holo.DatePicker</item> -->
         <!-- <item name="numberPickerStyle">@style/Holo.NumberPicker</item> -->
@@ -141,6 +145,13 @@
         <item name="android:windowMinWidthMinor" tools:targetApi="honeycomb">@null</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
+    </style>
+    
+    <!-- Circle page indicator from attr:CirclePageIndicator-->
+	<style name="Widget.JumiaCirclePageIndicator" parent="Widget">
+	    <item name="fillColor">@color/orange_basic</item>
+	    <item name="pageColor">@color/grey_middlelight</item>
+	    <item name="snap">true</item>
     </style>
 
 </resources>

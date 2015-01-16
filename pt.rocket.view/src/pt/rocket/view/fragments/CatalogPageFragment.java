@@ -45,7 +45,6 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -109,7 +108,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     // Products grid view
     private GridView gridView;
     // Button to go to top of list
-    private Button btnToplist;
+    private View btnToplist;
 
     // private LoadingBarView loadingBarView;
 
@@ -268,7 +267,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         this.gridView = (GridView) view.findViewById(R.id.middle_productslist_list);
         this.gridView.setOnItemClickListener(onItemClickListener);
 
-        this.btnToplist = (Button) view.findViewById(R.id.btn_toplist);
+        this.btnToplist = view.findViewById(R.id.btn_toplist);
         this.btnToplist.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1152,6 +1151,13 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     @Override
     public void onClick(View v) {
         int id = v.getId();
+//        // Case retry
+//        if (id == R.id.fragment_root_retry_button) onClickRetryButton();
+//        // Case continue
+//        else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
+//        // Case unknown
+//        else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+        
         // Case retry
         if (id == R.id.fragment_root_retry_button) onClickRetryButton();
         else super.onClick(v);

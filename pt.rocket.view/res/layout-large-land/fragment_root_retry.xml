@@ -5,63 +5,57 @@
     android:background="@color/background_color"
     android:gravity="top" >
 
-    <LinearLayout 
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:padding="@dimen/margin_20px"
-              android:background="@color/grey_background"
-              >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_background"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_20px" >
 
-    <include    
-        	android:id="@+id/no_connection_layout"
-            layout="@layout/no_connection_layout"
+        <include
+            android:id="@+id/no_connection_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/retry_layout_height"
             android:layout_marginBottom="@dimen/margin_20px"
-            />
-<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="50dp"
-	    android:orientation="horizontal"
-	    android:weightSum="1"
-	    android:gravity="center">
-	    
+            layout="@layout/no_connection_layout" />
 
-    <LinearLayout
-            android:id="@+id/fragment_root_retry_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:orientation="horizontal"
-            style="@style/button_fallback_retry"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:gravity="center"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:layoutDirection="locale">
-            
-        <ImageView
-                android:id="@+id/fragment_root_retry_spinning"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-               	android:background="@drawable/img_tryagain"
-               	android:layout_marginEnd="@dimen/margin_24px"
-				android:layout_marginRight="@dimen/margin_24px"
-                />
-        <pt.rocket.components.customfontviews.TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/try_again_retry"
-                android:clickable="false"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_m"
-                android:fontFamily="roboto_bold"
-                />
+            android:orientation="horizontal"
+            android:weightSum="1" >
 
+            <LinearLayout
+                android:id="@+id/fragment_root_retry_button"
+                style="@style/button_fallback_retry"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:clickable="true"
+                android:gravity="center"
+                android:layoutDirection="locale"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/fragment_root_retry_spinning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_24px"
+                    android:layout_marginRight="@dimen/margin_24px"
+                    android:background="@drawable/img_tryagain" />
+
+                <pt.rocket.components.customfontviews.TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:fontFamily="roboto_bold"
+                    android:text="@string/try_again_retry"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_m" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
-</LinearLayout>
-
 
 </ScrollView>

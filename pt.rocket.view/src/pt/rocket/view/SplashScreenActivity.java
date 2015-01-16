@@ -132,7 +132,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         setContentView(R.layout.splash_screen);
         // Get fall back layout
         mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
-        
+        // Get retry layout
         mRetryFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
         // Get prefs
         sharedPrefs = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);

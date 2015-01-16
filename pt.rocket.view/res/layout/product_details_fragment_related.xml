@@ -28,7 +28,7 @@
         android:scrollbars="none" />
 
     <!--
-         <pt.rocket.utils.scrolls.HorizontalScrollGroup
+	<pt.rocket.utils.scrolls.HorizontalScrollGroup
         android:id="@+id/product_detail_horizontal_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +43,6 @@
             android:layout_height="match_parent" />
     </pt.rocket.utils.scrolls.HorizontalScrollGroup>
     -->
-
 
     <!-- LOADING -->
 

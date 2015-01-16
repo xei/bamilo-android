@@ -44,7 +44,9 @@
         </RelativeLayout>
 
         <!-- BUTTONS -->
-
+        
+        <include layout="@layout/my_account_bottom_buttons"/>
+<!-- 
         <LinearLayout style="@style/button_container" >
 
             <pt.rocket.components.customfontviews.Button
@@ -61,6 +63,6 @@
                 android:layout_weight="1"
                 android:text="@string/save_label" />
         </LinearLayout>
-    </LinearLayout>
+ -->    </LinearLayout>
 
 </ScrollView>

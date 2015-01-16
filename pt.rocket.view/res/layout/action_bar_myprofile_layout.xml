@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+    android:layout_height="match_parent" >
 
-    <RelativeLayout
-        android:layout_width="@dimen/action_bar_icon_size"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/action_bar_margin" >
+    <ImageView
+        android:id="@+id/image_myprofile"
+        style="?attr/actionButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:clickable="true"
+        android:src="@drawable/selector_navigation_overflow" />
 
-        <ImageView
-            android:id="@+id/image_myprofile"
-            android:layout_width="@dimen/action_bar_icon_size"
-            android:layout_height="@dimen/action_bar_icon_size"
-            android:layout_centerVertical="true"
-            android:clickable="true"
-            android:src="@drawable/selector_navigation_overflow" />
+    <pt.rocket.utils.DismissibleSpinner
+        android:id="@+id/spinner_myprofile"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignEnd="@id/image_myprofile"
+        android:layout_alignLeft="@id/image_myprofile"
+        android:layout_alignRight="@id/image_myprofile"
+        android:layout_alignStart="@id/image_myprofile"
+        android:popupBackground="@drawable/menu_dropdown_panel_without_margin"
+        android:spinnerMode="dropdown"
+        android:visibility="invisible" />
 
-        <pt.rocket.utils.DismissibleSpinner
-            android:id="@+id/spinner_myprofile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:popupBackground="@drawable/menu_dropdown_panel_without_margin"
-            android:spinnerMode="dropdown"
-            android:visibility="invisible" />
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>
