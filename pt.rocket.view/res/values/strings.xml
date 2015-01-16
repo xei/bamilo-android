@@ -410,6 +410,8 @@
 	<string name="bundle_total_price">Total Price:</string>
 	<string name="try_again_retry">Try Again</string>
     <string name="connect_to_internet">An internet error occurred, please try again.</string>
+	<string name="pickup_station_address">Address: </string>
+	<string name="pickup_station_city">City: </string>
+	<string name="pickup_station_opening_hours">Opening Hours: </string>
 	<string name="format_discount_percentage">-%1$s%%</string>
-	
 </resources>

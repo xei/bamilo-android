@@ -60,6 +60,7 @@
     <dimen name="dimen_300px">100dp</dimen>
     <dimen name="dimen_310px">103.3dp</dimen>
     <dimen name="dimen_317px">105.66dp</dimen>
+    <dimen name="dimen_340px">113.33dp</dimen>
     <dimen name="dimen_421px">140.33dp</dimen>
     <dimen name="dimen_430px">143.33dp</dimen>
     <dimen name="dimen_440px">146.67dp</dimen>

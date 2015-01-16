@@ -394,5 +394,8 @@
 	<string name="string_appearance">Apparence</string>
 	<string name="string_rating">Avis</string>
 	<string name="string_with_discount_only">Avec réduction seulement</string>
+		<string name="pickup_station_address">Address: </string>
+	<string name="pickup_station_city">Ville: </string>
+	<string name="pickup_station_opening_hours">Heures d\'ouverture: </string>
 
 </resources>

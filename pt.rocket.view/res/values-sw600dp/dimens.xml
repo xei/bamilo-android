@@ -10,8 +10,8 @@
     <dimen name="text_actionbar_search">21sp</dimen -->
     <dimen name="text_root">27sp</dimen>
     <dimen name="text_header">24sp</dimen>
-    <dimen name="text_form">19.5sp</dimen>
     <dimen name="text_title">18sp</dimen>
+    <dimen name="text_form">19.5sp</dimen>
     <dimen name="text_subtitle">16sp</dimen>
     <!-- dimen name="text_description">15sp</dimen -->
     <dimen name="text_button">25sp</dimen>

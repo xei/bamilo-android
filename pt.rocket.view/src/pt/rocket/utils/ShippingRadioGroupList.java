@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.components.absspinner.IcsSpinner;
+import pt.rocket.controllers.PickupStationsAdapter;
 import pt.rocket.forms.ShippingMethodForm;
 import pt.rocket.forms.ShippingMethodSubForm;
 import pt.rocket.framework.objects.PickUpStationObject;
@@ -233,7 +234,7 @@ public class ShippingRadioGroupList extends RadioGroup {
         if (subForms.containsKey(mItems.get(groupId)) && subForms.get(mItems.get(groupId)).size() > 0) {
             for (ShippingMethodSubForm element : subForms.get(mItems.get(groupId))) {
                 if (element.options != null && element.options.size() > 0) {
-                    ((IcsSpinner) element.dataControl).setSelection(subId);
+                    element.icsSpinner.setSelection(subId);
                 }
             }
         }
@@ -243,7 +244,7 @@ public class ShippingRadioGroupList extends RadioGroup {
         if (subForms.containsKey(mItems.get(groupId)) && subForms.get(mItems.get(groupId)).size() > 0) {
             for (ShippingMethodSubForm element : subForms.get(mItems.get(groupId))) {
                 if (element.options != null && element.options.size() > 0) {
-                    return ((IcsSpinner) element.dataControl).getSelectedItemPosition();
+                    return element.icsSpinner.getSelectedItemPosition();
                 }
             }
         }
@@ -315,8 +316,13 @@ public class ShippingRadioGroupList extends RadioGroup {
             Log.i(TAG, "code1values : adding ");
             for (ShippingMethodSubForm element : subForms.get(mItems.get(idx))) {
                 if (element.options != null && element.options.size() > 0) {
-                    selectedPickup = element.options.get(((IcsSpinner) element.dataControl).getSelectedItemPosition());
-                    mContentValues.put(element.name, element.options.get(((IcsSpinner) element.dataControl).getSelectedItemPosition()).getPickupId());
+                    if(element.pickup_stations_list_view.getAdapter() instanceof PickupStationsAdapter){
+                        selectedPickup = ((PickupStationsAdapter)element.pickup_stations_list_view.getAdapter()).getSelectedPickupStation();
+                        
+                    }
+                    if(selectedPickup != null){
+                        mContentValues.put(element.name, selectedPickup.getPickupId());
+                    }
                     Log.i(TAG, "code1values : element.name : " + element.name);
                 } else {
                     if (selectedPickup.getRegions() != null && selectedPickup.getRegions().size() > 0) {

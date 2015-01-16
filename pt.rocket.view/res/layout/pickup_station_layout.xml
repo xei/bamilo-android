@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/dimen_340px"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:id="@+id/pickup_station_image_layout"
+        android:layout_width="@dimen/dimen_240px"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        >
+
+        <ImageView
+            android:id="@+id/pickup_station_image"
+            android:layout_width="@dimen/dimen_160px"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="false"
+            android:gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/arrow_side" 
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pickup_station_details_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dimen_50px"
+        android:layout_marginTop="@dimen/dimen_50px"
+        android:layout_toLeftOf="@+id/pickup_station_radio_button"
+        android:layout_toRightOf="@id/pickup_station_image_layout"
+        android:orientation="vertical" 
+        android:gravity="center_vertical">
+
+        <pt.rocket.components.customfontviews.TextView
+            android:id="@+id/pickup_station_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="false"
+            android:text="test"
+            android:textSize="@dimen/text_subtitle" />
+
+        <pt.rocket.components.customfontviews.TextView
+            android:id="@+id/pickup_station_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="false"
+            android:text="test"
+            android:textSize="@dimen/text_subtitle" />
+
+        <pt.rocket.components.customfontviews.TextView
+            android:id="@+id/pickup_station_opening_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="false"
+            android:text="test"
+            android:textSize="@dimen/text_subtitle" />
+    </LinearLayout>
+
+    <pt.rocket.components.customfontviews.RadioButton
+        android:id="@id/pickup_station_radio_button"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/dimen_50px"
+        android:layout_marginTop="@dimen/dimen_50px"
+        android:button="@drawable/btn_radio_holo_orange" 
+        />
+
+</RelativeLayout>

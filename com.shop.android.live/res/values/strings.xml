@@ -324,5 +324,7 @@
     <string name="category_filter_error">အမ်ိဳးအစားခြဲျခား စစ္ထုတ္ျခင္း မလုပ္ေဆာင္ႏိုင္ပါ။</string>
     <string name="try_again_retry">ျပန္လည္ႀကိဳးစားပါ</string>
     <string name="connect_to_internet">An internet error occurred, please try again.</string>
-
+    <string name="pickup_station_address">လိပ္စာ : </string>
+	<string name="pickup_station_city">ျမိဳ႕ : </string>
+	<string name="pickup_station_opening_hours">ရံုးဖြင့္ခ်ိန္ : </string>
 </resources>

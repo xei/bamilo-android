@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- <pt.rocket.components.custom.IcsSpinner xmlns:android="http://schemas.android.com/apk/res/android" -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    
 <pt.rocket.components.absspinner.IcsSpinner xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/custom"
     style="@style/form_style"
@@ -7,3 +12,15 @@
     android:background="@drawable/spinner_background_holo_orange"
     android:clickable="true"
     android:spinnerMode="dropdown" />
+
+	<ListView 
+    	android:id="@+id/pickup_stations_list_view"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:visibility="gone"
+    	android:divider="@color/grey_light"
+    	android:dividerHeight="0.75dp"
+    	android:paddingLeft="@dimen/dimen_50px"
+    	android:paddingRight="@dimen/dimen_50px"
+   	/>
+</LinearLayout>
