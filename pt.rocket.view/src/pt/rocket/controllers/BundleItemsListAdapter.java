@@ -2,19 +2,11 @@ package pt.rocket.controllers;
 
 import java.util.ArrayList;
 
-import de.akquinet.android.androlog.Log;
-
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import pt.rocket.components.absspinner.IcsSpinner;
-import pt.rocket.components.customfontviews.Button;
 import pt.rocket.components.customfontviews.CheckBox;
 import pt.rocket.components.customfontviews.TextView;
-import pt.rocket.controllers.BundleItemsListAdapter.ViewHolder.OnItemChecked;
-import pt.rocket.controllers.BundleItemsListAdapter.ViewHolder.OnItemSelected;
-import pt.rocket.controllers.BundleItemsListAdapter.ViewHolder.OnSimplePressed;
-import pt.rocket.framework.objects.CampaignItem;
-import pt.rocket.framework.objects.CampaignItemSize;
 import pt.rocket.framework.objects.ProductBundleProduct;
 import pt.rocket.framework.objects.ProductBundleSimple;
 import pt.rocket.utils.imageloader.RocketImageLoader;
@@ -39,7 +31,6 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
     
     private ArrayList<ProductBundleProduct> mDataset;
     private OnItemSelected itemSelected;
-    private OnSimplePressed simplePressed;
     private OnItemChecked itemChecked;
     private OnItemSelectedListener simplesSelected;
     /**
@@ -56,22 +47,10 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
         private ProgressBar mProgress;
         private TextView mPrice;
         private CheckBox mCheck;
-//        private Button mSimple;
         private View mContainer;
         private IcsSpinner mSizeSpinner;
         private RelativeLayout mSizeSpinnerContainer;
         
-        public interface OnItemSelected {
-            public void SelectedItem(ProductBundleProduct selectedProduct);
-        }
-        
-        public interface OnItemChecked {
-            public void checkItem(ProductBundleProduct selectedProduct, boolean isChecked, int pos);
-        }
-        
-        public interface OnSimplePressed {
-            public void PressedSimple(ProductBundleProduct selectedProduct);
-        }
         /**
          * Constructor 
          * @param view
@@ -83,12 +62,23 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
             mTitle = (TextView) view.findViewById(R.id.item_title);
             mImage = (ImageView) view.findViewById(R.id.image_view);
             mCheck = (CheckBox) view.findViewById(R.id.item_check);
-//            mSimple = (Button) view.findViewById(R.id.bundle_simple_button);
             mSizeSpinnerContainer = (RelativeLayout) view.findViewById(R.id.bundle_size_container);
             mSizeSpinner = (IcsSpinner) view.findViewById(R.id.bundle_simple_button);
             mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
             mPrice = (TextView) view.findViewById(R.id.item_price);
         }
+    }
+    
+    public interface OnItemSelected {
+        public void SelectedItem(ProductBundleProduct selectedProduct);
+    }
+    
+    public interface OnItemChecked {
+        public void checkItem(ProductBundleProduct selectedProduct, boolean isChecked, int pos);
+    }
+    
+    public interface OnSimplePressed {
+        public void PressedSimple(ProductBundleProduct selectedProduct);
     }
 
     /**
@@ -103,7 +93,6 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
         mDataset = bundleItemsList;
         itemSelected = selectedClickListener;
         itemChecked = checkedClickListener;
-        simplePressed = simpleClickListener;
         simplesSelected = simplesSelectedListener;
     }
 
