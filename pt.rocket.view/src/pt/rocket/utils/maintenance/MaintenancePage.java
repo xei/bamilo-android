@@ -5,6 +5,7 @@ import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
 import pt.rocket.framework.utils.DeviceInfoHelper;
+import pt.rocket.framework.utils.EventType;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -52,7 +53,7 @@ public class MaintenancePage {
      * @author manuel
      * @modified sergiopereira
      */
-    public static void setMaintenancePageSplashScreen(Activity activity, OnClickListener listener) {
+    public static void setMaintenancePageSplashScreen(Activity activity, EventType eventType, OnClickListener listener) {
 
         try {
 
@@ -61,6 +62,7 @@ public class MaintenancePage {
             // Set retry
             Button retry = (Button) activity.findViewById(R.id.fallback_retry);
             retry.setText(R.string.try_again);
+            retry.setTag(eventType.toString());
             retry.setOnClickListener(listener);
             // Set choose country case multi shops
             if (!activity.getResources().getBoolean(R.bool.is_single_shop_country)) {
@@ -130,7 +132,7 @@ public class MaintenancePage {
      * @author manuel
      * @modified sergiopereira
      */
-    public static void setMaintenancePageBaseActivity(Activity activity, OnClickListener listener) {
+    public static void setMaintenancePageBaseActivity(Activity activity, EventType eventType, OnClickListener listener) {
 
         try {
 
@@ -199,10 +201,11 @@ public class MaintenancePage {
      * @param listener
      * @author sergiopereira
      */
-    public static void setMaintenancePageBamilo(Activity activity, OnClickListener listener) {
+    public static void setMaintenancePageBamilo(Activity activity, EventType eventType, OnClickListener listener) {
         try {
             // Get retry button
             Button retry = (Button) activity.findViewById(R.id.fallback_retry);
+            retry.setTag(eventType.toString());
             retry.setOnClickListener(listener);
         } catch (NullPointerException e) {
             e.printStackTrace();

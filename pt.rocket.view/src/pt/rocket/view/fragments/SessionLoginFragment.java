@@ -4,7 +4,6 @@
 package pt.rocket.view.fragments;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -45,6 +44,7 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.deeplink.DeepLinkManager;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
+import pt.rocket.utils.social.FacebookHelper;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -60,7 +60,6 @@ import android.view.ViewGroup;
 import com.facebook.FacebookAuthorizationException;
 import com.facebook.Request;
 import com.facebook.Session;
-import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
@@ -191,26 +190,12 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
         register = view.findViewById(R.id.middle_login_link_register);
         container = (ViewGroup) view.findViewById(R.id.form_container);
-        // Facebook
+        // Get Facebook
         mFacebookButton = (FacebookTextView) view.findViewById(R.id.authButton);
-        // #RTL
-        Boolean hideFacebook = getResources().getBoolean(R.bool.is_bamilo_specific);
-        if(hideFacebook) mFacebookButton.setVisibility(View.GONE);
-        else setFacebookButton(mFacebookButton);
-
+        // Set Facebook
+        FacebookHelper.showOrHideFacebookButton(this, mFacebookButton);
     }
     
-    /**
-     * Set the Facebook button
-     * @param facebookButton
-     * @modified sergiopereira
-     */
-    private void setFacebookButton(FacebookTextView facebookButton) {
-        facebookButton.setFragment(this);
-        facebookButton.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);
-        facebookButton.setReadPermissions(Arrays.asList("email"));
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -257,8 +242,8 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
             } else {
                 Log.d(TAG, "FORM IS NULL");
 
-                Session s = Session.getActiveSession();
-                s.closeAndClearTokenInformation();
+                // Clean the Facebook Session
+                FacebookHelper.cleanFacebookSession();
 
                 HashMap<String, FormData> formDataRegistry = JumiaApplication.INSTANCE.getFormDataRegistry();
                 if (formDataRegistry == null || formDataRegistry.size() == 0) {

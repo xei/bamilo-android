@@ -49,14 +49,10 @@ import android.os.RemoteException;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 import android.view.View.OnClickListener;
-import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
-import android.widget.Toast;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -89,7 +85,7 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 
-public class SplashScreenActivity extends FragmentActivity implements IResponseCallback {
+public class SplashScreenActivity extends FragmentActivity implements IResponseCallback, OnClickListener {
 
     private final static String TAG = LogTagHelper.create(SplashScreenActivity.class);
 
@@ -631,7 +627,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Log.i(TAG, "ON ERROR RESPONSE");
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-
+        
         @SuppressWarnings("unchecked")
         HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
         Log.i(TAG, "codeerror " + errorCode);
@@ -728,62 +724,40 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     private void setLayoutMaintenance(final EventType eventType) {
         // Inflate maintenance
         mMainFallBackStub.setVisibility(View.VISIBLE);
-        
+        // Get config
+        boolean isBamilo = getResources().getBoolean(R.bool.is_bamilo_specific);
         // Case BAMILO
-        if(getResources().getBoolean(R.bool.is_bamilo_specific)) {
-            MaintenancePage.setMaintenancePageBamilo(this, new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onClickMaintenanceRetryButton(eventType);
-                }
-            });
-        }
+        if(isBamilo) MaintenancePage.setMaintenancePageBamilo(this, eventType, (OnClickListener) this);
         // Case JUMIA
-        else {
-            // Set content
-            MaintenancePage.setMaintenancePageSplashScreen(this, new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Get id
-                    int id = v.getId();
-                    // Case retry
-                    if (id == R.id.fallback_retry) onClickMaintenanceRetryButton(eventType);
-                    // Case choose
-                    else if (id == R.id.fallback_change_country) onClickMaitenanceChooseCountry();
-                }
-            });
-        }
+        else MaintenancePage.setMaintenancePageSplashScreen(this, eventType, (OnClickListener) this);
     }
     
-    /**
-     * Process the click on retry button in maintenance page.
-     * @param eventType
-     * @modified sergiopereira
+    /*
+     * ########### RETRY ###########
      */
-    private void onClickMaintenanceRetryButton(EventType eventType) {
-        mMainFallBackStub.setVisibility(View.GONE);
-        JumiaApplication.INSTANCE.sendRequest(
-                JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
-                JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
-                JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
-    }
     
     /**
-     * Process the click on choose country button in maintenance page.
+     * Show the retry view from the root layout
+     * @param listener button
      * @author sergiopereira
      */
-    private void onClickMaitenanceChooseCountry() {
-        // Show Change country
-        Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
-        intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
-        intent.putExtra(ConstantsIntentExtra.IN_MAINTANCE, true);
-        // Start activity
-        startActivity(intent);
-        finish();
+    protected void showFragmentRetry() {
+        // Hide maintenance visibility
+        if(mMainFallBackStub.getVisibility() == View.VISIBLE) mMainFallBackStub.setVisibility(View.GONE);
+        // Show no network
+        mRetryFallBackStub.setVisibility(View.VISIBLE);
+        // Set view
+        try {
+            findViewById(R.id.fragment_root_retry_button).setOnClickListener(this);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
+        }
     }
     
+    
+    /*
+     * ########### RESPONSES ###########
+     */
 
     /**
      * Requests and Callbacks methods
@@ -844,43 +818,78 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
+
+    /*
+     * ########### LISTENERS ###########
+     */
     
     /*
-     * ########### RETRY ###########
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
+    @Override
+    public void onClick(View view) {
+        // Get id
+        int id = view.getId();
+        // Case retry button from no network
+        if(id == R.id.fragment_root_retry_button) onClickRetryNoNetwork();
+        // Case retry button from maintenance
+        else if( id == R.id.fallback_retry) onClickMaintenanceRetryButton(view);
+        // Case choose country
+        else if( id == R.id.fallback_change_country) onClickMaitenanceChooseCountry();
+        // Case unknown
+        else Log.w(TAG, "WARNING: UNEXPECTED CLICK ENVENT");
+    }
     
     /**
-     * Show the retry view from the root layout
-     * @param listener button
-     * @author sergiopereira
+     * Process the click on retry button from no connection layout.
      */
-    protected void showFragmentRetry(OnClickListener listener) {
-        if(mMainFallBackStub.getVisibility() == View.VISIBLE){
-            mMainFallBackStub.setVisibility(View.GONE);
-        }
-        
-        mRetryFallBackStub.setVisibility(View.VISIBLE);
-        // Set view
-        try {
-            (findViewById(R.id.fragment_root_retry_button)).setOnClickListener(listener);
-        } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
-        }
+    private void onClickRetryNoNetwork() {
+        retryRequest();
+        Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
+        findViewById(R.id.fragment_root_retry_spinning).setAnimation(animation);
     }
     
-    protected void showFragmentRetry(){
-        showFragmentRetry(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-               retryRequest();
-               Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
-               ((ImageView)SplashScreenActivity.this.findViewById(R.id.fragment_root_retry_spinning)).setAnimation(animation);
-            }
-        });
-    }
-
+    /**
+     * Retry request
+     */
     protected void retryRequest(){
         JumiaApplication.INSTANCE.init(false, initializationHandler);
     }
+    
+    /**
+     * Process the click on choose country button in maintenance page.
+     * @author sergiopereira
+     */
+    private void onClickMaitenanceChooseCountry() {
+        // Show Change country
+        Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
+        intent.putExtra(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
+        intent.putExtra(ConstantsIntentExtra.IN_MAINTANCE, true);
+        // Start activity
+        startActivity(intent);
+        finish();
+    }
+    
+    /**
+     * Process the click on retry button in maintenance page.
+     * @param eventType
+     * @modified sergiopereira
+     */
+    private void onClickMaintenanceRetryButton(View view) {
+        // Get tag
+        String type = (String) view.getTag();
+        // Get event type
+        EventType eventType = EventType.valueOf(type);
+        // Retry
+        mMainFallBackStub.setVisibility(View.GONE);        
+        JumiaApplication.INSTANCE.sendRequest(
+                JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
+                JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
+                JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+    }
+    
+    
 }

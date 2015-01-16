@@ -2259,7 +2259,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         // Case BAMILO
         if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
-            MaintenancePage.setMaintenancePageBamilo(this, new OnClickListener() {
+            MaintenancePage.setMaintenancePageBamilo(this, eventType, new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onClickMaintenanceRetryButton(eventType);
@@ -2269,7 +2269,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Case JUMIA
         else {
             // Set content
-            MaintenancePage.setMaintenancePageBaseActivity(this, new OnClickListener() {
+            MaintenancePage.setMaintenancePageBaseActivity(this, eventType, new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onClickMaintenanceRetryButton(eventType);

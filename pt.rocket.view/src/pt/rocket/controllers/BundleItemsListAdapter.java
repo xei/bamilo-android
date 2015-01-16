@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
 
 /**
  * Ad
- * @author sergiopereira
+ * @author paulocarvalho
  *
  */
 public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsListAdapter.ViewHolder> {
@@ -36,7 +36,7 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
     /**
      * Provide a reference to the views for each data item.<br>
      * Complex data items may need more than one view per item, and you provide access to all the views for a data item in a view holder<br> 
-     * @author sergiopereira
+     * @author paulocarvalho
      *
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -86,7 +86,7 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
      * @param context
      * @param productTeaserGroup
      * @param parentClickListener
-     * @author sergiopereira
+     * @author paulocarvalho
      */
     public BundleItemsListAdapter(Context context, ArrayList<ProductBundleProduct> bundleItemsList, OnItemSelected selectedClickListener,
             OnItemChecked checkedClickListener, OnSimplePressed simpleClickListener, OnItemSelectedListener simplesSelectedListener) {

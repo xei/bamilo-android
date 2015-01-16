@@ -1100,6 +1100,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 //                Log.i(TAG, "DEFAULT HANDLE ERROR EVENT");
 //                showFragmentRetry(eventType);
 //                return true;
+            default:
+                break;
             }
 
         }

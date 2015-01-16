@@ -3,7 +3,6 @@
  */
 package pt.rocket.view.fragments;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,6 +46,7 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
+import pt.rocket.utils.social.FacebookHelper;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -62,7 +62,6 @@ import com.facebook.Request.GraphUserCallback;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.Session.StatusCallback;
-import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
@@ -81,8 +80,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private static final String FORM_ITEM_EMAIL = "email";
 
     private static final String FORM_ITEM_PASSWORD = "password";
-    
-    private static final String FB_PERMISSION_EMAIL = "email";
     
     private static CheckoutAboutYouFragment sAboutYouFragment;
 
@@ -218,18 +215,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         LoginButton facebookButton2 = (LoginButton) view.findViewById(R.id.checkout_signup_form_button_facebook);
         View facebookDivider1 = view.findViewById(R.id.checkout_login_form_divider_facebook);
         View facebookDivider2 = view.findViewById(R.id.checkout_signup_form_divider_facebook);
-                
-        // #RTL
-        Boolean hideFacebook = getResources().getBoolean(R.bool.is_bamilo_specific);
-        if(hideFacebook) {
-            facebookButton1.setVisibility(View.GONE);
-            facebookDivider1.setVisibility(View.GONE);
-            facebookButton2.setVisibility(View.GONE);
-            facebookDivider2.setVisibility(View.GONE);
-        } else {
-            setFacebookButton(facebookButton1);
-            setFacebookButton(facebookButton2);
-        }
+               
+        // Set Facebook
+        FacebookHelper.showOrHideFacebookButton(this, facebookButton1, facebookDivider1, facebookButton2, facebookDivider2);
         
         // Validate current state
         if(JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()){
@@ -486,24 +474,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     /**
      * ############# FACEBOOK #############
      */
-    
-    /**
-     * Set the facebook button behavior
-     * @param button
-     */
-    private void setFacebookButton(LoginButton button){
-        button.setFragment(this);
-        button.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);
-        button.setReadPermissions(Arrays.asList(FB_PERMISSION_EMAIL));
-    }
-    
-    /**
-     * Clean the facebook session
-     */
-    private void cleanFacebookSession(){
-        Session s = Session.getActiveSession();
-        s.closeAndClearTokenInformation();
-    }
     
     /*
      * (non-Javadoc)
@@ -943,7 +913,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 loadForm(form);
                 this.formResponse = form;
                 // Clean FACEBOOK session
-                cleanFacebookSession();
+                FacebookHelper.cleanFacebookSession();
             }
             break;
         case GET_CUSTOMER:

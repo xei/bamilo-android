@@ -11,7 +11,6 @@ import pt.rocket.pojo.DynamicFormItem;
 import pt.rocket.pojo.MetaFormExtractor;
 import pt.rocket.view.R;
 import android.content.Context;
-import android.text.Layout;
 import android.util.LayoutDirection;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -419,7 +418,6 @@ public class FormFactory {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             //#RTL
             if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
-                Log.e("FORM","1");
                 groupLayout.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
             }
             

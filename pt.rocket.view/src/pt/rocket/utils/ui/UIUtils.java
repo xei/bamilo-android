@@ -1,11 +1,8 @@
-package pt.rocket.utils;
+package pt.rocket.utils.ui;
 
-import pt.rocket.components.customfontviews.TextView;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 
 /**
@@ -21,32 +18,14 @@ import android.view.animation.AlphaAnimation;
  *
  */
 public class UIUtils {
-    private static Typeface robotoTypeFace;
 
-    public static void setRobotoFont(Context context, View view) {
-        if (robotoTypeFace == null) {
-            robotoTypeFace = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto/Roboto-Regular.ttf");
-        }
-        setFont(view, robotoTypeFace);
-    }
+    public static final String TAG = UIUtils.class.getSimpleName();
 
-    private static void setFont(View view, Typeface robotoTypeFace) {
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                setFont(((ViewGroup) view).getChildAt(i), robotoTypeFace);
-            }
-        } else if (view instanceof TextView) {
-            ((TextView) view).setTypeface(robotoTypeFace);
-        }
-    }
-    
-    public static int dpToPx(int dp, float density)
-    {
+    public static int dpToPx(int dp, float density) {
         return Math.round((float)dp * density);
     } 
 
-    public static int spToPx(float dp, Context context)
-    {
+    public static int spToPx(float dp, Context context) {
         return Math.round(dp * context.getResources().getDisplayMetrics().scaledDensity );
     }
 
@@ -62,9 +41,28 @@ public class UIUtils {
             animation.setDuration(0);
             animation.setFillAfter(true);
             view.startAnimation(animation);
-        }
-        else {
+        } else {
             view.setAlpha(alpha);
         }
     }
+    
+    /**
+     * Show or hide a set of views.
+     * @param visibility
+     * @param views
+     * @author sergiopereira
+     */
+    public final static void showOrHideViews(int visibility, View... views) {
+        for (View view : views) if (view != null) view.setVisibility(visibility);
+    }
+    
+    /**
+     * Set the visibility
+     * @param view
+     * @param show
+     */
+    public final static void setVisibility(View view, boolean show) {
+        if (view != null) view.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+    
 }
