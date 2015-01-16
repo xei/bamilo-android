@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/image_loadable"
-        android:gravity="right|end"
+        android:gravity="right"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="@dimen/rounded_margin_mid"
@@ -53,7 +53,7 @@
     <pt.rocket.components.customfontviews.TextView
         android:id="@+id/item_name"
         style="@style/text_subtitle"
-        android:gravity="right|end"
+        android:gravity="right"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_below="@id/item_brand"

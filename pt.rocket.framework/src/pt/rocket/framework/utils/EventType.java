@@ -69,8 +69,6 @@ public enum EventType {
 	
 	GET_REGISTRATION_FORM_FALLBACK_EVENT("http:/forms/register/", RestContract.MAX_CACHE_TIME),
 	
-	GET_REGISTRATION_EDIT_FORM_EVENT("edit", RestContract.MAX_CACHE_TIME),
-	
     CHANGE_PASSWORD_EVENT("https:/customer/changepass?setDevice=mobileApi", RestContract.NO_CACHE),
 	
 	GET_CHANGE_PASSWORD_FORM_EVENT("changepassword", RestContract.MAX_CACHE_TIME),
@@ -221,7 +219,7 @@ public enum EventType {
 	 * 
 	 */
 	private EventType() {
-		this(null, 0);
+		this(null, RestContract.NO_CACHE);
 	}
 
 }

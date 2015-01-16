@@ -25,6 +25,7 @@
         <item name="android:layout_centerVertical">true</item>
     </style>
 
+    
     <style name="rounded_box">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -34,17 +35,13 @@
         <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
         <item name="android:background">@drawable/background_content</item>
     </style>
-
-    <style name="checkbox_base" parent="Widget">
-        <item name="android:layout_gravity">right|end|center_vertical</item>
-        <item name="android:button">@null</item>
-        <item name="android:drawableRight">@drawable/selector_btn_check_holo_orange</item>
+    
+    
+    <!-- ################# CHECKOUT ################# -->
+    
+    <style name="checkout_about_you_title" parent="rounded_box_title_grey">
+        <item name="android:layout_height">@dimen/checkout_box_title_height</item>
+        <item name="android:drawableLeft">@drawable/selector_dropdown_indicator</item>
     </style>
     
-	<style name="_base_text" parent="text_regular">
-        <item name="android:ellipsize">start</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:gravity">right|center_vertical</item>
-    </style>
-
 </resources>

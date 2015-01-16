@@ -19,7 +19,7 @@
     <!-- CONTAINER -->
 
     <RelativeLayout
-        android:layout_width="@dimen/inner_container_width"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/checkout_voucher_box_height"
         android:layout_gravity="center_horizontal" >
 

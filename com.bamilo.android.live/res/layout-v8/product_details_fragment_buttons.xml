@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/button_container"
     android:paddingLeft="@dimen/rounded_margin_mid"
-    android:paddingRight="@dimen/rounded_margin_mid" >
+    android:paddingRight="@dimen/rounded_margin_mid"
+    android:layoutDirection="ltr" >
 
     
-        <!-- ADD TO CART -->
+	<!-- ADD TO CART -->
 
     <pt.rocket.components.customfontviews.Button
         android:id="@+id/product_detail_shop"

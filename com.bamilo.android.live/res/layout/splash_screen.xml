@@ -42,7 +42,7 @@
         android:layout_gravity="bottom|center_horizontal"
         android:textColor="@color/grey_middle" />
 
-        <!-- RETRY LAYOUT -->
+	<!-- RETRY LAYOUT -->
 
     <ViewStub
         android:id="@+id/splash_fragment_retry_stub"

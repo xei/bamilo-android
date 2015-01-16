@@ -47,7 +47,6 @@
         <pt.rocket.components.customfontviews.TextView
             android:id="@+id/order_last_update"
             style="@style/text_title"
-            android:layout_marginEnd="@dimen/margin_x_small"
             android:layout_marginRight="@dimen/margin_x_small"
             android:text="@string/track_your_order"
             android:visibility="gone" />

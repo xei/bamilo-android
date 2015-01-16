@@ -63,7 +63,6 @@
                 android:id="@+id/products_list_filter_button"
                 android:layout_width="37dp"
                 android:layout_height="match_parent"
-                android:layout_toEndOf="@id/first_divider"
                 android:layout_toRightOf="@id/first_divider"
                 android:scaleType="centerInside"
                 android:src="@drawable/selector_catalog_filter" />
@@ -81,7 +80,6 @@
                 android:id="@+id/products_switch_layout_button"
                 android:layout_width="37dp"
                 android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="false"
                 android:scaleType="centerInside"

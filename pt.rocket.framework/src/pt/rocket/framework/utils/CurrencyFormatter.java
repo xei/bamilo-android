@@ -172,20 +172,10 @@ public class CurrencyFormatter {
 	private static NumberFormat createNumberFormatter() {
 		//Log.d( TAG, "createNumberFormatter for android 2.x");
 		NumberFormat formatter;
-		Locale requiredLocale = Locale.getDefault();
 		Locale formatterLocale;
-		if (!isLocaleAvailable) {
-			//Log.d( TAG, "required locale " + requiredLocale.getCountry() + " is not available - fallback to backup");
-			if (requiredLocale.getCountry().equals("ID") || requiredLocale.getCountry().equals("PH")) {
-				formatterLocale = Locale.US;
-			} else {
-				formatterLocale = Locale.GERMAN;
-			}
-		} else {
-			formatterLocale = Locale.getDefault();
-		}
+		if (!isLocaleAvailable) formatterLocale = Locale.ENGLISH;
+		else formatterLocale = Locale.getDefault();
 		formatter = DecimalFormat.getCurrencyInstance(formatterLocale);
-
 		return formatter;
 	}
 

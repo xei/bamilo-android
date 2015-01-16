@@ -1,4 +1,4 @@
-# To enable ProGuard in your project, edit project.propertiesDarazMarketDev
+# To enable ProGuard in your project, edit project.properties
 # to define the proguard.config property as described in that file.
 #
 # Add project specific ProGuard rules here.
@@ -19,7 +19,8 @@
 #   public *;
 #}
 
-# BEGIN proguard-android-optimize.txt
+########################### BEGIN proguard-android-optimize.txt ###########################
+
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 -optimizationpasses 5
 -allowaccessmodification
@@ -72,7 +73,12 @@
 # Don't warn about those in case this app is linking against an older
 # platform version.  We know about them, and they are safe.
 -dontwarn android.support.**
-# END proguard-android-optimize.txt
+########################### END proguard-android-optimize.txt ###########################
+
+#-dontwarn pt.rocket.view.R$id
+#-dontwarn pt.rocket.utils.maintenance.MaintenancePage
+#-dontwarn pt.rocket.view.SplashScreenActivity
+#-dontwarn pt.rocket.view.fragments.HomeFragment
 
 -dontwarn pt.rocket.jumia.dev.R*
 -dontwarn com.ad4screen.R*
@@ -226,7 +232,12 @@
 #-keep class com.flurry.android.FlurryAgent { *; }
 ############################################
 
-############# SUPPORT LIBRARY (v?) #############
+############# BEGIN SUPPORT LIBRARY (v?) ########
 -keep class android.support.** { *; }
 -keep interface android.support.** { *; }
 ###########################################
+
+############# BEGIN ROCKET #############
+-keep class pt.rocket.** { *; }
+-keep interface pt.rocket.** { *; }
+########################################

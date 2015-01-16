@@ -36,4 +36,12 @@
         <item name="android:background">@drawable/background_content</item>
     </style>
     
+    
+    <!-- ################# CHECKOUT ################# -->
+    
+    <style name="checkout_about_you_title" parent="rounded_box_title_grey">
+        <item name="android:layout_height">@dimen/checkout_box_title_height</item>
+        <item name="android:drawableLeft">@drawable/selector_dropdown_indicator</item>
+    </style>
+    
 </resources>

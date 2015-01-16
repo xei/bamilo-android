@@ -23,7 +23,7 @@
         android:listSelector="@color/transparent"
         android:numColumns="3" />
 
-    <pt.rocket.components.customfontviews.Button
+    <ImageView
         android:id="@+id/btn_toplist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

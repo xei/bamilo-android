@@ -57,7 +57,8 @@
 
         <RelativeLayout
             style="@style/rounded_box"
-            android:layout_marginLeft="0dp" >
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="@dimen/rounded_margin_mid" >
 
             <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/shoppingcart_title"

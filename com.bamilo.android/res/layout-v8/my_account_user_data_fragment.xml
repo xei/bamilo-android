@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentTop="true"
+    android:layoutDirection="ltr"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -136,7 +137,7 @@
             <pt.rocket.components.customfontviews.Button
                 android:id="@+id/button_save"
                 style="@style/button_orange_bottom"
-                android:layout_marginLeft="@dimen/margin_x_small"
+                android:layout_marginRight="@dimen/margin_x_small"
                 android:layout_weight="1"
                 android:contentDescription="@string/myaccount_save_description"
                 android:text="@string/save_label" />
@@ -144,7 +145,7 @@
             <pt.rocket.components.customfontviews.Button
                 android:id="@+id/button_cancel"
                 style="@style/button_grey_bottom"
-                android:layout_marginRight="@dimen/margin_x_small"
+                android:layout_marginLeft="@dimen/margin_x_small"
                 android:layout_weight="1"
                 android:text="@string/cancel_label" />
         </LinearLayout>
