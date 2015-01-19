@@ -24,13 +24,11 @@ import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
 import pt.rocket.framework.tracking.TrackingEvent;
-import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
-import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.cart.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.search.GetSearchSuggestionHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -43,13 +41,13 @@ import pt.rocket.utils.dialogfragments.CustomToastView;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.dialogfragments.DialogProgressFragment;
 import pt.rocket.utils.maintenance.MaintenancePage;
+import pt.rocket.utils.ui.UIUtils;
 import pt.rocket.view.fragments.BaseFragment.KeyboardState;
 import pt.rocket.view.fragments.HomeFragment;
 import pt.rocket.view.fragments.NavigationFragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -148,8 +146,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     public ActionBarDrawerToggle mDrawerToggle;
 
-    private int mDrawableState = DrawerLayout.STATE_IDLE;
-
     private boolean isRegistered = false;
 
     private View warningView;
@@ -189,10 +185,6 @@ public abstract class BaseActivity extends ActionBarActivity {
     private boolean isBackButtonEnabled = false;
 
     private long mLaunchTime;
-
-    private long loadTime = 0;
-
-    private String trackScreen = "";
     
     public MenuItem mSearchMenuItem;
 
@@ -206,15 +198,8 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param titleResId
      * @param contentLayoutId
      */
-    public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems, 
-            Set<EventType> userEvents, int titleResId,
-            int contentLayoutId) {
-        this(R.layout.main,
-                action,
-                enabledMenuItems,
-                userEvents,
-                titleResId,
-                contentLayoutId);
+    public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
+        this(R.layout.main, action, enabledMenuItems, userEvents, titleResId, contentLayoutId);
     }
 
     /**
@@ -227,9 +212,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param titleResId
      * @param contentLayoutId
      */
-    public BaseActivity(int activityLayoutId, NavigationAction action,
-            Set<MyMenuItem> enabledMenuItems,
-            Set<EventType> userEvents, int titleResId, int contentLayoutId) {
+    public BaseActivity(int activityLayoutId, NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
         this.activityLayoutId = activityLayoutId;
         this.userEvents = userEvents;
         this.action = action != null ? action : NavigationAction.Unknown;
@@ -263,18 +246,15 @@ public abstract class BaseActivity extends ActionBarActivity {
         } else {
             HoloFontLoader.initFont(false);
         }
-        /**
-         * Used other approach:<br>
-         * - Created a new Activity with specific screen orientation
-         */
-        // Validate if is phone and force orientation
-        // setOrientationForHandsetDevices();
-        // setOrientationForTabletDevices();
 
         // Get fragment controller
         fragmentController = FragmentController.getInstance();
+        // Set content
+        setContentView(activityLayoutId);
         // Set action bar
         setupActionBar();
+        // Set navigation
+        setupDrawerNavigation();
         // Set content view
         setupContentViews();
         // Update the content view if initial country selection
@@ -358,12 +338,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         Log.i(TAG, "TRIGGER SHOPPING CART ITEMS");
         Bundle bundle = new Bundle();
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
-        triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), bundle, new IResponseCallback() {
+        JumiaApplication.INSTANCE.sendRequest(new GetShoppingCartItemsHelper(), bundle, new IResponseCallback() {
             
             @Override
             public void onRequestError(Bundle bundle) {
-                // TODO Auto-generated method stub
-                
+                //...
             }
             
             @Override
@@ -388,22 +367,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.FragmentActivity#onKeyDown(int, android.view.KeyEvent)
-     */
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent e) {
-        if (keyCode == KeyEvent.KEYCODE_MENU && ShopSelector.getShopId() == null) {
-            // intercept menu button click when on first choose country, and return true on order to do nothing
-            return true;
-        }
-        return super.onKeyDown(keyCode, e);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.actionbarsherlock.app.SherlockActivity#onPause()
+     * @see android.support.v4.app.FragmentActivity#onPause()
      */
     @Override
     public void onPause() {
@@ -425,7 +389,6 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        trackScreen = fragmentController.getLastEntry();
         JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
@@ -442,10 +405,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         JumiaApplication.INSTANCE.setLoggedIn(false);
         isRegistered = false;
         // Tracking
-        if (TextUtils.isEmpty(trackScreen)) {
-            TrackerDelegator.trackCloseApp();
-        }
-
+        TrackerDelegator.trackCloseApp();
     }
 
 //    /*
@@ -497,8 +457,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /**
-     * #### ACTION BAR ####
+    /*
+     * ############## ACTION BAR ##############
      */
     /**
      * Method used to update the sliding menu and items on action bar. Called from BaseFragment
@@ -545,11 +505,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSupportActionBar.setDisplayHomeAsUpEnabled(true);
         mSupportActionBar.setHomeButtonEnabled(true);
         mSupportActionBar.setDisplayShowTitleEnabled(true);
-//        // Set custom view
-//        supportActionBar.setDisplayShowCustomEnabled(true);
-//        supportActionBar.setCustomView(R.layout.action_bar_logo_layout);
-//        logoTextView = (TextView) supportActionBar.getCustomView().findViewById(R.id.ic_text_logo);
-//        logoTextView.setOnClickListener(onActionBarClickListener);
     }
     
     /**
@@ -580,91 +535,61 @@ public abstract class BaseActivity extends ActionBarActivity {
         }
     }
     
-
+    /*
+     * ############## NAVIGATION ##############
+     */
+    /**
+     * Set the navigation drawer.
+     * @modified sergiopereira
+     */
+    private void setupDrawerNavigation() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerNavigation = findViewById(R.id.fragment_navigation);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.drawable.ic_drawer);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+    
+    /**
+     * Close the navigation drawer if open.
+     * @modified sergiopereira
+     */
+    public void closeNavigationDrawer() {
+        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) mDrawerLayout.closeDrawer(mDrawerNavigation);
+    }
+    
+    /*
+     * ############## CONTENT VIEWS ##############
+     */
+    /**
+     * 
+     */
     private void setupContentViews() {
         Log.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
-        
-        setContentView(activityLayoutId);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        
-        mDrawerNavigation = findViewById(R.id.fragment_navigation);
-        
-        // XXX
-        
-        // mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
-        // R.string.app_name, R.string.app_name) {
-        // public void onDrawerClosed(View view) {
-        // onClosed();
-        // //supportActionBar.updateUpState(true);
-        // }
-        //
-        // public void onDrawerOpened(View drawerView) {
-        // onOpened();
-        // //supportActionBar.updateUpState(false);
-        // }
-        //
-        // @Override
-        // public void onDrawerStateChanged(int newState) {
-        // // Log.d(TAG, "SEARCH: ON STATE CHANGED " + newState);
-        // mDrawableState = newState;
-        // super.onDrawerStateChanged(newState);
-        // }
-        // };
-        
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.drawable.ic_drawer) {
-
-            /** Called when a drawer has settled in a completely closed state. */
-            @Override
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-            
-            @Override
-            public void onDrawerStateChanged(int newState) {
-                // Log.d(TAG, "SEARCH: ON STATE CHANGED " + newState);
-                mDrawableState = newState;
-                super.onDrawerStateChanged(newState);
-            }
-            
-        };
-
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
+        // Get the application container
         contentContainer = (ViewGroup) findViewById(R.id.rocket_app_content);
-
+        // Warning layout
         warningView = findViewById(R.id.warning);
         warningVariationView = findViewById(R.id.warning_variations);
         warningView.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 showWarning(false);
-
             }
         });
         warningVariationView.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 showWarningVariation(false);
 
             }
         });
-
         // Get the fallback stub
         mMainFallBackStub = (ViewStub) findViewById(R.id.main_fall_back_stub);
-
     }
-
+    
+    /*
+     * ############## INITIAL COUNTRY SELETECTION ##############
+     */
     /**
      * Updated the action bar and the navigation for initial country selection
      * 
@@ -708,44 +633,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         return initialCountry;
     }
 
-    /**
-     * Toggle the navigation drawer
+    /*
+     * ############### NAVIGATION MENU #################
      */
-    public void toggle() {
-        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
-            mDrawerLayout.closeDrawer(mDrawerNavigation);
-        } else {
-            if (mDrawerLayout.getDrawerLockMode(mDrawerNavigation) != DrawerLayout.LOCK_MODE_LOCKED_OPEN) {
-                mDrawerLayout.openDrawer(mDrawerNavigation);
-            }
-        }
-    }
-
-    public void closeDrawerIfOpen() {
-        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
-            mDrawerLayout.closeDrawer(mDrawerNavigation);
-        }
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        boolean result = super.dispatchKeyEvent(event);
-        if (result) {
-            return result;
-        }
-
-        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU && event.getAction() == KeyEvent.ACTION_DOWN) {
-            toggle();
-            return true;
-        }
-
-        return result;
-    }
-
-    /**
-     * ############### SLIDE MENU #################
-     */
-
     /**
      * Update the sliding menu
      */
@@ -767,68 +657,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         }
     }
 
-    /**
-     * Listener used for custom view on action bar
-     */
-    OnClickListener onActionBarClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-                toggle();
-            } else if (!initialCountry && mDrawableState == DrawerLayout.STATE_IDLE) {
-                // Hide search component and keyboard
-                hideSearchComponent();
-                hideKeyboard();
-            }
-        }
-    };
-
-    /**
-     * ############### ORIENTATION #################
-     */
-
-    /**
-     * Used other approach:<br>
-     * - Created a new Activity with specific screen orientation
-     */
-    @Deprecated
-    public void setOrientationForHandsetDevices() {
-        // Validate if is phone and force portrait orientaion
-        if (!getResources().getBoolean(R.bool.isTablet)) {
-            Log.i(TAG, "IS PHONE: FORCE PORTRAIT ORIENTATION");
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-    }
-
-    /**
-     * Used other approach:<br>
-     * - Created a new Activity with specific screen orientation
-     */
-    @Deprecated
-    public void setOrientationForTabletDevices() {
-        // Validate if is tablet and force landscape orientaion
-        if (getResources().getBoolean(R.bool.isTablet)) {
-            Log.i(TAG, "IS TABLET: FORCE LANDSPAPE ORIENTATION");
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-        }
-    }
-
-    /**
-     * Verifies if the current screen orientation is Landscape
-     * 
-     * @return true if yes, false otherwise
-     */
-    public static boolean isTabletInLandscape(Context context) {
-        if (context == null) {
-            return false;
-        }
-        if (context.getResources().getBoolean(R.bool.isTablet)
-                && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-            return true;
-        return false;
-    }
-
-    /**
+    /*
      * ############### OPTIONS MENU #################
      */
 
@@ -850,28 +679,26 @@ public abstract class BaseActivity extends ActionBarActivity {
         Log.d(TAG, "ON OPTION ITEM SELECTED: " + item.getTitle());
         // Get item id
         int itemId = item.getItemId();
-        // NAV or ARROW
-        if (itemId == android.R.id.home) {
-            // Go back or toggle between opened and closed drawer
-            if (isBackButtonEnabled) onBackPressed();
-            else toggle();
+        // CASE BACK ARROW
+        if (itemId == android.R.id.home && isBackButtonEnabled) {
+            onBackPressed(); 
+            return true;
+        }
+        // CASE HOME 
+        else if (mDrawerToggle.onOptionsItemSelected(item)) {
+            // Toggle between opened and closed drawer
             return true;
         }
         // CART
         else if (itemId == R.id.menu_basket) {
-            Log.i(TAG, "code1state : " + 
-                    mDrawerLayout.getDrawableState()[0] + " : idle : " + 
-                    DrawerLayout.STATE_IDLE + " : dragging :  " + 
-                    DrawerLayout.STATE_DRAGGING + "  : settling : " + 
-                    DrawerLayout.STATE_SETTLING);
-            if (mDrawableState == DrawerLayout.STATE_IDLE) {
-                closeDrawerIfOpen();
-                onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
-            return false;
+            // Close drawer
+            closeNavigationDrawer();
+            // Goto cart
+            onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            return true;
         }
         // DEFAULT:
-        else {
+        else { 
             return super.onOptionsItemSelected(item);
         }
     }
@@ -986,9 +813,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         //                return true;
         //            }
         //        });
+        //mShareActionProvider.setShareHistoryFileName(null);
+        //mShareActionProvider.setShareIntent(shareIntent);
         //setShareIntent(createShareIntent());
     }
-    
+        
     /**
      * Set the cart menu item
      * @param menu
@@ -1049,10 +878,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSearchAutoComplete.setTextColor(getResources().getColor(R.color.grey_middle));
         // Initial state
         MenuItemCompat.collapseActionView(mSearchMenuItem);
-        //mSearchAutoComplete.dismissDropDown();
-        //mSearchAutoComplete.setFocusable(false);
-        //mSearchAutoComplete.setFocusableInTouchMode(true);
-        //mSearchView.setOnClickListener(null);    
         // Calculate the max width to fill action bar
         setSearchWidthToFillOnExpand();
         // Set search
@@ -1061,24 +886,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSearchMenuItem.setVisible(true);
     }
 
-//    /**
-//     * method to position the drawable inside the span in hte right position when in #RTL and on
-//     * <3.0 Android version
-//     * 
-//     * @param hintText
-//     * @return formated Hint
-//     */
-//    private CharSequence getDecoratedHint(CharSequence hintText) {
-//        SpannableStringBuilder ssb = new SpannableStringBuilder(hintText);
-//        ssb.append("  ");// for the icon
-//        Drawable searchIcon = getResources().getDrawable(R.drawable.abs__ic_search_api_holo_light);
-//        int textSize = (int) (mSearchAutoComplete.getTextSize() * 1.25);
-//        searchIcon.setBounds(0, 0, textSize, textSize);
-//        // ssb.setSpan(new ImageSpan(searchIcon), textSize-4,textSize-3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        ssb.setSpan(new ImageSpan(searchIcon), hintText.length() + 1, hintText.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        return ssb;
-//    }
-
+    
     private void setSearchWidthToFillOnExpand() {
         // Get the width of main content
         // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
@@ -1182,7 +990,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 Log.d(TAG, "SEARCH ON EXPAND");
-                if (mDrawableState == DrawerLayout.STATE_IDLE) closeDrawerIfOpen();
+                closeNavigationDrawer();
                 isSearchComponentOpened = true;
                 setItemsVisibility(false);
                 return true;
@@ -1284,7 +1092,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         invalidateOptionsMenu();
     }
 
-    /**
+    /*
      * ############### SEARCH TRIGGER #################
      */
 
@@ -1389,8 +1197,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
         params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
         TrackerDelegator.trackLoadTiming(params);
-        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(
-                getApplicationContext(), sug, requestQuery);
+        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), sug, requestQuery);
         mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
         mSearchAutoComplete.showDropDown();
     }
@@ -1411,10 +1218,6 @@ public abstract class BaseActivity extends ActionBarActivity {
             mShareActionProvider.setShareIntent(shareIntent);
         }
     }*/
-
-    public static int maskRequestCodeId(int code) {
-        return code & 0x0000FFFF;
-    }
 
     /**
      * Displays the number of items that are currently on the shopping cart as well as its value.
@@ -1453,9 +1256,6 @@ public abstract class BaseActivity extends ActionBarActivity {
                 mActionCartCount.setText(quantity);
             }
         });
-        
-        // XXX ?
-        // hideKeyboard();
     }
 
     private void updateCartInfoInNavigation() {
@@ -1522,7 +1322,9 @@ public abstract class BaseActivity extends ActionBarActivity {
                 case MyProfile:
                     // MY PROFILE
                     hideMyProfile = false;
-                    closeDrawerIfOpen();
+                    // Close Drawer
+                    closeNavigationDrawer();
+                    // Validate provider
                     if (myProfileActionProvider != null) {
                         myProfileActionProvider.showSpinner();
                         int totalFavourites = FavouriteTableHelper.getTotalFavourites();
@@ -1598,6 +1400,13 @@ public abstract class BaseActivity extends ActionBarActivity {
             }
         }
     };
+    
+    /**
+     * @return the action
+     */
+    public NavigationAction getAction() {
+        return action;
+    }
 
     /*
      * (non-Javadoc)
@@ -1723,27 +1532,12 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSupportActionBar.setTitle("");
     }
 
-    /**
-     * Don't show loading if we are using fragments, no need to redraw all the layout...
-     * 
-     * @param event
-     */
-
-    private final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args,
-            final IResponseCallback responseCallback) {
-        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
-    }
-
-
     public final void showWarning(boolean show) {
-        Log.d(TAG, "Showing warning: " + show);
-        if (warningView != null)
-            warningView.setVisibility(show ? View.VISIBLE : View.GONE);
+        UIUtils.setVisibility(warningView, show);
     }
 
     public void showWarningVariation(boolean show) {
-        if (warningVariationView != null)
-            warningVariationView.setVisibility(show ? View.VISIBLE : View.GONE);
+        UIUtils.setVisibility(warningVariationView, show);
     }
 
     private void setAppContentLayout() {
@@ -1779,20 +1573,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         }
     }
 
-    public void onOpened() {
-        Log.d(TAG, "onOpened");
-        // Hide search component and hide keyboard
-        hideSearchComponent();
-        hideKeyboard();
-        // Update cart
-        loadTime = System.currentTimeMillis();
-        TrackerDelegator.trackPage(TrackingPage.NAVIGATION, loadTime, false);
-    }
-
-    public void onClosed() {
-        Log.d(TAG, "onClosed");
-    }
-
     /**
      * Service Stuff
      */
@@ -1821,13 +1601,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     }
 
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        Log.e(TAG, "LOW MEM");
-        // System.gc();
-    }
-
     public void hideKeyboard() {
         Log.i(TAG, "HIDE KEYBOARD");
         InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -1844,11 +1617,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         // use the above as the method below does not always work
         // imm.showSoftInput(getSlidingMenu().getCurrentFocus(),
         // InputMethodManager.SHOW_IMPLICIT);
-    }
-
-
-    public void finishFromAdapter() {
-        finish();
     }
     
     public void onLogOut(){
@@ -2030,12 +1798,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 //        }
 //    }
 
-    /**
-     * @return the action
-     */
-    public NavigationAction getAction() {
-        return action;
-    }
+
 
     /**
      * Set action
@@ -2067,8 +1830,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param addToBackStack
      * @author sergiopereira
      */
-    public void fragmentManagerTransition(int container, Fragment fragment, String tag,
-            Boolean addToBackStack) {
+    public void fragmentManagerTransition(int container, Fragment fragment, String tag, Boolean addToBackStack) {
         fragmentController.startTransition(this, container, fragment, tag, addToBackStack);
     }
 
@@ -2102,22 +1864,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         fragmentController.popAllEntriesUntil(this, tag);
     }
 
-    /**
-     * Constructor used to initialize the navigation list component and the autocomplete handler
-     * 
-     * @param userEvents
-     * @author manuelsilva
-     * 
-     */
-    public interface OnActivityFragmentInteraction {
-        public void sendValuesToFragment(int identifier, Object values);
-
-        public void sendPositionToFragment(int position);
-
-        public void sendListener(int identifier, OnClickListener clickListener);
-
-        public boolean allowBackPressed();
-    }
 
     /**
      * Confirm backPress to exit application
@@ -2362,7 +2108,6 @@ public abstract class BaseActivity extends ActionBarActivity {
             updateBaseComponentsOutCheckout(visibility);
             break;
         }
-
         // Return value
         return result;
     }
@@ -2378,7 +2123,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Set header visibility
         findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
         findViewById(R.id.checkout_header).setVisibility(visibility);
-        // Put sliding menu normal behavior
     }
 
     /**
@@ -2406,20 +2150,16 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void unSelectCheckoutStep(int step) {
         switch (step) {
         case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-            unSelectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon,
-                    R.id.checkout_header_step_1_text);
+            unSelectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon, R.id.checkout_header_step_1_text);
             break;
         case ConstantsCheckout.CHECKOUT_BILLING:
-            unSelectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon,
-                    R.id.checkout_header_step_2_text);
+            unSelectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon, R.id.checkout_header_step_2_text);
             break;
         case ConstantsCheckout.CHECKOUT_SHIPPING:
-            unSelectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon,
-                    R.id.checkout_header_step_3_text);
+            unSelectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon, R.id.checkout_header_step_3_text);
             break;
         case ConstantsCheckout.CHECKOUT_PAYMENT:
-            unSelectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon,
-                    R.id.checkout_header_step_4_text);
+            unSelectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon, R.id.checkout_header_step_4_text);
             break;
         default:
             break;
@@ -2435,20 +2175,16 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void selectCheckoutStep(int step) {
         switch (step) {
         case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-            selectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon,
-                    R.id.checkout_header_step_1_text);
+            selectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon, R.id.checkout_header_step_1_text);
             break;
         case ConstantsCheckout.CHECKOUT_BILLING:
-            selectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon,
-                    R.id.checkout_header_step_2_text);
+            selectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon, R.id.checkout_header_step_2_text);
             break;
         case ConstantsCheckout.CHECKOUT_SHIPPING:
-            selectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon,
-                    R.id.checkout_header_step_3_text);
+            selectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon, R.id.checkout_header_step_3_text);
             break;
         case ConstantsCheckout.CHECKOUT_PAYMENT:
-            selectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon,
-                    R.id.checkout_header_step_4_text);
+            selectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon, R.id.checkout_header_step_4_text);
             break;
         default:
             break;
@@ -2465,8 +2201,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void selectStep(int main, int icon, int text) {
         findViewById(main).setSelected(true);
-        findViewById(main).getLayoutParams().width = getResources().getDimensionPixelSize(
-                R.dimen.checkout_header_step_selected_width);
+        findViewById(main).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_selected_width);
         findViewById(icon).setSelected(true);
         findViewById(text).setVisibility(View.VISIBLE);
     }
@@ -2481,8 +2216,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void unSelectStep(int main, int icon, int text) {
         findViewById(main).setSelected(false);
-        findViewById(main).getLayoutParams().width = getResources().getDimensionPixelSize(
-                R.dimen.checkout_header_step_width);
+        findViewById(main).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_width);
         findViewById(icon).setSelected(false);
         findViewById(text).setVisibility(View.GONE);
     }
@@ -2508,21 +2242,17 @@ public abstract class BaseActivity extends ActionBarActivity {
         else if (id == R.id.checkout_header_step_2 && !view.isSelected()) {
             // Validate back stack
             if (FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString()))
-                FragmentController.getInstance().popAllEntriesUntil(this,
-                        FragmentType.MY_ADDRESSES.toString());
-            else if (FragmentController.getInstance().hasEntry(
-                    FragmentType.CREATE_ADDRESS.toString())) {
+                FragmentController.getInstance().popAllEntriesUntil(this, FragmentType.MY_ADDRESSES.toString());
+            else if (FragmentController.getInstance().hasEntry(FragmentType.CREATE_ADDRESS.toString())) {
                 removeAllCheckoutEntries();
-                onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE,
-                        FragmentController.ADD_TO_BACK_STACK);
+                onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
         }
         // CHECKOUT_SHIPPING
         else if (id == R.id.checkout_header_step_3 && !view.isSelected()) {
             // Validate back stack
             if (FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString()))
-                FragmentController.getInstance().popAllEntriesUntil(this,
-                        FragmentType.SHIPPING_METHODS.toString());
+                FragmentController.getInstance().popAllEntriesUntil(this, FragmentType.SHIPPING_METHODS.toString());
         }
         // CHECKOUT_PAYMENT IS THE LAST
     }
@@ -2533,27 +2263,12 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @author sergiopereira
      */
     private void removeAllCheckoutEntries() {
-        FragmentController.getInstance().removeAllEntriesWithTag(
-                FragmentType.PAYMENT_METHODS.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(
-                FragmentType.SHIPPING_METHODS.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(
-                FragmentType.MY_ADDRESSES.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(
-                FragmentType.CREATE_ADDRESS.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(
-                FragmentType.EDIT_ADDRESS.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.PAYMENT_METHODS.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.SHIPPING_METHODS.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ADDRESSES.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.CREATE_ADDRESS.toString());
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.EDIT_ADDRESS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.POLL.toString());
-    }
-
-    /**
-     * Get the current menu options specified by current fragment
-     * 
-     * @return a set of menu items
-     * @author sergiopereira
-     */
-    public Set<MyMenuItem> getCurrentMenuOptions() {
-        return menuItems;
     }
 
     /**

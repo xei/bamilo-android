@@ -15,6 +15,7 @@ import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.ProductReviewCommentCreated;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.configs.GetRatingOptionsHelper;
@@ -26,7 +27,6 @@ import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -561,7 +561,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                             dialog_review_submitted.dismiss();
                             isExecutingSendReview = false;
                             if (getBaseActivity() != null) {
-                                if (BaseActivity.isTabletInLandscape(getBaseActivity())) {
+                                if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
                                     cleanForm();
                                 } else {
                                     getBaseActivity().onBackPressed();

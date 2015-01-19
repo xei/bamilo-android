@@ -42,6 +42,7 @@ import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.cart.GetShoppingCartAddBundleHelper;
@@ -1012,7 +1013,7 @@ OnItemSelectedListener {
 
     private void executeAddProductToCart() {
         ProductSimple simple = getSelectedSimple();
-        if (simple == null && !BaseActivity.isTabletInLandscape(getBaseActivity())) {
+        if (simple == null && !DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
             showChooseReminder();
             isAddingProductToCart = false;
             return;
@@ -1196,7 +1197,7 @@ OnItemSelectedListener {
 
         setContentInformation();
 
-        if(BaseActivity.isTabletInLandscape(getBaseActivity())){
+        if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
             displayDescription();
             displaySpecification();   
         }

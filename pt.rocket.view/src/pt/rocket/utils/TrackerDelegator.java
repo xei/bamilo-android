@@ -1048,7 +1048,6 @@ public class TrackerDelegator {
     public static void trackCloseApp() {
         // GTM
         GTMManager.get().gtmTrackAppClose();
-
     }
     
     
@@ -1137,7 +1136,6 @@ public class TrackerDelegator {
         params.putLong(AdjustTracker.BEGIN_TIME, launchtime);
         params.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(context, TrackingEvent.APP_OPEN, params);
-       
     }
     
     /**

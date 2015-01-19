@@ -8,6 +8,7 @@ import java.util.List;
 
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.customfontviews.TextView;
+import pt.rocket.components.widget.DismissibleSpinner;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.content.Context;

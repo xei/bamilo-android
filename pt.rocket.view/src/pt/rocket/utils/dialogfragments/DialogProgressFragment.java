@@ -97,6 +97,6 @@ public class DialogProgressFragment extends DialogFragment {
     @Override
     public void onPause() {
         super.onPause();
-        this.dismiss();
+        //this.dismiss();
     }
 }

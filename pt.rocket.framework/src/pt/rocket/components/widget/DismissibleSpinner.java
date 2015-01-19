@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pt.rocket.utils;
+package pt.rocket.components.widget;
 
 import pt.rocket.components.absspinner.IcsSpinner;
 import android.content.Context;

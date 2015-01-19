@@ -6,20 +6,21 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import pt.rocket.components.androidslidingtabstrip.SlidingTabLayout;
+import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.CatalogPagerAdapter;
 import pt.rocket.controllers.FeaturedItemsAdapter;
 import pt.rocket.controllers.TipsPagerAdapter;
 import pt.rocket.framework.Darwin;
-import pt.rocket.components.androidslidingtabstrip.SlidingTabLayout;
-import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.framework.objects.CatalogFilter;
 import pt.rocket.framework.objects.CatalogFilterOption;
 import pt.rocket.framework.objects.FeaturedBox;
 import pt.rocket.framework.objects.FeaturedItem;
 import pt.rocket.framework.objects.Product;
 import pt.rocket.framework.tracking.TrackingPage;
+import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.products.GetProductsHelper;
 import pt.rocket.utils.MyMenuItem;
@@ -30,7 +31,6 @@ import pt.rocket.utils.dialogfragments.DialogFilterFragment;
 import pt.rocket.utils.dialogfragments.WizardPreferences;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import pt.rocket.utils.imageloader.RocketImageLoader;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.ContentValues;
 import android.content.Context;
@@ -329,10 +329,10 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
             params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
             mCatalogPagerAdapter = new CatalogPagerAdapter(getChildFragmentManager(), mViewPager.getId(), mSortOptions, params,
-                    BaseActivity.isTabletInLandscape(getBaseActivity()));
+                    DeviceInfoHelper.isTabletInLandscape(getBaseActivity()));
         } else {
             Log.d(TAG, "ON RESUME: ADAPTER IS NOT NULL");
-            mCatalogPagerAdapter.setLandscapeMode(BaseActivity.isTabletInLandscape(getBaseActivity()));
+            mCatalogPagerAdapter.setLandscapeMode(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()));
             int totalProducts = mCatalogPagerAdapter.getCatalogPageTotalItems(mViewPager.getCurrentItem());
             if (totalProducts > 0 && getView() != null) {
                 TextView totalItems = (TextView) getView().findViewById(R.id.totalProducts);
@@ -559,7 +559,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
             // define how many items will be displayed on the viewPager
             int partialSize = 3;
-            if (BaseActivity.isTabletInLandscape(getActivity())) {
+            if (DeviceInfoHelper.isTabletInLandscape(getActivity())) {
                 partialSize = 5;
             }
 

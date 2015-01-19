@@ -318,9 +318,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
          */
         if (!isNestedFragment || action == NavigationAction.Country) {
             updateAdjustState(this.adjustState, true);
-            if (getBaseActivity() != null) {
-                getBaseActivity().closeDrawerIfOpen();
-            }
+            //if (getBaseActivity() != null) {
+            //    getBaseActivity().closeDrawerIfOpen();
+            //}
         }
         
         if(null != getBaseActivity())

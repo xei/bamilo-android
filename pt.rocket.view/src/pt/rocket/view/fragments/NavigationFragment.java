@@ -641,8 +641,8 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
                 Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: UNKNOWN");
                 return false;
             }
-            // Toggle
-            getBaseActivity().toggle();
+            // Close 
+            getBaseActivity().closeNavigationDrawer();
         } else {
             Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: NOT HANDLE " + navAction);
             return false;
@@ -656,9 +656,11 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      */
     private void onClickCart(){
         try {
+            // Close 
+            getBaseActivity().closeNavigationDrawer();
+            // Goto cart
             FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            getBaseActivity().toggle();
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING NPE ON CLICK CART");
         }

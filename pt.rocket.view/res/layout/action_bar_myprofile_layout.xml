@@ -12,7 +12,7 @@
         android:clickable="true"
         android:src="@drawable/selector_navigation_overflow" />
 
-    <pt.rocket.utils.DismissibleSpinner
+    <pt.rocket.components.widget.DismissibleSpinner
         android:id="@+id/spinner_myprofile"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

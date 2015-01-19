@@ -15,6 +15,7 @@ import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.objects.OrderTracker;
 import pt.rocket.framework.objects.OrderTrackerItem;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LoadingBarView;
 import pt.rocket.framework.utils.LogTagHelper;
@@ -22,7 +23,6 @@ import pt.rocket.helpers.checkout.GetTrackOrderHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.Context;
@@ -229,13 +229,13 @@ public class TrackOrderFragment extends BaseFragment {
             if (TextUtils.isEmpty(order_number)){
                 proccessError();
             } else {
-                if (BaseActivity.isTabletInLandscape(getBaseActivity())){
+                if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
                     showStatusContainer();
                     setTipVisibility(true);
                 }
             }
         } else {
-            if (BaseActivity.isTabletInLandscape(getBaseActivity())){
+            if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
                 showStatusContainer();
                 setTipVisibility(true);   
             }

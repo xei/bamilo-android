@@ -18,6 +18,7 @@ import pt.rocket.framework.objects.OrderItem;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.account.GetMyOrdersListHelper;
@@ -25,7 +26,6 @@ import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.TrackerDelegator;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -164,7 +164,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
         ordersListView.setOnScrollListener(onScrollListener);
         noOrders = (TextView) view.findViewById(R.id.no_orders_title);
         loadMore = (LinearLayout) view.findViewById(R.id.loadmore);
-        if (BaseActivity.isTabletInLandscape(getBaseActivity())){
+        if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
             ordersProductsPayment = (TextView) view.findViewById(R.id.order_list_payment);
             ordersProductDate = (TextView) view.findViewById(R.id.order_list_date);
             productsContainer = (RelativeLayout) view.findViewById(R.id.order_products_container);
@@ -181,7 +181,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
         if(isToShow){
 
             noOrders.setVisibility(View.VISIBLE);
-            if(BaseActivity.isTabletInLandscape(getBaseActivity())){
+            if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
                 productsContainer.setVisibility(View.GONE);
                 ordersListView.setVisibility(View.GONE);
                 productsLanscapeContainer.setVisibility(View.GONE);
@@ -191,7 +191,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
         }else{
             noOrders.setVisibility(View.GONE);
             
-            if(BaseActivity.isTabletInLandscape(getBaseActivity())){
+            if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
                 productsContainer.setVisibility(View.VISIBLE);
                 ordersListView.setVisibility(View.VISIBLE);
                 productsLanscapeContainer.setVisibility(View.VISIBLE);
@@ -426,15 +426,15 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
             }
             if(ordersAdapter == null){
                 ordersAdapter = new OrdersListAdapter(getActivity().getApplicationContext(), ordersList, this);
-                if(selectedProduct == -1 && BaseActivity.isTabletInLandscape(getBaseActivity())){
+                if(selectedProduct == -1 && DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
                     selectedProduct = 0;
                 } else {
                     ordersAdapter.setSelectedPosition(selectedProduct);
                 }
                 ordersListView.setAdapter(ordersAdapter);
                 
-                if (BaseActivity.isTabletInLandscape(getBaseActivity()) && selectedProduct != -1) setOrderProducts(ordersList.get(selectedProduct),productsLanscapeContainer,true);
-                else if(BaseActivity.isTabletInLandscape(getBaseActivity()) && selectedProduct == -1) setOrderProducts(ordersList.get(0),productsLanscapeContainer,true);
+                if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct != -1) setOrderProducts(ordersList.get(selectedProduct),productsLanscapeContainer,true);
+                else if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct == -1) setOrderProducts(ordersList.get(0),productsLanscapeContainer,true);
                 ordersListView.setSelection(selectedProduct);
             } else{
                 ordersListView.setAdapter(ordersAdapter);
@@ -492,7 +492,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
         
         ordersListView.setAdapter(ordersAdapter);
 
-        if(orders.size() > 0 && BaseActivity.isTabletInLandscape(getBaseActivity())){
+        if(orders.size() > 0 && DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
             if(selectedProduct == -1) selectedProduct = 0;
             
             productsContainer.setVisibility(View.VISIBLE);
@@ -542,7 +542,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
         
         selectedProduct = selectedProd;
         
-        if (!BaseActivity.isTabletInLandscape(getBaseActivity())) setOrderProducts(order,productsContainer, toShowInnerProds);
+        if (!DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) setOrderProducts(order,productsContainer, toShowInnerProds);
         else setOrderProducts(order,productsLanscapeContainer,toShowInnerProds);
         
     }
@@ -567,7 +567,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
         
         ordersAdapter.notifyDataSetChanged();
         
-        if (toShowInnerProds && BaseActivity.isTabletInLandscape(getBaseActivity())){
+        if (toShowInnerProds && DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
             if(productsLanscapeContainer.getChildCount() > 0)
                 productsLanscapeContainer.removeAllViews();
             

@@ -7,18 +7,19 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.ScrollViewEx;
+import pt.rocket.components.ScrollViewEx.OnScrollBottomReachedListener;
 import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.ErrorCode;
-import pt.rocket.components.ScrollViewEx;
-import pt.rocket.components.ScrollViewEx.OnScrollBottomReachedListener;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ProductReviewComment;
 import pt.rocket.framework.objects.RatingOption;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.products.GetProductHelper;
@@ -28,7 +29,6 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.graphics.Paint;
@@ -186,7 +186,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         // Set content
         setAppContentLayout();
         
-        if (BaseActivity.isTabletInLandscape(getBaseActivity())) {
+        if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
             startWriteReviewFragment();
         }
     }
@@ -278,7 +278,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         if (mProductRatingPage != null) displayReviews(mProductRatingPage);
         else triggerReviews(selectedProduct.getUrl(), pageNumber);
         
-        if (!BaseActivity.isTabletInLandscape(getBaseActivity())) {
+        if (!DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
             setCommentListener();
         }
     }

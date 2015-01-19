@@ -383,12 +383,11 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @author sergiopereira
      */
     private void gotoCatalog(Category category) {
-        
         // Update counter for tracking
         CategoriesTableHelper.updateCategoryCounter(category.getId(), category.getName());
-        // Tracking category
-        //trackCategory(category.getName());
-        
+        // Close navigation
+        getBaseActivity().closeNavigationDrawer();
+        // Create bundle for catalog 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, category.getName());

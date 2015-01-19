@@ -6,9 +6,13 @@ import java.util.Locale;
 
 import pt.rocket.framework.R;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -314,4 +318,45 @@ public class DeviceInfoHelper {
         return (float) Math.round(screenInches * 10) / 10;
     }
 
+    /**
+     * ############### ORIENTATION #################
+     */
+
+    /**
+     * Used other approach:<br>
+     * - Created a new Activity with specific screen orientation
+     */
+    @Deprecated
+    public void setOrientationForHandsetDevices(Activity activity) {
+        // Validate if is phone and force portrait orientaion
+        if (!activity.getResources().getBoolean(R.bool.isTablet)) {
+            Log.i(TAG, "IS PHONE: FORCE PORTRAIT ORIENTATION");
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+    }
+
+    /**
+     * Used other approach:<br>
+     * - Created a new Activity with specific screen orientation
+     */
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    @Deprecated
+    public void setOrientationForTabletDevices(Activity activity) {
+        // Validate if is tablet and force landscape orientaion
+        if (activity.getResources().getBoolean(R.bool.isTablet)) {
+            Log.i(TAG, "IS TABLET: FORCE LANDSPAPE ORIENTATION");
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+        }
+    }
+
+    /**
+     * Verifies if the current screen orientation is Landscape 
+     * @return true if yes, false otherwise
+     */
+    public static boolean isTabletInLandscape(Context context) {
+        if (context == null) return false;
+        if (context.getResources().getBoolean(R.bool.isTablet) && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) return true;
+        return false;
+    }
+    
 }

@@ -22,6 +22,7 @@ import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.TrackingEvent;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.Direction;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.ProductSort;
@@ -31,7 +32,6 @@ import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.dialogfragments.DialogFilterFragment;
 import pt.rocket.utils.imageloader.RocketImageLoader;
-import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -611,7 +611,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         mNavigationSource = args.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
         mNavigationPath = args.getString(ConstantsIntentExtra.NAVIGATION_PATH);
         // mIsLandScape = args.getBoolean(PARAM_IS_LANDSCAPE);
-        mIsLandScape = BaseActivity.isTabletInLandscape(getBaseActivity());
+        mIsLandScape = DeviceInfoHelper.isTabletInLandscape(getBaseActivity());
         if (updateFilters)
             mFilters = args.getParcelable(PARAM_FILTERS);
     }
