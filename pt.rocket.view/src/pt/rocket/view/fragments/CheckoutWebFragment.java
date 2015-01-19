@@ -394,6 +394,24 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
     }
     
     
+    private void handleWebError(int errorCode){
+        switch(errorCode){
+        case WebViewClient.ERROR_HOST_LOOKUP:
+            showFragmentRetry(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+                        webview.loadUrl("about:blank");
+                    }
+                    webview.loadUrl(failedPageRequest);
+                    showFragmentContentContainer();
+                }
+            });
+            break;
+        }
+    }
+    
     private class CustomWebViewClient extends WebViewClient {
 
         private static final String SUCCESS_URL_TAG = "checkout/success";
@@ -411,6 +429,7 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
             failedPageRequest = failingUrl;
             webview.stopLoading();
             webview.clearView();
+            handleWebError(errorCode);
         }
 
         @Override
