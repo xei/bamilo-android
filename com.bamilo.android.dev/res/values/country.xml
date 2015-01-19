@@ -9,7 +9,6 @@
     <bool name="single_shop_country_force_https">false</bool>
     <bool name="single_shop_country_is_live">true</bool>
     <bool name="is_single_shop_country">true</bool>
-    <string name="jumia_global_password">z7euN7qfRD769BP</string>
     
 	<!-- Global Country Configuration -->
     <string name="global_server_shop_name">@string/single_shop_country_name</string>
