@@ -1,16 +1,14 @@
 package pt.rocket.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import pt.rocket.components.customfontviews.CheckBox;
 import pt.rocket.components.customfontviews.RadioButton;
 import pt.rocket.framework.objects.PickUpStationObject;
 import pt.rocket.utils.imageloader.RocketImageLoader;
 import pt.rocket.view.R;
 import android.content.Context;
+import android.os.Build;
 import android.text.Spannable;
-import android.text.SpannableStringBuilder;
+import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,7 +35,7 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
     }
 
     public PickupStationsAdapter(Context context, List<PickUpStationObject> objects) {
-        super(context, R.layout.pickup_station_layout, objects);
+        super(context, R.layout._def_checkout_shipping_pickup_station, objects);
         this.objects = objects;
         this.context = context;
         this.checks = new boolean[objects.size()];
@@ -56,7 +53,8 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
 
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.pickup_station_layout, parent, false);
+            convertView = inflater.inflate(R.layout._def_checkout_shipping_pickup_station, parent,
+                    false);
 
             pickupStationViewHolder = new PickupStationViewHolder();
 
@@ -84,20 +82,27 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
                         CompoundButton buttonView = (CompoundButton) arg0;
 
                         if (buttonView.isChecked()) {
-                            for (int i = 0; i < checks.length; i++) {
-                                checks[i] = false;
-                            }
-                            checks[position] = true;
-                            removeOtherSelections(parent, buttonView);
+                            replaceSelection(parent, position);
                             PickupStationsAdapter.this.pickUpStationObject = objects.get(position);
                         }
 
                     }
                 });
 
-        pickupStationViewHolder.pickup_station_radio_button.setChecked(checks[position]);
-        setDetails(pickUpStationObject, pickupStationViewHolder);
+        convertView.setOnClickListener(new OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                replaceSelection(parent, position);
+                PickupStationsAdapter.this.pickUpStationObject = objects.get(position);
+            }
+        });
+        pickupStationViewHolder.pickup_station_radio_button.setChecked(checks[position]);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            setDetailsWithBold(pickUpStationObject, pickupStationViewHolder);
+        } else {
+            setDetails(pickUpStationObject, pickupStationViewHolder);
+        }
         RocketImageLoader.instance.loadImage(pickUpStationObject.getImage(),
                 pickupStationViewHolder.pickup_station_image, null, R.drawable.no_image_small);
 
@@ -106,73 +111,111 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
 
     private void setDetails(PickUpStationObject pickUpStationObject,
             PickupStationViewHolder pickupStationViewHolder) {
+
+        String divider = " ";
+
+        // Address
+        String address = context.getResources().getString(R.string.pickup_station_address);
+        // String address = "Address:";
+        String pickupStationAddress = pickUpStationObject.getAddress();
+
+        pickupStationViewHolder.pickup_station_address.setText(address + divider
+                + pickupStationAddress);
+
+        // City
+        String city = context.getResources().getString(R.string.pickup_station_city);
+        String pickupStationCity = pickUpStationObject.getCity();
+
+        pickupStationViewHolder.pickup_station_city.setText(city + divider + pickupStationCity);
+        //
+        // // Opening hours
+        String hours = context.getResources().getString(R.string.pickup_station_opening_hours);
+        String pickupStationHours = pickUpStationObject.getOpening_hours();
+
+        pickupStationViewHolder.pickup_station_opening_hours.setText(hours + divider
+                + pickupStationHours);
+
+    }
+
+    private void setDetailsWithBold(PickUpStationObject pickUpStationObject,
+            PickupStationViewHolder pickupStationViewHolder) {
         final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
         final StyleSpan iss = new StyleSpan(android.graphics.Typeface.NORMAL);
         boolean bamilo = context.getResources().getBoolean(R.bool.is_bamilo_specific);
+        String divider = " ";
 
         // Address
         String address = context.getResources().getString(R.string.pickup_station_address);
         String pickupStationAddress = pickUpStationObject.getAddress();
-        SpannableStringBuilder sb = new SpannableStringBuilder(address + pickupStationAddress);
+        SpannableString sb = new SpannableString(address + divider + pickupStationAddress);
 
         if (bamilo) {
-            sb.setSpan(bss, sb.length(), sb.length() - address.length(),
-                    Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-            sb.setSpan(iss, sb.length() - address.length(), 0, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        } else {
-            sb.setSpan(bss, 0, address.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            sb.setSpan(bss, 0, address.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             sb.setSpan(iss, address.length(), address.length() + pickupStationAddress.length(),
-                    Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else {
+            sb.setSpan(bss, 0, address.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            sb.setSpan(iss, address.length(), address.length() + pickupStationAddress.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         pickupStationViewHolder.pickup_station_address.setText(sb);
 
         // City
         String city = context.getResources().getString(R.string.pickup_station_city);
         String pickupStationCity = pickUpStationObject.getCity();
-        sb = new SpannableStringBuilder(city + pickupStationCity);
+        sb = new SpannableString(city + divider + pickupStationCity);
 
         if (bamilo) {
-            sb.setSpan(bss, sb.length(), sb.length() - city.length(),
-                    Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-            sb.setSpan(iss, sb.length() - city.length(), 0, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        } else {
-            sb.setSpan(bss, 0, city.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            sb.setSpan(bss, 0, city.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             sb.setSpan(iss, city.length(), city.length() + pickupStationCity.length(),
-                    Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else {
+            sb.setSpan(bss, 0, city.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            sb.setSpan(iss, city.length(), city.length() + pickupStationCity.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         pickupStationViewHolder.pickup_station_city.setText(sb);
-
-        // Opening hours
+        //
+        // // Opening hours
         String hours = context.getResources().getString(R.string.pickup_station_opening_hours);
         String pickupStationHours = pickUpStationObject.getOpening_hours();
-        sb = new SpannableStringBuilder(hours + pickupStationHours);
+        sb = new SpannableString(hours + divider + pickupStationHours);
 
         if (bamilo) {
-            sb.setSpan(bss, sb.length(), sb.length() - hours.length(),
-                    Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-            sb.setSpan(iss, sb.length() - hours.length(), 0, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        } else {
-            sb.setSpan(bss, 0, hours.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            sb.setSpan(bss, 0, hours.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             sb.setSpan(iss, hours.length(), hours.length() + pickupStationHours.length(),
-                    Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else {
+            sb.setSpan(bss, 0, hours.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            sb.setSpan(iss, hours.length(), hours.length() + pickupStationHours.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         pickupStationViewHolder.pickup_station_opening_hours.setText(sb);
-
     }
 
     public PickUpStationObject getSelectedPickupStation() {
         return pickUpStationObject;
     }
 
-    private void removeOtherSelections(ViewGroup parent, CompoundButton buttonView) {
+    private void removeOtherSelections(ViewGroup parent) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View v = parent.getChildAt(i);
-            if (v instanceof RadioButton && v != buttonView) {
+            if (v instanceof RadioButton) {
                 ((RadioButton) v).setChecked(false);
             } else if (v instanceof ViewGroup) {
-                removeOtherSelections((ViewGroup) v, buttonView);
+                removeOtherSelections((ViewGroup) v);
             }
         }
+
+    }
+
+    protected void replaceSelection(ViewGroup parent, int position) {
+        removeOtherSelections(parent);
+        for (int i = 0; i < checks.length; i++) {
+            checks[i] = false;
+        }
+        checks[position] = true;
+        notifyDataSetChanged();
 
     }
 }

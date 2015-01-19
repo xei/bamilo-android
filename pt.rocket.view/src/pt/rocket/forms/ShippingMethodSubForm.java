@@ -23,7 +23,9 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
@@ -220,6 +222,15 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
                             {
                                 pickup_stations_list_view.setVisibility(View.VISIBLE);
                                 pickup_stations_list_view.setAdapter(new PickupStationsAdapter(context, pickupStationByRegion.get(icsSpinner.getItemAtPosition(position))));
+                                pickup_stations_list_view.setOnTouchListener(new OnTouchListener() {
+                                    // Setting on Touch Listener for handling the touch inside ScrollView
+                                    
+                                    @Override
+                                    public boolean onTouch(View v, MotionEvent event) {
+                                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                                        return false;
+                                    }
+                                });
                                 
                             } else {
                                 pickup_stations_list_view.setVisibility(View.GONE);   
