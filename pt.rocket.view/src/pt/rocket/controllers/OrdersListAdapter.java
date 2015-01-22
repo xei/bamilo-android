@@ -16,7 +16,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 /**
@@ -25,11 +24,11 @@ import android.widget.RelativeLayout;
  * 
  */
 public class OrdersListAdapter extends BaseAdapter {
-    private final static String TAG = LogTagHelper.create(OrdersListAdapter.class);
+    
+    public final static String TAG = LogTagHelper.create(OrdersListAdapter.class);
 
     public interface OnSelectedOrderChange {
-        public void SelectedOrder(Order selectedOrder, LinearLayout productsContainer,
-                boolean toShow, int selectedProd);
+        public void SelectedOrder(Order selectedOrder, ViewGroup productsContainer, boolean toShow, int selectedProd);
     }
 
     private LayoutInflater inflater;
@@ -48,9 +47,9 @@ public class OrdersListAdapter extends BaseAdapter {
      * A representation of each item on the list
      */
     static class Item {
-        public RelativeLayout productsCont;
+        public ViewGroup productsCont;
         public RelativeLayout orderHeader;
-        public LinearLayout products;
+        public ViewGroup products;
         public TextView orderDate;
         public TextView orderTotalPrice;
         public TextView orderNumber;
@@ -69,9 +68,7 @@ public class OrdersListAdapter extends BaseAdapter {
      *            show list (or grid)
      * @param numColumns
      */
-    public OrdersListAdapter(Context context, ArrayList<Order> orders,
-            OnSelectedOrderChange listener) {
-
+    public OrdersListAdapter(Context context, ArrayList<Order> orders, OnSelectedOrderChange listener) {
         this.context = context.getApplicationContext();
         this.orders = orders;
         this.inflater = LayoutInflater.from(context);
@@ -126,8 +123,8 @@ public class OrdersListAdapter extends BaseAdapter {
 
             item = new Item();
             // item.textView = (TextView) itemView.findViewById( R.id.text);
-            item.productsCont = (RelativeLayout) itemView.findViewById(R.id.order_more_info);
-            item.products = (LinearLayout) itemView.findViewById(R.id.order_product_list);
+            item.productsCont = (ViewGroup) itemView.findViewById(R.id.order_more_info);
+            item.products = (ViewGroup) itemView.findViewById(R.id.order_product_list);
             item.orderHeader = (RelativeLayout) itemView.findViewById(R.id.order_header);
             item.orderDate = (TextView) itemView.findViewById(R.id.order_date);
             item.orderTotalPrice = (TextView) itemView.findViewById(R.id.order_price);
@@ -163,10 +160,12 @@ public class OrdersListAdapter extends BaseAdapter {
             if(selectedPosition != -1 && position == selectedPosition){
                 item.orderArrow.setSelected(true);
                 item.productsCont.setVisibility(View.VISIBLE);
+                item.products.setVisibility(View.VISIBLE);
                 oderSelected.SelectedOrder(orders.get(position), item.products, true, position);
             } else {
                 item.orderArrow.setSelected(false);
                 item.productsCont.setVisibility(View.GONE);
+                item.products.setVisibility(View.GONE);
             }
             
             item.orderHeader.setOnClickListener(new OnClickListener() {
@@ -176,11 +175,13 @@ public class OrdersListAdapter extends BaseAdapter {
                     if (item.orderArrow.isSelected()) {
                         item.orderArrow.setSelected(false);
                         item.productsCont.setVisibility(View.GONE);
+                        item.products.setVisibility(View.GONE);
                         selectedPosition = -1;
                         oderSelected.SelectedOrder(orders.get(position), item.products, false, -1);
                     } else {
                         item.orderArrow.setSelected(true);
                         item.productsCont.setVisibility(View.VISIBLE);
+                        item.products.setVisibility(View.VISIBLE);
                         selectedPosition = position;
                         oderSelected.SelectedOrder(orders.get(position), item.products, true, position);
                     }

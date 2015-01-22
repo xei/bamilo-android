@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="match_parent" >
 
     <RelativeLayout
         style="@style/rounded_box"
@@ -24,10 +24,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/orders_container_line"
             android:layout_centerHorizontal="true"
-            android:paddingBottom="20dp"
             android:layout_marginTop="10dp"
             android:fontFamily="roboto_regular"
             android:gravity="center"
+            android:paddingBottom="20dp"
             android:text="@string/my_order_no_orders_label"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_s"
@@ -36,7 +36,7 @@
         <ListView
             android:id="@+id/orders_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/no_orders_title"
             android:divider="@color/grey_light"
             android:dividerHeight="@null"

@@ -35,8 +35,11 @@
                         style="@style/text_normal"
                         android:layout_marginBottom="@dimen/margin_60px"
                         android:text="@string/thank_you_order_title"
+                        android:singleLine="false"
+                        android:lines="2"
                         android:textColor="@color/grey_middledark"
-                        android:textSize="@dimen/checkout_thanks_thankyou_text_size" />
+                        android:textSize="@dimen/checkout_thanks_thankyou_text_size"
+                        android:gravity="center" />
 
                     <pt.rocket.components.customfontviews.TextView
                         style="@style/text_normal"

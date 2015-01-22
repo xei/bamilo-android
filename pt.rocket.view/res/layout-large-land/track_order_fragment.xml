@@ -2,37 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:baselineAligned="false"
     android:orientation="horizontal" >
 
     <ScrollView
-        style="@style/rounded_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_small"
-        android:layout_marginEnd="@dimen/rounded_margin_small"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:paddingBottom="@dimen/rounded_margin_mid"
+        android:paddingLeft="@dimen/rounded_margin_mid"
+        android:paddingRight="@dimen/rounded_margin_small" >
 
         <include layout="@layout/track_order_form" />
     </ScrollView>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/rounded_margin_mid"
-        android:layout_weight="1" >
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingBottom="@dimen/rounded_margin_mid"
+        android:paddingLeft="@dimen/rounded_margin_small"
+        android:paddingRight="@dimen/rounded_margin_mid" >
 
-        <LinearLayout
-            android:id="@+id/track_order_status_container"
-            style="@style/rounded_box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/rounded_margin_small"
-            android:layout_marginStart="@dimen/rounded_margin_small"
-            android:visibility="gone" >
-
-            <include layout="@layout/track_order_status" />
-        </LinearLayout>
+        <include
+            layout="@layout/track_order_status"
+            android:visibility="gone" />
     </ScrollView>
 
 </LinearLayout>

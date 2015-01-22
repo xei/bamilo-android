@@ -25,7 +25,6 @@
         <item name="android:layout_centerVertical">true</item>
     </style>
 
-    
     <style name="rounded_box">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -35,13 +34,19 @@
         <item name="android:layout_marginRight">@dimen/rounded_margin_mid</item>
         <item name="android:background">@drawable/background_content</item>
     </style>
-    
-    
+
     <!-- ################# CHECKOUT ################# -->
-    
+
     <style name="checkout_about_you_title" parent="rounded_box_title_grey">
         <item name="android:layout_height">@dimen/checkout_box_title_height</item>
         <item name="android:drawableLeft">@drawable/selector_dropdown_indicator</item>
     </style>
-    
+
+    <!-- ################# ACTION BAR ################# -->
+
+	<!-- Style used to set for LTR or RTL -->
+	<style name="text_actionbar_cart_layout_direction" >
+	    <item name="android:paddingRight">4dp</item>
+    </style>
+
 </resources>

@@ -27,7 +27,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginRight="8dp"
             android:layout_marginTop="3dp"
-            android:layout_toLeftOf="@+id/order_check"
+            android:layout_toLeftOf="@id/order_check"
             android:fontFamily="roboto_regular"
             android:gravity="center_vertical"
             android:textColor="@color/grey_middle"
@@ -38,26 +38,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@+id/order_date"
+            android:layout_below="@id/order_date"
             android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@+id/order_check"
+            android:layout_toLeftOf="@id/order_check"
             android:fontFamily="roboto_regular"
             android:gravity="center_vertical"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_m" />
-
-        <pt.rocket.components.customfontviews.TextView
-            android:id="@+id/order_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_toLeftOf="@+id/order_number"
-            android:layout_toRightOf="@+id/order_arrow"
-            android:ellipsize="end"
-            android:fontFamily="roboto_regular"
-            android:gravity="center_vertical|left"
-            android:singleLine="true"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_m" />
 
@@ -69,18 +54,34 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:background="@drawable/selector_order_arrow" />
+
+        <pt.rocket.components.customfontviews.TextView
+            android:id="@+id/order_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toLeftOf="@id/order_number"
+            android:layout_toRightOf="@id/order_arrow"
+            android:ellipsize="end"
+            android:fontFamily="roboto_regular"
+            android:gravity="center_vertical|left"
+            android:singleLine="true"
+            android:textColor="@color/grey_middle"
+            android:textSize="@dimen/text_m" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/order_more_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/order_header"
+        android:layout_below="@id/order_header"
         android:background="@android:color/white"
         android:clickable="false"
         android:duplicateParentState="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        android:orientation="vertical"
         android:visibility="gone" >
 
         <View
@@ -94,7 +95,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_gravity="right"
             android:layout_marginRight="8dp"
+            android:gravity="right"
             android:orientation="horizontal" >
 
             <pt.rocket.components.customfontviews.TextView
@@ -126,20 +129,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:gravity="right|center_vertical"
-            android:layout_below="@+id/order_list_date_cont"
+            android:layout_below="@id/order_list_date_cont"
             android:layout_marginRight="8dp"
             android:layout_marginTop="20dp"
+            android:gravity="right|center_vertical"
             android:orientation="horizontal" >
 
             <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/order_list_payment"
                 android:layout_width="wrap_content"
-                android:singleLine="true"
-                android:gravity="right|center_vertical"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
                 android:fontFamily="roboto_regular"
+                android:gravity="right|center_vertical"
+                android:singleLine="true"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_s" />
 
@@ -160,7 +163,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/order_list_payment_cont"
+            android:layout_below="@id/order_list_payment_cont"
+            android:layout_gravity="right"
             android:layout_marginBottom="13dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="25dp"
@@ -171,21 +175,21 @@
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_s"
             android:textStyle="bold" />
+    </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/order_product_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/order_list_products_title"
-            android:orientation="vertical" >
-        </LinearLayout>
-    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/order_product_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/order_more_info"
+        android:orientation="vertical"
+        android:visibility="gone" />
 
     <View
         android:id="@+id/order_bottom_line"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_below="@+id/order_more_info"
+        android:layout_below="@id/order_product_list"
         android:background="@color/grey_middle" />
 
 </RelativeLayout>

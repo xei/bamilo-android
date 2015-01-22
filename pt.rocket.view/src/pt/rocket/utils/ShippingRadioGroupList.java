@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import pt.rocket.components.customfontviews.TextView;
-import pt.rocket.components.absspinner.IcsSpinner;
 import pt.rocket.controllers.PickupStationsAdapter;
 import pt.rocket.forms.ShippingMethodForm;
 import pt.rocket.forms.ShippingMethodSubForm;
@@ -316,8 +315,8 @@ public class ShippingRadioGroupList extends RadioGroup {
             Log.i(TAG, "code1values : adding ");
             for (ShippingMethodSubForm element : subForms.get(mItems.get(idx))) {
                 if (element.options != null && element.options.size() > 0) {
-                    if(element.pickup_stations_list_view.getAdapter() instanceof PickupStationsAdapter){
-                        selectedPickup = ((PickupStationsAdapter)element.pickup_stations_list_view.getAdapter()).getSelectedPickupStation();
+                    if(element.pickupStationsListView.getAdapter() instanceof PickupStationsAdapter){
+                        selectedPickup = ((PickupStationsAdapter)element.pickupStationsListView.getAdapter()).getSelectedPickupStation();
                         
                     }
                     if(selectedPickup != null){

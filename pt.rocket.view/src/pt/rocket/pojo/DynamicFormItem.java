@@ -14,13 +14,13 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import pt.rocket.components.absspinner.IcsAdapterView;
+import pt.rocket.components.absspinner.IcsSpinner;
 import pt.rocket.components.customfontviews.Button;
 import pt.rocket.components.customfontviews.CheckBox;
 import pt.rocket.components.customfontviews.EditText;
 import pt.rocket.components.customfontviews.HoloFontLoader;
 import pt.rocket.components.customfontviews.TextView;
-import pt.rocket.components.absspinner.IcsAdapterView;
-import pt.rocket.components.absspinner.IcsSpinner;
 import pt.rocket.forms.Form;
 import pt.rocket.forms.FormField;
 import pt.rocket.forms.IFormField;
@@ -40,6 +40,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextUtils.TruncateAt;
 import android.text.TextWatcher;
 import android.util.LayoutDirection;
 import android.view.Gravity;
@@ -1033,7 +1034,7 @@ public class DynamicFormItem {
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         } else {
             // data controls
-            params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         }
         
         dataContainer = new RelativeLayout(this.context);
@@ -1041,15 +1042,8 @@ public class DynamicFormItem {
         
         dataContainer.setLayoutParams(params);
 
-//        dataContainer.setBackgroundColor(R.color.blue_basic);
-        
 
-        //#RTL
-        if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-        } else {
-            params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);    
-        }
+        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         
         int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
         params.leftMargin = formPadding;
@@ -1097,13 +1091,11 @@ public class DynamicFormItem {
     private void buildRadioGroup(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         // data controls
-
-        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
-        
-
         dataContainer.setLayoutParams(params);
+        
         //#RTL
         if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
             params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -1111,8 +1103,7 @@ public class DynamicFormItem {
             params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         }
         
-        if (this.entry.getDataSet().size() > 2
-                || this.parent.getForm().fields.get(0).getPaymentMethodsField() != null) {
+        if (this.entry.getDataSet().size() > 2 || this.parent.getForm().fields.get(0).getPaymentMethodsField() != null) {
             Log.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_VERTICAL");
             createRadioGroupVertical(MANDATORYSIGNALSIZE, params, dataContainer);
         } else {
@@ -1121,18 +1112,15 @@ public class DynamicFormItem {
         }
     }
 
-    private void buildList(RelativeLayout dataContainer, RelativeLayout.LayoutParams params,
-            int controlWidth) {
+    private void buildList(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         // data controls
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
 
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         // Validate this method for poll
         Log.d("Poll", "Type: Radio Group");
@@ -1225,8 +1213,7 @@ public class DynamicFormItem {
         ((ViewGroup) this.control).addView(dataContainer);
     }
 
-    private void buildText(RelativeLayout dataContainer, RelativeLayout.LayoutParams params,
-            int controlWidth) {
+    private void buildText(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         
         dataContainer = createTextDataContainer(controlWidth);
@@ -1238,6 +1225,10 @@ public class DynamicFormItem {
         if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
             this.errorControl.setLayoutDirection(LayoutDirection.RTL);
         }
+        //#RTL
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            ((EditText) this.dataControl).setGravity(Gravity.RIGHT);
+        } 
         
         ((ViewGroup) this.control).addView(dataContainer);
         ((ViewGroup) this.control).addView(this.errorControl);
@@ -1322,8 +1313,7 @@ public class DynamicFormItem {
      */
     private void buildControl() {
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         int controlWidth = RelativeLayout.LayoutParams.MATCH_PARENT;
 
         if (null != this.entry) {
@@ -1335,14 +1325,6 @@ public class DynamicFormItem {
             this.control = (View) new RelativeLayout(this.context);
             
             this.control.setId(parent.getNextId());
-
-            //#RTL
-            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-            if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-//                this.control.setLayoutDirection(LayoutDirection.LOCALE);
-//                params.setLayoutDirection(LayoutDirection.LOCALE);
-            }
-            
             
             switch (this.entry.getInputType()) {
             case checkBox:
@@ -1396,8 +1378,7 @@ public class DynamicFormItem {
         }
     }
 
-    private void createSpinnerForRadioGroup(final int MANDATORYSIGNALSIZE,
-            RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
+    private void createSpinnerForRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
         this.dataControl = View.inflate(this.context, R.layout.form_icsspinner, null);
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
@@ -1563,11 +1544,19 @@ public class DynamicFormItem {
         ((ViewGroup) this.control).addView(dataContainer);
     }
 
-    private void createRadioGroup(final int MANDATORYSIGNALSIZE,
-            RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
+    
+    /**
+     * Create an horizontal radio group 
+     * @param MANDATORYSIGNALSIZE
+     * @param params
+     * @param dataContainer
+     */
+    private void createRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
 
+        // Force the match the parent
         RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null);
-        //TODO create xml for radio item in order to fully support #RTL
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        radioGroup.setLayoutParams(params);
         radioGroup.setItems(new ArrayList<String>(this.entry.getDataSet().values()), RadioGroupLayout.NO_DEFAULT_SELECTION);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -1576,33 +1565,22 @@ public class DynamicFormItem {
                 DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
             }
         });
-        //#RTL
-        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
-            Log.e("FORM","RIGHT");
-            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            radioGroup.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
-        }
         
         this.dataControl = radioGroup;
         this.dataControl.setId(parent.getNextId());
+        dataContainer.addView(this.dataControl);
+
+        // Create mandatory field
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
         params.leftMargin = formPadding;
         params.rightMargin = formPadding;
-        
-
-        
-        this.dataControl.setLayoutParams(params);
-        dataContainer.addView(this.dataControl);
-
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        
+        //#RTl
         if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
-            Log.e("FORM"," MANDATORY ALIGN_PARENT_LEFT");
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         } else {
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         }
-
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = MANDATORYSIGNALMARGIN;
         this.mandatoryControl = new TextView(this.context);
@@ -1624,11 +1602,9 @@ public class DynamicFormItem {
      * @param params
      * @param dataContainer
      */
-    private void createRadioGroupVertical(final int MANDATORYSIGNALSIZE,
-            RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
+    private void createRadioGroupVertical(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
 
-        RadioGroupLayoutVertical radioGroup = (RadioGroupLayoutVertical) View.inflate(this.context,
-                R.layout.form_radiolistlayout, null);
+        RadioGroupLayoutVertical radioGroup = (RadioGroupLayoutVertical) View.inflate(this.context, R.layout.form_radiolistlayout, null);
         HashMap<String, Form> formsMap = new HashMap<String, Form>();
         Iterator<String> it = this.entry.getDataSet().values().iterator();
         while (it.hasNext()) {
@@ -1645,8 +1621,7 @@ public class DynamicFormItem {
             }
         }
 
-        radioGroup.setItems(new ArrayList<String>(this.entry.getDataSet().values()), formsMap,
-                RadioGroupLayoutVertical.NO_DEFAULT_SELECTION);
+        radioGroup.setItems(new ArrayList<String>(this.entry.getDataSet().values()), formsMap, RadioGroupLayoutVertical.NO_DEFAULT_SELECTION);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
@@ -1655,15 +1630,12 @@ public class DynamicFormItem {
                     if (i != checkedId) {
                         if (group.getChildAt(i).findViewById(R.id.extras) != null) {
                             group.getChildAt(i).findViewById(R.id.extras).setVisibility(View.GONE);
-                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_container)
-                                    .findViewById(i)).setChecked(false);
+                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_container).findViewById(i)).setChecked(false);
                         }
                     } else if (i == checkedId) {
                         if (group.getChildAt(i).findViewById(R.id.extras) != null) {
-                            group.getChildAt(i).findViewById(R.id.extras)
-                                    .setVisibility(View.VISIBLE);
-                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_container)
-                                    .findViewById(i)).setChecked(true);
+                            group.getChildAt(i).findViewById(R.id.extras).setVisibility(View.VISIBLE);
+                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_container).findViewById(i)).setChecked(true);
                         }
                     }
                 }
@@ -1676,8 +1648,7 @@ public class DynamicFormItem {
         this.dataControl.setLayoutParams(params);
         dataContainer.addView(this.dataControl);
 
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = MANDATORYSIGNALMARGIN;
@@ -1686,15 +1657,13 @@ public class DynamicFormItem {
         this.mandatoryControl.setText("*");
         this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
-                : View.GONE);
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
 
         // in order to position the mandatory signal on the payment method screen in the requested position, we don't inflate the dynamic form mandatory sign,
         // we use a hardcode mandatory signal since the  payment method is always a mandatory section        
         if(!this.getKey().toString().equalsIgnoreCase("payment_method"))
             dataContainer.addView(this.mandatoryControl);
         
-      
         ((ViewGroup) this.control).addView(dataContainer);
     }
 
@@ -1748,7 +1717,6 @@ public class DynamicFormItem {
         params.addRule(RelativeLayout.CENTER_VERTICAL);
 
         //#RTL
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
 
             params.addRule(RelativeLayout.RIGHT_OF, dataControlId);
@@ -1772,14 +1740,11 @@ public class DynamicFormItem {
         //ErrorText params
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
-//        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         
         //#RTL
         if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
-
           params.addRule(RelativeLayout.LEFT_OF, errImage.getId());
           params.setMargins(0, 0, 5, 0);
-            
         } else {
           params.addRule(RelativeLayout.RIGHT_OF, errImage.getId());
           params.setMargins(5, 0, 0, 0);
@@ -1793,6 +1758,12 @@ public class DynamicFormItem {
         this.errorTextControl.setTextColor(errorColor);
         this.errorTextControl.setTextSize(ERRORTEXTSIZE);
         
+        //#RTL
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
+            this.errorTextControl.setSingleLine(true);
+            this.errorTextControl.setEllipsize(TruncateAt.END);
+        }
+        
         errorControl.addView(this.errorTextControl);
         errorControl.addView(errImage);
 
@@ -1802,15 +1773,13 @@ public class DynamicFormItem {
 
     private View createTextDataControl() {
 
-        EditText textDataControl = (EditText) View.inflate(this.context, R.layout.form_edittext,
-                null);
+        EditText textDataControl = (EditText) View.inflate(this.context, R.layout.form_edittext, null);
 
         if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
             textDataControl.setHint(this.entry.getLabel());
         }
         if (null != this.entry.getValidation() && this.entry.getValidation().max > 0) {
-            textDataControl.setFilters(new InputFilter[] { new InputFilter.LengthFilter(this.entry
-                    .getValidation().max) });
+            textDataControl.setFilters(new InputFilter[] { new InputFilter.LengthFilter(this.entry.getValidation().max) });
         }
 
         //#RTL
@@ -1886,22 +1855,19 @@ public class DynamicFormItem {
 //    }
 
     private RelativeLayout createTextDataContainer(int controlWidth) {
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayout dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
 
-        params = new RelativeLayout.LayoutParams(controlWidth,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         this.dataControl = createTextDataControl();
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
         int formPadding = context.getResources().getDimensionPixelSize(R.dimen.form_padding);
         this.dataControl.setPadding(formPadding, 0, formPadding, 0);
         
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = MANDATORYSIGNALMARGIN;
@@ -1923,8 +1889,7 @@ public class DynamicFormItem {
         this.mandatoryControl.setText("*");
         this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
-                : View.GONE);
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
         
         dataContainer.addView(this.dataControl);
         dataContainer.addView(this.mandatoryControl);

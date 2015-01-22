@@ -148,10 +148,10 @@
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/orange_basic</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:paddingLeft">4dp</item>
-        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
         <item name="android:background">@drawable/selector_shop</item>
-        <item name="android:gravity">center_horizontal</item>
+        <item name="android:gravity">right|end|center_horizontal</item>
     </style>
 
     <!-- Products List -->
@@ -293,15 +293,19 @@
         <item name="android:layout_marginRight">@dimen/form_check_padding</item>
         <item name="android:layout_marginStart">@dimen/form_check_padding</item>
         <item name="android:layout_marginEnd">@dimen/form_check_padding</item>
-        <item name="android:layout_gravity">left|start|top</item>
+        <item name="android:layout_gravity">left|start|center_vertical</item>
+        <item name="android:gravity">left|start|center_vertical</item>
     </style>
 
     <style name="form_radiobutton_style" parent="form_style">
-        <item name="android:layout_marginLeft">@dimen/form_check_padding</item>
-        <item name="android:layout_marginRight">@dimen/form_check_padding</item>
-        <item name="android:layout_marginStart">@dimen/form_check_padding</item>
-        <item name="android:layout_marginEnd">@dimen/form_check_padding</item>
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginRight">@dimen/margin_30px</item>
+        <item name="android:layout_marginStart">0dp</item>
+        <item name="android:layout_marginEnd">@dimen/margin_30px</item>
         <item name="android:layout_gravity">top</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/btn_radio_holo_orange</item>
+        <item name="android:drawableStart">@drawable/btn_radio_holo_orange</item>
     </style>
 
     <style name="starRatingBarSmall" parent="@android:style/Widget.RatingBar">
@@ -311,6 +315,7 @@
         <item name="android:progressDrawable">@drawable/star_ratingbar_small</item>
         <item name="android:minHeight">11dp</item>
         <item name="android:maxHeight">11dp</item>
+        <item name="android:layoutDirection">locale</item>
     </style>
 
     <style name="starRatingBarBig" parent="@android:style/Widget.RatingBar">
@@ -524,6 +529,23 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <!-- ################# ACTION BAR ################# -->
+
+
+    <!-- Style used to set for LTR or RTL -->
+    <style name="text_actionbar_cart_layout_direction">
+        <item name="android:paddingLeft">4dp</item>
+    </style>
+
+    <style name="text_actionbar_cart" parent="text_actionbar_cart_layout_direction">
+        <item name="android:layout_width">33dp</item>
+        <item name="android:layout_height">33dp</item>
+        <item name="android:gravity">top|center_horizontal</item>
+        <item name="android:textColor">@color/orange_basic</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="action_button" parent="@style/Widget.AppCompat.ActionButton">
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
@@ -554,7 +576,7 @@
     </style>
 
     <!-- ################# CHECKOUT ################# -->
-    
+
     <style name="checkout_about_you_title" parent="rounded_box_title_grey">
         <item name="android:layout_height">@dimen/checkout_box_title_height</item>
         <item name="android:drawableRight">@drawable/selector_dropdown_indicator</item>

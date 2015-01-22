@@ -3,6 +3,6 @@
     style="@style/form_style"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
-    android:gravity="center_vertical"
+    android:gravity="left|start|center_vertical"
     android:paddingLeft="@dimen/form_spinner_left_margin"
     android:paddingStart="@dimen/form_spinner_left_margin" />

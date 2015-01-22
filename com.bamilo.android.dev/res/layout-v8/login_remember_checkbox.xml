@@ -6,4 +6,5 @@
     android:button="@null"
     android:gravity="right"
     android:drawableRight="@drawable/selector_btn_check_holo_orange"
-    android:text="@string/login_remember_user_email" />
+    android:text="@string/login_remember_user_email"
+    android:singleLine="true" />

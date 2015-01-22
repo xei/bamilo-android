@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/rounded_box"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="0dp"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
     android:orientation="vertical" >
 
     <pt.rocket.components.customfontviews.TextView
@@ -10,41 +14,26 @@
 
     <View style="@style/divider_horizontal_orange" />
 
-    <RelativeLayout
+    <pt.rocket.components.customfontviews.EditText
+        android:id="@+id/order_nr"
+        style="@style/form_edittext_style"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/login_margin_medium"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginTop="@dimen/rounded_margin_double_mid"
+        android:drawableLeft="@drawable/ic_star_formular"
+        android:gravity="right|center_vertical"
+        android:hint="@string/track_order_hint"
+        android:inputType="textAutoComplete" />
+
+    <pt.rocket.components.customfontviews.Button
+        android:id="@+id/btn_track_order"
+        style="@style/button_orange_bottom"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/track_order_content_height"
         android:layout_marginBottom="@dimen/rounded_margin_mid"
-        android:gravity="center" >
-
-        <LinearLayout
-            android:id="@+id/order_nr_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
-            android:gravity="center"
-            android:paddingBottom="@dimen/login_margin_medium"
-            android:paddingTop="@dimen/rounded_margin_double_mid" >
-
-            <pt.rocket.components.customfontviews.EditText
-                android:id="@+id/order_nr"
-                style="@style/form_edittext_style"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_star_formular"
-                android:hint="@string/track_order_hint"
-                android:inputType="textAutoComplete"
-                android:gravity="right|center_vertical" />
-        </LinearLayout>
-
-        <pt.rocket.components.customfontviews.Button
-            android:id="@+id/btn_track_order"
-            style="@style/button_orange_bottom"
-            android:layout_width="match_parent"
-            android:layout_below="@id/order_nr_container"
-            android:layout_marginBottom="0dp"
-            android:layout_marginTop="0dp"
-            android:contentDescription="@string/track_order"
-            android:text="@string/track_order" />
-    </RelativeLayout>
+        android:layout_marginTop="0dp"
+        android:contentDescription="@string/track_order"
+        android:text="@string/track_order" />
 
 </LinearLayout>

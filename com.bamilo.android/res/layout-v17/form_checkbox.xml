@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <pt.rocket.components.customfontviews.CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
-        android:button="@null"
-    android:gravity="end|right|center_vertical"
+    style="@style/form_checkbox_style"
     android:layout_width="wrap_content"
+    android:layout_gravity="right|center_vertical"
+    android:button="@null"
     android:drawableRight="@drawable/selector_btn_check_holo_orange"
-    android:drawableEnd="@drawable/selector_btn_check_holo_orange"
-    android:layout_gravity="end|right|center_vertical"
-    style="@style/form_checkbox_style" />
+    android:gravity="right|center_vertical" />

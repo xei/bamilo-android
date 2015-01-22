@@ -33,6 +33,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.LinearLayout;
@@ -538,7 +539,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
      * interface from the adapter to act when the user chooses a order
      */
     @Override
-    public void SelectedOrder(Order order, LinearLayout productsContainer, boolean toShowInnerProds, int selectedProd) {
+    public void SelectedOrder(Order order, ViewGroup productsContainer, boolean toShowInnerProds, int selectedProd) {
         
         selectedProduct = selectedProd;
         
@@ -554,7 +555,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
      * @param productsContainer
      * @param toShowInnerProds
      */
-    private void setOrderProducts(Order order, LinearLayout productsContainer, boolean toShowInnerProds){
+    private void setOrderProducts(Order order, ViewGroup productsContainer, boolean toShowInnerProds){
         class Item {
             public TextView productName;
             public TextView productQtd;
@@ -576,7 +577,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
         }
 
         
-       if(toShowInnerProds && productsContainer.getChildCount() == 0){
+       if(toShowInnerProds && productsContainer.getChildCount() == 0) {
            
            ArrayList<OrderItem> orderItems = order.getmOrderProducts();
            

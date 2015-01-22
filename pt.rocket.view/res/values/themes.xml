@@ -48,41 +48,53 @@
         <item name="android:textColorTertiary">@color/grey_middle</item>
         <item name="android:editTextColor">@color/grey_middle</item>
         <item name="editTextColor">@color/grey_middle</item>
-        <!-- Base Action Bar -->
+        <!-- Action Bar -->
         <item name="android:actionBarTheme">@style/Widget.Jumia.ActionBar</item>
         <item name="actionBarTheme">@style/Widget.Jumia.ActionBar</item>
         <item name="actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
         <!-- Search View -->
-        <item name="searchViewStyle">@style/Widget.Jumia.SearchView</item>
         <item name="android:searchViewStyle">@style/Widget.Jumia.SearchView</item>
+        <item name="searchViewStyle">@style/Widget.Jumia.SearchView</item>
         <!-- Check Box View -->
         <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
         <!-- List View -->
         <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
-		<!-- Custom Spinner -->
+        <!-- Custom Spinner -->
         <item name="actionCustomSpinnerDropDownStyle">@style/Widget.Jumia.Spinner.Style</item>
 		<!-- View Page Indicator -->
         <item name="vpiCirclePageIndicatorStyle">@style/Widget.JumiaCirclePageIndicator</item>
     </style>
 
-    <!-- Action Bar from support library compatibility -->
+    <!-- Theme for ActionBar from support library compatibility -->
     <style name="Widget.Jumia.ActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+		<!-- Apply the color filter for AB -->
         <item name="android:colorControlNormal">@color/grey_middledark</item>
         <item name="colorControlNormal">@color/grey_middledark</item>
+        <!-- Apply the AB style -->
         <item name="android:actionBarStyle">@style/Widget.Jumia.ActionBarStyle</item>
         <item name="actionBarStyle">@style/Widget.Jumia.ActionBarStyle</item>
+        <!-- Apply the ArrawStyle for AB -->
+        <item name="drawerArrowStyle">@style/Widget.Jumia.DrawerArrowStyle</item>
+    	<!-- To apply the color filter over indicator in Android v5.0.1 -->    
+        <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_mtrl_am_alpha</item>
     </style>
 
-    <!-- Action Bar style -->
+	<!-- Style for ActionBar from support library compatibility -->
     <style name="Widget.Jumia.ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
         <item name="android:background">@color/white_50</item>
         <item name="background">@color/white_50</item>
     </style>
 
-    <!-- Action Bar Button from support library compatibility -->    
-	<style name="Widget.Jumia.ActionButton" parent="Base.Widget.AppCompat.ActionButton">
-	    <item name="android:layout_marginTop">4dip</item>
-	    <item name="android:layout_marginBottom">4dip</item>
+    <!-- Style for DrawerArrow from support library compatibility -->
+    <style name="Widget.Jumia.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/grey_middledark</item>
+    </style>
+
+    <!-- Style for ActionBar Buttons from support library compatibility -->
+    <style name="Widget.Jumia.ActionButton" parent="Base.Widget.AppCompat.ActionButton">
+        <item name="android:layout_marginTop">4dip</item>
+        <item name="android:layout_marginBottom">4dip</item>
         <item name="android:paddingLeft">8dip</item>
         <item name="android:paddingRight">8dip</item>
     </style>
@@ -93,7 +105,7 @@
         <item name="queryHint">@string/action_label_search_hint</item>
         <item name="closeIcon">@drawable/btn_clearsearchfield</item>
         <item name="searchIcon">@drawable/selector_search_edit_icon</item>
-        <!-- <item name="android:imeOptions">actionSearch</item> -->
+        <item name="collapseIcon">?attr/homeAsUpIndicator</item>
     </style>
 
     <!-- Check Box -->

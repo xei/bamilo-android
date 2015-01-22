@@ -442,13 +442,10 @@ public class FormFactory {
                 if (ctrl.isMeta() || ctrl.hasNoType()) {
                     // Don't waste space with meta fields nor field without type
                     Log.i(TAG, "Meta or no type field");
-                    Log.e("FORM","2");
                     userForm.addControl(ctrl, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
                 } else if ( ! ctrl.isDatePart() ) {
-                    Log.e("FORM","3");
                     userForm.addControl(ctrl, ctrlParams);
                 } else {
-                    Log.e("FORM","4");
                     userForm.addGroupedControl(groupLayout, ctrl, ctrlParams);
                 }
             }
