@@ -374,4 +374,6 @@
     <dimen name="buttontoast_x_padding">12dp</dimen>
     
     <dimen name="retry_layout_height">@dimen/dimen_720px</dimen>
+    
+    <dimen name="shipping_time_fee_min_height">@dimen/dimen_100px</dimen>
 </resources>

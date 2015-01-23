@@ -56,6 +56,7 @@ public class RestConstants {
 	// Form Tags
 	public static final String JSON_FORM_TAG = "form";
 	public static final String JSON_METHOD_TAG = "method";
+	
 	// public static final String JSON_ACTION_TAG = "action";
 	public static final String JSON_SUBMIT_TAG = "submit";
 	public static final String JSON_FIELDS_TAG = "fields";
@@ -74,6 +75,8 @@ public class RestConstants {
 	public static final String JSON_TERMS_TAG = "terms";
 	public static final String JSON_LINK_TEXT_TAG = "link_text";
 	public static final String JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG = "newsletter_categories_subscribed";
+	public static final String JSON_DELIVERY_TIME = "delivery_time";
+	
 	// FieldValidation Tags
 	public static final String JSON_REQUIRED_TAG = "required";
 	public static final String JSON_REQUIREDVALUE_TAG = "requiredValue";

@@ -169,14 +169,15 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
         }
 
         // sets the spinner value
-        int position = -1;
-        icsSpinner.setSelection(position);
+//        int position = -1;
+//        icsSpinner.setSelection(position);
 
         this.dataControl.setVisibility(View.GONE);
 
 
         HoloFontLoader.applyDefaultFont(icsSpinner);
         // Listeners
+        
         icsSpinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
 
             @Override

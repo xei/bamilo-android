@@ -32,7 +32,6 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:singleLine="false"
-            android:text="tesasdasdast"
             android:textSize="@dimen/text_subtitle" />
 
         <TextView
@@ -41,7 +40,6 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:singleLine="false"
-            android:text="test"
             android:textSize="@dimen/text_subtitle" />
 
         <TextView
@@ -50,7 +48,6 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:singleLine="false"
-            android:text="test"
             android:textSize="@dimen/text_subtitle" />
     </LinearLayout>
 
@@ -70,8 +67,7 @@
             android:layout_gravity="center"
             android:adjustViewBounds="false"
             android:gravity="center"
-            android:scaleType="fitCenter"
-            android:src="@drawable/arrow_side" />
+            android:scaleType="fitCenter" />
     </LinearLayout>
 
 </RelativeLayout>

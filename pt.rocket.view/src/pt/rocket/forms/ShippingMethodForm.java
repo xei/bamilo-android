@@ -35,7 +35,7 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
     public String type;
     public boolean required;
     public ArrayList<String> options;
-    public HashMap<String, String> optionsLabel;
+    public HashMap<String, ShippingMethod> optionsShippingMethod;
     public ArrayList<ShippingMethodSubForm> subForms;
     private ShippingRadioGroupList mShippingRadioGroupList;
         /**
@@ -50,7 +50,7 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
         this.type = "";
         this.required = false;
         this.options = new ArrayList<String>();
-        this.optionsLabel = new HashMap<String, String>();
+        this.optionsShippingMethod = new HashMap<String, ShippingMethod>();
         this.subForms = new ArrayList<ShippingMethodSubForm>();
     }
 
@@ -82,7 +82,9 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
             while (opts.hasNext()) {
                String key = opts.next().toString();
                options.add(key);
-               optionsLabel.put(key, optionsObject.optJSONObject(key).optString("label"));
+               ShippingMethod shippingMethod = new ShippingMethod();
+               shippingMethod.initialize(key, optionsObject.optJSONObject(key));
+               optionsShippingMethod.put(key, shippingMethod);
             }
             
         } catch (JSONException e) {
@@ -132,7 +134,7 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
         dest.writeString(type);
         dest.writeBooleanArray(new boolean[] {required});
         dest.writeList(options);
-        dest.writeMap(optionsLabel);
+        dest.writeMap(optionsShippingMethod);
         dest.writeList(subForms);
     }
     
@@ -150,8 +152,8 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
         in.readBooleanArray(new boolean[] {required});
         options = new ArrayList<String>(); 
         in.readArrayList(null);
-        optionsLabel = new HashMap<String, String>();
-        in.readMap(optionsLabel, String.class.getClassLoader());
+        optionsShippingMethod = new HashMap<String, ShippingMethod>();
+        in.readMap(optionsShippingMethod, ShippingMethod.class.getClassLoader());
         subForms = new ArrayList<ShippingMethodSubForm>();
         in.readArrayList(ShippingMethodSubForm.class.getClassLoader()); 
     }
@@ -168,4 +170,5 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
             return new ShippingMethodForm[size];
         }
     };
+    
 }

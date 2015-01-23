@@ -50,8 +50,12 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
         PickupStationViewHolder pickupStationViewHolder;
 
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout._def_checkout_shipping_pickup_station, parent, false);
+
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.checkout_shipping_pickup_station, parent,
+                    false);
+
 
             pickupStationViewHolder = new PickupStationViewHolder();
             pickupStationViewHolder.pickupStationAddress = (TextView) convertView.findViewById(R.id.pickup_station_address);

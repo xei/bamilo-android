@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.controllers.PickupStationsAdapter;
+import pt.rocket.forms.ShippingMethod;
 import pt.rocket.forms.ShippingMethodForm;
 import pt.rocket.forms.ShippingMethodSubForm;
 import pt.rocket.framework.objects.PickUpStationObject;
@@ -125,6 +126,12 @@ public class ShippingRadioGroupList extends RadioGroup {
 
             if (tmpSubForms != null && tmpSubForms.size() > 0) {
                 subForms.put(mItems.get(idx), tmpSubForms);
+            } else {
+                ShippingMethod shippingMethod = mForm.optionsShippingMethod.get(mItems.get(idx));
+                View view = shippingMethod.generateForm(mContext);
+                if(view != null){
+                    extras.addView(view);
+                }
             }
 
             mLinearLayout.setId(idx);
@@ -132,9 +139,9 @@ public class ShippingRadioGroupList extends RadioGroup {
 
             final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton_shipping, buttonContainer, false);
             button.setId(idx);
-            String optionLabel = mForm.optionsLabel.get(mItems.get(idx));
+            ShippingMethod optionLabel = mForm.optionsShippingMethod.get(mItems.get(idx));
             //Log.i(TAG, "options jsonobject label: " + optionLabel);
-            button.setText(!TextUtils.isEmpty(optionLabel) ? optionLabel : mItems.get(idx));
+            button.setText(!TextUtils.isEmpty(optionLabel.getLabel()) ? optionLabel.getLabel() : mItems.get(idx));
             RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.checkout_shipping_item_height));
             
             button.setOnClickListener(new OnClickListener() {
@@ -178,10 +185,11 @@ public class ShippingRadioGroupList extends RadioGroup {
                         title.setText(mForm.label.trim());    
                     }
                     title.setVisibility(View.VISIBLE);
+                    for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
+                        ((ShippingMethodSubForm) element).dataControl.setVisibility(View.VISIBLE);
+                    }
                 }
-                for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
-                    ((ShippingMethodSubForm) element).dataControl.setVisibility(View.VISIBLE);
-                }
+                    
             }
         } else {
             extras.setVisibility(View.GONE);
@@ -189,10 +197,11 @@ public class ShippingRadioGroupList extends RadioGroup {
                 if (mItems.get(button.getId()).equalsIgnoreCase("pickupstation")) {
                     TextView title = (TextView) extras.findViewById(R.id.payment_text);
                     title.setVisibility(View.GONE);
+                    for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
+                        ((ShippingMethodSubForm) element).dataControl.setVisibility(View.GONE);
+                    }
                 }
-                for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
-                    ((ShippingMethodSubForm) element).dataControl.setVisibility(View.GONE);
-                }
+                
             }
         }
         setSelection(mLinearLayout.getId());
