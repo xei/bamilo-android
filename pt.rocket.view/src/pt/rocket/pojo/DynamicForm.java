@@ -1,19 +1,27 @@
 package pt.rocket.pojo;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import pt.rocket.components.absspinner.IcsAdapterView;
 import pt.rocket.forms.Form;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.InputType;
+import pt.rocket.view.R;
+import android.R.integer;
 import android.content.ContentValues;
+import android.os.Bundle;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -323,7 +331,9 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         Iterator<DynamicFormItem> it = iterator();
         while (it.hasNext()) {
 
+            
             control = it.next();
+
             if (control != null && control.getType() == InputType.metadate) {
                 control.addSubFormFieldValues(model);
                 model.put(control.getName().toString(), control.getValue().toString());
@@ -337,7 +347,9 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
                 model.put(control.getName().toString(), control.getValue().toString());
             } else if (null != control && null != control.getValue()) {
                 model.put(control.getName().toString(), control.getValue().toString());
-            } else if (null != control) {
+            } else if (null != control && control.getType() == InputType.rating) {
+                saveRatingForm(control, model);
+            }else if (null != control) {
                 model.put(control.getName().toString(), "");
             } else {
                 Log.e(TAG, "control is null");
@@ -347,6 +359,28 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         return model;
     }
 
+    /**
+     * Save rating bar stars selection
+     * 
+     * @param control
+     * @param model
+     */
+    private void saveRatingForm(DynamicFormItem control,ContentValues model){
+        
+        LinearLayout ratingList = ((LinearLayout)control.getEditControl());
+        
+        Iterator it = control.getEntry().getDateSetRating().entrySet().iterator();
+        int count = 1;
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next();
+            
+            float rate = ((RatingBar) ratingList.findViewById(count).findViewById(R.id.option_stars)).getRating();
+            
+            model.put(((RatingBar) ratingList.findViewById(count).findViewById(R.id.option_stars)).getTag().toString(), (int) rate);
+            count++;
+        }
+    }
+    
     public int getSelectedValueIndex() {
         // ContentValues model = new ContentValues();
         DynamicFormItem control;

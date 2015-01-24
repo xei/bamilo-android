@@ -1,5 +1,6 @@
 package pt.rocket.forms;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import pt.rocket.forms.FormField.OnDataSetReceived;
@@ -46,5 +47,7 @@ public interface IFormField {
 	public abstract Map<String, String> getDataCalls();
 
     String getScenario();
+    
+    public abstract Map<String, String> getDateSetRating();
 
 }

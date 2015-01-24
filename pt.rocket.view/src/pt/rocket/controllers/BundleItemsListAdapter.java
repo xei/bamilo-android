@@ -31,6 +31,7 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
     
     private ArrayList<ProductBundleProduct> mDataset;
     private OnItemSelected itemSelected;
+    private OnSimplePressed simplePressed;
     private OnItemChecked itemChecked;
     private OnItemSelectedListener simplesSelected;
     /**
@@ -93,6 +94,7 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
         mDataset = bundleItemsList;
         itemSelected = selectedClickListener;
         itemChecked = checkedClickListener;
+        simplePressed = simpleClickListener;
         simplesSelected = simplesSelectedListener;
     }
 
@@ -122,7 +124,12 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
         // Set image
         RocketImageLoader.instance.loadImage(item.getBundleProductImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set price
-        holder.mPrice.setText(item.getBundleProductMaxSpecialPrice());
+        if(item.hasDiscount() ){
+            holder.mPrice.setText(item.getBundleProductMaxSpecialPrice());
+        } else {
+            holder.mPrice.setText(item.getBundleProductMaxPrice());
+        }
+        
         // Set listener and tags
 //        holder.mContainer.setTag(item.getProductUrl());
         
@@ -138,22 +145,31 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
         });
         
         if(item.isChecked()){
+            
             holder.mCheck.setChecked(true);
+            if(position == 0){
+                holder.mCheck.setEnabled(false);
+            } else {
+                holder.mCheck.setEnabled(true);
+            }
         } else {
             holder.mCheck.setChecked(false);
             
         }
         
+        
         holder.mCheck.setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v) {
-                if(holder.mCheck.isChecked()){
-                    item.setChecked(true);
-                } else {
-                    item.setChecked(false);
+                if(position != 0){
+                    if(holder.mCheck.isChecked()){
+                        item.setChecked(true);
+                    } else {
+                        item.setChecked(false);
+                    }
+                    itemChecked.checkItem(item, holder.mCheck.isChecked(), position); 
                 }
-                itemChecked.checkItem(item, holder.mCheck.isChecked(), position);      
             }
         });
         

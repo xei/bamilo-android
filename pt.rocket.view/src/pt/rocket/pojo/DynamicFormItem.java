@@ -37,6 +37,7 @@ import pt.rocket.view.R;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -54,7 +55,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Spinner;
 import de.akquinet.android.androlog.Log;
 
@@ -131,10 +134,13 @@ public class DynamicFormItem {
 
         this.scale = context.getResources().getDisplayMetrics().density;
         this.errorColor = context.getResources().getColor(R.color.red_basic);
-
         buildControl();
     }
 
+    public IFormField getEntry() {
+        return this.entry;
+    }
+    
     /**
      * Gets the name of the control
      * 
@@ -296,7 +302,17 @@ public class DynamicFormItem {
         case number:
             String text = null == value ? "" : (String) value;
             ((EditText) this.dataControl).setText(text);
-            ((EditText) this.dataControl).setLayoutDirection(LayoutDirection.LOCALE);
+            //java.lang.NoSuchMethodError: pt.rocket.components.customfontviews.EditText.setLayoutDirection
+            try {
+                //#RTL
+                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+                if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                    ((EditText) this.dataControl).setLayoutDirection(LayoutDirection.LOCALE);
+                }
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             this.errorControl.setVisibility(View.GONE);
             ((View) this.dataControl).setContentDescription(this.entry.getId());
 
@@ -313,6 +329,8 @@ public class DynamicFormItem {
             String text1 = (null == value) ? "" : (String) value;
             ((EditText) this.dataControl).setText(text1);
             ((EditText) this.dataControl).setVisibility(View.GONE);
+            break;
+        case rating:
             break;
         default:
             break;
@@ -422,6 +440,8 @@ public class DynamicFormItem {
             ((EditText) this.dataControl).setText(text1);
             ((EditText) this.dataControl).setVisibility(View.GONE);
             break;
+        case rating:
+            break;
         default:
             break;
         }
@@ -440,6 +460,7 @@ public class DynamicFormItem {
      *            the Bundle that contains the stored information of the control
      */
     public void loadState(ContentValues inStat) {
+        
         switch (this.entry.getInputType()) {
         case meta:
             break;
@@ -504,11 +525,35 @@ public class DynamicFormItem {
             ((EditText) this.dataControl).setText(text1);
             ((EditText) this.dataControl).setVisibility(View.GONE);
             break;
+        case rating:
+            loadRatingState(inStat);
+            break;
         default:
             break;
         }
 
     }
+    
+    /**
+     * fill rating bar with saved values
+     * @param inStat
+     */
+    private void loadRatingState(ContentValues inStat){
+        
+        Iterator it = this.entry.getDateSetRating().entrySet().iterator();
+        
+        int count = 1;
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next();
+            
+            float value = Float.parseFloat(inStat.getAsString(pairs.getKey().toString()));
+            
+            ((RatingBar) ((LinearLayout)this.dataControl).findViewById(count).findViewById(R.id.option_stars)).setRating(value);
+            count++;
+        }
+    }
+    
+
 
     /**
      * Gets the value that the control currently holds
@@ -563,7 +608,8 @@ public class DynamicFormItem {
         case number:
             result = ((EditText) this.dataControl).getText().toString();
             break;
-
+        case rating:
+            break;
         default:
             result = "";
             break;
@@ -624,6 +670,8 @@ public class DynamicFormItem {
         case password:
         case number:
             outState.putString(getKey(), ((EditText) this.dataControl).getText().toString());
+            break;
+        case rating:
             break;
         default:
             break;
@@ -707,6 +755,9 @@ public class DynamicFormItem {
             break;
         }
         case hide:
+            break;
+        case rating:
+            result = validateRatingSet();
             break;
         default:
             break;
@@ -830,6 +881,8 @@ public class DynamicFormItem {
             break;
         case hide:
             break;
+        case rating:
+            break;
         default:
             break;
         }
@@ -837,6 +890,34 @@ public class DynamicFormItem {
         return result;
     }
 
+    
+    /**
+     * 
+     * Validate if all ratings options are filled
+     * 
+     * @return boolean is valid or not
+     */
+    private boolean validateRatingSet(){
+        
+        boolean areAllFilled = true;
+        
+        LinearLayout ratingList = ((LinearLayout)this.dataControl);
+        
+        Iterator it = this.entry.getDateSetRating().entrySet().iterator();
+        int count = 1;
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next();
+            
+            float rate = ((RatingBar) ratingList.findViewById(count).findViewById(R.id.option_stars)).getRating();
+
+            if(rate == 0.0)
+                areAllFilled = false;
+            
+            count++;
+        }
+        return areAllFilled;
+    }
+    
     /**
      * Sets the listener for the focus change of the edit part of the component
      * 
@@ -1369,6 +1450,9 @@ public class DynamicFormItem {
             case hide:
                 buildHide(dataContainer, params, controlWidth);
                 break;
+            case rating:
+                buildRatingOptionsTerms(dataContainer, params, controlWidth);
+                break;
 
             default:
                 Log.w(TAG, "buildControl: Field type not suported (" + this.entry.getInputType()
@@ -1666,7 +1750,100 @@ public class DynamicFormItem {
         
         ((ViewGroup) this.control).addView(dataContainer);
     }
+    
+    
+    /**
+     * Function responsible for constructing the ratings form layout
+     * 
+     * @param dataContainer
+     * @param params
+     * @param controlWidth
+     */
+    private void buildRatingOptionsTerms(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
 
+        LinearLayout linearLayout = new LinearLayout(context);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        param.addRule(RelativeLayout.BELOW,mDividerBundle.getId());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setLayoutParams(param);
+        
+        Iterator it = this.entry.getDateSetRating().entrySet().iterator();
+        int count = 1;
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next();
+            
+            RelativeLayout ratingLine = (RelativeLayout) View.inflate(this.context, R.layout.rating_bar_component, null);
+            ratingLine.setId(count);
+            count++;
+            TextView label = (TextView) ratingLine.findViewById(R.id.option_label);
+            
+            RatingBar starts = (RatingBar) ratingLine.findViewById(R.id.option_stars);
+            starts.setTag(pairs.getKey().toString());
+            label.setText(""+pairs.getValue());
+            linearLayout.addView(ratingLine);
+            
+            
+        }
+        int id = count-1;
+        //add error mesage to ratings form
+        this.errorText = context.getString(R.string.rating_option_error_message);
+        this.errorControl = createErrorControl(id, controlWidth);
+        
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+        }
+        
+        linearLayout.addView(this.errorControl);
+
+        addCustomRatingCheckbox(linearLayout,params,controlWidth);
+        
+        this.dataControl = linearLayout;
+        
+        ((ViewGroup) this.control).addView(this.dataControl);
+        
+     }
+    
+    /**
+     * 
+     * function that adds a checkbox to the rating layout, checkbox that control the swithcing of forms
+     * 
+     * @param linearLayout
+     * @param params
+     * @param controlWidth
+     */
+    private void addCustomRatingCheckbox(LinearLayout linearLayout, RelativeLayout.LayoutParams params, int controlWidth){
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        
+        
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        } else {
+            params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);    
+        }
+        
+        CheckBox checkWriteFull = (CheckBox) View.inflate(this.context, R.layout.form_checkbox, null);
+        
+        params.addRule(RelativeLayout.CENTER_VERTICAL);
+        int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.checkbox_rating_height);
+        params.height = formPadding;
+        
+        //#RTL
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            checkWriteFull.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT|Gravity.START);
+        } 
+    
+        checkWriteFull.setLayoutParams(params);
+        checkWriteFull.setContentDescription(this.entry.getKey());
+        checkWriteFull.setFocusable(false);
+        checkWriteFull.setFocusableInTouchMode(false);
+        
+        checkWriteFull.setText(context.getString(R.string.write_full_review));
+        
+        linearLayout.addView(checkWriteFull);
+    }
+    
     @SuppressLint("SimpleDateFormat")
     public void addSubFormFieldValues(ContentValues model) {
         if (this.entry.getInputType() == InputType.metadate) {

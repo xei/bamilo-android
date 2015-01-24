@@ -127,7 +127,9 @@ public enum TrackingEvent {
 	
 	CHECKOUT_STEP_PAYMENT(R.string.gNativeCheckout, R.string.gcheckoutPaymentMethods),
 	
-	CHECKOUT_STEP_EXTERNAL_PAYMENT(R.string.gNativeCheckout, R.string.gcheckoutExternalPayment)
+	CHECKOUT_STEP_EXTERNAL_PAYMENT(R.string.gNativeCheckout, R.string.gcheckoutExternalPayment),
+	
+	ADD_BUNDLE_TO_CART(R.string.gcatalog, R.string.gAddBundleToCart)
 	
 	;
 	

@@ -27,6 +27,9 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
     private double simplePriceDouble;
     private double simplePriceConverted;
     private int productParentPos;
+    private String simpleSpecialPrice;
+    private double simpleSpecialPriceDouble;
+    private double simpleSpecialPriceConverted;
 
 
     /**
@@ -41,6 +44,9 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
         simplePriceDouble = 0.0;
         simplePriceConverted = 0.0;
         productParentPos = 0;
+        simpleSpecialPrice =  "";
+        simpleSpecialPriceDouble = 0.0;
+        simpleSpecialPriceConverted = 0.0;
 
     }
 
@@ -53,6 +59,9 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
         simplePriceDouble = 0.0;
         simplePriceConverted = 0.0;
         productParentPos = parentPos;
+        simpleSpecialPrice =  "";
+        simpleSpecialPriceDouble = 0.0;
+        simpleSpecialPriceConverted = 0.0;
         initialize(jsonObject);
 
     }
@@ -81,6 +90,20 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
             simplePrice = CurrencyFormatter.formatCurrency(priceJSON);
             
             simplePriceConverted = jsonObject.getDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
+            
+            // Special Price
+            String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
+            
+            if(!specialPriceJSON.equals("")){
+                if (!CurrencyFormatter.isNumber(specialPriceJSON)) {
+                    throw new JSONException("Price is not a number!");
+                }
+                simpleSpecialPriceDouble = Double.parseDouble(specialPriceJSON);
+                simpleSpecialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
+                
+                simpleSpecialPriceConverted = jsonObject.getDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
+            }
+         
 
         } catch (JSONException e) {
 
@@ -154,7 +177,40 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
     public void setProductParentPos(int productParentPos) {
         this.productParentPos = productParentPos;
     }
+    
+    public String getSimpleSpecialPrice() {
+        return simpleSpecialPrice;
+    }
 
+    public void setSimpleSpecialPrice(String simpleSpecialPrice) {
+        this.simpleSpecialPrice = simpleSpecialPrice;
+    }
+
+    public double getSimpleSpecialPriceDouble() {
+        return simpleSpecialPriceDouble;
+    }
+
+    public void setSimpleSpecialPriceDouble(double simpleSpecialPriceDouble) {
+        this.simpleSpecialPriceDouble = simpleSpecialPriceDouble;
+    }
+
+    public double getSimpleSpecialPriceConverted() {
+        return simpleSpecialPriceConverted;
+    }
+
+    public void setSimpleSpecialPriceConverted(double simpleSpecialPriceConverted) {
+        this.simpleSpecialPriceConverted = simpleSpecialPriceConverted;
+    }
+
+    public double getPriceForTracking() {
+        if(simpleSpecialPriceDouble == 0.0){
+            return simplePriceDouble; 
+        } else {
+            return simpleSpecialPriceDouble;
+        }
+    }
+    
+    
     /*
      * (non-Javadoc)
      * 
@@ -176,6 +232,9 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
         simplePrice = in.readString();
         simplePriceDouble = in.readDouble();
         simplePriceConverted = in.readDouble();
+        simpleSpecialPrice = in.readString();
+        simpleSpecialPriceDouble = in.readDouble();
+        simpleSpecialPriceConverted = in.readDouble();
     }
 
     @Override
@@ -191,6 +250,9 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
         dest.writeString(simplePrice);
         dest.writeDouble(simplePriceDouble);
         dest.writeDouble(simplePriceConverted);
+        dest.writeString(simpleSpecialPrice);
+        dest.writeDouble(simpleSpecialPriceDouble);
+        dest.writeDouble(simpleSpecialPriceConverted);
 
     }
 

@@ -75,7 +75,6 @@ public class GetShoppingCartAddBundleHelper extends BaseHelper {
         JumiaApplication.INSTANCE.setCart(null);
         ShoppingCart cart = new ShoppingCart();
         try {
-            Log.d("BUNDLE ", "ADD BUNDLE RESPONSE:"+jsonObject.toString(4));
             cart.initialize(jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();

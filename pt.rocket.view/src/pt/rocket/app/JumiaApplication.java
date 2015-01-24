@@ -136,6 +136,14 @@ public class JumiaApplication extends A4SApplication {
     private PaymentMethodForm paymentMethodForm;
     
     private static ContentValues review;
+    
+    private static ContentValues rating;
+    
+    // TODO use an alternative to persist form on rotation
+    public Form reviewForm;
+    
+    // TODO use an alternative to persist form on rotation
+    public Form ratingForm;
 
     /*
      * (non-Javadoc)
@@ -675,6 +683,28 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
+     * clean and return last saved rating
+     * 
+     * @return last saved review
+     */
+    public static ContentValues getRating() {
+        ContentValues currentRating = JumiaApplication.rating;
+        return currentRating;
+    }
+
+    /**
+     * clean current rating
+     */
+    public static void cleanRating() {
+        JumiaApplication.rating = null;
+    }
+
+    public static void setRating(ContentValues rating) {
+        JumiaApplication.rating = rating;
+    }
+
+    
+    /**
      * clean and return last saved review
      * 
      * @return last saved review
@@ -694,7 +724,7 @@ public class JumiaApplication extends A4SApplication {
     public static void setReview(ContentValues review) {
         JumiaApplication.review = review;
     }
-
+    
     /**
      * @return the paymentsInfoList
      */
@@ -721,6 +751,7 @@ public class JumiaApplication extends A4SApplication {
         registerSavedInstanceState = null;
         getCustomerUtils().clearCredentials();
         review = null;
+        rating = null;
         CUSTOMER = null;        
         mCustomerUtils = null;
         currentProduct = null;
@@ -736,6 +767,8 @@ public class JumiaApplication extends A4SApplication {
         requestsRetryHelperList.clear();
         requestsResponseList.clear();
         countriesAvailable.clear();
+        reviewForm = null;
+        ratingForm = null;
     }
     
     

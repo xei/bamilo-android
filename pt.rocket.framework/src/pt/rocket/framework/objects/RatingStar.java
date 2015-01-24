@@ -8,17 +8,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Rating object to allow the individual display of each rating
+ * Star object to allow the individual display of each rating
  * 
  * @author josedourado
  * 
  */
-public class RatingOption implements IJSONSerializable, Parcelable {
+public class RatingStar implements IJSONSerializable, Parcelable {
 
 	private double rating = 0.0;
 	private String optionTitle = "";
 	
-	public RatingOption() {
+	public RatingStar() {
 		rating = 0.0;
 		optionTitle = "";
 	}
@@ -42,8 +42,8 @@ public class RatingOption implements IJSONSerializable, Parcelable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		// TODO Auto-generated method stub
-		rating = jsonObject.getInt(RestConstants.JSON_SIZE_STARS_FORE_TAG) / 20; // 5 stars (100/20)
-		optionTitle = jsonObject.getString(RestConstants.JSON_TYPE_TITLE_TAG);
+		rating = jsonObject.optDouble(RestConstants.JSON_RATINGS_AVERAGE_TAG, 0.0);
+		optionTitle = jsonObject.getString(RestConstants.JSON_TITLE_TAG);
 
 		return true;
 	}
@@ -67,18 +67,18 @@ public class RatingOption implements IJSONSerializable, Parcelable {
 
 	}
 
-	private RatingOption(Parcel in) {
+	private RatingStar(Parcel in) {
 		rating = in.readDouble();
 		optionTitle = in.readString();
 	}
 
-	public static final Parcelable.Creator<RatingOption> CREATOR = new Parcelable.Creator<RatingOption>() {
-		public RatingOption createFromParcel(Parcel in) {
-			return new RatingOption(in);
+	public static final Parcelable.Creator<RatingStar> CREATOR = new Parcelable.Creator<RatingStar>() {
+		public RatingStar createFromParcel(Parcel in) {
+			return new RatingStar(in);
 		}
 
-		public RatingOption[] newArray(int size) {
-			return new RatingOption[size];
+		public RatingStar[] newArray(int size) {
+			return new RatingStar[size];
 		}
 	};
 

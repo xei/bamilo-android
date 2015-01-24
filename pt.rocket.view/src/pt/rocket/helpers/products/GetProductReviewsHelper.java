@@ -55,8 +55,10 @@ public class GetProductReviewsHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d("TRACK", "parseResponseBundle GetProductReviewsHelper");
+        
         JSONObject dataObject = null;
         try {
+            
             dataObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
         } catch (JSONException e) {
             // TODO Auto-generated catch block

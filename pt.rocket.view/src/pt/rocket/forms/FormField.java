@@ -89,6 +89,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private String linkText;
     
     /**
+     * variable used to save the rating options
+     */
+    private LinkedHashMap<String, String> dataSetRating;
+    /**
      * Value that defines for each scenario the Form Field should appear
      */
     private String scenario;
@@ -147,6 +151,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.extrasValues = new LinkedHashMap<Object, Object>();
         this.scenario = null;
         this.linkText = "";
+        this.dataSetRating = new LinkedHashMap<String, String>();
     }
 
     /**
@@ -183,6 +188,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.dataset_Listener = null;
         this.extrasValues = new LinkedHashMap<Object, Object>();
         this.scenario = null;
+        this.dataSetRating = new LinkedHashMap<String, String>();
     }
 
     /*
@@ -212,6 +218,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 inputType = InputType.radioGroup;
             } else if (formFieldString.equals("list") || formFieldString.equals("select")) {
                 inputType = InputType.list;
+            } else if (formFieldString.equals("array") || formFieldString.equals("rating")) {
+                inputType = InputType.rating;
             } else if (formFieldString.equals("boolean") || formFieldString.equals("checkbox")) {
                 inputType = InputType.checkBox;
             } else if (formFieldString.equals("")) {
@@ -234,7 +242,16 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
                 linkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
                 Log.d(TAG, "FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario);
-                
+                //should be more generic
+                JSONArray optionsArray  = jsonObject.optJSONArray(RestConstants.JSON_DATA_SET_FORM_RATING_TAG);
+                dataSetRating.clear();
+                if (optionsArray != null && optionsArray.length() > 0) {
+                    for (int i = 0; i < optionsArray.length(); i++) {
+                        Log.e("RATING","key:"+optionsArray.getJSONObject(i).optString(RestConstants.JSON_ID_FORM_RATING_TAG)+" value:"+ optionsArray.getJSONObject(i).optString(RestConstants.JSON_TITLE_FORM_RATING_TAG));
+                        dataSetRating.put(optionsArray.getJSONObject(i).optString(RestConstants.JSON_ID_FORM_RATING_TAG), 
+                                optionsArray.getJSONObject(i).optString(RestConstants.JSON_TITLE_FORM_RATING_TAG));
+                    }
+                }
                 
                 /**
                  * Validate the city key for create/edit address form.
@@ -475,6 +492,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             case checkBoxList:
                 jsonObject.put(RestConstants.JSON_TYPE_TAG, "boolean");
                 break;
+            case rating:
+                jsonObject.put(RestConstants.JSON_TYPE_TAG, "rating");
+                break;
             default:
                 jsonObject.put(RestConstants.JSON_TYPE_TAG, "string");
                 break;
@@ -490,6 +510,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             // validation
             jsonObject.put(RestConstants.JSON_VALIDATION_TAG, validation.toJSON());
 
+            
+            //FIXME add rating data set to Json Object
+            
             // dataset
 
             JSONArray dataSetArray = new JSONArray();
@@ -774,6 +797,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(dataset_Listener);
         dest.writeMap(extrasValues);
         dest.writeString(linkText);
+        dest.writeMap(dataSetRating);
     }
     
     /**
@@ -793,6 +817,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dataset_Listener = in.readParcelable(null);
         extrasValues = (LinkedHashMap<Object, Object>) in.readHashMap(null);
         linkText = in.readString();
+        dataSetRating = (LinkedHashMap<String, String>) in.readHashMap(null);
     }
     
     /**
@@ -829,4 +854,22 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     public String getLinkText() {
         return this.linkText;
     }
+
+    public LinkedHashMap<String, String> getDataSetRating() {
+        return dataSetRating;
+    }
+
+    public void setDataSetRating(LinkedHashMap<String, String> dataSetRating) {
+        this.dataSetRating = dataSetRating;
+    }
+
+    @Override
+    public Map<String, String> getDateSetRating() {
+        return dataSetRating;
+    }
+
+
+    
+    
+    
 }

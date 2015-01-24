@@ -3,17 +3,22 @@
  */
 package pt.rocket.view.fragments;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.framework.objects.RatingStar;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.view.R;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.LayoutDirection;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import de.akquinet.android.androlog.Log;
 
@@ -26,6 +31,10 @@ public class ReviewFragment extends BaseFragment {
     private static final String TAG = LogTagHelper.create(ReviewFragment.class);
 
     private static ReviewFragment reviewFragment;
+    
+    private final int RATING_TYPE_BY_LINE = 3;
+    
+    private LayoutInflater inflater;
 
     /**
      * Get instance
@@ -94,6 +103,7 @@ public class ReviewFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
+        inflater = LayoutInflater.from(getActivity());
         setAppContentLayout();
     }
 
@@ -148,21 +158,89 @@ public class ReviewFragment extends BaseFragment {
     public void setAppContentLayout() {
 
         Bundle b = getArguments();
-        TextView title = (TextView) getView().findViewById(R.id.review_title);
-        title.setText(b.getString(ConstantsIntentExtra.REVIEW_TITLE));
 
         TextView comment = (TextView) getView().findViewById(R.id.review_comment);
         comment.setText(b.getString(ConstantsIntentExtra.REVIEW_COMMENT));
-
-        RatingBar ratingBar = (RatingBar) getView().findViewById(R.id.review_rating);
-        float rating = Double.valueOf(b.getDouble(ConstantsIntentExtra.REVIEW_RATING)).floatValue();
-        ratingBar.setRating(rating);
 
         TextView userName = (TextView) getView().findViewById(R.id.review_username);
         userName.setText(b.getString(ConstantsIntentExtra.REVIEW_NAME) + ",");
 
         TextView date = (TextView) getView().findViewById(R.id.review_date);
         date.setText(b.getString(ConstantsIntentExtra.REVIEW_DATE));
+        
+        LinearLayout ratingsContainer = (LinearLayout) getView().findViewById(R.id.review_ratings_container);
+        
+        
+        if(ratingsContainer.getChildCount() > 0)
+            ratingsContainer.removeAllViews();
+        
+        
+        ArrayList<RatingStar> ratings = b.getParcelableArrayList(ConstantsIntentExtra.REVIEW_RATING);
+        
+        if(ratings != null){
+            insertRatingTypes(ratings,ratingsContainer,false);            
+        }
 
+    }
+    
+    /**
+     * insert rate types on the review
+     * @param ratingOptionArray
+     * @param parent
+     */
+    private void insertRatingTypes(ArrayList<RatingStar> ratingOptionArray, LinearLayout parent, boolean isBigStar){
+        if(ratingOptionArray != null && ratingOptionArray.size() > 0){
+            
+            // calculate how many lines of rate types the review will have, supossing 3 types for line;
+            int rateCount = ratingOptionArray.size();
+            int rest = rateCount % RATING_TYPE_BY_LINE;
+            int numLines =(int) Math.ceil(rateCount / RATING_TYPE_BY_LINE);
+            if(rest == 1)
+                numLines = numLines + rest;
+            
+            int countType = 0;
+            
+            int starsLayout = R.layout.reviews_fragment_rating_samlltype_item;
+            
+            if(isBigStar)
+                starsLayout = R.layout.reviews_fragment_rating_bigtype_item;
+            
+            
+            for (int i = 0; i < numLines; i++) {
+                
+                LinearLayout typeLine = new LinearLayout(getActivity().getApplicationContext());
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,RATING_TYPE_BY_LINE);
+                
+                typeLine.setOrientation(LinearLayout.HORIZONTAL);
+                //#RTL
+                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+                if(getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                    typeLine.setLayoutDirection(LayoutDirection.LOCALE);
+                }
+                typeLine.setLayoutParams(params);
+                parent.addView(typeLine);
+                
+                for (int j = countType; j < countType+RATING_TYPE_BY_LINE; j++) {
+
+                    if(j < ratingOptionArray.size()){
+                        final View rateTypeView = inflater.inflate(starsLayout, null, false);
+                        
+                        rateTypeView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
+                        
+                        final TextView ratingTitle = (TextView) rateTypeView.findViewById(R.id.title_type);
+                        final RatingBar userRating = (RatingBar) rateTypeView.findViewById(R.id.rating_value);
+                          
+                        userRating.setRating((float) ratingOptionArray.get(j).getRating());
+                        ratingTitle.setText(ratingOptionArray.get(j).getTitle());
+                       
+                        typeLine.addView(rateTypeView);
+                    }
+
+                }
+                countType = countType + RATING_TYPE_BY_LINE;
+            }
+            
+
+        }
     }
 }

@@ -136,10 +136,34 @@ public class RestConstants {
 	public static final String JSON_RATINGS_TOTAL_TAG = "ratings_total";
 	public static final String JSON_RATINGS_TOTAL_SUM_TAG = "sum";
 	public static final String JSON_RATINGS_TOTAL_AVG_TAG = "avr";
+	
+	//NEW RATING V1.6
+	public static final String JSON_RATINGS_SUMMARY_TAG = "rating_reviews_summary";
+	public static final String JSON_RATINGS_AVERAGE_TAG = "average";
+	public static final String JSON_REVIEWS_TOTAL_TAG = "reviews_total";
+	public static final String JSON_PRODUCT_TAG = "product";
+	public static final String JSON_RATING_TYPE_TAG = "by_type";
+	public static final String JSON_REVIEWS_TAG = "reviews";
+	public static final String JSON_TOTAL_TAG = "total";
+	public static final String JSON_COMMENT_TAG = "comment";
+	public static final String JSON_COMMENT_DATE_TAG = "date";
+	public static final String JSON_RATING_STAR_SIZE_TAG = "stars_size";
+	public static final String JSON_DATA_SET_FORM_RATING_TAG = "data_set";
+	public static final String JSON_TITLE_FORM_RATING_TAG = "display_title";
+	public static final String JSON_ID_FORM_RATING_TAG = "id_rating_type";
+	public static final String JSON_RATING_TAG = "rating";
+	public static final String JSON_REVIEW_TAG = "review";
+	public static final String JSON_IS_ENABLE_TAG = "is_enable";
+	public static final String JSON_REQUIRED_LOGIN_TAG = "required_login";
 
 	public static final String JSON_VARIATIONS_TAG = "variations";
 	public static final String JSON_HAS_BUNDLE_TAG = "bundle";
+	
+	// Seller tags
 	public static final String JSON_HAS_SELLER_TAG = "has_seller";
+	public static final String JSON_SELLER_TAG = "seller";
+	public static final String JSON_SELLER_MIN_DELIVERY_TAG = "min_delivery_time";
+	public static final String JSON_SELLER_MAX_DELIVERY_TAG = "max_delivery_time";
 
 	// Variation Tags
 	public static final String JSON_LINK_TAG = "link";

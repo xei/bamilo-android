@@ -30,5 +30,7 @@ public class FormConstants {
     public final static int POLL_FORM = 8;
     // public static final int SHIPPING_DETAILS_FORM = 9;
     public static final int SIGNUP_FORM = 10;
+    public static final int RATING_FORM = 11;
+    public static final int REVIEW_FORM = 12;
 
 }

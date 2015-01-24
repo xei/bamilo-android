@@ -79,23 +79,23 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
         // Get options
         JSONArray jsonOptions = jsonObject.optJSONArray("option");
         if (jsonOptions != null) {
-            // Get options
-            for (int i = 0; i < jsonOptions.length(); i++) {
-                // Get json option
-                JSONObject jsonOption = jsonOptions.getJSONObject(i);
-                // Create filter option
-                CatalogFilterOption filterOption = new CatalogFilterOption(jsonOption);
-                // Save filter option
-                mFilterOptions.add(filterOption);
-            }
-
-            // Validate if is a brand filter and create everything is necessary
-            if (mId.contains("brand")) {
-                // Sort alphabetic
-                Collections.sort(mFilterOptions, new AlphabeticComparator());
-                // Create filter sections
-                mFilterOptions = createSections(mFilterOptions);
-            }
+//            // Get options
+//            for (int i = 0; i < jsonOptions.length(); i++) {
+//                // Get json option
+//                JSONObject jsonOption = jsonOptions.getJSONObject(i);
+//                // Create filter option
+//                CatalogFilterOption filterOption = new CatalogFilterOption(jsonOption);
+//                // Save filter option
+//                mFilterOptions.add(filterOption);
+//            }
+//
+//            // Validate if is a brand filter and create everything is necessary
+//            if (mId.contains("brand")) {
+//                // Sort alphabetic
+//                Collections.sort(mFilterOptions, new AlphabeticComparator());
+//                // Create filter sections
+//                mFilterOptions = createSections(mFilterOptions);
+//            }
 
         } else if (jsonObject.optJSONObject("option") != null) {
             // Get json option

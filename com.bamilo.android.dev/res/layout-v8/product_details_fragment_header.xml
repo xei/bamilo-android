@@ -12,7 +12,6 @@
         android:id="@+id/product_detail_name"
         style="@style/text_header"
         android:layout_width="match_parent"
-        android:layout_marginLeft="@dimen/margin_huge"
         android:gravity="right|center_vertical"
         android:maxLines="2"
         android:singleLine="false"
@@ -39,31 +38,13 @@
 
     <!-- RATING -->
 
-    <RelativeLayout
-        android:id="@+id/rating_stripe"
+    <LinearLayout
+        android:id="@+id/product_ratings_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/product_price_special"
-        android:visibility="gone" >
-
-        <RatingBar
-            android:id="@+id/rating"
-            style="@style/starRatingBarBig"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_mid"
-            android:isIndicator="true" />
-
-        <pt.rocket.components.customfontviews.TextView
-            android:id="@+id/reviews"
-            style="@style/text_header"
-            android:layout_width="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/rating"
-            android:gravity="center_vertical|right"
-            android:textColor="@color/grey_light" />
-    </RelativeLayout>
+        android:layout_marginTop="10dp"
+        android:orientation="vertical" >
+    </LinearLayout>
 
 </RelativeLayout>

@@ -64,6 +64,7 @@ import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.utils.dialogfragments.WizardPreferences;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
+import pt.rocket.utils.ui.UIUtils;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.ContentValues;
@@ -265,6 +266,21 @@ OnItemSelectedListener {
     private TextView mBundleTextTotal;
     
     private Button mBundleButton;
+    
+    private RelativeLayout sellerView;
+    
+    private RelativeLayout mSellerNameContainer;
+    
+    private TextView mSellerName;
+    
+    private RelativeLayout mSellerRatingContainer;
+    
+    private TextView mSellerRatingValue;
+    
+    private TextView mSellerDeliveryTime;
+    
+    private RatingBar mSellerRating;
+    
     
     
     /**
@@ -488,6 +504,8 @@ OnItemSelectedListener {
         // Determine if related items should be shown
         mShowRelatedItems = bundle.getBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS);
         isRelatedItem = bundle.getBoolean(ConstantsIntentExtra.IS_RELATED_ITEM);
+//        if(bundle.containsKey(PRODUCT_BUNDLE))
+//            mProductBundle = bundle.getParcelable(PRODUCT_BUNDLE);
     }
 
     /**
@@ -578,6 +596,18 @@ OnItemSelectedListener {
         if(mTitleText == null) mTitleText = (TextView) view.findViewById(R.id.product_detail_name);
         mTitleText.setOnClickListener((OnClickListener) this);
        
+        // Seller info
+        sellerView = (RelativeLayout) view.findViewById(R.id.seller_info);
+        mSellerNameContainer = (RelativeLayout) view.findViewById(R.id.seller_name_container);
+        mSellerNameContainer.setOnClickListener(this);
+        mSellerName = (TextView) view.findViewById(R.id.product_detail_seller_name);
+        mSellerRatingContainer = (RelativeLayout) view.findViewById(R.id.product_detail_product_seller_rating_container);
+        mSellerRatingContainer.setOnClickListener(this);
+        mSellerRatingValue = (TextView) view.findViewById(R.id.product_detail_product_seller_rating_count);
+        mSellerDeliveryTime = (TextView) view.findViewById(R.id.product_detail_seller_delivery_time);
+        mSellerRating = (RatingBar) view.findViewById(R.id.product_detail_product_seller_rating);
+        sellerView.setVisibility(View.GONE);
+        
         // Get and set portrait views
         checkPortraitLayout(view);
         // Get and set landscape views
@@ -607,6 +637,23 @@ OnItemSelectedListener {
         mProductDescriptionText = (TextView) view.findViewById(R.id.product_description_text);
         mProductFeaturesMore = (LinearLayout) view.findViewById(R.id.features_more_container);
         mProductDescriptionMore = (LinearLayout) view.findViewById(R.id.description_more_container);
+        
+        
+//        RelativeLayout mLeftContainerInfo = (RelativeLayout) view.findViewById(R.id.left_container_info);
+//       
+//        int height = DeviceInfoHelper.getHeight(getActivity().getApplicationContext());
+//        
+//        float heightDp = UIUtils.convertPixelsToDp(height,getActivity().getApplicationContext());
+//        Log.d("PDV","height:"+height);
+//        Log.d("PDV","heightdp:"+heightDp);
+//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT ); 
+//        params.height = (int) heightDp;
+//        mLeftContainerInfo.setLayoutParams(params);
+        
+        //FIXME
+//        ScrollViewWithHorizontal leftContainerScroll = (ScrollViewWithHorizontal) view.findViewById(R.id.left_container_scroll);
+//        leftContainerScroll.setScrollingEnabled(false);
+        
         // Set listeners
         if(mProductDescriptionMore != null) mProductDescriptionMore.setOnClickListener(this);
         if(mProductFeaturesMore != null) mProductFeaturesMore.setOnClickListener(this);
@@ -639,6 +686,7 @@ OnItemSelectedListener {
         displayPriceInfoOverallOrForSimple();
         displayRatingInfo();
         displayVariantsContainer();
+        displaySellerInfo();
     }
 
     private void loadProduct() {
@@ -924,15 +972,26 @@ OnItemSelectedListener {
 
         float ratingAverage = mCompleteProduct.getRatingsAverage().floatValue();
         Integer ratingCount = mCompleteProduct.getRatingsCount();
+        Integer reviewsCount = mCompleteProduct.getReviewsCount();
 
         mProductRating.setRating(ratingAverage);
         
-        if(ratingCount == 1){
-            mProductRatingCount.setText(String.valueOf(ratingCount) + " " + getString(R.string.review) );
-        } else {
-            mProductRatingCount.setText(String.valueOf(ratingCount) + " " + getString(R.string.reviews) );
-        }
+        String rating = getString(R.string.string_ratings).toLowerCase();
+        if(ratingCount == 1)
+            rating = getString(R.string.string_rating).toLowerCase();
         
+        String review = getString(R.string.reviews).toLowerCase();
+        if(reviewsCount == 1)
+            review = getString(R.string.review).toLowerCase();
+        
+        mProductRatingCount.setText("( "+String.valueOf(ratingCount) + " " + rating +" / "+String.valueOf(reviewsCount) + " " + review+" )");
+        
+//        if(ratingCount == 1){
+//            mProductRatingCount.setText(String.valueOf(ratingCount) + " " + getString(R.string.review) );
+//        } else {
+//            mProductRatingCount.setText(String.valueOf(ratingCount) + " " + getString(R.string.reviews) );
+//        }
+//        
 //        mProductRatingCount.setText("(" + String.valueOf(ratingCount) + ")");
         loadingRating.setVisibility(View.GONE);
     }
@@ -946,6 +1005,30 @@ OnItemSelectedListener {
             mVarianceContainer.setVisibility(View.VISIBLE);
         }
     }
+    
+    /**
+     * function responsible for showing the seller info
+     */
+    public void displaySellerInfo() {
+     
+        if(mCompleteProduct.isHasSeller()){
+            sellerView.setVisibility(View.VISIBLE);
+            mSellerName.setText(mCompleteProduct.getSeller().getName());
+            String rating = getString(R.string.string_ratings).toLowerCase();
+            if(mCompleteProduct.getSeller().getRatingCount() == 1)
+                rating = getString(R.string.string_rating).toLowerCase();
+            mSellerRatingValue.setText(mCompleteProduct.getSeller().getRatingCount()+" "+rating);
+            mSellerRating.setRating(mCompleteProduct.getSeller().getRatingValue());
+            mSellerDeliveryTime.setText(mCompleteProduct.getSeller().getMinDeliveryTime() +" - "+mCompleteProduct.getSeller().getMinDeliveryTime()
+                    +" "+ getResources().getString(R.string.product_delivery_days));
+            
+        } else {
+            sellerView.setVisibility(View.GONE);
+        }
+        
+        
+    }
+
 
     public void updateVariants() {
         // Log.i(TAG, "code1stock size selected : "+mSelectedSimple);
@@ -1125,6 +1208,10 @@ OnItemSelectedListener {
             mTitleText.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct.getBrand() + " " + mCompleteProduct.getName() : "");
         }
         
+        // Seller info
+        if(mCompleteProduct.getSeller() != null){
+            
+        }
 
         // Set favourite
         try {
@@ -1419,9 +1506,11 @@ OnItemSelectedListener {
         Log.d(TAG, "DEEP LINK SIMPLE POSITION: " + mSelectedSimple);
     }
 
-    private void executeAddToShoppingCartCompleted() {
+    private void executeAddToShoppingCartCompleted(boolean isBundle) {
 
         String msgText = "1 " + getResources().getString(R.string.added_to_shop_cart_dialog_text);
+        if(isBundle)
+            msgText = getResources().getString(R.string.added_bundle_to_shop_cart_dialog_text);
 
         mDialogAddedToCart = DialogGenericFragment.newInstance(
                 false,
@@ -1577,7 +1666,13 @@ OnItemSelectedListener {
         else if (id == R.id.product_detail_product_image_share) onClickShare(mCompleteProduct);
         // Case size guide
         else if (id == R.id.dialog_list_size_guide_button) onClickSizeGuide(view);
+        // seller link
+        else if (id == R.id.seller_name_container) goToSellerCatalog();
+        // seller rating
+        else if (id == R.id.product_detail_product_seller_rating_container) goToSellerRating();
     }
+    
+
     
     /**
      * Process the click on retry
@@ -1712,7 +1807,7 @@ OnItemSelectedListener {
             getBaseActivity().updateCartInfo();
             hideActivityProgress();
             mAddToCartButton.setEnabled(true);
-            executeAddToShoppingCartCompleted();
+            executeAddToShoppingCartCompleted(false);
             break;
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
@@ -1772,7 +1867,7 @@ OnItemSelectedListener {
             hideActivityProgress();
             mBundleButton.setEnabled(true);
             mAddToCartButton.setEnabled(true);
-            executeAddToShoppingCartCompleted();
+            executeAddToShoppingCartCompleted(true);
             break;
         default:
             break;
@@ -2017,7 +2112,7 @@ OnItemSelectedListener {
        ArrayList<ProductBundleProduct> bundleProducts = bundle.getBundleProducts();
        for (int i = 0; i < bundleProducts.size(); i++) {
            
-           if(bundleProducts.get(i).getBundleSimples() != null && bundleProducts.get(i).getBundleSimples().size() > 0){
+           if(bundleProducts.get(i).getBundleSimples() != null && bundleProducts.get(i).getBundleSimples().size() > 1){
                hasSimples = true;
            }
            
@@ -2037,16 +2132,6 @@ OnItemSelectedListener {
        mBundleTextTotal.setTag(total);
        
        
-       //remove the main product from the bundle ( leader pos == 0)
-       ArrayList<ProductBundleProduct> bundleWithoutLead = new ArrayList<ProductBundleProduct>();
-       if(bundleProducts.size() > 1){
-           for (int i = 0; i < bundleProducts.size(); i++) {
-               if(bundleProducts.get(i).getBundleProductLeaderPos() != 0){
-                   bundleWithoutLead.add(bundleProducts.get(i));
-               } 
-        }
-       } 
-       
        if(hasSimples){
            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (int)getResources().getDimension(R.dimen.teaser_product_bundle_item_width) );
            params.addRule(RelativeLayout.BELOW,mDividerBundle.getId());
@@ -2063,7 +2148,7 @@ OnItemSelectedListener {
        }
        
        mHorizontalBundleListView.setLayoutManager(mLayoutManager);
-       mHorizontalBundleListView.setAdapter(new BundleItemsListAdapter(mContext, bundleWithoutLead,
+       mHorizontalBundleListView.setAdapter(new BundleItemsListAdapter(mContext, bundleProducts,
                 (OnItemSelected)this, (OnItemChecked)this, (OnSimplePressed)this, (OnItemSelectedListener) this));
        
        mBundleLoading.setVisibility(View.GONE);
@@ -2141,7 +2226,7 @@ OnItemSelectedListener {
             mBundleTextTotal.setTag(totalPrice);
             mBundleTextTotal.setText(CurrencyFormatter.formatCurrency(String.valueOf(totalPrice)));
             if(mProductBundle != null)
-                mProductBundle.getBundleProducts().get(pos+1).setChecked(false);
+                mProductBundle.getBundleProducts().get(pos).setChecked(false);
             
             validateBundleButton();
             
@@ -2151,7 +2236,7 @@ OnItemSelectedListener {
             mBundleTextTotal.setTag(totalPrice);
             mBundleTextTotal.setText(CurrencyFormatter.formatCurrency(String.valueOf(totalPrice)));
             if(mProductBundle != null)
-                mProductBundle.getBundleProducts().get(pos+1).setChecked(true);
+                mProductBundle.getBundleProducts().get(pos).setChecked(true);
             
             mBundleButton.setEnabled(true);
         }
@@ -2182,13 +2267,21 @@ OnItemSelectedListener {
         ContentValues values = new ContentValues();
         values.put(GetShoppingCartAddBundleHelper.BUNDLE_ID, mProductBundle.getBundleId());
         for (int i = 0; i < mProductBundle.getBundleProducts().size(); i++) {
-            if(mProductBundle.getBundleProducts().get(i).isChecked() && mProductBundle.getBundleProducts().get(i).getBundleProductLeaderPos() != 0){
+//            if(mProductBundle.getBundleProducts().get(i).isChecked() && mProductBundle.getBundleProducts().get(i).getBundleProductLeaderPos() != 0){
+            if(mProductBundle.getBundleProducts().get(i).isChecked()){
                 values.put(GetShoppingCartAddBundleHelper.PRODUCT_SKU_TAG+count+"]", mProductBundle.getBundleProducts().get(i).getBundleProductSku());
                 values.put(GetShoppingCartAddBundleHelper.PRODUCT_SIMPLE_SKU_TAG+count+"]",mProductBundle.getBundleProducts().get(i).getBundleSimples()
                         .get(mProductBundle.getBundleProducts().get(i).getSimpleSelectedPos()).getSimpleSku());
                 count++;
+                
+                // GA BUNDLE TRACKING              
+                TrackerDelegator.trackAddBundleToCart(mProductBundle.getBundleProducts().get(i).getBundleSimples()
+                        .get(mProductBundle.getBundleProducts().get(i).getSimpleSelectedPos()).getSimpleSku(),
+                        mProductBundle.getBundleProducts().get(i).getBundleSimples()
+                        .get(mProductBundle.getBundleProducts().get(i).getSimpleSelectedPos()).getPriceForTracking());
             }
         }
+        
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartAddBundleHelper.ADD_BUNDLE, values);
         triggerContentEventProgress(new GetShoppingCartAddBundleHelper(), bundle, responseCallback);
@@ -2197,10 +2290,11 @@ OnItemSelectedListener {
     @Override
     public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
        Object object = parent.getItemAtPosition(position);
+
        if (object instanceof ProductBundleSimple) {
            ProductBundleSimple productSimple = (ProductBundleSimple) object;
            if(mProductBundle != null){
-               mProductBundle.getBundleProducts().get(productSimple.getProductParentPos()+1).setSimpleSelectedPos(position);
+               mProductBundle.getBundleProducts().get(productSimple.getProductParentPos()).setSimpleSelectedPos(position);
             }
        }
     }
@@ -2211,4 +2305,18 @@ OnItemSelectedListener {
         
     }
     
+    
+    /**
+     * function responsible for calling the catalog with the products from a specific seller
+     */
+    private void goToSellerCatalog(){
+        Log.e("SELLER","GO TO CATALOG");
+    }
+
+    /**
+     * function responsible for showing the rating and reviews of a specific seller
+     */    
+    private void goToSellerRating(){
+        Log.e("SELLER","GO TO RATING");
+    }
 }

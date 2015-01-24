@@ -41,6 +41,7 @@ public class FormFactory {
     private DynamicForm paymentForm = null;
     private DynamicForm registerForm = null;
     private DynamicForm pollForm = null;
+    private DynamicForm ratingForm = null;
     // private DynamicForm shippingForm = null;
     private float scale = 1;
 
@@ -131,6 +132,10 @@ public class FormFactory {
             break;*/
         case FormConstants.PAYMENT_DETAILS_FORM:
             parent = createPaymentMethodsForm(context, form, ctrlParams);
+            break;
+        case FormConstants.REVIEW_FORM:
+        case FormConstants.RATING_FORM:
+            parent = createRatingOptionsForm(context, form);
             break;
         }
         
@@ -259,6 +264,29 @@ public class FormFactory {
 
         return createGenericForm(context, form, paymentForm, ctrlParams);
     }
+    
+    
+    private DynamicForm createRatingOptionsForm(Context context, Form form) {
+        
+        final int CTRLMARGIN_LEFT = 0;
+        final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
+        final int CTRLMARGIN_RIGHT = 0;
+        final int CTRLMARGIN_BOTTOM = 0;
+
+        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            ctrlParams.setLayoutDirection(LayoutDirection.LOCALE);
+            ctrlParams.setMarginStart(CTRLMARGIN_LEFT);
+            ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
+        }
+        ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
+        
+        return createGenericForm(context, form, ratingForm, ctrlParams);
+    }
+    
 
     /**
      * Create the user registration form 
@@ -393,7 +421,6 @@ public class FormFactory {
      * @return n instance of a DynamicForm with the form representation implemented
      */
     private DynamicForm createGenericForm(Context context, Form form, DynamicForm userForm, ViewGroup.LayoutParams ctrlParams) {
-
         LinearLayout parent;
         Log.i(TAG,"code1form id : "+form.id+" name: "+form.name);
         if(context == null){
@@ -409,7 +436,6 @@ public class FormFactory {
             LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             parent.setOrientation(LinearLayout.VERTICAL);
             parent.setLayoutParams(frmParams);
-
             userForm = new DynamicForm(parent);
             userForm.setForm( form );
 
@@ -440,6 +466,7 @@ public class FormFactory {
                 ctrl = new DynamicFormItem(userForm, context, frmEntry);
                 
                 if (ctrl.isMeta() || ctrl.hasNoType()) {
+                    
                     // Don't waste space with meta fields nor field without type
                     Log.i(TAG, "Meta or no type field");
                     userForm.addControl(ctrl, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));

@@ -20,13 +20,12 @@ import de.akquinet.android.androlog.Log;
 public class ProductReviewComment implements IJSONSerializable, Parcelable {
 
     private String title = "";
-    private String comments = "";
+    private String comment = "";
     private String name = "";
     private String date = "";
     private double rating = 0.0;
     private String optionTitle="";
-    
-    private ArrayList<RatingOption> ratingOptions;
+    private ArrayList<RatingStar> ratingStars;
 
     public ProductReviewComment() {
 	
@@ -42,21 +41,21 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
 
-        ratingOptions = new ArrayList<RatingOption>();
+        ratingStars = new ArrayList<RatingStar>();
         try {
             title = jsonObject.getString(RestConstants.JSON_TITLE_TAG);
-            comments = jsonObject.getString(RestConstants.JSON_DETAILS_TAG);
-            name = jsonObject.getString(RestConstants.JSON_NICKNAME_TAG);
-            date = jsonObject.getString(RestConstants.JSON_DATE_TAG);
+            comment = jsonObject.getString(RestConstants.JSON_COMMENT_TAG);
+            name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
+            date = jsonObject.getString(RestConstants.JSON_COMMENT_DATE_TAG);
 
-            JSONArray options = jsonObject.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
-            int size = options.length();
-            Log.i("OPTIONS"," "+size);
+            JSONArray stars = jsonObject.getJSONArray(RestConstants.JSON_STARS_TAG);
+            int size = stars.length();
+            Log.i("STAR"," "+size);
             rating = 0 ;
             for (int i = 0; i < size; i++) {
-                RatingOption option= new RatingOption();
-                option.initialize(options.getJSONObject(i));
-                ratingOptions.add(option);
+                RatingStar option= new RatingStar();
+                option.initialize(stars.getJSONObject(i));
+                ratingStars.add(option);
                 rating += option.getRating();
             }
             rating /= size;
@@ -91,8 +90,8 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
     /**
      * @return the comments
      */
-    public String getComments() {
-        return comments;
+    public String getComment() {
+        return comment;
     }
 
     /**
@@ -116,8 +115,8 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
         return rating;
     }
     
-    public ArrayList<RatingOption> getRatingOptions(){
-        return ratingOptions;
+    public ArrayList<RatingStar> getRatingStars(){
+        return ratingStars;
     }
 
 	@Override
@@ -129,24 +128,24 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(title);
-		dest.writeString(comments);
+		dest.writeString(comment);
 		dest.writeString(name);
 		dest.writeString(date);
 		dest.writeDouble(rating);
 		dest.writeString(optionTitle);
-		dest.writeList(ratingOptions);
+		dest.writeList(ratingStars);
 		
 	}
 	
 	private ProductReviewComment(Parcel in) {
 		 title = in.readString();
-		 comments = in.readString();
+		 comment = in.readString();
 		 name = in.readString();
 		 date = in.readString();
 		 rating = in.readDouble();
 		 optionTitle = in.readString();
-		 ratingOptions = new ArrayList<RatingOption>(); 
-		 in.readList(ratingOptions, RatingOption.class.getClassLoader());
+		 ratingStars = new ArrayList<RatingStar>(); 
+		 in.readList(ratingStars, RatingStar.class.getClassLoader());
 	}
 	
     public static final Parcelable.Creator<ProductReviewComment> CREATOR = new Parcelable.Creator<ProductReviewComment>() {

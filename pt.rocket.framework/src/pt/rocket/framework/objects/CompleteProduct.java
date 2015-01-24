@@ -55,6 +55,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	private Double maxSavingPercentage;
 	private Double ratingsAverage;
 	private Integer ratingsCount;
+	private Integer reviewsCount;
 	private ArrayList<String> categories;
 	private HashMap<String, String> attributes;
 	private HashMap<String, String> shipmentData;
@@ -69,6 +70,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	private ProductBundle productBundle;
 	private boolean hasSeller;
 	private boolean hasBundle;
+	private Seller seller;
 //	private int simpleSkuPosition;
 
 	/**
@@ -88,6 +90,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		maxSavingPercentage = 0.0;
 		ratingsAverage = 0.0;
 		ratingsCount = 0;
+		reviewsCount = 0;
 		isNew = false;
 		mPriceConverted = 0d;
 		mSpecialPriceConverted = 0d;
@@ -95,6 +98,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		productBundle = null;
 		hasSeller = false;
 		hasBundle = false;
+		seller = new Seller();
 	}
 
 	/*
@@ -107,6 +111,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) {
 		try {
+		    
 			JSONObject dataObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
 
 			sku = dataObject.getString(RestConstants.JSON_SKU_TAG);
@@ -118,7 +123,6 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			description = dataObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
 			url = dataObject.optString(RestConstants.JSON_PROD_URL_TAG, "");
 			mSizeGuideUrl = dataObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
-
 			// Throw JSONException if JSON_PRICE_TAG is not present
 			String priceJSON = dataObject.getString(RestConstants.JSON_PRICE_TAG);
 			if (!CurrencyFormatter.isNumber(priceJSON)) {
@@ -143,13 +147,25 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			} else {
 				maxSavingPercentage = 0d;
 			}
-
 			// TODO: ratings need to be completed
-			JSONObject ratingsTotalObject = dataObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
-			if (ratingsTotalObject != null) {
-				ratingsAverage = ratingsTotalObject.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG, .0);
-				ratingsCount = ratingsTotalObject.optInt(RestConstants.JSON_RATINGS_TOTAL_SUM_TAG, 0);
-			}
+			
+          JSONObject ratingsSummaryObject = dataObject.optJSONObject(RestConstants.JSON_RATINGS_SUMMARY_TAG);
+
+          if(ratingsSummaryObject != null){
+              ratingsAverage = ratingsSummaryObject.optDouble(RestConstants.JSON_RATINGS_AVERAGE_TAG, .0);
+              ratingsCount = ratingsSummaryObject.optInt(RestConstants.JSON_RATINGS_TOTAL_TAG, 0);
+              reviewsCount = ratingsSummaryObject.optInt(RestConstants.JSON_REVIEWS_TOTAL_TAG, 0);
+          }
+			
+//			JSONObject ratingsTotalObject = dataObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
+//			if (ratingsTotalObject != null) {
+//				ratingsAverage = ratingsTotalObject.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG, .0);
+//				ratingsCount = ratingsTotalObject.optInt(RestConstants.JSON_RATINGS_TOTAL_SUM_TAG, 0);
+//			}
+//			
+			
+			
+			
 			
 			/*
 			if (maxSavingPercentage.equals(0D) && !price.equals(specialPrice)) {
@@ -164,7 +180,6 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			}
 			// attributes
 			attributes.clear();
-
 			JSONObject attributesObject = dataObject.optJSONObject(RestConstants.JSON_PROD_ATTRIBUTES_TAG);
 
 			if (attributesObject != null) {
@@ -175,7 +190,6 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 					attributes.put(key, value);
 				}
 			}
-
 			// simples
 			simples.clear();
 			JSONArray simpleArray = dataObject.getJSONArray(RestConstants.JSON_SIMPLES_TAG);
@@ -190,7 +204,6 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 
 				simples.add(simple);
 			}
-
 			// image_list
 			imageList.clear();
 			JSONArray imageArray = dataObject.optJSONArray(RestConstants.JSON_IMAGE_LIST_TAG);
@@ -200,7 +213,6 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 					imageList.add(getImageUrl(imageJsonObject.getString("url")));
 				}
 			}
-
 			if (dataObject.has(RestConstants.JSON_PROD_UNIQUES_TAG)
 					&& dataObject.optJSONObject(RestConstants.JSON_PROD_UNIQUES_TAG) != null
 					&& dataObject.optJSONObject(RestConstants.JSON_PROD_UNIQUES_TAG).optJSONObject(
@@ -225,13 +237,21 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 				}
 
 			}
-
 			isNew = dataObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
 
+	        hasBundle = dataObject.optBoolean(RestConstants.JSON_HAS_BUNDLE_TAG, false);
+	        hasSeller = dataObject.optBoolean(RestConstants.JSON_HAS_SELLER_TAG, false);
+	        if(hasSeller){
+	            JSONObject sellerObject = dataObject.optJSONObject(RestConstants.JSON_SELLER_TAG);
+	            if(sellerObject != null){
+	                 seller = new Seller(sellerObject);
+	            }
+	        }
+			
+			
 			JSONObject variationsObject = dataObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
 			if (variationsObject == null)
 				return true;
-
 			@SuppressWarnings("rawtypes")
 			Iterator iter = variationsObject.keys();
 			while (iter.hasNext()) {
@@ -241,10 +261,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 				variation.initialize(key, variationObject);
 				this.variations.add(variation);
 			}
-			
-		hasBundle =	dataObject.optBoolean(RestConstants.JSON_HAS_BUNDLE_TAG, false);
 
-		hasSeller =   dataObject.optBoolean(RestConstants.JSON_HAS_SELLER_TAG, false);
 
 		} catch (JSONException e) {
 
@@ -651,6 +668,23 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
         this.hasBundle = hasBundle;
     }
     
+    public Integer getReviewsCount() {
+        return reviewsCount;
+    }
+
+    public void setReviewsCount(Integer reviewsCount) {
+        this.reviewsCount = reviewsCount;
+    }
+    
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+    }
+
+    
     
     
     
@@ -658,8 +692,8 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
      * ############ PARCELABLE ############
      */
 
-
-
+    
+    
     /*
 	 * (non-Javadoc)
 	 * 
@@ -689,9 +723,15 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		dest.writeDouble(maxSavingPercentage);
 		dest.writeDouble(ratingsAverage);
 		dest.writeInt(ratingsCount);
+		dest.writeInt(reviewsCount);
 		dest.writeDouble(mPriceConverted);
 		dest.writeDouble(mSpecialPriceConverted);
 		dest.writeString(mSizeGuideUrl);
+		dest.writeByte((byte) (isNew ? 1 : 0));
+		dest.writeByte((byte) (hasSeller ? 1 : 0));
+		dest.writeByte((byte) (hasBundle ? 1 : 0));
+		dest.writeParcelable(seller, flags);
+		dest.writeParcelable(productBundle, flags);
 	}
 
 	private CompleteProduct(Parcel in) {
@@ -720,9 +760,15 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		maxSavingPercentage = in.readDouble();
 		ratingsAverage = in.readDouble();
 		ratingsCount = in.readInt();
+		reviewsCount = in.readInt();
 		mPriceConverted = in.readDouble();
 		mSpecialPriceConverted = in.readDouble();
 		mSizeGuideUrl = in.readString();
+		isNew = in.readByte() == 1;
+		hasSeller = in.readByte() == 1;
+		hasBundle = in.readByte() == 1;
+		seller = in.readParcelable(Seller.class.getClassLoader());
+		productBundle = in.readParcelable(ProductBundle.class.getClassLoader());
 	}
 
 	public static final Parcelable.Creator<CompleteProduct> CREATOR = new Parcelable.Creator<CompleteProduct>() {

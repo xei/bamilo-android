@@ -7,17 +7,19 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 import pt.rocket.app.JumiaApplication;
-import pt.rocket.components.ScrollViewEx;
-import pt.rocket.components.ScrollViewEx.OnScrollBottomReachedListener;
 import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsIntentExtra;
+import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
+import pt.rocket.framework.Darwin;
 import pt.rocket.framework.ErrorCode;
+import pt.rocket.components.ScrollViewEx;
+import pt.rocket.components.ScrollViewEx.OnScrollBottomReachedListener;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.ProductRatingPage;
 import pt.rocket.framework.objects.ProductReviewComment;
-import pt.rocket.framework.objects.RatingOption;
+import pt.rocket.framework.objects.RatingStar;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.EventType;
@@ -29,8 +31,11 @@ import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.Toast;
 import pt.rocket.utils.TrackerDelegator;
+import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,6 +43,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.LayoutDirection;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -79,7 +85,12 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
     private ProductRatingPage mSavedProductRatingPage;
 
     private boolean firstRequest = false;   
+    
+    private final int RATING_TYPE_BY_LINE = 3;
+    
+    private static boolean showRatingForm = true;
 
+    private SharedPreferences sharedPrefs;
 
     /**
      * Get instance
@@ -187,7 +198,11 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         setAppContentLayout();
         
         if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
-            startWriteReviewFragment();
+            //Validate if country configs allows rating and review, only show write review fragment if both are allowed
+            if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) || getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true) ){
+                startWriteReviewFragment();
+            }
+
         }
     }
     
@@ -288,6 +303,10 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.CONTENT_URL, mSavedUrl);
         args.putBoolean(CAME_FROM_POPULARITY, true);
+        
+        
+        args.putBoolean(ReviewWriteFragment.RATING_SHOW, showRatingForm);
+        
         mWriteReviewFragment.setArguments(args);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -297,6 +316,10 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
 
     private void removeWriteReviewFragment() {
         if (mWriteReviewFragment != null) {
+           
+            if(mWriteReviewFragment instanceof ReviewWriteFragment)
+                showRatingForm = ((ReviewWriteFragment)mWriteReviewFragment).getIsShowingRatingForm();
+            
             FragmentManager fm = getChildFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             ft.remove(mWriteReviewFragment);
@@ -310,7 +333,6 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
      */
     private void setViewContent() {
 
-        getView().findViewById(R.id.rating_stripe).setVisibility(View.VISIBLE);
         TextView productName = (TextView) getView().findViewById(R.id.product_detail_name);
         TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
         TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
@@ -349,10 +371,6 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
      * This method sets the rating of a given product using the rating bar component.
      */
     private void setPopularity() {
-
-        RatingBar ratingBar = (RatingBar) getView().findViewById(R.id.rating);
-        
-        ratingBar.setRating(selectedProduct.getRatingsAverage().floatValue());
 
         // Apply OnScrollBottomReachedListener to outer ScrollView, now that all page scrolls
         ((ScrollViewEx) getView().findViewById(R.id.reviews_scrollview_container)).setOnScrollBottomReached(new OnScrollBottomReachedListener() {
@@ -394,13 +412,23 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
      * fields are filled before sending a review to the server.
      */
     private void setCommentListener() {
+        
         final Button writeComment = (Button) getView().findViewById(R.id.write_btn);
-        writeComment.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                writeReview();
-            }
-        });
+        
+        //Validate if country configs allows rating and review, only show button if both are allowed
+        if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) || getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true) ){
+            writeComment.setVisibility(View.VISIBLE);
+            writeComment.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    writeReview();
+                }
+            });
+        } else {
+            writeComment.setVisibility(View.GONE);
+
+        }
+       
     }
 
     /**
@@ -430,7 +458,8 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
             // Validate the current rating page
             if(mProductRatingPage == null) mProductRatingPage = productRatingPage;
             // Append the new page to the current
-            else mProductRatingPage.appendPageRating(productRatingPage);
+            //XXX
+//            else mProductRatingPage.appendPageRating(productRatingPage);
                 
             showFragmentContentContainer();
             displayReviews(productRatingPage);
@@ -481,7 +510,8 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
             // Valdiate current rating page
             if(mProductRatingPage == null) mProductRatingPage = productRatingPage;
             // Append the new page to the current
-            else mProductRatingPage.appendPageRating(productRatingPage);
+            //XXX
+//            else mProductRatingPage.appendPageRating(productRatingPage);
                 
             displayReviews(productRatingPage);
             break;
@@ -504,7 +534,12 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
     
     private void displayReviews(ProductRatingPage productRatingPage) {
         ArrayList<ProductReviewComment> reviews = (productRatingPage != null) ? productRatingPage.getReviewComments(): new ArrayList<ProductReviewComment>();
+        
         LinearLayout reviewsLin = (LinearLayout) getView().findViewById(R.id.linear_reviews);
+        
+        if(reviewsLin.getChildCount() > 0)
+            reviewsLin.removeAllViews();
+        
         if(pageNumber == 1){
             try {
                 reviewsLin.removeAllViews();
@@ -513,17 +548,16 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
             }
             
         }
-        // Log.i("REVIEW COUNT", " IS " + review.size());
-        if (productRatingPage.getCommentsCount() >= 0) {
-            TextView reviewsPop = (TextView) getView().findViewById(R.id.reviews);
-            
-            if(productRatingPage.getCommentsCount() == 1){
-                reviewsPop.setText(String.valueOf(productRatingPage.getCommentsCount()) + " " + getString(R.string.review) );
-            } else {
-                reviewsPop.setText(String.valueOf(productRatingPage.getCommentsCount()) + " " + getString(R.string.reviews) );
-            }           
-//            reviewsPop.setText("(" + productRatingPage.getCommentsCount() + ")");
-        }
+        
+        LinearLayout productRatingContainer = (LinearLayout) getView().findViewById(R.id.product_ratings_container);
+        productRatingContainer.setVisibility(View.VISIBLE);
+        
+        if(productRatingContainer.getChildCount() > 0)
+            productRatingContainer.removeAllViews();
+        
+        
+        insertRatingTypes(productRatingPage.getRatingTypes(), productRatingContainer, true);
+        
         int numberReviews = reviews.size();
         // If there are reviews, list them
         // Otherwise, hide reviews list and show empty view
@@ -544,43 +578,21 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
                 final TextView textReview = (TextView) theInflatedView.findViewById(R.id.textreview);
                 
                 final TextView titleReview = (TextView) theInflatedView.findViewById(R.id.title_review);
+                LinearLayout ratingsContainer = (LinearLayout) theInflatedView.findViewById(R.id.ratings_container);
 
-                final TextView optionTitle = (TextView) theInflatedView.findViewById(R.id.quality_title_option);
-                final TextView appearenceTitle = (TextView) theInflatedView.findViewById(R.id.appearence_title_option);
-                final TextView priceTitle = (TextView) theInflatedView.findViewById(R.id.price_title_option);
+                if(ratingsContainer.getChildCount() > 0)
+                    ratingsContainer.removeAllViews();
+                
+                
+                ArrayList<RatingStar> ratingOptionArray = new ArrayList<RatingStar>();
+                ratingOptionArray = review.getRatingStars();
 
-                final RatingBar userRating = (RatingBar) theInflatedView.findViewById(R.id.quality_rating);
-                final RatingBar appearenceRating = (RatingBar) theInflatedView.findViewById(R.id.appearence_rating);
-                final RatingBar priceRating = (RatingBar) theInflatedView.findViewById(R.id.price_rating);
-
-                ArrayList<RatingOption> ratingOptionArray = new ArrayList<RatingOption>();
-                ratingOptionArray = review.getRatingOptions();
-
+                insertRatingTypes(ratingOptionArray, ratingsContainer,false);
+                
                 final String[] stringCor = review.getDate().split(" ");
                 userName.setText(review.getName() + ",");
                 userDate.setText(stringCor[0]);
-                textReview.setText(review.getComments());
-
-                if (ratingOptionArray.size() > 0) {
-                    priceRating.setRating((float) ratingOptionArray.get(0).getRating());
-                    priceTitle.setText(ratingOptionArray.get(0).getTitle());
-                }
-
-                if (ratingOptionArray.size() > 1) {
-                    appearenceRating.setRating((float) ratingOptionArray.get(1).getRating());
-                    appearenceTitle.setText(ratingOptionArray.get(1).getTitle());
-                } else {
-                    appearenceRating.setVisibility(View.GONE);
-                    appearenceTitle.setVisibility(View.GONE);
-                }
-
-                if (ratingOptionArray.size() > 2) {
-                    userRating.setRating((float) ratingOptionArray.get(2).getRating());
-                    optionTitle.setText(ratingOptionArray.get(2).getTitle());
-                } else {
-                    userRating.setVisibility(View.GONE);
-                    optionTitle.setVisibility(View.GONE);
-                }
+                textReview.setText(review.getComment());
 
                 titleReview.setText(review.getTitle());
 
@@ -593,8 +605,8 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
                         Bundle bundle = new Bundle();
                         bundle.putString(ConstantsIntentExtra.REVIEW_TITLE, review.getTitle());
                         bundle.putString(ConstantsIntentExtra.REVIEW_NAME, review.getName());
-                        bundle.putString(ConstantsIntentExtra.REVIEW_COMMENT, review.getComments());
-                        bundle.putDouble(ConstantsIntentExtra.REVIEW_RATING, review.getRating());
+                        bundle.putString(ConstantsIntentExtra.REVIEW_COMMENT, review.getComment());
+                        bundle.putParcelableArrayList(ConstantsIntentExtra.REVIEW_RATING, review.getRatingStars());
                         bundle.putString(ConstantsIntentExtra.REVIEW_DATE, stringCor[0]);
                         getBaseActivity().onSwitchFragment(FragmentType.REVIEW, bundle, true);
                     }
@@ -625,6 +637,69 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         }
 
     }
+    
+    /**
+     * insert rate types on the review
+     * @param ratingOptionArray
+     * @param parent
+     */
+    private void insertRatingTypes(ArrayList<RatingStar> ratingOptionArray, LinearLayout parent, boolean isBigStar){
+        if(ratingOptionArray != null && ratingOptionArray.size() > 0){
+            
+            // calculate how many lines of rate types the review will have, supossing 3 types for line;
+            int rateCount = ratingOptionArray.size();
+            int rest = rateCount % RATING_TYPE_BY_LINE;
+            int numLines =(int) Math.ceil(rateCount / RATING_TYPE_BY_LINE);
+            if(rest == 1)
+                numLines = numLines + rest;
+            
+            int countType = 0;
+            
+            int starsLayout = R.layout.reviews_fragment_rating_samlltype_item;
+            
+            if(isBigStar)
+                starsLayout = R.layout.reviews_fragment_rating_bigtype_item;
+            
+            
+            for (int i = 0; i < numLines; i++) {
+                
+                LinearLayout typeLine = new LinearLayout(getActivity().getApplicationContext());
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,RATING_TYPE_BY_LINE);
+                
+                typeLine.setOrientation(LinearLayout.HORIZONTAL);
+                //#RTL
+                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+                if(getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                    typeLine.setLayoutDirection(LayoutDirection.LOCALE);
+                }
+               
+                typeLine.setLayoutParams(params);
+                parent.addView(typeLine);
+                
+                for (int j = countType; j < countType+RATING_TYPE_BY_LINE; j++) {
+
+                    if(j < ratingOptionArray.size()){
+                        final View rateTypeView = inflater.inflate(starsLayout, null, false);
+                        
+                        rateTypeView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
+                        
+                        final TextView ratingTitle = (TextView) rateTypeView.findViewById(R.id.title_type);
+                        final RatingBar userRating = (RatingBar) rateTypeView.findViewById(R.id.rating_value);
+                          
+                        userRating.setRating((float) ratingOptionArray.get(j).getRating());
+                        ratingTitle.setText(ratingOptionArray.get(j).getTitle());
+                       
+                        typeLine.addView(rateTypeView);
+                    }
+                  
+                }
+                countType = countType + RATING_TYPE_BY_LINE;
+            }
+            
+
+        }
+    }
+    
     
     /**
      * TRIGGERS
@@ -665,5 +740,12 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         }
     }   
 
+    private SharedPreferences getSharedPref(){
+        if(sharedPrefs == null){
+          //Validate if country configs allows rating and review, only show write review fragment if both are allowed
+            sharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE); 
+        }
+        return sharedPrefs;
+    }
     
 }

@@ -87,11 +87,13 @@ public enum EventType {
     
     GET_TERMS_EVENT("http:/main/getstatic?key=terms_mobile", RestContract.MAX_CACHE_TIME ),
 
-    GET_RATING_OPTIONS_EVENT("http:/rating/options/", RestContract.MAX_CACHE_TIME),
+    GET_FORM_REVIEW_EVENT("http:/forms/review/", RestContract.MAX_CACHE_TIME),
+    
+    GET_FORM_RATING_EVENT("http:/forms/rating/", RestContract.MAX_CACHE_TIME),
     
     GET_PRODUCT_REVIEWS_EVENT,
     
-    REVIEW_PRODUCT_EVENT("http:/rating/add/", RestContract.NO_CACHE),
+    REVIEW_RATING_PRODUCT_EVENT,
             
     CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT("https:/order/cartchange/", RestContract.NO_CACHE),
     
@@ -219,7 +221,7 @@ public enum EventType {
 	 * 
 	 */
 	private EventType() {
-		this(null, RestContract.NO_CACHE);
+		this(null, 0);
 	}
 
 }

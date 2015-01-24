@@ -41,67 +41,30 @@
                     android:layout_marginLeft="@dimen/margin_100px"
                     android:layout_marginRight="@dimen/margin_100px"
                     android:ellipsize="none"
-                    android:gravity="center_vertical|right"
+                    android:gravity="center_vertical|center_horizontal"
                     android:singleLine="false"
                     android:text="@string/rating_question" />
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/form_rating_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_100px"
-                    android:layout_marginRight="@dimen/margin_100px"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical" >
+                </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/label_container"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="@dimen/margin_huge"
-                        android:orientation="vertical" >
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ratingbar_container"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="30dp"
-                        android:layout_marginTop="@dimen/margin_huge"
-                        android:layout_toLeftOf="@id/label_container"
-                        android:orientation="vertical" >
-                    </LinearLayout>
-                </RelativeLayout>
-
-                <pt.rocket.components.customfontviews.EditText
-                    android:id="@+id/name_box"
-                    style="@style/form_edittext_style"
-                    android:layout_marginLeft="@dimen/margin_100px"
-                    android:layout_marginRight="@dimen/margin_100px"
-                    android:layout_marginTop="@dimen/margin_midhuge"
-                    android:contentDescription="review_name"
-                    android:gravity="center_vertical|right"
-                    android:hint="@string/name" />
-
-                <pt.rocket.components.customfontviews.EditText
-                    android:id="@+id/title_box"
-                    style="@style/form_edittext_style"
-                    android:layout_marginLeft="@dimen/margin_100px"
-                    android:layout_marginRight="@dimen/margin_100px"
-                    android:layout_marginTop="@dimen/margin_mid"
-                    android:contentDescription="review_title"
-                    android:gravity="center_vertical|right"
-                    android:hint="@string/writereview_title_hint" />
-
-                <pt.rocket.components.customfontviews.EditText
-                    android:id="@+id/review_box"
-                    style="@style/form_edittext_style"
-                    android:layout_marginBottom="@dimen/rounded_margin_small"
-                    android:layout_marginLeft="@dimen/margin_100px"
-                    android:layout_marginRight="@dimen/margin_100px"
-                    android:layout_marginTop="@dimen/margin_mid"
-                    android:contentDescription="review_comment"
-                    android:gravity="center_vertical|right"
-                    android:hint="@string/writereview_review_hint" />
+                <LinearLayout
+                    android:id="@+id/form_review_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout style="@style/button_container" >

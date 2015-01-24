@@ -32,91 +32,45 @@
                 android:layout_marginTop="@dimen/rounded_margin_small"
                 android:orientation="vertical"
                 android:padding="@dimen/rounded_margin_mid"
-                android:visibility="gone" >
+                android:visibility="visible" >
 
                 <pt.rocket.components.customfontviews.TextView
                     style="@style/text_normal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|left|start"
                     android:layout_marginEnd="@dimen/margin_100px"
                     android:layout_marginLeft="@dimen/margin_100px"
                     android:layout_marginRight="@dimen/margin_100px"
                     android:layout_marginStart="@dimen/margin_100px"
                     android:ellipsize="none"
+                    android:gravity="center_vertical|center_horizontal"
                     android:singleLine="false"
                     android:text="@string/rating_question" />
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/form_rating_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_100px"
-                    android:layout_marginLeft="@dimen/margin_100px"
-                    android:layout_marginRight="@dimen/margin_100px"
-                    android:layout_marginStart="@dimen/margin_100px"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical" >
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/form_review_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical"
-                    android:paddingLeft="@dimen/form_padding"
-                    android:paddingStart="@dimen/form_padding" >
-
-                    <LinearLayout
-                        android:id="@+id/label_container"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginTop="@dimen/margin_huge"
-                        android:orientation="vertical" >
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ratingbar_container"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginStart="30dp"
-                        android:layout_marginTop="@dimen/margin_huge"
-                        android:layout_toEndOf="@id/label_container"
-                        android:layout_toRightOf="@id/label_container"
-                        android:orientation="vertical" >
-                    </LinearLayout>
-                </RelativeLayout>
-
-                <pt.rocket.components.customfontviews.EditText
-                    android:id="@+id/name_box"
-                    style="@style/form_edittext_style"
-                    android:layout_marginLeft="@dimen/margin_100px"
-                    android:layout_marginRight="@dimen/margin_100px"
-                    android:layout_marginStart="@dimen/margin_100px"
-                    android:layout_marginEnd="@dimen/margin_100px"
-                    android:layout_marginTop="@dimen/margin_midhuge"
-                    android:layoutDirection="locale"
-                    android:contentDescription="review_name"
-                    android:hint="@string/name" />
-
-                <pt.rocket.components.customfontviews.EditText
-                    android:id="@+id/title_box"
-                    style="@style/form_edittext_style"
-                    android:layout_marginLeft="@dimen/margin_100px"
-                    android:layout_marginRight="@dimen/margin_100px"
-                    android:layout_marginStart="@dimen/margin_100px"
-                    android:layout_marginEnd="@dimen/margin_100px"
-                    android:layoutDirection="locale"
-                    android:layout_marginTop="@dimen/margin_mid"
-                    android:contentDescription="review_title"
-                    android:hint="@string/writereview_title_hint" />
-
-                <pt.rocket.components.customfontviews.EditText
-                    android:id="@+id/review_box"
-                    style="@style/form_edittext_style"
-                    android:layout_marginBottom="@dimen/rounded_margin_small"
-                    android:layout_marginLeft="@dimen/margin_100px"
-                    android:layout_marginRight="@dimen/margin_100px"
-                    android:layout_marginEnd="@dimen/margin_100px"
-                    android:layout_marginStart="@dimen/margin_100px"
-                    android:layout_marginTop="@dimen/margin_mid"
-                    android:layoutDirection="locale"
-                    android:contentDescription="review_comment"
-                    android:hint="@string/writereview_review_hint" />
+                    android:visibility="gone" >
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout style="@style/button_container" >
@@ -124,10 +78,10 @@
                 <pt.rocket.components.customfontviews.Button
                     android:id="@+id/send_review"
                     style="@style/button_orange_bottom"
+                    android:layout_marginEnd="@dimen/rounded_margin_mid"
                     android:layout_marginLeft="@dimen/rounded_margin_mid"
                     android:layout_marginRight="@dimen/rounded_margin_mid"
                     android:layout_marginStart="@dimen/rounded_margin_mid"
-                    android:layout_marginEnd="@dimen/rounded_margin_mid"
                     android:text="@string/writereview_send" />
             </LinearLayout>
         </LinearLayout>

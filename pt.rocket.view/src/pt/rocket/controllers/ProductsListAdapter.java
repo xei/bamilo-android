@@ -98,8 +98,8 @@ public class ProductsListAdapter extends BaseAdapter {
         this.products = new ArrayList<String>();
         this.showList = showList;
         this.inflater = LayoutInflater.from(context);
-        this.reviewLabel = context.getString(R.string.review);
-        this.reviewsLabel = context.getString(R.string.reviews);
+        this.reviewLabel = context.getString(R.string.string_rating);
+        this.reviewsLabel = context.getString(R.string.string_ratings);
         this.parentCatalog = parent;
     }
 

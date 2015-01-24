@@ -1,7 +1,9 @@
 package pt.rocket.utils.ui;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 
@@ -24,6 +26,13 @@ public class UIUtils {
     public static int dpToPx(int dp, float density) {
         return Math.round((float)dp * density);
     } 
+    
+    public static float convertPixelsToDp(float px, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float dp = px / (metrics.densityDpi / 160f);
+        return dp;
+    }
 
     public static int spToPx(float dp, Context context) {
         return Math.round(dp * context.getResources().getDisplayMetrics().scaledDensity );

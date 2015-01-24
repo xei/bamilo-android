@@ -1,9 +1,10 @@
 package pt.rocket.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONException;
@@ -12,7 +13,6 @@ import org.json.JSONObject;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.objects.CompleteProduct;
 import pt.rocket.framework.objects.Customer;
-import pt.rocket.framework.objects.ProductReviewCommentCreated;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.rest.RestConstants;
@@ -307,25 +307,22 @@ public class TrackerDelegator {
     public final static void trackItemReview(Bundle params) {
 
         CompleteProduct product = params.getParcelable(PRODUCT_KEY);
-        ProductReviewCommentCreated review = params.getParcelable(REVIEW_KEY);
-
+        HashMap<String, Long> ratingValues = (HashMap<String, Long>) params.getSerializable(RATINGS_KEY);
         String user_id = "";
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
             user_id = JumiaApplication.CUSTOMER.getIdAsString();
         }
         
-        for (Entry<String, Double> option : review.getRating().entrySet()) {
-            Long ratingValue;
-            try {
-                ratingValue = option.getValue().longValue();
-            } catch (NumberFormatException e) {
-                ratingValue = 0l;
-            } catch (NullPointerException e) {
-                ratingValue = 0l;
-            }
-            AnalyticsGoogle.get().trackRateProduct(context, product.getSku(), ratingValue, option.getKey());
-        }
         
+        if (ratingValues != null && ratingValues.size() > 0) {
+            Iterator it = ratingValues.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pairs = (Map.Entry) it.next();
+
+                AnalyticsGoogle.get().trackRateProduct(context, product.getSku(),
+                        (Long) pairs.getValue(), (String) pairs.getKey());
+            }
+        }
         //Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
@@ -1214,7 +1211,11 @@ public class TrackerDelegator {
         // Ad4
         Ad4PushTracker.get().trackCart(cartValue, cartCount);
     }
-
+    
+    public static void trackAddBundleToCart(String productSku, double price) {
+        // GA
+        AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_BUNDLE_TO_CART, productSku, (long) price);
+    }
 //    private static void saveUtmParams(Context context, String key, String value) {
 //        Log.d(TAG, "saving saveUtmParams params, key: " + key + ", value : " + value);
 //        Log.d("BETA", "saving saveUtmParams params, key: " + key + ", value : " + value);

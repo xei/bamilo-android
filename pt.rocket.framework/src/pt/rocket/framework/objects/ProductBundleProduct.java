@@ -167,15 +167,13 @@ public class ProductBundleProduct implements IJSONSerializable, Parcelable {
 
             JSONArray productsSimpleArray = jsonObject.optJSONArray(RestConstants.JSON_SIMPLES_TAG);
 
-            if(bundleProductLeaderPos != 0){
-                if (productsSimpleArray != null && productsSimpleArray.length() > 0) {
-                    for (int i = 0; i < productsSimpleArray.length(); i++) {
+            if (productsSimpleArray != null && productsSimpleArray.length() > 0) {
+                for (int i = 0; i < productsSimpleArray.length(); i++) {
 
-                        JSONObject simpleJson = productsSimpleArray.getJSONObject(i);
-                        ProductBundleSimple bundleSimpleProduct = new ProductBundleSimple(bundleProductLeaderPos-1, simpleJson);
+                    JSONObject simpleJson = productsSimpleArray.getJSONObject(i);
+                    ProductBundleSimple bundleSimpleProduct = new ProductBundleSimple(bundleProductLeaderPos, simpleJson);
 
-                        bundleSimples.add(bundleSimpleProduct);
-                    }
+                    bundleSimples.add(bundleSimpleProduct);
                 }
             }
 

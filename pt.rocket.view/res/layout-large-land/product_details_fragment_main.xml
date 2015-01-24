@@ -83,6 +83,14 @@
                 android:layout_toRightOf="@+id/product_price_special"
                 android:text="Normal Price"
                 android:textColor="@color/grey_middlelight" />
+
+            <include
+                android:id="@+id/seller_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/product_price_normal"
+                layout="@layout/product_details_fragment_seller_info"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <!-- IMAGE CONTAINER -->

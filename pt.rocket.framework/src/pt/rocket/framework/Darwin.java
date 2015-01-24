@@ -86,6 +86,11 @@ public class Darwin {
 	public static final String KEY_SELECTED_COUNTRY_GA_TEST_ID = "selected_country_ga_test_id";
 	public static final String KEY_SELECTED_COUNTRY_PHONE_NUMBER = "selected_country_phone_number";
 	public static final String KEY_SELECTED_COUNTRY_CS_EMAIL = "selected_country_cs_email";
+	
+	public static final String KEY_SELECTED_RATING_ENABLE = "selected_rating_enable";
+	public static final String KEY_SELECTED_RATING_REQUIRED_LOGIN = "selected_rating_required_login";
+	public static final String KEY_SELECTED_REVIEW_ENABLE = "selected_review_enable";
+	public static final String KEY_SELECTED_REVIEW_REQUIRED_LOGIN = "selected_review_required_login";
 	/**
 	 * Prevent this class from being instantiated. Make this class into a
 	 * singleton

@@ -25,19 +25,13 @@
                 android:layout_marginTop="@dimen/margin_huge"
                 android:orientation="vertical" >
 
-                <RatingBar
-                    android:id="@+id/review_rating"
-                    style="@style/starRatingBarBig"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/review_ratings_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:isIndicator="true" />
-
-                <pt.rocket.components.customfontviews.TextView
-                    android:id="@+id/review_title"
-                    style="@style/text_title"
-                    android:layout_marginTop="@dimen/margin_mid"
-                    android:text="This is a review title"
-                    android:textSize="@dimen/text_m" />
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical" >
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

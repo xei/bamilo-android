@@ -60,9 +60,7 @@ public abstract class BaseHelper {
             }
 
             JSONObject metaData;
-            if (eventType == EventType.REVIEW_PRODUCT_EVENT) {
-                metaData = jsonObject;
-            } else {
+
                 if (jsonObject.has(JSONConstants.JSON_METADATA_TAG)) {
 
 //                    /**
@@ -81,7 +79,7 @@ public abstract class BaseHelper {
                     metaData = jsonObject;
                 }
 
-            }
+            
             // removing unnecessary information from bundle
             bundle.remove(Constants.BUNDLE_RESPONSE_KEY);
             if (success) {

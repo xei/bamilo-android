@@ -519,11 +519,6 @@ public class AnalyticsGoogle {
 		// Data
 		String category = mContext.getString(R.string.gcatalog);
 		
-        // FIXME : (TEMPORARY) Validate rating label if ins't a number from API
-        if (ratingLabel.equals("1")) ratingLabel = "Price";
-        else if (ratingLabel.equals("2")) ratingLabel = "Appearance";
-        else if (ratingLabel.equals("3")) ratingLabel = "Quality";
-		
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(mContext.getString(R.string.grateproduct));
 		stringBuilder.append(ratingLabel);

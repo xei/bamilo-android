@@ -85,6 +85,10 @@ public class GetCountryConfigsHelper extends BaseHelper {
         String ga_id = null;
         String phone_number = null;
         String cs_email = null;
+        boolean rating_enable = true;
+        boolean review_enable = true;
+        boolean rating_login_required = false;
+        boolean review_login_required = false;
         try {
             
             currency_iso = jsonObject.getString(RestConstants.JSON_COUNTRY_CURRENCY_ISO);
@@ -115,6 +119,19 @@ public class GetCountryConfigsHelper extends BaseHelper {
             phone_number = jsonObject.getString(RestConstants.JSON_CALL_PHONE_TAG);
             Log.i(TAG, "COUNTRY PHONE:" + phone_number);
             cs_email = jsonObject.getString(RestConstants.JSON_COUNTRY_CS_EMAIL);
+            
+            JSONObject ratingObject = jsonObject.optJSONObject(RestConstants.JSON_RATING_TAG);
+            if(ratingObject != null){
+                rating_enable = ratingObject.optBoolean(RestConstants.JSON_IS_ENABLE_TAG, true);
+                rating_login_required = ratingObject.optBoolean(RestConstants.JSON_REQUIRED_LOGIN_TAG, false);
+            }
+            
+            JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.JSON_REVIEW_TAG);
+            if(reviewObject != null){
+                review_enable = reviewObject.optBoolean(RestConstants.JSON_IS_ENABLE_TAG, true);
+                review_login_required = reviewObject.optBoolean(RestConstants.JSON_REQUIRED_LOGIN_TAG, false);
+            }
+                
         } catch (JSONException e) {
             e.printStackTrace();
             bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
@@ -141,6 +158,11 @@ public class GetCountryConfigsHelper extends BaseHelper {
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, ga_id);
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, phone_number);
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, cs_email);
+        
+        mEditor.putBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true);
+        mEditor.putBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, rating_login_required);
+        mEditor.putBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true);
+        mEditor.putBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, review_login_required);
         
         mEditor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, true);
         mEditor.commit();

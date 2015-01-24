@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<pt.rocket.components.customfontviews.TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/text_normal"
-    android:layout_gravity="center_vertical"
-    android:paddingTop="@dimen/margin_midhuge"
-    android:text="@string/rating_quality" />
