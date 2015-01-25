@@ -64,7 +64,6 @@ import pt.rocket.utils.dialogfragments.DialogListFragment;
 import pt.rocket.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import pt.rocket.utils.dialogfragments.WizardPreferences;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
-import pt.rocket.utils.ui.UIUtils;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.content.ContentValues;
@@ -90,6 +89,7 @@ import android.text.style.MetricAffectingSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ImageView;
@@ -148,6 +148,8 @@ OnItemSelectedListener {
     public final static String PRODUCT_CATEGORY = "product_category";
 
     public final static String PRODUCT_BUNDLE = "product_bundle";
+    
+    private final static String IMAGE_HEIGHT = "item_height";
     
     private Context mContext;
 
@@ -281,7 +283,7 @@ OnItemSelectedListener {
     
     private RatingBar mSellerRating;
     
-    
+    private int imageHeight = -1;
     
     /**
      * Empty constructor
@@ -352,6 +354,8 @@ OnItemSelectedListener {
             mSelectedSimple = savedInstanceState.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
             if(savedInstanceState.containsKey(PRODUCT_BUNDLE))
                 mProductBundle = savedInstanceState.getParcelable(PRODUCT_BUNDLE);
+            
+            imageHeight = savedInstanceState.getInt(IMAGE_HEIGHT);
         }
         Log.d(TAG, "CURRENT SELECTED SIMPLE: " + mSelectedSimple);
     }
@@ -417,6 +421,9 @@ OnItemSelectedListener {
         // Save product bundle
         if(mProductBundle != null)
             outState.putParcelable(PRODUCT_BUNDLE, mProductBundle);
+        
+        outState.putInt(IMAGE_HEIGHT, imageHeight);
+        
     }
 
     
@@ -639,21 +646,6 @@ OnItemSelectedListener {
         mProductDescriptionMore = (LinearLayout) view.findViewById(R.id.description_more_container);
         
         
-//        RelativeLayout mLeftContainerInfo = (RelativeLayout) view.findViewById(R.id.left_container_info);
-//       
-//        int height = DeviceInfoHelper.getHeight(getActivity().getApplicationContext());
-//        
-//        float heightDp = UIUtils.convertPixelsToDp(height,getActivity().getApplicationContext());
-//        Log.d("PDV","height:"+height);
-//        Log.d("PDV","heightdp:"+heightDp);
-//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT ); 
-//        params.height = (int) heightDp;
-//        mLeftContainerInfo.setLayoutParams(params);
-        
-        //FIXME
-//        ScrollViewWithHorizontal leftContainerScroll = (ScrollViewWithHorizontal) view.findViewById(R.id.left_container_scroll);
-//        leftContainerScroll.setScrollingEnabled(false);
-        
         // Set listeners
         if(mProductDescriptionMore != null) mProductDescriptionMore.setOnClickListener(this);
         if(mProductFeaturesMore != null) mProductFeaturesMore.setOnClickListener(this);
@@ -674,7 +666,52 @@ OnItemSelectedListener {
         }
 
     }
-
+    
+    /** 
+     * function responsible for handling the size of the image according to existence of other sections of the PDV
+     * @param hasBundle
+     */
+    private void updateImageSize(boolean hasBundle){
+        
+        if(getActivity() == null)
+            return;
+        
+        if(DeviceInfoHelper.isTabletInLandscape(getActivity().getApplicationContext())){
+            RelativeLayout mLeftContainerInfo = (RelativeLayout) getView().findViewById(R.id.image_container);
+            
+            LayoutParams params = mLeftContainerInfo.getLayoutParams();
+            
+            Log.d("PDV","params:"+params);
+            
+            if(imageHeight == -1){
+                
+                imageHeight = (int)getResources().getDimension(R.dimen.pdv_image_alone);
+                
+                if(mVarianceContainer.isShown() && getView().findViewById(R.id.product_detail_variations_container).isShown()){
+                    Log.d("PDV","IMAGE HAS VAR AND SIMPLE");
+                    imageHeight = (int)getResources().getDimension(R.dimen.pdv_image_with_var_simple);
+                } else if (mVarianceContainer.isShown() || getView().findViewById(R.id.product_detail_variations_container).isShown()){
+                    Log.d("PDV","IMAGE HAS VAR OR SIMPLE");
+                    imageHeight = (int)getResources().getDimension(R.dimen.pdv_image_with_var);
+                } else {
+                    Log.d("PDV","IMAGE ALONE");
+                }
+                
+                int bundleSize = 0;
+                        if(hasBundle){
+                           bundleSize = (int)getResources().getDimension(R.dimen.pdv_image_with_bundle);
+                        }
+                        Log.d("PDV","height:"+imageHeight);
+                        params.height = imageHeight-bundleSize;
+            } else {
+                params.height = imageHeight;
+            }
+           
+            mLeftContainerInfo.setLayoutParams(params);
+        }
+      
+    }
+    
     /**
      * 
      */
@@ -687,6 +724,7 @@ OnItemSelectedListener {
         displayRatingInfo();
         displayVariantsContainer();
         displaySellerInfo();
+        updateImageSize(false);
     }
 
     private void loadProduct() {
@@ -1846,10 +1884,9 @@ OnItemSelectedListener {
             }, 300);
 
             if(mCompleteProduct.isHasBundle()){
+                updateImageSize(true);
                 Bundle arg = new Bundle();
                 arg.putString(GetProductBundleHelper.PRODUCT_SKU, mCompleteProduct.getSku());
-                //TODO For BAMILO
-//                arg.putString(GetProductBundleHelper.PRODUCT_SKU, "TO430HBADWKVMEAMZ");
                 triggerContentEvent(new GetProductBundleHelper(), arg, responseCallback);
             }
             break;
