@@ -12,13 +12,4 @@
         android:layerType="software"
         android:visibility="gone" />
 
-    <Button
-        android:id="@+id/com_ad4screen_sdk_closebutton"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:layout_gravity="top|right"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/com_ad4screen_sdk_closebutton" />
-
 </FrameLayout>

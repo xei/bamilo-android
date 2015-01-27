@@ -11,10 +11,9 @@
 
         <Button
             android:id="@+id/com_ad4screen_sdk_closebutton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_alignRight="@+id/com_ad4screen_sdk_logo"
             android:background="@drawable/com_ad4screen_sdk_borderless_button" />
 
         <ImageView
@@ -23,28 +22,21 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
             android:contentDescription="@string/a4s_content_back"
-            android:src="@drawable/com_ad4screen_sdk_back_dark" />
-
-        <ImageView
-            android:id="@+id/com_ad4screen_sdk_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@+id/com_ad4screen_sdk_back"
-            android:contentDescription="@string/a4s_content_back" />
+            android:src="@drawable/com_ad4screen_sdk_navigation_back" />
 
         <TextView
             android:id="@+id/com_ad4screen_sdk_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/com_ad4screen_sdk_logo"
+            android:layout_marginLeft="60dp"
             android:maxLines="1"
             android:textColor="@android:color/white"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <TextView
@@ -71,7 +63,8 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/com_ad4screen_sdk_actionbar_background_bottom_holo_dark"
         android:gravity="center_vertical|right"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingRight="16dp" >
 
         <ProgressBar
             android:id="@+id/com_ad4screen_sdk_progress"
