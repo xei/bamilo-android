@@ -38,51 +38,52 @@
 
     <!-- ####################################################################### -->
 
+
     <!-- Jumia -->
-    <style name="Theme.Jumia" parent="@style/Theme.AppCompat.Light">
-        <!-- Base -->
+    <style name="Theme.Jumia" parent="Theme.AppCompat.Light">
+        <!-- #### Custom Material Color Palette -->
+        <!-- Color for the app bar -->
+        <item name="colorPrimary">@color/grey_tab_background</item>
+        <!-- Color for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/grey_dark</item>
+        <!-- Color for UI controls like checkboxes and text fields -->
+        <item name="colorAccent">@color/orange_basic</item>
+        <!-- Color for UI controls like checkboxes and text fields -->
+        <item name="android:navigationBarColor">@color/grey_dark</item>
+        <!-- Color for app background -->
         <item name="android:windowBackground">@color/background_color</item>
-        <!-- Text -->
+        <!-- #### Text -->
         <item name="android:textColorPrimary">@color/grey_middle</item>
         <item name="android:textColorSecondary">@color/grey_middle</item>
         <item name="android:textColorTertiary">@color/grey_middle</item>
         <item name="android:editTextColor">@color/grey_middle</item>
         <item name="editTextColor">@color/grey_middle</item>
-        <!-- Action Bar -->
+        <!-- #### Action Bar -->
         <item name="android:actionBarTheme">@style/Widget.Jumia.ActionBar</item>
         <item name="actionBarTheme">@style/Widget.Jumia.ActionBar</item>
         <item name="actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
-        <!-- Search View -->
+        <!-- #### Search View -->
         <item name="android:searchViewStyle">@style/Widget.Jumia.SearchView</item>
         <item name="searchViewStyle">@style/Widget.Jumia.SearchView</item>
-        <!-- Check Box View -->
+        <!-- #### Check Box View -->
         <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
-        <!-- List View -->
+        <!-- #### List View -->
         <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
-        <!-- Custom Spinner -->
+        <!-- #### Custom Spinner -->
         <item name="actionCustomSpinnerDropDownStyle">@style/Widget.Jumia.Spinner.Style</item>
-		<!-- View Page Indicator -->
+        <!-- #### View Page Indicator -->
         <item name="vpiCirclePageIndicatorStyle">@style/Widget.JumiaCirclePageIndicator</item>
     </style>
 
     <!-- Theme for ActionBar from support library compatibility -->
     <style name="Widget.Jumia.ActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-		<!-- Apply the color filter for AB -->
+        <!-- Apply the color filter for AB -->
         <item name="android:colorControlNormal">@color/grey_middledark</item>
         <item name="colorControlNormal">@color/grey_middledark</item>
-        <!-- Apply the AB style -->
-        <item name="android:actionBarStyle">@style/Widget.Jumia.ActionBarStyle</item>
-        <item name="actionBarStyle">@style/Widget.Jumia.ActionBarStyle</item>
         <!-- Apply the ArrawStyle for AB -->
         <item name="drawerArrowStyle">@style/Widget.Jumia.DrawerArrowStyle</item>
-    	<!-- To apply the color filter over indicator in Android v5.0.1 -->    
+        <!-- To apply the color filter over indicator in Android v5.0.1 -->
         <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_mtrl_am_alpha</item>
-    </style>
-
-	<!-- Style for ActionBar from support library compatibility -->
-    <style name="Widget.Jumia.ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
-        <item name="android:background">@color/white_50</item>
-        <item name="background">@color/white_50</item>
     </style>
 
     <!-- Style for DrawerArrow from support library compatibility -->
@@ -115,7 +116,6 @@
 
     <!-- List View -->
     <style name="Widget.Jumia.ListView" parent="android:Widget.ListView.White">
-        <!-- <item name="android:listSelector">@drawable/selector_listitem_highlight</item> -->
         <item name="android:cacheColorHint">@android:color/transparent</item>
         <item name="android:divider">@color/grey_light</item>
     </style>
@@ -144,9 +144,6 @@
     </style>
 
     <style name="Theme.Jumia.Dialog.NoTitle.DatePicker">
-        <!-- <item name="calendarViewStyle">@style/Holo.CalendarView.Light</item> -->
-        <!-- <item name="datePickerStyle">@style/Holo.DatePicker</item> -->
-        <!-- <item name="numberPickerStyle">@style/Holo.NumberPicker</item> -->
         <item name="android:windowFrame">@null</item>
     </style>
 
@@ -158,12 +155,12 @@
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
     </style>
-    
-    <!-- Circle page indicator from attr:CirclePageIndicator-->
-	<style name="Widget.JumiaCirclePageIndicator" parent="Widget">
-	    <item name="fillColor">@color/orange_basic</item>
-	    <item name="pageColor">@color/grey_middlelight</item>
-	    <item name="snap">true</item>
+
+    <!-- Circle page indicator from attr:CirclePageIndicator -->
+    <style name="Widget.JumiaCirclePageIndicator" parent="Widget">
+        <item name="fillColor">@color/orange_basic</item>
+        <item name="pageColor">@color/grey_middlelight</item>
+        <item name="snap">true</item>
     </style>
 
 </resources>
