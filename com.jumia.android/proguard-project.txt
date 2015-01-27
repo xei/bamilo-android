@@ -75,6 +75,10 @@
 -dontwarn android.support.**
 ########################### END proguard-android-optimize.txt ###########################
 
+#-dontwarn pt.rocket.view.R$id
+#-dontwarn pt.rocket.utils.maintenance.MaintenancePage
+#-dontwarn pt.rocket.view.SplashScreenActivity
+#-dontwarn pt.rocket.view.fragments.HomeFragment
 
 -dontwarn pt.rocket.jumia.dev.R*
 -dontwarn com.ad4screen.R*
@@ -84,8 +88,10 @@
 -dontwarn sun.reflect.**
 -dontwarn android.test.**
 -dontwarn com.sun.mail.imap.protocol.**
--keep public class android.net.http.SslError
--keep public class android.webkit.WebViewClient
+
+#-keep public class android.net.http.SslError
+#-keep public class android.webkit.WebViewClient
+
 -dontnote android.support.**
 
 -dontwarn android.webkit.WebView
@@ -100,9 +106,9 @@
 -dontnote com.android.vending.licensing.ILicensingService
 
 #-libraryjars ../pt.rocket.framework/libs/newrelic.android.jar(!sun.misc.Unsafe)
--libraryjars bin/classes(com/google/android/gms/R*.class)
+#-libraryjars bin/classes(com/google/android/gms/R*.class)
+#-libraryjars bin/classes(com/ad4screen/sdk/R*.class)
 
--libraryjars bin/classes(com/ad4screen/sdk/R*.class)
 -keepattributes InnerClasses,Signature,Exceptions,EnclosingMethod,SourceFile,LineNumberTable,*Annotation*
 -renamesourcefileattribute SourceFile
 
@@ -110,22 +116,38 @@
 
 #-keep class com.google.android.gms { int location_client_powered_by_google; }
 
+#-keep class com.google.ads.AdRequest$Gender
+#-keep class com.google.ads.mediation.MediationInterstitialAdapter
+#-keep class com.google.ads.mediation.MediationBannerAdapter
+#-keep class com.google.ads.AdRequest$ErrorCode
+#-keep class com.google.ads.mediation.NetworkExtras
+#-keep class com.google.ads.mediation.MediationAdapter
+
 -keep public class * extends android.support.v4.app.Fragment
 -keep class android.support.v4.app.Fragment
 -keep class android.support.v4.app.FragmentManager
--keep class com.google.ads.AdRequest$Gender
--keep class com.google.ads.mediation.MediationInterstitialAdapter
--keep class com.google.ads.mediation.MediationBannerAdapter
--keep class com.google.ads.AdRequest$ErrorCode
--keep class com.google.ads.mediation.NetworkExtras
 -keep class android.support.v4.content.Loader
--keep class com.ad4screen.sdk.common.annotations.API
+-keep class android.support.v4.content.Loader$OnLoadCompleteListener
+-keep class android.support.v4.app.FragmentTransaction
+-keep class android.support.v4.app.Fragment$SavedState
 
--keep class com.ad4screen.sdk.f
+############# BEGIN GENERIC CLASSES #############
 
--keep class com.ad4screen.sdk.a.a.g
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
 
--keep class com.ad4screen.sdk.a.a.e
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
 
 -keep class * extends java.util.ListResourceBundle {
     protected java.lang.Object[][] getContents();
@@ -144,81 +166,61 @@
     public static final ** CREATOR;
 }
 
+############################################################
 
-
-
--keep class android.support.v4.content.Loader$OnLoadCompleteListener
--keep class android.support.v4.app.FragmentTransaction
-
-
--keep class com.ad4screen.sdk.inbox.Button
-
+## BEGIN ACCENGAGE ##########################################
+-keep class com.ad4screen.sdk.f
+-keep class com.ad4screen.sdk.a.a.a
+-keep class com.ad4screen.sdk.a.a.g
+-keep class com.ad4screen.sdk.a.a.e
 -keep class com.ad4screen.sdk.d
 -keep class com.ad4screen.sdk.e
-
+-keep class com.ad4screen.sdk.common.annotations.API
 -keep @com.ad4screen.sdk.common.annotations.API class * {
 	public *;
 	@com.ad4screen.sdk.common.annotations.API protected *; 
 }
-
 -keep class com.ad4screen.sdk.IA4SService {
 	public *;
 }
-
 -keep class com.ad4screen.sdk.IA4SService$Stub {
 	public *;
 }
-
--keep class com.ad4screen.sdk.plugins.** { *; }
-
+-keep class com.ad4screen.sdk.inbox.Button
 -keep class com.ad4screen.sdk.inbox.Message
+-keep class com.ad4screen.sdk.plugins.** { *; }
+-dontwarn com.ad4screen.sdk.**
+-dontnote com.ad4screen.sdk.service.modules.inapp.DisplayView$b
+################################################################
 
--keep class android.support.v4.app.Fragment$SavedState
-
--keep class com.google.ads.mediation.MediationAdapter
-
--dontwarn com.ad4screen.sdk.plugins.**
-
--keep public class * extends android.app.Activity
--keep public class * extends android.app.Application
--keep public class * extends android.app.Service
--keep public class * extends android.content.BroadcastReceiver
--keep public class * extends android.content.ContentProvider
--keep public class * extends android.app.backup.BackupAgentHelper
--keep public class * extends android.preference.Preference
-
--keepclasseswithmembers class * {
-    public <init>(android.content.Context, android.util.AttributeSet);
-}
-
--keepclasseswithmembers class * {
-    public <init>(android.content.Context, android.util.AttributeSet, int);
-
-}
-
+## BEGIN NEW RELIC #############################################
 -keep class com.newrelic.** { *; }
 -dontwarn com.newrelic.**
 -keepattributes Exceptions, Signature, InnerClasses
+-dontnote com.newrelic.com.google.gson.internal.UnsafeAllocator
+################################################################
 
-#-keep class org.apache.harmony.** { *; }
-#-dontwarn org.apache.harmony.**
--keepattributes Signature
-
+## BEGIN FACEBOOK ##############################################
 -keep class com.facebook.** { *; }
 -keepattributes Signature
+-dontnote bolts.Task
+-dontnote bolts.Task$TaskCompletionSource
+################################################################
 
+## BEGIN GOOGLE ################################################
 -keep class com.google.android.** { *; }
 -keepattributes Signature
+################################################################
 
-############# BEGIN ADJUST #############
+## BEGIN ADJUST ################################################
 -keep class com.adjust.sdk.** { *; }
 -keep class com.google.android.gms.common.** { *; }
 -keep class com.google.android.gms.ads.identifier.** { *; }
-#########################################
+################################################################
 
-############# BEGIN APPTIMIZE #############
--keep class com.apptimize.**
+## BEGIN APPTIMIZE ##########################################################
 -keepclassmembers class * extends com.apptimize.ApptimizeTest { <methods>; }
+-keep class com.apptimize.** { *; }
 -keep class android.support.v4.view.ViewPager
 -keepclassmembers class android.support.v4.view.ViewPager$LayoutParams { *; }
 -keep class android.support.v4.app.Fragment { *; }
@@ -226,9 +228,30 @@
 -keep class com.google.android.gms.analytics.Tracker { *; }
 #-keep class com.google.analytics.tracking.android.Tracker { *; }
 #-keep class com.flurry.android.FlurryAgent { *; }
-############################################
+#############################################################################
 
-############# SUPPORT LIBRARY (v?) #############
+## BEGIN SUPPORT LIBRARY (v?) ###############################################
 -keep class android.support.** { *; }
 -keep interface android.support.** { *; }
-###########################################
+#############################################################################
+
+## BEGIN VOLLEY #############################################################
+-keep class com.android.volley.** { *; }
+-keep interface com.android.volley.** { *; }
+#############################################################################
+
+## BEGIN PAGE INDICATOR #####################################################
+-keep class com.viewpagerindicator.** { *; }
+-keep interface com.viewpagerindicator.** { *; }
+#############################################################################
+
+## BEGIN ROCKET #################################################################
+-keep class pt.rocket.components.** { public protected *; }
+-keep class pt.rocket.utils.** { public protected *; }
+-keep class pt.rocket.framework.tracking.TrackingEvent { public protected *; }
+-keep class pt.rocket.framework.tracking.TrackingPage { public protected *; }
+-keep class pt.rocket.framework.service.IRemoteService { public protected *; }
+-keep class pt.rocket.framework.service.IRemoteServiceCallback { public protected *; }
+-keep class pt.rocket.controllers.fragments.FragmentType { public protected *; }
+-keep class pt.rocket.view.fragments.BaseFragment$KeyboardState
+#################################################################################
