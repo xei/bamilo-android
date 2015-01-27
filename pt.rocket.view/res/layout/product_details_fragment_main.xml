@@ -32,16 +32,7 @@
 
             <!-- VARIATIONS -->
 
-            <View
-                android:id="@+id/variation_bottom_line"
-                style="@style/divider_horizontal"
-                android:visibility="gone" />
-
-            <FrameLayout
-                android:id="@+id/product_detail_variations_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp" />
+            <include layout="@layout/product_details_fragment_variations" />
 
             <!-- BASIC INFO -->
 

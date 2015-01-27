@@ -63,8 +63,6 @@ public class ProductImageGalleryFragment extends BaseFragment {
 
     private boolean isZoomAvailable = false;
 
-    private int mVariationsListPosition = 1;
-
     private int currentPosition = 0;
     
     private ArrayList<String> imagesList;
@@ -82,7 +80,6 @@ public class ProductImageGalleryFragment extends BaseFragment {
         // Validate if is nested or not
         sProductImageGalleryFragment = isNested ? new ProductImageGalleryFragment(isNested) : new ProductImageGalleryFragment();
         // Save arguments
-        sProductImageGalleryFragment.mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, 1);
         sProductImageGalleryFragment.currentPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
         if (sProductImageGalleryFragment.currentPosition <= 0) sProductImageGalleryFragment.currentPosition = 0;
         sProductImageGalleryFragment.isZoomAvailable = bundle.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
@@ -335,7 +332,6 @@ public class ProductImageGalleryFragment extends BaseFragment {
             ArrayList<String> temp = new ArrayList<String>();
             temp.add("");
             mCompleteProduct.setImageList(temp);
-
         }
          
         // Clone image list - TODO Validate if this is necessary
@@ -390,14 +386,11 @@ public class ProductImageGalleryFragment extends BaseFragment {
 
     private void setIndicatorForViewPager(){
         InfiniteCirclePageIndicator view_pager_indicator = (InfiniteCirclePageIndicator)getView().findViewById(R.id.view_pager_indicator);
-        //view_pager_indicator.setFillColor(getView().getResources().getColor(R.color.orange_basic));
-        //view_pager_indicator.setPageColor(getView().getResources().getColor(R.color.grey_middlelight));
         if(isZoomAvailable){
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view_pager_indicator.getLayoutParams();
             p.setMargins(0, 0, 0, (int)getView().getResources().getDimension(R.dimen.dimen_78px));
             view_pager_indicator.requestLayout();
         }
-        //view_pager_indicator.setSnap(true);
         view_pager_indicator.setViewPager(mViewPager);
     }
 
@@ -470,7 +463,6 @@ public class ProductImageGalleryFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
                bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, currentPosition);
-                bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
                 bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
                 bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
                 getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_GALLERY, bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -508,32 +500,27 @@ public class ProductImageGalleryFragment extends BaseFragment {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
+        
         if (bundle.containsKey(ProductDetailsFragment.LOADING_PRODUCT)) {
             showImageLoading();
             return;
         }
 
-        //productImageGalleryFragment.mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
-        mVariationsListPosition = bundle.getInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, 1);
-
-//        currentPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
         isZoomAvailable = bundle.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
 
         mCompleteProduct = (CompleteProduct) FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
-        // displayGallery(mCompleteProduct);
+        
         if (mCompleteProduct == null) {
             Log.e(TAG, "NO COMPLETE PRODUCT - SWITCHING TO HOME");
             restartAllFragments();
-            // getActivity().finish();
             return;
         }
+        
+        Log.i(TAG, "UPDATE GALLERY FOR PRODUCT: " + mCompleteProduct.getName());
 
         createViewPager();
         if (currentPosition <= 0) currentPosition = 0;
         
-//        Line was commented due to bad behavior on infinite view pager that it was causing
-//        updateImage(currentPosition);
     }
 
     /*

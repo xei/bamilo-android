@@ -8,7 +8,7 @@
 
 	<!-- COUNTRIES -->
 	<!-- <string name="countries_url">http://kaymu.com/jtmobapi</string> -->
-	<string name="countries_url">https://cld.pt/dl/download/4fe28e87-7250-4d59-b21b-1ca6ef9c69b5/jtmobapi?download=true</string>
+	<string name="countries_url">https://cld.pt/dl/download/d6d12cb0-569e-4288-aabd-03ca81e5f61b/jtmobapi?download=true</string>
 
 	<!-- GA -->
 	<!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 

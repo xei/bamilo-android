@@ -221,7 +221,7 @@ public enum EventType {
 	 * 
 	 */
 	private EventType() {
-		this(null, 0);
+		this(null, RestContract.NO_CACHE);
 	}
 
 }

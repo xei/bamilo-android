@@ -1036,16 +1036,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         Log.i(TAG, "ON HANDLE ERROR EVENT");
         
-        final EventType eventType = (EventType) bundle
-                .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        final EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         
         if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
             return false;
         }
 
-        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
-                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
         if (errorCode == null) {
             return false;
         }

@@ -135,21 +135,18 @@ public class FormFieldMeta implements IFormField {
 
     @Override
     public String getScenario() {
-        // TODO Auto-generated method stub
         return metaFormField.getScenario();
     }
 
 
     @Override
     public String getLinkText() {
-        // TODO Auto-generated method stub
         return metaFormField.getLinkText();
     }
 
 
     @Override
     public Map<String, String> getDateSetRating() {
-        // TODO Auto-generated method stub
         return metaFormField.getDateSetRating();
     }
 	

@@ -5,8 +5,6 @@ package pt.rocket.view.fragments;
 
 import java.util.EnumSet;
 
-import com.google.android.gms.internal.mc;
-
 import pt.rocket.constants.ConstantsCheckout;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.framework.utils.EventType;

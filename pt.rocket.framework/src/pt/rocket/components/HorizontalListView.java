@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 
 /**
  * Class
@@ -25,14 +26,6 @@ public class HorizontalListView extends RecyclerView {
     private float mLastX;
     
     private float mLastY;
-
-//    private float mDistanceY;
-//
-//    private float mDistanceX;
-//
-//    private float mLastX;
-//
-//    private float mLastY;
     
     /**
      * Constructor
@@ -40,6 +33,7 @@ public class HorizontalListView extends RecyclerView {
      */
     public HorizontalListView(Context context) {
         super(context);
+        init(context);
     }
     
     /**
@@ -49,6 +43,7 @@ public class HorizontalListView extends RecyclerView {
      */
     public HorizontalListView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context);
     }
     
     /**
@@ -59,6 +54,16 @@ public class HorizontalListView extends RecyclerView {
      */
     public HorizontalListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init(context);
+    }
+    
+    /**
+     * 
+     * @param context
+     */
+    private void init(Context context) {
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        setLayoutManager(mLayoutManager);
     }
     
     /*
@@ -68,9 +73,6 @@ public class HorizontalListView extends RecyclerView {
      */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-
-        //boolean bool = ((LinearLayoutManager) getLayoutManager()).canScrollHorizontally();
-        
         // Get layout manager
         int firstC = ((LinearLayoutManager) getLayoutManager()).findFirstCompletelyVisibleItemPosition();
         int lastC = ((LinearLayoutManager) getLayoutManager()).findLastCompletelyVisibleItemPosition();
@@ -93,25 +95,6 @@ public class HorizontalListView extends RecyclerView {
             // Intercept touch event
             return super.onInterceptTouchEvent(ev);
         }
-            
-        
-        
-        // Valiate view group child
-//        if (getChildCount() == 0) {
-//            //Log.w(TAG, "WARNING: IS MISSING A VIEW GROUP CHILD");
-            
-//        }
-//        // Get view group child
-//        ViewGroup group = (ViewGroup) this.getChildAt(0);
-//        // Validate min items to enable scroll
-//        if (group.getWidth() > this.getWidth()) {
-//            // For old versions is necessary disable the intercept of touch event in the parent.
-//            validateTouchEvent(ev);
-//            // Intercept touch event
-//            return super.onInterceptTouchEvent(ev);
-//        }
-//        // No intercept the current touch event
-//        else return false;
     }
 
     /**
@@ -162,5 +145,70 @@ public class HorizontalListView extends RecyclerView {
              */
         }
     }
+    
+    /**
+     * Set the selected item.<br>
+     * The adpter must implement the interface {@link OnViewHolderSelected}. 
+     * @param position
+     * @author sergiopereira
+     * @throws RuntimeException
+     */
+    public void setSelecetedItem(int position) {
+        Adapter<?> adapter = getAdapter();
+        if(adapter instanceof OnViewHolderSelected) {
+            ((OnViewHolderSelected) adapter).setSelectedPosition(position);
+            scrollToPosition(position);
+        } else {
+            throw new RuntimeException("The adpter must implement the interface 'OnViewHolderSelected' to set a selected position!");
+        }
+    }
 
+    /**
+     * Set the on item selected listener.<br>
+     * The adpter must implement the interface {@link OnViewHolderSelected}.
+     * @param listener
+     */
+    public void setOnItemSelectedListener(OnViewSelectedListener listener) {
+        Adapter<?> adapter = getAdapter();
+        if(adapter instanceof OnViewHolderSelected) {
+            ((OnViewHolderSelected) adapter).setOnViewHolderSelected(listener);
+        } else {
+            throw new RuntimeException("The adpter must implement the interface OnViewHolderSelected to the on selected item listener!");
+        }
+    }
+    
+    /**
+     * Interface for Adapter
+     * @author sergiopereira
+     *
+     */
+    public static interface OnViewHolderSelected {
+        /**
+         * Set the selected position.<br> 
+         * @param position
+         * @author sergiopereira
+         */
+        public void setSelectedPosition(int position);
+        /**
+         * Set the listener for on item selected.<br>
+         * @param listener
+         * @author sergiopereira
+         */
+        public void setOnViewHolderSelected(OnViewSelectedListener listener);
+    }
+    
+    /**
+     * Interface for Fragment
+     * @author sergiopereira
+     *
+     */
+    public static interface OnViewSelectedListener {
+        /**
+         * Receives the selected view and the respective position
+         * @param view
+         * @param position
+         */
+        public void onViewSelected(View view, int position, String string);
+    }
+    
 }

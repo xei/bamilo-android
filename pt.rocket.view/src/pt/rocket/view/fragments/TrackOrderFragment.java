@@ -135,7 +135,7 @@ public class TrackOrderFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         if(parentFragment != null)
-            parentFragment.mPositionToStart = 0;
+            MyOrdersFragment.mPositionToStart = 0;
     }
 
     /*

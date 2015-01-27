@@ -38,7 +38,6 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -1128,26 +1127,26 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     // ----- Listeners
     // ---------------------------------------------------------------
 
-    private OnPageChangeListener onPageChangeListener = new OnPageChangeListener() {
-
-        @Override
-        public void onPageSelected(int position) {
-            Log.d("FILTER","onPageSelected position:"+position);
-        }
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            // ...
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-            if (state == ViewPager.SCROLL_STATE_IDLE) {
-                RocketImageLoader.getInstance().startProcessingQueue();
-            } else {
-                RocketImageLoader.getInstance().stopProcessingQueue();
-            }
-
-        }
-    };
+//    private OnPageChangeListener onPageChangeListener = new OnPageChangeListener() {
+//
+//        @Override
+//        public void onPageSelected(int position) {
+//            Log.d("FILTER","onPageSelected position:"+position);
+//        }
+//
+//        @Override
+//        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//            // ...
+//        }
+//
+//        @Override
+//        public void onPageScrollStateChanged(int state) {
+//            if (state == ViewPager.SCROLL_STATE_IDLE) {
+//                RocketImageLoader.getInstance().startProcessingQueue();
+//            } else {
+//                RocketImageLoader.getInstance().stopProcessingQueue();
+//            }
+//
+//        }
+//    };
 }

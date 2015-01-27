@@ -156,16 +156,16 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
               ratingsCount = ratingsSummaryObject.optInt(RestConstants.JSON_RATINGS_TOTAL_TAG, 0);
               reviewsCount = ratingsSummaryObject.optInt(RestConstants.JSON_REVIEWS_TOTAL_TAG, 0);
           }
-			
-//			JSONObject ratingsTotalObject = dataObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
-//			if (ratingsTotalObject != null) {
-//				ratingsAverage = ratingsTotalObject.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG, .0);
-//				ratingsCount = ratingsTotalObject.optInt(RestConstants.JSON_RATINGS_TOTAL_SUM_TAG, 0);
-//			}
-//			
-			
-			
-			
+            
+//          JSONObject ratingsTotalObject = dataObject.optJSONObject(RestConstants.JSON_RATINGS_TOTAL_TAG);
+//          if (ratingsTotalObject != null) {
+//              ratingsAverage = ratingsTotalObject.optDouble(RestConstants.JSON_RATINGS_TOTAL_AVG_TAG, .0);
+//              ratingsCount = ratingsTotalObject.optInt(RestConstants.JSON_RATINGS_TOTAL_SUM_TAG, 0);
+//          }
+//          
+            
+            
+            
 			
 			/*
 			if (maxSavingPercentage.equals(0D) && !price.equals(specialPrice)) {
@@ -686,14 +686,10 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 
     
     
-    
-    
     /*
      * ############ PARCELABLE ############
      */
 
-    
-    
     /*
 	 * (non-Javadoc)
 	 * 

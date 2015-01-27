@@ -159,7 +159,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
         Log.i(TAG, "ON VIEW CREATED");               
         
         if(parentFragment != null)
-            parentFragment.mPositionToStart = 1;
+            MyOrdersFragment.mPositionToStart = 1;
         
         ordersListView = (ListView) view.findViewById(R.id.orders_list);
         ordersListView.setOnScrollListener(onScrollListener);
