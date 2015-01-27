@@ -755,7 +755,38 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 return true;
             }
         } else if(eventType == EventType.FACEBOOK_LOGIN_EVENT){
+            Log.i(TAG, "SHOW ERROR MESSAGE FOR FACEBOOK_LOGIN_EVENT");
+            // Clear credentials case auto login failed
+            clearCredentials();
+            // Clean the Facebook Session
+            FacebookHelper.cleanFacebookSession();
+            // Show alert
+            
             TrackerDelegator.trackLoginFailed(wasAutologin, GTMValues.LOGIN, GTMValues.FACEBOOK);
+            
+            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            List<String> errorMessages = null;
+            if (errors != null) {
+                Log.i(TAG, "ERRROS: " + errors.toString());    
+                errorMessages = (List<String>) errors.get(RestConstants.JSON_ERROR_TAG);
+            }
+            
+            if (errors != null && errorMessages != null && errorMessages.size() > 0) {
+                showFragmentContentContainer();
+                dialog = DialogGenericFragment.newInstance(true, true, false,
+                        getString(R.string.error_login_title),
+                        errorMessages.get(0),
+                        getString(R.string.ok_label), "", new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                int id = v.getId();
+                                if (id == R.id.button1) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+            }
         }
         return false;
     }

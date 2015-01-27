@@ -959,6 +959,18 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             }
             break;
         case FACEBOOK_LOGIN_EVENT:
+            // Clear credentials case auto login failed
+            clearCredentials();
+            // Clean the Facebook Session
+            FacebookHelper.cleanFacebookSession();
+            // Track
+            TrackerDelegator.trackLoginFailed(onAutoLogin, GTMValues.CHECKOUT, GTMValues.FACEBOOK);
+            // Show alert
+            HashMap<String, List<String>> fErrors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            showErrorDialog(fErrors, R.string.error_login_title);
+            // Show container
+            showFragmentContentContainer();
+            break;
         case LOGIN_EVENT:
             // Clear credentials case auto login failed
             clearCredentials();
