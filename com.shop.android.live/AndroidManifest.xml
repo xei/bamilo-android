@@ -80,7 +80,7 @@
     <!-- ######################################## -->
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="21" />
 
     <application
         android:name="pt.rocket.app.JumiaApplication"
