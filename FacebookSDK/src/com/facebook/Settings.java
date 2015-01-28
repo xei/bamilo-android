@@ -430,7 +430,7 @@ public final class Settings {
                     publishResponse.getGraphObject().getInnerJSONObject() != null) {
                     editor.putString(jsonKey, publishResponse.getGraphObject().getInnerJSONObject().toString());
                 }
-                editor.commit();
+                editor.apply();
 
                 return publishResponse;
             }
@@ -446,18 +446,22 @@ public final class Settings {
      * @return returns null if the facebook app is not present on the phone.
      */
     public static String getAttributionId(ContentResolver contentResolver) {
+        Cursor c = null;
         try {
             String [] projection = {ATTRIBUTION_ID_COLUMN_NAME};
-            Cursor c = contentResolver.query(ATTRIBUTION_ID_CONTENT_URI, projection, null, null, null);
+            c = contentResolver.query(ATTRIBUTION_ID_CONTENT_URI, projection, null, null, null);
             if (c == null || !c.moveToFirst()) {
                 return null;
             }
             String attributionId = c.getString(c.getColumnIndex(ATTRIBUTION_ID_COLUMN_NAME));
-            c.close();
             return attributionId;
         } catch (Exception e) {
             Log.d(TAG, "Caught unexpected exception in getAttributionId(): " + e.toString());
             return null;
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
     }
 
@@ -510,10 +514,10 @@ public final class Settings {
      * @param context   Used to persist this value across app runs.
      */
     public static void setLimitEventAndDataUsage(Context context, boolean limitEventUsage) {
-        SharedPreferences preferences = context.getSharedPreferences(APP_EVENT_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("limitEventUsage", limitEventUsage);
-        editor.commit();
+        context.getSharedPreferences(APP_EVENT_PREFERENCES, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean("limitEventUsage", limitEventUsage)
+            .apply();
     }
 
     /**

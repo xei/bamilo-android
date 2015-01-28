@@ -167,7 +167,7 @@ public class LikeActionController {
      * Called by the LikeView when an object-id is set on it.
      * @param context context
      * @param objectId Object Id
-     * @return A LikeActionController for the specified object id
+     * @param callback Callback to be invoked when the LikeActionController has been created.
      */
     public static void getControllerForObjectId(
             Context context,
@@ -562,7 +562,7 @@ public class LikeActionController {
         appEventsLogger.logSdkEvent(AnalyticsEvents.EVENT_LIKE_VIEW_DID_TAP, null, analyticsParameters);
 
         boolean shouldLikeObject = !this.isObjectLiked;
-        if (canUseOGPublish(shouldLikeObject)) {
+        if (canUseOGPublish()) {
             // Update UI state optimistically
             updateState(shouldLikeObject,
                     this.likeCountStringWithLike,
@@ -583,15 +583,39 @@ public class LikeActionController {
     }
 
     private void performLikeOrUnlike(Activity activity, boolean shouldLikeObject, Bundle analyticsParameters) {
-        if (canUseOGPublish(shouldLikeObject)) {
+        if (canUseOGPublish()) {
             if (shouldLikeObject) {
                 publishLikeAsync(activity, analyticsParameters);
             } else {
-                publishUnlikeAsync(activity, analyticsParameters);
+                if (!Utility.isNullOrEmpty(this.unlikeToken)) {
+                    publishUnlikeAsync(activity, analyticsParameters);
+                } else {
+                    // If we don't have an unlikeToken, we must fall back to the dialog.
+                    fallbackToDialog(activity, analyticsParameters, true);
+                }
             }
         } else {
             presentLikeDialog(activity, analyticsParameters);
         }
+    }
+
+    /**
+     * Only to be called after an OG-publish was attempted and something went wrong. The Button state is reverted
+     * and the dialog is presented.
+     */
+    private void fallbackToDialog(
+            Activity activity,
+            Bundle analyticsParameters,
+            boolean oldLikeState) {
+        updateState(
+                oldLikeState,
+                this.likeCountStringWithLike,
+                this.likeCountStringWithoutLike,
+                this.socialSentenceWithLike,
+                this.socialSentenceWithoutLike,
+                this.unlikeToken);
+
+        presentLikeDialog(activity, analyticsParameters);
     }
 
     private void updateState(boolean isObjectLiked,
@@ -683,15 +707,31 @@ public class LikeActionController {
         return new FacebookDialog.Callback() {
             @Override
             public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
-                if (!data.containsKey(LIKE_DIALOG_RESPONSE_OBJECT_IS_LIKED_KEY)) {
-                    // This is an empty result that we can't handle. Don't lose like state.
+                if (data == null || !data.containsKey(LIKE_DIALOG_RESPONSE_OBJECT_IS_LIKED_KEY)) {
+                    // This is an empty result that we can't handle.
                     return;
                 }
 
                 boolean isObjectLiked = data.getBoolean(LIKE_DIALOG_RESPONSE_OBJECT_IS_LIKED_KEY);
-                String likeCountString = data.getString(LIKE_DIALOG_RESPONSE_LIKE_COUNT_STRING_KEY);
-                String socialSentence = data.getString(LIKE_DIALOG_RESPONSE_SOCIAL_SENTENCE_KEY);
-                String unlikeToken = data.getString(LIKE_DIALOG_RESPONSE_UNLIKE_TOKEN_KEY);
+
+                // Default to known/cached state, if properties are missing.
+                String likeCountStringWithLike = LikeActionController.this.likeCountStringWithLike;
+                String likeCountStringWithoutLike = LikeActionController.this.likeCountStringWithoutLike;
+                if (data.containsKey(LIKE_DIALOG_RESPONSE_LIKE_COUNT_STRING_KEY)) {
+                    likeCountStringWithLike = data.getString(LIKE_DIALOG_RESPONSE_LIKE_COUNT_STRING_KEY);
+                    likeCountStringWithoutLike = likeCountStringWithLike;
+                }
+
+                String socialSentenceWithLike = LikeActionController.this.socialSentenceWithLike;
+                String socialSentenceWithoutWithoutLike = LikeActionController.this.socialSentenceWithoutLike;
+                if (data.containsKey(LIKE_DIALOG_RESPONSE_SOCIAL_SENTENCE_KEY)) {
+                    socialSentenceWithLike = data.getString(LIKE_DIALOG_RESPONSE_SOCIAL_SENTENCE_KEY);
+                    socialSentenceWithoutWithoutLike = socialSentenceWithLike;
+                }
+
+                String unlikeToken = data.containsKey(LIKE_DIALOG_RESPONSE_OBJECT_IS_LIKED_KEY)
+                        ? data.getString(LIKE_DIALOG_RESPONSE_UNLIKE_TOKEN_KEY)
+                        : LikeActionController.this.unlikeToken;
 
                 Bundle logParams = (analyticsParameters == null) ? new Bundle() : analyticsParameters;
                 logParams.putString(AnalyticsEvents.PARAMETER_CALL_ID, pendingCall.getCallId().toString());
@@ -699,10 +739,10 @@ public class LikeActionController {
 
                 updateState(
                         isObjectLiked,
-                        likeCountString,
-                        likeCountString,
-                        socialSentence,
-                        socialSentence,
+                        likeCountStringWithLike,
+                        likeCountStringWithoutLike,
+                        socialSentenceWithLike,
+                        socialSentenceWithoutWithoutLike,
                         unlikeToken);
             }
 
@@ -752,15 +792,14 @@ public class LikeActionController {
                 .apply();
     }
 
-    private boolean canUseOGPublish(boolean willPerformLike) {
+    private boolean canUseOGPublish() {
         // Verify that the object isn't a Page, that we have permissions and that, if we're unliking, then
         // we have an unlike token.
         return !objectIsPage &&
                 verifiedObjectId != null &&
                 session != null &&
                 session.getPermissions() != null &&
-                session.getPermissions().contains("publish_actions") &&
-                (willPerformLike || !Utility.isNullOrEmpty(unlikeToken));
+                session.getPermissions().contains("publish_actions");
     }
 
     private void publishLikeAsync(final Activity activity, final Bundle analyticsParameters) {
@@ -792,15 +831,7 @@ public class LikeActionController {
                             // revert back to the Unliked state and show the dialog. We need to do this because the
                             // dialog-flow expects the button to only be updated once the dialog returns
 
-                            updateState(
-                                    false,
-                                    likeCountStringWithLike,
-                                    likeCountStringWithoutLike,
-                                    socialSentenceWithLike,
-                                    socialSentenceWithoutLike,
-                                    unlikeToken);
-
-                            presentLikeDialog(activity, analyticsParameters);
+                            fallbackToDialog(activity, analyticsParameters, false);
                         } else {
                             unlikeToken = Utility.coerceValueIfNullOrEmpty(likeRequest.unlikeToken, null);
                             isObjectLikedOnServer = true;
@@ -834,15 +865,7 @@ public class LikeActionController {
                     // revert back to the Liked state and show the dialog. We need to do this because the
                     // dialog-flow expects the button to only be updated once the dialog returns
 
-                    updateState(
-                            true,
-                            likeCountStringWithLike,
-                            likeCountStringWithoutLike,
-                            socialSentenceWithLike,
-                            socialSentenceWithoutLike,
-                            unlikeToken);
-
-                    presentLikeDialog(activity, analyticsParameters);
+                    fallbackToDialog(activity, analyticsParameters, true);
                 } else {
                     unlikeToken = null;
                     isObjectLikedOnServer = false;
@@ -863,6 +886,12 @@ public class LikeActionController {
             // should we attempt getting like state from the service. Otherwise, use the access token of the session
             // to make sure we get the correct like state.
             refreshStatusViaService();
+            return;
+        } else if (!session.isOpened()) {
+            // The session might be OPENING. In this case, we don't have an access token yet and
+            // cannot make server requests. We hit this code path during login when the
+            // Session.ACTION_ACTIVE_SESSION_UNSET broadcast fires, which LikeActionController
+            // responds to by resetting.
             return;
         }
 
@@ -918,17 +947,37 @@ public class LikeActionController {
         LikeStatusClient.CompletedListener callback = new LikeStatusClient.CompletedListener() {
             @Override
             public void completed(Bundle result) {
+                // Don't lose old state if the service response is incomplete.
                 if (result == null || !result.containsKey(NativeProtocol.EXTRA_OBJECT_IS_LIKED)) {
-                    // Don't lose old state if the service response is incomplete.
                     return;
                 }
 
                 boolean objectIsLiked = result.getBoolean(NativeProtocol.EXTRA_OBJECT_IS_LIKED);
-                String likeCountWithLike = result.getString(NativeProtocol.EXTRA_LIKE_COUNT_STRING_WITH_LIKE);
-                String likeCountWithoutLike = result.getString(NativeProtocol.EXTRA_LIKE_COUNT_STRING_WITHOUT_LIKE);
-                String socialSentenceWithLike = result.getString(NativeProtocol.EXTRA_SOCIAL_SENTENCE_WITH_LIKE);
-                String socialSentenceWithoutLike = result.getString(NativeProtocol.EXTRA_SOCIAL_SENTENCE_WITHOUT_LIKE);
-                String unlikeToken = result.getString(NativeProtocol.EXTRA_UNLIKE_TOKEN);
+
+                String likeCountWithLike =
+                        result.containsKey(NativeProtocol.EXTRA_LIKE_COUNT_STRING_WITH_LIKE)
+                                ? result.getString(NativeProtocol.EXTRA_LIKE_COUNT_STRING_WITH_LIKE)
+                                : LikeActionController.this.likeCountStringWithLike;
+
+                String likeCountWithoutLike =
+                        result.containsKey(NativeProtocol.EXTRA_LIKE_COUNT_STRING_WITHOUT_LIKE)
+                                ? result.getString(NativeProtocol.EXTRA_LIKE_COUNT_STRING_WITHOUT_LIKE)
+                                : LikeActionController.this.likeCountStringWithoutLike;
+
+                String socialSentenceWithLike =
+                        result.containsKey(NativeProtocol.EXTRA_SOCIAL_SENTENCE_WITH_LIKE)
+                                ? result.getString(NativeProtocol.EXTRA_SOCIAL_SENTENCE_WITH_LIKE)
+                                : LikeActionController.this.socialSentenceWithLike;
+
+                String socialSentenceWithoutLike =
+                        result.containsKey(NativeProtocol.EXTRA_SOCIAL_SENTENCE_WITHOUT_LIKE)
+                                ? result.getString(NativeProtocol.EXTRA_SOCIAL_SENTENCE_WITHOUT_LIKE)
+                                : LikeActionController.this.socialSentenceWithoutLike;
+
+                String unlikeToken =
+                        result.containsKey(NativeProtocol.EXTRA_UNLIKE_TOKEN)
+                                ? result.getString(NativeProtocol.EXTRA_UNLIKE_TOKEN)
+                                : LikeActionController.this.unlikeToken;
 
                 updateState(
                         objectIsLiked,
@@ -1162,7 +1211,9 @@ public class LikeActionController {
     }
 
     private class GetOGObjectLikesRequestWrapper extends AbstractRequestWrapper {
-        boolean objectIsLiked;
+        // Initialize the like status to what we currently have. This way, empty/error responses don't end
+        // up clearing out the state.
+        boolean objectIsLiked = LikeActionController.this.isObjectLiked;
         String unlikeToken;
 
         GetOGObjectLikesRequestWrapper(String objectId) {
@@ -1204,10 +1255,12 @@ public class LikeActionController {
     }
 
     private class GetEngagementRequestWrapper extends AbstractRequestWrapper {
-        String likeCountStringWithLike;
-        String likeCountStringWithoutLike;
-        String socialSentenceStringWithLike;
-        String socialSentenceStringWithoutLike;
+        // Initialize the like status to what we currently have. This way, empty/error responses don't end
+        // up clearing out the state.
+        String likeCountStringWithLike = LikeActionController.this.likeCountStringWithLike;
+        String likeCountStringWithoutLike = LikeActionController.this.likeCountStringWithoutLike;
+        String socialSentenceStringWithLike = LikeActionController.this.socialSentenceWithLike;
+        String socialSentenceStringWithoutLike = LikeActionController.this.socialSentenceWithoutLike;
 
         GetEngagementRequestWrapper(String objectId) {
             super(objectId);
@@ -1228,10 +1281,18 @@ public class LikeActionController {
         protected void processSuccess(Response response) {
             JSONObject engagementResults = Utility.tryGetJSONObjectFromResponse(response.getGraphObject(), "engagement");
             if (engagementResults != null) {
-                likeCountStringWithLike = engagementResults.optString("count_string_with_like");
-                likeCountStringWithoutLike = engagementResults.optString("count_string_without_like");
-                socialSentenceStringWithLike = engagementResults.optString("social_sentence_with_like");
-                socialSentenceStringWithoutLike = engagementResults.optString("social_sentence_without_like");
+                // Missing properties in the response should default to cached like status
+                likeCountStringWithLike =
+                        engagementResults.optString("count_string_with_like", likeCountStringWithLike);
+
+                likeCountStringWithoutLike =
+                        engagementResults.optString("count_string_without_like", likeCountStringWithoutLike);
+
+                socialSentenceStringWithLike =
+                        engagementResults.optString("social_sentence_with_like", socialSentenceStringWithLike);
+
+                socialSentenceStringWithoutLike =
+                        engagementResults.optString("social_sentence_without_like", socialSentenceStringWithoutLike);
             }
         }
 
