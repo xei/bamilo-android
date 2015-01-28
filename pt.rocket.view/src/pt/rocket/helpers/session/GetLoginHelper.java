@@ -93,4 +93,8 @@ public class GetLoginHelper extends BaseHelper {
         return bundle;
     }
     
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
+        return parseResponseErrorBundle(bundle);
+    }
 }

@@ -120,5 +120,10 @@ public class GetFormAddAddressHelper extends BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
+    
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
+        return parseResponseErrorBundle(bundle);
+    }
 }
 

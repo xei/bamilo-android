@@ -68,4 +68,9 @@ public class GetLogoutHelper extends BaseHelper {
 //        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
+    
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
+        return parseResponseErrorBundle(bundle);
+    }
 }

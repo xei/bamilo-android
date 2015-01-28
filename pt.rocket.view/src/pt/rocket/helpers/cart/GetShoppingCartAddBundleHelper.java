@@ -115,4 +115,9 @@ public class GetShoppingCartAddBundleHelper extends BaseHelper {
         // Add specific data
         return bundle;
     }
+    
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
+        return parseResponseErrorBundle(bundle);
+    }
 }

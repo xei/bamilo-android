@@ -159,4 +159,9 @@ public class GetShoppingCartAddItemHelper extends BaseHelper {
         bundle.putString(PRODUCT_SKU_TAG, mCurrentSku);
         return bundle;
     }
+    
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
+        return parseResponseErrorBundle(bundle);
+    }
 }

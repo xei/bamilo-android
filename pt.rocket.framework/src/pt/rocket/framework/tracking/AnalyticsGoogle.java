@@ -114,6 +114,7 @@ public class AnalyticsGoogle {
 		validateDebugMode(context.getResources().getBoolean(R.bool.ga_debug_mode));
 		// Set key
 		updateTracker();
+//		mTracker.enableAdvertisingIdCollection(true);
 		Log.i(TAG, "TRACKING SUCCESSFULLY STEUP");
 	}
 	

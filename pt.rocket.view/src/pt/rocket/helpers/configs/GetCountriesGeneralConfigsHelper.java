@@ -295,4 +295,9 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
             Log.w(TAG, "WARNING: ON ADD DEV SERVERS" ,e);
         }
     }
+    
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
+        return parseResponseErrorBundle(bundle);
+    }
 }

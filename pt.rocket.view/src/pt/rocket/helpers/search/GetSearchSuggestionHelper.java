@@ -207,4 +207,9 @@ public class GetSearchSuggestionHelper extends BaseHelper {
 //        return bundle;
         return parseErrorBundle(bundle);
     }
+    
+    @Override
+    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
+        return parseResponseErrorBundle(bundle);
+    }
 }

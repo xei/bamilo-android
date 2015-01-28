@@ -61,6 +61,8 @@ public enum EventType {
 	
 	ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/order/add?setDevice=mobileApi", RestContract.NO_CACHE),
 	
+	ADD_ITEMS_TO_SHOPPING_CART_EVENT("https:/order/addmultiple?setDevice=mobileApi", RestContract.NO_CACHE),
+	
 	REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/order/remove?setDevice=mobileApi", RestContract.NO_CACHE),
 	
 	GET_SHOPPING_CART_ITEMS_EVENT("https:/order/cartdata?setDevice=mobileApi", RestContract.NO_CACHE),

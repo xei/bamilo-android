@@ -2,7 +2,7 @@ package pt.rocket.helpers;
 
 import java.util.HashMap;
 import java.util.List;
-
+import pt.rocket.framework.objects.Success;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,8 +19,8 @@ import android.os.Bundle;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Base helper for the test app. The helper is responsible for generating the
- * bundle for the api call and parse the http response
+ * Base helper for the test app. The helper is responsible for generating the bundle for the api
+ * call and parse the http response
  * 
  * @author Guilherme Silva
  * 
@@ -36,8 +36,8 @@ public abstract class BaseHelper {
     public abstract Bundle generateRequestBundle(Bundle bundle);
 
     /**
-     * Checks the response status of the response that came in a bundle in order
-     * to evaluate if its a valid response or not
+     * Checks the response status of the response that came in a bundle in order to evaluate if its
+     * a valid response or not
      * 
      * @param bundle
      * @return
@@ -61,51 +61,32 @@ public abstract class BaseHelper {
 
             JSONObject metaData;
 
-                if (jsonObject.has(JSONConstants.JSON_METADATA_TAG)) {
+            if (jsonObject.has(JSONConstants.JSON_METADATA_TAG)) {
 
-//                    /**
-//                     * TODO: Validate if is necessary this step The methods
-//                     * GetRegions and GetCities receive a the metadata field as
-//                     * json array
-//                     */
-//                    try {
-                        metaData = jsonObject.getJSONObject(JSONConstants.JSON_METADATA_TAG);
-//                    } catch (JSONException e) {
-//                        Log.w(TAG, "METADATA IS AN ARRAY: " + e.getMessage());
-//                        metaData = jsonObject;
-//                    }
+                // /**
+                // * TODO: Validate if is necessary this step The methods
+                // * GetRegions and GetCities receive a the metadata field as
+                // * json array
+                // */
+                metaData = jsonObject.getJSONObject(JSONConstants.JSON_METADATA_TAG);
+                
 
-                } else {
-                    metaData = jsonObject;
-                }
+            } else {
+                metaData = jsonObject;
+            }
 
-            
             // removing unnecessary information from bundle
             bundle.remove(Constants.BUNDLE_RESPONSE_KEY);
+            JSONObject messagesObject = jsonObject
+                    .optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
             if (success) {
-                JSONObject messagesObject = jsonObject.optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
-                if (messagesObject != null) {
-                    JSONArray messages = messagesObject.optJSONArray(RestConstants.JSON_SUCCESS_TAG);
-                    if (messages != null && messages.length() > 0) {
-                        bundle.putString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, messages.getString(0));
-                    }
-                }
+                handleSuccess(messagesObject, bundle);
                 return parseResponseBundle(bundle, metaData);
-            } else if (eventType == EventType.GET_PRODUCTS_EVENT) {
-                JSONObject messagesObject = jsonObject.optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
-                HashMap<String, List<String>> errors = Errors.createErrorMessageMap(messagesObject);
-                bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, errors);
-                bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
-                bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-                return parseResponseErrorBundle(bundle, metaData);
             } else {
-                JSONObject messagesObject = jsonObject.optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
-                HashMap<String, List<String>> errors = Errors.createErrorMessageMap(messagesObject);
-                bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, errors);
-                bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
-                bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-                return parseResponseErrorBundle(bundle);
+                handleError(messagesObject, bundle);
+                return parseResponseErrorBundle(bundle, metaData);
             }
+            
         } catch (JSONException e) {
             e.printStackTrace();
             bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
@@ -117,10 +98,26 @@ public abstract class BaseHelper {
         }
     }
 
+    protected void handleSuccess(JSONObject messagesObject, Bundle bundle) throws JSONException {
+        if (messagesObject != null) {
+            JSONArray sucessArray = messagesObject.optJSONArray(RestConstants.JSON_SUCCESS_TAG);
+            if (sucessArray != null && sucessArray.length() > 0) {
+                bundle.putString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY,
+                        sucessArray.getString(0));
+            }
+        }
+    }
+
+    protected void handleError(JSONObject messagesObject, Bundle bundle) throws JSONException {
+        HashMap<String, List<String>> errors = Errors.createErrorMessageMap(messagesObject);
+        bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, errors);
+        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
+        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+    }
+
     /**
-     * In case there as a valid json response, but that contains an error
-     * indication, be it due to wrong parameters or something else this is the
-     * method used to parse that error
+     * In case there as a valid json response, but that contains an error indication, be it due to
+     * wrong parameters or something else this is the method used to parse that error
      * 
      * @return
      */
@@ -129,9 +126,8 @@ public abstract class BaseHelper {
     }
 
     /**
-     * In case there as a valid json response, but that contains an error
-     * indication, be it due to wrong parameters or something else this is the
-     * method used to parse that error
+     * In case there as a valid json response, but that contains an error indication, be it due to
+     * wrong parameters or something else this is the method used to parse that error
      * 
      * @return
      */
@@ -148,8 +144,8 @@ public abstract class BaseHelper {
     public abstract Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject);
 
     /**
-     * Parses the bundle from the error response - This parses errors of generic
-     * factors: TIMEOUT, PROTOCOL ERROR, SOCKET ERROR among others
+     * Parses the bundle from the error response - This parses errors of generic factors: TIMEOUT,
+     * PROTOCOL ERROR, SOCKET ERROR among others
      * 
      * @param bundle
      * @return
@@ -176,4 +172,7 @@ public abstract class BaseHelper {
         return uriBuilder.build().toString();
     }
 
+    protected boolean getAllResponseObject() {
+        return false;
+    }
 }
