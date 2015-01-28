@@ -26,7 +26,7 @@
 #-dontwarn android.test.**
 #-dontwarn com.sun.mail.imap.protocol.**
 
-#-dontnote android.support.**
+-dontnote android.support.**
 
 #-dontwarn android.webkit.WebView
 #-dontwarn android.webkit.Network
@@ -99,7 +99,7 @@
 -keep class com.ad4screen.sdk.IA4SService$Stub { public *; }
 -keep class com.ad4screen.sdk.plugins.** { *; }
 -dontwarn com.ad4screen.sdk.plugins.**
-#-dontnote com.ad4screen.sdk.**
+-dontnote com.ad4screen.sdk.**
 ############################################################################################
 
 ## BEGIN NEW RELIC #########################################################################
