@@ -19,24 +19,29 @@
 #   public *;
 #}
 
--dontwarn sun.reflect.**
--dontwarn android.test.**
--dontwarn com.sun.mail.imap.protocol.**
+#-dontwarn pt.rocket.jumia.dev.R*
+#-dontwarn com.ad4screen.R*
+
+#-dontwarn sun.reflect.**
+#-dontwarn android.test.**
+#-dontwarn com.sun.mail.imap.protocol.**
 
 -dontnote android.support.**
+-dontnote com.ad4screen.sdk.**
 -dontwarn com.google.android.**
 
--dontwarn android.webkit.WebView
--dontwarn android.webkit.Network
--dontwarn com.shouldit.proxy.lib.ProxyUtils
--dontwarn sun.misc.Unsafe
--dontwarn android.net.http.SslError
--dontwarn android.webkit.WebViewClient
+#-dontwarn android.webkit.WebView
+#-dontwarn android.webkit.Network
+#-dontwarn com.shouldit.proxy.lib.ProxyUtils
 
--dontnote com.google.vending.licensing.ILicensingService
--dontnote com.android.vending.licensing.ILicensingService
+#-dontwarn sun.misc.Unsafe
+#-dontwarn android.net.http.SslError
+#-dontwarn android.webkit.WebViewClient
 
--dontwarn java.awt.**,javax.security.**,java.beans.**
+#-dontnote com.google.vending.licensing.ILicensingService
+#-dontnote com.android.vending.licensing.ILicensingService
+
+#-dontwarn java.awt.**,javax.security.**,java.beans.**
 
 #-keep public class * extends android.support.v4.app.Fragment
 #-keep class android.support.v4.app.Fragment
@@ -96,7 +101,6 @@
 -keep class com.ad4screen.sdk.IA4SService$Stub { public *; }
 -keep class com.ad4screen.sdk.plugins.** { *; }
 -dontwarn com.ad4screen.sdk.plugins.**
--dontnote com.ad4screen.sdk.**
 ############################################################################################
 
 ## BEGIN NEW RELIC #########################################################################
