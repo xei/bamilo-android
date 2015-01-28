@@ -255,9 +255,6 @@
     <string name="fallback_doorstep">À VOTRE PORTE</string>
     <string name="shipping">Livraison</string>
     <string name="got_it">J\'ai Compris</string>
-    <!-- string name="back_level">retour au niveau précédent</string -->
-    <!-- Facebook App Id DO NOT TRANSLATE -->
-    <string name="facebook_app_id">@string/facebook_id_default</string>
     <string name="exit_press_back_again">Appuyez de nouveau sur retour si vous souhaitez quitter l\'app</string>
     <string name="recently_viewed">Derniers Produits Vus</string>
 

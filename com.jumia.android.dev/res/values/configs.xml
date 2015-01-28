@@ -45,4 +45,8 @@
 	<!-- GTM -->
     <string name="gtm_key">GTM-KWJK97</string>
     <item name="gtm_debug" type="bool">false</item>
+    
+	<!-- FACEBOOK -->
+    <string name="facebook_app_id">215389355283677</string>
+    
 </resources>

@@ -170,8 +170,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         setRetainInstance(true);
-        // String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);
-        uiHelper = new UiLifecycleHelper(getBaseActivity(), callback/*-, appId*/);
+        uiHelper = new UiLifecycleHelper(getBaseActivity(), callback);
         uiHelper.onCreate(savedInstanceState);
     }
 
@@ -217,9 +216,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         super.onResume();
         Log.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGNUP, getLoadTime(), false);
-
-        /*-String appId = getBaseActivity().getResources().getString(R.string.facebook_app_id);
-        uiHelper.setJumiaAppId(appId);*/
+        
         uiHelper.onResume();
 
         /**

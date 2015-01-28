@@ -257,10 +257,6 @@
     <string name="got_it">Got it</string>
     <!-- string name="back_level">back level</string -->
 
-
-    <!-- NIGERIA IS BEING USED AS DEFAULT FACEBOOK APP ID -->
-    <!-- Facebook App Id DO NOT TRANSLATE -->
-    <string name="facebook_app_id">@string/facebook_id_default</string>
     <string name="exit_press_back_again">Please press back again if you wish to leave the app</string>
     <string name="recently_viewed">Recently Viewed</string>
 
