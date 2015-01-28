@@ -167,6 +167,7 @@
 #############################################################################
 
 ## BEGIN ROCKET #################################################################
+-keep class pt.rocket.framework.utils.EventType
 -keep class pt.rocket.components.** { public protected *; }
 -keep class pt.rocket.utils.** { public protected *; }
 -keep class pt.rocket.framework.tracking.TrackingEvent { public protected *; }
