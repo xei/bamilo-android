@@ -97,7 +97,7 @@
 
 #-dontwarn java.awt.**,javax.security.**,java.beans.**
 
-#-keep public class * extends android.support.v4.app.Fragment
+-keep public class * extends android.support.v4.app.Fragment
 #-keep class android.support.v4.app.Fragment
 #-keep class android.support.v4.app.FragmentManager
 #-keep class android.support.v4.content.Loader
