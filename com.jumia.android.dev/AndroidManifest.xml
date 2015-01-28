@@ -27,11 +27,6 @@
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         android:required="false" />
-	<!--     
-	<uses-permission
-        android:name="android.permission.ACCESS_FINE_LOCATION"
-        android:required="false" /> 
-     -->
     
 	<!-- ##################################### -->
     <!-- ############# Features ############## -->
@@ -53,28 +48,14 @@
 	<uses-feature
         android:name="android.hardware.wifi"
         android:required="false" />
-	<!-- 	
-	<uses-feature
-        android:name="android.hardware.location.gps"
-        android:required="false" />
-	-->
 
-    <!-- ############# AD4Push: MESSAGE (Receive) and SEND (PushNotificationReceiver) ############# -->
+    <!-- ############# AD4Push: MESSAGE (Receive) ############# -->
     <permission
         android:name="com.jumia.android.dev.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.jumia.android.dev.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
-    <!--
-         <permission
-        android:name="com.jumia.android.dev.permission.A4S_SEND"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="com.jumia.android.dev.permission.A4S_SEND" />
-    -->
-
 
     <!-- ######################################## -->
     <!-- ############# Application ############## -->
@@ -88,8 +69,6 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:largeHeap="true"
-        android:logo="@drawable/logo_ic_icon"
         android:theme="@style/Theme.Jumia" >
         <activity
             android:name="pt.rocket.view.SplashScreenActivity"
@@ -162,36 +141,14 @@
             <meta-data
                 android:name="com.ad4screen.logging"
                 android:value="false" />
+        	
         </service>
 
         <!-- ############# AD4Push: Basic Integration ############# -->
-        <receiver
-            android:name="com.ad4screen.sdk.A4SIDFVHandler"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="com.ad4screen.sdk.intent.action.QUERY" />
-
-                <category android:name="com.ad4screen.sdk.intent.category.ANONYM_ID" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="com.ad4screen.sdk.ReferrerHandler"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER" />
-            </intent-filter>
-        </receiver>
-
-        <activity
-            android:name="com.ad4screen.sdk.A4SPopup"
-            android:taskAffinity=""
-            android:theme="@style/com_ad4screen_sdk_theme_popup" />
-        <activity
-            android:name="com.ad4screen.sdk.A4SInterstitial"
-            android:theme="@style/com_ad4screen_sdk_theme_interstitial" />
+        <!-- MERGED USING: manifestmerger -->
 
         <!-- ############# AD4Push: Push Notifications ############# -->
-
+        
         <receiver
             android:name="com.ad4screen.sdk.GCMHandler"
             android:permission="com.google.android.c2dm.permission.SEND" >
@@ -203,20 +160,6 @@
                 <category android:name="com.jumia.android.dev" />
             </intent-filter>
         </receiver>
-
-        <!--
-             <receiver android:name="pt.rocket.utils.receivers.PushNotificationReceiver" >
-            <intent-filter>
-                <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
-                <action android:name="com.ad4screen.sdk.intent.action.CLICKED" />
-
-                <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS" />
-                <category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" />
-                <category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />
-            </intent-filter>
-        </receiver>
-        -->
-        
         
         <!-- ######################################## -->
         <!-- ############### ADJUST ################# -->
