@@ -87,7 +87,7 @@
 #-dontwarn android.webkit.WebView
 #-dontwarn android.webkit.Network
 #-dontwarn com.shouldit.proxy.lib.ProxyUtils
-#-dontwarn com.google.android.**
+-dontwarn com.google.android.**
 #-dontwarn sun.misc.Unsafe
 #-dontwarn android.net.http.SslError
 #-dontwarn android.webkit.WebViewClient
@@ -97,7 +97,7 @@
 
 #-dontwarn java.awt.**,javax.security.**,java.beans.**
 
--keep public class * extends android.support.v4.app.Fragment
+#-keep public class * extends android.support.v4.app.Fragment
 #-keep class android.support.v4.app.Fragment
 #-keep class android.support.v4.app.FragmentManager
 #-keep class android.support.v4.content.Loader
