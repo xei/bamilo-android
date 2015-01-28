@@ -22,7 +22,7 @@
     <!-- DEEP LINK -->
     <string name="dp_package_id">com.bamilo.android.live</string>
     <string name="dp_app_name_uppercase">BAMILO</string>
-    <string name="dp_app_name_lowercase">Bamilo</string>
+    <string name="dp_app_name_lowercase">bamilo</string>
     <string name="dp_intent_label">Bamilo Live</string>
 
     <!-- NEW RELIC --> 
