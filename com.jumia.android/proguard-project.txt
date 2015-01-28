@@ -75,38 +75,35 @@
 -dontwarn android.support.**
 ########################### END proguard-android-optimize.txt ###########################
 
--dontwarn pt.rocket.jumia.dev.R*
--dontwarn com.ad4screen.R*
+#-dontwarn pt.rocket.jumia.dev.R*
+#-dontwarn com.ad4screen.R*
 
--dontwarn sun.reflect.**
--dontwarn android.test.**
--dontwarn com.sun.mail.imap.protocol.**
+#-dontwarn sun.reflect.**
+#-dontwarn android.test.**
+#-dontwarn com.sun.mail.imap.protocol.**
 
--dontnote android.support.**
+#-dontnote android.support.**
 
--dontwarn android.webkit.WebView
--dontwarn android.webkit.Network
--dontwarn com.shouldit.proxy.lib.ProxyUtils
--dontwarn com.google.android.**
--dontwarn sun.misc.Unsafe
--dontwarn android.net.http.SslError
--dontwarn android.webkit.WebViewClient
+#-dontwarn android.webkit.WebView
+#-dontwarn android.webkit.Network
+#-dontwarn com.shouldit.proxy.lib.ProxyUtils
+#-dontwarn com.google.android.**
+#-dontwarn sun.misc.Unsafe
+#-dontwarn android.net.http.SslError
+#-dontwarn android.webkit.WebViewClient
 
--dontnote com.google.vending.licensing.ILicensingService
--dontnote com.android.vending.licensing.ILicensingService
+#-dontnote com.google.vending.licensing.ILicensingService
+#-dontnote com.android.vending.licensing.ILicensingService
 
-#-keepattributes InnerClasses,Signature,Exceptions,EnclosingMethod,SourceFile,LineNumberTable,*Annotation*
-#-renamesourcefileattribute SourceFile
+#-dontwarn java.awt.**,javax.security.**,java.beans.**
 
--dontwarn java.awt.**,javax.security.**,java.beans.**
-
--keep public class * extends android.support.v4.app.Fragment
--keep class android.support.v4.app.Fragment
--keep class android.support.v4.app.FragmentManager
--keep class android.support.v4.content.Loader
--keep class android.support.v4.content.Loader$OnLoadCompleteListener
--keep class android.support.v4.app.FragmentTransaction
--keep class android.support.v4.app.Fragment$SavedState
+#-keep public class * extends android.support.v4.app.Fragment
+#-keep class android.support.v4.app.Fragment
+#-keep class android.support.v4.app.FragmentManager
+#-keep class android.support.v4.content.Loader
+#-keep class android.support.v4.content.Loader$OnLoadCompleteListener
+#-keep class android.support.v4.app.FragmentTransaction
+#-keep class android.support.v4.app.Fragment$SavedState
 
 ############# BEGIN GENERIC CLASSES #############
 
@@ -158,6 +155,7 @@
 -keep class com.ad4screen.sdk.IA4SService$Stub { public *; }
 -keep class com.ad4screen.sdk.plugins.** { *; }
 -dontwarn com.ad4screen.sdk.plugins.**
+#-dontnote com.ad4screen.sdk.**
 ################################################################
 
 ## BEGIN NEW RELIC #############################################
