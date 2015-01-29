@@ -18,6 +18,7 @@ import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
 import pt.rocket.utils.PreferenceListFragment.OnPreferenceAttachedListener;
+import pt.rocket.utils.social.FacebookHelper;
 import pt.rocket.view.fragments.BaseFragment;
 import pt.rocket.view.fragments.CampaignsFragment;
 import pt.rocket.view.fragments.CatalogFragment;
@@ -140,6 +141,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         if (splashScreenParams != null && splashScreenParams.getExtras() != null) {
             isInMaintenance = splashScreenParams.getExtras().getBoolean(ConstantsIntentExtra.IN_MAINTANCE, false);
         }
+        
+        // XXX
+        FacebookHelper.logHashKey(getApplicationContext());
     }
 
     /*

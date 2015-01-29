@@ -1,10 +1,18 @@
 package pt.rocket.utils.social;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import pt.rocket.utils.ui.UIUtils;
 import pt.rocket.view.R;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 
@@ -22,6 +30,10 @@ public class FacebookHelper {
     private static final String TAG = FacebookHelper.class.getSimpleName();
     
     private static final String FB_PERMISSION_EMAIL = "email";
+    
+    private static final String FB_PERMISSION_PUB_PROFILE = "public_profile";
+    
+    private static final String FB_PERMISSION_FRIENDS = "user_friends";
 
     /**
      * Method used to show or hide facebook views
@@ -37,18 +49,6 @@ public class FacebookHelper {
         if(hideFacebook) UIUtils.showOrHideViews(View.GONE, views);
         // Case show Facebook view
         else showFacebookViews(fragment, views);
-    }
-    
-    /**
-     * Set the Facebook button
-     * @param button
-     * @param fragment
-     * @author sergiopereira
-     */
-    private final static void setFacebookLogin(LoginButton button, Fragment fragment) {
-        button.setFragment(fragment);
-        button.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO);
-        button.setReadPermissions(Arrays.asList(FB_PERMISSION_EMAIL));
     }
 
     /**
@@ -69,12 +69,49 @@ public class FacebookHelper {
     }
     
     /**
+     * Set the Facebook button
+     * @param button
+     * @param fragment
+     * @author sergiopereira
+     */
+    private final static void setFacebookLogin(LoginButton button, Fragment fragment) {
+        // Set the UI control
+        button.setFragment(fragment);
+        // Set the Facebook Login (from app or from dialog)
+        button.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
+        // Set Facebook permissions
+        button.setReadPermissions(Arrays.asList(FB_PERMISSION_EMAIL, FB_PERMISSION_PUB_PROFILE, FB_PERMISSION_FRIENDS));
+    }
+    
+    /**
      * Clean the facebook session
      * @author sergiopereira
      */
     public final static void cleanFacebookSession(){
         Session s = Session.getActiveSession();
         s.closeAndClearTokenInformation();
+    }
+    
+    /**
+     * Log the hash key for Facebook dashboard
+     * @param context
+     * @author sergiopereira
+     */
+    public final static void logHashKey(Context context) {
+        try {
+            String name = context.getApplicationInfo().packageName;
+            PackageInfo info = context.getPackageManager().getPackageInfo(name, PackageManager.GET_SIGNATURES);
+            android.util.Log.i("Facebook", "Package name: " + name);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                android.util.Log.i("Facebook", "KeyHash:\n" + Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (NameNotFoundException e) {
+            // ...
+        } catch (NoSuchAlgorithmException e) {
+            // ...
+        }
     }
     
 }
