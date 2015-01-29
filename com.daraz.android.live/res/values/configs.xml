@@ -2,7 +2,7 @@
 <resources>
     
 	<!-- APP -->
-    <string name="app_name">Daraz Market Dev</string>
+    <string name="app_name">Daraz Live</string>
     <bool name="rest_host_auth_use_it">true</bool>
 	<bool name="is_to_show_dev_env">true</bool>
 	<item name="is_daraz_specific" type="bool">true</item>
