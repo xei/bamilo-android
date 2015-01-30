@@ -424,15 +424,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
             item.getControl().setVisibility(View.GONE);
         }
-        if(isBilling){
-            item = dynamicForm.getItemByKey(RestConstants.JSON_GENDER_TAG);
-            if (item != null){
-                item.getMandatoryControl().setVisibility(View.GONE);
-                item.getEditControl().setVisibility(View.GONE);
-            } 
-        }
-        
-        
     }
 
     /**
@@ -846,7 +837,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             bundle.putBoolean(SetNewAddressHelper.IS_FROM_SIGNUP,args.getBoolean(ConstantsIntentExtra.IS_SIGNUP, false));
         // Trigger
         triggerContentEvent(new SetNewAddressHelper(), bundle, this);
-
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
     }
@@ -855,18 +845,17 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      * Trigger to get the address form
      * @author sergiopereira
      */
-    private void triggerCreateAddressForm(){
-        Log.i(TAG, "TRIGGER: LOGIN FORM");
+    private void triggerCreateAddressForm() {
+        // Get Arguments
         Bundle args = getArguments();
-        
-        if(null != args && args.containsKey(ConstantsIntentExtra.IS_SIGNUP)){
-            if(args.getBoolean(ConstantsIntentExtra.IS_SIGNUP, false))
-                triggerContentEvent(new GetFormAddAddressHelper(), args, this);            
+        // Validate arguments
+        if(null != args && args.containsKey(ConstantsIntentExtra.IS_SIGNUP)) {
+            Log.i(TAG, "TRIGGER: CREATE ADDRESS FORM FOR GUEST USER");
+            triggerContentEvent(new GetFormAddAddressHelper(), args, this);
         } else {
+            Log.i(TAG, "TRIGGER: CREATE ADDRESS FORM");
             triggerContentEvent(new GetFormAddAddressHelper(), null, this);    
         }
-        
-        
     }
     
     /**

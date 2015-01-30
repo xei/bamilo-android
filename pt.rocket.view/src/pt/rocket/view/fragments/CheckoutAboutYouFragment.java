@@ -788,11 +788,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             // Update
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
-            // Clean stack for new native checkout on the back stack (auto ogin)
+            // Clean stack for new native checkout on the back stack (auto login)
             super.removeNativeCheckoutFromBackStack();
             // Goto next step
             Bundle bundle = new Bundle();
-            bundle.putBoolean(ConstantsIntentExtra.IS_SIGNUP, true);
+            // Validate if is guest user and sent the flag 
+            if(JumiaApplication.CUSTOMER.isGuest()) bundle.putBoolean(ConstantsIntentExtra.IS_SIGNUP, true);
+            // Go
             getBaseActivity().onSwitchFragment(mNextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }    
@@ -808,7 +810,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         // Track signup
         trackCheckoutStarted(JumiaApplication.CUSTOMER.getIdAsString());
         // Next step
-        gotoNextStep();            
+        gotoNextStep();
     }
     
     /*

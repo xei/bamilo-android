@@ -47,11 +47,11 @@ public class GetFormAddAddressHelper extends BaseHelper {
         } catch (NullPointerException e) {
             Log.w(TAG, "FORM DATA IS NULL THEN GET CREATE ADDRESS FORM FALLBACK", e);
         }
-        if(null != args && args.containsKey(ConstantsIntentExtra.IS_SIGNUP)){
-            if(args.getBoolean(ConstantsIntentExtra.IS_SIGNUP, false))
-              url = EventType.GET_CREATE_ADDRESS_FORM_SIGNUP_EVENT.action;
-        } 
         
+        // Validate if is guest user
+        if(null != args && args.containsKey(ConstantsIntentExtra.IS_SIGNUP)){
+              url = EventType.GET_CREATE_ADDRESS_FORM_SIGNUP_EVENT.action;
+        }
         
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
