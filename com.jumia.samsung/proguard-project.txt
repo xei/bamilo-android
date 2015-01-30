@@ -147,3 +147,9 @@
 -keep class pt.rocket.controllers.fragments.FragmentType { public protected *; }
 -keep class pt.rocket.view.fragments.BaseFragment$KeyboardState
 #################################################################################
+
+## JAVASCRIPTINTERFACE ##########################################################
+-keepclassmembers class pt.rocket.view.fragments.CheckoutWebFragment$JavaScriptInterface { public *; }
+-keepclassmembers class pt.rocket.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface { public *; }
+-keepattributes JavascriptInterface
+#################################################################################
