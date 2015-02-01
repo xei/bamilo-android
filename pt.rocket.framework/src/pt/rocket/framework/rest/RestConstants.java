@@ -529,5 +529,13 @@ public class RestConstants {
 	public static final String JSON_MAX_PRICE_CONVERTED_TAG = "max_price_euroConverted";
 	public static final String JSON_BUNDLE_PRODUCT_LEADER_POS = "leader_simple_position";
 	public static final String JSON_MAX_SPECIAL_PRICE_CONVERTED_TAG = "max_special_price_euroConverted";
+	
+	/**
+	 * OFFERS
+	 */
+	
+	public static final String JSON_OFFERS_TAG = "offers";
+	public static final String JSON_OFFERS_MIN_PRICE_TAG = "min_price";
+	public static final String JSON_OFFERS_MIN_PRICE_CONVERTED_TAG = "min_price_euroConverted";
 
 }

@@ -27,6 +27,8 @@ public enum NavigationAction {
     MyOrders("trackingorder"),
     Unknown("unknown"),
     Checkout("checkout"),
+    Offers("offers"),
+    Seller("seller"),
     ForgotPassword("forgotpassword");
 
 	private final String action;

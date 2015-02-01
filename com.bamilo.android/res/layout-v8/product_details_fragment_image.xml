@@ -80,6 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/product_name"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
         layout="@layout/product_details_fragment_seller_info"
         android:visibility="gone" />
 

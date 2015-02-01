@@ -44,13 +44,25 @@
             android:layout_alignRight="@id/center_point"
             android:layout_below="@id/shadow" >
 
+            <View
+                android:id="@+id/margin_landscape"
+                android:layout_width="@dimen/rounded_margin_mid"
+                android:layout_height="1dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"
+                android:visibility="gone" />
+
             <LinearLayout
+                android:id="@+id/left_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/rounded_margin_mid"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
                 android:layout_marginStart="@dimen/rounded_margin_mid"
                 android:layout_marginTop="@dimen/rounded_margin_small"
+                android:layout_toLeftOf="@+id/margin_landscape"
+                android:layout_toStartOf="@+id/margin_landscape"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/rounded_margin_mid" >
 
@@ -110,7 +122,7 @@
         <FrameLayout
             android:id="@+id/fragment_writereview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignLeft="@id/center_point"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"

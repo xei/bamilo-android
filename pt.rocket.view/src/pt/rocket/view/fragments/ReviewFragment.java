@@ -177,9 +177,10 @@ public class ReviewFragment extends BaseFragment {
         
         ArrayList<RatingStar> ratings = b.getParcelableArrayList(ConstantsIntentExtra.REVIEW_RATING);
         
-        if(ratings != null){
-            insertRatingTypes(ratings,ratingsContainer,false);            
-        }
+        //used only on seller Review
+        int ratingValue = b.getInt(ConstantsIntentExtra.REVIEW_RATING);
+        
+        insertRatingTypes(ratings,ratingsContainer,false, ratingValue);            
 
     }
     
@@ -188,22 +189,25 @@ public class ReviewFragment extends BaseFragment {
      * @param ratingOptionArray
      * @param parent
      */
-    private void insertRatingTypes(ArrayList<RatingStar> ratingOptionArray, LinearLayout parent, boolean isBigStar){
+    private void insertRatingTypes(ArrayList<RatingStar> ratingOptionArray, LinearLayout parent, boolean isBigStar,int ratingValue){
+        
+        int starsLayout = R.layout.reviews_fragment_rating_samlltype_item;
+        
+        if(isBigStar)
+            starsLayout = R.layout.reviews_fragment_rating_bigtype_item;
+        
         if(ratingOptionArray != null && ratingOptionArray.size() > 0){
             
             // calculate how many lines of rate types the review will have, supossing 3 types for line;
             int rateCount = ratingOptionArray.size();
             int rest = rateCount % RATING_TYPE_BY_LINE;
             int numLines =(int) Math.ceil(rateCount / RATING_TYPE_BY_LINE);
-            if(rest == 1)
+            if(rest > 1)
                 numLines = numLines + rest;
             
             int countType = 0;
             
-            int starsLayout = R.layout.reviews_fragment_rating_samlltype_item;
-            
-            if(isBigStar)
-                starsLayout = R.layout.reviews_fragment_rating_bigtype_item;
+
             
             
             for (int i = 0; i < numLines; i++) {
@@ -241,6 +245,30 @@ public class ReviewFragment extends BaseFragment {
             }
             
 
+        }  else {
+            //if rating Options == null then its a seller review
+            
+            if(parent.getChildCount() > 0){
+                parent.removeAllViews();
+            }
+            
+            LinearLayout typeLine = new LinearLayout(getActivity().getApplicationContext());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,RATING_TYPE_BY_LINE);
+            
+            typeLine.setOrientation(LinearLayout.HORIZONTAL);
+            
+            View rateTypeView = inflater.inflate(starsLayout, null, false);
+            
+            rateTypeView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
+            
+            final TextView ratingTitle = (TextView) rateTypeView.findViewById(R.id.title_type);
+            final RatingBar userRating = (RatingBar) rateTypeView.findViewById(R.id.rating_value);
+              
+            userRating.setRating(ratingValue);
+            ratingTitle.setVisibility(View.GONE);
+           
+            typeLine.addView(rateTypeView);
+            parent.addView(typeLine);
         }
     }
 }

@@ -113,12 +113,6 @@ public class Seller implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) {
-        try {
-            Log.e("SELLER","SELLER OBJECT: "+jsonObject.toString(4));
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
             name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
             url = jsonObject.optString(RestConstants.JSON_URL_TAG);
             minDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MIN_DELIVERY_TAG);
@@ -130,8 +124,6 @@ public class Seller implements IJSONSerializable, Parcelable {
                 ratingCount = reviewObject.optInt(RestConstants.JSON_TOTAL_TAG);
                 ratingValue = reviewObject.optInt(RestConstants.JSON_RATINGS_AVERAGE_TAG);
             }
-           
-            
 
         return true;
     }

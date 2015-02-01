@@ -45,6 +45,7 @@ import pt.rocket.view.fragments.MyOrdersFragment;
 import pt.rocket.view.fragments.ProductDetailsDescriptionFragment;
 import pt.rocket.view.fragments.ProductDetailsFragment;
 import pt.rocket.view.fragments.ProductImageGalleryFragment;
+import pt.rocket.view.fragments.ProductOffersFragment;
 import pt.rocket.view.fragments.ProductSizeGuideFragment;
 import pt.rocket.view.fragments.RecentSearchFragment;
 import pt.rocket.view.fragments.RecentlyViewedFragment;
@@ -405,6 +406,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case PRODUCT_SIZE_GUIDE:
             fragment = ProductSizeGuideFragment.newInstance(bundle);
+            break;
+        case PRODUCT_OFFERS:
+            fragment = ProductOffersFragment.newInstance(bundle);
             break;
         default:
             Log.w(TAG, "INVALIDE FRAGMENT TYPE");

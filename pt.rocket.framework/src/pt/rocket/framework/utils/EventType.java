@@ -209,7 +209,11 @@ public enum EventType {
 	
 	GET_PRODUCT_BUNDLE("http:/catalog/bundle/sku/", RestContract.NO_CACHE),
 	
-	ADD_PRODUCT_BUNDLE("http:/order/addbundle/", RestContract.NO_CACHE);
+	ADD_PRODUCT_BUNDLE("http:/order/addbundle/", RestContract.NO_CACHE),
+	
+	GET_PRODUCT_OFFERS,
+	
+	GET_SELLER_REVIEWS;
 
     public final String action;
     public final Integer cacheTime;

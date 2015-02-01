@@ -71,6 +71,11 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	private boolean hasSeller;
 	private boolean hasBundle;
 	private Seller seller;
+	private double minPriceOfferDouble;
+	private String minPriceOffer;
+	private double minPriceOfferConverted;
+	private int totalOffers;
+	
 //	private int simpleSkuPosition;
 
 	/**
@@ -99,6 +104,10 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		hasSeller = false;
 		hasBundle = false;
 		seller = new Seller();
+		minPriceOfferDouble = 0.0;
+		minPriceOffer = "";
+		minPriceOfferConverted = 0.0;
+		totalOffers = 0;
 	}
 
 	/*
@@ -247,7 +256,25 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	                 seller = new Seller(sellerObject);
 	            }
 	        }
-			
+	        
+	        //Offers
+	        JSONObject offers = dataObject.optJSONObject(RestConstants.JSON_OFFERS_TAG);
+	        
+	        if(offers != null){
+	            
+	            String offerPriceJSON = offers.optString(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
+	            
+	            if (!CurrencyFormatter.isNumber(offerPriceJSON)) {
+	                offerPriceJSON = priceJSON;
+	                }
+	            minPriceOfferDouble = Double.parseDouble(offerPriceJSON);
+
+	            minPriceOffer = CurrencyFormatter.formatCurrency(offerPriceJSON);
+	            
+	            
+	            minPriceOfferConverted = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG, 0);
+	            totalOffers = offers.optInt(RestConstants.JSON_TOTAL_TAG, 0);
+	        }
 			
 			JSONObject variationsObject = dataObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
 			if (variationsObject == null)
@@ -684,6 +711,38 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
         this.seller = seller;
     }
 
+    public double getMinPriceOfferDouble() {
+        return minPriceOfferDouble;
+    }
+
+    public void setMinPriceOfferDouble(double minPriceOffer) {
+        this.minPriceOfferDouble = minPriceOfferDouble;
+    }
+
+    public String getMinPriceOffer() {
+        return minPriceOffer;
+    }
+
+    public void setMinPriceOffer(String minPriceOffer) {
+        this.minPriceOffer = minPriceOffer;
+    }
+    
+    public double getMinPriceOfferConverted() {
+        return minPriceOfferConverted;
+    }
+
+    public void setMinPriceOfferConverted(double minPriceOfferConverted) {
+        this.minPriceOfferConverted = minPriceOfferConverted;
+    }
+
+    public int getTotalOffers() {
+        return totalOffers;
+    }
+
+    public void setTotalOffers(int totalOffers) {
+        this.totalOffers = totalOffers;
+    }
+    
     
     
     /*
@@ -728,6 +787,10 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		dest.writeByte((byte) (hasBundle ? 1 : 0));
 		dest.writeParcelable(seller, flags);
 		dest.writeParcelable(productBundle, flags);
+		dest.writeDouble(minPriceOfferDouble);
+		dest.writeString(minPriceOffer);
+		dest.writeDouble(minPriceOfferConverted);
+		dest.writeInt(totalOffers);
 	}
 
 	private CompleteProduct(Parcel in) {
@@ -765,6 +828,10 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		hasBundle = in.readByte() == 1;
 		seller = in.readParcelable(Seller.class.getClassLoader());
 		productBundle = in.readParcelable(ProductBundle.class.getClassLoader());
+		minPriceOfferDouble = in.readDouble();
+		minPriceOffer = in.readString();
+        minPriceOfferConverted = in.readDouble();
+        totalOffers = in.readInt();
 	}
 
 	public static final Parcelable.Creator<CompleteProduct> CREATOR = new Parcelable.Creator<CompleteProduct>() {

@@ -61,5 +61,6 @@
     <dimen name="pdv_image_with_var">430dp</dimen>
     <dimen name="pdv_image_alone">480dp</dimen>
     <dimen name="pdv_image_with_bundle">60dp</dimen>
+    <dimen name="pdv_image_with_seller">50dp</dimen>
     
 </resources>

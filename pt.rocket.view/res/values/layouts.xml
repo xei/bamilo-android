@@ -29,5 +29,8 @@
     
     <!-- SHOPPING CART -->
 	<item name="shopping_basket_subtotal_element" 	type="layout">@layout/_def_shopping_basket_subtotal_element</item>
+	
+	<!-- SELLER INFO -->
+	<!-- <item name="shopping_basket_subtotal_element" 	type="layout">@layout/_def_shopping_basket_subtotal_element</item> -->
     
 </resources>

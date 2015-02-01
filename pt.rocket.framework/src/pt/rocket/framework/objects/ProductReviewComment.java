@@ -25,6 +25,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
     private String date = "";
     private double rating = 0.0;
     private String optionTitle="";
+    private int average = -1;
     private ArrayList<RatingStar> ratingStars;
 
     public ProductReviewComment() {
@@ -47,21 +48,24 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
             comment = jsonObject.getString(RestConstants.JSON_COMMENT_TAG);
             name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
             date = jsonObject.getString(RestConstants.JSON_COMMENT_DATE_TAG);
+            //only for seller reviews
+            average = jsonObject.optInt(RestConstants.JSON_RATINGS_AVERAGE_TAG,-1);
 
-            JSONArray stars = jsonObject.getJSONArray(RestConstants.JSON_STARS_TAG);
-            int size = stars.length();
-            Log.i("STAR"," "+size);
-            rating = 0 ;
-            for (int i = 0; i < size; i++) {
-                RatingStar option= new RatingStar();
-                option.initialize(stars.getJSONObject(i));
-                ratingStars.add(option);
-                rating += option.getRating();
+            JSONArray stars = jsonObject.optJSONArray(RestConstants.JSON_STARS_TAG);
+            if (stars != null) {
+                int size = stars.length();
+                Log.i("STAR", " " + size);
+                rating = 0;
+                for (int i = 0; i < size; i++) {
+                    RatingStar option = new RatingStar();
+                    option.initialize(stars.getJSONObject(i));
+                    ratingStars.add(option);
+                    rating += option.getRating();
+                }
+                rating /= size;
+                //rating = rating * 5 / 100;
+                Log.i("RATING", " " + rating);
             }
-            rating /= size;
-            //rating = rating * 5 / 100;
-            
-            Log.i("RATING"," " + rating);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -119,7 +123,15 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
         return ratingStars;
     }
 
-	@Override
+	public int getAverage() {
+        return average;
+    }
+
+    public void setAverage(int average) {
+        this.average = average;
+    }
+
+    @Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -134,6 +146,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
 		dest.writeDouble(rating);
 		dest.writeString(optionTitle);
 		dest.writeList(ratingStars);
+		dest.writeInt(average);
 		
 	}
 	
@@ -146,6 +159,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
 		 optionTitle = in.readString();
 		 ratingStars = new ArrayList<RatingStar>(); 
 		 in.readList(ratingStars, RatingStar.class.getClassLoader());
+		 average = in.readInt();
 	}
 	
     public static final Parcelable.Creator<ProductReviewComment> CREATOR = new Parcelable.Creator<ProductReviewComment>() {

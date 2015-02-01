@@ -20,8 +20,8 @@
         android:layout_height="match_parent"
         android:layout_alignLeft="@id/center_point"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="7dp"
-        android:scrollbars="none" >
+        android:scrollbars="none"
+        android:layout_marginLeft="7dp" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,20 +33,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="0dp" >
-
-                <!--
-             <include
-            android:id="@+id/product_basicinfo_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            layout="@layout/product_details_fragment_header"
-            android:background="@android:color/transparent"
-            android:layout_marginBottom="0dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
-            android:minHeight="50dp" />
-                -->
 
                 <RelativeLayout
                     android:id="@+id/product_basicinfo_container"
@@ -93,6 +79,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/product_price_special"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="0dp"
                         layout="@layout/product_details_fragment_seller_info"
                         android:visibility="gone" />
                 </RelativeLayout>
@@ -204,33 +192,61 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/product_detail_product_variant_container"
                     layout="@layout/product_details_fragment_variations" />
+
+
+<!--                 <View
+                    android:id="@+id/variation_bottom_line"
+                    style="@style/divider_horizontal"
+                    android:layout_below="@+id/product_detail_product_variant_container" />
+
+                <FrameLayout
+                    android:id="@+id/product_detail_variations_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:layout_below="@+id/variation_bottom_line" /> -->
             </RelativeLayout>
 
-            <!-- TIPS -->
+            <!-- OFFERS -->
 
             <include
-                android:id="@+id/product_detail_tips_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignBottom="@+id/pdv_left_container"
-                android:layout_alignTop="@+id/pdv_left_container"
-                android:layout_marginRight="10dp"
-                layout="@layout/tips"
-                android:background="#00ff00"
-                android:visibility="visible" />
+                android:id="@+id/product_detail_product_offers_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pdv_left_container"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="@dimen/rounded_margin_mid"
+                layout="@layout/product_details_fragment_offers"
+                android:visibility="gone" />
 
             <!-- BUNDLE PRODUCTS -->
 
             <include
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/pdv_left_container"
+                android:layout_below="@+id/offers_include"
                 android:layout_marginBottom="10dp"
-                android:layout_marginRight="7dp"
+                android:layout_marginRight="@dimen/rounded_margin_mid"
                 android:layout_marginTop="0dp"
                 layout="@layout/product_details_fragment_bundle" />
+
+
         </RelativeLayout>
     </pt.rocket.utils.ScrollViewWithHorizontal>
+
+    
+        <!-- TIPS -->
+
+    <include
+        android:id="@+id/product_detail_tips_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/center_point"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginTop="@dimen/rounded_margin_mid"
+        layout="@layout/tips"
+        android:visibility="gone" />
+    
     <!-- Right Container -->
 
     <RelativeLayout
@@ -282,8 +298,8 @@
         <pt.rocket.utils.ScrollViewWithHorizontal
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/shop_buttons"
-            android:scrollbars="none" >
+            android:scrollbars="none"
+            android:layout_below="@id/shop_buttons" >
 
             <LinearLayout
                 android:layout_width="match_parent"

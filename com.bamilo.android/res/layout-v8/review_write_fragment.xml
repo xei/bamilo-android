@@ -36,6 +36,7 @@
 
                 <pt.rocket.components.customfontviews.TextView
                     style="@style/text_normal"
+                    android:id="@+id/write_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/margin_100px"

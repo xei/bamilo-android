@@ -57,8 +57,9 @@ public class RestContract {
 	public static final int METHOD_PUT = 2;
 	public static final int METHOD_DELETE = 3;
 	
-	public static final String REST_PARAM_RATING=                      "rating";
-	public static final String REST_PARAM_PAGE=                        "page";
+	public static final String REST_PARAM_RATING =                      "rating";
+	public static final String REST_PARAM_PAGE =                        "page";
+	public static final String REST_PARAM_SELLER_RATING =               "seller_rating";
 	
 	// private static Context context;
 

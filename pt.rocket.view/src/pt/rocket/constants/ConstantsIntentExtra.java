@@ -40,6 +40,7 @@ public class ConstantsIntentExtra {
     public static final String SHOW_RELATED_ITEMS           = mPackage + "ShowRelatedItems";
     public static final String IS_RELATED_ITEM              = mPackage + "RelatedItem";
     public static final String SIZE_GUIDE_URL               = mPackage + "SizeGuideUrl";
+    public static final String PRODUCT_NAME                  = mPackage + "ProductName";
     
     // ########### Checkout ###########
     //
@@ -58,6 +59,7 @@ public class ConstantsIntentExtra {
 
     public static final String NAVIGATION_PATH              = mPackage + "NavigationPath";
     public static final String NAVIGATION_SOURCE            = mPackage + "NavigationPrefix";
+    public static final String REVIEW_TYPE                  = mPackage + "ReviewType";
 
     // ########### Google Analytics: Campaign ##############
     public static final String UTM_STRING                   = "UTM";

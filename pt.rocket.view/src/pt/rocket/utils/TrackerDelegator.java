@@ -1216,6 +1216,11 @@ public class TrackerDelegator {
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_BUNDLE_TO_CART, productSku, (long) price);
     }
+    
+    public static void trackAddOfferToCart(String productSku, double price) {
+        // GA
+        AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_BUNDLE_TO_CART, productSku, (long) price);
+    }
 //    private static void saveUtmParams(Context context, String key, String value) {
 //        Log.d(TAG, "saving saveUtmParams params, key: " + key + ", value : " + value);
 //        Log.d("BETA", "saving saveUtmParams params, key: " + key + ", value : " + value);

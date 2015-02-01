@@ -99,6 +99,7 @@
     <string name="gCatalogSortBrand">SortName</string>
     <string name="gRelatedProduct">RelatedItem</string>
     <string name="gAddBundleToCart">BundleAddToCart</string>
+    <string name="gAddSellerToCart">SellerAddToCart</string>
 
     <!-- Checkout Steps -->
     <string name="gNativeCheckout">NativeCheckout</string>

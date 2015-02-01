@@ -22,6 +22,15 @@
             android:layout_below="@id/product_info_container"
             android:visibility="gone" />
 
+        <!-- PLACE HOLDER IN ORDER TO MATCH THE LANDSCAPE LAYOUT -->
+
+        <View
+            android:id="@+id/center_point"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_below="@id/shadow"
+            android:layout_centerInParent="true" />
+
         <!-- REVIEWS -->
 
         <RelativeLayout
@@ -38,6 +47,7 @@
             android:visibility="visible" >
 
             <LinearLayout
+                android:id="@+id/left_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_content"
@@ -45,11 +55,14 @@
                 android:padding="@dimen/rounded_margin_mid" >
 
                 <pt.rocket.components.customfontviews.TextView
+                    android:id="@+id/write_title"
                     style="@style/text_normal"
+                    android:layout_width="match_parent"
                     android:layout_marginEnd="@dimen/rounded_margin_mid"
                     android:layout_marginLeft="@dimen/rounded_margin_mid"
                     android:layout_marginRight="@dimen/rounded_margin_mid"
                     android:layout_marginStart="@dimen/rounded_margin_mid"
+                    android:gravity="center_horizontal"
                     android:paddingLeft="3dp"
                     android:paddingStart="3dp"
                     android:text="@string/rating_question" />

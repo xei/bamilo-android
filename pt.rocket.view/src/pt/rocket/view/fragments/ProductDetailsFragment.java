@@ -51,6 +51,7 @@ import pt.rocket.helpers.cart.GetShoppingCartAddBundleHelper;
 import pt.rocket.helpers.cart.GetShoppingCartAddItemHelper;
 import pt.rocket.helpers.products.GetProductBundleHelper;
 import pt.rocket.helpers.products.GetProductHelper;
+import pt.rocket.helpers.products.GetProductOffersHelper;
 import pt.rocket.helpers.search.GetSearchProductHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.FragmentCommunicatorForProduct;
@@ -280,6 +281,14 @@ OnItemSelectedListener {
     private RatingBar mSellerRating;
     
     private int imageHeight = -1;
+    
+    private RelativeLayout offersContainer;
+    
+    private RelativeLayout offersContent;
+    
+    private TextView numOffers;
+    
+    private TextView minOffers;
     
     /**
      * Empty constructor
@@ -523,6 +532,11 @@ OnItemSelectedListener {
         mBundleTextTotal = (TextView) view.findViewById(R.id.bundle_total_value);
         mDividerBundle = view.findViewById(R.id.divider_bundle); 
         mBundleButton.setSelected(true);
+        //OFFERS
+        offersContainer = (RelativeLayout) view.findViewById(R.id.product_detail_product_offers_container);
+        offersContent = (RelativeLayout) view.findViewById(R.id.offers_container);
+        numOffers = (TextView) view.findViewById(R.id.offers_value);
+        minOffers = (TextView) view.findViewById(R.id.from_value);
         // Bottom Button
         mAddToCartButton = (Button) view.findViewById(R.id.product_detail_shop);
         mAddToCartButton.setSelected(true);
@@ -602,28 +616,31 @@ OnItemSelectedListener {
             
             LayoutParams params = mLeftContainerInfo.getLayoutParams();
             
-            Log.d("PDV","params:"+params);
-            
             if(imageHeight == -1){
                 
+                // set default size like the product does not have any more component on the left besides the image
                 imageHeight = (int)getResources().getDimension(R.dimen.pdv_image_alone);
                 
+                // set image size if product has variations and simples
                 if(mVarianceContainer.isShown() && getView().findViewById(R.id.variations_container).isShown()){
-                    Log.d("PDV","IMAGE HAS VAR AND SIMPLE");
                     imageHeight = (int)getResources().getDimension(R.dimen.pdv_image_with_var_simple);
+                 // set image size if product has variations or simples
                 } else if (mVarianceContainer.isShown() || getView().findViewById(R.id.variations_container).isShown()){
-                    Log.d("PDV","IMAGE HAS VAR OR SIMPLE");
                     imageHeight = (int)getResources().getDimension(R.dimen.pdv_image_with_var);
-                } else {
-                    Log.d("PDV","IMAGE ALONE");
                 }
                 
-                int bundleSize = 0;
-                        if(hasBundle){
-                           bundleSize = (int)getResources().getDimension(R.dimen.pdv_image_with_bundle);
-                        }
-                        Log.d("PDV","height:"+imageHeight);
-                        params.height = imageHeight-bundleSize;
+                int decreaseSize = 0;
+                // decrease image size if product has bundle container
+                if(hasBundle){
+                    decreaseSize = (int)getResources().getDimension(R.dimen.pdv_image_with_bundle);
+                }
+                // decrease image size if product has seller info
+                if(sellerView.isShown()){
+                    decreaseSize = decreaseSize + (int)getResources().getDimension(R.dimen.pdv_image_with_seller);
+                }
+               
+               params.height = imageHeight-decreaseSize;
+                        
             } else {
                 params.height = imageHeight;
             }
@@ -645,7 +662,25 @@ OnItemSelectedListener {
         displayRatingInfo();
         displayVariantsContainer();
         displaySellerInfo();
+        displayOffersInfo();
         updateImageSize(false);
+    }
+    
+    private void displayOffersInfo(){
+        if(mCompleteProduct != null && mCompleteProduct.getTotalOffers() > 0){
+            offersContainer.setVisibility(View.VISIBLE);
+            
+            numOffers.setText(" ("+mCompleteProduct.getTotalOffers()+")");
+            minOffers.setText(mCompleteProduct.getMinPriceOffer());
+            
+            if(DeviceInfoHelper.isTabletInLandscape(getActivity().getApplicationContext())){
+                offersContent.setOnClickListener(this);
+            } else {
+                offersContainer.setOnClickListener(this);
+            }
+        } else {
+            offersContainer.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -1535,15 +1570,33 @@ OnItemSelectedListener {
         else if (id == R.id.seller_name_container) goToSellerCatalog();
         // seller rating
         else if (id == R.id.product_detail_product_seller_rating_container) goToSellerRating();
+        // product offers
+        else if (id == R.id.offers_container || id == R.id.product_detail_product_offers_container) goToProductOffers();
     }
 
+    /**
+     * function that sends the user to the product offers view
+     */
+    private void goToProductOffers() {
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mCompleteProduct.getName());
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());    
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+    
     /**
      * 
      */
     private void onClickRating() {
+        
+        JumiaApplication.cleanRating();
+        JumiaApplication.cleanReview();
+        
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
-        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
+        bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, true);
+        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY,
+                bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
     /**
@@ -2262,13 +2315,20 @@ OnItemSelectedListener {
      * function responsible for calling the catalog with the products from a specific seller
      */
     private void goToSellerCatalog(){
-        Log.e("SELLER","GO TO CATALOG");
+        Log.d("SELLER","GO TO CATALOG");
     }
 
     /**
      * function responsible for showing the rating and reviews of a specific seller
      */    
     private void goToSellerRating(){
-        Log.e("SELLER","GO TO RATING");
+        JumiaApplication.cleanRating();
+        JumiaApplication.cleanReview();
+        
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+        bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, false);
+        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY,
+                bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 }

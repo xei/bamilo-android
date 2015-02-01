@@ -57,5 +57,6 @@ public enum FragmentType {
     RECENTLYVIEWED_LIST, 
 //    TRACK_ORDER,
     MY_ORDERS,
-    PRODUCT_SIZE_GUIDE 
+    PRODUCT_SIZE_GUIDE,
+    PRODUCT_OFFERS
 }

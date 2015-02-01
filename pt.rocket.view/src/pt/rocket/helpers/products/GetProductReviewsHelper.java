@@ -33,15 +33,23 @@ public class GetProductReviewsHelper extends BaseHelper {
     private static final EventType EVENT_TYPE = EventType.GET_PRODUCT_REVIEWS_EVENT;
 
     public static final String PRODUCT_URL = "productUrl";
-    public static final String PAGE_NUMBER = "pageNumber";
+    public static final String PER_PAGE = "per_page";
+    public static final String PAGE = "page";
+    public static final String TOTAL_PAGES = "totalPages";
+    public static final String RATING_TYPE = "ratingType";
 
     ProductsPage mProductsPage = new ProductsPage();
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();
-        Uri uri = Uri.parse(args.getString(PRODUCT_URL)).buildUpon().appendQueryParameter(RestContract.REST_PARAM_RATING, "1")
-                .appendQueryParameter(RestContract.REST_PARAM_PAGE, String.valueOf(args.getInt(PAGE_NUMBER))).build();
+        String ratingType = RestContract.REST_PARAM_RATING;
+        if(!args.getBoolean(RATING_TYPE))
+            ratingType = RestContract.REST_PARAM_SELLER_RATING;
+        
+        Uri uri = Uri.parse(args.getString(PRODUCT_URL)).buildUpon().appendQueryParameter(ratingType, "1")
+                .appendQueryParameter(PER_PAGE, args.getString(PER_PAGE))
+                .appendQueryParameter(PAGE, args.getString(PAGE)).build();
 
         bundle.putString(Constants.BUNDLE_URL_KEY, uri.toString());
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY,
@@ -56,21 +64,32 @@ public class GetProductReviewsHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d("TRACK", "parseResponseBundle GetProductReviewsHelper");
         
-        JSONObject dataObject = null;
-        try {
-            
-            dataObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
         ProductRatingPage rating = new ProductRatingPage();
         try {
+         
+
+            JSONObject dataObject = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
             rating.initialize(dataObject);
+            
+            JSONObject reviewsObject = dataObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
+            
+            if (reviewsObject != null) {
+                JSONObject paginationObject = reviewsObject.optJSONObject(RestConstants.JSON_ORDER_PAGINATION_TAG);
+                if (paginationObject != null) {
+                    int totalPages = paginationObject.optInt(RestConstants.JSON_ORDER_TOTAL_PAGES_TAG, -1);
+                    int currentPage = paginationObject.optInt(RestConstants.JSON_ORDER_CURRENT_PAGE_TAG, -1);
+                    if (currentPage != -1 && totalPages != -1) {
+                        bundle.putInt(TOTAL_PAGES, totalPages);
+                        bundle.putInt(PAGE, currentPage);
+                    }
+                }
+            }
+            
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, rating);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_REVIEWS_EVENT);
         return bundle;

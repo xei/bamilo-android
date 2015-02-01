@@ -38,9 +38,17 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
             android:layout_alignLeft="@id/center_point"
+            android:layout_alignParentRight="true"
             android:layout_below="@id/shadow" >
+
+            <View
+                android:id="@+id/margin_landscape"
+                android:layout_width="@dimen/rounded_margin_mid"
+                android:layout_height="1dp"
+                android:layout_alignParentLeft="true"
+                android:background="@android:color/transparent"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,6 +56,7 @@
                 android:layout_marginBottom="@dimen/rounded_margin_mid"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
                 android:layout_marginTop="@dimen/rounded_margin_small"
+                android:layout_toRightOf="@+id/margin_landscape"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/rounded_margin_mid" >
 
@@ -105,10 +114,10 @@
         <FrameLayout
             android:id="@+id/fragment_writereview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignRight="@id/center_point"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/shadow" />
+            android:layout_alignRight="@id/center_point"
+            android:layout_below="@id/shadow"/>
     </RelativeLayout>
 
 </pt.rocket.components.ScrollViewEx>
