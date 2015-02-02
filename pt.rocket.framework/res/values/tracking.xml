@@ -7,6 +7,7 @@
     <bool name="ga_testmode">false</bool>
     <bool name="ga_debug_mode">false</bool>
     <bool name="ga_enable">false</bool>
+    <bool name="ga_advertisingIDCollection">true</bool>
 
     <string name="ga_trackingId"></string>
 

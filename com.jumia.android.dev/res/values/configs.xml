@@ -3,21 +3,25 @@
 
     <!-- APP -->
     <string name="app_name">Jumia Dev</string>
+
     <bool name="rest_host_auth_use_it">true</bool>
     <bool name="is_to_show_dev_env">true</bool>
 
     <!-- COUNTRIES -->
     <!-- <string name="countries_url">http://kaymu.com/jtmobapi</string> -->
     <string name="countries_url">https://cld.pt/dl/download/58f926ce-7da6-40cf-bb54-886bb44ae3b3/jtmobapi_290115</string>
-    
+
     <!-- GA -->
     <bool name="ga_debug_mode">true</bool>
-    <!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
+    <!--
+    GA : Dispatch each hit immediately (seconds), default is 30 minutes. 
     <integer name="ga_dispatchPeriod">0</integer>
     -->
 
+
     <!-- HOCKEY APP -->
     <string name="hockey_app_id">5a55f44dbed1b1bdb88f57f6eda07d78</string>
+
     <item name="hockeyapp_enable_dev" type="bool">true</item>
 
     <!-- DEEP LINK -->
@@ -31,22 +35,26 @@
 
     <!-- ACCENGAGE -->
     <item name="ad4push_enabled" type="bool">true</item>
+
     <string name="ad4push_partner_id">rocketinternet93620eb82cc11e4</string>
     <string name="ad4push_private_key">97661e63ee731caf585fc70d5ce13d9c0fa32513</string>
 
     <!-- ADJUST -->
     <item name="adjust_enabled" type="bool">true</item>
+
     <string name="adjust_app_token">tx59byfttp6z</string>
-    
-	<!-- APPTIMIZE -->
+
+    <!-- APPTIMIZE -->
     <item name="apptimize_enabled" type="bool">false</item>
+
     <string name="apptimize_apikey">BraGp9FgT7ESwKR4Dk5SrkH8ZzBDfGo</string>
 
-	<!-- GTM -->
+    <!-- GTM -->
     <string name="gtm_key">GTM-KWJK97</string>
+
     <item name="gtm_debug" type="bool">false</item>
-    
-	<!-- FACEBOOK -->
+
+    <!-- FACEBOOK -->
     <string name="facebook_app_id">215389355283677</string>
-    
+
 </resources>
