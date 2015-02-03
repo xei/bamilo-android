@@ -1042,8 +1042,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
             return false;
         }
-
-        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+        
         if (errorCode == null) {
             return false;
         }
@@ -1061,6 +1060,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 getBaseActivity().setLayoutMaintenance(eventType);
                 return true;
             case REQUEST_ERROR:
+                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                 List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
                 String dialogMsg = "";
                 if (validateMessages == null || validateMessages.isEmpty()) {

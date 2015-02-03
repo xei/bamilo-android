@@ -14,6 +14,7 @@ import java.util.Set;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.customfontviews.EditText;
 import pt.rocket.components.customfontviews.TextView;
+import pt.rocket.constants.BundleConstants;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -26,8 +27,10 @@ import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CurrencyFormatter;
+import pt.rocket.framework.utils.DarwinRegex;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.helpers.cart.GetShoppingCartAddMultipleItemsHelper;
 import pt.rocket.helpers.cart.GetShoppingCartChangeItemQuantityHelper;
 import pt.rocket.helpers.cart.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.cart.GetShoppingCartRemoveItemHelper;
@@ -70,7 +73,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class ShoppingCartFragment extends BaseFragment implements OnClickListener{
+public class ShoppingCartFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(ShoppingCartFragment.class);
 
@@ -135,16 +138,20 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     private boolean isCallInProgress = false;
 
     private boolean isRemovingAllItems = false;
-    
+
+    private boolean fromDeeplink = false;
+
     private double itemRemoved_price_tracking = 0d;
-    
+
     private long itemRemoved_quantity;
-    
+
     private double itemRemoved_rating;
-    
+
     private String itemRemoved_cart_value;
-    
+
     private static String cartValue = "";
+
+    private String[] mItemsToCart;
 
     public static class CartItemValues {
         // public Boolean is_in_wishlist;
@@ -237,11 +244,17 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     @Override
     public void onResume() {
         super.onResume();
-        //Validate is service is available
+        // Validate is service is available
         if (JumiaApplication.mIsBound) {
             Log.i(TAG, "ON RESUME");
-            mBeginRequestMillis = System.currentTimeMillis();
-            triggerGetShoppingCart();
+            if (getArguments() != null
+                    && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
+                addItemsToCart(getArguments().getString(ConstantsIntentExtra.CONTENT_URL));
+            } else {
+                mBeginRequestMillis = System.currentTimeMillis();
+                triggerGetShoppingCart();
+            }
+
             setListeners();
             TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
         } else {
@@ -260,14 +273,37 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             // Get items
             triggerContentEvent(new GetShoppingCartItemsHelper(), null, responseCallback);
         } else {
-            // Show loading when 
+            // Show loading when
             showFragmentLoading();
             // Singleton for handler
-            if (triggerHander == null) triggerHander = new Handler();
+            if (triggerHander == null)
+                triggerHander = new Handler();
             // Remove pending posts
-            else triggerHander.removeCallbacks(triggerRunnable);
+            else
+                triggerHander.removeCallbacks(triggerRunnable);
             // Remove trigger
             triggerHander.postDelayed(triggerRunnable, FAVOURITE_DELAY);
+        }
+    }
+
+    /**
+     * Get items from string
+     * 
+     * @author sergiopereira
+     */
+    private void addItemsToCart(String items) {
+
+        String[] itemsToCart = items.split(DarwinRegex.SKU_DELIMITER);
+        Log.d(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
+
+        HashMap<String, String> productBySku = new HashMap<String, String>();
+
+        for (String sku : itemsToCart) {
+            productBySku.put(sku, sku.split("-")[0]);
+        }
+        if (productBySku.size() != 0) {
+            showActivityProgress();
+            triggerAddAllItems(productBySku);
         }
     }
 
@@ -291,12 +327,13 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         itemRemoved_price_tracking = item.getPriceForTracking();
         itemRemoved_quantity = item.getQuantity();
         itemRemoved_rating = -1d;
-        
-        if(TextUtils.isEmpty(cartValue)){
+
+        if (TextUtils.isEmpty(cartValue)) {
             TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
             itemRemoved_cart_value = totalValue.toString();
-        } else itemRemoved_cart_value = cartValue;
-        
+        } else
+            itemRemoved_cart_value = cartValue;
+
         if (itemRemoved_price == null) {
             itemRemoved_price = item.getPriceVal().toString();
         }
@@ -307,12 +344,14 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             bundle.putBoolean(GetShoppingCartRemoveItemHelper.UPDATE_CART, false);
             triggerContentEventWithNoLoading(new GetShoppingCartRemoveItemHelper(), bundle, null);
         } else {
-            triggerContentEventProgress(new GetShoppingCartRemoveItemHelper(), bundle, responseCallback);
+            triggerContentEventProgress(new GetShoppingCartRemoveItemHelper(), bundle,
+                    responseCallback);
         }
     }
 
     private void triggerIsNativeCheckoutAvailable() {
-        triggerContentEventWithNoLoading(new GetNativeCheckoutAvailableHelper(), null, responseCallback);
+        triggerContentEventWithNoLoading(new GetNativeCheckoutAvailableHelper(), null,
+                responseCallback);
     }
 
     private void triggerSubmitVoucher(ContentValues values) {
@@ -325,6 +364,15 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         Bundle bundle = new Bundle();
         bundle.putParcelable(RemoveVoucherHelper.VOUCHER_PARAM, values);
         triggerContentEventProgress(new RemoveVoucherHelper(), bundle, responseCallback);
+    }
+
+    private void triggerAddAllItems(HashMap<String, String> values) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(GetShoppingCartAddMultipleItemsHelper.ADD_ITEMS, values);
+        // Trigger
+        triggerContentEventWithNoLoading(new GetShoppingCartAddMultipleItemsHelper(), bundle,
+                responseCallback);
+
     }
 
     /*
@@ -405,12 +453,13 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                         String title = getString(R.string.shoppingcart_alert_header);
                         String message = getString(R.string.shoppingcart_alert_message_no_items);
                         String buttonText = getString(R.string.ok_label);
-                        messageDialog = DialogGenericFragment.newInstance(false, true, false, title, message, buttonText, null, new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                messageDialog.dismiss();
-                            }
-                        });
+                        messageDialog = DialogGenericFragment.newInstance(false, true, false,
+                                title, message, buttonText, null, new OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        messageDialog.dismiss();
+                                    }
+                                });
                         messageDialog.show(getActivity().getSupportFragmentManager(), null);
                     }
                     break;
@@ -429,18 +478,23 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                 @Override
                 public void onClick(View v) {
                     String user_id = "";
-                    if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
+                    if (JumiaApplication.CUSTOMER != null
+                            && JumiaApplication.CUSTOMER.getIdAsString() != null) {
                         user_id = JumiaApplication.CUSTOMER.getIdAsString();
                     }
-                    TrackerDelegator.trackCall(getActivity().getApplicationContext(), user_id, JumiaApplication.SHOP_NAME);
+                    TrackerDelegator.trackCall(getActivity().getApplicationContext(), user_id,
+                            JumiaApplication.SHOP_NAME);
                     makeCall();
                 }
             });
         } else {
             mCallToOrderButton.setVisibility(View.GONE);
-            // Change buttonsContainer height from two vertical buttons to height to accomodate a single button
-            LinearLayout buttonsContainer = (LinearLayout) getView().findViewById(R.id.shopping_basket_buttons_container);
-            buttonsContainer.getLayoutParams().height = getResources().getDimensionPixelSize(R.dimen.button_container_height);
+            // Change buttonsContainer height from two vertical buttons to height to accomodate a
+            // single button
+            LinearLayout buttonsContainer = (LinearLayout) getView().findViewById(
+                    R.id.shopping_basket_buttons_container);
+            buttonsContainer.getLayoutParams().height = getResources().getDimensionPixelSize(
+                    R.dimen.button_container_height);
         }
     }
 
@@ -455,7 +509,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     }
 
     private void setCallPhone() {
-        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(
+                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, "");
         if ("".equalsIgnoreCase(mPhone2Call)) {
             mPhone2Call = getString(R.string.call_to_order_number);
@@ -463,15 +518,15 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
-        
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        
+
         Bundle params;
-        
+
         // Update cart info
         super.handleSuccessEvent(bundle);
 
@@ -503,7 +558,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             if (isAvailable) {
                 Log.d(TAG, "ON SUCCESS EVENT: NATIVE_CHECKOUT_AVAILABLE");
                 Bundle mBundle = new Bundle();
-                getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle, FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle,
+                        FragmentController.ADD_TO_BACK_STACK);
             } else {
                 Log.d(TAG, "ON SUCCESS EVENT: NOT NATIVE_CHECKOUT_AVAILABLE");
                 goToWebCheckout();
@@ -521,10 +577,11 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
             TrackerDelegator.trackProductRemoveFromCart(params);
             TrackerDelegator.trackLoadTiming(params);
-            
+
             if (!isRemovingAllItems) {
                 showFragmentContentContainer();
-                displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+                displayShoppingCart((ShoppingCart) bundle
+                        .getParcelable(Constants.BUNDLE_RESPONSE_KEY));
                 hideActivityProgress();
             }
             return true;
@@ -539,7 +596,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             return true;
         case GET_SHOPPING_CART_ITEMS_EVENT:
-            ShoppingCart shoppingCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            ShoppingCart shoppingCart = (ShoppingCart) bundle
+                    .getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             showFragmentContentContainer();
             params = new Bundle();
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
@@ -551,13 +609,13 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             params.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
             params.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
             if (JumiaApplication.CUSTOMER != null) {
-                params.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+                params.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
             }
             params.putParcelable(AdjustTracker.CART, shoppingCart);
-            
+
             TrackerDelegator.trackPage(TrackingPage.CART_LOADED, getLoadTime(), false);
             TrackerDelegator.trackPageForAdjust(TrackingPage.CART_LOADED, params);
-            
+
             // verify if "Call to Order" was used
             if (isCallInProgress) {
                 isCallInProgress = false;
@@ -568,6 +626,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             }
 
             return true;
+        case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
+            getBaseActivity().updateCartInfo();
+            hideActivityProgress();
+            if(JumiaApplication.INSTANCE.getCart() != null)
+                displayShoppingCart(JumiaApplication.INSTANCE.getCart());
+            break;
         default:
             showFragmentContentContainer();
             params = new Bundle();
@@ -602,10 +666,11 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                     public void onClick(View v) {
                         int id = v.getId();
                         if (id == R.id.button1) {
-                            
+
                             isRemovingAllItems = true;
 
-                            List<ShoppingCartItem> items = new ArrayList<ShoppingCartItem>(shoppingCart.getCartItems().values());
+                            List<ShoppingCartItem> items = new ArrayList<ShoppingCartItem>(
+                                    shoppingCart.getCartItems().values());
 
                             for (ShoppingCartItem item : items) {
                                 mBeginRequestMillis = System.currentTimeMillis();
@@ -631,21 +696,20 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     }
 
     protected boolean onErrorEvent(Bundle bundle) {
-        
+
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
-        
+
         hideActivityProgress();
-        
-        
+
         // Validate generic errors
         if (super.handleErrorEvent(bundle)) {
             return true;
         }
-        
+
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
         case NATIVE_CHECKOUT_AVAILABLE:
@@ -657,10 +721,15 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             voucherCode.setText("");
             voucherError.setVisibility(View.VISIBLE);
             // voucherDivider.setBackgroundColor(R.color.red_middle);
-            //hideActivityProgress();
+            // hideActivityProgress();
             break;
         case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-            //hideActivityProgress();
+            // hideActivityProgress();
+            break;
+        case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
+            hideActivityProgress();
+            if(JumiaApplication.INSTANCE.getCart() != null)
+                displayShoppingCart(JumiaApplication.INSTANCE.getCart());
             break;
         default:
             break;
@@ -680,10 +749,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         View voucherContainer = getView().findViewById(R.id.voucher_info_container);
         // Get and set the cart value
         setTotal(cart);
-        
-        //GTM TRACKER
+
+        // GTM TRACKER
         TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getPriceForTracking());
-        
+
         // Set voucher
         String couponDiscount = cart.getCouponDiscount();
         String couponCope = cart.getCouponCode();
@@ -691,7 +760,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             double couponDiscountValue = Double.parseDouble(couponDiscount);
             if (couponDiscountValue > 0) {
                 // Fix NAFAMZ-7848
-                voucherValue.setText("- " + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue).toString()));
+                voucherValue.setText("- "
+                        + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue)
+                                .toString()));
                 voucherContainer.setVisibility(View.VISIBLE);
 
                 if (!TextUtils.isEmpty(couponCope)) {
@@ -720,12 +791,14 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
         if (!cart.isSumCosts()) {
             extraCostsMain.setVisibility(View.VISIBLE);
-            extraCostsValue.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart.getExtraCosts()).toString()));
+            extraCostsValue.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart
+                    .getExtraCosts()).toString()));
         } else {
             extraCostsMain.setVisibility(View.GONE);
         }
 
-        String articleString = getResources().getQuantityString(R.plurals.shoppingcart_text_article, cart.getCartCount());
+        String articleString = getResources().getQuantityString(
+                R.plurals.shoppingcart_text_article, cart.getCartCount());
         articlesCount.setText(cart.getCartCount() + " " + articleString);
         if (items.size() == 0) {
             showNoItems();
@@ -765,13 +838,15 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                 }
 
                 // Fix NAFAMZ-7848
-                unreduced_cart_price = unreduced_cart_price.add(new BigDecimal(item.getPriceVal() * item.getQuantity()));
+                unreduced_cart_price = unreduced_cart_price.add(new BigDecimal(item.getPriceVal()
+                        * item.getQuantity()));
                 Log.e(TAG, "unreduced_cart_price= " + unreduced_cart_price);
             }
 
             TextView priceUnreduced = (TextView) getView().findViewById(R.id.price_unreduced);
             if (cartHasReducedItem && unreduced_cart_price.intValue() > 0) {
-                priceUnreduced.setText(CurrencyFormatter.formatCurrency(unreduced_cart_price.toString()));
+                priceUnreduced.setText(CurrencyFormatter.formatCurrency(unreduced_cart_price
+                        .toString()));
                 priceUnreduced.setPaintFlags(priceUnreduced.getPaintFlags()
                         | Paint.STRIKE_THRU_TEXT_FLAG);
                 priceUnreduced.setVisibility(View.VISIBLE);
@@ -794,21 +869,24 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
             HashMap<String, String> priceRules = cart.getPriceRules();
             if (priceRules != null && priceRules.size() > 0) {
-                LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
+                LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(
+                        R.id.price_rules_container);
                 priceRulesContainer.removeAllViews();
                 priceRulesContainer.setVisibility(View.VISIBLE);
                 LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
                 Set<String> priceRulesKeys = priceRules.keySet();
                 for (String key : priceRulesKeys) {
-                    View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element, priceRulesContainer, false);
+                    View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element,
+                            priceRulesContainer, false);
                     ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
-                    ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-" + CurrencyFormatter.formatCurrency(priceRules.get(key)));
+                    ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-"
+                            + CurrencyFormatter.formatCurrency(priceRules.get(key)));
                     priceRulesContainer.addView(priceRuleElement);
                 }
             }
 
             hideNoItems();
-            TrackerDelegator.trackPage(TrackingPage.FILLED_CART, getLoadTime(),false);
+            TrackerDelegator.trackPage(TrackingPage.FILLED_CART, getLoadTime(), false);
 
         }
     }
@@ -896,9 +974,11 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         }
     }
 
-    public View getView(final int position, ViewGroup parent, LayoutInflater mInflater, CartItemValues item) {
+    public View getView(final int position, ViewGroup parent, LayoutInflater mInflater,
+            CartItemValues item) {
 
-        View view = mInflater.inflate(R.layout.shopping_basket_product_element_container, parent, false);
+        View view = mInflater.inflate(R.layout.shopping_basket_product_element_container, parent,
+                false);
 
         final Item prodItem = new Item();
         prodItem.itemValues = item;
@@ -922,7 +1002,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
         String imageUrl = prodItem.itemValues.image;
 
-        RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar, R.drawable.no_image_small);
+        RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
+                R.drawable.no_image_small);
 
         if (!prodItem.itemValues.price.equals(prodItem.itemValues.price_disc)) {
             prodItem.priceDisc.setText(prodItem.itemValues.price_disc);
@@ -930,10 +1011,12 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
             prodItem.priceView.setText(prodItem.itemValues.price);
             prodItem.priceView.setVisibility(View.VISIBLE);
-            prodItem.priceView.setPaintFlags(prodItem.priceView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            prodItem.priceView.setPaintFlags(prodItem.priceView.getPaintFlags()
+                    | Paint.STRIKE_THRU_TEXT_FLAG);
             prodItem.priceView.setTextColor(getResources().getColor(R.color.grey_middlelight));
 
-            prodItem.discountPercentage.setText("-" + prodItem.itemValues.discount_value.intValue() + "%");
+            prodItem.discountPercentage.setText("-" + prodItem.itemValues.discount_value.intValue()
+                    + "%");
             prodItem.discountPercentage.setVisibility(View.VISIBLE);
         } else {
             prodItem.priceDisc.setText(prodItem.itemValues.price);
@@ -984,7 +1067,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                     goToProducDetails((String) v.getTag(R.id.target_url));
                 } catch (NullPointerException e) {
                     Log.w(TAG, "WARNING: NPE ON GET CLICKED TAG");
-                } 
+                }
             }
         });
 
@@ -995,12 +1078,14 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
      * showNoItems update the layout when basket has no items
      */
     public void showNoItems() {
-        showFragmentEmpty(R.string.order_no_items, R.drawable.img_emptycart, R.string.continue_shopping, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
-        });
+        showFragmentEmpty(R.string.order_no_items, R.drawable.img_emptycart,
+                R.string.continue_shopping, new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getBaseActivity().onSwitchFragment(FragmentType.HOME,
+                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    }
+                });
 
         TrackerDelegator.trackPage(TrackingPage.EMPTY_CART, getLoadTime(), false);
     }
@@ -1012,24 +1097,28 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
      */
     private void goToProducDetails(String productUrl) {
         // Log.d(TAG, "CART COMPLETE PRODUCT URL: " + items.get(position).getProductUrl());
-        if (TextUtils.isEmpty(productUrl)) return;
+        if (TextUtils.isEmpty(productUrl))
+            return;
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, productUrl);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle,
+                FragmentController.ADD_TO_BACK_STACK);
     }
 
     private void goToWebCheckout() {
         Log.d(TAG, "GOTO WEB CHECKOUT");
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
+                FragmentType.CHECKOUT_BASKET);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle,
+                FragmentController.ADD_TO_BACK_STACK);
     }
 
     private void checkMinOrderAmount() {
         TrackerDelegator.trackCheckout(items);
-        
+
         String restbase = getResources().getString(R.string.global_server_api_version);
         if (restbase != null) {
             if (restbase.contains("mobapi/v1")) {
@@ -1085,7 +1174,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             }
         };
 
-        dialogList = DialogListFragment.newInstance(this, listener, ID_CHANGE_QUANTITY, getString(R.string.shoppingcart_choose_quantity), quantities, (int) crrQuantity);
+        dialogList = DialogListFragment.newInstance(this, listener, ID_CHANGE_QUANTITY,
+                getString(R.string.shoppingcart_choose_quantity), quantities, (int) crrQuantity);
         dialogList.show(getActivity().getSupportFragmentManager(), null);
     }
 
@@ -1096,23 +1186,22 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         changeItemQuantityInShoppingCart(items);
     }
 
-    private void trackAddToCartGTM(ShoppingCartItem item, int quantity){
+    private void trackAddToCartGTM(ShoppingCartItem item, int quantity) {
         try {
             double prods = item.getQuantity();
             Bundle params = new Bundle();
-            
-            
+
             params.putString(TrackerDelegator.SKU_KEY, item.getConfigSimpleSKU());
-            
+
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
             params.putDouble(TrackerDelegator.PRICE_KEY, item.getPriceForTracking());
             params.putLong(TrackerDelegator.QUANTITY_KEY, 1);
-            params.putDouble(TrackerDelegator.RATING_KEY,-1d);
-            params.putString(TrackerDelegator.NAME_KEY,item.getName());
+            params.putDouble(TrackerDelegator.RATING_KEY, -1d);
+            params.putString(TrackerDelegator.NAME_KEY, item.getName());
 
             params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
-            
-            if(quantity > prods){
+
+            if (quantity > prods) {
                 prods = quantity - prods;
                 params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.SHOPPINGCART);
                 for (int i = 0; i < prods; i++) {
@@ -1128,9 +1217,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         } catch (Exception e) {
             e.printStackTrace();
         }
- 
+
     }
-    
+
     private void changeItemQuantityInShoppingCart(List<ShoppingCartItem> items) {
         Bundle bundle = new Bundle();
         ContentValues values = new ContentValues();
@@ -1138,7 +1227,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             values.put("qty_" + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
         }
         bundle.putParcelable(GetShoppingCartChangeItemQuantityHelper.CART_ITEMS, values);
-        triggerContentEventProgress(new GetShoppingCartChangeItemQuantityHelper(), bundle, responseCallback);
+        triggerContentEventProgress(new GetShoppingCartChangeItemQuantityHelper(), bundle,
+                responseCallback);
     }
 
     IResponseCallback responseCallback = new IResponseCallback() {
@@ -1175,13 +1265,15 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
                     Log.i(TAG, "code1coupon : " + mVoucher);
-                    if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
+                    if (getString(R.string.voucher_use).equalsIgnoreCase(
+                            couponButton.getText().toString())) {
                         triggerSubmitVoucher(mContentValues);
                     } else {
                         triggerRemoveVoucher(mContentValues);
                     }
                 } else {
-                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message),
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -1190,16 +1282,19 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id == R.id.fragment_root_retry_button){
-          Bundle bundle = new Bundle();
-          if(null != JumiaApplication.CUSTOMER){
-              bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
-              getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-              
-          } else {
-              getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-//              restartAllFragments();
-          }
+        if (id == R.id.fragment_root_retry_button) {
+            Bundle bundle = new Bundle();
+            if (null != JumiaApplication.CUSTOMER) {
+                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
+                        FragmentType.SHOPPING_CART);
+                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle,
+                        FragmentController.ADD_TO_BACK_STACK);
+
+            } else {
+                getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle,
+                        FragmentController.ADD_TO_BACK_STACK);
+                // restartAllFragments();
+            }
         }
     }
 }

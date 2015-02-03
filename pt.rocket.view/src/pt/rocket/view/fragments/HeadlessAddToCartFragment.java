@@ -31,9 +31,11 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to add items to cart from deep link
+ * @deprecated due to a better way of adding items to cart. {@see ShoppingCartFragment#addItemsToCart(String)}
  * @author sergiopereira
  * 
  */
+@Deprecated
 public class HeadlessAddToCartFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(HeadlessAddToCartFragment.class);

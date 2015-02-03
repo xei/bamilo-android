@@ -303,16 +303,17 @@ public class DeepLinkManager {
         // Default link 
         String simpleSkuArray = null;
         FragmentType fragmentType = FragmentType.SHOPPING_CART;
+        Bundle bundle = new Bundle();
         // Validate if has multiple SKUs
         if(segments.size() > 2) {
             // Add SKUs for HEADLESS_CART
             simpleSkuArray = segments.get(PATH_DATA_POS);
-            fragmentType = FragmentType.HEADLESS_CART;
+//            fragmentType = FragmentType.HEADLESS_CART;
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, simpleSkuArray);
             Log.i(TAG, "DEEP LINK TO CART WITH: " + simpleSkuArray + " " + fragmentType.toString());
         }
         // Create bundle for fragment
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, simpleSkuArray);
+        
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         bundle.putSerializable(FRAGMENT_TYPE_TAG, fragmentType);
