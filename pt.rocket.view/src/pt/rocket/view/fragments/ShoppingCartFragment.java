@@ -139,8 +139,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
     private boolean isRemovingAllItems = false;
 
-    private boolean fromDeeplink = false;
-
     private double itemRemoved_price_tracking = 0d;
 
     private long itemRemoved_quantity;
@@ -150,8 +148,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     private String itemRemoved_cart_value;
 
     private static String cartValue = "";
-
-    private String[] mItemsToCart;
 
     public static class CartItemValues {
         // public Boolean is_in_wishlist;
@@ -250,6 +246,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             if (getArguments() != null
                     && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
                 addItemsToCart(getArguments().getString(ConstantsIntentExtra.CONTENT_URL));
+                getArguments().remove(ConstantsIntentExtra.CONTENT_URL);
             } else {
                 mBeginRequestMillis = System.currentTimeMillis();
                 triggerGetShoppingCart();
@@ -627,10 +624,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
 
             return true;
         case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
-            getBaseActivity().updateCartInfo();
-            hideActivityProgress();
-            if(JumiaApplication.INSTANCE.getCart() != null)
-                displayShoppingCart(JumiaApplication.INSTANCE.getCart());
+            onAddItemsToShoppingCartRequestSuccess(bundle);
             break;
         default:
             showFragmentContentContainer();
@@ -644,6 +638,32 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         return true;
     }
 
+    private void onAddItemsToShoppingCartRequestError(Bundle bundle){
+        hideActivityProgress();
+        if(JumiaApplication.INSTANCE.getCart() != null)
+            displayShoppingCart(JumiaApplication.INSTANCE.getCart());
+        Toast.makeText(getBaseActivity(), getString(R.string.some_products_not_added), Toast.LENGTH_LONG).show();
+        
+    }
+    
+    private void onAddItemsToShoppingCartRequestSuccess(Bundle bundle){
+        hideActivityProgress();
+        if (bundle.containsKey(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY)) {
+            ArrayList<String> notAdded = bundle
+                    .getStringArrayList(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            
+            if (notAdded != null && !notAdded.isEmpty()) {
+                Toast.makeText(getBaseActivity(), R.string.some_products_not_added,
+                        Toast.LENGTH_SHORT).show();
+                
+            }
+        }
+        
+        getBaseActivity().updateCartInfo();
+        if(JumiaApplication.INSTANCE.getCart() != null)
+            displayShoppingCart(JumiaApplication.INSTANCE.getCart());
+    }
+    
     /**
      * Present a dialog to remove all items from cart <br>
      * (Expectly used after user clicks "Call to Order")
@@ -727,9 +747,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             // hideActivityProgress();
             break;
         case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
-            hideActivityProgress();
-            if(JumiaApplication.INSTANCE.getCart() != null)
-                displayShoppingCart(JumiaApplication.INSTANCE.getCart());
+            onAddItemsToShoppingCartRequestError(bundle);
             break;
         default:
             break;
