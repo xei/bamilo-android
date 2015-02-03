@@ -7,7 +7,7 @@
     <pt.rocket.components.customfontviews.TextView
         android:id="@+id/offers_label_title"
         style="@style/rounded_box_title_grey"
-        android:text="@string/product_other_sellers_title" />
+        android:text="@string/same_product_from_other_sellers" />
 
     <View
         android:id="@+id/divider"
@@ -33,7 +33,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginLeft="7dp"
             android:layout_marginStart="7dp"
-            android:text="@string/product_other_sellers"
+            android:text="@string/other_sellers"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_title" />
 
@@ -57,7 +57,7 @@
             android:layout_marginLeft="7dp"
             android:layout_marginStart="7dp"
             android:gravity="center_vertical"
-            android:text="@string/product_offer_from"
+            android:text="@string/from"
             android:textColor="@color/grey_middlelight"
             android:textSize="@dimen/text_subtitle" />
 

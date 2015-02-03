@@ -30,7 +30,7 @@
         android:fontFamily="roboto_regular"
         android:gravity="center"
         android:singleLine="false"
-        android:text="@string/connect_to_internet"
+        android:text="@string/internet_no_connection_details_label"
         android:textColor="@color/text_root"
         android:textSize="@dimen/text_s" />
 

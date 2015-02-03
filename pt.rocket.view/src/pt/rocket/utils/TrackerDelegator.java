@@ -1126,6 +1126,8 @@ public class TrackerDelegator {
      * 
      */
     public static void trackAppOpenAdjust(Context context, long launchtime) {
+        if(ShopSelector.getShopId() == null)
+            return;
         // Get device info
         Bundle info = DeviceInfoHelper.getInfo(context);     
         // Adjust
@@ -1133,6 +1135,7 @@ public class TrackerDelegator {
         params.putLong(AdjustTracker.BEGIN_TIME, launchtime);
         params.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(context, TrackingEvent.APP_OPEN, params);
+        GTMManager.trackAdjustInstallSource(context);
     }
     
     /**

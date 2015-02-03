@@ -150,7 +150,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/seller_divider"
             android:layout_marginRight="7dp"
-            android:text="@string/product_other_sellers"
+            android:text="@string/other_sellers"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_title" />
 
@@ -173,7 +173,7 @@
             android:layout_marginRight="7dp"
             android:layout_marginTop="5dp"
             android:gravity="center_vertical"
-            android:text="@string/product_offer_from"
+            android:text="@string/from"
             android:textColor="@color/grey_middlelight"
             android:textSize="@dimen/text_subtitle" />
 

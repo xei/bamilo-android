@@ -1,6 +1,7 @@
 package pt.rocket.framework.tracking;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -16,7 +17,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 
 import com.google.android.gms.common.api.PendingResult;
@@ -54,6 +54,8 @@ public class GTMManager {
     private TagManager mTagManager;
 
     private final int REFRESH_INTERVAL = 1000 * 60 * 60; // 60 minutes
+    
+    private Context mContext;
 
     private static ArrayList<Map<String, Object>> pendingEvents = new ArrayList<Map<String, Object>>();
 
@@ -78,6 +80,8 @@ public class GTMManager {
         isContainerAvailable = false;
 
         mTagManager.setVerboseLoggingEnabled(context.getResources().getBoolean(R.bool.gtm_debug));
+        
+        mContext = context;
         
         dataLayer = TagManager.getInstance(context).getDataLayer();
         
@@ -132,7 +136,7 @@ public class GTMManager {
         Log.d(TAG, "gtmTrackAppOpen campaignId:"+campaignId);
         Log.d(TAG, "gtmTrackAppOpen source:"+source);
         Log.d(TAG, "gtmTrackAppOpen medium:"+medium);
-
+        
         Map<String, Object> message = null;
         String operator = "";
         operator = deviceInfo.getString(Constants.INFO_SIM_OPERATOR);        
@@ -789,5 +793,34 @@ public class GTMManager {
         }
     }
     
+    /**
+     * method responsible for sending the adjust install information to GTM
+     * @param context
+     */
+    public static void trackAdjustInstallSource(Context context){
+        if(context == null)
+            return;
+        
+        HashMap<String, Object> parameters = new HashMap<String, Object>();
+        
+        SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
+        if(settings.contains(GTMKeys.INSTALLNETWORK) && settings.getString(GTMKeys.INSTALLNETWORK, null) != null)
+            parameters.put(GTMKeys.INSTALLNETWORK, settings.getString(GTMKeys.INSTALLNETWORK, ""));
+
+            
+        if(settings.contains(GTMKeys.INSTALLADGROUP) && settings.getString(GTMKeys.INSTALLADGROUP, null) != null)
+            parameters.put(GTMKeys.INSTALLADGROUP, settings.getString(GTMKeys.INSTALLADGROUP, ""));
+
+        
+        if(settings.contains(GTMKeys.INSTALLCAMPAIGN) && settings.getString(GTMKeys.INSTALLCAMPAIGN, null) != null)
+            parameters.put(GTMKeys.INSTALLCAMPAIGN, settings.getString(GTMKeys.INSTALLCAMPAIGN, ""));
+
+        
+        if(settings.contains(GTMKeys.INSTALLCREATIVE) && settings.getString(GTMKeys.INSTALLCREATIVE, null) != null)
+            parameters.put(GTMKeys.INSTALLCREATIVE, settings.getString(GTMKeys.INSTALLCREATIVE, ""));
+
+        if(dataLayer != null)
+            dataLayer.pushEvent(GTMEvents.GTM_APP_INSTALL, parameters);
+    }
     
 }

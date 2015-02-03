@@ -21,6 +21,7 @@ import pt.rocket.framework.objects.CustomerGender;
 import pt.rocket.framework.objects.PurchaseItem;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
+import pt.rocket.framework.tracking.GTMEvents.GTMKeys;
 import pt.rocket.framework.utils.Constants;
 import android.app.Activity;
 import android.content.Context;
@@ -40,6 +41,8 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import com.adjust.sdk.Adjust;
+import com.adjust.sdk.OnFinishedListener;
+import com.adjust.sdk.ResponseData;
 
 import de.akquinet.android.androlog.Log;
 
@@ -259,12 +262,36 @@ public class AdjustTracker {
         Log.i(TAG, "ADJUST is APP_LAUNCH " + Adjust.isEnabled());
     }
     
-    public static void onResume(Activity activity) {
+    public static void onResume(final Activity activity) {
         Adjust.onResume(activity);
+        Adjust.setOnFinishedListener(new OnFinishedListener() {
+            
+            @Override
+            public void onFinishedTracking(ResponseData responseData) {
+                if(responseData.wasSuccess()){
+                    saveResponseDataInfo(activity,responseData.getAdgroup(),responseData.getNetwork(),responseData.getCampaign(),responseData.getCreative());
+                }
+            }
+        });
     }
 
     public static void onPause(){
         Adjust.onPause();
+    }
+    
+    public static void saveResponseDataInfo(Activity activity,String adGroup, String network, String campaign, String creative){
+        
+        if(activity == null)
+            return;
+            
+        SharedPreferences settings = activity.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(GTMKeys.INSTALLNETWORK, network);
+        editor.putString(GTMKeys.INSTALLADGROUP, adGroup);
+        editor.putString(GTMKeys.INSTALLCAMPAIGN, campaign);
+        editor.putString(GTMKeys.INSTALLCREATIVE, creative);
+        editor.commit();
+        
     }
     
     public void trackScreen(TrackingPage screen, Bundle bundle) {

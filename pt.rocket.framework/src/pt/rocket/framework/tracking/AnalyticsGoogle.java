@@ -115,11 +115,12 @@ public class AnalyticsGoogle {
 		// Set key
 		updateTracker();
 		// Enable Display Advertising features
-		mTracker.enableAdvertisingIdCollection(context.getResources().getBoolean(R.bool.ga_advertisingIDCollection)); 
+		//XXX null if theres no ga_id from API
+		if(mTracker!= null)
+		    mTracker.enableAdvertisingIdCollection(context.getResources().getBoolean(R.bool.ga_advertisingIDCollection)); 
 		
 		Log.i(TAG, "TRACKING SUCCESSFULLY STEUP");
 	}
-	
 	/**
 	 * Manual Dispatch
 	 * @author sergiopereira

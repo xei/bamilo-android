@@ -14,6 +14,7 @@ import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.tracking.Ad4PushTracker;
+import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.utils.MyMenuItem;
 import pt.rocket.utils.NavigationAction;
@@ -199,13 +200,13 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "ON RESUME");
+        Log.d(TAG, "ON RESUME");
 
         // AD4Push activity tracking for in-app messages
         //Ad4PushTracker.startActivityForInAppMessages(this);
         Ad4PushTracker.get().startActivity(this);
         //Ad4PushTracker.setPushNotificationLocked(true);
-        //AdjustTracker.onResume(this);
+        AdjustTracker.onResume(this);
     }
     
     /*

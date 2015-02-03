@@ -371,7 +371,7 @@
     <string name="shoppingcart_remove_products">Supprimé les produits dans la Cart?</string>
     <string name="track_your_order_tip">Recherche votre numéro de commande</string>
     <string name="your_order">Votre commande</string>
-    <string name="reviews_empty">Ce produit n\'a pas de notes!</string>
+    <string name="reviews_empty">Ce produit n\'a pas de avis!</string>
     <string name="checkout_label">Checkout</string>
     <string name="campaigns_label">Offres</string>
     <string name="order_status_label">Statut de la commande</string>
@@ -391,5 +391,26 @@
 	<string name="string_appearance">Apparence</string>
 	<string name="string_rating">Note</string>
 	<string name="string_with_discount_only">Avec réduction seulement</string>
+	<string name="pickup_station_address">Address: </string>
+	<string name="pickup_station_city">Ville: </string>
+	<string name="pickup_station_opening_hours">Heures d\'ouverture: </string>
+	
+	<string name="product_delivery_time">Livraison sous:</string>
+	<string name="product_delivery_days">Jours</string>
+    <string name="other_sellers">autres Vendeurs</string>
+    <string name="same_product_from_other_sellers">Même produit d\'autres vendeurs</string>
+    <string name="from">à partir de </string>
+	<string name="shipping_time">Délai de livraison: </string>
+	<string name="shipping_fee">Frais de livraison: </string>
+	<string name="product_offer_from_title">Offres de </string>
+	<string name="bundle_title">Produits fréquemment achetés ensemble</string>
+	<string name="bundle_total_price">Prix total:</string>
+	<string name="try_again_retry">Réessayer</string>
+    <string name="internet_no_connection_details_label">Un problème de connection s\'est produit, Veuillez essayer à nouveau</string>
+    <string name="string_ratings">Notes</string>
+    <string name="format_discount_percentage">-%1$s%%</string>
+    <string name="rating_option_error_message">Toutes les options de notation doivent être remplies</string>
+    <string name="write_full_review">Donnez votre avis complet</string>
+    <string name="product_sold_by">Vendu par:</string>
 
 </resources>

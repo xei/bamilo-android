@@ -256,6 +256,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         }
         
         setLoginBottomLayout();
+        
     }
 
     @Override

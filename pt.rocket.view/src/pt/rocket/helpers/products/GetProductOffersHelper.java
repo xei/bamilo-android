@@ -53,13 +53,7 @@ public class GetProductOffersHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d("TRACK", "parseResponseBundle GetProductOffersHelper");
-        try {
-            Log.d("OFFER", "OBJECT:"+jsonObject.toString(4));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-            ProductOffers productOffers = new ProductOffers(jsonObject);
-
+        ProductOffers productOffers = new ProductOffers(jsonObject);
        
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, productOffers);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_OFFERS);

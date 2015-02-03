@@ -397,27 +397,28 @@
     <string name="category_filter_error">It was not possible to apply category filter</string>
     
     <!-- new in 2.3 -->
-    <string name="product_sold_by">Sold by:</string>
     <string name="product_delivery_time">Delivery Within:</string>
     <string name="product_delivery_days">days</string>
-    <string name="product_other_sellers">Other Sellers</string>
-    <string name="product_other_sellers_title">Same Product from Other Sellers</string>
-    <string name="product_offer_from">From </string>
-    <string name="product_offer_from_title">Offers from</string>
+    <string name="other_sellers">Other Sellers</string>
+    <string name="same_product_from_other_sellers">Same Product from Other Sellers</string>
+    <string name="from">From </string>
+    <string name="shipping_time">Shipping Time: </string>
+	<string name="shipping_fee">Shipping Fee: </string>
+	<string name="product_offer_from_title">Offers from</string>
 	<string name="bundle_title">Frequently Bought Together</string>
 	<string name="bundle_total_price">Total Price:</string>
 	<string name="try_again_retry">Try Again</string>
-    <string name="connect_to_internet">An internet error occurred, please try again.</string>
+    <string name="internet_no_connection_details_label">An internet error occurred, please try again.</string>
 	<string name="string_ratings">ratings</string>
 	<string name="pickup_station_address">Address: </string>
 	<string name="pickup_station_city">City: </string>
 	<string name="pickup_station_opening_hours">Opening Hours: </string>
 	<string name="format_discount_percentage">-%1$s%%</string>
+	<string name="rating_option_error_message">All ratings options must be filled</string>
 	<string name="added_bundle_to_shop_cart_dialog_text">Products were added to shopping cart</string>
 	<string name="write_full_review">Write a Full Review</string>
 	<string name="rating_option_error_message">All ratings options must be filled</string>
-	<string name="shipping_time">Shipping Time: </string>
-	<string name="shipping_fee">Shipping Fee: </string>
+	<string name="product_sold_by">Sold by:</string>
 	<string name="review_this_seller">Review this seller now!</string>
 	<string name="write_review">Write a Review</string>
 </resources>

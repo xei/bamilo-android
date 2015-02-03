@@ -3,6 +3,7 @@
  */
 package pt.rocket.framework.tracking;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,6 +21,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4S;
@@ -29,12 +31,17 @@ import com.ad4screen.sdk.analytics.Lead;
 
 import de.akquinet.android.androlog.Log;
 
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.ads.identifier.AdvertisingIdClient.Info;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+
 /**
  * @author nunocastro
  * @modified sergiopereira
  */
 public class Ad4PushTracker {
-    
+
     private final static String TAG = Ad4PushTracker.class.getSimpleName();
 
     private boolean isEnabled = false;
@@ -119,8 +126,10 @@ public class Ad4PushTracker {
 
     private static final String IS_ENABLED = "Enabled";
     private static final String AD4PUSH_PREFERENCES_PERSIST = "Ad4PushPreferencesPersist";
-    
+
     HashMap<TrackingPage, String> screens;
+
+    private Handler handler;
 
     /**
      * Get singleton instance of Ad4PushTracker.
@@ -188,12 +197,11 @@ public class Ad4PushTracker {
             Log.i(TAG, "Ad4PSUH Startup -> INITITALIZED");
             mA4S = A4S.get(mContext);
             boolean isActive = getActiveAd4Push(mContext);
-//            setPushNotificationLocked(!isActive);
-//            setInAppDisplayLocked(!isActive);
-//            stopingSDK(mContext,!isActive);
+            // setPushNotificationLocked(!isActive);
+            // setInAppDisplayLocked(!isActive);
+            // stopingSDK(mContext,!isActive);
             setGCMEnabled(isActive);
             setInAppDisplayLocked(!isActive);
-            
             
         }
     }
@@ -246,7 +254,7 @@ public class Ad4PushTracker {
      * @author sergiopereira
      */
     public void setPushNotificationLocked(boolean bool) {
-         if (null != mA4S && isEnabled) {
+        if (null != mA4S && isEnabled) {
             Log.d(TAG, "LOCK PUSH NOTIFICATIONS: " + bool);
             mA4S.setPushNotificationLocked(bool);
         }
@@ -271,9 +279,10 @@ public class Ad4PushTracker {
             mA4S.putState(VIEW_STATE, view);
         }
     }
-    
+
     /**
      * Stop all services from ad4push SDK
+     * 
      * @param context
      * @param isToStop
      */
@@ -286,7 +295,10 @@ public class Ad4PushTracker {
 
     /**
      * Enables or disables GCM Push notifications for this device.
-     * @param enabled - True to enable push and try to register to GCM. False to unregister from GCM
+     * 
+     * @param enabled
+     *            - True to enable push and try to register to GCM. False to
+     *            unregister from GCM
      */
     private void setGCMEnabled(boolean enabled) {
         if (null != mA4S) {
@@ -294,8 +306,7 @@ public class Ad4PushTracker {
             mA4S.setGCMEnabled(enabled);
         }
     }
-    
-    
+
     /**
      * Clear the shared prefs.
      * 
@@ -398,10 +409,14 @@ public class Ad4PushTracker {
             prefs.putString(USER_FIRST_NAME, customerName);
             prefs.putString(USER_DOB, customerDob);
             prefs.putString(USER_GENDER, gender);
+//            prefs.putString(USER_GENDER, "xxxxxx");
+            // TODO TO MOVE
+            storeGaIdOnAccengage();
+            
             mA4S.updateDeviceInfo(prefs);
             // Track event
             mA4S.trackEvent(EVENT_LOGIN, "loginUserID=" + customerId);
-            Log.i(TAG, "TRACK LOGIN: " + prefs.toString());
+            Log.d(TAG, "TRACK LOGIN: " + prefs.toString());
         }
     }
 
@@ -786,5 +801,38 @@ public class Ad4PushTracker {
         editor.commit();
 
         Ad4PushTracker.startup(context);
+    }
+
+    /**
+     * function responsible of storing GPS id in the Accengage database
+     */
+    public void storeGaIdOnAccengage() {
+
+        final Runnable r = new Runnable() {
+            public void run() {
+                try {
+                    Info adInfo = AdvertisingIdClient.getAdvertisingIdInfo(mContext);
+                    String id = adInfo.getId();
+                    Bundle bundle = new Bundle();
+//                    Log.e("com.ad4screen.sdk","GPS ID:"+id);
+//                    bundle.putString("testField", "test");
+                    bundle.putString("gps_adid", id);
+//                    bundle.putString(USER_GENDER, "oooooo");
+//                    Log.e("com.ad4screen.sdk","storeGaIdOnAccengage:"+bundle.toString());
+                    mA4S.updateDeviceInfo(bundle);
+                    
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Thread thread = new Thread(r);
+        thread.start();
     }
 }

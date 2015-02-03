@@ -464,7 +464,6 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
         triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, responseCallback);
         
-        //TODO server in maintnance, DID NO TESTED THE TRACK, waiting for server
         // GA OFFER TRACKING              
         Log.d("TRACK","SIMLPE SKU:"+simpleSKU+" PRICE:"+price);
         TrackerDelegator.trackAddOfferToCart(simpleSKU,price);

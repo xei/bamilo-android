@@ -34,6 +34,7 @@ public class GTMEvents {
     public static String GTM_CHOOSE_PAYMENT = "choosePayment";
     public static String GTM_FAILED_PAYMENT = "failedPayment";
     public static String GTM_CLOSE_APP = "closeApp";
+    public static String GTM_APP_INSTALL = "appInstall";
         
 
     public static class GTMKeys {
@@ -113,6 +114,11 @@ public class GTMEvents {
         public static String PAGENUMBER = "pageNumber"; 
         
         public static String ADDRESSCORRECT = "addressCorrect"; 
+        
+        public static String INSTALLNETWORK = "installNetwork"; 
+        public static String INSTALLADGROUP = "installAdgroup"; 
+        public static String INSTALLCAMPAIGN = "installCampaign"; 
+        public static String INSTALLCREATIVE = "installCreative"; 
         
     }
 
