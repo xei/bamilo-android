@@ -518,6 +518,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
      *            brands and error messages
      */
     public synchronized void onErrorSearchResult(FeaturedBox featuredBox) {
+        if(mFeaturedBox != null)
+            return;
         // Get current view
         View view = getView();
         // Validate
@@ -545,8 +547,9 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             String searchTips = featuredBox.getSearchTips();
             // only process searchTips if is available
             if (!TextUtils.isEmpty(searchTips)) {
+                view.findViewById(R.id.no_results_search_tips_layout).setVisibility(View.VISIBLE);
                 TextView textViewSearchTips = (TextView) view.findViewById(R.id.no_results_search_tips_text);
-
+                textViewSearchTips.setVisibility(View.VISIBLE);
                 // set searchTips in bold if is converted
                 SpannableStringBuilder spannableSearchTips = getSpannableSearchTips(searchTips);
                 if (spannableSearchTips != null) {
@@ -566,17 +569,23 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             if (!TextUtils.isEmpty(productsTitle)) {
                 ((TextView) view.findViewById(R.id.featured_products_title)).setText(productsTitle);
             }
-
-            view.findViewById(R.id.featured_products).setVisibility(View.VISIBLE);
-            generateFeaturedProductsLayout(featuredBox.getProducts(), partialSize);
-
+            
+            ArrayList<FeaturedItem> featureBoxProducts = featuredBox.getProducts();
+            if(featureBoxProducts != null && !featureBoxProducts.isEmpty()){
+                view.findViewById(R.id.featured_products).setVisibility(View.VISIBLE);
+                generateFeaturedProductsLayout(featureBoxProducts, partialSize);
+            }
+            
             String brandsTitle = featuredBox.getBrandsTitle();
             if (!TextUtils.isEmpty(brandsTitle)) {
                 ((TextView) view.findViewById(R.id.featured_brands_title)).setText(brandsTitle);
             }
-
-            view.findViewById(R.id.featured_brands).setVisibility(View.VISIBLE);
-            generateFeaturedBrandsLayout(featuredBox.getBrands(), partialSize);
+            
+            ArrayList<FeaturedItem> featureBoxBrands = featuredBox.getBrands();
+            if(featureBoxBrands != null && !featureBoxBrands.isEmpty()){
+                view.findViewById(R.id.featured_brands).setVisibility(View.VISIBLE);
+                generateFeaturedBrandsLayout(featureBoxBrands, partialSize);
+            }
 
             String noticeMessage = featuredBox.getNoticeMessage();
             if (!TextUtils.isEmpty(noticeMessage)) {
@@ -584,6 +593,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             }
         } else {
             Log.e(TAG, "No featureBox!");
+            showContinueShopping();
         }
     }
 

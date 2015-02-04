@@ -1095,7 +1095,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
           } else if (errorCode == ErrorCode.HTTP_STATUS) {
                 if(getParentFragment() != null)
                     ((CatalogFragment) getParentFragment()).enableCatalogButtons();
-                showContinueShopping(this);
+                showContinueShopping();
                 return;
             } else if (super.handleErrorEvent(bundle)) {
                 return;
@@ -1167,8 +1167,8 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
 //        else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
         
         // Case retry
-        if (id == R.id.fragment_root_retry_button) onClickRetryButton();
-        else super.onClick(v);
+//        if (id == R.id.fragment_root_retry_button) onClickRetryButton();
+        super.onClick(v);
     }
     
     /**

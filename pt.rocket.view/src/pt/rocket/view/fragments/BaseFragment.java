@@ -882,6 +882,22 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
     
     /**
+     * Show continue with listener for going back.
+     * @author sergiopereira
+     */
+    protected void showContinueShopping() {
+        Log.i(TAG, "ON SHOW CONTINUE LAYOUT");
+        showFragmentEmpty(R.string.server_error, android.R.color.transparent, R.string.continue_shopping, new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                onClickContinueButton();
+                
+            }
+        });
+    }
+    
+    /**
      * Process the click in continue shopping
      * @author sergiopereira
      */

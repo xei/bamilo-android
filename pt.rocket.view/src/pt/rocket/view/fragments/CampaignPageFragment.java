@@ -599,13 +599,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
 //                return true;
 //            } else 
                 if (errorCode == ErrorCode.HTTP_STATUS) {
-                showContinueShopping(new OnClickListener() {
-                    
-                    @Override
-                    public void onClick(View v) {
-                        onClickContinueButton();
-                    }
-                });
+                showContinueShopping();
                 return true;
             }
         }

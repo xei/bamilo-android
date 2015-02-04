@@ -242,14 +242,6 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
             Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }   
     }
-
-    /**
-     * Show continue
-     * @author sergiopereira
-     */
-    private void showContinueShopping() {
-        showContinueShopping(this);
-    }
     
     /*
      * ############# CLICK LISTENER #############
@@ -264,9 +256,9 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
         // Get view id
         int id = v.getId();
         // Case retry
-        if(id == R.id.fragment_root_empty_button) onClickContinueButton();
+//        if(id == R.id.fragment_root_empty_button) onClickContinueButton();
         // Case wizard
-        else if (id == R.id.wizard_product_size_button) onClickWizardButton();
+        if (id == R.id.wizard_product_size_button) onClickWizardButton();
         // Case unknown
         else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
     }

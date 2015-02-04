@@ -32,13 +32,15 @@
         <View style="@style/line_grey_style" />
 
         <RelativeLayout
+            android:id="@+id/no_results_search_tips_layout"
             android:layout_width="@dimen/no_results_search_tips_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:paddingBottom="@dimen/margin_huge"
             android:paddingLeft="@dimen/margin_midhuge"
             android:paddingRight="@dimen/margin_midhuge"
-            android:paddingTop="@dimen/margin_huge" >
+            android:paddingTop="@dimen/margin_huge" 
+            android:visibility="gone">
 
             <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/no_results_search_tips_title"
@@ -47,7 +49,8 @@
                 android:fontFamily="roboto_bold"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_m"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+                android:visibility="gone"/>
 
             <pt.rocket.components.customfontviews.TextView
                 android:id="@+id/no_results_search_tips_text"
@@ -56,7 +59,8 @@
                 android:layout_below="@id/no_results_search_tips_title"
                 android:fontFamily="roboto"
                 android:textColor="@color/grey_middle"
-                android:textSize="@dimen/text_s" />
+                android:textSize="@dimen/text_s" 
+                android:visibility="gone"/>
         </RelativeLayout>
 
         <View style="@style/line_grey_style" />
