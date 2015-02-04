@@ -898,6 +898,8 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         } 
+        if(getParentFragment() != null)
+            ((CatalogFragment) getParentFragment()).enableCatalogButtons();
         
         isProductClear = false;
         // Get Products Event
@@ -1074,7 +1076,6 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
             ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
             
             Log.d(TAG, "ERROR CODE: " + errorCode.toString());
-            
 //            if(errorCode == ErrorCode.NO_NETWORK){
 //                ((CatalogFragment) getParentFragment()).disableCatalogButtons();
 //                showFragmentRetry(new OnClickListener() {
@@ -1086,7 +1087,14 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
 //                }, R.string.no_connect_dialog_content);
 //                return;
 //            } else 
-            if (errorCode == ErrorCode.HTTP_STATUS) {
+            
+          if(errorCode == ErrorCode.NO_NETWORK){
+              if(getParentFragment() != null)
+                  ((CatalogFragment) getParentFragment()).disableCatalogButtons();
+              super.handleErrorEvent(bundle);
+          } else if (errorCode == ErrorCode.HTTP_STATUS) {
+                if(getParentFragment() != null)
+                    ((CatalogFragment) getParentFragment()).enableCatalogButtons();
                 showContinueShopping(this);
                 return;
             } else if (super.handleErrorEvent(bundle)) {

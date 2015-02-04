@@ -1033,7 +1033,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     
     @SuppressWarnings("unchecked")
     public boolean handleErrorEvent(final Bundle bundle) {
-
         Log.i(TAG, "ON HANDLE ERROR EVENT");
         
         final EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);

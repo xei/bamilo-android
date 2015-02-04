@@ -946,6 +946,20 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     }
 
     /**
+     * set button state when catalog show no internet connection error
+     */
+    public void setFilterButtonState(boolean selectable){
+        if (mFilterButton != null) {
+            if (!selectable) {
+                mFilterButton.setOnClickListener(null);
+                mFilterButton.setEnabled(false);
+            } else {
+                mFilterButton.setOnClickListener(this);
+                mFilterButton.setEnabled(true);
+            }
+        }
+    }
+    /**
      * Set the filter button state, to show as selected or not
      * 
      * @author sergiopereira
@@ -997,7 +1011,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
      */
     public void disableCatalogButtons() {
         setSwitchLayoutButtonState(false);
-        disableFilterButton();
+        setFilterButtonState(false);
     }
     
     /**
@@ -1006,7 +1020,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
      */
     public void enableCatalogButtons() {
         setSwitchLayoutButtonState(true);
-        enableFilterButton();
+        setFilterButtonState(true);
     }
 
     /*
