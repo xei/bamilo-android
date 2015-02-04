@@ -294,10 +294,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         billingAddress = mOrderFinish.getBillingAddress();
         if(billingAddress != null) showBillingAddress();
         // Get shipping method
-        shipMethod = mOrderFinish.getShippingMethod();
+        shipMethod = mOrderFinish.getmShippingMethodLabel();
         if(shipMethod != null) showShippingMethod();
         // Get payment options
-        payMethod = mOrderFinish.getPaymentMethod();
+        payMethod = mOrderFinish.getmPaymentMethodLabel();
         if(payMethod != null) showPaymentOptions();
         // Show container
         showFragmentContentContainer();

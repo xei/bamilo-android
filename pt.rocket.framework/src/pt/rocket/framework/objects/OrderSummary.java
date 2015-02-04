@@ -47,6 +47,10 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	private String mDiscountCouponCode;
 
     private double mGrandTotalConverted;
+    
+    private String mShippingMethodLabel;
+    
+    private String mPaymentMethodLabel;
 
 	/**
 	 * 
@@ -105,6 +109,11 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
             Log.d(TAG, "SHIP METHOD: " + jsonShip.toString());
             String shipMethod = jsonShip.optString(RestConstants.JSON_METHOD_TAG);
             mShippingMethod = shipMethod;
+            String shipMethodLabel = jsonShip.optString(RestConstants.JSON_LABEL_TAG);
+            if("".equals(shipMethodLabel))
+                mShippingMethodLabel = mShippingMethod;
+            
+            mShippingMethodLabel = shipMethodLabel;
         }
     
         // Get payment method
@@ -115,6 +124,13 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
                 // String payId = jsonPay.optString("id");
                 String payProvider = jsonPay.optString(RestConstants.JSON_ORDER_PAYMENT_PROVIDER_TAG);
                 mPaymentMethod = payProvider;	
+                
+                String paymentMethodLabel = jsonPay.optString(RestConstants.JSON_LABEL_TAG);
+                if("".equals(paymentMethodLabel))
+                    mPaymentMethodLabel = mPaymentMethod;
+                
+                mPaymentMethodLabel = paymentMethodLabel;
+                
             } else {
             	mPaymentMethod = jsonOrder.optString(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
             }
@@ -159,8 +175,8 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	public String toString() {
 		String shipAddress = (mShippingAddress != null) ? mShippingAddress.getAddress() : "";
 		String billAddress = (mBillingAddress != null) ? mBillingAddress.getAddress() : "";
-		String shipMethod = (mShippingMethod != null) ? mShippingMethod : "";
-		String payMethod = (mPaymentMethod != null) ? mPaymentMethod : "";
+		String shipMethod = (mShippingMethodLabel != null) ? mShippingMethodLabel : "";
+		String payMethod = (mPaymentMethodLabel != null) ? mShippingMethodLabel : "";
 		return mGrandTotal + " " + 
 				mShippingAmount + " " + 
 				mExtraCost + " " + 
@@ -403,8 +419,23 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 		return (!TextUtils.isEmpty(mDiscountCouponValue) && !mDiscountCouponValue.equals("0")) ? true : false;
 	}
 	
+	public String getmShippingMethodLabel() {
+        return mShippingMethodLabel;
+    }
 
-	/**
+    public void setmShippingMethodLabel(String mShippingMethodLabel) {
+        this.mShippingMethodLabel = mShippingMethodLabel;
+    }
+
+    public String getmPaymentMethodLabel() {
+        return mPaymentMethodLabel;
+    }
+
+    public void setmPaymentMethodLabel(String mPaymentMethodLabel) {
+        this.mPaymentMethodLabel = mPaymentMethodLabel;
+    }
+
+    /**
 	 * ########### Parcelable ###########
 	 * 
 	 * @author sergiopereira
@@ -439,6 +470,8 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 		 dest.writeParcelable(mShippingAddress, 0);
 		 dest.writeParcelable(mBillingAddress, 0);
 		 dest.writeDouble(mGrandTotalConverted);
+		 dest.writeString(mShippingMethodLabel);
+         dest.writeString(mPaymentMethodLabel);
 	}
 
 	/**
@@ -459,6 +492,8 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 		 mShippingAddress = in.readParcelable(Address.class.getClassLoader());
 		 mBillingAddress = in.readParcelable(Address.class.getClassLoader());
 		 mGrandTotalConverted = in.readDouble();
+		 mShippingMethodLabel = in.readString();
+         mPaymentMethodLabel = in.readString();
 	}
 
 	/**
