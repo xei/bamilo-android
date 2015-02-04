@@ -5,6 +5,7 @@ package pt.rocket.framework.tracking;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -338,7 +339,6 @@ public class AdjustTracker {
             parameters = new HashMap<String, String>();
             parameters = getFBBaseParameters(parameters, bundle);           
             parameters.put(AdjustKeys.SKU, prod.getSku()); 
-            parameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
             parameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
             parameters.put(AdjustKeys.DISCOUNT, prod.hasDiscount() ? "y" : "n"); 
             parameters.put(AdjustKeys.BRAND, prod.getBrand()); 
@@ -445,10 +445,8 @@ public class AdjustTracker {
                 // fbParameters.put(AdjustKeys.COLOUR, item.getVariation());
                 // fbParameters.put(AdjustKeys.VARIATION, item.getVariation());            
                 // parameters.put(AdjustKeys.BRAND, item.getBrand());               
-                
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_fb_view_cart), fbParameters);
             }
-    
             Adjust.trackEvent(mContext.getString(R.string.adjust_token_view_cart), parameters);
             break;
         
@@ -571,7 +569,7 @@ public class AdjustTracker {
                     json = new JSONObject();
                     try {
                         json.put(AdjustKeys.SKU, item.sku);
-                        json.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
+                        json.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
                         json.put(AdjustKeys.QUANTITY, item.quantity);
                         json.put(AdjustKeys.PRICE, item.paidpriceAsDouble);
                         
@@ -600,10 +598,10 @@ public class AdjustTracker {
                     fbParameters.put(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
                 //    fbParameters.put(AdjustKeys.TRANSACTION_CURRENCY, bundle.getString(CURRENCY_ISO));
                     fbParameters.put(AdjustKeys.TOTAL_TRANSACTION, String.valueOf(bundle.getDouble(TRANSACTION_VALUE)));
-                    
+                    printParameters(fbParameters);
                     Adjust.trackEvent(mContext.getString(R.string.adjust_token_fb_transaction_confirmation), fbParameters);
                 }
-                
+                printParameters(transParameters);
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_transaction_confirmation), transParameters);
                 
             }
@@ -751,7 +749,6 @@ public class AdjustTracker {
                             fbParams.put(AdjustKeys.SIZE, fav.getSelectedSimpleValue());
                         }
                         fbParams.put(AdjustKeys.PRICE, String.valueOf(fav.getPriceForTracking()));
-                        
                         Adjust.trackEvent(mContext.getString(R.string.adjust_token_fb_view_wishlist), fbParams);
                     }
                 } else {
@@ -766,6 +763,17 @@ public class AdjustTracker {
 
     }
 
+    public static void printParameters(Map mp) {
+        Iterator it = mp.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next();
+            Log.e("Adjust","key="+pairs.getKey() + " value=" + pairs.getValue());
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+    }
+    
+    
+    
     public boolean enabled() {
         return true;
     }
@@ -795,8 +803,10 @@ public class AdjustTracker {
         parameters.put(AdjustKeys.DEVICE, getDeviceType(bundle.getBoolean(DEVICE, false)));
         Address address = getAddressFromLocation();
         if (null != address) {
-            parameters.put(AdjustKeys.REGION, address.getAdminArea()); 
-            parameters.put(AdjustKeys.CITY, address.getLocality()); 
+            if(address.getAdminArea() != null && !"".equals(address.getAdminArea()))
+                parameters.put(AdjustKeys.REGION, address.getAdminArea()); 
+            if(address.getLocality() != null && !"".equals(address.getLocality()))
+                parameters.put(AdjustKeys.CITY, address.getLocality()); 
         }
         
         if (bundle.getParcelable(CUSTOMER) != null) {

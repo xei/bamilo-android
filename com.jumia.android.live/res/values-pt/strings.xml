@@ -149,7 +149,7 @@
     <string name="nav_track_order">Localizar a Minha Encomenda</string>
     <string name="navigation_cart_empty">O seu carrinho está vazio</string>
     <string name="new_password_hint">Nova password</string>
-    <string name="new_password_label">Nova Password အသစ</string>
+    <string name="new_password_label">Nova Password</string>
     <string name="newsletter_saved_message">A configuração das notificações de email foram guardadas.</string>
     <string name="newsletters_label">Newsletters</string>
     <string name="next_button">Próximo</string>
