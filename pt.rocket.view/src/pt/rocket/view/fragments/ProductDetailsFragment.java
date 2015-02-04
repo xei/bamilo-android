@@ -437,6 +437,7 @@ OnItemSelectedListener {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "ON DESTROY");
+        FragmentCommunicatorForProduct.getInstance().destroyInstance();
     }
 
     /**

@@ -511,7 +511,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
 
     @Override
     public void notifyFragment(Bundle bundle) {
-
+        Log.v(TAG, "NOTIFY FRAGMENT");
         // Validate if fragment is on the screen
         if (!isVisible()) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -535,7 +535,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
         }
 
         Log.i(TAG, "UPDATE GALLERY FOR PRODUCT: " + mCompleteProduct.getName());
-
+        
         createViewPager();
         if (currentPosition <= 0)
             currentPosition = 0;
