@@ -12,8 +12,10 @@ import pt.rocket.components.widget.DismissibleSpinner;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.view.R;
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.view.ActionProvider;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -55,6 +57,15 @@ public class MyProfileActionProvider extends ActionProvider {
     public MyProfileActionProvider(Context context) {
         super(context);
     }
+
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.view.ActionProvider#onCreateActionView(android.view.MenuItem)
+     */
+    @Override
+    public View onCreateActionView(MenuItem forItem) {
+        return onCreateActionView();
+    }
     
     /*
      * (non-Javadoc)
@@ -67,6 +78,11 @@ public class MyProfileActionProvider extends ActionProvider {
         //
         View spinnerContainer = LayoutInflater.from(context).inflate(R.layout.action_bar_myprofile_layout, null);
         mSpinner = (DismissibleSpinner) spinnerContainer.findViewById(R.id.spinner_myprofile);
+
+        // Case in Bamilo and API 17 set spinner as gone
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN_MR1 && context.getResources().getBoolean(R.bool.is_bamilo_specific)) 
+            mSpinner.setVisibility(View.GONE);
+
         mIcon = spinnerContainer.findViewById(R.id.image_myprofile);
         mIcon.setTag(R.id.nav_action, NavigationAction.MyProfile);
         // Validate listener
