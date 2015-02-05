@@ -53,9 +53,9 @@ public class GTMManager {
 
     private TagManager mTagManager;
 
-    private final int REFRESH_INTERVAL = 1000 * 60 * 60; // 60 minutes
+    // private final int REFRESH_INTERVAL = 1000 * 60 * 60; // 60 minutes
     
-    private Context mContext;
+    // private Context mContext;
 
     private static ArrayList<Map<String, Object>> pendingEvents = new ArrayList<Map<String, Object>>();
 
@@ -81,7 +81,7 @@ public class GTMManager {
 
         mTagManager.setVerboseLoggingEnabled(context.getResources().getBoolean(R.bool.gtm_debug));
         
-        mContext = context;
+        // mContext = context;
         
         dataLayer = TagManager.getInstance(context).getDataLayer();
         
@@ -131,11 +131,14 @@ public class GTMManager {
      * 
      * @param appOpenContext
      */
-    public void gtmTrackAppOpen(String version, Bundle deviceInfo, String countryIso, String campaignId, String source, String medium, boolean isFromPush) {
+    public void gtmTrackAppOpen(Bundle deviceInfo, String countryIso, String campaignId, String source, String medium, boolean isFromPush) {
         Log.i(TAG, " GTM TRACKING -> gtmTrackAppOpen ( cointair available ? " + isContainerAvailable + " )");
         Log.d(TAG, "gtmTrackAppOpen campaignId:"+campaignId);
         Log.d(TAG, "gtmTrackAppOpen source:"+source);
         Log.d(TAG, "gtmTrackAppOpen medium:"+medium);
+        
+        String version = "";
+        version = deviceInfo.getString(Constants.INFO_BUNDLE_VERSION);
         
         Map<String, Object> message = null;
         String operator = "";
@@ -821,6 +824,20 @@ public class GTMManager {
 
         if(dataLayer != null)
             dataLayer.pushEvent(GTMEvents.GTM_APP_INSTALL, parameters);
+    }
+    
+    
+    public static String getUtmParams(Context context, String key) {
+        SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
+        return settings.getString(key, "");
+    }
+
+    public static void saveUtmParameters(Context context, String key, String value) {
+        Log.d(TAG, "saving INSTALL_REFERRAL params, key: " + key + ", value : " + value);
+        SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(key, value);
+        editor.commit();
     }
     
 }

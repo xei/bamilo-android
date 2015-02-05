@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONException;
@@ -19,6 +20,7 @@ import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.tracking.Ad4PushTracker;
 import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
+import pt.rocket.framework.tracking.FacebookTracker;
 import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.tracking.GTMManager;
 import pt.rocket.framework.tracking.TrackingEvent;
@@ -101,8 +103,10 @@ public class TrackerDelegator {
     
     public static final String CART_COUNT = "cartCount";
     public static final String GRAND_TOTAL = "grandTotal";
+   
+    private final static int MAX_RATE_VALUE = 5;
 
-    private static final Context context = JumiaApplication.INSTANCE.getApplicationContext();
+    private static final Context sContext = JumiaApplication.INSTANCE.getApplicationContext();
 
     
     public final static void trackLoginSuccessful(Bundle params) {
@@ -145,8 +149,8 @@ public class TrackerDelegator {
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customer.getIdAsString());
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
-        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
-        AdjustTracker.get().trackEvent(context, event, bundle);
+        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
+        AdjustTracker.get().trackEvent(sContext, event, bundle);
         
         storeFirstCustomer(customer);
 
@@ -192,8 +196,8 @@ public class TrackerDelegator {
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customerId);
-        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
-        AdjustTracker.get().trackEvent(context, TrackingEvent.LOGOUT_SUCCESS, bundle);
+        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
+        AdjustTracker.get().trackEvent(sContext, TrackingEvent.LOGOUT_SUCCESS, bundle);
         
         //GTM
         GTMManager.get().gtmTrackLogout(customerId);
@@ -219,15 +223,17 @@ public class TrackerDelegator {
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customerId);
         bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
-        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
+        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putString(AdjustTracker.SEARCH_TERM, criteria);
         if(params.containsKey(AdjustTracker.CATEGORY))
             bundle.putString(AdjustTracker.CATEGORY, params.getString(AdjustTracker.CATEGORY));
         
         bundle.putString(AdjustTracker.CATEGORY_ID, params.getString(AdjustTracker.CATEGORY_ID));
-        AdjustTracker.get().trackEvent(context, TrackingEvent.SEARCH, bundle);
+        AdjustTracker.get().trackEvent(sContext, TrackingEvent.SEARCH, bundle);
         //GTM
         GTMManager.get().gtmTrackSearch(criteria, results);
+        // FB
+        FacebookTracker.get(sContext).trackSearched(criteria);
     }
 
     
@@ -248,11 +254,11 @@ public class TrackerDelegator {
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customer_id);
-        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));      
+        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));      
         bundle.putString(AdjustTracker.PRODUCT_SKU, sku);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
         bundle.putDouble(AdjustTracker.VALUE, params.getDouble(PRICE_KEY));        
-        AdjustTracker.get().trackEvent(context, TrackingEvent.REMOVE_FROM_CART, bundle);
+        AdjustTracker.get().trackEvent(sContext, TrackingEvent.REMOVE_FROM_CART, bundle);
         
         // GTM
         GTMManager.get().gtmTrackRemoveFromCart(sku, params.getDouble(RATING_KEY), params.getDouble(PRICE_KEY),
@@ -273,16 +279,16 @@ public class TrackerDelegator {
             userId = JumiaApplication.CUSTOMER.getIdAsString();
         }
         // GA
-        AnalyticsGoogle.get().trackShare(context, sku, userId, JumiaApplication.SHOP_NAME);
+        AnalyticsGoogle.get().trackShare(sContext, sku, userId, JumiaApplication.SHOP_NAME);
         // Ad4
         Ad4PushTracker.get().trackSocialShare();
         //Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, userId);
-        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));       
+        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));       
         bundle.putString(AdjustTracker.PRODUCT_SKU, sku);        
-        AdjustTracker.get().trackEvent(context, TrackingEvent.SHARE, bundle);
+        AdjustTracker.get().trackEvent(sContext, TrackingEvent.SHARE, bundle);
         //GTM
         GTMManager.get().gtmTrackShare("", sku, category);
     }
@@ -300,7 +306,7 @@ public class TrackerDelegator {
         // GA
         AnalyticsGoogle.get().trackEvent(event, category, 0l);
     }
-
+    
     /**
      * 
      */
@@ -313,27 +319,28 @@ public class TrackerDelegator {
             user_id = JumiaApplication.CUSTOMER.getIdAsString();
         }
         
-        
         if (ratingValues != null && ratingValues.size() > 0) {
-            Iterator it = ratingValues.entrySet().iterator();
+            Iterator<Entry<String, Long>> it = ratingValues.entrySet().iterator();
             while (it.hasNext()) {
-                Map.Entry pairs = (Map.Entry) it.next();
-
-                AnalyticsGoogle.get().trackRateProduct(context, product.getSku(),
-                        (Long) pairs.getValue(), (String) pairs.getKey());
+                Map.Entry<String, Long> pairs = (Map.Entry<String, Long>) it.next();
+                // GA
+                AnalyticsGoogle.get().trackRateProduct(sContext, product.getSku(), pairs.getValue(), pairs.getKey());
+                // FB
+                FacebookTracker.get(sContext).trackRated(product.getSku(), pairs.getKey(), pairs.getValue(), MAX_RATE_VALUE);
             }
         }
         //Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, user_id);
-        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));       
+        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));       
         bundle.putString(AdjustTracker.PRODUCT_SKU, product.getSku());
-        AdjustTracker.get().trackEvent(context, TrackingEvent.ADD_REVIEW, bundle);
+        AdjustTracker.get().trackEvent(sContext, TrackingEvent.ADD_REVIEW, bundle);
         //GTM
-        GTMManager.get().gtmTrackRateProduct(product,EUR_CURRENCY);
+        GTMManager.get().gtmTrackRateProduct(product, EUR_CURRENCY);
         // Ad4
         Ad4PushTracker.get().trackReviewCounter();
+
     }
     
     /**
@@ -362,8 +369,8 @@ public class TrackerDelegator {
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customer.getIdAsString());
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
-        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
-        AdjustTracker.get().trackEvent(context, TrackingEvent.SIGNUP_SUCCESS, bundle);
+        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
+        AdjustTracker.get().trackEvent(sContext, TrackingEvent.SIGNUP_SUCCESS, bundle);
         //GTM
         GTMManager.get().gtmTrackRegister(customer.getIdAsString(),location);
         storeFirstCustomer(customer);
@@ -391,7 +398,7 @@ public class TrackerDelegator {
     /**
      * Track Checkout Step
      * 
-     * @param context
+     * @param sContext
      * @param result
      * @param customer
      */
@@ -437,7 +444,7 @@ public class TrackerDelegator {
     /**
      * Track Payment Method
      * 
-     * @param context
+     * @param sContext
      * @param email
      * @param payment
      */
@@ -566,7 +573,7 @@ public class TrackerDelegator {
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
         bundle.putString(AdjustTracker.USER_ID, customer.getIdAsString());
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
-        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));       
+        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));       
         bundle.putBoolean(AdjustTracker.IS_FIRST_CUSTOMER, isFirstCustomer);
         bundle.putString(AdjustTracker.TRANSACTION_ID, orderNr);
         bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, skus);
@@ -574,12 +581,13 @@ public class TrackerDelegator {
         bundle.putParcelableArrayList(AdjustTracker.CART, (ArrayList<PurchaseItem>)items);
         bundle.putDouble(AdjustTracker.TRANSACTION_VALUE, value);
         
-        AdjustTracker.get().trackEvent(context, TrackingEvent.CHECKOUT_FINISHED, bundle);
+        AdjustTracker.get().trackEvent(sContext, TrackingEvent.CHECKOUT_FINISHED, bundle);
         String paymentMethod = "";
         paymentMethod = params.getString(PAYMENT_METHOD_KEY);
         //GTM
         GTMManager.get().gtmTrackTransaction(items,EUR_CURRENCY, value,orderNr, coupon, paymentMethod, "", "");
-        
+        // FB
+        FacebookTracker.get(sContext).trackCheckoutFinished(orderNr, valueConverted, items.size());        
     }
 
     private static void trackNativeCheckoutPurchase(Bundle params, Map<String, ShoppingCartItem> mItems) {
@@ -636,33 +644,35 @@ public class TrackerDelegator {
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
         bundle.putString(AdjustTracker.USER_ID, customer.getIdAsString());
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
-        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
+        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putBoolean(AdjustTracker.IS_FIRST_CUSTOMER, isFirstCustomer);
         bundle.putString(AdjustTracker.TRANSACTION_ID, orderNr);
         bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, skus);
         bundle.putBoolean(AdjustTracker.IS_GUEST_CUSTOMER, customer.isGuest());
         bundle.putParcelableArrayList(AdjustTracker.CART, (ArrayList<PurchaseItem>)items);
         bundle.putDouble(AdjustTracker.TRANSACTION_VALUE, cartValue);
-        AdjustTracker.get().trackEvent(context, TrackingEvent.CHECKOUT_FINISHED, bundle);
+        AdjustTracker.get().trackEvent(sContext, TrackingEvent.CHECKOUT_FINISHED, bundle);
         //GTM
-        GTMManager.get().gtmTrackTransaction(items,EUR_CURRENCY, cartValue,orderNr, coupon, paymentMethod, shippingAmount, taxAmount);
+        GTMManager.get().gtmTrackTransaction(items, EUR_CURRENCY, cartValue, orderNr, coupon, paymentMethod, shippingAmount, taxAmount);
+        // FB
+        FacebookTracker.get(sContext).trackCheckoutFinished(orderNr, cartValue, numberOfItems);
     }
 
     public static void storeSignupProcess(Customer customer) {
         Log.d(TAG, "storing signup tags");
-        SharedPreferences prefs = context.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
         prefs.edit().putString(SIGNUP_KEY_FOR_LOGIN, customer.getEmail()).putString(SIGNUP_KEY_FOR_CHECKOUT, customer.getEmail()).commit();
     }
     
     public static void removeFirstCustomer(Customer customer) {
         Log.d(TAG, "remove first customer");
-        SharedPreferences prefs = context.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(customer.getEmail(),false).commit();
     }
 
     public static void storeFirstCustomer(Customer customer) {
         Log.d(TAG, "store first customer");
-        SharedPreferences prefs = context.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
         
         boolean isNewCustomer = prefs.getBoolean(customer.getEmail(), true);
         if (isNewCustomer) {
@@ -673,7 +683,7 @@ public class TrackerDelegator {
     }
     
     private static boolean checkLoginAfterSignup(Customer customer) {        
-        SharedPreferences prefs = context.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
 
         if (!prefs.contains(SIGNUP_KEY_FOR_LOGIN)) {
             return false;
@@ -689,7 +699,7 @@ public class TrackerDelegator {
     }
 
     private static boolean checkFirstCustomer(Customer customer) {
-        SharedPreferences prefs = context.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
 
         if (!prefs.contains(customer.getEmail())) {
             return true;
@@ -703,7 +713,7 @@ public class TrackerDelegator {
     /**
      * Tracking the continue shopping
      * 
-     * @param context
+     * @param sContext
      * @param userId
      */
     public static void trackCheckoutContinueShopping(String userId) {
@@ -714,7 +724,7 @@ public class TrackerDelegator {
     /**
      * Tracking the start of checkout
      * 
-     * @param context
+     * @param sContext
      * @param userId
      */
     public static void trackCheckoutStart(TrackingEvent event, String userId, int cartQt, double cartValue) {
@@ -724,6 +734,8 @@ public class TrackerDelegator {
         Ad4PushTracker.get().trackCheckoutStarted(cartQt, cartValue);
         // GTM
         GTMManager.get().gtmTrackStartCheckout(cartQt, cartValue, EUR_CURRENCY);
+        // FB
+        FacebookTracker.get(sContext).trackCheckoutStarted(userId, cartValue, cartQt);
     }
 
     /**
@@ -770,7 +782,7 @@ public class TrackerDelegator {
     /**
      * Tracking a product added to cart
      * 
-     * @param context
+     * @param sContext
      * @param bundle
      */
     public static void trackProductAddedToCart(Bundle bundle) {
@@ -801,19 +813,21 @@ public class TrackerDelegator {
         Bundle params = new Bundle();
         params.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         params.putString(AdjustTracker.USER_ID, customerId);
-        params.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
+        params.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         params.putString(AdjustTracker.PRODUCT_SKU, sku);
         params.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
         params.putDouble(AdjustTracker.VALUE, price);
-        AdjustTracker.get().trackEvent(context, TrackingEvent.ADD_TO_CART, params);
+        AdjustTracker.get().trackEvent(sContext, TrackingEvent.ADD_TO_CART, params);
         //GTM
         GTMManager.get().gtmTrackAddToCart(sku, price, brand, EUR_CURRENCY, discount, rating, category, subCategory, location);
+        // FB
+        FacebookTracker.get(sContext).trackAddedToCart(sku, price, category);
     }
 
     /**
      * Tracking a complete product
      * 
-     * @param context
+     * @param sContext
      * @param bundle
      */
     public static void trackProduct(Bundle bundle) {
@@ -836,6 +850,8 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().trackProduct(event, prefix, path, name, sku, price);
         //GTM
         GTMManager.get().gtmTrackViewProduct(sku, price, brand, EUR_CURRENCY, discount, rating, category, subCategory);
+        // FB
+        FacebookTracker.get(sContext).trackProduct(sku, price, category);
     }
 
     /**
@@ -876,10 +892,10 @@ public class TrackerDelegator {
         if (null != customer) {
             bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
         }       
-        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
+        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putParcelableArrayList(AdjustTracker.FAVORITES, args.getParcelableArrayList(FAVOURITES_KEY));
         
-        AdjustTracker.get().trackEvent(context, TrackingEvent.VIEW_WISHLIST, bundle);
+        AdjustTracker.get().trackEvent(sContext, TrackingEvent.VIEW_WISHLIST, bundle);
     }
     
     /**
@@ -902,12 +918,12 @@ public class TrackerDelegator {
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customerId);
-        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));       
+        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));       
         bundle.putString(AdjustTracker.PRODUCT_SKU, productSku);
         bundle.putDouble(AdjustTracker.VALUE, productPrice);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
         
-        AdjustTracker.get().trackEvent(context, TrackingEvent.ADD_TO_WISHLIST, bundle);
+        AdjustTracker.get().trackEvent(sContext, TrackingEvent.ADD_TO_WISHLIST, bundle);
         String location = GTMValues.PRODUCTDETAILPAGE;
         if(fromCatalog) location = GTMValues.CATALOG;
         String category = "";
@@ -922,6 +938,8 @@ public class TrackerDelegator {
         //GTM
         GTMManager.get().gtmTrackAddToWishList(productSku, productBrand, productPrice, averageRating,
                 productDiscount, CurrencyFormatter.getCurrencyCode(),location, category, subCategory);
+        // FB
+        FacebookTracker.get(sContext).trackAddedToWishlist(productSku, productPrice, category);
     }
 
     /**
@@ -941,12 +959,12 @@ public class TrackerDelegator {
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.USER_ID, customerId);
-        bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
+        bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putString(AdjustTracker.PRODUCT_SKU, productSku);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
         bundle.putDouble(AdjustTracker.VALUE, price);
         
-        AdjustTracker.get().trackEvent(context, TrackingEvent.REMOVE_FROM_WISHLIST, bundle);
+        AdjustTracker.get().trackEvent(sContext, TrackingEvent.REMOVE_FROM_WISHLIST, bundle);
         
         //GTM
         if(averageRatingTotal != -1d)
@@ -1054,7 +1072,7 @@ public class TrackerDelegator {
         //GMT
         String screenName = "";
         if(page.getName() != -1){
-            screenName = context.getString(page.getName());
+            screenName = sContext.getString(page.getName());
         }
         
         if(!"".equalsIgnoreCase(screenName))
@@ -1109,17 +1127,15 @@ public class TrackerDelegator {
         // GA
         AnalyticsGoogle.get().setCustomData(info);
         // GTM
-        String version = DeviceInfoHelper.getVersionName(context);
-        
-        String campaingId = getUtmParams(context, GTMManager.CAMPAIGN_ID_KEY);
-
-        //reset clean campaing id
-        saveUtmParameters(context, GTMManager.CAMPAIGN_ID_KEY, "");
-        
-        GTMManager.get().gtmTrackAppOpen(version, info, ShopSelector.getShopId(), campaingId,
-                getUtmParams(context, GTMManager.CAMPAIGN_SOURCE), getUtmParams(context, GTMManager.CAMPAIGN_MEDIUM), isFromPush);
-        
+        String campaingId = GTMManager.getUtmParams(context, GTMManager.CAMPAIGN_ID_KEY);
+        GTMManager.saveUtmParameters(context, GTMManager.CAMPAIGN_ID_KEY, "");
+        GTMManager.get().gtmTrackAppOpen(info, ShopSelector.getShopId(), campaingId,
+                                        GTMManager.getUtmParams(context, GTMManager.CAMPAIGN_SOURCE),
+                                        GTMManager.getUtmParams(context, GTMManager.CAMPAIGN_MEDIUM), 
+                                        isFromPush);
         countSession();
+        // FB
+        FacebookTracker.get(context).trackActivatedApp();
     }
     
     /**
@@ -1173,7 +1189,7 @@ public class TrackerDelegator {
     }    
     
     private static void countSession() {
-        SharedPreferences settings = context.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences settings = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
         int sessionCount = settings.getInt(SESSION_COUNTER, 0);
         long savedTimeStamp = settings.getLong(LAST_SESSION_SAVED, 0);
         long currentTimeStamp = System.currentTimeMillis();
@@ -1193,18 +1209,7 @@ public class TrackerDelegator {
 
     }
     
-    public static String getUtmParams(Context context, String key) {
-        SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
-        return settings.getString(key, "");
-    }
 
-    public static void saveUtmParameters(Context context, String key, String value) {
-        Log.d(TAG, "saving INSTALL_REFERRAL params, key: " + key + ", value : " + value);
-        SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(key, value);
-        editor.commit();
-    }
     /**
      * Track the new cart for each user interaction, add or remove.
      * @param cartValue
