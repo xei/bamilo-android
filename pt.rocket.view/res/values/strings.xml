@@ -422,6 +422,6 @@
 	<string name="review_this_seller">Review this seller now!</string>
 	<string name="write_review">Write a Review</string>
 	
-	<string name="error_fb_permission_not_granted">The email permission is required.</string>
+	<string name="error_fb_permission_not_granted">Sorry, we need your email to login/create your account.</string>
 	<string name="succes_login">You are logged in</string>
 </resources>
