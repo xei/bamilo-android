@@ -19,13 +19,36 @@
 #   public *;
 #}
 
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
--optimizationpasses 5
--allowaccessmodification
--dontpreverify
--dontusemixedcaseclassnames
--dontskipnonpubliclibraryclasses
--verbose
+#############################################################
+# Author: SergioPereira										#
+# See: http://proguard.sourceforge.net/manual/examples.html	#
+#############################################################
+
+## PARENT proguard-android-optimize.txt #########################################
+#-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+#-optimizationpasses 5
+#-allowaccessmodification
+#-dontpreverify
+#-dontusemixedcaseclassnames
+#-dontskipnonpubliclibraryclasses
+#-verbose
+##################################################################################
+
+## BEGIN OBFUSCATE PACKAGE NAMES #########################################
+#-repackageclasses ''
+#-allowaccessmodification
+###########################################################################
+
+## BEGIN REMOVE LOG CODE #########################################
+#-assumenosideeffects class de.akquinet.android.androlog.Log {
+#    public static boolean isLoggable(java.lang.String, int);
+#    public static int v(...);
+#    public static int i(...);
+#    public static int w(...);
+#    public static int d(...);
+#    public static int e(...);
+#}
+#####################################################################
 
 ## IGNORE WARN/NOTE CLASSES #########################################
 -dontnote android.support.**
@@ -33,9 +56,9 @@
 -dontwarn com.google.android.**
 -dontnote com.google.vending.licensing.ILicensingService
 -dontnote com.android.vending.licensing.ILicensingService
-###########################################################
+#####################################################################
 
-## BEGIN GENERIC CLASSES #########################################
+## BEGIN GENERIC CLASSES ############################################
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
@@ -136,16 +159,22 @@
 -keep interface com.viewpagerindicator.** { *; }
 #############################################################################
 
-## BEGIN ROCKET #################################################################
--keep class pt.rocket.framework.utils.EventType
--keep class pt.rocket.components.** { public protected *; }
--keep class pt.rocket.utils.** { public protected *; }
--keep class pt.rocket.framework.tracking.TrackingEvent { public protected *; }
--keep class pt.rocket.framework.tracking.TrackingPage { public protected *; }
--keep class pt.rocket.framework.service.IRemoteService { public protected *; }
--keep class pt.rocket.framework.service.IRemoteServiceCallback { public protected *; }
--keep class pt.rocket.controllers.fragments.FragmentType { public protected *; }
--keep class pt.rocket.view.fragments.BaseFragment$KeyboardState
+## BEGIN MOBILE #################################################################
+#### pt.rocket.components
+-keep interface pt.rocket.components.RangeSeekBar$** { public *; }
+-keep class pt.rocket.components.RangeSeekBar { public *; }
+-keep public interface pt.rocket.components.absspinner.IcsAdapterView$** { public *; }
+-keep,includedescriptorclasses class pt.rocket.components.icsspinner.IcsAdapterView { public *; }  
+-keep interface pt.rocket.components.ScrollViewEx$** { public *; }
+-keep interface pt.rocket.components.androidslidingtabstrip.SlidingTabLayout$** { public *; }
+#### pt.rocket.utils
+-keep class pt.rocket.utils.MyProfileActionProvider { public *; }
+-keep class pt.rocket.utils.SearchSuggestionImeBackListener { public *; }
+-keep class pt.rocket.utils.NavigationAction { public *; }
+-keep class pt.rocket.utils.photoview.PhotoViewAttacher { public *; }
+-keep interface pt.rocket.utils.photoview.PhotoViewAttacher$** { *; }
+#### pt.rocket.view
+-keep public enum pt.rocket.view.fragments.BaseFragment$KeyboardState { public *; }
 #################################################################################
 
 ## JAVASCRIPTINTERFACE ##########################################################
