@@ -2,7 +2,7 @@ package pt.rocket.helpers;
 
 import java.util.HashMap;
 import java.util.List;
-import pt.rocket.framework.objects.Success;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,23 +62,19 @@ public abstract class BaseHelper {
             JSONObject metaData;
 
             if (jsonObject.has(JSONConstants.JSON_METADATA_TAG)) {
-
                 // /**
                 // * TODO: Validate if is necessary this step The methods
                 // * GetRegions and GetCities receive a the metadata field as
                 // * json array
                 // */
                 metaData = jsonObject.getJSONObject(JSONConstants.JSON_METADATA_TAG);
-                
-
             } else {
                 metaData = jsonObject;
             }
 
             // removing unnecessary information from bundle
             bundle.remove(Constants.BUNDLE_RESPONSE_KEY);
-            JSONObject messagesObject = jsonObject
-                    .optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
+            JSONObject messagesObject = jsonObject.optJSONObject(JSONConstants.JSON_MESSAGES_TAG);
             if (success) {
                 handleSuccess(messagesObject, bundle);
                 return parseResponseBundle(bundle, metaData);
@@ -102,8 +98,7 @@ public abstract class BaseHelper {
         if (messagesObject != null) {
             JSONArray sucessArray = messagesObject.optJSONArray(RestConstants.JSON_SUCCESS_TAG);
             if (sucessArray != null && sucessArray.length() > 0) {
-                bundle.putString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY,
-                        sucessArray.getString(0));
+                bundle.putString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, sucessArray.getString(0));
             }
         }
     }

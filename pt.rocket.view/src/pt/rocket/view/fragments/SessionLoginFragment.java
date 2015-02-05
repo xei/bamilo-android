@@ -30,6 +30,7 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.framework.utils.NetworkConnectivity;
 import pt.rocket.helpers.configs.GetInitFormHelper;
 import pt.rocket.helpers.session.GetFacebookLoginHelper;
 import pt.rocket.helpers.session.GetLoginFormHelper;
@@ -45,6 +46,7 @@ import pt.rocket.utils.TrackerDelegator;
 import pt.rocket.utils.deeplink.DeepLinkManager;
 import pt.rocket.utils.dialogfragments.DialogGenericFragment;
 import pt.rocket.utils.social.FacebookHelper;
+import pt.rocket.utils.ui.ToastFactory;
 import pt.rocket.view.BaseActivity;
 import pt.rocket.view.R;
 import android.app.Activity;
@@ -57,7 +59,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.facebook.FacebookAuthorizationException;
 import com.facebook.Request;
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -70,7 +71,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class SessionLoginFragment extends BaseFragment implements OnClickListener{
+public class SessionLoginFragment extends BaseFragment implements OnClickListener, Request.GraphUserCallback, Session.StatusCallback {
 
     private static final String TAG = LogTagHelper.create(SessionLoginFragment.class);
 
@@ -141,6 +142,10 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 KeyboardState.ADJUST_CONTENT);
     }
 
+    /**
+     * Constructor
+     * @param titleResId
+     */
     public SessionLoginFragment(int titleResId) {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
@@ -170,7 +175,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         setRetainInstance(true);
-        uiHelper = new UiLifecycleHelper(getBaseActivity(), callback);
+        uiHelper = new UiLifecycleHelper(getBaseActivity(), this);
         uiHelper.onCreate(savedInstanceState);
     }
 
@@ -189,9 +194,8 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
         register = view.findViewById(R.id.middle_login_link_register);
         container = (ViewGroup) view.findViewById(R.id.form_container);
-        // Get Facebook
-        mFacebookButton = (FacebookTextView) view.findViewById(R.id.authButton);
-        // Set Facebook
+        // Get and set FB button
+        mFacebookButton = (FacebookTextView) view.findViewById(R.id.login_facebook_button);
         FacebookHelper.showOrHideFacebookButton(this, mFacebookButton);
     }
     
@@ -230,7 +234,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
             // Valdiate form
             if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
                 Log.d(TAG, "FORM: TRY AUTO LOGIN");
-
                 triggerAutoLogin();
             } else if (formResponse != null) {
                 Log.d(TAG, "FORM ISN'T NULL");
@@ -238,7 +241,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 cameFromRegister = false;
             } else {
                 Log.d(TAG, "FORM IS NULL");
-
                 // Clean the Facebook Session
                 FacebookHelper.cleanFacebookSession();
 
@@ -256,9 +258,12 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         }
         
         setLoginBottomLayout();
-        
     }
 
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onActivityResult(int, int, android.content.Intent)
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(TAG, "code1facebook onActivityResult");
@@ -285,81 +290,6 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
             // super.onSaveInstanceState(outState);
             uiHelper.onSaveInstanceState(outState);
         }
-    }
-
-    /**
-     * Facebook Methods
-     */
-
-    /**
-     * Verify facebook session state
-     * 
-     * @param session
-     * @param state
-     * @param exception
-     */
-    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-        // Exception handling for no network error
-        if(exception instanceof FacebookAuthorizationException){
-            createNoNetworkDialog();
-            return;
-        }
-        
-        if (state.isOpened()) {
-            showFragmentLoading();
-            // make request to the /me API
-            Request request = Request.newMeRequest(
-                    session,
-                    new Request.GraphUserCallback() {
-                        // callback after Graph API response with user object
-                        @Override
-                        public void onCompleted(GraphUser user, com.facebook.Response response) {
-                            if (user != null) {
-                                requestFacebookLogin(user);
-                            }
-                        }
-                    });
-            Request.executeBatchAsync(request);
-        } else if (state.isClosed()) {
-            Log.w(TAG, "USER Logged out!");
-        }
-    }
-
-    /**
-     * Listener for Session state changes
-     */
-    private Session.StatusCallback callback = new Session.StatusCallback() {
-        @Override
-        public void call(Session session, SessionState state, Exception exception) {
-            onSessionStateChange(session, state, exception);
-        }
-    };
-    
-    /**
-     * No network dialog for facebook exception handling
-     */
-    private void createNoNetworkDialog(){
-        dialog = DialogGenericFragment.createNoNetworkDialog(getActivity(), 
-                new OnClickListener() { 
-                    @Override
-                    public void onClick(View v) {                      
-                        mFacebookButton.performClick();
-                        if(dialog != null) dialog.dismiss();
-                        
-                    }
-                }, new OnClickListener() {
-                    
-                    @Override
-                    public void onClick(View v) {
-                        if(dialog != null) dialog.dismiss();
-                        
-                    }
-                }, false);
-         try {
-             dialog.show(getActivity().getSupportFragmentManager(), null);
-         } catch (Exception e) {
-             
-         }
     }
 
     /*
@@ -395,83 +325,89 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         uiHelper.onStop();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onDestroyView()
+     */
     @Override
     public void onDestroyView() {
         Log.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onDestroy()
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
         formResponse = null;
-        onCommonClickListener = null;
         uiHelper.onDestroy();
     }
+    
+    /*
+     * ################ FACEBOOK ################ 
+     */
+    /*
+     * (non-Javadoc)
+     * @see com.facebook.Session.StatusCallback#call(com.facebook.Session, com.facebook.SessionState, java.lang.Exception)
+     */
+    @Override
+    public void call(Session session, SessionState state, Exception exception) {
+        onSessionStateChange(session, state, exception);
+    }
+    
+    /**
+     * Validate Facebook session.
+     * @param session
+     * @param state
+     * @param exception
+     * @author sergiopereira
+     */
+    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+        Log.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
+        // Exception handling for no network error
+        if(exception != null && !NetworkConnectivity.isConnected(getBaseActivity())) {
+            createNoNetworkDialog(mFacebookButton);
+            return;
+        }
+        // Validate state
+        if (state.isOpened() && session.isOpened()) {
+            // Case user not accept the new request for required permissions
+            if(FacebookHelper.userNotAcceptRequiredPermissions(session)) 
+                super.onUserNotAcceptRequiredPermissions();
+            // Case required permissions are not granted then request again
+            else if(FacebookHelper.wereRequiredPermissionsGranted(session))
+                super.onMakeNewRequiredPermissionsRequest(this, session, this);
+            // Case accept permissions
+            else super.onMakeGraphUserRequest(session, this);
+        }
+        // Other cases
+        else if (state.isClosed()) {
+            Log.i(TAG, "USER Logged out!");
+        }
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.facebook.Request.GraphUserCallback#onCompleted(com.facebook.model.GraphUser, com.facebook.Response)
+     */
+    @Override
+    public void onCompleted(GraphUser user, com.facebook.Response response) {
+        // Callback after Graph API response with user object
+        if (user != null) requestFacebookLogin(user);
+    }
+    
 
     /**
      * Set listeners
      */
     private void setLoginBottomLayout() {
-        signinButton.setOnClickListener(onCommonClickListener);
-        forgetPass.setOnClickListener(onCommonClickListener);
-        register.setOnClickListener(onCommonClickListener);
-    }
-
-    /**
-     * Common Listener
-     */
-    OnClickListener onCommonClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            int id = view.getId();
-            if (id == R.id.middle_login_button_signin) {
-                // Log.d(TAG, "CLICKED ON SIGNIN");
-                if (null != dynamicForm) {
-                    if (dynamicForm.validate()) {
-                        requestLogin();
-                    }
-                    // Tracking login failed
-                    else TrackerDelegator.trackLoginFailed(TrackerDelegator.ISNT_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
-                } else {
-                    triggerLoginForm();
-                }
-
-            }
-            else if (id == R.id.middle_login_link_fgtpassword) {
-                getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD,
-                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
-            else if (id == R.id.middle_login_link_register) {
-                cameFromRegister = true;
-                getBaseActivity().onSwitchFragment(FragmentType.REGISTER,
-                        FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
-        }
-    };
-
-    /**
-     * Request auto login
-     */
-    private void requestLogin() {
-        Log.d(TAG, "requestLogin: triggerEvent LogInEvent");
-        getBaseActivity().hideKeyboard();
-        ContentValues values = dynamicForm.save();
-        values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
-        triggerLogin(values, true);
-    }
-
-    private void requestFacebookLogin(GraphUser user) {
-        Log.d(TAG, "requestLogin: triggerEvent LogInEvent");
-        ContentValues values = new ContentValues();
-        values.put("email", (String) user.getProperty("email"));
-        values.put("first_name", user.getFirstName());
-        values.put("last_name", user.getLastName());
-        values.put("birthday", user.getBirthday());
-        values.put("gender", (String) user.getProperty("gender"));
-        values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
-        triggerFacebookLogin(values, true);
+        signinButton.setOnClickListener(this);
+        forgetPass.setOnClickListener(this);
+        register.setOnClickListener(this);
     }
 
     /**
@@ -502,7 +438,33 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
             pass_p.setLayoutDirection(LayoutDirection.LOCALE);
         }
     }
+    
+    /*
+     * ################ RESPONSE ################ 
+     */
+    
+    /**
+     * CALLBACK
+     * 
+     * @author sergiopereira
+     */
+    IResponseCallback mCallBack = new IResponseCallback() {
+        @Override
+        public void onRequestError(Bundle bundle) {
+            onErrorEvent(bundle);
+        }
 
+        @Override
+        public void onRequestComplete(Bundle bundle) {
+            onSuccessEvent(bundle);
+        }
+    };
+
+    /**
+     * 
+     * @param bundle
+     * @return
+     */
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.d(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
@@ -553,8 +515,9 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 }
 
                 TrackerDelegator.trackLoginSuccessful(params);
+                // Notify user
+                ToastFactory.SUCCESS_LOGIN.show(baseActivity);
             }
-
           
             return true;
 
@@ -727,8 +690,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                     }
                 } else {
                     Log.d(TAG, "SHOW DIALOG");
-                    HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle
-                            .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                    HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                     List<String> errorMessages = null;
                     if (errors != null) {
                         errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
@@ -789,6 +751,37 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         return false;
     }
 
+    
+    /*
+     * ################ TRIGGRES ################ 
+     */
+    /**
+     * Request auto login
+     */
+    private void requestLogin() {
+        Log.d(TAG, "requestLogin: triggerEvent LogInEvent");
+        getBaseActivity().hideKeyboard();
+        ContentValues values = dynamicForm.save();
+        values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+        triggerLogin(values, true);
+    }
+
+    /**
+     * 
+     * @param user
+     */
+    private void requestFacebookLogin(GraphUser user) {
+        Log.d(TAG, "requestLogin: triggerEvent LogInEvent");
+        ContentValues values = new ContentValues();
+        values.put("email", (String) user.getProperty("email"));
+        values.put("first_name", user.getFirstName());
+        values.put("last_name", user.getLastName());
+        values.put("birthday", user.getBirthday());
+        values.put("gender", (String) user.getProperty("gender"));
+        values.put(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+        triggerFacebookLogin(values, true);
+    }
+    
     /**
      * TRIGGERS
      * 
@@ -830,30 +823,41 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         triggerContentEvent(new GetInitFormHelper(), bundle, mCallBack);
     }
 
-    /**
-     * CALLBACK
-     * 
-     * @author sergiopereira
+
+
+    /*
+     * (non-Javadoc)
+     * @see pt.rocket.view.fragments.BaseFragment#onClick(android.view.View)
      */
-    IResponseCallback mCallBack = new IResponseCallback() {
-        @Override
-        public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
-        }
-    };
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
+        // Case retry button
         if (id == R.id.fragment_root_retry_button) {
             Bundle bundle = new Bundle();
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-
+        }
+        // Case FB button 
+        else if(id == R.id.login_facebook_button) {
+            showFragmentLoading();
+        }
+        // Case sign in button
+        else if (id == R.id.middle_login_button_signin) {
+            // Log.d(TAG, "CLICKED ON SIGNIN");
+            if (null != dynamicForm) {
+                if (dynamicForm.validate()) requestLogin();
+                // Tracking login failed
+                else TrackerDelegator.trackLoginFailed(TrackerDelegator.ISNT_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
+            } else triggerLoginForm();
+        }
+        // Case forgot password
+        else if (id == R.id.middle_login_link_fgtpassword) {
+            getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
+        // Case redister
+        else if (id == R.id.middle_login_link_register) {
+            cameFromRegister = true;
+            getBaseActivity().onSwitchFragment(FragmentType.REGISTER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 }

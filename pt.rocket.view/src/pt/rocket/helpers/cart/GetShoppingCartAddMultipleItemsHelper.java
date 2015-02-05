@@ -3,30 +3,24 @@ package pt.rocket.helpers.cart;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
-
-import android.content.ContentValues;
-import android.os.Bundle;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.framework.enums.RequestType;
 import pt.rocket.framework.objects.ShoppingCart;
-import pt.rocket.framework.objects.Success;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.Utils;
 import pt.rocket.helpers.BaseHelper;
 import pt.rocket.helpers.HelperPriorityConfiguration;
-import pt.rocket.utils.JSONConstants;
 import pt.rocket.utils.TrackerDelegator;
+import android.content.ContentValues;
+import android.os.Bundle;
+import de.akquinet.android.androlog.Log;
 
 public class GetShoppingCartAddMultipleItemsHelper extends BaseHelper {
 
@@ -64,8 +58,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
         productBySku = (HashMap<String, String>) args.getSerializable(ADD_ITEMS);
-        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY,
-                createContentValues(productBySku));
+        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, createContentValues(productBySku));
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;
@@ -129,8 +122,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends BaseHelper {
     protected void handleSuccess(JSONObject messagesObject, Bundle bundle) {
         JSONObject successObject = messagesObject.optJSONObject(RestConstants.JSON_SUCCESS_TAG);
         if (successObject != null && successObject.length() > 0) {
-            bundle.putSerializable(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY,
-                    checkAddedProducts(successObject));
+            bundle.putSerializable(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, checkAddedProducts(successObject));
         }
 
         handleError(messagesObject, bundle);
@@ -140,8 +132,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends BaseHelper {
     protected void handleError(JSONObject messagesObject, Bundle bundle) {
         JSONObject errorObject = messagesObject.optJSONObject(RestConstants.JSON_ERROR_TAG);
         if (errorObject != null && errorObject.length() > 0) {
-            bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY,
-                    checkNotAddedProducts(errorObject));
+            bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, checkNotAddedProducts(errorObject));
         }
     }
     

@@ -29,6 +29,7 @@ import pt.rocket.framework.utils.Constants;
 import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
+import pt.rocket.framework.utils.NetworkConnectivity;
 import pt.rocket.helpers.account.GetCustomerHelper;
 import pt.rocket.helpers.cart.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.configs.GetInitFormHelper;
@@ -57,7 +58,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.facebook.Request;
 import com.facebook.Request.GraphUserCallback;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -80,8 +80,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private static final String FORM_ITEM_EMAIL = "email";
 
     private static final String FORM_ITEM_PASSWORD = "password";
-    
-    private static CheckoutAboutYouFragment sAboutYouFragment;
 
     private Form formResponse = null;
 
@@ -121,14 +119,15 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     private boolean cameFromSignUp = false;
     
     private int retryForms = 0;
+
+    private LoginButton mLoginFacebookButton;
     
     /**
      * Get the instance of CheckoutAboutYouFragment
      * @return {@link BaseFragment}
      */
-    public static CheckoutAboutYouFragment getInstance(Bundle bundle) {
-        sAboutYouFragment = new CheckoutAboutYouFragment();
-        return sAboutYouFragment;
+    public static CheckoutAboutYouFragment getInstance(Bundle bundle) { 
+        return new CheckoutAboutYouFragment();
     }
 
     /**
@@ -210,13 +209,12 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         view.findViewById(R.id.checkout_signup_form_button_enter).setOnClickListener(this);
         
         // FACEBOOK
-        LoginButton facebookButton1 = (LoginButton) view.findViewById(R.id.checkout_login_form_button_facebook);
+        mLoginFacebookButton = (LoginButton) view.findViewById(R.id.checkout_login_form_button_facebook);
         LoginButton facebookButton2 = (LoginButton) view.findViewById(R.id.checkout_signup_form_button_facebook);
         View facebookDivider1 = view.findViewById(R.id.checkout_login_form_divider_facebook);
         View facebookDivider2 = view.findViewById(R.id.checkout_signup_form_divider_facebook);
-               
         // Set Facebook
-        FacebookHelper.showOrHideFacebookButton(this, facebookButton1, facebookDivider1, facebookButton2, facebookDivider2);
+        FacebookHelper.showOrHideFacebookButton(this, mLoginFacebookButton, facebookDivider1, facebookButton2, facebookDivider2);
         
         // Validate current state
         if(JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()){
@@ -365,6 +363,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         else if(id == R.id.checkout_signup_form_button_enter) onClickSignupButton();
         //retry button
         else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
+        // Case FB buttons
+        else if(id == R.id.checkout_login_form_button_facebook || id == R.id.checkout_signup_form_button_facebook) showFragmentLoading();        
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
@@ -483,19 +483,46 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     }
     
     /*
+     * ################ FACEBOOK ################ 
+     */
+    /*
      * (non-Javadoc)
      * @see com.facebook.Session.StatusCallback#call(com.facebook.Session, com.facebook.SessionState, java.lang.Exception)
      */
     @Override
     public void call(Session session, SessionState state, Exception exception) {
-        // Validate the FACEBOOK session state
-        if (state.isOpened()) {
-            Log.i(TAG, "SESSION IS OPENED");
-            showFragmentLoading();
-            Request request = Request.newMeRequest(session, this);
-            Request.executeBatchAsync(request);
-        } else
-            Log.i(TAG, "SESSION IS CLOSED");
+        onSessionStateChange(session, state, exception);
+    }
+    
+    /**
+     * Validate Facebook session.
+     * @param session
+     * @param state
+     * @param exception
+     * @author sergiopereira
+     */
+    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+        Log.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
+        // Exception handling for no network error
+        if(exception != null && !NetworkConnectivity.isConnected(getBaseActivity())) {
+            createNoNetworkDialog(mLoginFacebookButton);
+            return;
+        }
+        // Validate state
+        if (state.isOpened() && session.isOpened()) {
+            // Case user not accept the new request for required permissions
+            if(FacebookHelper.userNotAcceptRequiredPermissions(session)) 
+                super.onUserNotAcceptRequiredPermissions();
+            // Case required permissions are not granted then request again
+            else if(FacebookHelper.wereRequiredPermissionsGranted(session))
+                super.onMakeNewRequiredPermissionsRequest(this, session, this);
+            // Case accept permissions
+            else super.onMakeGraphUserRequest(session, this);
+        }
+        // Other cases
+        else if (state.isClosed()) {
+            Log.i(TAG, "USER Logged out!");
+        }
     }
 
     /**
@@ -1123,6 +1150,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                 }, false);
         dialog.show(getBaseActivity().getSupportFragmentManager(), null);
     }
+
+
     
     
 }
