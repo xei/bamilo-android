@@ -115,12 +115,11 @@ public class AnalyticsGoogle {
 		// Set key
 		updateTracker();
 		// Enable Display Advertising features
-		//XXX null if theres no ga_id from API
-		if(mTracker!= null)
-		    mTracker.enableAdvertisingIdCollection(context.getResources().getBoolean(R.bool.ga_advertisingIDCollection)); 
+		enableAdvertisingCollection(context); 
 		
-		Log.i(TAG, "TRACKING SUCCESSFULLY STEUP");
+		Log.i(TAG, "TRACKING SUCCESSFULLY SETUP");
 	}
+	
 	/**
 	 * Manual Dispatch
 	 * @author sergiopereira
@@ -321,6 +320,16 @@ public class AnalyticsGoogle {
 		//mTracker.set("&cn", campaign);
 		//mTracker.set("&cs", "push");
 		//mTracker.set("&cm", "referrer");
+	}
+	
+	/**
+	 * Enable Display Advertising features.
+	 * @author ricardo
+	 * @mofidied sergiopereira
+	 */
+	private void enableAdvertisingCollection(Context context) {
+	    // Null if theres no ga_id from API
+        if(mTracker!= null) mTracker.enableAdvertisingIdCollection(context.getResources().getBoolean(R.bool.ga_advertisingIDCollection));
 	}
 		
 	/**
