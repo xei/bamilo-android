@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 import pt.rocket.app.JumiaApplication;
+import pt.rocket.components.androidslidingtabstrip.SlidingTabLayout;
 import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.framework.Darwin;
-import pt.rocket.components.androidslidingtabstrip.SlidingTabLayout;
-import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.Homepage;
 import pt.rocket.framework.objects.Promotion;
 import pt.rocket.framework.rest.RestConstants;
@@ -19,11 +18,9 @@ import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
-import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.helpers.configs.GetPromotionsHelper;
-import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.helpers.teasers.GetTeasersHelper;
 import pt.rocket.helpers.teasers.GetUpdatedTeasersHelper;
 import pt.rocket.interfaces.IResponseCallback;
@@ -37,7 +34,6 @@ import pt.rocket.utils.dialogfragments.WizardPreferences;
 import pt.rocket.utils.dialogfragments.WizardPreferences.WizardType;
 import pt.rocket.view.R;
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -248,10 +244,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         } else {
             Log.i(TAG, "ADAPTER IS NULL");
             triggerTeasers();
-
-            // Validate the user credentials
-            if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && !JumiaApplication.INSTANCE.isLoggedIn()) triggerAutoLogin();
-            else Log.i(TAG, "USER IS LOGGED IN: " + JumiaApplication.INSTANCE.isLoggedIn());
         }
     }
 
@@ -463,19 +455,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         triggerContentEventWithNoLoading(new GetPromotionsHelper(), bundle, (IResponseCallback) this);
     }
 
-    /**
-     * Trigger to perform auto login in background
-     * 
-     * @author sergiopereira
-     */
-    private void triggerAutoLogin() {
-        Log.d(TAG, "ON TRIGGER: AUTO LOGIN");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
-        triggerContentEventWithNoLoading(new GetLoginHelper(), bundle, (IResponseCallback) this);
-    }
-
     /*
      * ########### RESPONSES ###########
      */
@@ -521,23 +500,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         case GET_PROMOTIONS:
             Log.i(TAG, "ON SUCCESS RESPONSE: GET_TEASERS_EVENT");
             onGetPromotions(bundle);
-            break;
-        case LOGIN_EVENT:
-            // Set logged in
-            JumiaApplication.INSTANCE.setLoggedIn(true);
-            // Get customer
-            Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            // Get origin
-            ContentValues creadentialValues = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
-            boolean isFBLogin = creadentialValues.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG);
-            // Track
-            Bundle params = new Bundle();
-            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
-            params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, TrackerDelegator.IS_AUTO_LOGIN);
-            params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, isFBLogin);
-            params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.HOME);
-            TrackerDelegator.trackLoginSuccessful(params);
-            trackPageAdjust();
             break;
         default:
             break;
@@ -590,10 +552,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             setLayoutFallback();
             break;
         case GET_PROMOTIONS:
-            break;
-        case LOGIN_EVENT:
-            clearCredentials();
-            TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
             break;
         default:
             break;

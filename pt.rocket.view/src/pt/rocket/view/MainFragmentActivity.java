@@ -143,9 +143,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         if (splashScreenParams != null && splashScreenParams.getExtras() != null) {
             isInMaintenance = splashScreenParams.getExtras().getBoolean(ConstantsIntentExtra.IN_MAINTANCE, false);
         }
-        
-        // XXX
-        FacebookHelper.logHashKey(getApplicationContext());
     }
 
     /*

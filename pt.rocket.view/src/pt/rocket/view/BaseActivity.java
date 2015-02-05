@@ -17,20 +17,25 @@ import pt.rocket.controllers.fragments.FragmentController;
 import pt.rocket.controllers.fragments.FragmentType;
 import pt.rocket.framework.database.FavouriteTableHelper;
 import pt.rocket.framework.objects.CompleteProduct;
+import pt.rocket.framework.objects.Customer;
 import pt.rocket.framework.objects.SearchSuggestion;
 import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.rest.RestConstants;
 import pt.rocket.framework.service.IRemoteServiceCallback;
 import pt.rocket.framework.tracking.AdjustTracker;
 import pt.rocket.framework.tracking.AnalyticsGoogle;
+import pt.rocket.framework.tracking.GTMEvents.GTMValues;
 import pt.rocket.framework.tracking.TrackingEvent;
+import pt.rocket.framework.tracking.TrackingPage;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.CustomerUtils;
 import pt.rocket.framework.utils.DeviceInfoHelper;
 import pt.rocket.framework.utils.EventType;
 import pt.rocket.framework.utils.LogTagHelper;
 import pt.rocket.framework.utils.ShopSelector;
 import pt.rocket.helpers.cart.GetShoppingCartItemsHelper;
 import pt.rocket.helpers.search.GetSearchSuggestionHelper;
+import pt.rocket.helpers.session.GetLoginHelper;
 import pt.rocket.interfaces.IResponseCallback;
 import pt.rocket.utils.CheckVersion;
 import pt.rocket.utils.MyMenuItem;
@@ -46,6 +51,7 @@ import pt.rocket.view.fragments.BaseFragment.KeyboardState;
 import pt.rocket.view.fragments.HomeFragment;
 import pt.rocket.view.fragments.NavigationFragment;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -246,7 +252,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         } else {
             HoloFontLoader.initFont(false);
         }
-
         // Get fragment controller
         fragmentController = FragmentController.getInstance();
         // Set content
@@ -324,34 +329,17 @@ public abstract class BaseActivity extends ActionBarActivity {
             initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
             mOnActivityResultIntent = null;
         }
-
-        if (JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null) {
-                triggerGetShoppingCartItemsHelper();
-        }
+        
+        // Get the cart and perform auto login
+        recoverUserDataFromBackground();
 
         AdjustTracker.onResume(this);
 
         TrackerDelegator.trackAppOpenAdjust(getApplicationContext(), mLaunchTime);
     }
     
-    public void triggerGetShoppingCartItemsHelper(){
-        Log.i(TAG, "TRIGGER SHOPPING CART ITEMS");
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
-        JumiaApplication.INSTANCE.sendRequest(new GetShoppingCartItemsHelper(), bundle, new IResponseCallback() {
-            
-            @Override
-            public void onRequestError(Bundle bundle) {
-                //...
-            }
-            
-            @Override
-            public void onRequestComplete(Bundle bundle) {
-                updateCartInfo();
-            }
-        });
-    }
 
+    
     /**
      * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
      * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception
@@ -1075,7 +1063,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
             }
         } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON HIDE SEARCH COMPONENT", e);
+            Log.w(TAG, "WARNING NPE ON HIDE SEARCH COMPONENT");
         }
     }
 
@@ -2270,7 +2258,96 @@ public abstract class BaseActivity extends ActionBarActivity {
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.EDIT_ADDRESS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.POLL.toString());
     }
-
+    
+    /*
+     * ##### REQUESTS TO RECOVER #####
+     */
+    /**
+     * Recover the user data when comes from background.
+     * @author sergiopereira
+     */
+    private void recoverUserDataFromBackground() {
+        Log.i(TAG, "ON TRIGGER: INITIALIZE USER DATA");
+        // Validate the user credentials
+        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && JumiaApplication.CUSTOMER == null) 
+            triggerAutoLogin();
+        // Validate the user credentials
+        if (JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null)
+            triggerGetShoppingCartItemsHelper();
+    }
+    
+    /**
+     * Get cart
+     */
+    public void triggerGetShoppingCartItemsHelper(){
+        Log.i(TAG, "TRIGGER SHOPPING CART ITEMS");
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
+        JumiaApplication.INSTANCE.sendRequest(new GetShoppingCartItemsHelper(), bundle, new IResponseCallback() {
+            @Override
+            public void onRequestError(Bundle bundle) {
+                Log.i(TAG, "ON REQUEST ERROR: CART");
+                //...
+            }
+            @Override
+            public void onRequestComplete(Bundle bundle) {
+                Log.i(TAG, "ON REQUEST COMPLETE: CART");
+                updateCartInfo();
+            }
+        });
+    }
+    /**
+     * Auto login
+     */
+    private void triggerAutoLogin() {
+        Log.i(TAG, "ON TRIGGER: AUTO LOGIN");
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, true);
+        JumiaApplication.INSTANCE.sendRequest(new GetLoginHelper(), bundle, new IResponseCallback() {
+            @Override
+            public void onRequestError(Bundle bundle) {
+                Log.i(TAG, "ON REQUEST ERROR: AUTO LOGIN");
+                JumiaApplication.INSTANCE.setLoggedIn(false);
+                JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+                updateNavigationMenu();
+            }
+            @Override
+            public void onRequestComplete(Bundle bundle) {
+                Log.i(TAG, "ON REQUEST COMPLETE: AUTO LOGIN");
+                // Set logged in
+                JumiaApplication.INSTANCE.setLoggedIn(true);
+                // Get customer
+                Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                // Get origin
+                ContentValues creadentialValues = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
+                boolean isFBLogin = creadentialValues.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG);
+                // Track
+                Bundle params = new Bundle();
+                params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
+                params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, TrackerDelegator.IS_AUTO_LOGIN);
+                params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, isFBLogin);
+                params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.HOME);
+                TrackerDelegator.trackLoginSuccessful(params);
+                trackPageAdjust();
+            }
+        });
+    }
+    
+    /**
+     * Track Page only for adjust
+     */
+    private void trackPageAdjust(){
+        Bundle bundle = new Bundle();
+        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+        bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
+        bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+        if (JumiaApplication.CUSTOMER != null) {
+            bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+        }
+        TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);    
+    }
+    
     /**
      * ##### WIZARDS #####
      */
