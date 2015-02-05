@@ -24,6 +24,7 @@ import pt.rocket.framework.objects.ShoppingCart;
 import pt.rocket.framework.objects.ShoppingCartItem;
 import pt.rocket.framework.tracking.GTMEvents.GTMKeys;
 import pt.rocket.framework.utils.Constants;
+import pt.rocket.framework.utils.NetworkConnectivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -33,8 +34,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -206,7 +205,7 @@ public class AdjustTracker {
     
     private static double ADJUST_CENT_VALUE = 100d;
 
-    private Context mContext;
+    private static Context mContext;
     
     private static final String EURO_CURRENCY = "EUR";
 
@@ -263,14 +262,14 @@ public class AdjustTracker {
         Log.i(TAG, "ADJUST is APP_LAUNCH " + Adjust.isEnabled());
     }
     
-    public static void onResume(final Activity activity) {
+    public static void onResume(Activity activity) {
         Adjust.onResume(activity);
         Adjust.setOnFinishedListener(new OnFinishedListener() {
             
             @Override
             public void onFinishedTracking(ResponseData responseData) {
-                if(responseData.wasSuccess()){
-                    saveResponseDataInfo(activity,responseData.getAdgroup(),responseData.getNetwork(),responseData.getCampaign(),responseData.getCreative());
+                if (responseData.wasSuccess()) {
+                    saveResponseDataInfo(mContext, responseData.getAdgroup(), responseData.getNetwork(),responseData.getCampaign(),responseData.getCreative());
                 }
             }
         });
@@ -280,19 +279,17 @@ public class AdjustTracker {
         Adjust.onPause();
     }
     
-    public static void saveResponseDataInfo(Activity activity,String adGroup, String network, String campaign, String creative){
-        
-        if(activity == null)
-            return;
-            
-        SharedPreferences settings = activity.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
+    public static void saveResponseDataInfo(Context context,String adGroup, String network, String campaign, String creative){
+        //
+        if(context == null) return;
+        // 
+        SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(GTMKeys.INSTALLNETWORK, network);
         editor.putString(GTMKeys.INSTALLADGROUP, adGroup);
         editor.putString(GTMKeys.INSTALLCAMPAIGN, campaign);
         editor.putString(GTMKeys.INSTALLCREATIVE, creative);
         editor.commit();
-        
     }
     
     public void trackScreen(TrackingPage screen, Bundle bundle) {
@@ -945,29 +942,17 @@ public class AdjustTracker {
         // Get the best provider
         String bestProvider = null;
         // Validate if GPS is enabled
-        if(checkConnection() && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+        boolean isConnected = NetworkConnectivity.isConnected(mContext);
+        if(isConnected && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             bestProvider = LocationManager.NETWORK_PROVIDER;
         }    
         // Validate if GPS disabled, connection and Network provider
-        if(bestProvider == null && checkConnection() && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if(bestProvider == null && isConnected && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             bestProvider = LocationManager.GPS_PROVIDER;
         }
-        
         // Return provider
         Log.i(TAG, "SELECTED PROVIDER: " + bestProvider);
         return bestProvider;
     }
-    
-    /**
-     * Check the connection
-     * @return true or false
-     * @author sergiopereira
-     */
-    private boolean checkConnection() {
-        ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
-    }
-    
     
 }
