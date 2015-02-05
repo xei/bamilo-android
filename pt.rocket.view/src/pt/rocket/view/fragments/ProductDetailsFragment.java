@@ -388,8 +388,6 @@ OnItemSelectedListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        //removed nested fragments
-        removeNestedFragments();
         // Save the current fragment type on orientation change
         if (!mHideVariationSelection) outState.putInt(SELECTED_SIMPLE_POSITION, mSelectedSimple);
         // Save product bundle
@@ -397,13 +395,6 @@ OnItemSelectedListener {
         
         // TODO : Other approach
         outState.putInt(IMAGE_HEIGHT, imageHeight);
-    }
-    
-    /**
-     * method to remove nested fragments from product detail
-     */
-    private void removeNestedFragments() {
-        fragmentManagerTransition(R.id.product_detail_image_gallery_container, new Fragment(), false, true);
     }
     
     /*
@@ -437,6 +428,8 @@ OnItemSelectedListener {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "ON DESTROY");
+        // Garbage
+        productImagesViewPagerFragment = null;
         FragmentCommunicatorForProduct.getInstance().destroyInstance();
     }
 
@@ -533,7 +526,7 @@ OnItemSelectedListener {
         mBundleTextTotal = (TextView) view.findViewById(R.id.bundle_total_value);
         mDividerBundle = view.findViewById(R.id.divider_bundle); 
         mBundleButton.setSelected(true);
-        //OFFERS
+        // OFFERS
         offersContainer = (RelativeLayout) view.findViewById(R.id.product_detail_product_offers_container);
         offersContent = (RelativeLayout) view.findViewById(R.id.offers_container);
         numOffers = (TextView) view.findViewById(R.id.offers_value);
@@ -1596,8 +1589,7 @@ OnItemSelectedListener {
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
         bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, true);
-        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY,
-                bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
     /**
@@ -2016,7 +2008,7 @@ OnItemSelectedListener {
         Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
         // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);
+            //Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);
             MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
             for (MetricAffectingSpan span : spans) {
                 htmlText.removeSpan(span);
@@ -2316,7 +2308,7 @@ OnItemSelectedListener {
      * function responsible for calling the catalog with the products from a specific seller
      */
     private void goToSellerCatalog(){
-        Log.d("SELLER","GO TO CATALOG");
+        Log.i("SELLER","GO TO CATALOG");
     }
 
     /**
