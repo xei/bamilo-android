@@ -57,23 +57,37 @@ public class PurchaseItem implements Parcelable {
 		return items;
 	}
 	
+	/*--
+	"0": { "sku": "PP447HLADTYYMEAMZ-289976" },
+	"1": { "name": "دستمال کاغذی با طرح گربه" },
+	"2": { "category": "خانه و آشپزخانه" },
+	"3": { "paidprice": 37000 },
+	"4": { "paidprice_euroConverted": 0.88095238095238 },
+	"5": { "quantity": 1 }
+	 */
 	private boolean parseItem( JSONObject itemsJson, int indexBegin ) {
 		try {
+			// 0: sku
 			sku = itemsJson.getJSONObject(String.valueOf(indexBegin)).getString(RestConstants.JSON_SKU_TAG );
+			// 1: name
 			name = itemsJson.getJSONObject(String.valueOf(indexBegin + 1)).getString( RestConstants.JSON_PURCHASE_NAME_TAG );
+			// 2: category
 			category = itemsJson.getJSONObject(String.valueOf(indexBegin + 2)).getString( RestConstants.JSON_CATEGORY_TAG );
+			// 3: price
 			JSONObject prcObj = itemsJson.getJSONObject(String.valueOf(indexBegin + 3));
 			paidprice = prcObj.getString( RestConstants.JSON_PAIDPRICE_TAG );
 			paidpriceAsDouble = prcObj.optDouble(RestConstants.JSON_PAIDPRICE_TAG, 0);
-			paidPriceForTracking = prcObj.optDouble(RestConstants.JSON_PAIDPRICE_CONVERTED_TAG, 0d);
-			JSONObject qtObj = itemsJson.getJSONObject(String.valueOf(indexBegin + 4));
+			// 4: price tracking
+			JSONObject prcTrck = itemsJson.getJSONObject(String.valueOf(indexBegin + 4));
+			paidPriceForTracking = prcTrck.optDouble(RestConstants.JSON_PAIDPRICE_CONVERTED_TAG, 0d);
+			// 5: quantity
+			JSONObject qtObj = itemsJson.getJSONObject(String.valueOf(indexBegin + 5));
 			quantity = qtObj.getString( RestConstants.JSON_QUANTITY_TAG);
 			quantityAsInt = qtObj.optInt(RestConstants.JSON_QUANTITY_TAG, 0);
 		} catch (JSONException e) {
 			Log.e(TAG, "parsing purchase item failed" + e);
 			return false;
 		}
-		
 		return true;
 	}
 	
