@@ -3,6 +3,8 @@
  */
 package pt.rocket.framework.tracking;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,7 +45,7 @@ import android.view.WindowManager;
 import com.adjust.sdk.Adjust;
 import com.adjust.sdk.OnFinishedListener;
 import com.adjust.sdk.ResponseData;
-
+import android.util.Base64;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -110,6 +112,7 @@ public class AdjustTracker {
         public static final String OFFERING_TYPE = "offering_type";
         public static final String SELLER_ID = "seller_id";
         public static final String CURRENCY_CODE = "currency_code";
+        public static final String CURRENCY = "currency";
         public static final String PRICE = "price";
         public static final String RATE_GIVEN = "rategiven";
         public static final String COMMENT = "comment";
@@ -309,9 +312,10 @@ public class AdjustTracker {
             parameters.put(AdjustKeys.DURATION, getDuration(bundle.getLong(BEGIN_TIME)));
             if (bundle.getParcelable(CUSTOMER) != null) {
                 Customer customer = bundle.getParcelable(CUSTOMER);
-                parameters.put(AdjustKeys.GENDER, getGender(customer));
+                String gender = getGender(customer);
+                if(!gender.equals(CustomerGender.UNKNOWN.name()))
+                    parameters.put(AdjustKeys.GENDER, gender);
             }   
-            
             Adjust.trackEvent(mContext.getString(R.string.adjust_token_home), parameters);
             
             //FB - View Homescreen
@@ -325,10 +329,13 @@ public class AdjustTracker {
             parameters = getBaseParameters(parameters, bundle);
             if (bundle.getParcelable(CUSTOMER) != null) {
                 Customer customer = bundle.getParcelable(CUSTOMER);
-                parameters.put(AdjustKeys.GENDER, getGender(customer));
+                String gender = getGender(customer);
+                if(!gender.equals(CustomerGender.UNKNOWN.name()))
+                    parameters.put(AdjustKeys.GENDER, gender);
             }   
             CompleteProduct prod = bundle.getParcelable(PRODUCT);
-            parameters.put(AdjustKeys.SKU, prod.getSku());
+//            parameters.put(AdjustKeys.SKU, prod.getSku());
+            parameters.put(AdjustKeys.PRODUCT, prod.getSku());
             
             Adjust.trackEvent(mContext.getString(R.string.adjust_token_view_product), parameters);
             
@@ -358,7 +365,9 @@ public class AdjustTracker {
             parameters = getBaseParameters(parameters, bundle);         
             if (bundle.getParcelable(CUSTOMER) != null) {
                 Customer customer = bundle.getParcelable(CUSTOMER);
-                parameters.put(AdjustKeys.GENDER, getGender(customer));
+                String gender = getGender(customer);
+                if(!gender.equals(CustomerGender.UNKNOWN.name()))
+                    parameters.put(AdjustKeys.GENDER, gender);
             }
             ArrayList<String> skus = bundle.getStringArrayList(TRANSACTION_ITEM_SKUS);
             StringBuilder sbSkus;
@@ -383,7 +392,9 @@ public class AdjustTracker {
             //FB - View Listing
             fbParameters = new HashMap<String, String>();
             fbParameters = getFBBaseParameters(fbParameters, bundle);
-            fbParameters.put(AdjustKeys.CATEGORY, bundle.getString(CATEGORY)); 
+            if(!TextUtils.isEmpty(bundle.getString(CATEGORY)))
+                fbParameters.put(AdjustKeys.CATEGORY, bundle.getString(CATEGORY)); 
+            
             fbParameters.put(AdjustKeys.SKUS, sbSkus.toString());
             if (bundle.containsKey(CATEGORY_ID) && !TextUtils.isEmpty(bundle.getString(CATEGORY_ID))){
                 fbParameters.put(AdjustKeys.CATEGORY_ID, bundle.getString(CATEGORY_ID));
@@ -391,7 +402,6 @@ public class AdjustTracker {
             if (bundle.containsKey(TREE) && !TextUtils.isEmpty(bundle.getString(TREE))){
             	fbParameters.put(AdjustKeys.CATEGORY_TREE, bundle.getString(TREE));
             }
-   
             Adjust.trackEvent(mContext.getString(R.string.adjust_token_fb_view_listing), fbParameters);
             break;
             
@@ -401,7 +411,9 @@ public class AdjustTracker {
             
             if (bundle.getParcelable(CUSTOMER) != null) {
                 Customer customer = bundle.getParcelable(CUSTOMER);
-                parameters.put(AdjustKeys.GENDER, getGender(customer));
+                String gender = getGender(customer);
+                if(!gender.equals(CustomerGender.UNKNOWN.name()))
+                    parameters.put(AdjustKeys.GENDER, gender);
             }   
   
             ShoppingCart cart = bundle.getParcelable(CART);
@@ -416,14 +428,15 @@ public class AdjustTracker {
                 json = new JSONObject();
                 try {
                     json.put(AdjustKeys.SKU, item.getConfigSKU());
-                    json.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
+                    json.put(AdjustKeys.CURRENCY, EURO_CURRENCY);
                     json.put(AdjustKeys.QUANTITY, item.getQuantity());
-                    json.put(AdjustKeys.PRICE, item.getSpecialPriceConverted());
+                    json.put(AdjustKeys.PRICE, item.getPriceForTracking());
                     
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }               
-                parameters.put(AdjustKeys.PRODUCT + countString, json.toString());
+//                   Log.e("Adjust","PRODUCT:"+json.toString());
+                   parameters.put(AdjustKeys.PRODUCT + countString, json.toString());
 
                 countString = String.valueOf(++productCount);
 
@@ -434,8 +447,6 @@ public class AdjustTracker {
                 fbParameters.put(AdjustKeys.QUANTITY, String.valueOf(item.getQuantity())); 
                 fbParameters.put(AdjustKeys.DISCOUNT, item.hasDiscount() ? "y" : "n"); 
                 fbParameters.put(AdjustKeys.PRICE, String.valueOf(item.getPriceForTracking()));
-                // fbParameters.put(AdjustKeys.CART_CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
-                fbParameters.put(AdjustKeys.CART_CURRENCY_CODE, EURO_CURRENCY);
                 fbParameters.put(AdjustKeys.TOTAL_CART, String.valueOf(cart.getCartValueEuroConverted()));
                 
                 // fbParameters.put(AdjustKeys.SIZE, item.getVariation());
@@ -542,7 +553,6 @@ public class AdjustTracker {
                 parameters.put(AdjustKeys.SKUS, sbSkus.toString());
                 
                 String eventString = bundle.getBoolean(IS_GUEST_CUSTOMER) ? mContext.getString(R.string.adjust_token_guest_sale) : mContext.getString(R.string.adjust_token_sale);
-                
                 // Track Revenue (Sale or Gues Sale)
 //                convertToEuro(baseActivity, bundle.getDouble(TRANSACTION_VALUE), parameters, eventString, true, bundle.getString(CURRENCY_ISO));
                 double finalValue = bundle.getDouble(TRANSACTION_VALUE)*ADJUST_CENT_VALUE;
@@ -554,7 +564,9 @@ public class AdjustTracker {
                 transParameters.put(AdjustKeys.NEW_CUSTOMER, String.valueOf(bundle.getBoolean(IS_GUEST_CUSTOMER))); 
                 if (bundle.getParcelable(CUSTOMER) != null) {
                     Customer customer = bundle.getParcelable(CUSTOMER);
-                    transParameters.put(AdjustKeys.GENDER, getGender(customer));
+                    String gender = getGender(customer);
+                    if(!gender.equals(CustomerGender.UNKNOWN.name()))
+                        transParameters.put(AdjustKeys.GENDER, gender);
                 }
                 
                 ArrayList<PurchaseItem> cartItems = bundle.getParcelableArrayList(CART);
@@ -566,9 +578,9 @@ public class AdjustTracker {
                     json = new JSONObject();
                     try {
                         json.put(AdjustKeys.SKU, item.sku);
-                        json.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
+                        json.put(AdjustKeys.CURRENCY, EURO_CURRENCY);
                         json.put(AdjustKeys.QUANTITY, item.quantity);
-                        json.put(AdjustKeys.PRICE, item.paidpriceAsDouble);
+                        json.put(AdjustKeys.PRICE, item.getPriceForTracking());
                         
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -584,6 +596,9 @@ public class AdjustTracker {
                     fbParameters.put(AdjustKeys.SKU, item.sku );
                     fbParameters.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO)); 
                     fbParameters.put(AdjustKeys.QUANTITY, item.quantity);
+                    fbParameters.put(AdjustKeys.NEW_CUSTOMER, String.valueOf(bundle.getBoolean(IS_GUEST_CUSTOMER))); 
+                    //TODO
+//                    fbParameters.put(AdjustKeys.BRAND, item.brand); 
                     if(item.getPriceForTracking() > 0d){
                     	fbParameters.put(AdjustKeys.PRICE, String.valueOf(item.getPriceForTracking()));
                         fbParameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY); 
@@ -595,10 +610,8 @@ public class AdjustTracker {
                     fbParameters.put(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
                 //    fbParameters.put(AdjustKeys.TRANSACTION_CURRENCY, bundle.getString(CURRENCY_ISO));
                     fbParameters.put(AdjustKeys.TOTAL_TRANSACTION, String.valueOf(bundle.getDouble(TRANSACTION_VALUE)));
-                    printParameters(fbParameters);
                     Adjust.trackEvent(mContext.getString(R.string.adjust_token_fb_transaction_confirmation), fbParameters);
                 }
-                printParameters(transParameters);
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_transaction_confirmation), transParameters);
                 
             }
@@ -635,7 +648,6 @@ public class AdjustTracker {
             if (isEnabled) {
                 parameters = getBaseParameters(parameters, bundle);
                 parameters.put(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                //Log.e("Adjust","ADD_TO_WISHLIST sku:"+bundle.getString(PRODUCT_SKU));
                 if(bundle.getDouble(VALUE) > 0d){
                 	parameters.put(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
                     parameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
@@ -690,7 +702,9 @@ public class AdjustTracker {
                 parameters.put(AdjustKeys.KEYWORDS, bundle.getString(SEARCH_TERM));
                 if (bundle.getParcelable(CUSTOMER) != null) {
                     Customer customer = bundle.getParcelable(CUSTOMER);
-                    parameters.put(AdjustKeys.GENDER, getGender(customer));
+                    String gender = getGender(customer);
+                    if(!gender.equals(CustomerGender.UNKNOWN.name()))
+                        parameters.put(AdjustKeys.GENDER, gender);
                 }       
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_search), parameters);
                 
@@ -739,7 +753,7 @@ public class AdjustTracker {
                         fbParams.put(AdjustKeys.SKU, fav.getSku());
 //                        fbParams.put(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO)); 
                         fbParams.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-    //                  fbParams.put(AdjustKeys.QUANTITY, "1"); 
+                        fbParams.put(AdjustKeys.QUANTITY, "1"); 
                         fbParams.put(AdjustKeys.DISCOUNT, fav.hasDiscount() ? "y" : "n"); 
                         fbParams.put(AdjustKeys.BRAND, fav.getBrand());
                         if (fav.hasSimples() && AddableToCart.NO_SIMPLE_SELECTED != fav.getSelectedSimple()) {                                              
@@ -760,7 +774,12 @@ public class AdjustTracker {
 
     }
 
+    /**
+     * Just to aind adjust tracking debug, will be removed before going to prod
+     * @param mp
+     */
     public static void printParameters(Map mp) {
+        Log.e("Adjust","init ----------");
         Iterator it = mp.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry)it.next();
@@ -808,7 +827,9 @@ public class AdjustTracker {
         
         if (bundle.getParcelable(CUSTOMER) != null) {
             Customer customer = bundle.getParcelable(CUSTOMER);
-            parameters.put(AdjustKeys.GENDER, getGender(customer));
+            String gender = getGender(customer);
+            if(!gender.equals(CustomerGender.UNKNOWN.name()))
+                parameters.put(AdjustKeys.GENDER, gender);
         }       
  
         parameters.put(AdjustKeys.AMOUNT_TRANSACTIONS, getTransationCount()); 
