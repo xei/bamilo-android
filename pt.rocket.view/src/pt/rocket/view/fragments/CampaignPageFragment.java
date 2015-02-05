@@ -1151,6 +1151,18 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
                 adapter.setDropDownViewResource(R.layout.campaign_spinner_dropdown_item);
                 // Apply the adapter to the spinner
                 view.mSizeSpinner.setAdapter(adapter);
+                
+                // Checks if product has only one size to select
+                if(sizes.size() == 1){
+                    ViewGroup.LayoutParams lp = view.mSizeSpinner.getLayoutParams();
+                    lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    view.mSizeSpinner.setClickable(false);
+                } else {
+                    ViewGroup.LayoutParams lp = view.mSizeSpinner.getLayoutParams();
+                    lp.width = (int)getResources().getDimension(R.dimen.campaign_size_spinner_width);
+                    view.mSizeSpinner.setClickable(true);
+                }
+                
                 // Save position in spinner
                 view.mSizeSpinner.setTag(position);
                 // Check pre selection
