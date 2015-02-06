@@ -744,6 +744,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      */
     private void loadProductPartial() {
         mBeginRequestMillis = System.currentTimeMillis();
+        viewGrouFactory.setViewVisible(R.id.image_loading_progress);
         Bundle bundle = new Bundle();
         bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
         triggerContentEventWithNoLoading(new GetProductHelper(), bundle, responseCallback);
@@ -1931,6 +1932,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             } else {
                 mCompleteProduct = (CompleteProduct) bundle
                         .getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                productImagesViewPagerFragment = null;
                 // Show product or update partial
                 displayProduct(mCompleteProduct);
 
