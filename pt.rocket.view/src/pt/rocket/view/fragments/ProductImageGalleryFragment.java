@@ -357,11 +357,16 @@ public class ProductImageGalleryFragment extends BaseFragment {
             mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
             mViewPager.setPageMargin((int) getActivity().getResources().getDimension(R.dimen.margin_large));
         }
-        InfinitePagerAdapter infinitePagerAdapter = new InfinitePagerAdapter(galleryAdapter);
-        infinitePagerAdapter.setOneItemMode();
-        mViewPager.setAdapter(infinitePagerAdapter);
-        setIndicatorForViewPager();
-            
+        
+        
+        if(imagesList.size() > 1){
+            InfinitePagerAdapter infinitePagerAdapter = new InfinitePagerAdapter(galleryAdapter);
+            infinitePagerAdapter.setOneItemMode();
+            mViewPager.setAdapter(infinitePagerAdapter);
+            setIndicatorForViewPager();
+        } else {
+            mViewPager.setAdapter(galleryAdapter);
+        }
 
         mViewPager.setCurrentItem(FragmentCommunicatorForProduct.getInstance().getCurrentImagePosition());
 
@@ -643,7 +648,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
 
     private int getViewPagerPosition() {
         return mViewPager.getAdapter() instanceof InfinitePagerAdapter ? ((InfinitePagerAdapter) mViewPager
-                .getAdapter()).getVirtualPosition(mViewPager.getCurrentItem()) : 1;
+                .getAdapter()).getVirtualPosition(mViewPager.getCurrentItem()) : mViewPager.getCurrentItem();
 
     }
 
