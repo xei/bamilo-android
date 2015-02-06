@@ -601,7 +601,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         if(productRatingContainer.getChildCount() > 0)
             productRatingContainer.removeAllViews();
         
-        
+       
         if(!isProductRating){
             String reviewsString = getResources().getString(R.string.reviews);
             if(productRatingPage.getCommentsCount() == 1)
@@ -624,7 +624,6 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
             // means there's write fragment attached so the reviews list must be only one column
             numColumns = 1;
         }
-        
 //        reviews.remove(reviews.size()-1);
         int numberReviews = reviews.size();
         // If there are reviews, list them
@@ -775,7 +774,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
             int rateCount = ratingOptionArray.size();
             int rest = rateCount % RATING_TYPE_BY_LINE;
             int numLines =(int) Math.ceil(rateCount / RATING_TYPE_BY_LINE);
-            if(rest > 1)
+            if(rest >= 1)
                 numLines = numLines + rest;
             
             int countType = 0;

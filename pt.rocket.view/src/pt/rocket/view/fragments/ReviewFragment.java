@@ -202,7 +202,7 @@ public class ReviewFragment extends BaseFragment {
             int rateCount = ratingOptionArray.size();
             int rest = rateCount % RATING_TYPE_BY_LINE;
             int numLines =(int) Math.ceil(rateCount / RATING_TYPE_BY_LINE);
-            if(rest > 1)
+            if(rest >= 1)
                 numLines = numLines + rest;
             
             int countType = 0;

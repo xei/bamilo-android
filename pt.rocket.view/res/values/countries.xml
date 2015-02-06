@@ -8,6 +8,6 @@
  <!-- 	<string name="jumia_global_password">rock4me</string> -->
    <string name="jumia_global_password">z7euN7qfRD769BP</string>
     <string name="jumia_global_restbase_path">mobapi</string>
-    <string name="jumia_global_api_version">mobapi/v1.5</string>
+    <string name="jumia_global_api_version">mobapi/v1.6</string>
 
 </resources>
