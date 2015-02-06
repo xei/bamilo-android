@@ -162,7 +162,7 @@
 
 ## BEGIN MOBILE #################################################################
 #### pt.rocket.components
--kepp interface pt.rocket.components.HorizontalListView$** { public *; }
+-keep interface pt.rocket.components.HorizontalListView$** { public *; }
 -keep interface pt.rocket.components.RangeSeekBar$** { public *; }
 -keep class pt.rocket.components.RangeSeekBar { public *; }
 -keep public interface pt.rocket.components.absspinner.IcsAdapterView$** { public *; }
