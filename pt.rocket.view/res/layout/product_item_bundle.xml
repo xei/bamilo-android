@@ -87,8 +87,6 @@
             android:id="@+id/bundle_simple_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/margin_mid"
-            android:layout_marginStart="@dimen/margin_mid"
             android:layout_toEndOf="@id/bundle_size_text"
             android:layout_toRightOf="@id/bundle_size_text"
             android:background="@drawable/spinner_background_holo_orange"

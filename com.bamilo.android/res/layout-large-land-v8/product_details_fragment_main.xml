@@ -223,7 +223,7 @@
             <include
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/offers_include"
+                android:layout_below="@+id/product_detail_product_offers_container"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="@dimen/rounded_margin_mid"
                 android:layout_marginTop="0dp"
