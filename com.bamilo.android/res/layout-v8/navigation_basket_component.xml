@@ -18,20 +18,20 @@
         android:gravity="right"
         android:orientation="vertical" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/nav_basket_title"
             style="@style/navigation_cart_titletext"
             android:layout_alignParentRight="true"
             android:text="@string/shopping_cart" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/nav_basket_empty"
             style="@style/navigation_cart_emptytext"
             android:layout_alignParentRight="true"
             android:layout_below="@id/nav_basket_title"
             android:text="@string/navigation_cart_empty" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/nav_basket_elements"
             style="@style/navigation_cart_price"
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             android:gravity="right"
             android:visibility="invisible" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/nav_basket_vat"
             style="@style/navigation_cart_vattext"
             android:layout_alignParentRight="true"
@@ -48,7 +48,7 @@
             android:visibility="invisible" />
     </RelativeLayout>
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/nav_cart_count"
         android:layout_width="@dimen/action_bar_icon_size"
         android:layout_height="@dimen/action_bar_icon_size"

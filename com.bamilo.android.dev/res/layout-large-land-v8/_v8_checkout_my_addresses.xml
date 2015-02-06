@@ -51,7 +51,7 @@
             style="@style/button_container"
             android:layout_alignParentBottom="true" >
 
-            <pt.rocket.components.customfontviews.Button
+            <com.mobile.components.customfontviews.Button
                 android:id="@+id/checkout_addresses_button_enter"
                 style="@style/button_orange_landscape"
                 android:layout_width="@dimen/inner_container_width"

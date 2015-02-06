@@ -36,7 +36,7 @@
             android:gravity="center"
             android:orientation="vertical" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="-3dp"
@@ -47,7 +47,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-4dp"
@@ -58,7 +58,7 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/teaser_campaigns_group_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

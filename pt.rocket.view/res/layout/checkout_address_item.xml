@@ -22,23 +22,23 @@
             android:minHeight="@dimen/checkout_address_item_min_height"
             android:orientation="vertical" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_name"
                 style="@style/text_form" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_street"
                 style="@style/text_form" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_region"
                 style="@style/text_form" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_postcode"
                 style="@style/text_form" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_phone"
                 style="@style/text_form" />
         </LinearLayout>
@@ -64,7 +64,7 @@
 
             <!-- SELECTION RADIOBUTTON -->
 
-            <pt.rocket.components.customfontviews.RadioButton
+            <com.mobile.components.customfontviews.RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"

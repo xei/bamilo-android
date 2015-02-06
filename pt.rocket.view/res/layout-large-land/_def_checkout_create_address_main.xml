@@ -29,7 +29,7 @@
 
                 <!-- WARNING -->
 
-                <pt.rocket.components.customfontviews.TextView
+                <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_address_required_text"
                     style="@style/white_text_16sp_normal"
                     android:layout_width="match_parent"
@@ -67,7 +67,7 @@
             android:layout_alignParentBottom="true"
             android:orientation="vertical" >
 
-            <pt.rocket.components.customfontviews.Button
+            <com.mobile.components.customfontviews.Button
                 android:id="@+id/checkout_address_button_enter"
                 style="@style/button_orange_landscape"
                 android:text="@string/next_button" />
@@ -75,7 +75,7 @@
 
         <!-- WARNING -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/checkout_address_required_text"
             style="@style/white_text_16sp_normal"
             android:layout_width="match_parent"

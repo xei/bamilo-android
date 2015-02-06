@@ -16,7 +16,7 @@
         android:gravity="left|start|center"
         android:orientation="horizontal" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             style="@style/rounded_box_title_grey"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
@@ -37,7 +37,7 @@
 
     <!-- METHOD -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/checkout_summary_shipping_method_text"
         style="@style/text_normal"
         android:layout_marginBottom="@dimen/margin_40px"

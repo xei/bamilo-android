@@ -36,7 +36,7 @@
         android:layout_toEndOf="@id/image_loadable"
         android:layout_toRightOf="@id/image_loadable" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
         style="@style/text_title"
         android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
         android:layout_marginTop="@dimen/catalog_item_vertical_padding"
         android:text="BRAND" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
         style="@style/text_normal"
         android:layout_width="match_parent"
@@ -60,7 +60,7 @@
         android:gravity="left|center_vertical|start"
         android:text="Name" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
         style="@style/text_price"
         android:layout_alignLeft="@id/center_view"
@@ -70,7 +70,7 @@
         android:layout_marginRight="4dp"
         android:text="Discount" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
         style="@style/text_price"
         android:layout_alignTop="@id/item_discount"
@@ -97,7 +97,7 @@
             android:numStars="5"
             android:rating="3.5" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_reviews"
             style="@style/text_subtitle"
             android:layout_width="match_parent"
@@ -120,7 +120,7 @@
         android:paddingTop="@dimen/catalog_item_vertical_padding"
         android:src="@drawable/selector_favorite" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/discount_percentage"
         style="@style/discount_percentage"
         android:layout_above="@+id/bottom_spacer"

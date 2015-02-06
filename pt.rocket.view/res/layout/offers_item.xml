@@ -20,7 +20,7 @@
         android:paddingStart="@dimen/margin_mid"
         android:paddingTop="@dimen/catalog_item_vertical_padding" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/offer_price"
             style="@style/text_price"
             android:layout_width="match_parent"
@@ -28,7 +28,7 @@
             android:layout_alignParentTop="true"
             android:text="RM 9000" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/offer_owner_name"
             style="@style/text_title"
             android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:numStars="5"
                 android:rating="3.5" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"
                 style="@style/text_subtitle"
                 android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
                 android:textColor="@color/grey_light" />
         </RelativeLayout>
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/offer_item_delivery"
             style="@style/text_normal"
             android:layout_width="match_parent"
@@ -91,7 +91,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true" >
 
-        <pt.rocket.components.customfontviews.Button
+        <com.mobile.components.customfontviews.Button
             android:id="@+id/offer_addcart"
             style="@style/button_orange_bottom"
             android:layout_width="97dp"

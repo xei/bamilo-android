@@ -11,7 +11,7 @@
     layout_gravity added to fix bug on 2.2
     -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/color_label"
         style="@style/rounded_box_title_grey"
         android:text="@string/color_label" />
@@ -21,7 +21,7 @@
         style="@style/divider_horizontal_orange"
         android:layout_below="@id/color_label" />
 
-    <pt.rocket.components.HorizontalListView
+    <com.mobile.components.HorizontalListView
         android:id="@+id/variations_list"
         android:layout_width="match_parent"
         android:layout_height="63dp"

@@ -13,7 +13,7 @@
         android:layout_marginTop="@dimen/margin_116px"
         android:background="@drawable/img_connect" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_32px"
@@ -23,7 +23,7 @@
         android:textColor="@color/text_root"
         android:textSize="@dimen/text_l" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="middle"

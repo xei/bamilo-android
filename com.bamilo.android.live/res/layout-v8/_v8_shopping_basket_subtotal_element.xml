@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:paddingBottom="@dimen/rounded_margin_mid" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         style="@style/rounded_box_title_grey"
         android:text="@string/sub_total_title" />
 
@@ -21,7 +21,7 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/margin_large" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/articles_count"
             style="@style/text_normal"
             android:ellipsize="none"
@@ -29,7 +29,7 @@
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@+id/price_unreduced" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/price_unreduced"
             style="@style/text_normal"
             android:ellipsize="none"
@@ -37,7 +37,7 @@
             android:layout_toRightOf="@+id/price_total"
             android:textColor="@color/grey_light" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/price_total"
             style="@style/text_title"
             android:ellipsize="none"
@@ -68,13 +68,13 @@
         android:layout_marginTop="@dimen/margin_mid"
         android:visibility="visible" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             style="@style/text_normal"
             android:ellipsize="none"
             android:layout_alignParentRight="true"
             android:text="@string/vat_string" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/vat_value"
             android:ellipsize="none"
             style="@style/text_normal"
@@ -91,13 +91,13 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:visibility="gone" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             style="@style/text_normal"
             android:ellipsize="none"
             android:layout_alignParentRight="true"
             android:text="@string/shipping" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/shipping_value"
             style="@style/text_normal"
             android:ellipsize="none"
@@ -115,13 +115,13 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:visibility="gone" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             style="@style/text_normal"
             android:ellipsize="none"
             android:layout_alignParentRight="true" 
             android:text="@string/extra_costs_label" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/extra_costs_value"
             style="@style/text_normal"
             android:ellipsize="none"
@@ -138,14 +138,14 @@
         android:layout_marginStart="@dimen/rounded_margin_mid"
         android:visibility="visible" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             style="@style/text_normal"
             android:ellipsize="none"
             android:text="@string/my_order_voucher_label"
             android:layout_alignParentRight="true"
             android:textColor="@color/green_basic" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/text_voucher"
             style="@style/text_normal"
             android:ellipsize="none"
@@ -164,13 +164,13 @@
         android:layout_marginTop="@dimen/margin_mid"
         android:visibility="visible" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             style="@style/text_normal"
             android:layout_alignParentRight="true"
             android:ellipsize="none"
             android:text="@string/my_order_total_label" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/total_value"
             style="@style/text_title"
             android:ellipsize="none"

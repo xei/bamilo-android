@@ -19,7 +19,7 @@
         layout="@layout/image_loadable"
         android:background="@color/red_basic" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
         style="@style/text_normal"
         android:layout_below="@id/item_image_loadable"
@@ -27,7 +27,7 @@
         android:layout_gravity="center_horizontal"
         android:lines="1" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_title"
         style="@style/text_normal"
         android:layout_below="@id/item_brand"
@@ -36,7 +36,7 @@
         android:lines="1"
         android:text="Title" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_price"
         style="@style/text_price"
         android:layout_below="@id/item_title"

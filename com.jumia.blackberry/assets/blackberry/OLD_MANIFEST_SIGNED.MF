@@ -22,7 +22,7 @@ Application-Requires-System: Tablet OS/10.0.0.0
 Entry-Point-Name: Jumia
 Entry-Point-Icon: android/res/drawable-ldpi/ic_launcher.png
 Entry-Point-Type: Qnx/Android
-Entry-Point: android://com.jumia.blackberry?activity-name=pt.rocket.view.SplashScreenActivity
+Entry-Point: android://com.jumia.blackberry?activity-name=com.mobile.view.SplashScreenActivity
 Entry-Point-User-Actions: access_internet,read_geolocation,access_shared,play_audio,post_notification
 Entry-Point-System-Actions: _sys_use_consumer_push
 

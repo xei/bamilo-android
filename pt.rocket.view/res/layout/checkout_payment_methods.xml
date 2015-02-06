@@ -5,13 +5,13 @@
 
     <!-- TITLE mandatoryControl -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/checkout_payment_methods_title"
         style="@style/rounded_box_title_grey"
         android:layout_alignParentLeft="true"
         android:text="@string/payment" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

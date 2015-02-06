@@ -31,7 +31,7 @@
                     android:orientation="vertical" >
                 </LinearLayout>
 
-                <pt.rocket.components.customfontviews.TextView
+                <com.mobile.components.customfontviews.TextView
                     android:id="@+id/title_review"
                     style="@style/text_title"
                     android:layout_width="match_parent"
@@ -45,20 +45,20 @@
                     android:layout_marginTop="@dimen/margin_mid"
                     android:gravity="center_vertical|right" >
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/review_date"
                         style="@style/text_normal"
                         android:text="Date"
                         android:textSize="@dimen/text_s" />
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/review_username"
                         style="@style/text_normal"
                         android:layout_marginRight="@dimen/rounded_margin_small"
                         android:text="User"
                         android:textSize="@dimen/text_s" />
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/posted_by"
                         style="@style/text_normal"
                         android:layout_marginRight="@dimen/rounded_margin_small"
@@ -80,7 +80,7 @@
                 android:gravity="center_vertical|right"
                 android:orientation="vertical" >
 
-                <pt.rocket.components.customfontviews.TextView
+                <com.mobile.components.customfontviews.TextView
                     android:id="@+id/review_comment"
                     style="@style/text_normal"
                     android:ellipsize="none"

@@ -7,12 +7,12 @@
     android:orientation="horizontal"
     android:padding="@dimen/rounded_margin_mid" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         style="@style/text_title"
         android:layout_weight="1"
         android:text="@string/order_summary_total_label" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/checkout_summary_total_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

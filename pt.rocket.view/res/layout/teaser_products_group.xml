@@ -11,7 +11,7 @@
 
     <!-- TITLE -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/teaser_products_group_title"
         style="@style/rounded_box_title_grey"
         android:text="Product list"
@@ -24,7 +24,7 @@
 
     <!-- CONTAINER -->
 
-    <pt.rocket.components.HorizontalListView
+    <com.mobile.components.HorizontalListView
         android:id="@+id/teaser_products_horizontal_grid_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/teaser_product_item_width"

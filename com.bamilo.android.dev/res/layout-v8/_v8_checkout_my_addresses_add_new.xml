@@ -14,7 +14,7 @@
         android:paddingTop="@dimen/margin_30px"
         android:src="@drawable/selector_btn_addaddress" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         style="@style/text_form"
         android:layout_width="0dp"
         android:layout_height="match_parent"

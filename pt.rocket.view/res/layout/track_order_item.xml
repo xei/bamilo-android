@@ -23,12 +23,12 @@
         android:gravity="left|center_vertical|start"
         android:paddingTop="@dimen/rounded_margin_mid" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_item_name"
             style="@style/text_normal"
             android:text="@string/creation_date" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_item_quantity"
             style="@style/text_title"
             android:text="@string/creation_date" />
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_last_update"
             style="@style/text_title"
             android:layout_marginRight="@dimen/margin_x_small"
@@ -46,7 +46,7 @@
             android:text="@string/track_your_order"
             android:visibility="gone" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_status_text"
             style="@style/text_title"
             android:text="@string/track_your_order" />

@@ -7,16 +7,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
-import pt.rocket.utils.InflateLayout;
-import pt.rocket.utils.MyActivity;
-import pt.rocket.utils.PersistentData;
-import pt.rocket.framework.R;
-import pt.rocket.components.AlertMessagesComponent;
-import pt.rocket.components.lazylist.ImageLoader;
-import pt.rocket.framework.event.EventManager;
-import pt.rocket.framework.event.EventType;
-import pt.rocket.framework.event.IEvent;
-import pt.rocket.framework.event.IEventListener;
+import com.mobile.utils.InflateLayout;
+import com.mobile.utils.MyActivity;
+import com.mobile.utils.PersistentData;
+import com.mobile.framework.R;
+import com.mobile.components.AlertMessagesComponent;
+import com.mobile.components.lazylist.ImageLoader;
+import com.mobile.framework.event.EventManager;
+import com.mobile.framework.event.EventType;
+import com.mobile.framework.event.IEvent;
+import com.mobile.framework.event.IEventListener;
 import com.flurry.android.FlurryAgent;
 
 

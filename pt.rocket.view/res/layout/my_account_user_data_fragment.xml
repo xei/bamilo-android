@@ -18,7 +18,7 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/rounded_margin_mid" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/rounded_box_title_grey"
                 android:gravity="left|start|center_vertical"
                 android:paddingEnd="@dimen/rounded_margin_small"
@@ -47,7 +47,7 @@
                     android:layout_marginStart="@dimen/rounded_margin_small"
                     android:orientation="horizontal" >
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/clientLastName"
                         style="@style/text_normal"
                         android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                         android:text="first" />
 
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/clientFirstName"
                         style="@style/text_normal"
                         android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                         android:text="last" />
                 </RelativeLayout>
 
-                <pt.rocket.components.customfontviews.TextView
+                <com.mobile.components.customfontviews.TextView
                     android:id="@+id/clientEmail"
                     style="@style/text_normal"
                     android:layout_width="match_parent"
@@ -91,7 +91,7 @@
             android:layout_marginTop="0dp"
             android:orientation="vertical" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/rounded_box_title_grey"
                 android:gravity="left|start|center_vertical"
                 android:paddingEnd="@dimen/rounded_margin_small"
@@ -112,7 +112,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical" >
 
-                <pt.rocket.components.customfontviews.TextView
+                <com.mobile.components.customfontviews.TextView
                     android:id="@+id/passwordErrorHint"
                     style="@style/text_normal"
                     android:layout_width="match_parent"
@@ -124,7 +124,7 @@
                     android:textColor="@color/red_basic"
                     android:visibility="gone" />
 
-                <pt.rocket.components.customfontviews.EditText
+                <com.mobile.components.customfontviews.EditText
                     android:id="@+id/typeNewPassword"
                     style="@style/form_edittext_style"
                     android:layout_marginBottom="@dimen/margin_mid"
@@ -133,7 +133,7 @@
                     android:hint="@string/new_password_hint"
                     android:inputType="textPassword" />
 
-                <pt.rocket.components.customfontviews.EditText
+                <com.mobile.components.customfontviews.EditText
                     android:id="@+id/retypeNewPassword"
                     style="@style/form_edittext_style"
                     android:layout_marginBottom="@dimen/margin_mid"
@@ -148,7 +148,7 @@
             style="@style/button_container"
             android:layoutDirection="locale" >
 
-            <pt.rocket.components.customfontviews.Button
+            <com.mobile.components.customfontviews.Button
                 android:id="@+id/button_cancel"
                 style="@style/button_grey_bottom"
                 android:layout_marginEnd="@dimen/margin_x_small"
@@ -156,7 +156,7 @@
                 android:layout_weight="1"
                 android:text="@string/cancel_label" />
 
-            <pt.rocket.components.customfontviews.Button
+            <com.mobile.components.customfontviews.Button
                 android:id="@+id/button_save"
                 style="@style/button_orange_bottom"
                 android:layout_marginLeft="@dimen/margin_x_small"

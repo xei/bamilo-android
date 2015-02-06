@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:paddingRight="@dimen/action_bar_margin" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/cart_count"
         style="@style/ShoppingCartCount"
         android:contentDescription="Go to Cart" />

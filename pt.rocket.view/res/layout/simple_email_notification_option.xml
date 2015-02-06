@@ -9,7 +9,7 @@
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid" />
 
-    <pt.rocket.components.customfontviews.CheckBox
+    <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/myaccount_newsletter_checkbox"
         style="@style/text_normal"
         android:layout_width="match_parent"

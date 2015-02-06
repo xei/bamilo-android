@@ -18,7 +18,7 @@
         android:paddingBottom="@dimen/rounded_margin_mid"
         android:paddingTop="@dimen/rounded_margin_mid" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/option_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:textColor="@color/grey_middledark"
             android:textSize="@dimen/text_title" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/option_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

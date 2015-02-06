@@ -15,7 +15,7 @@
         android:paddingRight="@dimen/margin_small"
         android:paddingTop="@dimen/margin_large" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/datepicker_title"
             style="@style/dialog_title"
             android:gravity="center_horizontal" />
@@ -49,7 +49,7 @@
             android:layout_below="@id/grey_line"
             android:orientation="horizontal" >
 
-            <pt.rocket.components.customfontviews.Button
+            <com.mobile.components.customfontviews.Button
                 android:id="@+id/button1"
                 style="@style/dialog_button_style"
                 android:text="@string/cancel_label" />
@@ -58,7 +58,7 @@
                 android:id="@+id/grey_line_vertical"
                 style="@style/line_dialog_vertical" />
 
-            <pt.rocket.components.customfontviews.Button
+            <com.mobile.components.customfontviews.Button
                 android:id="@+id/button2"
                 style="@style/dialog_button_style"
                 android:text="@string/ok_label" />

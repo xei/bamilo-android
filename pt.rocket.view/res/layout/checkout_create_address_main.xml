@@ -42,7 +42,7 @@
         android:orientation="vertical" >
 
 
-        <pt.rocket.components.customfontviews.Button
+        <com.mobile.components.customfontviews.Button
             android:id="@+id/checkout_address_button_enter"
             style="@style/button_orange_bottom"
             android:text="@string/next_button" />
@@ -50,7 +50,7 @@
 
                 <!-- WARNING -->
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/white_text_16sp_normal"
                 android:id="@+id/checkout_address_required_text"
                 android:layout_width="match_parent"

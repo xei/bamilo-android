@@ -20,7 +20,7 @@
         android:scaleType="fitCenter"
         android:src="@drawable/no_image_small" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/my_order_item_name"
         style="@style/text_normal"
         android:layout_width="match_parent"
@@ -30,19 +30,19 @@
         android:layout_marginTop="@dimen/margin_30px"
         android:layout_toRightOf="@+id/image_view" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/my_order_item_quantity"
         style="@style/text_normal"
         android:layout_alignLeft="@id/my_order_item_name"
         android:layout_below="@id/my_order_item_name" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/my_order_item_price"
         style="@style/text_normal"
         android:layout_alignLeft="@id/my_order_item_name"
         android:layout_below="@id/my_order_item_quantity" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/my_order_item_variation"
         style="@style/text_normal"
         android:layout_alignLeft="@id/my_order_item_name"

@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/rounded_margin_double_mid"
     android:paddingTop="@dimen/login_margin_small" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_detail_name"
         style="@style/text_header"
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         android:singleLine="false"
         android:text="Product" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_price_special"
         style="@style/text_header"
         android:layout_alignParentRight="true"
@@ -27,7 +27,7 @@
         android:text="Discount Price"
         android:textColor="@color/red_middle" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_price_normal"
         style="@style/text_header"
         android:layout_alignBaseline="@+id/product_price_special"
@@ -59,7 +59,7 @@
             android:numStars="5"
             android:rating="1" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/seller_reviews_item_reviews"
             style="@style/text_subtitle"
             android:layout_width="wrap_content"

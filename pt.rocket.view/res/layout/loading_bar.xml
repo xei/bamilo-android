@@ -10,14 +10,14 @@
     android:gravity="center"
     android:orientation="horizontal" >
 
-    <pt.rocket.framework.utils.LoadingBarView
+    <com.mobile.framework.utils.LoadingBarView
         android:id="@+id/fragment_root_loading_gif"
         style="?android:attr/progressBarStyleSmall"
         android:layout_width="@dimen/loading_gif_layout"
         android:layout_height="@dimen/loading_gif_layout"
         app:gifResource="@drawable/loading_bar_big" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"

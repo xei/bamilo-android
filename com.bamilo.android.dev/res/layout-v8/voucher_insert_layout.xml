@@ -8,7 +8,7 @@
 
     <!-- TITLE -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         style="@style/rounded_box_title_grey"
         android:text="@string/my_order_coupon_label" />
 
@@ -25,7 +25,7 @@
 
         <!-- RIGHT BUTTON -->
 
-        <pt.rocket.components.customfontviews.Button
+        <com.mobile.components.customfontviews.Button
             android:id="@+id/voucher_btn"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/button_big_height"
@@ -53,7 +53,7 @@
             android:orientation="vertical" 
             android:focusableInTouchMode="true">
 
-            <pt.rocket.components.customfontviews.EditText
+            <com.mobile.components.customfontviews.EditText
                 android:id="@+id/voucher_name"
                 style="@style/form_edittext_style"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
@@ -62,7 +62,7 @@
                 android:gravity="right|center_vertical"
                 android:hint="@string/voucher_message_hint" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/voucher_error_message"
                 style="@style/text_normal"
                 android:layout_width="match_parent"

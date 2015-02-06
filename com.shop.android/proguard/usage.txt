@@ -4038,21 +4038,21 @@ org.apache.commons.io.output.TeeOutputStream
 org.apache.commons.io.output.ThresholdingOutputStream
 org.apache.commons.io.output.WriterOutputStream
 org.apache.commons.io.output.XmlStreamWriter
-pt.rocket.app.JumiaApplication:
+com.mobile.app.JumiaApplication:
     410:410:protected void onServiceActivation()
-    472:473:public void setCustomerUtils(pt.rocket.framework.utils.CustomerUtils)
+    472:473:public void setCustomerUtils(com.mobile.framework.utils.CustomerUtils)
     494:494:public java.util.Map getItemSimpleDataRegistry()
     535:541:public void doUnbindService()
     570:571:public void setRequestsRetryBundleList(java.util.HashMap)
     585:586:public void setRequestsRetryHelperList(java.util.HashMap)
     606:607:public void setRequestsResponseList(java.util.HashMap)
     616:617:public void setResendMenuHander(android.os.Handler)
-pt.rocket.app.JumiaApplication$ParseSuccessAsyncTask
-pt.rocket.components.ExpandableGridViewComponent:
+com.mobile.app.JumiaApplication$ParseSuccessAsyncTask
+com.mobile.components.ExpandableGridViewComponent:
     28:29:public ExpandableGridViewComponent(android.content.Context)
-pt.rocket.components.HeaderGridView:
+com.mobile.components.HeaderGridView:
     private static final java.lang.String TAG
-pt.rocket.components.NavigationListComponent:
+com.mobile.components.NavigationListComponent:
     private int element_id
     private java.lang.String element_image_url
     38:43:public NavigationListComponent(int,java.lang.String,java.lang.String,java.lang.String)
@@ -4063,20 +4063,20 @@ pt.rocket.components.NavigationListComponent:
     91:91:public java.lang.String getElementImageUrl()
     108:121:public boolean initialize(org.json.JSONObject)
     129:146:public org.json.JSONObject toJSON()
-pt.rocket.components.RangeSeekBar:
+com.mobile.components.RangeSeekBar:
     public static final int INVALID_POINTER_ID
     public static final int ACTION_POINTER_UP
     public static final int ACTION_POINTER_INDEX_MASK
     public static final int ACTION_POINTER_INDEX_SHIFT
     float mTouchProgressOffset
     105:105:public boolean isNotifyWhileDragging()
-pt.rocket.components.absspinner.IcsAbsSpinner:
+com.mobile.components.absspinner.IcsAbsSpinner:
     private android.graphics.Rect mTouchFrame
     280:283:public void setSelection(int,boolean)
     301:308:void setSelectionInt(int,boolean)
     abstract void layout(int,boolean)
     353:369:public int pointToPosition(int,int)
-pt.rocket.components.absspinner.IcsAdapterView:
+com.mobile.components.absspinner.IcsAdapterView:
     public static final int ITEM_VIEW_TYPE_IGNORE
     public static final int ITEM_VIEW_TYPE_HEADER_OR_FOOTER
     static final int SYNC_SELECTED_POSITION
@@ -4086,31 +4086,31 @@ pt.rocket.components.absspinner.IcsAdapterView:
     public static final long INVALID_ROW_ID
     267:276:public boolean performItemClick(android.view.View,int,long)
     568:588:public int getPositionForView(android.view.View)
-pt.rocket.components.absspinner.IcsAdapterView$AdapterContextMenuInfo
-pt.rocket.components.absspinner.IcsAdapterView$AdapterDataSetObserver:
+com.mobile.components.absspinner.IcsAdapterView$AdapterContextMenuInfo
+com.mobile.components.absspinner.IcsAdapterView$AdapterDataSetObserver:
     807:808:public void clearSavedState()
-pt.rocket.components.absspinner.IcsAdapterView$OnItemLongClickListener:
-    public abstract boolean onItemLongClick(pt.rocket.components.absspinner.IcsAdapterView,android.view.View,int,long)
-pt.rocket.components.absspinner.IcsListPopupWindow:
+com.mobile.components.absspinner.IcsAdapterView$OnItemLongClickListener:
+    public abstract boolean onItemLongClick(com.mobile.components.absspinner.IcsAdapterView,android.view.View,int,long)
+com.mobile.components.absspinner.IcsListPopupWindow:
     private static final int EXPAND_LIST_TIMEOUT
     public static final int POSITION_PROMPT_ABOVE
     public static final int POSITION_PROMPT_BELOW
     79:80:public IcsListPopupWindow(android.content.Context)
     255:256:public void setOnDismissListener(android.widget.PopupWindow$OnDismissListener)
-pt.rocket.components.absspinner.IcsSpinner:
+com.mobile.components.absspinner.IcsSpinner:
     private static final int MAX_ITEMS_MEASURED
     public static final int MODE_DROPDOWN
-pt.rocket.components.absspinner.PopupWindowCompat:
+com.mobile.components.absspinner.PopupWindowCompat:
     69:71:public PopupWindowCompat(android.content.Context)
     90:92:public PopupWindowCompat(int,int)
     95:97:public PopupWindowCompat(android.view.View)
     100:102:public PopupWindowCompat(android.view.View,int,int,boolean)
     105:107:public PopupWindowCompat(android.view.View,int,int)
-pt.rocket.components.androidslidingtabstrip.SlidingTabLayout:
+com.mobile.components.androidslidingtabstrip.SlidingTabLayout:
     private static final int TITLE_OFFSET_DIPS
     private static final int TAB_VIEW_PADDING_DIPS
     private static final int TAB_VIEW_TEXT_SIZE_SP
-pt.rocket.components.androidslidingtabstrip.SlidingTabStrip:
+com.mobile.components.androidslidingtabstrip.SlidingTabStrip:
     private static final int DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS
     private static final byte DEFAULT_BOTTOM_BORDER_COLOR_ALPHA
     private static final int SELECTED_INDICATOR_THICKNESS_DIPS
@@ -4119,46 +4119,46 @@ pt.rocket.components.androidslidingtabstrip.SlidingTabStrip:
     private static final byte DEFAULT_DIVIDER_COLOR_ALPHA
     private static final float DEFAULT_DIVIDER_HEIGHT
     66:67:SlidingTabStrip(android.content.Context)
-pt.rocket.components.customfontviews.CheckedTextView:
+com.mobile.components.customfontviews.CheckedTextView:
     16:17:public CheckedTextView(android.content.Context)
-pt.rocket.components.customfontviews.HoloFontLoader:
+com.mobile.components.customfontviews.HoloFontLoader:
     117:119:private HoloFontLoader()
-    164:164:public static pt.rocket.components.customfontviews.HoloFontLoader$Font getDefaultFont()
-    168:169:public static void setDefaultFont(pt.rocket.components.customfontviews.HoloFontLoader$Font)
+    164:164:public static com.mobile.components.customfontviews.HoloFontLoader$Font getDefaultFont()
+    168:169:public static void setDefaultFont(com.mobile.components.customfontviews.HoloFontLoader$Font)
     159:159:static synthetic boolean access$0(java.lang.Object,java.lang.Object)
-pt.rocket.components.customfontviews.HoloFontLoader$Font:
+com.mobile.components.customfontviews.HoloFontLoader$Font:
     248:248:public boolean available(android.content.Context,java.lang.String,int)
     261:261:public java.lang.String getFontFamily()
     271:271:public int getFontStyle()
     288:294:public android.graphics.Typeface getTypeface(android.content.Context)
-pt.rocket.components.customfontviews.HoloFontLoader$FontCollector:
+com.mobile.components.customfontviews.HoloFontLoader$FontCollector:
     private static final java.lang.String DEFAULT_FONT_FAMILY
-    352:352:public pt.rocket.components.customfontviews.HoloFontLoader$Font getDefaultFont()
-    356:361:public pt.rocket.components.customfontviews.HoloFontLoader$FontCollector setDefaultFont(pt.rocket.components.customfontviews.HoloFontLoader$Font)
+    352:352:public com.mobile.components.customfontviews.HoloFontLoader$Font getDefaultFont()
+    356:361:public com.mobile.components.customfontviews.HoloFontLoader$FontCollector setDefaultFont(com.mobile.components.customfontviews.HoloFontLoader$Font)
     373:374:public boolean available(android.content.Context,java.lang.String,int)
-    412:413:public pt.rocket.components.customfontviews.HoloFontLoader$FontCollector unregister(pt.rocket.components.customfontviews.HoloFontLoader$Font)
-    417:424:public pt.rocket.components.customfontviews.HoloFontLoader$FontCollector unregister(java.lang.String,int)
-pt.rocket.components.customfontviews.HoloFontLoader$RawFont:
+    412:413:public com.mobile.components.customfontviews.HoloFontLoader$FontCollector unregister(com.mobile.components.customfontviews.HoloFontLoader$Font)
+    417:424:public com.mobile.components.customfontviews.HoloFontLoader$FontCollector unregister(java.lang.String,int)
+com.mobile.components.customfontviews.HoloFontLoader$RawFont:
     445:452:public boolean available(android.content.Context,java.lang.String,int)
-pt.rocket.components.customfontviews.HoloFontLoader$RawLazyFont:
+com.mobile.components.customfontviews.HoloFontLoader$RawLazyFont:
     550:556:public boolean available(android.content.Context,java.lang.String,int)
-pt.rocket.components.customfontviews.TextView:
+com.mobile.components.customfontviews.TextView:
     49:52:private static java.lang.Object[] parseFontStyle(android.content.Context,android.util.AttributeSet,int)
-pt.rocket.components.customfontviews.Toast:
+com.mobile.components.customfontviews.Toast:
     public static final int LENGTH_LONG
     public static final int LENGTH_SHORT
-    40:40:public static pt.rocket.components.customfontviews.Toast makeText(android.content.Context,int,int)
+    40:40:public static com.mobile.components.customfontviews.Toast makeText(android.content.Context,int,int)
     1:1:public static bridge synthetic android.widget.Toast makeText(android.content.Context,int,int)
     1:1:public static bridge synthetic android.widget.Toast makeText(android.content.Context,java.lang.CharSequence,int)
-pt.rocket.components.customfontviews.ToastOld
-pt.rocket.components.icsspinner.IcsAbsSpinner:
+com.mobile.components.customfontviews.ToastOld
+com.mobile.components.icsspinner.IcsAbsSpinner:
     private android.graphics.Rect mTouchFrame
     60:62:public IcsAbsSpinner(android.content.Context)
     281:284:public void setSelection(int,boolean)
     302:309:void setSelectionInt(int,boolean)
     abstract void layout(int,boolean)
     354:370:public int pointToPosition(int,int)
-pt.rocket.components.icsspinner.IcsAdapterView:
+com.mobile.components.icsspinner.IcsAdapterView:
     public static final int ITEM_VIEW_TYPE_IGNORE
     public static final int ITEM_VIEW_TYPE_HEADER_OR_FOOTER
     static final int SYNC_SELECTED_POSITION
@@ -4170,74 +4170,74 @@ pt.rocket.components.icsspinner.IcsAdapterView:
     271:280:public boolean performItemClick(android.view.View,int,long)
     572:592:public int getPositionForView(android.view.View)
     733:734:public java.lang.Object getItemAtPosition(int)
-pt.rocket.components.icsspinner.IcsAdapterView$AdapterContextMenuInfo
-pt.rocket.components.icsspinner.IcsAdapterView$AdapterDataSetObserver:
+com.mobile.components.icsspinner.IcsAdapterView$AdapterContextMenuInfo
+com.mobile.components.icsspinner.IcsAdapterView$AdapterDataSetObserver:
     811:812:public void clearSavedState()
-pt.rocket.components.icsspinner.IcsAdapterView$OnItemLongClickListener:
-    public abstract boolean onItemLongClick(pt.rocket.components.icsspinner.IcsAdapterView,android.view.View,int,long)
-pt.rocket.components.icsspinner.IcsListPopupWindow:
+com.mobile.components.icsspinner.IcsAdapterView$OnItemLongClickListener:
+    public abstract boolean onItemLongClick(com.mobile.components.icsspinner.IcsAdapterView,android.view.View,int,long)
+com.mobile.components.icsspinner.IcsListPopupWindow:
     private static final int EXPAND_LIST_TIMEOUT
     public static final int POSITION_PROMPT_ABOVE
     public static final int POSITION_PROMPT_BELOW
     79:80:public IcsListPopupWindow(android.content.Context)
     255:256:public void setOnDismissListener(android.widget.PopupWindow$OnDismissListener)
-pt.rocket.components.icsspinner.IcsSpinner:
+com.mobile.components.icsspinner.IcsSpinner:
     private static final int MAX_ITEMS_MEASURED
     public static final int MODE_DROPDOWN
-pt.rocket.constants.BundleConstants
-pt.rocket.constants.ConstantsCheckout
-pt.rocket.constants.ConstantsCountries
-pt.rocket.constants.ConstantsIntentExtra
-pt.rocket.constants.ConstantsSharedPrefs:
+com.mobile.constants.BundleConstants
+com.mobile.constants.ConstantsCheckout
+com.mobile.constants.ConstantsCountries
+com.mobile.constants.ConstantsIntentExtra
+com.mobile.constants.ConstantsSharedPrefs:
     20:20:public ConstantsSharedPrefs()
-pt.rocket.constants.FormConstants
-pt.rocket.controllers.CategoriesAdapter:
+com.mobile.constants.FormConstants
+com.mobile.controllers.CategoriesAdapter:
     112:114:public void updateAdapter(java.util.ArrayList)
-pt.rocket.controllers.CountryAdapter:
+com.mobile.controllers.CountryAdapter:
     84:107:private void setSelector(android.view.View,int)
-pt.rocket.controllers.GalleryPagerAdapter:
+com.mobile.controllers.GalleryPagerAdapter:
     private static final int MIN_NUM_OF_IMAGES
     182:182:public android.view.View getPrimaryView()
     187:187:public int getStartVirtualPosition()
-pt.rocket.controllers.LogOut:
+com.mobile.controllers.LogOut:
     34:34:public LogOut()
-pt.rocket.controllers.NormalizingViewPagerWrapper
-pt.rocket.controllers.NormalizingViewPagerWrapper$IPagerAdapter
-pt.rocket.controllers.NormalizingViewPagerWrapper$NormalizingOnPageChangeListener
-pt.rocket.controllers.NormalizingViewPagerWrapper$NormalizingPagerAdapter
-pt.rocket.controllers.OrdersListAdapter:
+com.mobile.controllers.NormalizingViewPagerWrapper
+com.mobile.controllers.NormalizingViewPagerWrapper$IPagerAdapter
+com.mobile.controllers.NormalizingViewPagerWrapper$NormalizingOnPageChangeListener
+com.mobile.controllers.NormalizingViewPagerWrapper$NormalizingPagerAdapter
+com.mobile.controllers.OrdersListAdapter:
     226:228:public void clearProducts()
     231:237:public void appendOrders(java.util.Collection)
     240:240:public java.util.ArrayList getOrdersList()
-pt.rocket.controllers.ProductImagesAdapter:
+com.mobile.controllers.ProductImagesAdapter:
     25:28:public ProductImagesAdapter(android.content.Context)
     45:48:public void replaceAll(java.util.ArrayList)
-pt.rocket.controllers.ProductsListAdapter:
+com.mobile.controllers.ProductsListAdapter:
     277:279:public void clearProducts()
-pt.rocket.controllers.ProductsListAdapter$OnSelectedItemsChange
-pt.rocket.controllers.SubCategoriesAdapter:
+com.mobile.controllers.ProductsListAdapter$OnSelectedItemsChange
+com.mobile.controllers.SubCategoriesAdapter:
     public static final int TYPE_ALL_CATEGORIES
     public static final int TYPE_SUBCATEGORIES
     private static final int TYPE_COUNT
     104:107:public void setAdapterData(java.util.List,java.lang.String)
-pt.rocket.controllers.fragments.FragmentController:
+com.mobile.controllers.fragments.FragmentController:
     private static final boolean ANIMATION_IN
     private static final boolean ANIMATION_OUT
     public static final boolean INCLUSIVE
     public static final boolean NO_INCLUSIVE
     167:171:public void printAllEntries()
-    429:443:public void fragmentManagerTransition(pt.rocket.view.BaseActivity,int,android.support.v4.app.Fragment,java.lang.String,java.lang.Boolean,boolean)
-    452:460:public void fragmentManagerBackPressed(pt.rocket.view.BaseActivity)
-    469:470:public void popAllBackStack(pt.rocket.view.BaseActivity,java.lang.String,int)
-    481:482:public void popBackStackUntilTag(pt.rocket.view.BaseActivity,java.lang.String,boolean)
-pt.rocket.factories.FormFactory:
-    209:209:private pt.rocket.pojo.DynamicForm createPaymentMethodsForm(android.content.Context,pt.rocket.forms.Form)
-pt.rocket.factories.TeasersFactory:
+    429:443:public void fragmentManagerTransition(com.mobile.view.BaseActivity,int,android.support.v4.app.Fragment,java.lang.String,java.lang.Boolean,boolean)
+    452:460:public void fragmentManagerBackPressed(com.mobile.view.BaseActivity)
+    469:470:public void popAllBackStack(com.mobile.view.BaseActivity,java.lang.String,int)
+    481:482:public void popBackStackUntilTag(com.mobile.view.BaseActivity,java.lang.String,boolean)
+com.mobile.factories.FormFactory:
+    209:209:private com.mobile.pojo.DynamicForm createPaymentMethodsForm(android.content.Context,com.mobile.forms.Form)
+com.mobile.factories.TeasersFactory:
     private static final int MAX_IMAGES_ON_SCREEN
     460:466:private android.view.View createItemAllBrandsView(android.view.ViewGroup,android.view.LayoutInflater)
-pt.rocket.factories.TeasersFactory$ImagePagerAdapter:
+com.mobile.factories.TeasersFactory$ImagePagerAdapter:
     656:656:public int getStartVirtualPosition()
-pt.rocket.forms.FieldPaymentMethod:
+com.mobile.forms.FieldPaymentMethod:
     38:42:public FieldPaymentMethod(java.lang.String,org.json.JSONObject)
     49:49:public java.lang.String getName()
     60:60:public java.util.ArrayList getFields()
@@ -4247,60 +4247,60 @@ pt.rocket.forms.FieldPaymentMethod:
     104:105:public void setValue(int)
     135:146:public boolean initialize(org.json.JSONObject)
     157:157:public org.json.JSONObject toJSON()
-pt.rocket.forms.FieldValidation:
+com.mobile.forms.FieldValidation:
     128:128:public java.lang.String getMessage()
-pt.rocket.forms.Form:
+com.mobile.forms.Form:
     82:93:public Form(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.ArrayList)
-    246:246:public pt.rocket.framework.utils.EventType getEventType()
-pt.rocket.forms.FormData:
+    246:246:public com.mobile.framework.utils.EventType getEventType()
+com.mobile.forms.FormData:
     38:38:public java.lang.String getId()
     76:85:public org.json.JSONObject toJSON()
-pt.rocket.forms.FormField:
-    170:186:public FormField(pt.rocket.forms.Form,java.lang.String,java.lang.String,boolean,pt.rocket.utils.InputType,int,java.lang.String)
-    512:513:public void setParent(pt.rocket.forms.Form)
+com.mobile.forms.FormField:
+    170:186:public FormField(com.mobile.forms.Form,java.lang.String,java.lang.String,boolean,com.mobile.utils.InputType,int,java.lang.String)
+    512:513:public void setParent(com.mobile.forms.Form)
     522:522:public java.lang.String getId()
     526:527:public void setId(java.lang.String)
     540:541:public void setKey(java.lang.String)
     554:555:public void setName(java.lang.String)
     564:564:public java.lang.String getScenario()
     568:569:public void setScenario(java.lang.String)
-    582:583:public void setInputType(pt.rocket.utils.InputType)
+    582:583:public void setInputType(com.mobile.utils.InputType)
     596:597:public void setLabel(java.lang.String)
     610:611:public void setDataSet(java.util.LinkedHashMap)
     633:634:public void setDataSet(java.util.Map)
     643:643:public java.lang.String getDatasetSource()
     647:648:public void setDatasetSource(java.lang.String)
-    666:667:public void setValidation(pt.rocket.forms.FieldValidation)
+    666:667:public void setValidation(com.mobile.forms.FieldValidation)
     676:676:public java.lang.String getRegEx()
     680:681:public void setRegEx(java.lang.String)
     694:695:public void setValue(java.lang.String)
     703:703:public void setSubFormFields(java.util.Map)
-    716:716:public pt.rocket.forms.FormField$OnDataSetReceived getOnDataSetReceived()
+    716:716:public com.mobile.forms.FormField$OnDataSetReceived getOnDataSetReceived()
     792:792:public java.util.LinkedHashMap getExtrasValues()
     802:803:public void setExtrasValues(java.util.LinkedHashMap)
-pt.rocket.forms.FormFieldMeta:
-    24:24:public pt.rocket.forms.Form getParent()
+com.mobile.forms.FormFieldMeta:
+    24:24:public com.mobile.forms.Form getParent()
     29:29:public java.lang.String getId()
     59:59:public java.lang.String getDatasetSource()
-    64:64:public pt.rocket.forms.FormField$OnDataSetReceived getOnDataSetReceived()
+    64:64:public com.mobile.forms.FormField$OnDataSetReceived getOnDataSetReceived()
     84:84:public java.lang.String getRegEx()
     95:95:public void setValue(java.lang.String)
     132:132:public java.util.Map getDataCalls()
     139:139:public java.lang.String getScenario()
-pt.rocket.forms.HomeNewslettersSignupForm:
+com.mobile.forms.HomeNewslettersSignupForm:
     46:102:public boolean initialize(org.json.JSONObject)
     107:107:public org.json.JSONObject toJSON()
-pt.rocket.forms.IFormField:
-    public abstract pt.rocket.forms.Form getParent()
+com.mobile.forms.IFormField:
+    public abstract com.mobile.forms.Form getParent()
     public abstract java.lang.String getId()
     public abstract java.lang.String getDatasetSource()
-    public abstract pt.rocket.forms.FormField$OnDataSetReceived getOnDataSetReceived()
+    public abstract com.mobile.forms.FormField$OnDataSetReceived getOnDataSetReceived()
     public abstract java.lang.String getRegEx()
     public abstract void setValue(java.lang.String)
     public abstract void setSubFormFields(java.util.Map)
     public abstract java.util.Map getDataCalls()
     public abstract java.lang.String getScenario()
-pt.rocket.forms.PaymentMethodForm:
+com.mobile.forms.PaymentMethodForm:
     private static final java.lang.String PAYMENT_METHOD_AUTO_SUBMIT_EXTERNAL
     private static final java.lang.String PAYMENT_METHOD_SUBMIT_EXTERNAL
     private static final java.lang.String PAYMENT_METHOD_AUTO_REDIRECT_EXTERNAL
@@ -4316,13 +4316,13 @@ pt.rocket.forms.PaymentMethodForm:
     311:312:public void setCustomerFirstName(java.lang.String)
     318:318:public java.lang.String getCustomerLastName()
     326:327:public void setCustomerLastName(java.lang.String)
-pt.rocket.forms.ShippingMethodForm:
+com.mobile.forms.ShippingMethodForm:
     104:104:public org.json.JSONObject toJSON()
-pt.rocket.forms.ShippingMethodFormBuilder:
+com.mobile.forms.ShippingMethodFormBuilder:
     103:120:public org.json.JSONObject toJSON()
-pt.rocket.forms.ShippingMethodSubForm:
+com.mobile.forms.ShippingMethodSubForm:
     118:118:public org.json.JSONObject toJSON()
-pt.rocket.framework.Darwin:
+com.mobile.framework.Darwin:
     public static final boolean logDebugEnabled
     public static final java.lang.String SHARED_PREFERENCES
     public static final java.lang.String INSTALL_TIME_PREFERENCE
@@ -4348,48 +4348,48 @@ pt.rocket.framework.Darwin:
     public static final java.lang.String KEY_SELECTED_COUNTRY_PHONE_NUMBER
     public static final java.lang.String KEY_SELECTED_COUNTRY_CS_EMAIL
     158:158:public static java.lang.String getShopId()
-    169:169:public static pt.rocket.framework.DarwinMode getMode()
+    169:169:public static com.mobile.framework.DarwinMode getMode()
     178:178:public static synchronized boolean isInitialized()
     182:182:public static synchronized android.content.Context getContext()
     200:200:public static int getVersionCode()
-pt.rocket.framework.ErrorCode:
-    38:44:public static final pt.rocket.framework.ErrorCode byId(int)
+com.mobile.framework.ErrorCode:
+    38:44:public static final com.mobile.framework.ErrorCode byId(int)
     78:81:public boolean isClientError()
     86:90:public boolean isServerError()
-pt.rocket.framework.Manifest
-pt.rocket.framework.Manifest$permission
-pt.rocket.framework.R:
+com.mobile.framework.Manifest
+com.mobile.framework.Manifest$permission
+com.mobile.framework.R:
     9:9:public R()
-pt.rocket.framework.R$anim
-pt.rocket.framework.R$animator
-pt.rocket.framework.R$array:
+com.mobile.framework.R$anim
+com.mobile.framework.R$animator
+com.mobile.framework.R$array:
     21:21:public R$array()
-pt.rocket.framework.R$attr:
+com.mobile.framework.R$attr:
     36:36:public R$attr()
-pt.rocket.framework.R$bool:
+com.mobile.framework.R$bool:
     177:177:public R$bool()
-pt.rocket.framework.R$color
-pt.rocket.framework.R$dimen
-pt.rocket.framework.R$drawable:
+com.mobile.framework.R$color
+com.mobile.framework.R$dimen
+com.mobile.framework.R$drawable:
     263:263:public R$drawable()
-pt.rocket.framework.R$id:
+com.mobile.framework.R$id:
     429:429:public R$id()
-pt.rocket.framework.R$integer
-pt.rocket.framework.R$layout
-pt.rocket.framework.R$raw:
+com.mobile.framework.R$integer
+com.mobile.framework.R$layout
+com.mobile.framework.R$raw:
     553:553:public R$raw()
-pt.rocket.framework.R$string:
+com.mobile.framework.R$string:
     563:563:public R$string()
-pt.rocket.framework.R$style
-pt.rocket.framework.R$styleable:
+com.mobile.framework.R$style
+com.mobile.framework.R$styleable:
     870:870:public R$styleable()
-pt.rocket.framework.database.CategoriesTableHelper:
+com.mobile.framework.database.CategoriesTableHelper:
     public static final java.lang.String TABLE_NAME
     79:88:public static void saveCategories(java.util.ArrayList)
     98:103:private static void saveCategories(android.database.sqlite.SQLiteDatabase,java.util.ArrayList)
-    113:118:private static synchronized void saveCategory(android.database.sqlite.SQLiteDatabase,pt.rocket.framework.objects.Category)
-pt.rocket.framework.database.CategoriesTableHelper$Columns
-pt.rocket.framework.database.CountriesConfigsTableHelper:
+    113:118:private static synchronized void saveCategory(android.database.sqlite.SQLiteDatabase,com.mobile.framework.objects.Category)
+com.mobile.framework.database.CategoriesTableHelper$Columns
+com.mobile.framework.database.CountriesConfigsTableHelper:
     public static final java.lang.String TABLE_NAME
     public static final java.lang.String _ID
     public static final java.lang.String _COUNTRY_NAME
@@ -4398,17 +4398,17 @@ pt.rocket.framework.database.CountriesConfigsTableHelper:
     public static final java.lang.String _COUNTRY_ISO
     public static final java.lang.String _COUNTRY_FORCE_HTTPS
     public static final java.lang.String _COUNTRY_IS_LIVE
-pt.rocket.framework.database.DarwinDatabaseHelper:
+com.mobile.framework.database.DarwinDatabaseHelper:
     public static final java.lang.String DB_NAME
     private static final int DATABASE_VERSION
     private static final java.lang.String DROP_TABLE
     private static final java.lang.String RENAME_TABLE
     private static final java.lang.String COPY_TABLE
     private static final java.lang.String INFO_TABLE
-    83:93:public static pt.rocket.framework.database.DarwinDatabaseHelper getInstance(android.content.Context)
-pt.rocket.framework.database.DarwinDatabaseSemaphore$Singleton:
+    83:93:public static com.mobile.framework.database.DarwinDatabaseHelper getInstance(android.content.Context)
+com.mobile.framework.database.DarwinDatabaseSemaphore$Singleton:
     16:16:private DarwinDatabaseSemaphore$Singleton()
-pt.rocket.framework.database.FavouriteTableHelper:
+com.mobile.framework.database.FavouriteTableHelper:
     public static final java.lang.String TABLE_NAME
     public static final java.lang.String _ID
     public static final java.lang.String _FAVOURITE_SKU
@@ -4430,7 +4430,7 @@ pt.rocket.framework.database.FavouriteTableHelper:
     public static final java.lang.String _FAVOURITE_IS_COMPLETE
     public static final java.lang.String _FAVOURITE_SIZE_GUIDE
     429:447:public static java.util.ArrayList getFavouriteSKUList()
-pt.rocket.framework.database.ImageResolutionTableHelper:
+com.mobile.framework.database.ImageResolutionTableHelper:
     public static final java.lang.String TABLE_NAME
     public static final java.lang.String _ID
     public static final java.lang.String _IDENTIFIER
@@ -4440,8 +4440,8 @@ pt.rocket.framework.database.ImageResolutionTableHelper:
     79:102:public static void replaceAllImageResolutions(org.json.JSONArray)
     113:121:public static void insertImageResolution(java.lang.String,int,int,java.lang.String)
     127:130:public static void deleteAllImageResolutions()
-    185:214:public static pt.rocket.framework.objects.ImageResolution getBestImageResolution(int,int)
-pt.rocket.framework.database.LastViewedTableHelper:
+    185:214:public static com.mobile.framework.objects.ImageResolution getBestImageResolution(int,int)
+com.mobile.framework.database.LastViewedTableHelper:
     public static final java.lang.String TABLE_NAME
     private static final int MAX_SAVED_PRODUCTS
     public static final java.lang.String _ID
@@ -4463,7 +4463,7 @@ pt.rocket.framework.database.LastViewedTableHelper:
     public static final java.lang.String _PRODUCT_KNOWN_VARIATIONS_LIST
     public static final java.lang.String _PRODUCT_IS_COMPLETE
     public static final java.lang.String _PRODUCT_SIZE_GUIDE
-pt.rocket.framework.database.RelatedItemsTableHelper:
+com.mobile.framework.database.RelatedItemsTableHelper:
     public static final java.lang.String TABLE_NAME
     private static final int MAX_SAVED_PRODUCTS
     public static final java.lang.String _ID
@@ -4474,7 +4474,7 @@ pt.rocket.framework.database.RelatedItemsTableHelper:
     public static final java.lang.String _PRODUCT_URL
     public static final java.lang.String _IMAGE_URL
     230:233:public static void deleteAllRelatedItems()
-pt.rocket.framework.database.SearchRecentQueriesTableHelper:
+com.mobile.framework.database.SearchRecentQueriesTableHelper:
     private static final java.lang.String NUMBER_OF_SUGGESTIONS
     public static final java.lang.String TABLE_NAME
     public static final java.lang.String _ID
@@ -4482,14 +4482,14 @@ pt.rocket.framework.database.SearchRecentQueriesTableHelper:
     public static final java.lang.String _TIME_STAMP
     137:150:public static synchronized boolean updateRecentQuery(java.lang.String)
     204:211:public static int getCount()
-pt.rocket.framework.database.SectionsTablesHelper:
+com.mobile.framework.database.SectionsTablesHelper:
     public static final java.lang.String TABLE_NAME
-pt.rocket.framework.database.SectionsTablesHelper$Columns
-pt.rocket.framework.database.SectionsTablesHelper$Projection
-pt.rocket.framework.enums.ObjectType
-pt.rocket.framework.interfaces.IJSONSerializable
-pt.rocket.framework.interfaces.IMetaData
-pt.rocket.framework.network.ConfigurationConstants:
+com.mobile.framework.database.SectionsTablesHelper$Columns
+com.mobile.framework.database.SectionsTablesHelper$Projection
+com.mobile.framework.enums.ObjectType
+com.mobile.framework.interfaces.IJSONSerializable
+com.mobile.framework.interfaces.IMetaData
+com.mobile.framework.network.ConfigurationConstants:
     public static final boolean FORCE_CACHE
     public static final int MIN_CACHE_TIME
     public static final int DEFAULT_CACHE_TIME
@@ -4502,19 +4502,19 @@ pt.rocket.framework.network.ConfigurationConstants:
     public static final java.lang.String ENCODING_GZIP
     public static final boolean ACTIVATE_GZIP
     3:3:public ConfigurationConstants()
-pt.rocket.framework.network.HttpCacheDatabaseHelper:
+com.mobile.framework.network.HttpCacheDatabaseHelper:
     public static final java.lang.String COLUMN_ID
     public static final java.lang.String COLUMN_PAYLOAD
     public static final java.lang.String COLUMN_TIMESTAMP
     public static final java.lang.String DB_NAME
     public static final java.lang.String TABLE_NAME
     private static final java.lang.String SQL_CREATE_MAIN
-pt.rocket.framework.network.LazHttpClientAndroidLog:
+com.mobile.framework.network.LazHttpClientAndroidLog:
     102:105:public void info(java.lang.Object,java.lang.Throwable)
     122:125:public void trace(java.lang.Object,java.lang.Throwable)
-pt.rocket.framework.objects.AddableToCart:
+com.mobile.framework.objects.AddableToCart:
     public static final int NO_SIMPLE_SELECTED
-    93:121:public AddableToCart(pt.rocket.framework.objects.CompleteProduct)
+    93:121:public AddableToCart(com.mobile.framework.objects.CompleteProduct)
     187:187:public java.lang.Double getPriceAsDouble()
     203:203:public java.lang.Double getSpecialPriceDouble()
     308:309:public void setImageList(java.util.ArrayList)
@@ -4524,7 +4524,7 @@ pt.rocket.framework.objects.AddableToCart:
     417:417:public double getPriceConverted()
     451:452:public void setCategories(java.util.ArrayList)
     493:493:public boolean hasSizeGuide()
-pt.rocket.framework.objects.Address:
+com.mobile.framework.objects.Address:
     104:104:public org.json.JSONObject toJSON()
     167:167:public int getFkCustomer()
     174:174:public int getFkCountry()
@@ -4545,13 +4545,13 @@ pt.rocket.framework.objects.Address:
     370:371:public void setCreatedBy(int)
     377:378:public void setUpdatedBy(int)
     384:385:public void setRegion(java.lang.String)
-pt.rocket.framework.objects.AddressCity:
+com.mobile.framework.objects.AddressCity:
     49:49:public java.lang.String getGroup()
     61:62:public void setId(int)
     69:70:public void setValue(java.lang.String)
     77:78:public void setGroup(java.lang.String)
     114:114:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.AddressRegion:
+com.mobile.framework.objects.AddressRegion:
     44:44:public int getCountryId()
     51:51:public java.lang.String getCode()
     65:65:public java.lang.String getSort()
@@ -4561,35 +4561,35 @@ pt.rocket.framework.objects.AddressRegion:
     101:102:public void setName(java.lang.String)
     109:110:public void setSort(java.lang.String)
     150:150:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.Addresses:
+com.mobile.framework.objects.Addresses:
     76:76:public org.json.JSONObject toJSON()
-    97:97:public pt.rocket.framework.objects.Address getFastline()
-    111:112:public void setShippingAddress(pt.rocket.framework.objects.Address)
-    118:119:public void setBillingAddress(pt.rocket.framework.objects.Address)
-    125:126:public void setFastline(pt.rocket.framework.objects.Address)
+    97:97:public com.mobile.framework.objects.Address getFastline()
+    111:112:public void setShippingAddress(com.mobile.framework.objects.Address)
+    118:119:public void setBillingAddress(com.mobile.framework.objects.Address)
+    125:126:public void setFastline(com.mobile.framework.objects.Address)
     133:134:public void setAddresses(java.util.HashMap)
     157:157:public boolean hasOtherAddresses()
-pt.rocket.framework.objects.Brand:
+com.mobile.framework.objects.Brand:
     45:45:public java.lang.String getId()
     52:52:public java.lang.String getUrl()
     59:59:public java.lang.String getName()
-    66:66:public pt.rocket.framework.objects.BrandImage getImage()
+    66:66:public com.mobile.framework.objects.BrandImage getImage()
     75:97:public boolean initialize(org.json.JSONObject)
     105:117:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.BrandAttributes:
+com.mobile.framework.objects.BrandAttributes:
     56:56:public java.lang.Integer getId()
     63:63:public java.lang.String getBrandUrl()
     84:84:public java.lang.String getDescription()
     106:107:public void setImageTableUrl(java.lang.String)
     176:189:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.BrandImage:
+com.mobile.framework.objects.BrandImage:
     45:45:public java.lang.String getUrl()
     52:52:public java.lang.String getWidth()
     59:59:public java.lang.String getHeight()
     66:66:public java.lang.String getFormat()
     78:83:public boolean initialize(org.json.JSONObject)
     93:105:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.Campaign:
+com.mobile.framework.objects.Campaign:
     103:103:public org.json.JSONObject toJSON()
     127:127:public java.lang.String getName()
     134:134:public java.lang.String getStartTime()
@@ -4602,7 +4602,7 @@ pt.rocket.framework.objects.Campaign:
     194:195:public void setEndTime(java.lang.String)
     201:202:public void setCount(int)
     208:209:public void setItems(java.util.ArrayList)
-pt.rocket.framework.objects.CampaignItem:
+com.mobile.framework.objects.CampaignItem:
     139:139:public org.json.JSONObject toJSON()
     198:198:public java.util.ArrayList getImages()
     247:247:public double getPriceConverted()
@@ -4622,23 +4622,23 @@ pt.rocket.framework.objects.CampaignItem:
     420:421:public void setRemainingTime(int)
     428:429:public void setPriceConverted(double)
     436:437:public void setSpecialPriceConverted(double)
-pt.rocket.framework.objects.CampaignItemSize:
+com.mobile.framework.objects.CampaignItemSize:
     47:47:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.CarouselItem:
+com.mobile.framework.objects.CarouselItem:
     33:37:public CarouselItem(java.lang.String,java.lang.String)
     45:55:public boolean initialize(org.json.JSONObject)
     63:76:public org.json.JSONObject toJSON()
     83:83:public java.lang.String getDescription()
     90:90:public java.lang.String getUrl()
     97:97:public java.lang.String getId()
-pt.rocket.framework.objects.CatalogFilter:
+com.mobile.framework.objects.CatalogFilter:
     161:161:public org.json.JSONObject toJSON()
     205:206:public void setFilterOptions(java.util.ArrayList)
-    209:210:public void setFilterOption(pt.rocket.framework.objects.CatalogFilterOption)
+    209:210:public void setFilterOption(com.mobile.framework.objects.CatalogFilterOption)
     223:224:public void setId(java.lang.String)
     227:228:public void setName(java.lang.String)
     231:232:public void setMulti(boolean)
-pt.rocket.framework.objects.CatalogFilterOption:
+com.mobile.framework.objects.CatalogFilterOption:
     122:122:public java.lang.String getId()
     130:130:public java.lang.String getValue()
     134:134:public java.lang.String getCount()
@@ -4649,19 +4649,19 @@ pt.rocket.framework.objects.CatalogFilterOption:
     194:195:public void setMax(int)
     198:199:public void setMin(int)
     202:203:public void setInterval(int)
-pt.rocket.framework.objects.Category:
-    78:86:public Category(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.ArrayList,pt.rocket.framework.objects.Category,boolean)
+com.mobile.framework.objects.Category:
+    78:86:public Category(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.ArrayList,com.mobile.framework.objects.Category,boolean)
     93:93:public boolean getHasChildrenInArray()
-    108:109:public void addChild(pt.rocket.framework.objects.Category)
+    108:109:public void addChild(com.mobile.framework.objects.Category)
     160:161:public void setChildren(java.util.ArrayList)
-    205:213:public static pt.rocket.framework.objects.Category findCategoryFromTopLevel(java.lang.String,java.util.ArrayList)
-    217:229:public pt.rocket.framework.objects.Category findCategoryInChildren(java.lang.String)
+    205:213:public static com.mobile.framework.objects.Category findCategoryFromTopLevel(java.lang.String,java.util.ArrayList)
+    217:229:public com.mobile.framework.objects.Category findCategoryInChildren(java.lang.String)
     240:257:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.CategoryFilterOption:
+com.mobile.framework.objects.CategoryFilterOption:
     54:54:public int getNumber()
     65:66:public void setUrl(java.lang.String)
     72:73:public void setNumber(int)
-pt.rocket.framework.objects.CompleteProduct:
+com.mobile.framework.objects.CompleteProduct:
     private java.lang.String ratingsUrl
     254:254:public org.json.JSONObject toJSON()
     268:269:public void setSku(java.lang.String)
@@ -4687,19 +4687,19 @@ pt.rocket.framework.objects.CompleteProduct:
     565:566:public void setPriceConverted(double)
     579:580:public void setSpecialPriceConverted(double)
     617:617:public boolean hasSizeGuide()
-pt.rocket.framework.objects.CountryObject:
+com.mobile.framework.objects.CountryObject:
     75:86:public CountryObject(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean)
     278:278:public java.lang.String getCountryId()
     326:326:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.CreditCard:
+com.mobile.framework.objects.CreditCard:
     29:35:public CreditCard(java.lang.String,int,int,java.lang.String,long)
     38:38:public java.lang.String getCvc()
     42:42:public int getExpiryMonth()
     46:46:public int getExpiryYear()
     50:50:public java.lang.String getHolderName()
     54:54:public long getNumber()
-pt.rocket.framework.objects.Customer:
-    78:92:public Customer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,pt.rocket.framework.objects.CustomerGender,pt.rocket.framework.objects.CustomerPrefix,java.lang.String,java.util.ArrayList,java.lang.String)
+com.mobile.framework.objects.Customer:
+    78:92:public Customer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.mobile.framework.objects.CustomerGender,com.mobile.framework.objects.CustomerPrefix,java.lang.String,java.util.ArrayList,java.lang.String)
     109:110:public void setBirthday(java.lang.String)
     146:146:public java.lang.String getMiddleName()
     182:182:public java.lang.String getPassword()
@@ -4707,23 +4707,23 @@ pt.rocket.framework.objects.Customer:
     199:200:public void setMiddleName(java.lang.String)
     207:208:public void setLastName(java.lang.String)
     215:216:public void setEmail(java.lang.String)
-    223:224:public void setGender(pt.rocket.framework.objects.CustomerGender)
+    223:224:public void setGender(com.mobile.framework.objects.CustomerGender)
     231:232:public void setPassword(java.lang.String)
-    238:238:public pt.rocket.framework.objects.CustomerPrefix getPrefix()
-    246:247:public void setPrefix(pt.rocket.framework.objects.CustomerPrefix)
+    238:238:public com.mobile.framework.objects.CustomerPrefix getPrefix()
+    246:247:public void setPrefix(com.mobile.framework.objects.CustomerPrefix)
     269:269:public java.util.ArrayList getAddresses()
     276:277:public void setAddresses(java.util.ArrayList)
     284:284:public boolean hasAddresses()
     293:293:public java.util.ArrayList getNewsletterSubscriptions()
     311:311:public boolean hasNewsletterSubscriptions()
     391:405:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.CustomerNewsletterSubscription:
+com.mobile.framework.objects.CustomerNewsletterSubscription:
     54:54:public org.json.JSONObject toJSON()
     64:64:public int getId()
     71:71:public java.lang.String getName()
     81:82:public void setId(int)
     88:89:public void setName(java.lang.String)
-pt.rocket.framework.objects.Errors:
+com.mobile.framework.objects.Errors:
     public static final java.lang.String CODE_LOGIN_FAILED
     public static final java.lang.String CODE_LOGIN_CHECK_PASSWORD
     public static final java.lang.String CODE_LOGOUT_FAILED
@@ -4736,25 +4736,25 @@ pt.rocket.framework.objects.Errors:
     public static final java.lang.String CODE_PRODUCT_ADD_OVERQUANTITY
     public static final java.lang.String CODE_ORDER_PRODUCT_ERROR_ADDING
     public static final java.lang.String CODE_ALREADY_LOGGED_IN
-pt.rocket.framework.objects.FeaturedBox:
+com.mobile.framework.objects.FeaturedBox:
     133:133:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.FeaturedItem:
+com.mobile.framework.objects.FeaturedItem:
     40:40:public java.lang.String getId()
     100:112:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.FeaturedProduct:
+com.mobile.framework.objects.FeaturedProduct:
     102:109:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.Homepage:
+com.mobile.framework.objects.Homepage:
     42:42:public int getHomepageId()
     75:75:public java.lang.String getHomepageLayout()
     99:99:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.IJSONSerializable
-pt.rocket.framework.objects.Image:
+com.mobile.framework.objects.IJSONSerializable
+com.mobile.framework.objects.Image:
     private static final java.lang.String TAG
     72:72:public java.lang.String getFormat()
     79:79:public java.lang.String getWidth()
     86:86:public java.lang.String getHeight()
     125:135:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.ImageResolution:
+com.mobile.framework.objects.ImageResolution:
     public static final java.lang.String JSON_IDENTIFIER_TAG
     public static final java.lang.String JSON_WIDTH_TAG
     public static final java.lang.String JSON_HEIGHT_TAG
@@ -4765,13 +4765,13 @@ pt.rocket.framework.objects.ImageResolution:
     98:99:public void setWidth(int)
     107:108:public void setHeigth(int)
     116:117:public void setExtension(java.lang.String)
-pt.rocket.framework.objects.LastViewed:
+com.mobile.framework.objects.LastViewed:
     33:40:public LastViewed(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
-pt.rocket.framework.objects.MinOrderAmount:
+com.mobile.framework.objects.MinOrderAmount:
     22:31:public boolean initialize(org.json.JSONObject)
     36:36:public org.json.JSONObject toJSON()
     40:40:public double getValue()
-pt.rocket.framework.objects.Order:
+com.mobile.framework.objects.Order:
     65:66:public void setmOrderNumber(java.lang.String)
     73:74:public void setmPayment(java.lang.String)
     81:82:public void setmDate(java.lang.String)
@@ -4779,7 +4779,7 @@ pt.rocket.framework.objects.Order:
     97:98:public void setmOrderProducts(java.util.ArrayList)
     101:101:public int getTotalOrdersHistory()
     150:150:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.OrderItem:
+com.mobile.framework.objects.OrderItem:
     65:66:public void setmProductQuantity(int)
     69:69:public double getmProductUnitPrice()
     73:74:public void setmProductUnitPrice(double)
@@ -4790,7 +4790,7 @@ pt.rocket.framework.objects.OrderItem:
     104:105:public void setmProductTotal(double)
     112:113:public void setmProductName(java.lang.String)
     144:144:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.OrderSummary:
+com.mobile.framework.objects.OrderSummary:
     151:151:public org.json.JSONObject toJSON()
     194:194:public java.lang.String getExtraCost()
     201:201:public java.lang.String getInstallmentFees()
@@ -4801,27 +4801,27 @@ pt.rocket.framework.objects.OrderSummary:
     290:291:public void setInstallmentFees(java.lang.String)
     298:299:public void setTaxAmount(java.lang.String)
     306:307:public void setCustomerDevice(java.lang.String)
-    314:315:public void setCart(pt.rocket.framework.objects.ShoppingCart)
+    314:315:public void setCart(com.mobile.framework.objects.ShoppingCart)
     322:323:public void setShippingMethod(java.lang.String)
     330:331:public void setPaymentMethod(java.lang.String)
-    338:339:public void setShippingAddress(pt.rocket.framework.objects.Address)
-    346:347:public void setBillingAddress(pt.rocket.framework.objects.Address)
+    338:339:public void setShippingAddress(com.mobile.framework.objects.Address)
+    346:347:public void setBillingAddress(com.mobile.framework.objects.Address)
     369:370:public void setDiscountCouponValue(java.lang.String)
     376:377:public void setDiscountCouponCode(java.lang.String)
     393:393:public boolean hasShippingFees()
-pt.rocket.framework.objects.OrderTracker:
+com.mobile.framework.objects.OrderTracker:
     65:71:public OrderTracker(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.ArrayList)
     87:87:public java.lang.String getLastUpdateDate()
     130:142:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.OrderTrackerItem:
+com.mobile.framework.objects.OrderTrackerItem:
     61:67:public OrderTrackerItem(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
     71:71:public java.lang.String getSku()
     87:87:public java.lang.String getUpdateDate()
     121:132:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.PaymentInfo:
+com.mobile.framework.objects.PaymentInfo:
     119:119:public java.lang.String getTooltipText()
     134:134:public java.lang.String getCvcText()
-pt.rocket.framework.objects.PaymentResult:
+com.mobile.framework.objects.PaymentResult:
     46:61:public PaymentResult(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,long,java.lang.String,java.lang.String)
     67:67:public java.lang.String getAuthCode()
     74:74:public java.lang.String getDccAmount()
@@ -4833,7 +4833,7 @@ pt.rocket.framework.objects.PaymentResult:
     116:116:public long getPspReference()
     123:123:public java.lang.String getRefusalReason()
     130:130:public java.lang.String getResultCode()
-pt.rocket.framework.objects.PickUpStationObject:
+com.mobile.framework.objects.PickUpStationObject:
     53:54:public void setIdPickupstation(java.lang.String)
     68:69:public void setName(java.lang.String)
     83:84:public void setPickupId(java.lang.String)
@@ -4852,23 +4852,23 @@ pt.rocket.framework.objects.PickUpStationObject:
     177:177:public java.util.ArrayList getPaymentMethod()
     184:185:public void setPaymentMethod(java.util.ArrayList)
     198:199:public void setRegions(java.util.ArrayList)
-pt.rocket.framework.objects.PollOption:
+com.mobile.framework.objects.PollOption:
     50:50:public org.json.JSONObject toJSON()
     73:73:public java.lang.String getGroup()
     81:82:public void setOption(java.lang.String)
     89:90:public void setValue(java.lang.String)
     97:98:public void setGroup(java.lang.String)
-pt.rocket.framework.objects.Product:
+com.mobile.framework.objects.Product:
     59:59:public java.lang.String getId()
     157:172:public org.json.JSONObject toJSON()
     200:200:public java.lang.String getDescription()
-pt.rocket.framework.objects.ProductAttributes:
+com.mobile.framework.objects.ProductAttributes:
     104:104:public java.lang.String getDescription()
     172:173:public void setNew(boolean)
     198:199:public void setPriceConverted(double)
     206:207:public void setSpecialPriceConverted(double)
     319:333:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.ProductImage:
+com.mobile.framework.objects.ProductImage:
     38:38:public java.lang.String getIdCatalogProductImage()
     45:45:public java.lang.Integer getFkCatalogConfig()
     52:52:public java.lang.Integer getFkCatalogSimple()
@@ -4887,11 +4887,11 @@ pt.rocket.framework.objects.ProductImage:
     143:143:public java.lang.String getSprite()
     156:173:public boolean initialize(org.json.JSONObject)
     183:206:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.ProductRatingPage:
+com.mobile.framework.objects.ProductRatingPage:
     80:80:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.ProductReviewComment:
+com.mobile.framework.objects.ProductReviewComment:
     81:81:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.ProductReviewCommentCreated:
+com.mobile.framework.objects.ProductReviewCommentCreated:
     private static final java.lang.String FORM_NAME_FIELD
     private static final java.lang.String FORM_TITLE_FIELD
     private static final java.lang.String FORM_COMMENT_FIELD
@@ -4900,7 +4900,7 @@ pt.rocket.framework.objects.ProductReviewCommentCreated:
     65:65:public java.lang.String getComments()
     80:80:public java.lang.String getName()
     96:97:public void setEmail(java.lang.String)
-pt.rocket.framework.objects.ProductSimple:
+com.mobile.framework.objects.ProductSimple:
     public static final java.lang.String SKU_TAG
     public static final java.lang.String PRICE_TAG
     public static final java.lang.String SPECIAL_PRICE_TAG
@@ -4913,31 +4913,31 @@ pt.rocket.framework.objects.ProductSimple:
     public static final java.lang.String MAX_DELIVERY_TIME_TAG
     92:92:public java.util.HashMap getAttributes()
     103:104:public void setAttributes(java.util.HashMap)
-pt.rocket.framework.objects.ProductSimpleUnique:
+com.mobile.framework.objects.ProductSimpleUnique:
     26:34:public boolean initialize(org.json.JSONObject)
     44:52:public org.json.JSONObject toJSON()
     59:59:public java.lang.String getSku()
     66:66:public int getQuantity()
     73:73:public java.lang.String getVariation()
-pt.rocket.framework.objects.ProductsPage:
+com.mobile.framework.objects.ProductsPage:
     137:137:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.Promotion:
+com.mobile.framework.objects.Promotion:
     71:77:public Promotion(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
     165:177:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.PurchaseItem:
+com.mobile.framework.objects.PurchaseItem:
     41:57:public static java.util.List parseItems(org.json.JSONObject)
     62:77:private boolean parseItem(org.json.JSONObject,int)
-pt.rocket.framework.objects.RatingOption:
+com.mobile.framework.objects.RatingOption:
     31:32:public void setRating(double)
     39:40:public void setTitle(java.lang.String)
     54:54:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.Region:
+com.mobile.framework.objects.Region:
     44:45:public void setId(java.lang.String)
     51:51:public java.lang.String getName()
     59:60:public void setName(java.lang.String)
-pt.rocket.framework.objects.SearchSuggestion:
+com.mobile.framework.objects.SearchSuggestion:
     61:61:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.Section:
+com.mobile.framework.objects.Section:
     public static final java.lang.String SECTION_NAME_TEASERS
     public static final java.lang.String SECTION_NAME_BRANDS
     public static final java.lang.String SECTION_NAME_CATEGORIES
@@ -4950,7 +4950,7 @@ pt.rocket.framework.objects.Section:
     public static final java.lang.String SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES
     public static final java.lang.String SECTION_NAME_COUNTRY_CONFIGS
     115:122:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.ShoppingCart:
+com.mobile.framework.objects.ShoppingCart:
     139:139:public org.json.JSONObject toJSON()
     158:159:public void setCartItems(java.util.HashMap)
     173:174:public void setCartValue(java.lang.String)
@@ -4965,7 +4965,7 @@ pt.rocket.framework.objects.ShoppingCart:
     299:299:public double getCartValueAsDouble()
     306:307:public void setCartValueAsDouble(double)
     320:321:public void setCartValueEuroConverted(double)
-pt.rocket.framework.objects.ShoppingCartItem:
+com.mobile.framework.objects.ShoppingCartItem:
     50:53:public ShoppingCartItem(java.util.HashMap)
     146:146:public org.json.JSONObject toJSON()
     195:196:public void setMaxQuantity(int)
@@ -4976,19 +4976,19 @@ pt.rocket.framework.objects.ShoppingCartItem:
     310:310:public double getPriceValueEuroConverted()
     318:319:public void setPriceValueEuroConverted(double)
     333:334:public void setSpecialPriceConverted(double)
-pt.rocket.framework.objects.TeaserBrand:
+com.mobile.framework.objects.TeaserBrand:
     27:27:public java.lang.String getImage()
     32:32:public java.lang.String getBrandUrl()
-pt.rocket.framework.objects.TeaserBrandElement:
+com.mobile.framework.objects.TeaserBrandElement:
     48:48:public java.lang.String getId()
-    55:55:public pt.rocket.framework.objects.BrandAttributes getAttributes()
+    55:55:public com.mobile.framework.objects.BrandAttributes getAttributes()
     88:96:public org.json.JSONObject toJSON()
     103:103:public int getID()
     117:117:public java.lang.String getDescription()
     124:124:public java.lang.String getBrandUrl()
-pt.rocket.framework.objects.TeaserCampaign:
+com.mobile.framework.objects.TeaserCampaign:
     69:69:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.TeaserImage:
+com.mobile.framework.objects.TeaserImage:
     94:94:public org.json.JSONObject toJSON()
     101:101:public java.lang.String getWidth()
     108:108:public java.lang.String getHeight()
@@ -4996,39 +4996,39 @@ pt.rocket.framework.objects.TeaserImage:
     136:136:public java.lang.String getDescription()
     151:151:public int getId()
     198:199:public void setImageTableUrl(java.lang.String)
-pt.rocket.framework.objects.TeaserSpecification:
+com.mobile.framework.objects.TeaserSpecification:
     104:105:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.Variation:
+com.mobile.framework.objects.Variation:
     76:77:public void setSKU(java.lang.String)
-pt.rocket.framework.objects.Version:
+com.mobile.framework.objects.Version:
     25:28:public Version(int,int)
     49:49:public org.json.JSONObject toJSON()
-pt.rocket.framework.objects.VersionInfo:
+com.mobile.framework.objects.VersionInfo:
     50:50:public org.json.JSONObject toJSON()
-    54:55:public void addEntry(java.lang.String,pt.rocket.framework.objects.Version)
+    54:55:public void addEntry(java.lang.String,com.mobile.framework.objects.Version)
     58:58:public java.util.HashMap getMap()
-pt.rocket.framework.objects.Voucher:
+com.mobile.framework.objects.Voucher:
     22:22:public java.util.HashMap getMessages()
     36:36:public java.lang.String getCartValue()
     50:50:public java.lang.String getCouponMoneyValue()
     61:64:public boolean isPaymentNeeded()
-pt.rocket.framework.rest.PersistentCookie:
+com.mobile.framework.rest.PersistentCookie:
     private static final long serialVersionUID
     50:58:private void writeObject(java.io.ObjectOutputStream)
     61:70:private void readObject(java.io.ObjectInputStream)
-pt.rocket.framework.rest.PersistentCookieStore:
+com.mobile.framework.rest.PersistentCookieStore:
     private static final java.lang.String PERSISTENT_COOKIES_FILE
     private static final java.lang.String COOKIE_PREFS_TAG
     private static final java.lang.String PHPSESSID_TAG
     private static final long serialVersionUID
     164:172:protected java.lang.String byteArrayToHexString(byte[])
     184:189:protected byte[] hexStringToByteArray(java.lang.String)
-pt.rocket.framework.rest.RequestDatabaseHelper
-pt.rocket.framework.rest.RestClientSingleton:
+com.mobile.framework.rest.RequestDatabaseHelper
+com.mobile.framework.rest.RestClientSingleton:
     private static final int MAX_CACHE_OBJECT_SIZE
     199:199:public ch.boye.httpclientandroidlib.client.CookieStore getCookieStore()
-pt.rocket.framework.rest.RestConstants
-pt.rocket.framework.rest.RestContract:
+com.mobile.framework.rest.RestConstants
+com.mobile.framework.rest.RestContract:
     public static final int MIN_CACHE_TIME
     public static final int DEFAULT_CACHE_TIME
     public static final int MAX_CACHE_TIME
@@ -5048,22 +5048,22 @@ pt.rocket.framework.rest.RestContract:
     public static final int METHOD_DELETE
     public static final java.lang.String REST_PARAM_RATING
     public static final java.lang.String REST_PARAM_PAGE
-pt.rocket.framework.service.IRemoteService$Stub:
+com.mobile.framework.service.IRemoteService$Stub:
     private static final java.lang.String DESCRIPTOR
     static final int TRANSACTION_sendRequest
     static final int TRANSACTION_registerCallback
     static final int TRANSACTION_unregisterCallback
-pt.rocket.framework.service.IRemoteService$Stub$Proxy:
+com.mobile.framework.service.IRemoteService$Stub$Proxy:
     93:93:public java.lang.String getInterfaceDescriptor()
-pt.rocket.framework.service.IRemoteServiceCallback$Stub:
+com.mobile.framework.service.IRemoteServiceCallback$Stub:
     private static final java.lang.String DESCRIPTOR
     static final int TRANSACTION_getResponse
     static final int TRANSACTION_getError
-pt.rocket.framework.service.IRemoteServiceCallback$Stub$Proxy:
+com.mobile.framework.service.IRemoteServiceCallback$Stub$Proxy:
     91:91:public java.lang.String getInterfaceDescriptor()
-pt.rocket.framework.service.RemoteService:
+com.mobile.framework.service.RemoteService:
     190:190:public static boolean isServiceBound()
-pt.rocket.framework.tracking.Ad4PushTracker:
+com.mobile.framework.tracking.Ad4PushTracker:
     private static final java.lang.String AD4PUSH_PREFERENCES
     private static final java.lang.String VIEW_STATE
     private static final java.lang.String PURCHASES_COUNTER
@@ -5115,7 +5115,7 @@ pt.rocket.framework.tracking.Ad4PushTracker:
     216:221:public void startActivityForInAppMessages(android.app.Activity)
     229:233:public void setPushNotificationLocked(boolean)
     241:245:public void setInAppDisplayLocked(boolean)
-pt.rocket.framework.tracking.AdjustTracker:
+com.mobile.framework.tracking.AdjustTracker:
     public static final java.lang.String BEGIN_TIME
     public static final java.lang.String USER_ID
     public static final java.lang.String CURRENCY_ISO
@@ -5144,24 +5144,24 @@ pt.rocket.framework.tracking.AdjustTracker:
     public static final java.lang.String ADJUST_FIRST_TIME_KEY
     private static final java.lang.String EURO_CURRENCY
     743:743:public boolean enabled()
-    748:748:public void trackTiming(pt.rocket.framework.tracking.TrackingPage,android.os.Bundle)
-pt.rocket.framework.tracking.AdjustTracker$AdjustConstants
-pt.rocket.framework.tracking.AdjustTracker$AdjustEvents
-pt.rocket.framework.tracking.AdjustTracker$AdjustKeys
-pt.rocket.framework.tracking.AnalyticsGoogle:
+    748:748:public void trackTiming(com.mobile.framework.tracking.TrackingPage,android.os.Bundle)
+com.mobile.framework.tracking.AdjustTracker$AdjustConstants
+com.mobile.framework.tracking.AdjustTracker$AdjustEvents
+com.mobile.framework.tracking.AdjustTracker$AdjustKeys
+com.mobile.framework.tracking.AnalyticsGoogle:
     private static final int PRE_INSTALL_ID
     private static final int SIM_OPERATOR_ID
     320:320:protected void trackGACampaign()
-pt.rocket.framework.tracking.ContainerHolderSingleton:
+com.mobile.framework.tracking.ContainerHolderSingleton:
     15:16:private ContainerHolderSingleton()
     19:19:public static com.google.android.gms.tagmanager.ContainerHolder getContainerHolder()
-pt.rocket.framework.tracking.GTMEvents:
+com.mobile.framework.tracking.GTMEvents:
     4:4:public GTMEvents()
-pt.rocket.framework.tracking.GTMEvents$GTMKeys:
+com.mobile.framework.tracking.GTMEvents$GTMKeys:
     39:39:public GTMEvents$GTMKeys()
-pt.rocket.framework.tracking.GTMEvents$GTMValues:
+com.mobile.framework.tracking.GTMEvents$GTMValues:
     119:119:public GTMEvents$GTMValues()
-pt.rocket.framework.tracking.GTMManager:
+com.mobile.framework.tracking.GTMManager:
     public static final java.lang.String GA_PREFERENCES
     public static final java.lang.String CAMPAIGN_ID_KEY
     public static final java.lang.String CAMPAIGN_SOURCE
@@ -5171,10 +5171,10 @@ pt.rocket.framework.tracking.GTMManager:
     public static final java.lang.String IS_REFERRER_CAMPAIGN_SET
     677:697:public void gtmTrackFreshInstall(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
     732:733:public static java.lang.String getCampaignParams(android.content.Context,java.lang.String)
-pt.rocket.framework.tracking.GTMManager$ContainerLoadedCallback:
+com.mobile.framework.tracking.GTMManager$ContainerLoadedCallback:
     747:747:private GTMManager$ContainerLoadedCallback()
-pt.rocket.framework.utils.CompleteProductCache
-pt.rocket.framework.utils.Constants:
+com.mobile.framework.utils.CompleteProductCache
+com.mobile.framework.utils.Constants:
     public static final java.lang.String BUNDLE_URL_KEY
     public static final java.lang.String BUNDLE_REQUEST_TYPE_KEY
     public static final java.lang.String BUNDLE_OBJECT_TYPE_KEY
@@ -5204,12 +5204,12 @@ pt.rocket.framework.utils.Constants:
     public static final java.lang.String INFO_SIM_OPERATOR
     public static final java.lang.String INFO_BUNDLE_VERSION
     9:9:public Constants()
-pt.rocket.framework.utils.CurrencyFormatter:
+com.mobile.framework.utils.CurrencyFormatter:
     public static final java.lang.String EURO_CODE
     82:83:public static void setCurrency(java.lang.String)
     145:164:public static double getValueDouble(java.lang.String)
     173:188:public static java.lang.String getCleanValue(java.lang.String)
-pt.rocket.framework.utils.CustomerUtils:
+com.mobile.framework.utils.CustomerUtils:
     public static final java.lang.String INTERNAL_AUTOLOGIN_FLAG
     public static final java.lang.String INTERNAL_PASSWORD_VALUE
     public static final java.lang.String INTERNAL_EMAIL_VALUE
@@ -5217,32 +5217,32 @@ pt.rocket.framework.utils.CustomerUtils:
     public static final java.lang.String INTERNAL_SIGNUP_FLAG
     private static final java.lang.String CRED_PREFS
     private static final java.lang.String USER_LOGGED_ONCE_FLAG
-pt.rocket.framework.utils.DarwinRegex
-pt.rocket.framework.utils.DeviceInfoHelper:
+com.mobile.framework.utils.DarwinRegex
+com.mobile.framework.utils.DeviceInfoHelper:
     private static final java.lang.String PRE_INSTALL_FILE
     265:267:public static int getHeight(android.content.Context)
     308:314:public static java.lang.Float getScreenSizeInches(android.content.Context)
-pt.rocket.framework.utils.GifDecoder:
+com.mobile.framework.utils.GifDecoder:
     public static final int STATUS_OK
     public static final int STATUS_FORMAT_ERROR
     public static final int STATUS_OPEN_ERROR
     protected static final int MAX_STACK_SIZE
     107:107:public android.graphics.Bitmap getBitmap()
-pt.rocket.framework.utils.ImageResolutionHelper:
+com.mobile.framework.utils.ImageResolutionHelper:
     public static final java.lang.String REGEX_RESOLUTION
     public static final int DEVICE_WEAK_RESOURCES
     public static final int DEVICE_NORMAL_RESOURCES
     public static final int DEVICE_HIGH_RESOURCES
-    86:100:private static pt.rocket.framework.objects.ImageResolution getBestResolution(int,int)
+    86:100:private static com.mobile.framework.objects.ImageResolution getBestResolution(int,int)
     163:165:public static java.lang.String getResolutionIdentifier(int,int)
-pt.rocket.framework.utils.JumiaPrefs
-pt.rocket.framework.utils.LoadingBarView:
+com.mobile.framework.utils.JumiaPrefs
+com.mobile.framework.utils.LoadingBarView:
     public static final int MAX_RUNNING_FRAMES
-pt.rocket.framework.utils.LogTagHelper:
+com.mobile.framework.utils.LogTagHelper:
     4:4:public LogTagHelper()
-pt.rocket.framework.utils.SingletonMap:
+com.mobile.framework.utils.SingletonMap:
     32:32:public java.lang.Object get(java.lang.Class)
-pt.rocket.framework.utils.Utils:
+com.mobile.framework.utils.Utils:
     static byte[] iv
     static java.security.spec.KeySpec keySpec
     static javax.crypto.SecretKeyFactory keyFactory
@@ -5250,37 +5250,37 @@ pt.rocket.framework.utils.Utils:
     static javax.crypto.SecretKey key
     113:143:public static java.lang.String encrypt(java.lang.Object)
     155:181:public static java.lang.String decrypt(java.lang.String)
-pt.rocket.helpers.HelperPriorityConfiguration
-pt.rocket.helpers.account.GetChangePasswordHelper:
+com.mobile.helpers.HelperPriorityConfiguration
+com.mobile.helpers.account.GetChangePasswordHelper:
     public static final java.lang.String CONTENT_VALUES
-pt.rocket.helpers.account.GetCustomerHelper:
+com.mobile.helpers.account.GetCustomerHelper:
     public static final java.lang.String CUSTOMER_CONTENT_VALUES
-pt.rocket.helpers.account.GetMyOrdersListHelper:
+com.mobile.helpers.account.GetMyOrdersListHelper:
     public static final java.lang.String PAGE_NUMBER
     public static final java.lang.String PER_PAGE
     public static final java.lang.String CURRENT_PAGE
     public static final java.lang.String TOTAL_PAGES
-pt.rocket.helpers.account.HomeNewslettersSignupHelper
-pt.rocket.helpers.account.SubscribeNewslettersHelper:
+com.mobile.helpers.account.HomeNewslettersSignupHelper
+com.mobile.helpers.account.SubscribeNewslettersHelper:
     public static final java.lang.String FORM_CONTENT_VALUES
-pt.rocket.helpers.address.GetDefaultBillingAddressHelper
-pt.rocket.helpers.address.GetDefaultShippingAddressHelper
-pt.rocket.helpers.address.GetMyAddressesHelper
-pt.rocket.helpers.address.SetBillingAddressHelper:
+com.mobile.helpers.address.GetDefaultBillingAddressHelper
+com.mobile.helpers.address.GetDefaultShippingAddressHelper
+com.mobile.helpers.address.GetMyAddressesHelper
+com.mobile.helpers.address.SetBillingAddressHelper:
     public static final java.lang.String FORM_CONTENT_VALUES
-pt.rocket.helpers.address.SetEditedAddressHelper:
+com.mobile.helpers.address.SetEditedAddressHelper:
     public static final java.lang.String FORM_CONTENT_VALUES
-pt.rocket.helpers.address.SetNewAddressHelper:
+com.mobile.helpers.address.SetNewAddressHelper:
     public static final java.lang.String FORM_CONTENT_VALUES
     public static final java.lang.String IS_FROM_SIGNUP
     public static final java.lang.String IS_BILLING
-pt.rocket.helpers.address.SetShippingAddressHelper
-pt.rocket.helpers.campaign.GetCampaignHelper:
+com.mobile.helpers.address.SetShippingAddressHelper
+com.mobile.helpers.campaign.GetCampaignHelper:
     public static final java.lang.String CAMPAIGN_ID
     public static final java.lang.String CAMPAIGN_TAG
-pt.rocket.helpers.cart.ClearShoppingCartHelper:
+com.mobile.helpers.cart.ClearShoppingCartHelper:
     public static final java.lang.String CART_ITEMS
-pt.rocket.helpers.cart.GetShoppingCartAddItemHelper:
+com.mobile.helpers.cart.GetShoppingCartAddItemHelper:
     public static final java.lang.String PRODUCT_TAG
     public static final java.lang.String PRODUCT_SKU_TAG
     public static final java.lang.String PRODUCT_QT_TAG
@@ -5290,44 +5290,44 @@ pt.rocket.helpers.cart.GetShoppingCartAddItemHelper:
     public static final java.lang.String REMOVE_FAVOURITE_TAG
     public static final java.lang.String REMOVE_RECENTLYVIEWED_TAG
     public static final java.lang.String PRODUCT_PRICE_TAG
-pt.rocket.helpers.cart.GetShoppingCartChangeItemQuantityHelper:
+com.mobile.helpers.cart.GetShoppingCartChangeItemQuantityHelper:
     public static final java.lang.String CART_ITEMS
-pt.rocket.helpers.cart.GetShoppingCartRemoveItemHelper:
+com.mobile.helpers.cart.GetShoppingCartRemoveItemHelper:
     public static final java.lang.String ITEM
     public static final java.lang.String UPDATE_CART
-pt.rocket.helpers.categories.GetCategoriesPerLevelsHelper:
+com.mobile.helpers.categories.GetCategoriesPerLevelsHelper:
     public static final java.lang.String PAGINATE_KEY
     public static final java.lang.String CATEGORY_KEY
     public static final java.lang.String PAGINATE_ENABLE
-pt.rocket.helpers.checkout.CheckoutFinishHelper:
+com.mobile.helpers.checkout.CheckoutFinishHelper:
     private static final java.lang.String PAYMENT_FORM
     public static final java.lang.String USER_AGENT
-pt.rocket.helpers.checkout.GetMyOrderHelper
-pt.rocket.helpers.checkout.GetPaymentMethodsHelper:
+com.mobile.helpers.checkout.GetMyOrderHelper
+com.mobile.helpers.checkout.GetPaymentMethodsHelper:
     public static final java.lang.String NO_PAYMENT
-pt.rocket.helpers.checkout.GetTrackOrderHelper:
+com.mobile.helpers.checkout.GetTrackOrderHelper:
     public static final java.lang.String ORDER_NR
-pt.rocket.helpers.checkout.SetPaymentMethodHelper:
+com.mobile.helpers.checkout.SetPaymentMethodHelper:
     public static final java.lang.String FORM_CONTENT_VALUES
-pt.rocket.helpers.checkout.SetPollAnswerHelper:
+com.mobile.helpers.checkout.SetPollAnswerHelper:
     public static final java.lang.String FORM_CONTENT_VALUES
-pt.rocket.helpers.checkout.SetShippingMethodHelper:
+com.mobile.helpers.checkout.SetShippingMethodHelper:
     public static final java.lang.String FORM_CONTENT_VALUES
-pt.rocket.helpers.configs.GetApiInfoHelper:
+com.mobile.helpers.configs.GetApiInfoHelper:
     public static final java.lang.String API_INFO_OUTDATEDSECTIONS
-pt.rocket.helpers.configs.GetFormsDatasetListHelper:
+com.mobile.helpers.configs.GetFormsDatasetListHelper:
     public static final java.lang.String URL
     public static final java.lang.String KEY
-pt.rocket.helpers.configs.GetImageResolutionsHelper
-pt.rocket.helpers.configs.GetRatingOptionsHelper:
+com.mobile.helpers.configs.GetImageResolutionsHelper
+com.mobile.helpers.configs.GetRatingOptionsHelper:
     public static final java.lang.String PRODUCT_URL
-pt.rocket.helpers.configs.NavigationListHelper
-pt.rocket.helpers.products.GetProductHelper:
+com.mobile.helpers.configs.NavigationListHelper
+com.mobile.helpers.products.GetProductHelper:
     public static final java.lang.String PRODUCT_URL
-pt.rocket.helpers.products.GetProductReviewsHelper:
+com.mobile.helpers.products.GetProductReviewsHelper:
     public static final java.lang.String PRODUCT_URL
     public static final java.lang.String PAGE_NUMBER
-pt.rocket.helpers.products.GetProductsHelper:
+com.mobile.helpers.products.GetProductsHelper:
     public static final java.lang.String PRODUCT_URL
     public static final java.lang.String SEARCH_QUERY
     public static final java.lang.String PAGE_NUMBER
@@ -5336,45 +5336,45 @@ pt.rocket.helpers.products.GetProductsHelper:
     public static final java.lang.String DIRECTION
     public static final java.lang.String FILTERS
     public static final java.lang.String SEARCH_NO_RESULTS
-pt.rocket.helpers.products.ReviewProductHelper:
+com.mobile.helpers.products.ReviewProductHelper:
     public static final java.lang.String COMMENT_CREATED
     public static final java.lang.String PRODUCT_SKU
     public static final java.lang.String CUSTOMER_ID
-pt.rocket.helpers.search.GetSearchCategoryHelper
-pt.rocket.helpers.search.GetSearchProductHelper:
+com.mobile.helpers.search.GetSearchCategoryHelper
+com.mobile.helpers.search.GetSearchProductHelper:
     public static final java.lang.String SKU_TAG
-pt.rocket.helpers.search.GetSearchSuggestionHelper:
+com.mobile.helpers.search.GetSearchSuggestionHelper:
     public static final java.lang.String SEACH_PARAM
     120:127:public static void updateSearchQuery(java.lang.String)
-pt.rocket.helpers.search.GetSearchSuggestionHelper$2
-pt.rocket.helpers.session.GetFacebookLoginHelper:
+com.mobile.helpers.search.GetSearchSuggestionHelper$2
+com.mobile.helpers.session.GetFacebookLoginHelper:
     public static final java.lang.String LOGIN_CONTENT_VALUES
-pt.rocket.helpers.session.GetForgotPasswordHelper:
+com.mobile.helpers.session.GetForgotPasswordHelper:
     public static final java.lang.String CONTENT_VALUES
-pt.rocket.helpers.session.GetLoginHelper:
+com.mobile.helpers.session.GetLoginHelper:
     public static final java.lang.String LOGIN_CONTENT_VALUES
-pt.rocket.helpers.session.GetRegisterHelper:
+com.mobile.helpers.session.GetRegisterHelper:
     public static final java.lang.String REGISTER_CONTENT_VALUES
-pt.rocket.helpers.session.SetSignupHelper:
+com.mobile.helpers.session.SetSignupHelper:
     public static final java.lang.String FORM_CONTENT_VALUES
-pt.rocket.helpers.teasers.GetTeasersHelper:
+com.mobile.helpers.teasers.GetTeasersHelper:
     public static final java.lang.String MD5_KEY
-pt.rocket.helpers.teasers.GetUpdatedTeasersHelper:
+com.mobile.helpers.teasers.GetUpdatedTeasersHelper:
     public static final java.lang.String OLD_MD5_KEY
     public static final java.lang.String MD5_KEY
-pt.rocket.helpers.voucher.RemoveVoucherHelper:
+com.mobile.helpers.voucher.RemoveVoucherHelper:
     public static final java.lang.String VOUCHER_PARAM
-pt.rocket.helpers.voucher.SetVoucherHelper:
+com.mobile.helpers.voucher.SetVoucherHelper:
     public static final java.lang.String VOUCHER_PARAM
-pt.rocket.pojo.CurrencyFormatter
-pt.rocket.pojo.DynamicForm:
-    72:75:public void addControl(pt.rocket.pojo.DynamicFormItem)
-    163:184:public pt.rocket.pojo.DynamicFormItem getItemById(int)
+com.mobile.pojo.CurrencyFormatter
+com.mobile.pojo.DynamicForm:
+    72:75:public void addControl(com.mobile.pojo.DynamicFormItem)
+    163:184:public com.mobile.pojo.DynamicFormItem getItemById(int)
     226:226:public int getLastId()
-    399:412:public pt.rocket.forms.Form storeInServerForm()
+    399:412:public com.mobile.forms.Form storeInServerForm()
     419:425:public void reset()
     431:437:public void clear()
-pt.rocket.pojo.DynamicFormItem:
+com.mobile.pojo.DynamicFormItem:
     private static final int ERRORTEXTSIZE
     private static final int MANDATORYSIGNALSIZE
     private static final int MANDATORYSIGNALMARGIN
@@ -5386,39 +5386,39 @@ pt.rocket.pojo.DynamicFormItem:
     585:586:public void storeValueInField(java.lang.String)
     1800:1803:public java.util.ArrayList getChildDynamicForm()
     1811:1812:public void setChildDynamicForm(java.util.ArrayList)
-pt.rocket.pojo.ITargeting
-pt.rocket.pojo.ITargeting$TargetType
-pt.rocket.pojo.MetaFormExtractor:
+com.mobile.pojo.ITargeting
+com.mobile.pojo.ITargeting$TargetType
+com.mobile.pojo.MetaFormExtractor:
     private static final java.lang.String KEY_BIRTHDAY
-pt.rocket.pojo.Version
-pt.rocket.pojo.VersionInfo
-pt.rocket.utils.AndroidFileFunctions
-pt.rocket.utils.CheckNumber
-pt.rocket.utils.CheckVersion:
+com.mobile.pojo.Version
+com.mobile.pojo.VersionInfo
+com.mobile.utils.AndroidFileFunctions
+com.mobile.utils.CheckNumber
+com.mobile.utils.CheckVersion:
     private static final java.lang.String PLAY_MARKET_QUERY
     private static final java.lang.String VERSION_UNWANTED_KEY
     private static final java.lang.String DIALOG_SEEN_AFTER_THIS_LAUNCH_KEY
     private static final long UPDATE_INTERVALL_MILLIS
     private static final int NO_VERSION_UNWANTED
-pt.rocket.utils.CheckoutStepManager:
+com.mobile.utils.CheckoutStepManager:
     public static final java.lang.String POLL_STEP
     public static final java.lang.String ADDRESSES_STEP
     public static final java.lang.String BILLING_STEP
     public static final java.lang.String SHIPPING_STEP
     public static final java.lang.String PAYMENT_STEP
     public static final java.lang.String ORDER_STEP
-pt.rocket.utils.Compat
-pt.rocket.utils.ExpandCollapseAnimation
-pt.rocket.utils.FragmentCommunicatorForProduct:
+com.mobile.utils.Compat
+com.mobile.utils.ExpandCollapseAnimation
+com.mobile.utils.FragmentCommunicatorForProduct:
     private static final java.lang.String TAG
     99:99:public int getCurrentImagePosition()
     103:104:public void setCurrentImagePosition(int)
-pt.rocket.utils.GalleryLayout
-pt.rocket.utils.GalleryLayout$1
-pt.rocket.utils.GenericRadioGroup:
+com.mobile.utils.GalleryLayout
+com.mobile.utils.GalleryLayout$1
+com.mobile.utils.GenericRadioGroup:
     private static final java.lang.String RADIO_BUTTON_TAG
     private static final java.lang.String RADIO_GROUP_TAG
-pt.rocket.utils.HockeyStartup:
+com.mobile.utils.HockeyStartup:
     private static final java.lang.String MESSAGEDIGEST
     private static final int SPLASH_DISPLAY_TIME
     private static final java.lang.String KEY_FINGERPRINT_HOCKEY
@@ -5427,53 +5427,53 @@ pt.rocket.utils.HockeyStartup:
     private static final int RESULT_KEY_HOCKEY
     58:68:public static void start(android.app.Activity,java.lang.Runnable)
     93:97:public static boolean isDevEnvironment(android.content.Context)
-pt.rocket.utils.HorizontalListView:
+com.mobile.utils.HorizontalListView:
     public static final int MOVE_TO_NO
     public static final int MOVE_TO_DIRECTLY
     public static final int MOVE_TO_SCROLLED
     private static final int NO_SCROLL_FOR_ITEM
     384:386:public synchronized void scrollTo(int)
-pt.rocket.utils.InflateLayout
-pt.rocket.utils.JSONConstants
-pt.rocket.utils.LocationHelper:
+com.mobile.utils.InflateLayout
+com.mobile.utils.JSONConstants
+com.mobile.utils.LocationHelper:
     public static final boolean SELECTED
     public static final boolean NO_SELECTED
     public static final int TIMEOUT
-pt.rocket.utils.OnActivityFragmentInteraction:
+com.mobile.utils.OnActivityFragmentInteraction:
     public abstract void sendValuesToFragment(int,java.lang.Object)
     public abstract void sendPositionToFragment(int)
     public abstract void sendListener(int,android.view.View$OnClickListener)
     public abstract boolean allowBackPressed()
-pt.rocket.utils.OnFragmentActivityInteraction
-pt.rocket.utils.PreferenceListFragment:
+com.mobile.utils.OnFragmentActivityInteraction
+com.mobile.utils.PreferenceListFragment:
     private static final int FIRST_REQUEST_CODE
     private static final int MSG_BIND_PREFERENCES
     170:170:public android.preference.PreferenceManager getPreferenceManager()
     214:214:public void addPreferencesFromIntent(android.content.Intent)
     242:245:public android.preference.Preference findPreference(java.lang.CharSequence)
-pt.rocket.utils.RadioGroupLayout:
+com.mobile.utils.RadioGroupLayout:
     public static final int NO_DEFAULT_SELECTION
-pt.rocket.utils.RadioGroupLayout$OnRadioGroupSelected
-pt.rocket.utils.RadioGroupLayoutVertical:
+com.mobile.utils.RadioGroupLayout$OnRadioGroupSelected
+com.mobile.utils.RadioGroupLayoutVertical:
     public static final int NO_DEFAULT_SELECTION
-pt.rocket.utils.RadioGroupLayoutVertical$OnRadioGroupSelected
-pt.rocket.utils.RightDrawableOnTouchListener
-pt.rocket.utils.SDK16
-pt.rocket.utils.ScrollViewWithHorizontal:
+com.mobile.utils.RadioGroupLayoutVertical$OnRadioGroupSelected
+com.mobile.utils.RightDrawableOnTouchListener
+com.mobile.utils.SDK16
+com.mobile.utils.ScrollViewWithHorizontal:
     60:62:public void sendListenerAndView(android.os.Handler,android.view.View)
-pt.rocket.utils.SearchSuggestionText:
+com.mobile.utils.SearchSuggestionText:
     32:33:public SearchSuggestionText(android.content.Context)
     109:116:public void clearTextChangedListeners()
-pt.rocket.utils.ServiceSingleton:
+com.mobile.utils.ServiceSingleton:
     public static java.util.HashMap responseCallbacks
     38:39:public void setResponseCallbacks(java.util.HashMap)
     42:42:public java.util.HashMap getResponseCallbacks()
-pt.rocket.utils.ShippingRadioGroupList:
+com.mobile.utils.ShippingRadioGroupList:
     public static final int NO_DEFAULT_SELECTION
     212:216:public java.lang.String getItemByIndex(int)
     269:272:public boolean validateSelected()
-pt.rocket.utils.ShippingRadioGroupList$OnRadioGroupSelected
-pt.rocket.utils.TrackerDelegator:
+com.mobile.utils.ShippingRadioGroupList$OnRadioGroupSelected
+com.mobile.utils.TrackerDelegator:
     public static final boolean IS_AUTO_LOGIN
     public static final boolean ISNT_AUTO_LOGIN
     public static final java.lang.String CUSTOMER_KEY
@@ -5533,24 +5533,24 @@ pt.rocket.utils.TrackerDelegator:
     385:392:public static void trackPurchase(android.os.Bundle)
     424:438:public static void trackSignUp(java.lang.String)
     504:586:private static void trackPurchaseInt(android.os.Bundle)
-    655:658:public static void storeSignupProcess(pt.rocket.framework.objects.Customer)
+    655:658:public static void storeSignupProcess(com.mobile.framework.objects.Customer)
     503:503:static synthetic void access$0(android.os.Bundle)
-pt.rocket.utils.TrackerDelegator$1
-pt.rocket.utils.TrackerDelegator$3
-pt.rocket.utils.UIUtils:
+com.mobile.utils.TrackerDelegator$1
+com.mobile.utils.TrackerDelegator$3
+com.mobile.utils.UIUtils:
     private static android.graphics.Typeface robotoTypeFace
     23:23:public UIUtils()
     27:31:public static void setRobotoFont(android.content.Context,android.view.View)
     34:41:private static void setFont(android.view.View,android.graphics.Typeface)
     50:50:public static int spToPx(float,android.content.Context)
-pt.rocket.utils.VersionedGestureDetector
-pt.rocket.utils.VersionedGestureDetector$CupcakeDetector
-pt.rocket.utils.VersionedGestureDetector$EclairDetector
-pt.rocket.utils.VersionedGestureDetector$FroyoDetector
-pt.rocket.utils.VersionedGestureDetector$FroyoDetector$1
-pt.rocket.utils.VersionedGestureDetector$OnGestureListener
-pt.rocket.utils.ViewPagerHomeActivityInteraction
-pt.rocket.utils.deeplink.DeepLinkManager:
+com.mobile.utils.VersionedGestureDetector
+com.mobile.utils.VersionedGestureDetector$CupcakeDetector
+com.mobile.utils.VersionedGestureDetector$EclairDetector
+com.mobile.utils.VersionedGestureDetector$FroyoDetector
+com.mobile.utils.VersionedGestureDetector$FroyoDetector$1
+com.mobile.utils.VersionedGestureDetector$OnGestureListener
+com.mobile.utils.ViewPagerHomeActivityInteraction
+com.mobile.utils.deeplink.DeepLinkManager:
     private static final int PATH_CC_POS
     private static final int PATH_VIEW_POS
     private static final int PATH_DATA_POS
@@ -5576,14 +5576,14 @@ pt.rocket.utils.deeplink.DeepLinkManager:
     private static final java.lang.String FAVORITES_TAG
     public static final java.lang.String FRAGMENT_TYPE_TAG
     public static final java.lang.String PDV_SIZE_TAG
-pt.rocket.utils.dialogfragments.CustomToastView:
+com.mobile.utils.dialogfragments.CustomToastView:
     25:26:public CustomToastView(android.content.Context)
-    59:59:public static android.widget.Toast makeText(pt.rocket.view.BaseActivity,int,int)
-pt.rocket.utils.dialogfragments.DialogDatePickerFragment:
-    69:80:public static pt.rocket.utils.dialogfragments.DialogDatePickerFragment newInstance(android.app.Activity,java.lang.String,java.lang.String,int,int,int)
+    59:59:public static android.widget.Toast makeText(com.mobile.view.BaseActivity,int,int)
+com.mobile.utils.dialogfragments.DialogDatePickerFragment:
+    69:80:public static com.mobile.utils.dialogfragments.DialogDatePickerFragment newInstance(android.app.Activity,java.lang.String,java.lang.String,int,int,int)
     233:247:public void setDate(int,int,int)
-    259:267:public void resizeDialog(pt.rocket.utils.dialogfragments.DialogDatePickerFragment)
-pt.rocket.utils.dialogfragments.DialogFilterFragment:
+    259:267:public void resizeDialog(com.mobile.utils.dialogfragments.DialogDatePickerFragment)
+com.mobile.utils.dialogfragments.DialogFilterFragment:
     public static final int NO_INITIAL_POSITION
     private static final int FILTER_CATEGORY_TYPE
     private static final int FILTER_BRAND_TYPE
@@ -5597,23 +5597,23 @@ pt.rocket.utils.dialogfragments.DialogFilterFragment:
     public static final java.lang.String PRICE_ID
     public static final java.lang.String COLOR_ID
     public static final java.lang.String FILTER_TAG
-pt.rocket.utils.dialogfragments.DialogGenericFragment:
+com.mobile.utils.dialogfragments.DialogGenericFragment:
     246:248:public void setOnClickListener(android.view.View$OnClickListener)
     255:257:public void setText(java.lang.CharSequence)
-    331:331:public static pt.rocket.utils.dialogfragments.DialogGenericFragment createServerErrorDialog(java.lang.String,android.app.Activity,android.view.View$OnClickListener,boolean)
-    378:378:public static pt.rocket.utils.dialogfragments.DialogGenericFragment createClientErrorDialog(java.lang.String,android.app.Activity,android.view.View$OnClickListener,boolean)
-pt.rocket.utils.dialogfragments.DialogListFragment:
+    331:331:public static com.mobile.utils.dialogfragments.DialogGenericFragment createServerErrorDialog(java.lang.String,android.app.Activity,android.view.View$OnClickListener,boolean)
+    378:378:public static com.mobile.utils.dialogfragments.DialogGenericFragment createClientErrorDialog(java.lang.String,android.app.Activity,android.view.View$OnClickListener,boolean)
+com.mobile.utils.dialogfragments.DialogListFragment:
     private static final long DELAY_DISMISS
     public static final int NO_INITIAL_POSITION
-pt.rocket.utils.dialogfragments.FilterBrandFragment$FilterOptionArrayAdapter:
+com.mobile.utils.dialogfragments.FilterBrandFragment$FilterOptionArrayAdapter:
     public static final int ITEM
     public static final int SECTION
     public static final int TYPES
-pt.rocket.utils.dialogfragments.WizardFactory
-pt.rocket.utils.dialogfragments.WizardGenericFragment:
-    private static pt.rocket.utils.dialogfragments.WizardGenericFragment sWizardGenericFragment
-    37:41:public static pt.rocket.utils.dialogfragments.WizardGenericFragment getInstance(pt.rocket.utils.dialogfragments.WizardPreferences$WizardType,int,int)
-pt.rocket.utils.imageloader.RocketImageLoader:
+com.mobile.utils.dialogfragments.WizardFactory
+com.mobile.utils.dialogfragments.WizardGenericFragment:
+    private static com.mobile.utils.dialogfragments.WizardGenericFragment sWizardGenericFragment
+    37:41:public static com.mobile.utils.dialogfragments.WizardGenericFragment getInstance(com.mobile.utils.dialogfragments.WizardPreferences$WizardType,int,int)
+com.mobile.utils.imageloader.RocketImageLoader:
     private static final int NETWORK_THREAD_POOL_SIZE
     73:73:public com.android.volley.toolbox.ImageLoader getImageLoader()
     107:108:public void loadImage(java.lang.String,android.widget.ImageView,boolean)
@@ -5622,16 +5622,16 @@ pt.rocket.utils.imageloader.RocketImageLoader:
     319:337:public static int calculateInSampleSize(android.graphics.BitmapFactory$Options,int,int)
     341:349:public void cancelImageRequest(java.lang.String,android.widget.ImageView)
     355:362:public void cancelImageRequests(java.util.List)
-    398:409:public void preload(java.lang.String,pt.rocket.utils.imageloader.RocketImageLoader$RocketImageLoaderListener)
-pt.rocket.utils.imageloader.RocketImageLoader$2
-pt.rocket.utils.imageloader.RocketImageLoader$3
-pt.rocket.utils.maintenance.MaintenancePage:
+    398:409:public void preload(java.lang.String,com.mobile.utils.imageloader.RocketImageLoader$RocketImageLoaderListener)
+com.mobile.utils.imageloader.RocketImageLoader$2
+com.mobile.utils.imageloader.RocketImageLoader$3
+com.mobile.utils.maintenance.MaintenancePage:
     24:24:public MaintenancePage()
     36:45:private static void rearrageLayoutForImage(android.app.Activity,android.widget.ImageView)
-pt.rocket.utils.photoview.Compat:
+com.mobile.utils.photoview.Compat:
     private static final int SIXTY_FPS_INTERVAL
     25:25:public Compat()
-pt.rocket.utils.photoview.IPhotoView:
+com.mobile.utils.photoview.IPhotoView:
     public static final float DEFAULT_MAX_SCALE
     public static final float DEFAULT_MID_SCALE
     public static final float DEFAULT_MIN_SCALE
@@ -5656,13 +5656,13 @@ pt.rocket.utils.photoview.IPhotoView:
     public abstract void setMaxScale(float)
     public abstract void setMaximumScale(float)
     public abstract void setOnLongClickListener(android.view.View$OnLongClickListener)
-    public abstract void setOnMatrixChangeListener(pt.rocket.utils.photoview.PhotoViewAttacher$OnMatrixChangedListener)
-    public abstract void setOnPhotoTapListener(pt.rocket.utils.photoview.PhotoViewAttacher$OnPhotoTapListener)
-    public abstract pt.rocket.utils.photoview.PhotoViewAttacher$OnPhotoTapListener getOnPhotoTapListener()
-    public abstract void setOnViewTapListener(pt.rocket.utils.photoview.PhotoViewAttacher$OnViewTapListener)
+    public abstract void setOnMatrixChangeListener(com.mobile.utils.photoview.PhotoViewAttacher$OnMatrixChangedListener)
+    public abstract void setOnPhotoTapListener(com.mobile.utils.photoview.PhotoViewAttacher$OnPhotoTapListener)
+    public abstract com.mobile.utils.photoview.PhotoViewAttacher$OnPhotoTapListener getOnPhotoTapListener()
+    public abstract void setOnViewTapListener(com.mobile.utils.photoview.PhotoViewAttacher$OnViewTapListener)
     public abstract void setRotationTo(float)
     public abstract void setRotationBy(float)
-    public abstract pt.rocket.utils.photoview.PhotoViewAttacher$OnViewTapListener getOnViewTapListener()
+    public abstract com.mobile.utils.photoview.PhotoViewAttacher$OnViewTapListener getOnViewTapListener()
     public abstract void setScale(float)
     public abstract void setScale(float,boolean)
     public abstract void setScale(float,float,float,boolean)
@@ -5671,14 +5671,14 @@ pt.rocket.utils.photoview.IPhotoView:
     public abstract void setPhotoViewRotation(float)
     public abstract android.graphics.Bitmap getVisibleRectangleBitmap()
     public abstract void setZoomTransitionDuration(int)
-    public abstract pt.rocket.utils.photoview.IPhotoView getIPhotoViewImplementation()
+    public abstract com.mobile.utils.photoview.IPhotoView getIPhotoViewImplementation()
     public abstract void setOnDoubleTapListener(android.view.GestureDetector$OnDoubleTapListener)
-pt.rocket.utils.photoview.PhotoView:
+com.mobile.utils.photoview.PhotoView:
     76:76:public boolean canZoom()
     91:91:public boolean setDisplayMatrix(android.graphics.Matrix)
     237:238:public void setScale(float,boolean)
     242:243:public void setScale(float,float,float,boolean)
-pt.rocket.utils.photoview.PhotoViewAttacher:
+com.mobile.utils.photoview.PhotoViewAttacher:
     private static final java.lang.String LOG_TAG
     static final int EDGE_NONE
     static final int EDGE_LEFT
@@ -5694,17 +5694,17 @@ pt.rocket.utils.photoview.PhotoViewAttacher:
     521:522:public void setMidScale(float)
     533:534:public void setMaxScale(float)
     649:649:public android.graphics.Matrix getDisplayMatrix()
-    786:786:public pt.rocket.utils.photoview.IPhotoView getIPhotoViewImplementation()
-pt.rocket.utils.photoview.gestures.CupcakeGestureDetector:
+    786:786:public com.mobile.utils.photoview.IPhotoView getIPhotoViewImplementation()
+com.mobile.utils.photoview.gestures.CupcakeGestureDetector:
     private static final java.lang.String LOG_TAG
-pt.rocket.utils.photoview.gestures.EclairGestureDetector:
+com.mobile.utils.photoview.gestures.EclairGestureDetector:
     private static final int INVALID_POINTER_ID
-pt.rocket.utils.photoview.gestures.VersionedGestureDetector:
+com.mobile.utils.photoview.gestures.VersionedGestureDetector:
     22:22:public VersionedGestureDetector()
-pt.rocket.utils.photoview.log.LogManager:
+com.mobile.utils.photoview.log.LogManager:
     23:23:public LogManager()
-    28:29:public static void setLogger(pt.rocket.utils.photoview.log.Logger)
-pt.rocket.utils.photoview.log.Logger:
+    28:29:public static void setLogger(com.mobile.utils.photoview.log.Logger)
+com.mobile.utils.photoview.log.Logger:
     public abstract int v(java.lang.String,java.lang.String)
     public abstract int v(java.lang.String,java.lang.String,java.lang.Throwable)
     public abstract int d(java.lang.String,java.lang.String,java.lang.Throwable)
@@ -5713,7 +5713,7 @@ pt.rocket.utils.photoview.log.Logger:
     public abstract int w(java.lang.String,java.lang.String,java.lang.Throwable)
     public abstract int e(java.lang.String,java.lang.String)
     public abstract int e(java.lang.String,java.lang.String,java.lang.Throwable)
-pt.rocket.utils.photoview.log.LoggerDefault:
+com.mobile.utils.photoview.log.LoggerDefault:
     27:27:public int v(java.lang.String,java.lang.String)
     32:32:public int v(java.lang.String,java.lang.String,java.lang.Throwable)
     42:42:public int d(java.lang.String,java.lang.String,java.lang.Throwable)
@@ -5722,64 +5722,64 @@ pt.rocket.utils.photoview.log.LoggerDefault:
     62:62:public int w(java.lang.String,java.lang.String,java.lang.Throwable)
     67:67:public int e(java.lang.String,java.lang.String)
     72:72:public int e(java.lang.String,java.lang.String,java.lang.Throwable)
-pt.rocket.view.BaseActivity$OnActivityFragmentInteraction
-pt.rocket.view.R:
+com.mobile.view.BaseActivity$OnActivityFragmentInteraction
+com.mobile.view.R:
     9:9:public R()
-pt.rocket.view.R$anim:
+com.mobile.view.R$anim:
     10:10:public R$anim()
-pt.rocket.view.R$animator:
+com.mobile.view.R$animator:
     26:26:public R$animator()
-pt.rocket.view.R$array:
+com.mobile.view.R$array:
     31:31:public R$array()
-pt.rocket.view.R$attr
-pt.rocket.view.R$bool:
+com.mobile.view.R$attr
+com.mobile.view.R$bool:
     244:244:public R$bool()
-pt.rocket.view.R$color:
+com.mobile.view.R$color:
     276:276:public R$color()
-pt.rocket.view.R$dimen:
+com.mobile.view.R$dimen:
     394:394:public R$dimen()
-pt.rocket.view.R$drawable:
+com.mobile.view.R$drawable:
     699:699:public R$drawable()
-pt.rocket.view.R$id:
+com.mobile.view.R$id:
     1192:1192:public R$id()
-pt.rocket.view.R$integer:
+com.mobile.view.R$integer:
     1957:1957:public R$integer()
-pt.rocket.view.R$layout:
+com.mobile.view.R$layout:
     1972:1972:public R$layout()
-pt.rocket.view.R$menu:
+com.mobile.view.R$menu:
     2225:2225:public R$menu()
-pt.rocket.view.R$plurals:
+com.mobile.view.R$plurals:
     2229:2229:public R$plurals()
-pt.rocket.view.R$raw
-pt.rocket.view.R$string:
+com.mobile.view.R$raw
+com.mobile.view.R$string:
     2242:2242:public R$string()
-pt.rocket.view.R$style:
+com.mobile.view.R$style:
     2818:2818:public R$style()
-pt.rocket.view.R$styleable
-pt.rocket.view.R$xml:
+com.mobile.view.R$styleable
+com.mobile.view.R$xml:
     3293:3293:public R$xml()
-pt.rocket.view.fragments.BaseFragment:
+com.mobile.view.fragments.BaseFragment:
     public static final int FRAGMENT_VALUE_SET_FAVORITE
     public static final int FRAGMENT_VALUE_REMOVE_FAVORITE
     public static final int NO_INFLATE_LAYOUT
-    506:506:public pt.rocket.utils.NavigationAction getAction()
+    506:506:public com.mobile.utils.NavigationAction getAction()
     530:530:public void sendPositionToFragment(int)
     533:533:public void sendListener(int,android.view.View$OnClickListener)
-    565:565:public void onFragmentSelected(pt.rocket.controllers.fragments.FragmentType)
+    565:565:public void onFragmentSelected(com.mobile.controllers.fragments.FragmentType)
     569:569:public void onFragmentElementSelected(int)
     858:863:protected void hideFragmentRootViews()
-pt.rocket.view.fragments.BaseFragment$OnFragmentActivityInteraction
-pt.rocket.view.fragments.CampaignPageFragment:
+com.mobile.view.fragments.BaseFragment$OnFragmentActivityInteraction
+com.mobile.view.fragments.CampaignPageFragment:
     private static final java.lang.String COUNTER_START_TIME
     private static final java.lang.String BANNER_STATE
-pt.rocket.view.fragments.CampaignPageFragment$CampaignAdapter:
+com.mobile.view.fragments.CampaignPageFragment$CampaignAdapter:
     private static final int GREEN_PERCENTAGE
     private static final int ORANGE_PERCENTAGE
-pt.rocket.view.fragments.CampaignsFragment:
+com.mobile.view.fragments.CampaignsFragment:
     public static final java.lang.String CAMPAIGNS_TAG
     public static final java.lang.String CAMPAIGN_DEEP_LINK
     public static final java.lang.String CAMPAIGN_POSITION_TAG
-pt.rocket.view.fragments.CatalogFragment:
+com.mobile.view.fragments.CatalogFragment:
     private static final java.lang.String FILTER_VALUES_KEY
     private static final java.lang.String FILTER_STATE_KEY
     private static final java.lang.String TOTAL_KEY
@@ -5788,13 +5788,13 @@ pt.rocket.view.fragments.CatalogFragment:
     private static final java.lang.String FEATURED_BOX
     1051:1051:public java.lang.String getSortTitle(int)
     1059:1060:public void setCatalogTitle(java.lang.String)
-pt.rocket.view.fragments.CatalogPageFragment:
+com.mobile.view.fragments.CatalogPageFragment:
     public static final java.lang.String PARAM_PAGE_INDEX
     public static final java.lang.String PARAM_FILTERS
     public static final java.lang.String PARAM_TITLE
     public static final java.lang.String PARAM_IS_LANDSCAPE
     private static final int POPULARITY_PAGE_NUMBER
-pt.rocket.view.fragments.CategoriesPageFragment:
+com.mobile.view.fragments.CategoriesPageFragment:
     private static final int NUMBER_OF_HEADERS
     private static final int HEADER_FOR_ALL_POSITION
     private static final int NUMBER_OF_HEADERS_LANDSCAPE
@@ -5803,11 +5803,11 @@ pt.rocket.view.fragments.CategoriesPageFragment:
     private static final int NO_SELECETD_LANDSCAPE_CATEGORY
     private static final int CLICK_FROM_DEFAULT_CONTAINER
     private static final int CLICK_FROM_LANDSCAPE_CONTAINER
-pt.rocket.view.fragments.CheckoutAboutYouFragment:
+com.mobile.view.fragments.CheckoutAboutYouFragment:
     private static final java.lang.String FORM_ITEM_EMAIL
     private static final java.lang.String FORM_ITEM_PASSWORD
     private static final java.lang.String FB_PERMISSION_EMAIL
-pt.rocket.view.fragments.CheckoutCreateAddressFragment:
+com.mobile.view.fragments.CheckoutCreateAddressFragment:
     private static final java.lang.String SHIPPING_FORM_TAG
     private static final java.lang.String BILLING_FORM_TAG
     private static final java.lang.String SHIPPING_REGION_POS
@@ -5821,108 +5821,108 @@ pt.rocket.view.fragments.CheckoutCreateAddressFragment:
     private static final int ISNT_DEFAULT_SHIPPING_ADDRESS
     private static final int ISNT_DEFAULT_BILLING_ADDRESS
     private static final long ERROR_DELAY
-pt.rocket.view.fragments.CheckoutEditAddressFragment:
+com.mobile.view.fragments.CheckoutEditAddressFragment:
     public static final java.lang.String SELECTED_ADDRESS
-pt.rocket.view.fragments.CheckoutExternalPaymentFragment:
+com.mobile.view.fragments.CheckoutExternalPaymentFragment:
     430:434:private void trackPurchase(org.json.JSONObject)
-    84:84:static synthetic android.os.Handler access$6(pt.rocket.view.fragments.CheckoutExternalPaymentFragment)
-    429:429:static synthetic void access$7(pt.rocket.view.fragments.CheckoutExternalPaymentFragment,org.json.JSONObject)
-pt.rocket.view.fragments.CheckoutExternalPaymentFragment$CustomWebViewClient:
+    84:84:static synthetic android.os.Handler access$6(com.mobile.view.fragments.CheckoutExternalPaymentFragment)
+    429:429:static synthetic void access$7(com.mobile.view.fragments.CheckoutExternalPaymentFragment,org.json.JSONObject)
+com.mobile.view.fragments.CheckoutExternalPaymentFragment$CustomWebViewClient:
     private static final java.lang.String SUCCESS_URL_TAG
     private static final java.lang.String JAVASCRIPT_PROCESS
-pt.rocket.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface:
+com.mobile.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface:
     590:637:public void processContent(java.lang.String)
-    584:584:static synthetic pt.rocket.view.fragments.CheckoutExternalPaymentFragment access$1(pt.rocket.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface)
-pt.rocket.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface$1
-pt.rocket.view.fragments.CheckoutMyAddressesFragment:
+    584:584:static synthetic com.mobile.view.fragments.CheckoutExternalPaymentFragment access$1(com.mobile.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface)
+com.mobile.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface$1
+com.mobile.view.fragments.CheckoutMyAddressesFragment:
     private static final java.lang.String IS_SAME_ADDRESS
     private static final java.lang.String ISNT_SAME_ADDRESS
     private static final java.lang.String BILLING_ID_TAG
     private static final java.lang.String SHIPPING_ID_TAG
     private static final java.lang.String IS_SAME_TAG
-pt.rocket.view.fragments.CheckoutPaymentMethodsFragment:
+com.mobile.view.fragments.CheckoutPaymentMethodsFragment:
     private static final java.lang.String SAVED_STATE
-pt.rocket.view.fragments.CheckoutShippingMethodsFragment:
+com.mobile.view.fragments.CheckoutShippingMethodsFragment:
     private static final java.lang.String SELECTION_STATE
     private static final java.lang.String SUB_SELECTION_STATE
-pt.rocket.view.fragments.CheckoutThanksFragment:
-    pt.rocket.framework.objects.Customer mCustomer
-pt.rocket.view.fragments.CheckoutWebFragment:
+com.mobile.view.fragments.CheckoutThanksFragment:
+    com.mobile.framework.objects.Customer mCustomer
+com.mobile.view.fragments.CheckoutWebFragment:
     private static final java.lang.String CHECKOUT_URL_WITH_PARAM
     390:394:private void trackPurchase(org.json.JSONObject)
-    78:78:static synthetic android.os.Handler access$6(pt.rocket.view.fragments.CheckoutWebFragment)
-    389:389:static synthetic void access$7(pt.rocket.view.fragments.CheckoutWebFragment,org.json.JSONObject)
-    76:76:static synthetic pt.rocket.framework.objects.Customer access$8(pt.rocket.view.fragments.CheckoutWebFragment)
-pt.rocket.view.fragments.CheckoutWebFragment$CustomWebViewClient:
+    78:78:static synthetic android.os.Handler access$6(com.mobile.view.fragments.CheckoutWebFragment)
+    389:389:static synthetic void access$7(com.mobile.view.fragments.CheckoutWebFragment,org.json.JSONObject)
+    76:76:static synthetic com.mobile.framework.objects.Customer access$8(com.mobile.view.fragments.CheckoutWebFragment)
+com.mobile.view.fragments.CheckoutWebFragment$CustomWebViewClient:
     private static final java.lang.String SUCCESS_URL_TAG
     private static final java.lang.String JAVASCRIPT_PROCESS
-pt.rocket.view.fragments.CheckoutWebFragment$JavaScriptInterface:
+com.mobile.view.fragments.CheckoutWebFragment$JavaScriptInterface:
     538:575:public void processContent(java.lang.String)
-    532:532:static synthetic pt.rocket.view.fragments.CheckoutWebFragment access$1(pt.rocket.view.fragments.CheckoutWebFragment$JavaScriptInterface)
-pt.rocket.view.fragments.CheckoutWebFragment$JavaScriptInterface$1
-pt.rocket.view.fragments.ChooseCountryFragment:
+    532:532:static synthetic com.mobile.view.fragments.CheckoutWebFragment access$1(com.mobile.view.fragments.CheckoutWebFragment$JavaScriptInterface)
+com.mobile.view.fragments.CheckoutWebFragment$JavaScriptInterface$1
+com.mobile.view.fragments.ChooseCountryFragment:
     private static final int SHOP_NOT_SELECTED
-pt.rocket.view.fragments.FavouritesFragment:
+com.mobile.view.fragments.FavouritesFragment:
     protected static final int SINGLE_ITEM
     protected static final int NO_ERROR
     protected static final java.lang.String VARIATION_PICKER_ID
-pt.rocket.view.fragments.HeadlessAddToCartFragment:
+com.mobile.view.fragments.HeadlessAddToCartFragment:
     private static final int DELAY_FOR_EACH_ITEM
     private static final java.lang.String P_TAG
     private static final java.lang.String SKU_TAG
     private static final java.lang.String QT_TAG
     private static final java.lang.String DEF_QT_VALUE
     270:272:private void startTimer()
-pt.rocket.view.fragments.HomeFragment:
+com.mobile.view.fragments.HomeFragment:
     private static final java.lang.String PAGER_POSITION_KEY
-pt.rocket.view.fragments.HomePageFragment:
+com.mobile.view.fragments.HomePageFragment:
     public static final java.lang.String HOME_PAGE_KEY
     public static final java.lang.String SCROLL_STATE_KEY
-pt.rocket.view.fragments.MyAccountEmailNotificationFragment:
+com.mobile.view.fragments.MyAccountEmailNotificationFragment:
     private static final int UNSUBSCRIBE_VALUE
-pt.rocket.view.fragments.MyAccountFragment:
+com.mobile.view.fragments.MyAccountFragment:
     public static final int POSITION_USER_DATA
     public static final int POSITION_EMAIL
-pt.rocket.view.fragments.MyAccountUserDataFragment:
+com.mobile.view.fragments.MyAccountUserDataFragment:
     private static final int PASSWORD_MINLENGTH
-pt.rocket.view.fragments.NavigationCategoryFragment:
+com.mobile.view.fragments.NavigationCategoryFragment:
     private static final int HEADER_FOR_BACK_POSITION
     private static final int HEADER_FOR_ALL_POSITION
-pt.rocket.view.fragments.NavigationFragment:
-    private static pt.rocket.view.fragments.NavigationFragment sNavigationFragment
+com.mobile.view.fragments.NavigationFragment:
+    private static com.mobile.view.fragments.NavigationFragment sNavigationFragment
     private static final int TAB_MENU
     private static final int TAB_CATEGORIES
-    70:71:public static pt.rocket.view.fragments.NavigationFragment newInstance(android.os.Bundle)
-pt.rocket.view.fragments.OrderHistoryFragment:
+    70:71:public static com.mobile.view.fragments.NavigationFragment newInstance(android.os.Bundle)
+com.mobile.view.fragments.OrderHistoryFragment:
     private static final int NUM_ORDERS
-pt.rocket.view.fragments.ProductDetailsFragment:
+com.mobile.view.fragments.ProductDetailsFragment:
     private static final int NO_SIMPLE_SELECTED
     private static final java.lang.String VARIATION_PICKER_ID
     public static final java.lang.String LOADING_PRODUCT_KEY
     public static final java.lang.String LOADING_PRODUCT
     public static final java.lang.String PRODUCT_COMPLETE
     public static final java.lang.String PRODUCT_CATEGORY
-    287:292:public void onFragmentSelected(pt.rocket.controllers.fragments.FragmentType)
+    287:292:public void onFragmentSelected(com.mobile.controllers.fragments.FragmentType)
     1548:1556:private void showGallery()
-pt.rocket.view.fragments.RecentlyViewedFragment:
-    1:1:public static bridge synthetic pt.rocket.view.fragments.FavouritesFragment getInstance()
-pt.rocket.view.fragments.ReviewWriteFragment:
+com.mobile.view.fragments.RecentlyViewedFragment:
+    1:1:public static bridge synthetic com.mobile.view.fragments.FavouritesFragment getInstance()
+com.mobile.view.fragments.ReviewWriteFragment:
     private static final java.lang.String NAME
     private static final java.lang.String TITLE
     private static final java.lang.String COMMENT
-pt.rocket.view.fragments.ReviewsFragment:
+com.mobile.view.fragments.ReviewsFragment:
     private static final int MAX_REVIEW_COUNT
     public static final java.lang.String CAME_FROM_POPULARITY
-pt.rocket.view.fragments.SessionLoginFragment:
+com.mobile.view.fragments.SessionLoginFragment:
     private static final java.lang.String FORM_ITEM_EMAIL
     private static final java.lang.String FORM_ITEM_PASSWORD
-pt.rocket.view.fragments.SessionRegisterFragment:
-    733:733:public boolean isToBig(pt.rocket.components.customfontviews.TextView,java.lang.String,int)
-pt.rocket.view.fragments.SessionTermsFragment:
-    38:40:public static pt.rocket.view.fragments.SessionTermsFragment getInstance()
-pt.rocket.view.fragments.ShoppingCartFragment:
+com.mobile.view.fragments.SessionRegisterFragment:
+    733:733:public boolean isToBig(com.mobile.components.customfontviews.TextView,java.lang.String,int)
+com.mobile.view.fragments.SessionTermsFragment:
+    38:40:public static com.mobile.view.fragments.SessionTermsFragment getInstance()
+com.mobile.view.fragments.ShoppingCartFragment:
     private static final java.lang.String ID_CHANGE_QUANTITY
     private static final int FAVOURITE_DELAY
-pt.rocket.view.fragments.ShoppingCartFragment$CartItemValues:
+com.mobile.view.fragments.ShoppingCartFragment$CartItemValues:
     public java.lang.String simple_product_sku
     public java.lang.String product_sku

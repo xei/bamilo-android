@@ -14,7 +14,7 @@
         android:layout_marginTop="19.8dp"
         android:orientation="vertical" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/img_maintenance_logo" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/fallback_country"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
             android:orientation="vertical"
             android:visibility="gone" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/fallback_country_top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                 android:textColor="#000000"
                 android:textSize="17.14sp" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/fallback_country_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/fallback_best"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/fallback_choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
             android:textColor="#ffffff"
             android:textSize="9.9sp" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/fallback_doorstep"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -146,13 +146,13 @@
         android:background="@color/transparent"
         android:orientation="vertical" >
 
-        <pt.rocket.components.customfontviews.Button
+        <com.mobile.components.customfontviews.Button
             android:id="@+id/fallback_retry"
             style="@style/button_orange_landscape"
             android:contentDescription="@string/try_again"
             android:text="@string/try_again" />
 
-        <pt.rocket.components.customfontviews.Button
+        <com.mobile.components.customfontviews.Button
             android:id="@+id/fallback_change_country"
             style="@style/button_grey_landscape"
             android:layout_marginTop="0dp"
@@ -170,7 +170,7 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/fallback_country_bottom_text2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
         android:orientation="horizontal"
         android:weightSum="2" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/fallback_options_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -201,7 +201,7 @@
             android:textColor="#000000"
             android:textSize="@dimen/text_s" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/fallback_country_bottom_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

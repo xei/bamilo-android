@@ -14,7 +14,7 @@
 
     <!-- Left Container -->
 
-    <pt.rocket.utils.ScrollViewWithHorizontal
+    <com.mobile.utils.ScrollViewWithHorizontal
         android:id="@+id/left_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,7 +51,7 @@
                     android:paddingStart="10dp"
                     android:paddingTop="5dp" >
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/product_detail_name"
                         style="@style/text_header"
                         android:layout_width="match_parent"
@@ -63,7 +63,7 @@
                         android:singleLine="false"
                         android:text="Product" />
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/product_price_special"
                         style="@style/text_header"
                         android:layout_below="@+id/product_detail_name"
@@ -73,7 +73,7 @@
                         android:text="Discount Price"
                         android:textColor="@color/red_middle" />
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/product_price_normal"
                         style="@style/text_header"
                         android:layout_alignBaseline="@+id/product_price_special"
@@ -168,7 +168,7 @@
                         android:layout_marginTop="@dimen/product_list_item_image_margin"
                         android:src="@drawable/selector_favorite" />
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/product_detail_discount_percentage"
                         style="@style/discount_percentage"
                         android:layout_alignBottom="@id/product_image_layout"
@@ -202,7 +202,7 @@
                         android:paddingStart="@dimen/margin_huge"
                         android:paddingTop="@dimen/margin_mid" >
 
-                        <pt.rocket.components.customfontviews.TextView
+                        <com.mobile.components.customfontviews.TextView
                             android:id="@+id/product_detail_product_variant_text"
                             style="@style/text_header"
                             android:layout_alignParentLeft="true"
@@ -210,7 +210,7 @@
                             android:layout_centerVertical="true"
                             android:text="@string/size_label" />
 
-                        <pt.rocket.components.customfontviews.Button
+                        <com.mobile.components.customfontviews.Button
                             android:id="@+id/product_detail_product_variant_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -278,7 +278,7 @@
                 layout="@layout/product_details_fragment_bundle"
                 android:visibility="gone" />
         </RelativeLayout>
-    </pt.rocket.utils.ScrollViewWithHorizontal>
+    </com.mobile.utils.ScrollViewWithHorizontal>
 
     <!-- TIPS -->
 
@@ -319,7 +319,7 @@
             android:layout_marginRight="0dp"
             android:layout_marginStart="0dp" >
 
-            <pt.rocket.components.customfontviews.Button
+            <com.mobile.components.customfontviews.Button
                 android:id="@+id/product_detail_call_to_order"
                 style="@style/button_grey_bottom"
                 android:layout_width="match_parent"
@@ -336,7 +336,7 @@
                 android:text="@string/call_to_order"
                 android:visibility="visible" />
 
-            <pt.rocket.components.customfontviews.Button
+            <com.mobile.components.customfontviews.Button
                 android:id="@+id/product_detail_shop"
                 style="@style/button_orange_bottom"
                 android:layout_width="match_parent"
@@ -352,7 +352,7 @@
                 android:text="@string/add_to_shopping_cart" />
         </LinearLayout>
 
-        <pt.rocket.utils.ScrollViewWithHorizontal
+        <com.mobile.utils.ScrollViewWithHorizontal
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/shop_buttons"
@@ -383,7 +383,7 @@
                         android:isIndicator="true"
                         android:numStars="5" />
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/product_detail_product_rating_count"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -434,7 +434,7 @@
                     android:layout_marginTop="9dp"
                     android:visibility="visible" >
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/features_label"
                         style="@style/rounded_box_title_grey"
                         android:text="@string/product_features_title" />
@@ -444,7 +444,7 @@
                         style="@style/divider_horizontal_orange"
                         android:layout_below="@id/features_label" />
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/product_features_text"
                         style="@style/text_normal"
                         android:layout_width="match_parent"
@@ -479,7 +479,7 @@
                             android:background="@drawable/selector_item_bottom"
                             android:duplicateParentState="true" >
 
-                            <pt.rocket.components.customfontviews.TextView
+                            <com.mobile.components.customfontviews.TextView
                                 style="@style/text_normal"
                                 android:layout_width="wrap_content"
                                 android:layout_alignParentEnd="true"
@@ -506,7 +506,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="9dp" >
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/description_label"
                         style="@style/rounded_box_title_grey"
                         android:text="@string/product_description_title" />
@@ -516,7 +516,7 @@
                         style="@style/divider_horizontal_orange"
                         android:layout_below="@id/description_label" />
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/product_description_text"
                         style="@style/text_normal"
                         android:layout_width="match_parent"
@@ -551,7 +551,7 @@
                             android:background="@drawable/selector_item_bottom"
                             android:duplicateParentState="true" >
 
-                            <pt.rocket.components.customfontviews.TextView
+                            <com.mobile.components.customfontviews.TextView
                                 style="@style/text_normal"
                                 android:layout_width="wrap_content"
                                 android:layout_alignParentEnd="true"
@@ -576,7 +576,7 @@
                     android:layout_marginTop="0dp"
                     layout="@layout/product_details_fragment_related" />
             </LinearLayout>
-        </pt.rocket.utils.ScrollViewWithHorizontal>
+        </com.mobile.utils.ScrollViewWithHorizontal>
     </RelativeLayout>
 
 </RelativeLayout>

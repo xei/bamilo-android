@@ -6,7 +6,7 @@
     android:layout_marginRight="@dimen/margin_huge"
     android:layout_marginTop="10dp" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/price_rules_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         android:textColor="@color/grey_divider_light_text"
         android:textSize="@dimen/text_m" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/price_rules_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/checkout_login_toogle"
         style="@style/checkout_about_you_title"
         android:text="@string/login_label" />
@@ -60,7 +60,7 @@
 
             <!-- LOGIN -->
 
-            <pt.rocket.components.customfontviews.Button
+            <com.mobile.components.customfontviews.Button
                 android:id="@+id/checkout_login_form_button_enter"
                 style="@style/button_orange_bottom"
                 android:contentDescription="@string/login_button_description"
@@ -68,7 +68,7 @@
 
             <!-- FORGOT -->
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_login_form_button_password"
                 style="@style/text_normal"
                 android:layout_gravity="center"
@@ -92,7 +92,7 @@
                     android:layout_centerInParent="true"
                     android:background="@color/grey_divider_light_text" />
 
-                <pt.rocket.components.customfontviews.TextView
+                <com.mobile.components.customfontviews.TextView
                     style="@style/text_header"
                     android:layout_centerInParent="true"
                     android:background="@android:color/white"
@@ -106,7 +106,7 @@
 
             <!-- FACEBOOK -->
 
-            <pt.rocket.components.customfontviews.FacebookTextView
+            <com.mobile.components.customfontviews.FacebookTextView
                 xmlns:fb="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/checkout_login_form_button_facebook"
                 android:layout_width="match_parent"

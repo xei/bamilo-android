@@ -7,7 +7,7 @@
 
     <!-- TITLE -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/checkout_address_form_shipping_title"
         style="@style/rounded_box_title_grey"
         android:text="@string/action_label_add_address" />

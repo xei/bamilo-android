@@ -12,7 +12,7 @@
         android:clickable="true"
         android:src="@drawable/selector_shop" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/action_cart_count"
         style="@style/text_actionbar_cart"
         android:layout_alignEnd="@id/action_cart_image"

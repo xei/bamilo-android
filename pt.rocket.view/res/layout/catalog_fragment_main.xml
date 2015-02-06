@@ -14,7 +14,7 @@
 
         <!-- TABS -->
 
-        <pt.rocket.components.androidslidingtabstrip.SlidingTabLayout
+        <com.mobile.components.androidslidingtabstrip.SlidingTabLayout
             android:id="@+id/catalog_pager_tag"
             android:layout_width="match_parent"
             android:layout_height="@dimen/sliding_tab_height"

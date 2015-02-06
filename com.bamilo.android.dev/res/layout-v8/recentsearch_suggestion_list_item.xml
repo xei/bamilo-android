@@ -13,7 +13,7 @@
         android:background="@drawable/selector_listitem_rounded_margin_highlight"
         android:orientation="horizontal" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_text_suggestion"
             style="@style/text_header"
             android:layout_width="0dp"

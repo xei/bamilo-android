@@ -23,7 +23,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:src="@drawable/no_image_small" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/fragment_root_empty_text"
             style="@style/text_root"
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
 
     <LinearLayout style="@style/button_container" >
 
-        <pt.rocket.components.customfontviews.Button
+        <com.mobile.components.customfontviews.Button
             android:id="@+id/fragment_root_empty_button"
             style="@style/button_orange_landscape"
             android:text="@string/favourite_addalltocart"

@@ -13,7 +13,7 @@
         android:layout_height="@dimen/title_box_height"
         android:layout_margin="@dimen/rounded_margin_mid" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             style="@style/rounded_box_title_grey"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"

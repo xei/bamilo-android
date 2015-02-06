@@ -34,7 +34,7 @@
                 android:padding="@dimen/rounded_margin_mid"
                 android:visibility="visible" >
 
-                <pt.rocket.components.customfontviews.TextView
+                <com.mobile.components.customfontviews.TextView
                     android:id="@+id/write_title"
                     style="@style/text_normal"
                     android:layout_width="match_parent"
@@ -76,7 +76,7 @@
 
             <LinearLayout style="@style/button_container" >
 
-                <pt.rocket.components.customfontviews.Button
+                <com.mobile.components.customfontviews.Button
                     android:id="@+id/send_review"
                     style="@style/button_orange_bottom"
                     android:layout_marginEnd="@dimen/rounded_margin_mid"

@@ -26,7 +26,7 @@
         android:icon="@drawable/selector_navigation_overflow"
         android:title="@string/my_profile"
         android:visible="false"
-        app:actionProviderClass="pt.rocket.utils.MyProfileActionProvider"
+        app:actionProviderClass="com.mobile.utils.MyProfileActionProvider"
         app:showAsAction="always"/>
 
     <!--

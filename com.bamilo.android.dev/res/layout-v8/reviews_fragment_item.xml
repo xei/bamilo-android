@@ -20,7 +20,7 @@
         android:orientation="vertical" >
     </LinearLayout>
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/title_review"
         style="@style/text_title"
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
         android:layout_marginRight="@dimen/margin_huge"
         android:gravity="right" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/textreview"
         style="@style/text_normal"
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
         android:maxLines="5"
         android:singleLine="false"/>
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/posted_by"
         style="@style/text_subtitle"
         android:layout_alignParentRight="true"
@@ -50,14 +50,14 @@
         android:paddingBottom="@dimen/margin_mid"
         android:text="@string/posted_by" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/user_review"
         style="@style/text_subtitle"
         android:layout_below="@id/textreview"
         android:layout_marginRight="@dimen/rounded_margin_small"
         android:layout_toLeftOf="@id/posted_by" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/date_review"
         style="@style/text_subtitle"
         android:layout_below="@id/textreview"

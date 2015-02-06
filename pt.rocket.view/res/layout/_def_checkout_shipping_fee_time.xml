@@ -7,7 +7,7 @@
     android:layout_marginTop="@dimen/margin_20px"
     android:minHeight="@dimen/shipping_time_fee_min_height" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/shipping_time_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:textSize="@dimen/text_title"
             android:visibility="gone" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/shipping_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

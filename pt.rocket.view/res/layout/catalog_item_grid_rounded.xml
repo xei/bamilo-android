@@ -33,7 +33,7 @@
         android:paddingTop="@dimen/catalog_item_vertical_padding"
         android:src="@drawable/selector_favorite" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/discount_percentage"
         style="@style/discount_percentage"
         android:layout_above="@+id/item_brand"
@@ -43,7 +43,7 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:gravity="center" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
         style="@style/text_title"
         android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
         android:layout_marginTop="@dimen/rounded_margin_mid"
         android:text="BRAND" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
         style="@style/text_subtitle"
         android:gravity="left|start"
@@ -68,7 +68,7 @@
         android:layout_marginEnd="5dp"
         android:text="Name" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
         style="@style/text_price"
         android:layout_alignLeft="@+id/item_brand"
@@ -78,7 +78,7 @@
         android:layout_marginEnd="4dp"
         android:text="Discount" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
         style="@style/text_price"
         android:layout_below="@id/item_name"

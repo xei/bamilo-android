@@ -6,7 +6,7 @@
 
     <!-- TITLE -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_list_title"
         style="@style/dialog_title"
         android:background="@drawable/modal_dialog_header"
@@ -36,7 +36,7 @@
 
     <!-- SIZE GUIDE -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_list_size_guide_button"
         style="@style/dialog_title"
         android:layout_width="match_parent"

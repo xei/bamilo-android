@@ -19,7 +19,7 @@
         android:gravity="start|left|center"
         android:orientation="horizontal" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/product_price_special"
             style="@style/text_header"
             android:layout_alignParentLeft="true"
@@ -30,7 +30,7 @@
             android:fontFamily="roboto_bold"
             android:textColor="@color/red_basic" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/product_price_normal"
             style="@style/text_header"
             android:layout_centerVertical="true"
@@ -51,7 +51,7 @@
         android:gravity="start|left|center_vertical"
         android:orientation="horizontal" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/product_detail_product_variant_text"
             style="@style/text_header"
             android:layout_alignParentLeft="true"
@@ -59,7 +59,7 @@
             android:layout_centerVertical="true"
             android:text="@string/size_label" />
 
-        <pt.rocket.components.customfontviews.Button
+        <com.mobile.components.customfontviews.Button
             android:id="@+id/product_detail_product_variant_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
             android:layout_centerVertical="true"
             android:isIndicator="true" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/product_detail_product_rating_count"
             style="@style/text_header"
             android:layout_centerVertical="true"
@@ -123,7 +123,7 @@
 
     <!-- SPECIFICATIONS -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_detail_specifications"
         style="@style/text_header"
         android:layout_width="match_parent"
@@ -154,7 +154,7 @@
             android:layout_marginBottom="@dimen/margin_mid"
             android:layout_alignParentTop="true" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/offers_label"
             android:layout_below="@+id/seller_divider"
             android:layout_width="wrap_content"
@@ -167,7 +167,7 @@
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_title" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/offers_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -178,7 +178,7 @@
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_title" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/from_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
             android:textColor="@color/grey_middlelight"
             android:textSize="@dimen/text_subtitle" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/from_value"
             style="@style/text_price"
             android:layout_width="match_parent"

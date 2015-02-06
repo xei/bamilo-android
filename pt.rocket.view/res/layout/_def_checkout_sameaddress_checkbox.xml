@@ -7,7 +7,7 @@
     android:layout_marginRight="@dimen/rounded_margin_mid"
     android:layout_marginStart="@dimen/rounded_margin_mid" >
 
-    <pt.rocket.components.customfontviews.CheckBox
+    <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/checkout_address_billing_checkbox"
         style="@style/form_checkbox_style"
         android:layout_gravity="left|start|center_vertical"

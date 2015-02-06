@@ -11,7 +11,7 @@
 
     <!-- STOCK OFF -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/campaign_item_stock_off"
         android:layout_width="@dimen/campaign_discount_flag_width"
         android:layout_height="match_parent"
@@ -26,7 +26,7 @@
 
     <!-- NAME -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/campaign_item_name"
         android:layout_width="0dp"
         android:layout_height="match_parent"

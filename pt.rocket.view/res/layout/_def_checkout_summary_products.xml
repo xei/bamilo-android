@@ -15,7 +15,7 @@
         android:gravity="left|start|center"
         android:orientation="horizontal" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             style="@style/rounded_box_title_grey"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
@@ -43,7 +43,7 @@
 
         <!-- PRODUCTS -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             style="@style/text_normal"
             android:layout_marginTop="@dimen/margin_40px"
             android:text="@string/order_track_products" />
@@ -75,13 +75,13 @@
             android:orientation="horizontal"
             android:visibility="gone" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/text_normal"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/vat_string" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_summary_products_text_vat_value"
                 style="@style/text_normal" />
         </LinearLayout>
@@ -96,13 +96,13 @@
             android:orientation="horizontal"
             android:visibility="gone" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/text_normal"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/order_summary_shipping_fee_label" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_summary_products_text_shippingfee"
                 style="@style/text_normal" />
         </LinearLayout>
@@ -117,14 +117,14 @@
             android:orientation="horizontal"
             android:visibility="gone" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/text_normal"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/my_order_voucher_label"
                 android:textColor="@color/green_basic" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_summary_products_text_voucher"
                 style="@style/text_normal"
                 android:textColor="@color/green_basic" />
@@ -139,13 +139,13 @@
             android:layout_marginTop="@dimen/margin_large"
             android:orientation="horizontal" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/text_normal"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/order_summary_subtotal_label" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_summary_products_text_subtotal"
                 style="@style/text_normal" />
         </LinearLayout>
@@ -160,13 +160,13 @@
             android:layout_marginTop="@dimen/margin_large"
             android:orientation="horizontal" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/text_normal"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/extra_costs" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_summary_extra_costs_value"
                 style="@style/text_normal" />
         </LinearLayout>

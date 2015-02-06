@@ -5,7 +5,7 @@
     android:background="@drawable/toast_frame"
     android:orientation="vertical">
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@android:id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

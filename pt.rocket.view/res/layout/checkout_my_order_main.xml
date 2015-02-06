@@ -101,7 +101,7 @@
         style="@style/button_container"
         android:layout_alignParentBottom="true" >
 
-        <pt.rocket.components.customfontviews.Button
+        <com.mobile.components.customfontviews.Button
             android:id="@+id/checkout_my_order_button_enter"
             style="@style/button_orange_bottom"
             android:text="@string/my_order_confirm_button" />

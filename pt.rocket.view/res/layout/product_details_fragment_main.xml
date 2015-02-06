@@ -14,7 +14,7 @@
 
     <!-- SCROLL CONTAINER -->
 
-    <pt.rocket.utils.ScrollViewWithHorizontal
+    <com.mobile.utils.ScrollViewWithHorizontal
         android:id="@+id/product_detail_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -46,7 +46,7 @@
 
             <include layout="@layout/product_details_fragment_related" />
         </LinearLayout>
-    </pt.rocket.utils.ScrollViewWithHorizontal>
+    </com.mobile.utils.ScrollViewWithHorizontal>
 
     <!-- TIPS -->
 

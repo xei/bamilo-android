@@ -5,7 +5,7 @@
     android:minHeight="@dimen/dimen_340px"
     android:orientation="horizontal" >
 
-    <pt.rocket.components.customfontviews.RadioButton
+    <com.mobile.components.customfontviews.RadioButton
         android:id="@+id/pickup_station_radio_button"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

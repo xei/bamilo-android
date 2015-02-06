@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<pt.rocket.utils.ScrollViewWithHorizontal xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mobile.utils.ScrollViewWithHorizontal xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_above="@id/catalog_viewpager_container"
@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:visibility="gone" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/no_results_search_error_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:paddingTop="@dimen/margin_huge" 
             android:visibility="gone">
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/no_results_search_tips_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 android:textStyle="bold" 
                 android:visibility="gone"/>
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/no_results_search_tips_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
             android:layout_height="@dimen/teaser_recently_viewed_height"
             android:visibility="gone" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/featured_products_title"
                 style="@style/activity_sectionheader_text"
                 android:layout_marginBottom="@dimen/margin_mid"
@@ -102,7 +102,7 @@
             android:layout_height="@dimen/no_results_brands_height"
             android:visibility="gone" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/featured_brands_title"
                 style="@style/activity_sectionheader_text"
                 android:layout_marginBottom="@dimen/margin_mid"
@@ -127,7 +127,7 @@
 
         <View style="@style/line_grey_style" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/no_results_search_notice_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -139,4 +139,4 @@
             android:visibility="visible" />
     </LinearLayout>
 
-</pt.rocket.utils.ScrollViewWithHorizontal>
+</com.mobile.utils.ScrollViewWithHorizontal>

@@ -10,7 +10,7 @@
         android:layout_weight="1"
         android:orientation="vertical" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_summary_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -18,13 +18,13 @@
             android:layout_gravity="right"
             style="@style/text_normal" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_summary_item_quantity"
             style="@style/text_normal"
             android:layout_gravity="right"
             android:gravity="center_vertical|right" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_summary_item_variation"
             style="@style/text_normal"
             android:layout_gravity="right"

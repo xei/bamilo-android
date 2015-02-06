@@ -9,7 +9,7 @@
 
     <!-- TABS -->
 
-    <pt.rocket.components.androidslidingtabstrip.SlidingTabLayout
+    <com.mobile.components.androidslidingtabstrip.SlidingTabLayout
         android:id="@+id/my_orders_pager_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

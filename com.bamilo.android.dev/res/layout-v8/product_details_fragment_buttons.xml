@@ -8,7 +8,7 @@
     
 	<!-- ADD TO CART -->
 
-    <pt.rocket.components.customfontviews.Button
+    <com.mobile.components.customfontviews.Button
         android:id="@+id/product_detail_shop"
         style="@style/button_orange_bottom"
         android:layout_marginRight="@dimen/margin_x_small"
@@ -19,7 +19,7 @@
     
     <!-- CALL -->
 
-    <pt.rocket.components.customfontviews.Button
+    <com.mobile.components.customfontviews.Button
         android:id="@+id/product_detail_call_to_order"
         style="@style/button_grey_bottom"
         android:layout_marginRight="0dp"

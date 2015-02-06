@@ -32,7 +32,7 @@
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/image_loadable" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
         style="@style/text_title"
         android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
         android:layout_marginTop="@dimen/catalog_item_vertical_padding"
         android:text="BRAND" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
         style="@style/text_normal"
         android:layout_width="match_parent"
@@ -51,7 +51,7 @@
         android:gravity="right|center_vertical"
         android:text="Name" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
         style="@style/text_price"
         android:layout_alignRight="@id/center_view"
@@ -59,7 +59,7 @@
         android:layout_marginLeft="4dp"
         android:text="Discount" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
         style="@style/text_price"
         android:layout_alignTop="@id/item_discount"
@@ -75,7 +75,7 @@
         android:gravity="center_vertical|right"
         android:orientation="horizontal" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_reviews"
             style="@style/text_subtitle"
             android:layout_width="wrap_content"
@@ -104,7 +104,7 @@
         android:paddingTop="@dimen/catalog_item_vertical_padding"
         android:src="@drawable/selector_favorite" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/discount_percentage"
         style="@style/discount_percentage"
         android:layout_above="@+id/bottom_spacer"

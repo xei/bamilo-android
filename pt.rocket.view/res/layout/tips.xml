@@ -32,7 +32,7 @@
             android:layout_marginTop="5dp" /
         -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/tips_got_it_img"
             style="@style/button_orange_style"
             android:layout_width="@dimen/tips_button_width"

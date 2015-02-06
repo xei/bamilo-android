@@ -31,7 +31,7 @@
                         android:layout_marginBottom="@dimen/margin_60px"
                         android:src="@drawable/img_success" />
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         style="@style/text_normal"
                         android:layout_marginBottom="@dimen/margin_60px"
                         android:text="@string/thank_you_order_title"
@@ -41,7 +41,7 @@
                         android:textSize="@dimen/checkout_thanks_thankyou_text_size"
                         android:gravity="center" />
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         style="@style/text_normal"
                         android:layout_marginBottom="@dimen/margin_40px"
                         android:ellipsize="none"
@@ -50,7 +50,7 @@
                         android:text="@string/order_success"
                         android:textSize="@dimen/checkout_thanks_message_text_size" />
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/order_number_id"
                         style="@style/text_bold"
                         android:layout_width="@dimen/checkout_thanks_order_width"
@@ -62,7 +62,7 @@
                         android:textColor="@color/grey_middledark"
                         android:textSize="@dimen/checkout_thanks_order_text_size" />
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/order_status_text"
                         style="@style/text_normal"
                         android:layout_width="match_parent"
@@ -82,7 +82,7 @@
         style="@style/button_container"
         android:layout_alignParentBottom="true" >
 
-        <pt.rocket.components.customfontviews.Button
+        <com.mobile.components.customfontviews.Button
             android:id="@+id/btn_checkout_continue"
             style="@style/button_orange_landscape"
             android:layout_width="@dimen/inner_container_width"

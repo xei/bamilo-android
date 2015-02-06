@@ -16,7 +16,7 @@
         android:gravity="left|start|center"
         android:orientation="horizontal" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             style="@style/rounded_box_title_grey"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
@@ -48,11 +48,11 @@
         android:layout_marginTop="@dimen/margin_40px"
         android:orientation="vertical" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/checkout_my_order_payment_name"
             style="@style/text_normal" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/checkout_my_order_payment_coupon"
             style="@style/text_normal"
             android:layout_marginTop="@dimen/margin_60px"

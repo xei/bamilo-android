@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="20dp" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/toast_exit_message"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

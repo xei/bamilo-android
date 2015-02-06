@@ -14,7 +14,7 @@
         android:layout_marginBottom="0dp"
         android:paddingBottom="@dimen/rounded_margin_mid" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/title_options"
             style="@style/rounded_box_title_grey"
             android:layout_centerHorizontal="true"
@@ -44,13 +44,13 @@
         android:layout_marginTop="0dp"
         android:paddingBottom="@dimen/rounded_margin_mid" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/title_preferences"
             style="@style/rounded_box_title_grey"
             android:text="@string/section_title_notification" />
 
         <fragment
-            android:name="pt.rocket.view.fragments.MyAccountPushPreferences"
+            android:name="com.mobile.view.fragments.MyAccountPushPreferences"
             android:layout_width="@dimen/inner_container_width"
             android:layout_height="wrap_content"
             android:layout_below="@id/title_preferences"

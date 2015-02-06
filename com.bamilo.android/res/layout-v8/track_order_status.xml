@@ -9,7 +9,7 @@
     android:layout_marginRight="0dp"
     android:orientation="vertical" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/title_status_text"
         style="@style/rounded_box_title_grey"
         android:text="@string/your_order" />
@@ -27,7 +27,7 @@
 
         <!-- TIP -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/tip_tracking_order"
             style="@style/text_normal"
             android:layout_height="@dimen/track_order_content_height"
@@ -63,7 +63,7 @@
             android:gravity="center"
             android:visibility="gone" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/text_normal"
                 android:layout_marginBottom="@dimen/rounded_margin_mid"
                 android:layout_marginTop="@dimen/rounded_margin_mid"
@@ -83,7 +83,7 @@
             android:minHeight="@dimen/track_order_content_height"
             android:visibility="gone" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_creation_date_title"
                 style="@style/text_title"
                 android:layout_alignParentRight="true"
@@ -91,14 +91,14 @@
                 android:layout_marginTop="@dimen/rounded_margin_mid"
                 android:text="@string/creation_date" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_creation_date_text"
                 style="@style/text_normal"
                 android:layout_alignBaseline="@id/order_creation_date_title"
                 android:layout_toLeftOf="@id/order_creation_date_title"
                 android:text="@string/creation_date" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_payment_method_title"
                 style="@style/text_title"
                 android:layout_alignParentRight="true"
@@ -106,7 +106,7 @@
                 android:layout_marginLeft="@dimen/margin_x_small"
                 android:text="@string/payment_method" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_payment_method_text"
                 style="@style/text_normal"
                 android:layout_alignBaseline="@id/order_payment_method_title"
@@ -114,7 +114,7 @@
                 android:layout_toLeftOf="@id/order_payment_method_title"
                 android:text="@string/payment_method" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_products_title"
                 style="@style/text_title"
                 android:layout_alignParentRight="true"

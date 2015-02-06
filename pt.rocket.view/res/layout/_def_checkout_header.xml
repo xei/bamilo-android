@@ -37,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/selector_checkout_step_1_icon" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_header_step_1_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -77,7 +77,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/selector_checkout_step_2_icon" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_header_step_2_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -117,7 +117,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/selector_checkout_step_3_icon" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_header_step_3_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -155,7 +155,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/selector_checkout_step_4_icon" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_header_step_4_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:padding="13.2dp" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/promotion_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:textColor="@color/grey_dark"
             android:textSize="11.88sp" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/promotion_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             android:textColor="@color/grey_dark"
             android:textSize="17.16sp" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/promotion_coupon_code"
             android:layout_width="118.8dp"
             android:layout_height="34.98dp"
@@ -51,7 +51,7 @@
             android:textColor="@color/grey_dark"
             android:textSize="13.2sp" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -61,7 +61,7 @@
             android:textColor="@color/grey_dark"
             android:textSize="11.88sp" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/promotion_go_shop"
             style="@style/button_orange_style"
             android:layout_width="118.8dp"
@@ -70,7 +70,7 @@
             android:gravity="center"
             android:text="@string/go_shop_text" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/promotion_terms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

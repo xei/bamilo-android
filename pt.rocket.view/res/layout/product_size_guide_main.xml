@@ -9,7 +9,7 @@
         style="@style/rounded_box"
         android:padding="@dimen/rounded_margin_mid" >
 
-        <pt.rocket.utils.photoview.PhotoView
+        <com.mobile.utils.photoview.PhotoView
             android:id="@+id/product_size_guide_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

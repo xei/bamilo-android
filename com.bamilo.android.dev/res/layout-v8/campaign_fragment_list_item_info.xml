@@ -9,7 +9,7 @@
  
     <!-- BUTTON -->
 
-    <pt.rocket.components.customfontviews.Button
+    <com.mobile.components.customfontviews.Button
         android:id="@+id/campaign_item_button_buy"
         style="@style/button_orange_style"
         android:layout_width="0dp"
@@ -33,7 +33,7 @@
 
         <!-- DISCOUNT -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_discount"
             style="@style/product_price_current_single_item"
             android:layout_marginLeft="@dimen/margin_small"
@@ -47,7 +47,7 @@
 
         <!-- PRICE -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_price"
             style="@style/product_price_old_single_item"
             android:layout_alignBottom="@id/campaign_item_discount"
@@ -63,7 +63,7 @@
 
         <!-- SAVE VALUE -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_save_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
 
         <!-- STOCK LABEL -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_stock_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -113,7 +113,7 @@
 
         <!-- STOCK VALUE -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_stock_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -13,7 +13,7 @@
 
     <!-- LEFT CONTAINER -->
 
-    <pt.rocket.utils.ScrollViewWithHorizontal
+    <com.mobile.utils.ScrollViewWithHorizontal
         android:id="@+id/home_page_single_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,11 +30,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
-    </pt.rocket.utils.ScrollViewWithHorizontal>
+    </com.mobile.utils.ScrollViewWithHorizontal>
 
     <!-- RIGHT SCROLABLE CONTAINER -->
 
-    <pt.rocket.utils.ScrollViewWithHorizontal
+    <com.mobile.utils.ScrollViewWithHorizontal
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignLeft="@id/center_point"
@@ -78,6 +78,6 @@
             <!-- OTHERS: TOP SELLERS AND TOP BRANDS -->
 
         </LinearLayout>
-    </pt.rocket.utils.ScrollViewWithHorizontal>
+    </com.mobile.utils.ScrollViewWithHorizontal>
 
 </RelativeLayout>

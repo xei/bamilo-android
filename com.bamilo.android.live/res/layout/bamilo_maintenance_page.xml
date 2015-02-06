@@ -23,7 +23,7 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/img_maintenance_bag" />
 
-    <pt.rocket.components.customfontviews.Button
+    <com.mobile.components.customfontviews.Button
         android:id="@+id/fallback_retry"
         style="@style/button_grey_bottom"
         android:layout_below="@+id/fallback_country_map"
@@ -32,7 +32,7 @@
         android:contentDescription="@string/try_again"
         android:text="@string/try_again" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/fallback_bottom_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

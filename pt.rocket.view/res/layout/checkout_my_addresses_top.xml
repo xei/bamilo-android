@@ -6,7 +6,7 @@
 
     <!-- TITLE -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/checkout_addresses_default_title"
         style="@style/rounded_box_title_grey"
         android:text="@string/billing_def_shipping_label" />
@@ -15,7 +15,7 @@
 
     <!-- GROUP CONTAINER -->
 
-    <pt.rocket.utils.GenericRadioGroup
+    <com.mobile.utils.GenericRadioGroup
         android:id="@+id/checkout_addresses_default_container"
         android:layout_width="@dimen/inner_container_width"
         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_30px" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/text_form"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

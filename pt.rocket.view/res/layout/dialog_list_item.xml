@@ -10,7 +10,7 @@
     android:paddingStart="@dimen/dialog_list_margin_horizontal"
     android:paddingTop="@dimen/margin_mid" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text"
         style="@style/dialog_list_itemtext"
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         android:layout_toLeftOf="@+id/dialog_item_checkbox"
         android:text="ListItem text" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text_unavailable"
         style="@style/dialog_list_itemtext"
         android:layout_width="match_parent"

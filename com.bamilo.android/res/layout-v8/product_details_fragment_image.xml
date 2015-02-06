@@ -36,7 +36,7 @@
 
     <!-- DISCOUNT -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_detail_discount_percentage"
         style="@style/discount_percentage"
         android:layout_alignBottom="@id/product_image_layout"
@@ -81,7 +81,7 @@
 
     <!-- TITLE -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_name"
         style="@style/text_header"
         android:layout_width="match_parent"

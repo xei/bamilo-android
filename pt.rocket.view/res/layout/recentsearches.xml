@@ -24,7 +24,7 @@
         style="@style/button_container"
         android:layout_alignBottom="@id/recentsearch_container" >
 
-        <pt.rocket.components.customfontviews.Button
+        <com.mobile.components.customfontviews.Button
             android:id="@+id/recentsearch_clear_all"
             style="@style/button_grey_landscape"
             android:text="@string/recentsearch_clear_searches" />

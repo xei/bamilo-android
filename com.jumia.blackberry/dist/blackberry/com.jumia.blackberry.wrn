@@ -1,0 +1,10 @@
+Found apk2bar.prefs bundled in the APK
+(AndroidManifest.xml) targetSdkVersion: 21 is higher than 18:impact=1
+(com/google/android/gms/internal/od.java) uses package: com.google.android.gms.maps.model:impact=4
+(com/google/android/gms/internal/ni.java:1) uses package: com.google.android.gms.maps.model:impact=4
+(com/google/android/gms/internal/oc.java) uses package: com.google.android.gms.maps.model:impact=4
+Attaching configuration file: /home/spereira/ANDROID/WORK/workspace_jumia_dev/com.jumia.blackberry/assets/blackberry/android.cfg
+Using custom manifest file: /home/spereira/ANDROID/WORK/workspace_jumia_dev/com.jumia.blackberry/assets/blackberry/MANIFEST.MF
+Using custom manifest additions from file: /home/spereira/ANDROID/WORK/workspace_jumia_dev/com.jumia.blackberry/assets/blackberry/MANIFEST.MF
+Summary: [5]=0; [4]=3; [3]=0; [2]=0; [1]=1;
+Impact Legend: [5]=Severe; [4]=High /context; [3]=Medium /context; [2]=Medium-low /context; [1]=Minor;

@@ -12,14 +12,14 @@
             style="@style/activity_sectionheader_container"
             android:orientation="vertical" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/activity_sectionheader_text"
                 android:text="@string/terms_and_conditions" />
 
             <View style="@style/activity_sectionheader_divider" />
         </LinearLayout>
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/terms_text"
             style="@style/text_normal"
             android:layout_below="@id/title_container"

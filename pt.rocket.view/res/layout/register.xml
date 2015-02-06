@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/rounded_box_title_grey"
                 android:text="@string/register_sectiontitle" />
 
@@ -34,7 +34,7 @@
                     android:layout_marginTop="@dimen/rounded_margin_mid"
                     android:orientation="vertical" >
 
-                    <pt.rocket.components.customfontviews.TextView
+                    <com.mobile.components.customfontviews.TextView
                         android:id="@+id/register_required_text"
                         style="@style/form_style"
                         android:layout_marginLeft="@dimen/margin_small"
@@ -65,14 +65,14 @@
                     <include layout="@layout/login_remember_checkbox" />
                 </LinearLayout>
 
-                <pt.rocket.components.customfontviews.Button
+                <com.mobile.components.customfontviews.Button
                     android:id="@+id/register_button_submit"
                     style="@style/button_orange_bottom"
                     android:contentDescription="@string/register_submit_description"
                     android:fontFamily="roboto_bold"
                     android:text="@string/registration_text" />
 
-                <pt.rocket.components.customfontviews.TextView
+                <com.mobile.components.customfontviews.TextView
                     android:id="@+id/loginText"
                     style="@style/text_normal"
                     android:layout_gravity="center"

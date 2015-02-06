@@ -6,7 +6,7 @@
     android:layout_marginTop="@dimen/rounded_margin_small"
     android:visibility="gone" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/bundle_label"
         style="@style/rounded_box_title_grey"
         android:text="@string/bundle_title" />
@@ -18,7 +18,7 @@
 
     <!-- CONTAINER -->
 
-    <pt.rocket.components.HorizontalListView
+    <com.mobile.components.HorizontalListView
         android:id="@+id/product_detail_horizontal_bundle_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
 
     <!--
     220dp
-         <pt.rocket.utils.scrolls.HorizontalScrollGroup
+         <com.mobile.utils.scrolls.HorizontalScrollGroup
         android:id="@+id/product_detail_horizontal_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             android:id="@+id/product_detail_horizontal_group_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </pt.rocket.utils.scrolls.HorizontalScrollGroup>
+    </com.mobile.utils.scrolls.HorizontalScrollGroup>
     -->
 
 
@@ -81,7 +81,7 @@
             android:layout_toRightOf="@+id/bundle_add_cart"
             android:gravity="right|center_vertical" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/bundle_total"
                 style="@style/text_subtitle"
                 android:layout_alignParentRight="true"
@@ -95,7 +95,7 @@
                 android:text="@string/bundle_total_price"
                 android:visibility="visible" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/bundle_total_value"
                 style="@style/text_subtitle"
                 android:layout_width="match_parent"
@@ -112,7 +112,7 @@
         </RelativeLayout>
 
 
-        <pt.rocket.components.customfontviews.Button
+        <com.mobile.components.customfontviews.Button
             android:id="@+id/bundle_add_cart"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/button_big_height"

@@ -160,25 +160,25 @@
 #############################################################################
 
 ## BEGIN MOBILE #################################################################
-#### pt.rocket.components
--keep interface pt.rocket.components.RangeSeekBar$** { public *; }
--keep class pt.rocket.components.RangeSeekBar { public *; }
--keep public interface pt.rocket.components.absspinner.IcsAdapterView$** { public *; }
--keep,includedescriptorclasses class pt.rocket.components.icsspinner.IcsAdapterView { public *; }  
--keep interface pt.rocket.components.ScrollViewEx$** { public *; }
--keep interface pt.rocket.components.androidslidingtabstrip.SlidingTabLayout$** { public *; }
-#### pt.rocket.utils
--keep class pt.rocket.utils.MyProfileActionProvider { public *; }
--keep class pt.rocket.utils.SearchSuggestionImeBackListener { public *; }
--keep class pt.rocket.utils.NavigationAction { public *; }
--keep class pt.rocket.utils.photoview.PhotoViewAttacher { public *; }
--keep interface pt.rocket.utils.photoview.PhotoViewAttacher$** { *; }
-#### pt.rocket.view
--keep public enum pt.rocket.view.fragments.BaseFragment$KeyboardState { public *; }
+#### com.mobile.components
+-keep interface com.mobile.components.RangeSeekBar$** { public *; }
+-keep class com.mobile.components.RangeSeekBar { public *; }
+-keep public interface com.mobile.components.absspinner.IcsAdapterView$** { public *; }
+-keep,includedescriptorclasses class com.mobile.components.icsspinner.IcsAdapterView { public *; }  
+-keep interface com.mobile.components.ScrollViewEx$** { public *; }
+-keep interface com.mobile.components.androidslidingtabstrip.SlidingTabLayout$** { public *; }
+#### com.mobile.utils
+-keep class com.mobile.utils.MyProfileActionProvider { public *; }
+-keep class com.mobile.utils.SearchSuggestionImeBackListener { public *; }
+-keep class com.mobile.utils.NavigationAction { public *; }
+-keep class com.mobile.utils.photoview.PhotoViewAttacher { public *; }
+-keep interface com.mobile.utils.photoview.PhotoViewAttacher$** { *; }
+#### com.mobile.view
+-keep public enum com.mobile.view.fragments.BaseFragment$KeyboardState { public *; }
 #################################################################################
 
 ## JAVASCRIPTINTERFACE ##########################################################
--keepclassmembers class pt.rocket.view.fragments.CheckoutWebFragment$JavaScriptInterface { public *; }
--keepclassmembers class pt.rocket.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface { public *; }
+-keepclassmembers class com.mobile.view.fragments.CheckoutWebFragment$JavaScriptInterface { public *; }
+-keepclassmembers class com.mobile.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface { public *; }
 -keepattributes JavascriptInterface
 #################################################################################

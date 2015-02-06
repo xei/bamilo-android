@@ -68,13 +68,13 @@
         android:targetSdkVersion="21" />
 
     <application
-        android:name="pt.rocket.app.JumiaApplication"
+        android:name="com.mobile.app.JumiaApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Jumia" >
         <activity
-            android:name="pt.rocket.view.SplashScreenActivity"
+            android:name="com.mobile.view.SplashScreenActivity"
             android:noHistory="true"
             android:screenOrientation="unspecified" >
             <intent-filter>
@@ -99,19 +99,19 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name="pt.rocket.view.MainFragmentActivity"
+            android:name="com.mobile.view.MainFragmentActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="pt.rocket.view.MainFragmentTabletActivity"
+            android:name="com.mobile.view.MainFragmentTabletActivity"
             android:exported="true"
             android:screenOrientation="unspecified"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name="net.hockeyapp.android.UpdateActivity" />
 
         <service
-            android:name="pt.rocket.framework.service.RemoteService"
+            android:name="com.mobile.framework.service.RemoteService"
             android:exported="false" />
 
         <!-- ##################################### -->
@@ -203,9 +203,9 @@
         <service android:name="com.google.android.gms.tagmanager.InstallReferrerService" />
 
         <!-- android:name="com.google.android.gms.tagmanager.InstallReferrerReceiver" -->
-        <!-- android:name="pt.rocket.utils.receivers.InstallReceiver" -->
+        <!-- android:name="com.mobile.utils.receivers.InstallReceiver" -->
         <receiver
-            android:name="pt.rocket.utils.receivers.InstallReceiver"
+            android:name="com.mobile.utils.receivers.InstallReceiver"
             android:exported="true" >
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />

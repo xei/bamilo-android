@@ -13,12 +13,12 @@
             style="@style/rounded_box"
             android:layout_marginBottom="0dp" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/shoppingcart_title"
                 style="@style/rounded_box_title_grey"
                 android:text="@string/shoppingcart_items" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/text_normal"
                 android:layout_alignBaseline="@+id/shoppingcart_title"
                 android:layout_alignParentEnd="true"
@@ -60,12 +60,12 @@
             android:layout_height="@dimen/button_double_container_height"
             android:orientation="vertical" >
 
-            <pt.rocket.components.customfontviews.Button
+            <com.mobile.components.customfontviews.Button
                 android:id="@+id/checkout_button"
                 style="@style/button_orange_bottom"
                 android:text="@string/checkout_button_text" />
 
-            <pt.rocket.components.customfontviews.Button
+            <com.mobile.components.customfontviews.Button
                 android:id="@+id/checkout_call_to_order"
                 style="@style/button_grey_bottom"
                 android:layout_marginTop="0dp"

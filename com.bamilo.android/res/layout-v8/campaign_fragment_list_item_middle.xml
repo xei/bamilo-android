@@ -28,7 +28,7 @@
             android:layout_centerInParent="true"
             android:visibility="gone" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_offer_ended"
             android:layout_width="@dimen/campaign_item_offer_ended_width"
             android:layout_height="@dimen/campaign_item_offer_ended_height"
@@ -60,7 +60,7 @@
 
         <!-- SIZE TEXT -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_size_label"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -79,7 +79,7 @@
 
         <!-- SIZE SPINNER -->
 
-        <pt.rocket.components.absspinner.IcsSpinner
+        <com.mobile.components.absspinner.IcsSpinner
             android:id="@+id/campaign_item_size_spinner"
             android:layout_width="@dimen/campaign_size_spinner_width"
             android:layout_height="match_parent"

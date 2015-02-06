@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/rounded_box_title_grey"
                 android:text="@string/login_sectiontitle" />
 
@@ -27,7 +27,7 @@
                 android:layout_marginTop="@dimen/login_margin_medium"
                 android:orientation="vertical" >
 
-                <pt.rocket.components.customfontviews.FacebookTextView
+                <com.mobile.components.customfontviews.FacebookTextView
                     xmlns:fb="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/login_facebook_button"
                     android:layout_width="match_parent"
@@ -78,13 +78,13 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <pt.rocket.components.customfontviews.Button
+                <com.mobile.components.customfontviews.Button
                     android:id="@+id/middle_login_button_signin"
                     style="@style/button_orange_bottom"
                     android:contentDescription="@string/login_button_description"
                     android:text="@string/login_label" />
 
-                <pt.rocket.components.customfontviews.TextView
+                <com.mobile.components.customfontviews.TextView
                     android:id="@+id/middle_login_link_fgtpassword"
                     style="@style/text_normal"
                     android:layout_gravity="center"
@@ -93,7 +93,7 @@
                     android:text="@string/fgt_pass"
                     android:textColor="@drawable/selector_link_blue" />
 
-                <pt.rocket.components.customfontviews.Button
+                <com.mobile.components.customfontviews.Button
                     android:id="@+id/middle_login_link_register"
                     style="@style/button_grey_bottom"
                     android:layout_marginBottom="@dimen/rounded_margin_mid"

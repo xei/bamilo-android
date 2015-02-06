@@ -26,7 +26,7 @@
         android:layout_toRightOf="@+id/dialog_item_checkbox"
         android:gravity="right|center_vertical" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_text"
             style="@style/dialog_list_itemtext"
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:gravity="right|center_vertical"
             android:text="ListItem text" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_text_unavailable"
             style="@style/dialog_list_itemtext"
             android:layout_width="match_parent"

@@ -10,18 +10,18 @@
         android:layout_weight="1"
         android:orientation="vertical" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_summary_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical|start"
             style="@style/text_normal" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_summary_item_quantity"
             style="@style/text_normal" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_summary_item_variation"
             style="@style/text_normal"
             android:visibility="gone" />

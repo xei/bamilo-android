@@ -10,7 +10,7 @@
 
     <!-- DELETE BUTTON -->
 
-    <pt.rocket.components.customfontviews.Button
+    <com.mobile.components.customfontviews.Button
         android:id="@+id/button_delete"
         android:layout_width="@dimen/delete_button_size"
         android:layout_height="@dimen/delete_button_size"
@@ -23,7 +23,7 @@
 
     <!-- BRAND -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
         style="@style/text_title"
         android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
 
     <!-- NAME -->
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
         style="@style/text_subtitle"
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
         android:layout_alignStart="@id/item_name"
         android:layout_below="@id/item_name" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_discount"
             style="@style/text_price"
             android:layout_alignParentLeft="true"
@@ -68,7 +68,7 @@
 
         <!-- PRICE -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_regprice"
             style="@style/text_price"
             android:layout_alignTop="@id/item_discount"
@@ -89,7 +89,7 @@
 
         <!-- DUMMY -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/product_outof_stock"
@@ -99,7 +99,7 @@
 
         <!-- STOCK WARNING -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/error_stock"
             style="@style/text_subtitle"
             android:layout_width="match_parent"
@@ -109,7 +109,7 @@
 
         <!-- CHOOSE WARNING -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/error_variant"
             style="@style/text_subtitle"
             android:layout_width="match_parent"
@@ -120,7 +120,7 @@
 
     <!-- VARIATION BUTTON -->
 
-    <pt.rocket.components.customfontviews.Button
+    <com.mobile.components.customfontviews.Button
         android:id="@+id/button_variant"
         android:layout_width="@dimen/product_item_addtocart_variation_width"
         android:layout_height="@dimen/product_item_button_height"
@@ -138,7 +138,7 @@
 
     <!-- ADD BUTTON -->
 
-    <pt.rocket.components.customfontviews.Button
+    <com.mobile.components.customfontviews.Button
         android:id="@id/button_shop"
         style="@style/button_orange_style"
         android:layout_width="wrap_content"

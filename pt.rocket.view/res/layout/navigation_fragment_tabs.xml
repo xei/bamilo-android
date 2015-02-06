@@ -5,7 +5,7 @@
     android:background="@color/grey_tab_background"
     android:orientation="horizontal" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/navigation_tabs_button_menu"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -23,7 +23,7 @@
         android:layout_marginTop="@dimen/margin_small"
         android:background="@color/grey_div_background" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/navigation_tabs_button_categories"
         android:layout_width="0dp"
         android:layout_height="match_parent"

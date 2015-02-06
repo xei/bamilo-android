@@ -6,7 +6,7 @@
     android:layout_marginTop="@dimen/rounded_margin_small"
     android:visibility="gone" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/related_label"
         style="@style/rounded_box_title_grey"
         android:text="@string/related_items" />
@@ -18,7 +18,7 @@
 
     <!-- CONTAINER -->
 
-    <pt.rocket.components.HorizontalListView
+    <com.mobile.components.HorizontalListView
         android:id="@+id/product_detail_horizontal_list_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/teaser_product_item_width"

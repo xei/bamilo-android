@@ -27,11 +27,11 @@
             android:paddingLeft="@dimen/margin_large"
             android:paddingRight="@dimen/margin_large"
             android:paddingTop="@dimen/margin_huge"
-            tools:context="pt.rocket.view.BaseActivity" >
+            tools:context="com.mobile.view.BaseActivity" >
 
             <!-- RANGE VALUES -->
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/dialog_filter_range_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
 
             <!-- CHECK DISCOUNT -->
 
-            <pt.rocket.components.customfontviews.CheckBox
+            <com.mobile.components.customfontviews.CheckBox
                 android:id="@+id/dialog_filter_check_discount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

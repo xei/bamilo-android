@@ -5,7 +5,7 @@
     android:layoutDirection="locale"
     android:orientation="vertical" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/component_text"
         style="@style/navigation_generic_component_text"
         android:background="@drawable/selector_navigation_generic_component"

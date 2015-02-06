@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/margin_large"
     android:paddingTop="@dimen/margin_mid" >
 
-    <pt.rocket.components.customfontviews.CheckBox
+    <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/dialog_item_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:clickable="false"
         android:focusable="false" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_item_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

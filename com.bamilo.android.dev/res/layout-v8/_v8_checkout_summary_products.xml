@@ -13,7 +13,7 @@
         android:gravity="right|center"
         android:orientation="horizontal" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             style="@style/rounded_box_title_grey"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
@@ -39,7 +39,7 @@
 
         <!-- PRODUCTS -->
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             style="@style/text_normal"
             android:layout_gravity="right"
             android:layout_marginTop="@dimen/margin_40px"
@@ -72,12 +72,12 @@
             android:orientation="horizontal"
             android:visibility="gone" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_summary_products_text_vat_value"
                 style="@style/text_normal"
                 android:gravity="left|center_vertical" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/text_normal"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -95,12 +95,12 @@
             android:orientation="horizontal"
             android:visibility="gone" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_summary_products_text_shippingfee"
                 style="@style/text_normal"
                 android:gravity="left|center_vertical" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/text_normal"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -118,13 +118,13 @@
             android:orientation="horizontal"
             android:visibility="gone" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_summary_products_text_voucher"
                 style="@style/text_normal"
                 android:textColor="@color/green_basic"
                 android:gravity="left|center_vertical" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/text_normal"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -142,12 +142,12 @@
             android:layout_marginTop="@dimen/margin_large"
             android:orientation="horizontal" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_summary_products_text_subtotal"
                 android:gravity="left|center_vertical"
                 style="@style/text_normal" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/text_normal"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -165,12 +165,12 @@
             android:layout_marginTop="@dimen/margin_large"
             android:orientation="horizontal" >
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_summary_extra_costs_value"
                 style="@style/text_normal"
                 android:gravity="left|center_vertical" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 style="@style/text_normal"
                 android:layout_width="0dp"
                 android:layout_weight="1"

@@ -6,7 +6,7 @@
     android:layoutDirection="locale"
     android:orientation="horizontal" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/component_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"

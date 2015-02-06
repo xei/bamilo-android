@@ -5,7 +5,7 @@
     android:layoutDirection="locale"
     android:background="@drawable/selector_listitem_highlight" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/text"
         style="@style/text_normal"
         android:layout_width="match_parent"

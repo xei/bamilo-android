@@ -38,7 +38,7 @@
                 android:layout_toRightOf="@+id/product_detail_product_seller_rating_count"
                 android:isIndicator="true" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/product_detail_product_seller_rating_count"
                 style="@style/text_subtitle"
                 android:layout_alignParentLeft="true"
@@ -62,7 +62,7 @@
 
             <!-- android:background="@drawable/selector_listitem_highlight" -->
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/product_detail_seller_sold_by"
                 style="@style/text_subtitle"
                 android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
                 android:text="@string/product_sold_by"
                 android:visibility="visible" />
 
-            <pt.rocket.components.customfontviews.TextView
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/product_detail_seller_name"
                 style="@style/text_subtitle"
                 android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp" >
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/product_detail_seller_delivery"
             style="@style/text_subtitle"
             android:layout_width="wrap_content"
@@ -110,7 +110,7 @@
             android:text="@string/product_delivery_time"
             android:visibility="visible" />
 
-        <pt.rocket.components.customfontviews.TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/product_detail_seller_delivery_time"
             style="@style/text_subtitle"
             android:layout_width="match_parent"

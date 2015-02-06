@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/margin_large"
     android:paddingTop="@dimen/margin_mid" >
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         android:textColor="@color/grey_dark"
         android:textSize="@dimen/text_xl" />
 
-    <pt.rocket.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_item_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:textSize="@dimen/text_xl" />
 
     <!--
-         <pt.rocket.components.holo_font_views.CheckBox
+         <com.mobile.components.holo_font_views.CheckBox
         android:id="@+id/dialog_item_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
