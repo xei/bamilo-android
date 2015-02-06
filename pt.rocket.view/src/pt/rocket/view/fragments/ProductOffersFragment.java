@@ -3,9 +3,14 @@
  */
 package pt.rocket.view.fragments;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import pt.rocket.components.customfontviews.TextView;
 import pt.rocket.constants.ConstantsCheckout;
@@ -236,6 +241,24 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
         mOffersList.setAdapter(offersAdapter);
     }
 
+    private void orderOffersByLowerPrice(ProductOffers productOffersArray){
+        if(productOffersArray != null){
+            ArrayList<Offer> offers = productOffersArray.getOffers();
+            if(offers != null && offers.size() > 0){
+                Collections.sort(offers, new CustomComparator());
+                productOffers.setOffers(offers); 
+          }
+        }
+    }
+    
+    public class CustomComparator implements Comparator<Offer> {
+        @Override
+        public int compare(Offer o1, Offer o2) {
+            return ((Double)o1.getPriceOfferDouble()).compareTo((Double)o2.getPriceOfferDouble());
+        }
+    }
+    
+    
     /*
      * ############# LISTENERS #############
      */
@@ -271,6 +294,7 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
         switch (eventType) {
         case GET_PRODUCT_OFFERS:
             productOffers = (ProductOffers) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            orderOffersByLowerPrice(productOffers);
             setAppContent();
             showFragmentContentContainer();
             hideActivityProgress();
