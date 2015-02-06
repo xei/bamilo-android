@@ -183,7 +183,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
             //Log.i(TAG, "ON LOAD SAVED STATE: " + mSavedUrl + " " + mSavedPageNumber);
         } else {
             // clean last saved review
-            JumiaApplication.cleanReview();
+            JumiaApplication.cleanRatingReviewValues();
         }
     }
 

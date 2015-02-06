@@ -168,6 +168,9 @@ public class ReviewFragment extends BaseFragment {
         TextView date = (TextView) getView().findViewById(R.id.review_date);
         date.setText(b.getString(ConstantsIntentExtra.REVIEW_DATE));
         
+        TextView title = (TextView) getView().findViewById(R.id.title_review);
+        title.setText(b.getString(ConstantsIntentExtra.REVIEW_TITLE));
+        
         LinearLayout ratingsContainer = (LinearLayout) getView().findViewById(R.id.review_ratings_container);
         
         

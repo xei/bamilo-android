@@ -1668,8 +1668,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      */
     private void onClickRating() {
 
-        JumiaApplication.cleanRating();
-        JumiaApplication.cleanReview();
+        JumiaApplication.cleanRatingReviewValues();
 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
@@ -2462,8 +2461,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      * function responsible for showing the rating and reviews of a specific seller
      */
     private void goToSellerRating() {
-        JumiaApplication.cleanRating();
-        JumiaApplication.cleanReview();
+        JumiaApplication.cleanRatingReviewValues();
 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());

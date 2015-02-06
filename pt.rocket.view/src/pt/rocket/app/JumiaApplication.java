@@ -2,7 +2,10 @@ package pt.rocket.app;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import pt.rocket.components.NavigationListComponent;
 import pt.rocket.constants.ConstantsSharedPrefs;
@@ -138,6 +141,8 @@ public class JumiaApplication extends A4SApplication {
     private static ContentValues review;
     
     private static ContentValues rating;
+    
+    private static ContentValues ratingReviewValues;
     
     // TODO use an alternative to persist form on rotation
     public Form reviewForm;
@@ -681,49 +686,92 @@ public class JumiaApplication extends A4SApplication {
     public PaymentMethodForm getPaymentMethodForm() {
         return this.paymentMethodForm;
     }
-
+    
+    //FIXME
     /**
      * clean and return last saved rating
      * 
      * @return last saved review
      */
-    public static ContentValues getRating() {
-        ContentValues currentRating = JumiaApplication.rating;
+    public static ContentValues getRatingReviewValues() {
+        ContentValues currentRating = JumiaApplication.ratingReviewValues;
         return currentRating;
     }
 
     /**
      * clean current rating
      */
-    public static void cleanRating() {
-        JumiaApplication.rating = null;
+    public static void cleanRatingReviewValues() {
+        JumiaApplication.ratingReviewValues = null;
     }
 
-    public static void setRating(ContentValues rating) {
-        JumiaApplication.rating = rating;
+    public static void setRatingReviewValues(ContentValues ratingReviewValues) {
+        
+        if(JumiaApplication.ratingReviewValues != null && ratingReviewValues != null && ratingReviewValues.size() > 0 && JumiaApplication.ratingReviewValues.size() > 0){
+            mergeRatingReviewValuesFormValues(ratingReviewValues);
+        } else {
+            JumiaApplication.ratingReviewValues = ratingReviewValues;    
+        }
+        
     }
-
     
-    /**
-     * clean and return last saved review
-     * 
-     * @return last saved review
-     */
-    public static ContentValues getReview() {
-        ContentValues currentReview = JumiaApplication.review;
-        return currentReview;
+    private static void mergeRatingReviewValuesFormValues(ContentValues ratingReviewValues){
+        
+        Set<Entry<String, Object>> s=ratingReviewValues.valueSet();
+        Iterator itr = s.iterator();
+        
+        while(itr.hasNext())
+        {
+             Entry me = (Entry)itr.next(); 
+             String key = me.getKey().toString();
+             Object value =  me.getValue();
+             JumiaApplication.ratingReviewValues.put(key, (String)value.toString());
+        }
+        
     }
-
-    /**
-     * clean current review
-     */
-    public static void cleanReview() {
-        JumiaApplication.review = null;
-    }
-
-    public static void setReview(ContentValues review) {
-        JumiaApplication.review = review;
-    }
+    
+//    /**
+//     * clean and return last saved rating
+//     * 
+//     * @return last saved review
+//     */
+//    public static ContentValues getRating() {
+//        ContentValues currentRating = JumiaApplication.rating;
+//        return currentRating;
+//    }
+//
+//    /**
+//     * clean current rating
+//     */
+//    public static void cleanRating() {
+//        JumiaApplication.rating = null;
+//    }
+//
+//    public static void setRating(ContentValues rating) {
+//        JumiaApplication.rating = rating;
+//    }
+//
+//    
+//    /**
+//     * clean and return last saved review
+//     * 
+//     * @return last saved review
+//     */
+//    public static ContentValues getReview() {
+//        ContentValues currentReview = JumiaApplication.review;
+//        return currentReview;
+//    }
+//
+//    /**
+//     * clean current review
+//     */
+//    public static void cleanReview() {
+//        JumiaApplication.review = null;
+//    }
+//
+//    public static void setReview(ContentValues review) {
+//        JumiaApplication.review = review;
+//    }
     
     /**
      * @return the paymentsInfoList

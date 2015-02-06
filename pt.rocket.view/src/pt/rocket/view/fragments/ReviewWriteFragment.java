@@ -234,7 +234,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             if(ratingForm != null && reviewForm != null){
                 setRatingLayout(ratingForm); 
                 setReviewLayout(reviewForm);
-                loadReviewAndRating();
+                loadReviewAndRatingFormValues();
                 if(isShowingRatingForm){
                     ratingContainer.setVisibility(View.VISIBLE);
                     reviewContainer.setVisibility(View.GONE);
@@ -334,10 +334,15 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked){
+                        JumiaApplication.setRatingReviewValues(dynamicRatingForm.save());
+                        loadReviewAndRatingFormValues();
                         isShowingRatingForm = false;
                         ratingContainer.setVisibility(View.GONE);
                         reviewContainer.setVisibility(View.VISIBLE);
+                        
                         ((CheckBox) dynamicRatingForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(false);
+                        
+                        
                     }
                 }
             });
@@ -379,6 +384,8 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(!isChecked){
+                        JumiaApplication.setRatingReviewValues(dynamicReviewForm.save());
+                        loadReviewAndRatingFormValues();
                         isShowingRatingForm = true;
                         ratingContainer.setVisibility(View.VISIBLE);
                         reviewContainer.setVisibility(View.GONE);
@@ -394,7 +401,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
       
 
     }
-
+    
     /**
      * Set info of the product on write review screen
      * 
@@ -429,30 +436,30 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
      */
     private void saveReview() {
 
-        if(dynamicRatingForm != null)
-            JumiaApplication.setRating(dynamicRatingForm.save());
-        
-        if(dynamicReviewForm != null)
-            JumiaApplication.setReview(dynamicReviewForm.save());
+        if(isShowingRatingForm){
+            if(dynamicRatingForm != null)
+                JumiaApplication.setRatingReviewValues(dynamicRatingForm.save());
+        } else {
+            if(dynamicReviewForm != null)
+                JumiaApplication.setRatingReviewValues(dynamicReviewForm.save());
+        }
 
     }
 
     /**
      * Load rating and review form
      */
-    private void loadReviewAndRating() {
+    private void loadReviewAndRatingFormValues() {
         
-        ContentValues savedRatingValues = JumiaApplication.getRating();
-        ContentValues savedReviewValues = JumiaApplication.getReview();
-        
+        ContentValues savedRatingReviewValues = JumiaApplication.getRatingReviewValues();
         // Validate values
-        if(savedRatingValues != null && dynamicRatingForm != null) {
+        if(savedRatingReviewValues != null && dynamicRatingForm != null) {
             // Get dynamic form and update
             Iterator<DynamicFormItem> iter = dynamicRatingForm.getIterator();
             while (iter.hasNext()) {
                 DynamicFormItem item = iter.next();
                 try {
-                    item.loadState(savedRatingValues);
+                    item.loadState(savedRatingReviewValues);
                 } catch (NullPointerException e) {
                     Log.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
                 }
@@ -460,13 +467,13 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         }
         
         // Validate values
-        if(savedReviewValues != null && dynamicReviewForm != null) {
+        if(savedRatingReviewValues != null && dynamicReviewForm != null) {
             // Get dynamic form and update
             Iterator<DynamicFormItem> iter = dynamicReviewForm.getIterator();
             while (iter.hasNext()) {
                 DynamicFormItem item = iter.next();
                 try {
-                    item.loadState(savedReviewValues);
+                    item.loadState(savedRatingReviewValues);
                 } catch (NullPointerException e) {
                     Log.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
                 }
@@ -511,8 +518,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             setReviewName(dynamicReviewForm);
         }
         
-        JumiaApplication.cleanRating();
-        JumiaApplication.cleanReview();
+        JumiaApplication.cleanRatingReviewValues();
         
         if(ratingForm != null)
         setRatingLayout(ratingForm);
