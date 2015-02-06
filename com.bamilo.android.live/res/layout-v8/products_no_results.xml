@@ -32,6 +32,7 @@
         <View style="@style/line_grey_style" />
 
         <RelativeLayout
+            android:id="@+id/no_results_search_tips_layout"
             android:layout_width="@dimen/no_results_search_tips_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
