@@ -1152,7 +1152,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
                 // Apply the adapter to the spinner
                 view.mSizeSpinner.setAdapter(adapter);
                 
-                // Checks if product has only one size to select
+                // Checks if product has only one size to select (S, M, L - only available L)
                 if(sizes.size() == 1){
                     ViewGroup.LayoutParams lp = view.mSizeSpinner.getLayoutParams();
                     lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;

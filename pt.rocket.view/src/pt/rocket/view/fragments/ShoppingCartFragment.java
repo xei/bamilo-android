@@ -14,7 +14,6 @@ import java.util.Set;
 import pt.rocket.app.JumiaApplication;
 import pt.rocket.components.customfontviews.EditText;
 import pt.rocket.components.customfontviews.TextView;
-import pt.rocket.constants.BundleConstants;
 import pt.rocket.constants.ConstantsIntentExtra;
 import pt.rocket.constants.ConstantsSharedPrefs;
 import pt.rocket.controllers.fragments.FragmentController;
@@ -555,8 +554,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             if (isAvailable) {
                 Log.d(TAG, "ON SUCCESS EVENT: NATIVE_CHECKOUT_AVAILABLE");
                 Bundle mBundle = new Bundle();
-                getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle,
-                        FragmentController.ADD_TO_BACK_STACK);
+                getBaseActivity().onSwitchFragment(FragmentType.ABOUT_YOU, mBundle, FragmentController.ADD_TO_BACK_STACK);
             } else {
                 Log.d(TAG, "ON SUCCESS EVENT: NOT NATIVE_CHECKOUT_AVAILABLE");
                 goToWebCheckout();
@@ -574,11 +572,9 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
             TrackerDelegator.trackProductRemoveFromCart(params);
             TrackerDelegator.trackLoadTiming(params);
-
             if (!isRemovingAllItems) {
                 showFragmentContentContainer();
-                displayShoppingCart((ShoppingCart) bundle
-                        .getParcelable(Constants.BUNDLE_RESPONSE_KEY));
+                displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
                 hideActivityProgress();
             }
             return true;
@@ -588,13 +584,11 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             params = new Bundle();
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-
             TrackerDelegator.trackLoadTiming(params);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             return true;
         case GET_SHOPPING_CART_ITEMS_EVENT:
-            ShoppingCart shoppingCart = (ShoppingCart) bundle
-                    .getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            ShoppingCart shoppingCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             showFragmentContentContainer();
             params = new Bundle();
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
@@ -616,7 +610,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             // verify if "Call to Order" was used
             if (isCallInProgress) {
                 isCallInProgress = false;
-
                 askToRemoveProductsAfterOrder(shoppingCart);
             } else {
                 displayShoppingCart(shoppingCart);
@@ -631,7 +624,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             params = new Bundle();
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-
             TrackerDelegator.trackLoadTiming(params);
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
         }
@@ -649,13 +641,10 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
     private void onAddItemsToShoppingCartRequestSuccess(Bundle bundle){
         hideActivityProgress();
         if (bundle.containsKey(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY)) {
-            ArrayList<String> notAdded = bundle
-                    .getStringArrayList(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            ArrayList<String> notAdded = bundle.getStringArrayList(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             
             if (notAdded != null && !notAdded.isEmpty()) {
-                Toast.makeText(getBaseActivity(), R.string.some_products_not_added,
-                        Toast.LENGTH_SHORT).show();
-                
+                Toast.makeText(getBaseActivity(), R.string.some_products_not_added, Toast.LENGTH_SHORT).show();
             }
         }
         

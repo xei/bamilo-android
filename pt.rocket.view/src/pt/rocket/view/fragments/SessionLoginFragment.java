@@ -387,6 +387,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         // Other cases
         else if (state.isClosed()) {
             Log.i(TAG, "USER Logged out!");
+            showFragmentContentContainer();
         }
     }
     

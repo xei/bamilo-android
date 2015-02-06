@@ -232,7 +232,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
     @Override
     public void onPause() {
         super.onPause();
-        dismiss();
+        dismissAllowingStateLoss();
     }
     
     /*

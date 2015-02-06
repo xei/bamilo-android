@@ -205,7 +205,7 @@ public class DialogFilterFragment extends DialogFragment {
     @Override
     public void onPause() {
         super.onPause();
-        dismiss();
+        dismissAllowingStateLoss();
     }
     
     /*

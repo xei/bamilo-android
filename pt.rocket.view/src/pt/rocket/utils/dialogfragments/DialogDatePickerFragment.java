@@ -270,6 +270,6 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     @Override
     public void onPause() {
         super.onPause();
-        this.dismiss();
+        dismissAllowingStateLoss();
     }
 }

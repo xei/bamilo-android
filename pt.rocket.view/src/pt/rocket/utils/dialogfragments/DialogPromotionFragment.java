@@ -124,6 +124,6 @@ public class DialogPromotionFragment extends DialogFragment {
     @Override
     public void onPause() {
         super.onPause();
-        this.dismiss();
+        dismissAllowingStateLoss();
     }
 }

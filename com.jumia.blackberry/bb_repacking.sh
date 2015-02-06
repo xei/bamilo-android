@@ -6,7 +6,7 @@
 # Author: sergiopereira														#
 # Description: 																#
 #		- This script supports Dev enviroment to run in local machine.		#
-#		- Copy the content of certicate folder for RIM HOME					#
+#		- Copy the content of certicate folder for RIM HOME	(~/.rim)		#
 #		- Repacking the apk to bar											#
 #		- Sign the bar with respective certicate							#
 #		- Upload the apk to HockeyApp with the bar inside 					#

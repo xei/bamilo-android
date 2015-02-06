@@ -522,6 +522,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         // Other cases
         else if (state.isClosed()) {
             Log.i(TAG, "USER Logged out!");
+            showFragmentContentContainer();
         }
     }
 
