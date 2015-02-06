@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mobile.components.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <RelativeLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <!-- HEADER TITLE AND TOTAL -->
+
+        <include
+            android:id="@+id/header_title"
+            layout="@layout/header_title" />
+
+        <!-- NATIVE CHECKOUT HEADER -->
+
+        <include
+            android:id="@+id/checkout_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/header_title"
+            layout="@layout/checkout_header"
+            android:visibility="gone" />
+
+        <!-- Main Content Layout -->
+
+        <RelativeLayout
+            android:id="@+id/warning_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/checkout_header" >
+
+            <include
+                android:id="@+id/warning"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                layout="@layout/warning"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/warning_variations"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                layout="@layout/warning_variations"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <!-- CONTENT LAYOUT -->
+
+        <ViewStub
+            android:id="@+id/stub_app_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_below="@id/warning_container"
+            android:inflatedId="@+id/rocket_app_content" />
+
+        <include
+            layout="@layout/promotion_layout"
+            android:visibility="gone" />
+
+        <!-- FALL BACK LAYOUT -->
+
+        <ViewStub
+            android:id="@+id/main_fall_back_stub"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:inflatedId="@+id/main_fall_back_stub_inflate"
+            android:layout="@layout/maintenance_page" />
+    </RelativeLayout>
+
+    <!-- NAVIGATION -->
+
+    <fragment
+        android:id="@+id/fragment_navigation"
+        android:name="com.mobile.view.fragments.NavigationFragment"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/white" />
+
+</com.mobile.components.widget.DrawerLayout>
