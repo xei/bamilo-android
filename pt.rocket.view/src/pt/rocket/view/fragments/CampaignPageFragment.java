@@ -322,7 +322,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             RocketImageLoader.instance.loadImage(url, imageView, false, new RocketImageLoader.RocketImageLoaderListener() {
                 
                 @Override
-                public void onLoadedSuccess(Bitmap bitmap) {
+                public void onLoadedSuccess(String url, Bitmap bitmap) {
                     // Show content
                     imageView.setImageBitmap(bitmap);
                     bannerState = BannerVisibility.VISIBLE;
@@ -330,7 +330,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
                 }
                 
                 @Override
-                public void onLoadedError() {
+                public void onLoadedError(String url) {
                     bannerView.setVisibility(View.GONE);
                     mGridView.removeHeaderView(bannerView);
                     bannerState = BannerVisibility.HIDDEN;

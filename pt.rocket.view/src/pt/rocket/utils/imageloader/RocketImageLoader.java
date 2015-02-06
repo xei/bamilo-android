@@ -1,6 +1,7 @@
 package pt.rocket.utils.imageloader;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Application;
@@ -57,9 +58,9 @@ public class RocketImageLoader {
     private Context context;
 
     public static interface RocketImageLoaderListener {
-        void onLoadedSuccess(Bitmap bitmap);
+        void onLoadedSuccess(String imageUrl, Bitmap bitmap);
 
-        void onLoadedError();
+        void onLoadedError(String imageUrl);
 
         void onLoadedCancel(String imageUrl);
     }
@@ -245,7 +246,7 @@ public class RocketImageLoader {
                         }
                         
                         if (listener != null) {
-                            listener.onLoadedError();
+                            listener.onLoadedError(imageUrl);
                         }
 
                         if (hideImageView)
@@ -277,7 +278,7 @@ public class RocketImageLoader {
                                 imageView.setImageBitmap(response.getBitmap());
                                 
                                 if (listener != null) {
-                                    listener.onLoadedSuccess(response.getBitmap());
+                                    listener.onLoadedSuccess(imageUrl, response.getBitmap());
                                 }
 
                                 if (hideImageView)
@@ -300,7 +301,7 @@ public class RocketImageLoader {
             // clear any previous image
             imageView.setImageResource(placeHolderImageId);
             if (listener != null) {
-                listener.onLoadedError();
+                listener.onLoadedError(imageUrl);
             }            
         }
     }
@@ -406,12 +407,12 @@ public class RocketImageLoader {
         volleyImageLoader.get(imageUrl, new ImageListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onLoadedError();
+                listener.onLoadedError(imageUrl);
             }
 
             @Override
             public void onResponse(ImageContainer response, boolean isImmediate) {
-                listener.onLoadedSuccess(response.getBitmap());
+                listener.onLoadedSuccess(imageUrl, response.getBitmap());
             }
         });
     }
@@ -454,5 +455,53 @@ public class RocketImageLoader {
         queue.start();
 
         return queue;
+    }
+    
+    public interface RocketImageLoaderLoadImagesListener{
+        public void onCompleteLoadingImages(ArrayList<ImageHolder> successUrls);
+    }
+    
+    public class ImageHolder{
+        public String url;
+        public Bitmap bitmap;
+    }
+    
+    public void loadImages(final ArrayList<String> urls, final RocketImageLoaderLoadImagesListener rocketImageLoaderLoadImagesListener){
+        RocketImageLoaderListener rocketImageLoaderListener = new RocketImageLoaderListener() {
+            private int images = 0;
+            private ArrayList<ImageHolder> successUrls = new ArrayList<ImageHolder>();
+            
+            @Override
+            public void onLoadedSuccess(String url, Bitmap bitmap) {
+                if(bitmap != null){
+                    ImageHolder imgHolder = new ImageHolder();
+                    imgHolder.url = url;
+                    imgHolder.bitmap = bitmap;
+                    successUrls.add(imgHolder);
+                    checkIfRequestComplete(++images);
+                }
+            }
+            
+            @Override
+            public void onLoadedError(String url) {
+                checkIfRequestComplete(++images);
+            }
+            
+            @Override
+            public void onLoadedCancel(String imageUrl) {
+                checkIfRequestComplete(++images);
+            }
+            
+            private void checkIfRequestComplete(int images){
+                int totalImages = urls.size();
+                if(images == totalImages && rocketImageLoaderLoadImagesListener != null){
+                    rocketImageLoaderLoadImagesListener.onCompleteLoadingImages(successUrls);
+                }
+            }
+        };
+        
+        for(String str : urls){
+            RocketImageLoader.getInstance().preload(str, rocketImageLoaderListener);
+        }
     }
 }

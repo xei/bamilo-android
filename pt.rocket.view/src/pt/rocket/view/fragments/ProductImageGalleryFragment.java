@@ -69,6 +69,8 @@ public class ProductImageGalleryFragment extends BaseFragment {
 
     private String mCompleteProductUrl;
 
+    private boolean errorLoadingImages = false;
+    
     /**
      * Constructor using a nested flag
      * 
@@ -290,6 +292,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
+        FragmentCommunicatorForProduct.getInstance().setCurrentImagePosition(getViewPagerPosition());
     }
 
     /*
@@ -457,20 +460,20 @@ public class ProductImageGalleryFragment extends BaseFragment {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-
-            if (!isZoomAvailable) {
-                Log.i(TAG, "onSingleTapConfirmed");
-                FragmentCommunicatorForProduct.getInstance().setCurrentImagePosition(getViewPagerPosition());
-                Bundle bundle = new Bundle();
-                bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
-                // bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, getViewPagerPosition());
-                bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
-                bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
-                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_GALLERY, bundle, FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                getBaseActivity().onBackPressed();
+            if(!errorLoadingImages){
+                if (!isZoomAvailable) {
+                    Log.i(TAG, "onSingleTapConfirmed");
+                    FragmentCommunicatorForProduct.getInstance().setCurrentImagePosition(getViewPagerPosition());
+                    Bundle bundle = new Bundle();
+                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+                    // bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, getViewPagerPosition());
+                    bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
+                    bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
+                    getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_GALLERY, bundle, FragmentController.ADD_TO_BACK_STACK);
+                } else {
+                    getBaseActivity().onBackPressed();
+                }
             }
-
             return true;
         }
     }

@@ -202,12 +202,12 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
         RocketImageLoader.getInstance().loadImage(url, mImageView, null, R.drawable.no_image_large, new RocketImageLoaderListener() {
             
             @Override
-            public void onLoadedSuccess(Bitmap bitmap) { 
+            public void onLoadedSuccess(String url, Bitmap bitmap) { 
                 showFragmentContentContainer();
             }
             
             @Override
-            public void onLoadedError() {
+            public void onLoadedError(String url) {
                 // Show continue shopping
                 showFragmentRetry(new OnClickListener() {
                     
