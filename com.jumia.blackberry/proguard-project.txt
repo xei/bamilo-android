@@ -54,6 +54,7 @@
 -dontnote android.support.**
 -dontnote com.ad4screen.sdk.**
 -dontwarn com.google.android.**
+-dontwarn com.google.ads.**
 -dontnote com.google.vending.licensing.ILicensingService
 -dontnote com.android.vending.licensing.ILicensingService
 #####################################################################
@@ -161,6 +162,7 @@
 
 ## BEGIN MOBILE #################################################################
 #### pt.rocket.components
+-kepp interface pt.rocket.components.HorizontalListView$** { public *; }
 -keep interface pt.rocket.components.RangeSeekBar$** { public *; }
 -keep class pt.rocket.components.RangeSeekBar { public *; }
 -keep public interface pt.rocket.components.absspinner.IcsAdapterView$** { public *; }
