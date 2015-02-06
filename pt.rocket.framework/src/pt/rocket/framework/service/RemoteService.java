@@ -146,7 +146,7 @@ public class RemoteService extends Service {
 		 * Temporary: Force http for Bamilo.
 		 * TODO: Remove me if Bamilo supports https.
 		 */
-		if(RestContract.IS_BAMILO) {
+		if(RestContract.USE_ONLY_HTTP) {
 		    Log.i(TAG, "BAMILO REQUEST: force http.");
 		    builder.scheme("http");
 		}

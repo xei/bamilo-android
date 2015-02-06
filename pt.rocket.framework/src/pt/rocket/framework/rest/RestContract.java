@@ -46,7 +46,7 @@ public class RestContract {
 	
     // AUTH CONSTANTS										//false
 	public static boolean RUNNING_TESTS = false;
-    public static boolean IS_BAMILO = false;
+    public static boolean USE_ONLY_HTTP = false;
     public static final boolean USE_AUTHENTICATION_TEST = true;
     public static final String AUTHENTICATION_USER_TEST = "rocket";
     public static final String AUTHENTICATION_PASS_TEST = "rock4me";
@@ -74,9 +74,8 @@ public class RestContract {
 		}
 		
 		USE_ONLY_HTTPS = sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false);
-		
-		// SHOP: Temporary flag
-		IS_BAMILO  = context.getResources().getBoolean(R.bool.is_bamilo_specific);
+		// 
+		USE_ONLY_HTTP  = context.getResources().getBoolean(R.bool.is_force_http);
 		
 		REST_BASE_PATH = context.getResources().getString(R.string.global_server_api_version);
 		if (TextUtils.isEmpty(REST_BASE_PATH)) {

@@ -6,6 +6,7 @@
 	<item name="is_daraz_specific" type="bool">false</item>
 	<item name="is_shop_specific" type="bool">false</item>
 	<item name="is_bamilo_specific" type="bool">false</item>
+	<bool name="is_force_http">false</bool>
 	<!-- WARNING: PRE INSTALL ONLY FOR HUAWEI -->
 	<bool name="create_pre_install_file">false</bool>
 	<!-- CUSTOM PRE INSTALL FOLDERS -->
