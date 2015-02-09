@@ -805,7 +805,7 @@ public class Ad4PushTracker {
      */
     public void storeGaIdOnAccengage() {
         // Case not enabled
-        if (isEnabled) return;
+        if (!isEnabled) return;
         // 
         final Runnable r = new Runnable() {
             public void run() {
