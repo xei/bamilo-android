@@ -804,7 +804,9 @@ public class Ad4PushTracker {
      * function responsible of storing GPS id in the Accengage database
      */
     public void storeGaIdOnAccengage() {
-
+        // Case not enabled
+        if (isEnabled) return;
+        // 
         final Runnable r = new Runnable() {
             public void run() {
                 try {
@@ -813,7 +815,6 @@ public class Ad4PushTracker {
                     Bundle bundle = new Bundle();
                     bundle.putString("gps_adid", id);
                     mA4S.updateDeviceInfo(bundle);
-                    
                 } catch (IllegalStateException e) {
                     e.printStackTrace();
                 } catch (GooglePlayServicesRepairableException e) {
@@ -821,6 +822,8 @@ public class Ad4PushTracker {
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
             }
