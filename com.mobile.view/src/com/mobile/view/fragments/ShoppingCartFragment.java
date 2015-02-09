@@ -453,7 +453,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                                 title, message, buttonText, null, new OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        messageDialog.dismiss();
+                                        messageDialog.dismissAllowingStateLoss();
                                     }
                                 });
                         messageDialog.show(getActivity().getSupportFragmentManager(), null);
@@ -662,9 +662,8 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
      */
     private void askToRemoveProductsAfterOrder(final ShoppingCart shoppingCart) {
         // Dismiss any existing dialogs
-        if (dialog != null) {
-            dialog.dismiss();
-        }
+        dismissDialogFragement();
+        
         dialog = DialogGenericFragment.newInstance(true, true, false,
                 getString(R.string.shoppingcart_dialog_title),
                 getString(R.string.shoppingcart_remove_products),
@@ -698,7 +697,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                             displayShoppingCart(shoppingCart);
                         }
 
-                        dialog.dismiss();
+                        dismissDialogFragement();
                     }
                 });
         dialog.show(getActivity().getSupportFragmentManager(), null);

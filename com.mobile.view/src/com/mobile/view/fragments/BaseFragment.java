@@ -1121,7 +1121,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                             public void onClick(View v) {
                                 int id = v.getId();
                                 if (id == R.id.button1) {
-                                    dialog.dismiss();
+                                    dismissDialogFragement();
                                 }
                             }
                         });
@@ -1237,14 +1237,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     @Override
                     public void onClick(View v) {
                         clickView.performClick();
-                        if (dialog != null)
-                            dialog.dismiss();
+                        dismissDialogFragement();
                     }
                 }, new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (dialog != null)
-                            dialog.dismiss();
+                        dismissDialogFragement();
                     }
                 }, false);
         try {
@@ -1252,6 +1250,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         } catch (Exception e) {
             // ...
         }
+    }
+    
+    /**
+     * 
+     */
+    protected void dismissDialogFragement() {
+        if (dialog != null) dialog.dismissAllowingStateLoss();
     }
 
 }

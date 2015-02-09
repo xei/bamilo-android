@@ -670,7 +670,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
                                 public void onClick(View v) {
                                     int id = v.getId();
                                     if (id == R.id.button1) {
-                                        dialog.dismiss();
+                                        dismissDialogFragement();
                                     }
                                 }
                             });
@@ -688,7 +688,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
                                 public void onClick(View v) {
                                     int id = v.getId();
                                     if (id == R.id.button1) {
-                                        dialog.dismiss();
+                                        dismissDialogFragement();
                                     }
                                 }
                             });

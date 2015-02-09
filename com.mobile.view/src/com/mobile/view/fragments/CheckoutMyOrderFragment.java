@@ -732,7 +732,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                         public void onClick(View v) {
                             int id = v.getId();
                             if (id == R.id.button1) {
-                                dialog.dismiss();
+                                dismissDialogFragement();
                                 gotoWebCheckout(errorMessages.get(0));
                             }
                         }
@@ -772,14 +772,14 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
                         public void onClick(View v) {
                             int id = v.getId();
                             if (id == R.id.button1) {
-                                dialog.dismiss();
+                                dismissDialogFragement();
                                 JumiaApplication.INSTANCE.setPaymentMethodForm(null);
                                 JumiaApplication.INSTANCE.setCart(null);
                                 triggerClearCart();
                                 getBaseActivity().updateCartInfo();
                                 getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                             } else if (id == R.id.button2) {
-                                dialog.dismiss();
+                                dismissDialogFragement();
                             }
                         }
                     });

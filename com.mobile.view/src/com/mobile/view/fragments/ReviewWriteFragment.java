@@ -690,7 +690,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                             if (!isExecutingSendReview) {
                                 formsValidation();
                             }
-                            dialog.dismiss();
+                            dismissDialogFragement();
                         }
                     }, false);
             dialog.setCancelable(false);

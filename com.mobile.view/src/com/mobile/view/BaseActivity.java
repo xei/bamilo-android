@@ -1556,7 +1556,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     public final void dismissProgress() {
         if (baseActivityProgressDialog != null) {
-            baseActivityProgressDialog.dismiss();
+            baseActivityProgressDialog.dismissAllowingStateLoss();
             baseActivityProgressDialog = null;
         }
     }
@@ -1868,7 +1868,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
                     @Override
                     public void onClick(View v) {
-                        dialog.dismiss();
+                        dialog.dismissAllowingStateLoss();
                         int id = v.getId();
                         if (id == R.id.button1) {
                             // fragC.popLastEntry();

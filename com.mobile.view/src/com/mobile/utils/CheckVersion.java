@@ -272,7 +272,7 @@ public class CheckVersion {
 
         @Override
         public void onClick(View v) {
-            sDialog.dismiss();
+            sDialog.dismissAllowingStateLoss();
 
             int id = v.getId();
             if (id == R.id.button1) {
@@ -296,7 +296,7 @@ public class CheckVersion {
         
         @Override
         public void onClick(View v) {
-            sDialog.dismiss();
+            sDialog.dismissAllowingStateLoss();
 
             int id = v.getId();
             if (id == R.id.button1) {

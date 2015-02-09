@@ -279,7 +279,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
 
                     @Override
                     public void onClick(View v) {
-                        dialog.dismiss();
+                        dismissDialogFragement();
                         int id = v.getId();
                         if (id == R.id.button1) {
                             getBaseActivity().onBackPressed();

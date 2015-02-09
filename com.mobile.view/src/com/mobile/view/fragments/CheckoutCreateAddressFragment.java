@@ -1093,7 +1093,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                         public void onClick(View v) {
                             int id = v.getId();
                             if (id == R.id.button1) {
-                                dialog.dismiss();
+                                dismissDialogFragement();
                             }
                         }
                     });

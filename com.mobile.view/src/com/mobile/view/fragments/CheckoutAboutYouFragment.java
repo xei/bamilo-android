@@ -1128,7 +1128,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                         public void onClick(View v) {
                             int id = v.getId();
                             if (id == R.id.button1) {
-                                dialog.dismiss();
+                                dismissDialogFragement();
                             }
                         }
                     });
@@ -1146,7 +1146,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
                     public void onClick(View v) {
                         showFragmentLoading();
                         triggerLoginForm();
-                        dialog.dismiss();
+                        dismissDialogFragement();
                     }
                 }, false);
         dialog.show(getBaseActivity().getSupportFragmentManager(), null);

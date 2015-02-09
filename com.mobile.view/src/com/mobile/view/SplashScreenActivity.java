@@ -179,8 +179,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         super.onPause();
         Log.i(TAG, "ON PAUSE");
         // Validate dialog
-        if (dialog != null)
-            dialog.dismiss();
+        if (dialog != null) dialog.dismissAllowingStateLoss();
     }
 
     /*
@@ -457,7 +456,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
         if (dialog != null && dialog.isVisible()) {
             try {
-                dialog.dismiss();
+                dialog.dismissAllowingStateLoss();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -670,7 +669,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                             public void onClick(View v) {
                                 int id = v.getId();
                                 if (id == R.id.button1) {
-                                    dialog.dismiss();
+                                    dialog.dismissAllowingStateLoss();
                                 }
 
                             }
@@ -682,7 +681,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             default:
                 if (dialog != null) {
                     try {
-                        dialog.dismiss();
+                        dialog.dismissAllowingStateLoss();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -693,7 +692,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                             public void onClick(View v) {
                                 // Re-send initialize event
                                 retryRequest();
-                                dialog.dismiss();
+                                dialog.dismissAllowingStateLoss();
                             }
                         }, true);
                 dialog.show(getSupportFragmentManager(), null);
