@@ -280,11 +280,18 @@ public class FavouriteTableHelper extends BaseTable {
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		String query = new StringBuilder("SELECT 1 FROM ").append(TABLE_NAME).append(" WHERE ").append(_FAVOURITE_SKU).append(" = ?").toString();
 		Log.i(TAG, "SQL RESULT query :  " + query);
-		Cursor cursor = db.rawQuery(query, new String[] {sku});
-		boolean result = (cursor != null && cursor.getCount() > 0 ) ? true : false;
-		//Log.i(TAG, "SQL RESULT: " + (cursor != null ? cursor.getCount() : 0) + " result is : " + result);
+		// Find item in favorite table 
+		boolean result = false;
+		try {
+	        Cursor cursor = db.rawQuery(query, new String[] {sku});
+	        result = (cursor != null && cursor.getCount() > 0 ) ? true : false;
+	        //Log.i(TAG, "SQL RESULT: " + (cursor != null ? cursor.getCount() : 0) + " result is : " + result);
+	        // Validate cursor and db
+	        if (cursor != null) cursor.close();
+        } catch (IllegalStateException e) {
+            Log.w(TAG, "WARNING: ISE ON VERIFY IF FAVOURITE", e);
+        }
 		// Validate cursor and db
-		if (cursor != null) cursor.close();
 		if (db != null && db.isOpen()) db.close();
 
 		DarwinDatabaseSemaphore.getInstance().releaseLock();

@@ -160,36 +160,39 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      */
     public static synchronized ArrayList<SearchSuggestion> getRecentQueries(String query) throws InterruptedException{
     	Log.i(TAG, "SQL QUERY: " + query);
-    	
+    	// Lock access
     	DarwinDatabaseSemaphore.getInstance().getLock();
-    	
 		// Permission
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-		Cursor cursor = db.rawQuery(query, null);
 		// Get results
 		ArrayList<SearchSuggestion> recentSuggestions = new ArrayList<SearchSuggestion>();
-		if (cursor != null && cursor.getCount() >0 ) {
-			Log.d(TAG, "QUERY RESULT SIZE: " + cursor.getCount());
-			// Move to first position
-			cursor.moveToFirst();
-			// Get items
-			while (!cursor.isAfterLast()) {
-				String recentSuggestion = cursor.getString(0);
-				Log.d(TAG, "QUERY: " + recentSuggestion);
-				SearchSuggestion searchSuggestion = new SearchSuggestion();
-				searchSuggestion.setResult(recentSuggestion);
-				searchSuggestion.setIsRecentSearch(true);
-				// Save product
-				recentSuggestions.add(searchSuggestion);
-				// Next
-				cursor.moveToNext();
-			}
-		}
-		// Validate cursor
-		if(cursor != null) cursor.close();
-		
+		// 
+        try {
+            Cursor cursor = db.rawQuery(query, null);
+            if (cursor != null && cursor.getCount() > 0) {
+                Log.d(TAG, "QUERY RESULT SIZE: " + cursor.getCount());
+                // Move to first position
+                cursor.moveToFirst();
+                // Get items
+                while (!cursor.isAfterLast()) {
+                    String recentSuggestion = cursor.getString(0);
+                    Log.d(TAG, "QUERY: " + recentSuggestion);
+                    SearchSuggestion searchSuggestion = new SearchSuggestion();
+                    searchSuggestion.setResult(recentSuggestion);
+                    searchSuggestion.setIsRecentSearch(true);
+                    // Save product
+                    recentSuggestions.add(searchSuggestion);
+                    // Next
+                    cursor.moveToNext();
+                }
+            }
+            // Validate cursor
+            if (cursor != null) cursor.close();
+        } catch (IllegalStateException e) {
+            Log.w(TAG, "WARNING: ISE ON GET RECENT QUERIES", e);
+        }
+        // Unlock access
 		DarwinDatabaseSemaphore.getInstance().releaseLock();
-		
 		// Return
 		return recentSuggestions;
     }

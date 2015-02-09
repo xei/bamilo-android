@@ -553,8 +553,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
                 FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
                 Bundle agrs = new Bundle();
                 agrs.putBoolean(TrackerDelegator.LOGIN_KEY, true);
-                baseActivity.onSwitchFragment(nextFragmentType, agrs,
-                        FragmentController.ADD_TO_BACK_STACK);
+                baseActivity.onSwitchFragment(nextFragmentType, agrs, FragmentController.ADD_TO_BACK_STACK);
             } else {
                 Log.d(TAG, "NEXT STEP: BACK");
                 baseActivity.onBackPressed();
