@@ -25,7 +25,7 @@
     <!-- CONTAINER -->
 
     <com.mobile.components.HorizontalListView
-        android:id="@+id/teaser_products_horizontal_grid_view"
+        android:id="@+id/teaser_products_horizontal_list_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/teaser_product_item_width"
         android:layout_below="@id/teaser_products_group_title_divider"

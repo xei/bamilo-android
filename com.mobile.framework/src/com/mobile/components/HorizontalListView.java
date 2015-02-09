@@ -1,6 +1,8 @@
 package com.mobile.components;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -175,6 +177,20 @@ public class HorizontalListView extends RecyclerView {
         } else {
             throw new RuntimeException("The adpter must implement the interface OnViewHolderSelected to the on selected item listener!");
         }
+    }
+    
+    /**
+     * Method used to enable the reverse layout to support RTL direction.<br>
+     * Case SDK version >= JELLY_BEAN_MR1 (API 17), use native support (LAYOUT_DIRECTION_LOCALE).<br>
+     * @author sergiopereira
+     */
+    @SuppressLint("NewApi")
+    public void enableReverseLayout() {
+        // Case API < 17: set reverse layout as true
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) 
+            ((LinearLayoutManager) getLayoutManager()).setReverseLayout(true);
+        // Case API >= 17: use the native support
+        else setLayoutDirection(LAYOUT_DIRECTION_LOCALE);
     }
     
     /**

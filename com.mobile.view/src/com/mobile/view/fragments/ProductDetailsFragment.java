@@ -7,6 +7,37 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Paint;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.TextUtils;
+import android.text.style.MetricAffectingSpan;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.HorizontalListView;
 import com.mobile.components.HorizontalListView.OnViewSelectedListener;
@@ -52,7 +83,6 @@ import com.mobile.helpers.cart.GetShoppingCartAddBundleHelper;
 import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
-import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.FragmentCommunicatorForProduct;
@@ -73,37 +103,7 @@ import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImage
 import com.mobile.utils.ui.CompleteProductUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Paint;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.TextUtils;
-import android.text.style.MetricAffectingSpan;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.webkit.WebView.FindListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -250,7 +250,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private boolean isRelatedItem = false;
 
-    private HorizontalListView mHorizontalListView;
+    private HorizontalListView mRelatedListView;
 
     private static String categoryTree = "";
 
@@ -258,7 +258,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private View mBundleContainer;
 
-    private HorizontalListView mHorizontalBundleListView;
+    private HorizontalListView mBundleListView;
 
     private View mBundleLoading;
 
@@ -471,8 +471,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private void restoreParams(Bundle bundle) {
         // Get source and path
-        mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE,
-                R.string.gcatalog));
+        mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog));
         mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
         // Determine if related items should be shown
         mShowRelatedItems = bundle.getBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS);
@@ -515,45 +514,38 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         imageShare = (ImageView) view.findViewById(R.id.product_detail_product_image_share);
         imageShare.setOnClickListener((OnClickListener) this);
         // Discount percentage
-        mDiscountPercentageText = (TextView) view
-                .findViewById(R.id.product_detail_discount_percentage);
+        mDiscountPercentageText = (TextView) view.findViewById(R.id.product_detail_discount_percentage);
         // Prices
         mSpecialPriceText = (TextView) view.findViewById(R.id.product_price_special);
         mPriceText = (TextView) view.findViewById(R.id.product_price_normal);
         // Variations
-        mVarianceContainer = (ViewGroup) view
-                .findViewById(R.id.product_detail_product_variant_container);
+        mVarianceContainer = (ViewGroup) view.findViewById(R.id.product_detail_product_variant_container);
         mVarianceText = (TextView) view.findViewById(R.id.product_detail_product_variant_text);
         mVarianceButton = (Button) view.findViewById(R.id.product_detail_product_variant_button);
         mVarianceButton.setOnClickListener(this);
         // Rating
-        mProductRatingContainer = (ViewGroup) view
-                .findViewById(R.id.product_detail_product_rating_container);
+        mProductRatingContainer = (ViewGroup) view.findViewById(R.id.product_detail_product_rating_container);
         mProductRatingContainer.setOnClickListener(this);
         mProductRating = (RatingBar) view.findViewById(R.id.product_detail_product_rating);
-        mProductRatingCount = (TextView) view
-                .findViewById(R.id.product_detail_product_rating_count);
+        mProductRatingCount = (TextView) view.findViewById(R.id.product_detail_product_rating_count);
         loadingRating = (RelativeLayout) view.findViewById(R.id.product_detail_loading_rating);
         // Related
         mRelatedContainer = view.findViewById(R.id.product_detail_product_related_container);
-        mHorizontalListView = (HorizontalListView) view
-                .findViewById(R.id.product_detail_horizontal_list_view);
+        mRelatedListView = (HorizontalListView) view.findViewById(R.id.product_detail_horizontal_list_view);
         mRelatedLoading = view.findViewById(R.id.loading_related);
         // Variations
         mVariationsContainer = view.findViewById(R.id.variations_container);
         mVariationsListView = (HorizontalListView) view.findViewById(R.id.variations_list);
         // BUNDLE
         mBundleContainer = view.findViewById(R.id.product_detail_product_bundle_container);
-        mHorizontalBundleListView = (HorizontalListView) view
-                .findViewById(R.id.product_detail_horizontal_bundle_list_view);
+        mBundleListView = (HorizontalListView) view.findViewById(R.id.product_detail_horizontal_bundle_list_view);
         mBundleLoading = view.findViewById(R.id.loading_related_bundle);
         mBundleButton = (Button) view.findViewById(R.id.bundle_add_cart);
         mBundleTextTotal = (TextView) view.findViewById(R.id.bundle_total_value);
         mDividerBundle = view.findViewById(R.id.divider_bundle);
         mBundleButton.setSelected(true);
         // OFFERS
-        offersContainer = (RelativeLayout) view
-                .findViewById(R.id.product_detail_product_offers_container);
+        offersContainer = (RelativeLayout) view.findViewById(R.id.product_detail_product_offers_container);
         offersContent = (RelativeLayout) view.findViewById(R.id.offers_container);
         numOffers = (TextView) view.findViewById(R.id.offers_value);
         minOffers = (TextView) view.findViewById(R.id.from_value);
@@ -580,13 +572,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         mSellerNameContainer = (RelativeLayout) view.findViewById(R.id.seller_name_container);
         mSellerNameContainer.setOnClickListener(this);
         mSellerName = (TextView) view.findViewById(R.id.product_detail_seller_name);
-        mSellerRatingContainer = (RelativeLayout) view
-                .findViewById(R.id.product_detail_product_seller_rating_container);
+        mSellerRatingContainer = (RelativeLayout) view.findViewById(R.id.product_detail_product_seller_rating_container);
         mSellerRatingContainer.setOnClickListener(this);
-        mSellerRatingValue = (TextView) view
-                .findViewById(R.id.product_detail_product_seller_rating_count);
-        mSellerDeliveryTime = (TextView) view
-                .findViewById(R.id.product_detail_seller_delivery_time);
+        mSellerRatingValue = (TextView) view.findViewById(R.id.product_detail_product_seller_rating_count);
+        mSellerDeliveryTime = (TextView) view.findViewById(R.id.product_detail_seller_delivery_time);
         mSellerRating = (RatingBar) view.findViewById(R.id.product_detail_product_seller_rating);
         sellerView.setVisibility(View.GONE);
 
@@ -595,8 +584,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Get and set landscape views
         checkLanscapeLayout(view);
 
-        viewGrouFactory = new ViewGroupFactory(
-                (ViewGroup) view.findViewById(R.id.product_image_layout));
+        viewGrouFactory = new ViewGroupFactory((ViewGroup) view.findViewById(R.id.product_image_layout));
     }
 
     /**
@@ -1370,9 +1358,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         if (mVariationsListView.getAdapter() == null) {
             Log.i(TAG, "NEW ADAPTER");
             int position = CompleteProductUtils.findIndexOfSelectedVariation(mCompleteProduct);
-            ProductVariationsListAdapter adapter = new ProductVariationsListAdapter(
-                    mCompleteProduct.getVariations());
+            ProductVariationsListAdapter adapter = new ProductVariationsListAdapter(mCompleteProduct.getVariations());
             mVariationsListView.setHasFixedSize(true);
+            Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
+            if(isRTL) mVariationsListView.enableReverseLayout();
             mVariationsListView.setAdapter(adapter);
             mVariationsListView.setSelecetedItem(position);
             mVariationsListView.setOnItemSelectedListener(new OnViewSelectedListener() {
@@ -1438,28 +1427,27 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      * @param relatedItemsList
      * @modified sergiopereira
      */
-    private void showRelatedItemsLayout(ArrayList<LastViewed> relatedItemsList) {
+    private void showRelatedItemsLayout(ArrayList<LastViewed> relatedItemsList) { // XXX
         mRelatedContainer.setVisibility(View.VISIBLE);
         // Use this setting to improve performance if you know that changes in content do not change
         // the layout size of the RecyclerView
-        mHorizontalListView.setHasFixedSize(true);
-        // mHorizontalListView.setLayoutManager(mLayoutManager);
-        mHorizontalListView.setAdapter(new RelatedItemsListAdapter(mContext, relatedItemsList,
+        mRelatedListView.setHasFixedSize(true);
+        Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
+        if(isRTL) mRelatedListView.enableReverseLayout();
+        mRelatedListView.setAdapter(new RelatedItemsListAdapter(mContext, relatedItemsList,
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Show related item
                         Bundle bundle = new Bundle();
                         bundle.putString(ConstantsIntentExtra.CONTENT_URL, (String) v.getTag());
-                        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE,
-                                R.string.grelateditem_prefix);
+                        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.grelateditem_prefix);
                         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
                         // For tracking as a related item
                         bundle.putBoolean(ConstantsIntentExtra.IS_RELATED_ITEM, true);
                         // inform PDV that Related Items should be shown
                         bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
-                        ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS,
-                                bundle, FragmentController.ADD_TO_BACK_STACK);
+                        ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
                     }
                 }));
         // Hide loading
@@ -1509,8 +1497,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         Bundle bundle = new Bundle();
         bundle.putString(TrackerDelegator.SOURCE_KEY, mNavigationSource);
         bundle.putString(TrackerDelegator.PATH_KEY, mNavigationPath);
-        bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getBrand() + " "
-                + mCompleteProduct.getName());
+        bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         bundle.putString(TrackerDelegator.SKU_KEY, mCompleteProduct.getSku());
         bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceForTracking());
         bundle.putBoolean(TrackerDelegator.RELATED_ITEM, isRelatedItem);
@@ -1521,8 +1508,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 0) {
             bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(0));
             if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 1) {
-                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategories()
-                        .get(1));
+                bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, mCompleteProduct.getCategories().get(1));
             }
         }
         return bundle;
@@ -2258,32 +2244,20 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         mBundleTextTotal.setTag(total);
 
         if (hasSimples) {
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT, (int) getResources().getDimension(
-                            R.dimen.teaser_product_bundle_item_width));
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (int) getResources().getDimension( R.dimen.teaser_product_bundle_item_width));
             params.addRule(RelativeLayout.BELOW, mDividerBundle.getId());
-            mHorizontalBundleListView.setLayoutParams(params);
+            mBundleListView.setLayoutParams(params);
         }
 
-        mHorizontalBundleListView.setHasFixedSize(true);
-        // use a linear layout manager
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext,
-                LinearLayoutManager.HORIZONTAL, false);
-
-        if (mContext.getResources().getBoolean(R.bool.is_bamilo_specific)
-                && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            mLayoutManager.setReverseLayout(true);
-        }
-
-        mHorizontalBundleListView.setLayoutManager(mLayoutManager);
-        mHorizontalBundleListView.setAdapter(new BundleItemsListAdapter(mContext, bundleProducts,
-                (OnItemSelected) this, (OnItemChecked) this, (OnSimplePressed) this,
-                (OnItemSelectedListener) this));
-
+        // Use this setting to improve performance
+        mBundleListView.setHasFixedSize(true);
+        // RTL
+        Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
+        if(isRTL) mBundleListView.enableReverseLayout();
+        // Content
+        mBundleListView.setAdapter(new BundleItemsListAdapter(mContext, bundleProducts, (OnItemSelected) this, (OnItemChecked) this, (OnSimplePressed) this, (OnItemSelectedListener) this));
         mBundleLoading.setVisibility(View.GONE);
-
         mBundleButton.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 triggerAddBundleToCart(mProductBundle);

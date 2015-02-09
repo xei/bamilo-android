@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import com.mobile.components.HorizontalListView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.TeaserProductsAdapter;
 import com.mobile.framework.objects.ITargeting;
@@ -267,28 +268,15 @@ public class TeasersFactory {
             rootView = mInflater.inflate(R.layout.teaser_products_group, mainView, false);
             // Title
             ((TextView) rootView.findViewById(R.id.teaser_products_group_title)).setText(productTeaserGroup.getTitle());
-            
-            // #### NEW approach
-            RecyclerView horizontalScrollView = (RecyclerView) rootView.findViewById(R.id.teaser_products_horizontal_grid_view);
-            // use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
+            // RecyclerView
+            HorizontalListView horizontalScrollView = (HorizontalListView) rootView.findViewById(R.id.teaser_products_horizontal_list_view);
+            // Use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
             horizontalScrollView.setHasFixedSize(true);
-            // use a linear layout manager
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+            // RTL
             Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-            mLayoutManager.setReverseLayout(isRTL);
-            horizontalScrollView.setLayoutManager(mLayoutManager);
+            if(isRTL) horizontalScrollView.enableReverseLayout();
+            // Set adapter
             horizontalScrollView.setAdapter(new TeaserProductsAdapter(mContext, productTeaserGroup, onTeaserClickListener));
-            
-//          // #RTL: set horizontal scroll with RTL orientation
-//          Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-//          ((HorizontalScrollGroup) rootView.findViewById(R.id.teaser_products_group_scroll)).setReverseLayout(isRTL);
-//          // Fill group
-//          ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_products_group_container);
-//          TeaserGroupType type = productTeaserGroup.getType();
-//          for (TeaserProduct product : productTeaserGroup.getTeasers())
-//              container.addView(createProductTeaserView(type, product, container, mInflater, productTeaserGroup.getTeasers().size()));
-            
-            
         }
         return rootView;
     }
