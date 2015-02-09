@@ -164,7 +164,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             // Get and show form
             if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
                 triggerInitForm();
-            } else if(mFormResponse != null && orderSummary != null){
+            } else if(mFormResponse != null && orderSummary != null && mRegions != null){
                 loadEditAddressForm(mFormResponse);
             } else {
                 triggerEditAddressForm();
@@ -288,11 +288,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         mEditFormContainer.addView(mEditFormGenerator.getContainer());                
         mEditFormContainer.refreshDrawableState();
         // Validate Regions
-        if(mRegions == null) {
-            FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG);
-            String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
-            triggerGetRegions(url);
-        } else {
+        if(mRegions != null) {
             Log.d(TAG, "REGIONS ISN'T NULL");
             setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
         }
@@ -304,8 +300,6 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         showSelectedAddress(mEditFormGenerator, mCurrentAddress);
         // Show
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
-        // Show
-        showFragmentContentContainer();
         
         mEditFormContainer.refreshDrawableState();
     }
@@ -607,12 +601,18 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
                     // Get cities
                     triggerGetCities(url, regionId);
                 } else {
+                    // Show
+                    showFragmentContentContainer();
                     Log.e(TAG, "No " + RestConstants.JSON_API_CALL_TAG + " on "+ RestConstants.JSON_CITY_ID_TAG);
                 }
             } else if (InputType.text == field.getInputType()) {
+                // Show
+                showFragmentContentContainer();
                 // City
                 // ((EditText) mEditFormGenerator.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl()).setText(mCurrentAddress.getCity());
             } else {
+                // Show
+                showFragmentContentContainer();
                 Log.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
                 super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET CITIES EVENT: IS EMPTY");
             }
@@ -710,6 +710,17 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             mFormResponse = form;
             loadEditAddressForm(form);
+            
+            // Validate Regions
+            if(mRegions == null) {
+                FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG);
+                String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
+                triggerGetRegions(url);
+            } else {
+                Log.d(TAG, "REGIONS ISN'T NULL");
+                setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
+            }
+            
             break;
         case GET_REGIONS_EVENT:
             Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
@@ -725,6 +736,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             Log.d(TAG, "RECEIVED GET_CITIES_EVENT");
             ArrayList<AddressCity> cities = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             setCitiesOnSelectedRegion(cities, mCurrentAddress);
+            // Show
+            showFragmentContentContainer();
             break;
         case EDIT_ADDRESS_EVENT:
             Log.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");

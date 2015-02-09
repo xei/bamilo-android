@@ -230,7 +230,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             // Get and show form
             if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
                 triggerInitForm();
-            } else if(mFormResponse != null && orderSummary != null){
+            } else if(mFormResponse != null && orderSummary != null && regions != null){
                 loadCreateAddressForm(mFormResponse);
             } else {
                 triggerCreateAddressForm();
@@ -362,11 +362,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         hideSomeFields(shippingFormGenerator,false);
         hideSomeFields(billingFormGenerator, true);
         // Validate Regions
-        if(regions == null) {
-            FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG);
-            String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
-            triggerGetRegions(url);
-        } else {
+        if(regions != null) {
             setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
             setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
         }
@@ -377,11 +373,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         // Load the saved shipping values
         loadSavedValues(mShippingSavedValues, shippingFormGenerator);
         loadSavedValues(mBillingSavedValues, billingFormGenerator);
-        
-        // Show
-        showFragmentContentContainer();
     }
-    
+
     /**
      * Load the saved values to the respective form 
      * @param savedValues
@@ -760,12 +753,18 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                         triggerGetCities(url, regionId, selectedRegionOnBilling);
                     }
                 } else {
+                 // Show
+                    showFragmentContentContainer();
                     Log.e(TAG, "No " + RestConstants.JSON_API_CALL_TAG + " on "+ RestConstants.JSON_CITY_ID_TAG);
                 }
             } else if (InputType.text == field.getInputType()) {
+             // Show
+                showFragmentContentContainer();
                 // City
                 // loadCityEditText(field.getInputType());
             } else {
+             // Show
+                showFragmentContentContainer();
                 Log.e(TAG, RestConstants.JSON_API_CALL_TAG + " with an expected inputType");
                 super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET CITIES EVENT: IS EMPTY");
             }
@@ -929,6 +928,16 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             mFormResponse = form;
             loadCreateAddressForm(form);
+            //validate if country already has regions
+            if(regions == null) {
+                FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG);
+                String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
+                triggerGetRegions(url);
+            } else {
+                setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
+                setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
+            }
+            
             break;
         case GET_REGIONS_EVENT:
             Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
@@ -941,6 +950,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                 Log.w(TAG, "GET REGIONS EVENT: IS EMPTY");
                 super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "GET REGIONS EVENT: IS EMPTY");
             }
+          
             break;
         case GET_CITIES_EVENT:
             Log.d(TAG, "RECEIVED GET_CITIES_EVENT");
@@ -948,6 +958,8 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             String requestedRegionAndField = bundle.getString(GetCitiesHelper.CUSTOM_TAG);
             ArrayList<AddressCity> cities = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             setCitiesOnSelectedRegion(requestedRegionAndField, cities);
+            // Show
+            showFragmentContentContainer();
             break;
         case CREATE_ADDRESS_SIGNUP_EVENT:
         case CREATE_ADDRESS_EVENT:
@@ -981,6 +993,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         
         return true;
     }
+    
     
     /**
      * Filter the error response
