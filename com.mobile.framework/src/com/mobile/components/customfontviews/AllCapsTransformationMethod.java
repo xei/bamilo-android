@@ -25,8 +25,7 @@ public class AllCapsTransformationMethod implements TransformationMethod {
     }
 
     @Override
-    public void onFocusChanged(View view, CharSequence sourceText, boolean focused, int direction,
-                               Rect previouslyFocusedRect) {
+    public void onFocusChanged(View view, CharSequence sourceText, boolean focused, int direction, Rect previouslyFocusedRect) {
     }
     
 }

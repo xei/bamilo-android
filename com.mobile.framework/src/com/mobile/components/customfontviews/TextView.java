@@ -97,30 +97,38 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
     }
 
     public static <T extends android.widget.TextView & FontStyleProvider> void setTextAppearance(T textView, TypedArray appearance) {
+        // android:textColorHighlight
         int color = appearance.getColor(R.styleable.TextAppearance_android_textColorHighlight, 0);
         if (color != 0) {
             textView.setHighlightColor(color);
         }
-        ColorStateList colors = appearance
-                .getColorStateList(R.styleable.TextAppearance_android_textColor);
+        // android:textColor
+        ColorStateList colors = appearance.getColorStateList(R.styleable.TextAppearance_android_textColor);
         if (colors != null) {
             textView.setTextColor(colors);
         }
+        // android:textSize
         int ts = appearance.getDimensionPixelSize(R.styleable.TextAppearance_android_textSize, 0);
         if (ts != 0) {
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, ts);
         }
+        // android:textColorHint
         colors = appearance.getColorStateList(R.styleable.TextAppearance_android_textColorHint);
         if (colors != null) {
             textView.setHintTextColor(colors);
         }
+        // android:textColorLink
         colors = appearance.getColorStateList(R.styleable.TextAppearance_android_textColorLink);
         if (colors != null) {
             textView.setLinkTextColor(colors);
         }
+        // android:textAllCaps
         if (appearance.getBoolean(R.styleable.TextAppearance_android_textAllCaps, false)) {
             textView.setTransformationMethod(new AllCapsTransformationMethod(textView.getContext()));
+        } else {
+            textView.setAllCaps(false);
         }
+        // android:fontFamily 
         Object[] font = parseFontStyle(appearance);
         textView.setFontStyle((String) font[2], (Integer) font[1] | ((Boolean) font[0] ? 0 : textView.getFontStyle()));
     }
