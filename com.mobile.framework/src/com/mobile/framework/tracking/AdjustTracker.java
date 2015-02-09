@@ -3,8 +3,6 @@
  */
 package com.mobile.framework.tracking;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,6 +13,25 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
+
+import com.adjust.sdk.Adjust;
+import com.adjust.sdk.OnFinishedListener;
+import com.adjust.sdk.ResponseData;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
 import com.mobile.framework.objects.AddableToCart;
@@ -27,25 +44,7 @@ import com.mobile.framework.objects.ShoppingCartItem;
 import com.mobile.framework.tracking.GTMEvents.GTMKeys;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.NetworkConnectivity;
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.view.WindowManager;
 
-import com.adjust.sdk.Adjust;
-import com.adjust.sdk.OnFinishedListener;
-import com.adjust.sdk.ResponseData;
-import android.util.Base64;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -195,6 +194,8 @@ public class AdjustTracker {
     
     private final String TRACKING_PREFS = "tracking_prefs";
     private final String SESSION_COUNTER = "sessionCounter";
+
+    private Handler handler;
     
     private static boolean isEnabled = false;
     
@@ -407,7 +408,7 @@ public class AdjustTracker {
             
         case CART_LOADED:
             parameters = getBaseParameters(parameters, bundle);
-            fbParameters = new HashMap<String, String>();
+            
             
             if (bundle.getParcelable(CUSTOMER) != null) {
                 Customer customer = bundle.getParcelable(CUSTOMER);
@@ -424,7 +425,7 @@ public class AdjustTracker {
             String countString = "";
             for (String key : cart.getCartItems().keySet()) {
                 item = cart.getCartItems().get(key);
-                
+                fbParameters = new HashMap<String, String>();
                 json = new JSONObject();
                 try {
                     json.put(AdjustKeys.SKU, item.getConfigSKU());
@@ -453,8 +454,10 @@ public class AdjustTracker {
                 // fbParameters.put(AdjustKeys.COLOUR, item.getVariation());
                 // fbParameters.put(AdjustKeys.VARIATION, item.getVariation());            
                 // parameters.put(AdjustKeys.BRAND, item.getBrand());               
+                
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_fb_view_cart), fbParameters);
             }
+            
             Adjust.trackEvent(mContext.getString(R.string.adjust_token_view_cart), parameters);
             break;
         
@@ -533,7 +536,6 @@ public class AdjustTracker {
                 Log.d(TAG, " TRACK REVENEU --> " + bundle.getDouble(TRANSACTION_VALUE));
                 
                 parameters = getBaseParameters(parameters, bundle);                
-                Map<String, String> fbParameters = new HashMap<String, String>();
                 Map<String, String> transParameters;
                 
                 if (bundle.getBoolean(IS_FIRST_CUSTOMER)) {
@@ -574,7 +576,8 @@ public class AdjustTracker {
                 int productCount = 0;
                 String countString = "";
                 for (PurchaseItem item : cartItems) {
-                    
+                    Map<String, String> fbParameters = new HashMap<String, String>();
+
                     json = new JSONObject();
                     try {
                         json.put(AdjustKeys.SKU, item.sku);
@@ -728,7 +731,6 @@ public class AdjustTracker {
             if (isEnabled) {
                 parameters = new HashMap<String, String>();
                 parameters = getFBBaseParameters(parameters, bundle);
-                HashMap<String, String> fbParams = new HashMap<String, String>(); 
                 
                 ArrayList<AddableToCart> favourites = bundle.getParcelableArrayList(FAVORITES);
             
@@ -744,6 +746,8 @@ public class AdjustTracker {
                 
                 if (null != favourites) {
                     for (AddableToCart fav : favourites) {
+                        HashMap<String, String> fbParams = new HashMap<String, String>(); 
+
                         fbParams = new HashMap<String, String>(parameters);
                         parameters.put(AdjustKeys.BRAND, fav.getBrand()); 
 //                        if( null != fav.getAttributes() && !TextUtils.isEmpty(fav.getAttributes().get("color"))){
@@ -784,7 +788,6 @@ public class AdjustTracker {
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry)it.next();
             Log.e("Adjust","key="+pairs.getKey() + " value=" + pairs.getValue());
-            it.remove(); // avoids a ConcurrentModificationException
         }
     }
     
