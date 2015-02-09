@@ -1276,21 +1276,25 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         //
         FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);
-
         if (productImagesViewPagerFragment == null) {
             viewGrouFactory.setViewVisible(R.id.image_loading_progress);
             RocketImageLoader.getInstance().loadImages(mCompleteProduct.getImageList(), this);
-            if (mShowRelatedItems) {
-                Log.d(TAG, "ON GET RELATED ITEMS FOR: " + product.getSku());
-                getRelatedItems(product.getSku());
-            }
 
         } else {
             viewGrouFactory.setViewVisible(R.id.product_detail_image_gallery_container);
             // Containers
             fragmentManagerTransition(R.id.product_detail_image_gallery_container,
                     productImagesViewPagerFragment, false, true);
+            
+            getRelatedItems(product.getSku());
         }
+        
+        
+        if (mShowRelatedItems) {
+            Log.d(TAG, "ON GET RELATED ITEMS FOR: " + product.getSku());
+            getRelatedItems(product.getSku());
+        } 
+        
 //        else {
 //            viewGrouFactory.setViewVisible(R.id.product_detail_image_gallery_container);
 //            Log.i(TAG, "Update Gallery");
