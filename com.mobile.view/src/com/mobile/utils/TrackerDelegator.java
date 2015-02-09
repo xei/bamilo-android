@@ -1152,6 +1152,8 @@ public class TrackerDelegator {
         params.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));
         AdjustTracker.get().trackEvent(context, TrackingEvent.APP_OPEN, params);
         GTMManager.trackAdjustInstallSource(context);
+        
+        Ad4PushTracker.get().storeGaIdOnAccengage();
     }
     
     /**

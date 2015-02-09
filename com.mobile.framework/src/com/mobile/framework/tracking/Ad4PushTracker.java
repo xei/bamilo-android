@@ -409,9 +409,6 @@ public class Ad4PushTracker {
             prefs.putString(USER_FIRST_NAME, customerName);
             prefs.putString(USER_DOB, customerDob);
             prefs.putString(USER_GENDER, gender);
-//            prefs.putString(USER_GENDER, "xxxxxx");
-            // TODO TO MOVE
-            storeGaIdOnAccengage();
             
             mA4S.updateDeviceInfo(prefs);
             // Track event
@@ -814,11 +811,7 @@ public class Ad4PushTracker {
                     Info adInfo = AdvertisingIdClient.getAdvertisingIdInfo(mContext);
                     String id = adInfo.getId();
                     Bundle bundle = new Bundle();
-//                    Log.e("com.ad4screen.sdk","GPS ID:"+id);
-//                    bundle.putString("testField", "test");
                     bundle.putString("gps_adid", id);
-//                    bundle.putString(USER_GENDER, "oooooo");
-//                    Log.e("com.ad4screen.sdk","storeGaIdOnAccengage:"+bundle.toString());
                     mA4S.updateDeviceInfo(bundle);
                     
                 } catch (IllegalStateException e) {
