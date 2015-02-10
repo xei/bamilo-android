@@ -288,7 +288,11 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         mEditFormContainer.addView(mEditFormGenerator.getContainer());                
         mEditFormContainer.refreshDrawableState();
         // Validate Regions
-        if(mRegions != null) {
+        if(mRegions == null) {
+            FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG);
+            String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
+            triggerGetRegions(url);
+        } else {
             Log.d(TAG, "REGIONS ISN'T NULL");
             setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
         }
@@ -709,18 +713,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
             // Form
             Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             mFormResponse = form;
+            // Load form, get regions
             loadEditAddressForm(form);
-            
-            // Validate Regions
-            if(mRegions == null) {
-                FormField field = form.getFieldKeyMap().get(RestConstants.JSON_REGION_ID_TAG);
-                String url = field.getDataCalls().get(RestConstants.JSON_API_CALL_TAG);
-                triggerGetRegions(url);
-            } else {
-                Log.d(TAG, "REGIONS ISN'T NULL");
-                setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
-            }
-            
             break;
         case GET_REGIONS_EVENT:
             Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
