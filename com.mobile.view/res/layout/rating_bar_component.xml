@@ -17,6 +17,7 @@
         android:layout_marginTop="@dimen/margin_midhuge"
         android:layout_toLeftOf="@+id/option_stars"
         android:layout_toStartOf="@+id/option_stars"
+        android:layout_marginLeft="6dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="@string/rating_quality" />
