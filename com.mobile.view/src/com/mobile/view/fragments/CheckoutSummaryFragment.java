@@ -264,10 +264,10 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         case ConstantsCheckout.CHECKOUT_PAYMENT:
             // Validate shipping method
             if(mOrderSummary != null && mOrderSummary.hasShippingMethod()) showShippingMethod(mOrderSummary.getShippingMethod());
-            // continue
-        case ConstantsCheckout.CHECKOUT_SHIPPING:
             // Shipping fees
             if(mOrderSummary != null) showShippingFees();
+            // continue
+        case ConstantsCheckout.CHECKOUT_SHIPPING:
             // Validate shipping address
             if(mOrderSummary != null && mOrderSummary.hasShippingAddress()) showShippingAddress(mOrderSummary.getShippingAddress());
             // Validate total
