@@ -105,7 +105,7 @@
                    <LinearLayout
                         android:id="@+id/product_image_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="283.33dp"
+                        android:layout_height="@dimen/pdv_image"
                         android:gravity="center" 
                         android:layout_below="@id/gallery_line"
                         android:orientation="horizontal">

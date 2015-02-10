@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +31,6 @@ import android.text.style.MetricAffectingSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ImageView;
@@ -157,8 +158,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     public final static String PRODUCT_BUNDLE = "product_bundle";
 
-    private final static String IMAGE_HEIGHT = "item_height";
-
     private Context mContext;
 
     private DialogFragment mDialogAddedToCart;
@@ -206,8 +205,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     private boolean mShowRelatedItems;
 
     private RelativeLayout loadingRating;
-
-    private Fragment productImagesViewPagerFragment;
 
     public static String VARIATION_LIST_POSITION = "variation_list_position";
 
@@ -285,8 +282,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private RatingBar mSellerRating;
 
-    private int imageHeight = -1;
-
     private RelativeLayout offersContainer;
 
     private RelativeLayout offersContent;
@@ -295,7 +290,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
     private TextView minOffers;
 
-    private ViewGroupFactory viewGrouFactory;
+    private ViewGroupFactory mGalleryViewGroupFactory;
 
     /**
      * Empty constructor
@@ -337,12 +332,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         Log.d(TAG, "ON CREATE");
         // Get data from saved instance
         if (savedInstanceState != null) {
-            mSelectedSimple = savedInstanceState.getInt(SELECTED_SIMPLE_POSITION,
-                    NO_SIMPLE_SELECTED);
+            mSelectedSimple = savedInstanceState.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
             mProductBundle = savedInstanceState.getParcelable(PRODUCT_BUNDLE);
-            // TODO : Other approach
-            imageHeight = savedInstanceState.getInt(IMAGE_HEIGHT);
-            
         }
         Log.d(TAG, "CURRENT SELECTED SIMPLE: " + mSelectedSimple);
     }
@@ -405,9 +396,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Save product bundle
         if (mProductBundle != null)
             outState.putParcelable(PRODUCT_BUNDLE, mProductBundle);
-        
-        // TODO : Other approach
-        outState.putInt(IMAGE_HEIGHT, imageHeight);
     }
 
     /*
@@ -442,7 +430,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         super.onDestroy();
         Log.d(TAG, "ON DESTROY");
         // Garbage
-        productImagesViewPagerFragment = null;
         FragmentCommunicatorForProduct.getInstance().destroyInstance();
     }
 
@@ -583,7 +570,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Get and set landscape views
         checkLanscapeLayout(view);
 
-        viewGrouFactory = new ViewGroupFactory((ViewGroup) view.findViewById(R.id.product_image_layout));
+        mGalleryViewGroupFactory = new ViewGroupFactory((ViewGroup) view.findViewById(R.id.product_image_layout));
     }
 
     /**
@@ -620,62 +607,62 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             mProductFeaturesMore.setOnClickListener(this);
     }
 
-    /**
-     * function responsible for handling the size of the image according to existence of other
-     * sections of the PDV
-     * 
-     * @param hasBundle
-     *            // TODO : Other approach
-     */
-    private void updateImageSize(boolean hasBundle) {
-
-        if (getActivity() == null)
-            return;
-
-        if (DeviceInfoHelper.isTabletInLandscape(getActivity().getApplicationContext())) {
-            RelativeLayout mLeftContainerInfo = (RelativeLayout) getView().findViewById(
-                    R.id.image_container);
-
-            LayoutParams params = mLeftContainerInfo.getLayoutParams();
-
-            if (imageHeight == -1) {
-
-                // set default size like the product does not have any more component on the left
-                // besides the image
-                imageHeight = (int) getResources().getDimension(R.dimen.pdv_image_alone);
-
-                // set image size if product has variations and simples
-                if (mVarianceContainer.isShown()
-                        && getView().findViewById(R.id.variations_container).isShown()) {
-                    imageHeight = (int) getResources().getDimension(
-                            R.dimen.pdv_image_with_var_simple);
-                    // set image size if product has variations or simples
-                } else if (mVarianceContainer.isShown()
-                        || getView().findViewById(R.id.variations_container).isShown()) {
-                    imageHeight = (int) getResources().getDimension(R.dimen.pdv_image_with_var);
-                }
-
-                int decreaseSize = 0;
-                // decrease image size if product has bundle container
-                if (hasBundle) {
-                    decreaseSize = (int) getResources().getDimension(R.dimen.pdv_image_with_bundle);
-                }
-                // decrease image size if product has seller info
-                if (sellerView.isShown()) {
-                    decreaseSize = decreaseSize
-                            + (int) getResources().getDimension(R.dimen.pdv_image_with_seller);
-                }
-
-                params.height = imageHeight - decreaseSize;
-
-            } else {
-                params.height = imageHeight;
-            }
-
-            mLeftContainerInfo.setLayoutParams(params);
-        }
-
-    }
+//    /**
+//     * function responsible for handling the size of the image according to existence of other
+//     * sections of the PDV
+//     * 
+//     * @param hasBundle
+//     *            // TODO : Other approach
+//     */
+//    private void updateImageSize(boolean hasBundle) {
+//
+//        if (getActivity() == null)
+//            return;
+//
+//        if (DeviceInfoHelper.isTabletInLandscape(getActivity().getApplicationContext())) {
+//            RelativeLayout mLeftContainerInfo = (RelativeLayout) getView().findViewById(
+//                    R.id.image_container);
+//
+//            LayoutParams params = mLeftContainerInfo.getLayoutParams();
+//
+//            if (imageHeight == -1) {
+//
+//                // set default size like the product does not have any more component on the left
+//                // besides the image
+//                imageHeight = (int) getResources().getDimension(R.dimen.pdv_image_alone);
+//
+//                // set image size if product has variations and simples
+//                if (mVarianceContainer.isShown()
+//                        && getView().findViewById(R.id.variations_container).isShown()) {
+//                    imageHeight = (int) getResources().getDimension(
+//                            R.dimen.pdv_image_with_var_simple);
+//                    // set image size if product has variations or simples
+//                } else if (mVarianceContainer.isShown()
+//                        || getView().findViewById(R.id.variations_container).isShown()) {
+//                    imageHeight = (int) getResources().getDimension(R.dimen.pdv_image_with_var);
+//                }
+//
+//                int decreaseSize = 0;
+//                // decrease image size if product has bundle container
+//                if (hasBundle) {
+//                    decreaseSize = (int) getResources().getDimension(R.dimen.pdv_image_with_bundle);
+//                }
+//                // decrease image size if product has seller info
+//                if (sellerView.isShown()) {
+//                    decreaseSize = decreaseSize
+//                            + (int) getResources().getDimension(R.dimen.pdv_image_with_seller);
+//                }
+//
+//                params.height = imageHeight - decreaseSize;
+//
+//            } else {
+//                params.height = imageHeight;
+//            }
+//
+//            mLeftContainerInfo.setLayoutParams(params);
+//        }
+//
+//    }
 
     /**
      * 
@@ -690,7 +677,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         displayVariantsContainer();
         displaySellerInfo();
         displayOffersInfo();
-        updateImageSize(false);
     }
 
     private void displayOffersInfo() {
@@ -731,7 +717,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      */
     private void loadProductPartial() {
         mBeginRequestMillis = System.currentTimeMillis();
-        viewGrouFactory.setViewVisible(R.id.image_loading_progress);
+        mGalleryViewGroupFactory.setViewVisible(R.id.image_loading_progress);
         Bundle bundle = new Bundle();
         bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
         triggerContentEventWithNoLoading(new GetProductHelper(), bundle, responseCallback);
@@ -1236,78 +1222,36 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Set Title
         // #RTL
         if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
-            mTitleText.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct.getName()
-                    + " " + mCompleteProduct.getBrand() : "");
+            mTitleText.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct.getName() + " " + mCompleteProduct.getBrand() : "");
         } else {
-            mTitleText.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct.getBrand()
-                    + " " + mCompleteProduct.getName() : "");
+            mTitleText.setText(mCompleteProduct.getBrand() != null ? mCompleteProduct.getBrand() + " " + mCompleteProduct.getName() : "");
         }
 
         // Set favourite
         try {
             if (FavouriteTableHelper.verifyIfFavourite(mCompleteProduct.getSku())) {
-                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG,
-                        Boolean.TRUE.toString());
+                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
                 imageIsFavourite.setSelected(true);
             } else {
-                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG,
-                        Boolean.FALSE.toString());
+                mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
                 imageIsFavourite.setSelected(false);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
-            mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG,
-                    Boolean.FALSE.toString());
+            mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
             imageIsFavourite.setSelected(false);
         }
-
-        //
-        FragmentCommunicatorForProduct.getInstance().updateCurrentProduct(mCompleteProduct);
-        if (productImagesViewPagerFragment == null) {
-            viewGrouFactory.setViewVisible(R.id.image_loading_progress);
-            RocketImageLoader.getInstance().loadImages(mCompleteProduct.getImageList(), this);
-
-        } else {
-            viewGrouFactory.setViewVisible(R.id.product_detail_image_gallery_container);
-            // Containers
-            fragmentManagerTransition(R.id.product_detail_image_gallery_container,
-                    productImagesViewPagerFragment, false, true);
-            
-            getRelatedItems(product.getSku());
-        }
         
-        
-        if (mShowRelatedItems) {
-            Log.d(TAG, "ON GET RELATED ITEMS FOR: " + product.getSku());
-            getRelatedItems(product.getSku());
-        } 
-        
-//        else {
-//            viewGrouFactory.setViewVisible(R.id.product_detail_image_gallery_container);
-//            Log.i(TAG, "Update Gallery");
-//            mSelectedSimple = NO_SIMPLE_SELECTED;
-//            Bundle bundle = new Bundle();
-//            bundle.putBoolean(PRODUCT_COMPLETE, true);
-//            // bundle.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
-//            bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mSelectedSimple);
-//            bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
-//
-//            ((ProductImageGalleryFragment) productImagesViewPagerFragment).notifyFragment(bundle);
-//
-//            displayPriceInfoOverallOrForSimple();
-//        }
-
-        // Bundles
-        if (product.getProductBundle() != null
-                && product.getProductBundle().getBundleProducts().size() > 0) {
-            displayBundle(product.getProductBundle());
-        } else
-            hideBundle();
-
+        // Validate gallery
+        setProductGallery(product);
+        // Validate related items
+        setRelatedItems(product.getSku());
         // Validate variations
         setProductVariations();
         // Show product info
         setContentInformation();
+        // Bundles
+        setBundles(product);
 
         if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
             displayDescription();
@@ -1316,7 +1260,33 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         // Tracking
         TrackerDelegator.trackProduct(createBundleProduct());
     }
-
+    
+    /**
+     * Set the gallery
+     * @param mCompleteProduct
+     * @author sergiopereira
+     */
+    private void setProductGallery(CompleteProduct mCompleteProduct) {
+        mGalleryViewGroupFactory.setViewVisible(R.id.image_loading_progress);
+        RocketImageLoader.getInstance().loadImages(mCompleteProduct.getImageList(), this);
+    }
+    
+    /**
+     * 
+     * @param product
+     */
+    private void setBundles(CompleteProduct product) {
+        if (product.getProductBundle() != null && product.getProductBundle().getBundleProducts().size() > 0) {
+            displayBundle(product.getProductBundle());
+        } else
+            hideBundle();
+    }
+    
+    /**
+     * 
+     * @param variations
+     * @return
+     */
     private boolean isNotValidVariation(ArrayList<Variation> variations) {
         if (variations == null || variations.size() == 0) {
             return true;
@@ -1342,7 +1312,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
 
         // Validate complete product
         if (mCompleteProduct == null) {
-            Log.i(TAG, "mCompleteProduct is null -- XXX verify and fix!!!");
+            Log.i(TAG, "mCompleteProduct is null -- verify and fix!!!");
             return;
         }
 
@@ -1403,7 +1373,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     /**
      * Method used to get the related products
      */
-    private void getRelatedItems(String sku) {
+    private void setRelatedItems(String sku) {
+        // Validate if is to show
+        if (!mShowRelatedItems) return;
+        // Show related items
         Log.d(TAG, "ON GET RELATED ITEMS FOR: " + sku);
         ArrayList<LastViewed> relatedItemsList = RelatedItemsTableHelper.getRelatedItemsList();
         if (relatedItemsList != null && relatedItemsList.size() > 1) {
@@ -1426,7 +1399,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      * @param relatedItemsList
      * @modified sergiopereira
      */
-    private void showRelatedItemsLayout(ArrayList<LastViewed> relatedItemsList) { // XXX
+    private void showRelatedItemsLayout(ArrayList<LastViewed> relatedItemsList) {
         mRelatedContainer.setVisibility(View.VISIBLE);
         // Use this setting to improve performance if you know that changes in content do not change
         // the layout size of the RecyclerView
@@ -1914,17 +1887,16 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
             if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
-                Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
                 getBaseActivity().onBackPressed();
                 return;
             } else {
-                mCompleteProduct = (CompleteProduct) bundle
-                        .getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                productImagesViewPagerFragment = null;
+                mCompleteProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                // Show product or update partial
+                ProductImageGalleryFragment.sSharedSelectedPosition = 0;
                 // Show product or update partial
                 displayProduct(mCompleteProduct);
-
+                // 
                 Bundle params = new Bundle();
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gproductdetail);
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
@@ -1939,8 +1911,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                 params.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
                 params.putParcelable(AdjustTracker.PRODUCT, mCompleteProduct);
                 params.putString(AdjustTracker.TREE, categoryTree);
-                TrackerDelegator
-                        .trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, getLoadTime(), false);
+                TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, getLoadTime(), false);
                 TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_DETAIL_LOADED, params);
             }
 
@@ -1953,11 +1924,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             }, 300);
 
             if (mCompleteProduct.isHasBundle()) {
-                updateImageSize(true);
                 Bundle arg = new Bundle();
                 arg.putString(GetProductBundleHelper.PRODUCT_SKU, mCompleteProduct.getSku());
-                triggerContentEventWithNoLoading(new GetProductBundleHelper(), arg,
-                        responseCallback);
+                triggerContentEventWithNoLoading(new GetProductBundleHelper(), arg, responseCallback);
             }
             break;
         case GET_PRODUCT_BUNDLE:
@@ -2003,8 +1972,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             isAddingProductToCart = false;
             hideActivityProgress();
             if (errorCode == ErrorCode.REQUEST_ERROR) {
-                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
-                        .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
 
                 if (errorMessages != null) {
                     int titleRes = R.string.error_add_to_cart_failed;
@@ -2019,8 +1987,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
                         msgRes = R.string.error_add_to_shopping_cart_quantity;
                     } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(
                             Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
-                        List<String> validateMessages = errorMessages
-                                .get(RestConstants.JSON_VALIDATE_TAG);
+                        List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
                         if (validateMessages != null && validateMessages.size() > 0) {
                             message = validateMessages.get(0);
                         } else {
@@ -2078,22 +2045,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         default:
             break;
         }
-    }
-
-    protected void fragmentManagerTransition(int container, Fragment fragment,
-            Boolean addToBackStack, Boolean animated) {
-        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        // Animations
-        if (animated)
-            fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in,
-                    R.anim.pop_out);
-        // Replace
-        fragmentTransaction.replace(container, fragment);
-        // BackStack
-        if (addToBackStack)
-            fragmentTransaction.addToBackStack(null);
-        // Commit
-        fragmentTransaction.commitAllowingStateLoss();
     }
 
     /**
@@ -2319,8 +2270,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      */
     @Override
     public void checkItem(ProductBundleProduct selectedProduct, boolean isChecked, int pos) {
-        // TODO Auto-generated method stub
-
         // if isChecked is false then item was deselected
         double priceChange = selectedProduct.getBundleProductMaxSpecialPriceDouble();
         if (priceChange == 0) {
@@ -2441,44 +2390,71 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      */
     private void goToSellerRating() {
         JumiaApplication.cleanRatingReviewValues();
-
+        
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
         bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, false);
-        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY,
-                bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
-
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener#onCompleteLoadingImages(java.util.ArrayList)
+     */
     @Override
     public void onCompleteLoadingImages(ArrayList<ImageHolder> successUrls) {
-        //Gets all urls with success
+        Log.i(TAG, "ON COMPLETE LOADING IMAGES");
+        // Gets all urls with success
         ArrayList<String> urls = new ArrayList<String>();
-        for(ImageHolder imageHolder : successUrls){
-            urls.add(imageHolder.url);
-        }
-        mCompleteProduct.setImageList(urls);
+        for(ImageHolder imageHolder : successUrls) urls.add(imageHolder.url);
         
+        // Validate the number of cached images
         if (!successUrls.isEmpty()) {
-            viewGrouFactory.setViewVisible(R.id.product_detail_image_gallery_container);
-            // FragmentCommunicatorForProduct.getInstance().getCurrentProduct().setImageList(successUrls);
-            Log.i(TAG, "Show Gallery: first time");
-
+            // Match the cached image list with the current image list order
+            ArrayList<String> orderCachedImageList = (ArrayList<String>) CollectionUtils.retainAll(mCompleteProduct.getImageList(), urls);
+            // Set the cached images
+            mCompleteProduct.setImageList(orderCachedImageList);
+            // Create bundle with arguments
             Bundle args = new Bundle();
-            args.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
-            args.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, mSelectedSimple);
-            // args.putInt(ConstantsIntentExtra.VARIATION_LISTPOSITION, mVariationsListPosition);
+            args.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, orderCachedImageList);
             args.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
-
-            // Instantiate a nested fragment of ProductImageGalleryFragment
-            productImagesViewPagerFragment = ProductImageGalleryFragment.getInstanceAsNested(args);
-
-            // Containers
-            fragmentManagerTransition(R.id.product_detail_image_gallery_container,
-                    productImagesViewPagerFragment, false, true);
-
+            
+            // Validate the ProductImageGalleryFragment
+            ProductImageGalleryFragment productImagesViewPagerFragment = (ProductImageGalleryFragment) getChildFragmentManager().findFragmentByTag(ProductImageGalleryFragment.TAG);
+            // CASE CREATE
+            if (productImagesViewPagerFragment == null) {
+                Log.i(TAG, "SHOW GALLERY: first time position = " + ProductImageGalleryFragment.sSharedSelectedPosition);
+                productImagesViewPagerFragment = ProductImageGalleryFragment.getInstanceAsNested(args);
+                fragmentManagerTransition(R.id.product_detail_image_gallery_container, productImagesViewPagerFragment);
+            }
+            // CASE UPDATE
+            else {
+                Log.i(TAG, "SHOW GALLERY: second time position = " + ProductImageGalleryFragment.sSharedSelectedPosition);
+                productImagesViewPagerFragment.notifyFragment(args);
+            }
+            // Show container
+            mGalleryViewGroupFactory.setViewVisible(R.id.product_detail_image_gallery_container);
         } else {
-            viewGrouFactory.setViewVisible(R.id.image_place_holder);
+            Log.i(TAG, "SHOW PLACE HOLDER");
+            // Show place holder
+            mGalleryViewGroupFactory.setViewVisible(R.id.image_place_holder);
         }
-        
+    }
+    
+    /**
+     * Add/Replace the container to show a new nested fragment.<br>
+     * @param container
+     * @param fragment
+     * @author sergiopereira
+     */
+    protected void fragmentManagerTransition(int container, Fragment fragment) {
+        // Transaction
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        // Animations
+        fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
+        // Replace
+        fragmentTransaction.replace(container, fragment, ProductImageGalleryFragment.TAG);
+        // Commit
+        fragmentTransaction.commitAllowingStateLoss();
     }
 }

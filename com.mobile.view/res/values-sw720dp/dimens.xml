@@ -57,4 +57,8 @@
 
 	<!-- Toast -->
     <dimen name="toast_hover">75dp</dimen>
+    
+    <!-- PDV IMAGE -->
+    <dimen name="pdv_image">370dp</dimen>
+    
 </resources>

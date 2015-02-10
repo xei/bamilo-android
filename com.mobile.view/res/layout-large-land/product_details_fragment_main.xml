@@ -99,14 +99,13 @@
                 <!-- IMAGE CONTAINER -->
                 <!-- <include layout="@layout/product_details_fragment_image" /> -->
 
-               <RelativeLayout
+                <RelativeLayout
                     android:id="@+id/image_container"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/pdv_image"
                     android:layout_below="@id/product_basicinfo_container"
                     android:layout_marginBottom="5dp"
-                    android:background="@android:color/transparent"
-                    android:minHeight="@dimen/pdv_image_with_var" >
+                    android:background="@android:color/transparent" >
 
                     <View
                         android:id="@+id/gallery_line"
@@ -116,16 +115,16 @@
                     <LinearLayout
                         android:id="@+id/product_image_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="283.33dp"
-                        android:gravity="center" 
-                        android:layout_below="@id/gallery_line">
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/gallery_line"
+                        android:gravity="center" >
 
                         <FrameLayout
                             android:id="@+id/product_detail_image_gallery_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:visibility="gone" 
-                            android:background="@android:color/transparent"/>
+                            android:background="@android:color/transparent"
+                            android:visibility="gone" />
 
                         <ProgressBar
                             android:id="@+id/image_loading_progress"
@@ -141,7 +140,6 @@
                             android:src="@drawable/no_image_large"
                             android:visibility="gone" />
                     </LinearLayout>
-
 
                     <ImageView
                         android:id="@+id/product_detail_product_image_share"

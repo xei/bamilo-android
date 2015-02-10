@@ -380,8 +380,12 @@
     <!-- CHECKBOX RATING -->
     
     <dimen name="checkbox_rating_height">44dp</dimen>
+   
+    <!-- PDV IMAGE -->
+    <dimen name="pdv_image">283.33dp</dimen>
     
-   <!-- PDV IMAGE LANDSCAPE --> 
+   <!-- PDV IMAGE LANDSCAPE -->
+   <dimen name="pdv_image_with_var_simple">210dp</dimen>
     <dimen name="pdv_image_with_var_simple">210dp</dimen>
     <dimen name="pdv_image_with_var">270dp</dimen>
     <dimen name="pdv_image_alone">320dp</dimen>

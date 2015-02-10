@@ -8,36 +8,27 @@ import java.util.EnumSet;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import com.mobile.app.JumiaApplication;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+
 import com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator;
 import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.GalleryPagerAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.CompleteProduct;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.products.GetProductHelper;
-import com.mobile.interfaces.IResponseCallback;
-import com.mobile.utils.FragmentCommunicatorForProduct;
 import com.mobile.utils.JumiaViewPagerWithZoom;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -47,7 +38,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class ProductImageGalleryFragment extends BaseFragment {
 
-    private static final String TAG = LogTagHelper.create(ProductImageGalleryFragment.class);
+    public static final String TAG = LogTagHelper.create(ProductImageGalleryFragment.class);
 
     private static ProductImageGalleryFragment sProductImageGalleryFragment;
 
@@ -55,21 +46,14 @@ public class ProductImageGalleryFragment extends BaseFragment {
 
     private GalleryPagerAdapter galleryAdapter;
 
-    private RelativeLayout mProductImageLoading;
-
-    private CompleteProduct mCompleteProduct;
-
-    private View mainView;
-
     private boolean isZoomAvailable = false;
 
-    private int currentPosition = 0;
+    public static int sSharedSelectedPosition = 0;
 
     private ArrayList<String> imagesList;
 
-    private String mCompleteProductUrl;
-
     private boolean errorLoadingImages = false;
+    
     
     /**
      * Constructor using a nested flag
@@ -83,11 +67,8 @@ public class ProductImageGalleryFragment extends BaseFragment {
         // Validate if is nested or not
         sProductImageGalleryFragment = isNested ? new ProductImageGalleryFragment(isNested) : new ProductImageGalleryFragment();
         // Save arguments
-        sProductImageGalleryFragment.currentPosition = bundle.getInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, 1);
-        // if (sProductImageGalleryFragment.currentPosition <= 0) sProductImageGalleryFragment.currentPosition = 0;
         sProductImageGalleryFragment.isZoomAvailable = bundle.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
-        String contentUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
-        sProductImageGalleryFragment.mCompleteProductUrl = contentUrl != null ? contentUrl : "";
+        sProductImageGalleryFragment.imagesList = bundle.getStringArrayList(ConstantsIntentExtra.IMAGE_LIST);
         // Return instance
         return sProductImageGalleryFragment;
     }
@@ -116,7 +97,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
      * Default constructor
      */
     public ProductImageGalleryFragment() {
-        super(EnumSet.of(MyMenuItem.HIDE_AB, MyMenuItem.UP_BUTTON_BACK), NavigationAction.Products,R.layout.product_gallery_fragment, 0, KeyboardState.NO_ADJUST_CONTENT);
+        super(EnumSet.of(MyMenuItem.HIDE_AB), NavigationAction.Products,R.layout.product_gallery_fragment, 0, KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /**
@@ -147,9 +128,11 @@ public class ProductImageGalleryFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        // Restore isZoomAvailable after rotation
+        // Restore state after rotation
         if (savedInstanceState != null) {
             isZoomAvailable = savedInstanceState.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
+            imagesList = savedInstanceState.getStringArrayList(ConstantsIntentExtra.IMAGE_LIST);
+            isNestedFragment = savedInstanceState.getBoolean(ConstantsIntentExtra.IS_NESTED_FRAGMENT);
         }
     }
 
@@ -161,79 +144,13 @@ public class ProductImageGalleryFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        mainView = view;
-        mProductImageLoading = (RelativeLayout) view.findViewById(R.id.loading_gallery);
         mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.viewpager);
         View closeView = view.findViewById(R.id.gallery_button_close);
+        // Set view pager
+        createGallery();
         // Set close button
         setCloseButton(closeView);
-        
-        /* Necessary for adding virtual positions (older implementation)
-        // Set indicators
-        setIndicators();
-        setPageListener();
-        */
     }
-    
-//    @Deprecated
-//    private void setPageListener(){
-//        mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
-//
-//            @Override
-//            public void onPageSelected(int arg0) {
-//                currentPosition = arg0;
-//            }
-//
-//            @Override
-//            public void onPageScrolled(int arg0, float arg1, int arg2) {
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int arg0) {
-//                if (arg0 == ViewPager.SCROLL_STATE_SETTLING) {
-//                    if (mViewPager != null)
-//                        mViewPager.setPagingEnabled(false);
-//                }
-//                if (arg0 == ViewPager.SCROLL_STATE_IDLE) {   
-//                    changePage();
-//                }
-//            }
-//        });
-//    }
-//    
-//    /** Older implementation of infinite view pager.
-//     * 
-//     */
-//    @Deprecated
-//    private void changePage() {
-//        try {
-//            getBaseActivity().runOnUiThread(new Runnable() {
-//                public void run() {
-//                    int pageCount = galleryAdapter.getCount();
-//                    try {
-//                        mViewPager.setPagingEnabled(true);
-//                        // mViewPager.toggleJumiaScroller(true);
-//
-//                        if (currentPosition == 0) {
-//                            // mViewPager.toggleJumiaScroller(false);
-//                            mViewPager.setCurrentItem(pageCount - 2, false);
-////                            view_pager_indicator.onPageSelected(pageCount - 2);
-//                            //
-//                        } else if (currentPosition == pageCount - 1) 
-//                            // mViewPager.toggleJumiaScroller(false);
-//                            mViewPager.setCurrentItem(1, false);
-////                            view_pager_indicator.onPageSelected(1);
-////                        } else 
-////                            view_pager_indicator.onPageSelected(currentPosition);
-//                    } catch (NullPointerException e) {
-//                        Log.w(TAG, "WARNING NPE IN CHANGE PAGE");
-//                    }
-//                }
-//            });
-//        } catch (NullPointerException e) {
-//            Log.w(TAG, "WARNING NPE ON CHANGE PAGE", e);
-//        }
-//    }
     
     /*
      * (non-Javadoc)
@@ -244,7 +161,6 @@ public class ProductImageGalleryFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-
     }
 
     /*
@@ -254,21 +170,10 @@ public class ProductImageGalleryFragment extends BaseFragment {
      */
     @Override
     public void onResume() {
-        Log.i(TAG, "ON RESUME");
         super.onResume();
-        mCompleteProduct = FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
-        if (mCompleteProduct == null) {
-            if (JumiaApplication.mIsBound && !"".equals(mCompleteProductUrl)) {
-                Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-                triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
-            } else {
-                showFragmentRetry(this);
-            }
-
-        } else {
-            createViewPager();
-        }
+        Log.i(TAG, "ON RESUME");
+        // Set the current position
+        if(mViewPager != null) mViewPager.setCurrentItem(ProductImageGalleryFragment.sSharedSelectedPosition);
     }
 
     /*
@@ -278,9 +183,11 @@ public class ProductImageGalleryFragment extends BaseFragment {
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        // Persist isZoomAvailable
-        outState.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, isZoomAvailable);
         super.onSaveInstanceState(outState);
+        Log.i(TAG, "ON SAVE INSTANCE");
+        outState.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, isZoomAvailable);
+        outState.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, imagesList);
+        outState.putBoolean(ConstantsIntentExtra.IS_NESTED_FRAGMENT, isNestedFragment);
     }
 
     /*
@@ -292,7 +199,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
-        FragmentCommunicatorForProduct.getInstance().setCurrentImagePosition(getViewPagerPosition());
+        ProductImageGalleryFragment.sSharedSelectedPosition = getViewPagerPosition();
     }
 
     /*
@@ -316,49 +223,23 @@ public class ProductImageGalleryFragment extends BaseFragment {
             closeButton.setVisibility(View.VISIBLE);
         }
     }
-    
-    
-    /**
-     * Set the indicators
-     
-    private void setIndicators() {
-        if(isZoomAvailable) {
-            mIndicatorLeftView.setVisibility(View.VISIBLE);
-            mIndicatorRightView.setVisibility(View.VISIBLE);
-        }
-    }*/
-    
 
-    private void createViewPager() {
+    /**
+     * Set product image gallery
+     */
+    private void createGallery() {
         // Setted in order to show the no image placeholder on PDV view
-        if (CollectionUtils.isEmpty(mCompleteProduct.getImageList())) {
-            ArrayList<String> temp = new ArrayList<String>();
-            temp.add("");
-            mCompleteProduct.setImageList(temp);
+        if (CollectionUtils.isEmpty(imagesList)) {
+            imagesList = new ArrayList<String>();
+            imagesList.add("");
         }
-         
-        // Clone image list - TODO Validate if this is necessary
-        imagesList = new ArrayList<String>(mCompleteProduct.getImageList());
         
         if (galleryAdapter != null) {
-            /* Necessary for adding virtual positions (older implementation)
-            imagesList.add(0, imagesList.get(imagesList.size() - 1));
-            imagesList.add(imagesList.get(1));*/
             galleryAdapter.replaceAll(imagesList);
         } else {
-            /* Necessary for adding virtual positions (older implementation)
-            imagesList.add(0, imagesList.get(imagesList.size() - 1));
-            imagesList.add(imagesList.get(1));
-             */
             galleryAdapter = new GalleryPagerAdapter(getActivity(), imagesList, isZoomAvailable);
         }
 
-        if (mViewPager == null) {
-            mViewPager = (JumiaViewPagerWithZoom) mainView.findViewById(R.id.viewpager);
-            mViewPager.setPageMargin((int) getActivity().getResources().getDimension(R.dimen.margin_large));
-        }
-        
-        
         if(imagesList.size() > 1){
             InfinitePagerAdapter infinitePagerAdapter = new InfinitePagerAdapter(galleryAdapter);
             infinitePagerAdapter.setOneItemMode();
@@ -367,8 +248,6 @@ public class ProductImageGalleryFragment extends BaseFragment {
         } else {
             mViewPager.setAdapter(galleryAdapter);
         }
-
-        mViewPager.setCurrentItem(FragmentCommunicatorForProduct.getInstance().getCurrentImagePosition());
 
         final GestureDetector tapGestureDetector = new GestureDetector(getActivity(), new TapGestureListener(mViewPager));
         mViewPager.setOnTouchListener(new OnTouchListener() {
@@ -387,42 +266,18 @@ public class ProductImageGalleryFragment extends BaseFragment {
                 return false;
             }
         });
-            
-        hideImageLoading();
 
     }
 
     private void setIndicatorForViewPager() {
-        InfiniteCirclePageIndicator view_pager_indicator = (InfiniteCirclePageIndicator)getView().findViewById(R.id.view_pager_indicator);
+        InfiniteCirclePageIndicator viewPagerIndicator = (InfiniteCirclePageIndicator)getView().findViewById(R.id.view_pager_indicator);
         if (isZoomAvailable) {
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view_pager_indicator.getLayoutParams();
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) viewPagerIndicator.getLayoutParams();
             p.setMargins(0, 0, 0, (int) getView().getResources().getDimension(R.dimen.dimen_78px));
-            view_pager_indicator.requestLayout();
+            viewPagerIndicator.requestLayout();
         }
-        view_pager_indicator.setViewPager(mViewPager);
+        viewPagerIndicator.setViewPager(mViewPager);
     }
-
-    private void showImageLoading() {
-        mProductImageLoading.setVisibility(View.VISIBLE);
-        mViewPager.setVisibility(View.GONE);
-    }
-
-    private void hideImageLoading() {
-        mProductImageLoading.setVisibility(View.GONE);
-        mViewPager.setVisibility(View.VISIBLE);
-    }
-
-//    private void updateImage(int index) {
-//        if (mViewPager != null && mViewPager.getAdapter() != null && mViewPager.getAdapter().getCount() > 0) {
-//            mViewPager.setCurrentItem(index, true);
-//        }
-//    }
-
-//    @Override
-//    public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
-//        // mPagerWrapper.setCurrentItem(position, true);
-//        // mViewPager.setCurrentItem(position, true);
-//    }
 
     /**
      * GestureListener to respond to tap on viewPager<br>
@@ -465,14 +320,12 @@ public class ProductImageGalleryFragment extends BaseFragment {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            Log.i(TAG, "onSingleTap");
             if(!errorLoadingImages){
                 if (!isZoomAvailable) {
                     Log.i(TAG, "onSingleTapConfirmed");
-                    FragmentCommunicatorForProduct.getInstance().setCurrentImagePosition(getViewPagerPosition());
+                    ProductImageGalleryFragment.sSharedSelectedPosition = getViewPagerPosition();
                     Bundle bundle = new Bundle();
-                    bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
-                    // bundle.putInt(ConstantsIntentExtra.CURRENT_LISTPOSITION, getViewPagerPosition());
+                    bundle.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, imagesList);
                     bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
                     bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
                     getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_GALLERY, bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -484,54 +337,25 @@ public class ProductImageGalleryFragment extends BaseFragment {
         }
     }
 
-//    @Override
-//    public void onPageScrollStateChanged(int position) {
-//        // noop
-//    }
-//
-//    @Override
-//    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//        // noop
-//    }
-//
-//    @Override
-//    public void onPageSelected(int position) {
-//        Log.d(TAG, "onPageSelected position = " + position);
-//        // mImagesList.setSelectedItem(position, HorizontalListView.MOVE_TO_SCROLLED);
-//        // update current selected viewpager position
-//        currentPosition = position;
-//    }
-
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#notifyFragment(android.os.Bundle)
+     */
     @Override
     public void notifyFragment(Bundle bundle) {
-        Log.i(TAG, "NOTIFY FRAGMENT");
+        Log.i(TAG, "NOTIFY FRAGMENT: " + sSharedSelectedPosition);
         // Validate if fragment is on the screen
         if (!isVisible()) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        
-        if (bundle.containsKey(ProductDetailsFragment.LOADING_PRODUCT)) {
-            showImageLoading();
-            return;
-        }
-
+        // Validate the shared current position
+        if (sSharedSelectedPosition <= 0) sSharedSelectedPosition = 0;
+        // Get arguments 
         isZoomAvailable = bundle.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
-
-        mCompleteProduct = (CompleteProduct) FragmentCommunicatorForProduct.getInstance().getCurrentProduct();
-        
-        if (mCompleteProduct == null) {
-            Log.e(TAG, "NO COMPLETE PRODUCT - SWITCHING TO HOME");
-            restartAllFragments();
-            return;
-        }
-        
-        Log.i(TAG, "UPDATE GALLERY FOR PRODUCT: " + mCompleteProduct.getName());
-
-        createViewPager();
-
-        if (currentPosition <= 0) currentPosition = 0;
-        
+        imagesList = bundle.getStringArrayList(ConstantsIntentExtra.IMAGE_LIST);
+        // Create view pager
+        createGallery();
     }
 
     /*
@@ -542,13 +366,8 @@ public class ProductImageGalleryFragment extends BaseFragment {
     public void onClick(View v) {
         // Get id
         int id = v.getId();
-        // Case retry
-        if (id == R.id.fragment_root_retry_button) {
-            Log.d(TAG,"RETRY");
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_GALLERY, getArguments(), FragmentController.ADD_TO_BACK_STACK);
-        }
         // Case close button
-        else if (id == R.id.gallery_button_close) onClickCloseButton();
+        if (id == R.id.gallery_button_close) onClickCloseButton();
         // Unknown
         else Log.w(TAG, "WARNING: UNEXPECTED CLICK EVENT");
     }
@@ -559,98 +378,27 @@ public class ProductImageGalleryFragment extends BaseFragment {
      */
     private void onClickCloseButton() {
         Log.i(TAG, "ON CLICK CLOSE BUTTON");
-        FragmentCommunicatorForProduct.getInstance().setCurrentImagePosition(getViewPagerPosition());
+        ProductImageGalleryFragment.sSharedSelectedPosition = getViewPagerPosition();
         getBaseActivity().onBackPressed();
     }
 
-    
-    IResponseCallback responseCallback = new IResponseCallback() {
-
-        @Override
-        public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
-        }
-    };
-
-    public void onSuccessEvent(Bundle bundle) {
-
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-
-        super.handleSuccessEvent(bundle);
-
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        Log.d(TAG, "onSuccessEvent: type = " + eventType);
-        switch (eventType) {
-        case GET_PRODUCT_EVENT:
-            if (((CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getName() == null) {
-                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-                getActivity().onBackPressed();
-                return;
-            } else {
-                mCompleteProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                createViewPager();
-                // Waiting for the fragment comunication
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        showFragmentContentContainer();
-                    }
-                }, 300);
-            }
-
-            break;
-        default:
-            break;
-        }
-    }
-
-    public void onErrorEvent(Bundle bundle) {
-
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-
-        if (super.handleErrorEvent(bundle)) {
-            return;
-        }
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Log.d(TAG, "onErrorEvent: type = " + eventType);
-        switch (eventType) {
-
-        case GET_PRODUCT_EVENT:
-            if (!errorCode.isNetworkError()) {
-                Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-
-                showFragmentContentContainer();
-
-                try {
-                    getBaseActivity().onBackPressed();
-                } catch (IllegalStateException e) {
-                    getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
-                }
-                return;
-            }
-        default:
-            break;
-        }
-    }
-
+    /**
+     * Get the current view pager position
+     * @return int - the current pager position or 0 case exception
+     * @modified sergiopereira
+     */
     private int getViewPagerPosition() {
-        return mViewPager.getAdapter() instanceof InfinitePagerAdapter ? ((InfinitePagerAdapter) mViewPager
-                .getAdapter()).getVirtualPosition(mViewPager.getCurrentItem()) : mViewPager.getCurrentItem();
-
+        try {
+            return mViewPager.getAdapter() instanceof InfinitePagerAdapter 
+                    ? ((InfinitePagerAdapter) mViewPager.getAdapter()).getVirtualPosition(mViewPager.getCurrentItem()) 
+                    : mViewPager.getCurrentItem();            
+        } catch (NullPointerException e) {
+            Log.i(TAG, "WARNING: NPE ON GET CURRENT PAGER POSITION");
+            return 0;
+        } catch (ClassCastException e) {
+            Log.i(TAG, "WARNING: CCE ON GET CURRENT PAGER POSITION");
+            return 0;
+        }
     }
 
 }

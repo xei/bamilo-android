@@ -23,6 +23,9 @@ public class ConstantsIntentExtra {
 
     //
     public static final String CATEGORY_INDEX               = mPackage + "CategoryIndex";
+    
+    // ########### BASE ###########
+    public static final String IS_NESTED_FRAGMENT            = mPackage + "isNestedFragment";
 
     // ########### Search ###########
     //
@@ -40,7 +43,8 @@ public class ConstantsIntentExtra {
     public static final String SHOW_RELATED_ITEMS           = mPackage + "ShowRelatedItems";
     public static final String IS_RELATED_ITEM              = mPackage + "RelatedItem";
     public static final String SIZE_GUIDE_URL               = mPackage + "SizeGuideUrl";
-    public static final String PRODUCT_NAME                  = mPackage + "ProductName";
+    public static final String PRODUCT_NAME                 = mPackage + "ProductName";
+    public static final String IMAGE_LIST                   = mPackage + "ProductImages";
     
     // ########### Checkout ###########
     //
