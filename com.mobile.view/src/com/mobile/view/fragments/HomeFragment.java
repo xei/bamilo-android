@@ -576,17 +576,20 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
      * Track Page only for adjust
      */
     private void trackPageAdjust(){
-        if(isAdded()){
-            Bundle bundle = new Bundle();
-            bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
-            bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
-            bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-            if (JumiaApplication.CUSTOMER != null) {
-                bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+        try {
+            if(isAdded()){
+                Bundle bundle = new Bundle();
+                bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+                bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
+                bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+                if (JumiaApplication.CUSTOMER != null) {
+                    bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+                }
+                TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);    
             }
-            TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);    
+        } catch (IllegalStateException e) {
+            Log.w(TAG, "WARNING: ISE ON TRACK PAGE ADJUST");
         }
-        
     }
 
     /*
