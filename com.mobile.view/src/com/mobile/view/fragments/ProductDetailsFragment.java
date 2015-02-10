@@ -2404,6 +2404,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     @Override
     public void onCompleteLoadingImages(ArrayList<ImageHolder> successUrls) {
         Log.i(TAG, "ON COMPLETE LOADING IMAGES");
+        
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        
         // Gets all urls with success
         ArrayList<String> urls = new ArrayList<String>();
         for(ImageHolder imageHolder : successUrls) urls.add(imageHolder.url);
