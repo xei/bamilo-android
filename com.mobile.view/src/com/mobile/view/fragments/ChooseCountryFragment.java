@@ -5,6 +5,16 @@ package com.mobile.view.fragments;
 
 import java.util.EnumSet;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.ActivitiesWorkFlow;
@@ -27,16 +37,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -51,8 +52,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     private static final int SHOP_NOT_SELECTED = -1;
 
     private Context context;
-
-    private DialogGenericFragment dialog;
 
     private int selected = SHOP_NOT_SELECTED;
 
@@ -271,15 +270,17 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     }
 
     private void showWarningDialog(final int position) {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
         dialog = DialogGenericFragment.newInstance(true, true, false,
                 getString(R.string.nav_country),
-                getString(R.string.nav_country_warning), getString(R.string.cancel_label),
-                getString(R.string.yes_label), new OnClickListener() {
-
+                getString(R.string.nav_country_warning), 
+                getString(R.string.cancel_label),
+                getString(R.string.yes_label), 
+                new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        // Dissmiss dialog
                         dismissDialogFragement();
+                        // Validate click
                         int id = v.getId();
                         if (id == R.id.button1) {
                             getBaseActivity().onBackPressed();
@@ -288,7 +289,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                         }
                     }
                 });
-        dialog.show(fm, null);
+        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
     }
 
     /**
@@ -335,35 +336,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         
         
     }
-    
-//    /**
-//     * Get map image for respective device density(dpi).
-//     * 
-//     * @param mCountryObject
-//     * @return String
-//     */
-//    private String calculateMapImageResolution(CountryObject mCountryObject) {
-//        String mapImage = mCountryObject.getCountryMapMdpi();
-//        DisplayMetrics dm = new DisplayMetrics();
-//        getBaseActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-//        int dpiClassification = dm.densityDpi;
-//        switch (dpiClassification) {
-//        case DisplayMetrics.DENSITY_HIGH:
-//            Log.i(TAG, "code1desnsity  DENSITY_HIGH");
-//            mapImage = mCountryObject.getCountryMapHdpi();
-//            break;
-//        case DisplayMetrics.DENSITY_XHIGH:
-//            Log.i(TAG, "code1desnsity  DENSITY_XHIGH");
-//            mapImage = mCountryObject.getCountryMapXhdpi();
-//            break;
-//        default:
-//            Log.i(TAG, "code1desnsity  DENSITY_MEDIUM");
-//            mapImage = mCountryObject.getCountryMapMdpi();
-//            break;
-//        }
-//        return mapImage;
-//    }
-    
+
     /*
      * ############# TRIGGERS ############# 
      */
@@ -379,7 +352,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         } else {
             showFragmentRetry(this);
         }
-        
     }
 
     /*

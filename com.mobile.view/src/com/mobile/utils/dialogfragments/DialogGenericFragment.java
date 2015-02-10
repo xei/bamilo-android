@@ -57,10 +57,15 @@ public class DialogGenericFragment extends DialogFragment {
      * @param click
      * @return
      */
-    public static DialogGenericFragment newInstance(Boolean has_header, Boolean main_text,
+    public static DialogGenericFragment newInstance(
+            Boolean has_header, 
+            Boolean main_text,
             Boolean secondary_text,
-            String title, String content, String button1_title, String button2_title,
-            android.view.View.OnClickListener click) {
+            String title, 
+            String content, 
+            String button1_title, 
+            String button2_title,
+            OnClickListener click) {
 
         Log.d(TAG, "NEW INSTANCE: 2 Buttons");
 
