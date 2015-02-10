@@ -518,8 +518,9 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
      *            brands and error messages
      */
     public synchronized void onErrorSearchResult(FeaturedBox featuredBox) {
-        if(mFeaturedBox != null)
-            return;
+//        if(mFeaturedBox != null)
+//            return;
+        Log.i(TAG, "ON ERROR SEARCH RESULT");
         // Get current view
         View view = getView();
         // Validate
