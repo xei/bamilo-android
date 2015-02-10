@@ -82,7 +82,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
 
     private String mCompleteProductUrl = "";
     
-    private LinearLayout mainContainer;
+    private View mainContainer;
 
     private Form ratingForm;
     
@@ -176,7 +176,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
         Log.i(TAG, "ON VIEW CREATED");
         reviewContainer = (LinearLayout) view.findViewById(R.id.form_review_container);
         ratingContainer = (LinearLayout) view.findViewById(R.id.form_rating_container);
-        mainContainer = (LinearLayout) view.findViewById(R.id.product_rating_container);
+        mainContainer =  view.findViewById(R.id.product_rating_container);
     }
 
     /*

@@ -3,6 +3,7 @@ package com.mobile.utils.dialogfragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.CatalogFilter;
 import com.mobile.framework.objects.CatalogFilterOption;
@@ -368,7 +369,7 @@ public class DialogFilterFragment extends DialogFragment {
                 } else if(filter.hasOptionSelected()){
                     addGenericFilter(filter, contentValues);
                 // Case price filter, get range value 
-                } else if(filter.hasRangeValues()){
+                } else if(filter.hasRangeValues() || filter.isRangeWithDiscount()){
                     addPriceFilter(filter, contentValues);
                 }
                 
@@ -467,10 +468,15 @@ public class DialogFilterFragment extends DialogFragment {
             // Get filter id and values
             String filterId = filter.getId();
             // String filterId = filter.getId();
-            int min = filter.getMinRangeValue();
-            int max = filter.getMaxRangeValue();
-            //boolean discount = filter.isRangeWithDiscount();
-            contentValues.put(filterId, min + "-" + max);
+            if(filter.hasRangeValues()){
+                int min = filter.getMinRangeValue();
+                int max = filter.getMaxRangeValue();
+                contentValues.put(filterId, min + "-" + max);
+            }
+            boolean discount = filter.isRangeWithDiscount();
+            if(discount){
+                contentValues.put("special_price", "1");
+            }
         }
         
         /**
@@ -521,10 +527,14 @@ public class DialogFilterFragment extends DialogFragment {
             // Set title
             ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(filter.getName());
             // Set sub title
-            if (!filter.hasOptionSelected() && !filter.hasRangeValues())
+            if (!filter.hasOptionSelected() && !filter.hasRangeValues() && !filter.isRangeWithDiscount())
                 ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(R.string.all_label);
-            else if(filter.hasRangeValues())
+            else if(filter.hasRangeValues() && !filter.isRangeWithDiscount())
                 ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue());
+            else if(filter.hasRangeValues() && filter.isRangeWithDiscount())
+                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue() +" "+JumiaApplication.INSTANCE.getResources().getString(R.string.string_with_discount_only));
+            else if(!filter.hasRangeValues() && filter.isRangeWithDiscount())
+                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(JumiaApplication.INSTANCE.getResources().getString(R.string.string_with_discount_only));
             else if (filter.hasOptionSelected())
                 ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(getOptionsToString(filter.getSelectedOption()));
                 

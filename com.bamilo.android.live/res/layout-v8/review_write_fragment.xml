@@ -19,7 +19,7 @@
             android:layout_below="@id/product_info_container"
             android:visibility="gone" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/product_rating_container"
             style="@style/rounded_box"
             android:layout_below="@id/shadow"
@@ -45,6 +45,7 @@
                 android:id="@+id/form_rating_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/write_title"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
@@ -55,13 +56,14 @@
                 android:id="@+id/form_review_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/write_title"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 android:visibility="gone" >
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/send_review"
