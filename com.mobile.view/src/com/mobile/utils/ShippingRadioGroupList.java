@@ -180,11 +180,11 @@ public class ShippingRadioGroupList extends RadioGroup {
             extras.setVisibility(View.VISIBLE);
             if (subForms.get(mItems.get(button.getId())) != null) {
                 if (mItems.get(button.getId()).equalsIgnoreCase("pickupstation")) {
-                    TextView title = (TextView) extras.findViewById(R.id.payment_text);
-                    if(mForm.label != null){
-                        title.setText(mForm.label.trim());    
-                    }
-                    title.setVisibility(View.VISIBLE);
+//                    TextView title = (TextView) extras.findViewById(R.id.payment_text);
+//                    if(mForm.label != null){
+//                        title.setText(mForm.label.trim());    
+//                    }
+//                    title.setVisibility(View.VISIBLE);
                     for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
                         ((ShippingMethodSubForm) element).dataControl.setVisibility(View.VISIBLE);
                     }
@@ -195,8 +195,8 @@ public class ShippingRadioGroupList extends RadioGroup {
             extras.setVisibility(View.GONE);
             if (subForms.get(mItems.get(button.getId())) != null) {
                 if (mItems.get(button.getId()).equalsIgnoreCase("pickupstation")) {
-                    TextView title = (TextView) extras.findViewById(R.id.payment_text);
-                    title.setVisibility(View.GONE);
+//                    TextView title = (TextView) extras.findViewById(R.id.payment_text);
+//                    title.setVisibility(View.GONE);
                     for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
                         ((ShippingMethodSubForm) element).dataControl.setVisibility(View.GONE);
                     }

@@ -3,6 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="@dimen/dimen_780px"
     android:orientation="vertical">
     
 <com.mobile.components.absspinner.IcsSpinner 
@@ -16,10 +17,11 @@
 	<ListView 
     	android:id="@+id/pickup_stations_list_view"
         android:layout_width="match_parent"
-    	android:layout_height="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1"
     	android:visibility="gone"
     	android:divider="@color/grey_light"
     	android:dividerHeight="0.75dp"
     	android:paddingLeft="@dimen/dimen_50px"
-    	android:paddingRight="@dimen/dimen_50px"  	/>
+  		android:paddingRight="@dimen/dimen_50px"  	/>
 </LinearLayout>

@@ -138,8 +138,8 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
     public View generateForm(final Context context) {
         // Generate LayoutParams for Spinner
         LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        mParams.setMargins(0, context.getResources().getDimensionPixelSize(R.dimen.form_top_margin), 0, context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid));
-
+//        mParams.setMargins(0, context.getResources().getDimensionPixelSize(R.dimen.form_top_margin), 0, context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid));
+        mParams.setMargins(0, 0, 0, context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid));
         this.dataControl = View.inflate(context, R.layout.form_icsspinner_shipping, null);
         this.dataControl.setId(getNextId());
         this.dataControl.setLayoutParams(mParams);

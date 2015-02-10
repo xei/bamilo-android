@@ -89,7 +89,7 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
         });
         
         pickupStationViewHolder.pickupStationRadioButton.setChecked(checks[position]);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             setDetailsWithBold(pickUpStationObject, pickupStationViewHolder);
         } else {
             setDetails(pickUpStationObject, pickupStationViewHolder);
@@ -162,7 +162,7 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         pickupStationViewHolder.pickupStationCity.setText(sb);
-        //
+        
         // // Opening hours
         String hours = context.getResources().getString(R.string.pickup_station_opening_hours);
         String pickupStationHours = pickUpStationObject.getOpening_hours();
