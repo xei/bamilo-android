@@ -677,7 +677,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
         bundle.putInt(GetCitiesHelper.REGION_ID_TAG, region);
-        triggerContentEventWithNoLoading(new GetCitiesHelper(), bundle, this);
+        triggerContentEvent(new GetCitiesHelper(), bundle, this);
     }
     
     

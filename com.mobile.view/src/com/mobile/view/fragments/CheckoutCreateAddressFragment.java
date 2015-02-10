@@ -894,7 +894,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         bundle.putString(Constants.BUNDLE_URL_KEY, apiCall);
         bundle.putInt(GetCitiesHelper.REGION_ID_TAG, region);
         bundle.putString(GetCitiesHelper.CUSTOM_TAG, selectedTag);
-        triggerContentEventWithNoLoading(new GetCitiesHelper(), bundle, this);
+        triggerContentEvent(new GetCitiesHelper(), bundle, this);
     }
     
     
