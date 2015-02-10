@@ -339,8 +339,6 @@
     <string name="shipping_fee">Taxa de entrega:</string>
     <string name="rating_option_error_message">Todas as opções de avaliação devem ser preenchidas</string>
     <string name="product_offer_from_title">Ofertas de  </string>
-    <string name="write_full_review"></string>
-    <string name="product_sold_by"></string>
-    <string name="review_this_seller"></string>
+    <string name="product_sold_by">Vendido por:</string>
 
 </resources>

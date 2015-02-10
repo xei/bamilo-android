@@ -29,6 +29,8 @@
             android:layout_width="match_parent"
             android:layout_marginLeft="@dimen/margin_mid"
             android:layout_marginRight="@dimen/margin_mid"
+            android:singleLine="false"
+            android:inputType="textMultiLine"
             android:layout_marginTop="@dimen/root_empty_drawable_padding"
             android:text="You have no items at the moment." />
     </LinearLayout>
