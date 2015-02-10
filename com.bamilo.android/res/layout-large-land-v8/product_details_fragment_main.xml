@@ -377,6 +377,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
+                        android:visibility="gone"
                         android:src="@drawable/arrow_side" />
                 </RelativeLayout>
 
@@ -448,6 +449,7 @@
                                 android:id="@id/features_arrow"
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
+                                android:visibility="gone"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="10dp"
@@ -523,6 +525,7 @@
                             <ImageView
                                 android:id="@id/description_arrow"
                                 android:layout_width="15dp"
+                                android:visibility="gone"
                                 android:layout_height="15dp"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
