@@ -131,6 +131,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         String contentUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
         sPopularityFragment.mProductUrl = contentUrl != null ? contentUrl : "";
         sPopularityFragment.setArguments(bundle);
+        showRatingForm = true;
         return sPopularityFragment;
     }
 

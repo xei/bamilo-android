@@ -389,6 +389,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                         isShowingRatingForm = true;
                         ratingContainer.setVisibility(View.VISIBLE);
                         reviewContainer.setVisibility(View.GONE);
+                        hideKeyboard();
                         ((CheckBox) dynamicReviewForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(true);
                     }
                 }
