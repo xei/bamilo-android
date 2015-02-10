@@ -446,7 +446,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
         @Override
         public boolean onDown(MotionEvent e) {
             Log.i(TAG, "onShowPress");
-            mViewPager.setSelected(true);
+//            mViewPager.setSelected(true);
 
             return false;
         }
@@ -458,13 +458,14 @@ public class ProductImageGalleryFragment extends BaseFragment {
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             Log.i(TAG, "onScroll");
             // i'm only scrolling along the X axis
-            mViewPager.setSelected(false);
+//            mViewPager.setSelected(false);
 
             return super.onScroll(e1, e2, distanceX, distanceY);
         }
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
+            Log.i(TAG, "onSingleTap");
             if(!errorLoadingImages){
                 if (!isZoomAvailable) {
                     Log.i(TAG, "onSingleTapConfirmed");
