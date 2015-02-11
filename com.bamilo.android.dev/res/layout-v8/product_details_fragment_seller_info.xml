@@ -57,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginTop="15dp"
+            android:paddingBottom="10dp"
             android:layout_toRightOf="@+id/product_detail_product_seller_rating_container"
             android:layout_weight="1" >
 
