@@ -36,7 +36,7 @@
         <ListView
             android:id="@+id/orders_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/no_orders_title"
             android:divider="@color/grey_light"
             android:dividerHeight="@null"

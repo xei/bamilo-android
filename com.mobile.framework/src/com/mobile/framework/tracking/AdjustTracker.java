@@ -532,6 +532,8 @@ public class AdjustTracker {
             break;
             
         case CHECKOUT_FINISHED: // Sale       
+            try {
+                
             if (isEnabled) {
                 Log.d(TAG, " TRACK REVENEU --> " + bundle.getDouble(TRANSACTION_VALUE));
                 
@@ -617,6 +619,12 @@ public class AdjustTracker {
                 }
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_transaction_confirmation), transParameters);
                 
+            }
+            
+            } catch (Exception e) {
+                //XXX ADJUST INTERNAL CRASH
+                //FATAL EXCEPTION: Adjust
+                //java.util.ConcurrentModificationException
             }
             break;
             
