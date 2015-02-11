@@ -81,7 +81,7 @@
 
         <com.mobile.components.absspinner.IcsSpinner
             android:id="@+id/campaign_item_size_spinner"
-            android:layout_width="@dimen/campaign_size_spinner_width"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignTop="@id/campaign_item_size_label"
             android:layout_toLeftOf="@id/campaign_item_size_label"

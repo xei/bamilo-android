@@ -8,5 +8,6 @@
     android:ellipsize="marquee"
     android:fontFamily="roboto_regular"
     android:singleLine="true"
+    android:gravity="right"
     android:textColor="@color/grey_middle"
     android:textSize="@dimen/text_xs" />

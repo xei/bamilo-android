@@ -1154,12 +1154,12 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
                 
                 // Checks if product has only one size to select (S, M, L - only available L)
                 if(sizes.size() == 1){
-                    ViewGroup.LayoutParams lp = view.mSizeSpinner.getLayoutParams();
-                    lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                    ViewGroup.LayoutParams lp = view.mSizeSpinner.getLayoutParams();
+//                    lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
                     view.mSizeSpinner.setClickable(false);
                 } else {
-                    ViewGroup.LayoutParams lp = view.mSizeSpinner.getLayoutParams();
-                    lp.width = (int)getResources().getDimension(R.dimen.campaign_size_spinner_width);
+//                    ViewGroup.LayoutParams lp = view.mSizeSpinner.getLayoutParams();
+//                    lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
                     view.mSizeSpinner.setClickable(true);
                 }
                 
