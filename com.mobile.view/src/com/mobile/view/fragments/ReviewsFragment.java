@@ -210,8 +210,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
             reviews = new ArrayList<ProductReviewComment>();
         
         selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
-        checkReviewsTypeVisibility();
-        
+
     }
     
     
@@ -239,6 +238,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
                 showFragmentRetry(this);
             }
         } else {
+            checkReviewsTypeVisibility();
             showFragmentContent();    
         }
     }
@@ -283,7 +283,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         
         if(selectedProduct == null)
             selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
-         
+        
         mProductUrl = selectedProduct.getUrl();
         outState.putString("url", mProductUrl);
         outState.putInt("page", pageNumber);
@@ -504,6 +504,8 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
               return;
           } else {
               selectedProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+              JumiaApplication.INSTANCE.setCurrentProduct(selectedProduct);
+              setHeaderReviews();
               showFragmentContent();
               // Waiting for the fragment comunication
               new Handler().postDelayed(new Runnable() {
@@ -896,13 +898,19 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         }
         return sharedPrefs;
     }
-    
+ 
+    private void setHeaderReviews(){
+        if(isProductRating){
+            productName.setText(selectedProduct.getBrand()+" "+selectedProduct.getName());
+            displayPriceInformation(productPriceNormal, productPriceSpecial);
+        }
+       
+    }
  
     /**
      * method that controls what to show or hide based on what type of reviews it is
      */
     private void checkReviewsTypeVisibility(){
-        
         
         if(isProductRating){
             productRatingContainer.setVisibility(View.VISIBLE);

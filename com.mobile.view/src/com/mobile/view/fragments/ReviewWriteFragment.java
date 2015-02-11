@@ -188,17 +188,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        // Validate is service is available
-        if (JumiaApplication.mIsBound) {
-            // load complete product URL
-            if (mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
-                String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
-                mCompleteProductUrl = contentUrl != null ? contentUrl : "";
-            }
-
-        } else {
-            showFragmentRetry(this);
-        }
+        
     }
 
     /*
@@ -224,30 +214,39 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
             reviewForm =  JumiaApplication.INSTANCE.reviewForm;
 
         }
-        
-        if (completeProduct == null) {
-            Bundle bundle = new Bundle();
-            bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-            triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
-        } else {
-            /* Commented due to unnecessary data being fetched
-            triggerAutoLogin();
-            triggerCustomer();*/
-            if(ratingForm != null && reviewForm != null){
-                setRatingLayout(ratingForm); 
-                setReviewLayout(reviewForm);
-                loadReviewAndRatingFormValues(isShowingRatingForm);
-                if(isShowingRatingForm){
-                    ratingContainer.setVisibility(View.VISIBLE);
-                    reviewContainer.setVisibility(View.GONE);
-                } else {
-                    ratingContainer.setVisibility(View.GONE);
-                    reviewContainer.setVisibility(View.VISIBLE);
-                }
-            } else {
-                triggerRatingForm();
+     // Validate is service is available
+        if (JumiaApplication.mIsBound) {
+            // load complete product URL
+            if (mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
+                String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
+                mCompleteProductUrl = contentUrl != null ? contentUrl : "";
             }
             
+            if (completeProduct == null) {
+                Bundle bundle = new Bundle();
+                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
+            } else {
+                /* Commented due to unnecessary data being fetched
+                triggerAutoLogin();
+                triggerCustomer();*/
+                if(ratingForm != null && reviewForm != null){
+                    setRatingLayout(ratingForm); 
+                    setReviewLayout(reviewForm);
+                    loadReviewAndRatingFormValues(isShowingRatingForm);
+                    if(isShowingRatingForm){
+                        ratingContainer.setVisibility(View.VISIBLE);
+                        reviewContainer.setVisibility(View.GONE);
+                    } else {
+                        ratingContainer.setVisibility(View.GONE);
+                        reviewContainer.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    triggerRatingForm();
+                }
+            }
+        } else {
+            showFragmentRetry(this);
         }
         
     }
@@ -640,6 +639,7 @@ public class ReviewWriteFragment extends BaseFragment implements OnClickListener
                 return true;
             } else {
                 completeProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                JumiaApplication.INSTANCE.setCurrentProduct(completeProduct);
                 // triggerAutoLogin();
                 // triggerCustomer();
                 triggerRatingForm();
