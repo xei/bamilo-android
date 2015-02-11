@@ -1318,60 +1318,65 @@ public class DynamicFormItem {
         
         ((View) this.dataControl).setContentDescription(this.entry.getKey());
         // Listeners
-        this.dataControl.setOnFocusChangeListener(new OnFocusChangeListener() {
+        
+        //TODO
+        //FIXME to be fixed on previous rating reform, uncomment crashs app
+        
+//        this.dataControl.setOnFocusChangeListener(new OnFocusChangeListener() {
+//
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                EditText dataCtrl = (EditText) v;
+//                if (hasFocus) {
+//                    errorControl.setVisibility(View.GONE);
+//                    mandatoryControl.setVisibility(View.GONE);
+//                    // Uncomment the below line if you want hide the hint when the focus changes
+//                    // dataCtrl.setHint(" ");
+//                    dataCtrl.setCursorVisible(true);
+//                } else {
+//                    if (entry.getValidation().isRequired()) {
+//                        mandatoryControl
+//                                .setVisibility(dataCtrl.getText().toString().length() == 0 ? View.VISIBLE
+//                                        : View.GONE);
+//                    }
+//                    if (dataCtrl.getHint().toString().equals(" ")) {
+//                        dataCtrl.setHint(editText);
+//                    }
+//
+//                }
+//
+//                if (null != editFocusListener) {
+//                    editFocusListener.onFocusChange(v, hasFocus);
+//
+//                }
+//            }
+//        });
+//
+//        ((EditText) this.dataControl).addTextChangedListener(new TextWatcher() {
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if (null != textWatcher) {
+//                    textWatcher.afterTextChanged(s);
+//                }
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                if (null != textWatcher) {
+//                    textWatcher.beforeTextChanged(s, start, count, after);
+//                }
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (null != textWatcher) {
+//                    textWatcher.onTextChanged(s, start, before, count);
+//                }
+//            }
+//
+//        });
 
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                EditText dataCtrl = (EditText) v;
-                if (hasFocus) {
-                    errorControl.setVisibility(View.GONE);
-                    mandatoryControl.setVisibility(View.GONE);
-                    // Uncomment the below line if you want hide the hint when the focus changes
-                    // dataCtrl.setHint(" ");
-                    dataCtrl.setCursorVisible(true);
-                } else {
-                    if (entry.getValidation().isRequired()) {
-                        mandatoryControl
-                                .setVisibility(dataCtrl.getText().toString().length() == 0 ? View.VISIBLE
-                                        : View.GONE);
-                    }
-                    if (dataCtrl.getHint().toString().equals(" ")) {
-                        dataCtrl.setHint(editText);
-                    }
-
-                }
-
-                if (null != editFocusListener) {
-                    editFocusListener.onFocusChange(v, hasFocus);
-
-                }
-            }
-        });
-
-        ((EditText) this.dataControl).addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (null != textWatcher) {
-                    textWatcher.afterTextChanged(s);
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (null != textWatcher) {
-                    textWatcher.beforeTextChanged(s, start, count, after);
-                }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (null != textWatcher) {
-                    textWatcher.onTextChanged(s, start, before, count);
-                }
-            }
-
-        });
     }
 
     /**

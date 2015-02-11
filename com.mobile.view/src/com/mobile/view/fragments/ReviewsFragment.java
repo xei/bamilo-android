@@ -6,6 +6,25 @@ package com.mobile.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.LayoutDirection;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.ScrollViewEx;
 import com.mobile.components.ScrollViewEx.OnScrollBottomReachedListener;
@@ -33,26 +52,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
-import android.util.LayoutDirection;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -347,12 +347,12 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
     }
 
     private void startWriteReviewFragment() {
-        mWriteReviewFragment = new ReviewWriteFragment();
+        mWriteReviewFragment = new ReviewWriteNestedFragment();
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.CONTENT_URL, mProductUrl);
         args.putBoolean(CAME_FROM_POPULARITY, true);
         
-        args.putBoolean(ReviewWriteFragment.RATING_SHOW, showRatingForm);
+        args.putBoolean(ReviewWriteNestedFragment.RATING_SHOW, showRatingForm);
         
         mWriteReviewFragment.setArguments(args);
         FragmentManager fm = getChildFragmentManager();
@@ -365,8 +365,8 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
     private void removeWriteReviewFragment() {
         if (mWriteReviewFragment != null) {
            
-            if(mWriteReviewFragment instanceof ReviewWriteFragment)
-                showRatingForm = ((ReviewWriteFragment)mWriteReviewFragment).getIsShowingRatingForm();
+            if(mWriteReviewFragment instanceof ReviewWriteNestedFragment)
+                showRatingForm = ((ReviewWriteNestedFragment)mWriteReviewFragment).getIsShowingRatingForm();
             
             FragmentManager fm = getChildFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();

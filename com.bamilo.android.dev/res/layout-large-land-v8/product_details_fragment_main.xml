@@ -20,8 +20,8 @@
         android:layout_height="match_parent"
         android:layout_alignLeft="@id/center_point"
         android:layout_alignParentRight="true"
-        android:scrollbars="none"
-        android:layout_marginLeft="7dp" >
+        android:layout_marginLeft="7dp"
+        android:scrollbars="none" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -106,16 +106,16 @@
                         android:id="@+id/product_image_layout"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/pdv_image"
-                        android:gravity="center" 
                         android:layout_below="@id/gallery_line"
-                        android:orientation="horizontal">
+                        android:gravity="center"
+                        android:orientation="horizontal" >
 
                         <FrameLayout
                             android:id="@+id/product_detail_image_gallery_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:visibility="gone" 
-                            android:background="@android:color/transparent"/>
+                            android:background="@android:color/transparent"
+                            android:visibility="gone" />
 
                         <ProgressBar
                             android:id="@+id/image_loading_progress"
@@ -216,8 +216,8 @@
                     android:layout_below="@+id/product_detail_product_variant_container"
                     layout="@layout/product_details_fragment_variations" />
 
-
-<!--                 <View
+                <!--
+                     <View
                     android:id="@+id/variation_bottom_line"
                     style="@style/divider_horizontal"
                     android:layout_below="@+id/product_detail_product_variant_container" />
@@ -226,7 +226,8 @@
                     android:id="@+id/product_detail_variations_container"
                     android:layout_width="match_parent"
                     android:layout_height="63dp"
-                    android:layout_below="@+id/variation_bottom_line" /> -->
+                    android:layout_below="@+id/variation_bottom_line" />
+                -->
             </RelativeLayout>
 
             <!-- OFFERS -->
@@ -251,13 +252,10 @@
                 android:layout_marginRight="@dimen/rounded_margin_mid"
                 android:layout_marginTop="0dp"
                 layout="@layout/product_details_fragment_bundle" />
-
-
         </RelativeLayout>
     </com.mobile.utils.ScrollViewWithHorizontal>
 
-    
-        <!-- TIPS -->
+    <!-- TIPS -->
 
     <include
         android:id="@+id/product_detail_tips_container"
@@ -269,7 +267,7 @@
         android:layout_marginTop="@dimen/rounded_margin_mid"
         layout="@layout/tips"
         android:visibility="gone" />
-    
+
     <!-- Right Container -->
 
     <RelativeLayout
@@ -321,8 +319,8 @@
         <com.mobile.utils.ScrollViewWithHorizontal
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:layout_below="@id/shop_buttons" >
+            android:layout_below="@id/shop_buttons"
+            android:scrollbars="none" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -375,10 +373,10 @@
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_alignParentLeft="true"
-                        android:visibility="gone"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:src="@drawable/arrow_side" />
+                        android:src="@drawable/arrow_side"
+                        android:visibility="gone" />
                 </RelativeLayout>
 
                 <!-- FEATURES -->
@@ -439,21 +437,11 @@
                             <com.mobile.components.customfontviews.TextView
                                 style="@style/text_normal"
                                 android:layout_width="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="3dp"
-                                android:layout_toRightOf="@+id/features_arrow"
-                                android:text="@string/show_more"
-                                android:textColor="@color/orange_basic" />
-
-                            <ImageView
-                                android:id="@id/features_arrow"
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="10dp"
-                                android:visibility="gone"
-                                android:src="@drawable/arrow_side" />
+                                android:text="@string/show_more"
+                                android:textColor="@color/orange_basic" />
                         </RelativeLayout>
                     </LinearLayout>
                 </RelativeLayout>
@@ -516,21 +504,11 @@
                             <com.mobile.components.customfontviews.TextView
                                 style="@style/text_normal"
                                 android:layout_width="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="3dp"
-                                android:layout_toRightOf="@+id/description_arrow"
-                                android:text="@string/show_more"
-                                android:textColor="@color/orange_basic" />
-
-                            <ImageView
-                                android:id="@id/description_arrow"
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="10dp"
-                                android:visibility="gone"
-                                android:src="@drawable/arrow_side" />
+                                android:text="@string/show_more"
+                                android:textColor="@color/orange_basic" />
                         </RelativeLayout>
                     </LinearLayout>
                 </RelativeLayout>
