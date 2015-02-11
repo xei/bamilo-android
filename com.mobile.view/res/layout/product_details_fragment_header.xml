@@ -43,44 +43,43 @@
 
     <!-- RATING -->
 
-        <RelativeLayout
-            android:id="@+id/seller_reviews_rating_container"
-            android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/seller_reviews_rating_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/product_price_special"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="7dp"
+        android:gravity="start|left|center_vertical"
+        android:visibility="gone" >
+
+        <RatingBar
+            android:id="@+id/seller_reviews_item_rating"
+            style="@style/starRatingBarSmall"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@id/product_price_special"
             android:layout_centerVertical="true"
-            android:layout_marginTop="7dp"
-            android:visibility="gone"
-            android:gravity="start|left|center_vertical" >
+            android:numStars="5"
+            android:rating="1" />
 
-            <RatingBar
-                android:id="@+id/seller_reviews_item_rating"
-                style="@style/starRatingBarSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:numStars="5"
-                android:rating="1" />
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/seller_reviews_item_reviews"
-                style="@style/text_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_toRightOf="@+id/seller_reviews_item_rating"
-                android:layout_toEndOf="@+id/seller_reviews_item_rating"
-                android:gravity="start|left|center_vertical"
-                android:includeFontPadding="false"
-                android:text="Reviews"
-                android:textColor="@color/grey_light" />
-        </RelativeLayout>
-
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/seller_reviews_item_reviews"
+            style="@style/text_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_toEndOf="@+id/seller_reviews_item_rating"
+            android:layout_toRightOf="@+id/seller_reviews_item_rating"
+            android:gravity="start|left|center_vertical"
+            android:includeFontPadding="false"
+            android:text="Reviews"
+            android:textColor="@color/grey_light" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/product_ratings_container"

@@ -695,18 +695,21 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         Log.d(TAG, "showProductsNotfound");
         hideProductsLoading(false);
         relativeLayoutPc.setVisibility(View.GONE);
-        showFragmentRetry(new OnClickListener() {
+        // Show continue shopping
+        showContinueShopping(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideProductsNotFound();
-                getMoreProducts();
+                //hideProductsNotFound();
+                //getMoreProducts();
+                getBaseActivity().onBackPressed();
             }
         });
     }
 
+    /*
     private void hideProductsNotFound() {
         showFragmentContentContainer();
-    }
+    }*/
 
     private void showFiltersNoResults() {
         mSavedProductsSKU = null;
@@ -1061,10 +1064,13 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
         Log.d(TAG, "ON ERROR EVENT");
     	
         // Validate fragment state
-        if (isOnStoppingProcess) return;
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
     	
+        // Resume
         RocketImageLoader.getInstance().startProcessingQueue();
-
 
         /**
          * Show the retry layout for ErrorCode.NO_NETWORK
@@ -1076,25 +1082,12 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
             ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
             
             Log.d(TAG, "ERROR CODE: " + errorCode.toString());
-//            if(errorCode == ErrorCode.NO_NETWORK){
-//                ((CatalogFragment) getParentFragment()).disableCatalogButtons();
-//                showFragmentRetry(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        ((CatalogFragment) getParentFragment()).enableCatalogButtons();
-//                        getMoreProducts();
-//                    }
-//                }, R.string.no_connect_dialog_content);
-//                return;
-//            } else 
             
-          if(errorCode == ErrorCode.NO_NETWORK){
-              if(getParentFragment() != null)
-                  ((CatalogFragment) getParentFragment()).disableCatalogButtons();
-              super.handleErrorEvent(bundle);
-          } else if (errorCode == ErrorCode.HTTP_STATUS) {
-                if(getParentFragment() != null)
-                    ((CatalogFragment) getParentFragment()).enableCatalogButtons();
+            if (errorCode == ErrorCode.NO_NETWORK) {
+                if (getParentFragment() != null) ((CatalogFragment) getParentFragment()).disableCatalogButtons();
+                super.handleErrorEvent(bundle);
+            } else if (errorCode == ErrorCode.HTTP_STATUS) {
+                if (getParentFragment() != null) ((CatalogFragment) getParentFragment()).enableCatalogButtons();
                 showContinueShopping();
                 return;
             } else if (super.handleErrorEvent(bundle)) {
@@ -1121,8 +1114,8 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
                 featuredBox = (FeaturedBox) featureBoxObject;
             }
 
-            // Show respective error layout
-            if (!TextUtils.isEmpty(mSearchQuery) && !hasFilter) {
+            // Show Feature box as error layout if hasn't filter 
+            if (featuredBox != null && !hasFilter) {
                 // For search query
                 parentFragment.onErrorSearchResult(featuredBox);
             } else {

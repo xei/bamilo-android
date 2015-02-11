@@ -14,6 +14,30 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
+import android.content.Context;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextUtils.TruncateAt;
+import android.text.TextWatcher;
+import android.util.LayoutDirection;
+import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.Button;
@@ -34,33 +58,7 @@ import com.mobile.utils.dialogfragments.DialogDatePickerFragment.OnDatePickerDia
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
-import android.annotation.SuppressLint;
-import android.content.ContentValues;
-import android.content.Context;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.TextUtils.TruncateAt;
-import android.text.TextWatcher;
-import android.util.LayoutDirection;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
-import android.widget.Spinner;
-import android.widget.TextView.OnEditorActionListener;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -1320,60 +1318,60 @@ public class DynamicFormItem {
         
         ((View) this.dataControl).setContentDescription(this.entry.getKey());
         // Listeners
-//        this.dataControl.setOnFocusChangeListener(new OnFocusChangeListener() {
-//
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                EditText dataCtrl = (EditText) v;
-//                if (hasFocus) {
-//                    errorControl.setVisibility(View.GONE);
-//                    mandatoryControl.setVisibility(View.GONE);
-//                    // Uncomment the below line if you want hide the hint when the focus changes
-//                    // dataCtrl.setHint(" ");
-//                    dataCtrl.setCursorVisible(true);
-//                } else {
-//                    if (entry.getValidation().isRequired()) {
-//                        mandatoryControl
-//                                .setVisibility(dataCtrl.getText().toString().length() == 0 ? View.VISIBLE
-//                                        : View.GONE);
-//                    }
-//                    if (dataCtrl.getHint().toString().equals(" ")) {
-//                        dataCtrl.setHint(editText);
-//                    }
-//
-//                }
-//
-//                if (null != editFocusListener) {
-//                    editFocusListener.onFocusChange(v, hasFocus);
-//
-//                }
-//            }
-//        });
-//
-//        ((EditText) this.dataControl).addTextChangedListener(new TextWatcher() {
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if (null != textWatcher) {
-//                    textWatcher.afterTextChanged(s);
-//                }
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                if (null != textWatcher) {
-//                    textWatcher.beforeTextChanged(s, start, count, after);
-//                }
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (null != textWatcher) {
-//                    textWatcher.onTextChanged(s, start, before, count);
-//                }
-//            }
-//
-//        });
+        this.dataControl.setOnFocusChangeListener(new OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                EditText dataCtrl = (EditText) v;
+                if (hasFocus) {
+                    errorControl.setVisibility(View.GONE);
+                    mandatoryControl.setVisibility(View.GONE);
+                    // Uncomment the below line if you want hide the hint when the focus changes
+                    // dataCtrl.setHint(" ");
+                    dataCtrl.setCursorVisible(true);
+                } else {
+                    if (entry.getValidation().isRequired()) {
+                        mandatoryControl
+                                .setVisibility(dataCtrl.getText().toString().length() == 0 ? View.VISIBLE
+                                        : View.GONE);
+                    }
+                    if (dataCtrl.getHint().toString().equals(" ")) {
+                        dataCtrl.setHint(editText);
+                    }
+
+                }
+
+                if (null != editFocusListener) {
+                    editFocusListener.onFocusChange(v, hasFocus);
+
+                }
+            }
+        });
+
+        ((EditText) this.dataControl).addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (null != textWatcher) {
+                    textWatcher.afterTextChanged(s);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (null != textWatcher) {
+                    textWatcher.beforeTextChanged(s, start, count, after);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (null != textWatcher) {
+                    textWatcher.onTextChanged(s, start, before, count);
+                }
+            }
+
+        });
     }
 
     /**

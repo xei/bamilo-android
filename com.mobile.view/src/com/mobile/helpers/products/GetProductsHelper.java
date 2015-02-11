@@ -173,11 +173,9 @@ public class GetProductsHelper extends BaseHelper {
         try {
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 Log.i(TAG, "REQUEST_ERROR");
-                HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle
-                        .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                 if (errors != null) {
-                    List<String> errorMessages = (List<String>) errors
-                            .get(Constants.BUNDLE_ERROR_KEY);
+                    List<String> errorMessages = (List<String>) errors.get(Constants.BUNDLE_ERROR_KEY);
                     if (errorMessages.size() > 0) {
                         String specificErrorMessage = errorMessages.get(0);
                         if (SEARCH_NO_RESULTS.equals(specificErrorMessage)) {
