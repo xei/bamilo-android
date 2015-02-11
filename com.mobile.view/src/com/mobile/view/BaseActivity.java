@@ -5,51 +5,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.HoloFontLoader;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsCheckout;
-import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.ActivitiesWorkFlow;
-import com.mobile.controllers.LogOut;
-import com.mobile.controllers.SearchDropDownAdapter;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.objects.CompleteProduct;
-import com.mobile.framework.objects.Customer;
-import com.mobile.framework.objects.SearchSuggestion;
-import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.service.IRemoteServiceCallback;
-import com.mobile.framework.tracking.AdjustTracker;
-import com.mobile.framework.tracking.AnalyticsGoogle;
-import com.mobile.framework.tracking.GTMEvents.GTMValues;
-import com.mobile.framework.tracking.TrackingEvent;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.CustomerUtils;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.framework.utils.ShopSelector;
-import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
-import com.mobile.helpers.search.GetSearchSuggestionHelper;
-import com.mobile.helpers.session.GetLoginHelper;
-import com.mobile.interfaces.IResponseCallback;
-import com.mobile.utils.CheckVersion;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.MyProfileActionProvider;
-import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.CustomToastView;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
-import com.mobile.utils.dialogfragments.DialogProgressFragment;
-import com.mobile.utils.maintenance.MaintenancePage;
-import com.mobile.utils.ui.UIUtils;
-import com.mobile.view.fragments.BaseFragment.KeyboardState;
-import com.mobile.view.fragments.HomeFragment;
-import com.mobile.view.fragments.NavigationFragment;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -87,6 +42,54 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+
+import com.mobile.app.JumiaApplication;
+import com.mobile.components.customfontviews.HoloFontLoader;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsCheckout;
+import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.ActivitiesWorkFlow;
+import com.mobile.controllers.LogOut;
+import com.mobile.controllers.SearchDropDownAdapter;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.database.FavouriteTableHelper;
+import com.mobile.framework.objects.CompleteProduct;
+import com.mobile.framework.objects.Customer;
+import com.mobile.framework.objects.SearchSuggestion;
+import com.mobile.framework.objects.ShoppingCart;
+import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.service.IRemoteServiceCallback;
+import com.mobile.framework.tracking.AdjustTracker;
+import com.mobile.framework.tracking.AnalyticsGoogle;
+import com.mobile.framework.tracking.GTMEvents.GTMValues;
+import com.mobile.framework.tracking.TrackingEvent;
+import com.mobile.framework.tracking.TrackingPage;
+import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.CustomerUtils;
+import com.mobile.framework.utils.DeviceInfoHelper;
+import com.mobile.framework.utils.EventType;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.framework.utils.NetworkConnectivity;
+import com.mobile.framework.utils.ShopSelector;
+import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
+import com.mobile.helpers.search.GetSearchSuggestionHelper;
+import com.mobile.helpers.session.GetLoginHelper;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.utils.CheckVersion;
+import com.mobile.utils.MyMenuItem;
+import com.mobile.utils.MyProfileActionProvider;
+import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.dialogfragments.CustomToastView;
+import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.dialogfragments.DialogProgressFragment;
+import com.mobile.utils.maintenance.MaintenancePage;
+import com.mobile.utils.ui.UIUtils;
+import com.mobile.view.fragments.BaseFragment.KeyboardState;
+import com.mobile.view.fragments.HomeFragment;
+import com.mobile.view.fragments.NavigationFragment;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -1140,8 +1143,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         String requestQuery = bundle.getString(GetSearchSuggestionHelper.SEACH_PARAM);
         Log.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
         // Validate current search component
-        if (mSearchAutoComplete != null
-                && !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
+        if (mSearchAutoComplete != null && !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
             Log.w(TAG, "SEARCH ERROR: WAS DISCARTED FOR QUERY " + requestQuery);
             return;
         }
@@ -1149,6 +1151,26 @@ public abstract class BaseActivity extends ActionBarActivity {
             return;
         // Hide dropdown
         mSearchAutoComplete.dismissDropDown();
+        
+        // Show no network dialog
+        if(!NetworkConnectivity.isConnected(getApplicationContext())) {
+            if(dialog != null) dialog.dismissAllowingStateLoss();
+            // Show
+            dialog = DialogGenericFragment.createNoNetworkDialog(this, new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismissAllowingStateLoss();
+                    if(mSearchAutoComplete != null) getSuggestions();
+                }
+            }, 
+            new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismissAllowingStateLoss();
+                }
+            }, false);
+            dialog.show(getSupportFragmentManager(), null);
+        }
     }
 
     /**
