@@ -12,8 +12,10 @@
         android:layout_alignParentBottom="true"
         android:background="#90000000"
         android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
         android:paddingBottom="15dp"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <LinearLayout
             android:id="@+id/indicators_container"
