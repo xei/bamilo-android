@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import com.mobile.app.JumiaApplication;
@@ -351,9 +352,14 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         mShippingFormContainer.removeAllViews();
         mShippingFormContainer.addView(shippingFormGenerator.getContainer());                
         mShippingFormContainer.refreshDrawableState();
+        
+        //removes the gender from the form on the billing address if this is sign up
+        removeGenderFromBilling(form);
+        
         // Billing form
         billingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
         mBillingFormContainer.removeAllViews();
+        //TODO
         mBillingFormContainer.addView(billingFormGenerator.getContainer());
         mBillingFormContainer.refreshDrawableState();
         // Define if CITY is a List or Text
@@ -379,6 +385,37 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         loadSavedValues(mBillingSavedValues, billingFormGenerator);
     }
 
+    /**
+     * function responsible for searching for the gender field on the form 
+     * and case it exists removes it in order to not show on the billing address after a sign up
+     * 
+     * @param form
+     */
+    private void removeGenderFromBilling(Form form){
+        
+        int index = -1;
+        if(form.fields.size() > 0){
+            for (int i = 0; i < form.fields.size(); i++) {
+                if(form.fields.get(i).getKey() != null && form.fields.get(i).getKey().toString().equals("gender"))
+                    index = i;
+            }
+            if(index != -1)
+                form.fields.remove(index);
+        }
+        String genderKey = "";
+        if(form.mFieldKeyMap != null){
+            Iterator it = form.mFieldKeyMap.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pairs = (Map.Entry)it.next();
+                if(pairs.getKey().equals("gender"))
+                    genderKey = pairs.getKey().toString();
+            }
+            if(!"".equals(genderKey)){
+                form.mFieldKeyMap.remove(genderKey);
+            }
+        }
+    }
+    
     /**
      * Load the saved values to the respective form 
      * @param savedValues
