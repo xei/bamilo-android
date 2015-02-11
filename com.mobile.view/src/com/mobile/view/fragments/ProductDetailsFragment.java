@@ -1263,12 +1263,16 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
     
     /**
      * Set the gallery
-     * @param mCompleteProduct
+     * @param completeProduct
      * @author sergiopereira
      */
-    private void setProductGallery(CompleteProduct mCompleteProduct) {
+    private void setProductGallery(CompleteProduct completeProduct) {
+        // Show loading
         mGalleryViewGroupFactory.setViewVisible(R.id.image_loading_progress);
-        RocketImageLoader.getInstance().loadImages(mCompleteProduct.getImageList(), this);
+        // Case product without images
+        if(CollectionUtils.isEmpty(completeProduct.getImageList())) mGalleryViewGroupFactory.setViewVisible(R.id.image_place_holder);
+        // Case product with images
+        else RocketImageLoader.getInstance().loadImages(completeProduct.getImageList(), this);
     }
     
     /**
