@@ -319,14 +319,27 @@
     <string name="pinch_to_zoom_label">باز و بسته کردن دو انگشت برای تغییر بزرگنمایی</string>
     <string name="string_rating">امتیازدهی</string>
     <string name="string_with_discount_only">تنها با تخفیف</string>
-	<string name="bamilo_not_available">بامیلو در حال حاضر در دسترس نمی باشد.</string>    
-        
-    <string name="invalid_product"></string>
-
+    <string name="bamilo_not_available">بامیلو در حال حاضر در دسترس نمی باشد.</string>
+    <string name="invalid_product">کالای نامعتبر</string>
     <string name="try_again_retry">دوباره امتحان کنید</string>
     <string name="connect_to_internet">An internet error occurred, please try again.</string>
     <string name="pickup_station_address"> نشانی:</string>
-	<string name="pickup_station_city"> شهر:</string>
-	<string name="pickup_station_opening_hours"> ساعت های کاری:</string>
-    
+    <string name="pickup_station_city"> شهر:</string>
+    <string name="pickup_station_opening_hours"> ساعت های کاری:</string>
+    <string name="added_bundle_to_shop_cart_dialog_text">کالاها به سبد خرید اضافه گردیدند</string>
+    <string name="product_delivery_time">تحویل در:</string>
+    <string name="product_delivery_days">روز</string>
+    <string name="other_sellers">سایر تامین کنندگان</string>
+    <string name="same_product_from_other_sellers">کالای مشابه از سایر تامین کنندگان</string>
+    <string name="from">از</string>
+    <string name="shipping_time">زمان ارسال:</string>
+    <string name="shipping_fee">هزینه ارسال :</string>
+    <string name="rating_option_error_message">تمامی گزینه های امتیازدهی می بایست تکمیل شود</string>
+    <string name="product_offer_from_title">پیشنهادهای</string>
+    <string name="write_full_review">نظر کامل خود را بنویسید</string>
+    <string name="product_sold_by">فروخته شده توسط:</string>
+    <string name="review_this_seller">نظر خود را در مورد این تامین کننده بنویسید</string>
+    <string name="succes_login">وارد سیستم شده اید</string>
+    <string name="error_fb_permission_not_granted">متاسفیم، برای ایجاد حساب کاربری و ورود به سیستم به ایمیل شما نیاز است</string>
+
 </resources>

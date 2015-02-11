@@ -24,7 +24,7 @@
     <string name="buy_now">ယခု၀ယ္ယူရန္</string>
     <string name="call_to_order">ေအာ္ဒါမွာရန္ဖုန္းေခၚမည္</string>
     <string name="campaign_choose_size">သင္၏ဆိုဒ္နံပါတ္ေရြးခ်ယ္ပါ</string>
-    <string name="campaign_ramaining_stock">ကုန္လက္က်န္:</string> 
+    <string name="campaign_ramaining_stock">ကုန္လက္က်န္:</string>
     <string name="campaign_save">သင္ သက္သာၿပီး</string>
     <string name="campaign_stock_alert">သင္ေရြးခ်ယ္ထားေသာ ကုန္ပစၥည္းမွာ လက္က်န္မရွိေတာ့ပါ</string>
     <string name="campaigns_label">ပြဲလမ္းသဘင္မ်ား</string>
@@ -322,9 +322,25 @@
     <string name="string_with_discount_only">ေလွ်ာ့ေစ်းျဖင့္သာ</string>
     <string name="invalid_product">မရရွိႏိုင္ေသာ ကုန္ပစၥည္း</string>
     <string name="category_filter_error">အမ်ိဳးအစားခြဲျခား စစ္ထုတ္ျခင္း မလုပ္ေဆာင္ႏိုင္ပါ။</string>
-	<string name="try_again_retry">ျပန္လည္ႀကိဳးစားပါ</string>
+    <string name="try_again_retry">ျပန္လည္ႀကိဳးစားပါ</string>
     <string name="connect_to_internet">An internet error occurred, please try again.</string>
     <string name="pickup_station_address">လိပ္စာ : </string>
-	<string name="pickup_station_city">ျမိဳ႕ : </string>
-	<string name="pickup_station_opening_hours">ရံုးဖြင့္ခ်ိန္ : </string>
+    <string name="pickup_station_city">ျမိဳ႕ : </string>
+    <string name="pickup_station_opening_hours">ရံုးဖြင့္ခ်ိန္ : </string>
+    <string name="added_bundle_to_shop_cart_dialog_text">ပစၥည္းမ်ားအား ေစ်း၀ယ္လွည္းသို႔ ထည္႔ၿပီးပါၿပီ</string>
+    <string name="product_delivery_time">: အတြင္း ပို႔ေဆာင္ေပးမႈ</string>
+    <string name="product_delivery_days">ေန႔</string>
+    <string name="other_sellers">အျခား ေရာင္းခ်သူမ်ား</string>
+    <string name="same_product_from_other_sellers">အျခားေရာင္းခ်သူမ်ားထံမွ တူညီေသာကုန္ပစၥည္း</string>
+    <string name="from">မွ</string>
+    <string name="shipping_time">သယ္ယူပို႔ေဆာင္ခ်ိန္</string>
+    <string name="shipping_fee">သယ္ယူပို႔ေဆာင္ခ</string>
+    <string name="rating_option_error_message">အဆင့္သတ္မွတ္ေပးျခင္းမ်ားအားလံုး ျဖည္႔ေပးရပါမည္။</string>
+    <string name="product_offer_from_title">မွ ကမ္းလွမ္းခ်က္မ်ား</string>
+    <string name="write_full_review">သံုးသပ္ခ်က္အျပည္႔အစံု ေရးသားရန္</string>
+    <string name="product_sold_by">: မွ ေရာင္းခ်ပါသည္</string>
+    <string name="review_this_seller">ဤေရာင္းခ်သူအား ယခု ျပန္လည္သံုးသပ္ရန္!</string>
+    <string name="succes_login">Log In ၀င္ၿပီးပါၿပီ</string>
+    <string name="error_fb_permission_not_granted">၀မ္းနည္းပါတယ္.သင္၏အေကာင့္ ျပဳလုပ္ရန္/ Login ၀င္ရန္ သင္၏အီးေမးလ္လိုအပ္ပါသည္။</string>
+
 </resources>
