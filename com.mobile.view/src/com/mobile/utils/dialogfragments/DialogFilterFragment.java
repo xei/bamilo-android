@@ -405,6 +405,9 @@ public class DialogFilterFragment extends DialogFragment {
             // Price filter: Get range value 
             if(filter.hasRangeValues())
                 filter.cleanRangeValues();
+            // Price filter: Get discount only
+            if(filter.isRangeWithDiscount())
+                filter.setRangeWithDiscount(false);
         }
         
         /**
