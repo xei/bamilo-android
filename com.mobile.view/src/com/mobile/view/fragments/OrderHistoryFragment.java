@@ -436,12 +436,16 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
                 
                 if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct != -1) setOrderProducts(ordersList.get(selectedProduct),productsLanscapeContainer,true);
                 else if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct == -1) setOrderProducts(ordersList.get(0),productsLanscapeContainer,true);
+                
                 ordersListView.setSelection(selectedProduct);
             } else{
                 ordersListView.setAdapter(ordersAdapter);
                 ordersAdapter.setSelectedPosition(selectedProduct);
                 ordersAdapter.updateOrders(ordersList);
                 ordersListView.setSelection(selectedProduct);
+                
+                if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct != -1) setOrderProducts(ordersList.get(selectedProduct),productsLanscapeContainer,true);
+                else if(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && selectedProduct == -1) setOrderProducts(ordersList.get(0),productsLanscapeContainer,true);
             }
         }
         else{
