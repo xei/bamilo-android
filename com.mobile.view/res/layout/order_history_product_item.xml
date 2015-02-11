@@ -3,7 +3,7 @@
     android:id="@+id/order_history_product_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white" >
+    android:background="@android:color/transparent" >
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_product_name"
