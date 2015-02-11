@@ -15,7 +15,7 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingBottom="15dp"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <LinearLayout
             android:id="@+id/indicators_container"
