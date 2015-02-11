@@ -3,7 +3,6 @@ package com.mobile.utils.dialogfragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.CatalogFilter;
 import com.mobile.framework.objects.CatalogFilterOption;
@@ -473,8 +472,8 @@ public class DialogFilterFragment extends DialogFragment {
                 int max = filter.getMaxRangeValue();
                 contentValues.put(filterId, min + "-" + max);
             }
-            boolean discount = filter.isRangeWithDiscount();
-            if(discount){
+            // String special_price = 1
+            if(filter.isRangeWithDiscount()){
                 contentValues.put("special_price", "1");
             }
         }
@@ -532,9 +531,9 @@ public class DialogFilterFragment extends DialogFragment {
             else if(filter.hasRangeValues() && !filter.isRangeWithDiscount())
                 ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue());
             else if(filter.hasRangeValues() && filter.isRangeWithDiscount())
-                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue() +" "+JumiaApplication.INSTANCE.getResources().getString(R.string.string_with_discount_only));
+                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(filter.getMinRangeValue() + " - " + filter.getMaxRangeValue() + " " + getContext().getString(R.string.string_with_discount_only));
             else if(!filter.hasRangeValues() && filter.isRangeWithDiscount())
-                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(JumiaApplication.INSTANCE.getResources().getString(R.string.string_with_discount_only));
+                ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(R.string.string_with_discount_only);
             else if (filter.hasOptionSelected())
                 ((TextView) convertView.findViewById(R.id.dialog_item_subtitle)).setText(getOptionsToString(filter.getSelectedOption()));
                 

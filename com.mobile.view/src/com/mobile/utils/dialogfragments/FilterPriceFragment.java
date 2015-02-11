@@ -193,23 +193,15 @@ class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListen
     private void processOnClickDone() {
         Log.d(TAG, "FILTER: DONE " + mCurrMinValue + " " + mCurrMaxValue);
         // Validate current values
-        
-        if(mDiscountBox.isChecked()){
-            if(getMinIntervalValue(mCurrMinValue) == getMinIntervalValue(mMin) && getMaxIntervalValue(mCurrMaxValue) == getMaxIntervalValue(mMax)) {
-                mPriceFilter.cleanRangeValues();
-            } else {
-                mPriceFilter.setRangeValues(mCurrMinValue, mCurrMaxValue);
-            }
-            mPriceFilter.setRangeWithDiscount(mDiscountBox.isChecked());
+        if(getMinIntervalValue(mCurrMinValue) == getMinIntervalValue(mMin) && getMaxIntervalValue(mCurrMaxValue) == getMaxIntervalValue(mMax)) {
+            // Clean saved values
+            mPriceFilter.cleanRangeValues();
         } else {
-            if(getMinIntervalValue(mCurrMinValue) == getMinIntervalValue(mMin) && getMaxIntervalValue(mCurrMaxValue) == getMaxIntervalValue(mMax)) {
-                mPriceFilter.cleanRangeValues();
-            } else {
-                mPriceFilter.setRangeValues(mCurrMinValue, mCurrMaxValue);
-            }
-            mPriceFilter.setRangeWithDiscount(false);
-
+            // Save current values
+            mPriceFilter.setRangeValues(mCurrMinValue, mCurrMaxValue);
         }
+        // Validate discount check
+        mPriceFilter.setRangeWithDiscount(mDiscountBox.isChecked());
         // Goto back
         mParent.allowBackPressed();
     }
