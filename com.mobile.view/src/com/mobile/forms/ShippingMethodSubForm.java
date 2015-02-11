@@ -16,12 +16,13 @@ import com.mobile.framework.objects.PickUpStationObject;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
+
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.MotionEvent;
+
 import android.view.View;
-import android.view.View.OnTouchListener;
+
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -186,19 +187,10 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
                 if (pickupStationByRegion.get(icsSpinner.getItemAtPosition(position)).size() > 0) {
                     pickupStationsListView.setVisibility(View.VISIBLE);
                     pickupStationsListView.setAdapter(new PickupStationsAdapter(context, pickupStationByRegion.get(icsSpinner.getItemAtPosition(position))));
-                    pickupStationsListView.setOnTouchListener(new OnTouchListener() {
-                        // Setting on Touch Listener for handling the touch inside ScrollView
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            v.getParent().requestDisallowInterceptTouchEvent(true);
-                            return false;
-                        }
-                    });
-
                 } else {
                     pickupStationsListView.setVisibility(View.GONE);
                 }
-                // #####
+                
                 if (required) {
                     // mandatoryControl
                     // .setVisibility(position == Spinner.INVALID_POSITION ? View.VISIBLE

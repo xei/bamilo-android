@@ -14,7 +14,7 @@
     android:clickable="true"
     android:spinnerMode="dropdown" />
 
-	<ListView 
+	<com.mobile.utils.PickUpStationListView
     	android:id="@+id/pickup_stations_list_view"
         android:layout_width="match_parent"
     	android:layout_height="0dp"
@@ -23,5 +23,6 @@
     	android:divider="@color/grey_light"
     	android:dividerHeight="0.75dp"
     	android:paddingLeft="@dimen/dimen_50px"
-  		android:paddingRight="@dimen/dimen_50px"  	/>
+  		android:paddingRight="@dimen/dimen_50px"
+  		  	/>
 </LinearLayout>
