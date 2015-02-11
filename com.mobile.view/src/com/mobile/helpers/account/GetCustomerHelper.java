@@ -6,6 +6,8 @@ package com.mobile.helpers.account;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Bundle;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.objects.Customer;
@@ -14,7 +16,7 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
-import android.os.Bundle;
+
 import de.akquinet.android.androlog.Log;
 
 /**

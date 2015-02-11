@@ -9,6 +9,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.net.Uri;
+import android.net.Uri.Builder;
+import android.os.Bundle;
+
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.objects.Order;
 import com.mobile.framework.rest.RestConstants;
@@ -17,9 +21,7 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
-import android.net.Uri;
-import android.net.Uri.Builder;
-import android.os.Bundle;
+
 import de.akquinet.android.androlog.Log;
 
 /**

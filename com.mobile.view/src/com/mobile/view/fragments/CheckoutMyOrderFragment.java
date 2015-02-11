@@ -6,6 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -35,22 +45,14 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to shoe the order
  * @author sergiopereira
  */
-public class CheckoutMyOrderFragment extends BaseFragment implements OnClickListener, IResponseCallback {
+public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CheckoutMyOrderFragment.class);
 
@@ -200,7 +202,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
             // Get my Order
             showMyOrder();
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
 
     }
@@ -464,6 +466,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
      */
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         // Get view id
         int id = view.getId();
         // Shipping Address Edit
@@ -476,10 +479,18 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         else if (id == R.id.checkout_my_order_payment_options_btn_edit) onClickEditPaymentOptionsButton();
         // Next step button
         else if (id == R.id.checkout_my_order_button_enter) onClickNextStepButton();
-        //retry button
-        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+   
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onClickRetryButton();
     }
     
     /**
@@ -491,10 +502,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements OnClickList
         if(null != JumiaApplication.CUSTOMER){
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            
         } else {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-//            restartAllFragments();
         }
     }
 

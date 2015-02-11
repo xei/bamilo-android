@@ -11,6 +11,7 @@ import com.mobile.forms.FormFieldMeta;
 import com.mobile.forms.IFormField;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.InputType;
+
 import de.akquinet.android.androlog.Log;
 
 public class MetaFormExtractor {

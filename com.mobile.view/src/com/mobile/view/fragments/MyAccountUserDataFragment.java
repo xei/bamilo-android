@@ -7,6 +7,12 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
@@ -25,19 +31,14 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
  * 
  */
-public class MyAccountUserDataFragment extends BaseFragment implements OnClickListener {
+public class MyAccountUserDataFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(MyAccountUserDataFragment.class);
 
@@ -123,7 +124,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
             setAppContentLayout();
             init();
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
 
     }
@@ -359,20 +360,26 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     }
 
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
+    public void onClick(View view) {
+        super.onClick(view);
+        int id = view.getId();
         hideKeyboard();
         // Cancel button
-        if (id == R.id.button_cancel)
-            finish();
+        if (id == R.id.button_cancel) finish();
         // Save button
-        else if (id == R.id.button_save)
-            changePassword();
-        // Retry button
-        else if (id == R.id.fragment_root_retry_button)
-            onClickRetryButton();
+        else if (id == R.id.button_save) changePassword();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onClickRetryButton();
+    }
+    
     /**
      * Process the click on retry button.
      * 
@@ -381,8 +388,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements OnClickLi
     private void onClickRetryButton() {
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle,
-                FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**

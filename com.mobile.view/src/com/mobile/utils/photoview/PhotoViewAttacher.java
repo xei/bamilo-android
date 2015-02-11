@@ -21,10 +21,6 @@ import static android.view.MotionEvent.ACTION_UP;
 
 import java.lang.ref.WeakReference;
 
-import com.mobile.utils.photoview.gestures.OnGestureListener;
-import com.mobile.utils.photoview.gestures.VersionedGestureDetector;
-import com.mobile.utils.photoview.log.LogManager;
-import com.mobile.utils.photoview.scrollerproxy.ScrollerProxy;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -43,6 +39,11 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+
+import com.mobile.utils.photoview.gestures.OnGestureListener;
+import com.mobile.utils.photoview.gestures.VersionedGestureDetector;
+import com.mobile.utils.photoview.log.LogManager;
+import com.mobile.utils.photoview.scrollerproxy.ScrollerProxy;
 
 public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         OnGestureListener,

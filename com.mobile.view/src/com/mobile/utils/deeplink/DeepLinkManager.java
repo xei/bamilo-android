@@ -6,6 +6,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.content.Context;
+import android.net.Uri;
+import android.os.Bundle;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -19,9 +23,7 @@ import com.mobile.preferences.ShopPreferences;
 import com.mobile.view.R;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
-import android.content.Context;
-import android.net.Uri;
-import android.os.Bundle;
+
 import de.akquinet.android.androlog.Log;
 
 

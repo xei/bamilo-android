@@ -1,14 +1,16 @@
 package com.mobile.controllers;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.view.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

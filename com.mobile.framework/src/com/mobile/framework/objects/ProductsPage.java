@@ -10,11 +10,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
 import com.mobile.framework.rest.RestConstants;
-import android.os.Parcel;
-import android.os.Parcelable;
+
 import de.akquinet.android.androlog.Log;
 
 /**

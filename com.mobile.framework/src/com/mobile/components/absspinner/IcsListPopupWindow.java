@@ -1,7 +1,6 @@
 package com.mobile.components.absspinner;
 
 
-import com.mobile.framework.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -24,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+
+import com.mobile.framework.R;
 
 /**
  * A proxy between pre- and post-Honeycomb implementations of this class.

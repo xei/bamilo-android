@@ -3,8 +3,9 @@
  */
 package com.mobile.app;
 
-import com.mobile.framework.ErrorCode;
 import android.content.Context;
+
+import com.mobile.framework.ErrorCode;
 
 /**
  * @author nutzer2

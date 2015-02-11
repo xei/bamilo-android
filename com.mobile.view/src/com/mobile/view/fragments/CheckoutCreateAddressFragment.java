@@ -8,8 +8,19 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
+
+import android.app.Activity;
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
@@ -51,17 +62,7 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -69,7 +70,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class CheckoutCreateAddressFragment extends BaseFragment implements OnClickListener, IResponseCallback, OnItemSelectedListener, OnCheckedChangeListener {
+public class CheckoutCreateAddressFragment extends BaseFragment implements IResponseCallback, OnItemSelectedListener, OnCheckedChangeListener {
 
     private static final String TAG = LogTagHelper.create(CheckoutCreateAddressFragment.class);
     
@@ -237,7 +238,7 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
                 triggerCreateAddressForm();
             }
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
       
     }
@@ -352,14 +353,9 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         mShippingFormContainer.removeAllViews();
         mShippingFormContainer.addView(shippingFormGenerator.getContainer());                
         mShippingFormContainer.refreshDrawableState();
-        
-        //removes the gender from the form on the billing address if this is sign up
-        removeGenderFromBilling(form);
-        
         // Billing form
         billingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
         mBillingFormContainer.removeAllViews();
-        //TODO
         mBillingFormContainer.addView(billingFormGenerator.getContainer());
         mBillingFormContainer.refreshDrawableState();
         // Define if CITY is a List or Text
@@ -385,37 +381,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         loadSavedValues(mBillingSavedValues, billingFormGenerator);
     }
 
-    /**
-     * function responsible for searching for the gender field on the form 
-     * and case it exists removes it in order to not show on the billing address after a sign up
-     * 
-     * @param form
-     */
-    private void removeGenderFromBilling(Form form){
-        
-        int index = -1;
-        if(form.fields.size() > 0){
-            for (int i = 0; i < form.fields.size(); i++) {
-                if(form.fields.get(i).getKey() != null && form.fields.get(i).getKey().toString().equals("gender"))
-                    index = i;
-            }
-            if(index != -1)
-                form.fields.remove(index);
-        }
-        String genderKey = "";
-        if(form.mFieldKeyMap != null){
-            Iterator it = form.mFieldKeyMap.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry pairs = (Map.Entry)it.next();
-                if(pairs.getKey().equals("gender"))
-                    genderKey = pairs.getKey().toString();
-            }
-            if(!"".equals(genderKey)){
-                form.mFieldKeyMap.remove(genderKey);
-            }
-        }
-    }
-    
     /**
      * Load the saved values to the respective form 
      * @param savedValues
@@ -457,6 +422,18 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
             // Use CITY_ID
             item = dynamicForm.getItemByKey(RestConstants.JSON_CITY_TAG);
             item.getControl().setVisibility(View.GONE);
+        }
+        // Hide the gender field only for billing address
+		if(isBilling){
+			try {
+	            item = dynamicForm.getItemByKey(RestConstants.JSON_GENDER_TAG);
+	            if (item != null){
+	                item.getMandatoryControl().setVisibility(View.GONE);
+	                item.getEditControl().setVisibility(View.GONE);
+	            } 
+            } catch (NullPointerException e) {
+                Log.w(TAG, "WARNING: NPE ON TRY HIDE THE GENDER IN BILLING ADDRESS");
+            }
         }
     }
 
@@ -596,12 +573,11 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
      */
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         // Get view id
         int id = view.getId();
         // Next button
         if(id == R.id.checkout_address_button_enter) onClickCreateAddressButton();
-        //retry button
-        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // message view
         else if(id == R.id.checkout_address_required_text) onClickRequired(view);
         // Unknown view
@@ -616,6 +592,25 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         if(view.isShown()) mMsgRequired.setVisibility(View.GONE);
     }
     
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onClickRetryButton();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        super.onRetryRequest(eventType);
+    }
+    
     /**
      * Process the click on retry button.
      * @author paulo
@@ -625,7 +620,6 @@ public class CheckoutCreateAddressFragment extends BaseFragment implements OnCli
         if(null != JumiaApplication.CUSTOMER){
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            
         } else {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
         }

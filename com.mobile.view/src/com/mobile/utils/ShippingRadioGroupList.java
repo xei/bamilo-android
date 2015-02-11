@@ -3,14 +3,6 @@ package com.mobile.utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.controllers.PickupStationsAdapter;
-import com.mobile.forms.ShippingMethod;
-import com.mobile.forms.ShippingMethodForm;
-import com.mobile.forms.ShippingMethodSubForm;
-import com.mobile.framework.objects.PickUpStationObject;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.view.R;
 import android.content.ContentValues;
 import android.content.Context;
 import android.text.TextUtils;
@@ -21,6 +13,15 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+
+import com.mobile.controllers.PickupStationsAdapter;
+import com.mobile.forms.ShippingMethod;
+import com.mobile.forms.ShippingMethodForm;
+import com.mobile.forms.ShippingMethodSubForm;
+import com.mobile.framework.objects.PickUpStationObject;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 public class ShippingRadioGroupList extends RadioGroup {

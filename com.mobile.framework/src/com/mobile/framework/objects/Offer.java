@@ -10,6 +10,7 @@ import android.os.Parcelable;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
+
 import de.akquinet.android.androlog.Log;
 
 /**

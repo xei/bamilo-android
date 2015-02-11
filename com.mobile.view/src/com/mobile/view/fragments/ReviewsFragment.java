@@ -59,7 +59,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * @modified manuelsilva
  */
-public class ReviewsFragment extends BaseFragment implements OnClickListener {
+public class ReviewsFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(ReviewsFragment.class);
     
@@ -235,7 +235,7 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
                 bundle.putString(GetProductHelper.PRODUCT_URL, mProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
-                showFragmentRetry(this);
+                showFragmentErrorRetry();
             }
         } else {
             checkReviewsTypeVisibility();
@@ -280,11 +280,6 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE STATE: ");
-        
-        if(selectedProduct == null)
-            selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
-        
-        mProductUrl = selectedProduct.getUrl();
         outState.putString("url", mProductUrl);
         outState.putInt("page", pageNumber);
         outState.putInt("current_page", totalPages);
@@ -882,15 +877,6 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
         }
     };
 
-    
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if(id == R.id.fragment_root_retry_button){
-            getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, getArguments(), FragmentController.ADD_TO_BACK_STACK);
-        }
-    }   
-
     private SharedPreferences getSharedPref(){
         if(sharedPrefs == null){
           //Validate if country configs allows rating and review, only show write review fragment if both are allowed
@@ -987,5 +973,25 @@ public class ReviewsFragment extends BaseFragment implements OnClickListener {
             writeReviewTitle.setText(getResources().getString(R.string.review_this_seller));
         }
         
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onStart();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        //super.onRetryRequest(eventType);
+        onStart();
     }
 }

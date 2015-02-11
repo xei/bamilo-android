@@ -7,11 +7,13 @@ import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
 
-import com.mobile.framework.Darwin;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.TextUtils;
+
+import com.mobile.framework.Darwin;
+
 import de.akquinet.android.androlog.Log;
 
 /**

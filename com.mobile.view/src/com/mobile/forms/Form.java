@@ -22,12 +22,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import android.os.Parcel;
-import android.os.Parcelable;
+
 import de.akquinet.android.androlog.Log;
 
 /**

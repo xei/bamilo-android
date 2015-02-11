@@ -2,6 +2,16 @@ package com.mobile.controllers;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -12,15 +22,7 @@ import com.mobile.framework.objects.FeaturedProduct;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
-import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**

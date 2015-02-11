@@ -1,6 +1,5 @@
 package com.mobile.components.icsspinner;
 
-import com.mobile.framework.R;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.DataSetObserver;
@@ -22,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+
+import com.mobile.framework.R;
 
 
 

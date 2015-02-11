@@ -3,8 +3,6 @@ package com.mobile.utils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-import com.mobile.framework.tracking.Ad4PushTracker;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
@@ -20,12 +17,13 @@ import android.preference.PreferenceScreen;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
+import com.mobile.framework.tracking.Ad4PushTracker;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 public class PreferenceListFragment extends ListFragment implements OnPreferenceClickListener{

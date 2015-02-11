@@ -4,6 +4,9 @@ package com.mobile.preferences;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.framework.Darwin;
@@ -12,8 +15,7 @@ import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.database.LastViewedTableHelper;
 import com.mobile.framework.objects.CountryObject;
 import com.mobile.view.R;
-import android.content.Context;
-import android.content.SharedPreferences;
+
 import de.akquinet.android.androlog.Log;
 
 /**

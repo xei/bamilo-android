@@ -5,12 +5,25 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.forms.Form;
@@ -18,7 +31,6 @@ import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.configs.GetRatingFormHelper;
@@ -34,19 +46,7 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -54,7 +54,7 @@ import de.akquinet.android.androlog.Log;
  * @modified Paulo Carvalho
  * 
  */
-public class ReviewWriteNestedFragment extends BaseFragment implements OnClickListener {
+public class ReviewWriteNestedFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(ReviewWriteNestedFragment.class);
     
@@ -195,9 +195,8 @@ public class ReviewWriteNestedFragment extends BaseFragment implements OnClickLi
                 String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
                 mCompleteProductUrl = contentUrl != null ? contentUrl : "";
             }
-
         } else {
-            showFragmentRetry(this);
+            showRetryLayout();
         }
     }
 
@@ -316,7 +315,7 @@ public class ReviewWriteNestedFragment extends BaseFragment implements OnClickLi
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
-                showFragmentRetry(this);
+                showRetryLayout();
             }
             
         } else {
@@ -366,7 +365,7 @@ public class ReviewWriteNestedFragment extends BaseFragment implements OnClickLi
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
-                showFragmentRetry(this);
+                showRetryLayout();
             }
             
         } else {
@@ -419,7 +418,7 @@ public class ReviewWriteNestedFragment extends BaseFragment implements OnClickLi
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
-                showFragmentRetry(this);
+                showRetryLayout();
             }
             
         } else {
@@ -606,6 +605,7 @@ public class ReviewWriteNestedFragment extends BaseFragment implements OnClickLi
             dialog_review_submitted.setCancelable(false);
             dialog_review_submitted.show(getActivity().getSupportFragmentManager(), null);
             hideActivityProgress();
+            showFragmentContentContainer();
             isExecutingSendReview = false;
             cleanForm();
             return false;
@@ -660,38 +660,24 @@ public class ReviewWriteNestedFragment extends BaseFragment implements OnClickLi
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return true;
         }
+        
+        // Hide progress
+        hideActivityProgress();
+        
         isExecutingSendReview = false;
+        
         // Generic errors
-        super.handleErrorEvent(bundle);
-        
-        
+        if(super.handleErrorEvent(bundle)) return true;
         
         switch (eventType) {
-        // case GET_CUSTOMER:
-        // List<String> errors = event.errorMessages.get( Errors.JSON_ERROR_TAG);
-        // if ( errors.contains( Errors.CODE_CUSTOMER_NOT_LOGGED_ID )) {
-        // return true;
-        // }
-        // return false;
-        // case LOGIN_EVENT:
-        // // don't care
-        // return true;
-        //
-        // case GET_CUSTOMER:
-        // // don't care
-        // // customerCred = null;
-        // // Log.i("DIDNT GET CUSTOMER"," HERE ");
-        // return true;
         case GET_FORM_RATING_EVENT:
-
             failedRatingForm = true;
             triggerReviewForm();
-
             return false;
         case GET_FORM_REVIEW_EVENT:
             failedReviewForm = true;
             showFragmentContentContainer();
-            showFragmentRetry(this);
+            showRetryLayout();
             return false;
         case REVIEW_RATING_PRODUCT_EVENT:
             dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
@@ -709,7 +695,6 @@ public class ReviewWriteNestedFragment extends BaseFragment implements OnClickLi
             hideActivityProgress();
             isExecutingSendReview = false;
             return false;
-            
             
         case GET_PRODUCT_EVENT:
             if (!errorCode.isNetworkError()) {
@@ -758,14 +743,20 @@ public class ReviewWriteNestedFragment extends BaseFragment implements OnClickLi
     };
 
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.fragment_root_retry_button) {
-            getBaseActivity().onSwitchFragment(FragmentType.WRITE_REVIEW, getArguments(), FragmentController.ADD_TO_BACK_STACK);
-
-        } else if(id == R.id.send_review){
-            formsValidation();
-        }
+    public void onClick(View view) {
+        super.onClick(view);
+        int id = view.getId();
+        if(id == R.id.send_review) formsValidation();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickContinueButton()
+     */
+    @Override
+    protected void onClickContinueButton() {
+        super.onClickContinueButton();
+        onResume();
     }
     
     /**
@@ -917,6 +908,13 @@ public class ReviewWriteNestedFragment extends BaseFragment implements OnClickLi
             }
         
         return values;
+    }
+    
+    /**
+     * 
+     */
+    private void showRetryLayout() {
+        showFragmentErrorRetry();
     }
     
 }

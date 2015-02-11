@@ -2,12 +2,6 @@ package com.mobile.controllers;
 
 import java.util.ArrayList;
 
-import com.mobile.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.photoview.PhotoView;
-import com.mobile.utils.photoview.PhotoViewAttacher;
-import com.mobile.view.R;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.InflateException;
@@ -16,6 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+
+import com.mobile.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.photoview.PhotoView;
+import com.mobile.utils.photoview.PhotoViewAttacher;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {

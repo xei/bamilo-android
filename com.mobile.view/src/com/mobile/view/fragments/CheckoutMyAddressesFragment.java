@@ -10,6 +10,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.RadioGroup;
+import android.widget.ScrollView;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
@@ -39,23 +50,14 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.RadioGroup;
-import android.widget.ScrollView;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to show the my addresses and set the on process checkout the billing and shipping address. 
  * @author sergiopereira
  */
-public class CheckoutMyAddressesFragment extends BaseFragment implements OnClickListener, IResponseCallback, RadioGroup.OnCheckedChangeListener{
+public class CheckoutMyAddressesFragment extends BaseFragment implements IResponseCallback, RadioGroup.OnCheckedChangeListener{
 
     private static final String TAG = LogTagHelper.create(CheckoutMyAddressesFragment.class);
     
@@ -243,6 +245,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
      */
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         // Get view id
         int id = view.getId();
         // Submit
@@ -257,10 +260,18 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         else if(id == R.id.checkout_address_item_btn_delete) onClickDeleteAddressButton(view);
         // Check box
         else if(id == R.id.checkout_address_billing_checkbox) onClickCheckBox((CheckBox) view);
-        //retry button
-        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view   
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW " + view.getTag());
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onClickRetryButton();
     }
     
     /**
@@ -272,10 +283,8 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         if(null != JumiaApplication.CUSTOMER){
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            
         } else {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-//            restartAllFragments();
         }
     }
     
@@ -612,7 +621,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements OnClick
         if(JumiaApplication.mIsBound) {
             triggerContentEvent(new GetBillingFormHelper(), null, this);
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
     }
     

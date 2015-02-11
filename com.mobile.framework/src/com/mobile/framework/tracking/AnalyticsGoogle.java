@@ -2,13 +2,6 @@ package com.mobile.framework.tracking;
 
 import java.util.List;
 
-import com.mobile.framework.Darwin;
-import com.mobile.framework.R;
-import com.mobile.framework.objects.PurchaseItem;
-import com.mobile.framework.objects.ShoppingCartItem;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.LogTagHelper;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +11,13 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Logger.LogLevel;
 import com.google.android.gms.analytics.Tracker;
+import com.mobile.framework.Darwin;
+import com.mobile.framework.R;
+import com.mobile.framework.objects.PurchaseItem;
+import com.mobile.framework.objects.ShoppingCartItem;
+import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.framework.utils.LogTagHelper;
 
 import de.akquinet.android.androlog.Log;
 

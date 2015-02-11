@@ -11,6 +11,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.framework.Darwin;
@@ -25,10 +30,7 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.view.R;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.Bundle;
+
 import de.akquinet.android.androlog.Log;
 
 /**

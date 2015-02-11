@@ -21,12 +21,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+
+import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.framework.utils.LogTagHelper;
+
 import de.akquinet.android.androlog.Log;
 
 /**

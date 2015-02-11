@@ -6,10 +6,24 @@ package com.mobile.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.widget.RelativeLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsSharedPrefs;
+import com.mobile.controllers.HomePagerAdapter;
+import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.objects.Homepage;
 import com.mobile.framework.objects.Promotion;
@@ -22,7 +36,6 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.configs.GetPromotionsHelper;
 import com.mobile.helpers.teasers.GetTeasersHelper;
-import com.mobile.helpers.teasers.GetUpdatedTeasersHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.HockeyStartup;
@@ -33,21 +46,7 @@ import com.mobile.utils.dialogfragments.DialogPromotionFragment;
 import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.widget.RelativeLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -55,7 +54,7 @@ import de.akquinet.android.androlog.Log;
  * 
  * @author sergiopereira
  */
-public class HomeFragment extends BaseFragment implements IResponseCallback, OnClickListener {
+public class HomeFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(HomeFragment.class);
 
@@ -66,8 +65,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     private HomePagerAdapter mHomePagerAdapter;
 
     private SlidingTabLayout mHomePagerTabStrip;
-
-    private String mCurrentMd5Collection;
 
     private int mPagerSavedPosition = 0;
 
@@ -159,7 +156,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             onResumeExecution();
         // Case app is not bound and has shop id and not in maintenance
         else if (!JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry()) 
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         // Case app not bound and not shop id and in maintenance country selection
         else JumiaApplication.INSTANCE.setResendHander(mServiceConnectedHandler);
     }
@@ -227,12 +224,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         // TODO : Comment for BlackBerry
         if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
 
-        // Validate promotions
-        SharedPreferences sP = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        if (sP.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true)) {
-            triggerPromotions();
-        }
-
         // Validate current state
         if (mHomePagerAdapter != null && mHomePagerAdapter.getCount() > 0) {
             Log.i(TAG, "ADAPTER IS NOT NULL");
@@ -240,10 +231,15 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
             mHomePagerTabStrip.setViewPager(mHomePager);
             // Show container
             showContent();
-
         } else {
             Log.i(TAG, "ADAPTER IS NULL");
             triggerTeasers();
+        }
+        
+        // Validate promotions
+        SharedPreferences sP = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        if (sP.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true)) {
+            triggerPromotions();
         }
     }
 
@@ -412,15 +408,24 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     /*
      * ########### LISTENERS ###########
      */
-
+    
     /*
      * (non-Javadoc)
-     * 
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
      */
     @Override
-    public void onClick(View v) {
-        Log.d(TAG, "ON CLICK RETRY");
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onReloadContent();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        //super.onRetryRequest(eventType);
         onReloadContent();
     }
 
@@ -436,12 +441,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
     private void triggerTeasers() {
         Log.d(TAG, "ON TRIGGER: GET TEASERS");
         // Get teaser collection
-        triggerContentEvent(new GetTeasersHelper(), null, (IResponseCallback) this);
-        // Validate the current md5 to check updated teaser collection
-        Log.d(TAG, "ON TRIGGER: GET UPDATED TEASERS " + mCurrentMd5Collection);
-        Bundle bundle = new Bundle();
-        bundle.putString(GetUpdatedTeasersHelper.OLD_MD5_KEY, mCurrentMd5Collection);
-        triggerContentEventWithNoLoading(new GetUpdatedTeasersHelper(), bundle, (IResponseCallback) this);
+        triggerContentEvent(new GetTeasersHelper(), FragmentController.NO_BUNDLE, this);
     }
 
     /**
@@ -472,19 +472,9 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         }
 
         switch (eventType) {
-        case GET_UPDATED_TEASERS_EVENT:
-            Log.i(TAG, "ON SUCCESS RESPONSE: GET_UPDATED_TEASERS_EVENT");
-            // Get current md5 response
-            mCurrentMd5Collection = bundle.getString(GetUpdatedTeasersHelper.MD5_KEY);
-            // Get updated teaser collection
-            ArrayList<Homepage> updatedCollection = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-            if (updatedCollection != null) onShowCollection(updatedCollection, 0);
-            break;
         case GET_TEASERS_EVENT:
             Log.i(TAG, "ON SUCCESS RESPONSE: GET_TEASERS_EVENT");
             mReceivedInBackgroundAndDiscarded = false;
-            // Get current md5 response
-            mCurrentMd5Collection = bundle.getString(GetTeasersHelper.MD5_KEY);
             // Get collection
             ArrayList<Homepage> collection = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
             // Get default home
@@ -531,6 +521,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
      */
     @Override
     public void onRequestError(Bundle bundle) {
+        
+        Log.i(TAG, "ON ERROR RESPONSE: HOME");
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -543,15 +535,13 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
-        case GET_UPDATED_TEASERS_EVENT:
-            Log.d(TAG, "ON ERROR RESPONSE: DISCARDED RECEIVED GET_UPDATED_TEASERS_EVENT");
-            break;
         case GET_TEASERS_EVENT:
             Log.i(TAG, "ON ERROR RESPONSE: GET_TEASERS_EVENT");
             showFragmentFallBack();
             setLayoutFallback();
             break;
         case GET_PROMOTIONS:
+            Log.i(TAG, "ON ERROR RESPONSE: GET_PROMOTIONS");
             break;
         default:
             break;
@@ -590,91 +580,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback, OnC
         } catch (IllegalStateException e) {
             Log.w(TAG, "WARNING: ISE ON TRACK PAGE ADJUST");
         }
-    }
-
-    /*
-     * ########### DIALOGS ###########
-     */
-
-    /*
-     * ########### ADAPTERS ###########
-     */
-
-    /**
-     * Class used as an simple pager adapter that represents each campaign
-     * fragment
-     * 
-     * @author sergiopereira
-     */
-    private class HomePagerAdapter extends FragmentPagerAdapter {
-
-        private ArrayList<Homepage> mHomePages;
-
-        /**
-         * Constructor
-         * 
-         * @param fm
-         * @param collection
-         * @author sergiopereira
-         */
-        public HomePagerAdapter(FragmentManager fm, ArrayList<Homepage> collection) {
-            super(fm);
-            this.mHomePages = collection;
-        }
-
-        /**
-         * 
-         * @param collection
-         */
-        public void updateCollection(ArrayList<Homepage> collection) {
-            this.mHomePages = collection;
-            this.notifyDataSetChanged();
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
-         */
-        @Override
-        public Fragment getItem(int position) {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(HomePageFragment.HOME_PAGE_KEY, this.mHomePages.get(position));
-            return HomePageFragment.getInstance(bundle);
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see android.support.v4.view.PagerAdapter#getCount()
-         */
-        @Override
-        public int getCount() {
-            return (mHomePages != null) ? mHomePages.size() : 0;
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see android.support.v4.view.PagerAdapter#getPageTitle(int)
-         */
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mHomePages.get(position).getHomepageTitle().toUpperCase();
-        }
-
-        // /*
-        // * (non-Javadoc)
-        // * @see
-        // android.support.v4.app.FragmentPagerAdapter#destroyItem(android.view.ViewGroup,
-        // int, java.lang.Object)
-        // */
-        // @Override
-        // public void destroyItem(ViewGroup container, int position, Object
-        // object) {
-        // super.destroyItem(container, position, object);
-        // }
-
     }
 
 }

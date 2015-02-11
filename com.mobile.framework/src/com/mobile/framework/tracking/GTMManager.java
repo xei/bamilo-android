@@ -6,13 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import com.mobile.framework.R;
-import com.mobile.framework.objects.CompleteProduct;
-import com.mobile.framework.objects.Customer;
-import com.mobile.framework.objects.PurchaseItem;
-import com.mobile.framework.tracking.GTMEvents.GTMKeys;
-import com.mobile.framework.tracking.GTMEvents.GTMValues;
-import com.mobile.framework.utils.Constants;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -28,6 +21,13 @@ import com.google.android.gms.tagmanager.ContainerHolder;
 import com.google.android.gms.tagmanager.ContainerHolder.ContainerAvailableListener;
 import com.google.android.gms.tagmanager.DataLayer;
 import com.google.android.gms.tagmanager.TagManager;
+import com.mobile.framework.R;
+import com.mobile.framework.objects.CompleteProduct;
+import com.mobile.framework.objects.Customer;
+import com.mobile.framework.objects.PurchaseItem;
+import com.mobile.framework.tracking.GTMEvents.GTMKeys;
+import com.mobile.framework.tracking.GTMEvents.GTMValues;
+import com.mobile.framework.utils.Constants;
 
 import de.akquinet.android.androlog.Log;
 

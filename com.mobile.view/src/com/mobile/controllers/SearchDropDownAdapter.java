@@ -2,9 +2,6 @@ package com.mobile.controllers;
 
 import java.util.List;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.SearchSuggestion;
-import com.mobile.view.R;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
@@ -16,6 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.objects.SearchSuggestion;
+import com.mobile.view.R;
 
 
 /**

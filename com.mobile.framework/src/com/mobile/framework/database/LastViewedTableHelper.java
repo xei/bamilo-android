@@ -7,15 +7,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
+
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.LastViewedAddableToCart;
 import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.objects.Variation;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.text.TextUtils;
+
 import de.akquinet.android.androlog.Log;
 
 /**

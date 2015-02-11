@@ -5,9 +5,10 @@ package com.mobile.framework.objects;
 
 import org.json.JSONObject;
 
-import com.mobile.framework.objects.TeaserGroupTopBrands.TeaserTopBrand;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.mobile.framework.objects.TeaserGroupTopBrands.TeaserTopBrand;
 
 /**
  * Class used to represent a group of top brands

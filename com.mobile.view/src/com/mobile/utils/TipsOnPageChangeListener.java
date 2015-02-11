@@ -3,10 +3,11 @@
  */
 package com.mobile.utils;
 
-import com.mobile.view.R;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.mobile.view.R;
 
 /**
  * @author Andre Lopes

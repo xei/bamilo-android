@@ -5,15 +5,17 @@ package com.mobile.view.fragments;
 
 import java.util.EnumSet;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.View;
+
 import de.akquinet.android.androlog.Log;
 
 /**

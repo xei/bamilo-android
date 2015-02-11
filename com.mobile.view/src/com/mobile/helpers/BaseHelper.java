@@ -7,15 +7,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.net.Uri;
+import android.net.Uri.Builder;
+import android.os.Bundle;
+
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Errors;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.utils.JSONConstants;
-import android.net.Uri;
-import android.net.Uri.Builder;
-import android.os.Bundle;
+
 import de.akquinet.android.androlog.Log;
 
 /**

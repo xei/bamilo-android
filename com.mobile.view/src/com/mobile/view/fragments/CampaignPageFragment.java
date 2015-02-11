@@ -5,37 +5,6 @@ package com.mobile.view.fragments;
 
 import java.util.ArrayList;
 
-import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.components.absspinner.IcsAdapterView;
-import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
-import com.mobile.components.absspinner.IcsSpinner;
-import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.ErrorCode;
-import com.mobile.components.HeaderGridView;
-import com.mobile.framework.objects.Campaign;
-import com.mobile.framework.objects.CampaignItem;
-import com.mobile.framework.objects.CampaignItemSize;
-import com.mobile.framework.objects.TeaserCampaign;
-import com.mobile.framework.tracking.GTMEvents.GTMValues;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.campaign.GetCampaignHelper;
-import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
-import com.mobile.helpers.search.GetSearchProductHelper;
-import com.mobile.interfaces.IResponseCallback;
-import com.mobile.utils.Toast;
-import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.deeplink.DeepLinkManager;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
-import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.UIUtils;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -60,13 +29,46 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+
+import com.mobile.app.JumiaApplication;
+import com.mobile.components.HeaderGridView;
+import com.mobile.components.absspinner.IcsAdapterView;
+import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
+import com.mobile.components.absspinner.IcsSpinner;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.ErrorCode;
+import com.mobile.framework.objects.Campaign;
+import com.mobile.framework.objects.CampaignItem;
+import com.mobile.framework.objects.CampaignItemSize;
+import com.mobile.framework.objects.TeaserCampaign;
+import com.mobile.framework.tracking.GTMEvents.GTMValues;
+import com.mobile.framework.tracking.TrackingPage;
+import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.framework.utils.EventType;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.helpers.campaign.GetCampaignHelper;
+import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
+import com.mobile.helpers.search.GetSearchProductHelper;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.utils.Toast;
+import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.DeepLinkManager;
+import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.UIUtils;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to show campaign page
  * @author sergiopereira
  */
-public class CampaignPageFragment extends BaseFragment implements OnClickListener, OnScrollListener, IResponseCallback {
+public class CampaignPageFragment extends BaseFragment implements OnScrollListener, IResponseCallback {
 
     public static final String TAG = LogTagHelper.create(CampaignPageFragment.class);
     
@@ -367,7 +369,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
      * @author sergiopereira
      */
     private void showRetry() {
-        showFragmentRetry((OnClickListener) this);
+        showFragmentErrorRetry();
     }
     
     /**
@@ -406,19 +408,21 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         if(id == R.id.campaign_item_button_buy) onClickBuyButton(view);
         // Product name and image container
         else if (id == R.id.image_container || id == R.id.campaign_item_name) onClickProduct(view);
-//        // Retry button
-//        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
     
-//    /**
-//     * Process the click on the retry button
-//     * @author sergiopereira
-//     */
-//    private void onClickRetryButton(){
-//        getAndShowCampaign();
-//    }
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        getAndShowCampaign();
+    }
+    
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        // super.onRetryRequest(eventType);
+        getAndShowCampaign();
+    }
     
     /**
      * Process the click on the buy button
@@ -512,7 +516,7 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
             bundle.putString(GetCampaignHelper.CAMPAIGN_ID, id);
             triggerContentEvent(new GetCampaignHelper(), bundle, this);
        } else {
-          showFragmentRetry(this);
+           showRetry();
        }
     }
     
@@ -625,9 +629,6 @@ public class CampaignPageFragment extends BaseFragment implements OnClickListene
         return false;
     }
     
-   protected void onRetryRequest(EventType eventType){
-       getAndShowCampaign();
-   }
     
     /**
      * ########### RESPONSE LISTENER ###########  

@@ -10,6 +10,24 @@ import org.apache.http.ParseException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.net.http.SslError;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
+import android.webkit.HttpAuthHandler;
+import android.webkit.JavascriptInterface;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebBackForwardList;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import ch.boye.httpclientandroidlib.cookie.Cookie;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -33,31 +51,14 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.net.http.SslError;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.webkit.HttpAuthHandler;
-import android.webkit.JavascriptInterface;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebBackForwardList;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import ch.boye.httpclientandroidlib.cookie.Cookie;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
  * 
  */
-public class CheckoutWebFragment extends BaseFragment implements OnClickListener {
+public class CheckoutWebFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(CheckoutWebFragment.class);
 
@@ -155,7 +156,7 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
             triggerGetCustomer();
             triggerGetShoppingCartItems();    
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
         
     }
@@ -397,17 +398,7 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
     private void handleWebError(int errorCode){
         switch(errorCode){
         case WebViewClient.ERROR_HOST_LOOKUP:
-            showFragmentRetry(new OnClickListener() {
-                
-                @Override
-                public void onClick(View v) {
-                    if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
-                        webview.loadUrl("about:blank");
-                    }
-                    webview.loadUrl(failedPageRequest);
-                    showFragmentContentContainer();
-                }
-            });
+            showFragmentNoNetworkRetry(this);
             break;
         }
     }
@@ -611,21 +602,33 @@ public class CheckoutWebFragment extends BaseFragment implements OnClickListener
         return false;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        //retry button
-        if (id == R.id.fragment_root_retry_button) {
-            Bundle bundle = new Bundle();
-            if (null != JumiaApplication.CUSTOMER) {
-                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
-                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-                
-            } else {
-                getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-                // restartAllFragments();
-            }
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        Bundle bundle = new Bundle();
+        if (null != JumiaApplication.CUSTOMER) {
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+            webview.loadUrl("about:blank");
+        }
+        webview.loadUrl(failedPageRequest);
+        showFragmentContentContainer();
     }
     
 }

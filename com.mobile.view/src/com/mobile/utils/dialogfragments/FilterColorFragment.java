@@ -2,11 +2,6 @@ package com.mobile.utils.dialogfragments;
 
 import java.util.List;
 
-import com.mobile.components.customfontviews.CheckBox;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.CatalogFilter;
-import com.mobile.framework.objects.CatalogFilterOption;
-import com.mobile.view.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,6 +16,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+
+import com.mobile.components.customfontviews.CheckBox;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.objects.CatalogFilter;
+import com.mobile.framework.objects.CatalogFilterOption;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

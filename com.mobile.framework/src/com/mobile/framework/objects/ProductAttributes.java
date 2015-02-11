@@ -12,12 +12,14 @@ package com.mobile.framework.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.interfaces.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
-import android.os.Parcel;
-import android.os.Parcelable;
+
 import de.akquinet.android.androlog.Log;
 
 /**

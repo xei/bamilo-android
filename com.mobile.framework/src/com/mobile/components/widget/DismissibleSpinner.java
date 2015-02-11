@@ -3,9 +3,10 @@
  */
 package com.mobile.components.widget;
 
-import com.mobile.components.absspinner.IcsSpinner;
 import android.content.Context;
 import android.util.AttributeSet;
+
+import com.mobile.components.absspinner.IcsSpinner;
 
 /**
  * <code>IcsSpinner</code> that allows to call method <code>onDetachedFromWindow()</code> which will

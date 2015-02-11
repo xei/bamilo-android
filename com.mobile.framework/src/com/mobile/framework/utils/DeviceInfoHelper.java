@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
-import com.mobile.framework.R;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -21,6 +20,9 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
+
+import com.mobile.framework.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

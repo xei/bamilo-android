@@ -13,6 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Bundle;
+
 import com.mobile.framework.database.ImageResolutionTableHelper;
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.rest.RestConstants;
@@ -22,7 +24,7 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
-import android.os.Bundle;
+
 import de.akquinet.android.androlog.Log;
 
 /**

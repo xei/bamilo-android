@@ -3,6 +3,17 @@ package com.mobile.utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.FormConstants;
@@ -14,16 +25,7 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
-import android.content.ContentValues;
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
+
 import de.akquinet.android.androlog.Log;
 
 public class RadioGroupLayoutVertical extends RadioGroup {

@@ -1,12 +1,5 @@
 package com.mobile.utils.maintenance;
 
-import com.mobile.components.customfontviews.Button;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsSharedPrefs;
-import com.mobile.framework.Darwin;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.EventType;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,6 +8,14 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+
+import com.mobile.components.customfontviews.Button;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsSharedPrefs;
+import com.mobile.framework.Darwin;
+import com.mobile.framework.utils.DeviceInfoHelper;
+import com.mobile.framework.utils.EventType;
+import com.mobile.view.R;
 
 /**
  * Class used to set the content for maintenance page.

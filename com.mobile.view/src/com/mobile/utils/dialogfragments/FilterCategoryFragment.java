@@ -1,10 +1,5 @@
 package com.mobile.utils.dialogfragments;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.controllers.FilterOptionArrayAdapter;
-import com.mobile.framework.objects.CatalogFilter;
-import com.mobile.framework.objects.CatalogFilterOption;
-import com.mobile.view.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.SparseArray;
@@ -16,6 +11,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.controllers.FilterOptionArrayAdapter;
+import com.mobile.framework.objects.CatalogFilter;
+import com.mobile.framework.objects.CatalogFilterOption;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

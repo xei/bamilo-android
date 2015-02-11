@@ -1,9 +1,10 @@
 
 package com.mobile.components.customfontviews;
 
-import com.mobile.components.customfontviews.HoloFontLoader.FontStyleProvider;
 import android.content.Context;
 import android.util.AttributeSet;
+
+import com.mobile.components.customfontviews.HoloFontLoader.FontStyleProvider;
 
 
 

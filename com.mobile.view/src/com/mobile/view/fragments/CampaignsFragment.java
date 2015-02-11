@@ -6,12 +6,6 @@ package com.mobile.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
-import com.mobile.framework.objects.TeaserCampaign;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +13,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+
+import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
+import com.mobile.framework.objects.TeaserCampaign;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.MyMenuItem;
+import com.mobile.utils.NavigationAction;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

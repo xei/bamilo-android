@@ -6,6 +6,18 @@ package com.mobile.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -27,25 +39,14 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * @author Paulo Carvalho
  * 
  */
-public class OrderHistoryFragment extends BaseFragment implements OnClickListener, OnSelectedOrderChange{
+public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrderChange{
 
     private static final String TAG = LogTagHelper.create(OrderHistoryFragment.class);
 
@@ -226,7 +227,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
         if(JumiaApplication.mIsBound){
             triggerGetOrderList();            
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
         
     }
@@ -529,14 +530,16 @@ public class OrderHistoryFragment extends BaseFragment implements OnClickListene
 ////        if (BaseActivity.isTabletInLandscape(getBaseActivity())) setOrderProducts(order,productsLanscapeContainer, true);
 //    }
 
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.fragment_root_retry_button) {
-            Bundle bundle = new Bundle();
-            getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, bundle, FragmentController.ADD_TO_BACK_STACK);
-
-        }
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        Bundle bundle = new Bundle();
+        getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**

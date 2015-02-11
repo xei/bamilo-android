@@ -2,10 +2,6 @@ package com.mobile.controllers;
 
 import java.util.ArrayList;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.LastViewed;
-import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.view.R;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +10,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.objects.LastViewed;
+import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.view.R;
 
 /**
  * Ad

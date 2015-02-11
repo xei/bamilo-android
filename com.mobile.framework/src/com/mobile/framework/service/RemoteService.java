@@ -8,10 +8,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.mobile.framework.Darwin;
-import com.mobile.framework.rest.RestContract;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.worker.RequestWorker;
 import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,6 +17,12 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+
+import com.mobile.framework.Darwin;
+import com.mobile.framework.rest.RestContract;
+import com.mobile.framework.utils.Constants;
+import com.mobile.framework.worker.RequestWorker;
+
 import de.akquinet.android.androlog.Log;
 
 public class RemoteService extends Service {

@@ -1,11 +1,13 @@
 package com.mobile.framework;
 
-import com.mobile.framework.database.DarwinDatabaseHelper;
-import com.mobile.framework.tracking.NewRelicTracker;
-import com.mobile.framework.utils.ShopSelector;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+
+import com.mobile.framework.database.DarwinDatabaseHelper;
+import com.mobile.framework.tracking.NewRelicTracker;
+import com.mobile.framework.utils.ShopSelector;
+
 import de.akquinet.android.androlog.Log;
 
 /**

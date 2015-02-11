@@ -7,15 +7,17 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.view.BaseActivity;
-import com.mobile.view.R;
-import com.mobile.view.fragments.BaseFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.view.BaseActivity;
+import com.mobile.view.R;
+import com.mobile.view.fragments.BaseFragment;
+
 import de.akquinet.android.androlog.Log;
 
 /**

@@ -5,6 +5,8 @@ package com.mobile.helpers.checkout;
 
 import org.json.JSONObject;
 
+import android.os.Bundle;
+
 import com.mobile.forms.Form;
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.objects.Addresses;
@@ -15,7 +17,7 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
-import android.os.Bundle;
+
 import de.akquinet.android.androlog.Log;
 
 

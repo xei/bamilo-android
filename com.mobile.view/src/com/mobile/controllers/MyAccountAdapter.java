@@ -1,14 +1,15 @@
 package com.mobile.controllers;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.view.R;
-import com.mobile.view.fragments.MyAccountFragment;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.view.R;
+import com.mobile.view.fragments.MyAccountFragment;
 
 /**
  * This Class is used to create an adapter for the list of account options. It is called by Home Activity.

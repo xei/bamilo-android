@@ -45,7 +45,7 @@ import de.akquinet.android.androlog.Log;
  * 
  * @author sergiopereira
  */
-public class ChooseCountryFragment extends BaseFragment implements IResponseCallback, OnClickListener {
+public class ChooseCountryFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(ChooseCountryFragment.class);
 
@@ -350,7 +350,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         if(JumiaApplication.mIsBound){
             triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, (IResponseCallback) this);
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
     }
 
@@ -360,16 +360,21 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     
     /*
      * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
      */
     @Override
-    public void onClick(View v) {
-        // Validate the view id
-        int id = v.getId();
-        // Case retry button
-        if(id == R.id.fragment_root_retry_button) onClickRetryButton();
-        // Case Unknown
-        else Log.w(TAG, "WARNING ON CLICK: UNKNWON");
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onClickRetryButton();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        onClickRetryButton();
     }
     
     /**
@@ -430,12 +435,15 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        
+        if(super.handleErrorEvent(bundle)) return;
+        
         // Validate event type
         switch (eventType) {
         case GET_GLOBAL_CONFIGURATIONS:
             Log.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
             // Show retry view
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
             break;
         default:
             Log.w(TAG, "WARNING RECEIVED UNKOWN EVENT: " + eventType.toString());

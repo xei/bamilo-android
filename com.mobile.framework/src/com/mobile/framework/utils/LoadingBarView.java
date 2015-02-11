@@ -2,13 +2,15 @@ package com.mobile.framework.utils;
 
 import java.io.InputStream;
 
-import com.mobile.framework.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import com.mobile.framework.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

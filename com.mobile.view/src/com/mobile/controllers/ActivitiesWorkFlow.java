@@ -1,10 +1,12 @@
 package com.mobile.controllers;
 
+import android.app.Activity;
+import android.content.Intent;
+
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
 import com.mobile.view.SplashScreenActivity;
-import android.app.Activity;
-import android.content.Intent;
+
 import de.akquinet.android.androlog.Log;
 
 /**

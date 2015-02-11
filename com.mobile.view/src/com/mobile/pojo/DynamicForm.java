@@ -1,27 +1,24 @@
 package com.mobile.pojo;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.mobile.components.absspinner.IcsAdapterView;
-import com.mobile.forms.Form;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.InputType;
-import com.mobile.view.R;
-import android.R.integer;
 import android.content.ContentValues;
-import android.os.Bundle;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
+
+import com.mobile.components.absspinner.IcsAdapterView;
+import com.mobile.forms.Form;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.InputType;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

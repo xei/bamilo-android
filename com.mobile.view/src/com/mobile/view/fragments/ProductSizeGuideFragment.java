@@ -5,10 +5,17 @@ package com.mobile.view.fragments;
 
 import java.util.EnumSet;
 
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.framework.utils.NetworkConnectivity;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.dialogfragments.WizardPreferences;
@@ -17,19 +24,14 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderListener;
 import com.mobile.utils.photoview.PhotoView;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.View.OnClickListener;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to shoe the size guide.
  * @author sergiopereira
  */
-public class ProductSizeGuideFragment extends BaseFragment implements OnClickListener {
+public class ProductSizeGuideFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(ProductSizeGuideFragment.class);
     
@@ -208,19 +210,17 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
             
             @Override
             public void onLoadedError(String url) {
-                // Show continue shopping
-                showFragmentRetry(new OnClickListener() {
-                    
-                    @Override
-                    public void onClick(View v) {
-                        onRetryRequest(null);
-                    }
-                });
+                showRetryLayout();
             }
             
             @Override
             public void onLoadedCancel(String imageUrl) { }
         });
+    }
+    
+    private void showRetryLayout() {
+        if(NetworkConnectivity.isConnected(getBaseActivity())) showFragmentErrorRetry();
+        else showFragmentNoNetworkRetry(this);
     }
     
     /**
@@ -252,11 +252,10 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
+        super.onClick(view);
         // Get view id
-        int id = v.getId();
-        // Case retry
-//        if(id == R.id.fragment_root_empty_button) onClickContinueButton();
+        int id = view.getId();
         // Case wizard
         if (id == R.id.wizard_product_size_button) onClickWizardButton();
         // Case unknown
@@ -278,7 +277,21 @@ public class ProductSizeGuideFragment extends BaseFragment implements OnClickLis
         }
     }
 
+
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        showSizeGuide(mImageView, mSizeGuideUrl);
+    }
     
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
     @Override
     protected void onRetryRequest(EventType eventType) {
         Log.i(TAG, "ON RETRY REQUEST");

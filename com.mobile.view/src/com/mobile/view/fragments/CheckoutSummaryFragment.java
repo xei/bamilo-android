@@ -8,6 +8,16 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -28,15 +38,7 @@ import com.mobile.helpers.cart.GetShoppingCartRemoveItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -44,7 +46,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class CheckoutSummaryFragment extends BaseFragment implements OnClickListener, IResponseCallback {
+public class CheckoutSummaryFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CheckoutSummaryFragment.class);
 
@@ -172,7 +174,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
             if (mCart == null) triggerGetShoppingCart();
             else showOrderSummary();
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
 
     }
@@ -473,6 +475,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
      */
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         // Get view id
         int id = view.getId();
         // Prod Edit
@@ -483,10 +486,18 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         else if (id == R.id.checkout_summary_shipping_method_btn_edit) onClickEditMethodButton();
         // Remove
         else if (id == R.id.order_summary_item_btn_remove) onClickRemoveItemButton(view);
-        // Retry button
-        if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onClickRetryButton();
     }
     
     /**
@@ -498,10 +509,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements OnClickList
         if(null != JumiaApplication.CUSTOMER){
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            
         } else {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-//            restartAllFragments();
         }
     }
 

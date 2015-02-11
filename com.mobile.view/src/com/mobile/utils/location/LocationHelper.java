@@ -3,12 +3,6 @@ package com.mobile.utils.location;
 import java.util.List;
 import java.util.Locale;
 
-import com.mobile.app.JumiaApplication;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.database.CountriesConfigsTableHelper;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.preferences.ShopPreferences;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -21,6 +15,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.telephony.TelephonyManager;
+
+import com.mobile.app.JumiaApplication;
+import com.mobile.framework.ErrorCode;
+import com.mobile.framework.database.CountriesConfigsTableHelper;
+import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventType;
+import com.mobile.preferences.ShopPreferences;
+
 import de.akquinet.android.androlog.Log;
 
 /**

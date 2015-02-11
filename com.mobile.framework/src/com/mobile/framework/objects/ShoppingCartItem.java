@@ -6,11 +6,13 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.ImageResolutionHelper;
-import android.os.Parcel;
-import android.os.Parcelable;
+
 import de.akquinet.android.androlog.Log;
 
 /**

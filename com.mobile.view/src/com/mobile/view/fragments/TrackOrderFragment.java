@@ -6,6 +6,16 @@ package com.mobile.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
@@ -24,15 +34,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.LinearLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**

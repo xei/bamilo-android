@@ -1,10 +1,7 @@
 package com.mobile.controllers;
 
 import java.util.List;
-import com.mobile.components.customfontviews.RadioButton;
-import com.mobile.framework.objects.PickUpStationObject;
-import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.view.R;
+
 import android.content.Context;
 import android.os.Build;
 import android.text.Spannable;
@@ -18,6 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.mobile.components.customfontviews.RadioButton;
+import com.mobile.framework.objects.PickUpStationObject;
+import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.view.R;
 
 public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
 

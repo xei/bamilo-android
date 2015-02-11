@@ -4,11 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
-import com.mobile.framework.objects.ImageResolution;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
+import com.mobile.framework.objects.ImageResolution;
+
 import de.akquinet.android.androlog.Log;
 
 /**

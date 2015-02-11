@@ -11,6 +11,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Paint;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
@@ -46,33 +67,14 @@ import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Paint;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
  * 
  */
-public class ShoppingCartFragment extends BaseFragment implements OnClickListener {
+public class ShoppingCartFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(ShoppingCartFragment.class);
 
@@ -189,7 +191,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
                 R.layout.shopping_basket,
                 R.string.cart_label,
                 KeyboardState.ADJUST_CONTENT);
-        // R.string.shoppingcart_title
         this.setRetainInstance(true);
     }
 
@@ -225,10 +226,6 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         super.onStart();
         Log.i(TAG, "ON START");
         setAppContentLayout();
-
-        // EventManager.getSingleton().triggerRequestEvent(new RequestEvent(
-        // EventType.GET_MIN_ORDER_AMOUNT));
-
     }
 
     /*
@@ -242,8 +239,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         // Validate is service is available
         if (JumiaApplication.mIsBound) {
             Log.i(TAG, "ON RESUME");
-            if (getArguments() != null
-                    && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
+            if (getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
                 addItemsToCart(getArguments().getString(ConstantsIntentExtra.CONTENT_URL));
                 getArguments().remove(ConstantsIntentExtra.CONTENT_URL);
             } else {
@@ -254,7 +250,7 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
             setListeners();
             TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
     }
 
@@ -1285,22 +1281,24 @@ public class ShoppingCartFragment extends BaseFragment implements OnClickListene
         });
     }
 
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.fragment_root_retry_button) {
-            Bundle bundle = new Bundle();
-            if (null != JumiaApplication.CUSTOMER) {
-                bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
-                        FragmentType.SHOPPING_CART);
-                getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle,
-                        FragmentController.ADD_TO_BACK_STACK);
-
-            } else {
-                getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle,
-                        FragmentController.ADD_TO_BACK_STACK);
-                // restartAllFragments();
-            }
-        }
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onResume();
     }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        onResume();
+    }
+    
 }

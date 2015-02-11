@@ -18,7 +18,6 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils.TruncateAt;
 import android.text.TextWatcher;

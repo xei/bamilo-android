@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
-import com.mobile.framework.objects.SearchSuggestion;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
+import com.mobile.framework.objects.SearchSuggestion;
+
 import de.akquinet.android.androlog.Log;
 
 /**

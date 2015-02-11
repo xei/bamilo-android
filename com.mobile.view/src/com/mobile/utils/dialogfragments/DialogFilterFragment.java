@@ -3,15 +3,6 @@ package com.mobile.utils.dialogfragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.CatalogFilter;
-import com.mobile.framework.objects.CatalogFilterOption;
-import com.mobile.framework.objects.CategoryFilterOption;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.products.GetProductsHelper;
-import com.mobile.utils.TrackerDelegator;
-import com.mobile.view.R;
-import com.mobile.view.fragments.CatalogFragment;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,6 +20,17 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.objects.CatalogFilter;
+import com.mobile.framework.objects.CatalogFilterOption;
+import com.mobile.framework.objects.CategoryFilterOption;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.helpers.products.GetProductsHelper;
+import com.mobile.utils.TrackerDelegator;
+import com.mobile.view.R;
+import com.mobile.view.fragments.CatalogFragment;
+
 import de.akquinet.android.androlog.Log;
 
 /**

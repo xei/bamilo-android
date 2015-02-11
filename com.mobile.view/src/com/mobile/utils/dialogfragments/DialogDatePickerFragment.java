@@ -6,9 +6,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -18,6 +15,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 //import org.holoeverywhere.widget.DatePicker;
 

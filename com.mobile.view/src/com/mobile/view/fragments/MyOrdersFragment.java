@@ -5,13 +5,6 @@ package com.mobile.view.fragments;
 
 import java.util.EnumSet;
 
-import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +13,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.View.OnClickListener;
+
+import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
+import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.MyMenuItem;
+import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

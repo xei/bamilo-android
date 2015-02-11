@@ -1,13 +1,15 @@
 package com.mobile.framework.worker;
 
-import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.rest.RestClientSingleton;
-import com.mobile.framework.utils.Constants;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.mobile.framework.enums.RequestType;
+import com.mobile.framework.rest.RestClientSingleton;
+import com.mobile.framework.utils.Constants;
+
 import de.akquinet.android.androlog.Log;
 /**
  * Worker class that deals with the request call of the RestClientSingleton

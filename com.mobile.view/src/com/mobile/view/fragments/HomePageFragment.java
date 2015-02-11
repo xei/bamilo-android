@@ -5,6 +5,16 @@ package com.mobile.view.fragments;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -21,15 +31,7 @@ import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.ScrollViewWithHorizontal;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -348,7 +350,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      * @author sergiopereira
      */
     private void showRetry() {
-        showFragmentRetry((OnClickListener) this);
+        showFragmentErrorRetry();
     }
     
     /**
@@ -365,6 +367,8 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         int id = view.getId();
         // Retry button
         if(id == R.id.fragment_root_retry_button) onClickRetryButton();
+        // Retry button
+        if(id == R.id.fragment_root_error_button) onClickRetryButton();
         // Teaser item
         else onClickTeaserItem(view);
     }

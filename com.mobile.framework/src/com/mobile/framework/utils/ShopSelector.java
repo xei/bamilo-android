@@ -2,6 +2,12 @@ package com.mobile.framework.utils;
 
 import java.util.Locale;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.text.TextUtils;
+
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
 import com.mobile.framework.rest.RestClientSingleton;
@@ -11,11 +17,7 @@ import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.FacebookTracker;
 import com.mobile.framework.tracking.GTMManager;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.text.TextUtils;
+
 import de.akquinet.android.androlog.Log;
 
 /**

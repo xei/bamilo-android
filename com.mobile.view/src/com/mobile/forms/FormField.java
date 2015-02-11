@@ -22,6 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.objects.PaymentInfo;
@@ -34,9 +38,7 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.configs.GetFormsDatasetListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.InputType;
-import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
+
 import de.akquinet.android.androlog.Log;
 
 /**

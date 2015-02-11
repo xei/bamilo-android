@@ -2,13 +2,6 @@ package com.mobile.utils.dialogfragments;
 
 import java.util.List;
 
-import com.mobile.components.customfontviews.CheckBox;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.components.PinnedSectionListView;
-import com.mobile.components.PinnedSectionListView.PinnedSectionListAdapter;
-import com.mobile.framework.objects.CatalogFilter;
-import com.mobile.framework.objects.CatalogFilterOption;
-import com.mobile.view.R;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +13,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+
+import com.mobile.components.PinnedSectionListView;
+import com.mobile.components.PinnedSectionListView.PinnedSectionListAdapter;
+import com.mobile.components.customfontviews.CheckBox;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.objects.CatalogFilter;
+import com.mobile.framework.objects.CatalogFilterOption;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

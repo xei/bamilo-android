@@ -8,6 +8,23 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+
+import com.facebook.Request.GraphUserCallback;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.Session.StatusCallback;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
@@ -49,23 +66,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-
-import com.facebook.Request.GraphUserCallback;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.Session.StatusCallback;
-import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.model.GraphUser;
-import com.facebook.widget.LoginButton;
 
 import de.akquinet.android.androlog.Log;
 
@@ -73,7 +73,7 @@ import de.akquinet.android.androlog.Log;
  * Class used to perform the login or sign up
  * @author sergiopereira
  */
-public class CheckoutAboutYouFragment extends BaseFragment implements OnClickListener, GraphUserCallback, StatusCallback, IResponseCallback {
+public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserCallback, StatusCallback, IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CheckoutAboutYouFragment.class);
 
@@ -340,6 +340,10 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
     }
     
     
+    private void showRetryLayout() {
+        showFragmentErrorRetry();
+    }
+    
     /**
      * ############# CLICK LISTENER #############
      */
@@ -349,6 +353,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
      */
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         // Get view id
         int id = view.getId();
         // Login toggle
@@ -361,28 +366,30 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         else if(id == R.id.checkout_signup_toogle) onClickSignupToogle(view);
         // Sign button
         else if(id == R.id.checkout_signup_form_button_enter) onClickSignupButton();
-        //retry button
-        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Case FB buttons
         else if(id == R.id.checkout_login_form_button_facebook || id == R.id.checkout_signup_form_button_facebook) showFragmentLoading();        
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
     
-    /**
-     * Process the click on retry button.
-     * @author paulo
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
      */
-    private void onClickRetryButton() {
-        Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            
-        } else {
-            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-//            restartAllFragments();
-        }
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, null, FragmentController.ADD_TO_BACK_STACK);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        // super.onRetryRequest(eventType);
+        triggerAutoLogin();
     }
     
     /**
@@ -505,7 +512,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
         Log.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
         // Exception handling for no network error
         if(exception != null && !NetworkConnectivity.isConnected(getBaseActivity())) {
-            createNoNetworkDialog(mLoginFacebookButton);
+            if(formResponse != null) createNoNetworkDialog(mLoginFacebookButton);
             return;
         }
         // Validate state
@@ -701,7 +708,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             // Try login with saved credentials
             triggerLogin(values, onAutoLogin);
         } else {
-            showFragmentRetry(this);
+            showRetryLayout();
         }
      
     }
@@ -784,7 +791,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements OnClickLis
             Bundle bundle = new Bundle();
             triggerContentEvent(new GetInitFormHelper(), bundle, this);
         } else {
-            showFragmentRetry(this);
+            showRetryLayout();
         }     
 
     }

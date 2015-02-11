@@ -4,8 +4,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import com.mobile.utils.ui.UIUtils;
-import com.mobile.view.R;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -24,6 +22,8 @@ import com.facebook.Session;
 import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.facebook.widget.LoginButton;
+import com.mobile.utils.ui.UIUtils;
+import com.mobile.view.R;
 
 /**
  * Facebook helper.

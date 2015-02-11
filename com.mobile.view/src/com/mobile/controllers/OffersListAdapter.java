@@ -2,11 +2,6 @@ package com.mobile.controllers;
 
 import java.util.ArrayList;
 
-import com.mobile.components.customfontviews.Button;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.Offer;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.view.R;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
@@ -15,6 +10,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RatingBar;
+
+import com.mobile.components.customfontviews.Button;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.objects.Offer;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.view.R;
 
 /**
  * Class that deals with offers list presentation

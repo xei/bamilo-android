@@ -1,8 +1,9 @@
 package com.mobile.framework.objects;
 
-import com.mobile.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.mobile.framework.utils.LogTagHelper;
 
 /**
  * 

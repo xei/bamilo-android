@@ -5,6 +5,12 @@ package com.mobile.view.fragments;
 
 import java.util.EnumSet;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -22,11 +28,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
+
 import de.akquinet.android.androlog.Log;
 
 /**

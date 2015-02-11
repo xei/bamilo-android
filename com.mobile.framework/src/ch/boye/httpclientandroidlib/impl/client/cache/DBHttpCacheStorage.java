@@ -4,11 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import com.mobile.framework.network.HttpCacheDatabaseHelper;
 import android.content.Context;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheEntry;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheStorage;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheUpdateCallback;
+
+import com.mobile.framework.network.HttpCacheDatabaseHelper;
+
 import de.akquinet.android.androlog.Log;
 
 /**

@@ -3,15 +3,6 @@ package com.mobile.controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.objects.Product;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.Toast;
-import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.view.R;
-import com.mobile.view.fragments.CatalogFragment;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Color;
@@ -25,6 +16,15 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.database.FavouriteTableHelper;
+import com.mobile.framework.objects.Product;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.Toast;
+import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.view.R;
+import com.mobile.view.fragments.CatalogFragment;
 
 import de.akquinet.android.androlog.Log;
 

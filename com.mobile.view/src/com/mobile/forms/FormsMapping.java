@@ -11,6 +11,7 @@ import java.util.Map;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.InputType;
+
 import de.akquinet.android.androlog.Log;
 
 /**

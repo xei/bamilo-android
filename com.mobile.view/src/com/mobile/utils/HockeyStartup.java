@@ -15,7 +15,6 @@ import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.CrashManagerListener;
 import net.hockeyapp.android.UpdateManager;
 import net.hockeyapp.android.UpdateManagerListener;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -32,6 +31,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
+
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 public class HockeyStartup {

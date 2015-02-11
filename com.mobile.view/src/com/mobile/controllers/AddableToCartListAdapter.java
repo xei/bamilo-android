@@ -2,13 +2,6 @@ package com.mobile.controllers;
 
 import java.util.ArrayList;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.AddableToCart;
-import com.mobile.framework.objects.Favourite;
-import com.mobile.framework.objects.LastViewedAddableToCart;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.view.R;
 import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -18,6 +11,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.objects.AddableToCart;
+import com.mobile.framework.objects.Favourite;
+import com.mobile.framework.objects.LastViewedAddableToCart;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

@@ -1,10 +1,12 @@
 package com.mobile.framework.rest;
 
-import com.mobile.framework.Darwin;
-import com.mobile.framework.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+
+import com.mobile.framework.Darwin;
+import com.mobile.framework.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

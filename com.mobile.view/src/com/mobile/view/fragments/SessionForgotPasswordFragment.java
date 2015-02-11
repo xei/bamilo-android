@@ -8,11 +8,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.constants.FormConstants;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.forms.Form;
 import com.mobile.framework.rest.RestConstants;
@@ -28,20 +34,14 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.LinearLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
  * 
  */
-public class SessionForgotPasswordFragment extends BaseFragment implements OnClickListener{
+public class SessionForgotPasswordFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(SessionForgotPasswordFragment.class);
 
@@ -119,18 +119,11 @@ public class SessionForgotPasswordFragment extends BaseFragment implements OnCli
         Log.i(TAG, "ON RESUME");
         //Validate is service is available
         if(JumiaApplication.mIsBound){
-            
-            if (formResponse != null) {
-                displayForm(formResponse);
-            }
-            else{
-                triggerForgotForm();
-            }
-            
+            if (formResponse != null) displayForm(formResponse);
+            else triggerForgotForm();
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
-
         setAppContentLayout();
     }
 
@@ -376,13 +369,23 @@ public class SessionForgotPasswordFragment extends BaseFragment implements OnCli
         }
     };
     
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.fragment_root_retry_button) {
-            Bundle bundle = new Bundle();
-            getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, bundle, FragmentController.ADD_TO_BACK_STACK);
-
-        }
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onResume();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        onResume();
+        
     }
 }

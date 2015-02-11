@@ -8,6 +8,14 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.preference.PreferenceScreen;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+
+import com.ad4screen.sdk.Tag;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.BundleConstants;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -19,7 +27,6 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.PreferenceListFragment.OnPreferenceAttachedListener;
-import com.mobile.utils.social.FacebookHelper;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
@@ -58,14 +65,6 @@ import com.mobile.view.fragments.SessionLoginFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
 import com.mobile.view.fragments.SessionTermsFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.preference.PreferenceScreen;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
-
-import com.ad4screen.sdk.Tag;
 
 import de.akquinet.android.androlog.Log;
 

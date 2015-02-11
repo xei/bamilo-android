@@ -5,12 +5,13 @@ package com.mobile.controllers;
 
 import java.util.ArrayList;
 
-import com.mobile.view.fragments.CatalogPageFragment;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.mobile.view.fragments.CatalogPageFragment;
 
 /**
  * @author nunocastro

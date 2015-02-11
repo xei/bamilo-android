@@ -3,9 +3,6 @@ package com.mobile.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.Category;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -13,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.objects.Category;
+import com.mobile.view.R;
 
 /**
  * This Class is used to create an adapter for the list of categories. It is

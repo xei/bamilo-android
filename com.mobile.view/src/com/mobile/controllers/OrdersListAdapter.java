@@ -3,11 +3,6 @@ package com.mobile.controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.Order;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.view.R;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
@@ -17,6 +12,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.objects.Order;
+import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.view.R;
 
 /**
  * 

@@ -7,6 +7,21 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import android.content.ComponentName;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
+import android.os.RemoteException;
+
+import com.ad4screen.sdk.A4SApplication;
 import com.mobile.components.NavigationListComponent;
 import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.forms.Form;
@@ -38,21 +53,6 @@ import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.ServiceSingleton;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import android.content.ComponentName;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Looper;
-import android.os.Message;
-import android.os.RemoteException;
-
-import com.ad4screen.sdk.A4SApplication;
 
 import de.akquinet.android.androlog.Log;
 

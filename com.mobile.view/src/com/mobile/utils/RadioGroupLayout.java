@@ -2,8 +2,6 @@ package com.mobile.utils;
 
 import java.util.ArrayList;
 
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.view.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -13,6 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 public class RadioGroupLayout extends LinearLayout {

@@ -10,16 +10,6 @@ import java.util.Map.Entry;
 
 import javax.net.ssl.SSLException;
 
-import com.mobile.framework.Darwin;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.interfaces.IMetaData;
-import com.mobile.framework.network.ConfigurationConstants;
-import com.mobile.framework.network.DarwinHttpClient;
-import com.mobile.framework.network.LazHttpClientAndroidLog;
-import com.mobile.framework.service.RemoteService;
-import com.mobile.framework.tracking.NewRelicTracker;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -65,6 +55,18 @@ import ch.boye.httpclientandroidlib.params.HttpParams;
 import ch.boye.httpclientandroidlib.protocol.BasicHttpContext;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
+
+import com.mobile.framework.Darwin;
+import com.mobile.framework.ErrorCode;
+import com.mobile.framework.interfaces.IMetaData;
+import com.mobile.framework.network.ConfigurationConstants;
+import com.mobile.framework.network.DarwinHttpClient;
+import com.mobile.framework.network.LazHttpClientAndroidLog;
+import com.mobile.framework.service.RemoteService;
+import com.mobile.framework.tracking.NewRelicTracker;
+import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventType;
+
 import de.akquinet.android.androlog.Log;
 
 /**

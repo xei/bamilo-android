@@ -5,10 +5,21 @@ package com.mobile.view.fragments;
 
 import java.util.EnumSet;
 
+import android.app.Activity;
+import android.graphics.Paint;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.TextUtils;
+import android.text.style.MetricAffectingSpan;
+import android.view.View;
+import android.widget.RelativeLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.CompleteProduct;
@@ -21,25 +32,14 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.graphics.Paint;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.TextUtils;
-import android.text.style.MetricAffectingSpan;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.RelativeLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
  * 
  */
-public class ProductDetailsDescriptionFragment extends BaseFragment implements OnClickListener {
+public class ProductDetailsDescriptionFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(ProductDetailsDescriptionFragment.class);
 
@@ -155,7 +155,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment implements O
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
             } else {
-                showFragmentRetry(this);
+                showFragmentErrorRetry();
             }
         }
     }
@@ -303,15 +303,18 @@ public class ProductDetailsDescriptionFragment extends BaseFragment implements O
         
 //        mProductDescriptionText.setText( Html.fromHtml(translatedDescription));
     }
-
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if(id == R.id.fragment_root_retry_button){
-            Log.d(TAG,"RETRY");
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, getArguments(), FragmentController.ADD_TO_BACK_STACK);
-        }
-    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        Log.d(TAG,"RETRY");
+        onResume();        
+    };
+    
+    
     
     IResponseCallback responseCallback = new IResponseCallback() {
 

@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import com.mobile.framework.interfaces.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
+
 import de.akquinet.android.androlog.Log;
 
 public class Version implements IJSONSerializable {

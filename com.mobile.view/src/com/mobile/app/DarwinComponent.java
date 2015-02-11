@@ -4,15 +4,17 @@
 package com.mobile.app;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.text.TextUtils;
+
 import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.view.R;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.text.TextUtils;
+
 import de.akquinet.android.androlog.Log;
 
 /**

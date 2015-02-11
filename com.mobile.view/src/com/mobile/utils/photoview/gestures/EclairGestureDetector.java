@@ -15,10 +15,11 @@
  *******************************************************************************/
 package com.mobile.utils.photoview.gestures;
 
-import com.mobile.utils.photoview.Compat;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.view.MotionEvent;
+
+import com.mobile.utils.photoview.Compat;
 
 @TargetApi(5)
 public class EclairGestureDetector extends CupcakeGestureDetector {

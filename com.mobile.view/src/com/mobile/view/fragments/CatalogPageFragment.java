@@ -6,6 +6,22 @@ package com.mobile.view.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ProductsListAdapter;
@@ -33,28 +49,14 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogFilterFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * @author nunocastro
  * 
  */
-public class CatalogPageFragment extends BaseFragment implements OnClickListener{
+public class CatalogPageFragment extends BaseFragment {
 
     public static final String TAG = CatalogPageFragment.class.getSimpleName();
 
@@ -656,9 +658,8 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
             if(JumiaApplication.mIsBound){
                 if(mPageNumber == 1) triggerContentEvent(new GetProductsHelper(), bundle, responseCallback);
                 else triggerContentEventWithNoLoading(new GetProductsHelper(), bundle, responseCallback);
-
             } else {
-                showFragmentRetry(this);
+                showContinueShopping();
             }
         } else {
             hideProductsLoading();
@@ -1086,6 +1087,7 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
             if (errorCode == ErrorCode.NO_NETWORK) {
                 if (getParentFragment() != null) ((CatalogFragment) getParentFragment()).disableCatalogButtons();
                 super.handleErrorEvent(bundle);
+                return;
             } else if (errorCode == ErrorCode.HTTP_STATUS) {
                 if (getParentFragment() != null) ((CatalogFragment) getParentFragment()).enableCatalogButtons();
                 showContinueShopping();
@@ -1147,28 +1149,11 @@ public class CatalogPageFragment extends BaseFragment implements OnClickListener
     
     /*
      * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
      */
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-//        // Case retry
-//        if (id == R.id.fragment_root_retry_button) onClickRetryButton();
-//        // Case continue
-//        else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
-//        // Case unknown
-//        else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
-        
-        // Case retry
-//        if (id == R.id.fragment_root_retry_button) onClickRetryButton();
-        super.onClick(v);
-    }
-    
-    /**
-     * Process the click in retry button
-     * @author sergiopereira
-     */
-    private void onClickRetryButton() {
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, getArguments(), FragmentController.ADD_TO_BACK_STACK);
     }
     

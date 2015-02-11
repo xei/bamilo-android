@@ -17,9 +17,10 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.mobile.framework.objects.IJSONSerializable;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.mobile.framework.objects.IJSONSerializable;
 
 /**
  * Class that represents the form fiel validation parameters.

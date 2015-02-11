@@ -9,11 +9,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
-
-import com.mobile.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.mobile.framework.rest.RestConstants;
 
 /**
  * Class that represents the response from the get products rating

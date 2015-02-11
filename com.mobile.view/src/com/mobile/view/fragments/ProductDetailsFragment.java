@@ -136,9 +136,7 @@ import de.akquinet.android.androlog.Log;
  * @description This class displays the product detail screen
  * 
  */
-public class ProductDetailsFragment extends BaseFragment implements OnClickListener,
-        OnDialogListListener, OnItemChecked, OnItemSelected, OnSimplePressed,
-        OnItemSelectedListener, RocketImageLoaderLoadImagesListener {
+public class ProductDetailsFragment extends BaseFragment implements OnDialogListListener, OnItemChecked, OnItemSelected, OnSimplePressed, OnItemSelectedListener, RocketImageLoaderLoadImagesListener {
 
     private final static String TAG = LogTagHelper.create(ProductDetailsFragment.class);
 
@@ -708,7 +706,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         if (JumiaApplication.mIsBound) {
             triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
     }
 
@@ -1259,6 +1257,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         }
         // Tracking
         TrackerDelegator.trackProduct(createBundleProduct());
+        // Show container
+        showFragmentContentContainer();
     }
     
     /**
@@ -1573,11 +1573,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      */
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         // Get id
         int id = view.getId();
         // Case rating
-        if (id == R.id.product_detail_product_rating_container)
-            onClickRating();
+        if (id == R.id.product_detail_product_rating_container) onClickRating();
         // Case description
         else if (id == R.id.product_detail_specifications || id == R.id.product_name ||
                 id == R.id.product_detail_name || id == R.id.features_more_container ||
@@ -1585,38 +1585,37 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
             onClickShowDescription();
         }
         // Case variation button
-        else if (id == R.id.product_detail_product_variant_button)
-            onClickVariantionButton();
+        else if (id == R.id.product_detail_product_variant_button) onClickVariantionButton();
         // Case shop product
-        else if (id == R.id.product_detail_shop)
-            onClickShopProduct();
+        else if (id == R.id.product_detail_shop) onClickShopProduct();
         // Case call to order
-        else if (id == R.id.product_detail_call_to_order)
-            onClickCallToOrder();
+        else if (id == R.id.product_detail_call_to_order) onClickCallToOrder();
         // Case wizard
-        else if (id == R.id.tips_got_it_img)
-            onClickWizardButton();
+        else if (id == R.id.tips_got_it_img) onClickWizardButton();
         // Case favourite
-        else if (id == R.id.product_detail_image_is_favourite)
-            onClickFavouriteButton();
-        // Case retry
-        else if (id == R.id.fragment_root_retry_button)
-            onClickRetry();
+        else if (id == R.id.product_detail_image_is_favourite) onClickFavouriteButton();
         // Case share
-        else if (id == R.id.product_detail_product_image_share)
-            onClickShare(mCompleteProduct);
+        else if (id == R.id.product_detail_product_image_share) onClickShare(mCompleteProduct);
         // Case size guide
-        else if (id == R.id.dialog_list_size_guide_button)
-            onClickSizeGuide(view);
+        else if (id == R.id.dialog_list_size_guide_button) onClickSizeGuide(view);
         // seller link
-        else if (id == R.id.seller_name_container)
-            goToSellerCatalog();
+        else if (id == R.id.seller_name_container) goToSellerCatalog();
         // seller rating
-        else if (id == R.id.product_detail_product_seller_rating_container)
-            goToSellerRating();
+        else if (id == R.id.product_detail_product_seller_rating_container) goToSellerRating();
         // product offers
-        else if (id == R.id.offers_container || id == R.id.product_detail_product_offers_container)
-            goToProductOffers();
+        else if (id == R.id.offers_container || id == R.id.product_detail_product_offers_container) goToProductOffers();
+    }
+    
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        super.onRetryRequest(eventType);
+        //onResume();
+    }
+    
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onResume();
     }
 
     /**
@@ -1626,8 +1625,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mCompleteProduct.getName());
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle,
-                FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -1764,8 +1762,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnClickListe
      * @author sergiopereira
      */
     private void onClickRetry() {
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, getArguments(),
-                FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, getArguments(), FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**

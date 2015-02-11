@@ -2,15 +2,6 @@ package com.mobile.controllers;
 
 import java.util.ArrayList;
 
-import com.mobile.app.JumiaApplication;
-import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
-import com.mobile.components.absspinner.IcsSpinner;
-import com.mobile.components.customfontviews.CheckBox;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.ProductBundleProduct;
-import com.mobile.framework.objects.ProductBundleSimple;
-import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.view.R;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,6 +12,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
+import com.mobile.app.JumiaApplication;
+import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
+import com.mobile.components.absspinner.IcsSpinner;
+import com.mobile.components.customfontviews.CheckBox;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.objects.ProductBundleProduct;
+import com.mobile.framework.objects.ProductBundleSimple;
+import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.view.R;
 
 /**
  * Ad

@@ -5,17 +5,6 @@ package com.mobile.view.fragments;
 
 import java.util.ArrayList;
 
-import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.components.NavigationListComponent;
-import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.NavigationAction;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +14,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+
+import com.mobile.app.JumiaApplication;
+import com.mobile.components.NavigationListComponent;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.objects.ShoppingCart;
+import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.NavigationAction;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

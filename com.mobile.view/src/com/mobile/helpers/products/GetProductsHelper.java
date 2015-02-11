@@ -10,6 +10,12 @@ import java.util.Map.Entry;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ContentValues;
+import android.net.Uri;
+import android.net.Uri.Builder;
+import android.os.Bundle;
+import android.text.TextUtils;
+
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.objects.FeaturedBox;
@@ -19,11 +25,7 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
-import android.content.ContentValues;
-import android.net.Uri;
-import android.net.Uri.Builder;
-import android.os.Bundle;
-import android.text.TextUtils;
+
 import de.akquinet.android.androlog.Log;
 
 /**

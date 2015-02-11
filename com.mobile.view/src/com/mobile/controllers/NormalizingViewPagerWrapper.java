@@ -1,11 +1,11 @@
 package com.mobile.controllers;
 
-import com.mobile.framework.utils.LogTagHelper;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.mobile.framework.utils.LogTagHelper;
 import com.viewpagerindicator.IconPagerAdapter;
 
 import de.akquinet.android.androlog.Log;

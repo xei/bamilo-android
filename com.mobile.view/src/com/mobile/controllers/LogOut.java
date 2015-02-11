@@ -2,14 +2,15 @@ package com.mobile.controllers;
 
 import java.lang.ref.WeakReference;
 
+import android.app.Activity;
+import android.os.Bundle;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.helpers.session.GetLogoutHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.view.BaseActivity;
-import android.app.Activity;
-import android.os.Bundle;
 
 /**
  * This Class is responsible to show the log out dialog.

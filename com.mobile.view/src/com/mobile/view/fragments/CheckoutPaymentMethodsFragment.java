@@ -6,6 +6,16 @@ package com.mobile.view.fragments;
 import java.util.EnumSet;
 import java.util.Iterator;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
@@ -36,15 +46,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -52,7 +54,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnClickListener, IResponseCallback {
+public class CheckoutPaymentMethodsFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CheckoutPaymentMethodsFragment.class);
 
@@ -150,7 +152,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             // Get and show addresses
             triggerGetPaymentMethods();
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
     }
 
@@ -336,6 +338,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
     
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         // Get view id
         int id = view.getId();
         // Submit
@@ -343,10 +346,18 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
             onClickSubmitPaymentButton(); 
             getBaseActivity().hideKeyboard();
         }
-        // Case retry
-        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Case Unknown
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onClickRetryButton();
     }
     
     /**
@@ -358,10 +369,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements OnCl
         if(null != JumiaApplication.CUSTOMER){
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            
         } else {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-//            restartAllFragments();
         }
     }
     

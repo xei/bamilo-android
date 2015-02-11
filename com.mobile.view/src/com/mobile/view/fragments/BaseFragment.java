@@ -9,6 +9,28 @@ import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.RemoteException;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewStub;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+
+import com.facebook.Request;
+import com.facebook.Session;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
@@ -36,28 +58,6 @@ import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.RemoteException;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-
-import com.facebook.Request;
-import com.facebook.Session;
 
 import de.akquinet.android.androlog.Log;
 
@@ -119,6 +119,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private View mFallBackView;
     // For tacking
     protected long mLoadTime = 0l;
+
+    private View mErrorView;
 
     /**
      * Constructor with layout to inflate
@@ -259,6 +261,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         mRetryView = view.findViewById(R.id.fragment_retry_stub);
         // Get fall back layout
         mFallBackView = view.findViewById(R.id.fragment_fall_back_stub);
+        // Get fall back layout
+        mErrorView = view.findViewById(R.id.fragment_unexpected_error_stub);
     }
 
     /**
@@ -775,10 +779,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         setVisibility(mContentView, true);
         setVisibility(mEmptyView, false);
         setVisibility(mRetryView, false);
+        setVisibility(mErrorView, false);
         setVisibility(mFallBackView, false);
         hideLoadingInfo(mLoadingView);
     }
-
+    
     /**
      * Show the retry view from the root layout
      * 
@@ -786,22 +791,21 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      *            button
      * @author sergiopereira
      */
-    protected void showFragmentRetry(final OnClickListener listener) {
+    protected void showFragmentNoNetworkRetry(final OnClickListener listener) {
         setVisibility(mContentView, false);
         setVisibility(mEmptyView, false);
         hideLoadingInfo(mLoadingView);
         setVisibility(mFallBackView, false);
+        setVisibility(mErrorView, false);
         setVisibility(mRetryView, true);
         // Set view
         try {
             (getView().findViewById(R.id.fragment_root_retry_button)).setOnClickListener(new OnClickListener() {
-                
                 @Override
                 public void onClick(View v) {
                     listener.onClick(v);
                     Animation animation = AnimationUtils.loadAnimation(BaseFragment.this.getActivity(), R.anim.anim_rotate);
                     ((ImageView)getView().findViewById(R.id.fragment_root_retry_spinning)).setAnimation(animation);
-                    
                 }
             });
         } catch (NullPointerException e) {
@@ -809,8 +813,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-    protected void showFragmentRetry(final EventType eventType) {
-        showFragmentRetry(new OnClickListener() {
+    protected void showFragmentNoNetworkRetry(final EventType eventType) {
+        showFragmentNoNetworkRetry(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -836,6 +840,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         setVisibility(mContentView, false);
         setVisibility(mEmptyView, false);
         setVisibility(mRetryView, false);
+        setVisibility(mErrorView, false);
         setVisibility(mFallBackView, false);
         showLoadingInfo(mLoadingView);
     }
@@ -851,6 +856,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void showFragmentEmpty(int emptyStringResId, int emptyDrawableResId) {
         setVisibility(mContentView, false);
         setVisibility(mRetryView, false);
+        setVisibility(mErrorView, false);
         hideLoadingInfo(mLoadingView);
         setVisibility(mFallBackView, false);
         setVisibility(mEmptyView, true);
@@ -884,6 +890,30 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             Log.w(TAG, "WARNING NPE ON SHOW EMPTY LAYOUT");
         }
     }
+    
+    /**
+     * Show the retry view from the root layout
+     * 
+     * @param listener
+     *            button
+     * @author sergiopereira
+     */
+    protected void showFragmentErrorRetry() {
+        setVisibility(mContentView, false);
+        setVisibility(mEmptyView, false);
+        hideLoadingInfo(mLoadingView);
+        setVisibility(mFallBackView, false);
+        setVisibility(mRetryView, false);
+        setVisibility(mErrorView, true);
+        // Set view
+        try {
+            (getView().findViewById(R.id.fragment_root_error_button)).setOnClickListener(this);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
+        }
+    }
+    
+
 
     /**
      * Show continue
@@ -895,18 +925,18 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         showFragmentEmpty(R.string.server_error, android.R.color.transparent, R.string.continue_shopping, listener);
     }
 
+
     /**
      * Show continue with listener for going back.
      * @author sergiopereira
      */
     protected void showContinueShopping() {
         Log.i(TAG, "ON SHOW CONTINUE LAYOUT");
-        showFragmentEmpty(R.string.server_error, android.R.color.transparent, R.string.continue_shopping, new OnClickListener() {
+        showFragmentEmpty(R.string.server_error, R.drawable.ic_warning_grey, R.string.continue_shopping, new OnClickListener() {
             
             @Override
             public void onClick(View v) {
                 onClickContinueButton();
-                
             }
         });
     }
@@ -928,6 +958,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         setVisibility(mEmptyView, false);
         hideLoadingInfo(mLoadingView);
         setVisibility(mRetryView, false);
+        setVisibility(mErrorView, false);
         setVisibility(mFallBackView, false);
     }
 
@@ -940,6 +971,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         setVisibility(mEmptyView, false);
         hideLoadingInfo(mLoadingView);
         setVisibility(mRetryView, false);
+        setVisibility(mErrorView, false);
     }
 
     /**
@@ -1077,9 +1109,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             return false;
         }
 
-        if (errorCode == null) {
-            return false;
-        }
+        if (errorCode == null) return false;
+        
+        Log.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
+        
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
             case SSL:
@@ -1088,7 +1121,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             case TIME_OUT:
             case HTTP_STATUS:
             case NO_NETWORK:
-                showFragmentRetry(eventType);
+                showFragmentNoNetworkRetry(eventType);
                 return true;
             case SERVER_IN_MAINTENANCE:
                 getBaseActivity().setLayoutMaintenance(eventType);
@@ -1157,15 +1190,30 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        // Case retry button
+    public void onClick(View view) {
+        int id = view.getId();
+        // Case retry button from network
         if (id == R.id.fragment_root_retry_button) onRetryRequest(null);
         // Case continue button
         else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
+        // Case retry button from error
+        else if(id == R.id.fragment_root_error_button) onClickErrorButton(view);
         // Case continue button
-        else
-            Log.w(TAG, "WARNING: UNKNOWN CLICK EVENT");
+        else Log.w(TAG, "WARNING: UNKNOWN CLICK EVENT");
+    }
+    
+    /**
+     * Process the click in continue shopping
+     * 
+     * @author sergiopereira
+     */
+    protected void onClickErrorButton(View view) {
+        try {
+            Animation animation = AnimationUtils.loadAnimation(BaseFragment.this.getActivity(), R.anim.anim_rotate);
+            ((ImageView) getView().findViewById(R.id.fragment_root_error_spinning)).setAnimation(animation);    
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
+        }
     }
 
     /*

@@ -5,6 +5,13 @@ package com.mobile.view.fragments;
 
 import java.util.EnumSet;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -28,12 +35,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -41,7 +43,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickListener, IResponseCallback {
+public class CheckoutPollAnswerFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CheckoutPollAnswerFragment.class);
     
@@ -133,7 +135,7 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
                 triggerPollForm();
             }
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
     }
     
@@ -228,14 +230,23 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
      */
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         // Get view id
         int id = view.getId();
         // Next button
         if(id == R.id.checkout_poll_button_enter) onClickPollAnswerButton();
-        // Retry button
-        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onClickRetryButton();
     }
     
     /**
@@ -247,10 +258,8 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements OnClickL
         if(null != JumiaApplication.CUSTOMER){
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            
         } else {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-//            restartAllFragments();
         }
     }
     

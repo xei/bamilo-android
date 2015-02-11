@@ -1,12 +1,5 @@
 package com.mobile.utils;
 
-import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsSharedPrefs;
-import com.mobile.controllers.ActivitiesWorkFlow;
-import com.mobile.framework.objects.Version;
-import com.mobile.framework.objects.VersionInfo;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +12,15 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+
+import com.mobile.app.JumiaApplication;
+import com.mobile.constants.ConstantsSharedPrefs;
+import com.mobile.controllers.ActivitiesWorkFlow;
+import com.mobile.framework.objects.Version;
+import com.mobile.framework.objects.VersionInfo;
+import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 public class CheckVersion {

@@ -6,10 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.utils.ShippingRadioGroupList;
-import com.mobile.view.R;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Parcel;
@@ -17,6 +13,12 @@ import android.os.Parcelable;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+
+import com.mobile.framework.objects.IJSONSerializable;
+import com.mobile.framework.rest.RestConstants;
+import com.mobile.utils.ShippingRadioGroupList;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable  {

@@ -10,12 +10,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-import com.mobile.framework.R;
-import com.mobile.framework.database.CategoriesTableHelper;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.ShopSelector;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -28,13 +22,18 @@ import com.ad4screen.sdk.A4S;
 import com.ad4screen.sdk.analytics.Cart;
 import com.ad4screen.sdk.analytics.Item;
 import com.ad4screen.sdk.analytics.Lead;
-
-import de.akquinet.android.androlog.Log;
-
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient.Info;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.mobile.framework.R;
+import com.mobile.framework.database.CategoriesTableHelper;
+import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.framework.utils.DeviceInfoHelper;
+import com.mobile.framework.utils.ShopSelector;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * @author nunocastro

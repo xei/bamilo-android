@@ -1,7 +1,8 @@
 package com.mobile.utils;
 
-import com.mobile.controllers.fragments.FragmentType;
 import android.view.View.OnClickListener;
+
+import com.mobile.controllers.fragments.FragmentType;
 
 
 /**

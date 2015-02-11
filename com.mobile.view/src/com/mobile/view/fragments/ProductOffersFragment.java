@@ -10,7 +10,14 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
+import android.app.Activity;
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.GridView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -35,14 +42,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.GridView;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -330,7 +330,7 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
         case GET_PRODUCT_OFFERS:
             hideActivityProgress();
             showFragmentContentContainer();
-            showFragmentRetry(EventType.GET_PRODUCT_OFFERS);
+            showFragmentNoNetworkRetry(EventType.GET_PRODUCT_OFFERS);
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
 //            mBundleButton.setEnabled(true);

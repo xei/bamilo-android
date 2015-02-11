@@ -6,13 +6,6 @@ package com.mobile.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.framework.objects.RatingStar;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.LayoutDirection;
@@ -20,6 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.framework.objects.RatingStar;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.MyMenuItem;
+import com.mobile.utils.NavigationAction;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

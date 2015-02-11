@@ -2,12 +2,14 @@ package com.mobile.helpers.products;
 
 import java.util.ArrayList;
 
+import android.os.Bundle;
+
 import com.mobile.framework.database.LastViewedTableHelper;
 import com.mobile.framework.objects.LastViewedAddableToCart;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.interfaces.IResponseCallback;
-import android.os.Bundle;
+
 import de.akquinet.android.androlog.Log;
 
 /**

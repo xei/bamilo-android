@@ -2,10 +2,12 @@ package com.mobile.utils.dialogfragments;
 
 
 
-import com.mobile.constants.ConstantsSharedPrefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+
+import com.mobile.constants.ConstantsSharedPrefs;
+
 import de.akquinet.android.androlog.Log;
 
 public class WizardPreferences {

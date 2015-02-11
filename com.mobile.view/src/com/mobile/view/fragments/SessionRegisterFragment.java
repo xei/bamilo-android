@@ -9,11 +9,22 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
+
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
@@ -44,23 +55,14 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.widget.Button;
-import android.widget.LinearLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
  * 
  */
-public class SessionRegisterFragment extends BaseFragment implements OnClickListener {
+public class SessionRegisterFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(SessionRegisterFragment.class);
 
@@ -183,7 +185,7 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
             getFormComponents();
             setFormComponents();
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
       
     }
@@ -773,13 +775,24 @@ public class SessionRegisterFragment extends BaseFragment implements OnClickList
         }
     };
 
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.fragment_root_retry_button) {
-            Bundle bundle = new Bundle();
-            getBaseActivity().onSwitchFragment(FragmentType.REGISTER, bundle, FragmentController.ADD_TO_BACK_STACK);
-
-        }        
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onResume();
+    };
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        onResume();
     }
+
+
 }

@@ -1,8 +1,9 @@
 package com.mobile.utils.ui;
 
+import android.content.Context;
+
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
-import android.content.Context;
 
 /**
  * Class used to manage all toasts.

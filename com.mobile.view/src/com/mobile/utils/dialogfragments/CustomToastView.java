@@ -1,13 +1,14 @@
 package com.mobile.utils.dialogfragments;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.view.BaseActivity;
-import com.mobile.view.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.view.BaseActivity;
+import com.mobile.view.R;
 
 /**
  * Class used to create a custom toast

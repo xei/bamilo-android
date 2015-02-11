@@ -2,12 +2,14 @@ package com.mobile.framework.database;
 
 import java.util.ArrayList;
 
-import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
-import com.mobile.framework.objects.CountryObject;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
+import com.mobile.framework.objects.CountryObject;
+
 import de.akquinet.android.androlog.Log;
 
 /**

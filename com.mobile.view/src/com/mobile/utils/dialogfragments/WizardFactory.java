@@ -2,9 +2,11 @@ package com.mobile.utils.dialogfragments;
 
 
 
-import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
+
+import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
+
 import de.akquinet.android.androlog.Log;
 
 public class WizardFactory {

@@ -2,9 +2,10 @@ package com.mobile.forms;
 
 import org.json.JSONObject;
 
-import com.mobile.framework.interfaces.IJSONSerializable;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.mobile.framework.interfaces.IJSONSerializable;
 
 /**
  * 

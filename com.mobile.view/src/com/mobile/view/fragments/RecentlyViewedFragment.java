@@ -6,6 +6,12 @@ package com.mobile.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.GridView;
+
 import com.mobile.components.customfontviews.Button;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.AddableToCartListAdapter;
@@ -25,11 +31,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.GridView;
+
 import de.akquinet.android.androlog.Log;
 
 /**

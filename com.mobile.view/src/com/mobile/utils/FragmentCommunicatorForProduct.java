@@ -2,9 +2,11 @@ package com.mobile.utils;
 
 import java.util.ArrayList;
 
-import com.mobile.framework.objects.CompleteProduct;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+
+import com.mobile.framework.objects.CompleteProduct;
+
 import de.akquinet.android.androlog.Log;
 
 /**

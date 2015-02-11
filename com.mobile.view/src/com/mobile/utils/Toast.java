@@ -1,11 +1,12 @@
 
 package com.mobile.utils;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.view.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.view.R;
 
 
 public class Toast  {

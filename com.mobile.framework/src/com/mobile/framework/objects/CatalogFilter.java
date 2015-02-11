@@ -9,10 +9,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mobile.framework.utils.LogTagHelper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.SparseArray;
+
+import com.mobile.framework.utils.LogTagHelper;
 
 /**
  * 

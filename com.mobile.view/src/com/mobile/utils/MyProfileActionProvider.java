@@ -6,11 +6,6 @@ package com.mobile.utils;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.components.widget.DismissibleSpinner;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.view.R;
 import android.content.Context;
 import android.os.Build;
 import android.support.v4.view.ActionProvider;
@@ -22,6 +17,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
+
+import com.mobile.app.JumiaApplication;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.widget.DismissibleSpinner;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

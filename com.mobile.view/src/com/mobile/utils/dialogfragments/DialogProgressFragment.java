@@ -1,8 +1,5 @@
 package com.mobile.utils.dialogfragments;
 
-import com.mobile.framework.utils.LoadingBarView;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.view.R;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +8,11 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.mobile.framework.utils.LoadingBarView;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

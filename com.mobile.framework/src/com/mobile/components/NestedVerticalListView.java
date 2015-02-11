@@ -3,13 +3,7 @@ package com.mobile.components;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.MeasureSpec;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.AbsListView.LayoutParams;
 
 /**	
  * 	ListView for nested environments (ScrollView)

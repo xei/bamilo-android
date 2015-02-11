@@ -1,10 +1,6 @@
 
 package com.mobile.components.customfontviews;
 
-import com.mobile.components.customfontviews.AllCapsTransformationMethod;
-import com.mobile.components.customfontviews.HoloFontLoader;
-import com.mobile.components.customfontviews.HoloFontLoader.FontStyleProvider;
-import com.mobile.framework.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -13,6 +9,8 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 
 import com.facebook.widget.LoginButton;
+import com.mobile.components.customfontviews.HoloFontLoader.FontStyleProvider;
+import com.mobile.framework.R;
 
 
 

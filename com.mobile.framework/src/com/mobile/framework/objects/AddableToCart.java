@@ -17,11 +17,13 @@ import java.util.ArrayList;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.utils.CurrencyFormatter;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+
+import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.utils.CurrencyFormatter;
+
 import de.akquinet.android.androlog.Log;
 
 /**

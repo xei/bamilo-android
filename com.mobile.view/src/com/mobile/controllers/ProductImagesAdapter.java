@@ -2,10 +2,6 @@ package com.mobile.controllers;
 
 import java.util.ArrayList;
 
-import com.mobile.framework.objects.Variation;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.view.R;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
@@ -14,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
+import com.mobile.framework.objects.Variation;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 public class ProductImagesAdapter extends BaseAdapter {

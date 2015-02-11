@@ -6,6 +6,16 @@ package com.mobile.view.fragments;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.LinearLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -28,15 +38,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.LinearLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -44,8 +46,7 @@ import de.akquinet.android.androlog.Log;
  * 
  * @author sergiopereira
  */
-public class MyAccountEmailNotificationFragment extends BaseFragment implements OnClickListener,
-        IResponseCallback, OnCheckedChangeListener {
+public class MyAccountEmailNotificationFragment extends BaseFragment implements IResponseCallback, OnCheckedChangeListener {
 
     private static final String TAG = LogTagHelper.create(MyAccountEmailNotificationFragment.class);
 
@@ -279,22 +280,23 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         // Get view id
         int id = view.getId();
         // Next button
-        if (id == R.id.myaccount_newsletter_save)
-            onClickSaveButton();
+        if (id == R.id.myaccount_newsletter_save) onClickSaveButton();
         // Cancel button
-        else if (id == R.id.myaccount_newsletter_cancel)
-            onClickCancelButton();
-        // Retry button
-        else if (id == R.id.fragment_root_retry_button)
-            onClickRetryButton();
+        else if (id == R.id.myaccount_newsletter_cancel) onClickCancelButton();
         // Unknown view
-        else
-            Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
 
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onClickRetryButton();
+    }
+    
     /**
      * Process the click on retry button.
      * 
@@ -302,10 +304,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     private void onClickRetryButton() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE,
-                FragmentType.EMAIL_NOTIFICATION);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle,
-                FragmentController.ADD_TO_BACK_STACK);
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -373,9 +373,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             showFragmentLoading();
             triggerContentEvent(new GetNewslettersFormHelper(), null, (IResponseCallback) this);
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
-
     }
 
     /**

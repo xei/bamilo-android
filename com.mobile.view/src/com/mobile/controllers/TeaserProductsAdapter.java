@@ -4,12 +4,6 @@ import java.util.ArrayList;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.TeaserGroupProducts;
-import com.mobile.framework.objects.TeaserGroupProducts.TeaserProduct;
-import com.mobile.framework.objects.TeaserGroupType;
-import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.view.R;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -19,6 +13,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.objects.TeaserGroupProducts;
+import com.mobile.framework.objects.TeaserGroupProducts.TeaserProduct;
+import com.mobile.framework.objects.TeaserGroupType;
+import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.view.R;
 
 /**
  * 

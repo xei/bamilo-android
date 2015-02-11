@@ -7,10 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.utils.CurrencyFormatter;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.utils.CurrencyFormatter;
 
 /**
  * Class that represents the server side product. Contains id, url, name, image

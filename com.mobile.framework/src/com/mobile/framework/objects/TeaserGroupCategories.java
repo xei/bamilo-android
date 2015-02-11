@@ -5,9 +5,10 @@ package com.mobile.framework.objects;
 
 import org.json.JSONObject;
 
-import com.mobile.framework.objects.TeaserGroupCategories.TeaserCategory;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.mobile.framework.objects.TeaserGroupCategories.TeaserCategory;
 
 /**
  * @author nutzer2

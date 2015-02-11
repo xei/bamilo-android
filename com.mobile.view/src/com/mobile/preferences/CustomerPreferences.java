@@ -2,9 +2,11 @@ package com.mobile.preferences;
 
 
 
-import com.mobile.constants.ConstantsSharedPrefs;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.mobile.constants.ConstantsSharedPrefs;
+
 import de.akquinet.android.androlog.Log;
 
 /**

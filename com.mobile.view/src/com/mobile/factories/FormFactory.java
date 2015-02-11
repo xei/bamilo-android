@@ -2,6 +2,12 @@ package com.mobile.factories;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.util.LayoutDirection;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
 import com.mobile.constants.FormConstants;
 import com.mobile.forms.Form;
 import com.mobile.forms.IFormField;
@@ -10,11 +16,7 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.pojo.MetaFormExtractor;
 import com.mobile.view.R;
-import android.content.Context;
-import android.util.LayoutDirection;
-import android.view.Gravity;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**

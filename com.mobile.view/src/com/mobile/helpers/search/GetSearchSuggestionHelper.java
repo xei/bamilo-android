@@ -9,6 +9,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.database.sqlite.SQLiteException;
+import android.net.Uri;
+import android.os.Bundle;
+import android.text.TextUtils;
+
 import com.mobile.framework.database.SearchRecentQueriesTableHelper;
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.objects.SearchSuggestion;
@@ -19,10 +24,7 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.interfaces.IResponseCallback;
-import android.database.sqlite.SQLiteException;
-import android.net.Uri;
-import android.os.Bundle;
-import android.text.TextUtils;
+
 import de.akquinet.android.androlog.Log;
 
 /**

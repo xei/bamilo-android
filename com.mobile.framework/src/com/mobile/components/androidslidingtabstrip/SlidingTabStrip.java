@@ -16,7 +16,6 @@
 
 package com.mobile.components.androidslidingtabstrip;
 
-import com.mobile.framework.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -26,6 +25,8 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.mobile.framework.R;
 
 /**
  * @see http://developer.android.com/downloads/samples/SlidingTabsBasic.zip

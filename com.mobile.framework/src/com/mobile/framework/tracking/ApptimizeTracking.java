@@ -1,10 +1,10 @@
 package com.mobile.framework.tracking;
 
-import com.mobile.framework.R;
-import com.mobile.framework.utils.LogTagHelper;
 import android.content.Context;
 
 import com.apptimize.Apptimize;
+import com.mobile.framework.R;
+import com.mobile.framework.utils.LogTagHelper;
 
 import de.akquinet.android.androlog.Log;
 

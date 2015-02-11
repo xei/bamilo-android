@@ -15,9 +15,6 @@
  *******************************************************************************/
 package com.mobile.utils.photoview;
 
-import com.mobile.utils.photoview.PhotoViewAttacher.OnMatrixChangedListener;
-import com.mobile.utils.photoview.PhotoViewAttacher.OnPhotoTapListener;
-import com.mobile.utils.photoview.PhotoViewAttacher.OnViewTapListener;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -27,6 +24,10 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.widget.ImageView;
+
+import com.mobile.utils.photoview.PhotoViewAttacher.OnMatrixChangedListener;
+import com.mobile.utils.photoview.PhotoViewAttacher.OnPhotoTapListener;
+import com.mobile.utils.photoview.PhotoViewAttacher.OnViewTapListener;
 
 public class PhotoView extends ImageView implements IPhotoView {
 

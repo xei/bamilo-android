@@ -3,7 +3,6 @@
  */
 package com.mobile.controllers;
 
-import com.mobile.view.R;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v4.view.PagerAdapter;
@@ -16,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
+import com.mobile.view.R;
 import com.viewpagerindicator.IconPagerAdapter;
 
 /**

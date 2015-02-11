@@ -1,8 +1,5 @@
 package com.mobile.utils.dialogfragments;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -13,6 +10,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

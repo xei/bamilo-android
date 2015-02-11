@@ -5,26 +5,6 @@ package com.mobile.view.fragments;
 
 import java.util.EnumSet;
 
-import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsCheckout;
-import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.Customer;
-import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.cart.ClearShoppingCartHelper;
-import com.mobile.interfaces.IResponseCallback;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
-import com.mobile.utils.TrackerDelegator;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -41,15 +21,35 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.TextView.BufferType;
+
+import com.mobile.app.JumiaApplication;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsCheckout;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.ErrorCode;
+import com.mobile.framework.objects.Customer;
+import com.mobile.framework.objects.ShoppingCart;
+import com.mobile.framework.tracking.TrackingPage;
+import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventType;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.helpers.cart.ClearShoppingCartHelper;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.utils.MyMenuItem;
+import com.mobile.utils.NavigationAction;
+import com.mobile.utils.Toast;
+import com.mobile.utils.TrackerDelegator;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * @author sergiopereira
  * 
  */
-public class CheckoutThanksFragment extends BaseFragment implements OnClickListener, IResponseCallback {
+public class CheckoutThanksFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(CheckoutThanksFragment.class);
 
@@ -140,7 +140,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
         if(JumiaApplication.mIsBound){
             prepareLayout();
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
     }
     
@@ -397,17 +397,26 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
     @Override
-    public void onClick(View v) {
-        Log.d(TAG, "VIEW ID: " + v.getId() + " " + R.id.order_status_text);
+    public void onClick(View view) {
+        super.onClick(view);
+        Log.d(TAG, "VIEW ID: " + view.getId() + " " + R.id.order_status_text);
         // CASE continue
-        if (v.getId() == R.id.btn_checkout_continue) onClickContinue();
+        if (view.getId() == R.id.btn_checkout_continue) onClickContinue();
         // CASE order number
-        else if(v.getId() == R.id.order_number_id) onClickOrderNumber(v);
-        //retry button
-        else if(v.getId() == R.id.fragment_root_retry_button) onClickRetryButton();   
+        else if(view.getId() == R.id.order_number_id) onClickOrderNumber(view);   
         // CASE default
         else getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onClickRetryButton();
     }
     
     /**
@@ -415,13 +424,7 @@ public class CheckoutThanksFragment extends BaseFragment implements OnClickListe
      * @author paulo
      */
     private void onClickRetryButton() {
-        Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.HOME);
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            restartAllFragments();
-        }
+        getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
     
     /**

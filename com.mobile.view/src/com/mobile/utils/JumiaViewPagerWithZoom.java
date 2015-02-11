@@ -1,10 +1,12 @@
 package com.mobile.utils;
 
-import com.mobile.components.infiniteviewpager.InfiniteViewPager;
-import com.mobile.framework.utils.LogTagHelper;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import com.mobile.components.infiniteviewpager.InfiniteViewPager;
+import com.mobile.framework.utils.LogTagHelper;
+
 import de.akquinet.android.androlog.Log;
 
 public class JumiaViewPagerWithZoom extends InfiniteViewPager {

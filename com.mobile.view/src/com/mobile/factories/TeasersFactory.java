@@ -4,6 +4,17 @@ import java.util.ArrayList;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+
 import com.mobile.components.HorizontalListView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.TeaserProductsAdapter;
@@ -26,18 +37,7 @@ import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderListener;
 import com.mobile.view.R;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
+
 import de.akquinet.android.androlog.Log;
 
 /**

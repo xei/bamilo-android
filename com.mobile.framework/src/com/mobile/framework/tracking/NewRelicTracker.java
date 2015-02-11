@@ -1,9 +1,9 @@
 package com.mobile.framework.tracking;
 
-import com.mobile.framework.R;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.mobile.framework.R;
 import com.newrelic.agent.android.NewRelic;
 import com.newrelic.agent.android.util.NetworkFailure;
 

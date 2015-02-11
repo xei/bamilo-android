@@ -3,10 +3,11 @@ package com.mobile.forms;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.mobile.framework.objects.IJSONSerializable;
+import com.mobile.framework.rest.RestConstants;
 
 /**
  * Defines the data from the form.

@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.mobile.framework.rest.RestConstants;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.mobile.framework.rest.RestConstants;
+
 import de.akquinet.android.androlog.Log;
 
 /**

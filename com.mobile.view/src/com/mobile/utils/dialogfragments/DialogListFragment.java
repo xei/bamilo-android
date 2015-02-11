@@ -2,9 +2,6 @@ package com.mobile.utils.dialogfragments;
 
 import java.util.ArrayList;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.view.R;
 import android.app.Activity;
 import android.database.DataSetObserver;
 import android.os.Bundle;
@@ -21,6 +18,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

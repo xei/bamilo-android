@@ -1,12 +1,13 @@
 package com.mobile.utils;
 
 
-import com.mobile.components.customfontviews.TextView;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+
+import com.mobile.components.customfontviews.TextView;
 
 public abstract class RightDrawableOnTouchListener implements OnTouchListener {
     Drawable drawable;

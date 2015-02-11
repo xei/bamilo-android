@@ -2,6 +2,16 @@ package com.mobile.view.fragments;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.CategoriesAdapter;
@@ -17,15 +27,7 @@ import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -309,7 +311,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      * @author sergiopereira
      */
     private void showRetry() {
-        showFragmentRetry((OnClickListener) this);
+        showFragmentErrorRetry();
     }
     
     /**
@@ -422,32 +424,25 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     /**
      * ####### LISTENERS ####### 
      */
-//    /*
-//     * (non-Javadoc)
-//     * @see android.view.View.OnClickListener#onClick(android.view.View)
-//     */
-//    @Override
-//    public void onClick(View view) {
-//        // Get view id
-//        int id = view.getId();
-//        // Case retry
-//        if (id == R.id.fragment_root_retry_button) onClickRetryButton();
-//        // Case Unknown
-//        else Log.w(TAG, "WARNING: UNKNOWN BUTTON");
-//    }
-//    
-//    /**
-//     * Process the click on retry
-//     * @author sergiopereira
-//     */
-//    private void onClickRetryButton(){
-//        Log.d(TAG, "ON CLICK RETRY");
-//        triggerGetCategories(mCategoryKey);
-//    }
-    
 
-    protected void onRetryRequest(EventType eventType){
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
         Log.d(TAG, "ON CLICK RETRY");
+        triggerGetCategories(mCategoryKey);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        // super.onRetryRequest(eventType);
         triggerGetCategories(mCategoryKey);
     }
     

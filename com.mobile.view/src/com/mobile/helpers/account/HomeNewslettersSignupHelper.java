@@ -5,15 +5,17 @@ package com.mobile.helpers.account;
 
 import org.json.JSONObject;
 
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.text.TextUtils;
+
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.text.TextUtils;
+
 import de.akquinet.android.androlog.Log;
 
 /**

@@ -1,18 +1,20 @@
 package com.mobile.utils.dialogfragments;
 
-import com.mobile.components.customfontviews.CheckBox;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.components.RangeSeekBar;
-import com.mobile.components.RangeSeekBar.OnRangeSeekBarChangeListener;
-import com.mobile.framework.objects.CatalogFilter;
-import com.mobile.framework.objects.CatalogFilterOption;
-import com.mobile.view.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+
+import com.mobile.components.RangeSeekBar;
+import com.mobile.components.RangeSeekBar.OnRangeSeekBarChangeListener;
+import com.mobile.components.customfontviews.CheckBox;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.objects.CatalogFilter;
+import com.mobile.framework.objects.CatalogFilterOption;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

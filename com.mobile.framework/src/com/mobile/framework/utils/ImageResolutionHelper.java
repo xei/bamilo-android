@@ -4,13 +4,15 @@ import java.util.WeakHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.mobile.framework.R;
-import com.mobile.framework.database.ImageResolutionTableHelper;
-import com.mobile.framework.objects.ImageResolution;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Message;
+
+import com.mobile.framework.R;
+import com.mobile.framework.database.ImageResolutionTableHelper;
+import com.mobile.framework.objects.ImageResolution;
+
 import de.akquinet.android.androlog.Log;
 
 /**

@@ -1,11 +1,5 @@
 package com.mobile.utils.dialogfragments;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsSharedPrefs;
-import com.mobile.framework.objects.Promotion;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.Toast;
-import com.mobile.view.R;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -17,6 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsSharedPrefs;
+import com.mobile.framework.objects.Promotion;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.Toast;
+import com.mobile.view.R;
+
 import de.akquinet.android.androlog.Log;
 
 /**

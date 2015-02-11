@@ -4,7 +4,6 @@ package com.mobile.utils.receivers;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mobile.framework.tracking.GTMManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +14,7 @@ import android.text.TextUtils;
 import com.ad4screen.sdk.ReferrerHandler;
 import com.adjust.sdk.ReferrerReceiver;
 import com.google.android.gms.analytics.CampaignTrackingReceiver;
+import com.mobile.framework.tracking.GTMManager;
 
 import de.akquinet.android.androlog.Log;
 

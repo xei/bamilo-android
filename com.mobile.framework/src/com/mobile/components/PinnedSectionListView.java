@@ -16,7 +16,6 @@
 
 package com.mobile.components;
 
-import com.mobile.framework.BuildConfig;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
@@ -37,6 +36,8 @@ import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
+
+import com.mobile.framework.BuildConfig;
 
 /**
  * ListView, which is capable to pin section views at its top while the rest is still scrolled.

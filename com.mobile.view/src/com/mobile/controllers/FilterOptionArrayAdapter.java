@@ -2,15 +2,16 @@ package com.mobile.controllers;
 
 import java.util.List;
 
-import com.mobile.components.customfontviews.CheckBox;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.objects.CatalogFilterOption;
-import com.mobile.view.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
+import com.mobile.components.customfontviews.CheckBox;
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.objects.CatalogFilterOption;
+import com.mobile.view.R;
 
 /**
  * Class used to fill the list view with filter options

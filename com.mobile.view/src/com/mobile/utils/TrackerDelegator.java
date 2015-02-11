@@ -11,6 +11,14 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
+import android.text.TextUtils;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Customer;
@@ -30,13 +38,7 @@ import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.framework.utils.Utils;
 import com.mobile.view.R;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.Bundle;
-import android.text.TextUtils;
+
 import de.akquinet.android.androlog.Log;
 
 public class TrackerDelegator {

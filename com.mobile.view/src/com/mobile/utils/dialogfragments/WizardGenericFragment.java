@@ -1,7 +1,5 @@
 package com.mobile.utils.dialogfragments;
 
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -13,6 +11,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
+
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
+
 import de.akquinet.android.androlog.Log;
 
 /**

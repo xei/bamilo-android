@@ -9,6 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
@@ -47,14 +56,7 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -62,7 +64,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class CheckoutEditAddressFragment extends BaseFragment implements OnClickListener, IResponseCallback, OnItemSelectedListener {
+public class CheckoutEditAddressFragment extends BaseFragment implements IResponseCallback, OnItemSelectedListener {
 
     private static final String TAG = LogTagHelper.create(CheckoutEditAddressFragment.class);
     
@@ -156,7 +158,7 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
 
         //Validate current address, if null goto back
         if(mCurrentAddress == null)
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
 
         
       //Validate is service is available
@@ -170,9 +172,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
                 triggerEditAddressForm();
             }
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
-
     }
     
     /*
@@ -451,16 +452,27 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
      */
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         // Get view id
         int id = view.getId();
         // Next button
         if(id == R.id.checkout_edit_button_enter) onClickEditAddressButton();
         // Next button
         else if(id == R.id.checkout_edit_button_cancel) onClickCancelAddressButton();
-        //retry button
-        else if(id == R.id.fragment_root_retry_button) onClickRetryButton();
         // Unknown view
         else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+    
+    
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        super.onRetryRequest(eventType);
+    }
+    
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onClickRetryButton();
     }
     
     /**
@@ -472,10 +484,8 @@ public class CheckoutEditAddressFragment extends BaseFragment implements OnClick
         if(null != JumiaApplication.CUSTOMER){
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-            
         } else {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-//            restartAllFragments();
         }
     }
     

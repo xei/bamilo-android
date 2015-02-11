@@ -5,6 +5,15 @@ package com.mobile.view.fragments;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.CategoriesAdapter;
@@ -14,27 +23,20 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.CategoriesTableHelper;
 import com.mobile.framework.objects.Category;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * Classm used to shoe the categories in the navigation container
  * @author sergiopereira
  */
-public class NavigationCategoryFragment extends BaseFragment implements OnItemClickListener, OnClickListener, IResponseCallback {
+public class NavigationCategoryFragment extends BaseFragment implements OnItemClickListener, IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(NavigationCategoryFragment.class);
     
@@ -265,7 +267,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @author sergiopereira
      */
     private void showRetry() {
-        showFragmentRetry((OnClickListener) this);
+        showFragmentErrorRetry();
     }
     
     /**
@@ -290,18 +292,27 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     /**
      * ####### LISTENERS ####### 
      */
+    
     /*
      * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
      */
     @Override
-    public void onClick(View view) {
-        // Get view id
-        int id = view.getId();
-        // Case retry
-        if (id == R.id.fragment_root_retry_button) onClickRetryButton();
-        // Case Unknown
-        else Log.w(TAG, "WARNING: UNKNOWN BUTTON");
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        // Get categories from unexpected error
+        triggerGetCategories(mCategoryKey);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        //super.onRetryRequest(eventType);
+        // Get categories from no network
+        triggerGetCategories(mCategoryKey);
     }
     
     /*
@@ -419,15 +430,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             break;
         }
     }
-    
-    /**
-     * Process the click on retry
-     * @author sergiopereira
-     */
-    private void onClickRetryButton(){
-        Log.d(TAG, "ON CLICK RETRY");
-        triggerGetCategories(mCategoryKey);
-    }
 
     /**
      * ####### RESPONSE EVENTS ####### 
@@ -454,23 +456,10 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onRequestError(Bundle bundle) {
         Log.i(TAG, "ON ERROR EVENT");
+        // Generic errors
+        if(super.handleErrorEvent(bundle)) return;
         // Show retry
         showRetry();
     }
-    
-//    /**
-//     * ####### TRACKING ####### 
-//     */
-//    /**
-//     * Tracking category
-//     * @param name
-//     */
-//    private void trackCategory(String name){
-//        Bundle params = new Bundle();
-//        params.putString(TrackerDelegator.CATEGORY_KEY, name);
-//        params.putInt(TrackerDelegator.PAGE_NUMBER_KEY, 1);
-//        params.putSerializable(TrackerDelegator.LOCATION_KEY, TrackingEvent.CATALOG_FROM_NAVIGATION);
-//        TrackerDelegator.trackCategoryView(params);
-//    }
     
 }

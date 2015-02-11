@@ -9,6 +9,21 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.LayoutDirection;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+
+import com.facebook.Request;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
@@ -49,21 +64,6 @@ import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.LayoutDirection;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-
-import com.facebook.Request;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.model.GraphUser;
 
 import de.akquinet.android.androlog.Log;
 
@@ -71,7 +71,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class SessionLoginFragment extends BaseFragment implements OnClickListener, Request.GraphUserCallback, Session.StatusCallback {
+public class SessionLoginFragment extends BaseFragment implements Request.GraphUserCallback, Session.StatusCallback {
 
     private static final String TAG = LogTagHelper.create(SessionLoginFragment.class);
 
@@ -254,7 +254,7 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
             }
             
         } else {
-            showFragmentRetry(this);
+            showFragmentErrorRetry();
         }
         
         setLoginBottomLayout();
@@ -370,7 +370,8 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
         Log.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
         // Exception handling for no network error
         if(exception != null && !NetworkConnectivity.isConnected(getBaseActivity())) {
-            createNoNetworkDialog(mFacebookButton);
+            // Show dialog case form is visible
+            if(formResponse != null) createNoNetworkDialog(mFacebookButton);
             return;
         }
         // Validate state
@@ -830,17 +831,11 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
      * @see com.mobile.view.fragments.BaseFragment#onClick(android.view.View)
      */
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        // Case retry button
-        if (id == R.id.fragment_root_retry_button) {
-            Bundle bundle = new Bundle();
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-        }
+    public void onClick(View view) {
+        super.onClick(view);
+        int id = view.getId();
         // Case FB button 
-        else if(id == R.id.login_facebook_button) {
-            showFragmentLoading();
-        }
+        if(id == R.id.login_facebook_button) showFragmentLoading();
         // Case sign in button
         else if (id == R.id.middle_login_button_signin) {
             // Log.d(TAG, "CLICKED ON SIGNIN");
@@ -859,5 +854,24 @@ public class SessionLoginFragment extends BaseFragment implements OnClickListene
             cameFromRegister = true;
             getBaseActivity().onSwitchFragment(FragmentType.REGISTER, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     */
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onResume();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        onResume();
     }
 }
