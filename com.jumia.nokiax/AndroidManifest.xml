@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jumia.nokiax"
     android:installLocation="auto"
-    android:versionCode="9"
-    android:versionName="2.2" >
+    android:versionCode="10"
+    android:versionName="2.3" >
     
 	<!-- ######################################## -->
     <!-- ############# Permissions ############## -->
