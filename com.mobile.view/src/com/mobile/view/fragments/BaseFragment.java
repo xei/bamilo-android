@@ -1102,7 +1102,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         Log.i(TAG, "ON HANDLE ERROR EVENT");
         
-        final EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
@@ -1120,12 +1120,17 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             case CONNECT_ERROR:
             case TIME_OUT:
             case NO_NETWORK:
+                // Show no network layout
                 showFragmentNoNetworkRetry(eventType);
                 return true;
             case HTTP_STATUS:
-                showContinueShopping();
+                // Case HOME show retry
+                if(action == NavigationAction.Home) showFragmentErrorRetry();
+                // Case Default show continue shopping
+                else showContinueShopping();
                 return true;
             case SERVER_IN_MAINTENANCE:
+                // Show maintenance page
                 getBaseActivity().setLayoutMaintenance(eventType);
                 return true;
             case REQUEST_ERROR:
