@@ -79,8 +79,8 @@ public class AdjustTracker {
     public static final String FAVORITES = "favorites";
     public static final String PRODUCT_SIZE = "size";
     
-    private final String ADJUST_PREFERENCES = "AdjustPreferences";
-    private final String PURCHASE_NUMBER = "aggregatedNumberOfPurchases";
+    public final static String ADJUST_PREFERENCES = "AdjustPreferences";
+    public final static String PURCHASE_NUMBER = "aggregatedNumberOfPurchases";
     
     protected static class AdjustConstants {
         public static final String NO_DATA = "";
@@ -536,7 +536,7 @@ public class AdjustTracker {
                 
             if (isEnabled) {
                 Log.d(TAG, " TRACK REVENEU --> " + bundle.getDouble(TRANSACTION_VALUE));
-                
+                increaseTransactionCount();
                 parameters = getBaseParameters(parameters, bundle);                
                 Map<String, String> transParameters;
                 
@@ -842,8 +842,7 @@ public class AdjustTracker {
             if(!gender.equals(CustomerGender.UNKNOWN.name()))
                 parameters.put(AdjustKeys.GENDER, gender);
         }       
- 
-        parameters.put(AdjustKeys.AMOUNT_TRANSACTIONS, getTransationCount()); 
+        parameters.put(AdjustKeys.AMOUNT_TRANSACTIONS, getTransactionCount()); 
         parameters.put(AdjustKeys.AMOUNT_SESSIONS, getSessionsCount());         
         
         return parameters;
@@ -912,12 +911,29 @@ public class AdjustTracker {
     }    
 
     
-    private String getTransationCount() {
+    private String getTransactionCount() {
         SharedPreferences settings = mContext.getSharedPreferences(ADJUST_PREFERENCES, Context.MODE_PRIVATE);
         int purchasesNumber = settings.getInt(PURCHASE_NUMBER, 0);
         
         return String.valueOf(purchasesNumber);
     }    
+    
+    private void increaseTransactionCount() {
+        SharedPreferences settings = mContext.getSharedPreferences(ADJUST_PREFERENCES, Context.MODE_PRIVATE);
+        
+        int purchasesNumber = settings.getInt(PURCHASE_NUMBER, 0);
+        purchasesNumber = purchasesNumber +1;
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(PURCHASE_NUMBER, purchasesNumber);
+        editor.commit();
+    }    
+    
+    public static void clearTransactionCount() {
+        SharedPreferences settings = mContext.getSharedPreferences(ADJUST_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(PURCHASE_NUMBER, 0);
+        editor.commit();
+    }  
 
     public Address getAddressFromLocation() {
         Address currAddressLocation = null;

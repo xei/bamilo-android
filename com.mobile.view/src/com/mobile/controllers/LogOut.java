@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.rest.RestClientSingleton;
+import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.helpers.session.GetLogoutHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.view.BaseActivity;
@@ -87,6 +88,7 @@ public class LogOut {
         baseActivity.updateSlidingMenuCompletly();
         // Inform parent activity
         baseActivity.onLogOut();
+        AdjustTracker.clearTransactionCount();
     }
 
 }

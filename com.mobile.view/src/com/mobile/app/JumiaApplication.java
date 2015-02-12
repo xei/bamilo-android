@@ -39,6 +39,7 @@ import com.mobile.framework.objects.VersionInfo;
 import com.mobile.framework.service.IRemoteService;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.service.RemoteService;
+import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.ApptimizeTracking;
 import com.mobile.framework.utils.Constants;
@@ -817,8 +818,16 @@ public class JumiaApplication extends A4SApplication {
         countriesAvailable.clear();
         reviewForm = null;
         ratingForm = null;
+        resetTransactionCount();
     }
     
+    private void resetTransactionCount() {
+        SharedPreferences settings = getApplicationContext().getSharedPreferences(AdjustTracker.ADJUST_PREFERENCES, Context.MODE_PRIVATE);
+        
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(AdjustTracker.PURCHASE_NUMBER, 0);
+        editor.commit();
+    }  
     
     @SuppressWarnings("unused")
     @Deprecated
