@@ -61,6 +61,10 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     private static final String SHOWING_FORM = "showingForm";
     
     private static final String NAME = "name";
+    
+    private static final String TITLE = "title";
+    
+    private static final String COMMENT = "comment";
 
     private static final String SKU = "sku";
     
@@ -71,8 +75,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     private CompleteProduct completeProduct;
 
     private TextView productName;
-
-    private LinearLayout reviewContainer;
 
     private LinearLayout ratingContainer;
 
@@ -90,22 +92,17 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     
     private DynamicForm dynamicRatingForm;
     
-    private DynamicForm dynamicReviewForm;
-    
-    private boolean failedRatingForm = false;
-    
-    private boolean failedReviewForm = false;
-    
     private boolean isShowingRatingForm = true;
     
     public static final String RATING_SHOW = "isShowingRating";
     
-    private static final String RATING_FORM = "rating_form";
-    private static final String REVIEW_FORM = "review_form";
-    
     private boolean nestedFragment = true;
     
     private ContentValues formValues;
+    
+    private String reviewName = "";
+    private String reviewTitle = "";
+    private String reviewComment = "";
     
     /**
      * Get instance
@@ -158,9 +155,13 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         if(savedInstanceState != null){
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
             reviewForm =  JumiaApplication.INSTANCE.reviewForm;
-//            ratingForm = savedInstanceState.getParcelable(RATING_FORM);
-//            reviewForm =  savedInstanceState.getParcelable(REVIEW_FORM);
             isShowingRatingForm = savedInstanceState.getBoolean(SHOWING_FORM);
+            if(savedInstanceState.containsKey(NAME))
+                reviewName = savedInstanceState.getString(NAME);
+            if(savedInstanceState.containsKey(TITLE))
+                reviewTitle = savedInstanceState.getString(TITLE);
+            if(savedInstanceState.containsKey(COMMENT))
+                reviewComment = savedInstanceState.getString(COMMENT);
         } 
     }
 
@@ -174,9 +175,8 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        reviewContainer = (LinearLayout) view.findViewById(R.id.form_rating_container);
         ratingContainer = (LinearLayout) view.findViewById(R.id.form_rating_container);
-        mainContainer =  view.findViewById(R.id.product_rating_container);
+        mainContainer = view.findViewById(R.id.product_rating_container);
     }
 
     /*
@@ -188,16 +188,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        // Validate is service is available
-        if (JumiaApplication.mIsBound) {
-            // load complete product URL
-            if (mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
-                String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
-                mCompleteProductUrl = contentUrl != null ? contentUrl : "";
-            }
-        } else {
-            showRetryLayout();
-        }
+        
     }
 
     /*
@@ -210,43 +201,46 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         isExecutingSendReview = false;
-//        if (getArguments() != null
-//                && getArguments().containsKey(ReviewsFragment.CAME_FROM_POPULARITY)) {
+        
+//        if (getArguments() != null && getArguments().containsKey(ReviewsFragment.CAME_FROM_POPULARITY)) {
 //            getView().findViewById(R.id.product_info_container).setVisibility(View.GONE);
 //            getView().findViewById(R.id.shadow).setVisibility(View.GONE);
 //        } 
-        if(getArguments() != null
-                && getArguments().containsKey(RATING_SHOW)) {
+//        
+        if(getArguments() != null && getArguments().containsKey(RATING_SHOW)) {
             isShowingRatingForm = getArguments().getBoolean(RATING_SHOW);
-            
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
             reviewForm =  JumiaApplication.INSTANCE.reviewForm;
-
         }
-        
-        if (completeProduct == null) {
-            Bundle bundle = new Bundle();
-            bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-            triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
-        } else {
-            /* Commented due to unnecessary data being fetched
-            triggerAutoLogin();
-            triggerCustomer();*/
-            if(ratingForm != null && reviewForm != null){
-                setRatingLayout(ratingForm); 
-                setReviewLayout(reviewForm);
-                loadReviewAndRatingFormValues(isShowingRatingForm);
-                if(isShowingRatingForm){
-                    ratingContainer.setVisibility(View.VISIBLE);
-                    reviewContainer.setVisibility(View.GONE);
-                } else {
-                    ratingContainer.setVisibility(View.GONE);
-                    reviewContainer.setVisibility(View.VISIBLE);
-                }
-            } else {
-                triggerRatingForm();
+     // Validate is service is available
+        if (JumiaApplication.mIsBound) {
+            // load complete product URL
+            if (mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
+                String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
+                mCompleteProductUrl = contentUrl != null ? contentUrl : "";
             }
             
+            if (completeProduct == null) {
+                Bundle bundle = new Bundle();
+                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
+                triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
+            } else {
+                /* Commented due to unnecessary data being fetched
+                triggerAutoLogin();
+                triggerCustomer();*/
+                if(ratingForm != null && reviewForm != null){
+                    loadReviewAndRatingFormValues(isShowingRatingForm);
+                    if(isShowingRatingForm){
+                        setRatingLayout(ratingForm);
+                    } else {
+                        setRatingLayout(reviewForm);
+                    }
+                } else {
+                    triggerRatingForm();
+                }
+            }
+        } else {
+            showRetryLayout();
         }
         
     }
@@ -271,11 +265,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        if(ratingContainer.isShown()){
-            isShowingRatingForm = true;
-        } else {
-            isShowingRatingForm = false;
-        }
         saveReview();
         
         //duplicated here and on onSaveInstance because when this fragment is removed from the Reviews Landscape it doesn't pass on the onSaveInstance method
@@ -305,6 +294,11 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         }
     }
     
+    
+    private void showRetryLayout() {
+        showFragmentErrorRetry();
+    }
+    
     /**
      * Set the Products layout using inflate
      */
@@ -329,22 +323,36 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             
             ratingContainer.addView(dynamicRatingForm.getContainer());
             
-            ((CheckBox) dynamicRatingForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(false);
+            loadReviewAndRatingFormValues(isShowingRatingForm);
+            setReviewName(dynamicRatingForm);
+            restoreTextReview(dynamicRatingForm);
+            if(isShowingRatingForm)
+                ((CheckBox) dynamicRatingForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(false);
+            else 
+                ((CheckBox) dynamicRatingForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(true);
+            
             ((CheckBox) dynamicRatingForm.getContainer().findViewById(R.id.checkbox_form)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked){
-                        JumiaApplication.setRatingReviewValues(dynamicRatingForm.save());
-                        formValues = dynamicRatingForm.save();
-                        isShowingRatingForm = false;
-                        loadReviewAndRatingFormValues(isShowingRatingForm);
-                        ratingContainer.setVisibility(View.GONE);
-                        reviewContainer.setVisibility(View.VISIBLE);
-                        
-                        ((CheckBox) dynamicRatingForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(false);
-                        
-                        
+                        if(reviewForm != null){
+                            formValues = dynamicRatingForm.save();
+                            JumiaApplication.setRatingReviewValues(formValues);
+                            isShowingRatingForm = false;
+                            setRatingLayout(reviewForm);
+                        }
+                      
+                    } else {
+                        if(ratingForm != null){
+                            formValues = dynamicRatingForm.save();
+                            JumiaApplication.setRatingReviewValues(formValues);
+                            isShowingRatingForm = true;
+                            hideKeyboard();
+                            saveTextReview(dynamicRatingForm);
+                            setRatingLayout(ratingForm);
+                        }
+                       
                     }
                 }
             });
@@ -355,55 +363,34 @@ public class ReviewWriteNestedFragment extends BaseFragment {
 
     }
 
-    /**
-     * Set the Products layout using inflate
-     */
-    private void setReviewLayout(Form form) {
-        if (completeProduct == null) {
-            if (!mCompleteProductUrl.equalsIgnoreCase("")) {
-                Bundle bundle = new Bundle();
-                bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-                triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
-            } else {
-                showRetryLayout();
-            }
-            
-        } else {
-            mainContainer.setVisibility(View.VISIBLE);
-            
-            if (getBaseActivity() == null) return;
-    
-            dynamicReviewForm = FormFactory.getSingleton().CreateForm(FormConstants.REVIEW_FORM, getBaseActivity(), form);
-            if(reviewContainer.getChildCount() > 0)
-            reviewContainer.removeAllViews();
-            
-            reviewContainer.addView(dynamicReviewForm.getContainer());
-            
-            ((CheckBox) dynamicReviewForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(true);
-            
-            ((CheckBox) dynamicReviewForm.getContainer().findViewById(R.id.checkbox_form)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(!isChecked){
-                        JumiaApplication.setRatingReviewValues(dynamicReviewForm.save());
-                        formValues = dynamicReviewForm.save();
-                        isShowingRatingForm = true;
-                        loadReviewAndRatingFormValues(isShowingRatingForm);
-                        ratingContainer.setVisibility(View.VISIBLE);
-                        reviewContainer.setVisibility(View.GONE);
-                        hideKeyboard();
-                        ((CheckBox) dynamicReviewForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(true);
-                    }
-                }
-            });
-
-            setGenericLayout();
-            
-            setReviewName(dynamicReviewForm);
+    private void saveTextReview(DynamicForm form){
+        if(form != null && form.getItemByKey(NAME) != null){
+            reviewName = form.getItemByKey(NAME).getValue().toString();
         }
-      
-
+        if(form != null && form.getItemByKey(TITLE) != null){
+            reviewTitle = form.getItemByKey(TITLE).getValue().toString();
+        }
+        if(form != null && form.getItemByKey(COMMENT) != null){
+            reviewComment = form.getItemByKey(COMMENT).getValue().toString();
+        }
+    }
+  
+    private void cleanReviewText(){
+        reviewName = "";
+        reviewTitle = "";
+        reviewComment = "";
+    }
+    
+    private void restoreTextReview(DynamicForm form){
+        if(form != null && form.getItemByKey(NAME) != null){
+            form.getItemByKey(NAME).setValue(reviewName);
+        }
+        if(form != null && form.getItemByKey(TITLE) != null){
+            form.getItemByKey(TITLE).setValue(reviewTitle);
+        }
+        if(form != null && form.getItemByKey(COMMENT) != null){
+            form.getItemByKey(COMMENT).setValue(reviewComment);
+        }
     }
     
     /**
@@ -423,7 +410,15 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             
         } else {
             mainContainer.setVisibility(View.VISIBLE);
+            
+//            productName = (TextView) getView().findViewById(R.id.product_detail_name);
+//            TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
+//            TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
+
             ((Button) getView().findViewById(R.id.send_review)).setOnClickListener(this);
+
+//            productName.setText(completeProduct.getBrand() + " " + completeProduct.getName());
+//            displayPriceInformation(productPriceNormal, productPriceSpecial);       
         }
     }
     
@@ -431,15 +426,8 @@ public class ReviewWriteNestedFragment extends BaseFragment {
      * Save rating and review form
      */
     private void saveReview() {
-
-        if(isShowingRatingForm){
-            if(dynamicRatingForm != null)
-                JumiaApplication.setRatingReviewValues(dynamicRatingForm.save());
-        } else {
-            if(dynamicReviewForm != null)
-                JumiaApplication.setRatingReviewValues(dynamicReviewForm.save());
-        }
-
+        if(dynamicRatingForm != null)
+            JumiaApplication.setRatingReviewValues(dynamicRatingForm.save());
     }
 
     /**
@@ -455,8 +443,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             savedRatingReviewValues = formValues;
         }
         
-        if(isShowingRatingForm){
-            
             // Validate values
             if(savedRatingReviewValues != null && dynamicRatingForm != null) {
                 // Get dynamic form and update
@@ -470,25 +456,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                     }
                 }
             }
-            
-        } else {
-            
-            // Validate values
-            if(savedRatingReviewValues != null && dynamicReviewForm != null) {
-                // Get dynamic form and update
-                Iterator<DynamicFormItem> iter = dynamicReviewForm.getIterator();
-                while (iter.hasNext()) {
-                    DynamicFormItem item = iter.next();
-                    try {
-                        item.loadState(savedRatingReviewValues);
-                    } catch (NullPointerException e) {
-                        Log.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
-                    }
-                }
-            }
-            
-        }
-
     }
 
     private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
@@ -523,17 +490,18 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     private void cleanForm() {
         if(dynamicRatingForm != null)
             dynamicRatingForm.clear();
-        if(dynamicReviewForm != null){
-            dynamicReviewForm.clear();
-            setReviewName(dynamicReviewForm);
-        }
-        
+       
         JumiaApplication.cleanRatingReviewValues();
+        if(formValues != null)
+            formValues = null;
         
-        if(ratingForm != null)
-        setRatingLayout(ratingForm);
-        if(reviewForm != null)
-        setReviewLayout(reviewForm);
+        if(isShowingRatingForm){
+            setRatingLayout(ratingForm);
+        } else {
+            setRatingLayout(reviewForm);
+        }
+        cleanReviewText();
+        setReviewName(dynamicRatingForm);
     }
 
     protected boolean onSuccessEvent(Bundle bundle) {
@@ -556,12 +524,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             params.putParcelable(TrackerDelegator.PRODUCT_KEY, completeProduct);
             
             //only needed for tracking purpose
-            
-            if(isShowingRatingForm){
-                params.putSerializable(TrackerDelegator.RATINGS_KEY, getRatingsMapValues(dynamicRatingForm));
-            } else {
-                params.putSerializable(TrackerDelegator.RATINGS_KEY, getRatingsMapValues(dynamicReviewForm));
-            }
+            params.putSerializable(TrackerDelegator.RATINGS_KEY, getRatingsMapValues(dynamicRatingForm));
             
             TrackerDelegator.trackItemReview(params);
             String buttonMessageText = getResources().getString(R.string.dialog_to_reviews);
@@ -605,7 +568,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             dialog_review_submitted.setCancelable(false);
             dialog_review_submitted.show(getActivity().getSupportFragmentManager(), null);
             hideActivityProgress();
-            showFragmentContentContainer();
             isExecutingSendReview = false;
             cleanForm();
             return false;
@@ -620,7 +582,8 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         case GET_FORM_REVIEW_EVENT:
             Log.i(TAG, "GET_FORM_REVIEW_EVENT");
             reviewForm = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            setReviewLayout(reviewForm);
+            if(ratingForm == null)
+                setRatingLayout(reviewForm);
             showFragmentContentContainer();
             return true;
 
@@ -632,6 +595,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 return true;
             } else {
                 completeProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                JumiaApplication.INSTANCE.setCurrentProduct(completeProduct);
                 // triggerAutoLogin();
                 // triggerCustomer();
                 triggerRatingForm();
@@ -665,18 +629,14 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         hideActivityProgress();
         
         isExecutingSendReview = false;
-        
         // Generic errors
         if(super.handleErrorEvent(bundle)) return true;
         
         switch (eventType) {
         case GET_FORM_RATING_EVENT:
-            failedRatingForm = true;
             triggerReviewForm();
             return false;
         case GET_FORM_REVIEW_EVENT:
-            failedReviewForm = true;
-            showFragmentContentContainer();
             showRetryLayout();
             return false;
         case REVIEW_RATING_PRODUCT_EVENT:
@@ -695,6 +655,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             hideActivityProgress();
             isExecutingSendReview = false;
             return false;
+            
             
         case GET_PRODUCT_EVENT:
             if (!errorCode.isNetworkError()) {
@@ -751,52 +712,56 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickContinueButton()
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
      */
     @Override
-    protected void onClickContinueButton() {
-        super.onClickContinueButton();
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
         onResume();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
+     */
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        switch(eventType){
+        case GET_FORM_RATING_EVENT:
+            triggerRatingForm();
+            return;
+        case REVIEW_RATING_PRODUCT_EVENT:
+            formsValidation();
+            return;
+        default:
+            super.onRetryRequest(eventType);
+            return;
+        }
     }
     
     /**
      * function that validates if the form is correctly filled
      */
     private void formsValidation(){
-        if(isShowingRatingForm){
-            if(dynamicRatingForm != null){
-                if(!dynamicRatingForm.validate())
-                    return;
-            } else if (ratingForm != null) {
+        if(dynamicRatingForm != null){
+            if(!dynamicRatingForm.validate())
+                return;
+        } else if (ratingForm != null) {
+            if(isShowingRatingForm)
                 dynamicRatingForm = FormFactory.getSingleton().CreateForm(FormConstants.RATING_FORM, getBaseActivity(), ratingForm);
-                if(!dynamicRatingForm.validate())
-                    return;
-            } else {
-                triggerRatingForm();
-            }
-            isExecutingSendReview = false;
-            if (!isExecutingSendReview) {
-                isExecutingSendReview = true;
-                executeSendReview(ratingForm.action, dynamicRatingForm);
-            }
-                
+            else if(reviewForm != null)
+                dynamicRatingForm = FormFactory.getSingleton().CreateForm(FormConstants.RATING_FORM, getBaseActivity(), reviewForm);
+            
+            if(!dynamicRatingForm.validate())
+                return;
         } else {
-            if(dynamicReviewForm != null){
-                if(!dynamicReviewForm.validate())
-                    return;
-            } else if (reviewForm != null) {
-                dynamicReviewForm = FormFactory.getSingleton().CreateForm(FormConstants.RATING_FORM, getBaseActivity(), reviewForm);
-                if(!dynamicReviewForm.validate())
-                    return;
-            } else {
-                triggerRatingForm();
-               
-            }
-            isExecutingSendReview = false;
-            if (!isExecutingSendReview) {
-                isExecutingSendReview = true;
-                executeSendReview(reviewForm.action, dynamicReviewForm);
-            }
+            triggerRatingForm();
+        }
+        isExecutingSendReview = false;
+        if (!isExecutingSendReview) {
+            isExecutingSendReview = true;
+            if(isShowingRatingForm) executeSendReview(ratingForm.action, dynamicRatingForm);
+            else executeSendReview(reviewForm.action, dynamicRatingForm);
         }
     }
     
@@ -863,25 +828,13 @@ public class ReviewWriteNestedFragment extends BaseFragment {
 //        JumiaApplication.INSTANCE.reviewForm = reviewForm;
 
         outState.putBoolean(SHOWING_FORM, isShowingRatingForm);
-        
+        outState.putString(NAME, reviewName);
+        outState.putString(TITLE, reviewTitle);
+        outState.putString(COMMENT, reviewComment);
         super.onSaveInstanceState(outState);
     }
     
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        switch(eventType){
-        case GET_FORM_RATING_EVENT:
-            triggerRatingForm();
-            return;
-        case REVIEW_RATING_PRODUCT_EVENT:
-            formsValidation();
-            return;
-        default:
-            super.onRetryRequest(eventType);
-            return;
-        }
-        
-    }
+
     
     protected boolean getIsShowingRatingForm(){
         return isShowingRatingForm;
@@ -908,13 +861,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             }
         
         return values;
-    }
-    
-    /**
-     * 
-     */
-    private void showRetryLayout() {
-        showFragmentErrorRetry();
     }
     
 }

@@ -342,12 +342,12 @@ public class ReviewsFragment extends BaseFragment {
     }
 
     private void startWriteReviewFragment() {
-        mWriteReviewFragment = new ReviewWriteFragment();
+        mWriteReviewFragment = new ReviewWriteNestedFragment();
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.CONTENT_URL, mProductUrl);
         args.putBoolean(CAME_FROM_POPULARITY, true);
         
-        args.putBoolean(ReviewWriteFragment.RATING_SHOW, showRatingForm);
+        args.putBoolean(ReviewWriteNestedFragment.RATING_SHOW, showRatingForm);
         
         mWriteReviewFragment.setArguments(args);
         FragmentManager fm = getChildFragmentManager();
@@ -360,8 +360,8 @@ public class ReviewsFragment extends BaseFragment {
     private void removeWriteReviewFragment() {
         if (mWriteReviewFragment != null) {
            
-            if(mWriteReviewFragment instanceof ReviewWriteFragment)
-                showRatingForm = ((ReviewWriteFragment)mWriteReviewFragment).getIsShowingRatingForm();
+            if(mWriteReviewFragment instanceof ReviewWriteNestedFragment)
+                showRatingForm = ((ReviewWriteNestedFragment)mWriteReviewFragment).getIsShowingRatingForm();
             
             FragmentManager fm = getChildFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
