@@ -218,13 +218,12 @@ public class JumiaApplication extends A4SApplication {
         SHOP_NAME = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
         Log.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
 
-        // TODO : Comment for Samsung store
+        // Disabled for Samsung and Blackberry (check_version_enabled) 
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
 
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
 
-        // TODO : Comment for Samsung store
-        // TODO : Comment for BlackBerry
+        // Disabled for Samsung and Blackberry (check_version_enabled) 
         CheckVersion.init(getApplicationContext());
 
     }

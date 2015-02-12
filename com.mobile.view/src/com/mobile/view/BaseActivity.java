@@ -318,8 +318,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             isRegistered = true;
         }
 
-        // TODO : Comment for Samsung store
-        // TODO : Comment for BlackBerry
+        // Disabled for Samsung and Blackberry (check_version_enabled) 
         CheckVersion.run(getApplicationContext());
 
         /**
