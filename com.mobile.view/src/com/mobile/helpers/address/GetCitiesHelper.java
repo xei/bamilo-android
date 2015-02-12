@@ -53,10 +53,11 @@ public class GetCitiesHelper extends BaseHelper {
         int region = bundle.getInt(REGION_ID_TAG);
         // Get action
         String action = bundle.getString(Constants.BUNDLE_URL_KEY);
-        if(TextUtils.isEmpty(action)) action = EVENT_TYPE.action.toString();    
+        if(TextUtils.isEmpty(action)) action = EVENT_TYPE.action.toString();
+
         // Validate action
         if(action.contains("fk_customer_address_region")) action = action.replace("fk_customer_address_region", "" + region);
-        else action += "?region=" + region; 
+        else action = action.replace("region=\\d+" , "region=" + region); 
         
         Log.d(TAG, "URL: " + action);
         
