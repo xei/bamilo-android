@@ -23,9 +23,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/margin_50px"
+                android:layout_marginBottom="@dimen/margin_80px"
                 android:layout_marginTop="@dimen/margin_116px"
-                android:background="@drawable/ic_warning_grey" />
+                android:background="@drawable/img_warning" />
 
             <com.mobile.components.customfontviews.TextView
                 android:layout_width="match_parent"
