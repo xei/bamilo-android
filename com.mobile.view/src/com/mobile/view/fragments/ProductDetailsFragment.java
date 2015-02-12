@@ -1410,6 +1410,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mRelatedListView.setHasFixedSize(true);
         Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
         if(isRTL) mRelatedListView.enableReverseLayout();
+        
         mRelatedListView.setAdapter(new RelatedItemsListAdapter(mContext, relatedItemsList,
                 new OnClickListener() {
                     @Override
@@ -2194,7 +2195,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mBundleTextTotal.setTag(total);
 
         if (hasSimples) {
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (int) getResources().getDimension( R.dimen.teaser_product_bundle_item_width));
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (int) getResources().getDimension(R.dimen.teaser_product_bundle_item_width));
+            params.addRule(RelativeLayout.BELOW, mDividerBundle.getId());
+            mBundleListView.setLayoutParams(params);
+        } else {
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (int) getResources().getDimension(R.dimen.teaser_product_item_width));
             params.addRule(RelativeLayout.BELOW, mDividerBundle.getId());
             mBundleListView.setLayoutParams(params);
         }
@@ -2205,6 +2210,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
         if(isRTL) mBundleListView.enableReverseLayout();
         // Content
+        Log.e("BUNDLE","bundleProducts size:"+bundleProducts.size());
         mBundleListView.setAdapter(new BundleItemsListAdapter(mContext, bundleProducts, (OnItemSelected) this, (OnItemChecked) this, (OnSimplePressed) this, (OnItemSelectedListener) this));
         mBundleLoading.setVisibility(View.GONE);
         mBundleButton.setOnClickListener(new OnClickListener() {
