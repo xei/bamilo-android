@@ -174,7 +174,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        reviewContainer = (LinearLayout) view.findViewById(R.id.form_review_container);
+        reviewContainer = (LinearLayout) view.findViewById(R.id.form_rating_container);
         ratingContainer = (LinearLayout) view.findViewById(R.id.form_rating_container);
         mainContainer =  view.findViewById(R.id.product_rating_container);
     }

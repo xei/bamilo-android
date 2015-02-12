@@ -1016,7 +1016,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             review = getString(R.string.review).toLowerCase();
 
         mProductRatingCount.setText("( " + String.valueOf(ratingCount) + " " + rating + " / "
-                + String.valueOf(reviewsCount) + " " + review + " )");
+                + String.valueOf(reviewsCount) + " " + review + ")");
 
         // if(ratingCount == 1){
         // mProductRatingCount.setText(String.valueOf(ratingCount) + " " +

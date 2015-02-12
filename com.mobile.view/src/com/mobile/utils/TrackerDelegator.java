@@ -1233,6 +1233,14 @@ public class TrackerDelegator {
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_BUNDLE_TO_CART, productSku, (long) price);
     }
+    
+    public static void clearTransactionCount() {
+        SharedPreferences settings = sContext.getSharedPreferences(AdjustTracker.ADJUST_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(AdjustTracker.PURCHASE_NUMBER, 0);
+        editor.commit();
+    }  
+    
 //    private static void saveUtmParams(Context context, String key, String value) {
 //        Log.d(TAG, "saving saveUtmParams params, key: " + key + ", value : " + value);
 //        Log.d("BETA", "saving saveUtmParams params, key: " + key + ", value : " + value);

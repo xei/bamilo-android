@@ -40,19 +40,6 @@
             android:orientation="vertical" >
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/form_review_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/write_title"
-            android:layout_marginEnd="20dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:visibility="gone" >
-        </LinearLayout>
     </RelativeLayout>
 
     <com.mobile.components.customfontviews.Button

@@ -928,13 +928,6 @@ public class AdjustTracker {
         editor.commit();
     }    
     
-    public static void clearTransactionCount() {
-        SharedPreferences settings = mContext.getSharedPreferences(ADJUST_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putInt(PURCHASE_NUMBER, 0);
-        editor.commit();
-    }  
-
     public Address getAddressFromLocation() {
         Address currAddressLocation = null;
         // From geo location

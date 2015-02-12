@@ -708,11 +708,11 @@ public class JumiaApplication extends A4SApplication {
 
     public static void setRatingReviewValues(ContentValues ratingReviewValues) {
         
-        if(JumiaApplication.ratingReviewValues != null && ratingReviewValues != null && ratingReviewValues.size() > 0 && JumiaApplication.ratingReviewValues.size() > 0){
-            mergeRatingReviewValuesFormValues(ratingReviewValues);
-        } else {
+//        if(JumiaApplication.ratingReviewValues != null && ratingReviewValues != null && ratingReviewValues.size() > 0 && JumiaApplication.ratingReviewValues.size() > 0){
+//            mergeRatingReviewValuesFormValues(ratingReviewValues);
+//        } else {
             JumiaApplication.ratingReviewValues = ratingReviewValues;    
-        }
+//        }
         
     }
     
