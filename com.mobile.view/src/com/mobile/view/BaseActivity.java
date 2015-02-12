@@ -70,7 +70,6 @@ import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.framework.utils.NetworkConnectivity;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.search.GetSearchSuggestionHelper;
@@ -1152,7 +1151,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Hide dropdown
         mSearchAutoComplete.dismissDropDown();
         
-        // Show no network dialog
+        /*-- // Show no network dialog
         if(!NetworkConnectivity.isConnected(getApplicationContext())) {
             if(dialog != null) dialog.dismissAllowingStateLoss();
             // Show
@@ -1171,6 +1170,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             }, false);
             dialog.show(getSupportFragmentManager(), null);
         }
+         */
     }
 
     /**

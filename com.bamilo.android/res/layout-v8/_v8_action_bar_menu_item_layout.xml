@@ -3,13 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/myprofile_item_size"
     android:background="@drawable/selector_myprofile_highlight"
-    android:layoutDirection="locale"
     android:gravity="center_vertical"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:weightSum="1" >
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/menu_item_title"
+        style="@style/text_header"
+        android:layout_width="match_parent"
+        android:layout_weight="0.8"
+        android:gravity="right|center_vertical"
+        android:text="Menu item" />
 
     <RelativeLayout
+        android:id="@+id/item_symbol"
         android:layout_width="@dimen/myprofile_item_size"
-        android:layout_height="@dimen/myprofile_item_size" >
+        android:layout_height="@dimen/myprofile_item_size"
+        android:layout_weight="0.2" >
 
         <LinearLayout
             android:id="@+id/icon_container"
@@ -30,8 +40,7 @@
             android:id="@+id/icon_counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@id/icon_container"
-            android:layout_alignEnd="@id/icon_container"
+            android:layout_alignLeft="@id/icon_container"
             android:layout_alignTop="@id/icon_container"
             android:background="@drawable/favourite_counter_shape"
             android:gravity="center"
@@ -39,16 +48,5 @@
             android:textSize="@dimen/myprofile_icon_counter_text_size"
             android:visibility="invisible" />
     </RelativeLayout>
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/menu_item_title"
-        style="@style/text_header"
-        android:layout_width="match_parent"
-        android:layout_gravity="center_vertical"
-        android:gravity="left|start"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:layout_marginRight="@dimen/margin_20px"
-        android:layout_marginEnd="@dimen/margin_20px"
-        android:text="Menu item" />
 
 </LinearLayout>

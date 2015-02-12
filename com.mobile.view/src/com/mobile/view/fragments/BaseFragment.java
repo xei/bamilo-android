@@ -922,7 +922,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showContinueShopping(OnClickListener listener) {
         Log.i(TAG, "ON SHOW CONTINUE LAYOUT");
-        showFragmentEmpty(R.string.server_error, android.R.color.transparent, R.string.continue_shopping, listener);
+        showFragmentEmpty(R.string.server_error, R.drawable.img_warning, R.string.continue_shopping, listener);
     }
 
 

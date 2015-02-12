@@ -32,6 +32,9 @@
     <!-- SHOPPING CART -->
 	<item name="shopping_basket_subtotal_element" 	type="layout">@layout/_def_shopping_basket_subtotal_element</item>
 	
+	<!-- ACTION BAR -->
+    <item name="action_bar_menu_item_layout" 		type="layout">@layout/_def_action_bar_menu_item_layout</item>
+	
 	<!-- SELLER INFO -->
 	<!-- <item name="shopping_basket_subtotal_element" 	type="layout">@layout/_def_shopping_basket_subtotal_element</item> -->
     
