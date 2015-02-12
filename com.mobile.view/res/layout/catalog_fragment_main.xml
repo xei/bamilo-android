@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="0dp" >
+    android:paddingBottom="0dp"
+    android:layoutDirection="locale" >
 
     <RelativeLayout
         android:id="@+id/catalog_viewpager_container"
@@ -32,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/catalog_pager_tag"
-            android:duplicateParentState="true" />
+            android:duplicateParentState="true"/>
 
         <!-- BUTTONS CONTAINER -->
 
