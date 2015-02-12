@@ -94,10 +94,10 @@
         <com.mobile.components.customfontviews.Button
             android:id="@+id/offer_addcart"
             style="@style/button_orange_bottom"
-            android:layout_width="97dp"
+            android:layout_width="105dp"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/margin_huge"
-            android:layout_marginLeft="@dimen/margin_huge"
+            android:layout_marginLeft="@dimen/margin_mid"
             android:layout_marginRight="@dimen/margin_huge"
             android:layout_marginStart="@dimen/margin_huge"
             android:contentDescription="@string/productdetail_addcart_description"
