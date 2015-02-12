@@ -771,6 +771,22 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
     
     /**
+     * Change actionBar visibility if necessary and executes runnable
+     * 
+     * @param showActionBar
+     * @param onChangeRunnable
+     * @param onChangePostDelay
+     */
+    public void setActionBarVisibility(int showActionBar, Runnable onChangeRunnable, int onChangePostDelay){
+        boolean actionBarVisible = getSupportActionBar().isShowing();
+        setActionBarVisibility(showActionBar);
+        
+        if(getSupportActionBar().isShowing() != actionBarVisible){
+            new Handler().postDelayed(onChangeRunnable, onChangePostDelay);
+        }
+    }
+    
+    /**
      * Set the up button in ActionBar
      * 
      * @param upButton

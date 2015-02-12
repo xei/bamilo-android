@@ -9,6 +9,7 @@ import java.util.EnumSet;
 import org.apache.commons.collections4.CollectionUtils;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -52,10 +53,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
 
     private ArrayList<String> imagesList;
 
-    private boolean errorLoadingImages = false;
-
     private InfiniteCirclePageIndicator mViewPagerIndicator;
-    
     
     /**
      * Constructor using a nested flag
@@ -334,23 +332,39 @@ public class ProductImageGalleryFragment extends BaseFragment {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            if(!errorLoadingImages){
-                if (!isZoomAvailable) {
-                    Log.i(TAG, "onSingleTapConfirmed");
-                    ProductImageGalleryFragment.sSharedSelectedPosition = getViewPagerPosition();
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, imagesList);
-                    bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
-                    bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
-                    getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_GALLERY, bundle, FragmentController.ADD_TO_BACK_STACK);
+            
+            if (!isZoomAvailable) {
+                Log.i(TAG, "onSingleTapConfirmed");
+                
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    
+                    getBaseActivity().setActionBarVisibility(View.GONE, new Runnable(){
+                        @Override
+                        public void run() {
+                            launchNewInstance();
+                    }}, 200);
+                    
                 } else {
-                    getBaseActivity().onBackPressed();
+                    launchNewInstance();
                 }
+            } else {
+                getBaseActivity().onBackPressed();
             }
             return true;
         }
     }
 
+    private void launchNewInstance(){
+
+        ProductImageGalleryFragment.sSharedSelectedPosition = getViewPagerPosition();
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, imagesList);
+        bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
+        bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_GALLERY, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+    }
+    
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#notifyFragment(android.os.Bundle)
