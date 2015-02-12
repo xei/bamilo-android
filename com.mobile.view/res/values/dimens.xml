@@ -261,7 +261,7 @@
     <dimen name="rounded_margin_double_double_mid">@dimen/margin_80px</dimen>
 
     <!-- CATALOG REDESIGN -->
-    <dimen name="catalog_list_item_height">106dp</dimen><!--105dp-->
+    <dimen name="catalog_list_item_height">111dp</dimen><!--105dp-->
     <dimen name="catalog_grid_item_height">190.67dp</dimen>
     <dimen name="catalog_list_item_image_width">74.67dp</dimen>
     <dimen name="catalog_list_item_image_height">93.33dp</dimen>
