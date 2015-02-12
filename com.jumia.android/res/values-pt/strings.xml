@@ -319,6 +319,7 @@
     <string name="size_guide_label">Guia de Tamanhos</string>
     <string name="pinch_to_zoom_label">Belisque para ampliar</string>
     <string name="string_rating">Avaliação</string>
+    <string name="string_ratings">Avaliações</string>
     <string name="invalid_product">Produto Inválido</string>
     <string name="category_filter_error">Não foi possível filtrar a categoria</string>
     <string name="bamilo_not_available">Bamilo não está disponível de momento</string>

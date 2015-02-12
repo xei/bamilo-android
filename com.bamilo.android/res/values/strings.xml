@@ -318,6 +318,7 @@
     <string name="size_guide_label">راهنمای انتخاب سایز</string>
     <string name="pinch_to_zoom_label">باز و بسته کردن دو انگشت برای تغییر بزرگنمایی</string>
     <string name="string_rating">امتیازدهی</string>
+    <string name="string_ratings">امتیاز</string>
     <string name="string_with_discount_only">تنها با تخفیف</string>
     <string name="bamilo_not_available">بامیلو در حال حاضر در دسترس نمی باشد.</string>
     <string name="invalid_product">کالای نامعتبر</string>
