@@ -53,6 +53,8 @@ public class ProductImageGalleryFragment extends BaseFragment {
     private ArrayList<String> imagesList;
 
     private boolean errorLoadingImages = false;
+
+    private InfiniteCirclePageIndicator mViewPagerIndicator;
     
     
     /**
@@ -145,6 +147,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.viewpager);
+        mViewPagerIndicator = (InfiniteCirclePageIndicator)getView().findViewById(R.id.view_pager_indicator);
         View closeView = view.findViewById(R.id.gallery_button_close);
         // Set view pager
         createGallery();
@@ -234,21 +237,21 @@ public class ProductImageGalleryFragment extends BaseFragment {
             imagesList.add("");
         }
         
-        if (galleryAdapter != null) {
-            galleryAdapter.replaceAll(imagesList);
-        } else {
-            galleryAdapter = new GalleryPagerAdapter(getActivity(), imagesList, isZoomAvailable);
-        }
+        // Validate current adapter
+        if (galleryAdapter != null) galleryAdapter.replaceAll(imagesList);
+        else galleryAdapter = new GalleryPagerAdapter(getActivity(), imagesList, isZoomAvailable);
+        // Get size
+        int size = imagesList.size();
+        // Create infinite view pager using current gallery
+        InfinitePagerAdapter infinitePagerAdapter = new InfinitePagerAdapter(galleryAdapter);
+        infinitePagerAdapter.setOneItemMode();
+        infinitePagerAdapter.enableInfinitePages(size > 1);
+        // Add infinite adapter to pager 
+        mViewPager.setAdapter(infinitePagerAdapter);
+        // Add pager to indicator
+        setIndicatorForViewPager(size);
 
-        if(imagesList.size() > 1){
-            InfinitePagerAdapter infinitePagerAdapter = new InfinitePagerAdapter(galleryAdapter);
-            infinitePagerAdapter.setOneItemMode();
-            mViewPager.setAdapter(infinitePagerAdapter);
-            setIndicatorForViewPager();
-        } else {
-            mViewPager.setAdapter(galleryAdapter);
-        }
-
+        // 
         final GestureDetector tapGestureDetector = new GestureDetector(getActivity(), new TapGestureListener(mViewPager));
         mViewPager.setOnTouchListener(new OnTouchListener() {
             /**
@@ -268,15 +271,26 @@ public class ProductImageGalleryFragment extends BaseFragment {
         });
 
     }
-
-    private void setIndicatorForViewPager() {
-        InfiniteCirclePageIndicator viewPagerIndicator = (InfiniteCirclePageIndicator)getView().findViewById(R.id.view_pager_indicator);
-        if (isZoomAvailable) {
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) viewPagerIndicator.getLayoutParams();
-            p.setMargins(0, 0, 0, (int) getView().getResources().getDimension(R.dimen.dimen_78px));
-            viewPagerIndicator.requestLayout();
+    
+    /**
+     * Set the pager indicator validating the size.<br>
+     * @param size
+     * @author ricardo
+     * @modified sergiopereira
+     */
+    private void setIndicatorForViewPager(int size) {
+        // Validate the current size
+        if(size > 1) {
+            if (isZoomAvailable) {
+                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) mViewPagerIndicator.getLayoutParams();
+                p.setMargins(0, 0, 0, (int) getView().getResources().getDimension(R.dimen.dimen_78px));
+                mViewPagerIndicator.requestLayout();
+            }
+            mViewPagerIndicator.setVisibility(View.VISIBLE);
+        } else {
+            mViewPagerIndicator.setVisibility(View.INVISIBLE);
         }
-        viewPagerIndicator.setViewPager(mViewPager);
+        mViewPagerIndicator.setViewPager(mViewPager);
     }
 
     /**

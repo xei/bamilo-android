@@ -82,12 +82,12 @@ public class InfiniteCirclePageIndicator extends View implements PageIndicator{
 
         Drawable background = a.getDrawable(R.styleable.CirclePageIndicator_android_background);
         if (background != null) {
-          setBackgroundDrawable(background);
+            setBackgroundDrawable(background);
         }
 
         a.recycle();
 
-        final ViewConfiguration configuration = ViewConfiguration.get(context);
+        //final ViewConfiguration configuration = ViewConfiguration.get(context);
 //        mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
     }
 
@@ -302,7 +302,7 @@ public class InfiniteCirclePageIndicator extends View implements PageIndicator{
     }
 
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        mCurrentPage = ((InfinitePagerAdapter)mViewPager.getAdapter()).getVirtualPosition(position);
+        mCurrentPage = ((InfinitePagerAdapter) mViewPager.getAdapter()).getVirtualPosition(position);
         mPageOffset = positionOffset;
         invalidate();
 
