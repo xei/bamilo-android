@@ -52,8 +52,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
 
     private ShippingMethodFormBuilder mFormResponse;
 
-    private View nFormContainer;
-
     private int mSelectionSaved = -1;
 
     private int mSubSelectionSaved = -1;
@@ -237,8 +235,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         Log.i(TAG, "LOAD FORM");
         mFormResponse = form;
         mShippingMethodsContainer.removeAllViews();
-        nFormContainer = mFormResponse.generateForm(getBaseActivity());
-        mShippingMethodsContainer.addView(nFormContainer);
+        mFormResponse.generateForm(getBaseActivity(), mShippingMethodsContainer);
+        //mShippingMethodsContainer.addView(nFormContainer);
         mShippingMethodsContainer.refreshDrawableState();
         
         // Set the saved selection

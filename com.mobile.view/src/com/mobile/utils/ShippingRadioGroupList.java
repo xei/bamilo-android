@@ -86,7 +86,7 @@ public class ShippingRadioGroupList extends RadioGroup {
             /**
              * Global Container
              */
-            final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, mGroup, false);
+            final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radio_layout_with_extra, mGroup, false);
 
             // Hide first divider
             if (idx == 0) {
@@ -110,18 +110,18 @@ public class ShippingRadioGroupList extends RadioGroup {
             /**
              * For each element verify if it has extras if so add them to the view
              */
-            for (int i = 0; i < mForm.subForms.size(); i++) {
+            for (int i = 0; i < mForm.shippingMethodsSubForms.size(); i++) {
 
-                Log.i(TAG, "code1generate subForms : " + mForm.subForms.get(i).scenario);
+                Log.i(TAG, "code1generate subForms : " + mForm.shippingMethodsSubForms.get(i).scenario);
 
-                if (mForm.subForms.get(i).scenario.equalsIgnoreCase(mItems.get(idx))) {
-                    Log.i(TAG, "code1generate subForms : " + mForm.subForms.get(i).name);
-                    tmpSubForms.add(mForm.subForms.get(i));
-
-                    View mView = mForm.subForms.get(i).generateForm(mContext);
-                    if (mView != null) {
-                        extras.addView(mView);
-                    }
+                if (mForm.shippingMethodsSubForms.get(i).scenario.equalsIgnoreCase(mItems.get(idx))) {
+                    Log.i(TAG, "code1generate subForms : " + mForm.shippingMethodsSubForms.get(i).name);
+                    tmpSubForms.add(mForm.shippingMethodsSubForms.get(i));
+                    // Get sub form
+                    ShippingMethodSubForm shippingSubForm = mForm.shippingMethodsSubForms.get(i);
+                    // Validate number of options
+                    if(shippingSubForm.options.size() > 0) shippingSubForm.generateForm(mContext, extras);
+                    else shippingSubForm.dataControl = new View(mContext);
                 }
             }
 
@@ -181,11 +181,6 @@ public class ShippingRadioGroupList extends RadioGroup {
             extras.setVisibility(View.VISIBLE);
             if (subForms.get(mItems.get(button.getId())) != null) {
                 if (mItems.get(button.getId()).equalsIgnoreCase("pickupstation")) {
-//                    TextView title = (TextView) extras.findViewById(R.id.payment_text);
-//                    if(mForm.label != null){
-//                        title.setText(mForm.label.trim());    
-//                    }
-//                    title.setVisibility(View.VISIBLE);
                     for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
                         ((ShippingMethodSubForm) element).dataControl.setVisibility(View.VISIBLE);
                     }
@@ -196,8 +191,6 @@ public class ShippingRadioGroupList extends RadioGroup {
             extras.setVisibility(View.GONE);
             if (subForms.get(mItems.get(button.getId())) != null) {
                 if (mItems.get(button.getId()).equalsIgnoreCase("pickupstation")) {
-//                    TextView title = (TextView) extras.findViewById(R.id.payment_text);
-//                    title.setVisibility(View.GONE);
                     for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
                         ((ShippingMethodSubForm) element).dataControl.setVisibility(View.GONE);
                     }
@@ -265,8 +258,7 @@ public class ShippingRadioGroupList extends RadioGroup {
         for (int i = 0; i < mGroup.getChildCount(); i++) {
             if (i != idx) {
                 if (mGroup.getChildAt(i).findViewById(R.id.radio_container).findViewById(i) instanceof RadioButton) {
-                    RadioButton button = (RadioButton) mGroup.getChildAt(i)
-                            .findViewById(R.id.radio_container).findViewById(i);
+                    RadioButton button = (RadioButton) mGroup.getChildAt(i).findViewById(R.id.radio_container).findViewById(i);
                     button.setChecked(false);
                     mGroup.getChildAt(i).findViewById(R.id.extras).setVisibility(View.GONE);
                     Log.i(TAG, "code1selection : id is : " + idx + " cleaning 2 : " + i);
