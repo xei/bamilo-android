@@ -21,7 +21,7 @@
     <item name="checkout_shipping_pickup_station" 	type="layout">@layout/_v8_checkout_shipping_pickup_station</item>
     <item name="checkout_shipping_fee_time" 		type="layout">@layout/_v8_checkout_shipping_fee_time</item>
     <item name="checkout_header"					type="layout">@layout/_v8_checkout_header</item>
-    
+
     <!-- FORMS -->
     <item name="form_radiobutton_shipping" 			type="layout">@layout/_v8_form_radiobutton_shipping</item>
 	<item name="form_radiobutton_with_extra" 		type="layout">@layout/_v8_form_radiobutton_with_extra</item>
@@ -31,7 +31,10 @@
     <!-- SHOPPING CART -->
     <item name="shopping_basket_subtotal_element" 	type="layout">@layout/_v8_shopping_basket_subtotal_element</item>
     
-	<!-- ACTION BAR -->
+    <!-- ACTION BAR -->
     <item name="action_bar_menu_item_layout" 		type="layout">@layout/_v8_action_bar_menu_item_layout</item>
+    
+	<!-- FRAGMENT ROOT -->
+	<item name="no_connection_button_retry" 		type="layout">@layout/_v8_no_connection_button_retry</item>
 
 </resources>

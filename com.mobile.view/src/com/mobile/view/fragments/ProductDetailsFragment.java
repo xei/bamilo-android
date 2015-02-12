@@ -1951,18 +1951,17 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     }
 
     public void onErrorEvent(Bundle bundle) {
-
+        Log.i(TAG, "ON ERROR EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
+        // Hide dialog progress
         hideActivityProgress();
-
-        if (super.handleErrorEvent(bundle)) {
-            return;
-        }
+        // Generic errors
+        if (super.handleErrorEvent(bundle)) return;
+        // Specific errors
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "onErrorEvent: type = " + eventType);

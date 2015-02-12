@@ -33,5 +33,8 @@
     
     <!-- ACTION BAR -->
     <item name="action_bar_menu_item_layout" 		type="layout">@layout/_v8_action_bar_menu_item_layout</item>
+    
+	<!-- FRAGMENT ROOT -->
+	<item name="no_connection_button_retry" 		type="layout">@layout/_v8_no_connection_button_retry</item>
 
 </resources>

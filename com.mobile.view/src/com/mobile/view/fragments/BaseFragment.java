@@ -1119,9 +1119,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             case IO:
             case CONNECT_ERROR:
             case TIME_OUT:
-            case HTTP_STATUS:
             case NO_NETWORK:
                 showFragmentNoNetworkRetry(eventType);
+                return true;
+            case HTTP_STATUS:
+                showContinueShopping();
                 return true;
             case SERVER_IN_MAINTENANCE:
                 getBaseActivity().setLayoutMaintenance(eventType);
