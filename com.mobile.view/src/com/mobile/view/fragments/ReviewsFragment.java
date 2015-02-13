@@ -134,7 +134,8 @@ public class ReviewsFragment extends BaseFragment {
         sPopularityFragment.mProductRatingPage = null;
         String contentUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
         sPopularityFragment.mProductUrl = contentUrl != null ? contentUrl : "";
-        sPopularityFragment.isProductReview = bundle.getBoolean(ConstantsIntentExtra.REVIEW_TYPE,true);
+        if(bundle.containsKey(ConstantsIntentExtra.REVIEW_TYPE))
+            sPopularityFragment.isProductReview = bundle.getBoolean(ConstantsIntentExtra.REVIEW_TYPE,true);
         sPopularityFragment.setArguments(bundle);
         showRatingForm = true;
         return sPopularityFragment;
