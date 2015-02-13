@@ -102,6 +102,7 @@
 
                     <com.mobile.components.customfontviews.TextView
                         style="@style/text_root"
+                        android:id="@+id/fragment_root_empty_text"
                         android:layout_width="match_parent"
                         android:layout_marginEnd="@dimen/margin_mid"
                         android:layout_marginLeft="@dimen/margin_mid"

@@ -110,6 +110,8 @@ public class ReviewsFragment extends BaseFragment {
     
     private TextView writeReviewTitle;
     
+    private TextView emptyScreenText;
+    
     private View centerPoint;
     
     private int pageNumber = 1;
@@ -119,6 +121,8 @@ public class ReviewsFragment extends BaseFragment {
     private static final int REVIEWS_PER_PAGE = 18;
     
     private ArrayList<ProductReviewComment> reviews;
+    
+    private static boolean isProductReview = true;
     
     /**
      * Get instance
@@ -130,6 +134,7 @@ public class ReviewsFragment extends BaseFragment {
         sPopularityFragment.mProductRatingPage = null;
         String contentUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
         sPopularityFragment.mProductUrl = contentUrl != null ? contentUrl : "";
+        sPopularityFragment.isProductReview = bundle.getBoolean(ConstantsIntentExtra.REVIEW_TYPE,true);
         sPopularityFragment.setArguments(bundle);
         showRatingForm = true;
         return sPopularityFragment;
@@ -203,6 +208,13 @@ public class ReviewsFragment extends BaseFragment {
         sellerRatingContainer = (RelativeLayout) getView().findViewById(R.id.seller_reviews_rating_container);
         sellerRatingBar = (RatingBar) getView().findViewById(R.id.seller_reviews_item_rating);
         sellerRatingCount = (TextView) getView().findViewById(R.id.seller_reviews_item_reviews);
+
+        emptyScreenText = (TextView) getView().findViewById(R.id.fragment_root_empty_text);
+        if(isProductReview){
+            emptyScreenText.setText(getResources().getString(R.string.reviews_empty));
+        } else {
+            emptyScreenText.setText(getResources().getString(R.string.reviews_empty_seller));
+        }
         
         reviewsContainer = (LinearLayout) getView().findViewById(R.id.linear_reviews);
         marginLandscape = (View) getView().findViewById(R.id.margin_landscape);
