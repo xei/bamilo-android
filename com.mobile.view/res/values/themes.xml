@@ -61,6 +61,7 @@
         <!-- #### Action Bar -->
         <item name="android:actionBarTheme">@style/Widget.Jumia.ActionBar</item>
         <item name="actionBarTheme">@style/Widget.Jumia.ActionBar</item>
+        <item name="android:actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
         <item name="actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
         <!-- #### Search View -->
         <item name="android:searchViewStyle">@style/Widget.Jumia.SearchView</item>
@@ -93,11 +94,12 @@
     </style>
 
     <!-- Style for ActionBar Buttons from support library compatibility -->
-    <style name="Widget.Jumia.ActionButton" parent="Base.Widget.AppCompat.ActionButton">
+    <style name="Widget.Jumia.ActionButton" parent="@style/Base.Widget.AppCompat.ActionButton">
         <item name="android:layout_marginTop">4dip</item>
         <item name="android:layout_marginBottom">4dip</item>
         <item name="android:paddingLeft">8dip</item>
         <item name="android:paddingRight">8dip</item>
+        <!-- API v11: is used the abc_item_background_holo_light.xml file -->
     </style>
 
     <!-- Search view from support library compatibility -->
