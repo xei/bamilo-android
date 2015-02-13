@@ -345,5 +345,5 @@
     <string name="review_this_seller">Avalie este vendedor agora!</string>
     <string name="error_fb_permission_not_granted">Pedimos desculpa, precisamos do seu e-mail para entrar/criar a sua conta.</string>
     <string name="succes_login">Está conetado</string>
-
+	<string name="reviews_empty_seller">Este Vendedor ainda não tem avaliações!</string>
 </resources>
