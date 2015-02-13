@@ -98,6 +98,7 @@
                         android:src="@drawable/img_noratings" />
 
                     <com.mobile.components.customfontviews.TextView
+                        android:id="@+id/fragment_root_empty_text"
                         style="@style/text_root"
                         android:layout_width="match_parent"
                         android:layout_marginLeft="@dimen/margin_mid"
