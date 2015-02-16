@@ -1,0 +1,6 @@
+<alpha xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="500"
+    android:fromAlpha="0.0"
+    android:interpolator="@android:anim/accelerate_interpolator"
+    android:toAlpha="1.0" />
+<!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/A4SSDK/src/main/res/anim/com_ad4screen_sdk_fade_in.xml -->

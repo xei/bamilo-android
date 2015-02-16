@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="shoppingcart_text_article">
+        <item quantity="one">@string/shoppingcart_article</item>
+        <item quantity="other">@string/shoppingcart_articles</item>
+    </plurals>
+
+    <string-array name="products_picker">
+
+        <!-- <item>@string/products_sort_brand</item> -->
+        <item>@string/products_sort_bestrated</item>
+        <item>@string/products_sort_popularity</item>
+        <item>@string/products_sort_newin</item>
+        <item>@string/products_sort_priceup</item>
+        <item>@string/products_sort_pricedown</item>
+        <item>@string/products_sort_name</item>
+        <item>@string/products_sort_brand</item>
+
+        <!-- <item>@string/products_sort_popularity</item> -->
+    </string-array>
+    <string-array name="myaccount_array">
+        <item>@string/myaccount_userdata</item>
+        <item>@string/myaccount_email_notifications</item>
+    </string-array>
+
+    <!-- NAVIGATION MENU ITEMS -->
+    <string-array name="navigation_items">
+        <item>/shop/</item>
+        <item>/customer/language/</item>
+    </string-array>
+
+</resources>

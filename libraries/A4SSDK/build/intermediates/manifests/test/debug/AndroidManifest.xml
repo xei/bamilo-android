@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ad4screen.sdk.test" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="21" />
+
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:functionalTest="false"
+        android:handleProfiling="false"
+        android:label="Tests for com.ad4screen.sdk.test"
+        android:targetPackage="com.ad4screen.sdk.test" />
+    <!-- [A4S-SDK[ -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application>
+        <uses-library android:name="android.test.runner" />
+        <!-- [A4S-SDK[ -->
+        <receiver
+            android:name="com.ad4screen.sdk.ReferrerHandler"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.ad4screen.sdk.A4SPopup"
+            android:taskAffinity=""
+            android:theme="@style/com_ad4screen_sdk_theme_popup" />
+        <activity
+            android:name="com.ad4screen.sdk.A4SInterstitial"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:documentLaunchMode="always"
+            android:maxRecents="1"
+            android:theme="@style/com_ad4screen_sdk_theme_interstitial" />
+
+        <receiver
+            android:name="com.ad4screen.sdk.A4SIDFVHandler"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.ad4screen.sdk.intent.action.QUERY" />
+
+                <category android:name="com.ad4screen.sdk.intent.category.ANONYM_ID" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

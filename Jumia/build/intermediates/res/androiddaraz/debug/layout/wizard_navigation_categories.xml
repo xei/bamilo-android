@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wizard_main_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/wizard_nav_img_margin_left"
+        android:layout_marginTop="@dimen/wizard_nav_img_margin_top"
+        android:src="@drawable/img_instructions_arrowcategories" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/margin_huge"
+        android:fontFamily="roboto_light"
+        android:gravity="center"
+        android:shadowColor="#000000"
+        android:text="@string/wizard_navigation"
+        android:textColor="#c3c3c3"
+        android:textSize="@dimen/text_xl" />
+
+    <com.mobile.components.customfontviews.Button
+        android:id="@+id/wizard_nav_button"
+        style="@style/button_orange_style"
+        android:layout_width="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_veryhuge"
+        android:fontFamily="roboto_bold"
+        android:text="@string/got_it"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/layout/wizard_navigation_categories.xml -->

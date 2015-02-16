@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/build/intermediates/exploded-aar/JumiaApp.libraries/FacebookSDK/unspecified/res/values-ldpi-v4/values.xml -->
+    <eat-comment/>
+    <dimen name="com_facebook_picker_divider_width">1px</dimen>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/values-ldpi/dimens.xml -->
+    <eat-comment/>
+    <dimen name="product_tip_variations_top_margin">25dp</dimen>
+    <dimen name="tips_button_height">45dp</dimen>
+    <dimen name="tips_button_width">180dp</dimen>
+</resources>

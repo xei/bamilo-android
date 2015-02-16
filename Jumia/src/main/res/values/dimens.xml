@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- BASE MARGINS PX -->
+    <dimen name="margin_10px">3.33dp</dimen>
+    <dimen name="margin_20px">6.67dp</dimen>
+    <dimen name="margin_24px">8dp</dimen>
+    <dimen name="margin_30px">10dp</dimen>
+    <dimen name="margin_32px">10.67dp</dimen>
+    <dimen name="margin_40px">13.33dp</dimen>
+    <dimen name="margin_50px">16.67dp</dimen>
+    <dimen name="margin_60px">20dp</dimen>
+    <dimen name="margin_70px">23.33dp</dimen>
+    <dimen name="margin_80px">26.67dp</dimen>
+    <dimen name="margin_90px">30dp</dimen>
+    <dimen name="margin_100px">33.33dp</dimen>
+    <dimen name="margin_110px">36.67dp</dimen>
+    <dimen name="margin_116px">38.67dp</dimen>
+    <dimen name="margin_120px">40dp</dimen>
+    <dimen name="margin_140px">46dp</dimen>
+    <dimen name="margin_150px">50dp</dimen>
+
+    <!-- BASE DIMENSIONS: PX TO DP -->
+    <dimen name="dimen_3px">1dp</dimen>
+    <dimen name="dimen_6px">2dp</dimen>
+    <dimen name="dimen_8px">2.67dp</dimen>
+    <dimen name="dimen_9px">3dp</dimen>
+    <dimen name="dimen_10px">3.33dp</dimen>
+    <dimen name="dimen_12px">4dp</dimen>
+    <dimen name="dimen_15px">5dp</dimen>
+    <dimen name="dimen_27px">9dp</dimen>
+    <dimen name="dimen_20px">6.67dp</dimen>
+    <dimen name="dimen_30px">10dp</dimen>
+    <dimen name="dimen_40px">13.33dp</dimen>
+    <dimen name="dimen_42px">14dp</dimen>
+    <dimen name="dimen_48px">16dp</dimen>
+    <dimen name="dimen_50px">16.67dp</dimen>
+    <dimen name="dimen_60px">20dp</dimen>
+    <dimen name="dimen_70px">23.33dp</dimen>
+    <dimen name="dimen_71px">23.66dp</dimen>
+    <dimen name="dimen_78px">26dp</dimen>
+    <dimen name="dimen_80px">26.67dp</dimen>
+    <dimen name="dimen_90px">30dp</dimen>
+    <dimen name="dimen_100px">33.33dp</dimen>
+    <dimen name="dimen_110px">36.67dp</dimen>
+    <dimen name="dimen_120px">40dp</dimen>
+    <dimen name="dimen_130px">43.33dp</dimen>
+    <dimen name="dimen_140px">46.67dp</dimen>
+    <dimen name="dimen_144px">48dp</dimen>
+    <dimen name="dimen_150px">50dp</dimen>
+    <dimen name="dimen_160px">53.33dp</dimen>
+    <dimen name="dimen_170px">56.67dp</dimen>
+    <dimen name="dimen_179px">59.67dp</dimen>
+    <dimen name="dimen_180px">60dp</dimen>
+    <dimen name="dimen_200px">66.66dp</dimen>
+    <dimen name="dimen_205px">68.33dp</dimen>
+    <dimen name="dimen_230px">76.66dp</dimen>
+    <dimen name="dimen_240px">80dp</dimen>
+    <dimen name="dimen_290px">96.67dp</dimen>
+    <dimen name="dimen_300px">100dp</dimen>
+    <dimen name="dimen_310px">103.3dp</dimen>
+    <dimen name="dimen_317px">105.66dp</dimen>
+    <dimen name="dimen_340px">113.33dp</dimen>
+    <dimen name="dimen_421px">140.33dp</dimen>
+    <dimen name="dimen_430px">143.33dp</dimen>
+    <dimen name="dimen_440px">146.67dp</dimen>
+    <dimen name="dimen_460px">153.33dp</dimen>
+    <dimen name="dimen_480px">160dp</dimen>
+    <dimen name="dimen_490px">163.33dp</dimen>
+    <dimen name="dimen_500px">166.67dp</dimen>
+    <dimen name="dimen_540px">180dp</dimen>
+    <dimen name="dimen_600px">200dp</dimen>
+    <dimen name="dimen_640px">213.33dp</dimen>
+    <dimen name="dimen_650px">216.67dp</dimen>
+    <dimen name="dimen_670px">223.33dp</dimen>
+    <dimen name="dimen_700px">233.33dp</dimen>
+    <dimen name="dimen_720px">240dp</dimen>
+    <dimen name="dimen_780px">260dp</dimen>
+
+    <!-- MATERIAL: Typographic scale & basic styles -->
+    <dimen name="dimen_display_4">112sp</dimen>
+    <dimen name="dimen_display_3">56sp</dimen>
+    <dimen name="dimen_display_2">45sp</dimen>
+    <dimen name="dimen_display_1">34sp</dimen>
+    <dimen name="dimen_headline">24sp</dimen>
+    <dimen name="dimen_title">20sp</dimen>
+    <dimen name="dimen_subhead">16sp</dimen>
+    <dimen name="dimen_body">14sp</dimen>
+    <dimen name="dimen_button">14sp</dimen>
+    <dimen name="dimen_caption">12sp</dimen>
+
+    <!-- BASE DIMENSIONS: PT TO SP (PT/3)-->
+    <dimen name="dimen_68pt">22sp</dimen>
+
+    <!-- TEXT DIMENSIONS (px/3) -->
+    <!-- ACTION BAR Tablet will use dimensions from Phone and upscale -->
+    <dimen name="text_actionbar_title">@dimen/text_root</dimen>
+    <dimen name="text_actionbar_search">14sp</dimen>
+    <dimen name="text_root">18sp</dimen>
+    <dimen name="text_header">16sp</dimen>
+    <dimen name="text_form">13sp</dimen>
+    <dimen name="text_title">12sp</dimen>
+    <dimen name="text_subtitle">10.67sp</dimen>
+    <!-- dimen name="text_description">10sp</dimen -->
+    <dimen name="text_button">16.67sp</dimen>
+    <dimen name="text_button_item">10.67sp</dimen>
+
+
+    <!-- OLD MARGINS -->
+    <dimen name="margin_x_small">2dp</dimen>
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_mid">8dp</dimen>
+    <dimen name="margin_large">12dp</dimen>
+    <dimen name="margin_huge">16dp</dimen>
+    <dimen name="margin_midhuge">24dp</dimen>
+    <dimen name="margin_veryhuge">32dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="distance_item_small">24dp</dimen>
+    <dimen name="navigation_item_divider_height">1dp</dimen>
+    <dimen name="navigation_cart_vertical_distance">17dp</dimen>
+
+    <!-- <dimen name="navigation_menu_offset">35dp</dimen> -->
+    <item name="navigation_menu_offset" type="dimen">100%</item>
+
+    <dimen name="item_height_normal">48dp</dimen>
+    <dimen name="dialog_list_margin_horizontal">40dp</dimen>
+    <dimen name="form_errormessage_margin">4dp</dimen>
+
+    <!-- better naming sceme for the text dimensions -->
+    <!-- dimen name="text_xxs">14sp</dimen -->
+    <dimen name="text_xs">12sp</dimen>
+    <dimen name="text_s">14sp</dimen>
+    <dimen name="text_m">16sp</dimen>
+    <dimen name="text_l">18sp</dimen>
+    <dimen name="text_xl">20sp</dimen>
+    <!-- dimen name="text_xxl">22sp</dimen -->
+
+
+    <item name="dialog_min_width_major" type="dimen">65%</item>
+    <item name="dialog_min_width_minor" type="dimen">95%</item>
+
+    <!--
+    	This is here as fallback - preferable the versions in
+     	values-sw320dp and values-sw360dp are used
+    -->
+    <dimen name="teaser_swipe_banner_height">196dp</dimen>
+    <dimen name="teaser_recently_viewed_height">196dp</dimen>
+
+    <!-- actual values for hdpi - are referenced as aliases -->
+    <dimen name="teaser_product_item_width_sw320dp">140dp</dimen>
+    <dimen name="teaser_swipe_banner_height_sw320dp">171dp</dimen>
+    <dimen name="teaser_banners_group_height_sw320dp">171dp</dimen>
+    <dimen name="teaser_banners_brands_list_height">88dp</dimen>
+    <dimen name="teaser_product_bundle_item_width_sw320dp">190dp</dimen>
+
+    <!-- BASE -->
+    <integer name="match_parent">-1</integer>
+    <integer name="wrap_content">-2</integer>
+
+    <!-- LOADING -->
+    <dimen name="loading_width">210dp</dimen>
+    <dimen name="loading_height">100dp</dimen>
+    <dimen name="loading_gif_layout">50dp</dimen>
+
+    <!-- HOME -->
+    <dimen name="teaser_product_item_width">140dp</dimen>
+    <dimen name="teaser_product_bundle_item_width">190dp</dimen>
+    <dimen name="teaser_banners_group_height">100dp</dimen>
+    <dimen name="teaser_margin_bottom">0dp</dimen>
+    <dimen name="teaser_margin_left">6.5dp</dimen>
+    <dimen name="teaser_margin">6.5dp</dimen>
+
+    <!-- MAIN LAYOUT -->
+    <dimen name="sliding_tab_height">38dp</dimen>
+    <dimen name="sliding_tab_inidicator_thickness">3dip</dimen>
+    <dimen name="sliding_tab_text_size">14sp</dimen>
+
+    <!-- PRODUCT LIST ITEM -->
+    <dimen name="product_list_item_discount_percentage_image_width">30dp</dimen>
+    <dimen name="product_list_item_discount_percentage_image_height">20dp</dimen>
+    <dimen name="product_list_item_discount_percentage_text_size">9sp</dimen>
+    <dimen name="product_list_item_image_margin">6.67dp</dimen>
+    <dimen name="product_list_item_image_side_margin">13.33dp</dimen>
+
+    <!-- PRODUCT DETAIL ITEM -->
+    <dimen name="product_detail_item_title_height">36.67dp</dimen>
+
+    <!-- INNER CONTAINER -->
+    <dimen name="inner_container_width">@integer/match_parent</dimen>
+
+    <!-- CHECKOUT HEADER -->
+    <dimen name="checkout_header_height">22dp</dimen>
+    <dimen name="checkout_header_margin">@dimen/margin_x_small</dimen>
+    <dimen name="checkout_header_step_width">60dp</dimen>
+    <dimen name="checkout_header_step_selected_width">120dp</dimen>
+    <dimen name="checkout_header_step_icon">7.5dp</dimen>
+    <dimen name="checkout_header_step_s_icon">10dp</dimen>
+    <dimen name="checkout_header_divider_height">@dimen/divider_height</dimen>
+
+    <item name="checkout_main_container" format="float" type="dimen">0.70</item>
+    <item name="checkout_order_summary" format="float" type="dimen">0.30</item>
+
+    <!-- DIALOG CATALOG FILTER -->
+    <dimen name="catalog_button_filter_width">80dp</dimen>
+    <dimen name="dialog_catalog_filter_width">@integer/match_parent</dimen>
+    <dimen name="dialog_catalog_filter_height">400.00dp</dimen>
+
+    <!-- CAMPAIGN PAGE -->
+    <integer name="campaign_num_columns">1</integer>
+
+    <dimen name="campaign_discount_flag_width">45dp</dimen>
+    <dimen name="campaign_banner_height">156.67dp</dimen>
+    <dimen name="campaign_title_height">53.33dp</dimen>
+    <dimen name="campaign_title_margin_left">@dimen/margin_midhuge</dimen>
+    <dimen name="campaign_image_height">173.33dp</dimen>
+    <dimen name="campaign_size_container_height">33.33dp</dimen>
+    <dimen name="campaign_size_spinner_width">50dp</dimen>
+    <dimen name="campaign_title_button_height">48dp</dimen>
+    <dimen name="campaign_title_button_text_vertical_alignment">7dp</dimen>
+    <dimen name="campaign_item_offer_ended_width">120dp</dimen>
+    <dimen name="campaign_item_offer_ended_height">26.67dp</dimen>
+
+    <!-- NO RESULTS PAGE -->
+    <dimen name="no_results_top_margin">40dp</dimen>
+    <dimen name="no_results_bottom_margin">33.33dp</dimen>
+    <dimen name="no_results_search_tips_width">@integer/match_parent</dimen>
+    <dimen name="no_results_brands_height">147dp</dimen>
+
+    <!-- ACTIONBAR SHERLOCK SEARCH adjustDropDownSizeAndPosition@SearchView -->
+    <dimen name="abs__dropdownitem_icon_width">0dp</dimen>
+
+    <!-- WIZARD -->
+    <dimen name="wizard_nav_img_margin_left">80dp</dimen>
+    <dimen name="wizard_nav_img_margin_top">140dp</dimen>
+    <dimen name="wizard_product_height">100dp</dimen>
+    <!-- FAVOURITE WIZARD -->
+    <dimen name="product_tip_top_margin">0dp</dimen>
+    <dimen name="product_tip_variations_top_margin">65dp</dimen>
+    <!-- <dimen name="product_tip_padding">52.8dp</dimen> -->
+    <dimen name="product_tip_padding">@dimen/margin_large</dimen>
+    <dimen name="product_tip_padding_side">15dp</dimen>
+
+    <!-- PRODUCT WIZARD -->
+    <dimen name="product_tip_top_swipe">52.8dp</dimen>
+    <dimen name="product_tip_top_favourite">32dp</dimen>
+    <!-- MY PROFILE -->
+    <dimen name="myprofile_item_size">42.67dp</dimen>
+    <dimen name="myprofile_item_icon_container_size">27dp</dimen>
+    <dimen name="myprofile_item_icon_size">21.33dp</dimen>
+    <dimen name="myprofile_icon_counter_size">12dp</dimen>
+    <dimen name="myprofile_icon_counter_text_size">6sp</dimen>
+
+    <!-- FAVOURITES -->
+    <integer name="favourite_num_columns">1</integer>
+
+    <!-- ROUNDED BORDERS -->
+    <dimen name="rounded_margin_small">@dimen/margin_10px</dimen>
+    <dimen name="rounded_margin_mid">@dimen/margin_20px</dimen>
+    <dimen name="rounded_margin_double_mid">@dimen/margin_40px</dimen>
+    <dimen name="rounded_margin_double_double_mid">@dimen/margin_80px</dimen>
+
+    <!-- CATALOG REDESIGN -->
+    <dimen name="catalog_list_item_height">111dp</dimen>
+    <!--105dp-->
+    <dimen name="catalog_grid_item_height">190.67dp</dimen>
+    <dimen name="catalog_list_item_image_width">74.67dp</dimen>
+    <dimen name="catalog_list_item_image_height">93.33dp</dimen>
+    <dimen name="catalog_list_item_image_padding">13.33dp</dimen>
+    <dimen name="catalog_item_vertical_padding">10dp</dimen>
+    <dimen name="catalog_grid_item_image_width">97.33dp</dimen>
+    <dimen name="catalog_grid_item_image_height">121.67dp</dimen>
+
+    <integer name="catalog_list_num_columns">1</integer>
+    <integer name="catalog_grid_num_columns">2</integer>
+
+    <dimen name="root_empty_container_height">240dp</dimen>
+    <dimen name="root_empty_drawable_padding">23.33dp</dimen>
+
+    <!-- MY PROFILE REDESIGN -->
+    <dimen name="button_big_height">40dp</dimen>
+    <!-- rounded_margin_mid + button_big_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
+    <dimen name="button_container_height">60dp</dimen>
+    <!-- rounded_margin_mid + button_big_height + button_container_height -->
+    <dimen name="button_double_container_height">106.67dp</dimen>
+    <dimen name="button_landscape_width">426.67dp</dimen>
+    <dimen name="product_item_button_height">@dimen/button_small_height</dimen>
+    <dimen name="product_item_addtocart_variation_width">43.33dp</dimen>
+    <dimen name="product_item_text_right_margin">50dp</dimen>
+    <dimen name="title_box_height">18.67dp</dimen>
+
+    <!--  TRACK ORDER REDESIGN -->
+    <dimen name="track_order_margin_small">10dp</dimen>
+    <dimen name="track_order_content_height">106.66dp</dimen>
+    <dimen name="track_order_error_content_height">@integer/wrap_content</dimen>
+
+    <dimen name="recently_viewed_button_container_height">@dimen/button_double_container_height
+    </dimen>
+
+    <dimen name="home_items_margin">18dp</dimen>
+
+    <!-- dimen name="fragment_root_text_size">18sp</dimen -->
+
+    <dimen name="login_container_width">@dimen/inner_container_width</dimen>
+
+    <dimen name="form_item_height">30dp</dimen>
+    <!-- 93.33dp reduced to 90dp -->
+    <dimen name="form_date_width">90dp</dimen>
+
+    <dimen name="login_margin_small">10dp</dimen>
+    <dimen name="login_margin_medium">20dp</dimen>
+    <dimen name="login_margin_high">23.33dp</dimen>
+
+    <dimen name="form_padding">@dimen/margin_30px</dimen>
+    <dimen name="form_check_padding">@dimen/margin_20px</dimen>
+
+    <dimen name="checkout_box_title_height">26.67dp</dimen>
+    <dimen name="checkout_voucher_box_height">70dp</dimen>
+
+    <dimen name="delete_button_size">16dp</dimen>
+    <!--12.67dp-->
+    <dimen name="delete_button_margin">2dp</dimen>
+
+    <dimen name="inner_child_height">33.33dp</dimen>
+
+    <dimen name="com_facebook_loginview_compound_drawable_padding">0dp</dimen>
+    <dimen name="com_facebook_loginview_padding_top">0dp</dimen>
+    <dimen name="com_facebook_loginview_padding_bottom">0dp</dimen>
+    <dimen name="com_facebook_loginview_padding_right">0dp</dimen>
+    <!-- dimen name="com_facebook_loginview_padding_left">@dimen/rounded_margin_mid</dimen -->
+
+    <dimen name="com_facebook_loginview_text_size">@dimen/text_header</dimen>
+
+    <dimen name="button_small_height">30dp</dimen>
+
+    <!-- (320px-20px-20px) -->
+    <dimen name="checkout_address_item_min_height">93.33dp</dimen>
+
+    <dimen name="checkout_shipping_item_height">48dp</dimen>
+    <dimen name="checkout_myorder_item_height">100dp</dimen>
+    <dimen name="checkout_thanks_image_size">106.67dp</dimen>
+    <dimen name="checkout_thanks_thankyou_text_size">42sp</dimen>
+    <dimen name="checkout_thanks_order_text_size">15.33sp</dimen>
+    <dimen name="checkout_thanks_message_text_size">13.33sp</dimen>
+    <dimen name="checkout_thanks_order_width">163.33dp</dimen>
+    <dimen name="checkout_thanks_order_height">32dp</dimen>
+
+    <dimen name="form_spinner_left_margin">5dp</dimen>
+    <dimen name="form_spinner_dropdown_left_margin">2dp</dimen>
+    <dimen name="form_top_margin">@dimen/margin_60px</dimen>
+    <dimen name="form_radiobutton_shipping_margin">@dimen/margin_30px</dimen>
+    <dimen name="form_btn_address_padding_fix">@dimen/margin_30px</dimen>
+    <dimen name="form_payment_left_margin">@dimen/margin_50px</dimen>
+    <dimen name="form_payment_vertical_margin">@dimen/margin_20px</dimen>
+
+    <dimen name="action_bar_icon_size">32dp</dimen>
+    <dimen name="action_bar_margin">16dp</dimen>
+    <dimen name="abs__search_button_icon_height">@dimen/action_bar_icon_size</dimen>
+    <dimen name="abs__action_button_min_width">@dimen/action_bar_icon_size</dimen>
+    <dimen name="action_bar_height">48dp</dimen>
+
+
+    <dimen name="tips_button_width">200dp</dimen>
+    <dimen name="tips_button_height">50dp</dimen>
+
+    <dimen name="teaser_campaigns_margin_bottom">@dimen/teaser_margin_bottom</dimen>
+
+    <!-- PRODUCT SIZE GUIDE -->
+    <dimen name="product_size_guide_main_container_height">@dimen/dimen_720px</dimen>
+
+    <!-- WIZARDS -->
+    <dimen name="wizard_text_size">@dimen/dimen_68pt</dimen>
+
+    <!-- TOAST -->
+    <dimen name="toast_hover">64dp</dimen>
+    <dimen name="buttontoast_hover">24dp</dimen>
+    <dimen name="buttontoast_x_padding">12dp</dimen>
+
+    <dimen name="retry_layout_height">@dimen/dimen_720px</dimen>
+
+    <dimen name="shipping_time_fee_min_height">@dimen/dimen_100px</dimen>
+
+    <!-- CHECKBOX RATING -->
+
+    <dimen name="checkbox_rating_height">44dp</dimen>
+
+    <!-- PDV IMAGE -->
+    <dimen name="pdv_image">283.33dp</dimen>
+
+    <!-- PDV IMAGE LANDSCAPE -->
+    <dimen name="pdv_image_with_var_simple">210dp</dimen>
+    <dimen name="pdv_image_with_var">270dp</dimen>
+    <dimen name="pdv_image_alone">320dp</dimen>
+    <dimen name="pdv_image_with_bundle">20dp</dimen>
+    <dimen name="pdv_image_with_seller">30dp</dimen>
+</resources>

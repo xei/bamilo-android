@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:valueFrom="-180"
+    android:valueTo="0" android:propertyName="rotationY" >
+</objectAnimator><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/A4SSDK/src/main/res/animator/com_ad4screen_sdk_flip_in.xml --><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/build/intermediates/exploded-aar/JumiaApp.libraries/A4SSDK/unspecified/res/animator/com_ad4screen_sdk_flip_in.xml -->

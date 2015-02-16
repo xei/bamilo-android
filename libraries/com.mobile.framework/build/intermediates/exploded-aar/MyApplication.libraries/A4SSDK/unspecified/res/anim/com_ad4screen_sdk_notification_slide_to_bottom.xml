@@ -1,0 +1,7 @@
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="500"
+    android:fromYDelta="0%p"
+    android:toYDelta="100%p"
+    android:zAdjustment="top" >
+
+</translate><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/MyApplication/libraries/A4SSDK/src/main/res/anim/com_ad4screen_sdk_notification_slide_to_bottom.xml -->

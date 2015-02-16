@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/ic_signin_highlight" android:state_pressed="true"/>
+    <item android:drawable="@drawable/ic_signin"/>
+
+</selector><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/drawable/selector_navigation_loginout.xml -->

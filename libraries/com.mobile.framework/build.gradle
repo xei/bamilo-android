@@ -1,0 +1,29 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 21
+    }
+
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:recyclerview-v7:21.0.0'
+    compile 'com.google.android.gms:play-services-base:6.5.87'
+
+    /** REMOTE MAVEN LIBS **/
+    compile 'com.newrelic.agent.android:android-agent:4.120.0'
+
+    compile project (':libraries:FacebookSDK')
+    compile project(':libraries:Volley')
+    compile project(':libraries:A4SSDK')
+    compile project(':libraries:Adjust')
+
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:drawable="@drawable/com_ad4screen_sdk_borderless_button"/>
+    <item>
+        <bitmap android:src="@drawable/com_ad4screen_sdk_navigation_cancel" android:gravity="center" />
+    </item>
+
+</layer-list><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_reloadbutton_on.xml --><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/build/intermediates/exploded-aar/JumiaApp.libraries/A4SSDK/unspecified/res/drawable/com_ad4screen_sdk_reloadbutton_on.xml -->

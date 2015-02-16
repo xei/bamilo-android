@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/androidTest/assets"/></dataSet><dataSet config="jumia"><source path="/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/androidTestJumia/assets"/></dataSet><dataSet config="android"><source path="/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/androidTestAndroid/assets"/></dataSet></merger>

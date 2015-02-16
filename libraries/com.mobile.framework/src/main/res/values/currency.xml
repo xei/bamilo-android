@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" 
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <string-array name="formatter_currency_codes">
+   	    <item>@string/currency_code_ngn</item>
+   	    <item>@string/currency_code_ksh</item>
+   	    <item>@string/currency_code_mad</item>
+   	    <item>@string/currency_code_egp</item>
+   	    <item>@string/currency_code_xof</item>
+   	    <item>@string/currency_code_ugx</item>
+   	</string-array>
+   	
+   	<string-array name="formatter_currency_unit_pattern">
+   	    <item>@string/currency_unit_pattern_ngn</item>
+   	    <item>@string/currency_unit_pattern_ksh</item>
+   	    <item>@string/currency_unit_pattern_mad</item>
+   	    <item>@string/currency_unit_pattern_egp</item>
+   	    <item>@string/currency_unit_pattern_cfa</item>
+   	    <item>@string/currency_unit_pattern_ugx</item>
+   	</string-array>
+   	
+   	<!-- <string-array name="formatter_currency_thousands_delim">
+   	    <item>@string/currency_thousands_delim_ngn</item>
+   	    <item>@string/currency_thousands_delim_ksh</item>
+   	    <item>@string/currency_thousands_delim_mad</item>
+   	    <item>@string/currency_thousands_delim_egp</item>
+   	    <item>@string/currency_thousands_delim_cfa</item>
+   	    <item>@string/currency_thousands_delim_ugx</item>
+   	</string-array> -->
+   	
+   	<!-- <string-array name="formatter_currency_fraction_count">
+   	    <item>@string/currency_fraction_count_ngn</item>
+   	    <item>@string/currency_fraction_count_ksh</item>
+   	    <item>@string/currency_fraction_count_mad</item>
+   	    <item>@string/currency_fraction_count_egp</item>
+   	    <item>@string/currency_fraction_count_cfa</item>
+   	    <item>@string/currency_fraction_count_ugx</item>
+   	</string-array> -->
+   	
+   	<!-- <string-array name="formatter_currency_fraction_delim">
+   	    <item>@string/currency_fraction_delim_ngn</item>
+   	    <item>@string/currency_fraction_delim_ksh</item>
+   	    <item>@string/currency_fraction_delim_mad</item>
+   	    <item>@string/currency_fraction_delim_egp</item>
+   	    <item>@string/currency_fraction_delim_cfa</item>
+   	    <item>@string/currency_fraction_delim_ugx</item>
+   	</string-array> -->
+   	
+   	<string name="currency_code_ngn">NGN</string>
+    <string name="currency_code_ksh">KES</string>
+    <string name="currency_code_mad">MAD</string>
+    <string name="currency_code_egp">EGP</string>
+    <string name="currency_code_xof">XOF</string>
+    <string name="currency_code_ugx">UGX</string>
+    
+    <string name="currency_unit_pattern_ngn">₦ %s</string>
+    <string name="currency_unit_pattern_ksh">KSh %s</string>
+    <string name="currency_unit_pattern_mad">%s Dhs</string>
+    <string name="currency_unit_pattern_egp">EGP %s</string>
+    <string name="currency_unit_pattern_cfa">%s FCFA</string>
+    <string name="currency_unit_pattern_ugx">USH %s</string>
+    
+    <!-- <string name="currency_thousands_delim_ngn">,</string> -->
+    <!-- <string name="currency_thousands_delim_ksh">,</string> -->
+    <!-- <string name="currency_thousands_delim_mad">.</string> -->
+    <!-- <string name="currency_thousands_delim_egp">,</string> -->
+    <!-- <string name="currency_thousands_delim_cfa">.</string> -->
+    <!-- <string name="currency_thousands_delim_ugx">,</string> -->
+    
+    <!-- <string name="currency_fraction_count_ngn">0</string> -->
+    <!-- <string name="currency_fraction_count_ksh">0</string> -->
+    <!-- <string name="currency_fraction_count_mad">2</string> -->
+    <!-- <string name="currency_fraction_count_egp">0</string> -->
+    <!-- <string name="currency_fraction_count_cfa">0</string> -->
+    <!-- <string name="currency_fraction_count_ugx">0</string> -->
+    
+    <!-- <string name="currency_fraction_delim_ngn">.</string> -->
+    <!-- <string name="currency_fraction_delim_ksh">.</string> -->
+    <!-- <string name="currency_fraction_delim_mad">,</string> -->
+    <!-- <string name="currency_fraction_delim_egp">,</string> -->
+    <!-- <string name="currency_fraction_delim_cfa">,</string> -->
+    <!-- <string name="currency_fraction_delim_ugx">.</string> -->
+    
+</resources>

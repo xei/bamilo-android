@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="A4SSDK">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libraries/A4SSDK/libs/A4SSDK.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

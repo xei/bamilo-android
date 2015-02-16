@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/default_notification"
+        android:key="@string/pref_notification"
+        android:layout="@layout/preference_list_item"
+        android:summary="@string/notifications_summary"
+        android:title="@string/notifications" />
+    <!--
+        CheckBoxPreference
+        android:defaultValue="true"
+        android:dependency="@string/pref_notification"
+        android:key="@string/pref_vibrate"
+        android:layout="@layout/preference_list_item"
+        android:summary="@string/vibrate_summary"
+        android:title="@string/vibrate" /
+    -->
+    <!--
+        CheckBoxPreference
+        android:defaultValue="@bool/default_sound"
+        android:dependency="@string/pref_notification"
+        android:key="@string/pref_sound"
+        android:layout="@layout/preference_list_item"
+        android:summary="@string/sound_summary"
+        android:title="@string/sound" /
+    -->
+
+</PreferenceScreen><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/xml/preferences_push.xml -->

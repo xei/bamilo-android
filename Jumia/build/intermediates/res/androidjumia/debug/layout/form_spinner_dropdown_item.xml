@@ -1,0 +1,8 @@
+<com.mobile.components.customfontviews.TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text2"
+    style="@style/form_style"
+    android:layout_height="@dimen/form_item_height"
+    android:background="@android:color/white"
+    android:gravity="left|start|center_vertical"
+    android:paddingLeft="@dimen/form_spinner_dropdown_left_margin"
+    android:paddingStart="@dimen/form_spinner_dropdown_left_margin" /><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/layout/form_spinner_dropdown_item.xml -->

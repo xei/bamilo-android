@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+    <stroke
+        android:width="1px"
+        android:color="@color/grey_middlelight" />
+
+    <solid android:color="@android:color/transparent" />
+
+</shape><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/drawable/shape_border_flag.xml -->

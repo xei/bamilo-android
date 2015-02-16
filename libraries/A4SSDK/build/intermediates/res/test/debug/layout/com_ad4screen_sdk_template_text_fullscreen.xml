@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black" >
+
+    <TextView
+        android:id="@+id/com_ad4screen_sdk_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/com_ad4screen_sdk_closebutton"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_gravity="top|right"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/com_ad4screen_sdk_closebutton" />
+
+</FrameLayout><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_text_fullscreen.xml --><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/A4SSDK/build/intermediates/bundles/debug/res/layout/com_ad4screen_sdk_template_text_fullscreen.xml -->

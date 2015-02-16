@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/currency.xml -->
+    <eat-comment/>
+    <string-array name="formatter_currency_codes">
+   	    <item>@string/currency_code_ngn</item>
+   	    <item>@string/currency_code_ksh</item>
+   	    <item>@string/currency_code_mad</item>
+   	    <item>@string/currency_code_egp</item>
+   	    <item>@string/currency_code_xof</item>
+   	    <item>@string/currency_code_ugx</item>
+   	</string-array>
+    <string-array name="formatter_currency_unit_pattern">
+   	    <item>@string/currency_unit_pattern_ngn</item>
+   	    <item>@string/currency_unit_pattern_ksh</item>
+   	    <item>@string/currency_unit_pattern_mad</item>
+   	    <item>@string/currency_unit_pattern_egp</item>
+   	    <item>@string/currency_unit_pattern_cfa</item>
+   	    <item>@string/currency_unit_pattern_ugx</item>
+   	</string-array>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/configs.xml -->
+    <eat-comment/>
+    <string-array name="pre_install_folders">
+        <!-- <item>/system/app</item> : ONLY FOR TESTS-->
+        <item>/data/cust/app</item>
+        <item>/data/cust/delap</item>
+    </string-array>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/attrs.xml -->
+    <eat-comment/>
+    <attr format="reference" name="actionCustomSpinnerDropDownStyle"/>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/configs.xml -->
+    <eat-comment/>
+    <item name="ad4push_enabled" type="bool"/>
+    <item name="adjust_enabled" type="bool"/>
+    <item name="apptimize_enabled" type="bool">false</item>
+    <bool name="create_pre_install_file">false</bool>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/tracking.xml -->
+    <eat-comment/>
+    <bool name="ga_advertisingIDCollection">true</bool>
+    <bool name="ga_autoActivityTracking">false</bool>
+    <bool name="ga_debug_mode">false</bool>
+    <bool name="ga_enable">false</bool>
+    <bool name="ga_reportUncaughtExceptions">false</bool>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/configs.xml -->
+    <eat-comment/>
+    <item name="gtm_debug" type="bool">false</item>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/layouts.xml -->
+    <eat-comment/>
+    <bool name="isTablet">false</bool>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/configs.xml -->
+    <eat-comment/>
+    <item name="is_bamilo_specific" type="bool">false</item>
+    <item name="is_daraz_specific" type="bool">false</item>
+    <bool name="is_force_http">false</bool>
+    <item name="is_shop_specific" type="bool">false</item>
+    <bool name="is_single_shop_country">false</bool>
+    <bool name="rest_host_auth_use_it">false</bool>
+    <bool name="single_shop_country_force_https">false</bool>
+    <bool name="single_shop_country_is_live">false</bool>
+    <declare-styleable name="CustomFontType"><attr format="integer" name="fontType"><enum name="burmese_regular" value="0"/><enum name="roboto_bold" value="1"/><enum name="roboto_light" value="4"/><enum name="roboto_medium" value="5"/></attr><attr format="boolean" name="strikethrough"/><attr format="boolean" name="autofittext"/></declare-styleable>
+    <declare-styleable name="CustomSpinner"><attr name="android:prompt"/><attr name="android:dropDownSelector"/><attr name="android:popupBackground"/><attr name="android:dropDownVerticalOffset"/><attr name="android:dropDownHorizontalOffset"/><attr name="android:dropDownWidth"/><attr name="android:popupPromptView"/><attr name="android:gravity"/></declare-styleable>
+    <declare-styleable name="LoadingBarView"><attr format="reference" name="gifResource"/></declare-styleable>
+    <declare-styleable name="SlidingTabLayout"><attr format="dimension" name="stsDividerThickness"/><attr format="color" name="stsDividerColor"/><attr format="dimension" name="stsIndicatorThickness"/><attr format="color" name="stsIndicatorColor"/><attr format="dimension" name="stsBottomBorderThickness"/><attr format="color" name="stsBottomBorderColor"/></declare-styleable>
+    <declare-styleable name="TextAppearance"><attr name="android:fontFamily"/><attr name="android:textAllCaps"/><attr name="android:textColor"/><attr name="android:textColorHighlight"/><attr name="android:textColorHint"/><attr name="android:textColorLink"/><attr name="android:textSize"/><attr name="android:textStyle"/><attr name="android:typeface"/></declare-styleable>
+    <declare-styleable name="TextView"><attr name="android:textAppearance"/></declare-styleable>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/ids.xml -->
+    <eat-comment/>
+    <item name="fontLoaderFont" type="id"/>
+    <item name="fontLoaderFontFamily" type="id"/>
+    <item name="fontLoaderFontStyle" type="id"/>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/configs.xml -->
+    <eat-comment/>
+    <string name="ad4push_partner_id"/>
+    <string name="ad4push_private_key"/>
+    <string name="ad4push_sender_id">gcm:593252289486</string>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/tracking.xml -->
+    <eat-comment/>
+    <string name="adjust_token_add_to_cart">9a3y22</string>
+    <string name="adjust_token_add_to_wishlist">or10kh</string>
+    <string name="adjust_token_call">raztmz</string>
+    <string name="adjust_token_customer">lsxsdu</string>
+    <string name="adjust_token_fb_connect">xncmnj</string>
+    <string name="adjust_token_fb_home">z2ltzy</string>
+    <string name="adjust_token_fb_search">mlc8i5</string>
+    <string name="adjust_token_fb_transaction_confirmation">25981k</string>
+    <string name="adjust_token_fb_view_cart">cvjbaa</string>
+    <string name="adjust_token_fb_view_listing">iuvlys</string>
+    <string name="adjust_token_fb_view_product">h375id</string>
+    <string name="adjust_token_fb_view_wishlist">l3zco3</string>
+    <string name="adjust_token_guest_sale">60p5rq</string>
+    <string name="adjust_token_home">o4k36e</string>
+    <string name="adjust_token_launch">hrp47p</string>
+    <string name="adjust_token_log_in">e02cr6</string>
+    <string name="adjust_token_log_out">gxvwpj</string>
+    <string name="adjust_token_product_rate">kctyuo</string>
+    <string name="adjust_token_remove_from_cart">mbev3i</string>
+    <string name="adjust_token_remove_from_wishlist">1umzf5</string>
+    <string name="adjust_token_sale">2mzxyy</string>
+    <string name="adjust_token_search">h328i8</string>
+    <string name="adjust_token_sign_up">jvr797</string>
+    <string name="adjust_token_social_share">izdu5c</string>
+    <string name="adjust_token_transaction_confirmation">4mrofw</string>
+    <string name="adjust_token_view_cart">k220tx</string>
+    <string name="adjust_token_view_listing">90hme6</string>
+    <string name="adjust_token_view_product">ael3q3</string>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/configs.xml -->
+    <eat-comment/>
+    <string name="apptimize_apikey"/>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/currency.xml -->
+    <eat-comment/>
+    <string name="currency_code_egp">EGP</string>
+    <string name="currency_code_ksh">KES</string>
+    <string name="currency_code_mad">MAD</string>
+    <string name="currency_code_ngn">NGN</string>
+    <string name="currency_code_ugx">UGX</string>
+    <string name="currency_code_xof">XOF</string>
+    <string name="currency_unit_pattern_cfa">%s FCFA</string>
+    <string name="currency_unit_pattern_egp">EGP %s</string>
+    <string name="currency_unit_pattern_ksh">KSh %s</string>
+    <string name="currency_unit_pattern_mad">%s Dhs</string>
+    <string name="currency_unit_pattern_ngn">₦ %s</string>
+    <string name="currency_unit_pattern_ugx">USH %s</string>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/configs.xml -->
+    <eat-comment/>
+    <string name="framework_category_label"/>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/tracking.xml -->
+    <eat-comment/>
+    <string name="gAddBundleToCart">BundleAddToCart</string>
+    <string name="gAddSellerToCart">SellerAddToCart</string>
+    <string name="gCatalogSortBestRating">SortBestRating</string>
+    <string name="gCatalogSortBrand">SortName</string>
+    <string name="gCatalogSortName">SortName</string>
+    <string name="gCatalogSortNewIn">SortNewIn</string>
+    <string name="gCatalogSortPopularity">SortPopularity</string>
+    <string name="gCatalogSortPriceDown">SortPriceDown</string>
+    <string name="gCatalogSortPriceUp">SortPriceUp</string>
+    <string name="gNativeCheckout">NativeCheckout</string>
+    <string name="gNativeCheckoutError">NativeCheckoutError</string>
+    <string name="gPaymentMethod">PaymentMethod</string>
+    <string name="gRelatedProduct">RelatedItem</string>
+    <string name="ga_trackingId"/>
+    <string name="gaccount">Account</string>
+    <string name="gaddtocart">AddtoCart</string>
+    <string name="gaddtofavorites">AddtoWishlist</string>
+    <string name="gautologinfailed">AutoLoginFailed</string>
+    <string name="gautologinsuccess">AutoLoginSuccess</string>
+    <string name="gbrand_prefix">brand</string>
+    <string name="gbrands">ShopBrands</string>
+    <string name="gcampaign">Campaign</string>
+    <string name="gcampaignpage">Campaign</string>
+    <string name="gcart_prefix">cart</string>
+    <string name="gcartempty">CartEmpty</string>
+    <string name="gcartwithitems">CartWithItem</string>
+    <string name="gcatalog">Catalog</string>
+    <string name="gcatalogswitchlayout">ChangeCatalogView</string>
+    <string name="gcategories">ShopCategories</string>
+    <string name="gcategory_prefix">cat</string>
+    <string name="gcheckout">Checkout</string>
+    <string name="gcheckoutAboutYou">CheckoutAboutYou</string>
+    <string name="gcheckoutCreateAddress">CheckoutCreateAddress</string>
+    <string name="gcheckoutEditAddress">CheckoutEditAddress</string>
+    <string name="gcheckoutExternalPayment">CheckoutExternalPayment</string>
+    <string name="gcheckoutMyAddresses">CheckoutMyAddresses</string>
+    <string name="gcheckoutMyOrder">CheckoutMyOrder</string>
+    <string name="gcheckoutPaymentMethods">CheckoutPaymentMethods</string>
+    <string name="gcheckoutPollQuestion">CheckoutPollQuestion</string>
+    <string name="gcheckoutShippingMethods">CheckoutShippingMethods</string>
+    <string name="gcheckoutbegin">CheckoutViaWebview</string>
+    <string name="gcheckoutcontinueshopping">ContinueShopping</string>
+    <string name="gcheckoutfinal">CheckoutResult</string>
+    <string name="gcheckoutstart">CheckoutStart</string>
+    <string name="gcontinueshopping">ContinueShopping</string>
+    <string name="gcreatefailed">CreateFailed</string>
+    <string name="gcreatesuccess">CreateSuccess</string>
+    <string name="gcustomeraccount">CustomerAccount</string>
+    <string name="gcustomerid">CustomerId</string>
+    <string name="gfacebookloginsuccess">FacebookLoginSuccess</string>
+    <string name="gfacebooksignupsuccess">FacebookSignupSuccess</string>
+    <string name="gfavourites">Favourites</string>
+    <string name="gfilters">Filters</string>
+    <string name="gfinished">Finished</string>
+    <string name="ghomepage">ShopHome</string>
+    <string name="gload">PageLoad</string>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/configs.xml -->
+    <eat-comment/>
+    <string name="global_server_api_version"/>
+    <string name="global_server_host"/>
+    <string name="global_server_password"/>
+    <string name="global_server_restbase_path"/>
+    <string name="global_server_shop_name"/>
+    <string name="global_server_user"/>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/tracking.xml -->
+    <eat-comment/>
+    <string name="glogin">Login</string>
+    <string name="gloginfailed">LoginFailed</string>
+    <string name="gloginsuccess">LoginSuccess</string>
+    <string name="glogout">Logout</string>
+    <string name="glogoutfailed">LogoutFailed</string>
+    <string name="glogoutsuccess">LogoutSuccess</string>
+    <string name="gnavigation">LeftMenu</string>
+    <string name="gnewslettersubs">NewsletterSubscription</string>
+    <string name="gorderid">OrderID</string>
+    <string name="goverflowmenu">ActionOverflow</string>
+    <string name="gpdv">pdv</string>
+    <string name="gproductdetail">ShopProductDetail</string>
+    <string name="gproductlist">ShopCatalogList</string>
+    <string name="gproductreviews">ShopProductReviews</string>
+    <string name="gproductreviewscreate">ShopProductReviewsCreate</string>
+    <string name="gpush_prefix">push</string>
+    <string name="grateproduct">RateProduct</string>
+    <string name="grecentlyviewed">RecentlyViewed</string>
+    <string name="grecentsearches">RecentSearches</string>
+    <string name="gregister">Register</string>
+    <string name="grelateditem">RelatedItem</string>
+    <string name="grelateditem_prefix">related_item</string>
+    <string name="gremovefromfavorites">RemoveFromWishlist</string>
+    <string name="gsearch">Search</string>
+    <string name="gsearch_prefix">search</string>
+    <string name="gsearchsuggestions">SearchSuggestions</string>
+    <string name="gshoppingcart">ShoppingCart</string>
+    <string name="gsignin">SignIn</string>
+    <string name="gsignup">CustomerSignUp</string>
+    <string name="gsignupsuccess">SignupSuccess</string>
+    <string name="gsimplesku">Simple-SKU</string>
+    <string name="gsocialshare">SocialShare</string>
+    <string name="gstarted">Started</string>
+    <string name="gsubscribenewsletter">SubscribeNewsletter</string>
+    <string name="gteaser_prefix">teaser</string>
+    <string name="gteaserprod_prefix">teaser_prd</string>
+    <string name="gteaserrecentlyviewed_prefix">teaser_recently_viewed</string>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/configs.xml -->
+    <eat-comment/>
+    <string name="gtm_key"/>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/tracking.xml -->
+    <eat-comment/>
+    <string name="gtrackaddaddress">NewAddress</string>
+    <string name="gtrackaddress">Addresses</string>
+    <string name="gtrackconfirmorder">ConfirmationOrder</string>
+    <string name="gtrackmyorders">MyOrders</string>
+    <string name="gtrackorder">TrackOrder</string>
+    <string name="gtrackpayment">Payment</string>
+    <string name="gtracksearch">SearchResults</string>
+    <string name="gunsubscribenewsletter">UnsubscribeNewsletter</string>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/src/main/res/values/configs.xml -->
+    <eat-comment/>
+    <string name="newrelic_token"/>
+    <string name="single_shop_country_flag"/>
+    <string name="single_shop_country_iso"/>
+    <string name="single_shop_country_name"/>
+    <string name="single_shop_country_url"/>
+</resources>

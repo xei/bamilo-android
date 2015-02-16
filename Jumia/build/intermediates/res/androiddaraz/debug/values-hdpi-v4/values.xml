@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/build/intermediates/exploded-aar/JumiaApp.libraries/FacebookSDK/unspecified/res/values-hdpi-v4/values.xml -->
+    <eat-comment/>
+    <dimen name="com_facebook_picker_divider_width">1px</dimen>
+    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/values-hdpi/dimens.xml -->
+    <eat-comment/>
+    <dimen name="teaser_banners_group_height">@dimen/teaser_banners_group_height_sw320dp</dimen>
+    <dimen name="teaser_product_bundle_item_width">@dimen/teaser_product_bundle_item_width_sw320dp</dimen>
+    <dimen name="teaser_product_item_width">@dimen/teaser_product_item_width_sw320dp</dimen>
+    <dimen name="teaser_swipe_banner_height">@dimen/teaser_swipe_banner_height_sw320dp</dimen>
+</resources>

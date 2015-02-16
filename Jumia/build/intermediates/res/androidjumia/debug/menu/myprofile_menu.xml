@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- MY PROFILE PROVIDER -->
+    <item
+        android:id="@+id/menu_myprofile"
+        android:actionProviderClass="com.mobile.utils.MyProfileActionProvider"
+        android:showAsAction="always"
+        android:title="@string/my_profile"
+        android:visible="false"/>
+    <item
+        android:id="@+id/menu_signin"
+        android:icon="@drawable/ico_dropdown_signin"
+        android:title="@string/sign_in"/>
+    <item
+        android:id="@+id/menu_favourites"
+        android:actionLayout="@layout/action_bar_menu_item_layout"
+        android:title="@string/favourites"/>
+    <item
+        android:id="@+id/menu_recentsearch"
+        android:icon="@drawable/ico_dropdown_recentsearch"
+        android:title="@string/recent_searches"/>
+    <item
+        android:id="@+id/menu_recentlyview"
+        android:icon="@drawable/ico_dropdown_recentlyview"
+        android:title="@string/recently_viewed"/>
+
+</menu><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/menu/myprofile_menu.xml -->

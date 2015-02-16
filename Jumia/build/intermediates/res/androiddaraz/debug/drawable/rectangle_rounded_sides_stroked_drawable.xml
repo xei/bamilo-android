@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+          android:top="2dp"
+          android:bottom="2dp">
+        <shape>
+            <solid android:color="#c8c8c8"></solid>
+        </shape>
+    </item>
+</layer-list><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/drawable/rectangle_rounded_sides_stroked_drawable.xml -->

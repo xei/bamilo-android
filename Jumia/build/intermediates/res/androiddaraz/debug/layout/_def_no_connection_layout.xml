@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rectangle_rounded_drawable"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_70px"
+        android:layout_marginTop="@dimen/margin_116px"
+        android:background="@drawable/img_connect" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_32px"
+        android:fontFamily="roboto_regular"
+        android:gravity="center"
+        android:text="@string/error_no_connection"
+        android:textColor="@color/text_root"
+        android:textSize="@dimen/text_l" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="middle"
+        android:fontFamily="roboto_regular"
+        android:gravity="center"
+        android:singleLine="false"
+        android:text="@string/internet_no_connection_details_label"
+        android:textColor="@color/text_root"
+        android:textSize="@dimen/text_s" />
+
+</LinearLayout><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/layout/_def_no_connection_layout.xml -->
