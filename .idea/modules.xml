@@ -5,8 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/libraries/A4SSDK/A4SSDK.iml" filepath="$PROJECT_DIR$/libraries/A4SSDK/A4SSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/Adjust/Adjust.iml" filepath="$PROJECT_DIR$/libraries/Adjust/Adjust.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/FacebookSDK/FacebookSDK.iml" filepath="$PROJECT_DIR$/libraries/FacebookSDK/FacebookSDK.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Jumia.iml" filepath="$PROJECT_DIR$/Jumia.iml" />
       <module fileurl="file://$PROJECT_DIR$/Jumia/Jumia.iml" filepath="$PROJECT_DIR$/Jumia/Jumia.iml" />
-      <module fileurl="file://$PROJECT_DIR$/JumiaApp.iml" filepath="$PROJECT_DIR$/JumiaApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/Volley/Volley.iml" filepath="$PROJECT_DIR$/libraries/Volley/Volley.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/com.mobile.framework/com.mobile.framework.iml" filepath="$PROJECT_DIR$/libraries/com.mobile.framework/com.mobile.framework.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/com.viewpagerindicator/com.viewpagerindicator.iml" filepath="$PROJECT_DIR$/libraries/com.viewpagerindicator/com.viewpagerindicator.iml" />
