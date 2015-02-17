@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/MyApplication/libraries/A4SSDK/src/main/res/values-fr/com_ad4screen_sdk_strings.xml -->
-    <eat-comment/>
-    <string name="a4s_content_back">Retour</string>
-    <string name="a4s_popup_dismiss">Fermer</string>
-    <string name="a4s_popup_open">Ouvrir</string>
-</resources>

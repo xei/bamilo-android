@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.ad4screen.sdk.service.modules.inapp.DisplayView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/com_ad4screen_banner"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
- </com.ad4screen.sdk.service.modules.inapp.DisplayView>
-
-<!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_banner.xml --><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/libraries/com.mobile.framework/build/intermediates/exploded-aar/JumiaApp.libraries/A4SSDK/unspecified/res/layout/com_ad4screen_sdk_banner.xml -->
