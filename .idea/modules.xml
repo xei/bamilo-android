@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/libraries/Adjust/Adjust.iml" filepath="$PROJECT_DIR$/libraries/Adjust/Adjust.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/FacebookSDK/FacebookSDK.iml" filepath="$PROJECT_DIR$/libraries/FacebookSDK/FacebookSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/Jumia.iml" filepath="$PROJECT_DIR$/Jumia.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Jumia/Jumia.iml" filepath="$PROJECT_DIR$/Jumia/Jumia.iml" />
       <module fileurl="file://$PROJECT_DIR$/JumiaApp/JumiaApp.iml" filepath="$PROJECT_DIR$/JumiaApp/JumiaApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/Volley/Volley.iml" filepath="$PROJECT_DIR$/libraries/Volley/Volley.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/com.mobile.framework/com.mobile.framework.iml" filepath="$PROJECT_DIR$/libraries/com.mobile.framework/com.mobile.framework.iml" />
