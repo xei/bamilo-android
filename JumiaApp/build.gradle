@@ -1,0 +1,211 @@
+apply plugin: 'com.android.application'
+
+
+/**
+ * Check if BUILD_VERSION_NUMBER environment variable is defined and set it as version code.
+ * This var is defined when the apk is being created by jenkins.
+ *
+ * @return The app versionCode: 1 when app is created locally or current jenkins version number.
+ */
+def getAppVersionCode() {
+
+    def versionCode = 1
+    if (System.getenv('BUILD_VERSION_NUMBER') != null) {
+        versionCode = Integer.valueOf(System.getenv('BUILD_VERSION_NUMBER'))
+    }
+
+
+    return versionCode
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.mobile.view"
+        minSdkVersion 8
+        versionCode = getAppVersionCode()
+        versionName "1.9"
+
+        resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+    }
+
+    signingConfigs {
+        releaseJumiaSigning {
+            storeFile file("jumia.keystore")
+            storePassword "jumia123"
+            keyAlias "jumia"
+            keyPassword "jumia123"
+        }
+
+        releaseDarazSigning {
+            storeFile file("daraz_android.keystore")
+            storePassword "darazandroid"
+            keyAlias "daraz_android"
+            keyPassword "darazandroid"
+        }
+
+        releaseShopSigning {
+            storeFile file("shop_android.keystore")
+            storePassword "shopandroid"
+            keyAlias "shop_android"
+            keyPassword "shopandroid"
+        }
+
+        releaseBamiloSigning {
+            storeFile file("bamilo_android.keystore")
+            storePassword "bamiloandroid"
+            keyAlias "bamilo_android"
+            keyPassword "bamiloandroid"
+        }
+
+        releaseBlackberrySigning {
+            storeFile file("jumia_blackberry.keystore")
+            storePassword "jumiablackberry"
+            keyAlias "jumia_blackberry"
+            keyPassword "jumiablackberry"
+        }
+
+        releaseJumiaMTNSigning {
+            storeFile file("jumia_mtnng.keystore")
+            storePassword "jumiamtnng"
+            keyAlias "jumia_mtnng"
+            keyPassword "jumiamtnng"
+        }
+
+        releaseJumiaNokiaXSigning {
+            storeFile file("jumia_nokiax.keystore")
+            storePassword "jumianokiax"
+            keyAlias "jumia_nokiax"
+            keyPassword "jumianokiax"
+        }
+
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+    }
+
+
+    buildTypes {
+
+        debug {
+            debuggable true
+        }
+
+        release {
+            minifyEnabled false
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    flavorDimensions "operatingsystem", "venture"
+
+
+    productFlavors {
+
+        android {
+            flavorDimension "operatingsystem"
+        }
+
+        blackberry {
+            flavorDimension "operatingsystem"
+        }
+
+        jumia {
+            flavorDimension "venture"
+            signingConfig signingConfigs.releaseJumiaSigning
+            resConfigs "en", "fr", "pt"
+        }
+
+        shop {
+            flavorDimension "venture"
+            signingConfig signingConfigs.releaseShopSigning
+            resConfigs "my"
+        }
+
+        daraz {
+            flavorDimension "venture"
+            signingConfig signingConfigs.releaseDarazSigning
+            resConfigs "en"
+        }
+
+        bamilo {
+            flavorDimension "venture"
+            signingConfig signingConfigs.releaseBamiloSigning
+            resConfigs "ir"
+        }
+
+        blackberry {
+            flavorDimension "venture"
+            signingConfig signingConfigs.releaseBlackberrySigning
+            resConfigs "en", "fr", "pt"
+        }
+
+        jumiaMTN {
+            flavorDimension "venture"
+            signingConfig signingConfigs.releaseJumiaMTNSigning
+            resConfigs "en", "fr", "pt"
+        }
+
+        jumiaNokiaX {
+            flavorDimension "venture"
+            signingConfig signingConfigs.releaseJumiaNokiaXSigning
+            resConfigs "en", "fr", "pt"
+        }
+
+        JumiaSamsung {
+            flavorDimension "venture"
+            signingConfig signingConfigs.releaseJumiaSigning
+            resConfigs "en", "fr", "pt"
+        }
+
+    }
+
+    lintOptions {
+        disable 'NewApi', 'RtlSymmetry', 'IconLocation', 'IconDipSize', 'IconXmlAndPng', 'RtlHardcoded'
+        abortOnError false
+    }
+
+}
+
+dependencies {
+    /** LOCAL LIBS **/
+    compile project(':libraries:com.mobile.framework')
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+}
+
+
+/** SET CUSTOM APPLICATION IDS DEPENDING ON FLAVOURS AND BUILD TYPE **/
+android.applicationVariants.all { variant ->
+    /*println "****************************"
+    println "variant: ${variant.name}"
+    println "flavor: ${variant.flavorName}"
+    println "buildType: ${variant.buildType.name}"
+    println "applicationId: ${variant.applicationId}"
+    println "productFlavors[0]: ${variant.productFlavors[0].name}"
+    println "productFlavors[1]: ${variant.productFlavors[1].name}"
+    println "****************************"
+    */
+
+    /**
+     * Set application id with "com." + venture + "blackberry" or "android"(when not in debug build type)  + "dev" when in debug build type
+     */
+    def String venture = variant.productFlavors[1].name
+    venture = venture.replace("TIGO", "")
+    if (variant.buildType.name == android.buildTypes.debug.name) {
+        if (variant.productFlavors[0].name == "android") {
+            variant.mergedFlavor.applicationId = "com." + venture + "." + "dev"
+        } else {
+            variant.mergedFlavor.applicationId = "com." + venture + "." + variant.productFlavors[0].name + ".dev"
+        }
+    } else {
+        variant.mergedFlavor.applicationId = "com." + venture + "." + variant.productFlavors[0].name
+    }
+}

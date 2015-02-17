@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TODO remove examples. Also from Bamilo projects -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_20px"
+    android:layout_marginTop="@dimen/margin_20px"
+    android:minHeight="@dimen/shipping_time_fee_min_height" >
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/shipping_time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="@dimen/margin_30px"
+            android:layout_marginLeft="@dimen/margin_60px"
+            android:layout_marginRight="@dimen/margin_30px"
+            android:layout_marginStart="@dimen/margin_60px"
+            android:ellipsize="marquee"
+            android:fontFamily="roboto_light"
+            android:singleLine="true"
+            android:text="@string/shipping_time"
+            android:textSize="@dimen/text_title"
+            android:visibility="gone" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/shipping_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_toEndOf="@id/shipping_time_label"
+            android:layout_toRightOf="@id/shipping_time_label"
+            android:ellipsize="marquee"
+            android:fontFamily="roboto_light"
+            android:gravity="start|left"
+            android:singleLine="true"
+            android:textSize="@dimen/text_title"
+            android:visibility="gone" />
+
+</RelativeLayout>

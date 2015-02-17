@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nav_basket"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_navigation_basket_background"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/margin_mid"
+    android:paddingLeft="@dimen/margin_mid"
+    android:paddingStart="@dimen/margin_mid"
+    android:paddingTop="@dimen/margin_small" >
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/nav_cart_count"
+        style="@style/ShoppingCartCount"
+        android:layout_marginTop="@dimen/margin_mid" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/navigation_cart_vertical_distance"
+        android:layout_marginStart="@dimen/navigation_cart_vertical_distance"
+        android:layout_marginTop="@dimen/margin_small"
+        android:orientation="vertical" >
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/nav_basket_title"
+            style="@style/navigation_cart_titletext"
+            android:text="@string/shopping_cart" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/nav_basket_empty"
+            style="@style/navigation_cart_emptytext"
+            android:layout_below="@id/nav_basket_title"
+            android:text="@string/navigation_cart_empty" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/nav_basket_elements"
+            style="@style/navigation_cart_price"
+            android:layout_width="match_parent"
+            android:gravity="left|start"
+            android:layout_below="@id/nav_basket_title"
+            android:visibility="invisible" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/nav_basket_vat"
+            style="@style/navigation_cart_vattext"
+            android:layout_below="@+id/nav_basket_elements"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+</LinearLayout>
