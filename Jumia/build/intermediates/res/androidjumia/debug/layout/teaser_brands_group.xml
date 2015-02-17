@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/teaser_brands_group_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@android:color/white" />
-<!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/layout/teaser_brands_group.xml -->

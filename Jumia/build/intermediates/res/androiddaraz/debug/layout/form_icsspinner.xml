@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- <com.mobile.components.custom.IcsSpinner xmlns:android="http://schemas.android.com/apk/res/android" -->
-<com.mobile.components.absspinner.IcsSpinner xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/custom"
-    style="@style/form_style"
-    android:background="@drawable/spinner_background_holo_orange"
-    android:clickable="true"
-    android:spinnerMode="dropdown" /><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/layout/form_icsspinner.xml -->

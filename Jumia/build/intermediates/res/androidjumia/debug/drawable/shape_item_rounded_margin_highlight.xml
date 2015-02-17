@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item
-        android:drawable="@drawable/shape_itemhighlight"/>
-
-</layer-list><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/drawable/shape_item_rounded_margin_highlight.xml -->

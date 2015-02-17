@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@color/grey_light" android:state_focused="false" android:state_pressed="true"/>
-
-</selector><!-- From: file:/home/pcarvalho/Android/AndroidStudioProjects/JumiaApp/Jumia/src/main/res/drawable/selector_logo_header.xml -->
