@@ -183,7 +183,7 @@
     <string name="or_text">یا</string>
     <string name="order_no_items">شما هیچ کالایی در سبد خرید ندارید.</string>
     <string name="order_status_label">وضعیت سفارش</string>
-    <string name="order_success">سفارش شما با موفقیت ثبت شد\n شماره سفارش شما:</string>
+    <string name="order_success">سفارش شما با موفقیت ثبت شد.\n شماره سفارش شما:</string>
     <string name="order_summary_label">خلاصه سفارش</string>
     <string name="order_summary_shipping_fee_label">هزینه ارسال:</string>
     <string name="order_summary_shipping_method">روش ارسال:</string>
@@ -191,7 +191,7 @@
     <string name="order_summary_total_label">مجموع:</string>
     <string name="order_track_link">وضعیت سفارش</string>
     <string name="order_track_products">کالاها:</string>
-    <string name="order_track_success">شما می توانید وضعیت سفارش خود را/n با مراجعه به بخش وضعیت سفارش، رهگیری کنید</string>
+    <string name="order_track_success">شما می توانید سفارش خود را \n با مراجعه به بخش وضعیت سفارش، رهگیری کنید.</string>
     <string name="other_sellers">سایر تامین کنندگان</string>
     <string name="password_changed">رمز عبور با موفقیت تغییر یافت.</string>
     <string name="password_new_mincharacters">رمز عبور جدید می بایست حداقل ۶ کاراکتر داشته باشد.</string>
