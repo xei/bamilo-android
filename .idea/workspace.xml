@@ -202,6 +202,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/drawable-xxhdpi/spinner_pressed_holo_orange.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/drawable-xxhdpi/spinner_pressed_holo_orange.9.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/drawable-xhdpi/spinnerbutton_normal_holo_light.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/drawable-xhdpi/spinnerbutton_normal_holo_light.9.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/drawable-xhdpi/spinnerbutton_pressed_holo_light.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/drawable-xhdpi/spinnerbutton_pressed_holo_light.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/build.gradle" afterPath="$PROJECT_DIR$/JumiaApp/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/Jumia/res/raw/roboto_bold.ttf" afterPath="$PROJECT_DIR$/JumiaApp/src/Jumia/res/raw/roboto_bold.ttf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/raw/roboto_bold.ttf" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/raw/roboto_bold.ttf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/androidDaraz/res/raw/roboto_bold.ttf" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDaraz/res/raw/roboto_bold.ttf" />
@@ -226,382 +227,10 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/androidJumia/res/values-fr-rCI/strings.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumia/res/values-fr-rCI/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/androidJumia/res/values-fr-rCM/strings.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumia/res/values-fr-rCM/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/androidJumia/res/values-ke/strings.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumia/res/values-ke/strings.xml" />
-    </list>
-    <list id="d08c3752-4221-494c-9e4a-a5654ae108c7" name="Failed commit: Default" comment="% added flavours ;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/dist/blackberry/.hideme" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaDebug" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaLive" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaRelease" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/assets" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/assets/blackberry/certificate/author.p12" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/bamilo_android.keystore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/assets/blackberry/certificate/barsigner.db" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/assets/blackberry" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/dist/blackberry" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/assets/blackberry/certificate" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/dist/blackberry/com.jumia.blackberry.bar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/daraz_android.keystore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/dist" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-fr-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-fr-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-fr-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-fr-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-pt-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-pt-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-pt-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-pt-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/raw/gtm_default_container" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/res/raw/gtm_default_container" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/res/raw/gtm_default_container" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumia/res/raw/gtm_default_container" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg/res/raw/gtm_default_container" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/res/raw/gtm_default_container" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung/res/raw/gtm_default_container" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/mipmap-xxxhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-fr-hdpi/img_newarrival.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-fr-mdpi/img_newarrival.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-fr-xhdpi/img_newarrival.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-fr-xxhdpi/img_newarrival.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-pt-hdpi/img_newarrival.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-pt-mdpi/img_newarrival.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-pt-xhdpi/img_newarrival.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-pt-xxhdpi/img_newarrival.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/jumia.keystore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumia" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/jumia_blackberry.keystore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg/jumia_mtnng.keystore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/jumia_nokiax.keystore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/res/mipmap-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/res/mipmap-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/res/mipmap-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/res/mipmap-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/res/mipmap-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/res/mipmap-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaDebug/res/mipmap-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaLive/res/mipmap-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/res/mipmap-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/res/mipmap-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/res/mipmap-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/mipmap-hdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/res/mipmap-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/res/mipmap-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/res/mipmap-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/res/mipmap-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/res/mipmap-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/res/mipmap-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaDebug/res/mipmap-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaLive/res/mipmap-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/res/mipmap-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/res/mipmap-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/res/mipmap-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/mipmap-mdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/res/mipmap-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/res/mipmap-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/res/mipmap-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/res/mipmap-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/res/mipmap-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/res/mipmap-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaDebug/res/mipmap-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaLive/res/mipmap-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/res/mipmap-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/res/mipmap-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/res/mipmap-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/mipmap-xhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/res/mipmap-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/res/mipmap-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/res/mipmap-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/res/mipmap-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/res/mipmap-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/res/mipmap-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaDebug/res/mipmap-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaLive/res/mipmap-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/res/mipmap-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/res/mipmap-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/res/mipmap-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/mipmap-xxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/res/mipmap-xxxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/res/mipmap-xxxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/res/mipmap-xxxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/res/mipmap-xxxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/res/mipmap-xxxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/res/mipmap-xxxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaDebug/res/mipmap-xxxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaLive/res/mipmap-xxxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/res/mipmap-xxxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/res/mipmap-xxxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/res/mipmap-xxxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/mipmap-xxxhdpi" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/raw" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/res/raw" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/res/raw" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumia/res/raw" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg/res/raw" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/res/raw" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung/res/raw" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaDebug/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaLive/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaRelease/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumia/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung/res" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-eg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-fr-rCI" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-fr-rCM" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-fr-rMA" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-fr" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-gh" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-ke" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-ng" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-pt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-ug" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaDebug/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaLive/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaRelease/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung/res/values" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaDebug/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaLive/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaRelease/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/assets/blackberry/MANIFEST.MF" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/assets/blackberry/OLD_MANIFEST_SIGNED.MF" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/assets/blackberry/android.cfg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/assets/blackberry/apk2bar.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/values/arrays.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/bb_how_to_preparation.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/bb_how_to_release.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/assets/blackberry/certificate/bbidtoken.csk" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/dist/blackberry/com.jumia.blackberry.wrn" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaDebug/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaLive/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaRelease/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung/res/values/configs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/res/values/country.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopDebug/res/values/country.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/values/country.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values/donottranslate.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/proguard-project.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/proguard-project.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaLive/proguard-project.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidJumiaRelease/proguard-project.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopLive/proguard-project.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/androidShopRelease/proguard-project.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/blackberry/proguard-project.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/raw/roboto_bold.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/res/raw/roboto_bold.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumia/res/raw/roboto_bold.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg/res/raw/roboto_bold.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/res/raw/roboto_bold.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung/res/raw/roboto_bold.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/raw/roboto_bolditalic.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/res/raw/roboto_bolditalic.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumia/res/raw/roboto_bolditalic.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg/res/raw/roboto_bolditalic.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/res/raw/roboto_bolditalic.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung/res/raw/roboto_bolditalic.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/raw/roboto_italic.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/res/raw/roboto_italic.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumia/res/raw/roboto_italic.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg/res/raw/roboto_italic.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/res/raw/roboto_italic.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung/res/raw/roboto_italic.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/raw/roboto_light.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/res/raw/roboto_light.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumia/res/raw/roboto_light.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg/res/raw/roboto_light.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/res/raw/roboto_light.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung/res/raw/roboto_light.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/raw/roboto_regular.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/res/raw/roboto_regular.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumia/res/raw/roboto_regular.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg/res/raw/roboto_regular.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/res/raw/roboto_regular.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung/res/raw/roboto_regular.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/values/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/values/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-eg/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-fr/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-fr-rCI/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-fr-rCM/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-fr-rMA/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-gh/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-ke/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-ng/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-pt/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values-ug/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/values/tracking.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/values/tracking.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-hdpi/ic_launcher.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$" afterPath="$PROJECT_DIR$" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/img_maintenance_logo.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/img_maintenance_logo.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/img_maintenance_logo.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/img_maintenance_logo.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/img_maintenance_logo.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/img_maintenance_logo.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xxhdpi/img_maintenance_logo.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xxhdpi/img_maintenance_logo.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/img_maintenance_map.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/img_maintenance_map.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/img_maintenance_map.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/img_maintenance_map.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/img_maintenance_map.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/img_maintenance_map.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/img_newarrival.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/img_newarrival.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/img_newarrival.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/img_newarrival.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/img_newarrival.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/img_newarrival.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xxhdpi/img_newarrival.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xxhdpi/img_newarrival.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/img_splashlogo.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/img_splashlogo.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/img_splashlogo.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/img_splashlogo.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/img_splashlogo.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/img_splashlogo.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xxhdpi/img_splashlogo.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xxhdpi/img_splashlogo.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/img_splashmap.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/img_splashmap.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/img_splashmap.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/img_splashmap.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/img_splashmap.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/img_splashmap.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xxhdpi/img_splashmap.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xxhdpi/img_splashmap.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my/loading_bar_big.gif" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my/loading_bar_big.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/logo_ic.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/logo_ic.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/logo_ic.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/logo_ic.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/logo_ic.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/logo_ic.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xxhdpi/logo_ic.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xxhdpi/logo_ic.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/logo_ic_icon.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/logo_ic_icon.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/logo_ic_icon.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/logo_ic_icon.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/logo_ic_icon.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/logo_ic_icon.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xxhdpi/logo_ic_icon.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xxhdpi/logo_ic_icon.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/no_image_large.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/no_image_large.9.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/no_image_large.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/no_image_large.9.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/no_image_large.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/no_image_large.9.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/no_image_small.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/no_image_small.9.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/no_image_small.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/no_image_small.9.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/no_image_small.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/no_image_small.9.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/no_image_teaser.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-hdpi/no_image_teaser.9.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/no_image_teaser.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-mdpi/no_image_teaser.9.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/no_image_teaser.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-my-xhdpi/no_image_teaser.9.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/A4SSDK.xml" afterPath="$PROJECT_DIR$/.idea/libraries/A4SSDK.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/HockeySDK_3_0_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/HockeySDK_3_0_2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/JumiaApp.iml" afterPath="$PROJECT_DIR$/JumiaApp/JumiaApp.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/android_agent_4_120_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/android_agent_4_120_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/android_async_http_1_4_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/android_async_http_1_4_3.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/androlog_1_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/androlog_1_0_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_21_0_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_21_0_3.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/apptimize_android_2_4_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/apptimize_android_2_4_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/bolts_android_1_1_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/bolts_android_1_1_2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/build.gradle" afterPath="$PROJECT_DIR$/JumiaApp/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/commons_collections4_4_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/commons_collections4_4_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/commons_io_2_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/commons_io_2_4.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/values/configs.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values/configs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/httpclientandroidlib_1_1_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/httpclientandroidlib_1_1_2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/play_services_base_6_5_87.xml" afterPath="$PROJECT_DIR$/.idea/libraries/play_services_base_6_5_87.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/recyclerview_v7_21_0_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/recyclerview_v7_21_0_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_annotations_21_0_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_annotations_21_0_3.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_21_0_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_v4_21_0_3.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="My Application.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="$PROJECT_DIR$/.idea/workspace.xml" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -629,8 +258,8 @@
       <file leaf-file-name="build.gradle" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/JumiaApp/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.7292993" vertical-offset="68" max-vertical-offset="4176">
-              <caret line="99" column="20" selection-start-line="99" selection-start-column="20" selection-end-line="99" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.46290144" vertical-offset="68" max-vertical-offset="4176">
+              <caret line="27" column="24" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -9548,7 +9177,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="12817864822777" />
+        <entry key="$PROJECT_DIR$" value="12817883241522" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -10476,7 +10105,6 @@
         <option value="$PROJECT_DIR$/JumiaApp/src/androidDarazDebug/res/values/configs.xml" />
         <option value="$PROJECT_DIR$/JumiaApp/src/androidDarazLive/res/values/configs.xml" />
         <option value="$PROJECT_DIR$/JumiaApp/src/androidDarazRelease/res/values/configs.xml" />
-        <option value="$PROJECT_DIR$/JumiaApp/build.gradle" />
         <option value="$PROJECT_DIR$/JumiaApp/src/jumiaMTNNg/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/JumiaApp/src/androidBamiloDebug/AndroidManifest.xml" />
@@ -10487,6 +10115,7 @@
         <option value="$PROJECT_DIR$/JumiaApp/src/androidBamiloLive/res/values/configs.xml" />
         <option value="$PROJECT_DIR$/JumiaApp/src/androidBamiloRelease/res/values/configs.xml" />
         <option value="$PROJECT_DIR$/JumiaApp/src/blackberry/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/JumiaApp/build.gradle" />
       </list>
     </option>
   </component>
@@ -10528,48 +10157,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="JumiaApp" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Jumia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Jumia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Jumia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -10895,7 +10482,15 @@
       <created>1424449009138</created>
       <updated>1424449009138</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="% added flavours ;">
+      <created>1424449420274</created>
+      <updated>1424449420274</updated>
+    </task>
+    <task id="LOCAL-00006" summary="% added flavours ;">
+      <created>1424449941804</created>
+      <updated>1424449941804</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -10933,7 +10528,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.5002764" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.249309" sideWeight="0.50300604" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29474813" sideWeight="0.4997236" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29474813" sideWeight="0.4997236" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30868167" sideWeight="0.4991708" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4051447" sideWeight="0.4997236" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32984003" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -10942,7 +10537,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.249309" sideWeight="0.496994" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.249309" sideWeight="0.496994" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.4997236" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46516612" sideWeight="0.6053068" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="165" y="96" width="1655" height="884" />
@@ -11398,8 +10993,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/JumiaApp/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.7292993" vertical-offset="68" max-vertical-offset="4176">
-          <caret line="99" column="20" selection-start-line="99" selection-start-column="20" selection-end-line="99" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.46290144" vertical-offset="68" max-vertical-offset="4176">
+          <caret line="27" column="24" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
           <folding />
         </state>
       </provider>

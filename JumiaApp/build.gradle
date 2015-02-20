@@ -25,7 +25,7 @@ android {
         applicationId "com.mobile.view"
         minSdkVersion 9
         versionCode = getAppVersionCode()
-        versionName "1.9"
+        versionName "2.4"
 
         resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
     }
