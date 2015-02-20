@@ -14,7 +14,6 @@ def getAppVersionCode() {
         versionCode = Integer.valueOf(System.getenv('BUILD_VERSION_NUMBER'))
     }
 
-
     return versionCode
 }
 
@@ -24,7 +23,7 @@ android {
 
     defaultConfig {
         applicationId "com.mobile.view"
-        minSdkVersion 8
+        minSdkVersion 9
         versionCode = getAppVersionCode()
         versionName "1.9"
 
@@ -92,13 +91,24 @@ android {
     buildTypes {
 
         debug {
+            manifestPlaceholders = [ AdjustEnvironment:"sandbox" ]
             debuggable true
         }
 
-        release {
+        live {
+            manifestPlaceholders = [ AdjustEnvironment:"sandbox" ]
+            debuggable true
             minifyEnabled false
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-project.txt'), 'proguard-rules.pro'
+        }
+
+
+        release {
+            manifestPlaceholders = [ AdjustEnvironment:"production" ]
+            minifyEnabled false
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-project.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -125,7 +135,7 @@ android {
         shop {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseShopSigning
-            resConfigs "my"
+            resConfigs "en"
         }
 
         daraz {
@@ -137,16 +147,10 @@ android {
         bamilo {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseBamiloSigning
-            resConfigs "ir"
+            resConfigs "en"
         }
 
-        blackberry {
-            flavorDimension "venture"
-            signingConfig signingConfigs.releaseBlackberrySigning
-            resConfigs "en", "fr", "pt"
-        }
-
-        jumiaMTN {
+        jumiaMTNNg {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaMTNSigning
             resConfigs "en", "fr", "pt"
@@ -158,7 +162,7 @@ android {
             resConfigs "en", "fr", "pt"
         }
 
-        JumiaSamsung {
+        jumiaSamsung {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaSigning
             resConfigs "en", "fr", "pt"
@@ -184,7 +188,7 @@ dependencies {
 
 /** SET CUSTOM APPLICATION IDS DEPENDING ON FLAVOURS AND BUILD TYPE **/
 android.applicationVariants.all { variant ->
-    /*println "****************************"
+    println "****************************"
     println "variant: ${variant.name}"
     println "flavor: ${variant.flavorName}"
     println "buildType: ${variant.buildType.name}"
@@ -192,20 +196,32 @@ android.applicationVariants.all { variant ->
     println "productFlavors[0]: ${variant.productFlavors[0].name}"
     println "productFlavors[1]: ${variant.productFlavors[1].name}"
     println "****************************"
-    */
+
 
     /**
      * Set application id with "com." + venture + "blackberry" or "android"(when not in debug build type)  + "dev" when in debug build type
      */
     def String venture = variant.productFlavors[1].name
-    venture = venture.replace("TIGO", "")
-    if (variant.buildType.name == android.buildTypes.debug.name) {
-        if (variant.productFlavors[0].name == "android") {
-            variant.mergedFlavor.applicationId = "com." + venture + "." + "dev"
-        } else {
-            variant.mergedFlavor.applicationId = "com." + venture + "." + variant.productFlavors[0].name + ".dev"
+    venture = venture.replace("jumiaMTNNg", "jumia")
+    venture = venture.replace("jumiaNokiaX", "jumia")
+    venture = venture.replace("jumiaSamsung", "jumia")
+    if (variant.productFlavors[0].name == "android") {
+        variant.mergedFlavor.applicationId = "com." + venture + "." + variant.productFlavors[0].name
+        println "application ID: ${variant.mergedFlavor.applicationId}"
+        //e.g. com.jumia.android
+        if (variant.buildType.name == android.buildTypes.debug.name) {
+            variant.mergedFlavor.applicationId = variant.mergedFlavor.applicationId + ".dev"
+            println "application ID: ${variant.mergedFlavor.applicationId}"
+            //e.g. com.jumia.android.dev
+        } else if(variant.buildType.name == android.buildTypes.live.name){
+            variant.mergedFlavor.applicationId = variant.mergedFlavor.applicationId + ".live"
+            println "application ID: ${variant.mergedFlavor.applicationId}"
+            //e.g. com.jumia.android.live
         }
     } else {
         variant.mergedFlavor.applicationId = "com." + venture + "." + variant.productFlavors[0].name
+        println "application ID: ${variant.mergedFlavor.applicationId}"
+        //e.g. com.jumia.blackberry
     }
+
 }

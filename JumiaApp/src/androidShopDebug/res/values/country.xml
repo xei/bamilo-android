@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- CONFIGS: Shop.com.mm -->
+    <string name="single_shop_country_url">alice-staging.shop.com.mm</string>
+
+</resources>
