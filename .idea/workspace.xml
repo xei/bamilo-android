@@ -202,7 +202,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/drawable-xxhdpi/spinner_pressed_holo_orange.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/drawable-xxhdpi/spinner_pressed_holo_orange.9.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/drawable-xhdpi/spinnerbutton_normal_holo_light.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/drawable-xhdpi/spinnerbutton_normal_holo_light.9.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/drawable-xhdpi/spinnerbutton_pressed_holo_light.9.png" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/drawable-xhdpi/spinnerbutton_pressed_holo_light.9.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/build.gradle" afterPath="$PROJECT_DIR$/JumiaApp/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/Jumia/res/raw/roboto_bold.ttf" afterPath="$PROJECT_DIR$/JumiaApp/src/Jumia/res/raw/roboto_bold.ttf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/raw/roboto_bold.ttf" afterPath="$PROJECT_DIR$/JumiaApp/src/androidBamilo/res/raw/roboto_bold.ttf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/androidDaraz/res/raw/roboto_bold.ttf" afterPath="$PROJECT_DIR$/JumiaApp/src/androidDaraz/res/raw/roboto_bold.ttf" />
@@ -10490,7 +10489,11 @@
       <created>1424449941804</created>
       <updated>1424449941804</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="% added flavours ;">
+      <created>1424450003754</created>
+      <updated>1424450003754</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
