@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- THANK YOU -->
+    <dimen name="checkout_thanks_thankyou_text_size">30sp</dimen>
+
+</resources>
