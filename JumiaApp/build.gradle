@@ -225,3 +225,37 @@ android.applicationVariants.all { variant ->
     }
 
 }
+
+
+/**
+ *  PMD static analysis
+ */
+task pmd(type: Pmd) {
+    ignoreFailures = true
+    source 'src/main/java'
+    include '**/*.java'
+    exclude '**/gen/**'
+    //ruleSets = ["java-basic", "java-strings", "java-braces"]
+    ruleSetFiles = files("pmd-ruleset.xml")
+    ruleSets = []
+
+}
+
+/**
+ * Findbugs static analysis
+ */
+task findbugs(type: FindBugs) {
+    ignoreFailures = true
+    classes = fileTree('build/intermediates/classes/')
+    source = fileTree('src/main/java/')
+    classpath = files()
+    effort = 'max'
+//    shows all warnings: low, medium, high. By default is set to medium and high
+//    reportLevel = "low"
+    excludeFilter = file("findbugs-exclude.xml")
+    reports {
+        xml {
+            destination "build/reports/findbugs/findbugs.xml"
+        }
+    }
+}
