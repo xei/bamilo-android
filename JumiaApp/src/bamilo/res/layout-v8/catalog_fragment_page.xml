@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/products_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/rounded_margin_small"
+    android:paddingBottom="0dp" >
+
+    <include
+        android:id="@+id/loadmore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        layout="@layout/loading_more" />
+
+    <GridView
+        android:id="@+id/middle_productslist_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/loadmore"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/rounded_margin_small"
+        android:listSelector="@color/transparent"
+        android:numColumns="3" />
+
+    <ImageView
+        android:id="@+id/btn_toplist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/margin_30px"
+        android:layout_marginBottom="@dimen/margin_30px"
+        android:background="@drawable/selector_btn_toplist"
+        android:visibility="invisible" />
+
+</RelativeLayout>

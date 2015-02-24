@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <!-- DIVIDER -->
+
+    <View
+        android:id="@+id/radio_divider"
+        style="@style/divider_horizontal" />
+
+    <LinearLayout
+        android:id="@+id/radio_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
+
+    <LinearLayout
+        android:id="@+id/extras"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/form_radiobutton_shipping_margin"
+        android:paddingRight="@dimen/form_radiobutton_shipping_margin"
+        android:visibility="gone" >
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/payment_text"
+            style="@style/text_normal"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:fontFamily="roboto_light"
+            android:gravity="right|center_vertical"
+            android:layout_gravity="right"
+            android:paddingBottom="@dimen/margin_20px"
+            android:paddingTop="@dimen/margin_20px"
+            android:singleLine="false"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/payment_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>

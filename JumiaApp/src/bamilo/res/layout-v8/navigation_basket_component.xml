@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nav_basket"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_navigation_basket_background"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/margin_mid"
+    android:paddingRight="@dimen/margin_mid"
+    android:paddingTop="@dimen/margin_small" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/navigation_cart_vertical_distance"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_toLeftOf="@+id/nav_cart_count"
+        android:gravity="right"
+        android:orientation="vertical" >
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/nav_basket_title"
+            style="@style/navigation_cart_titletext"
+            android:layout_alignParentRight="true"
+            android:text="@string/shopping_cart" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/nav_basket_empty"
+            style="@style/navigation_cart_emptytext"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/nav_basket_title"
+            android:text="@string/navigation_cart_empty" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/nav_basket_elements"
+            style="@style/navigation_cart_price"
+            android:layout_width="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/nav_basket_title"
+            android:gravity="right"
+            android:visibility="invisible" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/nav_basket_vat"
+            style="@style/navigation_cart_vattext"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/nav_basket_elements"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/nav_cart_count"
+        android:layout_width="@dimen/action_bar_icon_size"
+        android:layout_height="@dimen/action_bar_icon_size"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:background="@drawable/selector_shop"
+        android:gravity="center|top"
+        android:paddingRight="3dp"
+        android:textColor="@color/orange_basic"
+        android:textSize="11sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
