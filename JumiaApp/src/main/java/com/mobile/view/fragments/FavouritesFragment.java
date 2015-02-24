@@ -280,7 +280,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Case unknown
         else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
     }
-    
+
     /**
      * Process the click on size guide.
      * @author sergiopereira
@@ -761,6 +761,13 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             Log.w(TAG, "WARNING: RECEIVED DATA IN BACKGROUND");
             return;
         }
+
+        if(super.handleErrorEvent(bundle)){
+            Log.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
+            hideActivityProgress();
+            return;
+        }
+
         // Validate type
         switch (eventType) {
         case GET_FAVOURITE_LIST:
