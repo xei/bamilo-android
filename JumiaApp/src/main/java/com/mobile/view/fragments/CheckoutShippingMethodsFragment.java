@@ -3,8 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -32,6 +30,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
+import java.util.EnumSet;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -51,8 +51,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     private ViewGroup mShippingMethodsContainer;
 
     private ShippingMethodFormBuilder mFormResponse;
-
-    private View nFormContainer;
 
     private int mSelectionSaved = -1;
 
@@ -237,8 +235,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         Log.i(TAG, "LOAD FORM");
         mFormResponse = form;
         mShippingMethodsContainer.removeAllViews();
-        nFormContainer = mFormResponse.generateForm(getBaseActivity());
-        mShippingMethodsContainer.addView(nFormContainer);
+        mFormResponse.generateForm(getBaseActivity(), mShippingMethodsContainer);
+        //mShippingMethodsContainer.addView(nFormContainer);
         mShippingMethodsContainer.refreshDrawableState();
         
         // Set the saved selection

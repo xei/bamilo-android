@@ -54,7 +54,7 @@
         android:id="@+id/product_detail_tips_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/tips"
+        layout="@layout/catalog_fragment_wizard"
         android:visibility="gone" />
 
 </RelativeLayout>

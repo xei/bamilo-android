@@ -76,6 +76,7 @@
     <dimen name="dimen_700px">233.33dp</dimen>
     <dimen name="dimen_720px">240dp</dimen>
     <dimen name="dimen_780px">260dp</dimen>
+    <dimen name="dimen_810px">270dp</dimen>
 
     <!-- MATERIAL: Typographic scale & basic styles -->
     <dimen name="dimen_display_4">112sp</dimen>

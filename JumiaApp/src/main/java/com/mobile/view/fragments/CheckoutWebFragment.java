@@ -3,13 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-import java.util.List;
-
-import org.apache.http.ParseException;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -26,7 +19,6 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import ch.boye.httpclientandroidlib.cookie.Cookie;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
@@ -52,6 +44,14 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
+import org.apache.http.ParseException;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.EnumSet;
+import java.util.List;
+
+import ch.boye.httpclientandroidlib.cookie.Cookie;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -163,14 +163,14 @@ public class CheckoutWebFragment extends BaseFragment {
     
     private void triggerGetCustomer(){
         
-        triggerContentEventWithNoLoading(new GetCustomerHelper(), null, mCallback);
+        triggerContentEventNoLoading(new GetCustomerHelper(), null, mCallback);
     }
     
     private void triggerGetShoppingCartItems(){
         // Defining event as having no priority
         Bundle args = new Bundle();
         args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
-        triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), args, mCallback);
+        triggerContentEventNoLoading(new GetShoppingCartItemsHelper(), args, mCallback);
     }
     
     IResponseCallback mCallback = new IResponseCallback() {
@@ -552,7 +552,7 @@ public class CheckoutWebFragment extends BaseFragment {
                     // Defining event as having no priority
                     Bundle args = new Bundle();
                     args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
-                    triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), args, mCallback);
+                    triggerContentEventNoLoading(new GetShoppingCartItemsHelper(), args, mCallback);
                     
                     // Measure to escape the webview thread
                     handler.post( new Runnable() {

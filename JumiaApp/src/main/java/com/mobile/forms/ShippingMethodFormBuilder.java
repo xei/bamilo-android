@@ -1,16 +1,11 @@
 package com.mobile.forms;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
@@ -18,6 +13,12 @@ import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.utils.ShippingRadioGroupList;
 import com.mobile.view.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -78,7 +79,7 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
                         Log.i(TAG, "code1subForms : subForm :  "+subForm.name+" "+subForm.toString());
                         for ( int j = 0; j < fields.size(); j++) {
                             if(fields.get(j).options.contains(subForm.scenario)){
-                                fields.get(j).subForms.add(subForm);   
+                                fields.get(j).shippingMethodsSubForms.add(subForm);   
                             }
                         }
                     }
@@ -125,9 +126,6 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
     
     public View generateForm(Context context){
         LinearLayout parent;
-        /*-if(context != null && context.getResources() != null && context.getResources().getDisplayMetrics() != null){
-            scale = context.getResources().getDisplayMetrics().density;
-        }*/
 
         parent = new LinearLayout(context);
         LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -145,6 +143,22 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
                 
         return parent;
     }
+    
+    
+    /**
+     * Generate a form using the view parent
+     */
+    public View generateForm(Context context, ViewGroup parent){
+        if(fields != null && fields.size() > 0){
+            for (ShippingMethodForm field : fields) {
+                ShippingRadioGroupList mGroup = field.generateForm(context, parent);
+                groupList.add(mGroup);
+                parent.addView(mGroup);
+            }
+        }
+        return parent;
+    }
+    
     
     public int getSelectionId(int groupId){
         try {

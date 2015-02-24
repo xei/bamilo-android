@@ -7,7 +7,8 @@
     android:layout_gravity="center"
     android:clickable="true"
     android:gravity="center"
-    android:orientation="horizontal" >
+    android:orientation="horizontal" 
+    android:layoutDirection="locale">
 
     <ImageView
         android:id="@+id/fragment_root_retry_spinning"

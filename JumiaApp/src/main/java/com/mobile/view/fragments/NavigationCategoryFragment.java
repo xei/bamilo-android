@@ -3,8 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,6 +18,7 @@ import com.mobile.controllers.CategoriesAdapter;
 import com.mobile.controllers.SubCategoriesAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.CategoriesTableHelper;
 import com.mobile.framework.objects.Category;
 import com.mobile.framework.utils.Constants;
@@ -28,7 +27,10 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -121,9 +123,14 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         
         // Validation to show content
         // Case cache
-        if (mCategories != null && mCategories.size() > 0) showCategoryList(mCategories);
+        if (mCategories != null && mCategories.size() > 0){ 
+            showCategoryList(mCategories);
+        }
         // Case empty
-        else if(!TextUtils.isEmpty(ShopSelector.getShopId())) triggerGetCategories(mCategoryKey);
+        else if(!TextUtils.isEmpty(ShopSelector.getShopId())) {
+            if(mainActivity instanceof MainFragmentActivity && !((MainFragmentActivity)mainActivity).isInMaintenance())
+                triggerGetCategories(mCategoryKey);
+        }
         // Case recover from background
         else { Log.w(TAG, "APPLICATION IS ON BIND PROCESS"); showRetry(); }
     }
@@ -408,7 +415,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Remove entries until Home
         FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
         // Goto Catalog
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
     /**
@@ -456,8 +463,17 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     public void onRequestError(Bundle bundle) {
         Log.i(TAG, "ON ERROR EVENT");
+        // Validate fragment state
+        if (isOnStoppingProcess) return;
         // Generic errors
-        if(super.handleErrorEvent(bundle)) return;
+        if(super.handleErrorEvent(bundle)){
+            ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+            if(errorCode == ErrorCode.SSL){
+                getBaseActivity().closeNavigationDrawer();
+                hideFragmentRootViews();
+            }
+            return;
+        }
         // Show retry
         showRetry();
     }

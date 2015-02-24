@@ -1,7 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +13,8 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.LastViewed;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 /**
  * Ad
@@ -75,7 +75,7 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
     @Override
     public RelatedItemsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Create a new view
-        return new ViewHolder(LayoutInflater.from(parent.getContext()) .inflate(R.layout.product_item_small, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item_small, parent, false));
     }
 
     /*

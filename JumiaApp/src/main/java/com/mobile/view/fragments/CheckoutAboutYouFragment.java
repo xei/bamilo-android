@@ -3,11 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -66,6 +61,11 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.view.R;
+
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -511,8 +511,16 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         Log.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
         // Exception handling for no network error
-        if(exception != null && !NetworkConnectivity.isConnected(getBaseActivity())) {
-            if(formResponse != null) createNoNetworkDialog(mLoginFacebookButton);
+        if(exception != null && !NetworkConnectivity.isConnected(getBaseActivity()) && state != SessionState.CLOSED_LOGIN_FAILED) {
+            if(formResponse != null){
+                showFragmentNoNetworkRetry(new OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        mLoginFacebookButton.performClick();
+                    }
+                });
+            };
             return;
         }
         // Validate state
@@ -749,7 +757,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
-        triggerContentEventWithNoLoading(new GetFacebookLoginHelper(), bundle, this);
+        triggerContentEventNoLoading(new GetFacebookLoginHelper(), bundle, this);
     }
     
     /**
@@ -778,7 +786,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      * Trigger used to get the customer
      */
     private void triggerGetCustomer(){
-        triggerContentEventWithNoLoading(new GetCustomerHelper(), null, this);
+        triggerContentEventNoLoading(new GetCustomerHelper(), null, this);
     }
     
     /**
@@ -1135,7 +1143,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                         public void onClick(View v) {
                             int id = v.getId();
                             if (id == R.id.button1) {
-                                dismissDialogFragement();
+                                dismissDialogFragment();
                             }
                         }
                     });
@@ -1153,7 +1161,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                     public void onClick(View v) {
                         showFragmentLoading();
                         triggerLoginForm();
-                        dismissDialogFragement();
+                        dismissDialogFragment();
                     }
                 }, false);
         dialog.show(getBaseActivity().getSupportFragmentManager(), null);

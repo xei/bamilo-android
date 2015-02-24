@@ -1,20 +1,12 @@
 package com.mobile.forms;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
@@ -25,6 +17,13 @@ import com.mobile.framework.objects.PickUpStationObject;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.akquinet.android.androlog.Log;
 
@@ -135,45 +134,39 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
         return ++lastID;
     }
 
-    public View generateForm(final Context context) {
-        // Generate LayoutParams for Spinner
-        LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//        mParams.setMargins(0, context.getResources().getDimensionPixelSize(R.dimen.form_top_margin), 0, context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid));
-        mParams.setMargins(0, 0, 0, context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid));
-        this.dataControl = View.inflate(context, R.layout.form_icsspinner_shipping, null);
-        this.dataControl.setId(getNextId());
-        this.dataControl.setLayoutParams(mParams);
-        
-        icsSpinner = (IcsSpinner)dataControl.findViewById(android.R.id.custom);
-        
+    /**
+     * Generate the layout for PUS
+     * @param context
+     * @param parent
+     * @return
+     */
+    public View generateForm(final Context context, ViewGroup parent) {
+        // Case form without options return a dummy view
+        if(this.options.size() == 0) return this.dataControl = new View(context);
+        // Case > 0 inflate a merge layout  
+        this.dataControl = View.inflate(context, R.layout.form_icsspinner_shipping, parent);
+        // Get spinner
+        icsSpinner = (IcsSpinner) dataControl.findViewById(android.R.id.custom);
+        //icsSpinner.setId(getNextId());
+        // Show PUS options 
         final HashMap<String, ArrayList<PickUpStationObject>> pickupStationByRegion = new HashMap<String, ArrayList<PickUpStationObject>>();
-        if (this.options.size() > 0) {
-            ArrayList<String> mSpinnerOptions = new ArrayList<String>();
-            
-            for(int i = 0; i< this.options.size(); i++){
-                if(!mSpinnerOptions.contains(this.options.get(i).getRegions().get(0).getName())){
-                    mSpinnerOptions.add(this.options.get(i).getRegions().get(0).getName());
-                }
-                if(!pickupStationByRegion.containsKey(this.options.get(i).getRegions().get(0).getName())){
-                    pickupStationByRegion.put(this.options.get(i).getRegions().get(0).getName(), new ArrayList<PickUpStationObject>());
-                } 
-                pickupStationByRegion.get(this.options.get(i).getRegions().get(0).getName()).add(this.options.get(i));
+        ArrayList<String> mSpinnerOptions = new ArrayList<String>();
+        for(int i = 0; i< this.options.size(); i++){
+            if(!mSpinnerOptions.contains(this.options.get(i).getRegions().get(0).getName())){
+                mSpinnerOptions.add(this.options.get(i).getRegions().get(0).getName());
             }
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.form_spinner_item, new ArrayList<String>(mSpinnerOptions));
-            adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-            icsSpinner.setAdapter(adapter);
-            icsSpinner.setPrompt(this.label);
+            if(!pickupStationByRegion.containsKey(this.options.get(i).getRegions().get(0).getName())){
+                pickupStationByRegion.put(this.options.get(i).getRegions().get(0).getName(), new ArrayList<PickUpStationObject>());
+            } 
+            pickupStationByRegion.get(this.options.get(i).getRegions().get(0).getName()).add(this.options.get(i));
         }
-        else {
-           return null;
-        }
-
-        // sets the spinner value
-//        int position = -1;
-//        icsSpinner.setSelection(position);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.form_spinner_item, new ArrayList<String>(mSpinnerOptions));
+        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+        icsSpinner.setAdapter(adapter);
+        icsSpinner.setPrompt(this.label);
+        icsSpinner.setVisibility(View.VISIBLE);
 
         this.dataControl.setVisibility(View.GONE);
-
 
         HoloFontLoader.applyDefaultFont(icsSpinner);
         // Listeners

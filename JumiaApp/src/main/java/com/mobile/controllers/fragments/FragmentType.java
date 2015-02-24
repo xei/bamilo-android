@@ -24,7 +24,7 @@ public enum FragmentType {
     CATEGORIES,
     HOME,
     SEARCH,
-    PRODUCT_LIST,
+    CATALOG,
     PRODUCT_DETAILS, 
     WRITE_REVIEW, 
     REVIEW,

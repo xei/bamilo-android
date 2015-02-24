@@ -131,7 +131,9 @@ public enum TrackingEvent {
 	
 	ADD_BUNDLE_TO_CART(R.string.gcatalog, R.string.gAddBundleToCart),
 	
-	ADD_OFFER_TO_CART(R.string.gcatalog, R.string.gAddSellerToCart)
+	ADD_OFFER_TO_CART(R.string.gcatalog, R.string.gAddSellerToCart),
+	
+	SHARE_APP(R.string.gaccount,R.string.gShareApp)
 	
 	;
 	

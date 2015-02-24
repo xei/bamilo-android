@@ -9,5 +9,5 @@
             
     <dimen name="margin_140px">60dp</dimen>
     
-    <dimen name="retry_layout_height">@dimen/dimen_780px</dimen>
+    <dimen name="retry_layout_height">@dimen/dimen_810px</dimen>
 </resources>

@@ -3,23 +3,29 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.ActivitiesWorkFlow;
+import com.mobile.controllers.AppSharingAdapter;
 import com.mobile.controllers.MyAccountAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.tracking.AnalyticsGoogle;
+import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
+
+import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
 
@@ -35,9 +41,13 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     
     public final static int POSITION_EMAIL = 1;
     
+    public final static int POSITION_SHARE_APP = 0;
+    
     private static MyAccountFragment myAccountFragment;
     
-    private String[] myAccountOptions = null;
+    private ListView optionsList;
+    
+    private ListView appSharingList;
     
     /**
      * Get instance
@@ -96,6 +106,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         showMyAccount(view);
+        showAppSharing(view);
     }
 
     /*
@@ -167,15 +178,27 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
      */
     private void showMyAccount(View v) {
         // Get User Account Option
-        myAccountOptions = getResources().getStringArray(R.array.myaccount_array);
+        String[] myAccountOptions = getResources().getStringArray(R.array.myaccount_array);
         // Get ListView
-        ListView optionsList = (ListView) v.findViewById(R.id.middle_myaccount_list);
+        optionsList = (ListView) v.findViewById(R.id.middle_myaccount_list);
         // Create new Adapter
         MyAccountAdapter myAccountAdpater = new MyAccountAdapter(getActivity(), myAccountOptions);
         // Set adapter
         optionsList.setAdapter(myAccountAdpater);
         // Set Listener for all items
         optionsList.setOnItemClickListener((OnItemClickListener) this);
+        
+    }
+    
+    /**
+     * Shows app sharing options
+     */
+    private void showAppSharing(View view) {
+        appSharingList = (ListView)view.findViewById(R.id.middle_app_sharing_list);
+        
+        appSharingList.setAdapter(new AppSharingAdapter(getActivity(), getResources().getStringArray(R.array.app_sharing_array)));
+        
+        appSharingList.setOnItemClickListener(this);
     }
     
     /*
@@ -184,6 +207,22 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
      */
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Validate item
+        if(parent == this.optionsList){
+            handleOnOptionsListItemClick(parent, view, position, id);
+        } else if(parent == this.appSharingList){
+            handleOnAppSharingListItemClick(parent, view, position, id);
+        }
+    }
+    
+    /**
+     *  Handles the item click of childs of options list.
+     *  
+     *  @param parent
+     *  @param view
+     *  @param position
+     *  @param id
+     */
+    private void handleOnOptionsListItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
         case POSITION_USER_DATA:
             processOnClickUserData();
@@ -194,6 +233,37 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         default:
             break;
         }
+        
+    }
+
+    /**
+     *  Handles the item click of childs of app sharing list.
+     *  
+     *  @param parent
+     *  @param view
+     *  @param position
+     *  @param id
+     */
+    private void handleOnAppSharingListItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+        case POSITION_SHARE_APP:
+            Resources resources = getResources();
+            
+            String text = "";
+            if(resources.getBoolean(R.bool.is_bamilo_specific)){
+                text = resources.getString(R.string.share_app_link) + " " + resources.getString(R.string.install_jumia_android);
+            } else {
+                text = resources.getString(R.string.install_jumia_android)+ " " + resources.getString(R.string.share_app_link);
+            }
+            
+            ActivitiesWorkFlow.startActivitySendString(getBaseActivity(), resources.getString(R.string.share_the_app), text) ;
+            break;
+        default:
+            break;
+        }
+      
+        AnalyticsGoogle.get().trackShareApp(TrackingEvent.SHARE_APP, 
+                (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId()+"":"");
     }
 
     /**

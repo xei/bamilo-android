@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyDashes">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyDashes">
 
     <!-- Begin of GA Tracking Parameters -->
     <bool name="ga_autoActivityTracking">false</bool>
@@ -100,6 +100,7 @@
     <string name="gRelatedProduct">RelatedItem</string>
     <string name="gAddBundleToCart">BundleAddToCart</string>
     <string name="gAddSellerToCart">SellerAddToCart</string>
+    <string name="gShareApp">ShareApp</string>
 
     <!-- Checkout Steps -->
     <string name="gNativeCheckout">NativeCheckout</string>

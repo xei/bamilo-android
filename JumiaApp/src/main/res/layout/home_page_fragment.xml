@@ -2,8 +2,7 @@
 <com.mobile.utils.ScrollViewWithHorizontal xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/home_page_single_scrollview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/rounded_margin_small" >
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:id="@+id/home_page_single_container"

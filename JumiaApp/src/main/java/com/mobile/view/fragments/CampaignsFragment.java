@@ -3,9 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +17,9 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
 
@@ -213,7 +213,7 @@ public class CampaignsFragment extends BaseFragment {
         @Override
         public Fragment getItem(int position) {
             Bundle bundle = new Bundle();
-            bundle.putParcelable(CampaignPageFragment.TAG, this.mCampaigns.get(position)); 
+            bundle.putParcelable(CampaignPageFragment.TAG, this.mCampaigns.get(position));
             return CampaignPageFragment.getInstance(bundle);
         }
 
@@ -237,4 +237,10 @@ public class CampaignsFragment extends BaseFragment {
         
     }
 
+    @Override
+    protected void onClickMaintenanceRetryButton() {
+        mCampaignPagerAdapter = new CampaignPagerAdapter(getChildFragmentManager(), mCampaigns);
+        mCampaignPager.setAdapter(mCampaignPagerAdapter);
+        mCampaignPagerTabStrip.setViewPager(mCampaignPager);
+    }
 }

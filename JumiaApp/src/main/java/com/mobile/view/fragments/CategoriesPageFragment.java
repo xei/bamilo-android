@@ -1,7 +1,5 @@
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,6 +25,8 @@ import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -398,7 +398,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         bundle.putString(GetCategoriesPerLevelsHelper.PAGINATE_KEY, GetCategoriesPerLevelsHelper.PAGINATE_ENABLE);
         bundle.putString(GetCategoriesPerLevelsHelper.CATEGORY_KEY, categoryKey);
         // Trigger
-        triggerContentEventWithNoLoading(new GetCategoriesPerLevelsHelper(), bundle, new IResponseCallback() {
+        triggerContentEventNoLoading(new GetCategoriesPerLevelsHelper(), bundle, new IResponseCallback() {
             
             @Override
             public void onRequestError(Bundle bundle) {
@@ -658,7 +658,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());
         // Goto Catalog
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
     /**

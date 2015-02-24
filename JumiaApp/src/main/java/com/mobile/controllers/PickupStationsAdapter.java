@@ -1,7 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.List;
-
 import android.content.Context;
 import android.os.Build;
 import android.text.Spannable;
@@ -21,6 +19,8 @@ import com.mobile.framework.objects.PickUpStationObject;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
+import java.util.List;
+
 public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
 
     private PickUpStationObject pickUpStationObject;
@@ -37,7 +37,7 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
     }
 
     public PickupStationsAdapter(Context context, List<PickUpStationObject> objects) {
-        super(context, R.layout._def_checkout_shipping_pickup_station, objects);
+        super(context, R.layout.checkout_shipping_pickup_station, objects);
         this.objects = objects;
         this.context = context;
         this.checks = new boolean[objects.size()];
@@ -53,11 +53,8 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
 
         if (convertView == null) {
 
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.checkout_shipping_pickup_station, parent,
-                    false);
-
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.checkout_shipping_pickup_station, parent,false);
 
             pickupStationViewHolder = new PickupStationViewHolder();
             pickupStationViewHolder.pickupStationAddress = (TextView) convertView.findViewById(R.id.pickup_station_address);

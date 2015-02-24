@@ -506,6 +506,7 @@ public class RestConstants {
 	public static final String JSON_COUNTRY_LANG_DEFAULT = "lang_default";
 	public static final String JSON_COUNTRY_GA_ID = "ga_id";
 	public static final String JSON_COUNTRY_CS_EMAIL = "cs_email";
+	public static final String JSON_FACEBOOK_IS_AVAILABLE = "facebook_is_available";
 	
 	
 	

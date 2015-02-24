@@ -3,12 +3,6 @@
  */
 package com.mobile.helpers.voucher;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.ContentValues;
 import android.os.Bundle;
 
@@ -20,6 +14,8 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -61,23 +57,6 @@ public class SetVoucherHelper extends BaseHelper {
 
         mVoucher.setCartValue(jsonObject.optString(RestConstants.JSON_CART_VALUE_TAG));
         mVoucher.setCouponMoneyValue(jsonObject.optString(RestConstants.JSON_CART_COUPON_VALUE_TAG));
-
-        JSONObject messageArray = jsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG);
-        if (messageArray != null && messageArray.length() > 0) {
-            Iterator<?> keys = messageArray.keys();
-            if (messageArray != null && messageArray.length() > 0) {
-                HashMap<String, String> messages = new HashMap<String, String>();
-                while (keys.hasNext()) {
-                    try {
-                        String key = keys.next().toString();
-                        messages.put(key, messageArray.getString(key));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                mVoucher.setMessages(messages);
-            }
-        }
 
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, mVoucher);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.ADD_VOUCHER);

@@ -3,8 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,6 +12,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -61,6 +60,8 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -117,7 +118,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     }
 
     private BannerVisibility bannerState;
-    
+        
     /**
      * Constructor via bundle
      * @return CampaignFragment
@@ -708,6 +709,14 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 });
         mDialogErrorToCart.show(fm, null);
         return;
+    }
+    
+    @Override
+    protected void onClickMaintenanceRetryButton() {
+        Fragment fragment = getParentFragment();
+        if(fragment instanceof CampaignsFragment){
+            ((CampaignsFragment)fragment).onClickMaintenanceRetryButton();
+        }
     }
     
     /**

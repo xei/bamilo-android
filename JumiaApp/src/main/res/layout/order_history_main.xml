@@ -43,7 +43,7 @@
             android:listSelector="@android:color/transparent" />
 
         <include
-            android:id="@+id/loadmore"
+            android:id="@+id/catalog_loading_more"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

@@ -3,11 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -38,6 +33,11 @@ import com.mobile.helpers.cart.GetShoppingCartRemoveItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 
@@ -454,7 +454,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                     public void onClick(View v) {
                         int id = v.getId();
                         if (id == R.id.button1) {
-                            dismissDialogFragement();
+                            dismissDialogFragment();
                             getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         }
                     }

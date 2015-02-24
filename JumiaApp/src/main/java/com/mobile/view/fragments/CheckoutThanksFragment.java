@@ -3,8 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -42,6 +40,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
+
+import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
 
@@ -258,7 +258,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     private void triggerClearCart() {
         Log.i(TAG, "TRIGGER: CHECKOUT FINISH");
-        triggerContentEventWithNoLoading(new ClearShoppingCartHelper(), null, this);
+        triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, this);
         //triggerContentEventWithNoLoading(new SetVoucherHelper(), null, this);
     }
 

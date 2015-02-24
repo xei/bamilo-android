@@ -1,32 +1,16 @@
 package com.mobile.framework.objects;
 
-import java.util.HashMap;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Voucher implements Parcelable {
-	private HashMap<String, String> messages;
+    
 	private String cartValue;
 	private String couponMoneyValue;
+	
 	public Voucher() {
-		this.messages = new HashMap<String, String>();
 		this.cartValue = "";
 		this.couponMoneyValue = "";
-	}
-
-	/**
-	 * @return the messages
-	 */
-	public HashMap<String, String> getMessages() {
-		return messages;
-	}
-
-	/**
-	 * @param messages the messages to set
-	 */
-	public void setMessages(HashMap<String, String> messages) {
-		this.messages = messages;
 	}
 
 	/**
@@ -66,13 +50,11 @@ public class Voucher implements Parcelable {
 	
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeMap(messages);
 		dest.writeString(cartValue);
 		dest.writeString(couponMoneyValue);
 		
@@ -83,8 +65,6 @@ public class Voucher implements Parcelable {
      * @param in
      */
     private Voucher(Parcel in) {
-    	messages = new HashMap<String, String>();
-    	in.readMap(messages, null);
     	cartValue = in.readString();
     	couponMoneyValue = in.readString();
     }

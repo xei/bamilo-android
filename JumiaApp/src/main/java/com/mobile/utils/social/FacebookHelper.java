@@ -1,11 +1,8 @@
 package com.mobile.utils.social;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -22,8 +19,13 @@ import com.facebook.Session;
 import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.facebook.widget.LoginButton;
+import com.mobile.constants.ConstantsSharedPrefs;
+import com.mobile.framework.Darwin;
 import com.mobile.utils.ui.UIUtils;
-import com.mobile.view.R;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 /**
  * Facebook helper.
@@ -49,7 +51,9 @@ public class FacebookHelper {
      */
     public final static void showOrHideFacebookButton(Fragment fragment, View... views) {
         // Validate the Facebook configuration
-        Boolean hideFacebook = fragment.getResources().getBoolean(R.bool.is_bamilo_specific);
+        SharedPreferences sharedPrefs = fragment.getActivity().getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        boolean hideFacebook = !sharedPrefs.getBoolean(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE, false);
+        
         Log.i(TAG, "ENABLED FACEBOOK: " + hideFacebook);
         // Case hide Facebook view
         if(hideFacebook) UIUtils.showOrHideViews(View.GONE, views);

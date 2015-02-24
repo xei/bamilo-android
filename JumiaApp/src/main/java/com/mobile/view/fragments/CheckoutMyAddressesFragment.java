@@ -3,13 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -50,6 +43,13 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
+
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import de.akquinet.android.androlog.Log;
 
@@ -782,7 +782,7 @@ public class CheckoutMyAddressesFragment extends BaseFragment implements IRespon
                         public void onClick(View v) {
                             int id = v.getId();
                             if (id == R.id.button1) {
-                                dismissDialogFragement();
+                                dismissDialogFragment();
                             }
                         }
                     });

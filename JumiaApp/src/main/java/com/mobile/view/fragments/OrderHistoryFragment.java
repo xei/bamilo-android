@@ -3,9 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +36,9 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
 
@@ -165,7 +165,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
         ordersListView = (ListView) view.findViewById(R.id.orders_list);
         ordersListView.setOnScrollListener(onScrollListener);
         noOrders = (TextView) view.findViewById(R.id.no_orders_title);
-        loadMore = (LinearLayout) view.findViewById(R.id.loadmore);
+        loadMore = (LinearLayout) view.findViewById(R.id.catalog_loading_more);
         if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
             ordersProductsPayment = (TextView) view.findViewById(R.id.order_list_payment);
             ordersProductDate = (TextView) view.findViewById(R.id.order_list_date);
@@ -705,7 +705,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
         
         bundle.putInt(GetMyOrdersListHelper.PAGE_NUMBER, pageIndex + 1);
         bundle.putInt(GetMyOrdersListHelper.PER_PAGE, NUM_ORDERS);
-        triggerContentEventWithNoLoading(new GetMyOrdersListHelper(), bundle, mCallBack);
+        triggerContentEventNoLoading(new GetMyOrdersListHelper(), bundle, mCallBack);
         
     }
 

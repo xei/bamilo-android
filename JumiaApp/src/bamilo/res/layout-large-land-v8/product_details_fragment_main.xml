@@ -265,7 +265,7 @@
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/rounded_margin_mid"
-        layout="@layout/tips"
+        layout="@layout/catalog_fragment_wizard"
         android:visibility="gone" />
 
     <!-- Right Container -->

@@ -3,9 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -46,6 +43,9 @@ import com.mobile.utils.dialogfragments.DialogPromotionFragment;
 import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
 
@@ -220,8 +220,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
     public void onResumeExecution() {
         Log.i(TAG, "ON RESUME EXECUTION");
 
-        // TODO : Comment for Samsung store
-        // TODO : Comment for BlackBerry
+        // Disabled for Samsung and Blackberry (check_version_enabled) 
         if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
 
         // Validate current state
@@ -452,7 +451,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
     private void triggerPromotions() {
         Log.d(TAG, "ON TRIGGER: GET PROMOTIONS");
         Bundle bundle = new Bundle();
-        triggerContentEventWithNoLoading(new GetPromotionsHelper(), bundle, (IResponseCallback) this);
+        triggerContentEventNoLoading(new GetPromotionsHelper(), bundle, (IResponseCallback) this);
     }
 
     /*

@@ -291,7 +291,7 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginStart="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/rounded_margin_mid"
-        layout="@layout/tips"
+        layout="@layout/catalog_fragment_wizard"
         android:visibility="visible" />
     <!-- Right Container -->
 

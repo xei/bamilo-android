@@ -3,14 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -67,6 +59,14 @@ import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 
@@ -334,7 +334,7 @@ public class ShoppingCartFragment extends BaseFragment {
         // only show loading when removing individual items
         if (isRemovingAllItems) {
             bundle.putBoolean(GetShoppingCartRemoveItemHelper.UPDATE_CART, false);
-            triggerContentEventWithNoLoading(new GetShoppingCartRemoveItemHelper(), bundle, null);
+            triggerContentEventNoLoading(new GetShoppingCartRemoveItemHelper(), bundle, null);
         } else {
             triggerContentEventProgress(new GetShoppingCartRemoveItemHelper(), bundle,
                     responseCallback);
@@ -342,7 +342,7 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
     private void triggerIsNativeCheckoutAvailable() {
-        triggerContentEventWithNoLoading(new GetNativeCheckoutAvailableHelper(), null,
+        triggerContentEventNoLoading(new GetNativeCheckoutAvailableHelper(), null,
                 responseCallback);
     }
 
@@ -362,7 +362,7 @@ public class ShoppingCartFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putSerializable(GetShoppingCartAddMultipleItemsHelper.ADD_ITEMS, values);
         // Trigger
-        triggerContentEventWithNoLoading(new GetShoppingCartAddMultipleItemsHelper(), bundle,
+        triggerContentEventNoLoading(new GetShoppingCartAddMultipleItemsHelper(), bundle,
                 responseCallback);
 
     }
@@ -658,7 +658,7 @@ public class ShoppingCartFragment extends BaseFragment {
      */
     private void askToRemoveProductsAfterOrder(final ShoppingCart shoppingCart) {
         // Dismiss any existing dialogs
-        dismissDialogFragement();
+        dismissDialogFragment();
         
         dialog = DialogGenericFragment.newInstance(true, true, false,
                 getString(R.string.shoppingcart_dialog_title),
@@ -693,7 +693,7 @@ public class ShoppingCartFragment extends BaseFragment {
                             displayShoppingCart(shoppingCart);
                         }
 
-                        dismissDialogFragement();
+                        dismissDialogFragment();
                     }
                 });
         dialog.show(getActivity().getSupportFragmentManager(), null);
@@ -762,9 +762,7 @@ public class ShoppingCartFragment extends BaseFragment {
             double couponDiscountValue = Double.parseDouble(couponDiscount);
             if (couponDiscountValue > 0) {
                 // Fix NAFAMZ-7848
-                voucherValue.setText("- "
-                        + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue)
-                                .toString()));
+                voucherValue.setText("- " + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue).toString()));
                 voucherContainer.setVisibility(View.VISIBLE);
 
                 if (!TextUtils.isEmpty(couponCope)) {
@@ -1088,7 +1086,7 @@ public class ShoppingCartFragment extends BaseFragment {
                                 FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                     }
                 });
-
+        getBaseActivity().hideKeyboard();
         TrackerDelegator.trackPage(TrackingPage.EMPTY_CART, getLoadTime(), false);
     }
 

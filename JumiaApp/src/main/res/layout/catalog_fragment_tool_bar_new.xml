@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_110px"
+    android:background="@color/grey_background"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="@dimen/margin_10px" >
+
+    <Button
+        android:id="@+id/catalog_bar_button_sort"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@android:color/white"
+        android:drawableLeft="@drawable/selector_catalog_filter"
+        android:drawablePadding="2dp"
+        android:drawableStart="@drawable/selector_catalog_filter"
+        android:gravity="center"
+        android:text="Popularity" />
+
+    <View style="@style/divider_vertical" />
+
+    <ImageButton
+        android:id="@+id/catalog_bar_button_filter"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@android:color/white"
+        android:drawableLeft="@drawable/selector_catalog_filter"
+        android:src="@drawable/selector_catalog_filter"
+        android:drawablePadding="2dp"
+        android:gravity="center"
+        android:text="Filter" />
+
+    <ImageButton
+        android:id="@+id/catalog_bar_button_columns"
+        android:layout_width="@dimen/dimen_160px"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dimen_10px"
+        android:background="@android:color/white"
+        android:src="@drawable/selector_catalog_gridview" />
+
+</LinearLayout>

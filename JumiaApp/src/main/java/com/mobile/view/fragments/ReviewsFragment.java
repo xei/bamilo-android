@@ -3,9 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -52,6 +49,9 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
 
@@ -456,7 +456,7 @@ public class ReviewsFragment extends BaseFragment {
                 if (!isLoadingMore && pageNumber < totalPages) {
                     
                     isLoadingMore = true;
-                    mLoadingLayout = getView().findViewById(R.id.loadmore);
+                    mLoadingLayout = getView().findViewById(R.id.catalog_loading_more);
                     mLoadingLayout.setVisibility(View.VISIBLE);
 //                    mLoadingLayout.refreshDrawableState();
 
@@ -752,7 +752,7 @@ public class ReviewsFragment extends BaseFragment {
             firstRequest = false;
         }
 
-        View loadingLayout = getView().findViewById(R.id.loadmore);
+        View loadingLayout = getView().findViewById(R.id.catalog_loading_more);
         loadingLayout.setVisibility(View.GONE);
         loadingLayout.refreshDrawableState();
         
@@ -869,7 +869,7 @@ public class ReviewsFragment extends BaseFragment {
         if(pageNumber == 1){
             triggerContentEvent(new GetProductReviewsHelper(), bundle, mCallBack);
         } else {
-            triggerContentEventWithNoLoading(new GetProductReviewsHelper(), bundle, mCallBack);
+            triggerContentEventNoLoading(new GetProductReviewsHelper(), bundle, mCallBack);
         }
     }
     

@@ -7,7 +7,7 @@
     android:paddingBottom="0dp" >
 
     <include
-        android:id="@+id/loadmore"
+        android:id="@+id/catalog_loading_more"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -17,7 +17,7 @@
         android:id="@+id/middle_productslist_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/loadmore"
+        android:layout_above="@id/catalog_loading_more"
         android:layout_alignParentTop="true"
         android:layout_margin="@dimen/rounded_margin_small"
         android:listSelector="@color/transparent"

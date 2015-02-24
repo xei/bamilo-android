@@ -1,9 +1,6 @@
 package com.mobile.framework.database;
 
-import java.util.ArrayList;
-
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,6 +9,8 @@ import android.text.TextUtils;
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.framework.objects.LastViewed;
 import com.mobile.framework.objects.Product;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -147,7 +146,7 @@ public class RelatedItemsTableHelper extends BaseTable {
 	 * @param mProducts
 	 * @throws InterruptedException 
 	 */
-	public synchronized static void insertRelatedItemsAndClear(Context ctx, ArrayList<Product> mProducts) throws InterruptedException {
+	public synchronized static void insertRelatedItemsAndClear(ArrayList<Product> mProducts) throws InterruptedException {
 		Log.d(TAG, "ON CLEAN AND INSERT: START");
 		SQLiteDatabase db = null;
 		

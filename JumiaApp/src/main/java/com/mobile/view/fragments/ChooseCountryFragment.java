@@ -3,8 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -37,6 +35,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
+
+import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
 
@@ -279,7 +279,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                     @Override
                     public void onClick(View v) {
                         // Dissmiss dialog
-                        dismissDialogFragement();
+                        dismissDialogFragment();
                         // Validate click
                         int id = v.getId();
                         if (id == R.id.button1) {

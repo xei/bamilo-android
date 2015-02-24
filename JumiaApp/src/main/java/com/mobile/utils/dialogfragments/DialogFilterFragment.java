@@ -1,8 +1,5 @@
 package com.mobile.utils.dialogfragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,10 +23,13 @@ import com.mobile.framework.objects.CatalogFilter;
 import com.mobile.framework.objects.CatalogFilterOption;
 import com.mobile.framework.objects.CategoryFilterOption;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.products.GetProductsHelper;
+import com.mobile.helpers.products.GetCatalogPageHelper;
+import com.mobile.interfaces.OnDialogFilterListener;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
-import com.mobile.view.fragments.CatalogFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -66,10 +66,14 @@ public class DialogFilterFragment extends DialogFragment {
     public static final String COLOR_ID = "color";
 
     public final static String FILTER_TAG = "catalog_filters";
+    
+    public static final String URL = GetCatalogPageHelper.URL;
+    
+    public static final String BRAND = GetCatalogPageHelper.BRAND;
 
     private static ArrayList<CatalogFilter> mFilters;
 
-    private CatalogFragment mParentFrament;
+    private OnDialogFilterListener mParentFrament;
 
     /**
      * Empty constructor
@@ -82,7 +86,7 @@ public class DialogFilterFragment extends DialogFragment {
      * @param onClickListener 
      * @return
      */
-    public static DialogFilterFragment newInstance(Bundle bundle, CatalogFragment mParentFrament) {
+    public static DialogFilterFragment newInstance(Bundle bundle, OnDialogFilterListener mParentFrament) {
         Log.d(TAG, "NEW INSTANCE");
         DialogFilterFragment dialogListFragment = new DialogFilterFragment();
         dialogListFragment.setArguments(bundle);
@@ -188,7 +192,6 @@ public class DialogFilterFragment extends DialogFragment {
         if (addToBackStack)
             fragmentTransaction.addToBackStack(null);
         // Commit
-        // fragmentTransaction.commit();
         fragmentTransaction.commitAllowingStateLoss();
     }
 
@@ -217,7 +220,6 @@ public class DialogFilterFragment extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        CatalogFragment.isNotShowingDialogFilter = true;
     }
     
     /**
@@ -226,8 +228,7 @@ public class DialogFilterFragment extends DialogFragment {
      * @author sergiopereira
      */
     public void onSubmitFilterValues(ContentValues filterValues){
-        if(mParentFrament != null)
-            mParentFrament.onSubmitFilterValues(filterValues);
+        if(mParentFrament != null) mParentFrament.onSubmitFilterValues(filterValues);
     }
     
     /*
@@ -355,7 +356,6 @@ public class DialogFilterFragment extends DialogFragment {
         private ContentValues createContentValues(){
             // Create query
             ContentValues contentValues = new ContentValues();
-            String catalogFilters = "";
             // Save all values
             for (CatalogFilter filter : mFilters) {
                 // Get filter id and values
@@ -375,11 +375,7 @@ public class DialogFilterFragment extends DialogFragment {
                 }
                 
                 if(TrackerDelegator.FILTER_COLOR.equalsIgnoreCase(filterId)) filterId = COLOR_ID;
-              //TODO
-                //catalogFilters = catalogFilters + filterId + ",";
             }
-            /*if(!TextUtils.isEmpty(catalogFilters)) catalogFilters = catalogFilters.substring(0, catalogFilters.length()-1);
-            contentValues.put(TrackerDelegator.CATALOG_FILTER_KEY, catalogFilters);*/
             return contentValues;
         }
         
@@ -424,7 +420,7 @@ public class DialogFilterFragment extends DialogFragment {
                 String url = ((CategoryFilterOption) selectedOption).getUrl();
                 Log.d(TAG, "SELECTED A NEW CATEGORY: " + url );
                 if(url != null)
-                    contentValues.put(GetProductsHelper.PRODUCT_URL, url);
+                    contentValues.put(URL, url);
             } else {
                 cleanFilter(filter);
                 Toast.makeText(getActivity(), getResources().getString(R.string.category_filter_error), Toast.LENGTH_SHORT).show();
@@ -442,7 +438,7 @@ public class DialogFilterFragment extends DialogFragment {
             int size = filter.getSelectedOption().size();
             for(int i = 0; i < size; i++)
                 query += filter.getSelectedOption().valueAt(i).getLabel() + ((i + 1 < size) ? "--" : "");
-            contentValues.put(GetProductsHelper.SEARCH_QUERY, query);
+            contentValues.put(BRAND, query);
         }
         
         /**

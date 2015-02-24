@@ -1,11 +1,5 @@
 package com.mobile.view.fragments;
 
-import java.math.BigDecimal;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -45,6 +39,12 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
+
+import java.math.BigDecimal;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 
@@ -600,8 +600,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
 
     private void triggerClearCart() {
         Log.i(TAG, "TRIGGER: CHECKOUT FINISH");
-        triggerContentEventWithNoLoading(new ClearShoppingCartHelper(), null, this);
-        triggerContentEventWithNoLoading(new SetVoucherHelper(), null, this);
+        triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, this);
+        triggerContentEventNoLoading(new SetVoucherHelper(), null, this);
     }
     
     /**
@@ -741,7 +741,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                         public void onClick(View v) {
                             int id = v.getId();
                             if (id == R.id.button1) {
-                                dismissDialogFragement();
+                                dismissDialogFragment();
                                 gotoWebCheckout(errorMessages.get(0));
                             }
                         }
@@ -781,14 +781,14 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                         public void onClick(View v) {
                             int id = v.getId();
                             if (id == R.id.button1) {
-                                dismissDialogFragement();
+                                dismissDialogFragment();
                                 JumiaApplication.INSTANCE.setPaymentMethodForm(null);
                                 JumiaApplication.INSTANCE.setCart(null);
                                 triggerClearCart();
                                 getBaseActivity().updateCartInfo();
                                 getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                             } else if (id == R.id.button2) {
-                                dismissDialogFragement();
+                                dismissDialogFragment();
                             }
                         }
                     });

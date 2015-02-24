@@ -46,6 +46,10 @@ public class MaintenancePage {
         }
     }
     
+    public static void setMaintenancePageWithChooseCountry(Activity activity, EventType eventType, OnClickListener listener) {
+        setMaintenancePageWithChooseCountry(activity, eventType, listener, listener);
+    }
+    
     /**
      * Set maintenance page content in SplashScreen.
      * 
@@ -54,7 +58,7 @@ public class MaintenancePage {
      * @author manuel
      * @modified sergiopereira
      */
-    public static void setMaintenancePageSplashScreen(Activity activity, EventType eventType, OnClickListener listener) {
+    public static void setMaintenancePageWithChooseCountry(Activity activity, EventType eventType, OnClickListener onClickRetryButton, OnClickListener onClickChooseCountry) {
 
         try {
 
@@ -64,13 +68,13 @@ public class MaintenancePage {
             Button retry = (Button) activity.findViewById(R.id.fallback_retry);
             retry.setText(R.string.try_again);
             retry.setTag(eventType.toString());
-            retry.setOnClickListener(listener);
+            retry.setOnClickListener(onClickRetryButton);
             // Set choose country case multi shops
             if (!activity.getResources().getBoolean(R.bool.is_single_shop_country)) {
                 Button changeCountry = (Button) activity.findViewById(R.id.fallback_change_country);
                 changeCountry.setVisibility(View.VISIBLE);
                 changeCountry.setText(R.string.nav_country);
-                changeCountry.setOnClickListener(listener);
+                changeCountry.setOnClickListener(onClickChooseCountry);
             }
 
             // Set image

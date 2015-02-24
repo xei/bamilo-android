@@ -3,11 +3,6 @@
  */
 package com.mobile.view;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,7 +24,6 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.PreferenceListFragment.OnPreferenceAttachedListener;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
-import com.mobile.view.fragments.CatalogFragment;
 import com.mobile.view.fragments.CategoriesCollectionFragment;
 import com.mobile.view.fragments.CheckoutAboutYouFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
@@ -44,12 +38,12 @@ import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.CheckoutWebFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
 import com.mobile.view.fragments.FavouritesFragment;
-import com.mobile.view.fragments.HeadlessAddToCartFragment;
 import com.mobile.view.fragments.HomeFragment;
 import com.mobile.view.fragments.MyAccountEmailNotificationFragment;
 import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
+import com.mobile.view.fragments.NewCatalogFragment;
 import com.mobile.view.fragments.ProductDetailsDescriptionFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -65,6 +59,11 @@ import com.mobile.view.fragments.SessionLoginFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
 import com.mobile.view.fragments.SessionTermsFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -302,8 +301,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         case CATEGORIES:
             fragment = CategoriesCollectionFragment.getInstance(bundle);
             break;
-        case PRODUCT_LIST:
-            fragment = CatalogFragment.getInstance(bundle);
+        case CATALOG:
+            fragment = NewCatalogFragment.getInstance(bundle);
             break;
         case PRODUCT_DETAILS:
             fragment = ProductDetailsFragment.getInstance(bundle);
@@ -349,9 +348,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             break;
         case CHOOSE_COUNTRY:
             fragment = ChooseCountryFragment.getInstance();
-            break;
-        case HEADLESS_CART:
-            fragment = HeadlessAddToCartFragment.getInstance();
             break;
         case LOGIN:
             fragment = SessionLoginFragment.getInstance(bundle);
@@ -520,6 +516,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 finish();
             }
         }
+    }
+    
+    public boolean isInMaintenance(){
+        return isInMaintenance;
     }
     
 }

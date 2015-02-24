@@ -1,10 +1,5 @@
 package com.mobile.view;
 
-import java.lang.ref.WeakReference;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -88,6 +83,11 @@ import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.HomeFragment;
 import com.mobile.view.fragments.NavigationFragment;
+
+import java.lang.ref.WeakReference;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 
@@ -318,8 +318,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             isRegistered = true;
         }
 
-        // TODO : Comment for Samsung store
-        // TODO : Comment for BlackBerry
+        // Disabled for Samsung and Blackberry (check_version_enabled) 
         CheckVersion.run(getApplicationContext());
 
         /**
@@ -1044,7 +1043,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);
+        onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -2025,49 +2024,25 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Sets Maintenance page
      */
-    public void setLayoutMaintenance(final EventType eventType) {
+    public void setLayoutMaintenance(final EventType eventType, OnClickListener onClickListener, boolean showChooseCountry) {
         // Inflate maintenance
         mMainFallBackStub.setVisibility(View.VISIBLE);
 
         // Case BAMILO
         if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
-            MaintenancePage.setMaintenancePageBamilo(this, eventType, new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onClickMaintenanceRetryButton(eventType);
-                }
-            });
+            MaintenancePage.setMaintenancePageBamilo(this, eventType, onClickListener);
         }
         // Case JUMIA
         else {
             // Set content
-            MaintenancePage.setMaintenancePageBaseActivity(this, eventType, new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onClickMaintenanceRetryButton(eventType);
-                }
-            });
+            if(showChooseCountry){
+                MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, onClickListener);
+            } else {
+                MaintenancePage.setMaintenancePageBaseActivity(this, eventType, onClickListener);
+            }
         }
     }
-
-    /**
-     * Process the click on retry button in maintenance page
-     * 
-     * @param eventType
-     * @modified sergiopereira
-     */
-    private void onClickMaintenanceRetryButton(EventType eventType) {
-        mMainFallBackStub.setVisibility(View.GONE);
-        String result = JumiaApplication.INSTANCE.sendRequest(
-                JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
-                JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
-                JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
-
-        if (result == null || result.equalsIgnoreCase("")) {
-            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-        }
-    }
-
+    
     /**
      * ########## CHECKOUT HEADER ##########
      */

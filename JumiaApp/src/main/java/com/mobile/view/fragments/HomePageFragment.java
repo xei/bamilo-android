@@ -3,8 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,6 +29,8 @@ import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.ScrollViewWithHorizontal;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -452,7 +452,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, true);
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
         } else Log.w(TAG, "WARNING: URL IS NULL"); 
     }
     
@@ -485,7 +485,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, targetUrl);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_LIST, bundle, FragmentController.ADD_TO_BACK_STACK);                            
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);                            
         } else Log.i(TAG, "WARNING: URL IS NULL");
     }
     

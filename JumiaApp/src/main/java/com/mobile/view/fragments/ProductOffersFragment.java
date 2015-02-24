@@ -3,13 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -42,6 +35,13 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -374,7 +374,7 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
                                 public void onClick(View v) {
                                     int id = v.getId();
                                     if (id == R.id.button1) {
-                                        dismissDialogFragement();
+                                        dismissDialogFragment();
                                     }
                                 }
                             });

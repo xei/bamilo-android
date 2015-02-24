@@ -1,7 +1,5 @@
 package com.mobile.framework.tracking;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +16,8 @@ import com.mobile.framework.objects.ShoppingCartItem;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
+
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -549,6 +549,16 @@ public class AnalyticsGoogle {
 		if (!isEnabled) return;
 		// Data		
 		trackPage(page);
+	}
+	
+	/**
+	 * Share the app
+	 */
+	public void trackShareApp(TrackingEvent event, String label){
+	    // Validate
+		if (!isEnabled) return;
+		// Data
+		trackEvent(event, label, 0l);
 	}
 
 	/**

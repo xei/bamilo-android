@@ -3,20 +3,20 @@
  */
 package com.mobile.framework.objects;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.DarwinRegex;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -102,7 +102,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 			}
 		}
 		
-		Log.i(TAG, "CART INIT: " + mCartValue + " " + mCartValueAsDouble + " " + mCartValueConverted);
+		Log.i(TAG, "CART INIT: " + mCartValue + " " + mCartValueAsDouble + " " + mCartValueConverted + " " + mCouponCode);
 		
 		return true;
 	}
@@ -204,7 +204,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	public String getCartCleanValue() {
 		return (!TextUtils.isEmpty(mCartCleanValue)) ? mCartCleanValue.replaceAll(DarwinRegex.CART_VALUE, "") : mCartValue;
 	}
-
+	
 	/**
 	 * @param cartCleanValue
 	 *            the cartCleanValue to set

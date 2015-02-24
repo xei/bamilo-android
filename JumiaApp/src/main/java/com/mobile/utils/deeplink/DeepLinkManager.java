@@ -1,11 +1,5 @@
 package com.mobile.utils.deeplink;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,9 +14,15 @@ import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.preferences.ShopPreferences;
+import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.view.R;
 import com.mobile.view.fragments.CampaignsFragment;
-import com.mobile.view.fragments.CatalogFragment;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 
@@ -144,28 +144,28 @@ public class DeepLinkManager {
                 String tag = segments.get(PATH_VIEW_POS);
                 // Catalog
                 if(tag.equalsIgnoreCase(CATALOG_TAG))
-                    bundle = processCatalogLink(CatalogFragment.SortPages.DEFAULT, segments, data);
+                    bundle = processCatalogLink(CatalogSort.POPULARITY, segments, data);
                 // Catalog - Rating
                 else if(tag.equalsIgnoreCase(CATALOG_RATING_TAG))
-                    bundle = processCatalogLink(CatalogFragment.SortPages.RATING, segments, data);
+                    bundle = processCatalogLink(CatalogSort.BESTRATING, segments, data);
                 // Catalog - Popularity
                 else if(tag.equalsIgnoreCase(CATALOG_POPULARITY_TAG))
-                    bundle = processCatalogLink(CatalogFragment.SortPages.POPULARITY, segments, data);
+                    bundle = processCatalogLink(CatalogSort.POPULARITY, segments, data);
                 // Catalog - New In
                 else if(tag.equalsIgnoreCase(CATALOG_NEW_TAG))
-                    bundle = processCatalogLink(CatalogFragment.SortPages.NEW_IN, segments, data);
+                    bundle = processCatalogLink(CatalogSort.NEWIN, segments, data);
                 // Catalog - Price Up
                 else if(tag.equalsIgnoreCase(CATALOG_PRICE_UP_TAG))
-                    bundle = processCatalogLink(CatalogFragment.SortPages.PRICE_UP, segments, data);
+                    bundle = processCatalogLink(CatalogSort.PRICE_UP, segments, data);
                 // Catalog - Price Down
                 else if(tag.equalsIgnoreCase(CATALOG_PRICE_DOWN_TAG))
-                    bundle = processCatalogLink(CatalogFragment.SortPages.PRICE_DOWN, segments, data);
+                    bundle = processCatalogLink(CatalogSort.PRICE_DOWN, segments, data);
                 // Catalog - Name
                 else if(tag.equalsIgnoreCase(CATALOG_NAME_TAG))
-                    bundle = processCatalogLink(CatalogFragment.SortPages.NAME, segments, data);
+                    bundle = processCatalogLink(CatalogSort.NAME, segments, data);
                 // Catalog - Brand
                 else if(tag.equalsIgnoreCase(CATALOG_BRAND_TAG))
-                    bundle = processCatalogLink(CatalogFragment.SortPages.BRAND, segments, data);
+                    bundle = processCatalogLink(CatalogSort.BRAND, segments, data);
                 // Cart
                 else if(tag.equalsIgnoreCase(CART_TAG))
                     bundle = processCartLink(segments);
@@ -288,7 +288,7 @@ public class DeepLinkManager {
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, query);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.PRODUCT_LIST);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
         return bundle;
     }
     
@@ -446,7 +446,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      * @param data 
      */
-    private static Bundle processCatalogLink(CatalogFragment.SortPages page, List<String> segments, Uri data) {
+    private static Bundle processCatalogLink(CatalogSort page, List<String> segments, Uri data) {
         // Get catalog 
         String catalogUrlKey = segments.get(PATH_DATA_POS);
         // Get filters
@@ -465,8 +465,8 @@ public class DeepLinkManager {
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, "https:/" + catalogUrlKey);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        bundle.putSerializable(ConstantsIntentExtra.CATALOG_SORT_PAGE, page);        
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.PRODUCT_LIST); 
+        bundle.putSerializable(ConstantsIntentExtra.CATALOG_PAGE, page);        
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG); 
         return bundle;
     }
     

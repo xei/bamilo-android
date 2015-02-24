@@ -1,14 +1,5 @@
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.collections4.CollectionUtils;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -103,6 +94,15 @@ import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImage
 import com.mobile.utils.ui.CompleteProductUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
+
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 
@@ -718,7 +718,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mGalleryViewGroupFactory.setViewVisible(R.id.image_loading_progress);
         Bundle bundle = new Bundle();
         bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
-        triggerContentEventWithNoLoading(new GetProductHelper(), bundle, responseCallback);
+        triggerContentEventNoLoading(new GetProductHelper(), bundle, responseCallback);
     }
 
     /**
@@ -1750,7 +1750,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         }
 
         BaseFragment catalogFragment = (BaseFragment) getBaseActivity().getSupportFragmentManager()
-                .findFragmentByTag(FragmentType.PRODUCT_LIST.toString());
+                .findFragmentByTag(FragmentType.CATALOG.toString());
         if (null != catalogFragment) {
             catalogFragment.sendValuesToFragment(fragmentMessage, mCompleteProduct.getSku());
         }
@@ -1928,7 +1928,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             if (mCompleteProduct.isHasBundle()) {
                 Bundle arg = new Bundle();
                 arg.putString(GetProductBundleHelper.PRODUCT_SKU, mCompleteProduct.getSku());
-                triggerContentEventWithNoLoading(new GetProductBundleHelper(), arg, responseCallback);
+                triggerContentEventNoLoading(new GetProductBundleHelper(), arg, responseCallback);
             }
             break;
         case GET_PRODUCT_BUNDLE:
@@ -2012,7 +2012,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                                 public void onClick(View v) {
                                     int id = v.getId();
                                     if (id == R.id.button1) {
-                                        dismissDialogFragement();
+                                        dismissDialogFragment();
                                     }
                                 }
                             });

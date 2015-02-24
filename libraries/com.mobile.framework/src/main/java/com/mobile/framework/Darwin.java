@@ -88,6 +88,7 @@ public class Darwin {
 	public static final String KEY_SELECTED_COUNTRY_GA_TEST_ID = "selected_country_ga_test_id";
 	public static final String KEY_SELECTED_COUNTRY_PHONE_NUMBER = "selected_country_phone_number";
 	public static final String KEY_SELECTED_COUNTRY_CS_EMAIL = "selected_country_cs_email";
+	public static final String KEY_SELECTED_FACEBOOK_IS_AVAILABLE = "selected_facebook_is_available";
 	
 	public static final String KEY_SELECTED_RATING_ENABLE = "selected_rating_enable";
 	public static final String KEY_SELECTED_RATING_REQUIRED_LOGIN = "selected_rating_required_login";
@@ -170,14 +171,16 @@ public class Darwin {
 	 * Checks if the class was already initialized
 	 * 
 	 * @return true, if the class was already initialized, otherwise false
-	 */
+
 	public synchronized static boolean isInitialized() {
 		return SHOP_ID != null;
 	}
 
+
 	public synchronized static Context getContext() {
 		return context;
 	}
+     */
 	
 	
     private static void retrieveVersionCode() {

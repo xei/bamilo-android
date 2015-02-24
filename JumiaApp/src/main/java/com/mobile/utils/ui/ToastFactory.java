@@ -12,8 +12,17 @@ import com.mobile.view.R;
  */
 public enum ToastFactory {
 
+    
+    ERROR_FB_PERMISSION(R.string.error_fb_permission_not_granted, Toast.LENGTH_LONG),
+    ERROR_NO_CONNECTION(R.string.no_connect_dialog_content, Toast.LENGTH_LONG),
+    ERROR_CATALOG_LOAD_MORE(R.string.products_could_notloaded, Toast.LENGTH_LONG),
+    
     SUCCESS_LOGIN(R.string.succes_login, Toast.LENGTH_LONG),
-    ERROR_FB_PERMISSION(R.string.error_fb_permission_not_granted, Toast.LENGTH_LONG);
+    ADDED_FAVOURITE(R.string.products_added_favourite, Toast.LENGTH_SHORT),
+    REMOVED_FAVOURITE(R.string.products_removed_favourite, Toast.LENGTH_SHORT)
+    
+    ;
+    
 
     
     private int string;

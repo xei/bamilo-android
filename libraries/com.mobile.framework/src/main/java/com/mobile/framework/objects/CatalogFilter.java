@@ -1,19 +1,19 @@
 package com.mobile.framework.objects;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Locale;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.SparseArray;
 
 import com.mobile.framework.utils.LogTagHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Locale;
 
 /**
  * 
@@ -41,7 +41,7 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
 
     private SparseArray<CatalogFilterOption> mSelectedOption;
 
-    /**
+    /*
      * ########### CONSTRUCTOR ###########
      */
 
@@ -54,7 +54,7 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
         initialize(jsonObject);
     }
 
-    /**
+    /*
      * ############### IJSON ###############
      */
 
@@ -247,7 +247,7 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
         isRangeWithDiscount = bool;
     }
 
-    /**
+    /*
      * ########### VALIDATOR ###########
      */
 
@@ -263,7 +263,7 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
         return mMulti;
     }
 
-    /**
+    /*
      * ############### Parcelable ###############
      */
 

@@ -41,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="0dp"
         android:layout_marginTop="0dp"
         android:paddingBottom="@dimen/rounded_margin_mid" >
 
@@ -60,6 +61,35 @@
         <View
             style="@style/divider_horizontal_orange"
             android:layout_below="@id/title_preferences" />
+    </RelativeLayout>
+
+    <!-- SHARE SETTINGS -->
+
+    <RelativeLayout
+        style="@style/rounded_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="0dp"
+        android:paddingBottom="@dimen/rounded_margin_mid" >
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/title_sharing"
+            style="@style/rounded_box_title_grey"
+            android:text="@string/app_social" />
+
+        <ListView
+            android:id="@+id/middle_app_sharing_list"
+            android:layout_width="@dimen/inner_container_width"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_sharing"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:listSelector="@drawable/selector_listitem_rounded_margin_highlight" />
+
+        <View
+            style="@style/divider_horizontal_orange"
+            android:layout_below="@id/title_sharing" />
     </RelativeLayout>
 
 </LinearLayout>

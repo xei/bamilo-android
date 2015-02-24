@@ -42,6 +42,16 @@ public class ActivitiesWorkFlow {
         addStandardTransition(activity);
 	}
 	
+	/**
+	 * Used to share.
+	 */
+	public static void startActivitySendString(Activity activity, String chooserText, String extraText){
+	    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, extraText);
+        activity.startActivity(Intent.createChooser(sharingIntent, chooserText));
+	}
+	
 	   /**
      * Start Login Activity validating Customer
      * 

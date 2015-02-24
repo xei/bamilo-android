@@ -1,12 +1,5 @@
 package com.mobile.view;
 
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
@@ -54,6 +48,13 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
+
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import de.akquinet.android.androlog.Log;
 
@@ -90,6 +91,10 @@ import de.akquinet.android.androlog.Log;
 public class SplashScreenActivity extends FragmentActivity implements IResponseCallback, OnClickListener {
 
     private final static String TAG = LogTagHelper.create(SplashScreenActivity.class);
+    
+    private static final int SPLASH_DURATION_IN = 1250;
+    
+    private static final int SPLASH_DURATION_OUT = 750;
 
     private DialogGenericFragment dialog;
 
@@ -101,13 +106,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private boolean isDeepLinkLaunch = false;
 
-    private View jumiaMapImage;
+    private View mJumiaMapImage;
 
     SharedPreferences sharedPrefs;
 
     private View mMainFallBackStub;
     
     private View mRetryFallBackStub;
+    
+    private View mUnexpectedError;
 
     /*
      * (non-Javadoc)
@@ -132,6 +139,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
         // Get retry layout
         mRetryFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
+        // Get unexpected error layout
+        mUnexpectedError = findViewById(R.id.fragment_unexpected_error_stub);
         // Get prefs
         sharedPrefs = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         // Get values from intent
@@ -152,7 +161,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         super.onStart();
         Log.i(TAG, "ON START");
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -164,11 +173,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Log.i(TAG, "ON RESUME");
         //
         shouldHandleEvent = true;
-        
-        jumiaMapImage = findViewById(R.id.jumiaMap);
+        // Show animated map
+        mJumiaMapImage = findViewById(R.id.jumiaMap);
         Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-        animationFadeIn.setDuration(1250);
-        jumiaMapImage.startAnimation(animationFadeIn);
+        animationFadeIn.setDuration(SPLASH_DURATION_IN);
+        mJumiaMapImage.startAnimation(animationFadeIn);
     }
 
     /*
@@ -301,8 +310,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Log.i(TAG, "DEEP LINK: NO GCM TAG");
         return isDeepLinkLaunch = false;
     }
-    
-    
+
     /**
      * Get the main class for mobile(Portrait) or tablet(Unspecified).
      * @return Class
@@ -318,40 +326,45 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * by the push notification.
      */
     public void selectActivity() {
-        jumiaMapImage = findViewById(R.id.jumiaMap);
+        Log.i(TAG, "START ANIMATION ACTIVITY");
+        mJumiaMapImage = findViewById(R.id.jumiaMap);
+        mJumiaMapImage.clearAnimation();
         Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
-        animationFadeOut.setDuration(750);
+        animationFadeOut.setDuration(SPLASH_DURATION_OUT);
         animationFadeOut.setAnimationListener(new AnimationListener() {
             
             @Override
             public void onAnimationStart(Animation animation) {
+                Log.i(TAG, "ON ANIMATION START");
             }
             
             @Override
             public void onAnimationRepeat(Animation animation) {
+                Log.i(TAG, "ON ANIMATION REPEAT");
             }
             
             @Override
             public void onAnimationEnd(Animation animation) {
-                jumiaMapImage.setVisibility(View.GONE);
+                Log.i(TAG, "ON ANIMATION END");
+                mJumiaMapImage.setVisibility(View.GONE);
                 // Validate deep link bundle    
                 if (mDeepLinkBundle != null) {
                     startActivityWithDeepLink(mDeepLinkBundle);
                 } else {
-                    starMainActivity();
+                    startMainActivity();
                 }
                 overridePendingTransition(R.animator.activityfadein, R.animator.splashfadeout);
                 finish();
             }
         });
-        jumiaMapImage.startAnimation(animationFadeOut);
+        mJumiaMapImage.startAnimation(animationFadeOut);
     }
     
     /**
      * Start main fragment activity
      * @author sergiopereira
      */
-    private void starMainActivity() {
+    private void startMainActivity() {
         Log.d(TAG, "START MAIN FRAGMENT ACTIVITY");
         // Default Start
         Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
@@ -563,7 +576,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessRequiresUserError() {
-        jumiaMapImage = findViewById(R.id.jumiaMap);
+        mJumiaMapImage = findViewById(R.id.jumiaMap);
         final Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         animationFadeOut.setDuration(750);
         animationFadeOut.setAnimationListener(new AnimationListener() {
@@ -578,7 +591,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             
             @Override
             public void onAnimationEnd(Animation animation) {
-                jumiaMapImage.setVisibility(View.GONE);
+                mJumiaMapImage.setVisibility(View.GONE);
                 Log.i(TAG, "ON PROCESS REQUIRES USER INTERACTION");
                 // Show Change country
                 Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
@@ -590,7 +603,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 finish();
             }
         });
-        jumiaMapImage.startAnimation(animationFadeOut);
+        mJumiaMapImage.startAnimation(animationFadeOut);
 
     }
 
@@ -634,15 +647,17 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Log.i(TAG, "codeerror " + errorCode);
 
         if (errorCode.isNetworkError()) {
+//            errorCode = ErrorCode.IO;
             switch (errorCode) {
-            case SSL:
             case IO:
             case CONNECT_ERROR:
-            case TIME_OUT:
             case HTTP_STATUS:
+                showUnexpectedError();
+            case TIME_OUT:
             case NO_NETWORK:
                 showFragmentRetry();
                 break;
+            case SSL:
             case SERVER_IN_MAINTENANCE:
                 setLayoutMaintenance(eventType);
                 break;
@@ -730,7 +745,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Case BAMILO
         if(isBamilo) MaintenancePage.setMaintenancePageBamilo(this, eventType, (OnClickListener) this);
         // Case JUMIA
-        else MaintenancePage.setMaintenancePageSplashScreen(this, eventType, (OnClickListener) this);
+        else MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, (OnClickListener) this);
     }
     
     /*
@@ -739,7 +754,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     
     /**
      * Show the retry view from the root layout
-     * @param listener button
+     * 
      * @author sergiopereira
      */
     protected void showFragmentRetry() {
@@ -755,6 +770,23 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
     }
     
+    /**
+     * Show the unexpected error view from the root layout
+     * 
+     * @author sergiopereira
+     */
+    protected void showUnexpectedError() {
+        // Hide maintenance visibility
+        if(mMainFallBackStub.getVisibility() == View.VISIBLE) mMainFallBackStub.setVisibility(View.GONE);
+        // Show no network
+        mUnexpectedError.setVisibility(View.VISIBLE);
+        // Set view
+        try {
+            findViewById(R.id.fragment_root_error_button).setOnClickListener(this);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
+        }
+    }
     
     /*
      * ########### RESPONSES ###########
@@ -833,15 +865,25 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get id
         int id = view.getId();
         // Case retry button from no network
-        if(id == R.id.fragment_root_retry_button) onClickRetryNoNetwork();
+        if(id == R.id.fragment_root_retry_button){ 
+            onClickRetryNoNetwork();
+        }
         // Case retry button from maintenance
-        else if( id == R.id.fallback_retry) onClickMaintenanceRetryButton(view);
+        else if( id == R.id.fallback_retry){ 
+            onClickMaintenanceRetryButton(view);
+        }
         // Case choose country
-        else if( id == R.id.fallback_change_country) onClickMaitenanceChooseCountry();
+        else if (id == R.id.fallback_change_country){
+            onClickMaitenanceChooseCountry();
+        }
+        else if(id == R.id.fragment_root_error_button){
+            onClickErrorButton(view);
+        }
+        
         // Case unknown
         else Log.w(TAG, "WARNING: UNEXPECTED CLICK ENVENT");
-    }
-    
+    }    
+
     /**
      * Process the click on retry button from no connection layout.
      */
@@ -849,6 +891,21 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         retryRequest();
         Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
         findViewById(R.id.fragment_root_retry_spinning).setAnimation(animation);
+    }
+    
+    /**
+     * Process the click in continue shopping
+     * 
+     * @author sergiopereira
+     */
+    protected void onClickErrorButton(View view) {
+        retryRequest();
+        try {
+            Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
+            ((ImageView) findViewById(R.id.fragment_root_error_spinning)).setAnimation(animation);    
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
+        }
     }
     
     /**
@@ -890,6 +947,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
                 JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
                 JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+//        retryRequest();
     }
     
     

@@ -3,18 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import org.apache.http.ParseException;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -30,11 +18,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import ch.boye.httpclientandroidlib.NameValuePair;
-import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
-import ch.boye.httpclientandroidlib.cookie.Cookie;
-import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
-import ch.boye.httpclientandroidlib.util.EntityUtils;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsCheckout;
@@ -60,6 +43,23 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
+import org.apache.http.ParseException;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import ch.boye.httpclientandroidlib.NameValuePair;
+import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
+import ch.boye.httpclientandroidlib.cookie.Cookie;
+import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
+import ch.boye.httpclientandroidlib.util.EntityUtils;
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -169,7 +169,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
     private void triggerGetCustomer() {
 
-        triggerContentEventWithNoLoading(new GetCustomerHelper(), null, mCallback);
+        triggerContentEventNoLoading(new GetCustomerHelper(), null, mCallback);
     }
 
     IResponseCallback mCallback = new IResponseCallback() {
@@ -595,7 +595,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                     // Defining event as having no priority
                     Bundle args = new Bundle();
                     args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
-                    triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), args,
+                    triggerContentEventNoLoading(new GetShoppingCartItemsHelper(), args,
                             mCallback);
                     
                     // Measure to escape the webview thread

@@ -1,7 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -22,6 +20,8 @@ import com.mobile.framework.objects.FeaturedProduct;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -156,7 +156,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
                 search = FragmentType.PRODUCT_DETAILS;
             } else if (featuredItem instanceof FeaturedBrand) {
                 navigationSourceId = R.string.gsearch;
-                search = FragmentType.PRODUCT_LIST;
+                search = FragmentType.CATALOG;
                 // add title for Brands
                 bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, featuredItem.getName());
             }

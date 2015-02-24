@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="0dp" >
+    android:paddingBottom="0dp"
+    android:layoutDirection="locale">
 
     <RelativeLayout
         android:id="@+id/catalog_viewpager_container"
@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/catalog_pager_tag"
-            android:duplicateParentState="true" />
+            android:duplicateParentState="true"/>
 
         <!-- BUTTONS CONTAINER -->
 
@@ -98,7 +98,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/catalog_viewpager_container"
-        layout="@layout/products_no_results" />
+        layout="@layout/catalog_fragment_no_result" />
 
     <!-- WIZARD CONTAINER -->
 
@@ -106,7 +106,7 @@
         android:id="@+id/tips_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/tips"
+        layout="@layout/catalog_fragment_wizard"
         android:duplicateParentState="false"
         android:visibility="visible" />
 

@@ -1,10 +1,5 @@
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.graphics.Paint;
@@ -46,6 +41,11 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
+
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -647,7 +647,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                             if (!isExecutingSendReview) {
                                 formsValidation();
                             }
-                            dismissDialogFragement();
+                            dismissDialogFragment();
                         }
                     }, false);
             dialog.setCancelable(false);

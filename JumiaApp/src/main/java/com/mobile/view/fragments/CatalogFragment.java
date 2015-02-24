@@ -1,11 +1,5 @@
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -26,7 +20,6 @@ import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.ConstantsSharedPrefs;
-import com.mobile.controllers.CatalogPagerAdapter;
 import com.mobile.controllers.FeaturedItemsAdapter;
 import com.mobile.controllers.TipsPagerAdapter;
 import com.mobile.framework.Darwin;
@@ -38,7 +31,7 @@ import com.mobile.framework.objects.Product;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.products.GetProductsHelper;
+import com.mobile.interfaces.OnDialogFilterListener;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TipsOnPageChangeListener;
@@ -46,12 +39,17 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogFilterFragment;
 import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
-import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
-public class CatalogFragment extends BaseFragment implements OnClickListener {
+public class CatalogFragment extends BaseFragment implements OnClickListener, OnDialogFilterListener {
 
     private static final String TAG = LogTagHelper.create(CatalogFragment.class);
 
@@ -75,7 +73,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
     public static String requestTag = "CTLG_REQUEST";
     private static String PRODUCTS_LIST = "CTLG_PRODUCTS";
 
-    private CatalogPagerAdapter mCatalogPagerAdapter;
+    //private CatalogPagerAdapter mCatalogPagerAdapter;
     private ViewPager mViewPager;
     private ViewPager mFeaturedProductsViewPager;
     private ViewPager mFeaturedBrandsViewPager;
@@ -236,7 +234,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
 
         // only set currentPage if arguments exists and CATALOG_SORT_PAGE is defined
         if (arguments != null) {
-            Object currentPageObject = arguments.getSerializable(ConstantsIntentExtra.CATALOG_SORT_PAGE);
+            Object currentPageObject = arguments.getSerializable(ConstantsIntentExtra.CATALOG_PAGE);
             if (currentPageObject != null && currentPageObject instanceof SortPages) {
                 currentPage = (SortPages) currentPageObject;
             }
@@ -319,46 +317,46 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             setSwitchLayoutButtonState(true);
         }
 
-        if (mCatalogPagerAdapter == null) {
-            Log.d(TAG, "ON RESUME: ADAPTER IS NULL");
-            Bundle params = new Bundle();
-            Log.d("FILTER", " ON RESUME 3 setTitle:" + title);
-            params.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-            params.putString(ConstantsIntentExtra.CONTENT_URL, productsURL);
-            params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
-            params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
-            params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-            params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
-            mCatalogPagerAdapter = new CatalogPagerAdapter(getChildFragmentManager(), mViewPager.getId(), mSortOptions, params,
-                    DeviceInfoHelper.isTabletInLandscape(getBaseActivity()));
-        } else {
-            Log.d(TAG, "ON RESUME: ADAPTER IS NOT NULL");
-            mCatalogPagerAdapter.setLandscapeMode(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()));
-            int totalProducts = mCatalogPagerAdapter.getCatalogPageTotalItems(mViewPager.getCurrentItem());
-            if (totalProducts > 0 && getView() != null) {
-                TextView totalItems = (TextView) getView().findViewById(R.id.totalProducts);
-                StringBuilder total = new StringBuilder(" (").append(totalProducts).append("  ").append(getString(R.string.shoppingcart_items)).append(") ");
-                if (null != totalItems) {
-                    totalItems.setText(total.toString());
-                    totalItems.setVisibility(View.VISIBLE);
-                }
-            }
-            mCatalogPagerAdapter.notifyDataSetChanged();
-        }
+//        if (mCatalogPagerAdapter == null) {
+//            Log.d(TAG, "ON RESUME: ADAPTER IS NULL");
+//            Bundle params = new Bundle();
+//            Log.d("FILTER", " ON RESUME 3 setTitle:" + title);
+//            params.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
+//            params.putString(ConstantsIntentExtra.CONTENT_URL, productsURL);
+//            params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
+//            params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
+//            params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
+//            params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
+//            mCatalogPagerAdapter = new CatalogPagerAdapter(getChildFragmentManager(), mViewPager.getId(), mSortOptions, params,
+//                    DeviceInfoHelper.isTabletInLandscape(getBaseActivity()));
+//        } else {
+//            Log.d(TAG, "ON RESUME: ADAPTER IS NOT NULL");
+//            mCatalogPagerAdapter.setLandscapeMode(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()));
+//            int totalProducts = mCatalogPagerAdapter.getCatalogPageTotalItems(mViewPager.getCurrentItem());
+//            if (totalProducts > 0 && getView() != null) {
+//                TextView totalItems = (TextView) getView().findViewById(R.id.totalProducts);
+//                StringBuilder total = new StringBuilder(" (").append(totalProducts).append("  ").append(getString(R.string.shoppingcart_items)).append(") ");
+//                if (null != totalItems) {
+//                    totalItems.setText(total.toString());
+//                    totalItems.setVisibility(View.VISIBLE);
+//                }
+//            }
+//            mCatalogPagerAdapter.notifyDataSetChanged();
+//        }
 
-        RocketImageLoader.getInstance().startProcessingQueue();
-        mViewPager.setAdapter(mCatalogPagerAdapter);
-        mPagerTabStrip.setViewPager(mViewPager);
-        mViewPager.setOffscreenPageLimit(1);
-        if (null != currentPage && currentPage != SortPages.DEFAULT) {
-            mViewPager.setCurrentItem(currentPage.ordinal(), false);
-            currentPage = SortPages.DEFAULT;
-        } else {
-            mViewPager.setCurrentItem(mSavedPagerPosition, false);
-        }
-        if (null != mCatalogPagerAdapter && null != mCatalogFilterValues) {
-            mCatalogPagerAdapter.restoreFilters(mCatalogFilterValues);
-        }
+//        RocketImageLoader.getInstance().startProcessingQueue();
+//        mViewPager.setAdapter(mCatalogPagerAdapter);
+//        mPagerTabStrip.setViewPager(mViewPager);
+//        mViewPager.setOffscreenPageLimit(1);
+//        if (null != currentPage && currentPage != SortPages.DEFAULT) {
+//            mViewPager.setCurrentItem(currentPage.ordinal(), false);
+//            currentPage = SortPages.DEFAULT;
+//        } else {
+//            mViewPager.setCurrentItem(mSavedPagerPosition, false);
+//        }
+//        if (null != mCatalogPagerAdapter && null != mCatalogFilterValues) {
+//            mCatalogPagerAdapter.restoreFilters(mCatalogFilterValues);
+//        }
         // Show tips
         isToShowWizard();
     }
@@ -400,7 +398,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         // Reset static values
         mCatalogFilter = null;
         mOldCatalogFilterState = null;
-        mCatalogPagerAdapter = null;
+//        mCatalogPagerAdapter = null;
     }
 
     @Override
@@ -439,7 +437,7 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
                 product.getAttributes().setFavourite(false);
             }
             // Indicates the to update the content
-            if(mCatalogPagerAdapter != null) mCatalogPagerAdapter.notifyDataSetChanged();
+//            if(mCatalogPagerAdapter != null) mCatalogPagerAdapter.notifyDataSetChanged();
         }
     }
 
@@ -773,33 +771,33 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         // Save the current filter values
         mCatalogFilterValues = filterValues;
         // Contains the new product URL (Category filter)
-        if (filterValues.containsKey(GetProductsHelper.PRODUCT_URL)) {
-            // Get product URL and remove it
-            productsURL = filterValues.getAsString(GetProductsHelper.PRODUCT_URL);
-            mCatalogFilterValues.put(GetProductsHelper.PRODUCT_URL, "");
-            // Save the new filters to restore
-            mOldCatalogFilterState = mCatalogFilter;
-            // Clean the current category values
-            mCatalogFilter = null;
-            searchQuery = null;
-            title = null;
-            mFilterButton.setOnClickListener(null);
-        }
-        // Send the last saved catalog data that works
-        else if (mSavedOldCatalogData != null) {
-            // productsURL = mSavedOldCatalogData[0];
-            productsURL = firstCatalogRequest;
-            searchQuery = mSavedOldCatalogData[1];
-            navigationPath = mSavedOldCatalogData[2];
-            // title = mSavedOldCatalogData[3];
-        }
-
-        // Contains the new search query (Brand filter)
-        if (filterValues.containsKey(GetProductsHelper.SEARCH_QUERY)) {
-            searchQuery = filterValues.getAsString(GetProductsHelper.SEARCH_QUERY);
-            // Used to indicate that has filter q=<BRAND>
-            mCatalogFilterValues.put(GetProductsHelper.SEARCH_QUERY, "");
-        }
+//        if (filterValues.containsKey(GetProductsHelper.PRODUCT_URL)) {
+//            // Get product URL and remove it
+//            productsURL = filterValues.getAsString(GetProductsHelper.PRODUCT_URL);
+//            mCatalogFilterValues.put(GetProductsHelper.PRODUCT_URL, "");
+//            // Save the new filters to restore
+//            mOldCatalogFilterState = mCatalogFilter;
+//            // Clean the current category values
+//            mCatalogFilter = null;
+//            searchQuery = null;
+//            title = null;
+//            mFilterButton.setOnClickListener(null);
+//        }
+//        // Send the last saved catalog data that works
+//        else if (mSavedOldCatalogData != null) {
+//            // productsURL = mSavedOldCatalogData[0];
+//            productsURL = firstCatalogRequest;
+//            searchQuery = mSavedOldCatalogData[1];
+//            navigationPath = mSavedOldCatalogData[2];
+//            // title = mSavedOldCatalogData[3];
+//        }
+//
+//        // Contains the new search query (Brand filter)
+//        if (filterValues.containsKey(GetProductsHelper.SEARCH_QUERY)) {
+//            searchQuery = filterValues.getAsString(GetProductsHelper.SEARCH_QUERY);
+//            // Used to indicate that has filter q=<BRAND>
+//            mCatalogFilterValues.put(GetProductsHelper.SEARCH_QUERY, "");
+//        }
 
         Log.i(TAG, "Updating totalUpdates: " + mSwitchMD5);
         mFilterMD5++;
@@ -818,16 +816,16 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
         params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
         params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
         params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-        params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
-
-        hasFilterApllied = true;
-
-        filterParams = params;
-        Log.d(TAG, " ----> FILTER TITLE :" + title);
-
-        mCatalogPagerAdapter.updateParametersBundle(params);
-        mCatalogPagerAdapter.resetClearProduct();
-        mCatalogPagerAdapter.notifyDataSetChanged();
+//        params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
+//
+//        hasFilterApllied = true;
+//
+//        filterParams = params;
+//        Log.d(TAG, " ----> FILTER TITLE :" + title);
+//
+//        mCatalogPagerAdapter.updateParametersBundle(params);
+//        mCatalogPagerAdapter.resetClearProduct();
+//        mCatalogPagerAdapter.notifyDataSetChanged();
 
     }
 
@@ -1085,8 +1083,8 @@ public class CatalogFragment extends BaseFragment implements OnClickListener {
             mSwitchMD5++;
             Log.i(TAG, "Updating totalUpdates: " + mSwitchMD5);
 
-            // Redraw layout
-            mCatalogPagerAdapter.notifyDataSetChanged();
+//            // Redraw layout
+//            mCatalogPagerAdapter.notifyDataSetChanged();
 
             v.setEnabled(true);
         }

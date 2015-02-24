@@ -3,11 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -34,6 +29,11 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
+
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -277,7 +277,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
                         public void onClick(View v) {
                             int id = v.getId();
                             if (id == R.id.button1) {
-                                dismissDialogFragement();
+                                dismissDialogFragment();
                             }
                         }
                     });
@@ -325,7 +325,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
                             public void onClick(View v) {
                                 int id = v.getId();
                                 if (id == R.id.button1) {
-                                    dismissDialogFragement();
+                                    dismissDialogFragment();
                                 }
                             }
                         });

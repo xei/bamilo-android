@@ -3,12 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.lang.ref.WeakReference;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -64,6 +58,12 @@ import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
+
+import java.lang.ref.WeakReference;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -369,9 +369,17 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         Log.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
         // Exception handling for no network error
-        if(exception != null && !NetworkConnectivity.isConnected(getBaseActivity())) {
+        if(exception != null && !NetworkConnectivity.isConnected(getBaseActivity()) && state != SessionState.CLOSED_LOGIN_FAILED) {
             // Show dialog case form is visible
-            if(formResponse != null) createNoNetworkDialog(mFacebookButton);
+            if(formResponse != null){ 
+                showFragmentNoNetworkRetry(new OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        mFacebookButton.performClick();
+                    }
+                });
+            }
             return;
         }
         // Validate state
@@ -570,7 +578,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
                             public void onClick(View v) {
                                 showFragmentLoading();
                                 triggerLoginForm();
-                                dismissDialogFragement();
+                                dismissDialogFragment();
                             }
                         }, false);
                 dialog.show(baseActivity.getSupportFragmentManager(), null);
@@ -706,7 +714,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
                                     public void onClick(View v) {
                                         int id = v.getId();
                                         if (id == R.id.button1) {
-                                            dismissDialogFragement();
+                                            dismissDialogFragment();
                                         }
                                     }
                                 });
@@ -742,7 +750,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
                             public void onClick(View v) {
                                 int id = v.getId();
                                 if (id == R.id.button1) {
-                                    dismissDialogFragement();
+                                    dismissDialogFragment();
                                 }
                             }
                         });
@@ -809,7 +817,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
-        triggerContentEventWithNoLoading(new GetFacebookLoginHelper(), bundle, mCallBack);
+        triggerContentEventNoLoading(new GetFacebookLoginHelper(), bundle, mCallBack);
     }
 
     private void triggerLoginForm() {

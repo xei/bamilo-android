@@ -76,7 +76,7 @@
     <string name="error_ismandatory">Please fill in the</string>
     <string name="error_login_title">Login failed</string>
     <string name="error_no_connection">No connection</string>
-    <string name="error_occured">An error occured.</string>
+    <string name="error_occured">Sorry, an error occured.</string>
     <string name="error_please_try_again">We have encountered a small problem fetching the data. Please try again.</string>
     <string name="error_register_alreadyexists">This email already exists. Please choose another one.</string>
     <string name="error_register_title">Registration failed</string>
@@ -345,5 +345,13 @@
     <string name="yes_label">Yes</string>
     <string name="your_cart">Your Cart</string>
     <string name="your_order">Your Order</string>
+
+    <!-- Version v2.4 -->
+	<string name="app_sharing">App Sharing</string>
+    <string name="install_jumia_android">Install the Jumia Android App in an instant</string>
+    <string name="share_the_app">Share the App</string>
+    <string name="can_share_app_with_friends">You can now share the app with your friends</string>
+    <string name="app_social">App Social</string>
+	<string name="sort_by">Sort by</string>
 
 </resources>

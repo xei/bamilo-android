@@ -9,17 +9,18 @@
  */
 package com.mobile.framework.objects;
 
-import java.util.ArrayList;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.text.TextUtils;
+
+import com.mobile.framework.interfaces.IJSONSerializable;
+import com.mobile.framework.rest.RestConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.mobile.framework.interfaces.IJSONSerializable;
-import com.mobile.framework.rest.RestConstants;
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -38,10 +39,8 @@ public class Product implements IJSONSerializable, Parcelable {
 
     private String id;
     private ProductAttributes attributes;
-    
     private ArrayList<Image> images;
     private String firstImageURL;
-
 	private ArrayList<Image> imagesTablet;
 
     /**
@@ -222,13 +221,13 @@ public class Product implements IJSONSerializable, Parcelable {
     public double getSpecialPriceAsDouble() {
         return attributes.getSpecialPriceAsDouble();
     }
-
+    
     /**
-     * @return the suggested price
+     * Validate if product has special price
      */
-    /*--public String getSuggestedPrice() {
-        return attributes.getMaxPrice();
-    }*/
+    public boolean hasSpecialPrice() {
+        return TextUtils.isEmpty(getSpecialPrice());
+    }
 
     /**
      * @return the max saving percentage

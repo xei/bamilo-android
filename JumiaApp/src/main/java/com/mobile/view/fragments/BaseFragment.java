@@ -1,14 +1,5 @@
 package com.mobile.view.fragments;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -59,6 +50,15 @@ import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -83,6 +83,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public static enum KeyboardState { NO_ADJUST_CONTENT, ADJUST_CONTENT };
     
     public static final int NO_INFLATE_LAYOUT = 0;
+    
+    public static final int NO_TITLE = 0;
 
     private NavigationAction action;
 
@@ -490,7 +492,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * 
      * @param type
      */
-    protected final void triggerContentEventWithNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+    protected final void triggerContentEventNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 
@@ -501,7 +503,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param responseCallback
      */
     protected final void triggerContentEvent(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        // Show loading
         showFragmentLoading();
+        // Request
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
         // Hide fall back for each fragment request
         if(getBaseActivity() != null) getBaseActivity().hideMainFallBackView();
@@ -813,6 +817,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
+    /**
+     * Show the retry view to try to execute the event again
+     * 
+     * @param eventType
+     * @author ricardosoares
+     */
     protected void showFragmentNoNetworkRetry(final EventType eventType) {
         showFragmentNoNetworkRetry(new OnClickListener() {
 
@@ -821,16 +831,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 onRetryRequest(eventType);
             }
         });
-    }
-
-    protected void onRetryRequest(EventType eventType) {
-        Log.i(TAG, "ON RETRY REQUEST");
-        if (eventType != null) {
-            JumiaApplication.INSTANCE.sendRequest(
-                    JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
-                    JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
-                    JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
-        }
     }
 
     /**
@@ -1025,7 +1025,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param show
      */
     private final void setVisibility(View view, boolean show) {
-        if (view != null) view.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (view != null) { 
+            view.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
     }
 
     /**
@@ -1102,7 +1104,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         Log.i(TAG, "ON HANDLE ERROR EVENT");
         
-        final EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
@@ -1115,18 +1117,27 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
-            case SSL:
             case IO:
             case CONNECT_ERROR:
+                showFragmentErrorRetry();
+                return true;
             case TIME_OUT:
             case NO_NETWORK:
+                // Show no network layout
                 showFragmentNoNetworkRetry(eventType);
                 return true;
             case HTTP_STATUS:
-                showContinueShopping();
+                // Case HOME show retry
+                if(action == NavigationAction.Home) showFragmentErrorRetry();
+                // Case Default show continue shopping
+                else showContinueShopping();
+                return true;
+            case SSL:
+                getBaseActivity().setLayoutMaintenance(eventType, this ,true);
                 return true;
             case SERVER_IN_MAINTENANCE:
-                getBaseActivity().setLayoutMaintenance(eventType);
+                // Show maintenance page
+                getBaseActivity().setLayoutMaintenance(eventType, this, false);
                 return true;
             case REQUEST_ERROR:
                 HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
@@ -1156,21 +1167,16 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                             public void onClick(View v) {
                                 int id = v.getId();
                                 if (id == R.id.button1) {
-                                    dismissDialogFragement();
+                                    dismissDialogFragment();
                                 }
                             }
                         });
 
                 dialog.show(getActivity().getSupportFragmentManager(), null);
                 return true;
-                // default:
-                // Log.i(TAG, "DEFAULT HANDLE ERROR EVENT");
-                // showFragmentRetry(eventType);
-                // return true;
             default:
                 break;
             }
-
         }
         return false;
 
@@ -1200,7 +1206,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         else if(id == R.id.fragment_root_empty_button) onClickContinueButton();
         // Case retry button from error
         else if(id == R.id.fragment_root_error_button) onClickErrorButton(view);
-        // Case continue button
+        // Case retry button in maintenance page
+        else if(id == R.id.fallback_retry)  onClickMaintenanceRetryButton(); 
+        // Case choose country button in maintenance page
+        else if(id == R.id.fallback_change_country) onClickMaitenanceChooseCountry();
+        // Case unknown
         else Log.w(TAG, "WARNING: UNKNOWN CLICK EVENT");
     }
     
@@ -1217,7 +1227,48 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             Log.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }
     }
+    
+    /**
+     * Process the click on retry button in maintenance page
+     * 
+     * @param eventType
+     * @modified sergiopereira
+     */
+    protected void onClickMaintenanceRetryButton() {
+        getBaseActivity().hideMainFallBackView();
+        onClickErrorButton(null);
+//        String result = retryLastRequest(eventType);
+//
+//        if (result == null || result.equalsIgnoreCase("")) {
+//            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+//        }
+    }
+    
+    protected void onRetryRequest(EventType eventType) {
+        Log.i(TAG, "ON RETRY REQUEST");
+        retryLastRequest(eventType);
+    }
+    
+    private String retryLastRequest(EventType eventType){
+        if(eventType != null){
+            return JumiaApplication.INSTANCE.sendRequest(
+                    JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
+                    JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
+                    JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+        } 
+        return null;
+    }
 
+    /**
+     * Process the click on choose country button in maintenance page.
+     * @author sergiopereira
+     */
+    private void onClickMaitenanceChooseCountry() {
+        // Show Change country
+        FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
+        getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY,FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+    }
+    
     /*
      * ########### FACEBOOK ###########
      */
@@ -1276,7 +1327,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * No network dialog for facebook exception handling
+     * Deprecated: using no network layout instead
      */
+    @Deprecated
     protected final void createNoNetworkDialog(final View clickView) {
         // Validate button
         if (clickView == null)
@@ -1287,12 +1340,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     @Override
                     public void onClick(View v) {
                         clickView.performClick();
-                        dismissDialogFragement();
+                        dismissDialogFragment();
                     }
                 }, new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dismissDialogFragement();
+                        dismissDialogFragment();
                     }
                 }, false);
         try {
@@ -1305,7 +1358,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * 
      */
-    protected void dismissDialogFragement() {
+    protected void dismissDialogFragment() {
         if (dialog != null) dialog.dismissAllowingStateLoss();
     }
 

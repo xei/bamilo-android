@@ -75,23 +75,29 @@ public class MyAccountAdapter extends BaseAdapter {
 
         // Get the Category Name
         TextView optionsName = (TextView) view.findViewById(R.id.option_name);
-        TextView optionsDescripton = (TextView) view.findViewById(R.id.option_info);
+        
         optionsName.setText(this.mOptions[position]);
 
-        // Validate the current position
-        switch (position) {
-        case MyAccountFragment.POSITION_USER_DATA:
-            optionsDescripton.setText(mContext.getResources().getString(R.string.option2_description));
-            break;
-        case MyAccountFragment.POSITION_EMAIL:
-            optionsDescripton.setText(mContext.getResources().getString(R.string.option3_description));
-            break;
-        }
+        setViewByPosition(view, position);
 
         // Return the Category Item View
         return view;
     }
 
+    protected void setViewByPosition(View view, int position){
+        TextView optionsDescripton = (TextView) view.findViewById(R.id.option_info);
+     // Validate the current position
+        switch (position) {
+            case MyAccountFragment.POSITION_USER_DATA:
+                optionsDescripton.setText(mContext.getResources().getString(R.string.option2_description));
+                break;
+            case MyAccountFragment.POSITION_EMAIL:
+                optionsDescripton.setText(mContext.getResources().getString(R.string.option3_description));
+                break;
+        }
+        
+    }
+    
     /**
      * #FIX: java.lang.IllegalArgumentException: The observer is null.
      * @solution from : https://code.google.com/p/android/issues/detail?id=22946 

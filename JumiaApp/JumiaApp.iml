@@ -8,44 +8,52 @@
     </facet>
     <facet type="android" name="Android">
       <configuration>
-        <option name="SELECTED_BUILD_VARIANT" value="androidJumiaLive" />
+        <option name="SELECTED_BUILD_VARIANT" value="androidBamiloDebug" />
         <option name="SELECTED_TEST_ARTIFACT" value="_android_test_" />
-        <option name="ASSEMBLE_TASK_NAME" value="assembleAndroidJumiaLive" />
-        <option name="COMPILE_JAVA_TASK_NAME" value="compileAndroidJumiaLiveSources" />
-        <option name="SOURCE_GEN_TASK_NAME" value="generateAndroidJumiaLiveSources" />
+        <option name="ASSEMBLE_TASK_NAME" value="assembleAndroidBamiloDebug" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileAndroidBamiloDebugSources" />
+        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleAndroidBamiloDebugTest" />
+        <option name="SOURCE_GEN_TASK_NAME" value="generateAndroidBamiloDebugSources" />
+        <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateAndroidBamiloDebugTestSources" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res;file://$MODULE_DIR$/src/jumia/res;file://$MODULE_DIR$/src/androidJumiaLive/res" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res;file://$MODULE_DIR$/src/bamilo/res;file://$MODULE_DIR$/src/androidBamiloDebug/res" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/build/intermediates/classes/androidjumia/live" />
-    <output-test url="file://$MODULE_DIR$/build/intermediates/classes/test/androidjumia/debug" />
+    <output url="file://$MODULE_DIR$/build/intermediates/classes/androidbamilo/debug" />
+    <output-test url="file://$MODULE_DIR$/build/intermediates/classes/test/androidbamilo/debug" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/androidjumia/live" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/androidjumia/live" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidjumia/live" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidjumia/live" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidjumia/live" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/androidjumia/live" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumiaLive/res" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumiaLive/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumiaLive/assets" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumiaLive/aidl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumiaLive/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumiaLive/jni" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumiaLive/rs" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumia/res" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumia/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumia/assets" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumia/aidl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumia/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumia/jni" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidJumia/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/androidbamilo/debug" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/androidbamilo/debug" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidbamilo/debug" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidbamilo/debug" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidbamilo/debug" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/androidbamilo/debug" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamiloDebug/res" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamiloDebug/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamiloDebug/assets" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamiloDebug/aidl" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamiloDebug/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamiloDebug/jni" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamiloDebug/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamilo/res" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamilo/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamilo/assets" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamilo/aidl" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamilo/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamilo/jni" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidBamilo/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/test/androidbamilo/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/test/androidbamilo/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/test/androidbamilo/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/test/androidbamilo/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/test/androidbamilo/debug" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/test/androidbamilo/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/android/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/android/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/android/assets" type="java-resource" />
@@ -60,27 +68,27 @@
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestAndroid/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestAndroid/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestAndroid/rs" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/jumia/res" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/jumia/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/jumia/assets" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/jumia/aidl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/jumia/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/jumia/jni" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/jumia/rs" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestJumia/res" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestJumia/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestJumia/assets" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestJumia/aidl" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestJumia/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestJumia/jni" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestJumia/rs" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/live/res" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/live/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/live/assets" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/live/aidl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/live/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/live/jni" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/live/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/bamilo/res" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/bamilo/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/bamilo/assets" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/bamilo/aidl" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/bamilo/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/bamilo/jni" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/bamilo/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestBamilo/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestBamilo/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestBamilo/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestBamilo/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestBamilo/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestBamilo/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestBamilo/rs" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/debug/res" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/debug/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/debug/assets" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/debug/aidl" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/debug/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/debug/jni" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/debug/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/assets" type="java-resource" />

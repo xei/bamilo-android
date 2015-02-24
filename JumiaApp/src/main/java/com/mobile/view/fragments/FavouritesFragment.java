@@ -3,13 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,6 +43,13 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 
@@ -280,7 +280,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Case unknown
         else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
     }
-
+    
     /**
      * Process the click on size guide.
      * @author sergiopereira
@@ -373,7 +373,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             // Update layout
             updateLayoutAfterAction();
 
-            BaseFragment catalogFragment = (BaseFragment) getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.PRODUCT_LIST.toString());
+            BaseFragment catalogFragment = (BaseFragment) getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.CATALOG.toString());
             if (null != catalogFragment) {
                 catalogFragment.sendValuesToFragment(BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE, addableToCart.getSku());
             }
@@ -592,7 +592,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         Bundle bundle = new Bundle();
         bundle.putSerializable(GetShoppingCartAddMultipleItemsHelper.ADD_ITEMS, values);
         // Trigger
-        triggerContentEventWithNoLoading(new GetShoppingCartAddMultipleItemsHelper(), bundle, (IResponseCallback) this);
+        triggerContentEventNoLoading(new GetShoppingCartAddMultipleItemsHelper(), bundle, (IResponseCallback) this);
     }
     
     /**
@@ -632,7 +632,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         bundle.putDouble(GetShoppingCartAddItemHelper.PRODUCT_RATING_TAG, addableToCart.getRatingsAverage());
         bundle.putBoolean(keyRemoveTable, true);
         // Trigger
-        triggerContentEventWithNoLoading(new GetShoppingCartAddItemHelper(), bundle, (IResponseCallback) this);
+        triggerContentEventNoLoading(new GetShoppingCartAddItemHelper(), bundle, (IResponseCallback) this);
         // Tracking
         trackAddtoCart(sku, addableToCart);
     }
@@ -761,13 +761,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             Log.w(TAG, "WARNING: RECEIVED DATA IN BACKGROUND");
             return;
         }
-
-        if(super.handleErrorEvent(bundle)){
-            Log.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
-            hideActivityProgress();
-            return;
-        }
-
         // Validate type
         switch (eventType) {
         case GET_FAVOURITE_LIST:
