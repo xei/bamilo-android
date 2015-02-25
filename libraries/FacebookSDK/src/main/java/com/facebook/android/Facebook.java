@@ -18,16 +18,35 @@ package com.facebook.android;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.*;
+import android.content.ComponentName;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.pm.Signature;
 import android.net.Uri;
-import android.os.*;
-import com.facebook.*;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+
+import com.facebook.AccessTokenSource;
+import com.facebook.FacebookAuthorizationException;
+import com.facebook.FacebookOperationCanceledException;
+import com.facebook.LegacyHelper;
+import com.facebook.Request;
+import com.facebook.Session;
 import com.facebook.Session.StatusCallback;
+import com.facebook.SessionLoginBehavior;
+import com.facebook.SessionState;
+import com.facebook.Settings;
+import com.facebook.TokenCachingStrategy;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -1199,32 +1218,6 @@ public class Facebook {
     @Deprecated
     public static String getAttributionId(ContentResolver contentResolver) {
         return Settings.getAttributionId(contentResolver);
-    }
-
-    /**
-     * Get the auto install publish setting.  If true, an install event will be published during authorize(), unless
-     * it has occurred previously or the app does not have install attribution enabled on the application's developer
-     * config page.
-     * <p/>
-     * This method is deprecated.  See {@link Facebook} and {@link Settings} for more info.
-     *
-     * @return a Boolean indicating whether installation of the app should be auto-published.
-     */
-    @Deprecated
-    public boolean getShouldAutoPublishInstall() {
-        return Settings.getShouldAutoPublishInstall();
-    }
-
-    /**
-     * Sets whether auto publishing of installs will occur.
-     * <p/>
-     * This method is deprecated.  See {@link Facebook} and {@link Settings} for more info.
-     *
-     * @param value a Boolean indicating whether installation of the app should be auto-published.
-     */
-    @Deprecated
-    public void setShouldAutoPublishInstall(boolean value) {
-        Settings.setShouldAutoPublishInstall(value);
     }
 
     /**

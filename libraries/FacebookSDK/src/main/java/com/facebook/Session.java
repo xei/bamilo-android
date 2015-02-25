@@ -16,15 +16,25 @@
 
 package com.facebook;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.*;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.ResolveInfo;
-import android.os.*;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.facebook.internal.NativeProtocol;
 import com.facebook.internal.SessionAuthorizationType;
 import com.facebook.internal.Utility;
@@ -32,12 +42,28 @@ import com.facebook.internal.Validate;
 import com.facebook.model.GraphMultiResult;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphObjectList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * <p>
@@ -147,7 +173,6 @@ public class Session implements Serializable {
     private volatile Bundle authorizationBundle;
     private final List<StatusCallback> callbacks;
     private Handler handler;
-    private AutoPublishAsyncTask autoPublishAsyncTask;
     // This is the object that synchronizes access to state and tokenInfo
     private final Object lock = new Object();
     private TokenCachingStrategy tokenCachingStrategy;
@@ -551,8 +576,6 @@ public class Session implements Serializable {
             state = SessionState.OPENED;
             this.postStateChange(oldState, state, null);
         }
-
-        autoPublishAsync();
     }
 
     /**
@@ -1151,8 +1174,6 @@ public class Session implements Serializable {
         boolean started = false;
 
         request.setApplicationId(applicationId);
-
-        autoPublishAsync();
 
         logAuthorizationStart();
 
@@ -1833,57 +1854,6 @@ public class Session implements Serializable {
         public void startActivityForResult(Intent intent, int requestCode);
 
         public Activity getActivityContext();
-    }
-
-    @SuppressWarnings("deprecation")
-    private void autoPublishAsync() {
-        AutoPublishAsyncTask asyncTask = null;
-        synchronized (this) {
-            if (autoPublishAsyncTask == null && Settings.getShouldAutoPublishInstall()) {
-                // copy the application id to guarantee thread safety against our container.
-                String applicationId = Session.this.applicationId;
-
-                // skip publish if we don't have an application id.
-                if (applicationId != null) {
-                    asyncTask = autoPublishAsyncTask = new AutoPublishAsyncTask(applicationId, staticContext);
-                }
-            }
-        }
-
-        if (asyncTask != null) {
-            asyncTask.execute();
-        }
-    }
-
-    /**
-     * Async implementation to allow auto publishing to not block the ui thread.
-     */
-    private class AutoPublishAsyncTask extends AsyncTask<Void, Void, Void> {
-        private final String mApplicationId;
-        private final Context mApplicationContext;
-
-        public AutoPublishAsyncTask(String applicationId, Context context) {
-            mApplicationId = applicationId;
-            mApplicationContext = context.getApplicationContext();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                Settings.publishInstallAndWaitForResponse(mApplicationContext, mApplicationId, true);
-            } catch (Exception e) {
-                Utility.logd("Facebook-publish", e);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            // always clear out the publisher to allow other invocations.
-            synchronized (Session.this) {
-                autoPublishAsyncTask = null;
-            }
-        }
     }
 
     /**

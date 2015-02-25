@@ -17,7 +17,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.facebook.android"
-    android:versionName="3.22.0" >
+    android:versionName="3.23.0" >
 
     <application />
 

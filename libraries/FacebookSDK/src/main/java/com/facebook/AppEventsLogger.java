@@ -20,15 +20,17 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import bolts.AppLinks;
+
 import com.facebook.internal.AttributionIdentifiers;
 import com.facebook.internal.Logger;
 import com.facebook.internal.Utility;
 import com.facebook.internal.Validate;
 import com.facebook.model.GraphObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,9 +50,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import bolts.AppLinks;
 
 
 /**
@@ -151,6 +156,9 @@ public class AppEventsLogger {
     private static final int APP_SUPPORTS_ATTRIBUTION_ID_RECHECK_PERIOD_IN_SECONDS = 60 * 60 * 24;
     private static final int FLUSH_APP_SESSION_INFO_IN_SECONDS = 30;
 
+    // Package visible
+    static final String APP_EVENT_PREFERENCES = "com.facebook.sdk.appEventPreferences";
+
     private static final String SOURCE_APPLICATION_HAS_BEEN_SET_BY_THIS_INTENT = "_fbSourceApplicationHasBeenSet";
 
     // Instance member variables
@@ -164,7 +172,7 @@ public class AppEventsLogger {
     private static boolean requestInFlight;
     private static Context applicationContext;
     private static Object staticLock = new Object();
-    private static String hashedDeviceAndAppId;
+    private static String anonymousAppDeviceGUID;
     private static String sourceApplication;
     private static boolean isOpenedByApplink;
 
@@ -612,7 +620,6 @@ public class AppEventsLogger {
      * Constructor is private, newLogger() methods should be used to build an instance.
      */
     private AppEventsLogger(Context context, String applicationId, Session session) {
-
         Validate.notNull(context, "context");
         this.context = context;
 
@@ -634,10 +641,6 @@ public class AppEventsLogger {
         }
 
         synchronized (staticLock) {
-
-            if (hashedDeviceAndAppId == null) {
-                hashedDeviceAndAppId = Utility.getHashedDeviceAndAppID(context, applicationId);
-            }
 
             if (applicationContext == null) {
                 applicationContext = context.getApplicationContext();
@@ -755,7 +758,7 @@ public class AppEventsLogger {
             // Check state again while we're locked.
             state = stateMap.get(accessTokenAppId);
             if (state == null) {
-                state = new SessionEventsState(attributionIdentifiers, context.getPackageName(), hashedDeviceAndAppId);
+                state = new SessionEventsState(attributionIdentifiers, context.getPackageName(), getAnonymousAppDeviceGUID(context));
                 stateMap.put(accessTokenAppId, state);
             }
             return state;
@@ -875,8 +878,11 @@ public class AppEventsLogger {
             return null;
         }
 
-        int numEvents = sessionEventsState.populateRequest(postRequest, fetchedAppSettings.supportsImplicitLogging(),
-                fetchedAppSettings.supportsAttribution(), limitEventUsage);
+        int numEvents = sessionEventsState.populateRequest(
+                postRequest,
+                fetchedAppSettings.supportsImplicitLogging(),
+                limitEventUsage);
+
         if (numEvents == 0) {
             return null;
         }
@@ -1043,6 +1049,32 @@ public class AppEventsLogger {
         isOpenedByApplink = false;
     }
 
+    // Each app/device pair gets an GUID that is sent back with App Events and persisted with this
+    // app/device pair.
+    static String getAnonymousAppDeviceGUID(Context context) {
+
+        if (anonymousAppDeviceGUID == null) {
+            synchronized (staticLock) {
+                if (anonymousAppDeviceGUID == null) {
+
+                    SharedPreferences preferences = context.getSharedPreferences(APP_EVENT_PREFERENCES, Context.MODE_PRIVATE);
+                    anonymousAppDeviceGUID = preferences.getString("anonymousAppDeviceGUID", null);
+                    if (anonymousAppDeviceGUID == null) {
+                        // Arbitrarily prepend XZ to distinguish from device supplied identifiers.
+                        anonymousAppDeviceGUID = "XZ" + UUID.randomUUID().toString();
+
+                        context.getSharedPreferences(APP_EVENT_PREFERENCES, Context.MODE_PRIVATE)
+                                .edit()
+                                .putString("anonymousAppDeviceGUID", anonymousAppDeviceGUID)
+                                .apply();
+                    }
+                }
+            }
+        }
+
+        return anonymousAppDeviceGUID;
+    }
+
     //
     // Deprecated Stuff
     //
@@ -1054,7 +1086,7 @@ public class AppEventsLogger {
         private int numSkippedEventsDueToFullBuffer;
         private AttributionIdentifiers attributionIdentifiers;
         private String packageName;
-        private String hashedDeviceAndAppId;
+        private String anonymousAppDeviceGUID;
 
         public static final String EVENT_COUNT_KEY = "event_count";
         public static final String ENCODED_EVENTS_KEY = "encoded_events";
@@ -1062,10 +1094,10 @@ public class AppEventsLogger {
 
         private final int MAX_ACCUMULATED_LOG_EVENTS = 1000;
 
-        public SessionEventsState(AttributionIdentifiers identifiers, String packageName, String hashedDeviceAndAppId) {
+        public SessionEventsState(AttributionIdentifiers identifiers, String packageName, String anonymousGUID) {
             this.attributionIdentifiers = identifiers;
             this.packageName = packageName;
-            this.hashedDeviceAndAppId = hashedDeviceAndAppId;
+            this.anonymousAppDeviceGUID = anonymousGUID;
         }
 
         // Synchronize here and in other methods on this class, because could be coming in from different
@@ -1091,7 +1123,7 @@ public class AppEventsLogger {
         }
 
         public int populateRequest(Request request, boolean includeImplicitEvents,
-                                   boolean includeAttribution, boolean limitEventUsage) {
+                                   boolean limitEventUsage) {
 
             int numSkipped;
             JSONArray jsonArray;
@@ -1114,7 +1146,7 @@ public class AppEventsLogger {
                 }
             }
 
-            populateRequest(request, numSkipped, jsonArray, includeAttribution, limitEventUsage);
+            populateRequest(request, numSkipped, jsonArray, limitEventUsage);
             return jsonArray.length();
         }
 
@@ -1133,7 +1165,7 @@ public class AppEventsLogger {
             accumulatedEvents.addAll(events);
         }
 
-        private void populateRequest(Request request, int numSkipped, JSONArray events, boolean includeAttribution,
+        private void populateRequest(Request request, int numSkipped, JSONArray events,
                                      boolean limitEventUsage) {
             GraphObject publishParams = GraphObject.Factory.create();
             publishParams.setProperty("event", "CUSTOM_APP_EVENTS");
@@ -1142,10 +1174,8 @@ public class AppEventsLogger {
                 publishParams.setProperty("num_skipped_events", numSkipped);
             }
 
-            if (includeAttribution) {
-                Utility.setAppEventAttributionParameters(publishParams, attributionIdentifiers,
-                        hashedDeviceAndAppId, limitEventUsage);
-            }
+            Utility.setAppEventAttributionParameters(publishParams, attributionIdentifiers,
+                    anonymousAppDeviceGUID, limitEventUsage);
 
             // The code to get all the Extended info is safe but just in case we can wrap the whole
             // call in its own try/catch block since some of the things it does might cause
