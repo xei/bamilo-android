@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="_button">
         <item name="android:layout_width">match_parent</item>
@@ -221,11 +221,11 @@
 
     <!-- DIALOGS -->
 
-    <style name="dialog_title">
+    <style name="dialog_header">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/text_m</item>
+        <item name="android:textSize">@dimen/text_header</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
@@ -253,7 +253,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/grey_middle</item>
-        <item name="android:textSize">@dimen/text_m</item>
+        <item name="android:textSize">@dimen/text_l</item>
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_alignParentStart">true</item>
         <item name="android:layout_centerVertical">true</item>
@@ -506,6 +506,10 @@
         <item name="android:textSize">@dimen/text_header</item>
     </style>
 
+    <style name="text_header_light" parent="text_header">
+        <item name="android:fontFamily">roboto_light</item>
+    </style>
+
     <style name="text_price" parent="_base_text">
         <item name="android:textSize">@dimen/text_title</item>
         <item name="android:fontFamily">roboto_bold</item>
@@ -530,6 +534,8 @@
         <item name="android:singleLine">false</item>
         <item name="android:gravity">center</item>
     </style>
+
+
 
     <!-- ################# ACTION BAR ################# -->
 
@@ -583,6 +589,18 @@
         <item name="android:layout_height">@dimen/checkout_box_title_height</item>
         <item name="android:drawableRight">@drawable/selector_dropdown_indicator</item>
         <item name="android:drawableEnd">@drawable/selector_dropdown_indicator</item>
+    </style>
+
+    <!--CATALOG TOOL BAR -->
+    <style name="catalog_tool_bar_text" parent="text_header_light">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:paddingLeft">@dimen/margin_20px</item>
+        <item name="android:paddingRight">@dimen/margin_20px</item>
+        <item name="android:drawablePadding">@dimen/margin_20px</item>
+        <item name="android:textSize">@dimen/text_header</item>
+        <item name="android:textColor">@drawable/selector_text_secondary</item>
     </style>
 
 </resources>

@@ -8,7 +8,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_list_title"
-        style="@style/dialog_title"
+        style="@style/dialog_header"
         android:background="@drawable/modal_dialog_header"
         android:gravity="left|start"
         android:paddingBottom="@dimen/margin_large"
@@ -40,7 +40,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_list_size_guide_button"
-        style="@style/dialog_title"
+        style="@style/dialog_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_listitem_highlight_dialog"

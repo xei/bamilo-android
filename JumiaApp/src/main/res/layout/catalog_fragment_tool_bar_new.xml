@@ -1,36 +1,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_110px"
+    android:layout_height="@dimen/catalog_tool_bar_height"
     android:background="@color/grey_background"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="@dimen/margin_10px" >
+    android:padding="@dimen/margin_10px">
 
-    <Button
-        android:id="@+id/catalog_bar_button_sort"
+    <!-- SORT -->
+
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@android:color/white"
-        android:drawableLeft="@drawable/selector_catalog_filter"
-        android:drawablePadding="2dp"
-        android:drawableStart="@drawable/selector_catalog_filter"
-        android:gravity="center"
-        android:text="Popularity" />
+        android:gravity="center">
 
-    <View style="@style/divider_vertical" />
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/catalog_bar_button_sort"
+            style="@style/catalog_tool_bar_text"
+            android:drawableLeft="@drawable/selector_catalog_sort"
+            android:text="@string/products_sort_popularity" />
 
-    <ImageButton
-        android:id="@+id/catalog_bar_button_filter"
+    </LinearLayout>
+
+    <!-- DIVIDER -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <View
+            style="@style/divider_vertical"
+            android:layout_margin="@dimen/margin_10px" />
+    </LinearLayout>
+
+    <!-- FILTER -->
+
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@android:color/white"
-        android:drawableLeft="@drawable/selector_catalog_filter"
-        android:src="@drawable/selector_catalog_filter"
-        android:drawablePadding="2dp"
-        android:gravity="center"
-        android:text="Filter" />
+        android:gravity="center">
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/catalog_bar_button_filter"
+            android:drawableLeft="@drawable/selector_catalog_filter"
+            style="@style/catalog_tool_bar_text"
+            android:text="@string/filter_label" />
+
+    </LinearLayout>
+
+    <!-- GRID LAYOUT -->
 
     <ImageButton
         android:id="@+id/catalog_bar_button_columns"

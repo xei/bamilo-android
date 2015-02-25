@@ -243,7 +243,7 @@
 
     <!-- PRODUCT WIZARD -->
     <dimen name="product_tip_top_swipe">52.8dp</dimen>
-    <dimen name="product_tip_top_favourite">32dp</dimen>
+    <dimen name="product_tip_top_favourite">@dimen/catalog_tool_bar_height</dimen>
     <!-- MY PROFILE -->
     <dimen name="myprofile_item_size">42.67dp</dimen>
     <dimen name="myprofile_item_icon_container_size">27dp</dimen>
@@ -260,9 +260,10 @@
     <dimen name="rounded_margin_double_mid">@dimen/margin_40px</dimen>
     <dimen name="rounded_margin_double_double_mid">@dimen/margin_80px</dimen>
 
-    <!-- CATALOG REDESIGN -->
+    <!-- CATALOG -->
+    <integer name="catalog_list_num_columns">1</integer>
+    <integer name="catalog_grid_num_columns">2</integer>
     <dimen name="catalog_list_item_height">111dp</dimen>
-    <!--105dp-->
     <dimen name="catalog_grid_item_height">190.67dp</dimen>
     <dimen name="catalog_list_item_image_width">74.67dp</dimen>
     <dimen name="catalog_list_item_image_height">93.33dp</dimen>
@@ -270,9 +271,7 @@
     <dimen name="catalog_item_vertical_padding">10dp</dimen>
     <dimen name="catalog_grid_item_image_width">97.33dp</dimen>
     <dimen name="catalog_grid_item_image_height">121.67dp</dimen>
-
-    <integer name="catalog_list_num_columns">1</integer>
-    <integer name="catalog_grid_num_columns">2</integer>
+    <dimen name="catalog_tool_bar_height">@dimen/dimen_150px</dimen>
 
     <dimen name="root_empty_container_height">240dp</dimen>
     <dimen name="root_empty_drawable_padding">23.33dp</dimen>

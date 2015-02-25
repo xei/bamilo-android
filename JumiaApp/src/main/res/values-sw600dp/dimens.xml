@@ -64,8 +64,8 @@
     <dimen name="wizard_nav_img_margin_top">165dp</dimen>
     <dimen name="wizard_product_height">150dp</dimen>
 
-    <!-- CATALOG REDESIGN -->
-    <dimen name="catalog_list_item_height">155dp</dimen><!--157.5dp-->
+    <!-- CATALOG -->
+    <dimen name="catalog_list_item_height">155dp</dimen>
     <dimen name="catalog_grid_item_height">280dp</dimen>
     <dimen name="catalog_list_item_image_width">112dp</dimen>
     <dimen name="catalog_list_item_image_height">140dp</dimen>
@@ -73,6 +73,8 @@
     <dimen name="catalog_item_vertical_padding">15dp</dimen>
     <dimen name="catalog_grid_item_image_width">146dp</dimen>
     <dimen name="catalog_grid_item_image_height">182.5dp</dimen>
+    <dimen name="catalog_tool_bar_height">@dimen/dimen_150px</dimen>
+
     <dimen name="root_empty_container_height">288dp</dimen> <!--720/2.5 -->
     <dimen name="root_empty_drawable_padding">35dp</dimen>
 

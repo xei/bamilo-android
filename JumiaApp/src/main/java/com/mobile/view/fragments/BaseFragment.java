@@ -441,11 +441,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Recycle bitmaps
      * 
      * @param view
-     * @see http 
-     *      ://stackoverflow.com/questions/10314527/caused-by-java-lang-outofmemoryerror-bitmap-size
-     *      -exceeds-vm-budget
-     *      http://stackoverflow.com/questions/1949066/java-lang-outofmemoryerror-
-     *      bitmap-size-exceeds-vm-budget-android
+     * @see <p>http://stackoverflow.com/questions/10314527/caused-by-java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget</p>
+     *      <p>http://stackoverflow.com/questions/1949066/java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget-android</p>
      */
     public void unbindDrawables(View view) {
         Log.i(TAG, "UNBIND DRAWABLES");
@@ -809,7 +806,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 public void onClick(View v) {
                     listener.onClick(v);
                     Animation animation = AnimationUtils.loadAnimation(BaseFragment.this.getActivity(), R.anim.anim_rotate);
-                    ((ImageView)getView().findViewById(R.id.fragment_root_retry_spinning)).setAnimation(animation);
+                    getView().findViewById(R.id.fragment_root_retry_spinning).setAnimation(animation);
                 }
             });
         } catch (NullPointerException e) {

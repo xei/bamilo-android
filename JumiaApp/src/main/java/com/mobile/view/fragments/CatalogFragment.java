@@ -1,144 +1,100 @@
 package com.mobile.view.fragments;
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.text.TextUtils;
-import android.util.SparseArray;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.AbsListView;
 
-import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.ConstantsSharedPrefs;
-import com.mobile.controllers.FeaturedItemsAdapter;
+import com.mobile.controllers.CatalogGridAdapter;
 import com.mobile.controllers.TipsPagerAdapter;
-import com.mobile.framework.Darwin;
-import com.mobile.framework.objects.CatalogFilter;
-import com.mobile.framework.objects.CatalogFilterOption;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.ErrorCode;
+import com.mobile.framework.objects.CatalogPage;
 import com.mobile.framework.objects.FeaturedBox;
-import com.mobile.framework.objects.FeaturedItem;
 import com.mobile.framework.objects.Product;
-import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.utils.DeviceInfoHelper;
-import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventType;
+import com.mobile.helpers.products.GetCatalogPageHelper;
+import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnDialogFilterListener;
+import com.mobile.interfaces.OnViewHolderClickListener;
+import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TipsOnPageChangeListener;
-import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.Toast;
+import com.mobile.utils.catalog.CatalogSort;
+import com.mobile.utils.catalog.FeaturedBoxHelper;
 import com.mobile.utils.dialogfragments.DialogFilterFragment;
+import com.mobile.utils.dialogfragments.DialogListFragment;
+import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.dialogfragments.WizardPreferences;
-import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
+import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 
-import de.akquinet.android.androlog.Log;
+/**
+ *
+ * @author sergiopereira
+ *
+ */
+public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogFilterListener, OnDialogListListener {
 
-public class CatalogFragment extends BaseFragment implements OnClickListener, OnDialogFilterListener {
+    private static final String TAG = CatalogFragment.class.getSimpleName();
 
-    private static final String TAG = LogTagHelper.create(CatalogFragment.class);
+    private RecyclerView mGridView;
 
-    public enum SortPages {
-        RATING,
-        POPULARITY,
-        NEW_IN,
-        PRICE_UP,
-        PRICE_DOWN,
-        NAME,
-        BRAND,
-        DEFAULT
-    }
-
-    private static final String FILTER_VALUES_KEY = "filter_values";
-    private static final String FILTER_STATE_KEY = "filter_state";
-    private static final String TOTAL_KEY = "total_products";
-    private static final String TITLE_KEY = "title";
-    private static final String CURRENT_PAGE = "current_page";
-
-    public static String requestTag = "CTLG_REQUEST";
-    private static String PRODUCTS_LIST = "CTLG_PRODUCTS";
-
-    //private CatalogPagerAdapter mCatalogPagerAdapter;
-    private ViewPager mViewPager;
-    private ViewPager mFeaturedProductsViewPager;
-    private ViewPager mFeaturedBrandsViewPager;
-
-    // we save each page in a model
-    private ArrayList<String> mSortOptions;
-
-    private HashMap<String, Product> mProductsMap;
-    private int mTotalProducts = 0;
-
-    public static String productsURL;
-    public static String searchQuery;
-    public static String navigationPath;
-    public static String title;
-    public static int navigationSource;
-
-    private View mProductsButtonsContainer;
+    private TextView mSortButton;
 
     private View mFilterButton;
 
-    private ImageView mSwitchLayoutButton;
+    private View mColumnsButton;
 
-    private ArrayList<CatalogFilter> mCatalogFilter;
+    private View mTopButton;
 
-    private ArrayList<CatalogFilter> mOldCatalogFilterState;
+    private View mLoadingMore;
 
-    private ContentValues mCatalogFilterValues;
+    private String mCatalogUrl;
 
-    private boolean wasReceivedErrorEvent = false;
+    private String mSearchQuery;
 
-    private String[] mSavedOldCatalogData;
+    private String mBrandQuery;
 
-    private ContentValues mOldCatalogFilterValues;
+    private CatalogPage mCatalogPage;
 
-    public static boolean isNotShowingDialogFilter = true;
+    private String mTitle;
 
-    private boolean showList = true;
-    private Drawable mShowListDrawable;
-    private Drawable mShowGridDrawable;
+    private View mNoResultStub;
 
-    private int mSwitchMD5 = 0;
+    private View mWizardStub;
 
-    private SharedPreferences sharedPreferences;
+    private ContentValues mCurrentFilterValues = new ContentValues();
 
-    private View mWizardContainer;
+    private CatalogSort mSelectedSort = CatalogSort.POPULARITY;
 
-    private SlidingTabLayout mPagerTabStrip;
-
-    private int mSavedPagerPosition = 1; // POPULARITY
-
-    private SortPages currentPage = SortPages.DEFAULT;
-
-    private static final String FEATURED_BOX = "FEATURED_BOX";
-
-    private FeaturedBox mFeaturedBox;
-
-    protected static String categoryId = "";
-
-    protected static String categoryTree = "";
-
-    protected static boolean hasFilterApllied = false;
-
-    protected static Bundle filterParams;
-
-    protected static String firstCatalogRequest = "";
+    /**
+     * Create and return a new instance.
+     * @param bundle - arguments
+     */
+    public static CatalogFragment getInstance(Bundle bundle) {
+        CatalogFragment catalogFragment = new CatalogFragment();
+        catalogFragment.setArguments(bundle);
+        return catalogFragment;
+    }
 
     /**
      * Empty constructor
@@ -146,237 +102,212 @@ public class CatalogFragment extends BaseFragment implements OnClickListener, On
     public CatalogFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.layout.catalog_fragment_main,
-                0,
+                R.layout.catalog_fragment_main_new,
+                NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
-
-        mProductsMap = new HashMap<String, Product>();
     }
 
-    public static CatalogFragment getInstance(Bundle bundle) {
-        Log.i(TAG, "getInstance");
-        CatalogFragment catalogFragment = new CatalogFragment();
-
-        // Clean static data
-        categoryId = "";
-        categoryTree = "";
-        hasFilterApllied = false;
-        filterParams = null;
-        firstCatalogRequest = "";
-        if (bundle != null && bundle.containsKey(ConstantsIntentExtra.CATEGORY_ID)) {
-            if (bundle.containsKey(ConstantsIntentExtra.CATEGORY_ID)) {
-                categoryId = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
-            }
-            if (bundle.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME)) {
-                categoryTree = bundle.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
-            }
-        }
-
-        return catalogFragment;
-    }
-
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onCreate(android.os.Bundle)
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        title = "";
-        if (null != savedInstanceState && savedInstanceState.containsKey(PRODUCTS_LIST)) {
-            mTotalProducts = savedInstanceState.getInt(TOTAL_KEY);
-            ArrayList<Product> products = savedInstanceState.getParcelableArrayList(PRODUCTS_LIST);
-            for (Product prod : products) {
-                mProductsMap.put(prod.getSKU(), prod);
-            }
-        }
-
-        // Get saved state for filter
-        if (savedInstanceState != null) {
-            mCatalogFilter = savedInstanceState.getParcelableArrayList(FILTER_STATE_KEY);
-            mCatalogFilterValues = savedInstanceState.getParcelable(FILTER_VALUES_KEY);
-            title = savedInstanceState.getString(TITLE_KEY);
-            if (null != mCatalogFilterValues) {
-                Integer iMD5 = mCatalogFilterValues.getAsInteger("md5");
-                if (null != iMD5) {
-                    mFilterMD5 = iMD5;
-                }
-            }
-            currentPage = (SortPages) savedInstanceState.getSerializable(CURRENT_PAGE);
-        }
-
-        // Get FeatureBox
-        if (savedInstanceState != null && savedInstanceState.containsKey(FEATURED_BOX)) {
-            mFeaturedBox = savedInstanceState.getParcelable(FEATURED_BOX);
-        }
-
-        mShowListDrawable = getResources().getDrawable(R.drawable.selector_catalog_listview);
-        mShowGridDrawable = getResources().getDrawable(R.drawable.selector_catalog_gridview);
-
-        sharedPreferences = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        showList = sharedPreferences.getBoolean(ConstantsSharedPrefs.KEY_SHOW_LIST_LAYOUT, true);
-
+        // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
-
-        if (TextUtils.isEmpty(title)) {
-            Log.d("FILTER", "ONCREATE title:" + title);
-            title = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
-        }
-
-        productsURL = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-
-        if (TextUtils.isEmpty(firstCatalogRequest)) {
-            firstCatalogRequest = productsURL;
-        }
-
-        searchQuery = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
-
-        navigationSource = arguments.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, -1);
-
-        navigationPath = arguments.getString(ConstantsIntentExtra.NAVIGATION_PATH);
-
-        // only set currentPage if arguments exists and CATALOG_SORT_PAGE is defined
-        if (arguments != null) {
-            Object currentPageObject = arguments.getSerializable(ConstantsIntentExtra.CATALOG_PAGE);
-            if (currentPageObject != null && currentPageObject instanceof SortPages) {
-                currentPage = (SortPages) currentPageObject;
+        if(arguments != null) {
+            Log.i(TAG, "ARGUMENTS: " + arguments.toString());
+            mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
+            mCatalogUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
+            mSearchQuery = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
+            if(arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
+                mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             }
         }
-
-        // Save the current catalog data, used as a fall back
-        saveCurrentCatalogDataForFilters();
-        
+        // Get data from saved instance
+        if (savedInstanceState != null) {
+            Log.i(TAG, "SAVED STATE: " + savedInstanceState.toString());
+            mTitle = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_TITLE);
+            mCatalogUrl = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_URL);
+            mSearchQuery = savedInstanceState.getString(ConstantsIntentExtra.SEARCH_QUERY);
+            mCatalogPage = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_PAGE);
+            mCurrentFilterValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES);
+            mBrandQuery = savedInstanceState.getString(ConstantsIntentExtra.CATALOG_FILTER_BRAND);
+            mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
+        }
     }
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
+     * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");
-        
-        mSortOptions = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.products_picker)));
+        Log.i(TAG, "ON VIEW CRETED");
 
-        mViewPager = (ViewPager) view.findViewById(R.id.viewpager_products_list);
-        // Associate the listener to tab strip
-        // mViewPager.setOnPageChangeListener(onPageChangeListener);
+        // Load user preferences
+        boolean isToShowGridLayout = CustomerPreferences.getCatalogLayout(getBaseActivity());
+        int numberOfColumns = isToShowGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns;
 
-        mPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.catalog_pager_tag);
-        mPagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
-        //TODO Tests required due to listener behavior that slows down images downloads.
-        //mPagerTabStrip.setOnPageChangeListener(onPageChangeListener);
-
-        // Get wizard container
-        mWizardContainer = view.findViewById(R.id.tips_container);
-        // Get buttons container
-        mProductsButtonsContainer = view.findViewById(R.id.products_buttons_container);
-        // Get switch layout button
-        mSwitchLayoutButton = (ImageView) view.findViewById(R.id.products_switch_layout_button);
-        //mSwitchLayoutButton.setOnClickListener(this);
-        setSwitchLayoutButtonState(false);
-        // Set the switch layout button icon
-        setSwitchLayoutButtonIcon();
+        // Get sort button 
+        mSortButton = (TextView) view.findViewById(R.id.catalog_bar_button_sort);
         // Get filter button
-        mFilterButton = view.findViewById(R.id.products_list_filter_button);
-        // Set the button state if is selected or not
-        setFilterButtonState();
+        mFilterButton = view.findViewById(R.id.catalog_bar_button_filter);
+        // Get switch button
+        mColumnsButton = view.findViewById(R.id.catalog_bar_button_columns);
+        mColumnsButton.setOnClickListener(this);
+        mColumnsButton.setSelected(isToShowGridLayout);
+        // Get up button
+        mTopButton = view.findViewById(R.id.catalog_button_top);
+        mTopButton.setOnClickListener(this);
+        // Get feature box
+        mNoResultStub = view.findViewById(R.id.catalog_no_result_stub);
+        // Get wizard
+        mWizardStub = view.findViewById(R.id.catalog_wizard_stub);
+        // Get loading more
+        mLoadingMore = view.findViewById(R.id.catalog_loading_more);
+        // Get grid view
+        mGridView = (RecyclerView) view.findViewById(R.id.catalog_grid_view);
+        mGridView.setHasFixedSize(true);
+        GridLayoutManager manager = new GridLayoutManager(getBaseActivity(), getResources().getInteger(numberOfColumns));
+        manager.setSmoothScrollbarEnabled(true);
+        mGridView.setLayoutManager(manager);
+
+        mGridView.setOnScrollListener(new OnScrollListener() {
+
+            private int visibleItemCount;
+            private int total;
+            private int firstVisibleItem;
+            private int last;
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                // TODO Auto-generated method stub
+                super.onScrolled(recyclerView, dx, dy);
+
+                GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
+
+                int columns = manager.getSpanCount();
+
+                visibleItemCount = recyclerView.getChildCount();
+                total = manager.getItemCount();
+                firstVisibleItem = manager.findFirstVisibleItemPosition();
+                last = manager.findLastVisibleItemPosition();
+                
+                /*--
+                Log.i(TAG, "ON SCROLL: " +
+                		"CC:" + visibleItemCount + " " +
+                		"IC:" + totalItemCount + " " +
+                		"FI:" + firstVisibleItem + " " +
+                		"LI:" + lastVisibleItem);
+                 */
+
+                int page = mCatalogPage.getPage();
+                int max = mCatalogPage.getMaxPages();
+
+                //Log.i(TAG, "MAX PAGES: " + page + " " + max);
+
+                // Show or hide top button after 4 arrow
+                if(last > columns * 4) mTopButton.setVisibility(View.VISIBLE);
+                else  mTopButton.setVisibility(View.INVISIBLE);
+
+                // Load more items
+                if(page < max && last + 1 == total && !isLoadingMore()) {
+                    //
+                    showLoadingMore();
+                    //
+                    triggerGetPaginatedCalalog();
+                }
+
+            }
+
+            /*
+             * (non-Javadoc)
+             * @see android.support.v7.widget.RecyclerView.OnScrollListener#onScrollStateChanged(android.support.v7.widget.RecyclerView, int)
+             */
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                Log.i(TAG, "ON SCROLL STATE CHANGED: " + newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+                    RocketImageLoader.getInstance().stopProcessingQueue();
+                } else {
+                    RocketImageLoader.getInstance().startProcessingQueue();
+                }
+            }
+        });
+
     }
 
     /*
      * (non-Javadoc)
-     * 
+     * @see com.mobile.view.fragments.BaseFragment#onStart()
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "ON START");
+    }
+
+    /*
+     * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onResume()
      */
     @Override
     public void onResume() {
-        Log.d(TAG, "ON RESUME");
         super.onResume();
-
-        TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
-
-        setTitleAndOrSubTitle(title);
-
-        Log.i(TAG, "DATA :  " + productsURL + " " + searchQuery + " " + navigationSource + " " + navigationPath);
-
-        /*--
-         * If restored from a rotation on "Undefined search terms", mFeaturedBox will be filled
-         * Present "Undefined search terms" page without completing rest of onResume process
-         */
-        if (mFeaturedBox != null) {
-            onErrorSearchResult(mFeaturedBox);
-
-            return;
-        }
-
-        // Set catalog filters
-        if (mCatalogFilter != null) {
-            Log.i(TAG, "setFilterAction");
-            enableFilterButton();
-            setSwitchLayoutButtonState(true);
-        }
-
-//        if (mCatalogPagerAdapter == null) {
-//            Log.d(TAG, "ON RESUME: ADAPTER IS NULL");
-//            Bundle params = new Bundle();
-//            Log.d("FILTER", " ON RESUME 3 setTitle:" + title);
-//            params.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-//            params.putString(ConstantsIntentExtra.CONTENT_URL, productsURL);
-//            params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
-//            params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
-//            params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-//            params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
-//            mCatalogPagerAdapter = new CatalogPagerAdapter(getChildFragmentManager(), mViewPager.getId(), mSortOptions, params,
-//                    DeviceInfoHelper.isTabletInLandscape(getBaseActivity()));
-//        } else {
-//            Log.d(TAG, "ON RESUME: ADAPTER IS NOT NULL");
-//            mCatalogPagerAdapter.setLandscapeMode(DeviceInfoHelper.isTabletInLandscape(getBaseActivity()));
-//            int totalProducts = mCatalogPagerAdapter.getCatalogPageTotalItems(mViewPager.getCurrentItem());
-//            if (totalProducts > 0 && getView() != null) {
-//                TextView totalItems = (TextView) getView().findViewById(R.id.totalProducts);
-//                StringBuilder total = new StringBuilder(" (").append(totalProducts).append("  ").append(getString(R.string.shoppingcart_items)).append(") ");
-//                if (null != totalItems) {
-//                    totalItems.setText(total.toString());
-//                    totalItems.setVisibility(View.VISIBLE);
-//                }
-//            }
-//            mCatalogPagerAdapter.notifyDataSetChanged();
-//        }
-
-//        RocketImageLoader.getInstance().startProcessingQueue();
-//        mViewPager.setAdapter(mCatalogPagerAdapter);
-//        mPagerTabStrip.setViewPager(mViewPager);
-//        mViewPager.setOffscreenPageLimit(1);
-//        if (null != currentPage && currentPage != SortPages.DEFAULT) {
-//            mViewPager.setCurrentItem(currentPage.ordinal(), false);
-//            currentPage = SortPages.DEFAULT;
-//        } else {
-//            mViewPager.setCurrentItem(mSavedPagerPosition, false);
-//        }
-//        if (null != mCatalogPagerAdapter && null != mCatalogFilterValues) {
-//            mCatalogPagerAdapter.restoreFilters(mCatalogFilterValues);
-//        }
-        // Show tips
-        isToShowWizard();
+        Log.i(TAG, "ON RESUME");
+        // Case URL or QUERY is empty show continue shopping 
+        if(TextUtils.isEmpty(mCatalogUrl) && TextUtils.isEmpty(mSearchQuery)) showContinueShopping();
+        // Case catalog is null get catalog from URL
+        else if(mCatalogPage == null) triggerGetPaginatedCalalog();
+        // Case catalog was recover
+        else onRecoverCatalogContainer(mCatalogPage);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "ON SAVE INSTANCE STATE");
+        // Save the current content
+        outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
+        outState.putString(ConstantsIntentExtra.CONTENT_URL, mCatalogUrl);
+        outState.putString(ConstantsIntentExtra.SEARCH_QUERY, mSearchQuery);
+        outState.putParcelable(ConstantsIntentExtra.CATALOG_PAGE, mCatalogPage);
+        outState.putParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES, mCurrentFilterValues);
+        outState.putString(ConstantsIntentExtra.CATALOG_FILTER_BRAND, mBrandQuery);
+        outState.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort.ordinal());
+    }
+
+    /*
+     * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onPause()
      */
     @Override
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
-        if (mViewPager != null)
-            mSavedPagerPosition = mViewPager.getCurrentItem();
     }
 
     /*
      * (non-Javadoc)
-     * 
+     * @see com.mobile.view.fragments.BaseFragment#onStop()
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "ON PAUSE");
+    }
+
+    /*
+     * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onDestroyView()
      */
     @Override
@@ -387,577 +318,159 @@ public class CatalogFragment extends BaseFragment implements OnClickListener, On
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.mobile.view.fragments.BaseFragment#onDestroy()
      */
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
-
-        // Reset static values
-        mCatalogFilter = null;
-        mOldCatalogFilterState = null;
-//        mCatalogPagerAdapter = null;
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVED INSTANCE");
-        
-        outState.putParcelableArrayList(FILTER_STATE_KEY, mCatalogFilter);
-        outState.putParcelable(FILTER_VALUES_KEY, mCatalogFilterValues);
-        outState.putParcelableArrayList(PRODUCTS_LIST, new ArrayList<Product>(mProductsMap.values()));
-        outState.putInt(TOTAL_KEY, mTotalProducts);
-        outState.putString(TITLE_KEY, title);
-
-        // save current page to be restored after a rotation
-        if (mViewPager != null) {
-            int currentPage = mViewPager.getCurrentItem();
-            if (currentPage >= 0) {
-                outState.putSerializable(CURRENT_PAGE, SortPages.values()[currentPage]);
-            }
-        }
-
-        // Persist featureBox if exists
-        if (mFeaturedBox != null) {
-            outState.putParcelable(FEATURED_BOX, mFeaturedBox);
-        }
-    }
-
-    @Override
-    public void sendValuesToFragment(int identifier, Object values) {
-        // Update the product
-        Product product = mProductsMap.get(values);
-        if (null != product) {
-            if (BaseFragment.FRAGMENT_VALUE_SET_FAVORITE == identifier) {
-                product.getAttributes().setFavourite(true);
-            } else if (BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE == identifier) {
-                product.getAttributes().setFavourite(false);
-            }
-            // Indicates the to update the content
-//            if(mCatalogPagerAdapter != null) mCatalogPagerAdapter.notifyDataSetChanged();
-        }
-    }
-
+    
     /*
-     * ######## CATALOG FILTER ########
+     * ############## LAYOUT ##############
      */
+
     /**
-     * Method used to set the filter button.
-     * 
-     * @param filters
-     * @author sergiopereira
+     *
+     * @param catalogPage
      */
-    public void onSuccesLoadingFilteredCatalog(ArrayList<CatalogFilter> filters) {
-        // Validate the view
-        if (mFilterButton == null) {
-            Log.w(TAG, "FILTER VIEW IS NULL");
-            return;
-        }
-        // Validate the current filter object
-        if (mCatalogFilter != null) {
-            Log.w(TAG, "DISCARTED: CURRENT FILTER IS NOT NULL");
-            return;
-        }
-        // Validate the received data
-        if (filters == null) {
-            Log.w(TAG, "HIDE FILTERS: DATA IS NULL");
-            return;
-        }
-        // Validate the received data
-        if (filters.size() == 0) {
-            Log.w(TAG, "HIDE FILTERS: DATA IS EMPTY");
-            return;
-        }
-
-        Log.d(TAG, " ######## FILTER EXISTING  -> " + mCatalogFilterValues);
-
-        // Save filters
-        mCatalogFilter = filters;
-        // Restore the old state
-        matchFilterStateWithOldState();
-        // Save the current catalog data
-        saveCurrentCatalogDataForFilters();
-        // Set the button behavior
-        enableFilterButton();
-        setSwitchLayoutButtonState(true);
-        Log.i(TAG, "SAVED THE FILTER");
+    private void onRecoverCatalogContainer(CatalogPage catalogPage) {
+        Log.i(TAG, "ON RECOVER CATALOG");
+        // Set title bar
+        setTitleBar();
+        // Set sort button
+        setSortButton();
+        // Set filter button
+        setFilterButtonActionState(catalogPage.hasFilters());
+        // Set the filter button selected or not
+        setFilterButtonState();
+        // Create adapter new data
+        CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
+        adapter.setOnViewHolderClickListener(this);
+        mGridView.setAdapter(adapter);
+        // Validate loading more view 
+        if(isLoadingMore()) hideLoadingMore();
+        // Show container
+        showFragmentContentContainer();
+        // Validate if is to show wizard
+        isToShowWizard();
     }
 
     /**
-     * Method used to process the error event Show the old filter
-     * 
-     * @author sergiopereira
+     *
+     * @param catalogPage
      */
-    public synchronized void onErrorLoadingFilteredCatalog() {
-        // Process only one error event
-        if (wasReceivedErrorEvent) {
-            Log.w(TAG, "DISCARTED OTHER ERROR EVENT");
-            return;
+    private void onUpdateCatalogContainer(CatalogPage catalogPage) {
+        Log.i(TAG, "ON UPDATE CATALOG CONTAINER: " + catalogPage.getPage());
+
+        // Case first time save catalog
+        if(mCatalogPage == null) mCatalogPage = catalogPage;
+        // Case load more then update data or Case filter applied then replace the data
+        else mCatalogPage.update(catalogPage);
+
+        // Validate current catalog page
+        CatalogGridAdapter adapter = (CatalogGridAdapter) mGridView.getAdapter();
+        if(adapter == null) {
+            // Create adapter new data
+            adapter = new CatalogGridAdapter(getBaseActivity(), mCatalogPage.getProducts());
+            adapter.setOnViewHolderClickListener(this);
+            mGridView.setAdapter(adapter);
+            // Set filter button
+            setFilterButtonActionState(mCatalogPage.hasFilters());
+            // Set sort button
+            setSortButton();
         }
-        // Set the flag
-        wasReceivedErrorEvent = true;
-        // Restore the filter values for request
-        if (mOldCatalogFilterValues != null)
-            mCatalogFilterValues = mOldCatalogFilterValues;
-        // Show the old filter
-        if (mOldCatalogFilterState != null)
-            mCatalogFilter = mOldCatalogFilterState;
-        // Set listener
-        mFilterButton.setOnClickListener(this);
-        Log.d(TAG, "RECEIVED ERROR ON LOAD CATALOG WITH FILTERS");
-    }
-
-    /**
-     * Show suggestion page when no results are found
-     * 
-     * @param featuredBox
-     *            contains a list of featured products, a list of featured
-     *            brands and error messages
-     */
-    public synchronized void onErrorSearchResult(FeaturedBox featuredBox) {
-        Log.i(TAG, "ON ERROR SEARCH RESULT");
-        // Get current view
-        View view = getView();
-        // Validate
-        if (featuredBox != null && view != null) {
-            // Persist featureBox for future rotations
-            mFeaturedBox = featuredBox;
-            // hide default products list
-            view.findViewById(R.id.catalog_viewpager_container).setVisibility(View.GONE);
-            view.findViewById(R.id.no_results_search_terms).setVisibility(View.VISIBLE);
-
-            String errorMessage = featuredBox.getErrorMessage();
-            // only process errorMessage if is available
-            if (!TextUtils.isEmpty(errorMessage)) {
-                TextView textViewErrorMessage = (TextView) view.findViewById(R.id.no_results_search_error_message);
-
-                // set seachQuery in bold if it is converted
-                SpannableStringBuilder spannableErrorMessage = getSpannableErrorMessageWithOriginalSearchQuery(errorMessage, searchQuery);
-                if (spannableErrorMessage != null) {
-                    textViewErrorMessage.setText(spannableErrorMessage);
-                } else {
-                    textViewErrorMessage.setText(errorMessage);
-                }
-            }
-
-            String searchTips = featuredBox.getSearchTips();
-            // only process searchTips if is available
-            if (!TextUtils.isEmpty(searchTips)) {
-                view.findViewById(R.id.no_results_search_tips_layout).setVisibility(View.VISIBLE);
-                TextView textViewSearchTips = (TextView) view.findViewById(R.id.no_results_search_tips_text);
-                textViewSearchTips.setVisibility(View.VISIBLE);
-                // set searchTips in bold if is converted
-                SpannableStringBuilder spannableSearchTips = getSpannableSearchTips(searchTips);
-                if (spannableSearchTips != null) {
-                    textViewSearchTips.setText(spannableSearchTips);
-                } else {
-                    textViewSearchTips.setText(errorMessage);
-                }
-            }
-
-            // define how many items will be displayed on the viewPager
-            int partialSize = 3;
-            if (DeviceInfoHelper.isTabletInLandscape(getActivity())) {
-                partialSize = 5;
-            }
-
-            String productsTitle = featuredBox.getProductsTitle();
-            if (!TextUtils.isEmpty(productsTitle)) {
-                ((TextView) view.findViewById(R.id.featured_products_title)).setText(productsTitle);
-            }
-            
-            ArrayList<FeaturedItem> featureBoxProducts = featuredBox.getProducts();
-            if(featureBoxProducts != null && !featureBoxProducts.isEmpty()){
-                view.findViewById(R.id.featured_products).setVisibility(View.VISIBLE);
-                generateFeaturedProductsLayout(featureBoxProducts, partialSize);
-            }
-            
-            String brandsTitle = featuredBox.getBrandsTitle();
-            if (!TextUtils.isEmpty(brandsTitle)) {
-                ((TextView) view.findViewById(R.id.featured_brands_title)).setText(brandsTitle);
-            }
-            
-            ArrayList<FeaturedItem> featureBoxBrands = featuredBox.getBrands();
-            if(featureBoxBrands != null && !featureBoxBrands.isEmpty()){
-                view.findViewById(R.id.featured_brands).setVisibility(View.VISIBLE);
-                generateFeaturedBrandsLayout(featureBoxBrands, partialSize);
-            }
-
-            String noticeMessage = featuredBox.getNoticeMessage();
-            if (!TextUtils.isEmpty(noticeMessage)) {
-                ((TextView) view.findViewById(R.id.no_results_search_notice_message)).setText(noticeMessage);
-            }
-        } else {
-            Log.e(TAG, "No featureBox!");
-            showContinueShopping();
+        // Case load more append the new data
+        else if(isLoadingMore()) {
+            // Hide loading
+            hideLoadingMore();
+            // Append new data
+            adapter.notifyDataSetChanged();
+            //adapter.updateData(catalogPage.getProducts());
         }
-    }
-
-    /**
-     * get spannableErrorMessage with <code>searchQuery</code> (text between
-     * " ") replaced by original <code>searchQuery</code> and set in bold
-     * 
-     * @param errorMessage
-     * @param searchQuery
-     * @return <code>spannableErrorMessage</code> with original searchQuery set
-     *         in bold, or <code>null</code> if processing wasn't successful
-     */
-    private SpannableStringBuilder getSpannableErrorMessageWithOriginalSearchQuery(String errorMessage, String searchQuery) {
-        String startDelimiter = "\"";
-        String endDelimiter = "\"";
-        int startIndex = errorMessage.indexOf(startDelimiter);
-
-        // some countries use others delimiters. try alternative
-        if (startIndex == -1) {
-            startDelimiter = "« ";
-            endDelimiter = " »";
-            startIndex = errorMessage.indexOf(startDelimiter);
+        // Case filter applied/clean replace the current data
+        else {
+            // Replace the data
+            adapter.replaceData(mCatalogPage.getProducts());
         }
-        // if finds delimiter process errorMessage
-        if (startIndex > 0) {
-            int startDelimiterLength = startDelimiter.length();
-            int endDelimiterLength = endDelimiter.length();
-            int lastEndIndex = 0;
 
-            int endIndex = errorMessage.indexOf(endDelimiter, startIndex + startDelimiterLength);
-            // get last index of delimitier
-            while (endIndex > 0) {
-                lastEndIndex = endIndex;
-                endIndex = errorMessage.indexOf(endDelimiter, lastEndIndex + endDelimiterLength);
-            }
-            if (lastEndIndex > 0) {
-                // Validate search value
-                if (TextUtils.isEmpty(searchQuery))
-                    searchQuery = "";
+        // Set title bar
+        setTitleBar();
 
-                // create SpannableStringBuilder with searchQuery replaced by
-                // original
-                SpannableStringBuilder spannableErrorMessage = new SpannableStringBuilder();
-                spannableErrorMessage.append(errorMessage.substring(0, startIndex + startDelimiterLength));
-                spannableErrorMessage.append(searchQuery);
-                spannableErrorMessage.append(errorMessage.substring(lastEndIndex, errorMessage.length()));
+        Log.i(TAG, "########### SIZE: " + adapter.getItemCount());
 
-                // set searchQuery on bold
-                String newSearchQuery = startDelimiter + searchQuery + endDelimiter;
-                startIndex = spannableErrorMessage.toString().indexOf(newSearchQuery);
-                spannableErrorMessage.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), startIndex + startDelimiterLength, startIndex
-                        + searchQuery.length() + endDelimiterLength, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                return spannableErrorMessage;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * get spannableSearchtips with first line set in bold
-     * 
-     * @param searchTips
-     * @return <code>spannableSearchtips</code> with first line set in bold, or
-     *         <code>null</code> if processing wasn't successful
-     */
-    private SpannableStringBuilder getSpannableSearchTips(String searchTips) {
-        // set first line bold, if searchTips has multiple lines
-        if (searchTips.contains("\n")) {
-            int endIndex = searchTips.indexOf("\n");
-            if (endIndex > 0) {
-                // check if Country is Nigeria
-                SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-                if (sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, "en").contains("en_NG")) {
-                    // get next 2 paragraphs
-                    int newEndIndex = searchTips.indexOf("\n", endIndex + 1);
-                    if (newEndIndex > 0) {
-                        newEndIndex = searchTips.indexOf("\n", newEndIndex + 1);
-                        if (newEndIndex > 0) {
-                            endIndex = newEndIndex;
-                        }
-                    }
-                }
-                SpannableStringBuilder spannableSearchTips = new SpannableStringBuilder(searchTips);
-                spannableSearchTips.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                return spannableSearchTips;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Fill adapter with featured products
-     * 
-     * @param featuredProducts
-     */
-    private void generateFeaturedProductsLayout(ArrayList<FeaturedItem> featuredProducts, int partialSize) {
-        View mLoadingFeaturedProducts = getView().findViewById(R.id.loading_featured_products);
-        mFeaturedProductsViewPager = (ViewPager) getView().findViewById(R.id.featured_products_viewpager);
-        // try to use portrait layout if there are less products than what the
-        // default layout would
-        // present
-        if (featuredProducts.size() < partialSize) {
-            partialSize = 3;
-        }
-        FeaturedItemsAdapter mFeaturedProductsAdapter = new FeaturedItemsAdapter(getBaseActivity(), featuredProducts, LayoutInflater.from(getActivity()),
-                partialSize);
-        mFeaturedProductsViewPager.setAdapter(mFeaturedProductsAdapter);
-        mFeaturedProductsViewPager.setVisibility(View.VISIBLE);
-        mLoadingFeaturedProducts.setVisibility(View.GONE);
-    }
-
-    /**
-     * Fill adapter with featured brands
-     * 
-     * @param featuredBrandsList
-     */
-    private void generateFeaturedBrandsLayout(ArrayList<FeaturedItem> featuredBrandsList, int partialSize) {
-        View mLoadingFeaturedBrands = getView().findViewById(R.id.loading_featured_brands);
-        mFeaturedBrandsViewPager = (ViewPager) getView().findViewById(R.id.featured_brands_viewpager);
-        // try to use portrait layout if there are less brands than what the
-        // default layout would
-        // present
-        if (featuredBrandsList.size() < partialSize) {
-            partialSize = 3;
-        }
-        FeaturedItemsAdapter mFeaturedBrandsAdapter = new FeaturedItemsAdapter(getBaseActivity(), featuredBrandsList, LayoutInflater.from(getActivity()),
-                partialSize);
-        mFeaturedBrandsViewPager.setAdapter(mFeaturedBrandsAdapter);
-        mFeaturedBrandsViewPager.setVisibility(View.VISIBLE);
-        mLoadingFeaturedBrands.setVisibility(View.GONE);
-    }
-
-    private void showButtonsContainer() {
-        mProductsButtonsContainer.setVisibility(View.VISIBLE);
+        // Show container
+        showFragmentContentContainer();
+        // Validate if is to show wizard
+        isToShowWizard();
     }
 
     /**
      * Show tips if is the first time the user uses the app.
      */
     private void isToShowWizard() {
-        ViewPager viewPagerTips = (ViewPager) mWizardContainer.findViewById(R.id.viewpager_tips);
-        Log.d(TAG, " --- TEST isToShowWizard -> " + WizardPreferences.isFirstTime(getBaseActivity(), WizardType.CATALOG));
-        if (WizardPreferences.isFirstTime(getBaseActivity(), WizardType.CATALOG)) {
-
-            viewPagerTips.setVisibility(View.VISIBLE);
-            viewPagerTips.bringToFront();
-
-            int[] tipsPages = { R.layout.products_tip_swipe_layout, R.layout.products_tip_favourite_layout };
-            TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(getBaseActivity(), getBaseActivity().getLayoutInflater(), mWizardContainer, tipsPages);
-            viewPagerTips.setAdapter(mTipsPagerAdapter);
-            viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(mWizardContainer, tipsPages));
-            viewPagerTips.setCurrentItem(0);
-            ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.VISIBLE);
-            ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator)).setOnClickListener(this);
-            Log.d(TAG, " --- TEST isToShowWizard -> Finished");
-        } else {
-            viewPagerTips.setVisibility(View.GONE);
+        try {
+            if (WizardPreferences.isFirstTime(getBaseActivity(), WizardPreferences.WizardType.CATALOG)) {
+                Log.i(TAG, "SHOW WIZARD");
+                // Inflate view in stub
+                mWizardStub.setVisibility(View.VISIBLE);
+                // Show
+                showWizard();
+            }
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON SHOW WIZARD" , e);
+            mWizardStub.setVisibility(View.GONE);
         }
     }
 
-    private int mFilterMD5 = 0;
-
-    /**
-     * Process the filter values
-     * 
-     * @param filterValues
-     * @author sergiopereira
-     */
-    public void onSubmitFilterValues(ContentValues filterValues) {
-        // Tracking
-        trackingCatalogFilters(filterValues);
-        // Save the old data to restore in case of error event
-        mOldCatalogFilterValues = mCatalogFilterValues;
-        // Save the current filter values
-        mCatalogFilterValues = filterValues;
-        // Contains the new product URL (Category filter)
-//        if (filterValues.containsKey(GetProductsHelper.PRODUCT_URL)) {
-//            // Get product URL and remove it
-//            productsURL = filterValues.getAsString(GetProductsHelper.PRODUCT_URL);
-//            mCatalogFilterValues.put(GetProductsHelper.PRODUCT_URL, "");
-//            // Save the new filters to restore
-//            mOldCatalogFilterState = mCatalogFilter;
-//            // Clean the current category values
-//            mCatalogFilter = null;
-//            searchQuery = null;
-//            title = null;
-//            mFilterButton.setOnClickListener(null);
-//        }
-//        // Send the last saved catalog data that works
-//        else if (mSavedOldCatalogData != null) {
-//            // productsURL = mSavedOldCatalogData[0];
-//            productsURL = firstCatalogRequest;
-//            searchQuery = mSavedOldCatalogData[1];
-//            navigationPath = mSavedOldCatalogData[2];
-//            // title = mSavedOldCatalogData[3];
-//        }
-//
-//        // Contains the new search query (Brand filter)
-//        if (filterValues.containsKey(GetProductsHelper.SEARCH_QUERY)) {
-//            searchQuery = filterValues.getAsString(GetProductsHelper.SEARCH_QUERY);
-//            // Used to indicate that has filter q=<BRAND>
-//            mCatalogFilterValues.put(GetProductsHelper.SEARCH_QUERY, "");
-//        }
-
-        Log.i(TAG, "Updating totalUpdates: " + mSwitchMD5);
-        mFilterMD5++;
-        mCatalogFilterValues.put("md5", mFilterMD5);
-
-        // Set the filter button selected or not
-        setFilterButtonState(); // size
-        // Error flag
-        wasReceivedErrorEvent = false;
-
-        mProductsMap = new HashMap<String, Product>();
-
-        Bundle params = new Bundle();
-        params.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-        params.putString(ConstantsIntentExtra.CONTENT_URL, productsURL);
-        params.putString(ConstantsIntentExtra.SEARCH_QUERY, searchQuery);
-        params.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, navigationSource);
-        params.putString(ConstantsIntentExtra.NAVIGATION_PATH, navigationPath);
-//        params.putParcelable(CatalogPageFragment.PARAM_FILTERS, mCatalogFilterValues);
-//
-//        hasFilterApllied = true;
-//
-//        filterParams = params;
-//        Log.d(TAG, " ----> FILTER TITLE :" + title);
-//
-//        mCatalogPagerAdapter.updateParametersBundle(params);
-//        mCatalogPagerAdapter.resetClearProduct();
-//        mCatalogPagerAdapter.notifyDataSetChanged();
-
+    private void showWizard() {
+        // Get view
+        View view = getView();
+        // Get view and set wizard
+        ViewPager viewPagerTips = (ViewPager) view.findViewById(R.id.catalog_wizard_viewpager);
+        int[] tipsPages = { R.layout.products_tip_favourite_layout };
+        TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(getBaseActivity(), getBaseActivity().getLayoutInflater(), view, tipsPages);
+        viewPagerTips.setAdapter(mTipsPagerAdapter);
+        viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(view, tipsPages));
+        viewPagerTips.setCurrentItem(0);
+        view.findViewById(R.id.catalog_wizard_button_ok).setOnClickListener(this);
     }
 
     /**
-     * Tracking catalog filter values
-     * @param filterValues
+     *
      */
-    private void trackingCatalogFilters(ContentValues filterValues) {
-        // Copy the content values for tracking
-        TrackerDelegator.trackCatalogFilter(new ContentValues(filterValues));
+    private void setTitleBar() {
+        getBaseActivity().setTitleAndSubTitle(mTitle, "(" + String.valueOf(mCatalogPage.getTotal()) + ")");
     }
 
     /**
-     * Save the current data to create a fall back point in case some request
-     * filtered return error
-     * 
+     * Set the sort button with the current sort selection
      * @author sergiopereira
      */
-    private void saveCurrentCatalogDataForFilters() {
-        mSavedOldCatalogData = new String[4];
-        mSavedOldCatalogData[0] = productsURL;
-        mSavedOldCatalogData[1] = searchQuery;
-        mSavedOldCatalogData[2] = navigationPath;
-        mSavedOldCatalogData[3] = title;
+    private void setSortButton() {
+        mSortButton.setText(getString(mSelectedSort.name));
+        mSortButton.setOnClickListener(this);
     }
 
     /**
-     * Method used to restore the old filter state when is performed a query
-     * filtered by a new category. Match the old selection with the new filter
-     * option.
-     * 
+     * Set the filter button state, to show as selected or not
+     *
      * @author sergiopereira
      */
-    private void matchFilterStateWithOldState() {
-        Log.i(TAG, "RESTORE THE OLD SELECTED STATE");
-        CatalogFilter oldFilter;
-        // Validate the old filter state
-        if (mOldCatalogFilterState != null)
-            // Restore the filter if match with the old
-            for (CatalogFilter newFilter : mCatalogFilter) {
-                Log.i(TAG, "RESTORE FILTER: " + newFilter.getName());
-                // Locate the old filter
-                oldFilter = locateFilter(mOldCatalogFilterState, newFilter.getId());
-                // Validate old filter
-                if (oldFilter != null) {
-                    // Case generic filter
-                    if (oldFilter.hasOptionSelected())
-                        // Locate selected options and save
-                        newFilter.setSelectedOption(locateOption(newFilter.getFilterOptions(), oldFilter.getSelectedOption()));
-                    // Case price filter
-                    else if (oldFilter.hasRangeValues()) {
-                        // Save the range
-                        newFilter.setRangeValues(oldFilter.getMinRangeValue(), oldFilter.getMaxRangeValue());
-                    }
-                }
-            }
-        else
-            Log.i(TAG, "OLD SELECTED STATE IS NULL");
-    }
-
-    /**
-     * Locate the current options in the old selected options and save the old
-     * value.
-     * 
-     * @param newOptions
-     * @param oldOptions
-     * @return The match of the selected options
-     * @author sergiopereira
-     */
-    private SparseArray<CatalogFilterOption> locateOption(ArrayList<CatalogFilterOption> newOptions, SparseArray<CatalogFilterOption> oldOptions) {
-        // Array to save the selected options
-        SparseArray<CatalogFilterOption> selectedOptions = new SparseArray<CatalogFilterOption>();
-        // Loop filter options
-        for (int i = 0; i < newOptions.size(); i++) {
-            CatalogFilterOption curOption = newOptions.get(i);
-            // Loop old selected options
-            for (int j = 0; j < oldOptions.size(); j++) {
-                CatalogFilterOption selectedOption = oldOptions.valueAt(j);
-                // If has the same value
-                if (curOption.getLabel().equals(selectedOption.getLabel())) {
-                    // Set option as selected and save it
-                    curOption.setSelected(true);
-                    selectedOptions.put(i, curOption);
-                    break;
-                }
-            }
+    private void setFilterButtonState() {
+        try {
+            mFilterButton.setSelected(mCurrentFilterValues.size() > 0);
+            Log.d(TAG, "SET FILTER BUTTON STATE: " + mFilterButton.isSelected());
+        } catch (NullPointerException e) {
+            Log.w(TAG, "BUTTON OR VALUE IS NULL", e);
         }
-        return selectedOptions;
     }
 
     /**
-     * Locate the current filter.
-     * 
-     * @param array
-     * @param id
-     * @return The old filter with saved state
+     * Set button state when catalog show no internet connection error
      * @author sergiopereira
      */
-    private CatalogFilter locateFilter(ArrayList<CatalogFilter> array, String id) {
-        for (CatalogFilter item : array)
-            if (item.getId().equals(id))
-                return item;
-        return null;
-    }
-
-    /**
-     * Set the behavior for filter button
-     * 
-     * @author sergiopereira
-     */
-    private void enableFilterButton() {
-        // Show buttons container
-        showButtonsContainer();
-        // Set listener
-        mFilterButton.setVisibility(View.VISIBLE);
-        mFilterButton.setOnClickListener(null);
-        mFilterButton.setOnClickListener(this);
-    }
-
-    /**
-     * Set the behavior for filter button
-     * 
-     * @author sergiopereira
-     */    
-    public void disableFilterButton() {
-        if (mFilterButton != null) mFilterButton.setOnClickListener(null);
-    }
-
-    /**
-     * set button state when catalog show no internet connection error
-     */
-    public void setFilterButtonState(boolean selectable){
+    private void setFilterButtonActionState(boolean selectable){
         if (mFilterButton != null) {
             if (!selectable) {
                 mFilterButton.setOnClickListener(null);
@@ -968,208 +481,378 @@ public class CatalogFragment extends BaseFragment implements OnClickListener, On
             }
         }
     }
+
     /**
-     * Set the filter button state, to show as selected or not
-     * 
+     * Validate if is loading more data.
+     * @return true or false
      * @author sergiopereira
      */
-    private void setFilterButtonState() {
-        try {
-            // Contains md5
-            mFilterButton.setSelected((mCatalogFilterValues.size() == 1) ? false : true);
-            Log.d(TAG, "SET FILTER BUTTON STATE: " + mFilterButton.isSelected());
-        } catch (NullPointerException e) {
-            Log.w(TAG, "BUTTON OR VALUE IS NULL", e);
-        }
+    private boolean isLoadingMore() {
+        return mLoadingMore.getVisibility() == View.VISIBLE;
     }
 
     /**
-     * Set the switch layout button icon (show the opposite icon)
+     * Show the loading more.
+     * @author sergiopereira
      */
-    private void setSwitchLayoutButtonIcon() {
-        try {
-            if (showList) {
-                mSwitchLayoutButton.setImageDrawable(mShowGridDrawable);
-            } else {
-                mSwitchLayoutButton.setImageDrawable(mShowListDrawable);
-            }
-            Log.i(TAG, "SET SWITCH LAYOUT BUTTON STATE: " + mSwitchLayoutButton.isSelected());
-        } catch (NullPointerException e) {
-            Log.w(TAG, "BUTTON OR VALUE IS NULL", e);
-        }
+    private void showLoadingMore() {
+        mLoadingMore.setVisibility(View.VISIBLE);
     }
 
     /**
-     * Change the state of the switch layout button.
+     * Hide the loading more.
+     * @author sergiopereira
      */
-    private void setSwitchLayoutButtonState(boolean selectable) {
-        if (mSwitchLayoutButton != null) {
-            if (!selectable) {
-                mSwitchLayoutButton.setOnClickListener(null);
-                mSwitchLayoutButton.setEnabled(false);
-            } else {
-                mSwitchLayoutButton.setOnClickListener(this);
-                mSwitchLayoutButton.setEnabled(true);
+    private void hideLoadingMore() {
+        mLoadingMore.setVisibility(View.GONE);
+    }
+
+    /**
+     *
+     * @author sergiopereira
+     */
+    private void showFilterNoResult() {
+        Log.i(TAG, "ON SHOW FILTER NO RESULT");
+        // Set title // TODO:
+        getBaseActivity().setSubTitle(" (" + 0 + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
+        // Show layout
+        showFragmentEmpty(R.string.catalog_no_results, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "ON CLICK: FILTER BUTTON");
+                onClickFilterButton();
             }
+        });
+    }
+
+    /**
+     *
+     * @param featuredBox
+     */
+    private void showFeaturedBoxNoResult(FeaturedBox featuredBox) {
+        Log.i(TAG, "ON SHOW FEATURED BOX");
+        // Inflate view
+        mNoResultStub.setVisibility(View.VISIBLE);
+        // Show featured box
+        if(FeaturedBoxHelper.show(this, mSearchQuery, featuredBox)) {
+            // Case success show container
+            showFragmentContentContainer();
+        } else {
+            // Case fail show continue
+            Log.e(TAG, "No featureBox!");
+            showContinueShopping();
         }
     }
-    
-    /**
-     * Disable catalog buttons.
-     * @author sergiopereira
+
+    /*
+     * ############## LISTENERS ##############
      */
-    public void disableCatalogButtons() {
-        setSwitchLayoutButtonState(false);
-        setFilterButtonState(false);
-    }
-    
-    /**
-     * Enable catalog buttons.
-     * @author sergiopereira
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
      */
-    public void enableCatalogButtons() {
-        setSwitchLayoutButtonState(true);
-        setFilterButtonState(true);
+    @Override
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        onResume();
     }
 
     /*
      * (non-Javadoc)
-     * 
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
      */
     @Override
-    public void onClick(final View v) {
-        // Get the view id
-        int id = v.getId();
-        // Validate the click
-        if (id == R.id.products_list_filter_button && isNotShowingDialogFilter) {           
-            Log.d(TAG, "ON CLICK: FILTER BUTTON");
-            isNotShowingDialogFilter = false;
-            // Validate current catalog filter
-            if(mCatalogFilter == null) return;
-            // TODO: Validate if is necessary Filter as static
-            try {
-                // Show dialog
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogFilter);
-                DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
-                newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
-            } catch (NullPointerException e) {
-                Log.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
-            }
-            
-        } else if (id == R.id.viewpager_tips_btn_indicator) {
-            WizardPreferences.changeState(getBaseActivity(), WizardType.CATALOG);
-            mWizardContainer.findViewById(R.id.viewpager_tips).setVisibility(View.GONE);
-            ((LinearLayout) mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator)).setVisibility(View.GONE);
+    protected void onRetryRequest(EventType eventType) {
+        onResume();
+    }
 
-        } else if (id == R.id.products_switch_layout_button) {
-            Log.d(TAG, "ON CLICK: SWITCH LAYOUT BUTTON");
-            v.setEnabled(false);
-
-            showList = !showList;
-
-            // Track
-            TrackerDelegator.trackCatalogSwitchLayout((showList) ? "list" : "grid");
-
-            // Save current layout used
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_LIST_LAYOUT, showList);
-            editor.commit();
-
-            setSwitchLayoutButtonIcon();
-
-            // Update switch md5
-            mSwitchMD5++;
-            Log.i(TAG, "Updating totalUpdates: " + mSwitchMD5);
-
-//            // Redraw layout
-//            mCatalogPagerAdapter.notifyDataSetChanged();
-
-            v.setEnabled(true);
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.interfaces.OnViewHolderClickListener#onViewHolderClick(android.support.v7.widget.RecyclerView.Adapter, android.view.View, int)
+     */
+    @Override
+    public void onViewHolderClick(Adapter<?> adapter, View view, int position, Object extra) {
+        // Get item
+        Product product = ((CatalogGridAdapter) adapter).getItem(position);
+        // Call Product Details        
+        if (product != null) {
+            // Show product
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, product.getUrl());
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
+            bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
+            // Goto PDV
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            Toast.makeText(getBaseActivity(), R.string.error_occured, Toast.LENGTH_SHORT).show();
         }
     }
 
-    public boolean getShowList() {
-        return showList;
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClick(android.view.View)
+     */
+    @Override
+    public void onClick(View view) {
+        Log.i(TAG, "ON CLICK VIEW");
+        // Get id
+        int id = view.getId();
+        // Case sort button
+        if(id == R.id.catalog_bar_button_sort) onClickSortButton();
+        // Case filter button
+        else if(id == R.id.catalog_bar_button_filter) onClickFilterButton();
+        // Case columns button
+        else if(id == R.id.catalog_bar_button_columns) onClickSwichColumnsButton(view);
+        // Case top button
+        else if(id == R.id.catalog_button_top) onClickScrollTopButton();
+        // Case wizard
+        else if(id == R.id.catalog_wizard_button_ok) onClickWizardButton();
+        // Case default
+        else super.onClick(view);
     }
 
-    public int getSwitchMD5() {
-        return mSwitchMD5;
+    /**
+     *
+     */
+    private void onClickWizardButton() {
+        Log.i(TAG, "ON CLICK FILTER BUTTON");
+        WizardPreferences.changeState(getBaseActivity(), WizardPreferences.WizardType.CATALOG);
+        mWizardStub.setVisibility(View.GONE);
     }
 
-    public String getSortTitle(int index) {
-        return index < mSortOptions.size() ? mSortOptions.get(index) : "";
+    /**
+     *
+     */
+    private void onClickFilterButton() {
+        Log.i(TAG, "ON CLICK FILTER BUTTON");
+        try {
+            // Show dialog
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogPage.getFilters());
+            DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
+            newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
+        }
     }
 
-    public Product getProduct(String sku) {
-        return mProductsMap.get(sku);
+    /**
+     * Process the filter values
+     *
+     * @param filterValues
+     * @author sergiopereira
+     */
+    public void onSubmitFilterValues(ContentValues filterValues) {
+        Log.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
+        // TODO: Validate new filterValues and current are the same
+        // Contains the new search query (Brand filter)
+        if (filterValues.containsKey(DialogFilterFragment.BRAND)) {
+            // Used to indicate that has filter q=<BRAND>
+            mBrandQuery = filterValues.getAsString(DialogFilterFragment.BRAND);
+        } // Clean brand filter
+        else {
+            mBrandQuery = null;
+        }
+        // Save the current filter values
+        mCurrentFilterValues = filterValues;
+        // Set the filter button selected or not
+        setFilterButtonState();
+        // Get new catalog
+        triggerGetFilteredOrSortedCatalog();
     }
 
-    public void setCatalogTitle(String title) {
-        getBaseActivity().setTitle(title);
+    /**
+     * Process the click on Columns button
+     * @param view
+     */
+    private void onClickSwichColumnsButton(View view) {
+        Log.i(TAG, "ON CLICK COLUMNS BUTTON");
+        // Case selected is showing the GRID LAYOUT and the LIST ICON
+        boolean isShowingGridLayout = view.isSelected();
+        // Save user preference 
+        CustomerPreferences.saveCatalogLayout(getBaseActivity(), !isShowingGridLayout);
+        // Update the icon
+        view.setSelected(!isShowingGridLayout);
+        // Update the columns and layout
+        int numberOfColumns = isShowingGridLayout ? R.integer.catalog_list_num_columns : R.integer.catalog_grid_num_columns;
+        GridLayoutManager manager = (GridLayoutManager) mGridView.getLayoutManager();
+        manager.setSpanCount(getResources().getInteger(numberOfColumns));
+        manager.requestLayout();
+        ((CatalogGridAdapter) mGridView.getAdapter()).updateLayout(!isShowingGridLayout);
+    }
+
+    /**
+     *
+     */
+    private void onClickScrollTopButton() {
+        Log.i(TAG, "ON CLICK SCROLL TOP BUTTON");
+        // TODO
+        mGridView.smoothScrollToPosition(0);
+    }
+
+    /**
+     *
+     */
+    private void onClickSortButton() {
+        Log.i(TAG, "ON CLICK SORT BUTTON");
+        // Create array list of strings
+        ArrayList<String> mSortOptions = new ArrayList<String>();
+        for (CatalogSort sort : CatalogSort.values()) {
+            mSortOptions.add(getString(sort.name));
+        }
+        // Show dialog
+        DialogListFragment
+        .newInstance(this, (OnDialogListListener) this, "sort", getString(R.string.sort_by), mSortOptions, mSelectedSort.ordinal())
+        .show(getChildFragmentManager(), null);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener#onDialogListItemSelect(java.lang.String, int, java.lang.String)
+     */
+    @Override
+    public void onDialogListItemSelect(String id, int position, String value) {
+        // Get selected sort position
+        mSelectedSort  = CatalogSort.values()[position];
+        // Set sort button
+        setSortButton();
+        // Get new data
+        triggerGetFilteredOrSortedCatalog();
     }
     
-    public void addProductsCollection(Map<String, Product> products, String categoryTitle, int totalProductsCount) {
-        title = categoryTitle;
-        mTotalProducts = totalProductsCount;
-        mProductsMap.putAll(products);
+    /*
+     * ############## TRIGGERS ##############
+     */
+    /**
+     *
+     */
+    private void triggerGetFilteredOrSortedCatalog() {
+        // Get first page
+        triggerGetCatalogPage(GetCatalogPageHelper.INITIAL_PAGE_NUMBER);
+    }
 
-        setTitleAndOrSubTitle(title);
+    /**
+     *
+     */
+    private void triggerGetPaginatedCalalog() {
+        // Get next page
+        int page = mCatalogPage == null ? GetCatalogPageHelper.INITIAL_PAGE_NUMBER : mCatalogPage.getPage() + 1;
+        // Get catalog page
+        triggerGetCatalogPage(page);
+    }
 
-        Bundle args = getArguments();
-        if (null != args) {
-            args.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
+    /**
+     * Trigger used to get a catalog.<br>
+     * Is sent the URL, arguments and indication to save or not related items.
+     * @author sergiopereira
+     */
+    private void triggerGetCatalogPage(int page) {
+        Log.i(TAG, "TRIGGER GET PAGINATED CATALOG");
+        // Create catalog request parameters
+        ContentValues catalogValues = new ContentValues();
+        catalogValues.put(GetCatalogPageHelper.QUERY, TextUtils.isEmpty(mBrandQuery) ? mSearchQuery : mBrandQuery);
+        catalogValues.put(GetCatalogPageHelper.PAGE, page);
+        catalogValues.put(GetCatalogPageHelper.MAX_ITEMS, GetCatalogPageHelper.MAX_ITEMS_PER_PAGE);
+        catalogValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
+        catalogValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+        catalogValues.putAll(mCurrentFilterValues);
+
+        // Create bundle with url and parameters
+        Bundle bundle = new Bundle();
+        bundle.putString(GetCatalogPageHelper.URL, mCatalogUrl);
+        bundle.putParcelable(GetCatalogPageHelper.CATALOG_ARGUMENTS, catalogValues);
+        bundle.putBoolean(GetCatalogPageHelper.SAVE_RELATED_ITEMS, saveRelatedItems(page));
+
+        // Case initial request or load more
+        if(page == GetCatalogPageHelper.INITIAL_PAGE_NUMBER) {
+            triggerContentEvent(new GetCatalogPageHelper(), bundle, this);
+        } else {
+            triggerContentEventNoLoading(new GetCatalogPageHelper(), bundle, this);
+        }
+    }
+
+    /**
+     * Validate if is to save some request items as related items.
+     * @param page
+     * @return true or false
+     * @author sergiopereira
+     */
+    private boolean saveRelatedItems(int page) {
+        try {
+            // Is to save related items in case popularity sort, first page and not filter applied
+            return  mCurrentFilterValues.size() == 0 &&
+                    mSelectedSort.ordinal() == CatalogSort.POPULARITY.ordinal() &&
+                    page == GetCatalogPageHelper.INITIAL_PAGE_NUMBER;
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+    
+    /*
+     * ############## RESPONSES ##############
+     */
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
+     */
+    @Override
+    public void onRequestComplete(Bundle bundle) {
+        Log.i(TAG, "ON SUCCESS");
+        // Validate fragment state
+        if (isOnStoppingProcess){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
         }
 
-    }
-    
-    // Set Title or subtitle
-    public void setTitleAndOrSubTitle(String title){
-        if (mTotalProducts > 0)
-            getBaseActivity().setTitleAndSubTitle(title,
-                    " (" + String.valueOf(mTotalProducts) + "  " + getBaseActivity().getString(R.string.shoppingcart_items) + ") ");
-        else
-            getBaseActivity().setTitle(title);
-    }
-    
-    
-//    public void invalidatePages() {
-//        CatalogPagerAdapter adapter = (CatalogPagerAdapter) mViewPager.getAdapter();
-//        if (null != adapter) {
-//            adapter.invalidateCatalogPages();
-//            adapter.notifyDataSetChanged();
-//        }
-//    }
-
-    public ArrayList<CatalogFilter> getCatalogFilter() {
-        return mCatalogFilter;
+        // TODO : Validate a null response
+        CatalogPage catalogPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        Log.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
+        onUpdateCatalogContainer(catalogPage);
     }
 
-    // ---------------------------------------------------------------
-    // ----- Listeners
-    // ---------------------------------------------------------------
 
-//    private OnPageChangeListener onPageChangeListener = new OnPageChangeListener() {
-//
-//        @Override
-//        public void onPageSelected(int position) {
-//            Log.d("FILTER","onPageSelected position:"+position);
-//        }
-//
-//        @Override
-//        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//            // ...
-//        }
-//
-//        @Override
-//        public void onPageScrollStateChanged(int state) {
-//            if (state == ViewPager.SCROLL_STATE_IDLE) {
-//                RocketImageLoader.getInstance().startProcessingQueue();
-//            } else {
-//                RocketImageLoader.getInstance().stopProcessingQueue();
-//            }
-//
-//        }
-//    };
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
+     */
+    @Override
+    public void onRequestError(Bundle bundle) {
+        Log.i(TAG, "ON ERROR: " + mCurrentFilterValues.toString());
+        // Validate fragment state
+        if (isOnStoppingProcess){
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        // Get error code
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        int type = bundle.getInt(Constants.BUNDLE_OBJECT_TYPE_KEY);
+        // Case error on load more data
+        if(isLoadingMore()) {
+            // TODO: improve the method to mark the loading more error
+            // Hide loading
+            hideLoadingMore();
+            // Show respective warning
+            if (errorCode == ErrorCode.SERVER_IN_MAINTENANCE) super.handleErrorEvent(bundle);
+            else if (errorCode == ErrorCode.NO_NETWORK) ToastFactory.ERROR_NO_CONNECTION.show(getBaseActivity());
+            else ToastFactory.ERROR_CATALOG_LOAD_MORE.show(getBaseActivity());
+        }
+        // Case error on request data with filters
+        else if(mCurrentFilterValues != null && mCurrentFilterValues.size() > 0) {
+            Log.i(TAG, "ON SHOW FILTER NO RESULT");
+            showFilterNoResult();
+        }
+        // Case error on request data without filters
+        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && type == GetCatalogPageHelper.FEATURE_BOX_TYPE) {
+            Log.i(TAG, "ON SHOW NO RESULT");
+            // Get feature box
+            FeaturedBox featuredBox = (FeaturedBox) bundle.get(Constants.BUNDLE_RESPONSE_KEY);
+            // Show no result layout
+            showFeaturedBoxNoResult(featuredBox);
+        }
+        // Case network errors
+        else if (super.handleErrorEvent(bundle));
+        // Case unexpected eror
+        else showContinueShopping();
+    }
+
 }

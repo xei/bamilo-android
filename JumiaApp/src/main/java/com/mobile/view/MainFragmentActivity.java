@@ -24,6 +24,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.PreferenceListFragment.OnPreferenceAttachedListener;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
+import com.mobile.view.fragments.CatalogFragment;
 import com.mobile.view.fragments.CategoriesCollectionFragment;
 import com.mobile.view.fragments.CheckoutAboutYouFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
@@ -43,7 +44,6 @@ import com.mobile.view.fragments.MyAccountEmailNotificationFragment;
 import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
-import com.mobile.view.fragments.NewCatalogFragment;
 import com.mobile.view.fragments.ProductDetailsDescriptionFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -302,7 +302,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             fragment = CategoriesCollectionFragment.getInstance(bundle);
             break;
         case CATALOG:
-            fragment = NewCatalogFragment.getInstance(bundle);
+            fragment = CatalogFragment.getInstance(bundle);
             break;
         case PRODUCT_DETAILS:
             fragment = ProductDetailsFragment.getInstance(bundle);

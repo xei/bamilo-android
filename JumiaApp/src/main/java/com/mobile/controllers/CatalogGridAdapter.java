@@ -174,9 +174,9 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
     
     /**
      * Set the favourite view.
-     * @param holder
-     * @param item
-     * @param position
+     * @param holder - the view holder
+     * @param item - the product
+     * @param position - the current position
      * @author sergiopereira
      */
     private void setFavourite(ProductViewHolder holder, Product item, int position) {
@@ -187,13 +187,13 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
     
     /**
      * Set the product price.
-     * @param holder
-     * @param item
+     * @param holder - the view holder
+     * @param item - the product
      * @author sergiopereira
      */
     private void setProductPrice(ProductViewHolder holder, Product item) {
         // Case discount
-        if(item.hasSpecialPrice()) {
+        if(item.hasDiscountPercentage()) {
             holder.discount.setText(item.getSpecialPrice());
             holder.price.setText(item.getPrice());
             holder.percentage.setText("-" + item.getMaxSavingPercentage().intValue() + "%");

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:holo="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/title_container"
@@ -17,7 +16,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/datepicker_title"
-            style="@style/dialog_title"
+            style="@style/dialog_header"
             android:gravity="center_horizontal" />
     </LinearLayout>
 

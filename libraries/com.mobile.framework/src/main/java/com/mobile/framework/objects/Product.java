@@ -11,7 +11,6 @@ package com.mobile.framework.objects;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 import com.mobile.framework.interfaces.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
@@ -225,8 +224,8 @@ public class Product implements IJSONSerializable, Parcelable {
     /**
      * Validate if product has special price
      */
-    public boolean hasSpecialPrice() {
-        return TextUtils.isEmpty(getSpecialPrice());
+    public boolean hasDiscountPercentage() {
+        return getMaxSavingPercentage() > 0;
     }
 
     /**
