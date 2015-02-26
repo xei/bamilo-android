@@ -103,7 +103,7 @@ android {
             debuggable true
             minifyEnabled false
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-project.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-live.txt'
         }
 
 
@@ -111,6 +111,7 @@ android {
             manifestPlaceholders = [ AdjustEnvironment:"production" ]
             minifyEnabled true
             shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
 
         }
     }
@@ -127,56 +128,48 @@ android {
 
         blackberry {
             flavorDimension "operatingsystem"
-            proguardFile 'proguard-project.txt'
         }
 
         jumia {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaSigning
             resConfigs "en", "fr", "pt"
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
         }
 
         shop {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseShopSigning
             resConfigs "en"
-            proguardFile 'proguard-project.txt'
         }
 
         daraz {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseDarazSigning
             resConfigs "en"
-            proguardFile 'proguard-project.txt'
         }
 
         bamilo {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseBamiloSigning
             resConfigs "en"
-            proguardFile 'proguard-project.txt'
         }
 
         jumiaMTNNg {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaMTNSigning
             resConfigs "en", "fr", "pt"
-            proguardFile 'proguard-project.txt'
         }
 
         jumiaNokiaX {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaNokiaXSigning
             resConfigs "en", "fr", "pt"
-            proguardFile 'proguard-project.txt'
         }
 
         jumiaSamsung {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaSigning
             resConfigs "en", "fr", "pt"
-            proguardFile 'proguard-project.txt'
         }
 
     }
