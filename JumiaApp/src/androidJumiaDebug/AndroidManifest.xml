@@ -8,6 +8,11 @@
 
     <uses-permission android:name="com.jumia.android.dev.permission.C2D_MESSAGE" />
 
+    <!-- ############# Location: LocationHelper and AD4Push ############# -->
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:required="false" />
+
     <!-- ######################################## -->
     <!-- ############# Application ############## -->
     <!-- ######################################## -->
