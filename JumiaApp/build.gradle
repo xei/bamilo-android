@@ -111,7 +111,6 @@ android {
             manifestPlaceholders = [ AdjustEnvironment:"production" ]
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-project.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -134,7 +133,7 @@ android {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaSigning
             resConfigs "en", "fr", "pt"
-            proguardFile 'proguard-project.txt'
+            proguardFile getDefaultProguardFile('proguard-project.txt')
         }
 
         shop {
