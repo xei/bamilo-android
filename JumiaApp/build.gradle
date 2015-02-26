@@ -92,6 +92,7 @@ android {
 
     /**
      * proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-market.txt'
+     * proguardFiles getDefaultProguardFile('proguard-android-optimized.txt'), 'proguard-project-market.txt'
      */
 
     buildTypes {
@@ -218,6 +219,7 @@ android.applicationVariants.all { variant ->
         variant.mergedFlavor.applicationId = "com." + venture + "." + variant.productFlavors[0].name
         println "application ID: ${variant.mergedFlavor.applicationId}"
         //e.g. com.jumia.android
+
         def String install = "";
         if(variant.productFlavors[1].name == "jumiaMTNNg" ){
             install = "mtnng";
