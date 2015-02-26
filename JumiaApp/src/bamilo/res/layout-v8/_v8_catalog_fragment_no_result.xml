@@ -2,7 +2,6 @@
 <com.mobile.utils.ScrollViewWithHorizontal xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_above="@id/catalog_viewpager_container"
     android:background="@android:color/white"
     android:fillViewport="true" >
 
@@ -11,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/no_results_search_error_message"
@@ -39,8 +38,7 @@
             android:paddingBottom="@dimen/margin_huge"
             android:paddingLeft="@dimen/margin_midhuge"
             android:paddingRight="@dimen/margin_midhuge"
-            android:paddingTop="@dimen/margin_huge" 
-            android:visibility="gone">
+            android:paddingTop="@dimen/margin_huge" >
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/no_results_search_tips_title"
@@ -49,8 +47,7 @@
                 android:fontFamily="roboto_bold"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_m"
-                android:textStyle="bold" 
-                android:visibility="gone"/>
+                android:textStyle="bold" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/no_results_search_tips_text"
@@ -59,8 +56,7 @@
                 android:layout_below="@id/no_results_search_tips_title"
                 android:fontFamily="roboto"
                 android:textColor="@color/grey_middle"
-                android:textSize="@dimen/text_s" 
-                android:visibility="gone"/>
+                android:textSize="@dimen/text_s" />
         </RelativeLayout>
 
         <View style="@style/line_grey_style" />
@@ -75,7 +71,8 @@
                 android:id="@+id/featured_products_title"
                 style="@style/activity_sectionheader_text"
                 android:layout_marginBottom="@dimen/margin_mid"
-                android:layout_marginLeft="@dimen/margin_huge" />
+                android:layout_marginLeft="@dimen/margin_huge"
+                android:gravity="right|center_vertical" />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/featured_products_viewpager"
@@ -106,7 +103,8 @@
                 android:id="@+id/featured_brands_title"
                 style="@style/activity_sectionheader_text"
                 android:layout_marginBottom="@dimen/margin_mid"
-                android:layout_marginLeft="@dimen/margin_huge" />
+                android:layout_marginLeft="@dimen/margin_huge"
+                android:gravity="right|center_vertical" />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/featured_brands_viewpager"

@@ -2,6 +2,9 @@
     
     <!-- ########################## DEF PORTRAIT ########################## -->
 
+    <!-- GENERIC -->
+    <item name="fragment_loading_more" 		        type="layout">@layout/_def_loading_more</item>
+
     <!-- CHECKOUT -->
     <item name="checkout_my_order_billing_address" 	type="layout">@layout/_def_checkout_my_order_billing_address</item>
     <item name="checkout_my_order_payment_options" 	type="layout">@layout/_def_checkout_my_order_payment_options</item>
@@ -38,8 +41,14 @@
 	<!-- FRAGMENT ROOT -->
 	<item name="no_connection_button_retry" 		type="layout">@layout/_def_no_connection_button_retry</item>
 	<item name="no_connection_layout" 				type="layout">@layout/_def_no_connection_layout</item>
-    	
-	<!-- SELLER INFO -->
-	<!-- <item name="shopping_basket_subtotal_element" 	type="layout">@layout/_def_shopping_basket_subtotal_element</item> -->
-	
+
+    <!-- CATALOG -->
+    <item name="catalog_fragment_main" 				type="layout">@layout/_def_catalog_fragment_main</item>
+    <item name="catalog_fragment_tool_bar" 			type="layout">@layout/_def_catalog_fragment_tool_bar</item>
+    <item name="catalog_fragment_wizard" 			type="layout">@layout/_def_catalog_fragment_wizard</item>
+    <item name="catalog_fragment_wizard_favourite" 	type="layout">@layout/_def_catalog_fragment_wizard_favourite</item>
+    <item name="catalog_fragment_no_result" 		type="layout">@layout/_def_catalog_fragment_no_result</item>
+    <item name="catalog_item_grid_rounded" 		    type="layout">@layout/_def_catalog_item_grid_rounded</item>
+    <item name="catalog_item_list_rounded" 		    type="layout">@layout/_def_catalog_item_list_rounded</item>
+
 </resources>

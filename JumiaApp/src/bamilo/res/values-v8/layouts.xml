@@ -2,6 +2,9 @@
     
     <!-- ########################## V8 PORTRAIT ########################## -->
 
+    <!-- GENERIC -->
+    <item name="fragment_loading_more" 		        type="layout">@layout/_v8_loading_more</item>
+
     <!-- CHECKOUT -->
     <item name="checkout_my_order_billing_address" 	type="layout">@layout/_v8_checkout_my_order_billing_address</item>
     <item name="checkout_my_order_payment_options" 	type="layout">@layout/_v8_checkout_my_order_payment_options</item>
@@ -36,5 +39,13 @@
     
 	<!-- FRAGMENT ROOT -->
 	<item name="no_connection_button_retry" 		type="layout">@layout/_v8_no_connection_button_retry</item>
+
+    <!-- CATALOG -->
+    <item name="catalog_fragment_main" 				type="layout">@layout/_v8_catalog_fragment_main</item>
+    <item name="catalog_fragment_tool_bar" 			type="layout">@layout/_v8_catalog_fragment_tool_bar</item>
+    <item name="catalog_fragment_wizard_favourite" 	type="layout">@layout/_v8_catalog_fragment_wizard_favourite</item>
+    <item name="catalog_fragment_no_result" 		type="layout">@layout/_v8_catalog_fragment_no_result</item>
+    <item name="catalog_item_grid_rounded" 		    type="layout">@layout/_v8_catalog_item_grid_rounded</item>
+    <item name="catalog_item_list_rounded" 		    type="layout">@layout/_v8_catalog_item_list_rounded</item>
 
 </resources>

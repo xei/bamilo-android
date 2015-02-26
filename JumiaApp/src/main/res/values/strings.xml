@@ -353,6 +353,10 @@
     <string name="can_share_app_with_friends">You can now share the app with your friends</string>
     <string name="app_social">App Social</string>
 	<string name="sort_by">Sort by</string>
+    <!-- RATING PLURALS -->
+    <string name="plurals_rating">%d rating</string>
+    <string name="plurals_ratings">%d ratings</string>
+
     <string name="my_addresses">My Addresses</string>
     <string name="create_edit_address">Create or edit your addresses</string>
 </resources>

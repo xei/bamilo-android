@@ -13,9 +13,11 @@
         android:layout_width="@dimen/dimen_340px"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/dimen_10px"
+        android:layout_marginStart="@dimen/dimen_10px"
         android:background="@android:color/white"
         android:src="@drawable/selector_catalog_gridview"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
     <!-- DIVIDER -->
 
@@ -31,21 +33,25 @@
             android:layout_margin="@dimen/margin_10px" />
     </LinearLayout>
 
-    <!-- SORT             android:background="@color/grey_middle" -->
+    <!-- SORT -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toLeftOf="@id/catalog_bar_divider"
+        android:layout_toStartOf="@id/catalog_bar_divider"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:background="@android:color/white"
         android:paddingRight="@dimen/dimen_100px"
-        android:gravity="right">
+        android:paddingEnd="@dimen/dimen_100px"
+        android:gravity="right|end">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_sort"
             style="@style/catalog_tool_bar_text"
             android:drawableLeft="@drawable/selector_catalog_sort"
+            android:drawableStart="@drawable/selector_catalog_sort"
             android:text="@string/products_sort_popularity" />
 
     </LinearLayout>
@@ -57,8 +63,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toRightOf="@id/catalog_bar_divider"
+        android:layout_toEndOf="@id/catalog_bar_divider"
         android:layout_toLeftOf="@id/catalog_bar_button_columns"
+        android:layout_toStartOf="@id/catalog_bar_button_columns"
         android:paddingLeft="@dimen/dimen_100px"
+        android:paddingStart="@dimen/dimen_100px"
         android:background="@android:color/white"
         android:gravity="left|start">
 
@@ -66,6 +75,7 @@
             android:id="@+id/catalog_bar_button_filter"
             style="@style/catalog_tool_bar_text"
             android:drawableLeft="@drawable/selector_catalog_filter"
+            android:drawableStart="@drawable/selector_catalog_filter"
             android:text="@string/filter_label" />
     </LinearLayout>
 

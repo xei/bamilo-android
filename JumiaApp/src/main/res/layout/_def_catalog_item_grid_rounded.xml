@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/list_row_rounded_style"
-    android:layoutDirection="locale"
     android:layout_height="@dimen/catalog_grid_item_height" >
 
     <include

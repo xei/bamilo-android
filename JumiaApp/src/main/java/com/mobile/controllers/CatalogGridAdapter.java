@@ -114,12 +114,12 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         if(viewType == ITEM_VIEW_TYPE_HEADER)
             ; // TODO
         else if (viewType == ITEM_VIEW_TYPE_LIST)
-            holder = new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.catalog_item_rounded, parent, false));
+            holder = new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.catalog_item_list_rounded, parent, false));
         else if (viewType == ITEM_VIEW_TYPE_GRID)
             holder = new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.catalog_item_grid_rounded, parent, false));
         else if (viewType == ITEM_VIEW_TYPE_FOOTER)
             ; // TODO
-        else holder = new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.catalog_item_rounded, parent, false)); 
+        else holder = new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.catalog_item_list_rounded, parent, false));
         // Create a new view
         return holder;
     }

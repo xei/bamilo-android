@@ -11,7 +11,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/catalog_list_item_image_padding"
-        layout="@layout/catalog_item_image"
+        layout="@layout/image_loadable"
         android:background="@color/orange_basic" />
 
     <ImageView
@@ -107,17 +107,11 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/discount_percentage"
         style="@style/discount_percentage"
-        android:layout_above="@+id/bottom_spacer"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:gravity="center" />
-
-    <View
-        android:id="@id/bottom_spacer"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/catalog_item_vertical_padding"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginBottom="@dimen/margin_20px"
+        android:gravity="center" />
 
     <View
         android:id="@+id/divider"

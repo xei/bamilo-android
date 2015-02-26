@@ -2,7 +2,6 @@
 <com.mobile.utils.ScrollViewWithHorizontal xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_above="@id/catalog_viewpager_container"
     android:background="@android:color/white"
     android:fillViewport="true" >
 
@@ -11,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/no_results_search_error_message"
@@ -19,7 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_veryhuge"
             android:layout_marginLeft="@dimen/margin_veryhuge"
+            android:layout_marginStart="@dimen/margin_veryhuge"
             android:layout_marginRight="@dimen/margin_veryhuge"
+            android:layout_marginEnd="@dimen/margin_veryhuge"
             android:layout_marginTop="@dimen/no_results_top_margin"
             android:drawablePadding="@dimen/no_results_bottom_margin"
             android:drawableTop="@drawable/ico_nosearchresults"
@@ -38,8 +39,11 @@
             android:layout_gravity="center_horizontal"
             android:paddingBottom="@dimen/margin_huge"
             android:paddingLeft="@dimen/margin_midhuge"
+            android:paddingStart="@dimen/margin_midhuge"
             android:paddingRight="@dimen/margin_midhuge"
-            android:paddingTop="@dimen/margin_huge" >
+            android:paddingEnd="@dimen/margin_midhuge"
+            android:paddingTop="@dimen/margin_huge" 
+            android:visibility="gone">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/no_results_search_tips_title"
@@ -48,7 +52,8 @@
                 android:fontFamily="roboto_bold"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_m"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+                android:visibility="gone"/>
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/no_results_search_tips_text"
@@ -57,7 +62,8 @@
                 android:layout_below="@id/no_results_search_tips_title"
                 android:fontFamily="roboto"
                 android:textColor="@color/grey_middle"
-                android:textSize="@dimen/text_s" />
+                android:textSize="@dimen/text_s" 
+                android:visibility="gone"/>
         </RelativeLayout>
 
         <View style="@style/line_grey_style" />
@@ -73,7 +79,7 @@
                 style="@style/activity_sectionheader_text"
                 android:layout_marginBottom="@dimen/margin_mid"
                 android:layout_marginLeft="@dimen/margin_huge"
-                android:gravity="right|center_vertical" />
+                android:layout_marginStart="@dimen/margin_huge"/>
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/featured_products_viewpager"
@@ -105,7 +111,8 @@
                 style="@style/activity_sectionheader_text"
                 android:layout_marginBottom="@dimen/margin_mid"
                 android:layout_marginLeft="@dimen/margin_huge"
-                android:gravity="right|center_vertical" />
+                android:layout_marginStart="@dimen/margin_huge"
+                />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/featured_brands_viewpager"
@@ -134,8 +141,7 @@
             android:fontFamily="roboto"
             android:gravity="center"
             android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_s"
-            android:visibility="visible" />
+            android:textSize="@dimen/text_s" />
     </LinearLayout>
 
 </com.mobile.utils.ScrollViewWithHorizontal>

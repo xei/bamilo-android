@@ -48,7 +48,9 @@
         <item name="android:textColor">@color/orange_basic</item>
         <item name="android:textSize">@dimen/text_s</item>
         <item name="android:layout_marginLeft">@dimen/margin_huge</item>
+        <item name="android:layout_marginStart">@dimen/margin_huge</item>
         <item name="android:layout_marginRight">@dimen/margin_huge</item>
+        <item name="android:layout_marginEnd">@dimen/margin_huge</item>
         <item name="android:layout_marginTop">@dimen/margin_large</item>
     </style>
 

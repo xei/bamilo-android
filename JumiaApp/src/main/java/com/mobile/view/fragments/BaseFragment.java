@@ -1293,8 +1293,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param callback
      * @author sergiopereira
      */
-    protected final void onMakeNewRequiredPermissionsRequest(Fragment fragment, Session session,
-            Session.StatusCallback callback) {
+    protected final void onMakeNewRequiredPermissionsRequest(Fragment fragment, Session session, Session.StatusCallback callback) {
         Log.i(TAG, "USER NOT ACCEPT EMAIL PERMISSION");
         // Show loading
         showFragmentLoading();

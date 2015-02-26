@@ -102,7 +102,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public CatalogFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
-                R.layout.catalog_fragment_main_new,
+                R.layout.catalog_fragment_main,
                 NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -428,7 +428,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         View view = getView();
         // Get view and set wizard
         ViewPager viewPagerTips = (ViewPager) view.findViewById(R.id.catalog_wizard_viewpager);
-        int[] tipsPages = { R.layout.products_tip_favourite_layout };
+        int[] tipsPages = { R.layout.catalog_fragment_wizard_favourite};
         TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(getBaseActivity(), getBaseActivity().getLayoutInflater(), view, tipsPages);
         viewPagerTips.setAdapter(mTipsPagerAdapter);
         viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(view, tipsPages));

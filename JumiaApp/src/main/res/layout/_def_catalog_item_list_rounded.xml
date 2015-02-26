@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/list_row_rounded_style"
-    android:layout_height="@dimen/catalog_list_item_height"
-    android:layoutDirection="locale" >
+    android:layout_height="@dimen/catalog_list_item_height" >
 
     <include
         android:id="@+id/image_loadable"
@@ -13,7 +12,7 @@
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/catalog_list_item_image_padding"
         android:layout_marginStart="@dimen/rounded_margin_mid"
-        layout="@layout/catalog_item_image"
+        layout="@layout/image_loadable"
         android:background="@color/orange_basic" />
 
     <ImageView
@@ -40,8 +39,8 @@
         android:id="@+id/item_brand"
         style="@style/text_title"
         android:layout_width="wrap_content"
-        android:layout_alignLeft="@+id/center_view"
-        android:layout_alignStart="@+id/center_view"
+        android:layout_alignLeft="@id/center_view"
+        android:layout_alignStart="@id/center_view"
         android:layout_marginEnd="@dimen/product_item_text_right_margin"
         android:layout_marginRight="@dimen/product_item_text_right_margin"
         android:layout_marginTop="@dimen/catalog_item_vertical_padding"
@@ -51,13 +50,11 @@
         android:id="@+id/item_name"
         style="@style/text_normal"
         android:layout_width="match_parent"
-        android:layout_alignLeft="@+id/center_view"
-        android:layout_alignStart="@+id/center_view"
-        android:layout_below="@+id/item_brand"
+        android:layout_alignLeft="@id/center_view"
+        android:layout_alignStart="@id/center_view"
+        android:layout_below="@id/item_brand"
         android:layout_marginEnd="@dimen/product_item_text_right_margin"
         android:layout_marginRight="@dimen/product_item_text_right_margin"
-        android:ellipsize="end"
-        android:gravity="left|center_vertical|start"
         android:text="Name" />
 
     <com.mobile.components.customfontviews.TextView
@@ -86,7 +83,6 @@
         android:layout_alignStart="@id/item_name"
         android:layout_below="@id/item_regprice"
         android:gravity="start|left|center_vertical"
-        android:layoutDirection="locale"
         android:orientation="horizontal" >
 
         <RatingBar
@@ -123,20 +119,13 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/discount_percentage"
         style="@style/discount_percentage"
-        android:layout_above="@+id/bottom_spacer"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginEnd="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginBottom="@dimen/margin_20px"
         android:gravity="center" />
-
-    <View
-        android:id="@id/bottom_spacer"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/catalog_item_vertical_padding"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
 
     <View
         android:id="@+id/divider"

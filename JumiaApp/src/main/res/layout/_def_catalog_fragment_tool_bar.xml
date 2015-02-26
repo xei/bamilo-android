@@ -19,6 +19,7 @@
             android:id="@+id/catalog_bar_button_sort"
             style="@style/catalog_tool_bar_text"
             android:drawableLeft="@drawable/selector_catalog_sort"
+            android:drawableStart="@drawable/selector_catalog_sort"
             android:text="@string/products_sort_popularity" />
 
     </LinearLayout>
@@ -47,6 +48,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_filter"
             android:drawableLeft="@drawable/selector_catalog_filter"
+            android:drawableStart="@drawable/selector_catalog_filter"
             style="@style/catalog_tool_bar_text"
             android:text="@string/filter_label" />
 
@@ -59,6 +61,7 @@
         android:layout_width="@dimen/dimen_160px"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/dimen_10px"
+        android:layout_marginStart="@dimen/dimen_10px"
         android:background="@android:color/white"
         android:src="@drawable/selector_catalog_gridview" />
 

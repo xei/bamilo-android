@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:gravity="center_horizontal"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:orientation="horizontal"/>
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_wizard_button_ok"
