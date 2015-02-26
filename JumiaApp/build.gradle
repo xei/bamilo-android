@@ -42,42 +42,42 @@ android {
         }
 
         releaseDarazSigning {
-            storeFile file("daraz_android.keystore")
+            storeFile file("src/daraz/daraz_android.keystore")
             storePassword "darazandroid"
             keyAlias "daraz_android"
             keyPassword "darazandroid"
         }
 
         releaseShopSigning {
-            storeFile file("shop_android.keystore")
+            storeFile file("src/shop/shop_android.keystore")
             storePassword "shopandroid"
             keyAlias "shop_android"
             keyPassword "shopandroid"
         }
 
         releaseBamiloSigning {
-            storeFile file("bamilo_android.keystore")
+            storeFile file("src/bamilo/bamilo_android.keystore")
             storePassword "bamiloandroid"
             keyAlias "bamilo_android"
             keyPassword "bamiloandroid"
         }
 
         releaseBlackberrySigning {
-            storeFile file("jumia_blackberry.keystore")
+            storeFile file("src/blackberry/jumia_blackberry.keystore")
             storePassword "jumiablackberry"
             keyAlias "jumia_blackberry"
             keyPassword "jumiablackberry"
         }
 
         releaseJumiaMTNSigning {
-            storeFile file("jumia_mtnng.keystore")
+            storeFile file("src/jumiaMTNNg/jumia_mtnng.keystore")
             storePassword "jumiamtnng"
             keyAlias "jumia_mtnng"
             keyPassword "jumiamtnng"
         }
 
         releaseJumiaNokiaXSigning {
-            storeFile file("jumia_nokiax.keystore")
+            storeFile file("src/jumiaNokiaX/jumia_nokiax.keystore")
             storePassword "jumianokiax"
             keyAlias "jumia_nokiax"
             keyPassword "jumianokiax"
@@ -91,7 +91,7 @@ android {
     }
 
     /**
-     * proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-live.txt'
+     * proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-market.txt'
      */
 
     buildTypes {
