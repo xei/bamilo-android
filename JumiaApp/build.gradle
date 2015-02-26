@@ -104,7 +104,7 @@ android {
         live {
             manifestPlaceholders = [ AdjustEnvironment:"sandbox" ]
             debuggable true
-            minifyEnabled false
+            minifyEnabled true
             shrinkResources true
             proguardFiles 'proguard-project-live.txt'
         }
