@@ -681,7 +681,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
         this.productBundle = productBundle;
     }
 
-    public boolean isHasSeller() {
+    public boolean hasSeller() {
         return hasSeller;
     }
 

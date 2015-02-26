@@ -102,7 +102,9 @@
             android:layout_marginStart="@dimen/margin_huge"
             android:contentDescription="@string/productdetail_addcart_description"
             android:text="@string/add_to_shopping_cart"
-            android:textSize="@dimen/text_subtitle" />
+            android:textSize="@dimen/text_subtitle"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
     </RelativeLayout>
 
 </RelativeLayout>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,8 +28,8 @@ public class OffersListAdapter extends BaseAdapter {
     
     public final static String TAG = LogTagHelper.create(OffersListAdapter.class);
 
-    public interface OnAddOfferToCart {
-        public void SelectedOffer(Offer offer);
+    public interface IOffersAdapterService {
+        public void onAddOfferToCart(Offer offer);
     }
 
     private LayoutInflater inflater;
@@ -37,7 +38,7 @@ public class OffersListAdapter extends BaseAdapter {
 
     private Context context;
 
-    private OnAddOfferToCart offerSelected;
+    private IOffersAdapterService offerSelected;
 
     ArrayList<Offer> offers = new ArrayList<Offer>();
     
@@ -56,12 +57,11 @@ public class OffersListAdapter extends BaseAdapter {
     /**
      * the constructor for this adapter
      * 
-     * @param activity
-     * @param showList
-     *            show list (or grid)
-     * @param numColumns
+     * @param context
+     * @param offers
+     * @param listener
      */
-    public OffersListAdapter(Context context, ArrayList<Offer> offers, OnAddOfferToCart listener) {
+    public OffersListAdapter(Context context, ArrayList<Offer> offers, IOffersAdapterService listener) {
         this.context = context.getApplicationContext();
         this.offers = offers;
         this.inflater = LayoutInflater.from(context);
@@ -115,7 +115,7 @@ public class OffersListAdapter extends BaseAdapter {
             itemView = inflater.inflate(R.layout.offers_item, parent, false);
 
             item = new Item();
-            
+
             // item.textView = (TextView) itemView.findViewById( R.id.text);
             item.offerAddToCart = (Button) itemView.findViewById(R.id.offer_addcart);
             item.offerPrice = (TextView) itemView.findViewById(R.id.offer_price);
@@ -150,7 +150,7 @@ public class OffersListAdapter extends BaseAdapter {
 
             @Override
             public void onClick(View v) {
-                offerSelected.SelectedOffer(offers.get(position));
+                offerSelected.onAddOfferToCart(offers.get(position));
             }
         });
 
@@ -160,7 +160,7 @@ public class OffersListAdapter extends BaseAdapter {
     /**
      * Updates the Orders array list
      * 
-     * @param orders
+     * @param offers
      *            The array list containing the orders
      */
     public void updateOffers(ArrayList<Offer> offers) {

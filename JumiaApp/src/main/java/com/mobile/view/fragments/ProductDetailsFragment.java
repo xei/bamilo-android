@@ -1045,7 +1045,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     public void displaySellerInfo() {
 
-        if (mCompleteProduct.isHasSeller()) {
+        if (mCompleteProduct.hasSeller()) {
             sellerView.setVisibility(View.VISIBLE);
             mSellerName.setText(mCompleteProduct.getSeller().getName());
             String rating = getString(R.string.string_ratings).toLowerCase();
@@ -1605,8 +1605,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         else if (id == R.id.product_detail_product_seller_rating_container) goToSellerRating();
         // product offers
         else if (id == R.id.offers_container || id == R.id.product_detail_product_offers_container) goToProductOffers();
+
     }
-    
+
     @Override
     protected void onRetryRequest(EventType eventType) {
         super.onRetryRequest(eventType);
@@ -2257,7 +2258,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     /**
      * function responsible for handling the item click of the bundle
      * 
-     * @param selectedOrder
+     * @param selectedProduct
      */
     @Override
     public void SelectedItem(ProductBundleProduct selectedProduct) {
@@ -2269,10 +2270,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * 
      * function responsible for handling on item of the bundle
      * 
-     * @param selectedOrder
-     * @param productsContainer
-     * @param toShow
-     * @param selectedProd
+     * @param selectedProduct
+     * @param isChecked
+     * @param pos
      */
     @Override
     public void checkItem(ProductBundleProduct selectedProduct, boolean isChecked, int pos) {
@@ -2389,6 +2389,17 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     private void goToSellerCatalog() {
         Log.d("SELLER", "GO TO CATALOG");
+        if (mCompleteProduct.hasSeller()) {
+            Bundle bundle = new Bundle();
+            String targetUrl = mCompleteProduct.getSeller().getUrl();
+            String targetTitle = mCompleteProduct.getSeller().getName();
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
+            //bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
+        }
     }
 
     /**

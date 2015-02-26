@@ -10,13 +10,13 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OffersListAdapter;
-import com.mobile.controllers.OffersListAdapter.OnAddOfferToCart;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
@@ -49,7 +49,7 @@ import de.akquinet.android.androlog.Log;
  * Class used to show the product offers
  * @author Paulo Carvalho
  */
-public class ProductOffersFragment extends BaseFragment implements OnClickListener, OnAddOfferToCart {
+public class ProductOffersFragment extends BaseFragment implements OnClickListener, OffersListAdapter.IOffersAdapterService, android.widget.AdapterView.OnItemClickListener {
 
     private static final String TAG = LogTagHelper.create(ProductOffersFragment.class);
     
@@ -239,6 +239,7 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
         OffersListAdapter offersAdapter = new OffersListAdapter(getActivity().getApplicationContext(), productOffers.getOffers(), this);
         
         mOffersList.setAdapter(offersAdapter);
+        mOffersList.setOnItemClickListener(this);
     }
 
     private void orderOffersByLowerPrice(ProductOffers productOffersArray){
@@ -250,7 +251,25 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
           }
         }
     }
-    
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "ON ITEM CLICK");
+        Offer offer = productOffers.getOffers().get(position);
+        if(offer.getSeller() != null){
+            Bundle bundle = new Bundle();
+            String targetUrl = offer.getSeller().getUrl();
+            String targetTitle = offer.getSeller().getName();
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
+            //bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
+        }
+
+    }
+
     public class CustomComparator implements Comparator<Offer> {
         @Override
         public int compare(Offer o1, Offer o2) {
@@ -416,7 +435,7 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
     }
 
     @Override
-    public void SelectedOffer(Offer offer) {
+    public void onAddOfferToCart(Offer offer) {
         // Add one unity to cart 
         triggerAddItemToCart(offer.getSku(), offer.getSimpleSku(),offer.getPriceForTracking());
         
