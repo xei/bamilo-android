@@ -20,6 +20,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jumia">
 
+        <service
+            android:name="com.ad4screen.sdk.A4SService"
+            android:label="A4S Service"
+            android:process=":A4SService" >
+
+            <meta-data
+                android:name="com.ad4screen.no_geoloc"
+                android:value="true" />
+        </service>
+
         <!-- ############# AD4Push: Push Notifications ############# -->
 
         <receiver
