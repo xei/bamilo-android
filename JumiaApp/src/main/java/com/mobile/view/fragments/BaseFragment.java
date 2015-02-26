@@ -102,7 +102,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private boolean isOrderSummaryPresent;
 
-    private int ORDER_SUMMARY_CONTAINER = R.id.order_summary_container;
+    protected int ORDER_SUMMARY_CONTAINER = R.id.order_summary_container;
 
     protected boolean isOnStoppingProcess = true;
 
@@ -179,7 +179,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param layoutResId
      * @param titleResId
      * @param adjust_state
-     * @param checkoutStep
      */
     public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state, int titleCheckout) {
         this.enabledMenuItems = enabledMenuItems;
@@ -486,8 +485,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
 
     /**
-     * 
-     * @param type
+     *
+     * @param helper
+     * @param args
+     * @param responseCallback
      */
     protected final void triggerContentEventNoLoading(final BaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
@@ -890,9 +891,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     
     /**
      * Show the retry view from the root layout
-     * 
-     * @param listener
-     *            button
+     *
      * @author sergiopereira
      */
     protected void showFragmentErrorRetry() {
@@ -1213,7 +1212,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     
     /**
      * Process the click in continue shopping
-     * 
+     *
+     * @param view
      * @author sergiopereira
      */
     protected void onClickErrorButton(View view) {
@@ -1227,8 +1227,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     
     /**
      * Process the click on retry button in maintenance page
-     * 
-     * @param eventType
+     *
      * @modified sergiopereira
      */
     protected void onClickMaintenanceRetryButton() {

@@ -98,9 +98,9 @@ public abstract class BaseHelper {
 
     protected void handleSuccess(JSONObject messagesObject, Bundle bundle) throws JSONException {
         if (messagesObject != null) {
-            JSONArray sucessArray = messagesObject.optJSONArray(RestConstants.JSON_SUCCESS_TAG);
-            if (sucessArray != null && sucessArray.length() > 0) {
-                bundle.putString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, sucessArray.getString(0));
+            JSONArray successArray = messagesObject.optJSONArray(RestConstants.JSON_SUCCESS_TAG);
+            if (successArray != null && successArray.length() > 0) {
+                bundle.putString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, successArray.getString(0));
             }
         }
     }

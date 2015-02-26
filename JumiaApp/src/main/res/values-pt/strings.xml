@@ -345,5 +345,6 @@
     <string name="yes_label">Sim</string>
     <string name="your_cart">O Seu Carrinho</string>
     <string name="your_order">A Sua Encomenda</string>
-
+    <string name="my_addresses">As Minhas Moradas</string>
+    <string name="create_edit_address">Criar ou editar as suas moradas</string>
 </resources>

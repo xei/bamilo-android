@@ -201,7 +201,6 @@ public abstract class BaseActivity extends ActionBarActivity {
      * 
      * @param action
      * @param enabledMenuItems
-     * @param contentEvents
      * @param userEvents
      * @param titleResId
      * @param contentLayoutId
@@ -215,7 +214,6 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param activityLayoutId
      * @param action
      * @param enabledMenuItems
-     * @param contentEvents
      * @param userEvents
      * @param titleResId
      * @param contentLayoutId
@@ -456,8 +454,6 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param action
      * @param actionBarTitleResId
      * @param checkoutStep
-     * @param backButtonEnabled
-     * @param showActionBar
      * 
      * @author sergiopereira
      * @modified Andre Lopes
@@ -787,8 +783,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     
     /**
      * Set the up button in ActionBar
-     * 
-     * @param upButton
+     *
      * @author sergiopereira
      */
     private void setActionBarUpButton() {
@@ -1060,8 +1055,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Hide the search component
-     * 
-     * @param menu
+     *
      * @author sergiopereira
      */
     public void hideSearchComponent() {
@@ -1148,7 +1142,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Process the search error event
      * 
-     * @param event
+     * @param bundle
      * @author sergiopereira
      */
     private void processErrorSearchEvent(Bundle bundle) {
@@ -1191,7 +1185,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Process success search event
      * 
-     * @param event
+     * @param bundle
      * @author sergiopereira
      */
     private void processSuccessSearchEvent(Bundle bundle) {
@@ -1247,11 +1241,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Displays the number of items that are currently on the shopping cart as well as its value.
      * This information is displayed on the navigation list
-     * 
-     * @param value
-     *            The current value of the shopping cart
-     * @param quantity
-     *            The number of items that currently the shopping cart holds
+     *
      */
     public void updateCartInfo() {
         Log.d(TAG, "ON UPDATE CART INFO");
@@ -1484,8 +1474,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Method used to set the number of products
-     * 
-     * @param title
+     *
      * @param subtitle
      */
     public void setSubTitle(CharSequence subtitle) {

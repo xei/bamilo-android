@@ -348,5 +348,6 @@
     <string name="install_jumia_android">برنامه Android بامیلو را نصب نمایید</string>
     <string name="share_the_app">برنامه را به اشتراک بگذار</string>
     <string name="can_share_app_with_friends">هم اکنون می توانید برنامه را با دوستان خود به اشتراک بگذارید</string>
-
+    <string name="my_addresses">آدرس های من</string>
+    <string name="create_edit_address">ایجاد یا ویرایش آدرس شما</string>
 </resources>

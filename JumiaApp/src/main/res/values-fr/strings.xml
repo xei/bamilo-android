@@ -345,5 +345,6 @@
     <string name="yes_label">Oui</string>
     <string name="your_cart">Votre panier</string>
     <string name="your_order">Votre commande</string>
-
+    <string name="my_addresses">Mes adresses</string>
+    <string name="create_edit_address">Créez ou modifiez vos adresses</string>
 </resources>

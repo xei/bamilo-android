@@ -344,5 +344,6 @@
     <string name="yes_label">Yes</string>
     <string name="your_cart">သင္၏ေစ်း၀ယ္လွည္း</string>
     <string name="your_order">သင္၏ေအာ္ဒါ</string>
-
+    <string name="my_addresses">ကြ်ႏု္ပ္၏ လိပ္စာ</string>
+    <string name="create_edit_address">သင္၏လိပ္စာ ျပဳလုပ္ရန္ သို႔ ျပင္ဆင္ရန္</string>
 </resources>

@@ -8,6 +8,7 @@
 
     <string-array name="myaccount_array">
         <item>@string/myaccount_userdata</item>
+        <item>@string/my_addresses</item>
         <item>@string/myaccount_email_notifications</item>
     </string-array>
 

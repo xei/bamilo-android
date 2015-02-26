@@ -40,8 +40,8 @@ public class MyAccountAdapter extends BaseAdapter {
      * 
      * @param context
      *            The context from where this adapter is called
-     * @param categories
-     *            The array containing the categories to display
+     * @param options
+     *            The array containing the options to display
      */
     public MyAccountAdapter(Context context, String[] options) {
         this.mOptions = options;
@@ -85,14 +85,17 @@ public class MyAccountAdapter extends BaseAdapter {
     }
 
     protected void setViewByPosition(View view, int position){
-        TextView optionsDescripton = (TextView) view.findViewById(R.id.option_info);
-     // Validate the current position
+        TextView optionsDescription = (TextView) view.findViewById(R.id.option_info);
+        // Validate the current position
         switch (position) {
             case MyAccountFragment.POSITION_USER_DATA:
-                optionsDescripton.setText(mContext.getResources().getString(R.string.option2_description));
+                optionsDescription.setText(mContext.getResources().getString(R.string.option2_description));
+                break;
+            case MyAccountFragment.POSITION_MY_ADDRESSES:
+                optionsDescription.setText(mContext.getResources().getString(R.string.create_edit_address));
                 break;
             case MyAccountFragment.POSITION_EMAIL:
-                optionsDescripton.setText(mContext.getResources().getString(R.string.option3_description));
+                optionsDescription.setText(mContext.getResources().getString(R.string.option3_description));
                 break;
         }
         

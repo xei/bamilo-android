@@ -38,8 +38,10 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     private static final String TAG = LogTagHelper.create(MyAccountFragment.class);
 
     public final static int POSITION_USER_DATA = 0;
-    
-    public final static int POSITION_EMAIL = 1;
+
+    public final static int POSITION_MY_ADDRESSES = 1;
+
+    public final static int POSITION_EMAIL = 2;
     
     public final static int POSITION_SHARE_APP = 0;
     
@@ -182,9 +184,9 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         // Get ListView
         optionsList = (ListView) v.findViewById(R.id.middle_myaccount_list);
         // Create new Adapter
-        MyAccountAdapter myAccountAdpater = new MyAccountAdapter(getActivity(), myAccountOptions);
+        MyAccountAdapter myAccountAdapter = new MyAccountAdapter(getActivity(), myAccountOptions);
         // Set adapter
-        optionsList.setAdapter(myAccountAdpater);
+        optionsList.setAdapter(myAccountAdapter);
         // Set Listener for all items
         optionsList.setOnItemClickListener((OnItemClickListener) this);
         
@@ -227,6 +229,9 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         case POSITION_USER_DATA:
             processOnClickUserData();
             break;
+        case POSITION_MY_ADDRESSES:
+            processOnClickMyAddresses();
+            break;
         case POSITION_EMAIL:
             processOnClickEmailNotification();
             break;
@@ -234,6 +239,12 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
             break;
         }
         
+    }
+
+    private void processOnClickMyAddresses() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_ACCOUNT_MY_ADDRESSES);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**

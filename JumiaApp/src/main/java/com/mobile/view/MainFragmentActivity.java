@@ -40,8 +40,11 @@ import com.mobile.view.fragments.CheckoutWebFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
 import com.mobile.view.fragments.FavouritesFragment;
 import com.mobile.view.fragments.HomeFragment;
+import com.mobile.view.fragments.MyAccountCreateAddressFragment;
+import com.mobile.view.fragments.MyAccountEditAddressFragment;
 import com.mobile.view.fragments.MyAccountEmailNotificationFragment;
 import com.mobile.view.fragments.MyAccountFragment;
+import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
 import com.mobile.view.fragments.ProductDetailsDescriptionFragment;
@@ -403,6 +406,15 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         case PRODUCT_OFFERS:
             fragment = ProductOffersFragment.newInstance(bundle);
             break;
+        case MY_ACCOUNT_MY_ADDRESSES:
+            fragment = MyAccountMyAddressesFragment.newInstance();
+            break;
+        case MY_ACCOUNT_CREATE_ADDRESS:
+            fragment = MyAccountCreateAddressFragment.newInstance();
+            break;
+        case MY_ACCOUNT_EDIT_ADDRESS:
+            fragment = MyAccountEditAddressFragment.newInstance(bundle);
+            break;
         default:
             Log.w(TAG, "INVALIDE FRAGMENT TYPE");
             return;
@@ -479,7 +491,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      * Pop back stack
      * 
      * @param tag
-     * @param isInclusive
      */
     public void popBackStack(String tag) {
         // Pop back stack until tag
