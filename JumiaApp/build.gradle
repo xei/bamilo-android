@@ -111,7 +111,6 @@ android {
             manifestPlaceholders = [ AdjustEnvironment:"production" ]
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-project.txt'), 'proguard-rules.pro'
         }
     }
 
