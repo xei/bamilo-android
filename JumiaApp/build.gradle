@@ -209,6 +209,8 @@ android.applicationVariants.all { variant ->
      * Set application id with "com." + venture + "blackberry" or "android"(when not in debug build type)  + "dev" when in debug build type
      */
     def String venture = variant.productFlavors[1].name
+    def boolean isInstall = false;
+
     venture = venture.replace("jumiaMTNNg", "jumia")
     venture = venture.replace("jumiaNokiaX", "jumia")
     venture = venture.replace("jumiaSamsung", "jumia")
@@ -216,11 +218,28 @@ android.applicationVariants.all { variant ->
         variant.mergedFlavor.applicationId = "com." + venture + "." + variant.productFlavors[0].name
         println "application ID: ${variant.mergedFlavor.applicationId}"
         //e.g. com.jumia.android
-        if (variant.buildType.name == android.buildTypes.debug.name) {
+        def String install = "";
+        if(variant.productFlavors[1].name == "jumiaMTNNg" ){
+            install = "mtnng";
+            isInstall = true;
+        } else if (variant.productFlavors[1].name == "jumiaNokiaX"){
+            install = "nokiax";
+            isInstall = true;
+        }
+        if(isInstall){
+            variant.mergedFlavor.applicationId = "com." + venture + "." + install
+            //e.g. com.jumia.nokiax
+            //e.g. com.jumia.mtnng
+            println "application ID: ${variant.mergedFlavor.applicationId}"
+        }
+
+
+
+        if (!isInstall && variant.buildType.name == android.buildTypes.debug.name) {
             variant.mergedFlavor.applicationId = variant.mergedFlavor.applicationId + ".dev"
             println "application ID: ${variant.mergedFlavor.applicationId}"
             //e.g. com.jumia.android.dev
-        } else if(variant.buildType.name == android.buildTypes.live.name){
+        } else if(!isInstall && variant.buildType.name == android.buildTypes.live.name){
             variant.mergedFlavor.applicationId = variant.mergedFlavor.applicationId + ".live"
             println "application ID: ${variant.mergedFlavor.applicationId}"
             //e.g. com.jumia.android.live
