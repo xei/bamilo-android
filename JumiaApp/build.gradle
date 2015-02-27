@@ -19,10 +19,20 @@ def getAppVersionCode() {
 
     return versionCode
 }
-
+/**
+ *
+ * if version name is defined on flavour the jenkins will use that name when creating the apk on the CI server or locally.
+ *
+ * if version name environment variable is setted on CI server and not on the flavour, the apk locally will be build with the versionName value,
+ *and on the CI server with the version name setted on the BUILD_VERSION_NAME environment variable.
+ *
+ * if the version name isn't setted anywhere the apk will be build both locally and on the CI server with version name setted on versionName variable.
+ *
+ * @return the version name
+ */
 def getAppVersionName() {
 
-    def versionName = 2.4
+    def versionName = 1
     if (System.getenv('BUILD_VERSION_NAME') != null) {
         versionName = System.getenv('BUILD_VERSION_NAME')
     }
@@ -147,43 +157,48 @@ android {
         jumia {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaSigning
+            versionName "2.4"
             resConfigs "en", "fr", "pt"
         }
 
         shop {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseShopSigning
+            versionName "1.2"
             resConfigs "en"
         }
 
         daraz {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseDarazSigning
-            versionName "3.2"
             resConfigs "en"
         }
 
         bamilo {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseBamiloSigning
+            versionName "1.4"
             resConfigs "en"
         }
 
         jumiaMTNNg {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaMTNSigning
+            versionName "2.4"
             resConfigs "en", "fr", "pt"
         }
 
         jumiaNokiaX {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaNokiaXSigning
+            versionName "2.4"
             resConfigs "en", "fr", "pt"
         }
 
         jumiaSamsung {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaSigning
+            versionName "2.4"
             resConfigs "en", "fr", "pt"
         }
 
