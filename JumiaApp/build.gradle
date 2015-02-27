@@ -32,7 +32,7 @@ def getAppVersionCode() {
  */
 def getAppVersionName() {
 
-    def versionName = 1
+    def versionName = 2.4
     if (System.getenv('BUILD_VERSION_NAME') != null) {
         versionName = System.getenv('BUILD_VERSION_NAME')
     }
@@ -157,7 +157,6 @@ android {
         jumia {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaSigning
-            versionName "2.4"
             resConfigs "en", "fr", "pt"
         }
 
@@ -171,6 +170,7 @@ android {
         daraz {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseDarazSigning
+            versionName "1.2"
             resConfigs "en"
         }
 
