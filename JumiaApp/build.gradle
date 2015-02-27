@@ -127,7 +127,7 @@ android {
             debuggable true
             minifyEnabled true
             shrinkResources true
-            proguardFiles 'proguard-project-live.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimized.txt'), 'proguard-project-live.txt'
         }
 
 
@@ -135,7 +135,7 @@ android {
             manifestPlaceholders = [ AdjustEnvironment:"production" ]
             minifyEnabled true
             shrinkResources true
-            proguardFiles 'proguard-project-market.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimized.txt'), 'proguard-project-market.txt'
 
         }
     }
@@ -184,21 +184,18 @@ android {
         jumiaMTNNg {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaMTNSigning
-            versionName "2.4"
             resConfigs "en", "fr", "pt"
         }
 
         jumiaNokiaX {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaNokiaXSigning
-            versionName "2.4"
             resConfigs "en", "fr", "pt"
         }
 
         jumiaSamsung {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseJumiaSigning
-            versionName "2.4"
             resConfigs "en", "fr", "pt"
         }
 
