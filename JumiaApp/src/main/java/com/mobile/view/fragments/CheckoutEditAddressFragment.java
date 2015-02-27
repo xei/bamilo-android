@@ -118,6 +118,17 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
     }
 
+    @Override
+    protected void onClickRetryButton() {
+        Bundle bundle = new Bundle();
+        if(null != JumiaApplication.CUSTOMER){
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+
     protected void onGetEditAddressFormErrorEvent(Bundle bundle){
         super.onGetEditAddressFormErrorEvent(bundle);
         super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");

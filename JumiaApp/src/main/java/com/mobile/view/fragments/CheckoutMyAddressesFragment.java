@@ -14,6 +14,7 @@ import android.view.View;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.constants.ConstantsCheckout;
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.forms.FormField;
@@ -166,6 +167,17 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment{
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
+    }
+
+    @Override
+    protected void onClickRetryButton() {
+        Bundle bundle = new Bundle();
+        if(null != JumiaApplication.CUSTOMER){
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     protected void onGetBillingFormEventErrorEvent(Bundle bundle) {

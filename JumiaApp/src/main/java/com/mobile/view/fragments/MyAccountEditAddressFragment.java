@@ -73,15 +73,24 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
         }
     }
 
+    @Override
+    protected void onClickRetryButton() {
+        //TODO retry error when this method has access to eventType
+        triggerInitForm();
+    }
+
     protected void onGetEditAddressFormErrorEvent(Bundle bundle){
+        super.onGetEditAddressFormErrorEvent(bundle);
         onErrorOccurred();
     }
 
     protected void onGetRegionsErrorEvent(Bundle bundle){
+        super.onGetRegionsErrorEvent(bundle);
         onErrorOccurred();
     }
 
     protected void onGetCitiesErrorEvent(Bundle bundle){
+        super.onGetCitiesErrorEvent(bundle);
         onErrorOccurred();
     }
 

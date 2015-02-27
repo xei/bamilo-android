@@ -79,6 +79,12 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     }
 
     @Override
+    protected void onClickRetryButton() {
+        //TODO retry error when this method has access to eventType
+        triggerInitForm();
+    }
+
+    @Override
     protected void onCreateAddressSuccessEvent(Bundle bundle) {
         super.onCreateAddressSuccessEvent(bundle);
         getBaseActivity().onBackPressed();

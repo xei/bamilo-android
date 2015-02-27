@@ -205,15 +205,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      * Process the click on retry button.
      * @author paulo
      */
-    private void onClickRetryButton() {
-        Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-        }
-    }
+    protected abstract void onClickRetryButton() ;
 
     /**
      * Process the click on add button.
