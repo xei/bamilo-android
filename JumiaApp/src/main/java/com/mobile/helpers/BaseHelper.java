@@ -12,9 +12,11 @@ import android.net.Uri.Builder;
 import android.os.Bundle;
 
 import com.mobile.framework.ErrorCode;
+import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.objects.Errors;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.utils.JSONConstants;
 
@@ -29,6 +31,17 @@ import de.akquinet.android.androlog.Log;
  */
 public abstract class BaseHelper {
     private static String TAG = BaseHelper.class.getSimpleName();
+
+    /**
+     * Creates the bundle for the request
+     *
+     * @return
+     */
+    public final Bundle newRequestBundle(Bundle args){
+        Bundle bundle = generateRequestBundle(args);
+        setTaskConfiguration(bundle);
+        return bundle;
+    }
 
     /**
      * Creates the bundle for the request
@@ -112,6 +125,24 @@ public abstract class BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
     }
 
+    protected void setTaskConfiguration(Bundle bundle){
+        if(bundle.get(Constants.BUNDLE_EVENT_TASK) == null && bundle.get(Constants.BUNDLE_TYPE_KEY) instanceof RequestType){
+            RequestType requestType = (RequestType)bundle.get(Constants.BUNDLE_TYPE_KEY);
+
+            if(requestType == RequestType.GET){
+                bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
+            } else if(requestType == RequestType.POST){
+                bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
+            }  else if(requestType == RequestType.PUT){
+                bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
+            }  else if(requestType == RequestType.DELETE){
+                bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
+            } else {
+                bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
+            }
+        }
+    }
+
     /**
      * In case there as a valid json response, but that contains an error indication, be it due to
      * wrong parameters or something else this is the method used to parse that error
@@ -167,9 +198,5 @@ public abstract class BaseHelper {
             uriBuilder.appendQueryParameter(key, params.getString(key));
         // Return the new
         return uriBuilder.build().toString();
-    }
-
-    protected boolean getAllResponseObject() {
-        return false;
     }
 }

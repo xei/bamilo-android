@@ -24,6 +24,7 @@ public class Constants {
 	public static final String BUNDLE_EVENT_TYPE_KEY = "eventtype";
 	public static final String BUNDLE_RESPONSE_KEY = "response";
 	public static final String BUNDLE_RESPONSE_ERROR_MESSAGE_KEY = "responseerrormessage";
+    public static final String BUNDLE_EVENT_TASK = "eventtask";
 	public static final String BUNDLE_ELAPSED_REQUEST_TIME = "elapsedtime";
 	public static final String BUNDLE_JSON_VALIDATION_KEY = "jsonvalidation";
 	public static final String BUNDLE_WRONG_PARAMETER_MESSAGE_KEY = "parametererrormessage";

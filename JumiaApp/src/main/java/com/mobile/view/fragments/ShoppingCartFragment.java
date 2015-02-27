@@ -82,7 +82,7 @@ public class ShoppingCartFragment extends BaseFragment {
 
     private final static int FAVOURITE_DELAY = 2000;
 
-    private Handler triggerHander;
+    private Handler triggerHandler;
 
     private static ShoppingCartFragment shoppingCartFragment;
 
@@ -268,13 +268,13 @@ public class ShoppingCartFragment extends BaseFragment {
             // Show loading when
             showFragmentLoading();
             // Singleton for handler
-            if (triggerHander == null)
-                triggerHander = new Handler();
+            if (triggerHandler == null)
+                triggerHandler = new Handler();
             // Remove pending posts
             else
-                triggerHander.removeCallbacks(triggerRunnable);
+                triggerHandler.removeCallbacks(triggerRunnable);
             // Remove trigger
-            triggerHander.postDelayed(triggerRunnable, FAVOURITE_DELAY);
+            triggerHandler.postDelayed(triggerRunnable, FAVOURITE_DELAY);
         }
     }
 
@@ -733,6 +733,13 @@ public class ShoppingCartFragment extends BaseFragment {
         case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
             onAddItemsToShoppingCartRequestError(bundle);
             break;
+        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            if (items.size() == 0) {
+                showNoItems();
+            } else {
+                hideNoItems();
+            }
+            break;
         default:
             break;
         }
@@ -1093,7 +1100,7 @@ public class ShoppingCartFragment extends BaseFragment {
     /**
      * Function to redirect to the selected product details.
      * 
-     * @param position
+     * @param productUrl
      */
     private void goToProducDetails(String productUrl) {
         // Log.d(TAG, "CART COMPLETE PRODUCT URL: " + items.get(position).getProductUrl());
@@ -1142,11 +1149,6 @@ public class ShoppingCartFragment extends BaseFragment {
             }
         }
 
-        if (items.size() == 0) {
-            showNoItems();
-        } else {
-            hideNoItems();
-        }
     }
 
     public void hideNoItems() {

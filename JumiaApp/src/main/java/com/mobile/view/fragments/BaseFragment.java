@@ -34,6 +34,7 @@ import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LoadingBarView;
 import com.mobile.framework.utils.LogTagHelper;
@@ -1014,6 +1015,18 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         getBaseActivity().dismissProgress();
     }
 
+    protected void showNoNetworkWarning(){
+        getBaseActivity().showWarning(R.string.no_internet_access_warning_title);
+        hideActivityProgress();
+        showFragmentContentContainer();
+    }
+
+    protected void showUnexpectedErrorWarning(){
+        getBaseActivity().showWarning(R.string.server_error);
+        showFragmentContentContainer();
+        hideActivityProgress();
+    }
+
     /**
      * Set the visibility
      * 
@@ -1102,6 +1115,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventTask eventTask = (EventTask) bundle.getSerializable(Constants.BUNDLE_EVENT_TASK);
 
         if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
             return false;
@@ -1114,12 +1128,20 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             switch (errorCode) {
             case IO:
             case CONNECT_ERROR:
-                showFragmentErrorRetry();
+                if(eventTask == EventTask.SMALL_TASK) {
+                    showUnexpectedErrorWarning();
+                } else {
+                    showFragmentErrorRetry();
+                }
                 return true;
             case TIME_OUT:
             case NO_NETWORK:
                 // Show no network layout
-                showFragmentNoNetworkRetry(eventType);
+                if(eventTask == EventTask.SMALL_TASK){
+                    showNoNetworkWarning();
+                } else {
+                    showFragmentNoNetworkRetry(eventType);
+                }
                 return true;
             case HTTP_STATUS:
                 // Case HOME show retry

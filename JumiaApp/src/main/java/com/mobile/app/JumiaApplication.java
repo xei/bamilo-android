@@ -321,7 +321,7 @@ public class JumiaApplication extends A4SApplication {
         if (helper == null) {
             return "";
         }
-        final Bundle bundle = helper.generateRequestBundle(args);
+        final Bundle bundle = helper.newRequestBundle(args);
 
         if (bundle.containsKey(Constants.BUNDLE_EVENT_TYPE_KEY)) {
             Log.i(TAG, "codesave saving : " + (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));

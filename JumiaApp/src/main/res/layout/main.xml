@@ -27,11 +27,23 @@
 
         <!-- Main Content Layout -->
 
+        <!-- CONTENT LAYOUT -->
+
+        <ViewStub
+            android:id="@+id/stub_app_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_below="@id/checkout_header"
+            android:inflatedId="@+id/rocket_app_content" />
+
+        <!-- WARNING MESSAGE -->
+
         <RelativeLayout
             android:id="@+id/warning_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/checkout_header" >
+            android:layout_height="wrap_content">
 
             <include
                 android:id="@+id/warning"
@@ -47,17 +59,6 @@
                 layout="@layout/warning_variations"
                 android:visibility="gone" />
         </RelativeLayout>
-
-        <!-- CONTENT LAYOUT -->
-
-        <ViewStub
-            android:id="@+id/stub_app_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignWithParentIfMissing="true"
-            android:layout_below="@id/warning_container"
-            android:inflatedId="@+id/rocket_app_content" />
 
         <include
             layout="@layout/promotion_layout"

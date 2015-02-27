@@ -31,10 +31,13 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
@@ -125,6 +128,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     private static final int SEARCH_EDIT_SIZE = 2;
 
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
+
+    private static final int WARNING_LENGTH = 4000;
 
     // REMOVED FINAL ATRIBUTE
     private NavigationAction action;
@@ -555,12 +560,12 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Warning layout
         warningView = findViewById(R.id.warning);
         warningVariationView = findViewById(R.id.warning_variations);
-        warningView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showWarning(false);
-            }
-        });
+//        warningView.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showWarning(false);
+//            }
+//        });
         warningVariationView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1548,6 +1553,53 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     public final void showWarning(boolean show) {
         UIUtils.setVisibility(warningView, show);
+    }
+
+    public void showWarning(int message){
+        if(warningView != null){
+            ((TextView)findViewById(R.id.warning_text)).setText(message);
+            final Animation mAnimFadeIn = AnimationUtils.loadAnimation(this,R.anim.fade_in);
+            final Animation mAnimFadeOut = AnimationUtils.loadAnimation(this,R.anim.fade_out);
+            warningView.startAnimation(mAnimFadeIn);
+
+            mAnimFadeIn.setAnimationListener(new Animation.AnimationListener() {
+
+                @Override
+                public void onAnimationStart(final Animation animation) {
+                    warningView.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(final Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(final Animation animation) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            warningView.startAnimation(mAnimFadeOut);
+                        }
+                    }, WARNING_LENGTH);
+                }
+            });
+
+            mAnimFadeOut.setAnimationListener(new Animation.AnimationListener() {
+
+                @Override
+                public void onAnimationStart(final Animation animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(final Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(final Animation animation) {
+                    warningView.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     public void showWarningVariation(boolean show) {

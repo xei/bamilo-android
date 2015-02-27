@@ -65,6 +65,7 @@ import com.mobile.framework.network.LazHttpClientAndroidLog;
 import com.mobile.framework.service.RemoteService;
 import com.mobile.framework.tracking.NewRelicTracker;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 
 import de.akquinet.android.androlog.Log;
@@ -328,9 +329,11 @@ public final class RestClientSingleton {
 		EventType eventType = (EventType) metaData.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 		
 		Boolean priority = metaData.getBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
-		
+
+        EventTask eventTask = (EventTask)metaData.getSerializable(Constants.BUNDLE_EVENT_TASK);
+
 		if(!checkConnection()){
-			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.NO_NETWORK, result, md5, priority));
+			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.NO_NETWORK, result, md5, priority, eventTask));
 		}
 
 		metaData.putString(IMetaData.URI, httpRequest.getURI().toString());
@@ -364,10 +367,10 @@ public final class RestClientSingleton {
 			if (statusCode != HttpStatus.SC_OK) {
 				ClientProtocolException e = new ClientProtocolException();
 				if(statusCode == HttpStatus.SC_SERVICE_UNAVAILABLE){
-					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SERVER_IN_MAINTENANCE, result, md5, priority));
+					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SERVER_IN_MAINTENANCE, result, md5, priority,eventTask));
 					trackError(mContext, e, httpRequest.getURI(), ErrorCode.SERVER_IN_MAINTENANCE, result, false, startTimeMillis);
 				} else {
-					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_STATUS, result, md5, priority));	
+					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_STATUS, result, md5, priority,eventTask));
 					trackError(mContext, e, httpRequest.getURI(), ErrorCode.HTTP_STATUS, result, false, startTimeMillis);
 				}
 				
@@ -423,7 +426,7 @@ public final class RestClientSingleton {
 
 			entity = response.getEntity();
 			if (entity == null || entity.getContentLength() == 0) {
-				mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.EMPTY_ENTITY, result, md5, priority));
+				mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.EMPTY_ENTITY, result, md5, priority,eventTask));
 				Exception e = new Exception();
 				trackError(mContext, e, httpRequest.getURI(), ErrorCode.EMPTY_ENTITY, null, false, startTimeMillis);
 				Log.w(TAG, "Got empty entity for request: " + httpRequest.getURI() + " -> " + statusCode);
@@ -443,55 +446,55 @@ public final class RestClientSingleton {
 			// closes the stream
 			EntityUtils.consumeQuietly(entity);
 			// Send success message
-			mHandler.sendMessage(buildResponseSuccessMessage(eventType, httpRequest.getURI(), Constants.SUCCESS, ErrorCode.NO_ERROR, result, md5, priority, startTimeMillis, byteCountResponse));
+			mHandler.sendMessage(buildResponseSuccessMessage(eventType, httpRequest.getURI(), Constants.SUCCESS, ErrorCode.NO_ERROR, result, md5, priority,eventTask, startTimeMillis, byteCountResponse));
 			// Return the result string
 			return result;
 			
 		} catch (ClientProtocolException e) {
 			Log.d("TRACK", "ClientProtocolException");
 			Log.e(TAG, "There was a protocol error calling " + httpRequest.getURI(), e);
-			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_PROTOCOL, result, md5, priority));
+			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_PROTOCOL, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.HTTP_PROTOCOL, null, false, startTimeMillis);
 		} catch (HttpHostConnectException e) {
 			Log.d("TRACK", "HttpHostConnectException");
 			Log.w(TAG, "Http host connect error calling " + httpRequest.getURI(), e);
-			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority));
+			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false, startTimeMillis);
 		} catch (ConnectTimeoutException e) {
 			Log.d("TRACK", "ConnectTimeoutException");
 			Log.w(TAG, "Connection timeout calling " + httpRequest.getURI(), e);
-			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority));
+			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.TIME_OUT, null, false, startTimeMillis);
 		} catch (SocketTimeoutException e) {
 			Log.d("TRACK", "SocketTimeoutException");
 			Log.w(TAG, "Socket timeout calling " + httpRequest.getURI(), e);
-			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority));
+			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.TIME_OUT, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.TIME_OUT, null, false, startTimeMillis);
 		} catch (UnknownHostException e) {
 			Log.d("TRACK", "UnknownHostException");
 			Log.w(TAG, "Unknown host error calling " + httpRequest.getURI(), e);
-			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority));
+			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.CONNECT_ERROR, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.CONNECT_ERROR, null, false, startTimeMillis);
 		} catch (SSLException e) {
 			Log.d("TRACK", "SSLException");
 			Log.e(TAG, "SSL error calling " + httpRequest.getURI(), e);
-			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SSL, result, md5, priority));
+			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SSL, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.SSL, null, false, startTimeMillis);
 		} catch (IOException e) {
 			Log.d("TRACK", "IOException");
 			Log.e(TAG, "IO error calling " + httpRequest.getURI(), e);
-			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority));
+			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.IO, null, false, startTimeMillis);
 		} catch (OutOfMemoryError e) {
             Log.d("TRACK", "OutOfMemoryError");
             Log.e(TAG, "OutOfMemoryError calling " + httpRequest.getURI(), e);
-            mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority));
+            mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.IO, result, md5, priority,eventTask));
             trackError(mContext, null, httpRequest.getURI(), ErrorCode.IO, null, false, startTimeMillis);
 		} catch (Exception e) {
 			Log.d("TRACK", "Exception");
 			e.printStackTrace();
 			Log.e(TAG, "Anormal exception " + e.getMessage(), e);
-			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.UNKNOWN_ERROR, result, md5, priority));
+			mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.UNKNOWN_ERROR, result, md5, priority,eventTask));
 			trackError(mContext, e, httpRequest.getURI(), ErrorCode.UNKNOWN_ERROR, null, false, startTimeMillis);
 		}
 
@@ -592,7 +595,7 @@ public final class RestClientSingleton {
 	 * @param status
 	 * @return
 	 */
-	private Message buildResponseMessage(EventType eventType, int status, ErrorCode error, String response, String md5, Boolean priority, long... values) {
+	private Message buildResponseMessage(EventType eventType, int status, ErrorCode error, String response, String md5, Boolean priority, EventTask eventTask, long... values) {
 		Message msg = new Message();
 		Bundle bundle = new Bundle();
 
@@ -602,6 +605,7 @@ public final class RestClientSingleton {
 		bundle.putString(Constants.BUNDLE_RESPONSE_KEY, response);
 		bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, priority);
 		bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, eventTask);
 		// Get elapsed time
 		if (values != null && values.length > 0) bundle.putLong(Constants.BUNDLE_ELAPSED_REQUEST_TIME, values[0]);
 	
@@ -625,7 +629,7 @@ public final class RestClientSingleton {
 	 * @return Message
 	 * @author sergiopereira
 	 */
-	private Message buildResponseSuccessMessage(EventType eventType, URI uri, int status, ErrorCode error, String response, String md5, Boolean priority, long startTimeMillis, long bytesReceived) {
+	private Message buildResponseSuccessMessage(EventType eventType, URI uri, int status, ErrorCode error, String response, String md5, Boolean priority, EventTask eventTask,long startTimeMillis, long bytesReceived) {
 		// Get the current time
 		long endTimeMillis = System.currentTimeMillis();
 		// Get the elpsed time
@@ -635,7 +639,7 @@ public final class RestClientSingleton {
 		// Track http transaction
 		NewRelicTracker.noticeSuccessTransaction((uri != null) ? uri.toString() : "n.a.", status, startTimeMillis, endTimeMillis, bytesReceived);
 		// Create a message
-		return buildResponseMessage(eventType, status, error, response, md5, priority, elapsed);
+		return buildResponseMessage(eventType, status, error, response, md5, priority, eventTask,elapsed);
 	}
 	
 	
