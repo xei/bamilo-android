@@ -159,6 +159,7 @@ android {
         daraz {
             flavorDimension "venture"
             signingConfig signingConfigs.releaseDarazSigning
+            versionName "3.2"
             resConfigs "en"
         }
 
