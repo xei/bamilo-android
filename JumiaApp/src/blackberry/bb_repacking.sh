@@ -43,13 +43,13 @@ MNF_PATH="$PCK_NAME/assets/blackberry/MANIFEST.MF"
 if [ ! `hostname -s` == $HOSTNAME_JENKINS ]
 then
 	echo "> WARNING: Dev environment"
-	APK_FILE="$PCK_NAME/build/outputs/apk/JumiaApp-black-jumia-release.apk"
-	BAR_FILE="$BAR_FOLDER/JumiaApp-black-jumia-release.bar"
+	APK_FILE="$PCK_NAME/build/outputs/apk/JumiaApp-blackberry-jumia-release.apk"
+	BAR_FILE="$BAR_FOLDER/JumiaApp-blackberry-jumia-release.bar"
 	STORE_CRT_FOLDER=~/.rim/
 else
 	echo "> Release environment"
-	APK_FILE="$PCK_NAME/build/outputs/apk/JumiaApp-black-jumia-release.apk"
-	BAR_FILE="$BAR_FOLDER/JumiaApp-black-jumia-release.bar"
+	APK_FILE="$PCK_NAME/build/outputs/apk/JumiaApp-blackberry-jumia-release.apk"
+	BAR_FILE="$BAR_FOLDER/JumiaApp-blackberry-jumia-release.bar"
 	#STORE_CRT_FOLDER=~/Library/Research\ In\ Motion/
 	STORE_CRT_FOLDER=~/.rim/
 	#### Reload PATH (MAC OS)
