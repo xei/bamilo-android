@@ -112,7 +112,7 @@ android {
 
     /**
      * proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-market.txt'
-     * proguardFiles getDefaultProguardFile('proguard-android-optimized.txt'), 'proguard-project-market.txt'
+     * proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-market.txt'
      */
 
     buildTypes {
@@ -127,7 +127,7 @@ android {
             debuggable true
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimized.txt'), 'proguard-project-live.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-live.txt'
         }
 
 
@@ -135,7 +135,7 @@ android {
             manifestPlaceholders = [ AdjustEnvironment:"production" ]
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimized.txt'), 'proguard-project-market.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-market.txt'
 
         }
     }
