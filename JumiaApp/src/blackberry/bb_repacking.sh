@@ -25,7 +25,7 @@ HOSTNAME_JENKINS="jenkinsmastermobile"
 ##### DEF CONSTANTS #####
 #########################
 STOREPASS="jumiablackberry"
-PCK_NAME="com.jumia.blackberry"
+PCK_NAME="JumiaApp"
 BAR_FOLDER="$PCK_NAME/dist/blackberry"
 CERT_FOLDER="$PCK_NAME/assets/blackberry/certificate"
 
