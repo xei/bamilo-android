@@ -5,3 +5,9 @@
 /.idea/libraries
 .DS_Store
 /build
+/libraries/A4SSDK/build
+/libraries/Adjust/build
+/libraries/com.mobile.framework/build
+/libraries/com.viewpageindicator/build
+/libraries/FacebookSDK/build
+/libraries/Volley/build
