@@ -12,14 +12,14 @@
     -->
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/color_label"
+        android:id="@+id/variations_label"
         style="@style/rounded_box_title_grey"
-        android:text="@string/color_label" />
+        android:text="@string/string_more_choices" />
 
     <View
         android:id="@+id/divider"
         style="@style/divider_horizontal_orange"
-        android:layout_below="@id/color_label" />
+        android:layout_below="@id/variations_label" />
 
     <com.mobile.components.HorizontalListView
         android:id="@+id/variations_list"
