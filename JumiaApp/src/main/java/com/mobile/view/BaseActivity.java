@@ -1556,6 +1556,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     public void showWarning(int message){
         if(warningView != null){
+            warningView.setVisibility(View.INVISIBLE);
             ((TextView)findViewById(R.id.warning_text)).setText(message);
             final Animation mAnimFadeIn = AnimationUtils.loadAnimation(this,R.anim.fade_in);
             final Animation mAnimFadeOut = AnimationUtils.loadAnimation(this,R.anim.fade_out);
@@ -1575,7 +1576,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
                 @Override
                 public void onAnimationEnd(final Animation animation) {
-                    new Handler().postDelayed(new Runnable() {
+                    warningView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             warningView.startAnimation(mAnimFadeOut);
