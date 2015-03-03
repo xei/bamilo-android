@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.mobile.helpers.products;
 
@@ -31,31 +31,31 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * Get Catalog Page helper
- * 
+ *
  * @author sergiopereira
- * 
+ *
  */
 public class GetCatalogPageHelper extends BaseHelper {
 
     private static String TAG = GetCatalogPageHelper.class.getSimpleName();
 
     private static final EventType EVENT_TYPE = EventType.GET_PRODUCTS_EVENT;
-    
+
     public static final String SEARCH_NO_RESULTS = "SEARCH_NO_RESULTS";
-    
+
     public static final String CATALOG_ARGUMENTS = "catalog_arguments";
-    
+
     public static final String SAVE_RELATED_ITEMS = "save_related_items";
-    
+
     public static final int MAX_ITEMS_PER_PAGE = CatalogPage.MAX_ITEMS_PER_PAGE;
-    
-    public static final int INITIAL_PAGE_NUMBER = 1;
-    
+
+    public static final int FIRST_PAGE_NUMBER = 1;
+
     public static final String URL = Constants.BUNDLE_URL_KEY;
-    
-    public static final int FEATURE_BOX_TYPE = 999;    
-    // 
-    private int mCurrentPage = INITIAL_PAGE_NUMBER;
+
+    public static final int FEATURE_BOX_TYPE = 999;
+    //
+    private int mCurrentPage = FIRST_PAGE_NUMBER;
     // Request parameters
     public static final String PAGE = "page";
     public static final String MAX_ITEMS = "maxitems";
@@ -65,7 +65,7 @@ public class GetCatalogPageHelper extends BaseHelper {
     public static final String BRAND = "brand";
     // Flag used to save some items as related items
     private boolean isToSaveRelatedItems = false;
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
@@ -75,7 +75,7 @@ public class GetCatalogPageHelper extends BaseHelper {
         Log.d(TAG, "FILTER REQUEST");
         // Is to save related items in case popularity sort, first page and not filter applied
         isToSaveRelatedItems = params.getBoolean(SAVE_RELATED_ITEMS);
-        
+
         // Get catalog URL
         String baseUrl = params.getString(URL);
         // Case search then url is empty
@@ -86,7 +86,7 @@ public class GetCatalogPageHelper extends BaseHelper {
         mCurrentPage = catalogArguments.getAsInteger(PAGE);
         // Build a complete catalog URL
         String url = createCatalogRequest(baseUrl, catalogArguments);
-        
+
         // Create bundle for service
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
@@ -100,14 +100,14 @@ public class GetCatalogPageHelper extends BaseHelper {
     /**
      * Build a catalog URL with respective URL and parameters.<br>
      * All parameters should be final, used to sent for service.<br>
-     * A null value will be ignored. 
+     * A null value will be ignored.
      * @param url
      * @param parameters
      * @return A complete catalog URL.
      * @author sergiopereira
      */
-    private String createCatalogRequest(String url, ContentValues parameters) {        
-        // Create 
+    private String createCatalogRequest(String url, ContentValues parameters) {
+        // Create
         Builder builder = Uri.parse(url).buildUpon();
         // Add parameters
         if (parameters != null) {
@@ -184,7 +184,7 @@ public class GetCatalogPageHelper extends BaseHelper {
                                 bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, featuredBox);
                                 bundle.putInt(Constants.BUNDLE_OBJECT_TYPE_KEY, FEATURE_BOX_TYPE);
                             }
-                                
+
                         }
                     }
                 }

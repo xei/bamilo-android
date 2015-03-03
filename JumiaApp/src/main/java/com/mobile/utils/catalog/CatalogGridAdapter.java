@@ -1,4 +1,4 @@
-package com.mobile.controllers;
+package com.mobile.utils.catalog;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -26,9 +26,9 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.ArrayList;
 
 /**
- * Class used to fill the grid catalog.
+ * Class used to fill the grid catalog.<br>
+ * Can be used to add a header and footer view.
  * @author sergiopereira
- *
  */
 public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.ProductViewHolder> implements OnClickListener {
     
@@ -39,16 +39,22 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
     private static final int ITEM_VIEW_TYPE_GRID = 2;
     
     private static final int ITEM_VIEW_TYPE_FOOTER = 3;
-    
-    private ArrayList<Product> mDataset;
+
+    private static final int HEADER_POSITION = 0;
+
+    private boolean isToShowHeader;
+
+    private boolean isToShowFooter;
+
+    private boolean isShowingGridLayout;
+
+    private ArrayList<Product> mDataSet;
     
     private Context mContext;
     
-    private int lastPosition = -1;
+    private int mLastPosition = -1;
 
     private OnViewHolderClickListener mOnViewHolderClicked;
-
-    private boolean isShowingGridLayout;
 
     /**
      * Provide a reference to the views for each data item.<br>
@@ -72,7 +78,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         
         /**
          * Constructor 
-         * @param view
+         * @param view -  the view holder
          */
         public ProductViewHolder(View view) {
             super(view);
@@ -93,14 +99,12 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
-     * @param context
-     * @param productTeaserGroup
-     * @param parentClickListener
-     * @author sergiopereira
+     * @param context - the application context
+     * @param data - the array lisl
      */
     public CatalogGridAdapter(Context context, ArrayList<Product> data) {
         mContext = context;
-        mDataset = data; 
+        mDataSet = data;
         isShowingGridLayout = CustomerPreferences.getCatalogLayout(mContext);
     }
 
@@ -109,19 +113,14 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @see android.support.v7.widget.RecyclerView.Adapter#onCreateViewHolder(android.view.ViewGroup, int)
      */
     @Override
-    public CatalogGridAdapter.ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ProductViewHolder holder = null; 
-        if(viewType == ITEM_VIEW_TYPE_HEADER)
-            ; // TODO
-        else if (viewType == ITEM_VIEW_TYPE_LIST)
-            holder = new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.catalog_item_list_rounded, parent, false));
-        else if (viewType == ITEM_VIEW_TYPE_GRID)
-            holder = new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.catalog_item_grid_rounded, parent, false));
-        else if (viewType == ITEM_VIEW_TYPE_FOOTER)
-            ; // TODO
-        else holder = new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.catalog_item_list_rounded, parent, false));
+    public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        int layout = R.layout.catalog_item_list_rounded;
+        if(viewType == ITEM_VIEW_TYPE_HEADER) layout = R.layout._def_catalog_fragment_header;
+        else if (viewType == ITEM_VIEW_TYPE_LIST) layout = R.layout.catalog_item_list_rounded;
+        else if (viewType == ITEM_VIEW_TYPE_GRID) layout = R.layout.catalog_item_grid_rounded;
+        else if (viewType == ITEM_VIEW_TYPE_FOOTER) layout = R.layout._def_catalog_fragment_footer;
         // Create a new view
-        return holder;
+        return new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
     }
     
     /*
@@ -130,6 +129,11 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      */
     @Override
     public int getItemViewType(int position) {
+        // Case header
+        if(isHeader(position)) return ITEM_VIEW_TYPE_HEADER;
+        // Case footer
+        if(isFooter(position)) return ITEM_VIEW_TYPE_FOOTER;
+        // Case item
         return isShowingGridLayout ? ITEM_VIEW_TYPE_GRID : ITEM_VIEW_TYPE_LIST;
     }
 
@@ -140,17 +144,45 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
     @Override
     public int getItemCount() {
         // Return the size of your dataset (invoked by the layout manager)
-        return mDataset == null ? 0 : mDataset.size();
+        return mDataSet == null ? 0 : mDataSet.size() + (hasHeaderView() ? 1 : 0) + (hasFooterView() ? 1 : 0);
     }
-    
+
+    /**
+     * Get the real position validating the header view.
+     * @param position - the virtual position
+     * @return int
+     */
+    private int getRealPosition(int position) {
+        return position - (hasHeaderView() ? 1 : 0);
+    }
+
+    /*
+      * (non-Javadoc)
+      * @see android.support.v7.widget.RecyclerView.Adapter#onViewDetachedFromWindow(android.support.v7.widget.RecyclerView.ViewHolder)
+      */
+    @Override
+    public void onViewDetachedFromWindow(ProductViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        // Cancel the animation for detached views
+        holder.itemView.clearAnimation();
+    }
+
     /*
      * (non-Javadoc)
      * @see android.support.v7.widget.RecyclerView.Adapter#onBindViewHolder(android.support.v7.widget.RecyclerView.ViewHolder, int)
      */
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
+        // Set animation
+        setAnimation(holder, position);
+        // Case header
+        if(isHeader(position)) return;
+        // Case footer
+        if(isFooter(position)) return;
+        // Get real position
+        position = getRealPosition(position);
         // Get item
-        Product item = mDataset.get(position);
+        Product item = mDataSet.get(position);
         // Set name
         holder.name.setText(item.getName());
         // Set brand
@@ -168,16 +200,32 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
-        // 
-        //setAnimation(holder, position);
     }
-    
+
+    /**
+     *Validate if the current position is the header view.
+     * @param position - the current position
+     * @return true or false
+     */
+    private boolean isHeader(int position) {
+        return isToShowHeader && position == HEADER_POSITION;
+    }
+
+    /**
+     * Validate if the current position is the footer view.
+     * @param position - the current position
+     * @return true or false
+     */
+    private boolean isFooter(int position) {
+        return isToShowFooter && position == mDataSet.size() + (hasHeaderView() ? 1 : 0);
+    }
+
+
     /**
      * Set the favourite view.
      * @param holder - the view holder
      * @param item - the product
      * @param position - the current position
-     * @author sergiopereira
      */
     private void setFavourite(ProductViewHolder holder, Product item, int position) {
         holder.favourite.setTag(R.id.position, position);
@@ -189,7 +237,6 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * Set the product price.
      * @param holder - the view holder
      * @param item - the product
-     * @author sergiopereira
      */
     private void setProductPrice(ProductViewHolder holder, Product item) {
         // Case discount
@@ -208,9 +255,9 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
     }
     
     /**
-     * Set some that for 
-     * @param holder
-     * @param item
+     * Validate and set views from list layout.
+     * @param holder - the view holder
+     * @param item - the product
      */
     private void setSpecificViewForListLayout(ProductViewHolder holder, Product item) {
         // Validate list views
@@ -230,22 +277,26 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
             }
         }
     }
-    
+
     /**
-     * TODO: Add the animation to holder class
-     * @param holder
-     * @param position
+     * Set an animation for new items.
+     * @param holder - the view holder
+     * @param position - the current position
      */
     private void setAnimation(ProductViewHolder holder, int position) {
-        Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.entry_up_from_bottom : R.anim.entry_down_from_top);
-        holder.itemView.startAnimation(animation);
-        lastPosition = position;
+        if(position > mLastPosition) {
+            //Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.entry_up_from_bottom);
+            Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.abc_fade_in);
+            //Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.abc_slide_in_bottom);
+            holder.itemView.startAnimation(animation);
+            mLastPosition = position;
+        }
     }
 
 
     /**
-     * 
-     * @param isShowingGridLayout
+     * Set the flag used to switch between list or grid layout
+     * @param isShowingGridLayout - the flag
      */
     public void updateLayout(boolean isShowingGridLayout){
         this.isShowingGridLayout = isShowingGridLayout;
@@ -253,40 +304,41 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
     }
     
     /**
-     * 
-     * @param newDataset
+     * Append the new data to the current data.
+     * @param newDataSet - the new data
      */
-    public void updateData(ArrayList<Product> newDataset){
-        CollectionUtils.addAll(mDataset, newDataset);
+    public void updateData(ArrayList<Product> newDataSet){
+        CollectionUtils.addAll(mDataSet, newDataSet);
         notifyDataSetChanged();
     }
     
     /**
-     * 
-     * @param newDataset
+     * Replace the current data and update the adapter.
+     * @param newDataSet - the new data
      */
-    public void replaceData(ArrayList<Product> newDataset){
-        mDataset = newDataset;
+    public void replaceData(ArrayList<Product> newDataSet){
+        mDataSet = newDataSet;
+
         notifyDataSetChanged();
     }
 
     /**
-     * 
-     * @param position
-     * @return
+     * Get the product from the current data.
+     * @param position - the respective product position
+     * @return Product or null
      */
     public Product getItem(int position) {
-        return CollectionUtils.isEmpty(mDataset) ?  null : mDataset.get(position);
+        return CollectionUtils.isEmpty(mDataSet) ?  null : mDataSet.get(position);
     }
     
     /**
-     * 
-     * @param listener
+     * Set the listener the click on view holder.
+     * @param listener - the listener
      */
     public void setOnViewHolderClickListener(OnViewHolderClickListener listener) {
         this.mOnViewHolderClicked = listener;
     }
-    
+
     /*
      * (non-Javadoc)
      * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -295,21 +347,21 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
     public void onClick(View view) {
         // Get view id
         int id = view.getId();
+        // Case favourite
         if(id == R.id.image_is_favourite) onClickFavouriteButton(view);
-        else if(mOnViewHolderClicked != null) 
-            mOnViewHolderClicked.onViewHolderClick(this, view, (Integer) view.getTag(R.id.position), null);
+        // Case other sent to listener
+        else if(mOnViewHolderClicked != null) mOnViewHolderClicked.onViewHolderClick(this, view, (Integer) view.getTag(R.id.position), null);
     }
     
     /**
      * Process the click on the favourite button
-     * @param view
-     * @author sergiopereira
+     * @param view - the view holder
      */
     private void onClickFavouriteButton(View view) {
         // Get id
         int position = (Integer) view.getTag(R.id.position);
         // Get item
-        Product product = mDataset.get(position);
+        Product product = mDataSet.get(position);
         // Remove from favorite
         if(product.getAttributes().isFavourite()) {
             // Remove from table and notify user
@@ -328,4 +380,34 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
           ToastFactory.ADDED_FAVOURITE.show(mContext);            
         }
     }
+
+
+    /*
+     * TODO: Implement a better approach for header view and footer view
+     */
+
+    public void showHeaderView() {
+        isToShowHeader = true;
+    }
+
+    public void showFooterView() {
+        isToShowFooter = true;
+    }
+
+    public void hideHeaderView() {
+        isToShowHeader = false;
+    }
+
+    public void hideFooterView() {
+        isToShowFooter = false;
+    }
+
+    public boolean hasHeaderView() {
+        return isToShowHeader;
+    }
+
+    public boolean hasFooterView() {
+        return isToShowFooter;
+    }
+
 }

@@ -437,9 +437,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     private class CustomWebViewClient extends WebViewClient {
 
         private static final String SUCCESS_URL_TAG = "checkout/success";
-        private static final String JAVASCRIPT_PROCESS = "javascript:window.INTERFACE.processContent"
-                +
-                "(document.getElementById('jsonAppObject').innerHTML);";
+        private static final String JAVASCRIPT_PROCESS = "javascript:window.INTERFACE.processContent(document.getElementById('jsonAppObject').innerHTML);";
         private boolean wasLoadingErrorPage;
 
         @SuppressWarnings("deprecation")
@@ -486,7 +484,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             Log.i(TAG, "code1payment : onPageFinished");
             Log.d(TAG, "onPageFinished: url = " + url);
             if (wasLoadingErrorPage) {
-                Log.d(TAG, "onPageFinished: resetting error page inforamtion");
+                Log.d(TAG, "onPageFinished: resetting error page information");
                 wasLoadingErrorPage = false;
                 failedPageRequest = null;
             } else if (url.equals(failedPageRequest)) {

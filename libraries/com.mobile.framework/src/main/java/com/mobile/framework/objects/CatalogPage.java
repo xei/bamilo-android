@@ -1,5 +1,6 @@
+
 /**
- * 
+ *
  */
 package com.mobile.framework.objects;
 
@@ -24,37 +25,39 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  */
 public class CatalogPage implements IJSONSerializable, Parcelable {
-    
+
     private static final String TAG = CatalogPage.class.getSimpleName();
-    
+
     public static final int MAX_ITEMS_PER_PAGE = 24;
-    
+
+    private static final int FIRST_PAGE = 1;
+
     private String mId;
-    
+
     private String mName;
-    
+
     private int mTotal;
-    
+
     private int mPage = 1;
-    
+
     private int mMaxPages = 1;
-    
+
     private ArrayList<Product> mProducts;
-       
+
     private ArrayList<CatalogFilter> mFilters;
 
-    
+
     /*
      * ########### CONSTRUCTOR ###########
      */
-    
+
     /**
      * Empty constructor
      */
     public CatalogPage() {
         //...
     }
-    
+
     /*
      * ############### IJSON ###############
      */
@@ -72,7 +75,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         // Set the max pages that application can request
         mMaxPages = calcMaxPages();
         // Get products
-        mProducts = new ArrayList<Product>();
+        mProducts = new ArrayList<>();
         JSONArray productObjectArray = metadataObject.getJSONArray(RestConstants.JSON_RESULTS_TAG);
         for (int i = 0; i < productObjectArray.length(); ++i) {
             JSONObject productObject = productObjectArray.getJSONObject(i);
@@ -81,8 +84,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             mProducts.add(product);
         }
         // Get filters
-        mFilters = new ArrayList<CatalogFilter>();
-        
+        mFilters = new ArrayList<>();
+
         // Get category filter
         /*
         if (!metadataObject.isNull(RestConstants.JSON_CATEGORIES_TAG)) {
@@ -93,7 +96,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             else
                 Log.d(TAG, "THERE IS NO CATEGORY FILTER");
         }*/
-        
+
         // Get the other filters
         if(!metadataObject.isNull(RestConstants.JSON_FILTERS_TAG)){
             JSONArray jsonArray = metadataObject.getJSONArray(RestConstants.JSON_FILTERS_TAG);
@@ -106,17 +109,16 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
                 mFilters.add(catalogFilter);
             }
         }
-        
+
         return true;
     }
-    
 
-    
+
+
     /**
      * Parse the JSON for categories, supported parent and leaf structure
-     * @param categoriesArray
+     * @param categoriesArray - the json array
      * @throws JSONException
-     * @author sergiopereira
      */
     @SuppressWarnings("unused")
     private void parseCategoryFilter(JSONArray categoriesArray) throws JSONException{
@@ -135,8 +137,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             Log.d(TAG, "CURRENT CATEGORY IS LEAF");
             categoryArray = leafObject;
         }
-        // Create category option and save it 
-        ArrayList<CatalogFilterOption> options = new ArrayList<CatalogFilterOption>();
+        // Create category option and save it
+        ArrayList<CatalogFilterOption> options = new ArrayList<>();
         if(categoryArray != null) {
             Log.d(TAG, "PARSE ADD TO CATALOG");
             for (int i = 0; i < categoryArray.length(); ++i) {
@@ -150,7 +152,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         // Create the category filter and save it
         mFilters.add(new CatalogFilter("category", Darwin.context.getString(R.string.framework_category_label), false, options));
     }
-    
+
     /* (non-Javadoc)
      * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
      */
@@ -158,18 +160,17 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         return null;
     }
-    
+
     /**
      * Calculate the max request per page.
      * @return number or pages
-     * @author sergiopereira
      */
     private int calcMaxPages() {
         int i = (mTotal / MAX_ITEMS_PER_PAGE) + ((mTotal % MAX_ITEMS_PER_PAGE) > 0 ? 1 : 0);
         Log.i(TAG, "MAX PAGES: " + i);
         return i;
     }
-    
+
     /**
      * The current catalog page
      * @return int
@@ -180,44 +181,52 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     /**
      * Set the current page
-     * @param page
+     * @param page - the new page number
      */
     public void setPage(int page) {
         this.mPage = page;
     }
 
     /**
-     * Update the current catalog with the new catalog data
-     * @param page
-     * @author sergiopereira
+     * Update the current catalog with the new catalog data.<br>
+     *     Case first page replace all content.
+     * @param catalog - the new catalog
      */
-    public void update(CatalogPage page) {
+    public void update(CatalogPage catalog) {
         // Update current page
-        mPage = page.getPage();
+        mPage = catalog.getPage();
         // Update total
-        mTotal = page.getTotal();
+        mTotal = catalog.getTotal();
         // Update the max pages that application can request
         mMaxPages = calcMaxPages();
-        // Case replace data 
-        if(mPage == 1) mProducts = page.getProducts();
-        // Case append data
-        else CollectionUtils.addAll(mProducts, page.getProducts());
+        // Case replace data
+        if(mPage == FIRST_PAGE) mProducts = catalog.getProducts();
+            // Case append data
+        else CollectionUtils.addAll(mProducts, catalog.getProducts());
     }
 
     /**
      * Get products
-     * @return
+     * @return a list of products
      */
     public ArrayList<Product> getProducts() {
         return mProducts;
     }
-    
+
     /**
      * Get max pages
-     * @return
+     * @return the max number of pages to request
      */
     public int getMaxPages() {
         return mMaxPages;
+    }
+
+    /**
+     * Validate if the current catalog has more pages to load
+     * @return true or false
+     */
+    public boolean hasMorePagesToLoad() {
+        return mPage < mMaxPages;
     }
 
     /**
@@ -226,40 +235,40 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     public int getTotal() {
         return mTotal;
     }
-    
+
     /**
      * @return the filters
      */
     public ArrayList<CatalogFilter> getFilters() {
         return mFilters;
     }
-    
+
     /**
      * @return the filters
      */
     public boolean hasFilters() {
         return CollectionUtils.isNotEmpty(mFilters);
     }
-    
+
     /**
      * Validate products is empty or not.
-     * @return
+     * @return true or false
      */
     public boolean hasProducts() {
         return CollectionUtils.isNotEmpty(mProducts);
     }
-    
+
     /**
      * Get name
-     * @return
+     * @return String
      */
     public String getName(){
         return mName;
     }
-    
+
     /**
      * Get id
-     * @return
+     * @return String
      */
     public String getCategoryId(){
         return mId;
@@ -268,7 +277,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     /*
      * ############### Parcelable ###############
      */
-    
+
     @Override
     public int describeContents() {
         return 0;
@@ -296,7 +305,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * Parcel constructor 
+     * Parcel constructor
      * @param in
      */
     private CatalogPage(Parcel in){
@@ -306,19 +315,19 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         mPage = in.readInt();
         mMaxPages = in.readInt();
         if (in.readByte() == 0x01) {
-            mProducts = new ArrayList<Product>();
+            mProducts = new ArrayList<>();
             in.readList(mProducts, Product.class.getClassLoader());
         } else {
             mProducts = null;
         }
         if (in.readByte() == 0x01) {
-            mFilters = new ArrayList<CatalogFilter>();
+            mFilters = new ArrayList<>();
             in.readList(mFilters, CatalogFilter.class.getClassLoader());
         } else {
             mFilters = null;
         }
     }
-    
+
     public static final Parcelable.Creator<CatalogPage> CREATOR = new Parcelable.Creator<CatalogPage>() {
         public CatalogPage createFromParcel(Parcel in) {
             return new CatalogPage(in);

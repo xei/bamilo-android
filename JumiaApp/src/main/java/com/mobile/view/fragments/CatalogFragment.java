@@ -2,7 +2,7 @@ package com.mobile.view.fragments;
 
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -11,12 +11,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewStub;
 import android.widget.AbsListView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.CatalogGridAdapter;
-import com.mobile.controllers.TipsPagerAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
@@ -32,10 +31,12 @@ import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TipsOnPageChangeListener;
 import com.mobile.utils.Toast;
+import com.mobile.utils.catalog.CatalogGridAdapter;
+import com.mobile.utils.catalog.CatalogGridView;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.utils.catalog.FeaturedBoxHelper;
+import com.mobile.utils.catalog.UICatalogHelper;
 import com.mobile.utils.dialogfragments.DialogFilterFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
@@ -56,17 +57,19 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private static final String TAG = CatalogFragment.class.getSimpleName();
 
-    private RecyclerView mGridView;
+    private final static int FIRST_POSITION = 0;
+
+    private final static int EMPTY_CATALOG = 0;
+
+    private final static int ACTIVATE_TOP_BUTTON_IN_LINE = 5;
+
+    private CatalogGridView mGridView;
 
     private TextView mSortButton;
 
     private View mFilterButton;
 
-    private View mColumnsButton;
-
     private View mTopButton;
-
-    private View mLoadingMore;
 
     private String mCatalogUrl;
 
@@ -80,11 +83,17 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private View mNoResultStub;
 
-    private View mWizardStub;
+    private ViewStub mWizardStub;
 
     private ContentValues mCurrentFilterValues = new ContentValues();
 
     private CatalogSort mSelectedSort = CatalogSort.POPULARITY;
+
+    private boolean mErrorLoading = false;
+
+    private boolean isLoadingMoreData = false;
+
+    private int mNumberOfColumns;
 
     /**
      * Create and return a new instance.
@@ -147,17 +156,15 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CRETED");
-
         // Load user preferences
         boolean isToShowGridLayout = CustomerPreferences.getCatalogLayout(getBaseActivity());
-        int numberOfColumns = isToShowGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns;
-
+        mNumberOfColumns = getResources().getInteger(isToShowGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns);
         // Get sort button 
         mSortButton = (TextView) view.findViewById(R.id.catalog_bar_button_sort);
         // Get filter button
         mFilterButton = view.findViewById(R.id.catalog_bar_button_filter);
         // Get switch button
-        mColumnsButton = view.findViewById(R.id.catalog_bar_button_columns);
+        View mColumnsButton = view.findViewById(R.id.catalog_bar_button_columns);
         mColumnsButton.setOnClickListener(this);
         mColumnsButton.setSelected(isToShowGridLayout);
         // Get up button
@@ -166,80 +173,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get feature box
         mNoResultStub = view.findViewById(R.id.catalog_no_result_stub);
         // Get wizard
-        mWizardStub = view.findViewById(R.id.catalog_wizard_stub);
-        // Get loading more
-        mLoadingMore = view.findViewById(R.id.catalog_loading_more);
+        mWizardStub = (ViewStub) view.findViewById(R.id.catalog_wizard_stub);
         // Get grid view
-        mGridView = (RecyclerView) view.findViewById(R.id.catalog_grid_view);
+        mGridView = (CatalogGridView) view.findViewById(R.id.catalog_grid_view);
         mGridView.setHasFixedSize(true);
-        GridLayoutManager manager = new GridLayoutManager(getBaseActivity(), getResources().getInteger(numberOfColumns));
-        manager.setSmoothScrollbarEnabled(true);
-        mGridView.setLayoutManager(manager);
-
-        mGridView.setOnScrollListener(new OnScrollListener() {
-
-            private int visibleItemCount;
-            private int total;
-            private int firstVisibleItem;
-            private int last;
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                // TODO Auto-generated method stub
-                super.onScrolled(recyclerView, dx, dy);
-
-                GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
-
-                int columns = manager.getSpanCount();
-
-                visibleItemCount = recyclerView.getChildCount();
-                total = manager.getItemCount();
-                firstVisibleItem = manager.findFirstVisibleItemPosition();
-                last = manager.findLastVisibleItemPosition();
-                
-                /*--
-                Log.i(TAG, "ON SCROLL: " +
-                		"CC:" + visibleItemCount + " " +
-                		"IC:" + totalItemCount + " " +
-                		"FI:" + firstVisibleItem + " " +
-                		"LI:" + lastVisibleItem);
-                 */
-
-                int page = mCatalogPage.getPage();
-                int max = mCatalogPage.getMaxPages();
-
-                //Log.i(TAG, "MAX PAGES: " + page + " " + max);
-
-                // Show or hide top button after 4 arrow
-                if(last > columns * 4) mTopButton.setVisibility(View.VISIBLE);
-                else  mTopButton.setVisibility(View.INVISIBLE);
-
-                // Load more items
-                if(page < max && last + 1 == total && !isLoadingMore()) {
-                    //
-                    showLoadingMore();
-                    //
-                    triggerGetPaginatedCalalog();
-                }
-
-            }
-
-            /*
-             * (non-Javadoc)
-             * @see android.support.v7.widget.RecyclerView.OnScrollListener#onScrollStateChanged(android.support.v7.widget.RecyclerView, int)
-             */
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                Log.i(TAG, "ON SCROLL STATE CHANGED: " + newState);
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-                    RocketImageLoader.getInstance().stopProcessingQueue();
-                } else {
-                    RocketImageLoader.getInstance().startProcessingQueue();
-                }
-            }
-        });
-
+        mGridView.setGridLayoutManager(mNumberOfColumns);
+        mGridView.setItemAnimator(new DefaultItemAnimator());
+        mGridView.setOnScrollListener(onRecyclerScrollListener);
     }
 
     /*
@@ -263,7 +203,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case URL or QUERY is empty show continue shopping 
         if(TextUtils.isEmpty(mCatalogUrl) && TextUtils.isEmpty(mSearchQuery)) showContinueShopping();
         // Case catalog is null get catalog from URL
-        else if(mCatalogPage == null) triggerGetPaginatedCalalog();
+        else if(mCatalogPage == null) triggerGetPaginatedCatalog();
         // Case catalog was recover
         else onRecoverCatalogContainer(mCatalogPage);
     }
@@ -331,34 +271,37 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
 
     /**
-     *
-     * @param catalogPage
+     * Recover the catalog container.
+     * @param catalogPage - the saved instance
      */
     private void onRecoverCatalogContainer(CatalogPage catalogPage) {
         Log.i(TAG, "ON RECOVER CATALOG");
         // Set title bar
-        setTitleBar();
+        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, mCatalogPage.getTotal());
         // Set sort button
         setSortButton();
         // Set filter button
-        setFilterButtonActionState(catalogPage.hasFilters());
+        UICatalogHelper.setFilterButtonActionState(mFilterButton, catalogPage.hasFilters(), this);
         // Set the filter button selected or not
-        setFilterButtonState();
+        UICatalogHelper.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
         // Create adapter new data
         CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
         adapter.setOnViewHolderClickListener(this);
         mGridView.setAdapter(adapter);
         // Validate loading more view 
-        if(isLoadingMore()) hideLoadingMore();
+        isLoadingMoreData = false;
+        // Validate if user can load more pages
+        if(mCatalogPage.hasMorePagesToLoad()) mGridView.showFooterView();
+        else mGridView.hideFooterView();
         // Show container
         showFragmentContentContainer();
         // Validate if is to show wizard
-        isToShowWizard();
+        UICatalogHelper.isToShowWizard(this, mWizardStub, this);
     }
 
     /**
-     *
-     * @param catalogPage
+     * Updated the catalog container.
+     * @param catalogPage - The current catalog page
      */
     private void onUpdateCatalogContainer(CatalogPage catalogPage) {
         Log.i(TAG, "ON UPDATE CATALOG CONTAINER: " + catalogPage.getPage());
@@ -376,76 +319,41 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             adapter.setOnViewHolderClickListener(this);
             mGridView.setAdapter(adapter);
             // Set filter button
-            setFilterButtonActionState(mCatalogPage.hasFilters());
+            UICatalogHelper.setFilterButtonActionState(mFilterButton, catalogPage.hasFilters(), this);
             // Set sort button
             setSortButton();
         }
         // Case load more append the new data
-        else if(isLoadingMore()) {
+        else if(isLoadingMoreData) {
             // Hide loading
-            hideLoadingMore();
+            isLoadingMoreData = false;
             // Append new data
             adapter.notifyDataSetChanged();
-            //adapter.updateData(catalogPage.getProducts());
         }
         // Case filter applied/clean replace the current data
         else {
+            // TODO: Try clean the data and the animations from the current adapter
             // Replace the data
-            adapter.replaceData(mCatalogPage.getProducts());
+            //adapter.replaceData(mCatalogPage.getProducts());
+            adapter = new CatalogGridAdapter(getBaseActivity(), mCatalogPage.getProducts());
+            adapter.setOnViewHolderClickListener(this);
+            mGridView.setAdapter(adapter);
+            // Hide the goto top button
+            UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);
         }
-
         // Set title bar
-        setTitleBar();
-
-        Log.i(TAG, "########### SIZE: " + adapter.getItemCount());
-
+        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, mCatalogPage.getTotal());
+        // Validate if user can load more pages
+        if(mCatalogPage.hasMorePagesToLoad()) mGridView.showFooterView();
+        else mGridView.hideFooterView();
         // Show container
         showFragmentContentContainer();
         // Validate if is to show wizard
-        isToShowWizard();
+        UICatalogHelper.isToShowWizard(this, mWizardStub, this);
     }
 
     /**
-     * Show tips if is the first time the user uses the app.
-     */
-    private void isToShowWizard() {
-        try {
-            if (WizardPreferences.isFirstTime(getBaseActivity(), WizardPreferences.WizardType.CATALOG)) {
-                Log.i(TAG, "SHOW WIZARD");
-                // Inflate view in stub
-                mWizardStub.setVisibility(View.VISIBLE);
-                // Show
-                showWizard();
-            }
-        } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON SHOW WIZARD" , e);
-            mWizardStub.setVisibility(View.GONE);
-        }
-    }
-
-    private void showWizard() {
-        // Get view
-        View view = getView();
-        // Get view and set wizard
-        ViewPager viewPagerTips = (ViewPager) view.findViewById(R.id.catalog_wizard_viewpager);
-        int[] tipsPages = { R.layout.catalog_fragment_wizard_favourite};
-        TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(getBaseActivity(), getBaseActivity().getLayoutInflater(), view, tipsPages);
-        viewPagerTips.setAdapter(mTipsPagerAdapter);
-        viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(view, tipsPages));
-        viewPagerTips.setCurrentItem(0);
-        view.findViewById(R.id.catalog_wizard_button_ok).setOnClickListener(this);
-    }
-
-    /**
-     *
-     */
-    private void setTitleBar() {
-        getBaseActivity().setTitleAndSubTitle(mTitle, "(" + String.valueOf(mCatalogPage.getTotal()) + ")");
-    }
-
-    /**
-     * Set the sort button with the current sort selection
-     * @author sergiopereira
+     * Set the sort button with the current sort selection.
      */
     private void setSortButton() {
         mSortButton.setText(getString(mSelectedSort.name));
@@ -453,68 +361,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     /**
-     * Set the filter button state, to show as selected or not
-     *
-     * @author sergiopereira
-     */
-    private void setFilterButtonState() {
-        try {
-            mFilterButton.setSelected(mCurrentFilterValues.size() > 0);
-            Log.d(TAG, "SET FILTER BUTTON STATE: " + mFilterButton.isSelected());
-        } catch (NullPointerException e) {
-            Log.w(TAG, "BUTTON OR VALUE IS NULL", e);
-        }
-    }
-
-    /**
-     * Set button state when catalog show no internet connection error
-     * @author sergiopereira
-     */
-    private void setFilterButtonActionState(boolean selectable){
-        if (mFilterButton != null) {
-            if (!selectable) {
-                mFilterButton.setOnClickListener(null);
-                mFilterButton.setEnabled(false);
-            } else {
-                mFilterButton.setOnClickListener(this);
-                mFilterButton.setEnabled(true);
-            }
-        }
-    }
-
-    /**
-     * Validate if is loading more data.
-     * @return true or false
-     * @author sergiopereira
-     */
-    private boolean isLoadingMore() {
-        return mLoadingMore.getVisibility() == View.VISIBLE;
-    }
-
-    /**
-     * Show the loading more.
-     * @author sergiopereira
-     */
-    private void showLoadingMore() {
-        mLoadingMore.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * Hide the loading more.
-     * @author sergiopereira
-     */
-    private void hideLoadingMore() {
-        mLoadingMore.setVisibility(View.GONE);
-    }
-
-    /**
-     *
-     * @author sergiopereira
+     * Show the no filter result
      */
     private void showFilterNoResult() {
         Log.i(TAG, "ON SHOW FILTER NO RESULT");
-        // Set title // TODO:
-        getBaseActivity().setSubTitle(" (" + 0 + " " + getBaseActivity().getString(R.string.shoppingcart_items) + ")");
+        // Set title
+        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, EMPTY_CATALOG);
         // Show layout
         showFragmentEmpty(R.string.catalog_no_results, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
             @Override
@@ -526,8 +378,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     /**
-     *
-     * @param featuredBox
+     * Show the received feature box from an invalid query
+     * @param featuredBox - all data to show the feature box
      */
     private void showFeaturedBoxNoResult(FeaturedBox featuredBox) {
         Log.i(TAG, "ON SHOW FEATURED BOX");
@@ -602,9 +454,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case filter button
         else if(id == R.id.catalog_bar_button_filter) onClickFilterButton();
         // Case columns button
-        else if(id == R.id.catalog_bar_button_columns) onClickSwichColumnsButton(view);
+        else if(id == R.id.catalog_bar_button_columns) onClickSwitchColumnsButton(view);
         // Case top button
-        else if(id == R.id.catalog_button_top) onClickScrollTopButton();
+        else if(id == R.id.catalog_button_top) onClickGotoTopButton();
         // Case wizard
         else if(id == R.id.catalog_wizard_button_ok) onClickWizardButton();
         // Case default
@@ -612,7 +464,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     /**
-     *
+     * Process the click on wizard button
      */
     private void onClickWizardButton() {
         Log.i(TAG, "ON CLICK FILTER BUTTON");
@@ -621,7 +473,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     /**
-     *
+     * Process the click on filter button
      */
     private void onClickFilterButton() {
         Log.i(TAG, "ON CLICK FILTER BUTTON");
@@ -637,10 +489,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     /**
-     * Process the filter values
-     *
-     * @param filterValues
-     * @author sergiopereira
+     * Process the filter values.
+     * @param filterValues - the new content values from dialog
      */
     public void onSubmitFilterValues(ContentValues filterValues) {
         Log.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
@@ -649,60 +499,71 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (filterValues.containsKey(DialogFilterFragment.BRAND)) {
             // Used to indicate that has filter q=<BRAND>
             mBrandQuery = filterValues.getAsString(DialogFilterFragment.BRAND);
-        } // Clean brand filter
+        }
+        // Clean brand filter
         else {
             mBrandQuery = null;
         }
         // Save the current filter values
         mCurrentFilterValues = filterValues;
         // Set the filter button selected or not
-        setFilterButtonState();
+        UICatalogHelper.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
         // Get new catalog
-        triggerGetFilteredOrSortedCatalog();
+        triggerGetInitialCatalogPage();
     }
 
     /**
      * Process the click on Columns button
-     * @param view
+     * @param button - the clicked view
      */
-    private void onClickSwichColumnsButton(View view) {
+    private void onClickSwitchColumnsButton(View button) {
         Log.i(TAG, "ON CLICK COLUMNS BUTTON");
         // Case selected is showing the GRID LAYOUT and the LIST ICON
-        boolean isShowingGridLayout = view.isSelected();
+        boolean isShowingGridLayout = button.isSelected();
         // Save user preference 
         CustomerPreferences.saveCatalogLayout(getBaseActivity(), !isShowingGridLayout);
         // Update the icon
-        view.setSelected(!isShowingGridLayout);
+        button.setSelected(!isShowingGridLayout);
+        // Update the number of columns
+        mNumberOfColumns = getResources().getInteger(!isShowingGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns);
         // Update the columns and layout
-        int numberOfColumns = isShowingGridLayout ? R.integer.catalog_list_num_columns : R.integer.catalog_grid_num_columns;
         GridLayoutManager manager = (GridLayoutManager) mGridView.getLayoutManager();
-        manager.setSpanCount(getResources().getInteger(numberOfColumns));
+        manager.setSpanCount(mNumberOfColumns);
         manager.requestLayout();
         ((CatalogGridAdapter) mGridView.getAdapter()).updateLayout(!isShowingGridLayout);
     }
 
     /**
-     *
+     * Process the click on button to go top
      */
-    private void onClickScrollTopButton() {
+    private void onClickGotoTopButton() {
         Log.i(TAG, "ON CLICK SCROLL TOP BUTTON");
-        // TODO
-        mGridView.smoothScrollToPosition(0);
+        GridLayoutManager manager = (GridLayoutManager) mGridView.getLayoutManager();
+        int columns = manager.getSpanCount();
+        // Scroll faster until mark line
+        mGridView.scrollToPosition(columns * ACTIVATE_TOP_BUTTON_IN_LINE);
+        // Scroll smooth until top position
+        mGridView.post(new Runnable() {
+            @Override
+            public void run() {
+                mGridView.smoothScrollToPosition(FIRST_POSITION);
+            }
+        });
     }
 
     /**
-     *
+     * Process the click on sort button
      */
     private void onClickSortButton() {
         Log.i(TAG, "ON CLICK SORT BUTTON");
         // Create array list of strings
-        ArrayList<String> mSortOptions = new ArrayList<String>();
+        ArrayList<String> mSortOptions = new ArrayList<>();
         for (CatalogSort sort : CatalogSort.values()) {
             mSortOptions.add(getString(sort.name));
         }
         // Show dialog
         DialogListFragment
-        .newInstance(this, (OnDialogListListener) this, "sort", getString(R.string.sort_by), mSortOptions, mSelectedSort.ordinal())
+        .newInstance(this, this, "sort", getString(R.string.sort_by), mSortOptions, mSelectedSort.ordinal())
         .show(getChildFragmentManager(), null);
     }
 
@@ -716,27 +577,85 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mSelectedSort  = CatalogSort.values()[position];
         // Set sort button
         setSortButton();
+        // Mark the current catalog has null
+        mCatalogPage = null;
         // Get new data
-        triggerGetFilteredOrSortedCatalog();
+        triggerGetInitialCatalogPage();
     }
+
+    /**
+     * The listener for grid view
+     */
+    private OnScrollListener onRecyclerScrollListener = new OnScrollListener() {
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            // Get the grid layout manager
+            GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
+            // Get the size
+            int total = manager.getItemCount();
+            // Get the last view for loading
+            int last = manager.findLastCompletelyVisibleItemPosition();
+            // Get the current page
+            int page = mCatalogPage.getPage();
+            // Get the max number of pages
+            int max = mCatalogPage.getMaxPages();
+            // Case error loading more, go up until to total - 1 to enable the loading more data
+            if(isLoadingMoreData && mErrorLoading && last < total - 1) {
+                isLoadingMoreData = false;
+                mErrorLoading = false;
+            }
+            // Case loading visible then load more items
+            else if(!isLoadingMoreData && page < max && last + 1 == total) {
+                isLoadingMoreData = true;
+                triggerGetPaginatedCatalog();
+            }
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see android.support.v7.widget.RecyclerView.OnScrollListener#onScrollStateChanged(android.support.v7.widget.RecyclerView, int)
+         */
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            Log.i(TAG, "ON SCROLL STATE CHANGED: " + newState);
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+                RocketImageLoader.getInstance().stopProcessingQueue();
+            } else {
+                RocketImageLoader.getInstance().startProcessingQueue();
+                // Set the goto top button
+                GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
+                int last = manager.findLastVisibleItemPosition();
+                // Show or hide top button after 4 arrow
+                if(last > mNumberOfColumns * ACTIVATE_TOP_BUTTON_IN_LINE)  {
+                    UICatalogHelper.showGotoTopButton(getBaseActivity(), mTopButton);
+                } else {
+                    UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);
+                }
+            }
+        }
+    };
     
     /*
      * ############## TRIGGERS ##############
      */
     /**
-     *
+     * Trigger the initialized catalog.<br>
+     *     Used for filter and sort.
      */
-    private void triggerGetFilteredOrSortedCatalog() {
+    private void triggerGetInitialCatalogPage() {
         // Get first page
-        triggerGetCatalogPage(GetCatalogPageHelper.INITIAL_PAGE_NUMBER);
+        triggerGetCatalogPage(GetCatalogPageHelper.FIRST_PAGE_NUMBER);
     }
 
     /**
-     *
+     * Trigger the paginated catalog.
      */
-    private void triggerGetPaginatedCalalog() {
+    private void triggerGetPaginatedCatalog() {
         // Get next page
-        int page = mCatalogPage == null ? GetCatalogPageHelper.INITIAL_PAGE_NUMBER : mCatalogPage.getPage() + 1;
+        int page = mCatalogPage == null ? GetCatalogPageHelper.FIRST_PAGE_NUMBER : mCatalogPage.getPage() + 1;
         // Get catalog page
         triggerGetCatalogPage(page);
     }
@@ -744,7 +663,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Trigger used to get a catalog.<br>
      * Is sent the URL, arguments and indication to save or not related items.
-     * @author sergiopereira
      */
     private void triggerGetCatalogPage(int page) {
         Log.i(TAG, "TRIGGER GET PAGINATED CATALOG");
@@ -756,15 +674,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         catalogValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
         catalogValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
         catalogValues.putAll(mCurrentFilterValues);
-
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
         bundle.putString(GetCatalogPageHelper.URL, mCatalogUrl);
         bundle.putParcelable(GetCatalogPageHelper.CATALOG_ARGUMENTS, catalogValues);
-        bundle.putBoolean(GetCatalogPageHelper.SAVE_RELATED_ITEMS, saveRelatedItems(page));
-
+        bundle.putBoolean(GetCatalogPageHelper.SAVE_RELATED_ITEMS, isToSaveRelatedItems(page));
         // Case initial request or load more
-        if(page == GetCatalogPageHelper.INITIAL_PAGE_NUMBER) {
+        if(page == GetCatalogPageHelper.FIRST_PAGE_NUMBER) {
             triggerContentEvent(new GetCatalogPageHelper(), bundle, this);
         } else {
             triggerContentEventNoLoading(new GetCatalogPageHelper(), bundle, this);
@@ -772,17 +688,18 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     /**
-     * Validate if is to save some request items as related items.
-     * @param page
+     * Validate if is to save some request items as related items.<br>
+     * Indicate to save related items in case:<br>
+     *      - NO FILTER && POPULARITY && FIRST_PAGE_NUMBER
+     * @param page - the current page number
      * @return true or false
-     * @author sergiopereira
      */
-    private boolean saveRelatedItems(int page) {
+    private boolean isToSaveRelatedItems(int page) {
         try {
             // Is to save related items in case popularity sort, first page and not filter applied
             return  mCurrentFilterValues.size() == 0 &&
                     mSelectedSort.ordinal() == CatalogSort.POPULARITY.ordinal() &&
-                    page == GetCatalogPageHelper.INITIAL_PAGE_NUMBER;
+                    page == GetCatalogPageHelper.FIRST_PAGE_NUMBER;
         } catch (NullPointerException e) {
             return false;
         }
@@ -803,13 +720,19 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
-        // TODO : Validate a null response
+        // Get the catalog
         CatalogPage catalogPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-        Log.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
-        onUpdateCatalogContainer(catalogPage);
+        // Case valid success response
+        if(catalogPage != null && catalogPage.hasProducts()) {
+            Log.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
+            onUpdateCatalogContainer(catalogPage);
+        }
+        // Case valid success response
+        else {
+            Log.w(TAG, "WARNING: RECEIVED INVALID CATALOG PAGE");
+            showContinueShopping();
+        }
     }
-
 
     /*
      * (non-Javadoc)
@@ -827,22 +750,17 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         int type = bundle.getInt(Constants.BUNDLE_OBJECT_TYPE_KEY);
         // Case error on load more data
-        if(isLoadingMore()) {
-            // TODO: improve the method to mark the loading more error
-            // Hide loading
-            hideLoadingMore();
-            // Show respective warning
-            if (errorCode == ErrorCode.SERVER_IN_MAINTENANCE) super.handleErrorEvent(bundle);
-            else if (errorCode == ErrorCode.NO_NETWORK) ToastFactory.ERROR_NO_CONNECTION.show(getBaseActivity());
-            else ToastFactory.ERROR_CATALOG_LOAD_MORE.show(getBaseActivity());
+        if(isLoadingMoreData) {
+            Log.i(TAG, "ON ERROR RESPONSE: IS LOADING MORE");
+            onLoadingMoreRequestError(errorCode, bundle);
         }
         // Case error on request data with filters
-        else if(mCurrentFilterValues != null && mCurrentFilterValues.size() > 0) {
+        else if(errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && mCurrentFilterValues != null && mCurrentFilterValues.size() > 0) {
             Log.i(TAG, "ON SHOW FILTER NO RESULT");
             showFilterNoResult();
         }
         // Case error on request data without filters
-        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && type == GetCatalogPageHelper.FEATURE_BOX_TYPE) {
+        else if(errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && type == GetCatalogPageHelper.FEATURE_BOX_TYPE) {
             Log.i(TAG, "ON SHOW NO RESULT");
             // Get feature box
             FeaturedBox featuredBox = (FeaturedBox) bundle.get(Constants.BUNDLE_RESPONSE_KEY);
@@ -850,9 +768,26 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             showFeaturedBoxNoResult(featuredBox);
         }
         // Case network errors
-        else if (super.handleErrorEvent(bundle));
-        // Case unexpected eror
+        else if (super.handleErrorEvent(bundle))
+            Log.i(TAG, "HANDLE BASE FRAGMENT");
+        // Case unexpected error
         else showContinueShopping();
     }
 
+    /**
+     * Process the error code
+     * @param errorCode - the loading more error code
+     * @param bundle - the request bundle
+     */
+    private void onLoadingMoreRequestError(ErrorCode errorCode, Bundle bundle) {
+        // Mark error on loading more
+        mErrorLoading = true;
+        // Scroll to hide the loading view
+        mGridView.stopScroll();
+        mGridView.scrollBy(0, - getResources().getDimensionPixelSize(R.dimen.catalog_footer_height));
+        // Show respective warning
+        if (errorCode == ErrorCode.SERVER_IN_MAINTENANCE) super.handleErrorEvent(bundle);
+        else if (errorCode == ErrorCode.NO_NETWORK) ToastFactory.ERROR_NO_CONNECTION.show(getBaseActivity());
+        else ToastFactory.ERROR_CATALOG_LOAD_MORE.show(getBaseActivity());
+    }
 }

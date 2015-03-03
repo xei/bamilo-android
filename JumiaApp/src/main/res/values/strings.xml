@@ -356,6 +356,8 @@
     <!-- RATING PLURALS -->
     <string name="plurals_rating">%d rating</string>
     <string name="plurals_ratings">%d ratings</string>
+    <string name="plurals_item">%d item</string>
+    <string name="plurals_items">%d items</string>
 
     <string name="my_addresses">My Addresses</string>
     <string name="create_edit_address">Create or edit your addresses</string>

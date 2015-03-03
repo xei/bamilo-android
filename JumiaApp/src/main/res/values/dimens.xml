@@ -272,6 +272,7 @@
     <dimen name="catalog_grid_item_image_width">97.33dp</dimen>
     <dimen name="catalog_grid_item_image_height">121.67dp</dimen>
     <dimen name="catalog_tool_bar_height">@dimen/dimen_150px</dimen>
+    <dimen name="catalog_footer_height">@dimen/abc_action_bar_default_height_material</dimen>
 
     <dimen name="root_empty_container_height">240dp</dimen>
     <dimen name="root_empty_drawable_padding">23.33dp</dimen>

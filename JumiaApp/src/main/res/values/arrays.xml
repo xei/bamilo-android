@@ -20,8 +20,16 @@
 
     <!-- RATING -->
     <plurals name="numberOfRatings">
+        <item quantity="zero">@string/plurals_rating</item>
         <item quantity="one">@string/plurals_rating</item>
         <item quantity="other">@string/plurals_ratings</item>
+    </plurals>
+
+    <!-- ITEM -->
+    <plurals name="numberOfItems">
+        <item quantity="zero">@string/plurals_item</item>
+        <item quantity="one">@string/plurals_item</item>
+        <item quantity="other">@string/plurals_items</item>
     </plurals>
 
     <!-- CATALOG SORT -->
