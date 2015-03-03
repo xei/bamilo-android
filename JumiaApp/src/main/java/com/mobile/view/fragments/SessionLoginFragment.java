@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.Request;
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -37,6 +38,7 @@ import com.mobile.framework.tracking.GTMEvents.GTMValues;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CustomerUtils;
+import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.NetworkConnectivity;
@@ -81,7 +83,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
     private CheckBox rememberEmailCheck;
 
-    private View signinButton;
+    private View signInButton;
 
     private ViewGroup container;
 
@@ -95,7 +97,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
     private Form formResponse = null;
 
-    private boolean wasAutologin = false;
+    private boolean wasAutoLogin = false;
 
     private DynamicForm dynamicForm;
 
@@ -190,7 +192,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         rememberEmailCheck = (CheckBox) view.findViewById(R.id.login_remember_user_email);
-        signinButton = view.findViewById(R.id.middle_login_button_signin);
+        signInButton = view.findViewById(R.id.middle_login_button_signin);
         forgetPass = view.findViewById(R.id.middle_login_link_fgtpassword);
         register = view.findViewById(R.id.middle_login_link_register);
         container = (ViewGroup) view.findViewById(R.id.form_container);
@@ -231,7 +233,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         //Validate is service is available
         if(JumiaApplication.mIsBound){
           
-            // Valdiate form
+            // Validate form
             if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
                 Log.d(TAG, "FORM: TRY AUTO LOGIN");
                 triggerAutoLogin();
@@ -369,16 +371,17 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         Log.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
         // Exception handling for no network error
-        if(exception != null && !NetworkConnectivity.isConnected(getBaseActivity()) && state != SessionState.CLOSED_LOGIN_FAILED) {
+        if(exception instanceof FacebookAuthorizationException && !NetworkConnectivity.isConnected(getBaseActivity())) {
             // Show dialog case form is visible
             if(formResponse != null){ 
-                showFragmentNoNetworkRetry(new OnClickListener() {
-                    
-                    @Override
-                    public void onClick(View v) {
-                        mFacebookButton.performClick();
-                    }
-                });
+//                showFragmentNoNetworkRetry(new OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        mFacebookButton.performClick();
+//                    }
+//                });
+                showNoNetworkWarning();
             }
             return;
         }
@@ -415,7 +418,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
      * Set listeners
      */
     private void setLoginBottomLayout() {
-        signinButton.setOnClickListener(this);
+        signInButton.setOnClickListener(this);
         forgetPass.setOnClickListener(this);
         register.setOnClickListener(this);
     }
@@ -431,8 +434,8 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         }
         user = (EditText) emailItem.getEditControl();
         //#RTL
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
             user.setLayoutDirection(LayoutDirection.LOCALE);
         }
         user.setId(21);
@@ -444,7 +447,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         pass_p = (EditText) passwordItem.getEditControl();
         pass_p.setId(22);
         //#RTL
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+        if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
             pass_p.setLayoutDirection(LayoutDirection.LOCALE);
         }
     }
@@ -510,7 +513,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
                 Bundle params = new Bundle();
                 params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
-                params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutologin);
+                params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutoLogin);
                 params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, true);
                 params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.LOGIN);
                 
@@ -545,7 +548,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
                 Bundle params = new Bundle();
                 params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
-                params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutologin);
+                params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutoLogin);
                 params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
                 params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.LOGIN);
                 TrackerDelegator.trackLoginSuccessful(params);
@@ -685,11 +688,11 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         } else if (eventType == EventType.LOGIN_EVENT) {
             clearCredentials();
 
-            TrackerDelegator.trackLoginFailed(wasAutologin, GTMValues.LOGIN, GTMValues.EMAILAUTH);
+            TrackerDelegator.trackLoginFailed(wasAutoLogin, GTMValues.LOGIN, GTMValues.EMAILAUTH);
 
             if (errorCode == ErrorCode.REQUEST_ERROR) {
 
-                if (wasAutologin) {
+                if (wasAutoLogin) {
                     if (formResponse == null) {
                         // Sometimes formDataRegistry is null, so init forms
                         triggerInitForm();
@@ -731,7 +734,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             FacebookHelper.cleanFacebookSession();
             // Show alert
             
-            TrackerDelegator.trackLoginFailed(wasAutologin, GTMValues.LOGIN, GTMValues.FACEBOOK);
+            TrackerDelegator.trackLoginFailed(wasAutoLogin, GTMValues.LOGIN, GTMValues.FACEBOOK);
             
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             List<String> errorMessages = null;
@@ -762,7 +765,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
     
     /*
-     * ################ TRIGGRES ################ 
+     * ################ TRIGGERS ################
      */
     /**
      * Request auto login
@@ -797,15 +800,16 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
      * @author sergiopereira
      */
     private void triggerAutoLogin() {
-        wasAutologin = true;
+        wasAutoLogin = true;
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, wasAutologin);
+        bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, wasAutoLogin);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         triggerContentEvent(new GetLoginHelper(), bundle, mCallBack);
     }
 
     private void triggerLogin(ContentValues values, boolean saveCredentials) {
-        wasAutologin = false;
+        wasAutoLogin = false;
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
@@ -813,7 +817,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     }
 
     private void triggerFacebookLogin(ContentValues values, boolean saveCredentials) {
-        wasAutologin = false;
+        wasAutoLogin = false;
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetLoginHelper.LOGIN_CONTENT_VALUES, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTOLOGIN_FLAG, saveCredentials);
@@ -821,18 +825,16 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     }
 
     private void triggerLoginForm() {
-        wasAutologin = false;
+        wasAutoLogin = false;
         Bundle bundle = new Bundle();
         triggerContentEvent(new GetLoginFormHelper(), bundle, mCallBack);
     }
 
     private void triggerInitForm() {
-        wasAutologin = false;
+        wasAutoLogin = false;
         Bundle bundle = new Bundle();
         triggerContentEvent(new GetInitFormHelper(), bundle, mCallBack);
     }
-
-
 
     /*
      * (non-Javadoc)

@@ -1,7 +1,5 @@
 package com.mobile.utils.dialogfragments;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.database.DataSetObserver;
 import android.os.Bundle;
@@ -22,6 +20,8 @@ import android.widget.ListView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -103,7 +103,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	
 	/**
 	 * Called from Shopping cart.
-	 * @param activity
+	 * @param fragment
 	 * @param listener
 	 * @param id
 	 * @param title
@@ -298,7 +298,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
             }, DELAY_DISMISS);
         }
     }
-    
+
     
     /*
      * ########### ADAPTER ###########
@@ -308,7 +308,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	 * 
 	 */
 	private class DialogListAdapter extends BaseAdapter {
-	    
+
 		private int mCheckedPosition = NO_INITIAL_POSITION;
 		
 		private LayoutInflater mInflater;

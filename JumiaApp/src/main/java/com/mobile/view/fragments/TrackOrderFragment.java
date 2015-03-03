@@ -3,9 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -26,6 +23,7 @@ import com.mobile.framework.objects.OrderTracker;
 import com.mobile.framework.objects.OrderTrackerItem;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.DeviceInfoHelper;
+import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LoadingBarView;
 import com.mobile.framework.utils.LogTagHelper;
@@ -34,6 +32,9 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
 
@@ -263,6 +264,7 @@ public class TrackOrderFragment extends BaseFragment {
             showLoading();
             Bundle args = new Bundle();
             args.putString(GetTrackOrderHelper.ORDER_NR, orderNumber);
+            args.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
             JumiaApplication.INSTANCE.sendRequest(new GetTrackOrderHelper(), args, new IResponseCallback() {
                 @Override
                 public void onRequestError(Bundle bundle) {
@@ -404,7 +406,7 @@ public class TrackOrderFragment extends BaseFragment {
         mOrderTrackerError = true;
         if(TextUtils.isEmpty(order_number))
             proccessError();
-        
+
         super.handleErrorEvent(bundle);
         
         return true;

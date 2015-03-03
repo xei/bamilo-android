@@ -206,8 +206,8 @@ public enum EventType {
 	HOME_NEWSLETTERS_SIGNUP_FORM_FALLBACK_EVENT("https:/newsletter/signup/", RestContract.MAX_CACHE_TIME),
 	
 	GET_FAVOURITE_LIST,
-	
-	GET_RECENLTLYVIEWED_LIST,
+
+    GET_RECENLTLY_VIEWED_LIST,
 	
 	GET_PRODUCT_BUNDLE("http:/catalog/bundle/sku/", RestContract.NO_CACHE),
 	

@@ -3,9 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -31,6 +28,9 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
 
@@ -360,8 +360,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         }
         // Validate the event type
         switch (eventType) {
-        case GET_RECENLTLYVIEWED_LIST:
-            Log.i(TAG, "ON RESPONSE COMPLETE: GET_RECENLTLYVIEWED_LIST");
+        case GET_RECENLTLY_VIEWED_LIST:
+            Log.i(TAG, "ON RESPONSE COMPLETE: GET_RECENLTLY_VIEWED_LIST");
             mAddableToCartList = (ArrayList<AddableToCart>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
             Log.d(TAG, "NUMBER : " + mAddableToCartList.size());
             // Show content
@@ -398,10 +398,17 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
             Log.w(TAG, "WARNING: RECEIVED DATA IN BACKGROUND");
             return;
         }
+
+        if(super.handleErrorEvent(bundle)){
+            Log.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
+            hideActivityProgress();
+            return;
+        }
+
         // Validate type
         switch (eventType) {
-        case GET_RECENLTLYVIEWED_LIST:
-            Log.d(TAG, "ON RESPONSE ERROR: GET_RECENLTLYVIEWED_LIST");
+        case GET_RECENLTLY_VIEWED_LIST:
+            Log.d(TAG, "ON RESPONSE ERROR: GET_RECENTLY_VIEWED_LIST");
             showFragmentContentContainer();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:

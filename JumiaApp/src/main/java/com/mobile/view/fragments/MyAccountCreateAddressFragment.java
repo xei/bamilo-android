@@ -5,15 +5,13 @@ import android.util.Log;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsCheckout;
+import com.mobile.components.customfontviews.Button;
 import com.mobile.framework.ErrorCode;
-import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
-import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -76,6 +74,8 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
         if(orderSummaryLayout != null){
             orderSummaryLayout.setVisibility(View.GONE);
         }
+
+        ((Button)view.findViewById(R.id.checkout_address_button_enter)).setText(getResources().getString(R.string.save_label));
     }
 
     @Override

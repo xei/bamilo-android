@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.Request.GraphUserCallback;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -394,7 +395,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     
     /**
      * Process the click on the login toogle
-     * @param toogle view
+     * @param view view
      */
     private void onClickLoginToogle(View view) {
         Log.i(TAG, "ON CLICK: LOGIN TOOGLE");
@@ -417,7 +418,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     
     /**
      * Process the click on the sign up toogle
-     * @param toogle view
+     * @param view view
      */
     private void onClickSignupToogle(View view) {
         Log.i(TAG, "ON CLICK: SIGNUP TOOGLE");
@@ -511,16 +512,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         Log.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
         // Exception handling for no network error
-        if(exception != null && !NetworkConnectivity.isConnected(getBaseActivity()) && state != SessionState.CLOSED_LOGIN_FAILED) {
+        if(exception instanceof FacebookAuthorizationException && !NetworkConnectivity.isConnected(getBaseActivity())) {
+            // Show dialog case form is visible
             if(formResponse != null){
-                showFragmentNoNetworkRetry(new OnClickListener() {
-                    
-                    @Override
-                    public void onClick(View v) {
-                        mLoginFacebookButton.performClick();
-                    }
-                });
-            };
+                showNoNetworkWarning();
+            }
             return;
         }
         // Validate state

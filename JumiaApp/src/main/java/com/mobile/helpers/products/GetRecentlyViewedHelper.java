@@ -1,7 +1,5 @@
 package com.mobile.helpers.products;
 
-import java.util.ArrayList;
-
 import android.os.Bundle;
 
 import com.mobile.framework.database.LastViewedTableHelper;
@@ -9,6 +7,8 @@ import com.mobile.framework.objects.LastViewedAddableToCart;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.interfaces.IResponseCallback;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -21,7 +21,7 @@ public class GetRecentlyViewedHelper {
 
     public static String TAG = GetRecentlyViewedHelper.class.getSimpleName();
 
-    private static final EventType EVENT_TYPE = EventType.GET_RECENLTLYVIEWED_LIST;
+    private static final EventType EVENT_TYPE = EventType.GET_RECENLTLY_VIEWED_LIST;
 
     private IResponseCallback mResponseCallback;
 

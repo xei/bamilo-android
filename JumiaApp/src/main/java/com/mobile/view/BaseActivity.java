@@ -37,7 +37,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
@@ -1560,6 +1559,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             ((TextView)findViewById(R.id.warning_text)).setText(message);
             final Animation mAnimFadeIn = AnimationUtils.loadAnimation(this,R.anim.fade_in);
             final Animation mAnimFadeOut = AnimationUtils.loadAnimation(this,R.anim.fade_out);
+            warningView.clearAnimation();
             warningView.startAnimation(mAnimFadeIn);
 
             mAnimFadeIn.setAnimationListener(new Animation.AnimationListener() {

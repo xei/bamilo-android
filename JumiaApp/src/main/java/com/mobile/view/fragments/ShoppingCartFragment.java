@@ -728,7 +728,6 @@ public class ShoppingCartFragment extends BaseFragment {
             // hideActivityProgress();
             break;
         case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
-            // hideActivityProgress();
             break;
         case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
             onAddItemsToShoppingCartRequestError(bundle);
@@ -1173,6 +1172,9 @@ public class ShoppingCartFragment extends BaseFragment {
             @Override
             public void onDialogListItemSelect(String id, int quantity, String value) {
                 changeQuantityOfItem(position, quantity);
+                if(dialogList != null) {
+                    dialogList.dismissAllowingStateLoss();
+                }
             }
         };
 
@@ -1226,7 +1228,7 @@ public class ShoppingCartFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         ContentValues values = new ContentValues();
         for (ShoppingCartItem item : items) {
-            values.put("qty_" + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
+            values.put(GetShoppingCartChangeItemQuantityHelper.ITEM_QTY + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
         }
         bundle.putParcelable(GetShoppingCartChangeItemQuantityHelper.CART_ITEMS, values);
         triggerContentEventProgress(new GetShoppingCartChangeItemQuantityHelper(), bundle,

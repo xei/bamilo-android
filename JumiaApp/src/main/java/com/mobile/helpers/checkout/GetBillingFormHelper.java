@@ -3,8 +3,6 @@
  */
 package com.mobile.helpers.checkout;
 
-import org.json.JSONObject;
-
 import android.os.Bundle;
 
 import com.mobile.forms.Form;
@@ -17,6 +15,8 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -42,7 +42,7 @@ public class GetBillingFormHelper extends BaseHelper {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
+        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;

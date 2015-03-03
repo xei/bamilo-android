@@ -75,6 +75,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public static final int FRAGMENT_VALUE_REMOVE_FAVORITE = 101;
 
+    public static final int RESTART_FRAGMENTS_DELAY = 500;
+
     private static Field sChildFragmentManagerField;
 
     public static final Boolean IS_NESTED_FRAGMENT = true;
@@ -414,7 +416,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 public void run() {
                     activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 }
-            }, 500);
+            }, RESTART_FRAGMENTS_DELAY);
         } else {
             Log.w(TAG, "RESTART ALL FRAGMENTS - ERROR : Activity is NULL");
         }

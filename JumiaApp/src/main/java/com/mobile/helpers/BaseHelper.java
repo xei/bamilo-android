@@ -1,12 +1,5 @@
 package com.mobile.helpers;
 
-import java.util.HashMap;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Bundle;
@@ -19,6 +12,13 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.utils.JSONConstants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -37,9 +37,9 @@ public abstract class BaseHelper {
      *
      * @return
      */
-    public final Bundle newRequestBundle(Bundle args){
-        Bundle bundle = generateRequestBundle(args);
-        setTaskConfiguration(bundle);
+    public final Bundle newRequestBundle(Bundle clientArgs){
+        Bundle bundle = generateRequestBundle(clientArgs);
+        setTaskConfiguration(clientArgs, bundle);
         return bundle;
     }
 
@@ -125,20 +125,27 @@ public abstract class BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
     }
 
-    protected void setTaskConfiguration(Bundle bundle){
-        if(bundle.get(Constants.BUNDLE_EVENT_TASK) == null && bundle.get(Constants.BUNDLE_TYPE_KEY) instanceof RequestType){
-            RequestType requestType = (RequestType)bundle.get(Constants.BUNDLE_TYPE_KEY);
+    protected void setTaskConfiguration(Bundle clientArgs, Bundle requestArgs){
+        // Check if arguments of the client already have event task defined
+        if(clientArgs != null && clientArgs.getSerializable(Constants.BUNDLE_EVENT_TASK) != null){
+            requestArgs.putSerializable(Constants.BUNDLE_EVENT_TASK, clientArgs.getSerializable(Constants.BUNDLE_EVENT_TASK));
+        }
+
+        // If arguments of request still don't have event task defined
+        if(requestArgs.get(Constants.BUNDLE_EVENT_TASK) == null && requestArgs.get(Constants.BUNDLE_TYPE_KEY) instanceof RequestType){
+
+            RequestType requestType = (RequestType)requestArgs.get(Constants.BUNDLE_TYPE_KEY);
 
             if(requestType == RequestType.GET){
-                bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
+                requestArgs.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
             } else if(requestType == RequestType.POST){
-                bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
+                requestArgs.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
             }  else if(requestType == RequestType.PUT){
-                bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
+                requestArgs.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
             }  else if(requestType == RequestType.DELETE){
-                bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
+                requestArgs.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
             } else {
-                bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
+                requestArgs.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
             }
         }
     }

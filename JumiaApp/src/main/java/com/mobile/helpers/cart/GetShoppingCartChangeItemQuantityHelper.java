@@ -4,9 +4,6 @@
  */
 package com.mobile.helpers.cart;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
@@ -18,6 +15,9 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.utils.TrackerDelegator;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -34,6 +34,8 @@ public class GetShoppingCartChangeItemQuantityHelper extends BaseHelper {
     private static final EventType EVENT_TYPE = EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT;
     
     public static final String CART_ITEMS = "cart_items";
+
+    public static final String ITEM_QTY = "qty_";
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {

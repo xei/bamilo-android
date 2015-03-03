@@ -1586,7 +1586,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             onClickShowDescription();
         }
         // Case variation button
-        else if (id == R.id.product_detail_product_variant_button) onClickVariantionButton();
+        else if (id == R.id.product_detail_product_variant_button) onClickVariationButton();
         // Case shop product
         else if (id == R.id.product_detail_shop) onClickShopProduct();
         // Case call to order
@@ -1659,7 +1659,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     /**
      * 
      */
-    private void onClickVariantionButton() {
+    private void onClickVariationButton() {
         showVariantsDialog();
     }
 
@@ -1961,17 +1961,23 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         }
         // Hide dialog progress
         hideActivityProgress();
-        // Generic errors
-        if (super.handleErrorEvent(bundle)) return;
+
         // Specific errors
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+
+
+        if(eventType == EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT){
+            isAddingProductToCart = false;
+        }
+
+        // Generic errors
+        if (super.handleErrorEvent(bundle)) return;
         Log.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
         case ADD_PRODUCT_BUNDLE:
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             mBundleButton.setEnabled(true);
-            isAddingProductToCart = false;
             hideActivityProgress();
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
