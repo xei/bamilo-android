@@ -447,10 +447,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         // Get url
         mCompleteProductUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
         // Validate url and load product
-        if (mCompleteProductUrl == null)
+        if (mCompleteProductUrl == null) {
             getBaseActivity().onBackPressed();
-        else
+        } else {
             loadProduct();
+        }
     }
 
     private void restoreParams(Bundle bundle) {
@@ -1243,7 +1244,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         // Validate gallery
         setProductGallery(product);
         // Validate related items
-        setRelatedItems(product.getSku());
+
+        ArrayList<LastViewed> RelatedItemsArrayList = new ArrayList<LastViewed>(mCompleteProduct.getRelatedProducts());
+        showRelatedItemsLayout(RelatedItemsArrayList);
+
         // Validate variations
         setProductVariations();
         // Show product info
@@ -1340,7 +1344,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             mVariationsListView.setOnItemSelectedListener(new OnViewSelectedListener() {
                 @Override
                 public void onViewSelected(View view, int position, String url) {
-                    Log.i(TAG, "ON SECLECTED ITEM: " + position + " " + url);
+                    Log.i(TAG, "ON SELECTED ITEM: " + position + " " + url);
                     // Validate if current product has variations
                     if (mCompleteProduct.getVariations() == null
                             || (mCompleteProduct.getVariations().size() <= position))
@@ -1376,7 +1380,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     /**
      * Method used to get the related products
+     *
      */
+    @Deprecated
     private void setRelatedItems(String sku) {
         // Validate if is to show
         if (!mShowRelatedItems) return;
@@ -1404,31 +1410,38 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * @modified sergiopereira
      */
     private void showRelatedItemsLayout(ArrayList<LastViewed> relatedItemsList) {
-        mRelatedContainer.setVisibility(View.VISIBLE);
-        // Use this setting to improve performance if you know that changes in content do not change
-        // the layout size of the RecyclerView
-        mRelatedListView.setHasFixedSize(true);
-        Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-        if(isRTL) mRelatedListView.enableReverseLayout();
-        
-        mRelatedListView.setAdapter(new RelatedItemsListAdapter(mContext, relatedItemsList,
-                new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Show related item
-                        Bundle bundle = new Bundle();
-                        bundle.putString(ConstantsIntentExtra.CONTENT_URL, (String) v.getTag());
-                        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.grelateditem_prefix);
-                        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-                        // For tracking as a related item
-                        bundle.putBoolean(ConstantsIntentExtra.IS_RELATED_ITEM, true);
-                        // inform PDV that Related Items should be shown
-                        bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
-                        ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-                    }
-                }));
-        // Hide loading
-        mRelatedLoading.setVisibility(View.GONE);
+        if(relatedItemsList == null){
+            mRelatedContainer.setVisibility(View.GONE);
+            return;
+        }
+
+        if(!relatedItemsList.isEmpty()){
+            mRelatedContainer.setVisibility(View.VISIBLE);
+            // Use this setting to improve performance if you know that changes in content do not change
+            // the layout size of the RecyclerView
+            mRelatedListView.setHasFixedSize(true);
+            Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
+            if(isRTL) mRelatedListView.enableReverseLayout();
+
+            mRelatedListView.setAdapter(new RelatedItemsListAdapter(mContext, relatedItemsList,
+                    new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Show related item
+                            Bundle bundle = new Bundle();
+                            bundle.putString(ConstantsIntentExtra.CONTENT_URL, (String) v.getTag());
+                            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.grelateditem_prefix);
+                            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+                            // For tracking as a related item
+                            bundle.putBoolean(ConstantsIntentExtra.IS_RELATED_ITEM, true);
+                            // inform PDV that Related Items should be shown
+                            bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
+                            ((BaseActivity) mContext).onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+                        }
+                    }));
+            // Hide loading
+            mRelatedLoading.setVisibility(View.GONE);
+        }
     }
 
     /**

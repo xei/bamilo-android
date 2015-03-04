@@ -13,14 +13,6 @@
 
 package com.mobile.framework.objects;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -28,6 +20,14 @@ import android.text.TextUtils;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import de.akquinet.android.androlog.Log;
 
@@ -77,6 +77,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	private String minPriceOffer;
 	private double minPriceOfferConverted;
 	private int totalOffers;
+    private ArrayList<RelatedProduct> relatedProducts;
 	
 //	private int simpleSkuPosition;
 
@@ -110,6 +111,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		minPriceOffer = "";
 		minPriceOfferConverted = 0.0;
 		totalOffers = 0;
+        relatedProducts = new ArrayList<RelatedProduct>();
 	}
 
 	/*
@@ -277,7 +279,20 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	            minPriceOfferConverted = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG, 0);
 	            totalOffers = offers.optInt(RestConstants.JSON_TOTAL_TAG, 0);
 	        }
-			
+
+            // Handle related products
+
+            JSONArray relatedProductsJsonArray = dataObject.optJSONArray(RestConstants.JSON_RELATED_PRODUCTS);
+            if(relatedProductsJsonArray != null){
+                for(int i = 0; i<relatedProductsJsonArray.length();i++){
+                    RelatedProduct relatedProduct = new RelatedProduct();
+                    JSONObject relatedProductJsonObject = relatedProductsJsonArray.optJSONObject(i);
+                    if(relatedProductJsonObject != null && relatedProduct.initialize(relatedProductJsonObject)){
+                        getRelatedProducts().add(relatedProduct);
+                    }
+                }
+            }
+
 			JSONObject variationsObject = dataObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
 			if (variationsObject == null)
 				return true;
@@ -845,4 +860,8 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			return new CompleteProduct[size];
 		}
 	};
+
+    public ArrayList<RelatedProduct> getRelatedProducts() {
+        return relatedProducts;
+    }
 }

@@ -59,7 +59,7 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
     /**
      * Provide a suitable constructor (depends on the kind of data)
      * @param context
-     * @param productTeaserGroup
+     * @param relatedItemsList
      * @param parentClickListener
      * @author sergiopereira
      */

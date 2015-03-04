@@ -3,18 +3,17 @@
  */
 package com.mobile.helpers.products;
 
-import org.json.JSONObject;
-
 import android.os.Bundle;
 
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.objects.CompleteProduct;
-import com.mobile.framework.objects.ProductsPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -32,8 +31,6 @@ public class GetProductHelper extends BaseHelper {
     private static final EventType EVENT_TYPE = EventType.GET_PRODUCT_EVENT;
     
     public static final String PRODUCT_URL = "productUrl";
-    
-    ProductsPage mProductsPage= new ProductsPage();
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
@@ -48,7 +45,7 @@ public class GetProductHelper extends BaseHelper {
     
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        Log.d("TRACK", "parseResponseBundle GetProductsHelper");
+        Log.d(TAG, "parseResponseBundle GetProductsHelper");
         CompleteProduct product = new CompleteProduct();
         boolean status = product.initialize(jsonObject);
         // Validate product initialization
