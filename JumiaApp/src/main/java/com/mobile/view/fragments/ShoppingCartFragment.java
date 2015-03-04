@@ -1252,6 +1252,10 @@ public class ShoppingCartFragment extends BaseFragment {
         voucherCode = (EditText) getView().findViewById(R.id.voucher_name);
         if (!TextUtils.isEmpty(mVoucher)) {
             voucherCode.setText(mVoucher);
+            voucherCode.setFocusable(false);
+        } else {
+            voucherCode.setFocusable(true);
+            voucherCode.setFocusableInTouchMode(true);
         }
 
         // voucherDivider = getView().findViewById(R.id.voucher_divider);

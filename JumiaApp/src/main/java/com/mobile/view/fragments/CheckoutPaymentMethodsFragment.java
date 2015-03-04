@@ -3,9 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-import java.util.Iterator;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -46,6 +43,9 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
+
+import java.util.EnumSet;
+import java.util.Iterator;
 
 import de.akquinet.android.androlog.Log;
 
@@ -408,9 +408,15 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 if (!TextUtils.isEmpty(mVoucher)) {
                     removeVoucher = true;
                     prepareCouponView();
+                    voucherCode.setText(mVoucher);
+                    voucherCode.setFocusable(false);
                 } else {
                     mVoucher = null;
                 }
+            } else {
+                voucherCode.setText("");
+                voucherCode.setFocusable(true);
+                voucherCode.setFocusableInTouchMode(true);
             }
         }
     }
