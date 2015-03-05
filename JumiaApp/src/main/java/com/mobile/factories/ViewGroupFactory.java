@@ -1,10 +1,10 @@
 package com.mobile.factories;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class ViewGroupFactory {
     // TODO validate if it's better wih SparceArray
@@ -27,6 +27,13 @@ public class ViewGroupFactory {
                 views.put(child.getId(), child);
             }
         }
+    }
+
+    public View setViewVisible(View view){
+        if(view != null){
+            return setViewVisible(view.getId());
+        }
+        return null;
     }
 
     public View setViewVisible(int id) {
@@ -52,6 +59,13 @@ public class ViewGroupFactory {
             }
         }
         return null;
+    }
+
+    public void hideAllViews(){
+        for (Entry<Integer, View> entry : views.entrySet()) {
+            View value = entry.getValue();
+            value.setVisibility(View.GONE);
+        }
     }
 
 }

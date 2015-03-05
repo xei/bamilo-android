@@ -569,14 +569,14 @@ public class ShoppingCartFragment extends BaseFragment {
             TrackerDelegator.trackProductRemoveFromCart(params);
             TrackerDelegator.trackLoadTiming(params);
             if (!isRemovingAllItems) {
-                showFragmentContentContainer();
+                //showFragmentContentContainer();
                 displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
                 hideActivityProgress();
             }
             return true;
         case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
             hideActivityProgress();
-            showFragmentContentContainer();
+            //showFragmentContentContainer();
             params = new Bundle();
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
@@ -585,7 +585,7 @@ public class ShoppingCartFragment extends BaseFragment {
             return true;
         case GET_SHOPPING_CART_ITEMS_EVENT:
             ShoppingCart shoppingCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            showFragmentContentContainer();
+            //showFragmentContentContainer();
             params = new Bundle();
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
@@ -616,7 +616,7 @@ public class ShoppingCartFragment extends BaseFragment {
             onAddItemsToShoppingCartRequestSuccess(bundle);
             break;
         default:
-            showFragmentContentContainer();
+            //showFragmentContentContainer();
             params = new Bundle();
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
             params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
@@ -749,66 +749,75 @@ public class ShoppingCartFragment extends BaseFragment {
 
     private void displayShoppingCart(ShoppingCart cart) {
         Log.d(TAG, "displayShoppingCart");
-        TextView priceTotal = (TextView) getView().findViewById(R.id.price_total);
-        TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
-        TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
-        View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
-        TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
-        View voucherContainer = getView().findViewById(R.id.voucher_info_container);
-        // Get and set the cart value
-        setTotal(cart);
+        if(cart == null){
+            showNoItems();
+            return;
+        }
 
-        // GTM TRACKER
-        TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getPriceForTracking());
+        items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
+        if (items.size() == 0) {
+            showNoItems();
+        } else {
+            showFragmentContentContainer();
+            TextView priceTotal = (TextView) getView().findViewById(R.id.price_total);
+            TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
+            TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
+            View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
+            TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
+            View voucherContainer = getView().findViewById(R.id.voucher_info_container);
+            // Get and set the cart value
+            setTotal(cart);
 
-        // Set voucher
-        String couponDiscount = cart.getCouponDiscount();
-        String couponCope = cart.getCouponCode();
-        if (!TextUtils.isEmpty(couponDiscount)) {
-            double couponDiscountValue = Double.parseDouble(couponDiscount);
-            if (couponDiscountValue > 0) {
-                // Fix NAFAMZ-7848
-                voucherValue.setText("- " + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue).toString()));
-                voucherContainer.setVisibility(View.VISIBLE);
+            // GTM TRACKER
+            TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getPriceForTracking());
 
-                if (!TextUtils.isEmpty(couponCope)) {
-                    // Change Coupon
-                    changeVoucher(couponCope);
+            // Set voucher
+            String couponDiscount = cart.getCouponDiscount();
+            String couponCope = cart.getCouponCode();
+            if (!TextUtils.isEmpty(couponDiscount)) {
+                double couponDiscountValue = Double.parseDouble(couponDiscount);
+                if (couponDiscountValue > 0) {
+                    // Fix NAFAMZ-7848
+                    voucherValue.setText("- " + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue).toString()));
+                    voucherContainer.setVisibility(View.VISIBLE);
+
+                    if (!TextUtils.isEmpty(couponCope)) {
+                        // Change Coupon
+                        changeVoucher(couponCope);
+                    }
+                } else {
+                    voucherContainer.setVisibility(View.GONE);
+                    // Clean Voucher
+                    removeVoucher();
                 }
             } else {
                 voucherContainer.setVisibility(View.GONE);
                 // Clean Voucher
                 removeVoucher();
             }
-        } else {
-            voucherContainer.setVisibility(View.GONE);
-            // Clean Voucher
-            removeVoucher();
-        }
 
-        items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
-        // Fix NAFAMZ-7848
-        // Only convert value if it is a number
-        if (CurrencyFormatter.isNumber(cart.getCartCleanValue())) {
-            priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartCleanValue()));
-        } else {
-            priceTotal.setText(cart.getCartCleanValue());
-        }
 
-        if (!cart.isSumCosts()) {
-            extraCostsMain.setVisibility(View.VISIBLE);
-            extraCostsValue.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart
-                    .getExtraCosts()).toString()));
-        } else {
-            extraCostsMain.setVisibility(View.GONE);
-        }
+            // Fix NAFAMZ-7848
+            // Only convert value if it is a number
+            if (CurrencyFormatter.isNumber(cart.getCartCleanValue())) {
+                priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartCleanValue()));
+            } else {
+                priceTotal.setText(cart.getCartCleanValue());
+            }
 
-        String articleString = getResources().getQuantityString(
-                R.plurals.shoppingcart_text_article, cart.getCartCount());
-        articlesCount.setText(cart.getCartCount() + " " + articleString);
-        if (items.size() == 0) {
-            showNoItems();
-        } else {
+            if (!cart.isSumCosts()) {
+                extraCostsMain.setVisibility(View.VISIBLE);
+                extraCostsValue.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart
+                        .getExtraCosts()).toString()));
+            } else {
+                extraCostsMain.setVisibility(View.GONE);
+            }
+
+            String articleString = getResources().getQuantityString(
+                    R.plurals.shoppingcart_text_article, cart.getCartCount());
+            articlesCount.setText(cart.getCartCount() + " " + articleString);
+
+
             lView = (LinearLayout) getView().findViewById(R.id.shoppingcart_list);
             lView.removeAllViewsInLayout();
             itemsValues = new ArrayList<CartItemValues>();
@@ -891,7 +900,7 @@ public class ShoppingCartFragment extends BaseFragment {
                 }
             }
 
-            hideNoItems();
+            //hideNoItems();
             TrackerDelegator.trackPage(TrackingPage.FILLED_CART, getLoadTime(), false);
 
         }
@@ -1070,7 +1079,7 @@ public class ShoppingCartFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 try {
-                    goToProducDetails((String) v.getTag(R.id.target_url));
+                    goToProductDetails((String) v.getTag(R.id.target_url));
                 } catch (NullPointerException e) {
                     Log.w(TAG, "WARNING: NPE ON GET CLICKED TAG");
                 }
@@ -1101,7 +1110,7 @@ public class ShoppingCartFragment extends BaseFragment {
      * 
      * @param productUrl
      */
-    private void goToProducDetails(String productUrl) {
+    private void goToProductDetails(String productUrl) {
         // Log.d(TAG, "CART COMPLETE PRODUCT URL: " + items.get(position).getProductUrl());
         if (TextUtils.isEmpty(productUrl))
             return;

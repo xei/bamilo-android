@@ -235,7 +235,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             this.mContentView = contentContainer.inflate();
             return view;
         } else {
-            Log.i(TAG, "ON CREATE VIEW: NO HAS LAYOUT TO INFLATE");
+            Log.i(TAG, "ON CREATE VIEW: HAS NO LAYOUT TO INFLATE");
             return super.onCreateView(inflater, container, savedInstanceState);
         }
     }
@@ -974,11 +974,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * Hides the loading screen that appears on the front of the fragmetn while it waits for the
+     * Hides the loading screen that appears on the front of the fragment while it waits for the
      * data to arrive from the server
      */
     protected final void hideLoadingInfo(View mLoadingView) {
-        Log.w(TAG, "HIDDING LAODING LAYOUT");
+        Log.w(TAG, "HIDING LOADING LAYOUT");
         // Set view
         try {
             ((LoadingBarView) getView().findViewById(R.id.fragment_root_loading_gif)).stopRendering();
@@ -993,7 +993,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * data to arrive from the server
      */
     protected final void showLoadingInfo(View mLoadingView) {
-        Log.w(TAG, "SHOWING LAODING LAYOUT");
+        Log.w(TAG, "SHOWING LOADING LAYOUT");
         setVisibility(mLoadingView, true);
         // Set view
         try {
@@ -1036,7 +1036,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param show
      */
     private final void setVisibility(View view, boolean show) {
-        if (view != null) { 
+        if (view != null) {
             view.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
