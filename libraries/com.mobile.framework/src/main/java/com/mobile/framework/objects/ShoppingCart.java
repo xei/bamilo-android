@@ -45,11 +45,12 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 
 	private HashMap<String, String> mPriceRules;
 
-	
+    private String mSubTotal;
+	private double mSubTotalDouble = 0d;
+    private double mSubTotalConvertedDouble = 0d;
 
 	/**
 	 * Constructor
-	 * @param itemSimpleDataRegistry
 	 */
 	public ShoppingCart() {
 	}
@@ -66,6 +67,10 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		// Get cart value as string and double
 		mCartValue = jsonObject.getString(RestConstants.JSON_CART_VALUE_TAG);
 		mCartValueAsDouble = jsonObject.optDouble(RestConstants.JSON_CART_VALUE_TAG, 0);
+        // Get cart sub total
+        mSubTotal = jsonObject.optString(RestConstants.JSON_CART_SUB_TOTAL);
+        mSubTotalDouble = jsonObject.optDouble(RestConstants.JSON_CART_SUB_TOTAL,0d);
+        mSubTotalConvertedDouble = jsonObject.optDouble(RestConstants.JSON_CART_SUB_TOTAL_CONVERTED, 0d);
 		// Get cart value converted
 		mCartValueConverted = jsonObject.optDouble(RestConstants.JSON_CART_VALUE_CONVERTED_TAG, 0d);
 		// Get cart clean value
@@ -366,6 +371,9 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		dest.writeMap(mPriceRules);
 	    dest.writeDouble(mCartValueAsDouble);
 	    dest.writeDouble(mCartValueConverted);
+        dest.writeString(mSubTotal);
+        dest.writeDouble(mSubTotalDouble);
+        dest.writeDouble(mSubTotalConvertedDouble);
 	}
 
 	/**
@@ -389,6 +397,9 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		in.readMap(mPriceRules, String.class.getClassLoader());
 		mCartValueAsDouble = in.readDouble();
 		mCartValueConverted = in.readDouble();
+        mSubTotal = in.readString();
+        mSubTotalDouble = in.readDouble();
+        mSubTotalConvertedDouble = in.readDouble();
 	}
 
 	/**
@@ -404,4 +415,27 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		}
 	};
 
+    public double getSubTotalDouble() {
+        return mSubTotalDouble;
+    }
+
+    public void setSubTotalDouble(double mSubTotal) {
+        this.mSubTotalDouble = mSubTotal;
+    }
+
+    public double getmubTotalConvertedDouble() {
+        return mSubTotalConvertedDouble;
+    }
+
+    public void setSubTotalConvertedDouble(double mSubTotalConverted) {
+        this.mSubTotalConvertedDouble = mSubTotalConverted;
+    }
+
+    public String getSubTotal() {
+        return mSubTotal;
+    }
+
+    public void setSubTotal(String mSubTotal) {
+        this.mSubTotal = mSubTotal;
+    }
 }

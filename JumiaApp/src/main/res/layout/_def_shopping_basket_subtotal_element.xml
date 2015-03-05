@@ -33,20 +33,27 @@
             android:layout_toStartOf="@+id/price_unreduced" />
 
         <com.mobile.components.customfontviews.TextView
+            android:id="@+id/vat_included_label"
+            style="@style/text_normal"
+            android:layout_below="@id/articles_count"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/price_unreduced"
             style="@style/text_normal"
             android:layout_marginEnd="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
             android:layout_toLeftOf="@+id/price_total"
             android:layout_toStartOf="@+id/price_total"
-            android:textColor="@color/grey_light" />
+            android:textColor="@color/grey_light"/>
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/price_total"
             style="@style/text_title"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:textColor="@color/red_basic" />
+            android:textColor="@color/red_basic"/>
     </RelativeLayout>
 
     <!-- Price Rules -->
@@ -62,30 +69,6 @@
         android:layout_marginTop="@dimen/margin_mid"
         android:orientation="vertical"
         android:visibility="gone" />
-
-    <!-- VAT -->
-
-    <RelativeLayout
-        android:id="@+id/vat_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/rounded_margin_mid"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:layout_marginStart="@dimen/rounded_margin_mid"
-        android:layout_marginTop="@dimen/margin_mid"
-        android:visibility="visible" >
-
-        <com.mobile.components.customfontviews.TextView
-            style="@style/text_normal"
-            android:text="@string/vat_string" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/vat_value"
-            style="@style/text_normal"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
 
     <!-- SHIPPING -->
 

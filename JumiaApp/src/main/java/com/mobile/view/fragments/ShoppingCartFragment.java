@@ -761,6 +761,7 @@ public class ShoppingCartFragment extends BaseFragment {
             showFragmentContentContainer();
             TextView priceTotal = (TextView) getView().findViewById(R.id.price_total);
             TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
+            TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
             TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
             View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
             TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
@@ -799,10 +800,10 @@ public class ShoppingCartFragment extends BaseFragment {
 
             // Fix NAFAMZ-7848
             // Only convert value if it is a number
-            if (CurrencyFormatter.isNumber(cart.getCartCleanValue())) {
-                priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartCleanValue()));
+            if (CurrencyFormatter.isNumber(cart.getSubTotal())) {
+                priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
             } else {
-                priceTotal.setText(cart.getCartCleanValue());
+                priceTotal.setText(cart.getSubTotal());
             }
 
             if (!cart.isSumCosts()) {
@@ -816,6 +817,7 @@ public class ShoppingCartFragment extends BaseFragment {
             String articleString = getResources().getQuantityString(
                     R.plurals.shoppingcart_text_article, cart.getCartCount());
             articlesCount.setText(cart.getCartCount() + " " + articleString);
+            vatIncludedLabel.setText(getString(R.string.parentheses, getString(R.string.string_vat_included)));
 
 
             lView = (LinearLayout) getView().findViewById(R.id.shoppingcart_list);
@@ -867,19 +869,6 @@ public class ShoppingCartFragment extends BaseFragment {
                 priceUnreduced.setVisibility(View.VISIBLE);
             } else {
                 priceUnreduced.setVisibility(View.INVISIBLE);
-            }
-            String vat = cart.getVatValue();
-            if (vat != null && !vat.equalsIgnoreCase("null") && !vat.equalsIgnoreCase("")) {
-                TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
-                View vatMain = getView().findViewById(R.id.vat_container);
-                // Fix NAFAMZ-7848
-                // Only convert value if it is a number
-                if (CurrencyFormatter.isNumber(vat)) {
-                    vatValue.setText(CurrencyFormatter.formatCurrency(vat));
-                } else {
-                    vatValue.setText(vat);
-                }
-                vatMain.setVisibility(View.VISIBLE);
             }
 
             HashMap<String, String> priceRules = cart.getPriceRules();

@@ -174,7 +174,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         mSubTotal = (TextView) view.findViewById(R.id.price_total);
         mExtraCosts = (TextView) view.findViewById(R.id.extra_costs_value);
         mExtraCostsContainer = (RelativeLayout) view.findViewById(R.id.extra_costs_container);
-        mVatValue = (TextView) view.findViewById(R.id.vat_value);
         mShipFeeView = (ViewGroup) view.findViewById(R.id.shipping_container);
         mShipFeeValue = (TextView) view.findViewById(R.id.shipping_value);
         mVoucherView = (ViewGroup) view.findViewById(R.id.voucher_info_container);
@@ -355,8 +354,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         String itemsLabel = (size > 1) ? getString(R.string.my_order_items_label) : getString(R.string.my_order_item_label);
         mProductsNum.setText(size + " " + itemsLabel);
         // Set cart value
-        mSubTotal.setText(CurrencyFormatter.formatCurrency(cart.getCartCleanValue()));
-        
+        mSubTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
+        ((TextView)getView().findViewById(R.id.vat_included_label)).setText(getString(R.string.parentheses, getString(R.string.string_vat_included)));
         if(!cart.isSumCosts()){
             // Fix NAFAMZ-7848
             mExtraCosts.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart.getExtraCosts()).toString()));
@@ -370,9 +369,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
             mShipFeeView.setVisibility(View.VISIBLE);
             mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
         }
-        
-        // Vat value
-        mVatValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTaxAmount()));
         
         // Voucher
         if(mOrderFinish.hasCouponDiscount()) mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderFinish.getDiscountCouponValue()));

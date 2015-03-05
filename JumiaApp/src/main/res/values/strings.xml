@@ -362,4 +362,6 @@
     <string name="my_addresses">My Addresses</string>
     <string name="create_edit_address">Create or edit your addresses</string>
     <string name="string_more_choices">More Choices</string>
+    <string name="string_vat_included">VAT incl.</string>
+    <string name="parentheses">(%s)</string>
 </resources>
