@@ -94,27 +94,21 @@ import java.util.Set;
 import de.akquinet.android.androlog.Log;
 
 /**
- * 
- * All activities extend this activity, in order to access methods that are shared and used in all
- * activities.
+ * All activities extend this activity, in order to access methods that are shared and used in all activities.
  * <p/>
  * <br>
- * 
+ * <p/>
  * Copyright (C) 2012 Rocket Internet - All Rights Reserved
  * <p/>
- * 
- * Unauthorized copying of this file, via any medium is strictly prohibited <br>
- * Proprietary and confidential.
- * 
+ * <p/>
+ * Unauthorized copying of this file, via any medium is strictly prohibited <br> Proprietary and confidential.
+ *
  * @author Paulo Carvalho
- * 
+ * @version 2.0
+ *          <p/>
+ *          2012/06/19
  * @modified Sergio Pereira
  * @modified Manuel Silva
- * 
- * @version 2.0
- * 
- *          2012/06/19
- * 
  */
 public abstract class BaseActivity extends ActionBarActivity {
 
@@ -197,12 +191,12 @@ public abstract class BaseActivity extends ActionBarActivity {
     private boolean isBackButtonEnabled = false;
 
     private long mLaunchTime;
-    
+
     public MenuItem mSearchMenuItem;
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
-     * 
+     *
      * @param action
      * @param enabledMenuItems
      * @param userEvents
@@ -214,7 +208,6 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     /**
-     * 
      * @param activityLayoutId
      * @param action
      * @param enabledMenuItems
@@ -332,7 +325,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
             mOnActivityResultIntent = null;
         }
-        
+
         // Get the cart and perform auto login
         recoverUserDataFromBackground();
 
@@ -340,13 +333,11 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         TrackerDelegator.trackAppOpenAdjust(getApplicationContext(), mLaunchTime);
     }
-    
 
-    
+
     /**
      * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
-     * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception
-     *           -can-not-perform-this -action-after-onsaveinstancestate-h
+     * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception -can-not-perform-this -action-after-onsaveinstancestate-h
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -419,8 +410,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 //    }
 
     /**
-     * Using the ActionBarDrawerToggle, you must call it during onPostCreate() and
-     * onConfigurationChanged()...
+     * Using the ActionBarDrawerToggle, you must call it during onPostCreate() and onConfigurationChanged()...
      */
     /*
      * (non-Javadoc)
@@ -451,14 +441,14 @@ public abstract class BaseActivity extends ActionBarActivity {
     /*
      * ############## ACTION BAR ##############
      */
+
     /**
      * Method used to update the sliding menu and items on action bar. Called from BaseFragment
-     * 
+     *
      * @param enabledMenuItems
      * @param action
      * @param actionBarTitleResId
      * @param checkoutStep
-     * 
      * @author sergiopereira
      * @modified Andre Lopes
      */
@@ -478,7 +468,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     /**
-     * 
+     *
      */
     public void updateActionForCountry(NavigationAction action) {
         this.action = action != null ? action : NavigationAction.Unknown;
@@ -487,6 +477,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Set the Action bar style
+     *
      * @modified sergiopereira
      */
     public void setupActionBar() {
@@ -495,9 +486,10 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSupportActionBar.setHomeButtonEnabled(true);
         mSupportActionBar.setDisplayShowTitleEnabled(true);
     }
-    
+
     /**
      * Set Action bar title
+     *
      * @param actionBarTitleResId
      */
     private void setActionTitle(int actionBarTitleResId) {
@@ -508,7 +500,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             hideActionBarTitle();
         }
         // Case #specific_shop
-        else if (getResources().getBoolean(R.bool.is_daraz_specific) || 
+        else if (getResources().getBoolean(R.bool.is_daraz_specific) ||
                 getResources().getBoolean(R.bool.is_shop_specific) ||
                 getResources().getBoolean(R.bool.is_bamilo_specific)) {
             // Show the application name in the action bar
@@ -527,8 +519,10 @@ public abstract class BaseActivity extends ActionBarActivity {
     /*
      * ############## NAVIGATION ##############
      */
+
     /**
      * Set the navigation drawer.
+     *
      * @modified sergiopereira
      */
     private void setupDrawerNavigation() {
@@ -537,20 +531,24 @@ public abstract class BaseActivity extends ActionBarActivity {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.drawable.ic_drawer);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
-    
+
     /**
      * Close the navigation drawer if open.
+     *
      * @modified sergiopereira
      */
     public void closeNavigationDrawer() {
-        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) mDrawerLayout.closeDrawer(mDrawerNavigation);
+        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
+            mDrawerLayout.closeDrawer(mDrawerNavigation);
+        }
     }
     
     /*
      * ############## CONTENT VIEWS ##############
      */
+
     /**
-     * 
+     *
      */
     private void setupContentViews() {
         Log.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
@@ -579,9 +577,10 @@ public abstract class BaseActivity extends ActionBarActivity {
     /*
      * ############## INITIAL COUNTRY SELETECTION ##############
      */
+
     /**
      * Updated the action bar and the navigation for initial country selection
-     * 
+     *
      * @author sergiopereira
      */
     private void updateContentViewsIfInitialCountrySelection() {
@@ -597,7 +596,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         /**
          * Set the action bar and navigation drawer for initialCountry
-         * 
+         *
          * @author sergiopereira
          */
         if (initialCountry) {
@@ -612,9 +611,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     /**
-     * Method used to validate if is to show the initial country selection or is in maintenance.<br>
-     * Used in {@link HomeFragment#onCreate(Bundle)}.
-     * 
+     * Method used to validate if is to show the initial country selection or is in maintenance.<br> Used in {@link HomeFragment#onCreate(Bundle)}.
+     *
      * @return true or false
      * @author sergiopereira
      */
@@ -625,14 +623,16 @@ public abstract class BaseActivity extends ActionBarActivity {
     /*
      * ############### NAVIGATION MENU #################
      */
+
     /**
      * Update the sliding menu
      */
     public void updateNavigationMenu() {
         Log.d(TAG, "UPDATE SLIDE MENU");
         NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
-        if (slideMenuFragment != null)
+        if (slideMenuFragment != null) {
             slideMenuFragment.onUpdateMenu();
+        }
     }
 
     /**
@@ -651,11 +651,10 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
 
     /**
-     * When a user selects an option of the menu that is on the action bar. The centralization of
-     * this in this activity, prevents all the activities to have to handle this events
-     * 
-     * @param item
-     *            The menu item that was pressed
+     * When a user selects an option of the menu that is on the action bar. The centralization of this in this activity, prevents all the activities to have to
+     * handle this events
+     *
+     * @param item The menu item that was pressed
      */
     /*
      * (non-Javadoc)
@@ -670,7 +669,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         int itemId = item.getItemId();
         // CASE BACK ARROW
         if (itemId == android.R.id.home && isBackButtonEnabled) {
-            onBackPressed(); 
+            onBackPressed();
             return true;
         }
         // CASE HOME 
@@ -687,7 +686,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             return true;
         }
         // DEFAULT:
-        else { 
+        else {
             return super.onOptionsItemSelected(item);
         }
     }
@@ -706,30 +705,30 @@ public abstract class BaseActivity extends ActionBarActivity {
         int showActionBar = View.VISIBLE;
         // Flag to show home or back button
         isBackButtonEnabled = false;
-        
+
         /**
          * Setting Menu Options
          */
         for (MyMenuItem item : menuItems) {
             switch (item) {
-            case HIDE_AB:
-                showActionBar = View.GONE;
-                break;
-            case UP_BUTTON_BACK:
-                isBackButtonEnabled = true;
-                break;
-            case SEARCH_VIEW:
-                setActionSearch(menu);
-                break;
-            case BASKET:
-                setActionCart(menu);
-                break;
-            case MY_PROFILE:
-                setActionProfile(menu);
-                break;
-            default:
-                menu.findItem(item.resId).setVisible(true);
-                break;
+                case HIDE_AB:
+                    showActionBar = View.GONE;
+                    break;
+                case UP_BUTTON_BACK:
+                    isBackButtonEnabled = true;
+                    break;
+                case SEARCH_VIEW:
+                    setActionSearch(menu);
+                    break;
+                case BASKET:
+                    setActionCart(menu);
+                    break;
+                case MY_PROFILE:
+                    setActionProfile(menu);
+                    break;
+                default:
+                    menu.findItem(item.resId).setVisible(true);
+                    break;
             }
         }
 
@@ -744,10 +743,10 @@ public abstract class BaseActivity extends ActionBarActivity {
     /*
      * ############### ACTION BAR MENU ITEMS #################
      */
-    
+
     /**
      * Change actionBar visibility if necessary
-     * 
+     *
      * @param showActionBar
      * @author andre
      * @modified sergiopereira
@@ -757,41 +756,43 @@ public abstract class BaseActivity extends ActionBarActivity {
         boolean actionBarVisible = getSupportActionBar().isShowing();
         // Validate flag
         switch (showActionBar) {
-        case View.VISIBLE:
-            if (!actionBarVisible) getSupportActionBar().show();
-            break;
-        case View.GONE:
-            getSupportActionBar().hide();
-            break;
-        default:
-            Log.w(TAG, "WARNING: INVALIDE FLAG, USE VISIBLE/INVISIBLE FROM View.");
-            break;
+            case View.VISIBLE:
+                if (!actionBarVisible) {
+                    getSupportActionBar().show();
+                }
+                break;
+            case View.GONE:
+                getSupportActionBar().hide();
+                break;
+            default:
+                Log.w(TAG, "WARNING: INVALIDE FLAG, USE VISIBLE/INVISIBLE FROM View.");
+                break;
         }
     }
-    
+
     /**
      * Change actionBar visibility if necessary and executes runnable
-     * 
+     *
      * @param showActionBar
      * @param onChangeRunnable
      * @param onChangePostDelay
      */
-    public void setActionBarVisibility(int showActionBar, Runnable onChangeRunnable, int onChangePostDelay){
+    public void setActionBarVisibility(int showActionBar, Runnable onChangeRunnable, int onChangePostDelay) {
         boolean actionBarVisible = getSupportActionBar().isShowing();
         setActionBarVisibility(showActionBar);
-        
-        if(getSupportActionBar().isShowing() != actionBarVisible){
+
+        if (getSupportActionBar().isShowing() != actionBarVisible) {
             new Handler().postDelayed(onChangeRunnable, onChangePostDelay);
         }
     }
-    
+
     /**
      * Set the up button in ActionBar
      *
      * @author sergiopereira
      */
     private void setActionBarUpButton() {
-        if(isBackButtonEnabled) {
+        if (isBackButtonEnabled) {
             Log.i(TAG, "SHOW UP BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(false);
         } else {
@@ -799,9 +800,10 @@ public abstract class BaseActivity extends ActionBarActivity {
             mDrawerToggle.setDrawerIndicatorEnabled(true);
         }
     }
-    
+
     /**
      * Set the share menu item
+     *
      * @modified sergiopereira
      */
     @SuppressWarnings("unused")
@@ -821,9 +823,10 @@ public abstract class BaseActivity extends ActionBarActivity {
         //mShareActionProvider.setShareIntent(shareIntent);
         //setShareIntent(createShareIntent());
     }
-        
+
     /**
      * Set the cart menu item
+     *
      * @param menu
      * @modified sergiopereira
      */
@@ -852,10 +855,10 @@ public abstract class BaseActivity extends ActionBarActivity {
     /*
      * ############### SEARCH COMPONENT #################
      */
-    
+
     /**
      * Method used to set the search bar in the Action bar.
-     * 
+     *
      * @param menu
      * @author Andre Lopes
      * @modified sergiopereira
@@ -869,8 +872,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Get edit text
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
         //#RTL
-        if(getResources().getBoolean(R.bool.is_bamilo_specific)) {
-            mSearchAutoComplete.setGravity(Gravity.RIGHT|Gravity.BOTTOM);
+        if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
+            mSearchAutoComplete.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
         }
         // Set font
         HoloFontLoader.applyDefaultFont(mSearchView);
@@ -890,7 +893,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSearchMenuItem.setVisible(true);
     }
 
-    
+
     private void setSearchWidthToFillOnExpand() {
         // Get the width of main content
         // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
@@ -907,7 +910,8 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Set the search component
-     * @param mSearchMenuItem 
+     *
+     * @param mSearchMenuItem
      */
     public void setActionBarSearchBehavior(final MenuItem mSearchMenuItem) {
         Log.d(TAG, "SEARCH MODE: NEW BEHAVIOUR");
@@ -936,7 +940,9 @@ public abstract class BaseActivity extends ActionBarActivity {
                 GetSearchSuggestionHelper.saveSearchQuery(text);
                 // Show query
                 showSearchCategory(text);
-                if (JumiaApplication.INSTANCE != null) JumiaApplication.INSTANCE.trackSearch = true;
+                if (JumiaApplication.INSTANCE != null) {
+                    JumiaApplication.INSTANCE.trackSearch = true;
+                }
             }
         });
 
@@ -958,8 +964,9 @@ public abstract class BaseActivity extends ActionBarActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 handle.removeCallbacks(run);
-                if (s.length() >= SEARCH_EDIT_SIZE && isSearchComponentOpened)
+                if (s.length() >= SEARCH_EDIT_SIZE && isSearchComponentOpened) {
                     handle.postDelayed(run, SEARCH_EDIT_DELAY);
+                }
             }
         });
 
@@ -972,7 +979,9 @@ public abstract class BaseActivity extends ActionBarActivity {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO) {
                     String searchTerm = textView.getText().toString();
                     Log.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
-                    if (TextUtils.isEmpty(searchTerm)) return false;
+                    if (TextUtils.isEmpty(searchTerm)) {
+                        return false;
+                    }
                     // Clean edit text
                     textView.setText("");
                     // Collapse search view
@@ -999,7 +1008,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 setItemsVisibility(false);
                 return true;
             }
-            
+
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 Log.d(TAG, "SEARCH ON COLLAPSE");
@@ -1015,18 +1024,18 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSearchAutoComplete.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus) {
+                if (!hasFocus) {
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
                     setItemsVisibility(true);
-                } 
+                }
             }
         });
-        
+
     }
 
     /**
      * Execute search
-     * 
+     *
      * @param searchText
      * @author sergiopereira
      */
@@ -1047,13 +1056,14 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * set all menu items visibility to <code>visible</code>
-     * 
+     *
      * @param visible
      */
     protected void setItemsVisibility(boolean visible) {
         for (MyMenuItem item : menuItems) {
-            if (item != MyMenuItem.SEARCH_VIEW && item.resId != -1)
+            if (item != MyMenuItem.SEARCH_VIEW && item.resId != -1) {
                 mCurrentMenu.findItem(item.resId).setVisible(visible);
+            }
         }
     }
 
@@ -1084,9 +1094,9 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Hide only the search bar, used by ChangeCountryFragment
-     * 
-     * @author sergiopereira
+     *
      * @param enumSet
+     * @author sergiopereira
      */
     public void hideActionBarItemsForChangeCountry(EnumSet<MyMenuItem> enumSet) {
         this.menuItems = enumSet;
@@ -1101,7 +1111,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Runnable to get suggestions
-     * 
+     *
      * @author sergiopereira
      */
     private Runnable run = new Runnable() {
@@ -1114,7 +1124,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Get suggestions and recent queries
-     * 
+     *
      * @author sergiopereira
      */
     private void getSuggestions() {
@@ -1145,7 +1155,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Process the search error event
-     * 
+     *
      * @param bundle
      * @author sergiopereira
      */
@@ -1159,8 +1169,9 @@ public abstract class BaseActivity extends ActionBarActivity {
             Log.w(TAG, "SEARCH ERROR: WAS DISCARTED FOR QUERY " + requestQuery);
             return;
         }
-        if (!mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible())
+        if (!mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible()) {
             return;
+        }
         // Hide dropdown
         mSearchAutoComplete.dismissDropDown();
         
@@ -1188,7 +1199,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Process success search event
-     * 
+     *
      * @param bundle
      * @author sergiopereira
      */
@@ -1201,13 +1212,16 @@ public abstract class BaseActivity extends ActionBarActivity {
         Log.d(TAG, "RECEIVED SEARCH EVENT: " + sug.size() + " " + requestQuery);
 
         // Validate current objects
-        if (menuItems == null && mCurrentMenu == null && mSearchAutoComplete == null)
+        if (menuItems == null && mCurrentMenu == null && mSearchAutoComplete == null) {
             return;
+        }
         // Validate current menu items
-        if (menuItems != null && !menuItems.contains(MyMenuItem.SEARCH_VIEW))
+        if (menuItems != null && !menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
             return;
-        if (!mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible())
+        }
+        if (!mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible()) {
             return;
+        }
         // Validate current search
         if (mSearchAutoComplete.getText().length() < SEARCH_EDIT_SIZE
                 || !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
@@ -1231,7 +1245,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Called to update the share intent
-     * 
+     *
      * @param shareIntent
      *            the intent to be stored
      */
@@ -1243,9 +1257,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     }*/
 
     /**
-     * Displays the number of items that are currently on the shopping cart as well as its value.
-     * This information is displayed on the navigation list
-     *
+     * Displays the number of items that are currently on the shopping cart as well as its value. This information is displayed on the navigation list
      */
     public void updateCartInfo() {
         Log.d(TAG, "ON UPDATE CART INFO");
@@ -1280,15 +1292,16 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void updateCartInfoInNavigation() {
         Log.d(TAG, "ON UPDATE CART IN NAVIGATION");
         NavigationFragment navigation = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
-        if (navigation != null)
+        if (navigation != null) {
             navigation.onUpdateCart();
-        else
+        } else {
             Log.w(TAG, "updateCartInfoInNavigation: navigation container empty - doing nothing");
+        }
     }
 
     /**
      * Create the share intent to be used to store the needed information
-     * 
+     *
      * @return The created intent
      */
     public Intent createShareIntent() {
@@ -1316,7 +1329,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Method used to set the myProfile Menu
-     * 
+     *
      * @author Andre Lopes
      * @modified sergiopereira
      */
@@ -1338,76 +1351,76 @@ public abstract class BaseActivity extends ActionBarActivity {
             NavigationAction navAction = (NavigationAction) v.getTag(R.id.nav_action);
             if (navAction != null && getAction() != navAction) {
                 switch (navAction) {
-                case MyProfile:
-                    // MY PROFILE
-                    hideMyProfile = false;
-                    // Close Drawer
-                    closeNavigationDrawer();
-                    // Validate provider
-                    if (myProfileActionProvider != null) {
-                        myProfileActionProvider.showSpinner();
-                        int totalFavourites = FavouriteTableHelper.getTotalFavourites();
-                        myProfileActionProvider.setTotalFavourites(totalFavourites);
-                    }
-                    break;
-                case LoginOut:
-                    // SIGN IN
-                    if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-                        FragmentManager fm = getSupportFragmentManager();
+                    case MyProfile:
+                        // MY PROFILE
+                        hideMyProfile = false;
+                        // Close Drawer
+                        closeNavigationDrawer();
+                        // Validate provider
+                        if (myProfileActionProvider != null) {
+                            myProfileActionProvider.showSpinner();
+                            int totalFavourites = FavouriteTableHelper.getTotalFavourites();
+                            myProfileActionProvider.setTotalFavourites(totalFavourites);
+                        }
+                        break;
+                    case LoginOut:
+                        // SIGN IN
+                        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+                            FragmentManager fm = getSupportFragmentManager();
 
-                        dialogLogout = DialogGenericFragment.newInstance(false, true, false,
-                                getString(R.string.logout_title),
-                                getString(R.string.logout_text_question),
-                                getString(R.string.no_label), getString(R.string.yes_label),
-                                new OnClickListener() {
+                            dialogLogout = DialogGenericFragment.newInstance(false, true, false,
+                                    getString(R.string.logout_title),
+                                    getString(R.string.logout_text_question),
+                                    getString(R.string.no_label), getString(R.string.yes_label),
+                                    new OnClickListener() {
 
-                                    @Override
-                                    public void onClick(View v) {
-                                        if (v.getId() == R.id.button2) {
-                                            LogOut.performLogOut(new WeakReference<Activity>(BaseActivity.this));
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (v.getId() == R.id.button2) {
+                                                LogOut.performLogOut(new WeakReference<Activity>(BaseActivity.this));
+                                            }
+                                            dialogLogout.dismiss();
                                         }
-                                        dialogLogout.dismiss();
-                                    }
-                                });
-                        dialogLogout.show(fm, null);
-                    } else {
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_SIGN_IN);
-                        onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                    }
-                    break;
-                case Favorite:
-                    // FAVOURITES
-                    TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
-                    onSwitchFragment(FragmentType.FAVORITE_LIST, FragmentController.NO_BUNDLE,
-                            FragmentController.ADD_TO_BACK_STACK);
-                    break;
-                case RecentSearch:
-                    // RECENT SEARCHES
-                    TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENT_SEARCHES);
-                    onSwitchFragment(FragmentType.RECENTSEARCHES_LIST,
-                            FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                    break;
-                case RecentlyView:
-                    // RECENTLY VIEWED
-                    TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENTLY_VIEW);
-                    onSwitchFragment(FragmentType.RECENTLYVIEWED_LIST,
-                            FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                    break;
-                case MyAccount:
-                    // MY ACCOUNT
-                    TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
-                    onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE,
-                            FragmentController.ADD_TO_BACK_STACK);
-                    break;
-                case MyOrders:
-                    // TRACK ORDER
-                    TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_TRACK_ORDER);
-                    onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE,
-                            FragmentController.ADD_TO_BACK_STACK);
-                    break;
-                default:
-                    Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
-                    break;
+                                    });
+                            dialogLogout.show(fm, null);
+                        } else {
+                            TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_SIGN_IN);
+                            onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        }
+                        break;
+                    case Favorite:
+                        // FAVOURITES
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
+                        onSwitchFragment(FragmentType.FAVORITE_LIST, FragmentController.NO_BUNDLE,
+                                FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case RecentSearch:
+                        // RECENT SEARCHES
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENT_SEARCHES);
+                        onSwitchFragment(FragmentType.RECENT_SEARCHES_LIST,
+                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case RecentlyView:
+                        // RECENTLY VIEWED
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENTLY_VIEW);
+                        onSwitchFragment(FragmentType.RECENTLY_VIEWED_LIST,
+                                FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case MyAccount:
+                        // MY ACCOUNT
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
+                        onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE,
+                                FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case MyOrders:
+                        // TRACK ORDER
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_TRACK_ORDER);
+                        onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE,
+                                FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    default:
+                        Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+                        break;
                 }
             } else {
                 Log.d(TAG, "selected navAction is already being shown");
@@ -1419,7 +1432,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             }
         }
     };
-    
+
     /**
      * @return the action
      */
@@ -1438,8 +1451,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
         View headerTitle = findViewById(R.id.header_title);
         subtitleView.setVisibility(View.GONE);
-        if (headerTitle == null)
+        if (headerTitle == null) {
             return;
+        }
 
         if (!TextUtils.isEmpty(title)) {
             titleView.setText(title + " ");
@@ -1451,7 +1465,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Method used to set the number of products
-     * 
+     *
      * @param title
      * @param subtitle
      */
@@ -1460,8 +1474,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
         View headerTitle = findViewById(R.id.header_title);
 
-        if (titleView == null)
+        if (titleView == null) {
             return;
+        }
         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(subtitle)) {
             Log.d(TAG, "------------->>>>>>>>>>>>>> SET TITLE ->" + title + "; " + subtitle);
             // Set text and force measure
@@ -1485,8 +1500,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         TextView subtitleView = (TextView) findViewById(R.id.totalProducts);
         View headerTitle = findViewById(R.id.header_title);
 
-        if (subtitleView == null)
+        if (subtitleView == null) {
             return;
+        }
         if (!TextUtils.isEmpty(subtitle)) {
             // Set text and force measure
             subtitleView.setText(subtitle);
@@ -1504,15 +1520,16 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * get the category tree title
-     * 
+     *
      * @return subtitle
      */
     public String getCategoriesTitle() {
         TextView titleView = (TextView) findViewById(R.id.titleProducts);
-        if (!TextUtils.isEmpty(titleView.getText().toString()))
+        if (!TextUtils.isEmpty(titleView.getText().toString())) {
             return titleView.getText().toString();
-        else
+        } else {
             return "";
+        }
     }
 
     /*
@@ -1529,7 +1546,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Show and set title on actionbar
-     * 
+     *
      * @param actionBarTitleResId
      */
     public void setActionBarTitle(int actionBarTitleResId) {
@@ -1554,12 +1571,12 @@ public abstract class BaseActivity extends ActionBarActivity {
         UIUtils.setVisibility(warningView, show);
     }
 
-    public void showWarning(int message){
-        if(warningView != null){
+    public void showWarning(int message) {
+        if (warningView != null) {
             warningView.setVisibility(View.INVISIBLE);
-            ((TextView)findViewById(R.id.warning_text)).setText(message);
-            final Animation mAnimFadeIn = AnimationUtils.loadAnimation(this,R.anim.fade_in);
-            final Animation mAnimFadeOut = AnimationUtils.loadAnimation(this,R.anim.fade_out);
+            ((TextView) findViewById(R.id.warning_text)).setText(message);
+            final Animation mAnimFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+            final Animation mAnimFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
             warningView.clearAnimation();
             warningView.startAnimation(mAnimFadeIn);
 
@@ -1618,12 +1635,14 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Show progress.
-     * 
+     *
      * @modified sergiopereira
      */
     public final void showProgress() {
         // Validate current progress dialog
-        if (baseActivityProgressDialog != null) return;
+        if (baseActivityProgressDialog != null) {
+            return;
+        }
         // FIXME: New implementation
         // Try fix android.view.WindowManager$BadTokenException: Unable to add window -- token
         // android.os.BinderProxy@42128698 is not valid; is your activity running?
@@ -1653,8 +1672,9 @@ public abstract class BaseActivity extends ActionBarActivity {
                 for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
                     unbindDrawables(((ViewGroup) view).getChildAt(i));
                 }
-                if (view instanceof AdapterView<?>)
+                if (view instanceof AdapterView<?>) {
                     return;
+                }
                 try {
                     ((ViewGroup) view).removeAllViews();
                 } catch (IllegalArgumentException e) {
@@ -1672,7 +1692,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         Log.i(TAG, "HIDE KEYBOARD");
         InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         View v = mDrawerLayout;
-        if (v == null) v = getWindow().getCurrentFocus();
+        if (v == null) {
+            v = getWindow().getCurrentFocus();
+        }
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
@@ -1685,8 +1707,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         // imm.showSoftInput(getSlidingMenu().getCurrentFocus(),
         // InputMethodManager.SHOW_IMPLICIT);
     }
-    
-    public void onLogOut(){
+
+    public void onLogOut() {
         /*
          * NOTE: Others sign out methods are performed in {@link LogOut}.
          */
@@ -1697,10 +1719,10 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Hide progress
         dismissProgress();
     }
-    
+
     /**
      * Handles a successful event and reflects necessary changes on the UI.
-     * 
+     *
      * @param event
      *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
      */
@@ -1740,7 +1762,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Handles a failed event and shows dialogs to the user.
-     * 
+     *
      * @param event
      *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
      */
@@ -1866,10 +1888,9 @@ public abstract class BaseActivity extends ActionBarActivity {
 //    }
 
 
-
     /**
      * Set action
-     * 
+     *
      * @param action
      */
     public void setAction(NavigationAction action) {
@@ -1881,9 +1902,8 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
 
     /**
-     * This method should be implemented by fragment activity to manage the work flow for fragments.
-     * Each fragment should call this method.
-     * 
+     * This method should be implemented by fragment activity to manage the work flow for fragments. Each fragment should call this method.
+     *
      * @param search
      * @param addToBackStack
      * @author sergiopereira
@@ -1892,7 +1912,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Method used to switch fragment on UI with/without back stack support
-     * 
+     *
      * @param fragment
      * @param addToBackStack
      * @author sergiopereira
@@ -1903,7 +1923,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Method used to perform a back stack using fragments
-     * 
+     *
      * @author sergiopereira
      */
     public void fragmentManagerBackPressed() {
@@ -1912,7 +1932,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Pop all back stack
-     * 
+     *
      * @param tag
      * @author sergiopereira
      */
@@ -1922,7 +1942,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Pop back stack until tag
-     * 
+     *
      * @param tag
      * @param inclusive
      * @author sergiopereira
@@ -1934,14 +1954,13 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Confirm backPress to exit application
-     * 
      */
     public Boolean exitApplication(final FragmentController fragC) {
 
         dialog = DialogGenericFragment.newInstance(false, false,
                 true,
                 null, // no
-                      // title
+                // title
                 getString(R.string.logout_text_question), getString(R.string.no_label),
                 getString(R.string.yes_label), new OnClickListener() {
 
@@ -1964,13 +1983,10 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Method used to control the double back pressed
-     * 
+     *
      * @author sergiopereira
-     * @see <a
-     *      href="http://stackoverflow.com/questions/7965135/what-is-the-duration-of-a-toast-length-long-and-length-short">Toast
-     *      duration</a> <br>
-     *      Toast.LENGTH_LONG is 3500 seconds. <br>
-     *      Toast.LENGTH_SHORT is 2000 seconds.
+     * @see <a href="http://stackoverflow.com/questions/7965135/what-is-the-duration-of-a-toast-length-long-and-length-short">Toast duration</a> <br>
+     * Toast.LENGTH_LONG is 3500 seconds. <br> Toast.LENGTH_SHORT is 2000 seconds.
      */
     public void doubleBackPressToExit() {
         Log.d(TAG, "DOUBLE BACK PRESSED TO EXIT: " + backPressedOnce);
@@ -2016,7 +2032,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Handles correct responses
-     * 
+     *
      * @param bundle
      */
     private void handleResponse(Bundle bundle) {
@@ -2036,7 +2052,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Handles error responses
-     * 
+     *
      * @param bundle
      */
     private void handleError(Bundle bundle) {
@@ -2059,8 +2075,9 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Hide the main fall back view with retry button
      */
     public void hideMainFallBackView() {
-        if (mMainFallBackStub != null)
+        if (mMainFallBackStub != null) {
             mMainFallBackStub.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -2077,21 +2094,21 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Case JUMIA
         else {
             // Set content
-            if(showChooseCountry){
+            if (showChooseCountry) {
                 MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, onClickListener);
             } else {
                 MaintenancePage.setMaintenancePageBaseActivity(this, eventType, onClickListener);
             }
         }
     }
-    
+
     /**
      * ########## CHECKOUT HEADER ##########
      */
 
     /**
      * Set the current checkout step otherwise return false
-     * 
+     *
      * @param checkoutStep
      * @return true/false
      */
@@ -2101,55 +2118,55 @@ public abstract class BaseActivity extends ActionBarActivity {
         int visibility = View.VISIBLE;
         boolean result = true;
         switch (checkoutStep) {
-        case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-            selectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
-            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
-            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
-            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
-            updateBaseComponentsInCheckout(visibility);
-            break;
-        case ConstantsCheckout.CHECKOUT_BILLING:
-            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
-            selectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
-            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
-            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
-            updateBaseComponentsInCheckout(visibility);
-            break;
-        case ConstantsCheckout.CHECKOUT_SHIPPING:
-            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
-            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
-            selectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
-            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
-            updateBaseComponentsInCheckout(visibility);
-            break;
-        case ConstantsCheckout.CHECKOUT_PAYMENT:
-            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
-            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
-            unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
-            selectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
-            updateBaseComponentsInCheckout(visibility);
-            break;
-        case ConstantsCheckout.CHECKOUT_ORDER:
-        case ConstantsCheckout.CHECKOUT_THANKS:
-            visibility = View.GONE;
-            updateBaseComponentsInCheckout(visibility);
-            break;
-        case ConstantsCheckout.CHECKOUT_NO_SET_HEADER:
-            // Hide title and total
-            hideTitle();
-            findViewById(R.id.totalProducts).setVisibility(View.GONE);
-            break;
-        case ConstantsCheckout.NO_CHECKOUT:
-            visibility = View.GONE;
-            result = false;
-            updateBaseComponentsOutCheckout(visibility);
-            break;
-        default:
-            Log.e(TAG, "checkoutStep unknown");
-            visibility = View.GONE;
-            result = false;
-            updateBaseComponentsOutCheckout(visibility);
-            break;
+            case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
+                selectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
+                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
+                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
+                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
+                updateBaseComponentsInCheckout(visibility);
+                break;
+            case ConstantsCheckout.CHECKOUT_BILLING:
+                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
+                selectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
+                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
+                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
+                updateBaseComponentsInCheckout(visibility);
+                break;
+            case ConstantsCheckout.CHECKOUT_SHIPPING:
+                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
+                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
+                selectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
+                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
+                updateBaseComponentsInCheckout(visibility);
+                break;
+            case ConstantsCheckout.CHECKOUT_PAYMENT:
+                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
+                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
+                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
+                selectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
+                updateBaseComponentsInCheckout(visibility);
+                break;
+            case ConstantsCheckout.CHECKOUT_ORDER:
+            case ConstantsCheckout.CHECKOUT_THANKS:
+                visibility = View.GONE;
+                updateBaseComponentsInCheckout(visibility);
+                break;
+            case ConstantsCheckout.CHECKOUT_NO_SET_HEADER:
+                // Hide title and total
+                hideTitle();
+                findViewById(R.id.totalProducts).setVisibility(View.GONE);
+                break;
+            case ConstantsCheckout.NO_CHECKOUT:
+                visibility = View.GONE;
+                result = false;
+                updateBaseComponentsOutCheckout(visibility);
+                break;
+            default:
+                Log.e(TAG, "checkoutStep unknown");
+                visibility = View.GONE;
+                result = false;
+                updateBaseComponentsOutCheckout(visibility);
+                break;
         }
         // Return value
         return result;
@@ -2157,7 +2174,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Update the base components out checkout
-     * 
+     *
      * @param visibility
      * @author sergiopereira
      */
@@ -2170,7 +2187,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Update the base components in checkout
-     * 
+     *
      * @param visibility
      * @author sergiopereira
      */
@@ -2186,57 +2203,57 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Unselect the a checkout step
-     * 
+     *
      * @param step
      * @author sergiopereira
      */
     private void unSelectCheckoutStep(int step) {
         switch (step) {
-        case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-            unSelectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon, R.id.checkout_header_step_1_text);
-            break;
-        case ConstantsCheckout.CHECKOUT_BILLING:
-            unSelectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon, R.id.checkout_header_step_2_text);
-            break;
-        case ConstantsCheckout.CHECKOUT_SHIPPING:
-            unSelectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon, R.id.checkout_header_step_3_text);
-            break;
-        case ConstantsCheckout.CHECKOUT_PAYMENT:
-            unSelectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon, R.id.checkout_header_step_4_text);
-            break;
-        default:
-            break;
+            case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
+                unSelectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon, R.id.checkout_header_step_1_text);
+                break;
+            case ConstantsCheckout.CHECKOUT_BILLING:
+                unSelectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon, R.id.checkout_header_step_2_text);
+                break;
+            case ConstantsCheckout.CHECKOUT_SHIPPING:
+                unSelectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon, R.id.checkout_header_step_3_text);
+                break;
+            case ConstantsCheckout.CHECKOUT_PAYMENT:
+                unSelectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon, R.id.checkout_header_step_4_text);
+                break;
+            default:
+                break;
         }
     }
 
     /**
      * Set the selected checkout step
-     * 
+     *
      * @param step
      * @author sergiopereira
      */
     private void selectCheckoutStep(int step) {
         switch (step) {
-        case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-            selectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon, R.id.checkout_header_step_1_text);
-            break;
-        case ConstantsCheckout.CHECKOUT_BILLING:
-            selectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon, R.id.checkout_header_step_2_text);
-            break;
-        case ConstantsCheckout.CHECKOUT_SHIPPING:
-            selectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon, R.id.checkout_header_step_3_text);
-            break;
-        case ConstantsCheckout.CHECKOUT_PAYMENT:
-            selectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon, R.id.checkout_header_step_4_text);
-            break;
-        default:
-            break;
+            case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
+                selectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon, R.id.checkout_header_step_1_text);
+                break;
+            case ConstantsCheckout.CHECKOUT_BILLING:
+                selectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon, R.id.checkout_header_step_2_text);
+                break;
+            case ConstantsCheckout.CHECKOUT_SHIPPING:
+                selectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon, R.id.checkout_header_step_3_text);
+                break;
+            case ConstantsCheckout.CHECKOUT_PAYMENT:
+                selectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon, R.id.checkout_header_step_4_text);
+                break;
+            default:
+                break;
         }
     }
 
     /**
      * Set a step selected
-     * 
+     *
      * @param main
      * @param icon
      * @param text
@@ -2251,7 +2268,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Set a step unselected
-     * 
+     *
      * @param main
      * @param icon
      * @param text
@@ -2266,7 +2283,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     /**
      * Checkout header click listener associated to each item on layout
-     * 
+     *
      * @param view
      * @author sergiopereira
      */
@@ -2284,9 +2301,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         // CHECKOUT_BILLING
         else if (id == R.id.checkout_header_step_2 && !view.isSelected()) {
             // Validate back stack
-            if (FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString()))
+            if (FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString())) {
                 FragmentController.getInstance().popAllEntriesUntil(this, FragmentType.MY_ADDRESSES.toString());
-            else if (FragmentController.getInstance().hasEntry(FragmentType.CREATE_ADDRESS.toString())) {
+            } else if (FragmentController.getInstance().hasEntry(FragmentType.CREATE_ADDRESS.toString())) {
                 removeAllCheckoutEntries();
                 onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
@@ -2294,15 +2311,16 @@ public abstract class BaseActivity extends ActionBarActivity {
         // CHECKOUT_SHIPPING
         else if (id == R.id.checkout_header_step_3 && !view.isSelected()) {
             // Validate back stack
-            if (FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString()))
+            if (FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString())) {
                 FragmentController.getInstance().popAllEntriesUntil(this, FragmentType.SHIPPING_METHODS.toString());
+            }
         }
         // CHECKOUT_PAYMENT IS THE LAST
     }
 
     /**
      * Remove all checkout entries to call the base of checkout
-     * 
+     *
      * @author sergiopereira
      */
     private void removeAllCheckoutEntries() {
@@ -2317,24 +2335,28 @@ public abstract class BaseActivity extends ActionBarActivity {
     /*
      * ##### REQUESTS TO RECOVER #####
      */
+
     /**
      * Recover the user data when comes from background.
+     *
      * @author sergiopereira
      */
     private void recoverUserDataFromBackground() {
         Log.i(TAG, "ON TRIGGER: INITIALIZE USER DATA");
         // Validate the user credentials
-        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && JumiaApplication.CUSTOMER == null) 
+        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && JumiaApplication.CUSTOMER == null) {
             triggerAutoLogin();
+        }
         // Validate the user credentials
-        if (JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null)
+        if (JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null) {
             triggerGetShoppingCartItemsHelper();
+        }
     }
-    
+
     /**
      * Get cart
      */
-    public void triggerGetShoppingCartItemsHelper(){
+    public void triggerGetShoppingCartItemsHelper() {
         Log.i(TAG, "TRIGGER SHOPPING CART ITEMS");
         Bundle bundle = new Bundle();
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
@@ -2344,6 +2366,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 Log.i(TAG, "ON REQUEST ERROR: CART");
                 //...
             }
+
             @Override
             public void onRequestComplete(Bundle bundle) {
                 Log.i(TAG, "ON REQUEST COMPLETE: CART");
@@ -2351,6 +2374,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             }
         });
     }
+
     /**
      * Auto login
      */
@@ -2367,6 +2391,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
                 updateNavigationMenu();
             }
+
             @Override
             public void onRequestComplete(Bundle bundle) {
                 Log.i(TAG, "ON REQUEST COMPLETE: AUTO LOGIN");
@@ -2388,21 +2413,21 @@ public abstract class BaseActivity extends ActionBarActivity {
             }
         });
     }
-    
+
     /**
      * Track Page only for adjust
      */
-    private void trackPageAdjust(){
+    private void trackPageAdjust() {
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
         bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
         if (JumiaApplication.CUSTOMER != null) {
-            bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
+            bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
         }
-        TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);    
+        TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
     }
-    
+
     /**
      * ##### WIZARDS #####
      */

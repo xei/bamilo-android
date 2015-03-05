@@ -1,97 +1,90 @@
 package com.mobile.framework.objects;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 /**
  * Object that deals with the parsing of a homepage
- * @author josedourado
- *
+ * @author sergiopereira
  */
 
-public class Homepage implements IJSONSerializable, Parcelable{
-	
-	private int homepageId;
-	private String homepageTitle;
-	private boolean defaultHomepage;
-	private ArrayList<TeaserSpecification<?>> teaserSpecifications;
-	private String homepageLayout;
-	
-	/**
+public class Homepage implements IJSONSerializable, Parcelable {
+
+    private int mId;
+    private String mTitle;
+    private boolean isDefault;
+    private ArrayList<TeaserSpecification> mTeaserSpecifications;
+    private String mLayout;
+
+    /**
 	 * Constructor
 	 */
 	public Homepage(){
-		homepageId=-1;
-		homepageTitle="";
-		defaultHomepage=false;
-		teaserSpecifications= new ArrayList<TeaserSpecification<?>>();
-	}
+        mId = -1;
+        mTitle = "";
+        isDefault = false;
+        mTeaserSpecifications = new ArrayList<>();
+    }
 	
 	/**
 	 * 
 	 * @return homepage id
 	 */
-	public int getHomepageId(){
-		return homepageId;
-	}
+    public int getId() {
+        return mId;
+    }
 	
 	/**
 	 * 
 	 * @return homepage title
 	 */
-	public String getHomepageTitle(){
-		return homepageTitle;
-	}
+    public String getTitle() {
+        return mTitle;
+    }
 	
 	/**
 	 * 
 	 * @return true if default, false otherwise
 	 */
-	public boolean isDefaultHomepage(){
-		return defaultHomepage;
-	}
+    public boolean isDefault() {
+        return isDefault;
+    }
 	
 	/**
 	 * 
 	 * @return teaser specification
 	 */
-	public ArrayList<TeaserSpecification<?>> getTeaserSpecification(){
-		return teaserSpecifications;
-	}
-	
-	
-	/**
-	 * 
-	 * @return homepage layout
+    public ArrayList<TeaserSpecification> getTeaserSpecification() {
+        return mTeaserSpecifications;
+    }
+
+    /**
+     *
+     * @return homepage layout
 	 */
-	public String getHomepageLayout(){
-	    return homepageLayout;
-	}
-	
-	
-	
+    public String getLayout() {
+        return mLayout;
+    }
 
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
-		homepageId = jsonObject.getInt(RestConstants.JSON_HOMEPAGE_ID_TAG);
-		homepageTitle=jsonObject.getString(RestConstants.JSON_HOMEPAGE_TITLE_TAG);
-		defaultHomepage=jsonObject.getInt(RestConstants.JSON_HOMEPAGE_DEFAULT_TAG)==1?true:false;
-		homepageLayout = jsonObject.getString(RestConstants.JSON_HOMEPAGE_LAYOUT_TAG);
-		JSONArray dataArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
-		int dataArrayLenght = dataArray.length();
-//		ArrayList<TeaserSpecification<?>> teaserSpecifications = new ArrayList<TeaserSpecification<?>>();
-		
-		for (int i = 0; i < dataArrayLenght; ++i) { // XXX
-			teaserSpecifications.add(TeaserSpecification.parse(dataArray.getJSONObject(i)));
-		}
+        mId = jsonObject.getInt(RestConstants.JSON_HOMEPAGE_ID_TAG);
+        mTitle = jsonObject.getString(RestConstants.JSON_HOMEPAGE_TITLE_TAG);
+        isDefault = jsonObject.getInt(RestConstants.JSON_HOMEPAGE_DEFAULT_TAG) == 1;
+        mLayout = jsonObject.getString(RestConstants.JSON_HOMEPAGE_LAYOUT_TAG);
+        JSONArray dataArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
+        int size = dataArray.length();
+        for (int i = 0; i < size; ++i) {
+            mTeaserSpecifications.add(TeaserSpecification.parse(dataArray.getJSONObject(i)));
+        }
 		return true;
 	}
 
@@ -99,12 +92,10 @@ public class Homepage implements IJSONSerializable, Parcelable{
 	public JSONObject toJSON() {
 		return null;
 	}
-	
-    /**
+
+    /*
      * ########### Parcelable ###########
-     * @author sergiopereira
      */
-    
     /*
      * (non-Javadoc)
      * @see android.os.Parcelable#describeContents()
@@ -120,25 +111,33 @@ public class Homepage implements IJSONSerializable, Parcelable{
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-	    dest.writeInt(homepageId);
-	    dest.writeString(homepageTitle);
-//	    dest.writeBooleanArray(new boolean[] {defaultHomepage});
-	    dest.writeByte((byte) (defaultHomepage ? 1 : 0));
-	    dest.writeList(teaserSpecifications);
-	}
+        dest.writeInt(mId);
+        dest.writeString(mTitle);
+        dest.writeByte((byte) (isDefault ? 0x01 : 0x00));
+        if (mTeaserSpecifications == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(mTeaserSpecifications);
+        }
+        dest.writeString(mLayout);
+    }
 	
 	/**
 	 * Parcel constructor
-	 * @param in
-	 */
+     * @param in - parcel
+     */
 	private Homepage(Parcel in) {
-		homepageId = in.readInt();
-		homepageTitle = in.readString();
-		teaserSpecifications = new ArrayList<TeaserSpecification<?>>();
-//		in.readBooleanArray(new boolean[] {defaultHomepage});
-		defaultHomepage = in.readByte() == 1;
-		teaserSpecifications = new ArrayList<TeaserSpecification<?>>();
-		in.readList(teaserSpecifications, TeaserSpecification.class.getClassLoader());
+        mId = in.readInt();
+        mTitle = in.readString();
+        isDefault = in.readByte() != 0x00;
+        if (in.readByte() == 0x01) {
+            mTeaserSpecifications = new ArrayList<>();
+            in.readList(mTeaserSpecifications, TeaserSpecification.class.getClassLoader());
+        } else {
+            mTeaserSpecifications = null;
+        }
+        mLayout = in.readString();
     }
 		
 	/**

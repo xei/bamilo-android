@@ -29,19 +29,20 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to manage the deep link process
+ *
  * @author sergiopereira
  */
 public class DeepLinkManager {
-    
+
     public static final String TAG = DeepLinkManager.class.getSimpleName();
-    
+
     private static final int PATH_CC_POS = 0;
-    
+
     private static final int PATH_VIEW_POS = 1;
-    
+
     private static final int PATH_DATA_POS = 2;
-    
-    private static final String CATALOG_TAG = "c";    
+
+    private static final String CATALOG_TAG = "c";
     private static final String CATALOG_RATING_TAG = "cbr";
     private static final String CATALOG_POPULARITY_TAG = "cp";
     private static final String CATALOG_NEW_TAG = "cin";
@@ -49,36 +50,36 @@ public class DeepLinkManager {
     private static final String CATALOG_PRICE_DOWN_TAG = "cpd";
     private static final String CATALOG_NAME_TAG = "cn";
     private static final String CATALOG_BRAND_TAG = "cb";
-    private static final String CART_TAG = "cart";    
-    private static final String PDV_TAG = "d";    
-    private static final String CATEGORY_TAG = "n";    
-    private static final String SEARCH_TERM_TAG = "s";    
-    private static final String ORDER_OVERVIEW_TAG = "o";    
-    private static final String CAMPAIGN_TAG = "camp";    
-    private static final String LOGIN_TAG = "l";    
+    private static final String CART_TAG = "cart";
+    private static final String PDV_TAG = "d";
+    private static final String CATEGORY_TAG = "n";
+    private static final String SEARCH_TERM_TAG = "s";
+    private static final String ORDER_OVERVIEW_TAG = "o";
+    private static final String CAMPAIGN_TAG = "camp";
+    private static final String LOGIN_TAG = "l";
     private static final String REGISTER_TAG = "r";
     private static final String NEWSLETTER_TAG = "news";
     private static final String RECENTLY_VIEWED_TAG = "rv";
     private static final String RECENT_SEARCHES_TAG = "rc";
     private static final String FAVORITES_TAG = "w";
-    
+
     public static final String FRAGMENT_TYPE_TAG = "fragment_type";
-    
+
     public static final String PDV_SIZE_TAG = "size";
-    
+
     /**
-     * Load the external deep link.
-     * Get and set the country
-     * Load the deep view and create a bundle
-     * <p># Default case -> JUMIA://com.mobile.jumia.dev/eg/cart/
+     * Load the external deep link. Get and set the country Load the deep view and create a bundle <p># Default case -> JUMIA://com.mobile.jumia.dev/eg/cart/
      * <p># Other case   -> JUMIA://eg/cart/
+     *
      * @param intent
      * @author sergiopereira
      */
-    public static Bundle loadExternalDeepLink(Context context, Uri data){
+    public static Bundle loadExternalDeepLink(Context context, Uri data) {
         // Decode path
         List<String> segments = isValidLink(context, data.getHost(), data.getPathSegments());
-        if(segments == null) return null;
+        if (segments == null) {
+            return null;
+        }
         Log.d(TAG, "DEEP LINK SEGMENTS: " + segments.toString());
         // Get the country code
         loadCountryCode(context, segments.get(PATH_CC_POS));
@@ -87,40 +88,41 @@ public class DeepLinkManager {
         // Return values
         return deepLinkBundle;
     }
-    
+
     /**
-     * Validate if is a valid link
-     * <p># Default case -> JUMIA://com.mobile.jumia.dev/eg/
-     * <p># Other case   -> JUMIA://eg/
+     * Validate if is a valid link <p># Default case -> JUMIA://com.mobile.jumia.dev/eg/ <p># Other case   -> JUMIA://eg/
+     *
      * @param context
      * @param host
      * @param segments
      * @return list of segments
      */
-    private static List<String> isValidLink(Context context, String host, List<String> segments){
+    private static List<String> isValidLink(Context context, String host, List<String> segments) {
         Log.i(TAG, "DEEP LINK URI HOST: " + host);
         Log.d(TAG, "DEEP LINK URI PATH: " + segments.toString());
         // Validate segments
-        if(segments.size() == 0) {
+        if (segments.size() == 0) {
             Log.w(TAG, "RECEIVED DEEP LINK WITHOUT SEGMENTS");
-           
+
             // Case -> JUMIA://ng/
-            if(isSupporedCountryCode(context, host)) { 
-                List<String> array = new ArrayList<String>(); 
+            if (isSupporedCountryCode(context, host)) {
+                List<String> array = new ArrayList<String>();
                 array.add(host);
                 return array;
-            
-            // Case -> JUMIA://XXXX/
-            } else return null;
-            
-        // Case -> JUMIA://eg/cart/ 
-        } else if(isSupporedCountryCode(context, host)) {
+
+                // Case -> JUMIA://XXXX/
+            } else {
+                return null;
+            }
+
+            // Case -> JUMIA://eg/cart/
+        } else if (isSupporedCountryCode(context, host)) {
             List<String> array = new ArrayList<String>();
             array.addAll(segments);
             array.add(PATH_CC_POS, host);
             return array;
         }
-        
+
         // Return default segments
         // Case -> JUMIA://com.mobile.jumia.dev/eg/cart
         return segments;
@@ -128,81 +130,102 @@ public class DeepLinkManager {
 
     /**
      * Load the deep link view to create the respective bundle for that view
+     *
      * @param context
      * @param segments
+     * @param data
      * @return {@link Bundle}
      * @author sergiopereira
-     * @param data 
      */
-    private static Bundle loadDeepViewTag(Context context, List<String> segments, Uri data){
+    private static Bundle loadDeepViewTag(Context context, List<String> segments, Uri data) {
         // 
         Bundle bundle = null;
         try {
             // Validate current URI size
-            if(segments != null && segments.size() > 1){
+            if (segments != null && segments.size() > 1) {
                 // Get the tag
                 String tag = segments.get(PATH_VIEW_POS);
                 // Catalog
-                if(tag.equalsIgnoreCase(CATALOG_TAG))
+                if (tag.equalsIgnoreCase(CATALOG_TAG)) {
                     bundle = processCatalogLink(CatalogSort.POPULARITY, segments, data);
+                }
                 // Catalog - Rating
-                else if(tag.equalsIgnoreCase(CATALOG_RATING_TAG))
+                else if (tag.equalsIgnoreCase(CATALOG_RATING_TAG)) {
                     bundle = processCatalogLink(CatalogSort.BESTRATING, segments, data);
+                }
                 // Catalog - Popularity
-                else if(tag.equalsIgnoreCase(CATALOG_POPULARITY_TAG))
+                else if (tag.equalsIgnoreCase(CATALOG_POPULARITY_TAG)) {
                     bundle = processCatalogLink(CatalogSort.POPULARITY, segments, data);
+                }
                 // Catalog - New In
-                else if(tag.equalsIgnoreCase(CATALOG_NEW_TAG))
+                else if (tag.equalsIgnoreCase(CATALOG_NEW_TAG)) {
                     bundle = processCatalogLink(CatalogSort.NEWIN, segments, data);
+                }
                 // Catalog - Price Up
-                else if(tag.equalsIgnoreCase(CATALOG_PRICE_UP_TAG))
+                else if (tag.equalsIgnoreCase(CATALOG_PRICE_UP_TAG)) {
                     bundle = processCatalogLink(CatalogSort.PRICE_UP, segments, data);
+                }
                 // Catalog - Price Down
-                else if(tag.equalsIgnoreCase(CATALOG_PRICE_DOWN_TAG))
+                else if (tag.equalsIgnoreCase(CATALOG_PRICE_DOWN_TAG)) {
                     bundle = processCatalogLink(CatalogSort.PRICE_DOWN, segments, data);
+                }
                 // Catalog - Name
-                else if(tag.equalsIgnoreCase(CATALOG_NAME_TAG))
+                else if (tag.equalsIgnoreCase(CATALOG_NAME_TAG)) {
                     bundle = processCatalogLink(CatalogSort.NAME, segments, data);
+                }
                 // Catalog - Brand
-                else if(tag.equalsIgnoreCase(CATALOG_BRAND_TAG))
+                else if (tag.equalsIgnoreCase(CATALOG_BRAND_TAG)) {
                     bundle = processCatalogLink(CatalogSort.BRAND, segments, data);
+                }
                 // Cart
-                else if(tag.equalsIgnoreCase(CART_TAG))
+                else if (tag.equalsIgnoreCase(CART_TAG)) {
                     bundle = processCartLink(segments);
+                }
                 // Product Details
-                else if(tag.equalsIgnoreCase(PDV_TAG))
+                else if (tag.equalsIgnoreCase(PDV_TAG)) {
                     bundle = processPdvLink(segments, data);
+                }
                 // Login
-                else if(tag.equalsIgnoreCase(LOGIN_TAG))
+                else if (tag.equalsIgnoreCase(LOGIN_TAG)) {
                     bundle = processLoginLink();
+                }
                 // Register
-                else if(tag.equalsIgnoreCase(REGISTER_TAG))
+                else if (tag.equalsIgnoreCase(REGISTER_TAG)) {
                     bundle = processRegisterLink();
+                }
                 // Category
-                else if(tag.equalsIgnoreCase(CATEGORY_TAG))
+                else if (tag.equalsIgnoreCase(CATEGORY_TAG)) {
                     bundle = processCategoryLink(segments.get(PATH_DATA_POS));
+                }
                 // Search term
-                else if(tag.equalsIgnoreCase(SEARCH_TERM_TAG))
+                else if (tag.equalsIgnoreCase(SEARCH_TERM_TAG)) {
                     bundle = processSearchTermLink(segments.get(PATH_DATA_POS));
+                }
                 // Order overview
-                else if(tag.equalsIgnoreCase(ORDER_OVERVIEW_TAG))
+                else if (tag.equalsIgnoreCase(ORDER_OVERVIEW_TAG)) {
                     bundle = processTrackOrderLink(segments.get(PATH_DATA_POS));
+                }
                 // Campaign
-                else if(tag.equalsIgnoreCase(CAMPAIGN_TAG))
+                else if (tag.equalsIgnoreCase(CAMPAIGN_TAG)) {
                     bundle = processCampaignLink(segments.get(PATH_DATA_POS));
+                }
                 // Newsleter
-                else if(tag.equalsIgnoreCase(NEWSLETTER_TAG))
+                else if (tag.equalsIgnoreCase(NEWSLETTER_TAG)) {
                     bundle = processNewsletterLink();
+                }
                 // Recently Viewed
-                else if(tag.equalsIgnoreCase(RECENTLY_VIEWED_TAG))
+                else if (tag.equalsIgnoreCase(RECENTLY_VIEWED_TAG)) {
                     bundle = processRecentViewedLink();
+                }
                 // Recent Searches
-                else if(tag.equalsIgnoreCase(RECENT_SEARCHES_TAG))
+                else if (tag.equalsIgnoreCase(RECENT_SEARCHES_TAG)) {
                     bundle = processRecenteSearchesLink();
+                }
                 // Favorites
-                else if(tag.equalsIgnoreCase(FAVORITES_TAG))
+                else if (tag.equalsIgnoreCase(FAVORITES_TAG)) {
                     bundle = processFavoritesLink();
-                
+                }
+
             } else {
                 // Home
                 bundle = processHomeLink();
@@ -214,11 +237,11 @@ public class DeepLinkManager {
         }
         return bundle;
     }
-    
-    
+
+
     /**
-     * Method used to create a bundle for campaign view with the respective campaign id.
-     * JUMIA://com.jumia.android/ng/cam/deals-of-the-day
+     * Method used to create a bundle for campaign view with the respective campaign id. JUMIA://com.jumia.android/ng/cam/deals-of-the-day
+     *
      * @param campaign id
      * @return {@link Bundle}
      * @author sergiopereira
@@ -227,7 +250,7 @@ public class DeepLinkManager {
         Log.i(TAG, "DEEP LINK TO CAMPAIGN: " + campaignId);
         // Create bundle
         Bundle bundle = new Bundle();
-        ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<TeaserCampaign>();
+        ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<>();
         TeaserCampaign campaign = new TeaserCampaign();
         campaign.setTitle(campaignId.replace("-", " "));
         campaign.setUrl(EventType.GET_CAMPAIGN_EVENT.action + "?campaign_slug=" + campaignId);
@@ -236,11 +259,11 @@ public class DeepLinkManager {
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CAMPAIGNS);
         return bundle;
     }
-    
-    
+
+
     /**
-     * Method used to create a bundle for category view with the respective category id.
-     * JUMIA://com.jumia.android/ng/n/5121
+     * Method used to create a bundle for category view with the respective category id. JUMIA://com.jumia.android/ng/n/5121
+     *
      * @param category id
      * @return {@link Bundle}
      * @author sergiopereira
@@ -254,10 +277,10 @@ public class DeepLinkManager {
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATEGORIES);
         return bundle;
     }
-    
+
     /**
-     * Method used to create a bundle for track order view with the order id.
-     * JUMIA://com.jumia.android/ng/o/1233
+     * Method used to create a bundle for track order view with the order id. JUMIA://com.jumia.android/ng/o/1233
+     *
      * @param order id
      * @return {@link Bundle}
      * @author sergiopereira
@@ -270,11 +293,10 @@ public class DeepLinkManager {
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.MY_ORDERS);
         return bundle;
     }
-    
+
     /**
-     * Method used to create a bundle for catalog view with the search query.
-     * <p>JUMIA://com.mobile.jumia.dev/ng/s/cart
-     * <p>key: u value: ng/s/cart
+     * Method used to create a bundle for catalog view with the search query. <p>JUMIA://com.mobile.jumia.dev/ng/s/cart <p>key: u value: ng/s/cart
+     *
      * @param query
      * @return {@link Bundle}
      * @author sergiopereira
@@ -291,11 +313,11 @@ public class DeepLinkManager {
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
         return bundle;
     }
-    
+
     /**
-     * Method used to create a bundle for cart or headless cart view with the respective SKUs.
-     * JUMIA://com.jumia.android/ng/cart
+     * Method used to create a bundle for cart or headless cart view with the respective SKUs. JUMIA://com.jumia.android/ng/cart
      * JUMIA://com.jumia.android/ng/cart/sku1_sku2_sku3
+     *
      * @param segments
      * @return {@link Bundle}
      * @author sergiopereira
@@ -307,7 +329,7 @@ public class DeepLinkManager {
         FragmentType fragmentType = FragmentType.SHOPPING_CART;
         Bundle bundle = new Bundle();
         // Validate if has multiple SKUs
-        if(segments.size() > 2) {
+        if (segments.size() > 2) {
             // Add SKUs for HEADLESS_CART
             simpleSkuArray = segments.get(PATH_DATA_POS);
 //            fragmentType = FragmentType.HEADLESS_CART;
@@ -315,19 +337,19 @@ public class DeepLinkManager {
             Log.i(TAG, "DEEP LINK TO CART WITH: " + simpleSkuArray + " " + fragmentType.toString());
         }
         // Create bundle for fragment
-        
+
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         bundle.putSerializable(FRAGMENT_TYPE_TAG, fragmentType);
         return bundle;
     }
-    
-    
+
+
     /**
-     * Method used to create a bundle for PDV view with the respective product SKU and size.
-     * JUMIA://ng/d/HO525HLAC8VKAFRAMZ?size=6.5
+     * Method used to create a bundle for PDV view with the respective product SKU and size. JUMIA://ng/d/HO525HLAC8VKAFRAMZ?size=6.5
+     *
      * @param segments
-     * @param data 
+     * @param data
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -346,9 +368,10 @@ public class DeepLinkManager {
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.PRODUCT_DETAILS);
         return bundle;
     }
-    
+
     /**
      * Method used to create a bundle for Home
+     *
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -359,9 +382,10 @@ public class DeepLinkManager {
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.LOGIN);
         return bundle;
     }
-    
+
     /**
      * Method used to create a bundle for Home
+     *
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -375,6 +399,7 @@ public class DeepLinkManager {
 
     /**
      * Method used to create a bundle for Home
+     *
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -386,9 +411,10 @@ public class DeepLinkManager {
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.LOGIN);
         return bundle;
     }
-    
+
     /**
      * Method used to create a bundle for Home
+     *
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -396,12 +422,13 @@ public class DeepLinkManager {
         Log.i(TAG, "DEEP LINK TO RECENT VIEWED");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.RECENTLYVIEWED_LIST);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.RECENTLY_VIEWED_LIST);
         return bundle;
     }
-    
+
     /**
      * Method used to create a bundle for Home
+     *
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -409,12 +436,13 @@ public class DeepLinkManager {
         Log.i(TAG, "DEEP LINK TO RECENT SEARCHES");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.RECENTSEARCHES_LIST);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.RECENT_SEARCHES_LIST);
         return bundle;
     }
-    
+
     /**
      * Method used to create a bundle for Home
+     *
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -425,9 +453,10 @@ public class DeepLinkManager {
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.FAVORITE_LIST);
         return bundle;
     }
-    
+
     /**
      * Method used to create a bundle for Home
+     *
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -437,14 +466,14 @@ public class DeepLinkManager {
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.HOME);
         return bundle;
     }
-    
+
     /**
-     * Method used to create a bundle for Catalog view with the respective catalog value. 
-     * JUMIA://com.jumia.android/eg/c/surprise-your-guests?q=AKOZ--225&price=11720-53620&color_family=Noir--Bleu&size=38--40
+     * Method used to create a bundle for Catalog view with the respective catalog value. JUMIA://com.jumia.android/eg/c/surprise-your-guests?q=AKOZ--225&price=11720-53620&color_family=Noir--Bleu&size=38--40
+     *
      * @param segments
+     * @param data
      * @return {@link Bundle}
      * @author sergiopereira
-     * @param data 
      */
     private static Bundle processCatalogLink(CatalogSort page, List<String> segments, Uri data) {
         // Get catalog 
@@ -452,7 +481,7 @@ public class DeepLinkManager {
         // Get filters
         Set<String> filters = getQueryParameterNames(data);
         // Get all params
-        if(filters.size() > 0) {
+        if (filters.size() > 0) {
             catalogUrlKey += "?";
             for (String key : filters) {
                 catalogUrlKey += key + "=" + data.getQueryParameter(key) + "&";
@@ -469,7 +498,7 @@ public class DeepLinkManager {
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
         return bundle;
     }
-    
+
 //    /**
 //     * Get the adx id value and add it to the received bundle
 //     * @param deepLinkBundle
@@ -489,40 +518,44 @@ public class DeepLinkManager {
 //            deepLinkBundle.putString(ADX_ID_TAG, null);
 //        }
 //    }
-    
+
     /**
      * Load the country and set
+     *
      * @param context
      * @param countryCode
      * @author sergiopereira
      */
-    private static void loadCountryCode(Context context, String countryCode){
+    private static void loadCountryCode(Context context, String countryCode) {
         Log.d(TAG, "DEEP LINK URI PATH: " + countryCode);
         // Get current country code
         String selectedCountryCode = ShopPreferences.getShopId(context);
         // Validate saved shop id
-        if(selectedCountryCode == ShopPreferences.SHOP_NOT_SELECTED || !selectedCountryCode.equalsIgnoreCase(countryCode))
+        if (selectedCountryCode == ShopPreferences.SHOP_NOT_SELECTED || !selectedCountryCode.equalsIgnoreCase(countryCode)) {
             locateCountryCode(context, countryCode);
-        else
+        } else {
             Log.i(TAG, "DEEP LINK CC IS THE SAME");
+        }
     }
 
     /**
      * Locate the shop id and save it for a respective country code
+     *
      * @param countryCode
      * @author sergiopereira
      */
     private static void locateCountryCode(Context context, String countryCode) {
         // Valdiate countries available
-        if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0 )
+        if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
+        }
         // Get the supported countries
-        if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0 ){
-         // Get the shop id for the country code 
-            for (int i = 0; i < JumiaApplication.INSTANCE.countriesAvailable.size(); i++) { 
+        if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
+            // Get the shop id for the country code
+            for (int i = 0; i < JumiaApplication.INSTANCE.countriesAvailable.size(); i++) {
                 String supportedCountry = JumiaApplication.INSTANCE.countriesAvailable.get(i).getCountryIso();
                 Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
-                if (supportedCountry.equalsIgnoreCase(countryCode)){
+                if (supportedCountry.equalsIgnoreCase(countryCode)) {
                     Log.d(TAG, "MATCH SUPPORTED COUNTRY: SHOP ID " + i + " " + countryCode);
                     ShopPreferences.setShopId(context, i);
                     break;
@@ -530,32 +563,40 @@ public class DeepLinkManager {
             }
         }
     }
-    
+
     /**
      * Locate the shop id and save it for a respective country code
+     *
      * @param countryCode
      * @author sergiopereira
      */
     private static boolean isSupporedCountryCode(Context context, String countryCode) {
-        if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0 ){
+        if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         }
-        if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0 ){
+        if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
             // Get the shop id for the country code 
-            for (CountryObject supportedCountry : JumiaApplication.INSTANCE.countriesAvailable) if (supportedCountry.getCountryIso().equalsIgnoreCase(countryCode)) return true;            
+            for (CountryObject supportedCountry : JumiaApplication.INSTANCE.countriesAvailable) {
+                if (supportedCountry.getCountryIso().equalsIgnoreCase(countryCode)) {
+                    return true;
+                }
+            }
         }
 
         return false;
     }
-    
+
     /**
      * Get all query parameters from Uri
+     *
      * @param uri
      * @return set of keys
      */
-    private  static Set<String> getQueryParameterNames(Uri uri) {
+    private static Set<String> getQueryParameterNames(Uri uri) {
         String query = uri.getEncodedQuery();
-        if (query == null) return Collections.emptySet();
+        if (query == null) {
+            return Collections.emptySet();
+        }
 
         Set<String> names = new LinkedHashSet<String>();
         int start = 0;

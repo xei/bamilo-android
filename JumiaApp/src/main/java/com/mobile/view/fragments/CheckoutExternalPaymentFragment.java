@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.mobile.view.fragments;
 
@@ -64,9 +64,8 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * Webview to execute an external Payment
- * 
+ *
  * @author Manuel Silva
- * 
  */
 public class CheckoutExternalPaymentFragment extends BaseFragment {
 
@@ -87,14 +86,16 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     private static CheckoutExternalPaymentFragment checkoutWebFragment;
 
     private Customer customer;
+
     /**
      * Get instance
-     * 
+     *
      * @return
      */
     public static CheckoutExternalPaymentFragment getInstance() {
-        if (checkoutWebFragment == null)
+        if (checkoutWebFragment == null) {
             checkoutWebFragment = new CheckoutExternalPaymentFragment();
+        }
 
         checkoutWebFragment.webview = null;
         checkoutWebFragment.paymentUrl = null;
@@ -154,17 +155,17 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         //Validate is service is available
-        if(JumiaApplication.mIsBound){
-            triggerGetCustomer();   
+        if (JumiaApplication.mIsBound) {
+            triggerGetCustomer();
         } else {
             showFragmentErrorRetry();
         }
-         
-         Bundle params = new Bundle();        
-         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_EXTERNAL_PAYMENT);
-         
-         TrackerDelegator.trackCheckoutStep(params);
+
+        Bundle params = new Bundle();
+        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_EXTERNAL_PAYMENT);
+
+        TrackerDelegator.trackCheckoutStep(params);
     }
 
     private void triggerGetCustomer() {
@@ -198,7 +199,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         Log.i(TAG, "ON VIEW CREATED");
         webview = (WebView) view.findViewById(R.id.webview);
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -314,20 +315,20 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null){
-            paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();    
+        if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null) {
+            paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();
         } else {
             super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "NO PAYMENT METHOD DEFINED");
             return;
         }
-        
-        Log.i(TAG, "trackPaymentMethod : payment method : "+JumiaApplication.INSTANCE.getPaymentMethodForm().getName() + " email : "+JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+
+        Log.i(TAG, "trackPaymentMethod : payment method : " + JumiaApplication.INSTANCE.getPaymentMethodForm().getName() + " email : " + JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         Bundle params = new Bundle();
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putString(TrackerDelegator.PAYMENT_METHOD_KEY,JumiaApplication.INSTANCE.getPaymentMethodForm().getName());    
-        
+        params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, JumiaApplication.INSTANCE.getPaymentMethodForm().getName());
+
         TrackerDelegator.trackPaymentMethod(params);
-        
+
         Log.d(TAG, "Loading Url: " + paymentUrl);
 
         List<NameValuePair> parameters = new ArrayList<NameValuePair>();
@@ -338,12 +339,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm()
                     .getContentValues().valueSet();
             for (Entry<String, Object> entry : mValues) {
-                if(entry.getKey().equalsIgnoreCase("tc")){
+                if (entry.getKey().equalsIgnoreCase("tc")) {
                     parameters.add(new BasicNameValuePair(entry.getKey(), "1"));
                 } else {
                     parameters.add(new BasicNameValuePair(entry.getKey(), (String) entry.getValue()));
                 }
-                
+
             }
 
             Log.i(TAG, "code1content : " + parameters.toString());
@@ -370,7 +371,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                     paymentUrl += "&" + entry.getKey() + "=" + (String) entry.getValue();
                 }
             }
-            
+
             webview.loadUrl(paymentUrl);
         } else {
             setProxy(paymentUrl);
@@ -426,11 +427,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         }
         return transDomain;
     }
-    
+
     private void trackPurchase(final JSONObject result) {
         Bundle params = new Bundle();
         params.putString(TrackerDelegator.PURCHASE_KEY, result.toString());
-        params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);        
+        params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
         TrackerDelegator.trackPurchase(params);
     }
 
@@ -443,7 +444,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         @SuppressWarnings("deprecation")
         @Override
         public void onReceivedError(WebView view, int errorCode,
-                String description, final String failingUrl) {
+                                    String description, final String failingUrl) {
             Log.e(TAG, "Received error: " + errorCode + " " + description + " "
                     + failingUrl);
             failedPageRequest = failingUrl;
@@ -466,7 +467,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
          */
         @Override
         public void onReceivedHttpAuthRequest(WebView view,
-                HttpAuthHandler handler, String host, String realm) {
+                                              HttpAuthHandler handler, String host, String realm) {
             Log.i(TAG, "code1payment : onReceivedHttpAuthRequest");
             handler.proceed(RestContract.AUTHENTICATION_USER,
                     RestContract.AUTHENTICATION_PASS);
@@ -500,7 +501,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             if (url.contains(SUCCESS_URL_TAG)) {
                 /**
                  * This line cause s a JNI exception only in the emulators 2.3.X.
-                 * 
+                 *
                  * @see http://code.google.com/p/android/issues/detail?id=12987
                  */
                 Log.d(TAG, "LOAD URL: JAVASCRIPT PROCESS");
@@ -561,7 +562,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
          */
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler,
-                SslError error) {
+                                       SslError error) {
             Log.i(TAG, "code1payment : onReceivedSslError : " + error);
             Log.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
@@ -589,13 +590,13 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 Log.d(TAG, "Got checkout response: " + content);
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
-                    
+
                     // Defining event as having no priority
                     Bundle args = new Bundle();
                     args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
                     triggerContentEventNoLoading(new GetShoppingCartItemsHelper(), args,
                             mCallback);
-                    
+
                     // Measure to escape the webview thread
                     handler.post(new Runnable() {
 
@@ -605,7 +606,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                         }
                     });
                     Bundle bundle = new Bundle();
-                    bundle.putString(ConstantsIntentExtra.SUCESS_INFORMATION, content);
+                    bundle.putString(ConstantsIntentExtra.SUCCESS_INFORMATION, content);
                     /**
                      * TODO: Verify if we need to send customer email
                      */
@@ -639,21 +640,21 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     protected boolean onSuccessEvent(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
-        case GET_CUSTOMER:
-            /**
-             * TODO: Verify if we need to fill customer
-             */
-             customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-             JumiaApplication.CUSTOMER = customer;
-            break;
-        case GET_SHOPPING_CART_ITEMS_EVENT:
-            break;
-        default:
-            break;
+            case GET_CUSTOMER:
+                /**
+                 * TODO: Verify if we need to fill customer
+                 */
+                customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                JumiaApplication.CUSTOMER = customer;
+                break;
+            case GET_SHOPPING_CART_ITEMS_EVENT:
+                break;
+            default:
+                break;
         }
         return false;
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
@@ -662,7 +663,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     protected void onClickErrorButton(View view) {
         super.onClickErrorButton(view);
         Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
+        if (null != JumiaApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {

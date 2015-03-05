@@ -1,7 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,10 +8,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.mobile.framework.objects.Homepage;
 import com.mobile.view.fragments.HomePageFragment;
 
+import java.util.ArrayList;
+
 /**
- * Class used as an simple pager adapter that represents each campaign
- * fragment
- * 
+ * Class used as an simple pager adapter that represents each campaign fragment
+ *
  * @author sergiopereira
  */
 public class HomePagerAdapter extends FragmentPagerAdapter {
@@ -22,7 +21,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
 
     /**
      * Constructor
-     * 
+     *
      * @param fm
      * @param collection
      * @author sergiopereira
@@ -33,7 +32,6 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     }
 
     /**
-     * 
      * @param collection
      */
     public void updateCollection(ArrayList<Homepage> collection) {
@@ -70,19 +68,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
      */
     @Override
     public CharSequence getPageTitle(int position) {
-        return mHomePages.get(position).getHomepageTitle().toUpperCase();
+        return mHomePages.get(position).getTitle().toUpperCase();
     }
-
-    // /*
-    // * (non-Javadoc)
-    // * @see
-    // android.support.v4.app.FragmentPagerAdapter#destroyItem(android.view.ViewGroup,
-    // int, java.lang.Object)
-    // */
-    // @Override
-    // public void destroyItem(ViewGroup container, int position, Object
-    // object) {
-    // super.destroyItem(container, position, object);
-    // }
 
 }
