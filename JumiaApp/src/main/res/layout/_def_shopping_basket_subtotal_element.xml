@@ -38,7 +38,7 @@
             android:layout_below="@id/articles_count"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:textColor="@string/string_vat_included" />
+            android:text="@string/string_vat_included" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/price_unreduced"
