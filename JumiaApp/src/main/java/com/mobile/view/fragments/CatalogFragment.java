@@ -23,6 +23,7 @@ import com.mobile.framework.objects.CatalogPage;
 import com.mobile.framework.objects.FeaturedBox;
 import com.mobile.framework.objects.Product;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -800,7 +801,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case error on load more data
         if (isLoadingMoreData) {
             Log.i(TAG, "ON ERROR RESPONSE: IS LOADING MORE");
-            onLoadingMoreRequestError(errorCode, bundle);
+            onLoadingMoreRequestError(bundle);
         }
         // Case error on request data with filters
         else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && mCurrentFilterValues != null && mCurrentFilterValues.size() > 0) {
@@ -828,22 +829,17 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * Process the error code
      *
-     * @param errorCode - the loading more error code
      * @param bundle    - the request bundle
      */
-    private void onLoadingMoreRequestError(ErrorCode errorCode, Bundle bundle) {
+    private void onLoadingMoreRequestError(Bundle bundle) {
         // Mark error on loading more
         mErrorLoading = true;
         // Scroll to hide the loading view
         mGridView.stopScroll();
         mGridView.scrollBy(0, -getResources().getDimensionPixelSize(R.dimen.catalog_footer_height));
-        // Show respective warning
-        if (errorCode == ErrorCode.SERVER_IN_MAINTENANCE) {
-            super.handleErrorEvent(bundle);
-        } else if (errorCode == ErrorCode.NO_NETWORK) {
-            ToastFactory.ERROR_NO_CONNECTION.show(getBaseActivity());
-        } else {
-            ToastFactory.ERROR_CATALOG_LOAD_MORE.show(getBaseActivity());
-        }
+        // Show respective warning indicating to use the warning bar
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
+        // Case super not handle the error show unexpected error
+        if(!super.handleErrorEvent(bundle)) showUnexpectedErrorWarning();
     }
 }
