@@ -9,15 +9,15 @@
  */
 package com.mobile.framework.objects;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.ITargeting.TargetType;
 import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -121,8 +121,8 @@ public class BrandAttributes implements IJSONSerializable, Parcelable {
 		try {
 
 			name = jsonObject.getString(RestConstants.JSON_BRAND_DESCRIPTION_TAG);
-			target_type = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG, "");
-			description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
+            target_type = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG);
+            description = jsonObject.optString(RestConstants.JSON_DESCRIPTION_TAG);
 
 			try {
 				/**

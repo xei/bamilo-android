@@ -1,13 +1,7 @@
 /**
- * 
+ *
  */
 package com.mobile.helpers.teasers;
-
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.os.Bundle;
 
@@ -20,21 +14,25 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * Example helper
- * 
+ *
  * @author Guilherme Silva
- * @modified Manuel Silva
+ * @modified sergiopereira
  */
 public class GetTeasersHelper extends BaseHelper {
 
     private static String TAG = GetTeasersHelper.class.getSimpleName();
 
     private static final EventType EVENT_TYPE = EventType.GET_TEASERS_EVENT;
-
-    public static final String MD5_KEY = "md5";
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
@@ -49,23 +47,20 @@ public class GetTeasersHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-
-        // Get MD5
-        String md5 = jsonObject.optString(RestConstants.JSON_MD5_TAG);
-        bundle.putString(MD5_KEY, md5);
-
-        Log.d(TAG, "parseResponseBundle GetTeasersHelper");
+        Log.i(TAG, "parseResponseBundle GetTeasersHelper");
         try {
             JSONArray dataArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
             int dataArrayLength = dataArray.length();
             if (dataArrayLength > 0) {
                 int defaultHomePage = 0;
-                ArrayList<Homepage> homepageSpecifications = new ArrayList<Homepage>();
+                ArrayList<Homepage> homepageSpecifications = new ArrayList<>();
                 for (int i = 0; i < dataArrayLength; ++i) {
                     Homepage homepage = new Homepage();
                     homepage.initialize(dataArray.getJSONObject(i));
                     // Validate if is the default home page
-                    if (homepage != null && homepage.isDefaultHomepage()) defaultHomePage = i;
+                    if (homepage.isDefault()) {
+                        defaultHomePage = i;
+                    }
                     homepageSpecifications.add(homepage);
                 }
                 bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, homepageSpecifications);

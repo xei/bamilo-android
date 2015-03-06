@@ -1,9 +1,5 @@
 package com.mobile.factories;
 
-import java.util.ArrayList;
-
-import org.apache.commons.collections4.CollectionUtils;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
@@ -38,48 +34,51 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderListener;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.ArrayList;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * Object that generates the Teasers based on the Teaser specification
- * 
+ *
  * @author manuelsilva
  * @modified sergiopereira
- * 
  */
 public class TeasersFactory {
 
     private static final String TAG = TeasersFactory.class.getSimpleName();
-    
+
     private Context mContext;
-    
+
     private OnClickListener onTeaserClickListener;
-    
+
     private static final int MAX_IMAGES_ON_SCREEN = 2;
-    
+
     private boolean isToResize = false;
-    
+
     private LayoutInflater mInflater;
-    
+
     private int mContentWidth;
 
     private boolean isTablet = false;
-   
+
     /**
      * Singleton method
-     * @param context
-     * @param layoutInflater
-     * @param onClickListener
+     *
+     * @param context         - the application context
+     * @param inflater        - the layout inflater
+     * @param onClickListener - the parent click listener
      * @return TeasersFactory
-     * @author sergiopereira
      */
-    public static TeasersFactory getSingleton(Context context, LayoutInflater layoutInflater, OnClickListener onClickListener) {
-        return new TeasersFactory(context, layoutInflater, onClickListener);
+    public static TeasersFactory getSingleton(Context context, LayoutInflater inflater, OnClickListener onClickListener) {
+        return new TeasersFactory(context, inflater, onClickListener);
     }
 
     /**
      * Constructor with parameters
-     * 
+     *
      * @param context
      * @param teaserSpecification
      */
@@ -88,55 +87,55 @@ public class TeasersFactory {
         this.mInflater = layoutInflater;
         this.onTeaserClickListener = onClickListener;
         this.mContentWidth = DeviceInfoHelper.getWidth(mContext);
-        this.isTablet  = mContext.getResources().getBoolean(R.bool.isTablet);
+        this.isTablet = mContext.getResources().getBoolean(R.bool.isTablet);
     }
-    
+
     /**
      * Set the container width to fill the product list
+     *
      * @param width
      * @author sergiopereira
      */
-    public void setContainerWidthToLoadImage(int width){
+    public void setContainerWidthToLoadImage(int width) {
         this.mContentWidth = width;
     }
 
     /**
-     * 
      * @param main
      * @param teaserSpecification
      * @return
      */
     public View getSpecificTeaser(ViewGroup main, TeaserSpecification<?> teaserSpecification) {
         View mView = null;
-        Log.i(TAG, "generating teaser : "+teaserSpecification.getType());
+        Log.i(TAG, "GENERATING TEASER: " + teaserSpecification.getType());
         isToResize = false;
         switch (teaserSpecification.getType()) {
-        case MAIN_ONE_SLIDE:
-            isToResize = true;
-            mView = getMainOneSlide(main, (TeaserGroupImages) teaserSpecification);
-            break;
-        case STATIC_BANNER:
-            isToResize = true;
-            mView = getStaticBanner(main, (TeaserGroupImages) teaserSpecification);
-            break;
-        case CATEGORIES:
-            mView = getCategoriesTeaser(main, (TeaserGroupCategories) teaserSpecification);
-            break;
-        case PRODUCT_LIST:
-            mView = getProductsListTeaser(main, (TeaserGroupProducts) teaserSpecification);
-            break;
-        case BRANDS_LIST:
-            isToResize = true;
-            mView = getBrandsListTeaser(main, (TeaserGroupBrands) teaserSpecification);
-            break;
-        case TOP_BRANDS_LIST:
-            mView = getTeaserTopBrands(main, (TeaserGroupTopBrands) teaserSpecification);
-            break;
-        case CAMPAIGNS_LIST:
-        	mView = getTeaserCampaigns(main, (TeaserGroupCampaigns) teaserSpecification);
-        	break;
-        default:
-            break;
+            case MAIN_ONE_SLIDE:
+                isToResize = true;
+                mView = getMainOneSlide(main, (TeaserGroupImages) teaserSpecification);
+                break;
+            case STATIC_BANNER:
+                isToResize = true;
+                mView = getStaticBanner(main, (TeaserGroupImages) teaserSpecification);
+                break;
+            case CATEGORIES:
+                mView = getCategoriesTeaser(main, (TeaserGroupCategories) teaserSpecification);
+                break;
+            case PRODUCT_LIST:
+                mView = getProductsListTeaser(main, (TeaserGroupProducts) teaserSpecification);
+                break;
+            case BRANDS_LIST:
+                isToResize = true;
+                mView = getBrandsListTeaser(main, (TeaserGroupBrands) teaserSpecification);
+                break;
+            case TOP_BRANDS_LIST:
+                mView = getTeaserTopBrands(main, (TeaserGroupTopBrands) teaserSpecification);
+                break;
+            case CAMPAIGNS_LIST:
+                mView = getTeaserCampaigns(main, (TeaserGroupCampaigns) teaserSpecification);
+                break;
+            default:
+                break;
         }
 
         return mView;
@@ -150,7 +149,7 @@ public class TeasersFactory {
         // Get image container
         final View imageContainer = rootView.findViewById(R.id.banner_view);
         // Validate data
-        if(CollectionUtils.isNotEmpty(teaserImageArrayList)) {
+        if (CollectionUtils.isNotEmpty(teaserImageArrayList)) {
             // Show teaser
             imageContainer.setVisibility(View.VISIBLE);
             // Get image
@@ -162,7 +161,7 @@ public class TeasersFactory {
             // Set listener
             attachTeaserListener(teaserGroupImages.getType(), teaserImageArrayList.get(0), imageContainer);
         }
-        
+
         // OLD METHOD WITH VIEW PAGER LAYOUT
 //        final ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewpager);
 //        pager.setSaveEnabled(false);
@@ -186,9 +185,8 @@ public class TeasersFactory {
 //            }
 //            attachTeaserListener(teaserGroupImages.getType(), teaserImageArrayList.get(0), imageContainer);
 //        }
-            
 
-            
+
         return rootView;
     }
 
@@ -203,16 +201,16 @@ public class TeasersFactory {
             int width = DeviceInfoHelper.getWidth(mContext);
             container.requestLayout();
             LayoutParams params = container.getLayoutParams();
-            
-            if(!isTablet){
+
+            if (!isTablet) {
                 params.height = width / 2;
             } else {
                 params.height = mContext.getResources().getDimensionPixelSize(R.dimen.teaser_banners_group_height);
             }
 
             container.setLayoutParams(params);
-            
-        } 
+
+        }
         if (teaserImageArrayList != null) {
             int maxItems = MAX_IMAGES_ON_SCREEN;
             if (teaserImageArrayList.size() < MAX_IMAGES_ON_SCREEN) {
@@ -223,7 +221,9 @@ public class TeasersFactory {
             int i;
             for (i = 0; i < maxItems; i++) {
                 TeaserImage image = teaserImageArrayList.get(i);
-                if (i > 0) mInflater.inflate(R.layout.vertical_divider, container);
+                if (i > 0) {
+                    mInflater.inflate(R.layout.vertical_divider, container);
+                }
                 container.addView(createImageTeaserView(type, image, container, mInflater, maxItems));
             }
 
@@ -235,7 +235,7 @@ public class TeasersFactory {
                 container.addView(createImageTeaserView(teaserImage, container, mInflater, 0));
             }
         }*/
-        
+
         return rootView;
     }
 
@@ -246,8 +246,9 @@ public class TeasersFactory {
             ((TextView) rootView.findViewById(R.id.teaser_categories_group_title)).setText(teaserCategoryGroup.getTitle());
             TeaserGroupType type = teaserCategoryGroup.getType();
             // Add each item
-            for (TeaserCategory category : teaserCategoryGroup.getTeasers())
+            for (TeaserCategory category : teaserCategoryGroup.getTeasers()) {
                 container.addView(createCategoryTeaserView(type, category, container, mInflater));
+            }
             // Add item for all categories
             container.addView(createCategoryAllTeaserView(container, mInflater));
         }
@@ -255,7 +256,6 @@ public class TeasersFactory {
     }
 
     /**
-     * 
      * @param mainView
      * @param productTeaserGroup
      * @return
@@ -274,7 +274,9 @@ public class TeasersFactory {
             horizontalScrollView.setHasFixedSize(true);
             // RTL
             Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-            if(isRTL) horizontalScrollView.enableReverseLayout();
+            if (isRTL) {
+                horizontalScrollView.enableReverseLayout();
+            }
             // Set adapter
             horizontalScrollView.setAdapter(new TeaserProductsAdapter(mContext, productTeaserGroup, onTeaserClickListener));
         }
@@ -282,7 +284,6 @@ public class TeasersFactory {
     }
 
     /**
-     * 
      * @param mainView
      * @param brandsTeaserGroup
      * @return
@@ -290,18 +291,19 @@ public class TeasersFactory {
     private View getBrandsListTeaser(ViewGroup mainView, TeaserGroupBrands brandsTeaserGroup) {
         View rootView = mInflater.inflate(R.layout.teaser_brands_group, mainView, false);
         ViewGroup container = (ViewGroup) rootView.findViewById(R.id.teaser_brands_group_container);
-        if(brandsTeaserGroup!=null){
+        if (brandsTeaserGroup != null) {
             // Get type
             TeaserGroupType type = brandsTeaserGroup.getType();
             for (TeaserBrand brand : brandsTeaserGroup.getTeasers()) {
                 container.addView(createBrandTeaserView(type, brand, container, mInflater, brandsTeaserGroup.getTeasers().size()));
-            }    
+            }
         }
         return rootView;
     }
-   
+
     /**
      * Create the Image Teaser View
+     *
      * @param teaserImage
      * @param vg
      * @param mInflater
@@ -329,12 +331,13 @@ public class TeasersFactory {
         }
         RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
         attachTeaserListener(teaserImage, imageTeaserView); */
-        
+
         return imageTeaserView;
     }
-    
+
     /**
      * Attach a listener to a teaser in order to infer later what action should be triggered.
+     *
      * @param targeting
      * @param view
      */
@@ -345,9 +348,10 @@ public class TeasersFactory {
         view.setTag(R.id.target_title, targeting.getTargetTitle());
         view.setOnClickListener(onTeaserClickListener);
     }
-    
+
     /**
      * Create the category teaser view
+     *
      * @param cat
      * @param vg
      * @param mInflater
@@ -362,9 +366,10 @@ public class TeasersFactory {
         attachTeaserListener(type, cat, categoryTeaserView);
         return categoryTeaserView;
     }
-    
+
     /**
      * Generate the All Categories view
+     *
      * @param container
      * @param mInflater
      * @return
@@ -379,9 +384,10 @@ public class TeasersFactory {
         view.setTag(R.id.target_type, ITargeting.TargetType.CATEGORY);
         return view;
     }
-    
+
     /**
      * Generate the Product Teaser View
+     *
      * @param product
      * @param vg
      * @param mInflater
@@ -390,7 +396,7 @@ public class TeasersFactory {
     private View createProductTeaserView(TeaserGroupType type, TeaserProduct product, ViewGroup vg, LayoutInflater mInflater, int size) {
         View productTeaserView = mInflater.inflate(R.layout.product_item_small, vg, false);
         // Tablet
-        if(isTablet && product.getImagesTablet() != null && product.getImagesTablet().size() > 0) {
+        if (isTablet && product.getImagesTablet() != null && product.getImagesTablet().size() > 0) {
             // Log.d(TAG, "PROD IMG: LOADED TABLET " + product.getImagesTablet().get(0).getUrl());
             setImageToLoad(product.getImagesTablet().get(0).getUrl(), productTeaserView, 0, R.drawable.no_image_large);
         } // Portrait
@@ -402,18 +408,18 @@ public class TeasersFactory {
         ((TextView) productTeaserView.findViewById(R.id.item_brand)).setText(product.getBrand());
         ((TextView) productTeaserView.findViewById(R.id.item_title)).setText(product.getName());
         // Set price
-        String price = (!TextUtils.isEmpty(product.getSpecialPrice())) ? product.getSpecialPrice() : product.getPrice(); 
+        String price = (!TextUtils.isEmpty(product.getSpecialPrice())) ? product.getSpecialPrice() : product.getPrice();
         ((TextView) productTeaserView.findViewById(R.id.item_price)).setText(price);
         attachTeaserListener(type, product, productTeaserView);
         return productTeaserView;
     }
-    
+
 
     private View createBrandTeaserView(TeaserGroupType type, TeaserBrand brand, ViewGroup vg, LayoutInflater mInflater, int size) {
         View brandTeaserView = mInflater.inflate(R.layout.brand_item_small, vg, false);
-        
+
         // Tablet
-        if(isTablet && brand.getImageTableUrl() != null && brand.getImageTableUrl().length() > 0) {
+        if (isTablet && brand.getImageTableUrl() != null && brand.getImageTableUrl().length() > 0) {
             // Log.d(TAG, "BRAND IMG: LOADED TABLET " + brand.getImageTableUrl());
             setImageToLoad(brand.getImageTableUrl(), brandTeaserView, size, R.drawable.no_image_large);
         } // Portrait
@@ -421,7 +427,7 @@ public class TeasersFactory {
             // Log.d(TAG, "BRAND IMG: LOADED PHONE " + brand.getImageUrl());
             setImageToLoad(brand.getImageUrl(), brandTeaserView, size, R.drawable.no_image_large);
         }
-        
+
         attachTeaserListener(type, brand, brandTeaserView);
         return brandTeaserView;
     }
@@ -429,9 +435,10 @@ public class TeasersFactory {
     /*
      * ################## TOP BRANDS ##################
      */
-    
+
     /**
      * Create the view to list the top brands
+     *
      * @param mInflater
      * @param teaserGroupTopBrands
      * @return View
@@ -451,9 +458,10 @@ public class TeasersFactory {
         }
         return rootView;
     }
-    
+
     /**
      * Create the top brand teaser view
+     *
      * @param teaser
      * @param vg
      * @param mInflater
@@ -469,9 +477,10 @@ public class TeasersFactory {
         attachTeaserListener(type, teaser, mTopBrandTeaserView);
         return mTopBrandTeaserView;
     }
-    
+
     /**
      * Generate the All Categories view
+     *
      * @param container
      * @param mInflater
      * @return the view that represent all brands
@@ -491,9 +500,10 @@ public class TeasersFactory {
     /*
      * ################## CAMPAIGNS ##################
      */
-    
+
     /**
      * Create the view to list the top brands
+     *
      * @param mInflater
      * @param teaserGroupTopBrands
      * @return View
@@ -511,35 +521,36 @@ public class TeasersFactory {
             int size = campaigns.size();
             // Validatin
             switch (size) {
-            // Case empty
-            case 0:
-                rootView.findViewById(R.id.teaser_campaigns_group_title_container).setVisibility(View.GONE);
-                break;
-            // Case one
-            case 1:
-                // Set title
-                ((TextView) rootView.findViewById(R.id.teaser_campaigns_group_title)).setText(campaigns.get(0).getTargetTitle());
-                attachTeaserListener(type, campaigns.get(0), rootView.findViewById(R.id.teaser_campaigns_group_title_container));
-                break;
-            // Case multi
-            default:
-                // Set title
-                ((TextView) rootView.findViewById(R.id.teaser_campaigns_group_title)).setText(teaserGroupCampaigns.getTitle());
-                attachTeaserListener(type, campaigns.get(0), rootView.findViewById(R.id.teaser_campaigns_group_title_container));
-                // Create views
-                for (int i = 0; i < campaigns.size(); i++) {
-                    View view = createCampaignTeaserView(type, campaigns.get(i), container, mInflater);
-                    view.setTag(R.id.position, i);
-                    container.addView(view);
-                }
-                break;
+                // Case empty
+                case 0:
+                    rootView.findViewById(R.id.teaser_campaigns_group_title_container).setVisibility(View.GONE);
+                    break;
+                // Case one
+                case 1:
+                    // Set title
+                    ((TextView) rootView.findViewById(R.id.teaser_campaigns_group_title)).setText(campaigns.get(0).getTargetTitle());
+                    attachTeaserListener(type, campaigns.get(0), rootView.findViewById(R.id.teaser_campaigns_group_title_container));
+                    break;
+                // Case multi
+                default:
+                    // Set title
+                    ((TextView) rootView.findViewById(R.id.teaser_campaigns_group_title)).setText(teaserGroupCampaigns.getTitle());
+                    attachTeaserListener(type, campaigns.get(0), rootView.findViewById(R.id.teaser_campaigns_group_title_container));
+                    // Create views
+                    for (int i = 0; i < campaigns.size(); i++) {
+                        View view = createCampaignTeaserView(type, campaigns.get(i), container, mInflater);
+                        view.setTag(R.id.position, i);
+                        container.addView(view);
+                    }
+                    break;
             }
         }
         return rootView;
     }
-    
+
     /**
      * Create the top brand teaser view
+     *
      * @param teaser
      * @param vg
      * @param mInflater
@@ -547,8 +558,8 @@ public class TeasersFactory {
      * @author sergiopereira
      */
     private View createCampaignTeaserView(TeaserGroupType type, TeaserCampaign teaser, ViewGroup vg, LayoutInflater mInflater) {
-    	View campaignTeaserView = mInflater.inflate(R.layout.teaser_inner_childcat, vg, false);
-    	campaignTeaserView.findViewById(R.id.divider).setVisibility(View.GONE);
+        View campaignTeaserView = mInflater.inflate(R.layout.teaser_inner_childcat, vg, false);
+        campaignTeaserView.findViewById(R.id.divider).setVisibility(View.GONE);
         TextView textView = (TextView) campaignTeaserView.findViewById(R.id.text);
         textView.setText(teaser.getTargetTitle());
         attachTeaserListener(type, teaser, campaignTeaserView);
@@ -558,10 +569,11 @@ public class TeasersFactory {
     /*
      * ################## IMAGE ##################
      */
-    
-    
+
+
     /**
      * Loads the image and hide progress bar
+     *
      * @param imageUrl
      * @param imageTeaserView
      */
@@ -570,34 +582,42 @@ public class TeasersFactory {
         final View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
 
         // Adapts the Image size if needed
-        if(size > 0 && imageTeaserView.getLayoutParams() != null) {
-            if(mContentWidth == 0) mContentWidth = DeviceInfoHelper.getWidth(mContext);
+        if (size > 0 && imageTeaserView.getLayoutParams() != null) {
+            if (mContentWidth == 0) {
+                mContentWidth = DeviceInfoHelper.getWidth(mContext);
+            }
             imageTeaserView.getLayoutParams().width = mContentWidth / size;
         }
-        
+
         // Validate place holder
         placeHolder = placeHolder < 0 ? R.drawable.no_image_large : placeHolder;
-        
+
         if (!TextUtils.isEmpty(imageUrl)) {
             // Flag for FIT_XY
             final boolean resize = isToResize;
             // Load image
             RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, placeHolder, new RocketImageLoaderListener() {
-                
+
                 @Override
-                public void onLoadedSuccess(String url,Bitmap bitmap) { if(resize) imageView.setScaleType(ScaleType.FIT_XY); }
-                
+                public void onLoadedSuccess(String url, Bitmap bitmap) {
+                    if (resize) {
+                        imageView.setScaleType(ScaleType.FIT_XY);
+                    }
+                }
+
                 @Override
-                public void onLoadedError(String url) { }
-                
+                public void onLoadedError(String url) {
+                }
+
                 @Override
-                public void onLoadedCancel(String imageUrl) { }
+                public void onLoadedCancel(String imageUrl) {
+                }
             });
 
         }
 
     }
-    
+
 //    /**
 //     * Adapter for the View Pager
 //     * @author manuelsilva
@@ -686,5 +706,5 @@ public class TeasersFactory {
 //        }
 //
 //    }
-    
+
 }
