@@ -761,7 +761,6 @@ public class ShoppingCartFragment extends BaseFragment {
             showFragmentContentContainer();
             TextView priceTotal = (TextView) getView().findViewById(R.id.price_total);
             TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
-            TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
             TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
             View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
             TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
@@ -797,8 +796,6 @@ public class ShoppingCartFragment extends BaseFragment {
                 removeVoucher();
             }
 
-
-            // Fix NAFAMZ-7848
             // Only convert value if it is a number
             if (CurrencyFormatter.isNumber(cart.getSubTotal())) {
                 priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
@@ -808,21 +805,16 @@ public class ShoppingCartFragment extends BaseFragment {
 
             if (!cart.isSumCosts()) {
                 extraCostsMain.setVisibility(View.VISIBLE);
-                extraCostsValue.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart
-                        .getExtraCosts()).toString()));
+                extraCostsValue.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart.getExtraCosts()).toString()));
             } else {
                 extraCostsMain.setVisibility(View.GONE);
             }
 
-            String articleString = getResources().getQuantityString(
-                    R.plurals.shoppingcart_text_article, cart.getCartCount());
-            articlesCount.setText(cart.getCartCount() + " " + articleString);
-            vatIncludedLabel.setText(getString(R.string.parentheses, getString(R.string.string_vat_included)));
-
+            articlesCount.setText(getResources().getQuantityString(R.plurals.numberOfArticles, cart.getCartCount(), cart.getCartCount()));
 
             lView = (LinearLayout) getView().findViewById(R.id.shoppingcart_list);
             lView.removeAllViewsInLayout();
-            itemsValues = new ArrayList<CartItemValues>();
+            itemsValues = new ArrayList<>();
             // Fix NAFAMZ-7848
             unreduced_cart_price = new BigDecimal(0);
             // reduced_cart_price = 0;

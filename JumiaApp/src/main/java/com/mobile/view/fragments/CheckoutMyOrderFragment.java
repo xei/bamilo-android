@@ -351,11 +351,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
      */
     private void showSubTotal() {
         int size = cart.getCartCount();
-        String itemsLabel = (size > 1) ? getString(R.string.my_order_items_label) : getString(R.string.my_order_item_label);
-        mProductsNum.setText(size + " " + itemsLabel);
+        mProductsNum.setText(getResources().getQuantityString(R.plurals.numberOfItems, size, size));
         // Set cart value
         mSubTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
-        ((TextView)getView().findViewById(R.id.vat_included_label)).setText(getString(R.string.parentheses, getString(R.string.string_vat_included)));
+        //
         if(!cart.isSumCosts()){
             // Fix NAFAMZ-7848
             mExtraCosts.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart.getExtraCosts()).toString()));

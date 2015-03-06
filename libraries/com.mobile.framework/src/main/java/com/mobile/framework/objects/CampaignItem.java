@@ -3,15 +3,15 @@
  */
 package com.mobile.framework.objects;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -82,8 +82,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public boolean initialize(JSONObject jsonObject) {
-		Log.d(TAG, "ON INITIALIZE");
-
+		Log.i(TAG, "ON INITIALIZE");
 		mSavePrice = jsonObject.optDouble(RestConstants.JSON_SAVE_PRICE_TAG, 0d);
 		mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG, 0d);
 		mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
@@ -101,7 +100,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		JSONArray imagesA = jsonObject.optJSONArray(RestConstants.JSON_IMAGES_TAG);
 		if (imagesA != null && imagesA.length() > 0) {
 			mImage = imagesA.optString(0);
-			mImages = new ArrayList<String>();
+			mImages = new ArrayList<>();
 			for (int i = 0; i < imagesA.length(); i++) {
 				mImages.add(imagesA.optString(i));
 			}
@@ -110,7 +109,7 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		// Save sizes
 		JSONArray sizesA = jsonObject.optJSONArray(RestConstants.JSON_SIZES_TAG);
 		if (sizesA != null && sizesA.length() > 0) {
-			mSizes = new ArrayList<CampaignItemSize>();
+			mSizes = new ArrayList<>();
 			for (int i = 0; i < sizesA.length(); i++) {
 				JSONObject sizeO = sizesA.optJSONObject(i);
 				if (sizeO != null)
@@ -282,21 +281,21 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 	 * @return the hasSizes except itself
 	 */
 	public boolean hasSizes() {
-		return (mSizes != null && mSizes.size() > 0) ? true : false;
+		return mSizes != null && mSizes.size() > 0;
 	}
 
 	/**
 	 * @return the hasSizes
 	 */
 	public boolean hasSelectedSize() {
-		return (hasSizes() && mSelectedSizePosition >= 0 && mSelectedSizePosition < mSizes.size()) ? true : false;
+		return hasSizes() && mSelectedSizePosition >= 0 && mSelectedSizePosition < mSizes.size();
 	}
 
 	/**
 	 * @return the hasSizes
 	 */
 	public boolean hasStock() {
-		return (mStockPercentage > 0) ? true : false;
+		return mStockPercentage > 0;
 	}
 
 	/*
@@ -490,14 +489,14 @@ public class CampaignItem implements IJSONSerializable, Parcelable {
 		mBrand = in.readString();
 		mName = in.readString();
 		mImage = in.readString();
-		mImages = new ArrayList<String>();
+		mImages = new ArrayList<>();
 		in.readList(mImages, String.class.getClassLoader());
 		mStockPercentage = in.readInt();
 		mMaxSavingPercentage = in.readDouble();
 		boolean[] bolArray = new boolean[1];
 		in.readBooleanArray(bolArray);
 		hasUniqueSize = bolArray[0];
-		mSizes = new ArrayList<CampaignItemSize>();
+		mSizes = new ArrayList<>();
 		in.readList(mSizes, CampaignItemSize.class.getClassLoader());
 		mSelectedSize = in.readParcelable(CampaignItemSize.class.getClassLoader());
 		mSelectedSizePosition = in.readInt();

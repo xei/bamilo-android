@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <plurals name="shoppingcart_text_article">
-        <item quantity="one">@string/shoppingcart_article</item>
-        <item quantity="other">@string/shoppingcart_articles</item>
-    </plurals>
+
 
     <string-array name="myaccount_array">
         <item>@string/myaccount_userdata</item>
@@ -47,5 +44,12 @@
 	<string-array name="app_sharing_array">
         <item>@string/share_the_app</item>
     </string-array>
+
+    <!-- ARTICLES -->
+    <plurals name="numberOfArticles">
+        <item quantity="zero">@string/plurals_article</item>
+        <item quantity="one">@string/plurals_article</item>
+        <item quantity="other">@string/plurals_articles</item>
+    </plurals>
 
 </resources>
