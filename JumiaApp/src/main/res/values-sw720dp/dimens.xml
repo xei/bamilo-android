@@ -60,5 +60,7 @@
     
     <!-- PDV IMAGE -->
     <dimen name="pdv_image">370dp</dimen>
+
+    <dimen name="delete_button_size">26dp</dimen>
     
 </resources>

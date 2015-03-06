@@ -10,4 +10,7 @@
     <dimen name="margin_140px">60dp</dimen>
     
     <dimen name="retry_layout_height">@dimen/dimen_810px</dimen>
+
+    <dimen name="delete_button_size">23dp</dimen>
+    <dimen name="delete_button_margin">3dp</dimen>
 </resources>

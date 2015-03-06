@@ -111,9 +111,6 @@
     <dimen name="checkout_box_title_height">40dp</dimen>
     <dimen name="checkout_voucher_box_height">105dp</dimen>
 
-    <dimen name="delete_button_size">19dp</dimen>
-    <dimen name="delete_button_margin">3dp</dimen>
-
     <dimen name="inner_child_height">50dp</dimen>
 
     <dimen name="button_small_height">45dp</dimen>
