@@ -2398,10 +2398,10 @@ public abstract class BaseActivity extends ActionBarActivity {
                 // Set logged in
                 JumiaApplication.INSTANCE.setLoggedIn(true);
                 // Get customer
-                Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 // Get origin
-                ContentValues creadentialValues = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
-                boolean isFBLogin = creadentialValues.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG);
+                ContentValues credentialValues = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
+                boolean isFBLogin = credentialValues.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG);
                 // Track
                 Bundle params = new Bundle();
                 params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
