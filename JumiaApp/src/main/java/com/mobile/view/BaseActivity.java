@@ -180,8 +180,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     protected SearchAutoComplete mSearchAutoComplete;
 
-    protected View mSearchButton;
-
     protected boolean isSearchComponentOpened = false;
 
     private ViewStub mMainFallBackStub;
@@ -313,7 +311,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             isRegistered = true;
         }
 
-        // Disabled for Samsung and Blackberry (check_version_enabled) 
+        // Disabled for Samsung and Blackberry (check_version_enabled)
         CheckVersion.run(getApplicationContext());
 
         /**
@@ -389,25 +387,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Tracking
         TrackerDelegator.trackCloseApp();
     }
-
-//    /*
-//     * (non-Javadoc)
-//     * 
-//     * @see android.support.v4.app.FragmentActivity#onBackPressed()
-//     */
-//    @Override
-//    public void onBackPressed() {
-//        Log.i(TAG, "ON BACK PRESSED");
-//        // Case navigation opened
-//        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)
-//                && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
-//            mDrawerLayout.closeDrawer(mDrawerNavigation);
-//        }
-//        // Case default
-//        else {
-//            super.onBackPressed();
-//        }
-//    }
 
     /**
      * Using the ActionBarDrawerToggle, you must call it during onPostCreate() and onConfigurationChanged()...
@@ -553,16 +532,10 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void setupContentViews() {
         Log.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
         // Get the application container
-        contentContainer = (ViewGroup) findViewById(R.id.rocket_app_content);
+        contentContainer = findViewById(R.id.rocket_app_content);
         // Warning layout
         warningView = findViewById(R.id.warning);
         warningVariationView = findViewById(R.id.warning_variations);
-//        warningView.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showWarning(false);
-//            }
-//        });
         warningVariationView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -575,7 +548,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
     
     /*
-     * ############## INITIAL COUNTRY SELETECTION ##############
+     * ############## INITIAL COUNTRY SELECTION ##############
      */
 
     /**
@@ -765,7 +738,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 getSupportActionBar().hide();
                 break;
             default:
-                Log.w(TAG, "WARNING: INVALIDE FLAG, USE VISIBLE/INVISIBLE FROM View.");
+                Log.w(TAG, "WARNING: INVALID FLAG, USE VISIBLE/INVISIBLE FROM View.");
                 break;
         }
     }
@@ -2398,10 +2371,10 @@ public abstract class BaseActivity extends ActionBarActivity {
                 // Set logged in
                 JumiaApplication.INSTANCE.setLoggedIn(true);
                 // Get customer
-                Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 // Get origin
-                ContentValues creadentialValues = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
-                boolean isFBLogin = creadentialValues.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG);
+                ContentValues credentialValues = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
+                boolean isFBLogin = credentialValues.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG);
                 // Track
                 Bundle params = new Bundle();
                 params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
