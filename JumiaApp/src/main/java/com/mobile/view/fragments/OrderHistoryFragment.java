@@ -604,7 +604,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                else
                    item.productPrice.setText(CurrencyFormatter.getCurrencyCode()+" "+orderItems.get(i).getmProductTotal());
                
-               item.productName.setText(orderItems.get(i).getmProductName()+" - ");
+               item.productName.setText(orderItems.get(i).getmProductName());
                item.productQtd.setText(getString(R.string.my_order_quantity_label)+" "+orderItems.get(i).getmProductQuantity());
                if(i == (orderItems.size() - 1)){
                    item.productBottomDivider.setVisibility(View.GONE);

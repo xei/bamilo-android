@@ -226,11 +226,11 @@ public class TrackOrderFragment extends BaseFragment {
         }
         text = mEditText.getText();
         if (text != null && text.length() > 0 && mOrderTracker != null) {
-            proccessSuccess();
+            processSuccess();
         } 
         else if (text != null && text.length() > 0 && mOrderTrackerError) {
             if (TextUtils.isEmpty(order_number)){
-                proccessError();
+                processError();
             } else {
                 if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
                     showStatusContainer();
@@ -339,21 +339,25 @@ public class TrackOrderFragment extends BaseFragment {
             TextView orderItemName = (TextView) view.findViewById(R.id.order_item_name);
             orderItemName.setText(orderTrackerItem.getName());
             orderItemName.setSelected(true);
-            ((TextView) view.findViewById(R.id.order_item_quantity)).setText(" - " + getString(R.string.my_order_qty) + ". " + orderTrackerItem.getQuantity());
-            ((TextView) view.findViewById(R.id.order_status_text)).setText(orderTrackerItem.getStatus());
+            ((TextView) view.findViewById(R.id.order_item_quantity)).setText(getString(R.string.shoppingcart_quantity) + ": " + orderTrackerItem.getQuantity());
+            if(!TextUtils.isEmpty(orderTrackerItem.getStatus())) {
+                TextView orderStatusTextView = ((TextView) view.findViewById(R.id.order_status_text));
+                orderStatusTextView.setVisibility(View.VISIBLE);
+                orderStatusTextView.setText(orderTrackerItem.getStatus());
+            }
 
             // REMOVED ON NAFAMZ-7271
             // ((TextView) view.findViewById(R.id.order_last_update)).setText(orderTrackerItem.getUpdateDate());
 
             // add divider to top of item after first item
-            if (i > 0) {
-                view.findViewById(R.id.order_item_divider).setVisibility(View.VISIBLE);
-            }
+//            if (i > 0) {
+//                view.findViewById(R.id.order_item_divider).setVisibility(View.VISIBLE);
+//            }
             mLinearLayout.addView(view);
         }
     }
 
-    private void proccessSuccess() {
+    private void processSuccess() {
         showStatusContainer();
         setTipVisibility(false);
         ((TextView) getView().findViewById(R.id.title_status_text)).setText("# " + mOrderTracker.getId());
@@ -370,8 +374,8 @@ public class TrackOrderFragment extends BaseFragment {
         getView().findViewById(R.id.error_tracking_order_container).setVisibility(View.GONE);
     }
 
-    private void proccessError() {
-        Log.e("TRACK","proccessError");
+    private void processError() {
+        Log.e(TAG,"processError");
         showStatusContainer();
         setTipVisibility(false);
         mOrderTracker = null;
@@ -393,7 +397,7 @@ public class TrackOrderFragment extends BaseFragment {
         Log.d(TAG, "ON SUCCESS EVENT");
         mOrderTracker = (OrderTracker) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         showFragmentContentContainer();
-        proccessSuccess();
+        processSuccess();
         return true;
     }
 
@@ -405,7 +409,7 @@ public class TrackOrderFragment extends BaseFragment {
         Log.d(TAG, "ON ERROR EVENT");
         mOrderTrackerError = true;
         if(TextUtils.isEmpty(order_number))
-            proccessError();
+            processError();
 
         super.handleErrorEvent(bundle);
         

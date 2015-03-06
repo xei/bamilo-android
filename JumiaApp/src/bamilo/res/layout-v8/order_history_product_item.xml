@@ -11,35 +11,33 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="5dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="5dp"
         android:ellipsize="end"
         android:fontFamily="roboto_regular"
         android:paddingLeft="@dimen/dimen_170px"
-        android:singleLine="true"
+        android:singleLine="false"
         android:textColor="@color/grey_middle"
-        android:textSize="@dimen/text_s" />
+        android:textSize="@dimen/text_s"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_product_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/order_product_name"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_below="@id/order_product_name"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
         android:fontFamily="roboto_bold"
         android:textColor="@color/grey_middle"
         android:textSize="@dimen/text_s"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_product_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/order_product_name"
+        android:layout_below="@id/order_product_quantity"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"

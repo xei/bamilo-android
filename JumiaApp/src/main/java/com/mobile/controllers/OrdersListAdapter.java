@@ -1,8 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
@@ -18,6 +15,9 @@ import com.mobile.framework.objects.Order;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * 
@@ -64,10 +64,9 @@ public class OrdersListAdapter extends BaseAdapter {
     /**
      * the constructor for this adapter
      * 
-     * @param activity
-     * @param showList
-     *            show list (or grid)
-     * @param numColumns
+     * @param context
+     * @param orders
+     * @param listener
      */
     public OrdersListAdapter(Context context, ArrayList<Order> orders, OnSelectedOrderChange listener) {
         this.context = context.getApplicationContext();
