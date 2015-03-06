@@ -1,18 +1,18 @@
 package com.mobile.framework.objects;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -77,11 +77,11 @@ public class PurchaseItem implements Parcelable {
 			category = itemsJson.getJSONObject(String.valueOf(indexBegin + 2)).getString( RestConstants.JSON_CATEGORY_TAG );
 			// 3: price
 			JSONObject prcObj = itemsJson.getJSONObject(String.valueOf(indexBegin + 3));
-			paidprice = prcObj.getString( RestConstants.JSON_PAIDPRICE_TAG );
-			paidpriceAsDouble = prcObj.optDouble(RestConstants.JSON_PAIDPRICE_TAG, 0);
+			paidprice = prcObj.getString( RestConstants.JSON_PAID_PRICE_TAG);
+			paidpriceAsDouble = prcObj.optDouble(RestConstants.JSON_PAID_PRICE_TAG, 0);
 			// 4: price tracking
 			JSONObject prcTrck = itemsJson.getJSONObject(String.valueOf(indexBegin + 4));
-			paidPriceForTracking = prcTrck.optDouble(RestConstants.JSON_PAIDPRICE_CONVERTED_TAG, 0d);
+			paidPriceForTracking = prcTrck.optDouble(RestConstants.JSON_PAID_PRICE_CONVERTED_TAG, 0d);
 			// 5: quantity
 			JSONObject qtObj = itemsJson.getJSONObject(String.valueOf(indexBegin + 5));
 			quantity = qtObj.getString( RestConstants.JSON_QUANTITY_TAG);

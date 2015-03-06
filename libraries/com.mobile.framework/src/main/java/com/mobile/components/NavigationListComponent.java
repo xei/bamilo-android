@@ -1,13 +1,13 @@
 package com.mobile.components;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.interfaces.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Navigation List Component
@@ -19,13 +19,8 @@ import com.mobile.framework.rest.RestConstants;
  * 
  */
 public class NavigationListComponent implements IJSONSerializable, Parcelable {
-    // private final static String TAG = LogTagHelper.create(NavigationListComponent.class);
 
-//	private static final String JSON_ATTRIBUTES_TAG = "attributes";
-//	private static final String JSON_NAME_TAG = "name";
-//	private static final String JSON_NAVIGATION_URL_TAG = "navigation_url";
-//	private static final String JSON_IMAGE_TAG = "image";
-//	private static final String JSON_IMAGE_URL_TAG = "image_url";
+    // private final static String TAG = LogTagHelper.create(NavigationListComponent.class);
     
     private int element_id;
 	private String element_text;
@@ -108,7 +103,7 @@ public class NavigationListComponent implements IJSONSerializable, Parcelable {
         	
             element_id = Integer.parseInt(jsonObject.getString(RestConstants.JSON_ID_TAG));
             JSONObject attributesObject = jsonObject.getJSONObject(RestConstants.JSON_ATTRIBUTES_TAG);
-            element_text = attributesObject.getString(RestConstants.JSON_NAVLIST_NAME_TAG);
+            element_text = attributesObject.getString(RestConstants.JSON_NAV_LIST_NAME_TAG);
             
             element_url = attributesObject.getString(RestConstants.JSON_NAVIGATION_URL_TAG);
             JSONObject imageObject = attributesObject.getJSONObject(RestConstants.JSON_IMAGE_TAG);
@@ -132,7 +127,7 @@ public class NavigationListComponent implements IJSONSerializable, Parcelable {
             jsonObject.put(RestConstants.JSON_ID_TAG, element_id);
 
             JSONObject attributesObject = new JSONObject();
-            attributesObject.put(RestConstants.JSON_NAVLIST_NAME_TAG, element_text);
+            attributesObject.put(RestConstants.JSON_NAV_LIST_NAME_TAG, element_text);
             attributesObject.put(RestConstants.JSON_NAVIGATION_URL_TAG, element_url);
             
             JSONObject imageObject = new JSONObject();

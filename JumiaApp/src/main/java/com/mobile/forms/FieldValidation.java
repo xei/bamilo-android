@@ -12,14 +12,14 @@
  */
 package com.mobile.forms;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -75,7 +75,7 @@ private static final String TAG = FieldValidation.class.getName();
             }
 		    
 		    if(mJSONObject != null){
-		        required = mJSONObject.optBoolean(RestConstants.JSON_REQUIREDVALUE_TAG, false);
+		        required = mJSONObject.optBoolean(RestConstants.JSON_REQUIRED_VALUE_TAG, false);
 		        Log.i(TAG, "code1message : "+required);
 		        message = mJSONObject.optString(RestConstants.JSON_MESSAGE_IN_MESSAGES_TAG,"");
 		        Log.i(TAG, "code1message : "+message);

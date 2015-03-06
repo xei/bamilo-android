@@ -1,16 +1,16 @@
 package com.mobile.framework.objects;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.mobile.framework.rest.RestConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.mobile.framework.rest.RestConstants;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import de.akquinet.android.androlog.Log;
 /**
@@ -202,7 +202,7 @@ public class PickUpStationObject implements Parcelable {
 
 	public void initialize(JSONObject jsonObject){
 		
-		this.id_pickupstation_region = jsonObject.optString(RestConstants.JSON_PICKUP_ID_PICKUPSTATION_REGION);
+		this.id_pickupstation_region = jsonObject.optString(RestConstants.JSON_PICKUP_ID_PICKUP_STATION_REGION);
 		this.pickup_id =  jsonObject.optString(RestConstants.JSON_PICKUP_STATION_ID);
 		this.name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
 		this.id_pickupstation = jsonObject.optString(RestConstants.JSON_PICKUP_ID);

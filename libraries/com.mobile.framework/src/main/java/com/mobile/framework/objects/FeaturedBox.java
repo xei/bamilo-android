@@ -3,17 +3,17 @@
  */
 package com.mobile.framework.objects;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -89,7 +89,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
             brands = new ArrayList<FeaturedItem>();
             
             try{
-            JSONArray featuredBrandboxObject = data.getJSONArray(RestConstants.JSON_FEATURED_BRANDBOX_TAG);
+            JSONArray featuredBrandboxObject = data.getJSONArray(RestConstants.JSON_FEATURED_BRAND_BOX_TAG);
             if (featuredBrandboxObject != null && featuredBrandboxObject.length() > 0) {
                 // get brands only from the first list
                 JSONObject brandsCategoryObject = featuredBrandboxObject.getJSONObject(0);

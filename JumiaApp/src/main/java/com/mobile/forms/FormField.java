@@ -12,16 +12,6 @@
  */
 package com.mobile.forms;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -39,6 +29,16 @@ import com.mobile.helpers.configs.GetFormsDatasetListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.InputType;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -53,15 +53,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     public interface OnDataSetReceived {
         public void DataSetReceived(Map<String, String> dataSet);
     }
-
-    // private static final String JSON_TYPE_TAG = "type";
-    // private static final String JSON_KEY_TAG = "key";
-    // private static final String JSON_NAME_TAG = "name";
-    // private static final String JSON_LABEL_TAG = "label";
-    // private static final String JSON_VALIDATION_TAG = "rules";
-    // private static final String JSON_DATASET_TAG = "dataset";
-    // private static final String JSON_VALUE_TAG = "value";
-    // private static final String JSON_DATASET_SOURCE_TAG = "dataset_source";
 
     private Form parent;
 
@@ -143,17 +134,17 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.label = "default";
         this.validation = new FieldValidation();
         this.value = "";
-        this.dataSet = new LinkedHashMap<String, String>();
-        this.dataValues = new HashMap<String, String>();
-        this.dataCalls = new HashMap<String, String>();
-        this.dataOptions = new HashMap<String, String>();
+        this.dataSet = new LinkedHashMap<>();
+        this.dataValues = new HashMap<>();
+        this.dataCalls = new HashMap<>();
+        this.dataOptions = new HashMap<>();
         this.datasetSource = "";
         this.parent = parent;
         this.dataset_Listener = null;
-        this.extrasValues = new LinkedHashMap<Object, Object>();
+        this.extrasValues = new LinkedHashMap<>();
         this.scenario = null;
         this.linkText = "";
-        this.dataSetRating = new LinkedHashMap<String, String>();
+        this.dataSetRating = new LinkedHashMap<>();
     }
 
     /**
@@ -181,16 +172,16 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.value = "";
         this.validation = new FieldValidation();
         this.validation.required = obligatory;
-        this.dataSet = new LinkedHashMap<String, String>();
-        this.dataValues = new HashMap<String, String>();
-        this.dataCalls = new HashMap<String, String>();
-        this.dataOptions = new HashMap<String, String>();
+        this.dataSet = new LinkedHashMap<>();
+        this.dataValues = new HashMap<>();
+        this.dataCalls = new HashMap<>();
+        this.dataOptions = new HashMap<>();
         this.datasetSource = "";
         this.parent = parent;
         this.dataset_Listener = null;
-        this.extrasValues = new LinkedHashMap<Object, Object>();
+        this.extrasValues = new LinkedHashMap<>();
         this.scenario = null;
-        this.dataSetRating = new LinkedHashMap<String, String>();
+        this.dataSetRating = new LinkedHashMap<>();
     }
 
     /*
@@ -278,9 +269,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 dataCalls.clear();
                 JSONArray dataSetArray = null;
                 JSONObject dataSetObject = null;
-                if (!jsonObject.isNull(RestConstants.JSON_DATASET_TAG)) {
-                    dataSetArray = jsonObject.optJSONArray(RestConstants.JSON_DATASET_TAG);
-                    dataSetObject = jsonObject.optJSONObject(RestConstants.JSON_DATASET_TAG);
+                if (!jsonObject.isNull(RestConstants.JSON_DATA_SET_TAG)) {
+                    dataSetArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_SET_TAG);
+                    dataSetObject = jsonObject.optJSONObject(RestConstants.JSON_DATA_SET_TAG);
                 }
                 
                                 
@@ -307,8 +298,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         Log.i(TAG, "code1put : "+dataSetArray.getString(i) );
                     }
                 } else {
-                    if (!jsonObject.isNull(RestConstants.JSON_DATASET_SOURCE_TAG)) {
-                        datasetSource = jsonObject.optString(RestConstants.JSON_DATASET_SOURCE_TAG);
+                    if (!jsonObject.isNull(RestConstants.JSON_DATA_SET_SOURCE_TAG)) {
+                        datasetSource = jsonObject.optString(RestConstants.JSON_DATA_SET_SOURCE_TAG);
                         if (!datasetSource.equals("")) {
                             Bundle bundle = new Bundle();
                             bundle.putString(GetFormsDatasetListHelper.KEY, key);
@@ -522,10 +513,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 dataSetArray.put(dataSetItem);
             }
 
-            jsonObject.put(RestConstants.JSON_DATASET_TAG, dataSetArray);
+            jsonObject.put(RestConstants.JSON_DATA_SET_TAG, dataSetArray);
 
             // datasetsource
-            jsonObject.put(RestConstants.JSON_DATASET_SOURCE_TAG, datasetSource);
+            jsonObject.put(RestConstants.JSON_DATA_SET_SOURCE_TAG, datasetSource);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -816,7 +807,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dataSet = (LinkedHashMap<String, String>) in.readHashMap(null);
         datasetSource = in.readString();
         parent = (Form) in.readValue(Form.class.getClassLoader());
-        dataset_Listener = in.readParcelable(null);
+        dataset_Listener = (OnDataSetReceived) in.readValue(OnDataSetReceived.class.getClassLoader());
         extrasValues = (LinkedHashMap<Object, Object>) in.readHashMap(null);
         linkText = in.readString();
         dataSetRating = (LinkedHashMap<String, String>) in.readHashMap(null);
