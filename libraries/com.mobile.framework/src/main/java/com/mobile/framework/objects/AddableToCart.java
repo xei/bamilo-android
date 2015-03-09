@@ -34,7 +34,7 @@ import de.akquinet.android.androlog.Log;
  * @author Andre Lopes
  * 
  */
-public class AddableToCart extends BaseProduct implements Parcelable {
+public class AddableToCart extends BaseProduct {
 
 	public final static int NO_SIMPLE_SELECTED = -1;
 
@@ -83,16 +83,9 @@ public class AddableToCart extends BaseProduct implements Parcelable {
 	}
 
 	public AddableToCart(CompleteProduct completeProduct) {
-		sku = completeProduct.getSku();
-		brand = completeProduct.getBrand();
-		name = completeProduct.getName();
-		price = completeProduct.getPrice();
-		priceDouble = completeProduct.getPriceDouble();
-		specialPriceDouble = completeProduct.getSpecialPriceAsDouble();
-		specialPrice = completeProduct.getSpecialPrice();
+        super(completeProduct);
 		maxSavingPercentage = completeProduct.getMaxSavingPercentage();
-		url = completeProduct.getUrl();
-		isNew = Boolean.getBoolean(completeProduct.getAttributes().get(RestConstants.JSON_IS_NEW_TAG));
+        isNew = Boolean.getBoolean(completeProduct.getAttributes().get(RestConstants.JSON_IS_NEW_TAG));
 		selectedSimple = NO_SIMPLE_SELECTED;
 		isComplete = true;
 		imageList = completeProduct.getImageList();
@@ -102,9 +95,6 @@ public class AddableToCart extends BaseProduct implements Parcelable {
 		favoriteSelected = NO_SIMPLE_SELECTED;
 		hasVariations = null;
 		mSelectedSimpleValue = "...";
-		// Converted values
-		priceConverted = completeProduct.getPriceConverted();
-		specialPriceConverted = completeProduct.getSpecialPriceConverted();
 		// Validate if has only one simple
 		selectedSimple = (simples != null && simples.size() == 1) ? 0 : NO_SIMPLE_SELECTED;
 		if(CollectionUtils.isNotEmpty(completeProduct.getCategories())) mCategories = completeProduct.getCategories(); 
@@ -366,13 +356,8 @@ public class AddableToCart extends BaseProduct implements Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(sku);
-		dest.writeString(brand);
-		dest.writeString(name);
-		dest.writeString(price);
-		dest.writeString(specialPrice);
+        super.writeToParcel(dest, flags);
 		dest.writeDouble(maxSavingPercentage);
-		dest.writeString(url);
 		dest.writeByte((byte) (isNew ? 1 : 0));
 		dest.writeInt(selectedSimple);
 		dest.writeByte((byte) (isComplete ? 1 : 0));
@@ -385,23 +370,14 @@ public class AddableToCart extends BaseProduct implements Parcelable {
 		dest.writeString(mSelectedSimpleValue);
 		dest.writeByte((byte) (mChooseVariationWarning ? 1 : 0));
 		dest.writeByte((byte) (mStockVariationWarning ? 1 : 0));
-		dest.writeDouble(priceDouble);
-		dest.writeDouble(specialPriceDouble);
-		dest.writeDouble(priceConverted);
-		dest.writeDouble(specialPriceConverted);
 		dest.writeList(mCategories);
 		dest.writeDouble(mRatingsAverage);
 		dest.writeString(mSizeGuideUrl);
 	}
 
 	private AddableToCart(Parcel in) {
-		sku = in.readString();
-		brand = in.readString();
-		name = in.readString();
-		price = in.readString();
-		specialPrice = in.readString();
+        super(in);
 		maxSavingPercentage = in.readDouble();
-		url = in.readString();
 		isNew = in.readByte() == 1;
 		selectedSimple = in.readInt();
 		isComplete = in.readByte() == 1;
@@ -418,10 +394,6 @@ public class AddableToCart extends BaseProduct implements Parcelable {
 		mSelectedSimpleValue = in.readString();
 		mChooseVariationWarning = in.readByte() == 1;
 		mStockVariationWarning = in.readByte() == 1;
-		priceDouble = in.readDouble();
-		specialPriceDouble = in.readDouble();
-		priceConverted = in.readDouble();
-		specialPriceConverted = in.readDouble();
         mCategories = new ArrayList<String>();
         in.readList(mCategories, String.class.getClassLoader());
         mRatingsAverage = in.readDouble();

@@ -37,7 +37,7 @@ import de.akquinet.android.androlog.Log;
  * @author GuilhermeSilva
  * 
  */
-public class CompleteProduct extends BaseProduct implements IJSONSerializable, Parcelable {
+public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 
 	private static final String TAG = LogTagHelper.create(CompleteProduct.class);
 
@@ -76,6 +76,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable, P
 	 * Complete product empty constructor.
 	 */
 	public CompleteProduct() {
+        super();
 		categories = new ArrayList<String>();
 		attributes = new HashMap<String, String>();
 		shipmentData = new HashMap<String, String>();
@@ -83,7 +84,6 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable, P
 		imageList = new ArrayList<String>();
 		variations = new ArrayList<Variation>();
 		known_variations = new ArrayList<String>();
-		url = "";
 		description = "";
 		specialPrice = CurrencyFormatter.formatCurrency("0");
 		maxSavingPercentage = 0.0;
@@ -91,7 +91,6 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable, P
 		ratingsCount = 0;
 		reviewsCount = 0;
 		isNew = false;
-		priceConverted = 0d;
 		specialPriceConverted = 0d;
 		mSizeGuideUrl = "";
 		productBundle = null;
@@ -686,7 +685,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable, P
 	}
 
 	private CompleteProduct(Parcel in) {
-
+        super();
 		categories = new ArrayList<String>();
 		in.readList(categories, String.class.getClassLoader());
 

@@ -1,9 +1,19 @@
 package com.mobile.framework.objects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
- * Created by rsoares on 3/6/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ * @author
+ * @version 1.01
+ * @date 2015/03/06
  */
-public class BaseProduct {
+public class BaseProduct implements Parcelable{
     protected String sku;
     protected String name;
     protected String brand;
@@ -14,6 +24,32 @@ public class BaseProduct {
     protected double specialPriceDouble;
     protected double specialPriceConverted;
     protected double priceConverted;
+
+    public BaseProduct(){
+        sku = "";
+        name= "";
+        brand= "";
+        price= "";
+        url= "";
+        specialPrice= "";
+        priceDouble= 0d;
+        specialPriceDouble= 0d;
+        specialPriceConverted= 0d;
+        priceConverted= 0d;
+    }
+
+    public BaseProduct(BaseProduct baseProduct){
+        sku = baseProduct.getSku();
+        name= baseProduct.getName();
+        brand= baseProduct.getBrand();
+        price= baseProduct.getPrice();
+        url= baseProduct.getUrl();
+        specialPrice= baseProduct.getSpecialPrice();
+        priceDouble= baseProduct.getPriceDouble();
+        specialPriceDouble= baseProduct.getSpecialPriceDouble();
+        specialPriceConverted= baseProduct.getSpecialPriceConverted();
+        priceConverted= baseProduct.getPriceConverted();
+    }
 
     /**
      * @return the sku
@@ -157,4 +193,35 @@ public class BaseProduct {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(sku);
+        dest.writeString(name);
+        dest.writeString(brand);
+        dest.writeString(price);
+        dest.writeString(url);
+        dest.writeString(specialPrice);
+        dest.writeDouble(priceDouble);
+        dest.writeDouble(specialPriceDouble);
+        dest.writeDouble(specialPriceConverted);
+        dest.writeDouble(priceConverted);
+    }
+
+    public BaseProduct(Parcel in){
+        sku = in.readString();
+        brand = in.readString();
+        name = in.readString();
+        price = in.readString();
+        specialPrice = in.readString();
+        url = in.readString();
+        priceDouble = in.readDouble();
+        specialPriceDouble = in.readDouble();
+        priceConverted = in.readDouble();
+        specialPriceConverted = in.readDouble();
+    }
 }

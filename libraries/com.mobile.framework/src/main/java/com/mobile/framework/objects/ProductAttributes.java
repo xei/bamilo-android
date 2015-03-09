@@ -28,7 +28,7 @@ import de.akquinet.android.androlog.Log;
  * @author GuilhermeSilva
  * 
  */
-public class ProductAttributes extends BaseProduct implements IJSONSerializable, Parcelable {
+public class ProductAttributes extends BaseProduct implements IJSONSerializable {
 
 	private static final String TAG = ProductAttributes.class.getName();
 	private String description;
@@ -41,23 +41,12 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable,
 	 * ProductAttributes empty constructor
 	 */
 	public ProductAttributes() {
-		sku = "";
-		name = "";
-		url = "";
+		super();
 		description = "";
-		brand = "";
-		price = "";
-		specialPrice = "";
 		maxSavingPercentage = 0.0;
 		reviews = 0;
 		rating = .0;
-		specialPriceDouble = .0;
-		priceDouble = .0;
 		rating = 0.0;
-		specialPriceDouble = 0.0;
-		priceDouble = 0.0;
-		priceConverted = 0d;
-		specialPriceConverted = 0d;
 	}
 
 	/**
@@ -245,39 +234,21 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable,
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(sku);
-		dest.writeString(name);
-		dest.writeString(url);
+        super.writeToParcel(dest, flags);
 		dest.writeString(description);
-		dest.writeString(brand);
-		dest.writeString(price);
-		dest.writeString(specialPrice);
 		dest.writeDouble(maxSavingPercentage);
 		dest.writeInt(reviews);
 		dest.writeDouble(rating);
-		dest.writeDouble(priceDouble);
-		dest.writeDouble(specialPriceDouble);
-		dest.writeDouble(priceConverted);
-		dest.writeDouble(specialPriceConverted);
 	}
 
 	private ProductAttributes(Parcel in) {
-		sku = in.readString();
-		name = in.readString();
-		url = in.readString();
+        super(in);
 		description = in.readString();
-		brand = in.readString();
 		/*--maxPrice = in.readString();*/
-		price = in.readString();
-		specialPrice = in.readString();
 		/*--maxSpecialPrice = in.readString();*/
 		maxSavingPercentage = in.readDouble();
 		reviews = in.readInt();
 		rating = in.readDouble();
-		priceDouble = in.readDouble();
-		specialPriceDouble = in.readDouble();
-		priceConverted = in.readDouble();
-		specialPriceConverted = in.readDouble();
 
 		try {
 			isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);

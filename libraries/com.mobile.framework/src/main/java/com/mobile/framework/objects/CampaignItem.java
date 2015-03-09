@@ -20,7 +20,7 @@ import de.akquinet.android.androlog.Log;
  * 
  * @author sergiopereira
  */
-public class CampaignItem extends BaseProduct implements IJSONSerializable, Parcelable {
+public class CampaignItem extends BaseProduct implements IJSONSerializable {
 
 	private static final String TAG = CampaignItem.class.getSimpleName();
 
@@ -48,6 +48,7 @@ public class CampaignItem extends BaseProduct implements IJSONSerializable, Parc
 	 * Empty constructor
 	 */
 	public CampaignItem() {
+        super();
 	}
 
 	/**
