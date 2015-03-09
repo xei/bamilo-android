@@ -37,24 +37,26 @@ MNF_PATH="$PCK_NAME/assets/blackberry/MANIFEST.MF"
 #ICON_PATH="$PCK_NAME/res/drawable-ldpi/ic_launcher.png"
 #HOCKEY_FILE="$BAR_FOLDER/com.jumia.blackberry.zip"
 
+
+##############################
+##### VALIDATE ARGUMENTS #####
+##############################
+if [ $# -ne 2 ]; then echo "Your command line contains $# arguments"; exit 1; fi
+if [ $1 != "" ]; then echo "Positional parameter 1 contains something"; exit 1; fi
+if [ $2 != "" ]; then echo "Positional parameter 1 contains something"; exit 1; fi
+
+JumiaApp/build/outputs/apk/JumiaApp-jumiaSamsung-release.apk
+
 ########################
 ##### VALIDATE ENV #####
 ########################
-if [ ! `hostname -s` == $HOSTNAME_JENKINS ]
-then
-	echo "> WARNING: Dev environment"
-	APK_FILE="$PCK_NAME/build/outputs/apk/JumiaApp-blackberry-jumia-release.apk"
-	BAR_FILE="$BAR_FOLDER/JumiaApp-blackberry-jumia-release.bar"
-	STORE_CRT_FOLDER=~/.rim/
-else
-	echo "> Release environment"
-	APK_FILE="$PCK_NAME/build/outputs/apk/JumiaApp-blackberry-jumia-release.apk"
-	BAR_FILE="$BAR_FOLDER/JumiaApp-blackberry-jumia-release.bar"
-	#STORE_CRT_FOLDER=~/Library/Research\ In\ Motion/
-	STORE_CRT_FOLDER=~/.rim/
-	#### Reload PATH (MAC OS)
-	. ~/.bash_profile
-fi
+echo "> Release environment"
+#APK_FILE="$PCK_NAME/build/outputs/apk/JumiaApp-blackberry-jumia-release.apk"
+#BAR_FILE="$BAR_FOLDER/JumiaApp-blackberry-jumia-release.bar"
+APK_FILE="$1"
+BAR_FILE="$2"
+STORE_CRT_FOLDER=~/.rim/
+. ~/.bash_profile
 
 ####################
 ##### FIND APK #####
