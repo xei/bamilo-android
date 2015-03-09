@@ -211,14 +211,14 @@ public class Product implements IJSONSerializable, Parcelable {
      * @return the price
      */
     public double getPriceAsDouble() {
-        return attributes.getPriceAsDouble();
+        return attributes.getPriceDouble();
     }
     
     /**
      * @return the price
      */
     public double getSpecialPriceAsDouble() {
-        return attributes.getSpecialPriceAsDouble();
+        return attributes.getSpecialPriceDouble();
     }
     
     /**

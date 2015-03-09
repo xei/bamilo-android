@@ -1,12 +1,5 @@
 package com.mobile.framework.database;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,6 +10,13 @@ import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.LastViewedAddableToCart;
 import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.objects.Variation;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import de.akquinet.android.androlog.Log;
 
@@ -129,7 +129,7 @@ public class LastViewedTableHelper extends BaseTable {
 				values.put(LastViewedTableHelper._PRODUCT_BRAND, completeProduct.getBrand());
 				values.put(LastViewedTableHelper._PRODUCT_NAME, completeProduct.getName());
 				values.put(LastViewedTableHelper._PRODUCT_PRICE, completeProduct.getPrice());
-				values.put(LastViewedTableHelper._PRODUCT_PRICE_ORIG, completeProduct.getPriceAsDouble());
+				values.put(LastViewedTableHelper._PRODUCT_PRICE_ORIG, completeProduct.getPriceDouble());
 				values.put(LastViewedTableHelper._PRODUCT_PRICE_CONVERTED, completeProduct.getPriceConverted());
 				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE, completeProduct.getSpecialPrice());
 				values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_ORIG, completeProduct.getSpecialPriceAsDouble());

@@ -1,17 +1,17 @@
 package com.mobile.framework.objects;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -21,27 +21,18 @@ import de.akquinet.android.androlog.Log;
  * @author Paulo Carvalho
  * 
  */
-public class ProductBundleProduct implements IJSONSerializable, Parcelable {
+public class ProductBundleProduct extends BaseProduct implements IJSONSerializable, Parcelable {
 
     private static final String TAG = LogTagHelper.create(ProductBundleProduct.class);
 
-    private String bundleProductSku;
-    private String bundleProductName;
-    private String bundleProductBrand;
     private String bundleProductMaxPrice;
     private double bundleProductMaxPriceDouble;
     private double bundleProductMaxPriceConverted;
     private String bundleProductImage;
-    private String bundleProductPrice;
-    private double bundleProductPriceDouble;
-    private double bundleProductPriceConverted;
     private int bundleProductLeaderPos;
     private String bundleProductMaxSpecialPrice;
     private double bundleProductMaxSpecialPriceDouble;
     private double bundleProductMaxSpecialPriceConverted;
-    private String bundleProductSpecialPrice;
-    private double bundleProductSpecialPriceDouble;
-    private double bundleProductSpecialPriceConverted;
     private String bundleProductSavingPercentage;
     private ArrayList<ProductBundleSimple> bundleSimples;
     private boolean isChecked = true;
@@ -52,23 +43,23 @@ public class ProductBundleProduct implements IJSONSerializable, Parcelable {
      */
     public ProductBundleProduct() {
 
-        bundleProductSku = "";
-        bundleProductName = "";
-        bundleProductBrand = "";
+        sku = "";
+        name = "";
+        brand = "";
         bundleProductMaxPrice = "";
         bundleProductMaxPriceDouble = 0.0;
         bundleProductMaxPriceConverted = 0.0;
         bundleProductImage = "";
-        bundleProductPrice = "";
-        bundleProductPriceDouble = 0.0;
-        bundleProductPriceConverted = 0.0;
+        price = "";
+        priceDouble = 0.0;
+        priceConverted = 0.0;
         bundleProductLeaderPos = 0;
         bundleProductMaxSpecialPrice = "";
         bundleProductMaxSpecialPriceDouble = 0.0;
         bundleProductMaxSpecialPriceConverted = 0.0;
-        bundleProductSpecialPrice = "";
-        bundleProductSpecialPriceDouble = 0.0;
-        bundleProductSpecialPriceConverted = 0.0;
+        specialPrice = "";
+        specialPriceDouble = 0.0;
+        specialPriceConverted = 0.0;
         bundleProductSavingPercentage = "";
         isChecked = true;
         simpleSelectedPos = 0;
@@ -77,23 +68,23 @@ public class ProductBundleProduct implements IJSONSerializable, Parcelable {
 
     public ProductBundleProduct(JSONObject jsonObject) {
 
-        bundleProductSku = "";
-        bundleProductName = "";
-        bundleProductBrand = "";
+        sku = "";
+        name = "";
+        brand = "";
         bundleProductMaxPrice = "";
         bundleProductMaxPriceDouble = 0.0;
         bundleProductMaxPriceConverted = 0.0;
         bundleProductImage = "";
-        bundleProductPrice = "";
-        bundleProductPriceDouble = 0.0;
-        bundleProductPriceConverted = 0.0;
+        price = "";
+        priceDouble = 0.0;
+        priceConverted = 0.0;
         bundleProductLeaderPos = 0;
         bundleProductMaxSpecialPrice = "";
         bundleProductMaxSpecialPriceDouble = 0.0;
         bundleProductMaxSpecialPriceConverted = 0.0;
-        bundleProductSpecialPrice = "";
-        bundleProductSpecialPriceDouble = 0.0;
-        bundleProductSpecialPriceConverted = 0.0;
+        specialPrice = "";
+        specialPriceDouble = 0.0;
+        specialPriceConverted = 0.0;
         bundleProductSavingPercentage = "";
         isChecked = true;
         simpleSelectedPos = 0;
@@ -113,9 +104,9 @@ public class ProductBundleProduct implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) {
         try {
 
-            bundleProductSku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
-            bundleProductName = jsonObject.getString(RestConstants.JSON_NAME_TAG);
-            bundleProductBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
+            sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
+            name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
+            brand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
             String maxPriceJSON = jsonObject.optString(RestConstants.JSON_MAX_PRICE_TAG,"");
 
             if (!"".equals(maxPriceJSON)) {
@@ -133,11 +124,11 @@ public class ProductBundleProduct implements IJSONSerializable, Parcelable {
                 if (!CurrencyFormatter.isNumber(priceJSON)) {
                     throw new JSONException("Price is not a number!");
                 }
-                bundleProductPriceDouble = Double.parseDouble(priceJSON);
-                bundleProductPrice = CurrencyFormatter.formatCurrency(priceJSON);
+                priceDouble = Double.parseDouble(priceJSON);
+                price = CurrencyFormatter.formatCurrency(priceJSON);
             }
 
-            bundleProductPriceConverted = jsonObject.getDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
+            priceConverted = jsonObject.getDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
             bundleProductLeaderPos = jsonObject.getInt(RestConstants.JSON_BUNDLE_PRODUCT_LEADER_POS);
 
             String maxSpecialPriceJSON = jsonObject.optString(RestConstants.JSON_MAX_SPECIAL_PRICE_TAG, "");
@@ -159,12 +150,12 @@ public class ProductBundleProduct implements IJSONSerializable, Parcelable {
                 if (!CurrencyFormatter.isNumber(specialPriceJSON)) {
                     throw new JSONException("Price is not a number!");
                 }
-                bundleProductSpecialPriceDouble = Double.parseDouble(specialPriceJSON);
-                bundleProductSpecialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
+                specialPriceDouble = Double.parseDouble(specialPriceJSON);
+                specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
 
             }
 
-            bundleProductSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
+            specialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
             bundleProductSavingPercentage = jsonObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
 
             JSONArray productsSimpleArray = jsonObject.optJSONArray(RestConstants.JSON_SIMPLES_TAG);
@@ -196,30 +187,6 @@ public class ProductBundleProduct implements IJSONSerializable, Parcelable {
     @Override
     public JSONObject toJSON() {
         return null;
-    }
-
-    public String getBundleProductSku() {
-        return bundleProductSku;
-    }
-
-    public void setBundleProductSku(String bundleProductSku) {
-        this.bundleProductSku = bundleProductSku;
-    }
-
-    public String getBundleProductName() {
-        return bundleProductName;
-    }
-
-    public void setBundleProductName(String bundleProductName) {
-        this.bundleProductName = bundleProductName;
-    }
-
-    public String getBundleProductBrand() {
-        return bundleProductBrand;
-    }
-
-    public void setBundleProductBrand(String bundleProductBrand) {
-        this.bundleProductBrand = bundleProductBrand;
     }
 
     public String getBundleProductMaxPrice() {
@@ -254,30 +221,6 @@ public class ProductBundleProduct implements IJSONSerializable, Parcelable {
         this.bundleProductImage = bundleProductImage;
     }
 
-    public String getBundleProductPrice() {
-        return bundleProductPrice;
-    }
-
-    public void setBundleProductPrice(String bundleProductPrice) {
-        this.bundleProductPrice = bundleProductPrice;
-    }
-
-    public double getBundleProductPriceDouble() {
-        return bundleProductPriceDouble;
-    }
-
-    public void setBundleProductPriceDouble(double bundleProductPriceDouble) {
-        this.bundleProductPriceDouble = bundleProductPriceDouble;
-    }
-
-    public double getBundleProductPriceConverted() {
-        return bundleProductPriceConverted;
-    }
-
-    public void setBundleProductPriceConverted(double bundleProductPriceConverted) {
-        this.bundleProductPriceConverted = bundleProductPriceConverted;
-    }
-
     public int getBundleProductLeaderPos() {
         return bundleProductLeaderPos;
     }
@@ -310,30 +253,6 @@ public class ProductBundleProduct implements IJSONSerializable, Parcelable {
         this.bundleProductMaxSpecialPriceConverted = bundleProductMaxSpecialPriceConverted;
     }
 
-    public String getBundleProductSpecialPrice() {
-        return bundleProductSpecialPrice;
-    }
-
-    public void setBundleProductSpecialPrice(String bundleProductSpecialPrice) {
-        this.bundleProductSpecialPrice = bundleProductSpecialPrice;
-    }
-
-    public double getBundleProductSpecialPriceDouble() {
-        return bundleProductSpecialPriceDouble;
-    }
-
-    public void setBundleProductSpecialPriceDouble(double bundleProductSpecialPriceDouble) {
-        this.bundleProductSpecialPriceDouble = bundleProductSpecialPriceDouble;
-    }
-
-    public double getBundleProductSpecialPriceConverted() {
-        return bundleProductSpecialPriceConverted;
-    }
-
-    public void setBundleProductSpecialPriceConverted(double bundleProductSpecialPriceConverted) {
-        this.bundleProductSpecialPriceConverted = bundleProductSpecialPriceConverted;
-    }
-
     public String getBundleProductSavingPercentage() {
         return bundleProductSavingPercentage;
     }
@@ -343,7 +262,7 @@ public class ProductBundleProduct implements IJSONSerializable, Parcelable {
     }
 
     public boolean hasDiscount() {
-        return bundleProductSpecialPriceDouble != 0.0 && bundleProductSpecialPriceDouble != (bundleProductPriceDouble);
+        return specialPriceDouble != 0.0 && specialPriceDouble != (priceDouble);
     }
 
     /**
@@ -354,7 +273,7 @@ public class ProductBundleProduct implements IJSONSerializable, Parcelable {
      */
     public double getPriceForTracking() {
 
-        return bundleProductSpecialPriceConverted > 0.0 ? bundleProductSpecialPriceConverted : bundleProductPriceConverted;
+        return specialPriceConverted > 0.0 ? specialPriceConverted : priceConverted;
     }
 
     public ArrayList<ProductBundleSimple> getBundleSimples() {
@@ -387,23 +306,23 @@ public class ProductBundleProduct implements IJSONSerializable, Parcelable {
      */
 
     protected ProductBundleProduct(Parcel in) {
-        bundleProductSku = in.readString();
-        bundleProductName = in.readString();
-        bundleProductBrand = in.readString();
+        sku = in.readString();
+        name = in.readString();
+        brand = in.readString();
         bundleProductMaxPrice = in.readString();
         bundleProductMaxPriceDouble = in.readDouble();
         bundleProductMaxPriceConverted = in.readDouble();
         bundleProductImage = in.readString();
-        bundleProductPrice = in.readString();
-        bundleProductPriceDouble = in.readDouble();
-        bundleProductPriceConverted = in.readDouble();
+        price = in.readString();
+        priceDouble = in.readDouble();
+        priceConverted = in.readDouble();
         bundleProductLeaderPos = in.readInt();
         bundleProductMaxSpecialPrice = in.readString();
         bundleProductMaxSpecialPriceDouble = in.readDouble();
         bundleProductMaxSpecialPriceConverted = in.readDouble();
-        bundleProductSpecialPrice = in.readString();
-        bundleProductSpecialPriceDouble = in.readDouble();
-        bundleProductSpecialPriceConverted = in.readDouble();
+        specialPrice = in.readString();
+        specialPriceDouble = in.readDouble();
+        specialPriceConverted = in.readDouble();
         bundleProductSavingPercentage = in.readString();
         if (in.readByte() == 0x01) {
             bundleSimples = new ArrayList<ProductBundleSimple>();
@@ -423,23 +342,23 @@ public class ProductBundleProduct implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(bundleProductSku);
-        dest.writeString(bundleProductName);
-        dest.writeString(bundleProductBrand);
+        dest.writeString(sku);
+        dest.writeString(name);
+        dest.writeString(brand);
         dest.writeString(bundleProductMaxPrice);
         dest.writeDouble(bundleProductMaxPriceDouble);
         dest.writeDouble(bundleProductMaxPriceConverted);
         dest.writeString(bundleProductImage);
-        dest.writeString(bundleProductPrice);
-        dest.writeDouble(bundleProductPriceDouble);
-        dest.writeDouble(bundleProductPriceConverted);
+        dest.writeString(price);
+        dest.writeDouble(priceDouble);
+        dest.writeDouble(priceConverted);
         dest.writeInt(bundleProductLeaderPos);
         dest.writeString(bundleProductMaxSpecialPrice);
         dest.writeDouble(bundleProductMaxSpecialPriceDouble);
         dest.writeDouble(bundleProductMaxSpecialPriceConverted);
-        dest.writeString(bundleProductSpecialPrice);
-        dest.writeDouble(bundleProductSpecialPriceDouble);
-        dest.writeDouble(bundleProductSpecialPriceConverted);
+        dest.writeString(specialPrice);
+        dest.writeDouble(specialPriceDouble);
+        dest.writeDouble(specialPriceConverted);
         dest.writeString(bundleProductSavingPercentage);
         if (bundleSimples == null) {
             dest.writeByte((byte) (0x00));

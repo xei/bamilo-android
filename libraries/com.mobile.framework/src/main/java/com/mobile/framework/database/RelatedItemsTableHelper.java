@@ -205,11 +205,11 @@ public class RelatedItemsTableHelper extends BaseTable {
     		
     		while (cursor.moveToNext()) {
     			LastViewed lViewed = new LastViewed();
-    			lViewed.setProductSku(cursor.getString(1));
-    			lViewed.setProductBrand(cursor.getString(2));
-    			lViewed.setProductName(cursor.getString(3));
-    			lViewed.setProductPrice(cursor.getString(4));
-    			lViewed.setProductUrl(cursor.getString(5));
+    			lViewed.setSku(cursor.getString(1));
+    			lViewed.setBrand(cursor.getString(2));
+    			lViewed.setName(cursor.getString(3));
+    			lViewed.setPrice(cursor.getString(4));
+    			lViewed.setUrl(cursor.getString(5));
     			lViewed.setImageUrl(cursor.getString(6));
     			lastViewed.add(lViewed);
     		}

@@ -1,16 +1,16 @@
 package com.mobile.framework.objects;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.mobile.framework.rest.RestConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.mobile.framework.rest.RestConstants;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 /**
  * Defines a simple (variation) of a give product.
@@ -48,10 +48,10 @@ public class ProductSimple implements IJSONSerializable, Parcelable {
         try {
 
             JSONObject attributesObject = jsonObject.getJSONObject(RestConstants.JSON_META_TAG);
-            JSONArray attibutesObjectNames = attributesObject.names();
+            JSONArray attributesObjectNames = attributesObject.names();
 
-            for (int i = 0; i < attibutesObjectNames.length(); ++i) {
-                String key = attibutesObjectNames.getString(i);
+            for (int i = 0; i < attributesObjectNames.length(); ++i) {
+                String key = attributesObjectNames.getString(i);
                 String value = attributesObject.getString(key);
                 attributes.put(key, value);
             }

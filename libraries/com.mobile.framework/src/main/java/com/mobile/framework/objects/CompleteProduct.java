@@ -37,22 +37,15 @@ import de.akquinet.android.androlog.Log;
  * @author GuilhermeSilva
  * 
  */
-public class CompleteProduct implements IJSONSerializable, Parcelable {
+public class CompleteProduct extends BaseProduct implements IJSONSerializable, Parcelable {
 
 	private static final String TAG = LogTagHelper.create(CompleteProduct.class);
 
-	private String sku;
-	private String name;
 	private String idCatalogConfig;
 	private String attributeSetId;
 	private String activatedAt;
-	private String url;
 	private String description;
 	private String ratingsUrl;
-	private String price;
-	private String brand;
-	private double priceDouble;
-	private String specialPrice;
 	private double specialPriceDouble;
 	private Double maxSavingPercentage;
 	private Double ratingsAverage;
@@ -66,8 +59,6 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	private ArrayList<Variation> variations;
 	private ArrayList<String> known_variations;
 	private boolean isNew;
-	private double mPriceConverted;
-	private double mSpecialPriceConverted;
 	private String mSizeGuideUrl;
 	private ProductBundle productBundle;
 	private boolean hasSeller;
@@ -100,8 +91,8 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		ratingsCount = 0;
 		reviewsCount = 0;
 		isNew = false;
-		mPriceConverted = 0d;
-		mSpecialPriceConverted = 0d;
+		priceConverted = 0d;
+		specialPriceConverted = 0d;
 		mSizeGuideUrl = "";
 		productBundle = null;
 		hasSeller = false;
@@ -143,7 +134,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			}
 			priceDouble = Double.parseDouble(priceJSON);
 			price = CurrencyFormatter.formatCurrency(priceJSON);
-			mPriceConverted = dataObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
+			priceConverted = dataObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
 
 			String specialPriceJSON = dataObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
 			if (!CurrencyFormatter.isNumber(specialPriceJSON)) {
@@ -152,7 +143,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 			specialPriceDouble = Double.parseDouble(specialPriceJSON);
 
 			specialPrice = CurrencyFormatter.formatCurrency(specialPriceJSON);
-			mSpecialPriceConverted = dataObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
+			specialPriceConverted = dataObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
 
 			String maxSavingPercentageJSON = dataObject.optString(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
 			if (CurrencyFormatter.isNumber(maxSavingPercentageJSON)) {
@@ -317,33 +308,12 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
 	 */
 	@Override
 	public JSONObject toJSON() {
 		return null;
-	}
-
-	/**
-	 * @return the sku
-	 */
-	public String getSku() {
-		return sku;
-	}
-
-	/**
-	 * Set the sku
-	 */
-	public void setSku(String sku) {
-		this.sku = sku;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
 	}
 
 	/**
@@ -367,31 +337,10 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @return the price
-	 */
-	public String getPrice() {
-		return price;
-	}
-
-	/**
-	 * @return the price as a Double
-	 */
-	public Double getPriceAsDouble() {
-		return priceDouble;
-	}
-
-	/**
 	 * @return the special price as a Double
 	 */
 	public double getSpecialPriceAsDouble() {
 		return specialPriceDouble;
-	}
-
-	/**
-	 * @return the brand
-	 */
-	public String getBrand() {
-		return brand;
 	}
 
 	/**
@@ -431,13 +380,6 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @return the url
-	 */
-	public String getUrl() {
-		return url;
-	}
-
-	/**
 	 * Get Better quality image.
 	 * 
 	 * @param url
@@ -466,14 +408,6 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @param name
-	 *            the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
 	 * @param idCatalogConfig
 	 *            the idCatalogConfig to set
 	 */
@@ -498,35 +432,11 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @param url
-	 *            the url to set
-	 */
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	/**
 	 * @param description
 	 *            the description to set
 	 */
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	/**
-	 * @param price
-	 *            the price to set
-	 */
-	public void setPrice(String price) {
-		this.price = price;
-	}
-
-	/**
-	 * @param brand
-	 *            the brand to set
-	 */
-	public void setBrand(String brand) {
-		this.brand = brand;
 	}
 
 	/**
@@ -567,13 +477,6 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	 */
 	public void setImageList(ArrayList<String> imageList) {
 		this.imageList = imageList;
-	}
-
-	/**
-	 * @return the specialPrice
-	 */
-	public String getSpecialPrice() {
-		return specialPrice;
 	}
 
 	/**
@@ -623,34 +526,6 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @return the mPriceConverted
-	 */
-	public double getPriceConverted() {
-		return mPriceConverted;
-	}
-
-	/**
-	 * @param priceConverted the mPriceConverted to set
-	 */
-	public void setPriceConverted(double priceConverted) {
-		this.mPriceConverted = priceConverted;
-	}
-
-	/**
-	 * @return the mSpecialPriceConverted
-	 */
-	public double getSpecialPriceConverted() {
-		return mSpecialPriceConverted;
-	}
-
-	/**
-	 * @param specialPriceConverted the mSpecialPriceConverted to set
-	 */
-	public void setSpecialPriceConverted(double specialPriceConverted) {
-		this.mSpecialPriceConverted = specialPriceConverted;
-	}
-
-	/**
 	 * Return the paid price for tracking.
 	 * 
 	 * @return double
@@ -658,8 +533,8 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 	 */
 	public double getPriceForTracking() {
 		//Log.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
-		//Log.i(TAG, "PRICE VALUE FOR TRACKING: " + mPriceConverted + " " + mSpecialPriceConverted);
-		return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceConverted;
+		//Log.i(TAG, "PRICE VALUE FOR TRACKING: " + priceConverted + " " + specialPriceConverted);
+		return specialPriceConverted > 0 ? specialPriceConverted : priceConverted;
 	}
 
 
@@ -704,7 +579,7 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
         this.hasSeller = hasSeller;
     }
 
-    public boolean isHasBundle() {
+    public boolean hasBundle() {
         return hasBundle;
     }
 
@@ -796,8 +671,8 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		dest.writeDouble(ratingsAverage);
 		dest.writeInt(ratingsCount);
 		dest.writeInt(reviewsCount);
-		dest.writeDouble(mPriceConverted);
-		dest.writeDouble(mSpecialPriceConverted);
+		dest.writeDouble(priceConverted);
+		dest.writeDouble(specialPriceConverted);
 		dest.writeString(mSizeGuideUrl);
 		dest.writeByte((byte) (isNew ? 1 : 0));
 		dest.writeByte((byte) (hasSeller ? 1 : 0));
@@ -837,8 +712,8 @@ public class CompleteProduct implements IJSONSerializable, Parcelable {
 		ratingsAverage = in.readDouble();
 		ratingsCount = in.readInt();
 		reviewsCount = in.readInt();
-		mPriceConverted = in.readDouble();
-		mSpecialPriceConverted = in.readDouble();
+		priceConverted = in.readDouble();
+		specialPriceConverted = in.readDouble();
 		mSizeGuideUrl = in.readString();
 		isNew = in.readByte() == 1;
 		hasSeller = in.readByte() == 1;

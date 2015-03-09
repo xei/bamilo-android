@@ -1391,7 +1391,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         ArrayList<LastViewed> relatedItemsList = RelatedItemsTableHelper.getRelatedItemsList();
         if (relatedItemsList != null && relatedItemsList.size() > 1) {
             for (int i = 0; i < relatedItemsList.size(); i++) {
-                String itemSku = relatedItemsList.get(i).getProductSku();
+                String itemSku = relatedItemsList.get(i).getSku();
                 if (!TextUtils.isEmpty(itemSku) && itemSku.equalsIgnoreCase(sku)) {
                     relatedItemsList.remove(i);
                     break;
@@ -1939,7 +1939,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 }
             }, 300);
 
-            if (mCompleteProduct.isHasBundle()) {
+            if (mCompleteProduct.hasBundle()) {
                 Bundle arg = new Bundle();
                 arg.putString(GetProductBundleHelper.PRODUCT_SKU, mCompleteProduct.getSku());
                 triggerContentEventNoLoading(new GetProductBundleHelper(), arg, responseCallback);
@@ -2201,9 +2201,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
             if (bundleProducts.get(i).isChecked()) {
                 if (bundleProducts.get(i).hasDiscount()) {
-                    total = total + bundleProducts.get(i).getBundleProductSpecialPriceDouble();
+                    total = total + bundleProducts.get(i).getSpecialPriceDouble();
                 } else {
-                    total = total + bundleProducts.get(i).getBundleProductPriceDouble();
+                    total = total + bundleProducts.get(i).getPriceDouble();
                 }
             }
         }
@@ -2352,7 +2352,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             // mProductBundle.getBundleProducts().get(i).getBundleProductLeaderPos() != 0){
             if (mProductBundle.getBundleProducts().get(i).isChecked()) {
                 values.put(GetShoppingCartAddBundleHelper.PRODUCT_SKU_TAG + count + "]",
-                        mProductBundle.getBundleProducts().get(i).getBundleProductSku());
+                        mProductBundle.getBundleProducts().get(i).getSku());
                 values.put(
                         GetShoppingCartAddBundleHelper.PRODUCT_SIMPLE_SKU_TAG + count + "]",
                         mProductBundle

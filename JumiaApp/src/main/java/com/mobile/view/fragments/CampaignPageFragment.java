@@ -1068,16 +1068,16 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Set price
             view.mPrice.setSelected(true);
             // Validate special price
-            if(item.getSpecialPrice() != 0) {
+            if(item.getSpecialPriceDouble() != 0) {
                 view.mPrice.setVisibility(View.VISIBLE);
                 // Set discount
-                view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getSpecialPrice()));
-                view.mPrice.setText(CurrencyFormatter.formatCurrency(""+item.getPrice()));
+                view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getSpecialPriceDouble()));
+                view.mPrice.setText(CurrencyFormatter.formatCurrency(""+item.getPriceDouble()));
                 view.mPrice.setPaintFlags(view.mPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 // Set discount
                 view.mPrice.setVisibility(View.GONE);
-                view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getPrice()));
+                view.mDiscount.setText(CurrencyFormatter.formatCurrency(""+item.getPriceDouble()));
             }
         }
         
@@ -1088,7 +1088,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
          * @author sergiopereira
          */
         private void setSaveContainer(ItemView view, CampaignItem item){
-            if(item.getSpecialPrice()>0){
+            if(item.getSpecialPriceDouble()>0){
                 String label = getString(R.string.campaign_save);
                 String value = CurrencyFormatter.formatCurrency( "" + item.getSavePrice());
                 String mainText = label + " " + value;
@@ -1107,7 +1107,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         /**
          * Set a view as clickable saving the position
          * @param view
-         * @param item
+         * @param position
          * @author sergiopereira
          */
         private void setClickableView(View view, int position) {
@@ -1143,9 +1143,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         
         /**
          * Hide or show the size container
-         * @param container
-         * @param spinner
+         * @param view
          * @param item
+         * @param position
          * @author sergiopereira
          */
         private void setSizeContainer(ItemView view, CampaignItem item, int position){

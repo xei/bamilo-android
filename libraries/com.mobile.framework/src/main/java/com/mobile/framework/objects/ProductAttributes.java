@@ -9,9 +9,6 @@
  */
 package com.mobile.framework.objects;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -19,6 +16,9 @@ import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.interfaces.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -28,26 +28,15 @@ import de.akquinet.android.androlog.Log;
  * @author GuilhermeSilva
  * 
  */
-public class ProductAttributes implements IJSONSerializable, Parcelable {
+public class ProductAttributes extends BaseProduct implements IJSONSerializable, Parcelable {
 
 	private static final String TAG = ProductAttributes.class.getName();
-	private String sku;
-	private String name;
-	private String url;
 	private String description;
-	private String brand;
-	private String price;
-	private String specialPrice;
 	private Double maxSavingPercentage;
 	private Integer reviews;
 	private Double rating;
 	private boolean isNew;
 	private boolean isFavourite;
-	private double specialPriceDouble;
-	private double priceDouble;
-	private double mPriceConverted;
-	private double mSpecialPriceConverted;
-
 	/**
 	 * ProductAttributes empty constructor
 	 */
@@ -67,8 +56,8 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 		rating = 0.0;
 		specialPriceDouble = 0.0;
 		priceDouble = 0.0;
-		mPriceConverted = 0d;
-		mSpecialPriceConverted = 0d;
+		priceConverted = 0d;
+		specialPriceConverted = 0d;
 	}
 
 	/**
@@ -86,66 +75,10 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @return the sku
-	 */
-	public String getSku() {
-		return sku;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
 	 * @return the description
 	 */
 	public String getDescription() {
 		return description;
-	}
-
-	/**
-	 * @return the brand
-	 */
-	public String getBrand() {
-		return brand;
-	}
-
-	/**
-	 * @return the price
-	 */
-	public String getPrice() {
-		return price;
-	}
-
-	/**
-	 * @return the price
-	 */
-	public double getPriceAsDouble() {
-		return priceDouble;
-	}
-
-	/**
-	 * @return the price
-	 */
-	public double getSpecialPriceAsDouble() {
-		return specialPriceDouble;
-	}
-
-	/**
-	 * @return the url
-	 */
-	public String getUrl() {
-		return url;
-	}
-
-	/**
-	 * @return the specialPrice
-	 */
-	public String getSpecialPrice() {
-		return specialPrice;
 	}
 	
 	/**
@@ -191,36 +124,6 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 	public void setFavourite(boolean isFavourite) {
 		this.isFavourite = isFavourite;
 	}
-	
-	/**
-	 * @param priceConverted
-	 *            the mPriceConverted to set
-	 */
-	public void setPriceConverted(double priceConverted) {
-		this.mPriceConverted = priceConverted;
-	}
-
-	/**
-	 * @param specialPriceConverted
-	 *            the mSpecialPriceConverted to set
-	 */
-	public void setSpecialPriceConverted(double specialPriceConverted) {
-		this.mSpecialPriceConverted = specialPriceConverted;
-	}
-	
-	/**
-	 * @return the mPriceConverted
-	 */
-	public double getPriceConverted() {
-		return mPriceConverted;
-	}
-
-	/**
-	 * @return the mSpecialPriceConverted
-	 */
-	public double getSpecialPriceConverted() {
-		return mSpecialPriceConverted;
-	}
 
 	/**
 	 * Return the paid price for tracking.
@@ -230,8 +133,8 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 	 */
 	public double getPriceForTracking() {
 		Log.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
-		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + mPriceConverted + " " + mSpecialPriceConverted);
-		return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceConverted;
+		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + priceConverted + " " + specialPriceConverted);
+		return specialPriceConverted > 0 ? specialPriceConverted : priceConverted;
 	}
 	
 
@@ -261,7 +164,7 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 				throw new JSONException("Price is not a number!");
 			}
 
-			mPriceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
+			priceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
 
 			// 
 			String specialPriceJSON = jsonObject.optString(RestConstants.JSON_SPECIAL_PRICE_TAG);
@@ -273,7 +176,7 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 				specialPriceDouble = priceDouble;
 			}
 
-			mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
+			specialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG, 0d);
 
 
 			maxSavingPercentage = jsonObject.optDouble(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG, 0);
@@ -354,8 +257,8 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 		dest.writeDouble(rating);
 		dest.writeDouble(priceDouble);
 		dest.writeDouble(specialPriceDouble);
-		dest.writeDouble(mPriceConverted);
-		dest.writeDouble(mSpecialPriceConverted);
+		dest.writeDouble(priceConverted);
+		dest.writeDouble(specialPriceConverted);
 	}
 
 	private ProductAttributes(Parcel in) {
@@ -373,8 +276,8 @@ public class ProductAttributes implements IJSONSerializable, Parcelable {
 		rating = in.readDouble();
 		priceDouble = in.readDouble();
 		specialPriceDouble = in.readDouble();
-		mPriceConverted = in.readDouble();
-		mSpecialPriceConverted = in.readDouble();
+		priceConverted = in.readDouble();
+		specialPriceConverted = in.readDouble();
 
 		try {
 			isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);

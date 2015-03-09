@@ -1,12 +1,5 @@
 package com.mobile.framework.database;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +11,13 @@ import com.mobile.framework.objects.Favourite;
 import com.mobile.framework.objects.Product;
 import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.objects.Variation;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import de.akquinet.android.androlog.Log;
 
@@ -124,7 +124,7 @@ public class FavouriteTableHelper extends BaseTable {
 			values.put(FavouriteTableHelper._FAVOURITE_BRAND, completeProduct.getBrand());
 			values.put(FavouriteTableHelper._FAVOURITE_NAME, completeProduct.getName());
 			values.put(FavouriteTableHelper._FAVOURITE_PRICE, completeProduct.getPrice());
-			values.put(FavouriteTableHelper._FAVOURITE_PRICE_ORIG, completeProduct.getPriceAsDouble());
+			values.put(FavouriteTableHelper._FAVOURITE_PRICE_ORIG, completeProduct.getPriceDouble());
 			values.put(FavouriteTableHelper._FAVOURITE_PRICE_CONVERTED, completeProduct.getPriceConverted());
 			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE, completeProduct.getSpecialPrice());
 			values.put(FavouriteTableHelper._FAVOURITE_SPECIAL_PRICE_ORIG, completeProduct.getSpecialPriceAsDouble());

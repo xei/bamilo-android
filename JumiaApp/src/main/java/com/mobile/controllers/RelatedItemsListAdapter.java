@@ -88,15 +88,15 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
         // Get item
         LastViewed item = mDataset.get(position);
         // Set brand
-        holder.mBrand.setText(item.getProductBrand());
+        holder.mBrand.setText(item.getBrand());
         // Set title
-        holder.mTitle.setText(item.getProductName());
+        holder.mTitle.setText(item.getName());
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set price
-        holder.mPrice.setText(item.getProductPrice());
+        holder.mPrice.setText(item.getPrice());
         // Set listener and tags
-        holder.mContainer.setTag(item.getProductUrl());
+        holder.mContainer.setTag(item.getUrl());
         holder.mContainer.setOnClickListener(mParentClickListener);
     }
 

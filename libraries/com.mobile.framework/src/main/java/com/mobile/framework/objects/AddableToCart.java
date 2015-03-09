@@ -13,16 +13,16 @@
 
 package com.mobile.framework.objects;
 
-import java.util.ArrayList;
-
-import org.apache.commons.collections4.CollectionUtils;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
+
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -34,19 +34,13 @@ import de.akquinet.android.androlog.Log;
  * @author Andre Lopes
  * 
  */
-public class AddableToCart implements Parcelable {
+public class AddableToCart extends BaseProduct implements Parcelable {
 
 	public final static int NO_SIMPLE_SELECTED = -1;
 
 	private static final String TAG = AddableToCart.class.getSimpleName();
 
-	protected String sku;
-	protected String brand;
-	protected String name;
-	protected String price;
-	protected String specialPrice;
 	protected Double maxSavingPercentage;
-	protected String url;
 	protected boolean isNew;
 	protected int selectedSimple;
 	protected boolean isComplete;
@@ -59,10 +53,6 @@ public class AddableToCart implements Parcelable {
 	protected String mSelectedSimpleValue;
 	protected Boolean mChooseVariationWarning = false;
 	protected boolean mStockVariationWarning = false;
-	private Double priceDouble;
-	private Double specialPriceDouble;
-	private double mSpecialPriceConverted;
-	private double mPriceConverted;
 	private ArrayList<String> mCategories;
 	private Double mRatingsAverage;
 	private String mSizeGuideUrl;
@@ -85,8 +75,8 @@ public class AddableToCart implements Parcelable {
 		hasVariations = null;
 		mSelectedSimpleValue = "...";
 		selectedSimple = NO_SIMPLE_SELECTED;
-		mSpecialPriceConverted = 0d;
-		mPriceConverted = 0d;
+		specialPriceConverted = 0d;
+		priceConverted = 0d;
 		mCategories = new ArrayList<String>();
 		mRatingsAverage = 0.0;
 		mSizeGuideUrl = "";
@@ -97,7 +87,7 @@ public class AddableToCart implements Parcelable {
 		brand = completeProduct.getBrand();
 		name = completeProduct.getName();
 		price = completeProduct.getPrice();
-		priceDouble = completeProduct.getPriceAsDouble();
+		priceDouble = completeProduct.getPriceDouble();
 		specialPriceDouble = completeProduct.getSpecialPriceAsDouble();
 		specialPrice = completeProduct.getSpecialPrice();
 		maxSavingPercentage = completeProduct.getMaxSavingPercentage();
@@ -113,111 +103,13 @@ public class AddableToCart implements Parcelable {
 		hasVariations = null;
 		mSelectedSimpleValue = "...";
 		// Converted values
-		mPriceConverted = completeProduct.getPriceConverted();
-		mSpecialPriceConverted = completeProduct.getSpecialPriceConverted();
+		priceConverted = completeProduct.getPriceConverted();
+		specialPriceConverted = completeProduct.getSpecialPriceConverted();
 		// Validate if has only one simple
 		selectedSimple = (simples != null && simples.size() == 1) ? 0 : NO_SIMPLE_SELECTED;
 		if(CollectionUtils.isNotEmpty(completeProduct.getCategories())) mCategories = completeProduct.getCategories(); 
 		mRatingsAverage = completeProduct.getRatingsAverage();
 		mSizeGuideUrl = completeProduct.getSizeGuideUrl();
-	}
-
-	/**
-	 * @return the sku
-	 */
-	public String getSku() {
-		return sku;
-	}
-
-	/**
-	 * @param sku
-	 *            the sku to set
-	 */
-	public void setSku(String sku) {
-		this.sku = sku;
-	}
-
-	/**
-	 * @return the brand
-	 */
-	public String getBrand() {
-		return brand;
-	}
-
-	/**
-	 * @param brand
-	 *            the brand to set
-	 */
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name
-	 *            the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @return the price
-	 */
-	public String getPrice() {
-		return price;
-	}
-
-	/**
-	 * @param price
-	 *            the price to set
-	 */
-	public void setPrice(String price) {
-		this.price = price;
-	}
-
-	/**
-	 * @return the price as a Double
-	 */
-	public Double getPriceAsDouble() {
-		return priceDouble;
-	}
-
-	/**
-	 * 
-	 * @param priceDouble
-	 */
-	public void setPriceAsDouble(double priceDouble) {
-		this.priceDouble = priceDouble;
-	}
-
-	public void setSpecialPriceDouble(Double priceDouble) {
-		this.specialPriceDouble = priceDouble;
-	}
-
-	public Double getSpecialPriceDouble() {
-		return this.specialPriceDouble;
-	}
-
-	/**
-	 * @return the specialPrice
-	 */
-	public String getSpecialPrice() {
-		return specialPrice;
-	}
-
-	/**
-	 * @param specialPrice
-	 *            the specialPrice to set
-	 */
-	public void setSpecialPrice(String specialPrice) {
-		this.specialPrice = specialPrice;
 	}
 
 	/**
@@ -233,21 +125,6 @@ public class AddableToCart implements Parcelable {
 	 */
 	public void setMaxSavingPercentage(Double maxSavingPercentage) {
 		this.maxSavingPercentage = maxSavingPercentage;
-	}
-
-	/**
-	 * @return the url
-	 */
-	public String getUrl() {
-		return url;
-	}
-
-	/**
-	 * @param url
-	 *            the url to set
-	 */
-	public void setUrl(String url) {
-		this.url = url;
 	}
 
 	/**
@@ -399,34 +276,6 @@ public class AddableToCart implements Parcelable {
 	}
 
 	/**
-	 * @return the mSpecialPriceConverted
-	 */
-	public double getSpecialPriceConverted() {
-		return mSpecialPriceConverted;
-	}
-
-	/**
-	 * @param mSpecialPriceConverted the mSpecialPriceConverted to set
-	 */
-	public void setSpecialPriceConverted(double mSpecialPriceConverted) {
-		this.mSpecialPriceConverted = mSpecialPriceConverted;
-	}
-
-	/**
-	 * @return the mPriceConverted
-	 */
-	public double getPriceConverted() {
-		return mPriceConverted;
-	}
-
-	/**
-	 * @param mPriceConverted the mPriceConverted to set
-	 */
-	public void setPriceConverted(double mPriceConverted) {
-		this.mPriceConverted = mPriceConverted;
-	}
-
-	/**
 	 * Return the paid price for tracking.
 	 * 
 	 * @return double
@@ -434,8 +283,8 @@ public class AddableToCart implements Parcelable {
 	 */
 	public double getPriceForTracking() {
 		Log.i(TAG, "ORIGIN PRICE VALUES: " + priceDouble + " " + specialPriceDouble);
-		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + mPriceConverted + " " + mSpecialPriceConverted);
-		return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceConverted;
+		Log.i(TAG, "PRICE VALUE FOR TRACKING: " + priceConverted + " " + specialPriceConverted);
+		return specialPriceConverted > 0 ? specialPriceConverted : priceConverted;
 	}
 	
 	   /**
@@ -466,7 +315,7 @@ public class AddableToCart implements Parcelable {
      * @author sergiopereira
      */
     public boolean hasDiscount() {
-        return mSpecialPriceConverted > 0 ? true : false;
+        return specialPriceConverted > 0 ? true : false;
     }
     
     /**
@@ -538,8 +387,8 @@ public class AddableToCart implements Parcelable {
 		dest.writeByte((byte) (mStockVariationWarning ? 1 : 0));
 		dest.writeDouble(priceDouble);
 		dest.writeDouble(specialPriceDouble);
-		dest.writeDouble(mPriceConverted);
-		dest.writeDouble(mSpecialPriceConverted);
+		dest.writeDouble(priceConverted);
+		dest.writeDouble(specialPriceConverted);
 		dest.writeList(mCategories);
 		dest.writeDouble(mRatingsAverage);
 		dest.writeString(mSizeGuideUrl);
@@ -571,8 +420,8 @@ public class AddableToCart implements Parcelable {
 		mStockVariationWarning = in.readByte() == 1;
 		priceDouble = in.readDouble();
 		specialPriceDouble = in.readDouble();
-		mPriceConverted = in.readDouble();
-		mSpecialPriceConverted = in.readDouble();
+		priceConverted = in.readDouble();
+		specialPriceConverted = in.readDouble();
         mCategories = new ArrayList<String>();
         in.readList(mCategories, String.class.getClassLoader());
         mRatingsAverage = in.readDouble();

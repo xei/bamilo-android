@@ -1,7 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +20,8 @@ import com.mobile.framework.objects.ProductBundleProduct;
 import com.mobile.framework.objects.ProductBundleSimple;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 /**
  * Ad
@@ -119,9 +119,9 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
         // Get item
         final ProductBundleProduct item = mDataset.get(position);
         // Set brand
-        holder.mBrand.setText(item.getBundleProductBrand());
+        holder.mBrand.setText(item.getBrand());
         // Set title
-        holder.mTitle.setText(item.getBundleProductName());
+        holder.mTitle.setText(item.getName());
         // Set image
         RocketImageLoader.instance.loadImage(item.getBundleProductImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set price
@@ -221,7 +221,7 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
             // Force reload content to redraw the default selection value
             adapter.notifyDataSetChanged();
             // Apply the select listener
-            view.mSizeSpinner.setTag(item.getBundleProductSku());
+            view.mSizeSpinner.setTag(item.getSku());
             view.mSizeSpinner.setOnItemSelectedListener(simplesSelected);
         } else {
             view.mSizeSpinnerContainer.setVisibility(View.GONE);

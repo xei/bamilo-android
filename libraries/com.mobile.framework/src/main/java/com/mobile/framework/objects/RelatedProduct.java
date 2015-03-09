@@ -23,8 +23,6 @@ import de.akquinet.android.androlog.Log;
  */
 public class RelatedProduct extends LastViewed{
 
-    private double price;
-    private double priceEuroConverted;
     private ArrayList<String> categories;
 
     public RelatedProduct(){
@@ -34,24 +32,24 @@ public class RelatedProduct extends LastViewed{
 
     public boolean initialize(JSONObject relatedProductJsonObject){
         try {
-            this.setProductSku(relatedProductJsonObject.getString(RestConstants.JSON_SKU_TAG));
+            this.setSku(relatedProductJsonObject.getString(RestConstants.JSON_SKU_TAG));
             this.setImageUrl(relatedProductJsonObject.getString(RestConstants.JSON_IMAGE_TAG));
-            this.setProductBrand(relatedProductJsonObject.getString(RestConstants.JSON_BRAND_TAG));
-            this.setProductName(relatedProductJsonObject.getString(RestConstants.JSON_PROD_NAME_TAG));
-            this.setProductUrl(relatedProductJsonObject.getString(RestConstants.JSON_PROD_URL_TAG));
+            this.setBrand(relatedProductJsonObject.getString(RestConstants.JSON_BRAND_TAG));
+            this.setName(relatedProductJsonObject.getString(RestConstants.JSON_PROD_NAME_TAG));
+            this.setUrl(relatedProductJsonObject.getString(RestConstants.JSON_PROD_URL_TAG));
 
             String priceJson = relatedProductJsonObject.getString(RestConstants.JSON_PRICE_TAG);
             if (!CurrencyFormatter.isNumber(priceJson)) {
                 throw new JSONException("Price is not a number!");
             }
-            setPrice(Double.parseDouble(priceJson));
-            setProductPrice(CurrencyFormatter.formatCurrency(priceJson));
+            setPriceAsDouble(Double.parseDouble(priceJson));
+            setPrice(CurrencyFormatter.formatCurrency(priceJson));
 
             String priceEuroConvertedJson = relatedProductJsonObject.getString(RestConstants.JSON_PRICE_CONVERTED_TAG);
             if (!CurrencyFormatter.isNumber(priceEuroConvertedJson)) {
                 throw new JSONException("Price converted is not a number!");
             }
-            setPriceEuroConverted(Double.parseDouble(priceEuroConvertedJson));
+            setPriceConverted(Double.parseDouble(priceEuroConvertedJson));
 
             JSONArray categoriesJsonArray = relatedProductJsonObject.getJSONArray(RestConstants.JSON_CATEGORIES_TAG);
             if(categoriesJsonArray !=null){
@@ -65,22 +63,6 @@ public class RelatedProduct extends LastViewed{
             return false;
         }
         return true;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public double getPriceEuroConverted() {
-        return priceEuroConverted;
-    }
-
-    public void setPriceEuroConverted(double priceEuroConverted) {
-        this.priceEuroConverted = priceEuroConverted;
     }
 
     public ArrayList<String> getCategories() {
