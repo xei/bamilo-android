@@ -31,9 +31,9 @@
     <string name="newrelic_token">AA55031c37ca1a1c324d8d7e92de9b51723114e240</string>
 
     <!-- ACCENGAGE -->
-    <item name="ad4push_enabled" type="bool">false</item>
-    <string name="ad4push_partner_id"></string>
-    <string name="ad4push_private_key"></string>
+    <item name="ad4push_enabled" type="bool">true</item>
+    <string name="ad4push_partner_id">bamilofbd792331eec326</string>
+    <string name="ad4push_private_key">55a23512350c6627ee095119a4b672ea7263fd73</string>
 
     <!-- ADJUST -->
     <item name="adjust_enabled" type="bool">true</item>
