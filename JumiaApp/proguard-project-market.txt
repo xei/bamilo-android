@@ -79,18 +79,18 @@
 
 
 ## BEGIN GOOGLE PLAY SERVICES ########################################################
--keep class * extends java.util.ListResourceBundle {
-	protected java.lang.Object[][] getContents();
+-keep class * extends java.util.ListResourceBundle { 
+	protected java.lang.Object[][] getContents(); 
 }
--keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
-	public static final *** NULL;
+-keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable { 
+	public static final *** NULL; 
 }
 -keepnames @com.google.android.gms.common.annotation.KeepName class *
--keepclassmembernames class * {
-	@com.google.android.gms.common.annotation.KeepName *;
+-keepclassmembernames class * { 
+	@com.google.android.gms.common.annotation.KeepName *; 
 }
--keepnames class * implements android.os.Parcelable {
-	public static final ** CREATOR;
+-keepnames class * implements android.os.Parcelable { 
+	public static final ** CREATOR; 
 }
 ########################################################################################
 
@@ -100,7 +100,7 @@
 -keep class com.ad4screen.sdk.common.annotations.API
 -keep @com.ad4screen.sdk.common.annotations.API class * {
 	public *;
-	@com.ad4screen.sdk.common.annotations.API protected *;
+	@com.ad4screen.sdk.common.annotations.API protected *; 
 }
 -keep class com.ad4screen.sdk.IA4SService { public *; }
 -keep class com.ad4screen.sdk.IA4SService$Stub { public *; }
@@ -146,11 +146,11 @@
 #############################################################################
 
 ## BEGIN SUPPORT LIBRARY (v?) ###############################################
--keep class android.support.v4.** { *; }
--keep interface android.support.v4.** { *; }
+#-keep class android.support.v4.** { *; } 
+#-keep interface android.support.v4.** { *; }
 
--keep class android.support.v7.** { *; }
--keep interface android.support.v7.** { *; }
+#-keep class android.support.v7.** { *; }
+#-keep interface android.support.v7.** { *; }
 
 # Allow obfuscation of android.support.v7.internal.view.menu.**
 # to avoid problem on Samsung 4.2.2 devices with appcompat v21
@@ -174,7 +174,7 @@
 -keep interface com.mobile.components.RangeSeekBar$** { public *; }
 -keep class com.mobile.components.RangeSeekBar { public *; }
 -keep public interface com.mobile.components.absspinner.IcsAdapterView$** { public *; }
--keep,includedescriptorclasses class com.mobile.components.icsspinner.IcsAdapterView { public *; }
+-keep,includedescriptorclasses class com.mobile.components.icsspinner.IcsAdapterView { public *; }  
 -keep interface com.mobile.components.ScrollViewEx$** { public *; }
 -keep interface com.mobile.components.androidslidingtabstrip.SlidingTabLayout$** { public *; }
 #### com.mobile.utils
