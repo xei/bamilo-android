@@ -42,24 +42,15 @@ public class ProductBundleProduct extends BaseProduct implements IJSONSerializab
      * Complete product bundle empty constructor.
      */
     public ProductBundleProduct() {
-
-        sku = "";
-        name = "";
-        brand = "";
+        super();
         bundleProductMaxPrice = "";
         bundleProductMaxPriceDouble = 0.0;
         bundleProductMaxPriceConverted = 0.0;
         bundleProductImage = "";
-        price = "";
-        priceDouble = 0.0;
-        priceConverted = 0.0;
         bundleProductLeaderPos = 0;
         bundleProductMaxSpecialPrice = "";
         bundleProductMaxSpecialPriceDouble = 0.0;
         bundleProductMaxSpecialPriceConverted = 0.0;
-        specialPrice = "";
-        specialPriceDouble = 0.0;
-        specialPriceConverted = 0.0;
         bundleProductSavingPercentage = "";
         isChecked = true;
         simpleSelectedPos = 0;
@@ -67,28 +58,7 @@ public class ProductBundleProduct extends BaseProduct implements IJSONSerializab
     }
 
     public ProductBundleProduct(JSONObject jsonObject) {
-
-        sku = "";
-        name = "";
-        brand = "";
-        bundleProductMaxPrice = "";
-        bundleProductMaxPriceDouble = 0.0;
-        bundleProductMaxPriceConverted = 0.0;
-        bundleProductImage = "";
-        price = "";
-        priceDouble = 0.0;
-        priceConverted = 0.0;
-        bundleProductLeaderPos = 0;
-        bundleProductMaxSpecialPrice = "";
-        bundleProductMaxSpecialPriceDouble = 0.0;
-        bundleProductMaxSpecialPriceConverted = 0.0;
-        specialPrice = "";
-        specialPriceDouble = 0.0;
-        specialPriceConverted = 0.0;
-        bundleProductSavingPercentage = "";
-        isChecked = true;
-        simpleSelectedPos = 0;
-        bundleSimples = new ArrayList<ProductBundleSimple>();
+        this();
         initialize(jsonObject);
 
     }
