@@ -10,14 +10,12 @@ apply plugin: 'findbugs'
  *
  * @return The app versionCode: 1 when app is created locally or current jenkins version number.
  */
-def getAppVersionCode() {
-
-    def versionCode = 1
+def getAppVersionCode(int releaseVersionCode) {
+    // CASE DEV: is used a system var
     if (System.getenv('BUILD_VERSION_NUMBER') != null) {
-        versionCode = Integer.valueOf(System.getenv('BUILD_VERSION_NUMBER'))
+        releaseVersionCode = Integer.valueOf(System.getenv('BUILD_VERSION_NUMBER'))
     }
-
-    return versionCode
+    return releaseVersionCode
 }
 /**
  *
@@ -49,8 +47,8 @@ android {
         applicationId "com.mobile.view"
         minSdkVersion 9
         targetSdkVersion 21
-        versionCode = getAppVersionCode()
         versionName = getAppVersionName()
+        versionCode = getAppVersionCode(1)
 
         resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
     }
@@ -143,7 +141,7 @@ android {
         jumia {
             applicationId "com.jumia.android"
             versionName "2.4"
-            versionCode 48
+            versionCode getAppVersionCode(48)
             signingConfig signingConfigs.jumia_signing
             resConfigs "en", "fr", "pt"
         }
@@ -195,7 +193,7 @@ android {
         shop {
             applicationId "com.shop.android"
             versionName "1.2"
-            versionCode 4
+            versionCode getAppVersionCode(4)
             signingConfig signingConfigs.shop_signing
             resConfigs "en"
         }
@@ -203,7 +201,7 @@ android {
         daraz {
             applicationId "com.daraz.android"
             versionName "1.2"
-            versionCode 4
+            versionCode getAppVersionCode(4)
             signingConfig signingConfigs.daraz_signing
             resConfigs "en"
         }
@@ -211,7 +209,7 @@ android {
         bamilo {
             applicationId "com.bamilo.android"
             versionName "1.4"
-            versionCode 8
+            versionCode getAppVersionCode(8)
             signingConfig signingConfigs.bamilo_signing
             resConfigs "en"
         }
@@ -236,9 +234,11 @@ android.applicationVariants.all { variant ->
     println "****************************"
     println "variant: ${variant.name}"
     println "flavor: ${variant.flavorName}"
+    println "productFlavors: ${variant.productFlavors[0].name}"
     println "buildType: ${variant.buildType.name}"
     println "applicationId: ${variant.applicationId}"
-    println "productFlavors: ${variant.productFlavors[0].name}"
+    println "versionName: ${variant.versionName}"
+    println "versionCode: ${variant.versionCode}"
     println "****************************"
 
     /**
