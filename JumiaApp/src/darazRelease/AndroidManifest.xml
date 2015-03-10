@@ -8,6 +8,12 @@
 
     <uses-permission android:name="com.daraz.android.permission.C2D_MESSAGE" />
 
+    <permission
+        android:name="com.daraz.android.permission.A4S_SEND"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.daraz.android.permission.A4S_SEND" />
+
     <!-- ############# Location: LocationHelper and AD4Push ############# -->
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
@@ -33,7 +39,20 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
                 <!-- WARNING: No use value from strings.xml, attribute is not a string value -->
-                <category android:name="com.daraz.android.dev" />
+                <category android:name="com.daraz.android" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="com.mobile.utils.receivers.PushNotificationReceiver"
+            android:permission="com.daraz.android.permission.A4S_SEND">
+            <intent-filter>
+                <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED"/>
+                <action android:name="com.ad4screen.sdk.intent.action.CLICKED"/>
+
+                <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS"/>
+                <!--<category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" />-->
+                <!--<category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />-->
             </intent-filter>
         </receiver>
 

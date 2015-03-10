@@ -240,11 +240,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Intent intent = getIntent();
         Log.d(TAG, "DEEP LINK RECEIVED INTENT: " + intent.toString());
         // ## DEEP LINK FROM EXTERNAL URIs ##
-        if (hasDeepLinkFromURI(intent)) {
-            ;
-        }
-        // ## DEEP LINK FROM NOTIFICATION ##
-        else {
+        if (!hasDeepLinkFromURI(intent)) {
+            // ## DEEP LINK FROM NOTIFICATION ##
             hasDeepLinkFromGCM(intent);
         }
     }
