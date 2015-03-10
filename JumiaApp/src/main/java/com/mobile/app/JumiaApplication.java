@@ -15,6 +15,7 @@ import android.os.Message;
 import android.os.RemoteException;
 
 import com.ad4screen.sdk.A4SApplication;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.mobile.components.NavigationListComponent;
 import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.forms.Form;
@@ -151,6 +152,7 @@ public class JumiaApplication extends A4SApplication {
     // TODO use an alternative to persist form on rotation
     public Form ratingForm;
 
+    public static GoogleApiClient mGoogleApiClient;
     /*
      * (non-Javadoc)
      * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()
@@ -728,6 +730,14 @@ public class JumiaApplication extends A4SApplication {
              JumiaApplication.ratingReviewValues.put(key, (String)value.toString());
         }
         
+    }
+
+    public static GoogleApiClient getGoogleApiClient(){
+        return mGoogleApiClient;
+    }
+
+    public static void setGoogleApiClient(GoogleApiClient googleApiClient){
+    mGoogleApiClient = googleApiClient;
     }
     
 //    /**

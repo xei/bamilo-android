@@ -1,9 +1,6 @@
 package com.mobile.preferences;
 
 
-
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -15,6 +12,8 @@ import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.database.LastViewedTableHelper;
 import com.mobile.framework.objects.CountryObject;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -72,6 +71,13 @@ public class ShopPreferences {
         LastViewedTableHelper.deleteAllLastViewed();
         FavouriteTableHelper.deleteAllFavourite();
         
+    }
+
+    public static String getShopCountryISO(Context context) {
+        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String shopCountryISO = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, SHOP_NOT_SELECTED);
+        Log.d(TAG, "SHOP COUNTRY: " + shopCountryISO);
+        return shopCountryISO;
     }
     
     /**

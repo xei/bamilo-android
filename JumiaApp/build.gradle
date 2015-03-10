@@ -55,49 +55,49 @@ android {
 
     signingConfigs {
 
-        jumia_signing {
+        jumiaSigning {
             storeFile file("keystores/jumia.keystore")
             storePassword "jumia123"
             keyAlias "jumia"
             keyPassword "jumia123"
         }
 
-        jumia_blackberry_signing {
+        jumiaBlackberrySigning {
             storeFile file("keystores/jumia_blackberry.keystore")
             storePassword "jumiablackberry"
             keyAlias "jumia_blackberry"
             keyPassword "jumiablackberry"
         }
 
-        jumia_mtnng_signing {
+        jumiaMtnngSigning {
             storeFile file("keystores/jumia_mtnng.keystore")
             storePassword "jumiamtnng"
             keyAlias "jumia_mtnng"
             keyPassword "jumiamtnng"
         }
 
-        jumia_nokiax_signing {
+        jumiaNokiaxSigning {
             storeFile file("keystores/jumia_nokiax.keystore")
             storePassword "jumianokiax"
             keyAlias "jumia_nokiax"
             keyPassword "jumianokiax"
         }
 
-        daraz_signing {
+        darazSigning {
             storeFile file("keystores/daraz_android.keystore")
             storePassword "darazandroid"
             keyAlias "daraz_android"
             keyPassword "darazandroid"
         }
 
-        shop_signing {
+        shopSigning {
             storeFile file("keystores/shop_android.keystore")
             storePassword "shopandroid"
             keyAlias "shop_android"
             keyPassword "shopandroid"
         }
 
-        bamilo_signing {
+        bamiloSigning {
             storeFile file("keystores/bamilo_android.keystore")
             storePassword "bamiloandroid"
             keyAlias "bamilo_android"
@@ -142,7 +142,7 @@ android {
             applicationId "com.jumia.android"
             versionName "2.4"
             versionCode getAppVersionCode(48)
-            signingConfig signingConfigs.jumia_signing
+            signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "pt"
         }
 
@@ -150,7 +150,7 @@ android {
             versionName "2.4"
             versionCode 47
             applicationId "com.jumia.mtnng"
-            signingConfig signingConfigs.jumia_mtnng_signing
+            signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
                 jumiaMTNng.res.srcDirs = ['src/jumia/res', 'src/jumiaMTNng/res']
@@ -161,7 +161,7 @@ android {
             versionName "2.4"
             versionCode 11
             applicationId "com.jumia.nokiax"
-            signingConfig signingConfigs.jumia_nokiax_signing
+            signingConfig signingConfigs.jumiaNokiaxSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
                 jumiaNokiaX.res.srcDirs = ['src/jumia/res', 'src/jumiaNokiaX/res']
@@ -172,7 +172,7 @@ android {
             versionName "2.4"
             versionCode 47
             applicationId "com.jumia.samsung"
-            signingConfig signingConfigs.jumia_signing
+            signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
                 jumiaSamsung.res.srcDirs = ['src/jumia/res', 'src/jumiaSamsung/res']
@@ -183,7 +183,7 @@ android {
             versionName "2.4"
             versionCode 7
             applicationId "com.jumia.blackberry"
-            signingConfig signingConfigs.jumia_blackberry_signing
+            signingConfig signingConfigs.jumiaBlackberrySigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
                 jumiaBlackberry.res.srcDirs = ['src/jumia/res', 'src/jumiaBlackberry/res']
@@ -194,7 +194,7 @@ android {
             applicationId "com.shop.android"
             versionName "1.2"
             versionCode getAppVersionCode(4)
-            signingConfig signingConfigs.shop_signing
+            signingConfig signingConfigs.shopSigning
             resConfigs "en"
         }
 
@@ -202,7 +202,7 @@ android {
             applicationId "com.daraz.android"
             versionName "1.2"
             versionCode getAppVersionCode(4)
-            signingConfig signingConfigs.daraz_signing
+            signingConfig signingConfigs.darazSigning
             resConfigs "en"
         }
 
@@ -210,7 +210,7 @@ android {
             applicationId "com.bamilo.android"
             versionName "1.4"
             versionCode getAppVersionCode(8)
-            signingConfig signingConfigs.bamilo_signing
+            signingConfig signingConfigs.bamiloSigning
             resConfigs "en"
         }
 
@@ -224,8 +224,22 @@ android {
 }
 
 dependencies {
+    /** LOCAL LIBS **/
     compile project(':libraries:com.mobile.framework')
+
+    compile 'com.google.android.support:wearable:1.1.0'
+    compile 'com.google.android.gms:play-services-wearable:6.5.87'
+//    wearApp project(':JumiaWear')
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    /**Comment this for the BB release **/
+    jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
+    shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
+    darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
+    jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
+
 }
 
 
