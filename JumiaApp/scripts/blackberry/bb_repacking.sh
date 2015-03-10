@@ -15,70 +15,72 @@
 #		- The PATH must contain the bin folder 								#
 #############################################################################
 
-
-#######################
-##### ENVIRONMENT #####
-#######################
-HOSTNAME_JENKINS="jenkinsmastermobile"
+##############################
+##### VALIDATE ARGUMENTS #####
+##############################
+# Get BB flavour
+if [ $# -ne 1 ];
+then echo "Please indicates the Blackberry project name:\n> sh JumiaApp/scripts/blackberry/bb_repacking.sh jumiaBlackberry"; exit 1;
+else ARG_1=$1
+fi
 
 #########################
 ##### DEF CONSTANTS #####
 #########################
 STOREPASS="jumiablackberry"
-PCK_NAME="JumiaApp"
-BAR_FOLDER="$PCK_NAME/dist/blackberry"
-CERT_FOLDER="$PCK_NAME/assets/blackberry/certificate"
+STUDIO_MOBILE_PACKAGE="JumiaApp"
+STORE_CRT_FOLDER=~/.rim/
 
 #####################
 ##### DEF FILES #####
 #####################
-CNF_PATH="$PCK_NAME/assets/blackberry/android.cfg"
-MNF_PATH="$PCK_NAME/assets/blackberry/MANIFEST.MF"
-#ICON_PATH="$PCK_NAME/res/drawable-ldpi/ic_launcher.png"
-#HOCKEY_FILE="$BAR_FOLDER/com.jumia.blackberry.zip"
-
-
-##############################
-##### VALIDATE ARGUMENTS #####
-##############################
-if [ $# -ne 2 ]; then echo "Your command line contains $# arguments"; exit 1; fi
-if [ $1 != "" ]; then echo "Positional parameter 1 contains something"; exit 1; fi
-if [ $2 != "" ]; then echo "Positional parameter 1 contains something"; exit 1; fi
-
-JumiaApp/build/outputs/apk/JumiaApp-jumiaSamsung-release.apk
+STUDIO_BB_FLAVOUR="$STUDIO_MOBILE_PACKAGE/src/$ARG_1"
+STUDIO_BB_FLAVOUR_CERT_FOLDER="$STUDIO_BB_FLAVOUR/assets/blackberry/certificate"
+STUDIO_BB_FLAVOUR_CNF_PATH="$STUDIO_BB_FLAVOUR/assets/blackberry/android.cfg"
+STUDIO_BB_FLAVOUR_MNF_PATH="$STUDIO_BB_FLAVOUR/assets/blackberry/MANIFEST.MF"
+STUDIO_OUT_APK="$STUDIO_MOBILE_PACKAGE/build/outputs/apk"
+STUDIO_OUT_BAR="$STUDIO_MOBILE_PACKAGE/build/outputs/bar"
 
 ########################
 ##### VALIDATE ENV #####
 ########################
-echo "> Release environment"
-#APK_FILE="$PCK_NAME/build/outputs/apk/JumiaApp-blackberry-jumia-release.apk"
-#BAR_FILE="$BAR_FOLDER/JumiaApp-blackberry-jumia-release.bar"
-APK_FILE="$1"
-BAR_FILE="$2"
-STORE_CRT_FOLDER=~/.rim/
-. ~/.bash_profile
+echo -n "1 - Validate Blackberry environment: "
+# GRADLE FLAVOUR
+if [ ! -d $STUDIO_BB_FLAVOUR ]; then echo "Directory not found: $STUDIO_BB_FLAVOUR"; exit 1; fi
+# CERTIFICATE
+if [ ! -d $STUDIO_BB_FLAVOUR_CERT_FOLDER ]; then echo "Directory not found: $STUDIO_BB_FLAVOUR"; exit 1; fi
+# CONFIGURATION
+if [ ! -f $STUDIO_BB_FLAVOUR_CNF_PATH ]; then echo "File not found: $STUDIO_BB_FLAVOUR_CNF_PATH"; exit 1; fi
+# MANIFEST
+if [ ! -f $STUDIO_BB_FLAVOUR_MNF_PATH ]; then echo "File not found: $STUDIO_BB_FLAVOUR_MNF_PATH"; exit 1; fi
+echo "SUCCESS"
 
-####################
-##### FIND APK #####
-#################### 
-echo -n "1 - Find apk: "
+############################
+##### FIND RELEASE APK #####
+############################
+APK_FILE="$(ls $STUDIO_OUT_APK/*release.apk)";
+echo -n "2 - Find apk: "
 if [ -f $APK_FILE ]
-then echo "SUCCESS"
-else echo "FAIL, File not found!"; exit 1;
+then
+    echo "SUCCESS. Apk: $APK_FILE";
+    BAR_FILE="$STUDIO_OUT_BAR/$(ls $APK_FILE | xargs -n 1 basename | sed -e s/.apk/.bar/g)";
+else
+    echo "FAIL. File not found: $APK_FILE";
+    exit 1;
 fi
 
 #######################
 ##### CERTIFICATE #####
 #######################
 echo "2 - Copy Token and Certificate"
-cp $CERT_FOLDER/* "$STORE_CRT_FOLDER"
+cp $STUDIO_BB_FLAVOUR_CERT_FOLDER/* "$STORE_CRT_FOLDER"
 
 #####################
 ##### REPACKING #####
 #####################
 echo "3 - Repacking apk to bar"
 #blackberry-apkpackager $APK_FILE $CNF_PATH -m $MNF_PATH -ci $ICON_PATH -t $BAR_FOLDER -r
-blackberry-apkpackager $APK_FILE $CNF_PATH -m $MNF_PATH -t $BAR_FOLDER -r
+blackberry-apkpackager $APK_FILE $STUDIO_BB_FLAVOUR_CNF_PATH -m $STUDIO_BB_FLAVOUR_MNF_PATH -t $STUDIO_OUT_BAR -r
 
 ################
 ##### SIGN #####
