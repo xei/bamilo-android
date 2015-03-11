@@ -10,14 +10,12 @@ apply plugin: 'findbugs'
  *
  * @return The app versionCode: 1 when app is created locally or current jenkins version number.
  */
-def getAppVersionCode() {
-
-    def versionCode = 1
+def getAppVersionCode(int releaseVersionCode) {
+    // CASE DEV: is used a system var
     if (System.getenv('BUILD_VERSION_NUMBER') != null) {
-        versionCode = Integer.valueOf(System.getenv('BUILD_VERSION_NUMBER'))
+        releaseVersionCode = Integer.valueOf(System.getenv('BUILD_VERSION_NUMBER'))
     }
-
-    return versionCode
+    return releaseVersionCode
 }
 /**
  *
@@ -49,9 +47,8 @@ android {
         applicationId "com.mobile.view"
         minSdkVersion 9
         targetSdkVersion 21
-        versionCode = getAppVersionCode()
         versionName = getAppVersionName()
-
+        versionCode = getAppVersionCode(1)
         resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
     }
 
@@ -140,17 +137,20 @@ android {
 
     productFlavors {
 
+        /**
+         * #################### JUMIA ####################
+         */
         jumia {
             applicationId "com.jumia.android"
             versionName "2.4"
-            versionCode 48
+            versionCode getAppVersionCode(48)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "pt"
         }
 
         jumiaMTNng {
             versionName "2.4"
-            versionCode 47
+            versionCode 48
             applicationId "com.jumia.mtnng"
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "pt"
@@ -172,8 +172,8 @@ android {
 
         jumiaSamsung {
             versionName "2.4"
-            versionCode 47
-            applicationId "com.jumia.samsung"
+            versionCode 48
+            applicationId "com.jumia.android"
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
@@ -192,26 +192,35 @@ android {
             }
         }
 
+        /**
+         * #################### SHOP ####################
+         */
         shop {
             applicationId "com.shop.android"
             versionName "1.2"
-            versionCode 4
+            versionCode getAppVersionCode(4)
             signingConfig signingConfigs.shopSigning
             resConfigs "en"
         }
 
+        /**
+         * #################### DARAZ ####################
+         */
         daraz {
             applicationId "com.daraz.android"
             versionName "1.2"
-            versionCode 4
+            versionCode getAppVersionCode(4)
             signingConfig signingConfigs.darazSigning
             resConfigs "en"
         }
 
+        /**
+         * #################### BAMILO ####################
+         */
         bamilo {
             applicationId "com.bamilo.android"
             versionName "1.4"
-            versionCode 8
+            versionCode getAppVersionCode(8)
             signingConfig signingConfigs.bamiloSigning
             resConfigs "en"
         }
@@ -227,21 +236,18 @@ android {
 
 dependencies {
     /** LOCAL LIBS **/
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':libraries:com.mobile.framework')
-
     compile 'com.google.android.support:wearable:1.1.0'
     compile 'com.google.android.gms:play-services-wearable:6.5.87'
-//    wearApp project(':JumiaWear')
-
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
-    /**Comment this for the BB release **/
+    /** Android wear releases **/
+    //wearApp project(':JumiaWear')
     jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaSamsungWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
     bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
     shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
     darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
-    jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
-
 }
 
 
@@ -250,9 +256,11 @@ android.applicationVariants.all { variant ->
     println "****************************"
     println "variant: ${variant.name}"
     println "flavor: ${variant.flavorName}"
+    println "productFlavors: ${variant.productFlavors[0].name}"
     println "buildType: ${variant.buildType.name}"
     println "applicationId: ${variant.applicationId}"
-    println "productFlavors: ${variant.productFlavors[0].name}"
+    println "versionName: ${variant.versionName}"
+    println "versionCode: ${variant.versionCode}"
     println "****************************"
 
     /**
