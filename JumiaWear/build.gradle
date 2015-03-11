@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.jumia.android"
         minSdkVersion 20
-        targetSdkVersion 20
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
@@ -58,14 +58,14 @@ android {
             debuggable true
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-live.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), '../JumiaApp/proguard-project-live.txt'
         }
 
         release {
-            minifyEnabled false
+            minifyEnabled true
             debuggable false
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), '../JumiaApp/proguard-project-market.txt'
         }
     }
 

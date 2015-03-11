@@ -435,6 +435,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     @Override
     public void onUserLeaveHint() {
+        Log.e(TAG,"onUserLeaveHint");
         shouldHandleEvent = false;
     }
 
@@ -453,6 +454,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onRequestComplete(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS RESPONSE");
         if (!shouldHandleEvent) {
+            Log.e(TAG,"shouldHandleEvent"+shouldHandleEvent);
             return;
         }
 

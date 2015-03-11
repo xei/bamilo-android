@@ -5,6 +5,25 @@
     android:versionCode="47"
     android:versionName="2.4" >
 
+
+    <!-- ############# AD4Push: MESSAGE (Receive) ############# -->
+    <permission
+        android:name="${applicationId}.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+
+    <permission
+        android:name="${applicationId}.permission.A4S_SEND"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="${applicationId}.permission.A4S_SEND" />
+
+    <!-- ############# Location: LocationHelper and AD4Push ############# -->
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:required="false" />
+
     <!-- ######################################## -->
     <!-- ############# Permissions ############## -->
     <!-- ######################################## -->
@@ -66,16 +85,31 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <!-- ############# DEEP LINK : Accepts URIs############# -->
-            <intent-filter android:label="@string/dp_intent_label" >
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.LAUNCHER"/>
+
+                <data android:scheme="@string/dp_app_name_uppercase" />
+                <data android:scheme="@string/dp_app_name_lowercase" />
+            </intent-filter>
+
+            <!-- ############# DEEP LINK : Accepts APP INDEXING ############# -->
+            <intent-filter >
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="@string/dp_app_name_uppercase" />
-                <data android:scheme="@string/dp_app_name_lowercase" />
+                <data android:scheme="@string/dp_app_index_scheme"
+                    android:host="${applicationId}"
+                    android:pathPrefix="@string/dp_app_index_prefix"/>
             </intent-filter>
+
         </activity>
         <activity
             android:name="com.facebook.LoginActivity"
@@ -187,7 +221,32 @@
             </intent-filter>
         </service>
 
+        <!-- ############# AD4Push: Push Notifications ############# -->
 
+        <receiver
+            android:name="com.ad4screen.sdk.GCMHandler"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <!-- WARNING: No use value from strings.xml, attribute is not a string value -->
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
+
+
+        <receiver
+            android:name="com.mobile.utils.receivers.PushNotificationReceiver"
+            android:permission="${applicationId}.permission.A4S_SEND">
+            <intent-filter>
+                <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED"/>
+                <action android:name="com.ad4screen.sdk.intent.action.CLICKED"/>
+
+                <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS"/>
+                <!--<category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" />-->
+                <!--<category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />-->
+            </intent-filter>
+        </receiver>
 
 
 

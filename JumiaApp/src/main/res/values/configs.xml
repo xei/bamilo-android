@@ -28,4 +28,8 @@
     <string name="hockey_app_id"></string>
     <item name="hockeyapp_enable_dev" type="bool">false</item>
 
+    <!-- DEEP LINK APP INDEXING -->
+    <string name="dp_app_index_prefix">/JUMIA</string>
+    <string name="dp_app_index_scheme">android-app</string>
+
 </resources>
