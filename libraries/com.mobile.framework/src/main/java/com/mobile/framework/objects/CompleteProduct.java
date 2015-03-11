@@ -271,7 +271,6 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 	        }
 
             // Handle related products
-
             JSONArray relatedProductsJsonArray = dataObject.optJSONArray(RestConstants.JSON_RELATED_PRODUCTS);
             if(relatedProductsJsonArray != null){
                 for(int i = 0; i<relatedProductsJsonArray.length();i++){

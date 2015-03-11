@@ -218,8 +218,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
             onRequestComplete(bundle);
         }
-
-        ;
     };
 
     private void cleanIntent(Intent intent) {

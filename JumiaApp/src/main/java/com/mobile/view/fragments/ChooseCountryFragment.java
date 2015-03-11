@@ -278,7 +278,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                 new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // Dissmiss dialog
+                        // Dismiss dialog
                         dismissDialogFragment();
                         // Validate click
                         int id = v.getId();
@@ -415,7 +415,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             showFragmentContentContainer();
             break;
         default:
-            Log.w(TAG, "WARNING RECEIVED UNKOWN EVENT: " + eventType.toString());
+            Log.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
             break;
         }
     }
@@ -446,7 +446,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             showFragmentErrorRetry();
             break;
         default:
-            Log.w(TAG, "WARNING RECEIVED UNKOWN EVENT: " + eventType.toString());
+            Log.w(TAG, "WARNING RECEIVED UNKNOWN EVENT: " + eventType.toString());
             break;
         }
     }
