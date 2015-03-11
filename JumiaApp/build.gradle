@@ -137,6 +137,9 @@ android {
 
     productFlavors {
 
+        /**
+         * #################### JUMIA ####################
+         */
         jumia {
             applicationId "com.jumia.android"
             versionName "2.4"
@@ -189,6 +192,9 @@ android {
             }
         }
 
+        /**
+         * #################### SHOP ####################
+         */
         shop {
             applicationId "com.shop.android"
             versionName "1.2"
@@ -197,6 +203,9 @@ android {
             resConfigs "en"
         }
 
+        /**
+         * #################### DARAZ ####################
+         */
         daraz {
             applicationId "com.daraz.android"
             versionName "1.2"
@@ -205,6 +214,9 @@ android {
             resConfigs "en"
         }
 
+        /**
+         * #################### BAMILO ####################
+         */
         bamilo {
             applicationId "com.bamilo.android"
             versionName "1.4"
@@ -228,10 +240,10 @@ dependencies {
     compile project(':libraries:com.mobile.framework')
     compile 'com.google.android.support:wearable:1.1.0'
     compile 'com.google.android.gms:play-services-wearable:6.5.87'
-
-    /** Android releases **/
+    /** Android wear releases **/
     //wearApp project(':JumiaWear')
     jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaSamsungWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
     bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
     shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')

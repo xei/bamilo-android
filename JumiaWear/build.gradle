@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
-
 android {
+
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "com.jumia.android"
         minSdkVersion 20
-        targetSdkVersion 20
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
@@ -45,7 +45,6 @@ android {
         }
     }
 
-
     buildTypes {
 
         debug {
@@ -58,18 +57,16 @@ android {
             debuggable true
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-live.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
         release {
-            minifyEnabled false
             debuggable false
+            minifyEnabled false
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-
 
     productFlavors {
 
@@ -116,7 +113,6 @@ dependencies {
     compile 'com.google.android.support:wearable:1.1.0'
     compile 'com.google.android.gms:play-services-wearable:6.5.87'
 }
-
 
 /** SET CUSTOM APPLICATION IDS DEPENDING ON FLAVOURS AND BUILD TYPE **/
 android.applicationVariants.all { variant ->
