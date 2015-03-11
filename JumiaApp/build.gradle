@@ -148,7 +148,7 @@ android {
 
         jumiaMTNng {
             versionName "2.4"
-            versionCode 47
+            versionCode 48
             applicationId "com.jumia.mtnng"
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "pt"
@@ -170,8 +170,8 @@ android {
 
         jumiaSamsung {
             versionName "2.4"
-            versionCode 47
-            applicationId "com.jumia.samsung"
+            versionCode 48
+            applicationId "com.jumia.android"
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
