@@ -5,7 +5,7 @@
     <string name="action_label_add_address">اضافه کردن آدرس جدید</string>
     <string name="action_label_basket">سبد کالا</string>
     <string name="action_label_logout">خروج</string>
-    <string name="action_label_search_hint">جستجو در بامیلو</string>
+    <string name="action_label_search_hint">%s جستجو در بامیلو</string>
     <string name="action_label_share">به اشتراک بگذارید</string>
     <string name="action_label_wishlist">فهرست علاقه مندی ها</string>
     <string name="add_address">افزودن نشانی</string>
@@ -267,7 +267,7 @@
     <string name="server_error">بازیابی اطلاعات دچار مشکل شده است.</string>
     <string name="server_error_title">مشکلی ایجاد شده است.</string>
     <string name="share_checkout_this_product">این کالاهایی که یافته ام را نیز مشاهده کنید:</string>
-    <string name="share_subject">اشتراک گذاری بامیلو</string>
+    <string name="share_subject">%s اشتراک گذاری بامیلو</string>
     <string name="shipping">ارسال کالا</string>
     <string name="shipping_fee">هزینه ارسال :</string>
     <string name="shipping_time">زمان ارسال:</string>
@@ -321,9 +321,9 @@
     <string name="track_your_order_tip">جستجو برای کد سفارش و تمامی جزییات مربوط به آن در این بخش به نمایش در خواهد آمد.</string>
     <string name="try_again">تکرار</string>
     <string name="try_again_retry">دوباره امتحان کنید</string>
-    <string name="upgrade_forced_text">ما موردی یافته ایم که باید برطرف شده و تجربه شما را از فروشگاه بامیلو باز هم بهبود دهد! برای ادامه باید برنامه را بروزرسانی کنید.</string>
+    <string name="upgrade_forced_text">%s ما موردی یافته ایم که باید برطرف شده و تجربه شما را از فروشگاه بامیلو باز هم بهبود دهد! برای ادامه باید برنامه را بروزرسانی کنید.</string>
     <string name="upgrade_forced_title">بروزرسانی لازم است.</string>
-    <string name="upgrade_optional_text">یک بروزرسانی جدید برای بهبود بیشتر تجربه خرید از فروشگاه بامیلو وجود دارد. حتما برنامه خود را بروزرسانی کنید.</string>
+    <string name="upgrade_optional_text">%s یک بروزرسانی جدید برای بهبود بیشتر تجربه خرید از فروشگاه بامیلو وجود دارد. حتما برنامه خود را بروزرسانی کنید.</string>
     <string name="upgrade_optional_title">بروزرسانی موجود است</string>
     <string name="upgrade_proceed">بروزرسانی</string>
     <string name="upgrade_remindmelater">بعدا یادآوری کن.</string>
@@ -350,4 +350,5 @@
     <string name="can_share_app_with_friends">هم اکنون می توانید برنامه را با دوستان خود به اشتراک بگذارید</string>
     <string name="my_addresses">آدرس های من</string>
     <string name="create_edit_address">ایجاد یا ویرایش آدرس شما</string>
+
 </resources>

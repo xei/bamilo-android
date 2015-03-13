@@ -32,4 +32,5 @@
     <string name="dp_app_index_prefix">/JUMIA</string>
     <string name="dp_app_index_scheme">android-app</string>
 
+    <string name="app_name_placeholder">Jumia</string>
 </resources>

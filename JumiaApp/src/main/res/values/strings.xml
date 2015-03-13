@@ -5,7 +5,7 @@
     <string name="action_label_add_address">Add New Address</string>
     <string name="action_label_basket">Basket</string>
     <string name="action_label_logout">Logout</string>
-    <string name="action_label_search_hint">Search on Jumia</string>
+    <string name="action_label_search_hint">Search on %s</string>
     <string name="action_label_share">Share It</string>
     <string name="action_label_wishlist">Wish List</string>
     <string name="add_address">Add Address</string>
@@ -268,7 +268,7 @@
     <string name="server_error">We have encountered a small problem fetching the data.</string>
     <string name="server_error_title">Problem occured</string>
     <string name="share_checkout_this_product">Check out this product I found:</string>
-    <string name="share_subject">Jumia Sharing</string>
+    <string name="share_subject">%s Sharing</string>
     <string name="shipping">Shipping</string>
     <string name="shipping_fee">Shipping Fee: </string>
     <string name="shipping_time">Shipping Time: </string>
@@ -322,9 +322,9 @@
     <string name="track_your_order_tip">Search for your Order ID and every detail about it will show here</string>
     <string name="try_again">Retry</string>
     <string name="try_again_retry">Try Again</string>
-    <string name="upgrade_forced_text">We found something that we needed to fix to make shopping on Jumia even better! You will need to update before you continue using.</string>
+    <string name="upgrade_forced_text">We found something that we needed to fix to make shopping on %s even better! You will need to update before you continue using.</string>
     <string name="upgrade_forced_title">Upgrade necessary</string>
-    <string name="upgrade_optional_text">There is a new update available that we prepared to make shopping on Jumia even better! Be sure to upgrade today!</string>
+    <string name="upgrade_optional_text">There is a new update available that we prepared to make shopping on %s even better! Be sure to upgrade today!</string>
     <string name="upgrade_optional_title">Upgrade available</string>
     <string name="upgrade_proceed">Upgrade</string>
     <string name="upgrade_remindmelater">Remind me later</string>
