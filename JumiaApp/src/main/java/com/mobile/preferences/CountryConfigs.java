@@ -152,4 +152,9 @@ public class CountryConfigs {
         mEditor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, true);
         mEditor.commit();
     }
+
+    public static boolean checkCountryRequirements(SharedPreferences sharedPrefs) {
+        return (sharedPrefs.contains(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE)) ? true : false;
+    }
+
 }

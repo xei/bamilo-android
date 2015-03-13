@@ -45,7 +45,7 @@ public class FacebookHelper {
      * Method used to show or hide Facebook views using a flag.<br>
      * Hide view case Build.VERSION  
      * Case the Frament implements the OnClickView is defined to the callback for click listener.
-     * @param context
+     * @param fragment
      * @param views
      * @author sergiopereira
      */
@@ -63,7 +63,7 @@ public class FacebookHelper {
 
     /**
      * Show Facebook views and associate buttons to fragment.
-     * @param visibility
+     * @param fragment
      * @param views
      * @author sergiopereira
      */
