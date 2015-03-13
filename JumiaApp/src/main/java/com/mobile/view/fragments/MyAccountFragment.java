@@ -261,10 +261,11 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
             Resources resources = getResources();
             
             String text = "";
+            String preText = getString(R.string.install_jumia_android, getString(R.string.app_name_placeholder));
             if(resources.getBoolean(R.bool.is_bamilo_specific)){
-                text = resources.getString(R.string.share_app_link) + " " + resources.getString(R.string.install_jumia_android);
+                text = getString(R.string.share_app_link) + " " + preText;
             } else {
-                text = resources.getString(R.string.install_jumia_android)+ " " + resources.getString(R.string.share_app_link);
+                text = preText + " " + getString(R.string.share_app_link);
             }
             
             ActivitiesWorkFlow.startActivitySendString(getBaseActivity(), resources.getString(R.string.share_the_app), text) ;

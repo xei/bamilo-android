@@ -1283,7 +1283,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         // sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.action_label_search_hint, getString(R.string.app_name_placeholder)));
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject, getString(R.string.app_name_placeholder)));
         // Get product
         CompleteProduct prod = JumiaApplication.INSTANCE.getCurrentProduct();
         // Validate
