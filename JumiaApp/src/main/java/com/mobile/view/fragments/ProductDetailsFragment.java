@@ -478,8 +478,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         // Validate
         if (sku != null) {
             Log.i(TAG, "DEEP LINK GET PDV: " + sku + " " + mDeepLinkSimpleSize);
-            mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE,
-                    R.string.gpush_prefix));
+            mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix));
             mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
             mBeginRequestMillis = System.currentTimeMillis();
             triggerContentEvent(new GetSearchProductHelper(), bundle, responseCallback);
@@ -1050,10 +1049,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             String rating = getString(R.string.string_ratings).toLowerCase();
             if (mCompleteProduct.getSeller().getRatingCount() == 1)
                 rating = getString(R.string.string_rating).toLowerCase();
-            mSellerRatingValue
-                    .setText(mCompleteProduct.getSeller().getRatingCount() + " " + rating);
+            mSellerRatingValue.setText(mCompleteProduct.getSeller().getRatingCount() + " " + rating);
             mSellerRating.setRating(mCompleteProduct.getSeller().getRatingValue());
-            if(!mCompleteProduct.getSimples().isEmpty() &&
+            if(CollectionUtils.isNotEmpty(mCompleteProduct.getSimples()) &&
                     !mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MIN_DELIVERY_TIME_TAG).equals("0") &&
                     !mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MAX_DELIVERY_TIME_TAG).equals("0") ) {
                 getView().findViewById(R.id.delivery_time_container).setVisibility(View.VISIBLE);

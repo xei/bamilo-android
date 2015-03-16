@@ -114,6 +114,7 @@ android {
             applicationIdSuffix ".dev"
             manifestPlaceholders = [ AdjustEnvironment:"sandbox" ]
             debuggable true
+            proguardFile 'proguard-project-dev.txt'
         }
 
         live {
