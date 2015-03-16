@@ -1,8 +1,4 @@
-
 package com.mobile.framework.objects;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,6 +6,9 @@ import android.text.TextUtils;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -24,7 +23,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 
 	private String mGrandTotal;
 
-	private String mShippingAmount;
+	private double mShippingAmount;
 
 	private String mExtraCost;
 
@@ -87,7 +86,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
             Log.d(TAG, "ORDER: " + jsonOrder.toString());
     		mGrandTotal = jsonOrder.optString(RestConstants.JSON_ORDER_GRAND_TOTAL_TAG);
     		mGrandTotalConverted = jsonOrder.optDouble(RestConstants.JSON_ORDER_GRAND_TOTAL_CONVERTED_TAG);
-    		mShippingAmount = jsonOrder.optString(RestConstants.JSON_ORDER_SHIP_AMOUNT_TAG);
+    		mShippingAmount = jsonOrder.optDouble(RestConstants.JSON_ORDER_SHIP_AMOUNT_TAG);
     		mExtraCost = jsonOrder.optString(RestConstants.JSON_ORDER_EXTRA_PAYMENTS_TAG);
     		mInstallmentFees = jsonOrder.optString(RestConstants.JSON_ORDER_INSTALLMENT_FEES_TAG);
     		mTaxAmount = jsonOrder.optString(RestConstants.JSON_TAX_AMOUNT_TAG);				// VAT
@@ -201,7 +200,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	/**
 	 * @return the shippingAmount
 	 */
-	public String getShippingAmount() {
+	public double getShippingAmount() {
 		return mShippingAmount;
 	}
 
@@ -288,7 +287,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	 * @param shippingAmount
 	 *            the shippingAmount to set
 	 */
-	public void setShippingAmount(String shippingAmount) {
+	public void setShippingAmount(double shippingAmount) {
 		this.mShippingAmount = shippingAmount;
 	}
 
@@ -325,40 +324,40 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	}
 	
 	/**
-	 * @param customerDevice
-	 *            the customerDevice to set
+	 * @param cart
+	 *
 	 */
 	public void setCart(ShoppingCart cart) {
 		this.mCart = cart;
 	}
 	
 	/**
-	 * @param customerDevice
-	 *            the customerDevice to set
+	 * @param method
+	 *
 	 */
 	public void setShippingMethod(String method) {
 		this.mShippingMethod = method;
 	}
 	
 	/**
-	 * @param customerDevice
-	 *            the customerDevice to set
+	 * @param method
+	 *
 	 */
 	public void setPaymentMethod(String method) {
 		this.mPaymentMethod = method;
 	}
 	
 	/**
-	 * @param customerDevice
-	 *            the customerDevice to set
+	 * @param address
+	 *
 	 */
 	public void setShippingAddress(Address address) {
 		this.mShippingAddress = address;
 	}
 	
 	/**
-	 * @param customerDevice
-	 *            the customerDevice to set
+	 * @param address
+	 *
 	 */
 	public void setBillingAddress(Address address) {
 		this.mBillingAddress = address;
@@ -461,7 +460,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		 dest.writeString(mGrandTotal);
-		 dest.writeString(mShippingAmount);
+		 dest.writeDouble(mShippingAmount);
 		 dest.writeString(mExtraCost);
 		 dest.writeString(mInstallmentFees);
 		 dest.writeString(mTaxAmount);
@@ -483,7 +482,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	 */
 	private OrderSummary(Parcel in) {
 		 mGrandTotal = in.readString();
-		 mShippingAmount = in.readString();
+		 mShippingAmount = in.readDouble();
 		 mExtraCost = in.readString();
 		 mInstallmentFees = in.readString();
 		 mTaxAmount = in.readString();
