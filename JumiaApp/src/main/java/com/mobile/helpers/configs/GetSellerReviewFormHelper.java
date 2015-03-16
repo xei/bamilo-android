@@ -66,8 +66,7 @@ public class GetSellerReviewFormHelper extends BaseHelper {
                 form.setEventType(EventType.GET_FORM_SELLER_REVIEW_EVENT);
                 JSONObject formObject = dataObject.getJSONObject(i);
                 if (!form.initialize(formObject)) {
-                    Log.e(TAG,
-                            "Error initializing the form using the data");
+                    Log.e(TAG, "Error initializing the form using the data");
                 }
                 forms.add(form);
             }
