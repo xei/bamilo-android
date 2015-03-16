@@ -86,10 +86,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 
     private TextView mVoucherValue;
 
-    private TextView mVatValue;
-
-    private View mVatView;
-
     /**
      * Get instance
      * @return CheckoutSummaryFragment
@@ -147,8 +143,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         // Products
         mProductList = (ViewGroup) view.findViewById(R.id.checkout_summary_products_list);
         view.findViewById(R.id.checkout_summary_products_btn_edit).setOnClickListener(this);
-        mVatView = view.findViewById(R.id.checkout_summary_products_vat_container);
-        mVatValue = (TextView) view.findViewById(R.id.checkout_summary_products_text_vat_value);
         mShippingFeeView = (ViewGroup) view.findViewById(R.id.checkout_summary_products_shippingfee_container);
         mShippingFeeValue = (TextView) view.findViewById(R.id.checkout_summary_products_text_shippingfee);
         mVoucherView = (ViewGroup) view.findViewById(R.id.checkout_summary_products_voucher_container);
@@ -276,8 +270,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             if(mOrderSummary != null) showTotal(mOrderSummary.getTotal());
             // continue
         case ConstantsCheckout.CHECKOUT_BILLING:
-            // VAT
-            if(mOrderSummary != null) showVat();
             // Voucher
             if(mOrderSummary != null) showVoucher();
             
@@ -417,16 +409,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             }
             
         }
-    }
-    
-    /**
-     * Show VAT
-     * @author sergiopereira
-     */
-    private void showVat() {
-        Log.d(TAG, "ORDER VAT: " + mOrderSummary.getTaxAmount());
-        mVatValue.setText(CurrencyFormatter.formatCurrency(mOrderSummary.getTaxAmount()));
-        mVatView.setVisibility(View.VISIBLE);
     }
     
     /**

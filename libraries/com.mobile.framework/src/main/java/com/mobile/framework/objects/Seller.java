@@ -1,12 +1,12 @@
 package com.mobile.framework.objects;
 
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
+
+import org.json.JSONObject;
 
 /**
  * Class that represents the Seller of a specific product
@@ -21,9 +21,9 @@ public class Seller implements IJSONSerializable, Parcelable {
     private String name;
     
     private String url;
-    
+
     private int minDeliveryTime;
-    
+
     private int maxDeliveryTime;
     
     private int ratingCount;
@@ -113,8 +113,8 @@ public class Seller implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) {
             name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
             url = jsonObject.optString(RestConstants.JSON_URL_TAG);
-            minDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MIN_DELIVERY_TAG);
-            maxDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MAX_DELIVERY_TAG);
+//            minDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MIN_DELIVERY_TAG);
+//            maxDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MAX_DELIVERY_TAG);
             
             JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
             

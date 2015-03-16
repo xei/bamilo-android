@@ -1053,9 +1053,16 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             mSellerRatingValue
                     .setText(mCompleteProduct.getSeller().getRatingCount() + " " + rating);
             mSellerRating.setRating(mCompleteProduct.getSeller().getRatingValue());
-            mSellerDeliveryTime.setText(mCompleteProduct.getSeller().getMinDeliveryTime() + " - "
-                    + mCompleteProduct.getSeller().getMinDeliveryTime()
-                    + " " + getResources().getString(R.string.product_delivery_days));
+            if(!mCompleteProduct.getSimples().isEmpty() &&
+                    !mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MIN_DELIVERY_TIME_TAG).equals("0") &&
+                    !mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MAX_DELIVERY_TIME_TAG).equals("0") ) {
+                getView().findViewById(R.id.delivery_time_container).setVisibility(View.VISIBLE);
+                mSellerDeliveryTime.setText(mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MIN_DELIVERY_TIME_TAG) + " - "
+                        + mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MAX_DELIVERY_TIME_TAG)
+                        + " " + getResources().getString(R.string.product_delivery_days));
+            } else {
+                getView().findViewById(R.id.delivery_time_container).setVisibility(View.GONE);
+            }
 
         } else {
             sellerView.setVisibility(View.GONE);

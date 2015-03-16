@@ -71,7 +71,6 @@ public class DeepLinkManager {
      * Load the external deep link. Get and set the country Load the deep view and create a bundle <p># Default case -> JUMIA://com.mobile.jumia.dev/eg/cart/
      * <p># Other case   -> JUMIA://eg/cart/
      *
-     * @param intent
      * @author sergiopereira
      */
     public static Bundle loadExternalDeepLink(Context context, Uri data) {
@@ -80,12 +79,19 @@ public class DeepLinkManager {
         if (segments == null) {
             return null;
         }
-        Log.d(TAG, "DEEP LINK SEGMENTS: " + segments.toString());
+        
+        //transform int arraylist in order to be able to excute a remove operation
+        ArrayList<String> segmentAux = new ArrayList<String>(segments);
+        Log.d(TAG, "DEEP LINK SEGMENTS: " + segmentAux.toString());
+        //if the deep link is from google app indexing the first element will be JUMIA value
+        if(segmentAux.get(PATH_CC_POS).equalsIgnoreCase(context.getString(R.string.dp_app_name_uppercase))){
+            segmentAux.remove(0);
+        }
+        
         // Get the country code
-        loadCountryCode(context, segments.get(PATH_CC_POS));
-        // Get the tag view
-        // Return values
-        return loadDeepViewTag(context, segments, data);
+        loadCountryCode(context, segmentAux.get(PATH_CC_POS));
+        // Get the tag view and return values
+        return loadDeepViewTag(context, segmentAux, data);
     }
 
     /**

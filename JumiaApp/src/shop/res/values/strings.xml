@@ -5,7 +5,7 @@
     <string name="action_label_add_address">လိပ္စာအသစ္ ျဖည္႔ရန္</string>
     <string name="action_label_basket">ျခင္းေတာင္း</string>
     <string name="action_label_logout">Logout</string>
-    <string name="action_label_search_hint">သယ္ယူပို႔ေဆာင္ရန္ ပံုေသလိပ္စာ</string>
+    <string name="action_label_search_hint">%s သယ္ယူပို႔ေဆာင္ရန္ ပံုေသလိပ္စာ</string>
     <string name="action_label_share">ေ၀မွ်ရန္</string>
     <string name="action_label_wishlist">ရရွိလိုေသာ ပစၥည္းစာရင္း</string>
     <string name="add_address">လိပ္စာ ျဖည္႔ရန္</string>
@@ -267,7 +267,7 @@
     <string name="server_error">အခ်က္အလက္မ်ား ရယူရာတြင္ တစ္စံုတရာ မွားယြင္းေနပါသည္။</string>
     <string name="server_error_title">တစ္စုံတရာ မွားယြင္းေနပါသည္</string>
     <string name="share_checkout_this_product">ဤပစၥည္းကို ၾကည္႔ရႈမည္။</string>
-    <string name="share_subject">Shop.com.mm Sharing</string>
+    <string name="share_subject">%s Sharing</string>
     <string name="shipping">သယ္ယူပို႕ေဆာင္မွဳ</string>
     <string name="shipping_fee">သယ္ယူပို႔ေဆာင္ခ</string>
     <string name="shipping_time">သယ္ယူပို႔ေဆာင္ခ်ိန္</string>
@@ -321,9 +321,9 @@
     <string name="track_your_order_tip">သင္၏ေအာ္ဒါ ID အားရွာေဖြျပီး အေသးစိတ္အခ်က္မ်ားကို ဤေနရာတြင္ၾကည္႕ပါ။</string>
     <string name="try_again">ျပန္လည္ႀကိဳးစားပါ</string>
     <string name="try_again_retry">ျပန္လည္ႀကိဳးစားပါ</string>
-    <string name="upgrade_forced_text">shop.com.mmတြင္ အဆင္ေျပစြာေစ်း၀ယ္ႏိုင္ရန္ ျပင္ဆင္မွဳမ်ားျပဳလုပ္ထားပါသည္။ ဆက္လက္သံုးစြဲရန္ update ျပဳလုပ္ေပးပါ။</string>
+    <string name="upgrade_forced_text">%s တြင္ အဆင္ေျပစြာေစ်း၀ယ္ႏိုင္ရန္ ျပင္ဆင္မွဳမ်ားျပဳလုပ္ထားပါသည္။ ဆက္လက္သံုးစြဲရန္ update ျပဳလုပ္ေပးပါ။</string>
     <string name="upgrade_forced_title">Upgrade လုပ္ရန္လုိအပ္သည္</string>
-    <string name="upgrade_optional_text">shop.com.mmကို ပိုမိုအဆင္ေျပစြာသံုးႏုိင္ရန္ update ျပဳလုပ္ႏိုင္ပါသည္။ ယေန႕ပင္ Upgrade ျပဳလုပ္လုိက္ပါ။</string>
+    <string name="upgrade_optional_text">%s ကို ပိုမိုအဆင္ေျပစြာသံုးႏုိင္ရန္ update ျပဳလုပ္ႏိုင္ပါသည္။ ယေန႕ပင္ Upgrade ျပဳလုပ္လုိက္ပါ။</string>
     <string name="upgrade_optional_title">Upgrade ရရွိႏိုင္သည္</string>
     <string name="upgrade_proceed">Upgrade</string>
     <string name="upgrade_remindmelater">ေနာက္မွသတိေပးပါ</string>

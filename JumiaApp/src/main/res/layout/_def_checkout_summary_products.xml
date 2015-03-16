@@ -65,27 +65,6 @@
             android:visibility="gone" >
         </LinearLayout>
 
-        <!-- VAT -->
-
-        <LinearLayout
-            android:id="@+id/checkout_summary_products_vat_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
-            android:orientation="horizontal"
-            android:visibility="gone" >
-
-            <com.mobile.components.customfontviews.TextView
-                style="@style/text_normal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/vat_string" />
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/checkout_summary_products_text_vat_value"
-                style="@style/text_normal" />
-        </LinearLayout>
-
         <!-- SHIPPING FEE -->
 
         <LinearLayout

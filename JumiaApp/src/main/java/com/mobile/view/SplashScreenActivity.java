@@ -41,6 +41,7 @@ import com.mobile.helpers.configs.GetApiInfoHelper;
 import com.mobile.helpers.configs.GetCountriesGeneralConfigsHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.preferences.CountryConfigs;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
@@ -218,8 +219,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
             onRequestComplete(bundle);
         }
-
-        ;
     };
 
     private void cleanIntent(Intent intent) {
@@ -435,6 +434,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     @Override
     public void onUserLeaveHint() {
+        Log.e(TAG,"onUserLeaveHint");
         shouldHandleEvent = false;
     }
 
@@ -453,6 +453,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onRequestComplete(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS RESPONSE");
         if (!shouldHandleEvent) {
+            Log.e(TAG,"shouldHandleEvent"+shouldHandleEvent);
             return;
         }
 
@@ -617,8 +618,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Validate out dated sections
         if (bundle.getBoolean(Section.SECTION_NAME_COUNTRY_CONFIGS, false)) {
             Log.d(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
-            JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
-            JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
+            triggerGetCountryConfigs();
+        } else if(!CountryConfigs.checkCountryRequirements(sharedPrefs)){
+            Log.d(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
+            triggerGetCountryConfigs();
         } else {
             Log.d(TAG, "START MAIN ACTIVITY");
             // ## Google Analytics "General Campaign Measurement" ##
@@ -628,6 +631,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             // Show activity
             selectActivity();
         }
+
+    }
+
+    private void triggerGetCountryConfigs(){
+        JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
+        JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
     }
 
     /*

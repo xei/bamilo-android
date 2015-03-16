@@ -49,4 +49,6 @@
 	<!-- FACEBOOK -->
     <string name="facebook_app_id"></string>
 
+    <!--<string name="app_name_placeholder">بامیلو</string>-->
+    <string name="app_name_placeholder">Bamilo</string>
 </resources>

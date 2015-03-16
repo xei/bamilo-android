@@ -155,7 +155,7 @@ public class JumiaApplication extends A4SApplication {
         setFormDataRegistry(new HashMap<String, FormData>());
 
         /**
-         * Fix a crash report, when app try recover from brackground
+         * Fix a crash report, when app try recover from background
          * https://rink.hockeyapp.net/manage/apps/33641/app_versions/109/crash_reasons/17098450
          * @author sergiopereira
          */

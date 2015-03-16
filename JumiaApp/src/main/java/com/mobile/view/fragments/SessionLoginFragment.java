@@ -726,7 +726,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             List<String> errorMessages = null;
             if (errors != null) {
-                Log.i(TAG, "ERRROS: " + errors.toString());    
+                Log.i(TAG, "ERRORS: " + errors.toString());
                 errorMessages = errors.get(RestConstants.JSON_ERROR_TAG);
             }
             

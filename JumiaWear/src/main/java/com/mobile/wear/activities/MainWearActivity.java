@@ -70,8 +70,8 @@ public class MainWearActivity extends BaseActivity {
         startActivityForResult(intent, SPEECH_REQUEST_CODE);
 
         //TODO to remove, test purpose
-        String spokenText = "nike";
-        JumiaDataReceiverService.performSearch(spokenText);
+//        String spokenText = "nike";
+//        JumiaDataReceiverService.performSearch(spokenText);
 
     }
 

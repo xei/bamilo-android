@@ -167,4 +167,9 @@ public class CountryConfigs {
         Log.i(TAG, "SHOP COUNTRY PHONE NUMBER: " + mPhone2Call);
         return mPhone2Call;
     }
+
+    public static boolean checkCountryRequirements(SharedPreferences sharedPrefs) {
+        return (sharedPrefs.contains(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE)) ? true : false;
+    }
+
 }

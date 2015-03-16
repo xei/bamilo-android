@@ -5,14 +5,14 @@
     android:layout_height="wrap_content"
     android:visibility="visible" >
 
-    
+
         <LinearLayout
         android:id="@+id/seller_name_n_rate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="2" >
-    
+
     <!-- SELLER NAME -->
 
     <RelativeLayout
@@ -26,7 +26,7 @@
         android:layout_weight="1" >
 
                     <!-- android:background="@drawable/selector_listitem_highlight" -->
-        
+
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/product_detail_seller_sold_by"
             style="@style/text_subtitle"
@@ -68,8 +68,8 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginStart="@dimen/rounded_margin_mid"
         android:layout_marginTop="15dp"
-        android:layout_toEndOf="@+id/seller_name_container"
-        android:layout_toRightOf="@+id/seller_name_container"
+        android:layout_toEndOf="@id/seller_name_container"
+        android:layout_toRightOf="@id/seller_name_container"
         android:background="@drawable/selector_clickableitem_highlight"
         android:layout_weight="1"
         android:visibility="visible" >

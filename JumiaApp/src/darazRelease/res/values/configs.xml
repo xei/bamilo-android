@@ -3,25 +3,16 @@
 
     <!-- APP -->
     <string name="app_name">Daraz</string>
-    <bool name="rest_host_auth_use_it">true</bool>
-    <item name="is_daraz_specific" type="bool">true</item>
+
 
     <!-- COUNTRIES -->
     <string name="countries_url">http://www.daraz.com/mobapi/availablecountries</string>
-
-    <!-- GA -->
-    <bool name="ga_debug_mode">false</bool>
-    <!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes.
-    <integer name="ga_dispatchPeriod">0</integer>
-    -->
 
     <!-- HOCKEY APP -->
     <string name="hockey_app_id">53c4446c9cc6e2442dad05030963d3ff</string>
 
     <!-- DEEP LINK -->
     <string name="dp_package_id">com.daraz.android</string>
-    <string name="dp_app_name_uppercase">DARAZ</string>
-    <string name="dp_app_name_lowercase">daraz</string>
     <string name="dp_intent_label">Daraz</string>
 
     <!-- NEW RELIC -->

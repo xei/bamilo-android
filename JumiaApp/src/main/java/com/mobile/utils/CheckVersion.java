@@ -154,7 +154,7 @@ public class CheckVersion {
     private static DialogFragment createOptionalUpdateDialog(Activity activity) {
         return DialogGenericFragment.newInstance(true, true, false,
                 sContext.getString(R.string.upgrade_optional_title),
-                sContext.getString(R.string.upgrade_optional_text),
+                sContext.getString(R.string.upgrade_optional_text, sContext.getString(R.string.app_name_placeholder)),
                 sContext.getString(R.string.no_label),
                 sContext.getString(R.string.upgrade_remindmelater),
                 sContext.getString(R.string.upgrade_proceed),
@@ -164,7 +164,7 @@ public class CheckVersion {
     private static DialogFragment createForcedUpdateDialog(Activity activity) {
         DialogFragment dialog = DialogGenericFragment.newInstance(true, true, false,
                 sContext.getString(R.string.upgrade_forced_title),
-                sContext.getString(R.string.upgrade_forced_text),
+                sContext.getString(R.string.upgrade_forced_text, sContext.getString(R.string.app_name_placeholder)),
                 sContext.getString(R.string.close_app),
                 sContext.getString(R.string.upgrade_proceed),
                 new ForceUpdateClickListener(activity));
