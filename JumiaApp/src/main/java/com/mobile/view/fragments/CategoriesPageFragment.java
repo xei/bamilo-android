@@ -56,8 +56,6 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
 
     private static final String ROOT_CATEGORIES = null;
 
-    private static CategoriesPageFragment sCategoriesFragment;
-
     private ListView mCategoryList;
 
     private LayoutInflater mInflater;
@@ -87,9 +85,9 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      * @author sergiopereira
      */
     public static CategoriesPageFragment getInstance(Bundle bundle) {
-        sCategoriesFragment = new CategoriesPageFragment();
-        sCategoriesFragment.setArguments(bundle);
-        return sCategoriesFragment;
+        CategoriesPageFragment fragment = new CategoriesPageFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /**
@@ -324,7 +322,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      * @author sergiopereira
      */
     private boolean isPresentLandscapeContainer(){
-        return mLandscapeCategoryChildrenList != null ? true : false;
+        return mLandscapeCategoryChildrenList != null;
     }
 
     /**
@@ -343,7 +341,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         SubCategoriesAdapter adapter = new SubCategoriesAdapter(getBaseActivity(), category.getChildren(), category.getName());
         mLandscapeCategoryChildrenList.setAdapter(adapter);
         mLandscapeCategoryChildrenList.setTag(CLICK_FROM_LANDSCAPE_CONTAINER);
-        mLandscapeCategoryChildrenList.setOnItemClickListener((OnItemClickListener) this);
+        mLandscapeCategoryChildrenList.setOnItemClickListener(this);
     }
     
     /**
@@ -708,13 +706,8 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         Log.i(TAG, "ON ERROR EVENT");
         // Validate fragment state
         if(isOnStoppingProcess) return;
-//        // Generic errors
-//        if(getBaseActivity().handleErrorEvent(bundle)) return;
-//        // Show retry
-//        showRetry();
-        
         // Generic errors
-        if(super.handleErrorEvent(bundle)) return;
+        super.handleErrorEvent(bundle);
     }
     
     /**

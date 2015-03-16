@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.mobile.app.JumiaApplication;
@@ -60,8 +59,7 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements IRespons
      * @return
      */
     public static CheckoutPollAnswerFragment getInstance(Bundle bundle) {
-        pollFragment = new CheckoutPollAnswerFragment();
-        return pollFragment;
+        return new CheckoutPollAnswerFragment();
     }
 
     /**
@@ -74,7 +72,6 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements IRespons
                 R.string.checkout_label,
                 KeyboardState.NO_ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_ABOUT_YOU);
-        // ConstantsCheckout.CHECKOUT_ABOUT_YOU
     }
 
     /*
@@ -118,7 +115,7 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements IRespons
         // Create address form
         pollFormContainer = (ViewGroup) view.findViewById(R.id.checkout_poll_form_container);
         // Next button
-        view.findViewById(R.id.checkout_poll_button_enter).setOnClickListener((OnClickListener) this);
+        view.findViewById(R.id.checkout_poll_button_enter).setOnClickListener(this);
 
         //Validate is service is available
         if (JumiaApplication.mIsBound) {
@@ -358,7 +355,7 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements IRespons
                 // Get order summary
                 orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
                 // Form
-                Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 formResponse = form;
                 loadPollForm(form);
                 break;

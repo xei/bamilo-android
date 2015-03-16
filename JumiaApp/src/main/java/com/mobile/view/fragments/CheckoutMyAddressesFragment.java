@@ -3,14 +3,12 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.constants.ConstantsCheckout;
@@ -34,6 +32,10 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -48,7 +50,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment{
      * Get instance
      * @return CheckoutMyAddressesFragment
      */
-    public static CheckoutMyAddressesFragment getInstance(Bundle bundle) {
+    public static CheckoutMyAddressesFragment getInstance() {
         return new CheckoutMyAddressesFragment();
     }
 

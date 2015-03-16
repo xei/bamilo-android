@@ -1,8 +1,5 @@
 package com.mobile.utils;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +20,9 @@ import android.widget.ListView;
 
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.view.R;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 import de.akquinet.android.androlog.Log;
 
@@ -85,9 +85,9 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
         
         addPreferencesFromResource(xmlId);
         
-        Preference pNotification = (Preference) findPreference(getString(R.string.pref_notification));
+        Preference pNotification = findPreference(getString(R.string.pref_notification));
         pNotification.setOnPreferenceClickListener(this);
-        pNotification.setDefaultValue((boolean) Ad4PushTracker.getActiveAd4Push(getActivity().getApplicationContext()));
+        pNotification.setDefaultValue(Ad4PushTracker.getActiveAd4Push(getActivity().getApplicationContext()));
         postBindPreferences();
         ((OnPreferenceAttachedListener)getActivity()).onPreferenceAttached(getPreferenceScreen(), xmlId);
     }

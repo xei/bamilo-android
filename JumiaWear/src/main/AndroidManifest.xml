@@ -21,10 +21,10 @@
 
         <activity
             android:name=".activities.ErrorActivity"
-            android:theme="@style/JumiaTheme"></activity>
+            android:theme="@style/JumiaTheme"/>
         <activity
             android:name="android.support.wearable.activity.ConfirmationActivity"
-            android:theme="@style/ConfirmationTheme"></activity>
+            android:theme="@style/ConfirmationTheme"/>
 
         <meta-data
             android:name="com.google.android.clockwork.home.preview"

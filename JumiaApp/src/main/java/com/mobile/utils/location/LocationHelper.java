@@ -1,8 +1,5 @@
 package com.mobile.utils.location;
 
-import java.util.List;
-import java.util.Locale;
-
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -22,6 +19,9 @@ import com.mobile.framework.database.CountriesConfigsTableHelper;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.preferences.ShopPreferences;
+
+import java.util.List;
+import java.util.Locale;
 
 import de.akquinet.android.androlog.Log;
 
@@ -365,7 +365,7 @@ public class LocationHelper implements LocationListener {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
             Address address = addresses.get(0);
             countryCode =  address.getCountryCode();
-            Log.d(TAG, "GET COUNTRY FROM GEOCODER: " +  countryCode.toString());
+            Log.d(TAG, "GET COUNTRY FROM GEOCODER: " + countryCode);
         } catch (Exception e) {
             Log.w(TAG, "GET ADDRESS EXCEPTION: " + e.getMessage());
         }

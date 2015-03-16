@@ -130,7 +130,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         isExecutingSendReview = false;
-        JumiaApplication.setIsSellerReview(true);
+        JumiaApplication.INSTANCE.setIsSellerReview(true);
         if(getArguments() != null){
             if(getArguments().containsKey(ProductDetailsFragment.SELLER_ID)){
                 mSellerId = getArguments().getString(ProductDetailsFragment.SELLER_ID);
@@ -167,7 +167,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        JumiaApplication.setIsSellerReview(true);
+        JumiaApplication.INSTANCE.setIsSellerReview(true);
         mReviewContainer = (LinearLayout) view.findViewById(R.id.form_rating_container);
         mMainContainer = view.findViewById(R.id.product_rating_container);
 
@@ -234,7 +234,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
-        JumiaApplication.setIsSellerReview(true);
+        JumiaApplication.INSTANCE.setIsSellerReview(true);
         if(mDynamicSellerReviewForm != null){
             saveTextReview(mDynamicSellerReviewForm);
             formValues = mDynamicSellerReviewForm.save();

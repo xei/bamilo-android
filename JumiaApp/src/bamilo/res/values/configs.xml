@@ -7,6 +7,7 @@
 	<bool name="is_to_show_dev_env">true</bool>
 	<item name="is_bamilo_specific" type="bool">true</item>
 	<bool name="is_force_http">true</bool>
+    <bool name="rtl_enabled">true</bool>
 
 	<!-- COUNTRIES -->
 	<!-- country.xml -->
@@ -49,4 +50,6 @@
 	<!-- FACEBOOK -->
     <string name="facebook_app_id"></string>
 
+    <!--<string name="app_name_placeholder">بامیلو</string>-->
+    <string name="app_name_placeholder">Bamilo</string>
 </resources>

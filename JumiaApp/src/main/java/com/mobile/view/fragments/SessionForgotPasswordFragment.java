@@ -136,9 +136,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (null != dynamicForm) {
-            Iterator<DynamicFormItem> iterator = dynamicForm.iterator();
-            while (iterator.hasNext()) {
-                DynamicFormItem item = iterator.next();
+            for (DynamicFormItem item : dynamicForm) {
                 item.saveState(outState);
             }
             savedInstanceState = outState;
@@ -258,7 +256,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         case INIT_FORMS:
         case GET_FORGET_PASSWORD_FORM_EVENT:
             Log.d(TAG, "FORGET_PASSWORD_FORM");
-            Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             if (null != form) {
                 this.formResponse = form;
                 displayForm(form);
@@ -311,7 +309,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             List<String> errorMessages = null;
             if (errors != null) {
-                errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+                errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
             }
             if (errors != null && errorMessages != null && errorMessages.size() > 0) {
                 showFragmentContentContainer();

@@ -60,7 +60,7 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
     public ShippingMethodSubForm() {
         this.key = "";
         this.scenario = "";
-        this.options = new ArrayList<PickUpStationObject>();
+        this.options = new ArrayList<>();
         this.type = "";
         this.required = false;
         this.value = "";
@@ -149,8 +149,8 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
         icsSpinner = (IcsSpinner) dataControl.findViewById(android.R.id.custom);
         //icsSpinner.setId(getNextId());
         // Show PUS options 
-        final HashMap<String, ArrayList<PickUpStationObject>> pickupStationByRegion = new HashMap<String, ArrayList<PickUpStationObject>>();
-        ArrayList<String> mSpinnerOptions = new ArrayList<String>();
+        final HashMap<String, ArrayList<PickUpStationObject>> pickupStationByRegion = new HashMap<>();
+        ArrayList<String> mSpinnerOptions = new ArrayList<>();
         for(int i = 0; i< this.options.size(); i++){
             if(!mSpinnerOptions.contains(this.options.get(i).getRegions().get(0).getName())){
                 mSpinnerOptions.add(this.options.get(i).getRegions().get(0).getName());
@@ -160,7 +160,7 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
             } 
             pickupStationByRegion.get(this.options.get(i).getRegions().get(0).getName()).add(this.options.get(i));
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.form_spinner_item, new ArrayList<String>(mSpinnerOptions));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, new ArrayList<>(mSpinnerOptions));
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         icsSpinner.setAdapter(adapter);
         icsSpinner.setPrompt(this.label);
@@ -240,7 +240,7 @@ public class ShippingMethodSubForm implements IJSONSerializable, Parcelable {
     private ShippingMethodSubForm(Parcel in) {
         key = in.readString();
         scenario = in.readString();
-        options = new ArrayList<PickUpStationObject>();
+        options = new ArrayList<>();
         in.readArrayList(PickUpStationObject.class.getClassLoader());
         type = in.readString();
         in.readBooleanArray(new boolean[] {required});

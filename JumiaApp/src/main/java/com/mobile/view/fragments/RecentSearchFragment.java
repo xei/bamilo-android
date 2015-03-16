@@ -5,7 +5,6 @@ package com.mobile.view.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -45,8 +44,6 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
     private final static String TAG = LogTagHelper.create(RecentSearchFragment.class);
 
     private Context mContext;
-
-    private static View mainView;
 
     private SearchSuggestionsAdapter mRecentSearchesAdapter;
     
@@ -89,8 +86,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        mainView = view;
-        setAppContentLayout();
+        setAppContentLayout(view);
         init();
     }
     
@@ -116,14 +112,11 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
         // Get Recent Searches
         Log.i(TAG, "LOAD RECENT SEARCHES");
         showFragmentLoading();
-        new GetSearchSuggestionHelper((IResponseCallback) this);
+        new GetSearchSuggestionHelper(this);
     }
 
 
-    private void setAppContentLayout() {
-        if (mainView == null) {
-            mainView = getView();
-        }
+    private void setAppContentLayout(View mainView) {
 
         mRecentSearchesList = (ListView) mainView.findViewById(R.id.recentsearch_list);
 
@@ -145,9 +138,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
                 showEmpty();
                 mClearAllButton.setVisibility(View.GONE);
                 Log.d(TAG, "RECENT SEARCHES: " + mRecentSearches.size());
-
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+                mClearAllButton.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         hideActivityProgress();
@@ -163,7 +154,7 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
      * @author Andre Lopes
      */
     protected void showEmpty() {
-        showFragmentEmpty(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch, R.string.continue_shopping, (OnClickListener) this);
+        showFragmentEmpty(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch, R.string.continue_shopping, this);
     }
 
     /**

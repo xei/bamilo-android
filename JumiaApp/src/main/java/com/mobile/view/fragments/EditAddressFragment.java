@@ -3,10 +3,8 @@ package com.mobile.view.fragments;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.support.v7.internal.widget.AdapterViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 
@@ -14,11 +12,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.EditText;
-import com.mobile.constants.ConstantsCheckout;
-import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.forms.Form;
 import com.mobile.forms.FormField;
@@ -49,7 +43,6 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -346,7 +339,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         // Create adapter
-        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<AddressRegion>( getBaseActivity(), R.layout.form_spinner_item, regions);
+        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(getRegionPosition(regions, selectedAddress));
@@ -392,7 +385,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         // Create adapter
-        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<AddressCity>( getBaseActivity(), R.layout.form_spinner_item, cities);
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(getCityPosition(cities, selectedAddress));
@@ -674,7 +667,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 // Get order summary
                 orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
                 // Form
-                Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 mFormResponse = form;
                 // Load form, get regions
                 loadEditAddressForm(form);
@@ -805,7 +798,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {
-            errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
         }
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             showFragmentContentContainer();

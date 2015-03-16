@@ -126,8 +126,8 @@ public class Seller implements IJSONSerializable, Parcelable {
             mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
             mUrl = jsonObject.optString(RestConstants.JSON_URL_TAG);
             mSellerId = jsonObject.optString(RestConstants.JSON_ID_TAG);
-            mMinDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MIN_DELIVERY_TAG);
-            mMaxDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MAX_DELIVERY_TAG);
+//            mMinDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MIN_DELIVERY_TAG);
+//            mMaxDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MAX_DELIVERY_TAG);
             
             JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
             

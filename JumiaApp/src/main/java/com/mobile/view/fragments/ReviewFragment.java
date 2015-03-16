@@ -3,9 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.LayoutDirection;
@@ -22,6 +19,9 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -31,10 +31,8 @@ import de.akquinet.android.androlog.Log;
 public class ReviewFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(ReviewFragment.class);
-
-    private static ReviewFragment reviewFragment;
     
-    private final int RATING_TYPE_BY_LINE = 3;
+    private static final int RATING_TYPE_BY_LINE = 3;
     
     private LayoutInflater inflater;
 
@@ -43,10 +41,10 @@ public class ReviewFragment extends BaseFragment {
      * 
      * @return
      */
-    public static ReviewFragment getInstance() {
-        if (reviewFragment == null)
-            reviewFragment = new ReviewFragment();
-        return reviewFragment;
+    public static ReviewFragment getInstance(Bundle bundle) {
+        ReviewFragment fragment = new ReviewFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /**
@@ -56,7 +54,7 @@ public class ReviewFragment extends BaseFragment {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.review_fragment,
-                0,
+                NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
         
         this.setRetainInstance(true);
@@ -94,6 +92,8 @@ public class ReviewFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        inflater = LayoutInflater.from(getActivity());
+        setAppContentLayout(view);
     }
     
     /*
@@ -105,8 +105,6 @@ public class ReviewFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        inflater = LayoutInflater.from(getActivity());
-        setAppContentLayout();
     }
 
     /*
@@ -157,23 +155,23 @@ public class ReviewFragment extends BaseFragment {
     /**
      * Sets view layout
      */
-    public void setAppContentLayout() {
+    public void setAppContentLayout(View view) {
 
         Bundle b = getArguments();
 
-        TextView comment = (TextView) getView().findViewById(R.id.review_comment);
+        TextView comment = (TextView) view.findViewById(R.id.review_comment);
         comment.setText(b.getString(ConstantsIntentExtra.REVIEW_COMMENT));
 
-        TextView userName = (TextView) getView().findViewById(R.id.review_username);
+        TextView userName = (TextView) view.findViewById(R.id.review_username);
         userName.setText(b.getString(ConstantsIntentExtra.REVIEW_NAME) + ",");
 
-        TextView date = (TextView) getView().findViewById(R.id.review_date);
+        TextView date = (TextView) view.findViewById(R.id.review_date);
         date.setText(b.getString(ConstantsIntentExtra.REVIEW_DATE));
         
-        TextView title = (TextView) getView().findViewById(R.id.title_review);
+        TextView title = (TextView) view.findViewById(R.id.title_review);
         title.setText(b.getString(ConstantsIntentExtra.REVIEW_TITLE));
         
-        LinearLayout ratingsContainer = (LinearLayout) getView().findViewById(R.id.review_ratings_container);
+        LinearLayout ratingsContainer = (LinearLayout) view.findViewById(R.id.review_ratings_container);
         
         
         if(ratingsContainer.getChildCount() > 0)

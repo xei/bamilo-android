@@ -57,9 +57,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
      * @return
      */
     public static MyAccountFragment getInstance() {
-        if (myAccountFragment == null)
-            myAccountFragment = new MyAccountFragment();
-        return myAccountFragment;
+        return new MyAccountFragment();
     }
 
     /**
@@ -71,7 +69,6 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
                 R.layout.my_account_fragment,
                 R.string.account_name,
                 KeyboardState.NO_ADJUST_CONTENT);
-        // R.string.account_name
     }
 
     /*
@@ -188,7 +185,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         // Set adapter
         optionsList.setAdapter(myAccountAdapter);
         // Set Listener for all items
-        optionsList.setOnItemClickListener((OnItemClickListener) this);
+        optionsList.setOnItemClickListener(this);
         
     }
     
@@ -261,10 +258,11 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
             Resources resources = getResources();
             
             String text = "";
+            String preText = getString(R.string.install_jumia_android, getString(R.string.app_name_placeholder));
             if(resources.getBoolean(R.bool.is_bamilo_specific)){
-                text = resources.getString(R.string.share_app_link) + " " + resources.getString(R.string.install_jumia_android);
+                text = getString(R.string.share_app_link) + " " + preText;
             } else {
-                text = resources.getString(R.string.install_jumia_android)+ " " + resources.getString(R.string.share_app_link);
+                text = preText + " " + getString(R.string.share_app_link);
             }
             
             ActivitiesWorkFlow.startActivitySendString(getBaseActivity(), resources.getString(R.string.share_the_app), text) ;

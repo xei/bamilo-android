@@ -1,10 +1,7 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +14,8 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.Offer;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 /**
  * Class that deals with offers list presentation
@@ -40,7 +39,7 @@ public class OffersListAdapter extends BaseAdapter {
 
     private IOffersAdapterService offerSelected;
 
-    ArrayList<Offer> offers = new ArrayList<Offer>();
+    ArrayList<Offer> offers = new ArrayList<>();
     
     /**
      * A representation of each item on the list
@@ -141,11 +140,16 @@ public class OffersListAdapter extends BaseAdapter {
         }
         item.offerReview.setText(offers.get(position).getSeller().getRatingCount()+ " "+reviews);
         item.offerRating.setRating(offers.get(position).getSeller().getRatingValue());
-        
-        item.offerDeliveryTime.setText(context.getResources().getString(R.string.product_delivery_time)+" "+
-        offers.get(position).getSeller().getMinDeliveryTime()+" - "+offers.get(position).getSeller().getMaxDeliveryTime()+" "+
-                context.getResources().getString(R.string.product_delivery_days));
-            
+
+        if( !(offers.get(position).getMinDeliveryTime() == 0 && offers.get(position).getMaxDeliveryTime() == 0) ) {
+            item.offerDeliveryTime.setVisibility(View.VISIBLE);
+            item.offerDeliveryTime.setText(context.getResources().getString(R.string.product_delivery_time) + " " +
+                    offers.get(position).getMinDeliveryTime() + " - " + offers.get(position).getMaxDeliveryTime() + " " +
+                    context.getResources().getString(R.string.product_delivery_days));
+        } else {
+            item.offerDeliveryTime.setVisibility(View.GONE);
+        }
+
         item.offerAddToCart.setOnClickListener(new OnClickListener() {
 
             @Override

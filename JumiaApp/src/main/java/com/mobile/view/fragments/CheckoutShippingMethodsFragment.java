@@ -45,8 +45,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     private static final String SELECTION_STATE = "selection";
 
     private static final String SUB_SELECTION_STATE = "sub_selection";
-    
-    private static CheckoutShippingMethodsFragment shippingMethodsFragment;
 
     private ViewGroup mShippingMethodsContainer;
 
@@ -60,9 +58,8 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      * Get instance
      * @return CheckoutShippingMethodsFragment
      */
-    public static CheckoutShippingMethodsFragment getInstance(Bundle bundle) {
-        shippingMethodsFragment = new CheckoutShippingMethodsFragment();
-        return shippingMethodsFragment;
+    public static CheckoutShippingMethodsFragment getInstance() {
+        return new CheckoutShippingMethodsFragment();
     }
 
     /**
@@ -329,7 +326,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
             OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_SHIPPING, orderSummary);
             // Form
-            ShippingMethodFormBuilder form = (ShippingMethodFormBuilder) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            ShippingMethodFormBuilder form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             loadForm(form);
             break;
         case SET_SHIPPING_METHOD_EVENT:

@@ -67,7 +67,7 @@ public class CheckVersion {
         if(isEnabled) {
             Log.i(TAG, "CHECK VERSION: ENABLED");
             sLastUpdate = 0;
-            runEvents(context);
+            runEvents();
         } else Log.i(TAG, "CHECK VERSION: DISABLED");
     }
 
@@ -77,7 +77,7 @@ public class CheckVersion {
         else Log.i(TAG, "RUN CHECK VERSION"); 
         
         sContext = context;
-        if (runEvents(context))
+        if (runEvents())
             return false;
 
         sSharedPrefs = context.getSharedPreferences( ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
@@ -89,7 +89,7 @@ public class CheckVersion {
         if (checkResult == UpdateStatus.FORCED_AVAILABLE) {
             sNeedsToShowDialog = true;
         } else if ( checkResult == UpdateStatus.OPTIONAL_AVAILABLE) {
-            if ( getRemindMeLater()) {
+            if (getRemindMeLater()) {
                 sNeedsToShowDialog = false;
             } else {
                 sNeedsToShowDialog = true;
@@ -137,10 +137,10 @@ public class CheckVersion {
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putBoolean(DIALOG_SEEN_AFTER_THIS_LAUNCH_KEY, false);
-        editor.commit();
+        editor.apply();
     }
 
-    private static boolean runEvents(Context context) {
+    private static boolean runEvents() {
         long now = System.currentTimeMillis();
         Log.d( TAG, "runEvents: lastUpdate = " + sLastUpdate + " passed = " + (now - sLastUpdate) + " intervall = " + UPDATE_INTERVALL_MILLIS);
         if (sLastUpdate == 0 || (now - sLastUpdate) > UPDATE_INTERVALL_MILLIS) {
@@ -148,14 +148,13 @@ public class CheckVersion {
             sLastUpdate = now;
             return true;
         }
-
         return false;
     }    
 
     private static DialogFragment createOptionalUpdateDialog(Activity activity) {
         return DialogGenericFragment.newInstance(true, true, false,
                 sContext.getString(R.string.upgrade_optional_title),
-                sContext.getString(R.string.upgrade_optional_text),
+                sContext.getString(R.string.upgrade_optional_text, sContext.getString(R.string.app_name_placeholder)),
                 sContext.getString(R.string.no_label),
                 sContext.getString(R.string.upgrade_remindmelater),
                 sContext.getString(R.string.upgrade_proceed),
@@ -165,7 +164,7 @@ public class CheckVersion {
     private static DialogFragment createForcedUpdateDialog(Activity activity) {
         DialogFragment dialog = DialogGenericFragment.newInstance(true, true, false,
                 sContext.getString(R.string.upgrade_forced_title),
-                sContext.getString(R.string.upgrade_forced_text),
+                sContext.getString(R.string.upgrade_forced_text, sContext.getString(R.string.app_name_placeholder)),
                 sContext.getString(R.string.close_app),
                 sContext.getString(R.string.upgrade_proceed),
                 new ForceUpdateClickListener(activity));
@@ -211,13 +210,11 @@ public class CheckVersion {
     }
     
     private static Version getVersion( Context context ) {
-        VersionInfo vInfo = JumiaApplication.INSTANCE.getVersionInfo();
+        VersionInfo vInfo = JumiaApplication.INSTANCE.getMobApiVersionInfo();
         if ( vInfo == null) {
             return null;
         }
-        
         return vInfo.getEntryByKey(context.getPackageName());
-                
     }
 
     private static void updateUnwantedVersionFromPrefs() {
@@ -232,7 +229,7 @@ public class CheckVersion {
         unwantedVersion = version.getCurrentVersion();
         SharedPreferences.Editor editor = sSharedPrefs.edit();
         editor.putInt(VERSION_UNWANTED_KEY, unwantedVersion);
-        editor.commit();
+        editor.apply();
     }
 
     private static boolean getRemindMeLater() {
@@ -242,7 +239,7 @@ public class CheckVersion {
     private static void storeRemindMeLater() {
         SharedPreferences.Editor editor = sSharedPrefs.edit();
         editor.putBoolean(DIALOG_SEEN_AFTER_THIS_LAUNCH_KEY, true);
-        editor.commit();
+        editor.apply();
     }
 
     private static String createUpdateUrl() {

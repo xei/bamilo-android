@@ -47,8 +47,6 @@ android {
         applicationId "com.mobile.view"
         minSdkVersion 9
         targetSdkVersion 21
-        versionName = getAppVersionName()
-        versionCode = getAppVersionCode(1)
         resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
     }
 
@@ -116,6 +114,7 @@ android {
             applicationIdSuffix ".dev"
             manifestPlaceholders = [ AdjustEnvironment:"sandbox" ]
             debuggable true
+            proguardFile 'proguard-project-dev.txt'
         }
 
         live {
@@ -149,9 +148,9 @@ android {
         }
 
         jumiaMTNng {
+            applicationId "com.jumia.mtnng"
             versionName "2.4"
             versionCode 48
-            applicationId "com.jumia.mtnng"
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
@@ -160,9 +159,9 @@ android {
         }
 
         jumiaNokiaX {
+            applicationId "com.jumia.nokiax"
             versionName "2.4"
             versionCode 11
-            applicationId "com.jumia.nokiax"
             signingConfig signingConfigs.jumiaNokiaxSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
@@ -171,9 +170,9 @@ android {
         }
 
         jumiaSamsung {
+            applicationId "com.jumia.android"
             versionName "2.4"
             versionCode 48
-            applicationId "com.jumia.android"
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
@@ -182,9 +181,9 @@ android {
         }
 
         jumiaBlackberry {
+            applicationId "com.jumia.blackberry"
             versionName "2.4"
             versionCode 7
-            applicationId "com.jumia.blackberry"
             signingConfig signingConfigs.jumiaBlackberrySigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {

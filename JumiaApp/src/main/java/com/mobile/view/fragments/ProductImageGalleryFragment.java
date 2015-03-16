@@ -3,11 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-
-import org.apache.commons.collections4.CollectionUtils;
-
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +25,11 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -40,8 +40,6 @@ import de.akquinet.android.androlog.Log;
 public class ProductImageGalleryFragment extends BaseFragment {
 
     public static final String TAG = LogTagHelper.create(ProductImageGalleryFragment.class);
-
-    private static ProductImageGalleryFragment sProductImageGalleryFragment;
 
     private JumiaViewPagerWithZoom mViewPager;
 
@@ -65,12 +63,11 @@ public class ProductImageGalleryFragment extends BaseFragment {
      */
     private static ProductImageGalleryFragment getInstance(Bundle bundle, boolean isNested) {
         // Validate if is nested or not
-        sProductImageGalleryFragment = isNested ? new ProductImageGalleryFragment(isNested) : new ProductImageGalleryFragment();
+        ProductImageGalleryFragment fragment = isNested ? new ProductImageGalleryFragment(isNested) : new ProductImageGalleryFragment();
         // Save arguments
-        sProductImageGalleryFragment.isZoomAvailable = bundle.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
-        sProductImageGalleryFragment.imagesList = bundle.getStringArrayList(ConstantsIntentExtra.IMAGE_LIST);
+        fragment.setArguments(bundle);
         // Return instance
-        return sProductImageGalleryFragment;
+        return fragment;
     }
 
     /**
@@ -128,6 +125,12 @@ public class ProductImageGalleryFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Get arguments
+        Bundle arguments = getArguments();
+        if(arguments != null) {
+            isZoomAvailable = arguments.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
+            imagesList = arguments.getStringArrayList(ConstantsIntentExtra.IMAGE_LIST);
+        }
         // Restore state after rotation
         if (savedInstanceState != null) {
             isZoomAvailable = savedInstanceState.getBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
@@ -231,7 +234,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
     private void createGallery() {
         // Setted in order to show the no image placeholder on PDV view
         if (CollectionUtils.isEmpty(imagesList)) {
-            imagesList = new ArrayList<String>();
+            imagesList = new ArrayList<>();
             imagesList.add("");
         }
         

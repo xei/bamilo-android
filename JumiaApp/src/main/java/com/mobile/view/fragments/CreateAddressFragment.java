@@ -180,13 +180,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         mBillingFormContainer = (ViewGroup) view.findViewById(R.id.checkout_address_form_billing_container);
         // Billing check box
         mIsSameCheckBox = (CheckBox) view.findViewById(R.id.checkout_address_billing_checkbox);
-        mIsSameCheckBox.setOnCheckedChangeListener((CompoundButton.OnCheckedChangeListener) this);
+        mIsSameCheckBox.setOnCheckedChangeListener(this);
         mIsSameCheckBox.setChecked(true);
         // Message
         mMsgRequired = view.findViewById(R.id.checkout_address_required_text);
         mMsgRequired.setOnClickListener(this);
         // Next button
-        view.findViewById(R.id.checkout_address_button_enter).setOnClickListener((View.OnClickListener) this);
+        view.findViewById(R.id.checkout_address_button_enter).setOnClickListener(this);
 
     }
 
@@ -408,7 +408,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         // Create adapter
-        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<AddressRegion>(getBaseActivity(), R.layout.form_spinner_item, regions);
+        ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         int defaultPosition = 0;
@@ -491,7 +491,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         // Create adapter
-        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<AddressCity>(getBaseActivity(), R.layout.form_spinner_item, cities);
+        ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         setSavedSelectedCityPos(spinner, cities, tag);
@@ -986,7 +986,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Get order summary
         //orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         // Save and load form
-        Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         mFormResponse = form;
         // Load form, get regions
         loadCreateAddressForm(form);
@@ -1102,7 +1102,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {
-            errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
         }
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             showFragmentContentContainer();

@@ -14,19 +14,15 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.forms.Form;
 import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.AddressCity;
 import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -42,17 +38,14 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
 
     private static final String TAG = LogTagHelper.create(CheckoutCreateAddressFragment.class);
 
-    private static CheckoutCreateAddressFragment createAddressFragment;
-
     private OrderSummary orderSummary;
     /**
      * Fragment used to create an address
      * @return CheckoutCreateAddressFragment
      * @author sergiopereira
      */
-    public static CheckoutCreateAddressFragment getInstance(Bundle bundle) {
-        createAddressFragment = new CheckoutCreateAddressFragment();
-        return createAddressFragment;
+    public static CheckoutCreateAddressFragment getInstance() {
+        return new CheckoutCreateAddressFragment();
     }
 
     /**

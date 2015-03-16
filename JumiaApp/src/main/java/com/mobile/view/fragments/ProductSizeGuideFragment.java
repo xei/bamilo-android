@@ -3,8 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -24,6 +22,8 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderListener;
 import com.mobile.utils.photoview.PhotoView;
 import com.mobile.view.R;
+
+import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
 
@@ -230,9 +230,9 @@ public class ProductSizeGuideFragment extends BaseFragment {
      */
     private void showWizard(View mWizard) {
         // Get flag
-        boolean isFirsttTime = WizardPreferences.isFirstTime(getBaseActivity(), WizardType.SIZE_GUIDE);
+        boolean firstTime = WizardPreferences.isFirstTime(getBaseActivity(), WizardType.SIZE_GUIDE);
         // Validate
-        if(!isFirsttTime) return;
+        if(!firstTime) return;
         // Inflate stub view
         mWizard.setVisibility(View.VISIBLE);
         // Set view

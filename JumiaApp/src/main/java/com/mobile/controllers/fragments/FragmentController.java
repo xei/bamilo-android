@@ -1,12 +1,5 @@
 package com.mobile.controllers.fragments;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +10,13 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 import de.akquinet.android.androlog.Log;
 
@@ -245,7 +245,7 @@ public class FragmentController {
                 removeAllEntriesWithTag(tag);
                 addToBackStack(tag);
             }
-        }).start();        
+        }).start();
     }
     
     /**

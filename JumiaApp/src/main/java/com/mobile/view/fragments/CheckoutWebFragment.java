@@ -63,8 +63,6 @@ public class CheckoutWebFragment extends BaseFragment {
 
     private static final String CHECKOUT_URL_WITH_PARAM = "/checkout/multistep/?setDevice=mobileApi&iosApp=1";
 
-    private static CheckoutWebFragment checkoutWebFragment;
-
     private WebView webview;
 
     private String checkoutUrl;
@@ -84,10 +82,7 @@ public class CheckoutWebFragment extends BaseFragment {
      * @return
      */
     public static CheckoutWebFragment getInstance() {
-        if (checkoutWebFragment == null) {
-            checkoutWebFragment = new CheckoutWebFragment();
-        }
-
+        CheckoutWebFragment checkoutWebFragment = new CheckoutWebFragment();
         checkoutWebFragment.webview = null;
         checkoutWebFragment.checkoutUrl = null;
         checkoutWebFragment.failedPageRequest = null;
@@ -106,7 +101,6 @@ public class CheckoutWebFragment extends BaseFragment {
                 R.string.checkout_label,
                 KeyboardState.NO_ADJUST_CONTENT,
                 ConstantsCheckout.NO_CHECKOUT);
-        // 0
         this.setRetainInstance(true);
     }
 
@@ -117,17 +111,15 @@ public class CheckoutWebFragment extends BaseFragment {
         } else {
             Log.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
         }
+        boolean result = false;
         if (webview != null) {
             WebBackForwardList history = webview.copyBackForwardList();
             if (webview.canGoBack() && webview.hasFocus() && !history.getItemAtIndex(history.getCurrentIndex() - 1).getUrl().equals("about:blank")) {
                 webview.goBack();
-                return true;
-            } else {
-                return false;
+                result = true;
             }
-        } else {
-            return false;
         }
+        return result;
     }
 
     /*
@@ -315,7 +307,7 @@ public class CheckoutWebFragment extends BaseFragment {
     }
 
     @SuppressWarnings("deprecation")
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     private void setupWebView() {
         //webview = (WebView) findViewById(R.id.webview);
         CustomWebViewClient customWebViewClient = new CustomWebViewClient();
@@ -539,7 +531,7 @@ public class CheckoutWebFragment extends BaseFragment {
 
     }
 
-    private class JavaScriptInterface extends Object {
+    private class JavaScriptInterface {
 
         @SuppressWarnings("unused")
         @JavascriptInterface
@@ -590,7 +582,7 @@ public class CheckoutWebFragment extends BaseFragment {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
             case GET_CUSTOMER:
-                customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 JumiaApplication.CUSTOMER = customer;
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:

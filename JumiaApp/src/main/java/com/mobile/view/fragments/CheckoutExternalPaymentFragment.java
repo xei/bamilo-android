@@ -48,7 +48,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -83,8 +82,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
     private Handler handler = new Handler();
 
-    private static CheckoutExternalPaymentFragment checkoutWebFragment;
-
     private Customer customer;
 
     /**
@@ -93,14 +90,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
      * @return
      */
     public static CheckoutExternalPaymentFragment getInstance() {
-        if (checkoutWebFragment == null) {
-            checkoutWebFragment = new CheckoutExternalPaymentFragment();
-        }
-
-        checkoutWebFragment.webview = null;
-        checkoutWebFragment.paymentUrl = null;
-        checkoutWebFragment.failedPageRequest = null;
-        return checkoutWebFragment;
+        CheckoutExternalPaymentFragment fragment = new CheckoutExternalPaymentFragment();
+        fragment.webview = null;
+        fragment.paymentUrl = null;
+        fragment.failedPageRequest = null;
+        return fragment;
     }
 
     /**
@@ -114,7 +108,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 R.string.checkout_label,
                 KeyboardState.NO_ADJUST_CONTENT,
                 ConstantsCheckout.NO_CHECKOUT);
-        // 0
         this.setRetainInstance(true);
     }
 
@@ -125,12 +118,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         } else {
             Log.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
         }
+        boolean result = false;
         if (webview != null && webview.canGoBack() && webview.hasFocus()) {
             webview.goBack();
-            return true;
-        } else {
-            return false;
+            result = true;
         }
+        return result;
     }
 
     /*
@@ -298,7 +291,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     }
 
     @SuppressWarnings("deprecation")
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     private void setupWebView() {
         CustomWebViewClient customWebViewClient = new CustomWebViewClient();
         webview.setWebViewClient(customWebViewClient);
@@ -331,7 +324,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
         Log.d(TAG, "Loading Url: " + paymentUrl);
 
-        List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+        List<NameValuePair> parameters = new ArrayList<>();
 
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null
                 && JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null
@@ -354,8 +347,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 Log.d(TAG, "Loading Url complete: " + paymentUrl + "  " + parameters.toString());
                 setProxy(paymentUrl);
                 webview.postUrl(paymentUrl, EntityUtils.toByteArray(entity));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -366,9 +357,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             for (Entry<String, Object> entry : mValues) {
 
                 if (!paymentUrl.contains("?")) {
-                    paymentUrl += "?" + entry.getKey() + "=" + (String) entry.getValue();
+                    paymentUrl += "?" + entry.getKey() + "=" + entry.getValue();
                 } else {
-                    paymentUrl += "&" + entry.getKey() + "=" + (String) entry.getValue();
+                    paymentUrl += "&" + entry.getKey() + "=" + entry.getValue();
                 }
             }
 
@@ -581,7 +572,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
     }
 
-    private class JavaScriptInterface extends Object {
+    private class JavaScriptInterface {
 
         @SuppressWarnings("unused")
         @JavascriptInterface
@@ -644,7 +635,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 /**
                  * TODO: Verify if we need to fill customer
                  */
-                customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 JumiaApplication.CUSTOMER = customer;
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:

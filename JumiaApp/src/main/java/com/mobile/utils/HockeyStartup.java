@@ -1,20 +1,5 @@
 package com.mobile.utils;
 
-import java.io.ByteArrayInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.util.Locale;
-
-import javax.security.auth.x500.X500Principal;
-
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.CrashManagerListener;
-import net.hockeyapp.android.UpdateManager;
-import net.hockeyapp.android.UpdateManagerListener;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -33,6 +18,22 @@ import android.view.WindowManager.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.mobile.view.R;
+
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.CrashManagerListener;
+import net.hockeyapp.android.UpdateManager;
+import net.hockeyapp.android.UpdateManagerListener;
+
+import java.io.ByteArrayInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.util.Locale;
+
+import javax.security.auth.x500.X500Principal;
 
 import de.akquinet.android.androlog.Log;
 
@@ -93,20 +94,12 @@ public class HockeyStartup {
     
     public static boolean isDevEnvironment( Context context ) {
         int resultCheckSignature = checkSignatureForUpdate(context);
-        if (resultCheckSignature == RESULT_KEY_HOCKEY || resultCheckSignature == RESULT_KEY_OTHER ) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(resultCheckSignature == RESULT_KEY_HOCKEY || resultCheckSignature == RESULT_KEY_OTHER);
     }
     
     public static boolean isSplashRequired( Context context ) {
         int resultCheckSignature = checkSignatureForUpdate(context);
-        if (resultCheckSignature == RESULT_KEY_HOCKEY || resultCheckSignature == RESULT_KEY_DEBUG ) {
-            return true;
-        } else {
-            return false;
-        }
+        return resultCheckSignature == RESULT_KEY_HOCKEY || resultCheckSignature == RESULT_KEY_DEBUG;
     }
 
     public static int checkSignatureForUpdate(Context context) {
@@ -163,9 +156,9 @@ public class HockeyStartup {
             byte[] publicKey = md.digest(cert.getEncoded());
 
             boolean delimiter = false;
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < publicKey.length; i++) {
-                String appendString = Integer.toHexString(0xFF & publicKey[i]);
+            StringBuilder hexString = new StringBuilder();
+            for (byte aPublicKey : publicKey) {
+                String appendString = Integer.toHexString(0xFF & aPublicKey);
                 if (delimiter)
                     hexString.append(":");
                 if (appendString.length() == 1)

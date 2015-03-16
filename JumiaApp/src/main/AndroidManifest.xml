@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mobile.view"
-    android:installLocation="auto"
-    android:versionCode="47"
-    android:versionName="2.4" >
+    android:installLocation="auto">
 
 
     <!-- ############# AD4Push: MESSAGE (Receive) ############# -->
@@ -66,20 +64,17 @@
     <!-- ############# Application ############## -->
     <!-- ######################################## -->
 
-    <uses-sdk
-        android:minSdkVersion="9"
-        android:targetSdkVersion="21" />
-
     <application
         android:name="com.mobile.app.JumiaApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Jumia" >
+        android:theme="@style/Theme.Jumia"
+        android:supportsRtl="@bool/rtl_enabled">
         <activity
             android:name="com.mobile.view.SplashScreenActivity"
             android:noHistory="true"
-            android:screenOrientation="unspecified" >
+            android:screenOrientation="unspecified">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -87,27 +82,29 @@
             </intent-filter>
 
             <!-- ############# DEEP LINK : Accepts URIs############# -->
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
 
                 <data android:scheme="@string/dp_app_name_uppercase" />
                 <data android:scheme="@string/dp_app_name_lowercase" />
             </intent-filter>
 
             <!-- ############# DEEP LINK : Accepts APP INDEXING ############# -->
-            <intent-filter >
+            <!-- android-app://com.jumia.android/JUMIA/UG?utm_source=app_indexing -->
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="@string/dp_app_index_scheme"
+                <data
+                    android:scheme="@string/dp_app_index_scheme"
                     android:host="${applicationId}"
-                    android:pathPrefix="@string/dp_app_index_prefix"/>
+                    android:pathPrefix="@string/dp_app_index_prefix" />
             </intent-filter>
 
         </activity>
@@ -148,7 +145,7 @@
         <service
             android:name="com.ad4screen.sdk.A4SService"
             android:label="A4S Service"
-            android:process=":A4SService" >
+            android:process=":A4SService">
             <meta-data
                 android:name="com.ad4screen.partnerid"
                 android:value="@string/ad4push_partner_id" />
@@ -206,13 +203,14 @@
         <!-- android:name="com.mobile.utils.receivers.InstallReceiver" -->
         <receiver
             android:name="com.mobile.utils.receivers.InstallReceiver"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
 
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <service android:name="com.mobile.utils.JumiaWearableListenerService">
@@ -239,15 +237,14 @@
             android:name="com.mobile.utils.receivers.PushNotificationReceiver"
             android:permission="${applicationId}.permission.A4S_SEND">
             <intent-filter>
-                <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED"/>
-                <action android:name="com.ad4screen.sdk.intent.action.CLICKED"/>
+                <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
+                <action android:name="com.ad4screen.sdk.intent.action.CLICKED" />
 
-                <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS"/>
+                <category android:name="com.ad4screen.sdk.intent.category.PUSH_NOTIFICATIONS" />
                 <!--<category android:name="com.ad4screen.sdk.intent.category.INAPP_NOTIFICATIONS" />-->
                 <!--<category android:name="com.ad4screen.sdk.intent.category.INBOX_NOTIFICATIONS" />-->
             </intent-filter>
         </receiver>
-
 
 
     </application>

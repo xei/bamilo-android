@@ -1,9 +1,5 @@
 package com.mobile.utils.imageloader;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -30,13 +26,17 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import de.akquinet.android.androlog.Log;
 
 public class RocketImageLoader {
 
     public static RocketImageLoader instance;
 
-    private static final int NETWORK_THREAD_POOL_SIZE = 4; 
+    private static final int NETWORK_THREAD_POOL_SIZE = 3;
     
     private ImageLoader volleyImageLoader;
 
@@ -57,7 +57,7 @@ public class RocketImageLoader {
     private boolean isVolleyRequestQueueRunning = true;
     private Context context;
 
-    public static interface RocketImageLoaderListener {
+    public interface RocketImageLoaderListener {
         void onLoadedSuccess(String imageUrl, Bitmap bitmap);
 
         void onLoadedError(String imageUrl);
@@ -67,7 +67,6 @@ public class RocketImageLoader {
 
     public static void init(Application application) {
         instance = new RocketImageLoader();
-
         instance.initLibrary(application);
     }
 
@@ -435,7 +434,7 @@ public class RocketImageLoader {
 
             PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
             userAgent = packageName + "/" + info.versionCode;
-        } catch (NameNotFoundException e) {
+        } catch (NameNotFoundException ignored) {
         }
 
         if (stack == null) {
@@ -469,7 +468,7 @@ public class RocketImageLoader {
     public void loadImages(final ArrayList<String> urls, final RocketImageLoaderLoadImagesListener rocketImageLoaderLoadImagesListener){
         RocketImageLoaderListener rocketImageLoaderListener = new RocketImageLoaderListener() {
             private int images = 0;
-            private ArrayList<ImageHolder> successUrls = new ArrayList<ImageHolder>();
+            private ArrayList<ImageHolder> successUrls = new ArrayList<>();
             
             @Override
             public void onLoadedSuccess(String url, Bitmap bitmap) {

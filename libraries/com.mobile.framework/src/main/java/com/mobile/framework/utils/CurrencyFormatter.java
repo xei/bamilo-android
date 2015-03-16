@@ -1,18 +1,18 @@
 package com.mobile.framework.utils;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Currency;
-import java.util.Locale;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.TextUtils;
 
 import com.mobile.framework.Darwin;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Currency;
+import java.util.Locale;
 
 import de.akquinet.android.androlog.Log;
 
@@ -32,7 +32,6 @@ public class CurrencyFormatter {
      */
     private static String currencyCode;
     private static String currencyUnitPattern;
-    private static Currency currency;
     private static NumberFormat formatter;
     private static String currencyThousandsDelim;
     private static int currencyFractionCount;
@@ -55,7 +54,7 @@ public class CurrencyFormatter {
         initialized = true;
         isLocaleAvailable = isLocaleAvailable(Locale.getDefault());
         // Load currency configurations
-        loadCurrencyInformation(context, currCode);
+        loadCurrencyInformation(context);
         
         if (TextUtils.isEmpty(currCode)) throw new RuntimeException("Currency code is empty or null - fix this");
         
@@ -64,11 +63,11 @@ public class CurrencyFormatter {
         if(currCode.equalsIgnoreCase("USH"))currCode = "UGX";
         // Case Iran (Bamilo)
         else if(currCode.equalsIgnoreCase("ريال")) currCode = "IRR";
-        
-        currency = Currency.getInstance(currCode);
+
+        Currency currency = Currency.getInstance(currCode);
         formatter = getNumberFormatter();
         
-        Log.i( TAG, "CURRENCY: currency code = " + currency.getCurrencyCode() + " fraction dicits = " + currency.getDefaultFractionDigits());
+        Log.i( TAG, "CURRENCY: currency code = " + currency.getCurrencyCode() + " fraction digits = " + currency.getDefaultFractionDigits());
     }
     
     /**
@@ -87,10 +86,9 @@ public class CurrencyFormatter {
     /**
      * Load currency info from country configurations.
      * @param context
-     * @param currCode
      * @modified sergiopereira
      */
-    public static void loadCurrencyInformation(Context context, String currCode) {
+    public static void loadCurrencyInformation(Context context) {
     	SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
     	currencyThousandsDelim = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_SEP, ",");
     	currencyFractionCount = sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, 0);
@@ -188,8 +186,6 @@ public class CurrencyFormatter {
 	public static String getCurrencyCode() {
     	return currencyCode;
     }
-    
-
 
     /**
      * Test if text is number
@@ -205,117 +201,5 @@ public class CurrencyFormatter {
             return false;
         }
     }
-    
-    
-//  public static void setCurrency( String currencyCode ) {
-//  currency = Currency.getInstance(currencyCode);
-//}
-
-///**
-// * Formats the currency based on the pre-defined values.
-// * @param value
-// * @return the formatted string
-// */
-//public static String formatCurrency(double value) {
-//  if (!initialized) throw new RuntimeException("currency converter not initialized");
-//  
-//  // String result = String.valueOf(value);
-//  String result = new BigDecimal(value).toString();
-//
-//  String noFraction;
-//  String fraction;
-//  if(result.contains(".")){
-//      StringTokenizer tokens = new StringTokenizer(result, ".");
-//      noFraction = tokens.nextToken();
-//      fraction = tokens.nextToken();
-//  } else {
-//      noFraction = result;
-//      fraction =null;
-//  }
-//  
-//  if(noFraction.length()>3){
-//      String thousands = noFraction.substring(noFraction.length()-3, noFraction.length());
-//      String other = noFraction.substring(0, noFraction.length()-3);
-//  
-//      if(currencyFractionCount == 0)
-//          result = other+currencyThousandsDelim+thousands;
-//      else { 
-//          
-//          while(fraction.length()<currencyFractionCount){
-//              fraction+="0";
-//          }
-//          result = other+currencyThousandsDelim+thousands+currencyFractionDelim+fraction;
-//      }
-//  } else {
-//      
-//      if(currencyFractionCount == 0)
-//          result = noFraction;
-//      else { 
-//          while(fraction.length()<currencyFractionCount){
-//              fraction+="0";
-//          }
-//          
-//          result = noFraction+currencyFractionDelim+fraction;
-//      }
-//      
-//  }
-//
-//  result = String.format(currencyUnitPattern, result);
-//  
-//  return result;
-//}
-
-///**
-// * This Function restrieves the double value of a previously formatted value with currency and locale options.
-// * @param value
-// * @return
-// */
-//public static double getValueDouble(String value ) {
-//  double result = 0;
-//  if(currencyFractionCount == 0)
-//      value = value.replace(",", "");
-//  else { 
-//      if(value.contains(",") && (""+currencyFractionDelim).equalsIgnoreCase(",") && !value.contains(".")){
-//          value = value.replace(",", ".");
-//      } else if(value.contains(",") && (""+currencyFractionDelim).equalsIgnoreCase(",") && value.contains(".")) {
-//          value = value.replace(".", "");
-//          value = value.replace(",", ".");
-//      } else if(value.contains(",")){
-//          value = value.replace(",", "");
-//      }
-//  }
-//  try {
-//      result = Double.parseDouble(value);
-//  } catch (Exception e) {
-//      e.printStackTrace();
-//  }
-//  
-//  return result;
-//}
-
-///**
-// * This Function restrieves the double value of a previously formatted value with currency and locale options.
-// * @param value
-// * @return
-// */
-//public static String getCleanValue(String value ) {
-//  value = value.trim();
-//  String result = "";
-//  if(currencyFractionCount == 0)
-//      value = value.replace(",", "");
-//  else { 
-//      if(value.contains(",") && (""+currencyFractionDelim).equalsIgnoreCase(",") && !value.contains(".")){
-//          value = value.replace(",", ".");
-//      } else if(value.contains(",") && (""+currencyFractionDelim).equalsIgnoreCase(",") && value.contains(".")) {
-//          value = value.replace(".", "");
-//          value = value.replace(",", ".");
-//      } else if(value.contains(",")){
-//          value = value.replace(",", "");
-//      }
-//  }
-//  result = value;
-//  return result;
-//}
-    
     
 }

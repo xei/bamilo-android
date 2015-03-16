@@ -182,7 +182,7 @@ public class ShippingRadioGroupList extends RadioGroup {
             if (subForms.get(mItems.get(button.getId())) != null) {
                 if (mItems.get(button.getId()).equalsIgnoreCase("pickupstation")) {
                     for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
-                        ((ShippingMethodSubForm) element).dataControl.setVisibility(View.VISIBLE);
+                        element.dataControl.setVisibility(View.VISIBLE);
                     }
                 }
                     
@@ -192,7 +192,7 @@ public class ShippingRadioGroupList extends RadioGroup {
             if (subForms.get(mItems.get(button.getId())) != null) {
                 if (mItems.get(button.getId()).equalsIgnoreCase("pickupstation")) {
                     for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
-                        ((ShippingMethodSubForm) element).dataControl.setVisibility(View.GONE);
+                        element.dataControl.setVisibility(View.GONE);
                     }
                 }
                 

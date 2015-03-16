@@ -27,7 +27,7 @@ public class GWearManager {
 
     public GWearManager(Context context) {
         mContext = context;
-        JumiaWearableListenerService.connectToWearable();
+        JumiaWearableListenerService.connectToWearable(context);
     }
 
 

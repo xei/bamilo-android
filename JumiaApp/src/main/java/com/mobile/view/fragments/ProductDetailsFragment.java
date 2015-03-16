@@ -186,9 +186,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private TextView mVarianceText;
 
-    private ImageView imageIsFavourite;
-
-    private ImageView imageShare;
+    private ImageView mImageFavourite;
 
     private long mBeginRequestMillis;
 
@@ -207,10 +205,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public static String VARIATION_LIST_POSITION = "variation_list_position";
 
     private String mPhone2Call = "";
-
-    private static View mainView;
-
-    private static ProductDetailsFragment mProductDetailsActivityFragment;
 
     boolean isAddingProductToCart = false;
 
@@ -292,15 +286,16 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     public static final String SELLER_ID = "sellerId";
 
+    private View mWizardContainer;
+
     /**
      * Empty constructor
      */
     public ProductDetailsFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET,
-                MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.product_details_fragment_main,
-                0,
+                NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
@@ -310,15 +305,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * @return
      */
     public static ProductDetailsFragment getInstance(Bundle bundle) {
-        ProductDetailsFragment.mProductDetailsActivityFragment = new ProductDetailsFragment();
-        if (null != bundle && bundle.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME)) {
-            categoryTree = bundle.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME) + ",PDV";
-        } else {
-            categoryTree = "";
-        }
+        ProductDetailsFragment fragment = new ProductDetailsFragment();
+        fragment.setArguments(bundle);
         // Clean current product
         JumiaApplication.INSTANCE.setCurrentProduct(null);
-        return ProductDetailsFragment.mProductDetailsActivityFragment;
+        return fragment;
     }
 
     /*
@@ -330,6 +321,15 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
+        // Get arguments
+        Bundle arguments = getArguments();
+        if(arguments != null) {
+            if (arguments.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME)) {
+                categoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME) + ",PDV";
+            } else {
+                categoryTree = "";
+            }
+        }
         // Get data from saved instance
         if (savedInstanceState != null) {
             mSelectedSimple = savedInstanceState.getInt(SELECTED_SIMPLE_POSITION, NO_SIMPLE_SELECTED);
@@ -350,8 +350,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         super.onViewCreated(view, savedInstanceState);
         // Context
         mContext = getBaseActivity();
-        // Save view
-        mainView = view;
         // Set layout
         setAppContentLayout(view);
     }
@@ -391,11 +389,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         // Save the current fragment type on orientation change
-        if (!mHideVariationSelection)
+        if (!mHideVariationSelection) {
             outState.putInt(SELECTED_SIMPLE_POSITION, mSelectedSimple);
+        }
         // Save product bundle
-        if (mProductBundle != null)
+        if (mProductBundle != null) {
             outState.putParcelable(PRODUCT_BUNDLE, mProductBundle);
+        }
     }
 
     /*
@@ -480,8 +480,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         // Validate
         if (sku != null) {
             Log.i(TAG, "DEEP LINK GET PDV: " + sku + " " + mDeepLinkSimpleSize);
-            mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE,
-                    R.string.gpush_prefix));
+            mNavigationSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix));
             mNavigationPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
             mBeginRequestMillis = System.currentTimeMillis();
             triggerContentEvent(new GetSearchProductHelper(), bundle, responseCallback);
@@ -494,12 +493,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * Set the Products layout using inflate
      */
     private void setAppContentLayout(View view) {
+        // Wizard container
+        mWizardContainer = view.findViewById(R.id.product_detail_tips_container);
         // Favourite
-        imageIsFavourite = (ImageView) view.findViewById(R.id.product_detail_image_is_favourite);
-        imageIsFavourite.setOnClickListener((OnClickListener) this);
+        mImageFavourite = (ImageView) view.findViewById(R.id.product_detail_image_is_favourite);
+        mImageFavourite.setOnClickListener(this);
         // Share
-        imageShare = (ImageView) view.findViewById(R.id.product_detail_product_image_share);
-        imageShare.setOnClickListener((OnClickListener) this);
+        view.findViewById(R.id.product_detail_product_image_share).setOnClickListener(this);
         // Discount percentage
         mDiscountPercentageText = (TextView) view.findViewById(R.id.product_detail_discount_percentage);
         // Prices
@@ -550,10 +550,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             mCallToOrderButton.setVisibility(View.GONE);
         }
         // Get title from portrait or landscape
-        mTitleText = (TextView) view.findViewById(R.id.product_name);
-        if (mTitleText == null)
-            mTitleText = (TextView) view.findViewById(R.id.product_detail_name);
-        mTitleText.setOnClickListener((OnClickListener) this);
+        mTitleText = (TextView) view.findViewById(R.id.product_detail_name);
+        mTitleText.setOnClickListener(this);
         // Seller info
         sellerView = (RelativeLayout) view.findViewById(R.id.seller_info);
         mSellerNameContainer = (RelativeLayout) view.findViewById(R.id.seller_name_container);
@@ -583,7 +581,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private void checkPortraitLayout(View view) {
         View specs = view.findViewById(R.id.product_detail_specifications);
         if (specs != null)
-            specs.setOnClickListener((OnClickListener) this);
+            specs.setOnClickListener(this);
     }
 
     /**
@@ -754,7 +752,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * @return
      */
     private Set<String> scanSimpleAttributesForKnownVariants(ArrayList<ProductSimple> simples) {
-        Set<String> foundVariations = new HashSet<String>();
+        Set<String> foundVariations = new HashSet<>();
         Log.i(TAG, "scanSimpleForKnownVariations : scanSimpleAttributesForKnownVariants");
         for (ProductSimple simple : simples) {
             Log.i(TAG, "scanSimpleForKnownVariations : scanSimpleAttributesForKnownVariants in");
@@ -785,19 +783,19 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private ArrayList<String> createSimpleVariants() {
         Log.i(TAG,
                 "scanSimpleForKnownVariations : createSimpleVariants" + mCompleteProduct.getName());
-        ArrayList<ProductSimple> simples = new ArrayList<ProductSimple>(
+        ArrayList<ProductSimple> simples = new ArrayList<>(
                 mCompleteProduct.getSimples());
         variations = mCompleteProduct.getKnownVariations();
         if (variations == null || variations.size() == 0) {
-            variations = new ArrayList<String>();
+            variations = new ArrayList<>();
             variations.add("size");
             variations.add("color");
             variations.add("variation");
         }
         Set<String> foundKeys = scanSimpleAttributesForKnownVariants(simples);
 
-        mSimpleVariantsAvailable = new ArrayList<String>();
-        ArrayList<String> variationValues = new ArrayList<String>();
+        mSimpleVariantsAvailable = new ArrayList<>();
+        ArrayList<String> variationValues = new ArrayList<>();
         for (ProductSimple simple : simples) {
             Log.i(TAG, "scanSimpleForKnownVariations : createSimpleVariants in");
             String value = calcVariationStringForSimple(simple, foundKeys);
@@ -972,7 +970,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             // bundle.putLong(ProductBasicInfoFragment.DEFINE_STOCK, -1);
             // FragmentCommunicatorForProduct.getInstance().notifyTarget(productBasicInfoFragment,
             // bundle, 4);
-            return;
         }
 
         /**
@@ -1054,12 +1051,18 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             String rating = getString(R.string.string_ratings).toLowerCase();
             if (mCompleteProduct.getSeller().getRatingCount() == 1)
                 rating = getString(R.string.string_rating).toLowerCase();
-            mSellerRatingValue
-                    .setText(mCompleteProduct.getSeller().getRatingCount() + " " + rating);
+            mSellerRatingValue.setText(mCompleteProduct.getSeller().getRatingCount() + " " + rating);
             mSellerRating.setRating(mCompleteProduct.getSeller().getRatingValue());
-            mSellerDeliveryTime.setText(mCompleteProduct.getSeller().getMinDeliveryTime() + " - "
-                    + mCompleteProduct.getSeller().getMinDeliveryTime()
-                    + " " + getResources().getString(R.string.product_delivery_days));
+            if(CollectionUtils.isNotEmpty(mCompleteProduct.getSimples()) &&
+                    !mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MIN_DELIVERY_TIME_TAG).equals("0") &&
+                    !mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MAX_DELIVERY_TIME_TAG).equals("0") ) {
+                getView().findViewById(R.id.delivery_time_container).setVisibility(View.VISIBLE);
+                mSellerDeliveryTime.setText(mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MIN_DELIVERY_TIME_TAG) + " - "
+                        + mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MAX_DELIVERY_TIME_TAG)
+                        + " " + getResources().getString(R.string.product_delivery_days));
+            } else {
+                getView().findViewById(R.id.delivery_time_container).setVisibility(View.GONE);
+            }
 
         } else {
             sellerView.setVisibility(View.GONE);
@@ -1232,15 +1235,15 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         try {
             if (FavouriteTableHelper.verifyIfFavourite(mCompleteProduct.getSku())) {
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.TRUE.toString());
-                imageIsFavourite.setSelected(true);
+                mImageFavourite.setSelected(true);
             } else {
                 mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
-                imageIsFavourite.setSelected(false);
+                mImageFavourite.setSelected(false);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
             mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG, Boolean.FALSE.toString());
-            imageIsFavourite.setSelected(false);
+            mImageFavourite.setSelected(false);
         }
         
         // Validate gallery
@@ -1300,12 +1303,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private boolean isNotValidVariation(ArrayList<Variation> variations) {
         if (variations == null || variations.size() == 0) {
             return true;
-        } else if (variations.size() == 1
-                && variations.get(0).getSKU().equals(mCompleteProduct.getSku())) {
-            return true;
-        } else {
-            return false;
-        }
+        } else return variations.size() == 1 && variations.get(0).getSKU().equals(mCompleteProduct.getSku());
     }
 
     /**
@@ -1452,20 +1450,16 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private void isToShowWizard() {
         if (WizardPreferences.isFirstTime(getBaseActivity(), WizardType.PRODUCT_DETAIL)) {
             Log.d(TAG, "Show Wizard");
-            mainView.findViewById(R.id.product_detail_tips_container).setVisibility(View.VISIBLE);
-            ViewPager viewPagerTips = (ViewPager) mainView.findViewById(R.id.viewpager_tips);
+            mWizardContainer.setVisibility(View.VISIBLE);
+            ViewPager viewPagerTips = (ViewPager) mWizardContainer.findViewById(R.id.viewpager_tips);
             viewPagerTips.setVisibility(View.VISIBLE);
-            int[] tips_pages = { R.layout.tip_swipe_layout, R.layout.tip_tap_layout,
-                    R.layout.tip_favourite_layout, R.layout.tip_share_layout };
-            TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(getActivity()
-                    .getApplicationContext(), getActivity().getLayoutInflater(), mainView,
-                    tips_pages);
+            int[] tips_pages = { R.layout.tip_swipe_layout, R.layout.tip_tap_layout, R.layout.tip_favourite_layout, R.layout.tip_share_layout };
+            TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(getActivity().getApplicationContext(), getActivity().getLayoutInflater(), mWizardContainer, tips_pages);
             viewPagerTips.setAdapter(mTipsPagerAdapter);
-            viewPagerTips
-                    .setOnPageChangeListener(new TipsOnPageChangeListener(mainView, tips_pages));
+            viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(mWizardContainer, tips_pages));
             viewPagerTips.setCurrentItem(0);
-            mainView.findViewById(R.id.viewpager_tips_btn_indicator).setVisibility(View.VISIBLE);
-            mainView.findViewById(R.id.tips_got_it_img).setOnClickListener(this);
+            mWizardContainer.findViewById(R.id.viewpager_tips_btn_indicator).setVisibility(View.VISIBLE);
+            mWizardContainer.findViewById(R.id.tips_got_it_img).setOnClickListener(this);
         }
     }
 
@@ -1594,8 +1588,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         // Case rating
         if (id == R.id.product_detail_product_rating_container) onClickRating();
         // Case description
-        else if (id == R.id.product_detail_specifications || id == R.id.product_name ||
-                id == R.id.product_detail_name || id == R.id.features_more_container ||
+        else if (id == R.id.product_detail_specifications ||
+                id == R.id.product_detail_name ||
+                id == R.id.features_more_container ||
                 id == R.id.description_more_container) {
             onClickShowDescription();
         }
@@ -1691,12 +1686,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * 
      */
     private void onClickCallToOrder() {
-        String user_id = "";
-        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
-            user_id = JumiaApplication.CUSTOMER.getIdAsString();
-        }
-        TrackerDelegator.trackCall(getActivity().getApplicationContext(), user_id,
-                JumiaApplication.SHOP_NAME);
+        TrackerDelegator.trackCall(getBaseActivity());
         makeCall();
     }
 
@@ -1707,8 +1697,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         WizardPreferences.changeState(getBaseActivity(), WizardType.PRODUCT_DETAIL);
         try {
             getView().findViewById(R.id.viewpager_tips).setVisibility(View.GONE);
-            ((LinearLayout) getView().findViewById(R.id.viewpager_tips_btn_indicator))
-                    .setVisibility(View.GONE);
+            getView().findViewById(R.id.viewpager_tips_btn_indicator).setVisibility(View.GONE);
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON HIDE WIZARD");
         }
@@ -1721,8 +1710,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         boolean isFavourite = false;
         if (mCompleteProduct != null && mCompleteProduct.getAttributes() != null) {
-            Object isFavoriteObject = mCompleteProduct.getAttributes().get(
-                    RestConstants.JSON_IS_FAVOURITE_TAG);
+            Object isFavoriteObject = mCompleteProduct.getAttributes().get(RestConstants.JSON_IS_FAVOURITE_TAG);
             if (isFavoriteObject != null && isFavoriteObject instanceof String) {
                 isFavourite = Boolean.parseBoolean((String) isFavoriteObject);
             }
@@ -1741,7 +1729,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             FavouriteTableHelper.insertFavouriteProduct(mCompleteProduct);
             mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG,
                     Boolean.TRUE.toString());
-            imageIsFavourite.setSelected(true);
+            mImageFavourite.setSelected(true);
 
             TrackerDelegator.trackAddToFavorites(sku, mCompleteProduct.getBrand(),
                     mCompleteProduct.getPriceForTracking(),
@@ -1756,7 +1744,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             FavouriteTableHelper.removeFavouriteProduct(mCompleteProduct.getSku());
             mCompleteProduct.getAttributes().put(RestConstants.JSON_IS_FAVOURITE_TAG,
                     Boolean.FALSE.toString());
-            imageIsFavourite.setSelected(false);
+            mImageFavourite.setSelected(false);
 
             TrackerDelegator.trackRemoveFromFavorites(sku, mCompleteProduct.getPriceForTracking(),
                     mCompleteProduct.getRatingsAverage());
@@ -1908,7 +1896,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 getBaseActivity().onBackPressed();
                 return;
             } else {
-                mCompleteProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                mCompleteProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 // Show product or update partial
                 ProductImageGalleryFragment.sSharedSelectedPosition = 0;
                 // Show product or update partial
@@ -1947,7 +1935,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             }
             break;
         case GET_PRODUCT_BUNDLE:
-            mProductBundle = (ProductBundle) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            mProductBundle = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             if (mProductBundle != null)
                 displayBundle(mProductBundle);
             else
@@ -2080,7 +2068,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             if (mProductFeaturesContainer != null) {
                 mProductFeaturesContainer.setVisibility(View.GONE);
             }
-            return;
         } else {
             mProductFeaturesContainer.setVisibility(View.VISIBLE);
 
@@ -2154,7 +2141,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 @SuppressWarnings("deprecation")
                 @Override
                 public void onGlobalLayout() {
-                    int maxLines = (int) textView.getHeight() / textView.getLineHeight();
+                    int maxLines = textView.getHeight() / textView.getLineHeight();
 
                     textView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 
@@ -2232,7 +2219,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         if(isRTL) mBundleListView.enableReverseLayout();
         // Content
         Log.e("BUNDLE","bundleProducts size:"+bundleProducts.size());
-        mBundleListView.setAdapter(new BundleItemsListAdapter(mContext, bundleProducts, (OnItemSelected) this, (OnItemChecked) this, (OnSimplePressed) this, (OnItemSelectedListener) this));
+        mBundleListView.setAdapter(new BundleItemsListAdapter(mContext, bundleProducts, this, this, this, this));
         mBundleLoading.setVisibility(View.GONE);
         mBundleButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -2450,7 +2437,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         }
         
         // Gets all urls with success
-        ArrayList<String> urls = new ArrayList<String>();
+        ArrayList<String> urls = new ArrayList<>();
         for(ImageHolder imageHolder : successUrls) urls.add(imageHolder.url);
         
         // Validate the number of cached images

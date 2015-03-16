@@ -287,6 +287,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      */
     @Override
     public void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack) {
+        //
         showWarningVariation(false);
         // 
         hideKeyboard();
@@ -322,10 +323,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = ReviewWriteFragment.getInstance(bundle);
                 break;
             case REVIEW:
-                fragment = ReviewFragment.getInstance();
+                fragment = ReviewFragment.getInstance(bundle);
                 break;
             case SHOPPING_CART:
-                fragment = ShoppingCartFragment.getInstance();
+                fragment = ShoppingCartFragment.getInstance(bundle);
                 break;
             case CHECKOUT_BASKET:
                 fragment = CheckoutWebFragment.getInstance();
@@ -361,19 +362,19 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = CheckoutPollAnswerFragment.getInstance(bundle);
                 break;
             case MY_ADDRESSES:
-                fragment = CheckoutMyAddressesFragment.getInstance(bundle);
+                fragment = CheckoutMyAddressesFragment.getInstance();
                 break;
             case CREATE_ADDRESS:
-                fragment = CheckoutCreateAddressFragment.getInstance(bundle);
+                fragment = CheckoutCreateAddressFragment.getInstance();
                 break;
             case EDIT_ADDRESS:
                 fragment = CheckoutEditAddressFragment.getInstance(bundle);
                 break;
             case SHIPPING_METHODS:
-                fragment = CheckoutShippingMethodsFragment.getInstance(bundle);
+                fragment = CheckoutShippingMethodsFragment.getInstance();
                 break;
             case PAYMENT_METHODS:
-                fragment = CheckoutPaymentMethodsFragment.getInstance(bundle);
+                fragment = CheckoutPaymentMethodsFragment.getInstance();
                 break;
             case MY_ORDER:
                 fragment = CheckoutMyOrderFragment.getInstance(bundle);
@@ -388,7 +389,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = CampaignsFragment.newInstance(bundle);
                 break;
             case EMAIL_NOTIFICATION:
-                fragment = MyAccountEmailNotificationFragment.newInstance(bundle);
+                fragment = MyAccountEmailNotificationFragment.newInstance();
                 break;
             case FAVORITE_LIST:
                 fragment = FavouritesFragment.getInstance();
@@ -425,14 +426,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 return;
         }
 
-        try {
-            fragment.setArguments(null);
-            fragment.setArguments(bundle);
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }
-
-        Log.i(TAG, "ON SWITCH FRAGMENT: " + type.toString());
+        Log.i(TAG, "ON SWITCH FRAGMENT: " + type);
         // Save the current state
         currentFragmentType = type;
         // Transition
@@ -447,21 +441,23 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     public void onBackPressed() {
         Log.i(TAG, "ON BACK PRESSED");
-
-        /*-
-         * This situation only occurs when user goes to Choose Country screen on maintenance page and presses back
-         */
+        // This situation only occurs when user goes to Choose Country screen on maintenance page and presses back
         if (isInMaintenance) {
             Intent newIntent = new Intent(this, SplashScreenActivity.class);
             newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(newIntent);
             finish();
-            return;
         }
-        
-        /*-
-         * Default
-         */
+        // Case default
+        else {
+            onProcessBackPressed();
+        }
+    }
+
+    /**
+     * Process the back pressed
+     */
+    private void onProcessBackPressed() {
         fragment = getActiveFragment();
         // Case navigation opened
         if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
@@ -472,8 +468,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         else if (fragment == null || !fragment.allowBackPressed()) {
             Log.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
             fragmentManagerBackPressed();
-            // Case fragment allow back pressed
-        } else {
+        }
+        // Case fragment allow back pressed
+        else {
             Log.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
         }
     }

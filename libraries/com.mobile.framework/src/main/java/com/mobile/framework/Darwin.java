@@ -1,8 +1,6 @@
 package com.mobile.framework;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 
 import com.mobile.framework.database.DarwinDatabaseHelper;
 import com.mobile.framework.tracking.NewRelicTracker;
@@ -25,14 +23,14 @@ import de.akquinet.android.androlog.Log;
  *
  * How to implement a new service:
  * 
- * - create the event (see com.mobile.framewrok.event.events for example events)
+ * - create the event (see com.mobile.framework.event.events for example events)
  * - add it to eventTypes
  * - create the service (see com.mobile.framework.service.services)
  * - make the service listen to the event (add the event type to the arra in the constructor)
  * - handle to that event (create function HandleEvent)
  * 
  * - in the activity, make it implement the response listener interface and handle event method
- * When you receive the response event it will be handled bythat function
+ * When you receive the response event it will be handled by that function
  * - implement the methods that use that event
  *
  * 
@@ -52,15 +50,8 @@ public class Darwin {
 	public static Context context = null;
 	
 	public final static boolean logDebugEnabled = true;
-	private static int sVersionCode;
-	
-	//private static final String FRAMEWORK_PREFS = "framework";
-	
-	//private static final String KEY_INITSUCCESSFUL = "init_successful";
 	
 	public final static String SHARED_PREFERENCES = "whitelabel_prefs";
-	
-	public final static String INSTALL_TIME_PREFERENCE = "install_time";
 	
 	/**
 	 * Countries Configs
@@ -71,21 +62,18 @@ public class Darwin {
 	public static final String KEY_SELECTED_COUNTRY_NAME = "selected_country_name";
 	public static final String KEY_SELECTED_COUNTRY_URL = "selected_country_url";
 	public static final String KEY_SELECTED_COUNTRY_FLAG = "selected_country_flag";
-	//public static final String KEY_SELECTED_COUNTRY_MAP_FLAG = "selected_country_map_flag";
 	public static final String KEY_SELECTED_COUNTRY_ISO = "selected_country_iso";
 	public static final String KEY_SELECTED_COUNTRY_FORCE_HTTP = "selected_country_force_http";
 	public static final String KEY_SELECTED_COUNTRY_IS_LIVE = "selected_country_is_live";
 	
 	public static final String KEY_SELECTED_COUNTRY_CURRENCY_ISO = "selected_country_currency_iso";
 	public static final String KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL = "selected_country_currency_symbol";
-	public static final String KEY_SELECTED_COUNTRY_CURRENCY_POSITION = "selected_country_currency_position";
 	public static final String KEY_SELECTED_COUNTRY_NO_DECIMALS = "selected_country_no_decimals";
 	public static final String KEY_SELECTED_COUNTRY_THOUSANDS_SEP = "selected_country_thousands_sep";
 	public static final String KEY_SELECTED_COUNTRY_DECIMALS_SEP = "selected_country_decimals_sep";
 	public static final String KEY_SELECTED_COUNTRY_LANG_CODE = "selected_country_lang_code";
 	public static final String KEY_SELECTED_COUNTRY_LANG_NAME = "selected_country_lang_name";
 	public static final String KEY_SELECTED_COUNTRY_GA_ID = "selected_country_ga_id";
-	public static final String KEY_SELECTED_COUNTRY_GA_TEST_ID = "selected_country_ga_test_id";
 	public static final String KEY_SELECTED_COUNTRY_PHONE_NUMBER = "selected_country_phone_number";
 	public static final String KEY_SELECTED_COUNTRY_CS_EMAIL = "selected_country_cs_email";
 	public static final String KEY_SELECTED_FACEBOOK_IS_AVAILABLE = "selected_facebook_is_available";
@@ -104,38 +92,26 @@ public class Darwin {
 
 	/**
 	 * Initializes the Darwin framework
-	 * 
-	 * @param mode
-	 *            execution mode used to set the service and activity behavior
-	 * @param context
-	 *            context of the activity
-	 * @param keystore
-	 *            certificate of the server
-	 * @param keystorePassword
-	 *            password of the certificate
+	 *
 	 * @return return true is Darwin is initializes and false if it is already
 	 *         intialized
 	 */
-	public static boolean initialize(Context ctx, String shopId, boolean isChangeShop) {
+	public static boolean initialize(Context ctx, String shopId) {
 		Log.d(TAG, "Initializing Darwin with id " + shopId);
 		context = ctx.getApplicationContext();
 		if (SHOP_ID != null && SHOP_ID.equalsIgnoreCase(shopId)) {
-			Log.d(TAG, "Allready initialized for id " + shopId);
+			Log.d(TAG, "Already initialized for id " + shopId);
 			ShopSelector.updateLocale(ctx, shopId);
 			return true;
 		}
-		
 		// Init darwin database
 		DarwinDatabaseHelper.init(context);
-		
-		retrieveVersionCode();
-		ShopSelector.init(context, shopId, isChangeShop);
-		
+		// Shop
+		ShopSelector.init(context, shopId);
+		// New relic
 		NewRelicTracker.init(context);
-
-		Log.d(TAG, "Darwin is initialized with id " + shopId);
+		Log.i(TAG, "Darwin is initialized with id " + shopId);
 		SHOP_ID = shopId;
-		
 		return true;
 	}
 	
@@ -145,9 +121,8 @@ public class Darwin {
 		context = ctx.getApplicationContext();
 		// Init darwin database
 		DarwinDatabaseHelper.init(context);
-		
+		// Shop
 		ShopSelector.init(context);
-		
 		return true;
 	}
 	
@@ -157,47 +132,9 @@ public class Darwin {
 		context = ctx.getApplicationContext();
 		// Init darwin database
 		DarwinDatabaseHelper.init(context);
-		
+		// Shop
 		ShopSelector.init(ctx, requestHost, basePath);
-		
 		return true;
 	}
-	
-	public static String getShopId(){
-		return SHOP_ID;
-	}
-
-	/**
-	 * Checks if the class was already initialized
-	 * 
-	 * @return true, if the class was already initialized, otherwise false
-
-	public synchronized static boolean isInitialized() {
-		return SHOP_ID != null;
-	}
-
-
-	public synchronized static Context getContext() {
-		return context;
-	}
-     */
-	
-	
-    private static void retrieveVersionCode() {
-        PackageInfo pinfo;
-        int versionCode = -1;
-        try {
-            pinfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            versionCode = pinfo.versionCode;
-        } catch (NameNotFoundException e) {
-            // ignore
-        }
-        
-        sVersionCode = versionCode;        
-    }
-    
-    public static int getVersionCode() {
-    	return sVersionCode;
-    }
 	
 }

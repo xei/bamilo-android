@@ -1,7 +1,5 @@
 package com.mobile.utils;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -11,6 +9,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.mobile.framework.utils.LogTagHelper;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -60,7 +60,7 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
      * Initialize the radio group
      */
     private void init() {
-        this.mRadioButtons = new ArrayList<RadioButton>();
+        this.mRadioButtons = new ArrayList<>();
         this.mCurrentCheckedButtonPos = -1;
         this.mOnCheckedChangeListener = null;
         this.mRadioChildOnCheckedChangeListener = new CheckedStateTracker();
@@ -95,7 +95,7 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
                 // Add to parent the child tag
                 else parent.setTag(view.getTag());
                 // Add listener for parent
-                parent.setOnClickListener((OnClickListener) this); 
+                parent.setOnClickListener(this);
             }
         }
         super.addView(parent);
@@ -129,7 +129,7 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
      */
     private View locateRadioButtons(ViewGroup child, View result) {
         // Locate
-        ViewGroup viewGroup = (ViewGroup) child;
+        ViewGroup viewGroup = child;
         int size = viewGroup.getChildCount();
         for (int i = 0; i < size; i++) {
             View viewChild = viewGroup.getChildAt(i);
@@ -312,7 +312,7 @@ public class GenericRadioGroup extends RadioGroup implements View.OnClickListene
      * @author sergiopereira
      */
     public boolean isValidateGroup(){
-        return (mCurrentCheckedButtonPos != -1) ? true : false;
+        return (mCurrentCheckedButtonPos != -1);
     }
     
 }

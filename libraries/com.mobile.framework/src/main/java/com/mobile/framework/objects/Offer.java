@@ -1,15 +1,15 @@
 package com.mobile.framework.objects;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -115,7 +115,10 @@ public class Offer implements IJSONSerializable, Parcelable{
                 specialPriceOfferConverted = productObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG,0.0);
                 
                 JSONArray simplesArray = productObject.optJSONArray(RestConstants.JSON_SIMPLES_TAG);
-                
+
+                minDeliveryTime = productObject.optInt(RestConstants.JSON_SELLER_MIN_DELIVERY_TAG);
+                maxDeliveryTime = productObject.optInt(RestConstants.JSON_SELLER_MAX_DELIVERY_TAG);
+
                 //Simple array it's only supposed to have one simple, is a "buy now" kind of product
                 if(simplesArray != null && simplesArray.length() > 0){
                     JSONObject simpleObject = simplesArray.getJSONObject(0);

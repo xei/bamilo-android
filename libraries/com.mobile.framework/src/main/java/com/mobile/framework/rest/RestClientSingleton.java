@@ -1,15 +1,5 @@
 package com.mobile.framework.rest;
 
-import java.io.IOException;
-import java.net.SocketTimeoutException;
-import java.net.URI;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
-
-import javax.net.ssl.SSLException;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,6 +10,29 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+
+import com.mobile.framework.Darwin;
+import com.mobile.framework.ErrorCode;
+import com.mobile.framework.interfaces.IMetaData;
+import com.mobile.framework.network.ConfigurationConstants;
+import com.mobile.framework.network.DarwinHttpClient;
+import com.mobile.framework.network.LazHttpClientAndroidLog;
+import com.mobile.framework.service.RemoteService;
+import com.mobile.framework.tracking.NewRelicTracker;
+import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventTask;
+import com.mobile.framework.utils.EventType;
+
+import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.net.URI;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+
+import javax.net.ssl.SSLException;
+
 import ch.boye.httpclientandroidlib.Consts;
 import ch.boye.httpclientandroidlib.HttpEntity;
 import ch.boye.httpclientandroidlib.HttpResponse;
@@ -55,19 +68,6 @@ import ch.boye.httpclientandroidlib.params.HttpParams;
 import ch.boye.httpclientandroidlib.protocol.BasicHttpContext;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
-
-import com.mobile.framework.Darwin;
-import com.mobile.framework.ErrorCode;
-import com.mobile.framework.interfaces.IMetaData;
-import com.mobile.framework.network.ConfigurationConstants;
-import com.mobile.framework.network.DarwinHttpClient;
-import com.mobile.framework.network.LazHttpClientAndroidLog;
-import com.mobile.framework.service.RemoteService;
-import com.mobile.framework.tracking.NewRelicTracker;
-import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventTask;
-import com.mobile.framework.utils.EventType;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -148,7 +148,7 @@ public final class RestClientSingleton {
         cacheConfig.setMaxObjectSize(MAX_CACHE_OBJECT_SIZE);
         cacheConfig.setSharedCache(false);
         mCacheStore = new DBHttpCacheStorage(mContext, cacheConfig);
-        mDarwinHttpClient = new DarwinHttpClient(getHttpParams(mContext));
+        mDarwinHttpClient = new DarwinHttpClient(getHttpParams());
         setAuthentication(mContext, mDarwinHttpClient);
 
         CachingHttpClient cachingClient = new CachingHttpClient(mDarwinHttpClient, mCacheStore, cacheConfig);
@@ -233,12 +233,7 @@ public final class RestClientSingleton {
 	/**
 	 * Sends a HTTP GET request to the given url and returns the response as
 	 * String (e.g. a json string).
-	 * 
-	 * @param ctx
-	 *            Used for the RestProcessor to call getContentResolver and
-	 *            store the state in the database
-	 * @param urlString
-	 *            the URL to send the HTTP request
+	 *
 	 * @return the response as String e.g. a json string
 	 */
 	public String executeGetRestUrlString(Uri uri, Handler mHandler, Bundle metaData) {
@@ -253,7 +248,7 @@ public final class RestClientSingleton {
 		String url = (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) ? uri.toString() : RemoteService.completeUri(uri).toString();
 		
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-			Log.d(TAG, "executeGetRestUrlString complete: " + url.toString());
+			Log.i(TAG, "executeGetRestUrlString complete: " + url);
 		}
 		
 		HttpGet httpRequest = new HttpGet(url.replaceAll(" ", "%20"));
@@ -285,12 +280,12 @@ public final class RestClientSingleton {
 		String url = (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) ? uri.toString() : RemoteService.completeUri(uri).toString();
 		
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-			Log.d(TAG, "executePostRestUrlString complete: " + url.toString());
+			Log.i(TAG, "executePostRestUrlString complete: " + url);
 		}
 		
-		HttpPost httpRequest = new HttpPost(url.toString());
+		HttpPost httpRequest = new HttpPost(url);
 
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		List<NameValuePair> params = new ArrayList<>();
 		if(formData != null){
 			for (Entry<String, Object> entry : formData.valueSet()) {
 				Object value = entry.getValue();
@@ -439,7 +434,7 @@ public final class RestClientSingleton {
 			
 			// FIXME - OutOfMemoryError
 			result = EntityUtils.toString(entity, Consts.UTF_8);
-			Log.i(TAG, "API RESPONSE : " + result.toString());
+			Log.i(TAG, "API RESPONSE : " + result);
 			
 			// Get the byte count response
             int byteCountResponse = result.getBytes().length;
@@ -503,7 +498,7 @@ public final class RestClientSingleton {
 		return null;
 	}
 
-	public HttpParams getHttpParams(Context context) {
+	public HttpParams getHttpParams() {
 		HttpParams httpParameters = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParameters, ConfigurationConstants.CONNECTION_TIMEOUT);
 		HttpConnectionParams.setSoTimeout(httpParameters, ConfigurationConstants.SOCKET_TIMEOUT);
@@ -527,7 +522,7 @@ public final class RestClientSingleton {
 	        }
 	        
 			RestContract.init(mContext, "" + shopId);
-			Darwin.initialize(mContext, "" + shopId, false);
+			Darwin.initialize(mContext, "" + shopId);
 		}
 		if (RestContract.USE_AUTHENTICATION) {
 			httpClient.getCredentialsProvider()

@@ -1,7 +1,5 @@
 package com.mobile.utils;
 
-import java.util.ArrayList;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -14,6 +12,8 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -90,9 +90,8 @@ public class RadioGroupLayout extends LinearLayout {
     public int getSelectedIndex() {
         int radioButtonID = mGroup.getCheckedRadioButtonId();
         View radioButton = mGroup.findViewById(radioButtonID);
-        int idx = mGroup.indexOfChild(radioButton);
 
-        return idx;
+        return mGroup.indexOfChild(radioButton);
     }
 
     public String getItemByIndex(int idx) {

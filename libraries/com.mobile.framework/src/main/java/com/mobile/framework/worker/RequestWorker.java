@@ -16,7 +16,7 @@ import de.akquinet.android.androlog.Log;
  * @author josedourado
  *
  */
-public class RequestWorker implements Runnable{
+public class RequestWorker implements Runnable {
 	
 	private static final String TAG = RequestWorker.class.getSimpleName();
 	private Uri uri;

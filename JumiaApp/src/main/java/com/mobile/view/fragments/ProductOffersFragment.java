@@ -83,7 +83,7 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Offers,
                 R.layout.product_offers_main,
-                0,
+                NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT,
                 ConstantsCheckout.NO_CHECKOUT);
     }
@@ -273,7 +273,7 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
     public class CustomComparator implements Comparator<Offer> {
         @Override
         public int compare(Offer o1, Offer o2) {
-            return ((Double)o1.getPriceOfferDouble()).compareTo((Double)o2.getPriceOfferDouble());
+            return ((Double)o1.getPriceOfferDouble()).compareTo(o2.getPriceOfferDouble());
         }
     }
     
@@ -312,7 +312,7 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
         
         switch (eventType) {
         case GET_PRODUCT_OFFERS:
-            productOffers = (ProductOffers) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            productOffers = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             orderOffersByLowerPrice(productOffers);
             setAppContent();
             showFragmentContentContainer();

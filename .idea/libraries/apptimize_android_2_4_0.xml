@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="apptimize-android-2.4.0">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libraries/com.mobile.framework/libs/apptimize-android-2.4.0.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

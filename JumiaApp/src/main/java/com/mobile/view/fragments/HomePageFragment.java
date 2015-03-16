@@ -281,7 +281,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
     private void showHomePage(Homepage homePage, ViewGroup leftView, ViewGroup rightView, ViewGroup rightViewCategories, ViewGroup rightViewBrands) {
         Log.i(TAG, "SHOW HOME WITH TEASERS");
         // Create the teaser factory
-        TeasersFactory mTeasersFactory = new TeasersFactory(getBaseActivity(), mInflater, (OnClickListener) this);
+        TeasersFactory mTeasersFactory = new TeasersFactory(getBaseActivity(), mInflater, this);
         mTeasersFactory.setContainerWidthToLoadImage(DeviceInfoHelper.getWidth(getBaseActivity()) / 2); // For product list
         // For each teaser create a view and add to container
         for (TeaserSpecification<?> teaser : homePage.getTeaserSpecification()) {

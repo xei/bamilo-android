@@ -44,7 +44,7 @@ public class FilterSizeFragment extends Fragment implements OnClickListener, OnI
 
     private FilterOptionArrayAdapter mOptionArray;
     
-    private SparseArray<CatalogFilterOption> mCurrentSelectedOptions = new SparseArray<CatalogFilterOption>();
+    private SparseArray<CatalogFilterOption> mCurrentSelectedOptions = new SparseArray<>();
     
     private boolean allowMultiselection;
 
@@ -221,7 +221,7 @@ public class FilterSizeFragment extends Fragment implements OnClickListener, OnI
     private void cleanOldSelections(){
         // Disable old selection
         for(int i = 0; i < mCurrentSelectedOptions.size(); i++) 
-            ((CatalogFilterOption) mCurrentSelectedOptions.valueAt(i)).setSelected(false);
+            mCurrentSelectedOptions.valueAt(i).setSelected(false);
         // Clean array
         mCurrentSelectedOptions.clear();
     }

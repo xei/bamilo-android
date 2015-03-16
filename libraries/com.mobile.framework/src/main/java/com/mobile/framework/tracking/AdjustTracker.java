@@ -3,16 +3,6 @@
  */
 package com.mobile.framework.tracking;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -44,6 +34,16 @@ import com.mobile.framework.objects.ShoppingCartItem;
 import com.mobile.framework.tracking.GTMEvents.GTMKeys;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.NetworkConnectivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -255,7 +255,7 @@ public class AdjustTracker {
 //        boolean firstTimeAdjust = sharedPrefs.getBoolean(ADJUST_FIRST_TIME_KEY, true);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putBoolean(ADJUST_FIRST_TIME_KEY, false);
-        editor.commit();
+        editor.apply();
 
 //        if (firstTimeAdjust) {
 //            isupdate = false;
@@ -293,7 +293,7 @@ public class AdjustTracker {
         editor.putString(GTMKeys.INSTALLADGROUP, adGroup);
         editor.putString(GTMKeys.INSTALLCAMPAIGN, campaign);
         editor.putString(GTMKeys.INSTALLCREATIVE, creative);
-        editor.commit();
+        editor.apply();
     }
     
     public void trackScreen(TrackingPage screen, Bundle bundle) {
@@ -320,7 +320,7 @@ public class AdjustTracker {
             Adjust.trackEvent(mContext.getString(R.string.adjust_token_home), parameters);
             
             //FB - View Homescreen
-            parameters = new HashMap<String, String>();
+            parameters = new HashMap<>();
             parameters = getFBBaseParameters(parameters, bundle);
             Adjust.trackEvent(mContext.getString(R.string.adjust_token_fb_home), parameters);
             
@@ -341,7 +341,7 @@ public class AdjustTracker {
             Adjust.trackEvent(mContext.getString(R.string.adjust_token_view_product), parameters);
             
             // FB - View Product
-            parameters = new HashMap<String, String>();
+            parameters = new HashMap<>();
             parameters = getFBBaseParameters(parameters, bundle);           
             parameters.put(AdjustKeys.SKU, prod.getSku()); 
             parameters.put(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
@@ -391,7 +391,7 @@ public class AdjustTracker {
                 Adjust.trackEvent(mContext.getString(R.string.adjust_token_view_listing), parameters);
             }
             //FB - View Listing
-            fbParameters = new HashMap<String, String>();
+            fbParameters = new HashMap<>();
             fbParameters = getFBBaseParameters(fbParameters, bundle);
             if(!TextUtils.isEmpty(bundle.getString(CATEGORY)))
                 fbParameters.put(AdjustKeys.CATEGORY, bundle.getString(CATEGORY)); 
@@ -425,7 +425,7 @@ public class AdjustTracker {
             String countString = "";
             for (String key : cart.getCartItems().keySet()) {
                 item = cart.getCartItems().get(key);
-                fbParameters = new HashMap<String, String>();
+                fbParameters = new HashMap<>();
                 json = new JSONObject();
                 try {
                     json.put(AdjustKeys.SKU, item.getConfigSKU());
@@ -469,7 +469,7 @@ public class AdjustTracker {
 
     public void trackEvent(Context context, TrackingEvent event, Bundle bundle) {
 
-        Map<String, String> parameters = new HashMap<String, String>();
+        Map<String, String> parameters = new HashMap<>();
         
         Log.i(TAG, " Tracked Event --> " + event);
         
@@ -754,7 +754,7 @@ public class AdjustTracker {
                 
                 if (null != favourites) {
                     for (AddableToCart fav : favourites) {
-                        HashMap<String, String> fbParams = new HashMap<String, String>(); 
+                        HashMap<String, String> fbParams = new HashMap<String, String>();
 
                         fbParams = new HashMap<String, String>(parameters);
                         parameters.put(AdjustKeys.BRAND, fav.getBrand()); 

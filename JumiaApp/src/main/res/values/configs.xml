@@ -3,6 +3,7 @@
 
     <!-- APP -->
     <bool name="is_to_show_dev_env">false</bool>
+    <bool name="rtl_enabled">false</bool>
     
 	<!-- CHECK VERSION -->
     <item name="check_version_enabled" type="bool">true</item>
@@ -25,11 +26,12 @@
     <item name="default_sound" type="bool">true</item>
 
     <!-- HOCKEY APP -->
-    <string name="hockey_app_id"></string>
+    <string name="hockey_app_id"/>
     <item name="hockeyapp_enable_dev" type="bool">false</item>
 
     <!-- DEEP LINK APP INDEXING -->
     <string name="dp_app_index_prefix">/JUMIA</string>
     <string name="dp_app_index_scheme">android-app</string>
 
+    <string name="app_name_placeholder">Jumia</string>
 </resources>

@@ -30,8 +30,7 @@ public class UIUtils {
     public static float convertPixelsToDp(float px, Context context){
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float dp = px / (metrics.densityDpi / 160f);
-        return dp;
+        return px / (metrics.densityDpi / 160f);
     }
 
     public static int spToPx(float dp, Context context) {
@@ -61,7 +60,7 @@ public class UIUtils {
      * @param views
      * @author sergiopereira
      */
-    public final static void showOrHideViews(int visibility, View... views) {
+    public static void showOrHideViews(int visibility, View... views) {
         for (View view : views) if (view != null) view.setVisibility(visibility);
     }
     
@@ -70,7 +69,7 @@ public class UIUtils {
      * @param view
      * @param show
      */
-    public final static void setVisibility(View view, boolean show) {
+    public static void setVisibility(View view, boolean show) {
         if (view != null) view.setVisibility(show ? View.VISIBLE : View.GONE);
     }
     

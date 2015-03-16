@@ -37,9 +37,9 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
      * @return MyAddressesFragment
      */
     public static MyAccountEditAddressFragment newInstance(Bundle bundle) {
-        MyAccountEditAddressFragment myAccountEditAddressFragment = new MyAccountEditAddressFragment();
-        myAccountEditAddressFragment.mCurrentAddress = bundle.getParcelable(EditAddressFragment.SELECTED_ADDRESS);
-        return myAccountEditAddressFragment;
+        MyAccountEditAddressFragment fragment = new MyAccountEditAddressFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     public MyAccountEditAddressFragment() {
@@ -47,6 +47,16 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
                 NavigationAction.MyAccount,
                 R.string.edit_address,
                 KeyboardState.ADJUST_CONTENT);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Get arguments
+        Bundle arguments = getArguments();
+        if(arguments != null) {
+            mCurrentAddress = arguments.getParcelable(EditAddressFragment.SELECTED_ADDRESS);
+        }
     }
 
     @Override
@@ -61,7 +71,7 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
         //Validate is service is available
         if(JumiaApplication.mIsBound){
             // Get and show form
-            if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
+            if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
                 triggerInitForm();
             } else if(mFormResponse != null && mRegions != null){
                 loadEditAddressForm(mFormResponse);

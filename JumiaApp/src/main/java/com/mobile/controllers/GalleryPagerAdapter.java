@@ -1,7 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.InflateException;
@@ -17,6 +15,8 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.photoview.PhotoView;
 import com.mobile.utils.photoview.PhotoViewAttacher;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -99,9 +99,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
             String imageUrl = mImageUrls.get(position);
             setImageToLoad(imageUrl, view);
             container.addView(view);
-        } catch (InflateException e) {
-            e.printStackTrace();
-        } catch (IndexOutOfBoundsException e) {
+        } catch (InflateException | IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
 
@@ -160,9 +158,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
                 PhotoViewAttacher mAttacher = new PhotoViewAttacher(mCurrentPhotoView);
                 mAttacher.setScaleType(ScaleType.FIT_CENTER);
                 mAttacher = null;
-            } catch (IllegalStateException e) {
-                Log.w(TAG, "RESETING IMAGE VIEW: " + e.getMessage());
-            } catch (NullPointerException e) {
+            } catch (IllegalStateException | NullPointerException e) {
                 Log.w(TAG, "RESETING IMAGE VIEW: " + e.getMessage());
             }
         }

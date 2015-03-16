@@ -85,10 +85,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      * 
      * @return
      */
-    public static CheckoutPaymentMethodsFragment getInstance(Bundle bundle) {
-        // if (loginFragment == null)
-        paymentMethodsFragment = new CheckoutPaymentMethodsFragment();
-        return paymentMethodsFragment;
+    public static CheckoutPaymentMethodsFragment getInstance() {
+        return new CheckoutPaymentMethodsFragment();
     }
 
     /**
@@ -101,7 +99,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 R.string.checkout_label,
                 KeyboardState.ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_PAYMENT);
-        // ConstantsCheckout.CHECKOUT_PAYMENT
     }
 
     /*
@@ -278,8 +275,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         if (savedValues != null){
             while (iter.hasNext()){
                 try {
-                    ((DynamicFormItem) iter.next()).setSelectedPaymentMethod(JumiaApplication.INSTANCE.lastPaymentSelected);
-                    ((DynamicFormItem) iter.next()).loadState(mSavedState);
+                    iter.next().setSelectedPaymentMethod(JumiaApplication.INSTANCE.lastPaymentSelected);
+                    iter.next().loadState(mSavedState);
                 } catch (Exception e) {
                     Log.w(TAG, "CAN'T LOAD THE SAVED STATE");
                 }
@@ -448,7 +445,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 generateNoPayment();
             } else {
                 // Form
-                Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 loadForm(form);                
             }
 

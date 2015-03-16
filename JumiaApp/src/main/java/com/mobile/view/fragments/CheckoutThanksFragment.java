@@ -27,7 +27,6 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
-import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
@@ -53,11 +52,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     private static final String TAG = LogTagHelper.create(CheckoutThanksFragment.class);
 
-    private static CheckoutThanksFragment checkoutStep5Fragment;
-
     private static String order_number;
-
-    Customer mCustomer;
     
     private String orderShipping;
     
@@ -73,11 +68,9 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      * @return
      */
     public static CheckoutThanksFragment getInstance(Bundle bundle) {
-        //if (checkoutStep5Fragment == null)
-            checkoutStep5Fragment = new CheckoutThanksFragment();
-        //FIXME java.lang.IllegalStateException: Fragment already active
-        checkoutStep5Fragment.setArguments(bundle);
-        return checkoutStep5Fragment;
+        CheckoutThanksFragment fragment = new CheckoutThanksFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /**

@@ -41,8 +41,8 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
         this.name = "";
         this.method = "";
         this.action = "";
-        this.groupList = new ArrayList<ShippingRadioGroupList>();
-        this.fields = new ArrayList<ShippingMethodForm>();
+        this.groupList = new ArrayList<>();
+        this.fields = new ArrayList<>();
     }
 
     /*
@@ -179,11 +179,11 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
     public void setSelections(int groupId, int itemId, int subItemId){
         try {
             if (groupList.get(groupId).findViewById(R.id.radio_container).findViewById(itemId) instanceof RadioButton) {
-                ((RadioButton) groupList.get(groupId).findViewById(R.id.radio_container).findViewById(itemId)).performClick();
+                groupList.get(groupId).findViewById(R.id.radio_container).findViewById(itemId).performClick();
                 if(subItemId != -1)
-                    ((ShippingRadioGroupList) groupList.get(groupId)).setSubSelection(itemId, subItemId);
+                    groupList.get(groupId).setSubSelection(itemId, subItemId);
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
     
@@ -219,7 +219,7 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
         name = in.readString();
         method = in.readString();
         action = in.readString();
-        fields = new ArrayList<ShippingMethodForm>();
+        fields = new ArrayList<>();
         in.readArrayList(ShippingMethodForm.class.getClassLoader());
         
     }

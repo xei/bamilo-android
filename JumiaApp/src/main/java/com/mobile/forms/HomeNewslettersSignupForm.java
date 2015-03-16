@@ -1,11 +1,5 @@
 package com.mobile.forms;
 
-import java.util.LinkedHashMap;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -13,6 +7,12 @@ import android.text.TextUtils;
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.LinkedHashMap;
 
 import de.akquinet.android.androlog.Log;
 
@@ -38,7 +38,7 @@ public class HomeNewslettersSignupForm implements IJSONSerializable, Parcelable 
         this.emailField = "";
         this.categoryField = "";
         this.emailValidation = new FieldValidation();
-        this.categories = new LinkedHashMap<String, String>();
+        this.categories = new LinkedHashMap<>();
         this.isValid = false;
     }
 
@@ -136,7 +136,7 @@ public class HomeNewslettersSignupForm implements IJSONSerializable, Parcelable 
         categoryField = in.readString();
         emailValidation = in.readParcelable(FieldValidation.class.getClassLoader());
         // read Hashmap
-        categories = new LinkedHashMap<String, String>();
+        categories = new LinkedHashMap<>();
         int numberCategories = in.readInt();
         for (int i = 0; i< numberCategories ; i++){
             String key = in.readString();

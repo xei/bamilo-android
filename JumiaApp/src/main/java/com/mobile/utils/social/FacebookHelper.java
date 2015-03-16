@@ -45,11 +45,11 @@ public class FacebookHelper {
      * Method used to show or hide Facebook views using a flag.<br>
      * Hide view case Build.VERSION  
      * Case the Frament implements the OnClickView is defined to the callback for click listener.
-     * @param context
+     * @param fragment
      * @param views
      * @author sergiopereira
      */
-    public final static void showOrHideFacebookButton(Fragment fragment, View... views) {
+    public static void showOrHideFacebookButton(Fragment fragment, View... views) {
         // Validate the Facebook configuration
         SharedPreferences sharedPrefs = fragment.getActivity().getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         boolean hideFacebook = !sharedPrefs.getBoolean(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE, false);
@@ -63,11 +63,11 @@ public class FacebookHelper {
 
     /**
      * Show Facebook views and associate buttons to fragment.
-     * @param visibility
+     * @param fragment
      * @param views
      * @author sergiopereira
      */
-    private final static void showFacebookViews(Fragment fragment, View... views) {
+    private static void showFacebookViews(Fragment fragment, View... views) {
         // For each view associated to Facebook buttons
         for (View view : views)
             if (view != null) {
@@ -84,7 +84,7 @@ public class FacebookHelper {
      * @param fragment
      * @author sergiopereira
      */
-    private final static void setFacebookLogin(LoginButton button, Fragment fragment) {
+    private static void setFacebookLogin(LoginButton button, Fragment fragment) {
         // Set the UI control
         button.setFragment(fragment);
         // Set the Facebook Login (from app or from dialog)
@@ -100,7 +100,7 @@ public class FacebookHelper {
      * @author sergiopereira
      */
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-    public final static void cleanFacebookSession(){
+    public static void cleanFacebookSession(){
         Session s = Session.getActiveSession();
         s.closeAndClearTokenInformation();
     }
@@ -110,7 +110,7 @@ public class FacebookHelper {
      * @param context
      * @author sergiopereira
      */
-    public final static void logHashKey(Context context) {
+    public static void logHashKey(Context context) {
         try {
             String name = context.getApplicationInfo().packageName;
             PackageInfo info = context.getPackageManager().getPackageInfo(name, PackageManager.GET_SIGNATURES);
@@ -120,9 +120,7 @@ public class FacebookHelper {
                 md.update(signature.toByteArray());
                 android.util.Log.i("Facebook", "KeyHash:\n" + Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
-        } catch (NameNotFoundException e) {
-            // ...
-        } catch (NoSuchAlgorithmException e) {
+        } catch (NameNotFoundException | NoSuchAlgorithmException e) {
             // ...
         }
     }

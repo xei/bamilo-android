@@ -197,32 +197,50 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             // get the form field
             String formFieldString = jsonObject.optString(RestConstants.JSON_TYPE_TAG);
 
-            if (formFieldString.equals("string") || formFieldString.equals("text")) {
-                inputType = InputType.text;
-            } else if (formFieldString.equals("email")) {
-                inputType = InputType.email;
-            } else if (formFieldString.equals("date")) {
-                inputType = InputType.date;
-            } else if (formFieldString.equals("integer") || formFieldString.equals("number")) {
-                inputType = InputType.number;
-            } else if (formFieldString.equals("password")) {
-                inputType = InputType.password;
-            } else if(formFieldString.equals("radio")){
-                inputType = InputType.radioGroup;
-            } else if (formFieldString.equals("list") || formFieldString.equals("select")) {
-                inputType = InputType.list;
-            } else if (formFieldString.equals("array") || formFieldString.equals("rating")) {
-                inputType = InputType.rating;
-            } else if (formFieldString.equals("boolean") || formFieldString.equals("checkbox")) {
-                inputType = InputType.checkBox;
-            } else if (formFieldString.equals("")) {
-            	inputType = InputType.meta;
-            } else if (formFieldString.equals("hidden")) {
-                inputType = InputType.hide;
-            } else if (formFieldString.equals("checkbox_link")) {
-                inputType = InputType.checkBoxList;
-            }  else {
-            	return false;
+            switch (formFieldString) {
+                case "string":
+                case "text":
+                    inputType = InputType.text;
+                    break;
+                case "email":
+                    inputType = InputType.email;
+                    break;
+                case "date":
+                    inputType = InputType.date;
+                    break;
+                case "integer":
+                case "number":
+                    inputType = InputType.number;
+                    break;
+                case "password":
+                    inputType = InputType.password;
+                    break;
+                case "radio":
+                    inputType = InputType.radioGroup;
+                    break;
+                case "list":
+                case "select":
+                    inputType = InputType.list;
+                    break;
+                case "array":
+                case "rating":
+                    inputType = InputType.rating;
+                    break;
+                case "boolean":
+                case "checkbox":
+                    inputType = InputType.checkBox;
+                    break;
+                case "":
+                    inputType = InputType.meta;
+                    break;
+                case "hidden":
+                    inputType = InputType.hide;
+                    break;
+                case "checkbox_link":
+                    inputType = InputType.checkBoxList;
+                    break;
+                default:
+                    return false;
             }
 
             // if the field is one of the supported types
@@ -347,9 +365,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                  * Method to save the newsletter options
                  */
                 if(key.equals("newsletter_categories_subscribed") && dataOptionsArray != null) {
-                    newsletterOptions = new ArrayList<NewsletterOption>();
+                    newsletterOptions = new ArrayList<>();
                     for (int i = 0; i < dataOptionsArray.length(); i++)
-                        newsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), name.toString()));
+                        newsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), name));
                     dataOptionsArray = null;
                     dataOptionsObject = null;
                 }
@@ -390,7 +408,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 
                 if(key.equals("payment_method")){
                     dataSet.clear();
-                    paymentFields = new HashMap<String, Form>();
+                    paymentFields = new HashMap<>();
                     dataOptionsObject = jsonObject.optJSONObject(RestConstants.JSON_OPTIONS_TAG);
                     Iterator<?> it = dataOptionsObject.keys();
                     //Clean payment method info

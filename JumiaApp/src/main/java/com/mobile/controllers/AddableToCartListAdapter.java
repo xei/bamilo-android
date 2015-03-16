@@ -1,7 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -19,6 +17,8 @@ import com.mobile.framework.objects.LastViewedAddableToCart;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -94,7 +94,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
         // Get the class associated to the view
         Item prodItem = getItemView(itemView);
         // Get addableToCart
-        AddableToCart addableToCart = (AddableToCart) getItem(position);
+        AddableToCart addableToCart = getItem(position);
         // Set Image
         setImage(prodItem, addableToCart);
         // Set brand, name and price 
@@ -135,7 +135,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
      */
     private Item getItemView(View itemView){
         Item item;
-        if ((Item) itemView.getTag(RECYCLED_VIEW_KEY) == null) {
+        if (itemView.getTag(RECYCLED_VIEW_KEY) == null) {
             // Create tag
             item = new Item();
             item.container = itemView.findViewById(R.id.addabletocart_item_container);

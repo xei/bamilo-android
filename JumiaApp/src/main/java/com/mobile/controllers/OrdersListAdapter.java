@@ -40,7 +40,7 @@ public class OrdersListAdapter extends BaseAdapter {
 
     private OnSelectedOrderChange oderSelected;
 
-    ArrayList<Order> orders = new ArrayList<Order>();
+    ArrayList<Order> orders = new ArrayList<>();
     
     private int selectedPosition = -1;
 
@@ -133,7 +133,7 @@ public class OrdersListAdapter extends BaseAdapter {
             item.productPaymentMethod = (TextView) itemView.findViewById(R.id.order_list_payment);
             item.orderCheck = (ImageView) itemView.findViewById(R.id.order_check);
             item.orderArrow = (ImageView) itemView.findViewById(R.id.order_arrow);
-            item.orderLine = (View) itemView.findViewById(R.id.order_bottom_line);
+            item.orderLine = itemView.findViewById(R.id.order_bottom_line);
 
             itemView.setTag(item);
 

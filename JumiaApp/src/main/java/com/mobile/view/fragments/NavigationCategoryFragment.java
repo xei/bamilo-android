@@ -128,7 +128,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         }
         // Case empty
         else if(!TextUtils.isEmpty(ShopSelector.getShopId())) {
-            if(mainActivity instanceof MainFragmentActivity && !((MainFragmentActivity)mainActivity).isInMaintenance())
+            if(getBaseActivity() instanceof MainFragmentActivity && !((MainFragmentActivity) getBaseActivity()).isInMaintenance())
                 triggerGetCategories(mCategoryKey);
         }
         // Case recover from background

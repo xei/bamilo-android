@@ -4,13 +4,6 @@
  */
 package com.mobile.helpers.configs;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
@@ -29,6 +22,13 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -117,7 +117,7 @@ public class GetApiInfoHelper extends BaseHelper {
 //          Log.i(TAG, "SECTIONS: DATED");
 //      }
         
-        JumiaApplication.INSTANCE.setVersionInfo(info);
+        JumiaApplication.INSTANCE.setMobApiVersionInfo(info);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, info);
         

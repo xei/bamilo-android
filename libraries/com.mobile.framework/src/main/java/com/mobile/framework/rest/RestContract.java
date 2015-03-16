@@ -38,8 +38,6 @@ public class RestContract {
 	public static String REST_BASE_PATH = null;
 	public static String REQUEST_HOST = null;
 	public static Boolean USE_ONLY_HTTPS = false;
-	
-	public final static String HTTPS_PROTOCOL = "https";
 
 	// Authentication
 	public static Boolean USE_AUTHENTICATION = null;
@@ -52,12 +50,6 @@ public class RestContract {
     public static final boolean USE_AUTHENTICATION_TEST = true;
     public static final String AUTHENTICATION_USER_TEST = "rocket";
     public static final String AUTHENTICATION_PASS_TEST = "rock4me";
-	
-	// REST Method types
-	public static final int METHOD_GET = 0;
-	public static final int METHOD_POST = 1;
-	public static final int METHOD_PUT = 2;
-	public static final int METHOD_DELETE = 3;
 	
 	public static final String REST_PARAM_RATING =                      "rating";
 	public static final String REST_PARAM_PAGE =                        "page";

@@ -256,11 +256,11 @@ public class DynamicFormItem {
             boolean checked = false;
             if (null != value) {
                 if (value instanceof String) {
-                    checked = value.equals("1") ? true : false;
+                    checked = value.equals("1");
                 } else if (value instanceof Boolean) {
                     checked = (Boolean) value;
                 } else if (value instanceof Integer) {
-                    checked = ((Integer) value) == 1 ? true : false;
+                    checked = ((Integer) value) == 1;
                 }
             }
             ((CheckBox) this.dataControl).setChecked(checked);
@@ -307,14 +307,14 @@ public class DynamicFormItem {
                 //#RTL
                 int currentapiVersion = android.os.Build.VERSION.SDK_INT;
                 if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-                    ((EditText) this.dataControl).setLayoutDirection(LayoutDirection.LOCALE);
+                    this.dataControl.setLayoutDirection(LayoutDirection.LOCALE);
                 }
                 
             } catch (Exception e) {
                 e.printStackTrace();
             }
             this.errorControl.setVisibility(View.GONE);
-            ((View) this.dataControl).setContentDescription(this.entry.getId());
+            this.dataControl.setContentDescription(this.entry.getId());
 
             if (text.length() == 0) {
                 this.mandatoryControl
@@ -328,7 +328,7 @@ public class DynamicFormItem {
         case hide:
             String text1 = (null == value) ? "" : (String) value;
             ((EditText) this.dataControl).setText(text1);
-            ((EditText) this.dataControl).setVisibility(View.GONE);
+            this.dataControl.setVisibility(View.GONE);
             break;
         case rating:
             break;
@@ -438,7 +438,7 @@ public class DynamicFormItem {
         case hide:
             String text1 = inStat.getString(getKey());
             ((EditText) this.dataControl).setText(text1);
-            ((EditText) this.dataControl).setVisibility(View.GONE);
+            this.dataControl.setVisibility(View.GONE);
             break;
         case rating:
             break;
@@ -523,7 +523,7 @@ public class DynamicFormItem {
         case hide:
             String text1 = inStat.getAsString(getName());
             ((EditText) this.dataControl).setText(text1);
-            ((EditText) this.dataControl).setVisibility(View.GONE);
+            this.dataControl.setVisibility(View.GONE);
             break;
         case rating:
             loadRatingState(inStat);
@@ -548,7 +548,7 @@ public class DynamicFormItem {
             
             float value = Float.parseFloat(inStat.getAsString(pairs.getKey().toString()));
             
-            ((RatingBar) ((LinearLayout)this.dataControl).findViewById(count).findViewById(R.id.option_stars)).setRating(value);
+            ((RatingBar) this.dataControl.findViewById(count).findViewById(R.id.option_stars)).setRating(value);
             count++;
         }
     }
@@ -622,7 +622,7 @@ public class DynamicFormItem {
      * Stores the value of the current field on the value property of the server side form field
      */
     public void storeValueInField() {
-        storeValueInField((String) getValue());
+        storeValueInField(getValue());
     }
 
     /**
@@ -1129,7 +1129,7 @@ public class DynamicFormItem {
         int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
         params.leftMargin = formPadding;
         params.rightMargin = formPadding;
-        this.dataControl = (CheckBox) View.inflate(this.context, R.layout.form_checkbox, null);
+        this.dataControl = View.inflate(this.context, R.layout.form_checkbox, null);
         this.dataControl.setId(parent.getNextId());
         
         params.addRule(RelativeLayout.CENTER_VERTICAL);
@@ -1226,7 +1226,7 @@ public class DynamicFormItem {
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
 
-        ((View) this.dataControl).setContentDescription(this.entry.getKey());
+        this.dataControl.setContentDescription(this.entry.getKey());
 
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -1316,7 +1316,7 @@ public class DynamicFormItem {
 
         final CharSequence editText = ((EditText) this.dataControl).getHint();
         
-        ((View) this.dataControl).setContentDescription(this.entry.getKey());
+        this.dataControl.setContentDescription(this.entry.getKey());
         // Listeners
         
         //TODO
@@ -1408,7 +1408,7 @@ public class DynamicFormItem {
             RelativeLayout dataContainer = null;
 
             // form item container
-            this.control = (View) new RelativeLayout(this.context);
+            this.control = new RelativeLayout(this.context);
             
             this.control.setId(parent.getNextId());
             
@@ -1473,17 +1473,17 @@ public class DynamicFormItem {
         this.dataControl.setLayoutParams(params);
 
         if (this.entry.getDataSet().size() > 0) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
-                    R.layout.form_spinner_item, new ArrayList<String>(this.entry.getDataSet()
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+                    R.layout.form_spinner_item, new ArrayList<>(this.entry.getDataSet()
                             .values()));
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
 
         }
         else {
-            ArrayList<String> default_string = new ArrayList<String>();
+            ArrayList<String> default_string = new ArrayList<>();
             default_string.add("Empty");
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
                     R.layout.form_spinner_item, default_string);
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
@@ -1492,7 +1492,7 @@ public class DynamicFormItem {
         // sets the spinner value
         int position = 0;
         if (null != this.entry.getValue() && !this.entry.getValue().trim().equals("")) {
-            for (String item : new ArrayList<String>(this.entry.getDataSet().values())) {
+            for (String item : new ArrayList<>(this.entry.getDataSet().values())) {
                 if (item.equals(this.entry.getValue())) {
                     ((IcsSpinner) this.dataControl).setSelection(position);
                     break;
@@ -1563,16 +1563,16 @@ public class DynamicFormItem {
             @Override
             public void DataSetReceived(Map<String, String> dataSet) {
                 if (dataSet.size() > 0) {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
-                            R.layout.form_spinner_item, new ArrayList<String>(dataSet.values()));
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+                            R.layout.form_spinner_item, new ArrayList<>(dataSet.values()));
                     adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
                     ((IcsSpinner) dataControl).setAdapter(adapter);
 
                 }
                 else {
-                    ArrayList<String> default_string = new ArrayList<String>();
+                    ArrayList<String> default_string = new ArrayList<>();
                     default_string.add("Empty");
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
                             R.layout.form_spinner_item, default_string);
                     adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
                     ((IcsSpinner) dataControl).setAdapter(adapter);
@@ -1581,7 +1581,7 @@ public class DynamicFormItem {
                 // sets the spinner value
                 int position = 0;
                 if (null != entry.getValue() && !entry.getValue().trim().equals("")) {
-                    for (String item : new ArrayList<String>(dataSet.values())) {
+                    for (String item : new ArrayList<>(dataSet.values())) {
                         if (item.equals(entry.getValue())) {
                             ((IcsSpinner) dataControl).setSelection(position);
                             break;
@@ -1600,9 +1600,9 @@ public class DynamicFormItem {
         RadioGroupLayoutVertical radioGroup = (RadioGroupLayoutVertical) View.inflate(this.context,
                 R.layout.form_radiolistlayout, null);
 
-        HashMap<String, Form> formsMap = new HashMap<String, Form>();
+        HashMap<String, Form> formsMap = new HashMap<>();
 
-        radioGroup.setItems(new ArrayList<String>(this.entry.getDataValues().values()), formsMap,
+        radioGroup.setItems(new ArrayList<>(this.entry.getDataValues().values()), formsMap,
                 RadioGroupLayout.NO_DEFAULT_SELECTION);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
@@ -1646,7 +1646,7 @@ public class DynamicFormItem {
         RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null);
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         radioGroup.setLayoutParams(params);
-        radioGroup.setItems(new ArrayList<String>(this.entry.getDataSet().values()), RadioGroupLayout.NO_DEFAULT_SELECTION);
+        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), RadioGroupLayout.NO_DEFAULT_SELECTION);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
@@ -1694,14 +1694,12 @@ public class DynamicFormItem {
     private void createRadioGroupVertical(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
 
         RadioGroupLayoutVertical radioGroup = (RadioGroupLayoutVertical) View.inflate(this.context, R.layout.form_radiolistlayout, null);
-        HashMap<String, Form> formsMap = new HashMap<String, Form>();
-        Iterator<String> it = this.entry.getDataSet().values().iterator();
-        while (it.hasNext()) {
+        HashMap<String, Form> formsMap = new HashMap<>();
+        for (String key : this.entry.getDataSet().values()) {
 
-            String key = it.next();
             if (this.parent.getForm().fields != null && this.parent.getForm().fields.size() > 0) {
                 HashMap<String, Form> paymentMethodsField = this.parent.getForm().fields.get(0).getPaymentMethodsField();
-                if(paymentMethodsField != null) {
+                if (paymentMethodsField != null) {
                     Log.i(TAG, "code1subForms : " + key + " --> " + paymentMethodsField.toString());
                     if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).fields.size() > 0 || paymentMethodsField.get(key).subForms.size() > 0)) {
                         formsMap.put(key, paymentMethodsField.get(key));
@@ -1710,7 +1708,7 @@ public class DynamicFormItem {
             }
         }
 
-        radioGroup.setItems(new ArrayList<String>(this.entry.getDataSet().values()), formsMap, RadioGroupLayoutVertical.NO_DEFAULT_SELECTION);
+        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), formsMap, RadioGroupLayoutVertical.NO_DEFAULT_SELECTION);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
@@ -1750,7 +1748,7 @@ public class DynamicFormItem {
 
         // in order to position the mandatory signal on the payment method screen in the requested position, we don't inflate the dynamic form mandatory sign,
         // we use a hardcode mandatory signal since the  payment method is always a mandatory section        
-        if(!this.getKey().toString().equalsIgnoreCase("payment_method"))
+        if(!this.getKey().equalsIgnoreCase("payment_method"))
             dataContainer.addView(this.mandatoryControl);
         
         ((ViewGroup) this.control).addView(dataContainer);
@@ -1809,7 +1807,7 @@ public class DynamicFormItem {
          */
 
 //        if( context != null && ((MainFragmentActivity) context).getActiveFragment() != null && !((MainFragmentActivity) context).getActiveFragment().getTag().equals(FragmentType.WRITE_REVIEW_SELLER.name())){
-        if(!JumiaApplication.getIsSellerReview()){
+        if(!JumiaApplication.INSTANCE.getIsSellerReview()){
             addCustomRatingCheckbox(linearLayout, params, controlWidth);
         }
         this.dataControl = linearLayout;
@@ -1839,8 +1837,7 @@ public class DynamicFormItem {
         CheckBox checkWriteFull = (CheckBox) View.inflate(this.context, R.layout.form_checkbox, null);
         
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.checkbox_rating_height);
-        params.height = formPadding;
+        params.height = context.getResources().getDimensionPixelOffset(R.dimen.checkbox_rating_height);
         
         //#RTL
         if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
@@ -1861,7 +1858,7 @@ public class DynamicFormItem {
     public void addSubFormFieldValues(ContentValues model) {
         if (this.entry.getInputType() == InputType.metadate) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String dateString = this.getValue().toString();
+            String dateString = this.getValue();
             Date date;
             try {
                 date = sdf.parse(dateString);
@@ -2102,7 +2099,7 @@ public class DynamicFormItem {
      */
     public ArrayList<DynamicForm> getChildDynamicForm() {
         if (childDynamicForm == null) {
-            childDynamicForm = new ArrayList<DynamicForm>();
+            childDynamicForm = new ArrayList<>();
         }
         return childDynamicForm;
     }

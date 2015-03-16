@@ -1,11 +1,5 @@
 package com.mobile.framework.tracking;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -28,6 +22,12 @@ import com.mobile.framework.objects.PurchaseItem;
 import com.mobile.framework.tracking.GTMEvents.GTMKeys;
 import com.mobile.framework.tracking.GTMEvents.GTMValues;
 import com.mobile.framework.utils.Constants;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import de.akquinet.android.androlog.Log;
 
@@ -69,19 +69,17 @@ public class GTMManager {
     private GTMManager() {
     };
 
-    public static void init(Context context, String countryIso) {
-        gtmTrackingManager = new GTMManager(context, countryIso);
+    public static void init(Context context) {
+        gtmTrackingManager = new GTMManager(context);
     }
 
     @SuppressLint("NewApi")
-    private GTMManager(Context context, String countryIso) {
+    private GTMManager(Context context) {
         Log.i(TAG, " STARTING GTM TRACKING");
         mTagManager = TagManager.getInstance(context);
         isContainerAvailable = false;
 
         mTagManager.setVerboseLoggingEnabled(context.getResources().getBoolean(R.bool.gtm_debug));
-        
-        // mContext = context;
         
         dataLayer = TagManager.getInstance(context).getDataLayer();
         
@@ -100,7 +98,6 @@ public class GTMManager {
                 mContainer = containerHolder.getContainer();
                 if (!containerHolder.getStatus().isSuccess()) {
                     Log.e(TAG, "failure loading container");
-//                    displayErrorToUser(R.string.load_error);
                     return;
                 }
                 ContainerHolderSingleton.setContainerHolder(containerHolder);
@@ -114,14 +111,9 @@ public class GTMManager {
                         processPendingEvents();
                     }
                 });
-                isContainerAvailable = true;  
-//                startMainActivity();
+                isContainerAvailable = true;
             }
         }, 2, TimeUnit.SECONDS);
-        
-//        refreshContainer();
-
-//        dataLayer = mTagManager.getDataLayer();
     }
  
 

@@ -76,25 +76,22 @@ public class DeepLinkManager {
     public static Bundle loadExternalDeepLink(Context context, Uri data) {
         // Decode path
         List<String> segments = isValidLink(context, data.getHost(), data.getPathSegments());
-
         if (segments == null) {
             return null;
         }
+        
         //transform int arraylist in order to be able to excute a remove operation
         ArrayList<String> segmentAux = new ArrayList<String>(segments);
-
         Log.d(TAG, "DEEP LINK SEGMENTS: " + segmentAux.toString());
-
         //if the deep link is from google app indexing the first element will be JUMIA value
         if(segmentAux.get(PATH_CC_POS).equalsIgnoreCase(context.getString(R.string.dp_app_name_uppercase))){
             segmentAux.remove(0);
         }
+        
         // Get the country code
         loadCountryCode(context, segmentAux.get(PATH_CC_POS));
-        // Get the tag view
-        Bundle deepLinkBundle = loadDeepViewTag(context, segmentAux, data);
-        // Return values
-        return deepLinkBundle;
+        // Get the tag view and return values
+        return loadDeepViewTag(context, segmentAux, data);
     }
 
     /**
@@ -114,7 +111,7 @@ public class DeepLinkManager {
 
             // Case -> JUMIA://ng/
             if (isSupporedCountryCode(context, host)) {
-                List<String> array = new ArrayList<String>();
+                List<String> array = new ArrayList<>();
                 array.add(host);
                 return array;
 
@@ -125,7 +122,7 @@ public class DeepLinkManager {
 
             // Case -> JUMIA://eg/cart/
         } else if (isSupporedCountryCode(context, host)) {
-            List<String> array = new ArrayList<String>();
+            List<String> array = new ArrayList<>();
             array.addAll(segments);
             array.add(PATH_CC_POS, host);
             return array;
@@ -606,7 +603,7 @@ public class DeepLinkManager {
             return Collections.emptySet();
         }
 
-        Set<String> names = new LinkedHashSet<String>();
+        Set<String> names = new LinkedHashSet<>();
         int start = 0;
         do {
             int next = query.indexOf('&', start);

@@ -236,7 +236,7 @@ public abstract class BaseActivity extends ActionBarActivity {
          * These method forces the right locale used before the rotation.
          * @author spereira
          */
-        ShopSelector.setLocaleOnOritentationChanged(getApplicationContext());
+        ShopSelector.setLocaleOnOrientationChanged(getApplicationContext());
         // Bind service
         JumiaApplication.INSTANCE.doBindService();
         /*
@@ -842,6 +842,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSearchMenuItem = menu.findItem(R.id.menu_search);
         // Get search action view
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
+        mSearchView.setQueryHint(getString(R.string.action_label_search_hint, getString(R.string.app_name_placeholder)));
         // Get edit text
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
         //#RTL
@@ -1282,7 +1283,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         // sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject, getString(R.string.app_name_placeholder)));
         // Get product
         CompleteProduct prod = JumiaApplication.INSTANCE.getCurrentProduct();
         // Validate
@@ -1941,11 +1942,13 @@ public abstract class BaseActivity extends ActionBarActivity {
                     public void onClick(View v) {
                         dialog.dismissAllowingStateLoss();
                         int id = v.getId();
+                        /*
                         if (id == R.id.button1) {
                             // fragC.popLastEntry();
-                        } else if (id == R.id.button2) {
+                        } else
+                         */
+                        if (id == R.id.button2) {
                             finish();
-
                         }
 
                     }
@@ -2263,6 +2266,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     public void onCheckoutHeaderClickListener(View view) {
         Log.i(TAG, "PROCESS CLICK ON CHECKOUT HEADER");
         int id = view.getId();
+        /*
         // CHECKOUT_ABOUT_YOU
         if (id == R.id.checkout_header_step_1 && !view.isSelected()) {
             // Uncomment if you want click on about you step
@@ -2271,8 +2275,10 @@ public abstract class BaseActivity extends ActionBarActivity {
             // FragmentController.NO_BUNDLE,
             // FragmentController.ADD_TO_BACK_STACK);
         }
+        else
+        */
         // CHECKOUT_BILLING
-        else if (id == R.id.checkout_header_step_2 && !view.isSelected()) {
+        if (id == R.id.checkout_header_step_2 && !view.isSelected()) {
             // Validate back stack
             if (FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString())) {
                 FragmentController.getInstance().popAllEntriesUntil(this, FragmentType.MY_ADDRESSES.toString());

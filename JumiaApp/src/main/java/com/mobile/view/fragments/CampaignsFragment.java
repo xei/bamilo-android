@@ -49,7 +49,9 @@ public class CampaignsFragment extends BaseFragment {
      * @author sergiopereira
      */
     public static CampaignsFragment newInstance(Bundle bundle) {
-        return new CampaignsFragment();
+        CampaignsFragment fragment = new CampaignsFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /**

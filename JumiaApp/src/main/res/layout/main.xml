@@ -28,7 +28,6 @@
         <!-- Main Content Layout -->
 
         <!-- CONTENT LAYOUT -->
-
         <ViewStub
             android:id="@+id/stub_app_content"
             android:layout_width="match_parent"
@@ -36,7 +35,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignWithParentIfMissing="true"
             android:layout_below="@id/checkout_header"
-            android:inflatedId="@+id/rocket_app_content" />
+            android:inflatedId="@+id/rocket_app_content"
+            android:layout="@layout/main_fragment_activity_layout"/>
 
         <!-- WARNING MESSAGE -->
 

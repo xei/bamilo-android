@@ -1,7 +1,5 @@
 package com.mobile.utils.dialogfragments;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,6 +20,8 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.CatalogFilter;
 import com.mobile.framework.objects.CatalogFilterOption;
 import com.mobile.view.R;
+
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -50,7 +50,7 @@ public class FilterColorFragment extends Fragment implements OnClickListener, On
 
     private FilterColorOptionArrayAdapter mOptionArray;
     
-    private SparseArray<CatalogFilterOption> mCurrentSelectedOptions = new SparseArray<CatalogFilterOption>();
+    private SparseArray<CatalogFilterOption> mCurrentSelectedOptions = new SparseArray<>();
     
     private boolean allowMultiselection;
     
@@ -232,7 +232,7 @@ public class FilterColorFragment extends Fragment implements OnClickListener, On
     private void cleanOldSelections(){
         // Disable old selection
         for(int i = 0; i < mCurrentSelectedOptions.size(); i++) 
-            ((CatalogFilterOption) mCurrentSelectedOptions.valueAt(i)).setSelected(false);
+            mCurrentSelectedOptions.valueAt(i).setSelected(false);
         // Clean array
         mCurrentSelectedOptions.clear();
     }

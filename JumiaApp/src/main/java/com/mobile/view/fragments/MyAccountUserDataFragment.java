@@ -3,10 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -32,6 +28,10 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -41,8 +41,6 @@ import de.akquinet.android.androlog.Log;
 public class MyAccountUserDataFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(MyAccountUserDataFragment.class);
-
-    private static MyAccountUserDataFragment sMyAccountFragment;
 
     private final static int PASSWORD_MINLENGTH = 6;
 
@@ -66,9 +64,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
      * @return
      */
     public static MyAccountUserDataFragment getInstance() {
-        // if (myAccountFragment == null)
-        sMyAccountFragment = new MyAccountUserDataFragment();
-        return sMyAccountFragment;
+        return new MyAccountUserDataFragment();
     }
 
     /**
@@ -294,7 +290,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
 
             return true;
         case GET_CUSTOMER:
-            Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.CUSTOMER = customer;
             Log.d(TAG, "CUSTOMER: " + customer.getLastName() + " " + customer.getFirstName() + " "
                     + customer.getEmail());

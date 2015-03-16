@@ -1,5 +1,6 @@
 package com.mobile.preferences;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
@@ -13,12 +14,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.akquinet.android.androlog.Log;
+
 /**
- * Class used to handle contry configs
+ * Class used to handle country configs
  * 
  * @author ricardosoares
  */
 public class CountryConfigs {
+
+    private static final String TAG = CountryConfigs.class.getSimpleName();
 
     private final String POSITION_LEFT = "1";
 
@@ -150,6 +155,21 @@ public class CountryConfigs {
         mEditor.putBoolean(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE, facebook_is_available);
 
         mEditor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, true);
-        mEditor.commit();
+        mEditor.apply();
     }
+
+    /**
+     * Function used to get the shop country code.
+     */
+    public static String getCountryPhoneNumber(Context context) {
+        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null);
+        Log.i(TAG, "SHOP COUNTRY PHONE NUMBER: " + mPhone2Call);
+        return mPhone2Call;
+    }
+
+    public static boolean checkCountryRequirements(SharedPreferences sharedPrefs) {
+        return (sharedPrefs.contains(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE)) ? true : false;
+    }
+
 }

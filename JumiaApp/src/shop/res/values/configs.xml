@@ -45,5 +45,7 @@
     
 	<!-- FACEBOOK -->
     <string name="facebook_app_id">1548038308764210</string>
-    
+
+    <string name="app_name_placeholder">Shop.com.mm</string>
+
 </resources>

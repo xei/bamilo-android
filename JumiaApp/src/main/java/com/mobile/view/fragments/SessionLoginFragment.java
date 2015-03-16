@@ -103,8 +103,6 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
     private Bundle savedInstanceState;
 
-    private static SessionLoginFragment sLoginFragment = null;
-
     private FragmentType nextFragmentType;
 
     private UiLifecycleHelper uiHelper;
@@ -118,19 +116,9 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
      * @return
      */
     public static SessionLoginFragment getInstance(Bundle bundle) {
-        if (bundle != null) {
-            // Initialize SessionLoginFragment with no title
-            sLoginFragment = new SessionLoginFragment(0);
-            sLoginFragment.nextFragmentType = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
-            // Force load form if comes from deep link
-            String path = bundle.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
-            if (path != null && path.equals(DeepLinkManager.TAG))
-                sLoginFragment.formResponse = null;
-        } else {
-            // Initialize SessionLoginFragment with proper title
-            sLoginFragment = new SessionLoginFragment(R.string.login_label);
-        }
-        return sLoginFragment;
+        SessionLoginFragment fragment = new SessionLoginFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /**
@@ -140,19 +128,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.LoginOut,
                 R.layout.login,
-                0,
-                KeyboardState.ADJUST_CONTENT);
-    }
-
-    /**
-     * Constructor
-     * @param titleResId
-     */
-    public SessionLoginFragment(int titleResId) {
-        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.LoginOut,
-                R.layout.login,
-                titleResId,
+                NO_TITLE,
                 KeyboardState.ADJUST_CONTENT);
     }
 
@@ -176,6 +152,20 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Get arguments
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            // Initialize SessionLoginFragment with no title
+            super.titleResId = NO_TITLE;
+            // Force load form if comes from deep link
+            nextFragmentType = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
+            String path = arguments.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
+            if (!TextUtils.isEmpty(path) && path.equals(DeepLinkManager.TAG)) formResponse = null;
+        } else {
+            // Initialize SessionLoginFragment with proper title
+            super.titleResId = R.string.login_label;
+        }
+
         setRetainInstance(true);
         uiHelper = new UiLifecycleHelper(getBaseActivity(), this);
         uiHelper.onCreate(savedInstanceState);
@@ -282,9 +272,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     public void onSaveInstanceState(Bundle outState) {
         if (!JumiaApplication.INSTANCE.isLoggedIn()) {
             if (null != dynamicForm) {
-                Iterator<DynamicFormItem> iterator = dynamicForm.iterator();
-                while (iterator.hasNext()) {
-                    DynamicFormItem item = iterator.next();
+                for (DynamicFormItem item : dynamicForm) {
                     item.saveState(outState);
                 }
                 savedInstanceState = outState;
@@ -392,7 +380,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
                 super.onUserNotAcceptRequiredPermissions();
             // Case required permissions are not granted then request again
             else if(FacebookHelper.wereRequiredPermissionsGranted(session))
-                super.onMakeNewRequiredPermissionsRequest(this, session, this);
+                super.onMakeNewRequiredPermissionsRequest(session, this);
             // Case accept permissions
             else super.onMakeGraphUserRequest(session, this);
         }
@@ -508,7 +496,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
             // NullPointerException on orientation change
             if (baseActivity != null) {
-                Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 JumiaApplication.CUSTOMER = customer;
 
                 Bundle params = new Bundle();
@@ -543,7 +531,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
             // NullPointerException on orientation change
             if (baseActivity != null && !cameFromRegister) {
-                Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 JumiaApplication.CUSTOMER = customer;
 
                 Bundle params = new Bundle();
@@ -573,7 +561,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
             return true;
         case GET_LOGIN_FORM_EVENT:
-            Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             if (form == null) {
                 dialog = DialogGenericFragment.createServerErrorDialog(baseActivity,
                         new OnClickListener() {
@@ -604,8 +592,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
      */
     private void loadForm(Form form) {
         // Set title when Login form is displayed to allow access to other fragments
-        if (null != sLoginFragment && sLoginFragment.nextFragmentType != null) {
-            
+        if (nextFragmentType != null) {
             //#specific_shop
             if(getResources().getBoolean(R.bool.is_daraz_specific) ||
                     getResources().getBoolean(R.bool.is_shop_specific) ||
@@ -705,7 +692,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
                     HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                     List<String> errorMessages = null;
                     if (errors != null) {
-                        errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+                        errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
                     }
                     if (errors != null && errorMessages != null && errorMessages.size() > 0) {
                         showFragmentContentContainer();
@@ -739,8 +726,8 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             List<String> errorMessages = null;
             if (errors != null) {
-                Log.i(TAG, "ERRROS: " + errors.toString());    
-                errorMessages = (List<String>) errors.get(RestConstants.JSON_ERROR_TAG);
+                Log.i(TAG, "ERRORS: " + errors.toString());
+                errorMessages = errors.get(RestConstants.JSON_ERROR_TAG);
             }
             
             if (errors != null && errorMessages != null && errorMessages.size() > 0) {

@@ -15,12 +15,6 @@
  *******************************************************************************/
 package com.mobile.utils.photoview;
 
-import static android.view.MotionEvent.ACTION_CANCEL;
-import static android.view.MotionEvent.ACTION_DOWN;
-import static android.view.MotionEvent.ACTION_UP;
-
-import java.lang.ref.WeakReference;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -44,6 +38,12 @@ import com.mobile.utils.photoview.gestures.OnGestureListener;
 import com.mobile.utils.photoview.gestures.VersionedGestureDetector;
 import com.mobile.utils.photoview.log.LogManager;
 import com.mobile.utils.photoview.scrollerproxy.ScrollerProxy;
+
+import java.lang.ref.WeakReference;
+
+import static android.view.MotionEvent.ACTION_CANCEL;
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
 
 public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
         OnGestureListener,
@@ -147,7 +147,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     private ScaleType mScaleType = ScaleType.FIT_CENTER;
 
     public PhotoViewAttacher(ImageView imageView) {
-        mImageView = new WeakReference<ImageView>(imageView);
+        mImageView = new WeakReference<>(imageView);
 
         imageView.setDrawingCacheEnabled(true);
         imageView.setOnTouchListener(this);

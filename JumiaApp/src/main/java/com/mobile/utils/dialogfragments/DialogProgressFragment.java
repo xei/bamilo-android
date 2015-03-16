@@ -38,8 +38,7 @@ public class DialogProgressFragment extends DialogFragment {
      */
     public static DialogProgressFragment newInstance() {
         Log.d(TAG, "NEW INSTANCE");
-        DialogProgressFragment dialogProgressFragment = new DialogProgressFragment();
-        return dialogProgressFragment;
+        return new DialogProgressFragment();
     }
     
     /*

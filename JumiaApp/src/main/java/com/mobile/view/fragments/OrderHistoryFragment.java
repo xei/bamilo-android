@@ -52,7 +52,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
 
     private static OrderHistoryFragment mOrderHistoryFragment;
 
-    private ArrayList<Order> ordersList = new ArrayList<Order>();
+    private ArrayList<Order> ordersList = new ArrayList<>();
     
     private ListView ordersListView;
         
@@ -596,8 +596,8 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                item.productName = (TextView) itemView.findViewById(R.id.order_product_name);
                item.productQtd = (TextView) itemView.findViewById(R.id.order_product_quantity);
                item.productPrice = (TextView) itemView.findViewById(R.id.order_product_price);
-               item.productBottomDivider = (View) itemView.findViewById(R.id.order_product_divider);
-               item.bottomSpace = (View) itemView.findViewById(R.id.order_product_bottom_space);
+               item.productBottomDivider = itemView.findViewById(R.id.order_product_divider);
+               item.bottomSpace = itemView.findViewById(R.id.order_product_bottom_space);
                
                if(!"null".equals(orderItems.get(i).getmProductTotalString()))
                    item.productPrice.setText(CurrencyFormatter.formatCurrency(orderItems.get(i).getmProductTotalString()));

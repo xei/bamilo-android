@@ -158,7 +158,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         else if (!JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry()) 
             showFragmentErrorRetry();
         // Case app not bound and not shop id and in maintenance country selection
-        else JumiaApplication.INSTANCE.setResendHander(mServiceConnectedHandler);
+        else JumiaApplication.INSTANCE.setResendHandler(mServiceConnectedHandler);
     }
 
     /*
@@ -397,9 +397,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
                 getView().findViewById(R.id.fallback_country).setVisibility(View.GONE);
             }
             fallbackBest.setSelected(true);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        } catch (ClassCastException e) {
+        } catch (NullPointerException | ClassCastException e) {
             e.printStackTrace();
         }
     }
@@ -451,7 +449,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
     private void triggerPromotions() {
         Log.d(TAG, "ON TRIGGER: GET PROMOTIONS");
         Bundle bundle = new Bundle();
-        triggerContentEventNoLoading(new GetPromotionsHelper(), bundle, (IResponseCallback) this);
+        triggerContentEventNoLoading(new GetPromotionsHelper(), bundle, this);
     }
 
     /*

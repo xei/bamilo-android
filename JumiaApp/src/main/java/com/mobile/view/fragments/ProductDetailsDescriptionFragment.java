@@ -3,8 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.graphics.Paint;
 import android.os.Build;
@@ -33,6 +31,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
 
+import java.util.EnumSet;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -42,8 +42,6 @@ import de.akquinet.android.androlog.Log;
 public class ProductDetailsDescriptionFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(ProductDetailsDescriptionFragment.class);
-
-    private static ProductDetailsDescriptionFragment sProductDetailsDescriptionFragment;
 
     private TextView mProductName;
     private TextView mProductPriceSpecial;
@@ -61,10 +59,9 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
      * @return
      */
     public static ProductDetailsDescriptionFragment getInstance(Bundle bundle) {
-        sProductDetailsDescriptionFragment = new ProductDetailsDescriptionFragment();
-        String contentUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
-        sProductDetailsDescriptionFragment.mCompleteProductUrl = contentUrl != null ? contentUrl : "";
-        return sProductDetailsDescriptionFragment;
+        ProductDetailsDescriptionFragment fragment = new ProductDetailsDescriptionFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /**
@@ -74,10 +71,8 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.product_description_fragment,
-                0,
+                NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
-        // super(IS_NESTED_FRAGMENT, R.layout.product_description_fragment);
-        // R.string.product_details_title
         this.mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
     }
 
@@ -102,6 +97,11 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         // Retain this fragment across configuration changes.
+        Bundle arguments = getArguments();
+        if(arguments != null) {
+            String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
+            mCompleteProductUrl = TextUtils.isEmpty(url) ? "" : url;
+        }
     }
     
     /*
@@ -265,7 +265,6 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
             if(mProductFeaturesContainer!=null){
                 mProductFeaturesContainer.setVisibility(View.GONE);
             }
-            return;
         } else {
             mProductFeaturesContainer.setVisibility(View.VISIBLE);
         
@@ -350,7 +349,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
                 getActivity().onBackPressed();
                 return;
             } else {
-                mCompleteProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                mCompleteProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 getViews();
                 displayProductInformation(mainView);   
                 // Waiting for the fragment comunication

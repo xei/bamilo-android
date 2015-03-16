@@ -301,7 +301,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         // Validate the current data
         if (mGridView.getAdapter() == null) {
             // Set adapter
-            CampaignAdapter mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), (OnClickListener) this);
+            CampaignAdapter mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), this);
             mGridView.setAdapter(mArrayAdapter);
         }
         // Show content
@@ -383,8 +383,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      */
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        if (scrollState == OnScrollListener.SCROLL_STATE_FLING) isScrolling = true;
-        else isScrolling = false;
+        isScrolling = scrollState == OnScrollListener.SCROLL_STATE_FLING;
     }
     
     /*
@@ -555,7 +554,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         case GET_CAMPAIGN_EVENT:
             Log.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
             // Get and show campaign
-            mCampaign = (Campaign) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            mCampaign = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             /*--TODO
              * Don't apply Timer if there are no products with remainingTime defined
              */
@@ -708,7 +707,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     }
                 });
         mDialogErrorToCart.show(fm, null);
-        return;
     }
     
     @Override
@@ -836,7 +834,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
          */
         private ItemView getItemView(View view){
             ItemView item;
-            if ((ItemView) view.getTag() == null) {
+            if (view.getTag() == null) {
                 item = new ItemView();
                 // Get stock off
                 item.mStockOff = (TextView) view.findViewById(R.id.campaign_item_stock_off);
@@ -1156,7 +1154,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 // Get sizes
                 ArrayList<CampaignItemSize> sizes = item.getSizes();
                 // Create an ArrayAdapter using the sizes values
-                ArrayAdapter<CampaignItemSize> adapter = new ArrayAdapter<CampaignItemSize>(getContext(), R.layout.campaign_spinner_item, sizes);
+                ArrayAdapter<CampaignItemSize> adapter = new ArrayAdapter<>(getContext(), R.layout.campaign_spinner_item, sizes);
                 // Specify the layout to use when the list of choices appears
                 adapter.setDropDownViewResource(R.layout.campaign_spinner_dropdown_item);
                 // Apply the adapter to the spinner

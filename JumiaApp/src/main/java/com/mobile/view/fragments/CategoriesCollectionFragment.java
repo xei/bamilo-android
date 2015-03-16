@@ -1,7 +1,5 @@
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +12,8 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
+import java.util.EnumSet;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -24,9 +24,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(CategoriesCollectionFragment.class);
     
-    private static CategoriesCollectionFragment sCategoriesFragment;
-    
-    private static int BACK_STACK_EMPTY = 0;
+    private static final int BACK_STACK_EMPTY = 0;
 
     /**
      * Get instance of CategoryColletionFragment
@@ -35,8 +33,9 @@ public class CategoriesCollectionFragment extends BaseFragment {
      * @author sergiopereira
      */
     public static CategoriesCollectionFragment getInstance(Bundle bundle) {
-        sCategoriesFragment = new CategoriesCollectionFragment();        
-        return sCategoriesFragment;
+        CategoriesCollectionFragment fragment = new CategoriesCollectionFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /**
@@ -163,13 +162,14 @@ public class CategoriesCollectionFragment extends BaseFragment {
     @Override
     public boolean allowBackPressed() {
         Log.i(TAG, "ON ALLOW BACK PRESSED");
+        boolean result = false;
         // Case multi level
         if(getChildFragmentManager().getBackStackEntryCount() > 1) {
             goToParentCategory();
-            return true;
+            result = true;
         }
         // Case first level
-        else return false;
+        return result;
     }
     
     
