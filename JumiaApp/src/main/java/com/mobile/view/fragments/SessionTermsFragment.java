@@ -3,8 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +13,8 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
+
+import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
 
@@ -28,8 +28,6 @@ public class SessionTermsFragment extends BaseFragment {
 
     private TextView textView;
     
-    private static SessionTermsFragment termsFragment;
-    
     private String termsText;
     /**
      * Get instance
@@ -37,16 +35,13 @@ public class SessionTermsFragment extends BaseFragment {
      * @return
      */
     public static SessionTermsFragment getInstance() {
-        if (termsFragment == null)
-            termsFragment = new SessionTermsFragment();
-        return termsFragment;
+        return new SessionTermsFragment();
     }
     
     
     public static SessionTermsFragment getInstance(Bundle bundle) {
-        if (termsFragment == null)
-            termsFragment = new SessionTermsFragment();
-        termsFragment.termsText = bundle.getString(ConstantsIntentExtra.TERMS_CONDITIONS);
+        SessionTermsFragment termsFragment = new SessionTermsFragment();
+        termsFragment.setArguments(bundle);
         return termsFragment;
     }
 
@@ -59,7 +54,6 @@ public class SessionTermsFragment extends BaseFragment {
                 R.layout.terms_conditions_fragment,
                 R.string.terms_and_conditions,
                 KeyboardState.NO_ADJUST_CONTENT);
-        // 0
     }
 
     @Override
@@ -87,9 +81,11 @@ public class SessionTermsFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        
-        // Retain this fragment across configuration changes.
-        setRetainInstance(true);
+        // Get arguments
+        Bundle arguments = getArguments();
+        if(arguments != null) {
+            termsText = arguments.getString(ConstantsIntentExtra.TERMS_CONDITIONS);
+        }
     }
     
     /*

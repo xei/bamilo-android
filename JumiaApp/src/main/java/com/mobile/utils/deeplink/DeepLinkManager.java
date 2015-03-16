@@ -84,9 +84,8 @@ public class DeepLinkManager {
         // Get the country code
         loadCountryCode(context, segments.get(PATH_CC_POS));
         // Get the tag view
-        Bundle deepLinkBundle = loadDeepViewTag(context, segments, data);
         // Return values
-        return deepLinkBundle;
+        return loadDeepViewTag(context, segments, data);
     }
 
     /**
@@ -106,7 +105,7 @@ public class DeepLinkManager {
 
             // Case -> JUMIA://ng/
             if (isSupporedCountryCode(context, host)) {
-                List<String> array = new ArrayList<String>();
+                List<String> array = new ArrayList<>();
                 array.add(host);
                 return array;
 
@@ -117,7 +116,7 @@ public class DeepLinkManager {
 
             // Case -> JUMIA://eg/cart/
         } else if (isSupporedCountryCode(context, host)) {
-            List<String> array = new ArrayList<String>();
+            List<String> array = new ArrayList<>();
             array.addAll(segments);
             array.add(PATH_CC_POS, host);
             return array;
@@ -598,7 +597,7 @@ public class DeepLinkManager {
             return Collections.emptySet();
         }
 
-        Set<String> names = new LinkedHashSet<String>();
+        Set<String> names = new LinkedHashSet<>();
         int start = 0;
         do {
             int next = query.indexOf('&', start);

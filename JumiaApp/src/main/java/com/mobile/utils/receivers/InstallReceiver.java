@@ -1,9 +1,6 @@
 package com.mobile.utils.receivers;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +12,9 @@ import com.ad4screen.sdk.ReferrerHandler;
 import com.adjust.sdk.ReferrerReceiver;
 import com.google.android.gms.analytics.CampaignTrackingReceiver;
 import com.mobile.framework.tracking.GTMManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -65,7 +65,7 @@ public class InstallReceiver extends BroadcastReceiver {
     
     public static Map<String, String> getQueryMap(String query) {  
         String[] params = query.split("&");  
-        Map<String, String> map = new HashMap<String, String>();  
+        Map<String, String> map = new HashMap<>();
         for (String param : params) {  
             String name = param.split("=")[0];  
             String value = param.split("=")[1];  

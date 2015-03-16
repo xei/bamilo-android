@@ -1,16 +1,5 @@
 package com.mobile.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +27,17 @@ import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.framework.utils.Utils;
 import com.mobile.view.R;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import de.akquinet.android.androlog.Log;
 
@@ -111,7 +111,7 @@ public class TrackerDelegator {
     private static final Context sContext = JumiaApplication.INSTANCE.getApplicationContext();
 
     
-    public final static void trackLoginSuccessful(Bundle params) {
+    public static void trackLoginSuccessful(Bundle params) {
         TrackingEvent event;
 
         Customer customer = params.getParcelable(CUSTOMER_KEY);
@@ -169,7 +169,7 @@ public class TrackerDelegator {
      * Track the normal/auto login
      * @param wasAutologin
      */
-    public final static void trackLoginFailed(boolean wasAutologin, String location, String method) {
+    public static void trackLoginFailed(boolean wasAutologin, String location, String method) {
         Log.i(TAG, "trackLoginFailed: autologin " + wasAutologin);
         // Case login
         TrackingEvent event = TrackingEvent.LOGIN_FAIL;
@@ -187,7 +187,7 @@ public class TrackerDelegator {
         }
     }
 
-    public final static void trackLogoutSuccessful() {
+    public static void trackLogoutSuccessful() {
         String customerId = "";
         if (JumiaApplication.CUSTOMER != null) {
             customerId = JumiaApplication.CUSTOMER.getIdAsString();
@@ -207,7 +207,7 @@ public class TrackerDelegator {
     }
 
     
-    public final static void trackSearch(Bundle params) {
+    public static void trackSearch(Bundle params) {
         String criteria = params.getString(SEARCH_CRITERIA_KEY);
         long results = params.getLong(SEARCH_RESULTS_KEY);
         
@@ -239,13 +239,13 @@ public class TrackerDelegator {
     }
 
     
-    public final static void trackShopChanged() {
+    public static void trackShopChanged() {
         //GTM
         GTMManager.get().gtmTrackChangeCountry(ShopSelector.getShopId());
     }
     
 
-    public final static void trackProductRemoveFromCart(Bundle params) {
+    public static void trackProductRemoveFromCart(Bundle params) {
         String sku = params.getString(SKU_KEY);
 
         String customer_id = "";
@@ -267,14 +267,14 @@ public class TrackerDelegator {
                 params.getLong(QUANTITY_KEY), params.getString(CARTVALUE_KEY), EUR_CURRENCY);
     }
 
-    public final static void trackCheckout(List<ShoppingCartItem> items) {
+    public static void trackCheckout(List<ShoppingCartItem> items) {
         AnalyticsGoogle.get().trackCheckout(items);
     }
 
     /**
      * 
      */
-    public final static void trackItemShared(Intent intent, String category) {
+    public static void trackItemShared(Intent intent, String category) {
         String sku = intent.getExtras().getString(RestConstants.JSON_SKU_TAG);
         String userId = "";
         if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
@@ -298,7 +298,7 @@ public class TrackerDelegator {
     /**
      * 
      */
-    public final static void trackCategoryView(Bundle params) {
+    public static void trackCategoryView(Bundle params) {
         // Data
         String category = params.getString(CATEGORY_KEY);
         //int page = params.getInt(PAGE_NUMBER_KEY);
@@ -312,7 +312,7 @@ public class TrackerDelegator {
     /**
      * 
      */
-    public final static void trackItemReview(Bundle params) {
+    public static void trackItemReview(Bundle params) {
 
         CompleteProduct product = params.getParcelable(PRODUCT_KEY);
         HashMap<String, Long> ratingValues = (HashMap<String, Long>) params.getSerializable(RATINGS_KEY);
@@ -324,7 +324,7 @@ public class TrackerDelegator {
         if (ratingValues != null && ratingValues.size() > 0) {
             Iterator<Entry<String, Long>> it = ratingValues.entrySet().iterator();
             while (it.hasNext()) {
-                Map.Entry<String, Long> pairs = (Map.Entry<String, Long>) it.next();
+                Map.Entry<String, Long> pairs = it.next();
                 // GA
                 AnalyticsGoogle.get().trackRateProduct(sContext, product.getSku(), pairs.getValue(), pairs.getKey());
                 // FB
@@ -348,7 +348,7 @@ public class TrackerDelegator {
     /**
      * 
      */
-    public final static void trackViewReview(CompleteProduct product) {
+    public static void trackViewReview(CompleteProduct product) {
         //GTM
         GTMManager.get().gtmTrackViewRating(product, EUR_CURRENCY);
     }
@@ -357,7 +357,7 @@ public class TrackerDelegator {
      * Track signup successful.
      * @param params
      */
-    public final static void trackSignupSuccessful(Bundle params) {
+    public static void trackSignupSuccessful(Bundle params) {
         Customer customer = params.getParcelable(CUSTOMER_KEY);
         String location = params.getString(LOCATION_KEY);
         // Validate customer
@@ -544,7 +544,7 @@ public class TrackerDelegator {
         //ArrayList<String> favoritesSKU = FavouriteTableHelper.getFavouriteSKUList();
 
         List<PurchaseItem> items = PurchaseItem.parseItems(itemsJson);
-        ArrayList<String> skus = new ArrayList<String>();
+        ArrayList<String> skus = new ArrayList<>();
         //int favoritesCount = 0;
         for (PurchaseItem item : items) {
             skus.add(item.sku);
@@ -620,7 +620,7 @@ public class TrackerDelegator {
         Log.d(TAG, "TRACK SALE: JSON " + orderNr);
 
         List<PurchaseItem> items = PurchaseItem.parseItems(mItems);
-        ArrayList<String> skus = new ArrayList<String>();
+        ArrayList<String> skus = new ArrayList<>();
         // Get number of items
         for (PurchaseItem item : items) {
             skus.add(item.sku);
@@ -1160,13 +1160,16 @@ public class TrackerDelegator {
     
     /**
      * Tracking the call button
-     * @param event
      */
-    public static void trackCall(Context context, String user_id, String shop_country) {
+    public static void trackCall(Context context) {
+        String userId = "";
+        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) {
+            userId= JumiaApplication.CUSTOMER.getIdAsString();
+        }
         //Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
-        bundle.putString(AdjustTracker.USER_ID, user_id);
+        bundle.putString(AdjustTracker.USER_ID, userId);
         bundle.putBoolean(AdjustTracker.DEVICE, context.getResources().getBoolean(R.bool.isTablet));        
         AdjustTracker.get().trackEvent(context, TrackingEvent.CALL, bundle);
 

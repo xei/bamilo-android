@@ -66,8 +66,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(SessionRegisterFragment.class);
 
-    private static SessionRegisterFragment sRegisterFragment;
-
     private Button registerButton;
 
     private CheckBox rememberEmailCheck;
@@ -97,17 +95,9 @@ public class SessionRegisterFragment extends BaseFragment {
      * @return
      */
     public static SessionRegisterFragment getInstance(Bundle bundle) {
-        sRegisterFragment = new SessionRegisterFragment();
-
-        if (bundle != null) {
-            // Force load form if comes from deep link
-            String path = bundle.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
-            if (path != null && path.equals(DeepLinkManager.TAG)) {
-                JumiaApplication.INSTANCE.registerForm = null;
-            }
-        }
-
-        return sRegisterFragment;
+        SessionRegisterFragment fragment = new SessionRegisterFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /**
@@ -141,6 +131,15 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Get arguments
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            // Force load form if comes from deep link
+            String path = arguments.getString(ConstantsIntentExtra.DEEP_LINK_TAG);
+            if (path != null && path.equals(DeepLinkManager.TAG)) {
+                JumiaApplication.INSTANCE.registerForm = null;
+            }
+        }
     }
 
     @Override
@@ -224,10 +223,8 @@ public class SessionRegisterFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         Log.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
         if (null != serverForm) {
-            Iterator<DynamicFormItem> iterator = serverForm.iterator();
 
-            while (iterator.hasNext()) {
-                DynamicFormItem item = iterator.next();
+            for (DynamicFormItem item : serverForm) {
                 item.saveState(outState);
             }
 
@@ -244,10 +241,8 @@ public class SessionRegisterFragment extends BaseFragment {
             if (JumiaApplication.INSTANCE.registerSavedInstanceState == null) {
                 JumiaApplication.INSTANCE.registerSavedInstanceState = new Bundle();
             }
-            Iterator<DynamicFormItem> iterator = serverForm.iterator();
 
-            while (iterator.hasNext()) {
-                DynamicFormItem item = iterator.next();
+            for (DynamicFormItem item : serverForm) {
                 item.saveState(JumiaApplication.INSTANCE.registerSavedInstanceState);
             }
         }
@@ -423,7 +418,7 @@ public class SessionRegisterFragment extends BaseFragment {
             DynamicFormItem item = iter.next();
             if (item.getType() == InputType.password) {
                 if (old.equals("")) {
-                    old = (String) item.getValue();
+                    old = item.getValue();
                 } else {
                     result &= old.equals(item.getValue());
                     if (!result) {
@@ -497,15 +492,13 @@ public class SessionRegisterFragment extends BaseFragment {
             
             try {
                 if(((CheckBox) newsletterSubscribe.getEditControl()).isChecked()) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }catch (ClassCastException e) {
+            } catch (NullPointerException | ClassCastException e) {
                 e.printStackTrace();
             }
-            
+
             showFragmentContentContainer();
             // Get Register Completed Event
-            Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.CUSTOMER = customer;
             Bundle params = new Bundle();
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
@@ -524,7 +517,7 @@ public class SessionRegisterFragment extends BaseFragment {
             return false;
         case GET_REGISTRATION_FORM_EVENT:
             showFragmentContentContainer();
-            Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             Log.d(TAG, "getRegistrationFormCompleted: form = " + (form == null ? "null" : form.toJSON()));
             if (null != form) {
                 JumiaApplication.INSTANCE.registerForm = form;
@@ -532,7 +525,7 @@ public class SessionRegisterFragment extends BaseFragment {
             }
             break;
         case GET_TERMS_EVENT:
-            terms = (String) bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
+            terms = bundle.getString(Constants.BUNDLE_RESPONSE_KEY);
             // Remove the listener
             // detailsListener();
             break;

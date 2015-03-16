@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_height_normal"
     android:layoutDirection="locale"
     android:background="@drawable/selector_listitem_highlight"
-    android:paddingTop="6dp" >
+    android:paddingTop="6dp">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/category_name"

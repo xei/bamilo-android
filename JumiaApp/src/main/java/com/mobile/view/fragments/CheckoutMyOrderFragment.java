@@ -107,10 +107,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
      * @return
      */
     public static CheckoutMyOrderFragment getInstance(Bundle bundle) {
-        CheckoutMyOrderFragment myOrderFragment = new CheckoutMyOrderFragment();
-        // Save order
-        myOrderFragment.mOrderFinish = (OrderSummary) bundle.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
-        return myOrderFragment;
+        CheckoutMyOrderFragment fragment = new CheckoutMyOrderFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /**
@@ -149,6 +148,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         // coming back from external methods don't call onViewCreated() again and as such
         // setOnClickListener won't be setup
 
+        // Get arguments
+        Bundle arguments = getArguments();
+        if(arguments != null) {
+            // Save order
+            mOrderFinish = arguments.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
+        }
         // Retain instance for rotation
         setRetainInstance(true);
         // Track
@@ -180,21 +185,21 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         mVoucherValue = (TextView) view.findViewById(R.id.text_voucher);
         mTotalValue = (TextView) view.findViewById(R.id.total_value);
         // Get shipping address
-        view.findViewById(R.id.checkout_my_order_shipping_address_btn_edit).setOnClickListener((OnClickListener) this);
+        view.findViewById(R.id.checkout_my_order_shipping_address_btn_edit).setOnClickListener(this);
         mShippingAddressContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_shipping_address_list);
         // Get billing address
-        view.findViewById(R.id.checkout_my_order_billing_address_btn_edit).setOnClickListener((OnClickListener) this);
+        view.findViewById(R.id.checkout_my_order_billing_address_btn_edit).setOnClickListener(this);
         mBillingAddressContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_billing_address_list);
         mBillingAddressIsSame = view.findViewById(R.id.checkout_my_order_billing_address_is_same);
         // Get shipping method
-        view.findViewById(R.id.checkout_my_order_shipping_method_btn_edit).setOnClickListener((OnClickListener) this);
+        view.findViewById(R.id.checkout_my_order_shipping_method_btn_edit).setOnClickListener(this);
         mShippingMethodName = (TextView) view.findViewById(R.id.checkout_my_order_shipping_method_name);
         // Get payment options
-        view.findViewById(R.id.checkout_my_order_payment_options_btn_edit).setOnClickListener((OnClickListener) this);
+        view.findViewById(R.id.checkout_my_order_payment_options_btn_edit).setOnClickListener(this);
         mPaymentName = (TextView) view.findViewById(R.id.checkout_my_order_payment_name);
         mCoupon = (TextView) view.findViewById(R.id.checkout_my_order_payment_coupon);
         // Get the next step button
-        view.findViewById(R.id.checkout_my_order_button_enter).setOnClickListener((OnClickListener) this);
+        view.findViewById(R.id.checkout_my_order_button_enter).setOnClickListener(this);
         
         //Validate is service is available
         if(JumiaApplication.mIsBound){
@@ -329,7 +334,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
             if ( variation != null && variation.length() > 0 && !variation.equalsIgnoreCase(",") && 
                  !variation.equalsIgnoreCase("...") && !variation.equalsIgnoreCase(".") && !variation.equalsIgnoreCase("false")) {
                 ((TextView) prodInflateView.findViewById(R.id.my_order_item_variation)).setText(variation);
-                ((TextView) prodInflateView.findViewById(R.id.my_order_item_variation)).setVisibility(View.VISIBLE);
+                prodInflateView.findViewById(R.id.my_order_item_variation).setVisibility(View.VISIBLE);
             } 
             // // Hide first divider
             if (first) {
@@ -719,7 +724,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
         List<String> temp = null;
         if (errors != null) {
-            temp = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+            temp = errors.get(RestConstants.JSON_VALIDATE_TAG);
         }
         final List<String> errorMessages = temp;
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {

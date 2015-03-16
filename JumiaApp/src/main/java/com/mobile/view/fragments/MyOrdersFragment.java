@@ -3,8 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +20,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
+import java.util.EnumSet;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -31,8 +31,6 @@ import de.akquinet.android.androlog.Log;
 public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     private static final String TAG = LogTagHelper.create(MyOrdersFragment.class);
-
-    private static MyOrdersFragment mMyOrdersFragment;
 
     private ViewPager mMyOrdersPager;
 
@@ -48,13 +46,9 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
      * @return
      */
     public static MyOrdersFragment getInstance(Bundle bundle) {
-        if (bundle != null && bundle.containsKey(TrackerDelegator.LOGIN_KEY))
-            mPositionToStart = 1;
-        else
-            mPositionToStart = 0;
-
-        mMyOrdersFragment = new MyOrdersFragment();
-        return mMyOrdersFragment;
+        MyOrdersFragment fragment = new MyOrdersFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /**
@@ -66,7 +60,6 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
                 R.layout.myorders_fragment_main,
                 R.string.my_orders_label,
                 KeyboardState.ADJUST_CONTENT);
-        // R.string.nav_track_order
     }
 
     @Override
@@ -93,6 +86,11 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Get arguments
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mPositionToStart = arguments.containsKey(TrackerDelegator.LOGIN_KEY) ? 1 : 0;
+        }
     }
 
     /*

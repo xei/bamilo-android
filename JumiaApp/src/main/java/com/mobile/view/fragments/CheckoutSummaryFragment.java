@@ -298,7 +298,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     private void showCart() {
         // Show all items
         Map<String, ShoppingCartItem> mShopMapItems = mCart.getCartItems();
-        ArrayList<ShoppingCartItem> mShopList = new ArrayList<ShoppingCartItem>(mShopMapItems.values());
+        ArrayList<ShoppingCartItem> mShopList = new ArrayList<>(mShopMapItems.values());
         mProductList.removeAllViews();
         for (ShoppingCartItem item : mShopList) {
             View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_summary_list_item, mProductList, false);
@@ -316,12 +316,12 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                     !variation.equalsIgnoreCase("...") &&
                     !variation.equalsIgnoreCase(".")) {
                 ((TextView) cartItemView.findViewById(R.id.order_summary_item_variation)).setText(variation);
-                ((TextView) cartItemView.findViewById(R.id.order_summary_item_variation)).setVisibility(View.VISIBLE);
+                cartItemView.findViewById(R.id.order_summary_item_variation).setVisibility(View.VISIBLE);
             } 
             // Buttons
             View deleteButton = cartItemView.findViewById(R.id.order_summary_item_btn_remove);
             // deleteButton.setVisibility(View.VISIBLE);
-            deleteButton.setOnClickListener((OnClickListener)this);
+            deleteButton.setOnClickListener(this);
             deleteButton.setTag(item.getConfigSimpleSKU());
             // Add view
             mProductList.addView(cartItemView);
@@ -588,7 +588,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         values.put("sku", sku);
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartRemoveItemHelper.ITEM, values);
-        triggerContentEventProgress(new GetShoppingCartRemoveItemHelper(), bundle, (IResponseCallback) this);
+        triggerContentEventProgress(new GetShoppingCartRemoveItemHelper(), bundle, this);
     }
     
     /**
@@ -614,13 +614,13 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         switch (eventType) {
         case GET_SHOPPING_CART_ITEMS_EVENT:
             Log.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
-            mCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            mCart = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             showOrderSummary();
             showFragmentContentContainer();
             break;
         case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
             Log.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
-            mCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            mCart = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             showOrderSummary();
             getBaseActivity().updateNavigationMenu();
             hideActivityProgress();

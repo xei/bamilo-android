@@ -211,7 +211,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object obj) {
-        return view == (View) obj;
+        return view == obj;
     }
 
 }

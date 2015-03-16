@@ -1,16 +1,16 @@
 package com.mobile.pojo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import com.mobile.forms.FormField;
 import com.mobile.forms.FormFieldMeta;
 import com.mobile.forms.IFormField;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.InputType;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 
@@ -27,8 +27,7 @@ public class MetaFormExtractor {
      * with the day, month and year form fields
      */
 	public static ArrayList<IFormField> generateMetaFields(ArrayList<FormField> fields) {
-		ArrayList<IFormField> transformedFields = generateMetaField(fields, KEY_BIRTHDAY );
-		return transformedFields;
+		return generateMetaField(fields, KEY_BIRTHDAY );
 	}
 	
 	private static ArrayList<IFormField> generateMetaField( ArrayList<FormField> fields, String metaFieldKey ) {
@@ -47,8 +46,8 @@ public class MetaFormExtractor {
 		
 		FormFieldMeta newMetaField = new FormFieldMeta(foundMetaField, metaFieldInputType.get( foundMetaField.getKey()), null);
 
-		Map<String, IFormField> newSubFields = new HashMap<String, IFormField>();
-		ArrayList<IFormField> transformedFields = new ArrayList<IFormField>();
+		Map<String, IFormField> newSubFields = new HashMap<>();
+		ArrayList<IFormField> transformedFields = new ArrayList<>();
 		
 		for( IFormField field: fields ) {	
 		    Log.i(TAG, "code1checked  field.getKey() : "+ field.getKey());
@@ -72,7 +71,7 @@ public class MetaFormExtractor {
 	
 	
 	private static ArrayList<IFormField> straightCopyFields(ArrayList<FormField> fields) {
-		ArrayList<IFormField> formFields = new ArrayList<IFormField>();
+		ArrayList<IFormField> formFields = new ArrayList<>();
 		
 		for( IFormField field: fields ) {
 			formFields.add( field );
@@ -92,10 +91,10 @@ public class MetaFormExtractor {
 	}
 
 	static {
-		metaFieldMapping = new HashMap<String, Set<String>>();
-		metaFieldInputType = new HashMap<String, InputType>();
+		metaFieldMapping = new HashMap<>();
+		metaFieldInputType = new HashMap<>();
 		
-		Set<String> metaFieldBirthday = new HashSet<String>();
+		Set<String> metaFieldBirthday = new HashSet<>();
 		metaFieldBirthday.add( "day" );
 		metaFieldBirthday.add( "month" );
 		metaFieldBirthday.add( "year" );

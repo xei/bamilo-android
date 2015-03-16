@@ -3,15 +3,11 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
@@ -38,6 +34,9 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
 
@@ -70,9 +69,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @return MyAccountEmailNotificationFragment
      * @author sergiopereira
      */
-    public static MyAccountEmailNotificationFragment newInstance(Bundle bundle) {
-        sEmailNotificationFragment = new MyAccountEmailNotificationFragment();
-        return sEmailNotificationFragment;
+    public static MyAccountEmailNotificationFragment newInstance() {
+        return new MyAccountEmailNotificationFragment();
     }
 
     /**
@@ -130,11 +128,9 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         // Get list view
         mNewsletterList = (LinearLayout) view.findViewById(R.id.myaccount_newsletter_list);
         // Get save button
-        view.findViewById(R.id.myaccount_newsletter_save)
-                .setOnClickListener((OnClickListener) this);
+        view.findViewById(R.id.myaccount_newsletter_save).setOnClickListener(this);
         // Get cancel button
-        view.findViewById(R.id.myaccount_newsletter_cancel).setOnClickListener(
-                (OnClickListener) this);
+        view.findViewById(R.id.myaccount_newsletter_cancel).setOnClickListener(this);
         // Validate data
         if (mNewslettersForm == null)
             triggerGetNewslettersForm();
@@ -359,7 +355,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         Log.i(TAG, "TRIGGER: SUBSCRIBE");
         Bundle bundle = new Bundle();
         bundle.putParcelable(SubscribeNewslettersHelper.FORM_CONTENT_VALUES, values);
-        triggerContentEvent(new SubscribeNewslettersHelper(), bundle, (IResponseCallback) this);
+        triggerContentEvent(new SubscribeNewslettersHelper(), bundle, this);
     }
 
     /**
@@ -371,7 +367,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         Log.i(TAG, "TRIGGER: GET NEWSLETTER FORM");
         if (null != JumiaApplication.CUSTOMER) {
             showFragmentLoading();
-            triggerContentEvent(new GetNewslettersFormHelper(), null, (IResponseCallback) this);
+            triggerContentEvent(new GetNewslettersFormHelper(), null, this);
         } else {
             showFragmentErrorRetry();
         }
@@ -402,9 +398,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         case GET_NEWSLETTERS_FORM_EVENT:
             Log.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
             // Get the form
-            Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Save the form
-            mNewslettersForm = form;
+            mNewslettersForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             // Clean options
             mNewsletterOptions = null;
             // Show the form

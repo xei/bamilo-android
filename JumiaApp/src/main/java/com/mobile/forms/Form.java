@@ -12,16 +12,6 @@
  */
 package com.mobile.forms;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -29,6 +19,16 @@ import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 
@@ -64,9 +64,9 @@ public class Form implements IJSONSerializable, Parcelable {
         this.action = "";
         this.submit = "";
 
-        this.fields = new ArrayList<FormField>();
-        this.subForms = new HashMap<String, Form>();
-        this.mFieldKeyMap = new HashMap<String, FormField>();
+        this.fields = new ArrayList<>();
+        this.subForms = new HashMap<>();
+        this.mFieldKeyMap = new HashMap<>();
         this.fieldMapping = null;
         this.setEventType(null);
     }
@@ -89,8 +89,8 @@ public class Form implements IJSONSerializable, Parcelable {
         this.submit = submit;
 
         this.fields = fields;
-        this.subForms = new HashMap<String, Form>();
-        this.mFieldKeyMap = new HashMap<String, FormField>();
+        this.subForms = new HashMap<>();
+        this.mFieldKeyMap = new HashMap<>();
         this.fieldMapping = null;
     }
 
@@ -238,7 +238,7 @@ public class Form implements IJSONSerializable, Parcelable {
         method = in.readString();
         action = in.readString();
         submit = in.readString();
-        fields = new ArrayList<FormField>();
+        fields = new ArrayList<>();
         in.readArrayList(FormField.class.getClassLoader());
         in.readMap(fieldMapping, null);
         eventType = (EventType) in.readSerializable();

@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
@@ -70,8 +69,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     
     private static final String RATINGS = "ratings";
 
-    private static ReviewWriteNestedFragment writeReviewFragment;
-
     private CompleteProduct completeProduct;
 
     private TextView productName;
@@ -110,13 +107,9 @@ public class ReviewWriteNestedFragment extends BaseFragment {
      * @return
      */
     public static ReviewWriteNestedFragment getInstance(Bundle bundle) {
-        Log.i(TAG, "getInstance");
-        writeReviewFragment = new ReviewWriteNestedFragment();
-        if (bundle != null) {
-            String contentUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
-            writeReviewFragment.mCompleteProductUrl = contentUrl != null ? contentUrl : "";
-        }
-        return writeReviewFragment;
+        ReviewWriteNestedFragment fragment = new ReviewWriteNestedFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /**
@@ -126,7 +119,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.review_write_fragment_nested,
-                0,
+                NO_TITLE,
                 KeyboardState.ADJUST_CONTENT);
     }
 
@@ -150,6 +143,13 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Get arguments
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
+            mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
+        }
+
         completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         isExecutingSendReview = false;
         if(savedInstanceState != null){
@@ -365,13 +365,13 @@ public class ReviewWriteNestedFragment extends BaseFragment {
 
     private void saveTextReview(DynamicForm form){
         if(form != null && form.getItemByKey(NAME) != null){
-            reviewName = form.getItemByKey(NAME).getValue().toString();
+            reviewName = form.getItemByKey(NAME).getValue();
         }
         if(form != null && form.getItemByKey(TITLE) != null){
-            reviewTitle = form.getItemByKey(TITLE).getValue().toString();
+            reviewTitle = form.getItemByKey(TITLE).getValue();
         }
         if(form != null && form.getItemByKey(COMMENT) != null){
-            reviewComment = form.getItemByKey(COMMENT).getValue().toString();
+            reviewComment = form.getItemByKey(COMMENT).getValue();
         }
     }
   
@@ -415,7 +415,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
 //            TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
 //            TextView productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
 
-            ((Button) getView().findViewById(R.id.send_review)).setOnClickListener(this);
+            getView().findViewById(R.id.send_review).setOnClickListener(this);
 
 //            productName.setText(completeProduct.getBrand() + " " + completeProduct.getName());
 //            displayPriceInformation(productPriceNormal, productPriceSpecial);       
@@ -530,17 +530,9 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             String buttonMessageText = getResources().getString(R.string.dialog_to_reviews);
             
            
-            try {
-                //Validate if fragment is nested
-                if(this.getParentFragment() instanceof ReviewsFragment){
-                    nestedFragment = true;
-                } else {
-                    nestedFragment = false;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                nestedFragment = true;
-            }
+            //Validate if fragment is nested
+            nestedFragment = this.getParentFragment() instanceof ReviewsFragment;
+
             if(nestedFragment)
                 buttonMessageText = getResources().getString(R.string.ok_label);
             
@@ -574,14 +566,14 @@ public class ReviewWriteNestedFragment extends BaseFragment {
 
         case GET_FORM_RATING_EVENT:
             Log.i(TAG, "GET_FORM_RATING_EVENT");
-            ratingForm = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            ratingForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             setRatingLayout(ratingForm);
             triggerReviewForm();
             return true;
             
         case GET_FORM_REVIEW_EVENT:
             Log.i(TAG, "GET_FORM_REVIEW_EVENT");
-            reviewForm = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            reviewForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             if(ratingForm == null)
                 setRatingLayout(reviewForm);
             showFragmentContentContainer();
@@ -594,7 +586,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 getActivity().onBackPressed();
                 return true;
             } else {
-                completeProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                completeProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 JumiaApplication.INSTANCE.setCurrentProduct(completeProduct);
                 // triggerAutoLogin();
                 // triggerCustomer();
@@ -729,13 +721,13 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         switch(eventType){
         case GET_FORM_RATING_EVENT:
             triggerRatingForm();
-            return;
+            break;
         case REVIEW_RATING_PRODUCT_EVENT:
             formsValidation();
-            return;
+            break;
         default:
             super.onRetryRequest(eventType);
-            return;
+            break;
         }
     }
     
@@ -807,7 +799,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         
         for (int i = 1; i < ratingMap.size()+1; i++) {
            int rate =  (int)((RatingBar)ratingFormContainer.findViewById(i).findViewById(R.id.option_stars)).getRating();
-           String id =  ((RatingBar)ratingFormContainer.findViewById(i).findViewById(R.id.option_stars)).getTag().toString();
+           String id =  ratingFormContainer.findViewById(i).findViewById(R.id.option_stars).getTag().toString();
         
            String key =formName+"["+id+"]";
            values.put(key, rate);
@@ -847,7 +839,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
      * @return
      */
     private HashMap<String, Long> getRatingsMapValues(DynamicForm form){
-        HashMap<String, Long> values = new HashMap<String, Long>();
+        HashMap<String, Long> values = new HashMap<>();
         
             if(form != null){
                 Map<String, String> ratingMap = form.getItemByKey(RATINGS).getEntry().getDateSetRating();

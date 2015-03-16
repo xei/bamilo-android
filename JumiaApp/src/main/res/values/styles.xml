@@ -564,7 +564,7 @@
         <item name="android:minWidth">@dimen/action_bar_icon_size</item>
     </style>
 
-    <style name="Widget"></style>
+    <style name="Widget"/>
 
     <!-- CUSTOM SPINNER STYLE -->
     <style name="Widget.Jumia.Spinner.Style" parent="Widget">

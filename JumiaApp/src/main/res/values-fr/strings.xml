@@ -258,7 +258,7 @@
     <string name="review_this_seller">Évaluer maintenant ce vendeur !</string>
     <string name="reviews">Avis</string>
     <string name="reviews_empty">Ce produit n\'a pas de avis!</string>
-    <string name="reviews_empty_seller"></string>
+    <string name="reviews_empty_seller"/>
     <string name="same_product_from_other_sellers">Même produit d\'autres vendeurs</string>
     <string name="save_changes_label">Enregistrer les changements</string>
     <string name="save_label">Enregistrer</string>

@@ -1,10 +1,7 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +14,8 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.Offer;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 /**
  * Class that deals with offers list presentation
@@ -40,7 +39,7 @@ public class OffersListAdapter extends BaseAdapter {
 
     private IOffersAdapterService offerSelected;
 
-    ArrayList<Offer> offers = new ArrayList<Offer>();
+    ArrayList<Offer> offers = new ArrayList<>();
     
     /**
      * A representation of each item on the list

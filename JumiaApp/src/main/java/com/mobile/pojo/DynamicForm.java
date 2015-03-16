@@ -1,10 +1,5 @@
 package com.mobile.pojo;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import android.content.ContentValues;
 import android.text.TextWatcher;
 import android.view.View;
@@ -18,6 +13,11 @@ import com.mobile.forms.Form;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.InputType;
 import com.mobile.view.R;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -59,7 +59,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     public DynamicForm(ViewGroup base) {
         this.base = base;
-        this.controls = new LinkedList<DynamicFormItem>();
+        this.controls = new LinkedList<>();
 
         this.focus_listener = null;
         this.itemSelected_listener = null;
@@ -192,10 +192,9 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     public DynamicFormItem getItemByKey(String key) {
         DynamicFormItem control = null;
         // gets an iterator to the hashmap
-        Iterator<DynamicFormItem> iterator = iterator();
 
-        while (iterator.hasNext()) {
-            control = iterator.next();
+        for (DynamicFormItem dynamicFormItem : this) {
+            control = dynamicFormItem;
             if (null != control && key.equals(control.getKey())) {
                 return control;
             }
@@ -286,10 +285,8 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     public boolean validate() {
         boolean result = true;
 
-        Iterator<DynamicFormItem> iterator = iterator();
-
-        while (iterator.hasNext()) {
-            result &= iterator.next().Validate();
+        for (DynamicFormItem dynamicFormItem : this) {
+            result &= dynamicFormItem.Validate();
             // Log.d( TAG, "validate: validated " + entry.getKey().toString() +
             // " result = " +
             // result );
@@ -307,10 +304,8 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     public boolean checkRequired() {
         boolean result = true;
 
-        Iterator<DynamicFormItem> iterator = iterator();
-
-        while (iterator.hasNext()) {
-            result &= iterator.next().ValidateRequired();
+        for (DynamicFormItem dynamicFormItem : this) {
+            result &= dynamicFormItem.ValidateRequired();
         }
 
         return result;
@@ -325,15 +320,14 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         ContentValues model = new ContentValues();
         DynamicFormItem control;
 
-        Iterator<DynamicFormItem> it = iterator();
-        while (it.hasNext()) {
+        for (DynamicFormItem dynamicFormItem : this) {
 
-            
-            control = it.next();
+
+            control = dynamicFormItem;
 
             if (control != null && control.getType() == InputType.metadate) {
                 control.addSubFormFieldValues(model);
-                model.put(control.getName().toString(), control.getValue().toString());
+                model.put(control.getName(), control.getValue());
             } else if (null != control && control.getType() == InputType.radioGroup && control.isRadioGroupLayoutVertical()) {
                 ContentValues mValues = control.getSubFormsValues();
                 if (mValues != null) {
@@ -341,13 +335,13 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
                 }
 
                 model.put("name", control.getRadioGroupLayoutVerticalSelectedFieldName());
-                model.put(control.getName().toString(), control.getValue().toString());
+                model.put(control.getName(), control.getValue());
             } else if (null != control && null != control.getValue()) {
-                model.put(control.getName().toString(), control.getValue().toString());
+                model.put(control.getName(), control.getValue());
             } else if (null != control && control.getType() == InputType.rating) {
                 saveRatingForm(control, model);
-            }else if (null != control) {
-                model.put(control.getName().toString(), "");
+            } else if (null != control) {
+                model.put(control.getName(), "");
             } else {
                 Log.e(TAG, "control is null");
             }
@@ -373,7 +367,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
             
             float rate = ((RatingBar) ratingList.findViewById(count).findViewById(R.id.option_stars)).getRating();
             
-            model.put(((RatingBar) ratingList.findViewById(count).findViewById(R.id.option_stars)).getTag().toString(), (int) rate);
+            model.put(ratingList.findViewById(count).findViewById(R.id.option_stars).getTag().toString(), (int) rate);
             count++;
         }
     }
@@ -382,10 +376,9 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         // ContentValues model = new ContentValues();
         DynamicFormItem control;
 
-        Iterator<DynamicFormItem> it = iterator();
-        while (it.hasNext()) {
+        for (DynamicFormItem dynamicFormItem : this) {
 
-            control = it.next();
+            control = dynamicFormItem;
             if (null != control && control.getType() == InputType.radioGroup && control.isRadioGroupLayoutVertical()) {
                 return control.getSubFormsSelectedIndex();
             }
@@ -427,10 +420,9 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     public Form storeInServerForm() {
         DynamicFormItem control;
 
-        Iterator<DynamicFormItem> it = iterator();
-        while (it.hasNext()) {
+        for (DynamicFormItem dynamicFormItem : this) {
 
-            control = it.next();
+            control = dynamicFormItem;
             if (null != control && null != control.getValue()) {
                 control.storeValueInField();
             } else if (null != control) {
@@ -447,10 +439,9 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      * Resets all the fields on the form to their original values.
      */
     public void reset() {
-        Iterator<DynamicFormItem> iterator = iterator();
 
-        while (iterator.hasNext()) {
-            iterator.next().resetValue();
+        for (DynamicFormItem dynamicFormItem : this) {
+            dynamicFormItem.resetValue();
         }
 
     }
@@ -459,10 +450,9 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      * Clears all the data on each control on the form.
      */
     public void clear() {
-        Iterator<DynamicFormItem> iterator = iterator();
 
-        while (iterator.hasNext()) {
-            iterator.next().setValue(null);
+        for (DynamicFormItem dynamicFormItem : this) {
+            dynamicFormItem.setValue(null);
         }
 
     }
@@ -486,9 +476,8 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     public void setOnFocusChangeListener(OnFocusChangeListener listener) {
         focus_listener = listener;
 
-        Iterator<DynamicFormItem> iterator = iterator();
-        while (iterator.hasNext()) {
-            iterator.next().setOnFocusChangeListener(focus_listener);
+        for (DynamicFormItem dynamicFormItem : this) {
+            dynamicFormItem.setOnFocusChangeListener(focus_listener);
         }
 
     }
@@ -502,10 +491,8 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     public void setOnItemSelectedListener(IcsAdapterView.OnItemSelectedListener listener) {
         itemSelected_listener = listener;
 
-        Iterator<DynamicFormItem> iterator = iterator();
-
-        while (iterator.hasNext()) {
-            iterator.next().setOnItemSelectedListener(itemSelected_listener);
+        for (DynamicFormItem dynamicFormItem : this) {
+            dynamicFormItem.setOnItemSelectedListener(itemSelected_listener);
         }
 
     }
@@ -520,10 +507,8 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     public void setTextWatcher(TextWatcher watcher) {
         text_watcher = watcher;
 
-        Iterator<DynamicFormItem> iterator = iterator();
-
-        while (iterator.hasNext()) {
-            iterator.next().setTextWatcher(text_watcher);
+        for (DynamicFormItem dynamicFormItem : this) {
+            dynamicFormItem.setTextWatcher(text_watcher);
         }
 
     }

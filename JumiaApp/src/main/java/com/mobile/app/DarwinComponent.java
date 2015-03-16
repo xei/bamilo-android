@@ -40,7 +40,6 @@ public class DarwinComponent extends ApplicationComponent {
      */
     @Override
     protected ErrorCode initInternal(Context context) {
-        
         /**
          * Single shop country validation.
          * ErrorCode values: ErrorCode.UNKNOWN_ERROR / ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE / ErrorCode.NO_ERROR
@@ -49,12 +48,10 @@ public class DarwinComponent extends ApplicationComponent {
         boolean isSingleShop = context.getResources().getBoolean(R.bool.is_single_shop_country);
         // Validate if is single shop
         if (isSingleShop) return isSingleShopCountry(context);
-        
-        
+
         /**
          * Multi shop countries validation
          */
-        
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
         boolean countriesConfigs = sharedPrefs.getBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, false);
@@ -88,11 +85,11 @@ public class DarwinComponent extends ApplicationComponent {
             
         }
         Log.i(TAG, "DarwinComponent shop id is : "+ shopId);
-        if (Darwin.initialize(context, shopId, isChangeShop)) {
+        if (Darwin.initialize(context, shopId)) {
             Log.i(TAG, "DarwinComponent NO_ERROR");
             Editor editor = sharedPrefs.edit();
             editor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, false);
-            editor.commit();
+            editor.apply();
             return ErrorCode.NO_ERROR;
         }
         Log.i(TAG, "DarwinComponent NO_ERROR UNKNOWN_ERROR");
@@ -103,7 +100,6 @@ public class DarwinComponent extends ApplicationComponent {
      * Method used to validate if this is a application for a single shop country.
      * Set country data from XML, initialize the framework and set the error code for SplashScreen.
      * @param context
-     * @param ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE or ErrorCode.NO_ERROR
      * @return true or false
      * @author sergiopereira
      */
@@ -121,14 +117,14 @@ public class DarwinComponent extends ApplicationComponent {
             ShopPreferences.setShopFromConfigs(context);
             // Partial framework initialization 
             Darwin.initialize(context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null), null);
-            // Set the error code for Splashscreen
+            // Set the error code for Splash screen
             return ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE;
         // Case default
         } else {
             Log.i(TAG, "SINGLE SHOP: NO_ERROR");
             // Full framework initialization 
-            Darwin.initialize(context, shopId, false);
-            // Set the error code for Splashscreen
+            Darwin.initialize(context, shopId);
+            // Set the error code for Splash screen
             return ErrorCode.NO_ERROR;
         }
     }

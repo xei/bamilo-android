@@ -208,7 +208,7 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
             // Get sizes
             ArrayList<ProductBundleSimple> sizes = item.getBundleSimples();
             // Create an ArrayAdapter using the sizes values
-            ArrayAdapter<ProductBundleSimple> adapter = new ArrayAdapter<ProductBundleSimple>(JumiaApplication.INSTANCE.getApplicationContext(), R.layout.campaign_spinner_item, sizes);
+            ArrayAdapter<ProductBundleSimple> adapter = new ArrayAdapter<>(JumiaApplication.INSTANCE.getApplicationContext(), R.layout.campaign_spinner_item, sizes);
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(R.layout.campaign_spinner_dropdown_item);
             // Apply the adapter to the spinner

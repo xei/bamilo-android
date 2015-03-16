@@ -1,13 +1,5 @@
 package com.mobile.framework.service;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
@@ -23,6 +15,14 @@ import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.worker.RequestWorker;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import de.akquinet.android.androlog.Log;
 
 public class RemoteService extends Service {
@@ -31,9 +31,9 @@ public class RemoteService extends Service {
     public static RemoteCallbackList<IRemoteServiceCallback> mCallbacks = new RemoteCallbackList<IRemoteServiceCallback>();
     //Thread pool manager
     private TestThreadPoolExecutor tpe;
-    private final int INIT_NUMBER_OF_THREADS = 5;
-    private final int MAX_NUMBER_OF_THREADS = 6;
-    private static boolean bound=false;
+    private static final int INIT_NUMBER_OF_THREADS = 1;
+    private static final int MAX_NUMBER_OF_THREADS = 3;
+    private static boolean bound = false;
 
 
 
@@ -106,8 +106,7 @@ public class RemoteService extends Service {
     public class TestThreadPoolExecutor extends ThreadPoolExecutor {
         Set<Runnable> executions = Collections.synchronizedSet(new HashSet<Runnable>());
 
-        public TestThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
-                BlockingQueue<Runnable> workQueue) {
+        public TestThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
             super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
         }
 
@@ -165,8 +164,8 @@ public class RemoteService extends Service {
     		final int N = mCallbacks.beginBroadcast();
     		switch(msg.what){
     		case Constants.SUCCESS:
-    			
-//    			Log.i(TAG,"Received success response from handler "+msg.getData().getString(Constants.BUNDLE_RESPONSE_KEY));			 
+
+//    			Log.i(TAG,"Received success response from handler "+msg.getData().getString(Constants.BUNDLE_RESPONSE_KEY));
     		        for (int i=0; i<N; i++) {
     		            try {
     		                mCallbacks.getBroadcastItem(i).getResponse(msg.getData());
@@ -192,10 +191,10 @@ public class RemoteService extends Service {
 		        mCallbacks.finishBroadcast();
     			break;
     		}
-    		
+
     	};
     };
-    
+
     public static boolean isServiceBound(){
         return bound;
     }

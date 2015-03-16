@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.LayoutDirection;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,9 +64,6 @@ public class ReviewsFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(ReviewsFragment.class);
     
-
-    private static ReviewsFragment sPopularityFragment;
-    
     public static final String CAME_FROM_POPULARITY = "came_from_popularity";
 
     private CompleteProduct selectedProduct;
@@ -84,7 +82,7 @@ public class ReviewsFragment extends BaseFragment {
     
     public static final int RATING_TYPE_BY_LINE = 3;
     
-    private static boolean showRatingForm = true;
+    private boolean showRatingForm = true;
 
     private SharedPreferences sharedPrefs;
     
@@ -130,15 +128,11 @@ public class ReviewsFragment extends BaseFragment {
      * @return
      */
     public static ReviewsFragment getInstance(Bundle bundle) {
-        sPopularityFragment = new ReviewsFragment();
-        sPopularityFragment.mProductRatingPage = null;
-        String contentUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
-        sPopularityFragment.mProductUrl = contentUrl != null ? contentUrl : "";
-        if(bundle.containsKey(ConstantsIntentExtra.REVIEW_TYPE))
-            sPopularityFragment.isProductReview = bundle.getBoolean(ConstantsIntentExtra.REVIEW_TYPE,true);
-        sPopularityFragment.setArguments(bundle);
-        showRatingForm = true;
-        return sPopularityFragment;
+        ReviewsFragment fragment = new ReviewsFragment();
+        fragment.setArguments(bundle);
+        fragment.mProductRatingPage = null;
+        fragment.showRatingForm = true;
+        return fragment;
     }
 
     /**
@@ -148,7 +142,7 @@ public class ReviewsFragment extends BaseFragment {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Products,
                 R.layout.reviews_fragment,
-                0,
+                NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
 
@@ -172,12 +166,15 @@ public class ReviewsFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        
-        
-        // Get review list type from arguments
-        isProductRating = getArguments().getBoolean(ConstantsIntentExtra.REVIEW_TYPE);
-        
-        
+        // Get arguments
+        Bundle arguments = getArguments();
+        if(arguments != null) {
+            // Get review list type from arguments
+            isProductReview = arguments.getBoolean(ConstantsIntentExtra.REVIEW_TYPE, true);
+            isProductRating = arguments.getBoolean(ConstantsIntentExtra.REVIEW_TYPE);
+            String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
+            mProductUrl = TextUtils.isEmpty(contentUrl) ? "" : contentUrl;
+        }
         // Load saved state
         if(savedInstanceState != null) {
             Log.i(TAG, "ON LOAD SAVED STATE");
@@ -199,28 +196,28 @@ public class ReviewsFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         // Get views
-        productName = (TextView) getView().findViewById(R.id.product_detail_name);
-        productPriceNormal = (TextView) getView().findViewById(R.id.product_price_normal);
-        productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
-        productRatingContainer = (LinearLayout) getView().findViewById(R.id.product_ratings_container);
+        productName = (TextView) view.findViewById(R.id.product_detail_name);
+        productPriceNormal = (TextView) view.findViewById(R.id.product_price_normal);
+        productPriceSpecial = (TextView) view.findViewById(R.id.product_price_special);
+        productRatingContainer = (LinearLayout) view.findViewById(R.id.product_ratings_container);
         
-        centerPoint = (View) getView().findViewById(R.id.center_point);
+        centerPoint = view.findViewById(R.id.center_point);
         //seller
-        sellerRatingContainer = (RelativeLayout) getView().findViewById(R.id.seller_reviews_rating_container);
-        sellerRatingBar = (RatingBar) getView().findViewById(R.id.seller_reviews_item_rating);
-        sellerRatingCount = (TextView) getView().findViewById(R.id.seller_reviews_item_reviews);
+        sellerRatingContainer = (RelativeLayout) view.findViewById(R.id.seller_reviews_rating_container);
+        sellerRatingBar = (RatingBar) view.findViewById(R.id.seller_reviews_item_rating);
+        sellerRatingCount = (TextView) view.findViewById(R.id.seller_reviews_item_reviews);
 
-        emptyScreenText = (TextView) getView().findViewById(R.id.fragment_root_empty_text);
+        emptyScreenText = (TextView) view.findViewById(R.id.fragment_root_empty_text);
         if(isProductReview){
             emptyScreenText.setText(getResources().getString(R.string.reviews_empty));
         } else {
             emptyScreenText.setText(getResources().getString(R.string.reviews_empty_seller));
         }
         
-        reviewsContainer = (LinearLayout) getView().findViewById(R.id.linear_reviews);
-        marginLandscape = (View) getView().findViewById(R.id.margin_landscape);
+        reviewsContainer = (LinearLayout) view.findViewById(R.id.linear_reviews);
+        marginLandscape = view.findViewById(R.id.margin_landscape);
         if(reviews == null)
-            reviews = new ArrayList<ProductReviewComment>();
+            reviews = new ArrayList<>();
         
         selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
 
@@ -355,19 +352,15 @@ public class ReviewsFragment extends BaseFragment {
     }
 
     private void startWriteReviewFragment() {
-        mWriteReviewFragment = new ReviewWriteNestedFragment();
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.CONTENT_URL, mProductUrl);
         args.putBoolean(CAME_FROM_POPULARITY, true);
-        
         args.putBoolean(ReviewWriteNestedFragment.RATING_SHOW, showRatingForm);
-        
-        mWriteReviewFragment.setArguments(args);
+        mWriteReviewFragment = ReviewWriteNestedFragment.getInstance(args);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragment_writereview, mWriteReviewFragment);
         ft.commit();
-        
     }
 
     private void removeWriteReviewFragment() {
@@ -511,7 +504,7 @@ public class ReviewsFragment extends BaseFragment {
               getActivity().onBackPressed();
               return;
           } else {
-              selectedProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+              selectedProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
               JumiaApplication.INSTANCE.setCurrentProduct(selectedProduct);
               setHeaderReviews();
               showFragmentContent();
@@ -527,7 +520,6 @@ public class ReviewsFragment extends BaseFragment {
         default:
             break;
         }
-        return;
     }
     
     protected void onErrorEvent(Bundle bundle){
@@ -577,10 +569,10 @@ public class ReviewsFragment extends BaseFragment {
             if(productRatingPage != null & reviews != null){
                 Log.d("POINT","DO NOTHING");    
             } else if(productRatingPage == null ){
-                reviews = new ArrayList<ProductReviewComment>();
+                reviews = new ArrayList<>();
                 triggerReviews(selectedProduct.getUrl(), 1);
             } else if(reviews == null ){
-                reviews = new ArrayList<ProductReviewComment>();
+                reviews = new ArrayList<>();
                 triggerReviews(selectedProduct.getUrl(), pageNumber);
             }
         } else {
@@ -593,10 +585,10 @@ public class ReviewsFragment extends BaseFragment {
                         reviews.addAll(productRatingPage.getReviewComments());
                     }
                 } else {
-                    reviews = new ArrayList<ProductReviewComment>();
+                    reviews = new ArrayList<>();
                 }
             } else {
-                reviews = new ArrayList<ProductReviewComment>();
+                reviews = new ArrayList<>();
             }
         }
         
@@ -685,7 +677,7 @@ public class ReviewsFragment extends BaseFragment {
                             ratingsContainer.removeAllViews();
                         
                         
-                        ArrayList<RatingStar> ratingOptionArray = new ArrayList<RatingStar>();
+                        ArrayList<RatingStar> ratingOptionArray = new ArrayList<>();
                         ratingOptionArray = review.getRatingStars();
 
                         insertRatingTypes(ratingOptionArray, ratingsContainer,false,review.getAverage());
@@ -900,7 +892,7 @@ public class ReviewsFragment extends BaseFragment {
  
     private void setHeaderReviews(){
         if(isProductRating){
-            productName.setText(selectedProduct.getBrand()+" "+selectedProduct.getName());
+            productName.setText(selectedProduct.getBrand() + " " + selectedProduct.getName());
             displayPriceInformation(productPriceNormal, productPriceSpecial);
         }
        
@@ -916,7 +908,7 @@ public class ReviewsFragment extends BaseFragment {
             sellerRatingContainer.setVisibility(View.GONE);
             productPriceSpecial.setVisibility(View.VISIBLE);
             productPriceNormal.setVisibility(View.VISIBLE);
-            productName.setText(selectedProduct.getBrand()+" "+selectedProduct.getName());
+            productName.setText(selectedProduct.getBrand() + " " + selectedProduct.getName());
             displayPriceInformation(productPriceNormal, productPriceSpecial);
             
             productRatingContainer.setVisibility(View.VISIBLE);

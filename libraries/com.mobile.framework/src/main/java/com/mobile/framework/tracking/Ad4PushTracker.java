@@ -3,13 +3,6 @@
  */
 package com.mobile.framework.tracking;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -32,6 +25,13 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.ShopSelector;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
 
 import de.akquinet.android.androlog.Log;
 
@@ -173,7 +173,7 @@ public class Ad4PushTracker {
         // Save context
         mContext = context;
         // Create screen map
-        screens = new HashMap<TrackingPage, String>();
+        screens = new HashMap<>();
         screens.put(TrackingPage.HOME, HOME_VIEW);
         screens.put(TrackingPage.PRODUCT_LIST, CATEGORY_VIEW);
         screens.put(TrackingPage.PRODUCT_DETAIL, PRODUCT_VIEW);
@@ -314,7 +314,7 @@ public class Ad4PushTracker {
      */
     public static void clearAllSavedData(Context context) {
         SharedPreferences settings = context.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
-        settings.edit().clear().commit();
+        settings.edit().clear().apply();
     }
 
     /*
@@ -340,7 +340,6 @@ public class Ad4PushTracker {
      * Method used to set some info about device.
      * 
      * @see {@link Constants} used for device info.
-     * @param mContext
      * @author sergiopereira
      */
     private void setDeviceInfo(Bundle info) {
@@ -350,10 +349,6 @@ public class Ad4PushTracker {
             bundle.putBoolean(PRE_INSTALL, info.getBoolean(Constants.INFO_PRE_INSTALL));
             bundle.putString(BRAND, info.getString(Constants.INFO_BRAND));
             bundle.putString(SIM_OPERATOR, info.getString(Constants.INFO_SIM_OPERATOR));
-            // WARNING: Ad4push takes the info directly from the application
-            // bundle.putString(VERSION,
-            // info.getString(Constants.INFO_BUNDLE_VERSION));
-            // Set info
             mA4S.updateDeviceInfo(bundle);
             Log.i(TAG, "SET DEVICE INFO: " + bundle.toString());
         }
@@ -377,7 +372,7 @@ public class Ad4PushTracker {
                 alreadyOpened = true;
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean(HAS_OPENED_APP, alreadyOpened);
-                editor.commit();
+                editor.apply();
             }
         }
 
@@ -428,7 +423,7 @@ public class Ad4PushTracker {
             userStatus = STATUS_PROSPECT;
             SharedPreferences.Editor editor = settings.edit();
             editor.putString(STATUS_IN_APP, userStatus);
-            editor.commit();
+            editor.apply();
         }
         return userStatus;
     }
@@ -507,7 +502,7 @@ public class Ad4PushTracker {
             editor.putString(STATUS_IN_APP, STATUS_CUSTOMER);
             editor.putInt(PURCHASES_COUNTER, ++purchasesNumber);
             editor.putFloat(PURCHASES_SUM_VALUE, (float) ordersSum);
-            editor.commit();
+            editor.apply();
 
             // Create bundle
             Bundle prefs = new Bundle();
@@ -545,7 +540,7 @@ public class Ad4PushTracker {
             int wishlistNumber = settings.getInt(WISHLIST_NUMBER, 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt(WISHLIST_NUMBER, ++wishlistNumber);
-            editor.commit();
+            editor.apply();
             // Create bundle
             Bundle prefs = new Bundle();
             prefs.putInt(WISHLIST_STATUS, wishlistNumber);
@@ -568,7 +563,7 @@ public class Ad4PushTracker {
             int wishlistNumber = settings.getInt(WISHLIST_NUMBER, 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt(WISHLIST_NUMBER, --wishlistNumber);
-            editor.commit();
+            editor.apply();
             // Create bundle
             Bundle prefs = new Bundle();
             prefs.putInt(WISHLIST_STATUS, wishlistNumber);
@@ -631,7 +626,7 @@ public class Ad4PushTracker {
             // Increment and save
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt(SHARED_PRODUCT_COUNT, ++shareNumber);
-            editor.commit();
+            editor.apply();
             // Track
             Bundle prefs = new Bundle();
             prefs.putInt(SHARED_PRODUCT_COUNT, shareNumber);
@@ -651,7 +646,7 @@ public class Ad4PushTracker {
             // Increment and save
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt(REVIEW_COUNT, ++shareNumber);
-            editor.commit();
+            editor.apply();
             // Track
             Bundle prefs = new Bundle();
             prefs.putInt(REVIEW_COUNT, shareNumber);
@@ -744,7 +739,7 @@ public class Ad4PushTracker {
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt(CAMPAIGN_PAGEVIEW_COUNT, ++campaignNumber);
-            editor.commit();
+            editor.apply();
 
             Bundle prefs = new Bundle();
             prefs.putInt(CAMPAIGN_PAGEVIEW_COUNT, campaignNumber);
@@ -794,7 +789,7 @@ public class Ad4PushTracker {
 
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean(IS_ENABLED, isActive);
-        editor.commit();
+        editor.apply();
 
         Ad4PushTracker.startup(context);
     }

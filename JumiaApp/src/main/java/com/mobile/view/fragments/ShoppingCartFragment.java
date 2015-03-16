@@ -5,14 +5,11 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -28,10 +25,8 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.Darwin;
 import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.objects.ShoppingCartItem;
 import com.mobile.framework.tracking.AdjustTracker;
@@ -50,6 +45,7 @@ import com.mobile.helpers.checkout.GetNativeCheckoutAvailableHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.helpers.voucher.SetVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.preferences.CountryConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -74,17 +70,11 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  * 
  */
-public class ShoppingCartFragment extends BaseFragment {
+public class ShoppingCartFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(ShoppingCartFragment.class);
 
     private final static String ID_CHANGE_QUANTITY = "id_change_quantity";
-
-    private final static int FAVOURITE_DELAY = 2000;
-
-    private Handler triggerHandler;
-
-    private static ShoppingCartFragment shoppingCartFragment;
 
     private long mBeginRequestMillis;
 
@@ -92,41 +82,21 @@ public class ShoppingCartFragment extends BaseFragment {
 
     private ArrayList<CartItemValues> itemsValues;
 
-    private BigDecimal unreduced_cart_price;
-
-    /**
-     * Boolean to the define the activities type: false - ShoppingBasket | true . Checkout
-     */
-    public boolean isShoppingBasket = true;
-
-    /**
-     * lView Basket grid view
-     */
     private LinearLayout lView;
-
-    /**
-     * Button container so we can control positioning in the screen
-     */
 
     private Button checkoutButton;
 
     private Button mCallToOrderButton;
 
-    /**
-     * dialogList for DialogList
-     */
     private DialogListFragment dialogList;
 
-    // Voucher
     private Button couponButton;
 
     private TextView voucherError;
 
-    EditText voucherCode;
+    private EditText voucherCode;
 
     private String mVoucher = null;
-
-    // private boolean noPaymentNeeded = false;
 
     private boolean removeVoucher = false;
 
@@ -138,7 +108,7 @@ public class ShoppingCartFragment extends BaseFragment {
 
     private boolean isCallInProgress = false;
 
-    private boolean isRemovingAllItems = false;
+    private boolean isRemovingAllItems = false; // Flag used to remove all items after call to order
 
     private double itemRemoved_price_tracking = 0d;
 
@@ -150,8 +120,9 @@ public class ShoppingCartFragment extends BaseFragment {
 
     private static String cartValue = "";
 
+    private String mItemsToCartDeepLink;
+
     public static class CartItemValues {
-        // public Boolean is_in_wishlist;
         public Boolean is_checked;
         public String product_name;
         public String price;
@@ -159,8 +130,6 @@ public class ShoppingCartFragment extends BaseFragment {
         public Integer product_id;
         public long quantity;
         public String image;
-        public String simple_product_sku;
-        public String product_sku;
         public Double discount_value;
         public long stock;
         public Integer min_delivery_time;
@@ -173,13 +142,12 @@ public class ShoppingCartFragment extends BaseFragment {
     /**
      * Get instance
      * 
-     * @return
+     * @return ShoppingCartFragment
      */
-    public static ShoppingCartFragment getInstance() {
-        if (shoppingCartFragment == null) {
-            shoppingCartFragment = new ShoppingCartFragment();
-        }
-        return shoppingCartFragment;
+    public static ShoppingCartFragment getInstance(Bundle bundle) {
+        ShoppingCartFragment fragment = new ShoppingCartFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /**
@@ -191,67 +159,99 @@ public class ShoppingCartFragment extends BaseFragment {
                 R.layout.shopping_basket,
                 R.string.cart_label,
                 KeyboardState.ADJUST_CONTENT);
-        this.setRetainInstance(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
-     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Get arguments
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mItemsToCartDeepLink = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
+            arguments.remove(ConstantsIntentExtra.CONTENT_URL);
+        }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onStart()
-     */
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Get and set views
+        setAppContentLayout(view);
+        // Set listeners
+        setListeners();
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        setAppContentLayout();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onResume()
-     */
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TAG, "ON RESUME");
         // Validate is service is available
         if (JumiaApplication.mIsBound) {
-            Log.i(TAG, "ON RESUME");
-            if (getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
-                addItemsToCart(getArguments().getString(ConstantsIntentExtra.CONTENT_URL));
-                getArguments().remove(ConstantsIntentExtra.CONTENT_URL);
-            } else {
-                mBeginRequestMillis = System.currentTimeMillis();
-                triggerGetShoppingCart();
-            }
-
-            setListeners();
+            mBeginRequestMillis = System.currentTimeMillis();
+            // Case deep link
+            if (!TextUtils.isEmpty(mItemsToCartDeepLink)) addItemsToCart(mItemsToCartDeepLink);
+            // Case normal
+            else triggerGetShoppingCart();
+            // Track page
             TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
         } else {
             showFragmentErrorRetry();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG, "ON PAUSE");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "ON SAVE INSTANCE STATE");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "ON STOP");
+        releaseVars();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i(TAG, "ON DESTROY VIEW");
+        releaseVars();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "ON DESTROY");
+    }
+
+    /**
+     *
+     */
+    private void releaseVars() {
+        itemsValues = null;
+        lView = null;
+        checkoutButton = null;
+        dialogList = null;
     }
 
     /**
@@ -260,22 +260,8 @@ public class ShoppingCartFragment extends BaseFragment {
      * @author sergiopereira
      */
     private void triggerGetShoppingCart() {
-        // Check if FavouritesFragment is complete
-        if (!FavouritesFragment.isOnAddingAllItemsToCart) {
-            // Get items
-            triggerContentEvent(new GetShoppingCartItemsHelper(), null, responseCallback);
-        } else {
-            // Show loading when
-            showFragmentLoading();
-            // Singleton for handler
-            if (triggerHandler == null)
-                triggerHandler = new Handler();
-            // Remove pending posts
-            else
-                triggerHandler.removeCallbacks(triggerRunnable);
-            // Remove trigger
-            triggerHandler.postDelayed(triggerRunnable, FAVOURITE_DELAY);
-        }
+        // Get items
+        triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
     }
 
     /**
@@ -284,33 +270,27 @@ public class ShoppingCartFragment extends BaseFragment {
      * @author sergiopereira
      */
     private void addItemsToCart(String items) {
-
         String[] itemsToCart = items.split(DarwinRegex.SKU_DELIMITER);
-        Log.d(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
-
-        HashMap<String, String> productBySku = new HashMap<String, String>();
-
+        Log.i(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
+        // Create arguments to add all items to cart
+        HashMap<String, String> productBySku = new HashMap<>();
         for (String sku : itemsToCart) {
             productBySku.put(sku, sku.split("-")[0]);
         }
+        // Case valid deep link
         if (productBySku.size() != 0) {
-            showActivityProgress();
             triggerAddAllItems(productBySku);
+        }
+        // Case invalid deep link
+        else {
+            triggerGetShoppingCart();
         }
     }
 
     /**
-     * Runnable used to get the cart items after FavouritesFragment is complete action
-     * 
-     * @author sergiopereira
+     *
+     * @param item
      */
-    Runnable triggerRunnable = new Runnable() {
-        @Override
-        public void run() {
-            triggerGetShoppingCart();
-        }
-    };
-
     private void triggerRemoveItem(ShoppingCartItem item) {
         ContentValues values = new ContentValues();
         values.put("sku", item.getConfigSimpleSKU());
@@ -336,104 +316,63 @@ public class ShoppingCartFragment extends BaseFragment {
             bundle.putBoolean(GetShoppingCartRemoveItemHelper.UPDATE_CART, false);
             triggerContentEventNoLoading(new GetShoppingCartRemoveItemHelper(), bundle, null);
         } else {
-            triggerContentEventProgress(new GetShoppingCartRemoveItemHelper(), bundle,
-                    responseCallback);
+            triggerContentEventProgress(new GetShoppingCartRemoveItemHelper(), bundle, this);
         }
     }
 
+    /**
+     * Trigger to get if is native checkout is available.
+     */
     private void triggerIsNativeCheckoutAvailable() {
-        triggerContentEventNoLoading(new GetNativeCheckoutAvailableHelper(), null,
-                responseCallback);
+        triggerContentEventNoLoading(new GetNativeCheckoutAvailableHelper(), null, this);
     }
 
+    /**
+     * Trigger to remove the submit a voucher value.
+     * @param values
+     */
     private void triggerSubmitVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetVoucherHelper.VOUCHER_PARAM, values);
-        triggerContentEventProgress(new SetVoucherHelper(), bundle, responseCallback);
+        triggerContentEventProgress(new SetVoucherHelper(), bundle, this);
     }
 
+    /**
+     * Trigger to remove the submitted voucher.
+     * @param values - TODO
+     */
     private void triggerRemoveVoucher(ContentValues values) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(RemoveVoucherHelper.VOUCHER_PARAM, values);
-        triggerContentEventProgress(new RemoveVoucherHelper(), bundle, responseCallback);
+        triggerContentEventProgress(new RemoveVoucherHelper(), bundle, this);
     }
 
+    /**
+     * Trigger to add all items to cart (Deep link).
+     * @param values - TODO
+     */
     private void triggerAddAllItems(HashMap<String, String> values) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(GetShoppingCartAddMultipleItemsHelper.ADD_ITEMS, values);
-        // Trigger
-        triggerContentEventNoLoading(new GetShoppingCartAddMultipleItemsHelper(), bundle,
-                responseCallback);
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.view.fragments.MyFragment#onPause()
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.i(TAG, "ON PAUSE");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.view.fragments.MyFragment#onStop()
-     */
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.i(TAG, "ON STOP");
-        releaseVars();
-        System.gc();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onDestroyView()
-     */
-    @Override
-    public void onDestroyView() {
-        releaseVars();
-        super.onDestroyView();
-        Log.i(TAG, "ON DESTROY");
-    }
-
-    private void releaseVars() {
-        shoppingCartFragment = null;
-
-        itemsValues = null;
-
-        lView = null;
-
-        checkoutButton = null;
-
-        dialogList = null;
+        triggerContentEventProgress(new GetShoppingCartAddMultipleItemsHelper(), bundle, this);
     }
 
     /**
      * Set the ShoppingCart layout using inflate
      */
-    public void setAppContentLayout() {
-        if (getView() == null) {
-            return;
-        }
-        checkoutButton = (Button) getView().findViewById(R.id.checkout_button);
-        mCallToOrderButton = (Button) getView().findViewById(R.id.checkout_call_to_order);
+    public void setAppContentLayout(View view) {
+        checkoutButton = (Button) view.findViewById(R.id.checkout_button);
+        mCallToOrderButton = (Button) view.findViewById(R.id.checkout_call_to_order);
+        voucherCode = (EditText) view.findViewById(R.id.voucher_name);
+        voucherError = (TextView) view.findViewById(R.id.voucher_error_message);
+        couponButton = (Button) view.findViewById(R.id.voucher_btn);
         prepareCouponView();
     }
 
     public void setListeners() {
-
         // checkoutButton.setOnClickListener(checkoutClickListener);
         checkoutButton.setOnTouchListener(new OnTouchListener() {
-
             private DialogGenericFragment messageDialog;
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -460,36 +399,28 @@ public class ShoppingCartFragment extends BaseFragment {
             }
         });
 
+        // Get phone number from country configs
+        mPhone2Call = CountryConfigs.getCountryPhoneNumber(getBaseActivity());
         // Show Call To Order if available on the device
         PackageManager pm = getActivity().getPackageManager();
-        if (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
-            setCallPhone();
+        if (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY) && !TextUtils.isEmpty(mPhone2Call)) {
             mCallToOrderButton.setVisibility(View.VISIBLE);
             mCallToOrderButton.setSelected(true);
             mCallToOrderButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String user_id = "";
-                    if (JumiaApplication.CUSTOMER != null
-                            && JumiaApplication.CUSTOMER.getIdAsString() != null) {
-                        user_id = JumiaApplication.CUSTOMER.getIdAsString();
-                    }
-                    TrackerDelegator.trackCall(getActivity().getApplicationContext(), user_id,
-                            JumiaApplication.SHOP_NAME);
+                    TrackerDelegator.trackCall(getBaseActivity());
                     makeCall();
                 }
             });
         } else {
             mCallToOrderButton.setVisibility(View.GONE);
-            // Change buttonsContainer height from two vertical buttons to height to accomodate a
-            // single button
-            LinearLayout buttonsContainer = (LinearLayout) getView().findViewById(
-                    R.id.shopping_basket_buttons_container);
-            buttonsContainer.getLayoutParams().height = getResources().getDimensionPixelSize(
-                    R.dimen.button_container_height);
         }
     }
 
+    /**
+     *
+     */
     private void makeCall() {
         // Displays the phone number but the user must press the Call button to begin the phone call
         Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -500,15 +431,11 @@ public class ShoppingCartFragment extends BaseFragment {
         }
     }
 
-    private void setCallPhone() {
-        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(
-                ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, "");
-        if ("".equalsIgnoreCase(mPhone2Call)) {
-            mPhone2Call = getString(R.string.call_to_order_number);
-        }
-    }
-
+    /**
+     *
+     * @param bundle
+     * @return
+     */
     protected boolean onSuccessEvent(Bundle bundle) {
 
         // Validate fragment visibility
@@ -523,24 +450,19 @@ public class ShoppingCartFragment extends BaseFragment {
         super.handleSuccessEvent(bundle);
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        // ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         Log.d(TAG, "onSuccessEvent: eventType = " + eventType);
         switch (eventType) {
         case ADD_VOUCHER:
             couponButton.setText(getString(R.string.voucher_remove));
             voucherError.setVisibility(View.GONE);
-            // voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             hideActivityProgress();
-            // noPaymentNeeded = false;
             removeVoucher = true;
             triggerGetShoppingCart();
             return true;
         case REMOVE_VOUCHER:
-            // noPaymentNeeded = false;
             couponButton.setText(getString(R.string.voucher_use));
             voucherError.setVisibility(View.GONE);
-            // voucherDivider.setBackgroundColor(R.color.grey_dividerlight);
             hideActivityProgress();
             triggerGetShoppingCart();
             removeVoucher = false;
@@ -584,7 +506,7 @@ public class ShoppingCartFragment extends BaseFragment {
             displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
             return true;
         case GET_SHOPPING_CART_ITEMS_EVENT:
-            ShoppingCart shoppingCart = (ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            ShoppingCart shoppingCart = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             //showFragmentContentContainer();
             params = new Bundle();
             params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
@@ -626,6 +548,10 @@ public class ShoppingCartFragment extends BaseFragment {
         return true;
     }
 
+    /**
+     *
+     * @param bundle
+     */
     private void onAddItemsToShoppingCartRequestError(Bundle bundle){
         hideActivityProgress();
         if(JumiaApplication.INSTANCE.getCart() != null)
@@ -633,7 +559,11 @@ public class ShoppingCartFragment extends BaseFragment {
         Toast.makeText(getBaseActivity(), getString(R.string.some_products_not_added), Toast.LENGTH_LONG).show();
         
     }
-    
+
+    /**
+     *
+     * @param bundle
+     */
     private void onAddItemsToShoppingCartRequestSuccess(Bundle bundle){
         hideActivityProgress();
         if (bundle.containsKey(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY)) {
@@ -643,7 +573,7 @@ public class ShoppingCartFragment extends BaseFragment {
                 Toast.makeText(getBaseActivity(), R.string.some_products_not_added, Toast.LENGTH_SHORT).show();
             }
         }
-        
+
         getBaseActivity().updateCartInfo();
         if(JumiaApplication.INSTANCE.getCart() != null)
             displayShoppingCart(JumiaApplication.INSTANCE.getCart());
@@ -669,36 +599,36 @@ public class ShoppingCartFragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         int id = v.getId();
+                        // Case remove
                         if (id == R.id.button1) {
-
                             isRemovingAllItems = true;
-
-                            List<ShoppingCartItem> items = new ArrayList<ShoppingCartItem>(
-                                    shoppingCart.getCartItems().values());
-
+                            List<ShoppingCartItem> items = new ArrayList<>(shoppingCart.getCartItems().values());
                             for (ShoppingCartItem item : items) {
                                 mBeginRequestMillis = System.currentTimeMillis();
                                 triggerRemoveItem(item);
                             }
-
                             showNoItems();
-
                             // Update global cart with an empty Cart
                             ShoppingCart cart = new ShoppingCart();
                             JumiaApplication.INSTANCE.setCart(cart);
-
                             // Update cart
                             getBaseActivity().updateCartInfo();
-                        } else if (id == R.id.button2) {
+                        }
+                        // Case continue
+                        else if (id == R.id.button2) {
                             displayShoppingCart(shoppingCart);
                         }
-
                         dismissDialogFragment();
                     }
                 });
         dialog.show(getActivity().getSupportFragmentManager(), null);
     }
 
+    /**
+     *
+     * @param bundle
+     * @return
+     */
     protected boolean onErrorEvent(Bundle bundle) {
 
         // Validate fragment visibility
@@ -747,6 +677,9 @@ public class ShoppingCartFragment extends BaseFragment {
         return true;
     }
 
+    /*
+
+     */
     private void displayShoppingCart(ShoppingCart cart) {
         Log.d(TAG, "displayShoppingCart");
         if(cart == null){
@@ -754,7 +687,7 @@ public class ShoppingCartFragment extends BaseFragment {
             return;
         }
 
-        items = new ArrayList<ShoppingCartItem>(cart.getCartItems().values());
+        items = new ArrayList<>(cart.getCartItems().values());
         if (items.size() == 0) {
             showNoItems();
         } else {
@@ -816,7 +749,7 @@ public class ShoppingCartFragment extends BaseFragment {
             lView.removeAllViewsInLayout();
             itemsValues = new ArrayList<>();
             // Fix NAFAMZ-7848
-            unreduced_cart_price = new BigDecimal(0);
+            BigDecimal unreduced_cart_price = new BigDecimal(0);
             // reduced_cart_price = 0;
             boolean cartHasReducedItem = false;
             for (int i = 0; i < items.size(); i++) {
@@ -1145,7 +1078,7 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
     public void changeQuantityOfItem(final int position) {
-        ArrayList<String> quantities = new ArrayList<String>();
+        ArrayList<String> quantities = new ArrayList<>();
 
         long stock = items.get(position).getStock();
         int maxQuantity = items.get(position).getMaxQuantity();
@@ -1221,25 +1154,11 @@ public class ShoppingCartFragment extends BaseFragment {
             values.put(GetShoppingCartChangeItemQuantityHelper.ITEM_QTY + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
         }
         bundle.putParcelable(GetShoppingCartChangeItemQuantityHelper.CART_ITEMS, values);
-        triggerContentEventProgress(new GetShoppingCartChangeItemQuantityHelper(), bundle,
-                responseCallback);
+        triggerContentEventProgress(new GetShoppingCartChangeItemQuantityHelper(), bundle, this);
     }
 
-    IResponseCallback responseCallback = new IResponseCallback() {
-        @Override
-        public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
-
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
-        }
-    };
 
     private void prepareCouponView() {
-        voucherCode = (EditText) getView().findViewById(R.id.voucher_name);
         if (!TextUtils.isEmpty(mVoucher)) {
             voucherCode.setText(mVoucher);
             voucherCode.setFocusable(false);
@@ -1248,9 +1167,6 @@ public class ShoppingCartFragment extends BaseFragment {
             voucherCode.setFocusableInTouchMode(true);
         }
 
-        // voucherDivider = getView().findViewById(R.id.voucher_divider);
-        voucherError = (TextView) getView().findViewById(R.id.voucher_error_message);
-        couponButton = (Button) getView().findViewById(R.id.voucher_btn);
         if (removeVoucher) {
             couponButton.setText(getString(R.string.voucher_remove));
         }
@@ -1263,15 +1179,13 @@ public class ShoppingCartFragment extends BaseFragment {
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(SetVoucherHelper.VOUCHER_PARAM, mVoucher);
                     Log.i(TAG, "code1coupon : " + mVoucher);
-                    if (getString(R.string.voucher_use).equalsIgnoreCase(
-                            couponButton.getText().toString())) {
+                    if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
                         triggerSubmitVoucher(mContentValues);
                     } else {
                         triggerRemoveVoucher(mContentValues);
                     }
                 } else {
-                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message),
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -1295,6 +1209,17 @@ public class ShoppingCartFragment extends BaseFragment {
     @Override
     protected void onRetryRequest(EventType eventType) {
         onResume();
+    }
+
+    @Override
+    public void onRequestError(Bundle bundle) {
+        onErrorEvent(bundle);
+
+    }
+
+    @Override
+    public void onRequestComplete(Bundle bundle) {
+        onSuccessEvent(bundle);
     }
     
 }

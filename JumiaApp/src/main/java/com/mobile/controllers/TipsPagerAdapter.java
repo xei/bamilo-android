@@ -6,7 +6,6 @@ package com.mobile.controllers;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +80,7 @@ public class TipsPagerAdapter extends PagerAdapter implements IconPagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object arg1) {
-        return view == ((View) arg1);
+        return view == arg1;
     }
 
     /**
@@ -102,11 +101,11 @@ public class TipsPagerAdapter extends PagerAdapter implements IconPagerAdapter {
 
         if (position != 0 && container.getChildCount() <= 0) {
             View view = mLayoutInflater.inflate(mTipsPages[0], container, false);
-            ((ViewPager) container).addView(view, 0);
+            container.addView(view, 0);
         }
 
         View view = mLayoutInflater.inflate(mTipsPages[position], container, false);
-        ((ViewPager) container).addView(view, 0);
+        container.addView(view, 0);
 
 //        if (mAddVariationsPadding) {
             ImageView tipImg = (ImageView) view.findViewById(R.id.tip_img);
@@ -128,7 +127,7 @@ public class TipsPagerAdapter extends PagerAdapter implements IconPagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        ((ViewPager) container).removeView(mView.findViewById(mTipsPages[position]));
+        container.removeView(mView.findViewById(mTipsPages[position]));
     }
 
     @Override

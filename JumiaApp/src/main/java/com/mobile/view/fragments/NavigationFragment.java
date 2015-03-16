@@ -3,8 +3,6 @@
  */
 package com.mobile.view.fragments;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,6 +24,8 @@ import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -254,7 +254,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * Add Categories header to Menu
      */
     private void addMenuItems() {
-        ArrayList<NavigationListComponent> components = new ArrayList<NavigationListComponent>();
+        ArrayList<NavigationListComponent> components = new ArrayList<>();
         // Get Navigation items from arrays.xml
         String[] natigationItems = getResources().getStringArray(R.array.navigation_items);
         for (String item : natigationItems) {

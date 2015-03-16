@@ -1,5 +1,6 @@
 package com.mobile.utils;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -19,7 +20,6 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
-import com.mobile.app.JumiaApplication;
 import com.mobile.constants.BundleConstants;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.view.SplashScreenActivity;
@@ -37,14 +37,17 @@ import de.akquinet.android.androlog.Log;
 public class JumiaWearableListenerService extends WearableListenerService {
 
     private static final String TAG = JumiaWearableListenerService.class.getSimpleName();
-    public static GoogleApiClient mGoogleApiClient;
+
+    public static GoogleApiClient sGoogleApiClient;
+
     public static final String EXTRA_SEARCH_TERM = "extra_search_term";
+
     public static final String EXTRA_ERROR_MESSAGE = "extra_error_message";
 
     @Override
     public void onCreate() {
         super.onCreate();
-        connectToWearable();
+        connectToWearable(getApplicationContext());
     }
 
     /**
@@ -144,21 +147,15 @@ public class JumiaWearableListenerService extends WearableListenerService {
     /**
      * Method responsible for opening a googleApiClient connection.
      */
-    public synchronized static void connectToWearable() {
-        if (mGoogleApiClient == null) {
-
-            mGoogleApiClient = new GoogleApiClient.Builder(JumiaApplication.INSTANCE.getApplicationContext())
-                    .addApi(Wearable.API)
-                    .build();
-            JumiaApplication.INSTANCE.setGoogleApiClient(mGoogleApiClient);
+    public synchronized static void connectToWearable(Context context) {
+        if (sGoogleApiClient == null) {
+            sGoogleApiClient = new GoogleApiClient.Builder(context).addApi(Wearable.API).build();
         }
 
-        if (!mGoogleApiClient.isConnected() && !mGoogleApiClient.isConnecting()) {
-            mGoogleApiClient.connect();
+        if (!sGoogleApiClient.isConnected() && !sGoogleApiClient.isConnecting()) {
+            sGoogleApiClient.connect();
         }
-
     }
-
 
     /**
      * Method responsible for sending a generic DataMapRequest from the handheld app to the wear app.
@@ -169,11 +166,11 @@ public class JumiaWearableListenerService extends WearableListenerService {
             long token = Binder.clearCallingIdentity();
             try {
                 Log.e("WEAR", "doInBackground 1");
-                NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(JumiaApplication.INSTANCE.getGoogleApiClient()).await();
+                NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(sGoogleApiClient).await();
                 for (Node node : nodes.getNodes()) {
                     Log.e("WEAR", "doInBackground 2");
 
-                    DataApi.DataItemResult result = Wearable.DataApi.putDataItem(JumiaApplication.INSTANCE.getGoogleApiClient(), requests[0].asPutDataRequest()).await();
+                    DataApi.DataItemResult result = Wearable.DataApi.putDataItem(sGoogleApiClient, requests[0].asPutDataRequest()).await();
                     if (result.getStatus().isSuccess()) {
                         Log.e("WEAR", "doInBackground 3");
                         Log.i(TAG, "code1DataMap: success! " + requests[0].getDataMap() + " sent to: " + node.getDisplayName());
@@ -196,10 +193,6 @@ public class JumiaWearableListenerService extends WearableListenerService {
             Log.e("WEAR", "onProgressUpdate");
         }
 
-        protected void onPostExecute(Long result) {
-            Log.e("WEAR", "onPostExecute");
-
-        }
     }
 
 

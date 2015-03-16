@@ -51,9 +51,9 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
         this.label = "";
         this.type = "";
         this.required = false;
-        this.options = new ArrayList<String>();
-        this.optionsShippingMethod = new HashMap<String, ShippingMethod>();
-        this.shippingMethodsSubForms = new ArrayList<ShippingMethodSubForm>();
+        this.options = new ArrayList<>();
+        this.optionsShippingMethod = new HashMap<>();
+        this.shippingMethodsSubForms = new ArrayList<>();
     }
 
     /*
@@ -152,11 +152,11 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
         label = in.readString();
         type = in.readString();
         in.readBooleanArray(new boolean[] {required});
-        options = new ArrayList<String>(); 
+        options = new ArrayList<>();
         in.readArrayList(null);
-        optionsShippingMethod = new HashMap<String, ShippingMethod>();
+        optionsShippingMethod = new HashMap<>();
         in.readMap(optionsShippingMethod, ShippingMethod.class.getClassLoader());
-        shippingMethodsSubForms = new ArrayList<ShippingMethodSubForm>();
+        shippingMethodsSubForms = new ArrayList<>();
         in.readArrayList(ShippingMethodSubForm.class.getClassLoader()); 
     }
     

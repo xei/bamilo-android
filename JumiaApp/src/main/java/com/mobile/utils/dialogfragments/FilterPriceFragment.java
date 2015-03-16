@@ -119,7 +119,7 @@ class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListen
         mRangeValues = (TextView) view.findViewById(R.id.dialog_filter_range_text);
         
         // Get range bar
-        mRangeBar = new RangeSeekBar<Integer>(getMinIntervalValue(mMin), getMaxIntervalValue(mMax), getActivity());
+        mRangeBar = new RangeSeekBar<>(getMinIntervalValue(mMin), getMaxIntervalValue(mMax), getActivity());
         mRangeBar.setNotifyWhileDragging(true);
         mRangeBar.setOnRangeSeekBarChangeListener(this);
         ((ViewGroup) view.findViewById(R.id.dialog_filter_range_bar)).addView(mRangeBar);

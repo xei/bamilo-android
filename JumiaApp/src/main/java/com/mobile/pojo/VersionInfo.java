@@ -1,13 +1,13 @@
 package com.mobile.pojo;
 
-import java.util.HashMap;
-import java.util.Iterator;
+import com.mobile.framework.interfaces.IJSONSerializable;
+import com.mobile.framework.rest.RestConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mobile.framework.interfaces.IJSONSerializable;
-import com.mobile.framework.rest.RestConstants;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import de.akquinet.android.androlog.Log;
 
@@ -20,7 +20,7 @@ public class VersionInfo implements IJSONSerializable {
 	private final HashMap<String, Version> mVersions;
 	
 	public VersionInfo() {
-		mVersions = new HashMap<String, Version>();
+		mVersions = new HashMap<>();
 	}
 
 	@Override

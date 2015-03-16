@@ -1,7 +1,5 @@
 package com.mobile.framework.utils;
 
-import java.util.Locale;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -17,6 +15,8 @@ import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.FacebookTracker;
 import com.mobile.framework.tracking.GTMManager;
+
+import java.util.Locale;
 
 import de.akquinet.android.androlog.Log;
 
@@ -53,7 +53,7 @@ public final class ShopSelector {
 	 * @param context
 	 * @param shopId
 	 */
-	public static void init(Context context, String shopId, boolean isChangeShop) {
+	public static void init(Context context, String shopId) {
 		SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		setLocale(context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null));
 		RestContract.init(context, shopId);
@@ -62,9 +62,9 @@ public final class ShopSelector {
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
 		AdjustTracker.startup(context);
 		CurrencyFormatter.initialize(context, currencyCode);
-		AnalyticsGoogle.startup(context, shopId);
+		AnalyticsGoogle.startup(context);
 		Ad4PushTracker.startup(context);
-        GTMManager.init(context, shopId);
+        GTMManager.init(context);
         FacebookTracker.startup(context);
         
         sShopId = shopId;
@@ -76,7 +76,6 @@ public final class ShopSelector {
      * Initializing To General Requests
      * 
      * @param context
-     * @param shopId
      */
 	// NO_COUNTRIES_CONFIGS
     public static void init(Context context) {
@@ -88,7 +87,6 @@ public final class ShopSelector {
 	 * Initializing the country selector to a certain Country host.
 	 * 
 	 * @param context
-	 * @param shopId
 	 */
     // NO_COUNTRY_CONFIGS_AVAILABLE
 	public static void init(Context context, String requestHost, String basePath) {
@@ -123,7 +121,7 @@ public final class ShopSelector {
 	 * @param context
 	 * @author spereira
 	 */
-	public static void setLocaleOnOritentationChanged(Context context) {
+	public static void setLocaleOnOrientationChanged(Context context) {
 	    //Log.i(TAG, "SET LOCALE ON ORIENTATION CHANGED");
 	    SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 	    String language = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null);
@@ -165,12 +163,10 @@ public final class ShopSelector {
 	}
 	
 	public static String getShopName() {
-		
 		return sShopName;		
 	}
 	
 	public static String getCountryName() {
-		
 		return sCountryName;
 	}
 

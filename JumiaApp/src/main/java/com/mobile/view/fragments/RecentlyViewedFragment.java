@@ -16,7 +16,6 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.LastViewedTableHelper;
 import com.mobile.framework.objects.AddableToCart;
-import com.mobile.framework.objects.LastViewedAddableToCart;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -43,8 +42,6 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
 
     protected final static String TAG = LogTagHelper.create(RecentlyViewedFragment.class);
 
-    private static RecentlyViewedFragment mRecentlyViewedFragment;
-
     private Button mClearAllButton;
 
     /**
@@ -64,8 +61,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      * @return RecentlyViewedFragment
      */
     public static RecentlyViewedFragment getInstance() {
-        mRecentlyViewedFragment = new RecentlyViewedFragment();
-        return mRecentlyViewedFragment;
+        return new RecentlyViewedFragment();
     }
 
     /*
@@ -99,12 +95,10 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         mAddableToCartGridView = (GridView) view.findViewById(R.id.recentlyviewed_grid);
         // Get clear all button
         mClearAllButton = (Button) view.findViewById(R.id.recentlyviewed_button_grey);
-        mClearAllButton.setOnClickListener((OnClickListener) this);
+        mClearAllButton.setOnClickListener(this);
         // Get add to cart button
         mAddAllToCartButton = (Button) view.findViewById(R.id.button_shop_all);
-        //mAddAllToCartButton.setOnClickListener((OnClickListener) this);
         mAddAllToCartButton.setVisibility(View.GONE);
-
         // Validate current state
         if (isOnAddingAllItemsToCart) {
             // Show progress
@@ -115,7 +109,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
             showFragmentLoading();
             // Get RecentlyViewed
             Log.i(TAG, "LOAD LAST VIEWED ITEMS");
-            new GetRecentlyViewedHelper((IResponseCallback) this);
+            new GetRecentlyViewedHelper(this);
         }
     }
 
@@ -134,7 +128,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         mClearAllButton.setOnClickListener(null);
         mAddAllToCartButton.setVisibility(View.GONE);
         mAddAllToCartButton.setOnClickListener(null);
-        showFragmentEmpty(R.string.recentlyview_no_searches, R.drawable.img_norecentview, R.string.continue_shopping, (OnClickListener) this);
+        showFragmentEmpty(R.string.recentlyview_no_searches, R.drawable.img_norecentview, R.string.continue_shopping, this);
     }
 
     /**
@@ -201,7 +195,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
             getBaseActivity().showWarningVariation(false);
             // Show dialog
             int position = Integer.parseInt(view.getTag().toString());
-            AddableToCart addableToCart = (LastViewedAddableToCart) mAddableToCartList.get(position);
+            AddableToCart addableToCart = mAddableToCartList.get(position);
             addableToCart.setFavoriteSelected(position);
             showVariantsDialog(addableToCart);
         } catch (NullPointerException e) {
@@ -220,7 +214,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         Log.i(TAG, "ON ITEM CLICK");
         try {
             int position = Integer.parseInt(view.getTag().toString());
-            AddableToCart addableToCart = (LastViewedAddableToCart) mAddableToCartList.get(position);
+            AddableToCart addableToCart = mAddableToCartList.get(position);
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, addableToCart.getUrl());
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
@@ -259,7 +253,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
     protected void onClickAddToCart(View view) {
         Log.i(TAG, "ON CLICK ADD ALL TO CART");
         int position = Integer.parseInt(view.getTag().toString());
-        AddableToCart addableToCart = (LastViewedAddableToCart) mAddableToCartList.get(position);
+        AddableToCart addableToCart = mAddableToCartList.get(position);
         // Validate variation
         if (hasSelectedVariation(addableToCart)) {
             Log.i(TAG, "SELECTED VARIATION");
@@ -289,7 +283,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         for (int i = 0; i < mNumberOfItemsForCart; i++) {
             if (mAddableToCartList.get(i).isComplete()) {
                 // Add item to cart
-                triggerAddProductToCart((LastViewedAddableToCart) mAddableToCartList.get(i), i);
+                triggerAddProductToCart(mAddableToCartList.get(i), i);
             } else {
                 // Increment counter
                 mAddedItemsCounter++;
@@ -458,15 +452,15 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
     protected void getNotAddedItems() {
         Log.i(TAG, "ON GET NOT ADDED ITEMS");
         // Create new array
-        ArrayList<AddableToCart> array = new ArrayList<AddableToCart>();
+        ArrayList<AddableToCart> array = new ArrayList<>();
         // Add items not added to cart
         for (Integer pos : mItemsNotAddedToCart) {
-            array.add((LastViewedAddableToCart) mAddableToCartList.get(pos));
+            array.add(mAddableToCartList.get(pos));
         }
         // Show new items
         mAddableToCartList = array;
         mAddableToCartGridView.setAdapter(null);
-        mAddableToCartAdapter = new AddableToCartListAdapter(getBaseActivity(), mAddableToCartList, (OnClickListener) this);
+        mAddableToCartAdapter = new AddableToCartListAdapter(getBaseActivity(), mAddableToCartList, this);
         mAddableToCartGridView.setAdapter(mAddableToCartAdapter);
     }
 }

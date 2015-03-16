@@ -46,8 +46,6 @@ public class TrackOrderFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(TrackOrderFragment.class);
 
-    private static TrackOrderFragment mTrackOrderFragment;
-
     private LoadingBarView loadingTrackBarView;
 
     private EditText mEditText;
@@ -70,13 +68,9 @@ public class TrackOrderFragment extends BaseFragment {
      * @return
      */
     public static TrackOrderFragment getInstance(Bundle bundle) {
-        mTrackOrderFragment = new TrackOrderFragment();
-        
-        if (bundle != null && bundle.containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR)) {
-            order_number = bundle.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
-        }
-        
-        return mTrackOrderFragment;
+        TrackOrderFragment fragment = new TrackOrderFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /**
@@ -88,7 +82,6 @@ public class TrackOrderFragment extends BaseFragment {
                 R.layout.track_order_fragment,
                 R.string.my_orders_label,
                 KeyboardState.ADJUST_CONTENT);
-        // R.string.nav_track_order
     }
 
     @Override
@@ -115,13 +108,19 @@ public class TrackOrderFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Get arguments
+        Bundle arguments = getArguments();
+        if(arguments != null) {
+            order_number = arguments.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
+        }
+        // Parent
         parentFragment = (MyOrdersFragment) getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.MY_ORDERS.toString());
+        // Get saved arguments
         if(savedInstanceState != null && savedInstanceState.containsKey("track")){
             if(TextUtils.isEmpty(order_number)){
                 mOrderTracker = savedInstanceState.getParcelable("track");
                 instanceOrder = savedInstanceState.getString("order_num");
             }
-                
             Log.i("TRACK", "onCreate mOrderTracker:"+mOrderTracker.getId());
         }
 
@@ -395,7 +394,7 @@ public class TrackOrderFragment extends BaseFragment {
             return true;
         };
         Log.d(TAG, "ON SUCCESS EVENT");
-        mOrderTracker = (OrderTracker) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        mOrderTracker = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         showFragmentContentContainer();
         processSuccess();
         return true;

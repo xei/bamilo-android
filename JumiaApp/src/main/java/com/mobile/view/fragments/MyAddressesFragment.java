@@ -9,12 +9,8 @@ import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.forms.Form;
 import com.mobile.framework.objects.Address;
 import com.mobile.framework.objects.Addresses;
@@ -27,8 +23,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
+
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -428,9 +424,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      * @author sergiopereira
      */
     private void addAddresses(GenericRadioGroup container, HashMap<String, Address> addresses) {
-        Iterator<Map.Entry<String, Address>> it = addresses.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String, Address> item = (Map.Entry<String, Address>) it.next();
+        for (Map.Entry<String, Address> item : addresses.entrySet()) {
             Address otherAddress = item.getValue();
             addAddress(container, otherAddress);
         }
@@ -542,7 +536,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {
-            errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
         }
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             showFragmentContentContainer();

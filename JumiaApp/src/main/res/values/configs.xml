@@ -25,7 +25,7 @@
     <item name="default_sound" type="bool">true</item>
 
     <!-- HOCKEY APP -->
-    <string name="hockey_app_id"></string>
+    <string name="hockey_app_id"/>
     <item name="hockeyapp_enable_dev" type="bool">false</item>
 
 </resources>

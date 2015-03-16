@@ -1,12 +1,13 @@
 package com.mobile.utils;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.widget.AutoCompleteTextView;
+
+import java.util.ArrayList;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -83,7 +84,7 @@ public class SearchSuggestionText extends AutoCompleteTextView {
      */
     @Override
     public void addTextChangedListener(TextWatcher watcher) {
-        if (mWatcheListeners == null) mWatcheListeners = new ArrayList<TextWatcher>();
+        if (mWatcheListeners == null) mWatcheListeners = new ArrayList<>();
         mWatcheListeners.add(watcher);
         super.addTextChangedListener(watcher);
     }

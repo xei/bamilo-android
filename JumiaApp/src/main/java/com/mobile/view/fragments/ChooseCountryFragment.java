@@ -258,7 +258,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 countryList.setItemChecked(position, true);
                 if (position == selected) {
-                    return;
                 } else if (selected == SHOP_NOT_SELECTED) {
                     setCountry(position);
                 } else if (position != selected) {
@@ -317,7 +316,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryIsLive());
         editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
-        editor.commit();
+        editor.apply();
         
         // Clean memory
         JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
@@ -348,7 +347,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     private void triggerGetJumiaCountries() {
         //Validate is service is available
         if(JumiaApplication.mIsBound){
-            triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, (IResponseCallback) this);
+            triggerContentEvent(new GetCountriesGeneralConfigsHelper(), null, this);
         } else {
             showFragmentErrorRetry();
         }

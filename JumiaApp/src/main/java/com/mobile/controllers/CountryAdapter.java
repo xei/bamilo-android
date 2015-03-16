@@ -57,19 +57,14 @@ public class CountryAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.i("Country List", "Position: " + position);
-        if (mInflater == null) {
-            mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
         View rowView = convertView;
         if (rowView == null) {
             rowView = mInflater.inflate(R.layout.change_country_row, parent, false);
-        }       
-//        setSelector(rowView,position);      
+        }
         TextView textView = (TextView) rowView.findViewById(R.id.country_name);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.flag);
         textView.setText(values[position]);
         if (flagsList != null && flagsList.length > 0) RocketImageLoader.instance.loadImage(flagsList[position], imageView, null, R.drawable.no_image_small);
-
         return rowView;
     }
     

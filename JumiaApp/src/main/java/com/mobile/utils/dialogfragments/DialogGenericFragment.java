@@ -188,22 +188,22 @@ public class DialogGenericFragment extends DialogFragment {
      */
     private void dialogWith2Buttons(View view) {
         if (this.mainText != null && !this.mainText) {
-            ((TextView) view.findViewById(R.id.dialog_text)).setVisibility(View.GONE);
+            view.findViewById(R.id.dialog_text).setVisibility(View.GONE);
             ((TextView) view.findViewById(R.id.items_count)).setText(content);
         }
         if (this.secondaryText != null && !this.secondaryText) {
-            ((TextView) view.findViewById(R.id.items_count)).setVisibility(View.GONE);
+            view.findViewById(R.id.items_count).setVisibility(View.GONE);
         }
         ((TextView) view.findViewById(R.id.dialog_title)).setText(title);
         ((TextView) view.findViewById(R.id.dialog_text)).setText(content);
-        ((Button) view.findViewById(R.id.button1)).setOnClickListener(clickListener);
+        view.findViewById(R.id.button1).setOnClickListener(clickListener);
         ((Button) view.findViewById(R.id.button1)).setText(buttonTitle1);
         if (TextUtils.isEmpty(buttonTitle2)) {
-            ((Button) view.findViewById(R.id.button2)).setVisibility(View.GONE);
-            ((View) view.findViewById(R.id.grey_line_vertical)).setVisibility(View.GONE);
+            view.findViewById(R.id.button2).setVisibility(View.GONE);
+            view.findViewById(R.id.grey_line_vertical).setVisibility(View.GONE);
         }
         ((Button) view.findViewById(R.id.button2)).setText(buttonTitle2);
-        ((Button) view.findViewById(R.id.button2)).setOnClickListener(clickListener);
+        view.findViewById(R.id.button2).setOnClickListener(clickListener);
         getActivity().getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
 
         if (title == null)
@@ -219,29 +219,29 @@ public class DialogGenericFragment extends DialogFragment {
      */
     private void dialogWith3Buttons(View view) {
         if (!mainText) {
-            ((TextView) view.findViewById(R.id.dialog_text)).setVisibility(View.GONE);
+            view.findViewById(R.id.dialog_text).setVisibility(View.GONE);
             ((TextView) view.findViewById(R.id.items_count)).setText(content);
         }
         if (!secondaryText) {
-            ((TextView) view.findViewById(R.id.items_count)).setVisibility(View.GONE);
+            view.findViewById(R.id.items_count).setVisibility(View.GONE);
         }
         ((TextView) view.findViewById(R.id.dialog_title)).setText(title);
         ((TextView) view.findViewById(R.id.dialog_text)).setText(content);
-        ((Button) view.findViewById(R.id.button1)).setOnClickListener(clickListener);
+        view.findViewById(R.id.button1).setOnClickListener(clickListener);
         ((Button) view.findViewById(R.id.button1)).setText(buttonTitle1);
         if (TextUtils.isEmpty(buttonTitle2)) {
-            ((Button) view.findViewById(R.id.button2)).setVisibility(View.GONE);
-            ((View) view.findViewById(R.id.grey_line_vertical)).setVisibility(View.GONE);
+            view.findViewById(R.id.button2).setVisibility(View.GONE);
+            view.findViewById(R.id.grey_line_vertical).setVisibility(View.GONE);
         }
         ((Button) view.findViewById(R.id.button2)).setText(buttonTitle2);
-        ((Button) view.findViewById(R.id.button2)).setOnClickListener(clickListener);
+        view.findViewById(R.id.button2).setOnClickListener(clickListener);
 
         if (TextUtils.isEmpty(buttonTitle2)) {
-            ((Button) view.findViewById(R.id.button2)).setVisibility(View.GONE);
-            ((View) view.findViewById(R.id.grey_line_vertical2)).setVisibility(View.GONE);
+            view.findViewById(R.id.button2).setVisibility(View.GONE);
+            view.findViewById(R.id.grey_line_vertical2).setVisibility(View.GONE);
         }
         ((Button) view.findViewById(R.id.button3)).setText(buttonTitle3);
-        ((Button) view.findViewById(R.id.button3)).setOnClickListener(clickListener);
+        view.findViewById(R.id.button3).setOnClickListener(clickListener);
         getActivity().getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
     }
 
@@ -250,8 +250,8 @@ public class DialogGenericFragment extends DialogFragment {
      * @param click
      */
     public void setOnClickListener(android.view.View.OnClickListener click) {
-        ((Button) getView().findViewById(R.id.button1)).setOnClickListener(click);
-        ((Button) getView().findViewById(R.id.button2)).setOnClickListener(click);
+        getView().findViewById(R.id.button1).setOnClickListener(click);
+        getView().findViewById(R.id.button2).setOnClickListener(click);
     }
 
     /**
@@ -277,9 +277,9 @@ public class DialogGenericFragment extends DialogFragment {
 
         Log.d(TAG, "CREATE NO NETWORK DIALOG");
 
-        final DialogGenericFragment dialog = DialogGenericFragment.newInstance(true, true, false,
-                activity.getResources().getString(R.string.no_internet_access_warning_title), 
-                activity.getResources().getString(R.string.no_connect_dialog_content), 
+        return DialogGenericFragment.newInstance(true, true, false,
+                activity.getResources().getString(R.string.no_internet_access_warning_title),
+                activity.getResources().getString(R.string.no_connect_dialog_content),
                 activity.getResources().getString(R.string.cancel_label),
                 activity.getResources().getString(R.string.try_again),
 
@@ -303,8 +303,6 @@ public class DialogGenericFragment extends DialogFragment {
                         }
                     }
                 });
-
-        return dialog;
     }
 
     /**
@@ -353,7 +351,7 @@ public class DialogGenericFragment extends DialogFragment {
 
         Log.d(TAG, "CREATE ERROR DIALOG");
 
-        final DialogGenericFragment dialog = DialogGenericFragment.newInstance(true, true, false,
+        return DialogGenericFragment.newInstance(true, true, false,
                 title, message, activity
                         .getString(R.string.cancel_label), activity.getString(R.string.try_again),
 
@@ -372,8 +370,6 @@ public class DialogGenericFragment extends DialogFragment {
                         }
                     }
                 });
-
-        return dialog;
     }
 
     public static DialogGenericFragment createClientErrorDialog(String message,

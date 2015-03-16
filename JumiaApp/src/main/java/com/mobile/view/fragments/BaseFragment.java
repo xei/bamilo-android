@@ -81,7 +81,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public static final Boolean ISNT_NESTED_FRAGMENT = false;
 
-    public static enum KeyboardState {NO_ADJUST_CONTENT, ADJUST_CONTENT};
+    public enum KeyboardState {NO_ADJUST_CONTENT, ADJUST_CONTENT};
 
     public static final int NO_INFLATE_LAYOUT = 0;
 
@@ -95,7 +95,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private int mInflateLayoutResId = NO_INFLATE_LAYOUT;
 
-    private int titleResId;
+    protected int titleResId;
 
     private int checkoutStep;
 
@@ -109,7 +109,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private KeyboardState adjustState = KeyboardState.ADJUST_CONTENT;
 
-    protected static BaseActivity mainActivity;
+    private BaseActivity mainActivity;
 
     private View mLoadingView;
 
@@ -252,7 +252,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Set flag for requests
         isOnStoppingProcess = false;
         // Exist order summary
-        isOrderSummaryPresent = (view.findViewById(ORDER_SUMMARY_CONTAINER) != null) ? true : false;
+        isOrderSummaryPresent = view.findViewById(ORDER_SUMMARY_CONTAINER) != null;
         // Get content layout
         mContentView = view.findViewById(R.id.content_container);
         // Get loading layout
@@ -304,20 +304,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onStart() {
         super.onStart();
-
-        /*
-        // Hide search component for change country
-        if (this.action == NavigationAction.Country) {
-            // Hide search component
-            getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
-        }
-
-        // Update base components, like items on action bar
-        if (!isNestedFragment && enabledMenuItems != null) {
-            Log.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
-            getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
-        }
-        */
     }
 
     /*
@@ -362,7 +348,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onPause() {
         super.onPause();
-
         /**
          * Restore locale if called the forceInputAlignToLeft(). 
          * Fix the input text align to right 
@@ -544,29 +529,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return action;
     }
 
-    /**
-     * Interface to communicate with the activity If another type of fragment is created, add the
-     * identifier to {@link FragmentType}
-     * 
-     * @author manuelsilva
-     */
-    public interface OnFragmentActivityInteraction {
-        public void onFragmentSelected(FragmentType fragmentIdentifier);
-
-        public void onFragmentElementSelected(int position);
-
-        public void sendClickListenerToActivity(OnClickListener clickListener);
-
-        public void sendValuesToActivity(int identifier, Object values);
-    }
-
     public void sendValuesToFragment(int identifier, Object values) {
-    }
-
-    public void sendPositionToFragment(int position) {
-    }
-
-    public void sendListener(int identifier, OnClickListener clickListener) {
     }
 
     public void notifyFragment(Bundle bundle) {
@@ -596,14 +559,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             mainActivity = (BaseActivity) getActivity();
         }
         return mainActivity;
-    }
-
-    public void onFragmentSelected(FragmentType type) {
-        // ...
-    }
-
-    public void onFragmentElementSelected(int position) {
-        // ...
     }
 
     // TODO : Validate if is necessary
@@ -675,13 +630,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             // Log.i(TAG, "code1removing removed callback with id : "+ id);
             JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
         }
-        JumiaApplication.INSTANCE.getRequestsRetryHelperList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-        JumiaApplication.INSTANCE.getRequestsRetryBundleList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-        JumiaApplication.INSTANCE.getRequestsResponseList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+        JumiaApplication.INSTANCE.getRequestsRetryHelperList().remove(bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+        JumiaApplication.INSTANCE.getRequestsRetryBundleList().remove(bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+        JumiaApplication.INSTANCE.getRequestsResponseList().remove(bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
 
         // TODO : Validate recover
-        JumiaApplication.INSTANCE.getRequestOrderList().remove((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+        JumiaApplication.INSTANCE.getRequestOrderList().remove(bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
     }
 
     /**
@@ -745,7 +700,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     protected boolean hasContent(ArrayList<?> array) {
-        return (array != null && !array.isEmpty()) ? true : false;
+        return array != null && !array.isEmpty();
     }
 
     /**
@@ -789,7 +744,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     private boolean hasLayoutToInflate() {
-        return (mInflateLayoutResId > NO_INFLATE_LAYOUT) ? true : false;
+        return mInflateLayoutResId > NO_INFLATE_LAYOUT;
     }
 
     /**
@@ -1049,7 +1004,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @param view
      * @param show
      */
-    private final void setVisibility(View view, boolean show) {
+    private void setVisibility(View view, boolean show) {
         if (view != null) {
             view.setVisibility(show ? View.VISIBLE : View.GONE);
         }
@@ -1245,7 +1200,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Case retry button in maintenance page
         else if(id == R.id.fallback_retry)  onClickMaintenanceRetryButton(); 
         // Case choose country button in maintenance page
-        else if(id == R.id.fallback_change_country) onClickMaitenanceChooseCountry();
+        else if(id == R.id.fallback_change_country) onClickMaintenanceChooseCountry();
         // Case unknown
         else Log.w(TAG, "WARNING: UNKNOWN CLICK EVENT");
     }
@@ -1273,11 +1228,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void onClickMaintenanceRetryButton() {
         getBaseActivity().hideMainFallBackView();
         onClickErrorButton(null);
-//        String result = retryLastRequest(eventType);
-//
-//        if (result == null || result.equalsIgnoreCase("")) {
-//            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-//        }
     }
 
     protected void onRetryRequest(EventType eventType) {
@@ -1300,7 +1250,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      *
      * @author sergiopereira
      */
-    private void onClickMaitenanceChooseCountry() {
+    private void onClickMaintenanceChooseCountry() {
         // Show Change country
         FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
         getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -1329,12 +1279,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Perform a new request to user with required permissions
      *
-     * @param fragment
      * @param session
      * @param callback
      * @author sergiopereira
      */
-    protected final void onMakeNewRequiredPermissionsRequest(Fragment fragment, Session session, Session.StatusCallback callback) {
+    protected final void onMakeNewRequiredPermissionsRequest(Session session, Session.StatusCallback callback) {
         Log.i(TAG, "USER NOT ACCEPT EMAIL PERMISSION");
         // Show loading
         showFragmentLoading();

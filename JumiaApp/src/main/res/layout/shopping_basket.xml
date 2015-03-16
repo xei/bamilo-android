@@ -57,7 +57,7 @@
         <LinearLayout
             android:id="@+id/shopping_basket_buttons_container"
             style="@style/button_container"
-            android:layout_height="@dimen/button_double_container_height"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <com.mobile.components.customfontviews.Button
@@ -70,7 +70,7 @@
                 style="@style/button_grey_bottom"
                 android:layout_marginTop="0dp"
                 android:text="@string/call_to_order"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </LinearLayout>
     </LinearLayout>
 

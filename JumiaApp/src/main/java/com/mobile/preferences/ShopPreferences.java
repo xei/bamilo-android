@@ -38,6 +38,40 @@ public class ShopPreferences {
         Log.d(TAG, "SHOP ID: " + shopId);
         return shopId;
     }
+
+    /**
+     * Function used to get the shop name
+     *
+     * @author sergiopereira
+     */
+    public static String getShopName(Context context) {
+        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String name = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
+        Log.i(TAG, "SHOP NAME: " + name);
+        return name;
+    }
+
+    /**
+     * Function used to get the shop country currency code
+     *
+     * @author sergiopereira
+     */
+    public static String getShopCountryCurrencyIso(Context context) {
+        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String currency = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
+        Log.i(TAG, "SHOP COUNTRY CURRENCY ISO: " + currency);
+        return currency;
+    }
+
+    /**
+     * Function used to get the shop country code
+     */
+    public static String getShopCountryISO(Context context) {
+        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String shopCountryISO = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, SHOP_NOT_SELECTED);
+        Log.d(TAG, "SHOP COUNTRY: " + shopCountryISO);
+        return shopCountryISO;
+    }
     
     /**
      * Method used to set the shop with the position
@@ -46,7 +80,6 @@ public class ShopPreferences {
      * @author sergiopereira
      */
     public static void setShopId(Context context, int shopPosition) {
-        
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryIso().toLowerCase());
@@ -64,20 +97,13 @@ public class ShopPreferences {
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).isCountryForceHttps());
         editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).isCountryIsLive());
         editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
-        editor.commit();
+        editor.apply();
 
         // Clean other
         JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
         LastViewedTableHelper.deleteAllLastViewed();
         FavouriteTableHelper.deleteAllFavourite();
         
-    }
-
-    public static String getShopCountryISO(Context context) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String shopCountryISO = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, SHOP_NOT_SELECTED);
-        Log.d(TAG, "SHOP COUNTRY: " + shopCountryISO);
-        return shopCountryISO;
     }
     
     /**
@@ -107,11 +133,11 @@ public class ShopPreferences {
         editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, true);
         editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
-        editor.commit();
+        editor.apply();
         // Delete old data
         CountriesConfigsTableHelper.deleteAllCountriesConfigs();
         // Save in database
-        ArrayList<CountryObject> mCountries = new ArrayList<CountryObject>();
+        ArrayList<CountryObject> mCountries = new ArrayList<>();
         mCountries.add(countryObject);
         CountriesConfigsTableHelper.insertCountriesConfigs(mCountries);
     }

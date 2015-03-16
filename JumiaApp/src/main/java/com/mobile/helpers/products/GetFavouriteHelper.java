@@ -1,7 +1,5 @@
 package com.mobile.helpers.products;
 
-import java.util.ArrayList;
-
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
@@ -11,6 +9,8 @@ import com.mobile.framework.objects.Favourite;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.interfaces.IResponseCallback;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -85,7 +85,7 @@ public class GetFavouriteHelper implements IResponseCallback {
             // Inc counter
             counter++;
             // Get complete product and update
-            CompleteProduct completeProduct = (CompleteProduct) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            CompleteProduct completeProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             FavouriteTableHelper.updateFavouriteProduct(completeProduct);
             // Get all items already update and send to callback
             if (counter == mNumberOfIncomplete) getFavouriteList();

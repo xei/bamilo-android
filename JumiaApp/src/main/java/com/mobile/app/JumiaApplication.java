@@ -6,22 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
+import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4SApplication;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.mobile.components.NavigationListComponent;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.forms.Form;
 import com.mobile.forms.FormData;
 import com.mobile.forms.PaymentMethodForm;
-import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.DarwinDatabaseHelper;
 import com.mobile.framework.objects.CompleteProduct;
@@ -51,61 +46,59 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import de.akquinet.android.androlog.Log;
 
 public class JumiaApplication extends A4SApplication {
 
     private static final String TAG = JumiaApplication.class.getSimpleName();
-
+    // Components
+    private static final SingletonMap<ApplicationComponent> COMPONENTS = new SingletonMap<ApplicationComponent>(new DarwinComponent());
+    // Application
+    public static JumiaApplication INSTANCE;
+    // Service flag
+    public static boolean mIsBound = false;
+    // Shop
     public static String SHOP_ID = null;
     public static String SHOP_NAME = "";
+    // Save the Mobile API version
+    private VersionInfo mMobApiVersionInfo;
+    // Account variables
     public static Customer CUSTOMER;
-
-    public static JumiaApplication INSTANCE;
-    public static boolean mIsBound = false;
-    /**
-     * Account Variables
-     */
     private CustomerUtils mCustomerUtils;
     private boolean loggedIn = false;
 
     /**
      * General Persistent Variables
      */
-    private HashMap<String, HashMap<String, String>> ratingOptions = null;
     private CompleteProduct currentProduct = null;
-    private VersionInfo mVersionInfo;
-    
-    boolean resendInitializationSignal = false;
 
     /**
      * Cart
      */
-    private Map<String, Map<String, String>> itemSimpleDataRegistry = new HashMap<String, Map<String, String>>();
+    private Map<String, Map<String, String>> itemSimpleDataRegistry = new HashMap<>();
     private ShoppingCart cart;
 
     /**
      * Forms
      */
-    private HashMap<String, FormData> formDataRegistry = new HashMap<String, FormData>();
+    private HashMap<String, FormData> formDataRegistry = new HashMap<>();
+    private PaymentMethodForm paymentMethodForm;
+    public Form registerForm; // TODO use an alternative to persist form on rotation
+    public Bundle registerSavedInstanceState; // TODO use an alternative to persist filled fields on rotation
+    public Form reviewForm; // TODO use an alternative to persist form on rotation
+    public Form ratingForm; // TODO use an alternative to persist form on rotation
+    private static ContentValues ratingReviewValues;
 
-    public static final SingletonMap<ApplicationComponent> COMPONENTS = new SingletonMap<ApplicationComponent>(new DarwinComponent());
-    
-    public static ArrayList<NavigationListComponent> navigationListComponents;
-    
     // TODO : Validate recover
-    private static ArrayList<EventType> requestOrder = new ArrayList<EventType>();
+    private static ArrayList<EventType> requestOrder = new ArrayList<>();
 
     /**
      * The md5 registry
      */
     public HashMap<String, IResponseCallback> responseCallbacks;
-
+    boolean resendInitializationSignal = false;
     private Handler resendHandler;
     private Handler resendMenuHandler;
     private Message resendMsg;
@@ -113,9 +106,9 @@ public class JumiaApplication extends A4SApplication {
     /**
      * Fallback and retry backups
      */
-    private HashMap<EventType, Bundle> requestsRetryBundleList = new HashMap<EventType, Bundle>();
-    private HashMap<EventType, BaseHelper> requestsRetryHelperList = new HashMap<EventType, BaseHelper>();
-    private HashMap<EventType, IResponseCallback> requestsResponseList = new HashMap<EventType, IResponseCallback>();
+    private HashMap<EventType, Bundle> requestsRetryBundleList = new HashMap<>();
+    private HashMap<EventType, BaseHelper> requestsRetryHelperList = new HashMap<>();
+    private HashMap<EventType, IResponseCallback> requestsResponseList = new HashMap<>();
 
     private IRemoteServiceCallback callBackWaitingService;
 
@@ -123,50 +116,25 @@ public class JumiaApplication extends A4SApplication {
      * Payment methods Info
      */
     private static HashMap<String, PaymentInfo> paymentsInfoList;
-
-    // TODO use an alternative to persist form on rotation
-    public Form registerForm;
-
-    // TODO use an alternative to persist filled fields on rotation
-    public Bundle registerSavedInstanceState;
-
     public int lastPaymentSelected = -1;
 
     public ArrayList<CountryObject> countriesAvailable = null;
-    
-    public boolean trackSearch = true;
-    // for tracking
-    public boolean trackSearchCategory = true;
-    
-    private PaymentMethodForm paymentMethodForm;
-    
-    private static ContentValues review;
-    
-    private static ContentValues rating;
-    
-    private static ContentValues ratingReviewValues;
-    
-    // TODO use an alternative to persist form on rotation
-    public Form reviewForm;
-    
-    // TODO use an alternative to persist form on rotation
-    public Form ratingForm;
 
-    public static GoogleApiClient mGoogleApiClient;
+    // for tracking
+    public boolean trackSearch = true;
+    public boolean trackSearchCategory = true;
+
+
+
     /*
      * (non-Javadoc)
      * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()
      */
     @Override
     public void onApplicationCreate() {
-        Log.d(TAG, "ON CREATE");
-
+        Log.i(TAG, "ON APPLICATION CREATE");
         Log.init(getApplicationContext());
-
         INSTANCE = this;
-
-        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-
         // Service
         doBindService();
         // Init image loader
@@ -175,30 +143,25 @@ public class JumiaApplication extends A4SApplication {
         ApptimizeTracking.startup(getApplicationContext());
         // Init darwin database, set the context
         DarwinDatabaseHelper.init(getApplicationContext());
-
-        countriesAvailable = new ArrayList<CountryObject>();
-
-        responseCallbacks = new HashMap<String, IResponseCallback>();
-        // Get the current shop id
+        countriesAvailable = new ArrayList<>();
+        responseCallbacks = new HashMap<>();
+        // Get the current shop id and name
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
-        if (SHOP_ID != null) {
-            SHOP_NAME = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
-        }
+        SHOP_NAME = ShopPreferences.getShopName(getApplicationContext());
+        //
         setItemSimpleDataRegistry(new HashMap<String, Map<String, String>>());
         setCart(null);
         ImageResolutionHelper.init(this);
         setFormDataRegistry(new HashMap<String, FormData>());
-        navigationListComponents = null;
 
         /**
          * Fix a crash report, when app try recover from brackground
          * https://rink.hockeyapp.net/manage/apps/33641/app_versions/109/crash_reasons/17098450
          * @author sergiopereira
          */
-        Log.d(TAG, "INIT CURRENCY");
-        String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
-        if(currencyCode != null) CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
-        
+        Log.i(TAG, "INIT CURRENCY");
+        String currencyCode = ShopPreferences.getShopCountryCurrencyIso(getApplicationContext());
+        if(!TextUtils.isEmpty(currencyCode)) CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
     }
 
     public synchronized void init(boolean isReInit, Handler initializationHandler) {
@@ -215,19 +178,15 @@ public class JumiaApplication extends A4SApplication {
             }
         }
 
-        SharedPreferences sharedPrefs = this.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
-        SHOP_NAME = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
+        SHOP_NAME = ShopPreferences.getShopName(getApplicationContext());
         Log.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
-
-        // Disabled for Samsung and Blackberry (check_version_enabled) 
+        // Disabled for Samsung and Blackberry (check_version_enabled)
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
-
-        handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
-
         // Disabled for Samsung and Blackberry (check_version_enabled) 
         CheckVersion.init(getApplicationContext());
-
+        //
+        handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
     }
 
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
@@ -326,7 +285,7 @@ public class JumiaApplication extends A4SApplication {
         final Bundle bundle = helper.newRequestBundle(args);
 
         if (bundle.containsKey(Constants.BUNDLE_EVENT_TYPE_KEY)) {
-            Log.i(TAG, "codesave saving : " + (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+            Log.i(TAG, "codesave saving : " + bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
             requestsRetryHelperList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), helper);
             requestsRetryBundleList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), args);
             requestsResponseList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), responseCallback);
@@ -366,7 +325,7 @@ public class JumiaApplication extends A4SApplication {
                         
                         Log.d("TRACK", "onRequestComplete BaseActivity");
                         // We have to parse this bundle to the final one
-                        Bundle formatedBundle = (Bundle) helper.checkResponseForStatus(bundle);
+                        Bundle formatedBundle = helper.checkResponseForStatus(bundle);
                         if (responseCallback != null) {
                             if (formatedBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
                                 responseCallback.onRequestError(formatedBundle);
@@ -380,7 +339,7 @@ public class JumiaApplication extends A4SApplication {
                     public void onRequestError(Bundle bundle) {
                         Log.d("TRACK", "onRequestError  BaseActivity");
                         // We have to parse this bundle to the final one
-                        Bundle formatedBundle = (Bundle) helper.parseErrorBundle(bundle);
+                        Bundle formatedBundle = helper.parseErrorBundle(bundle);
                         if (responseCallback != null) {
                             responseCallback.onRequestError(formatedBundle);
                         }
@@ -418,28 +377,6 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * Method called then the activity is connected to the service
-     */
-    protected void onServiceActivation() {
-
-    }
-
-    /**
-     * @return the ratingOptions
-     */
-    public HashMap<String, HashMap<String, String>> getRatingOptions() {
-        return ratingOptions;
-    }
-
-    /**
-     * @param ratingOptions
-     *            the ratingOptions to set
-     */
-    public void setRatingOptions(HashMap<String, HashMap<String, String>> ratingOptions) {
-        this.ratingOptions = ratingOptions;
-    }
-
-    /**
      * @return the currentProduct
      */
     public CompleteProduct getCurrentProduct() {
@@ -455,18 +392,18 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * @return the mVersionInfo
+     * @return the mMobApiVersionInfo
      */
-    public VersionInfo getVersionInfo() {
-        return mVersionInfo;
+    public VersionInfo getMobApiVersionInfo() {
+        return mMobApiVersionInfo;
     }
 
     /**
      * @param mVersionInfo
-     *            the mVersionInfo to set
+     *            the mMobApiVersionInfo to set
      */
-    public void setVersionInfo(VersionInfo mVersionInfo) {
-        this.mVersionInfo = mVersionInfo;
+    public void setMobApiVersionInfo(VersionInfo mVersionInfo) {
+        this.mMobApiVersionInfo = mVersionInfo;
     }
 
     /**
@@ -477,14 +414,6 @@ public class JumiaApplication extends A4SApplication {
             mCustomerUtils = new CustomerUtils(getApplicationContext());
         }
         return mCustomerUtils;
-    }
-
-    /**
-     * @param mCustomerUtils
-     *            the mCustomerUtils to set
-     */
-    public void setCustomerUtils(CustomerUtils mCustomerUtils) {
-        this.mCustomerUtils = mCustomerUtils;
     }
 
     /**
@@ -500,13 +429,6 @@ public class JumiaApplication extends A4SApplication {
      */
     public void setCart(ShoppingCart cart) {
         this.cart = cart;
-    }
-
-    /**
-     * @return the itemSimpleDataRegistry
-     */
-    public Map<String, Map<String, String>> getItemSimpleDataRegistry() {
-        return itemSimpleDataRegistry;
     }
 
     /**
@@ -533,9 +455,7 @@ public class JumiaApplication extends A4SApplication {
     }
 
     public void doBindService() {
-
         if (!mIsBound) {
-
             /**
              * Establish a connection with the service. We use an explicit class
              * name because we want a specific service implementation that we
@@ -543,15 +463,6 @@ public class JumiaApplication extends A4SApplication {
              * supporting component replacement by other applications).
              */
             bindService(new Intent(this, RemoteService.class), mConnection, Context.BIND_AUTO_CREATE);
-        }
-    }
-
-    public void doUnbindService() {
-        if (mIsBound) {
-            mIsBound = false;
-
-            // Detach our existing connection.
-            // unbindService(mConnection);
         }
     }
 
@@ -578,26 +489,10 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * @param requestsRetryBundleList
-     *            the requestsRetryBundleList to set
-     */
-    public void setRequestsRetryBundleList(HashMap<EventType, Bundle> requestsRetryBundleList) {
-        this.requestsRetryBundleList = requestsRetryBundleList;
-    }
-
-    /**
      * @return the requestsRetryHelperList
      */
     public HashMap<EventType, BaseHelper> getRequestsRetryHelperList() {
         return requestsRetryHelperList;
-    }
-
-    /**
-     * @param requestsRetryHelperList
-     *            the requestsRetryHelperList to set
-     */
-    public void setRequestsRetryHelperList(HashMap<EventType, BaseHelper> requestsRetryHelperList) {
-        this.requestsRetryHelperList = requestsRetryHelperList;
     }
 
     /**
@@ -613,22 +508,11 @@ public class JumiaApplication extends A4SApplication {
         return requestOrder;
     }
 
-    /**
-     * @param requestsResponseList
-     *            the requestsResponseList to set
-     */
-    public void setRequestsResponseList(HashMap<EventType, IResponseCallback> requestsResponseList) {
-        this.requestsResponseList = requestsResponseList;
-    }
 
-    public void setResendHander(Handler mHandler) {
+    public void setResendHandler(Handler mHandler) {
         resendInitializationSignal = true;
         resendMsg = new Message();
         resendHandler = mHandler;
-    }
-
-    public void setResendMenuHander(Handler mHandler) {
-        resendMenuHandler = mHandler;
     }
 
     /**
@@ -696,8 +580,7 @@ public class JumiaApplication extends A4SApplication {
      * @return last saved review
      */
     public static ContentValues getRatingReviewValues() {
-        ContentValues currentRating = JumiaApplication.ratingReviewValues;
-        return currentRating;
+        return JumiaApplication.ratingReviewValues;
     }
 
     /**
@@ -708,80 +591,8 @@ public class JumiaApplication extends A4SApplication {
     }
 
     public static void setRatingReviewValues(ContentValues ratingReviewValues) {
-        
-//        if(JumiaApplication.ratingReviewValues != null && ratingReviewValues != null && ratingReviewValues.size() > 0 && JumiaApplication.ratingReviewValues.size() > 0){
-//            mergeRatingReviewValuesFormValues(ratingReviewValues);
-//        } else {
-            JumiaApplication.ratingReviewValues = ratingReviewValues;    
-//        }
-        
+            JumiaApplication.ratingReviewValues = ratingReviewValues;
     }
-    
-    private static void mergeRatingReviewValuesFormValues(ContentValues ratingReviewValues){
-        
-        Set<Entry<String, Object>> s=ratingReviewValues.valueSet();
-        Iterator itr = s.iterator();
-        
-        while(itr.hasNext())
-        {
-             Entry me = (Entry)itr.next(); 
-             String key = me.getKey().toString();
-             Object value =  me.getValue();
-             JumiaApplication.ratingReviewValues.put(key, (String)value.toString());
-        }
-        
-    }
-
-    public static GoogleApiClient getGoogleApiClient(){
-        return mGoogleApiClient;
-    }
-
-    public static void setGoogleApiClient(GoogleApiClient googleApiClient){
-    mGoogleApiClient = googleApiClient;
-    }
-    
-//    /**
-//     * clean and return last saved rating
-//     * 
-//     * @return last saved review
-//     */
-//    public static ContentValues getRating() {
-//        ContentValues currentRating = JumiaApplication.rating;
-//        return currentRating;
-//    }
-//
-//    /**
-//     * clean current rating
-//     */
-//    public static void cleanRating() {
-//        JumiaApplication.rating = null;
-//    }
-//
-//    public static void setRating(ContentValues rating) {
-//        JumiaApplication.rating = rating;
-//    }
-//
-//    
-//    /**
-//     * clean and return last saved review
-//     * 
-//     * @return last saved review
-//     */
-//    public static ContentValues getReview() {
-//        ContentValues currentReview = JumiaApplication.review;
-//        return currentReview;
-//    }
-//
-//    /**
-//     * clean current review
-//     */
-//    public static void cleanReview() {
-//        JumiaApplication.review = null;
-//    }
-//
-//    public static void setReview(ContentValues review) {
-//        JumiaApplication.review = review;
-//    }
     
     /**
      * @return the paymentsInfoList
@@ -808,14 +619,10 @@ public class JumiaApplication extends A4SApplication {
         paymentMethodForm = null;
         registerSavedInstanceState = null;
         getCustomerUtils().clearCredentials();
-        review = null;
-        rating = null;
         CUSTOMER = null;        
         mCustomerUtils = null;
         currentProduct = null;
         cart = null;
-        ratingOptions = null;
-        navigationListComponents = null;
         paymentsInfoList = null;
         itemSimpleDataRegistry.clear();
         formDataRegistry.clear();
@@ -832,12 +639,12 @@ public class JumiaApplication extends A4SApplication {
     
     private void resetTransactionCount() {
         SharedPreferences settings = getApplicationContext().getSharedPreferences(AdjustTracker.ADJUST_PREFERENCES, Context.MODE_PRIVATE);
-        
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(AdjustTracker.PURCHASE_NUMBER, 0);
-        editor.commit();
+        editor.apply();
     }  
-    
+
+    /*
     @SuppressWarnings("unused")
     @Deprecated
     private class ParseSuccessAsyncTask extends AsyncTask<Void, Void, Bundle> {
@@ -870,5 +677,6 @@ public class JumiaApplication extends A4SApplication {
             }
         }
     }
+    */
 
 }

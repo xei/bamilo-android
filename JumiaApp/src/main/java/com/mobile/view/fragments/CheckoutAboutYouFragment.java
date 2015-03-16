@@ -168,7 +168,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         // Retain the fragment
         setRetainInstance(true);
         // Init the helper
-        uiHelper = new UiLifecycleHelper(getActivity(), (StatusCallback) this);
+        uiHelper = new UiLifecycleHelper(getActivity(), this);
         uiHelper.onCreate(savedInstanceState);
 
         Bundle params = new Bundle();
@@ -331,9 +331,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     @Override
     public void onSaveInstanceState(Bundle outState) {
         if (null != loginForm) {
-            Iterator<DynamicFormItem> iterator = loginForm.iterator();
-            while (iterator.hasNext()) {
-                DynamicFormItem item = iterator.next();
+            for (DynamicFormItem item : loginForm) {
                 item.saveState(outState);
             }
             savedInstanceState = outState;
@@ -554,7 +552,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             }
             // Case required permissions are not granted then request again
             else if (FacebookHelper.wereRequiredPermissionsGranted(session)) {
-                super.onMakeNewRequiredPermissionsRequest(this, session, this);
+                super.onMakeNewRequiredPermissionsRequest(session, this);
             }
             // Case accept permissions
             else {
@@ -581,13 +579,13 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         if (emailItem == null) {
             return;
         }
-        ((EditText) emailItem.getEditControl()).setId(21);
+        emailItem.getEditControl().setId(21);
         // Pass
         DynamicFormItem passwordItem = dynamicForm.getItemByKey(FORM_ITEM_PASSWORD);
         if (passwordItem == null) {
             return;
         }
-        ((EditText) emailItem.getEditControl()).setId(22);
+        emailItem.getEditControl().setId(22);
     }
 
     /**
@@ -921,7 +919,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             case SET_SIGNUP_EVENT:
                 cameFromSignUp = true;
                 mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
-                Customer tempCustomer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Customer tempCustomer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 
                 if (null != tempCustomer) {
                     TrackerDelegator.storeFirstCustomer(tempCustomer);
@@ -936,7 +934,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                 // Set logged in
                 JumiaApplication.INSTANCE.setLoggedIn(true);
                 // Get customer
-                Customer customerFb = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Customer customerFb = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 JumiaApplication.CUSTOMER = customerFb;
                 // Get next step
                 mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
@@ -954,7 +952,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                 // Set logged in
                 JumiaApplication.INSTANCE.setLoggedIn(true);
                 // Get customer
-                Customer customer = (Customer) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 // Get next step
                 mNextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
                 // Persist user email or empty that value after successful login
@@ -978,12 +976,12 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                 // Get order summary
                 mOrderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
                 // Save and load form
-                Form signupForm = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Form signupForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 loadSignupForm(signupForm);
                 this.signupFormResponse = signupForm;
                 break;
             case GET_LOGIN_FORM_EVENT:
-                Form form = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 // Validate form
                 if (form == null) {
                     showLoginFormErrorDialog();
@@ -1170,7 +1168,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         Log.d(TAG, "SHOW ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {
-            errorMessages = (List<String>) errors.get(RestConstants.JSON_VALIDATE_TAG);
+            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
         }
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             showFragmentContentContainer();

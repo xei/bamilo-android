@@ -1,15 +1,16 @@
 package com.mobile.framework.database;
 
-import java.util.ArrayList;
-
-import org.apache.commons.collections4.CollectionUtils;
-
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.ArrayList;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -96,7 +97,6 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     
     /**
      * Constructor
-     * @throws NameNotFoundException 
      */
     DarwinDatabaseHelper(int version) {
         super(CONTEXT, DB_NAME, null, version);
@@ -230,7 +230,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
      * @author sergiopereira
      */
     private ArrayList<String> getColumns(SQLiteDatabase db, String table) {
-        ArrayList<String> array = new ArrayList<String>();
+        ArrayList<String> array = new ArrayList<>();
         Cursor cursor = db.rawQuery(String.format(INFO_TABLE, table), null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {

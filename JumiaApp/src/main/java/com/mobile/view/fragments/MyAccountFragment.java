@@ -57,9 +57,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
      * @return
      */
     public static MyAccountFragment getInstance() {
-        if (myAccountFragment == null)
-            myAccountFragment = new MyAccountFragment();
-        return myAccountFragment;
+        return new MyAccountFragment();
     }
 
     /**
@@ -71,7 +69,6 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
                 R.layout.my_account_fragment,
                 R.string.account_name,
                 KeyboardState.NO_ADJUST_CONTENT);
-        // R.string.account_name
     }
 
     /*
@@ -188,7 +185,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
         // Set adapter
         optionsList.setAdapter(myAccountAdapter);
         // Set Listener for all items
-        optionsList.setOnItemClickListener((OnItemClickListener) this);
+        optionsList.setOnItemClickListener(this);
         
     }
     

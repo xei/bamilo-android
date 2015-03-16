@@ -1,13 +1,5 @@
 package com.mobile.helpers.cart;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.ContentValues;
 import android.os.Bundle;
 
@@ -21,6 +13,14 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.utils.TrackerDelegator;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -148,7 +148,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends BaseHelper {
         Iterator<?> keys = sucessObject.keys();
 
         while (keys.hasNext()) {
-            added.add(productBySku.get((String) keys.next()));
+            added.add(productBySku.get(keys.next()));
         }
         return added;
     }
@@ -163,7 +163,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends BaseHelper {
         Iterator<?> keys = errorObject.keys();
 
         while (keys.hasNext()) {
-            notAdded.add(productBySku.get((String) keys.next()));
+            notAdded.add(productBySku.get(keys.next()));
         }
         return notAdded;
     }

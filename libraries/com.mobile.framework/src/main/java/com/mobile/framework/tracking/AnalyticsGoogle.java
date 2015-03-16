@@ -56,10 +56,6 @@ public class AnalyticsGoogle {
 	private String mCurrentKey;
 	
 	private boolean isEnabled;
-	
-	private String mShopId;
-	
-	private SharedPreferences mSharedPreferences;
 
 	private String mGACampaign;
 
@@ -72,8 +68,8 @@ public class AnalyticsGoogle {
 	 * @param context
 	 * @param shopId
 	 */
-	public static void startup(Context context, String shopId) {
-		sInstance = new AnalyticsGoogle(context, shopId);
+	public static void startup(Context context) {
+		sInstance = new AnalyticsGoogle(context);
 	}
 
 	/**
@@ -99,10 +95,9 @@ public class AnalyticsGoogle {
 	 * @param context the base context for the analytics to run
 	 * @param shopId the current shop id
 	 */
-	private AnalyticsGoogle(Context context, String shopId) {
+	private AnalyticsGoogle(Context context) {
 		// Save data
 		mContext = context;
-		mShopId = shopId;
 		// Validation
 		isEnabled = mContext.getResources().getBoolean(R.bool.ga_enable);
 		if (!isEnabled) return;
@@ -138,7 +133,7 @@ public class AnalyticsGoogle {
 	
 	/**
 	 * When dry run is set, hits will not be dispatched, but will still be logged as though they were dispatched.
-	 * @param testMode
+	 * @param debugMode
 	 * @author sergiopereira
 	 */
 	private void validateDebugMode(boolean debugMode) {
@@ -156,7 +151,7 @@ public class AnalyticsGoogle {
 	 */
 	private void loadKeys() {
 		// Load keys
-		mSharedPreferences = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+		SharedPreferences mSharedPreferences = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		mCurrentKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
 		Log.d(TAG, "TRACK LOAD KEYS: mCurrentKey-> " + mCurrentKey);
 	}
@@ -170,7 +165,7 @@ public class AnalyticsGoogle {
 	private void updateTracker() {
 		if (TextUtils.isEmpty(mCurrentKey)) {
 			isEnabled = false;
-			Log.e("WARNING: NO TRACKING ID FOR SHOP ID " + mShopId + " KEY " + mCurrentKey);
+			Log.e("WARNING: NO TRACKING ID KEY " + mCurrentKey);
 			return;
 		}
 		mTracker = mAnalytics.newTracker(mCurrentKey);
@@ -531,11 +526,7 @@ public class AnalyticsGoogle {
 		if (!isEnabled) return;
 		// Data
 		String category = mContext.getString(R.string.gcatalog);
-		
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(mContext.getString(R.string.grateproduct));
-		stringBuilder.append(ratingLabel);
-		String action = stringBuilder.toString();		
+		String action = mContext.getString(R.string.grateproduct) + ratingLabel;
 		trackEvent(category, action, sku, value);
 	}
 	

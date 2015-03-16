@@ -37,7 +37,7 @@ public class FeaturedBoxHelper {
      * @return true or false - Case NPE returns false
      * @author sergiopereira 
      */
-    public static final boolean show(BaseFragment fragment, String mSearchQuery, FeaturedBox featuredBox) {
+    public static boolean show(BaseFragment fragment, String mSearchQuery, FeaturedBox featuredBox) {
         Log.i(TAG, "ON ERROR SEARCH RESULT");
         try {
             // define how many items will be displayed on the viewPager

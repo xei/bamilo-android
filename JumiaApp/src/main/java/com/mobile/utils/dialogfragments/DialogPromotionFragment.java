@@ -83,31 +83,31 @@ public class DialogPromotionFragment extends DialogFragment {
             eD.commit();
             ((TextView) getView().findViewById(R.id.promotion_title)).setText(Html.fromHtml(mPromotion.getTitle()));
             ((TextView) getView().findViewById(R.id.promotion_coupon_code)).setText(Html.fromHtml(mPromotion.getCouponCode()));
-            ((TextView) getView().findViewById(R.id.promotion_coupon_code)).setOnClickListener(new OnClickListener() {
-                
+            getView().findViewById(R.id.promotion_coupon_code).setOnClickListener(new OnClickListener() {
+
                 @SuppressWarnings("deprecation")
                 @Override
                 public void onClick(View v) {
-                    
-                    if(android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.GINGERBREAD_MR1){
+
+                    if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
                         android.text.ClipboardManager ClipMan = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                         ClipMan.setText(((TextView) v).getText());
                     } else {
                         ClipboardManager ClipMan = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                        ClipMan.setPrimaryClip(ClipData.newPlainText("simple text",((TextView) v).getText()));
-                        
+                        ClipMan.setPrimaryClip(ClipData.newPlainText("simple text", ((TextView) v).getText()));
+
                     }
-                        
+
                     Toast.makeText(getActivity(), getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
                 }
             });
             ((TextView) getView().findViewById(R.id.promotion_description)).setText(Html.fromHtml(mPromotion.getDescription()));
             ((TextView) getView().findViewById(R.id.promotion_terms)).setText(Html.fromHtml(mPromotion.getTermsConditions()));
-            ((TextView) getView().findViewById(R.id.promotion_go_shop)).setOnClickListener(new OnClickListener() {
-                
+            getView().findViewById(R.id.promotion_go_shop).setOnClickListener(new OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
-                   dismiss();
+                    dismiss();
                 }
             });
         }

@@ -3,14 +3,14 @@
  */
 package com.mobile.forms;
 
+import com.mobile.framework.utils.EventType;
+import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.InputType;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.mobile.framework.utils.EventType;
-import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.InputType;
 
 import de.akquinet.android.androlog.Log;
 
@@ -32,7 +32,7 @@ public class FormsMapping {
      */
     private static final Map<String, Integer> loginForm;
     static {
-        Map<String, Integer> currMapping = new HashMap<String, Integer>();
+        Map<String, Integer> currMapping = new HashMap<>();
         currMapping.put("email", 1);
         currMapping.put("password", 2);
         loginForm = Collections.unmodifiableMap(currMapping);
@@ -43,7 +43,7 @@ public class FormsMapping {
      */
     private static final Map<String, Integer> registrationForm;
     static {
-        Map<String, Integer> currMapping = new HashMap<String, Integer>();
+        Map<String, Integer> currMapping = new HashMap<>();
         currMapping.put("email", 1);
         currMapping.put("first_name", 4);
         currMapping.put("last_name", 5);
@@ -66,7 +66,7 @@ public class FormsMapping {
      */
     private static final Map<String, Integer> addressForm;
     static {
-        Map<String, Integer> currMapping = new HashMap<String, Integer>();
+        Map<String, Integer> currMapping = new HashMap<>();
         currMapping.put("first_name", 1);
         currMapping.put("last_name", 2);
         currMapping.put("company", 3);
@@ -92,7 +92,7 @@ public class FormsMapping {
      */
     public static final Map<String, Map<String, Integer>> genericMapping;
     static {
-        Map<String,  Map<String, Integer>> currMapping = new HashMap<String, Map<String, Integer>>();
+        Map<String,  Map<String, Integer>> currMapping = new HashMap<>();
         //currMapping.put("form-account-login", loginForm);
         //currMapping.put("form-account-create", registrationForm);
         // currMapping.put(EventType.GET_EDIT_ADDRESS_FORM_EVENT.toString(), addressForm);
@@ -129,7 +129,7 @@ public class FormsMapping {
     * @param fieldMap registry.
     */
     public static void removeUnsortedFields(Form form, Map<String, Integer> fieldMap){
-        ArrayList<FormField> fieldsToRemove = new ArrayList<FormField>();
+        ArrayList<FormField> fieldsToRemove = new ArrayList<>();
         
         for(FormField field : form.fields){
       
@@ -141,7 +141,6 @@ public class FormsMapping {
         	// Change this to || if the server side required=false mechanism works
             if (!field.getValidation().required && !fieldMap.containsKey(field.getKey())) {
             	fieldsToRemove.add(field);
-            	continue;
             }
             
          

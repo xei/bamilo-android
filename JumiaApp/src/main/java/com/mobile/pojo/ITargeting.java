@@ -10,12 +10,12 @@ package com.mobile.pojo;
  */
 public interface ITargeting {
 	
-	public enum TargetType {
+	enum TargetType {
 		PRODUCT_LIST(0), PRODUCT(1), CATEGORY(2), UNKNOWN(-1);
 
 		private final int value;
 
-		private TargetType(int value) {
+		TargetType(int value) {
 			this.value = value;
 		}
 

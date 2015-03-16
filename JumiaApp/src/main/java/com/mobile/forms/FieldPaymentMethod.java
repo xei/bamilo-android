@@ -12,15 +12,15 @@
  */
 package com.mobile.forms;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.IJSONSerializable;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Class that represents the form fiel validation parameters.
@@ -38,7 +38,7 @@ public class FieldPaymentMethod implements IJSONSerializable, Parcelable {
 	 */
 	public FieldPaymentMethod(String name, JSONObject jsonObject) {
 	    this.name = name;
-	    this.fields = new ArrayList<FormField>();
+	    this.fields = new ArrayList<>();
 	    initialize(jsonObject);
 	}
 	

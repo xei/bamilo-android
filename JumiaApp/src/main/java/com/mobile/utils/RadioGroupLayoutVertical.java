@@ -1,8 +1,5 @@
 package com.mobile.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -22,9 +19,11 @@ import com.mobile.forms.Form;
 import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.pojo.DynamicForm;
-import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.akquinet.android.androlog.Log;
 
@@ -79,7 +78,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         }
 
         int idx;
-        generatedForms = new HashMap<Integer, DynamicForm>();
+        generatedForms = new HashMap<>();
         for (idx = 0; idx < mItems.size(); idx++) {
             Log.i(TAG, "code1subForms updateRadioGroup : " + mItems.get(idx) + " formsMap size : " + formsMap.size());
             HashMap<String, PaymentInfo> paymentsInfoList = JumiaApplication.getPaymentsInfoList();
@@ -250,7 +249,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     public String getErrorMessage() {
         String result = mContext.getString(R.string.register_required_text);
 
-        result = ((DynamicFormItem) generatedForms.get(mGroup.getCheckedRadioButtonId()).getItem(0))
+        result = generatedForms.get(mGroup.getCheckedRadioButtonId()).getItem(0)
                 .getMessage();
 
         return result;
