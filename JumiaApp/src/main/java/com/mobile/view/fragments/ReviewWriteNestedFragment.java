@@ -49,6 +49,9 @@ import java.util.Map;
 import de.akquinet.android.androlog.Log;
 
 /**
+ *
+ *  * This class represents the write product review screen framgent when the user uses landscape view on Reviews fragment and manages all interactions about it's form.
+
  * @author sergiopereira
  * @modified Paulo Carvalho
  * 
@@ -150,6 +153,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
         }
 
+        JumiaApplication.INSTANCE.setIsSellerReview(false);
         completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         isExecutingSendReview = false;
         if(savedInstanceState != null){
@@ -175,6 +179,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        JumiaApplication.INSTANCE.setIsSellerReview(false);
         ratingContainer = (LinearLayout) view.findViewById(R.id.form_rating_container);
         mainContainer = view.findViewById(R.id.product_rating_container);
     }
@@ -201,12 +206,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         isExecutingSendReview = false;
-        
-//        if (getArguments() != null && getArguments().containsKey(ReviewsFragment.CAME_FROM_POPULARITY)) {
-//            getView().findViewById(R.id.product_info_container).setVisibility(View.GONE);
-//            getView().findViewById(R.id.shadow).setVisibility(View.GONE);
-//        } 
-//        
+
         if(getArguments() != null && getArguments().containsKey(RATING_SHOW)) {
             isShowingRatingForm = getArguments().getBoolean(RATING_SHOW);
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
@@ -254,6 +254,12 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
+        JumiaApplication.INSTANCE.setIsSellerReview(false);
+        saveReview();
+
+        //duplicated here and on onSaveInstance because when this fragment is removed from the Reviews Landscape it doesn't pass on the onSaveInstance method
+        JumiaApplication.INSTANCE.ratingForm = ratingForm;
+        JumiaApplication.INSTANCE.reviewForm = reviewForm;
     }
 
     /*
@@ -265,11 +271,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        saveReview();
-        
-        //duplicated here and on onSaveInstance because when this fragment is removed from the Reviews Landscape it doesn't pass on the onSaveInstance method
-        JumiaApplication.INSTANCE.ratingForm = ratingForm;
-        JumiaApplication.INSTANCE.reviewForm = reviewForm;
+
     }
 
     /*

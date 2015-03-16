@@ -54,6 +54,7 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
 import java.math.BigDecimal;
@@ -695,6 +696,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
             TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
             View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
+            View shippingContainer = getView().findViewById(R.id.shipping_container);
+            TextView shippingValue = (TextView)getView().findViewById(R.id.shipping_value);
             TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
             View voucherContainer = getView().findViewById(R.id.voucher_info_container);
             // Get and set the cart value
@@ -735,12 +738,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 priceTotal.setText(cart.getSubTotal());
             }
 
-            if (!cart.isSumCosts()) {
-                extraCostsMain.setVisibility(View.VISIBLE);
-                extraCostsValue.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart.getExtraCosts()).toString()));
-            } else {
-                extraCostsMain.setVisibility(View.GONE);
-            }
+            ShoppingCartUtils.setShippingRule(cart, shippingContainer, shippingValue, extraCostsMain, extraCostsValue);
 
             articlesCount.setText(getResources().getQuantityString(R.plurals.numberOfArticles, cart.getCartCount(), cart.getCartCount()));
 

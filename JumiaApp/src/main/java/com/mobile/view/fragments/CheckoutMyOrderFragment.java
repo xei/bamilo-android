@@ -38,9 +38,9 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
-import java.math.BigDecimal;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -356,21 +356,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         mProductsNum.setText(getResources().getQuantityString(R.plurals.numberOfItems, size, size));
         // Set cart value
         mSubTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
-        //
-        if(!cart.isSumCosts()){
-            // Fix NAFAMZ-7848
-            mExtraCosts.setText(CurrencyFormatter.formatCurrency(new BigDecimal(cart.getExtraCosts()).toString()));
-            mExtraCostsContainer.setVisibility(View.VISIBLE);
-            // Shipping fee
-            mShipFeeView.setVisibility(View.VISIBLE);
-            mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
-        } else {
-            mExtraCostsContainer.setVisibility(View.GONE);
-            // Shipping fee
-            mShipFeeView.setVisibility(View.VISIBLE);
-            mShipFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getShippingAmount()));
-        }
-        
+
+        ShoppingCartUtils.setShippingRule(cart, mShipFeeView, mShipFeeValue,mExtraCostsContainer,mExtraCosts);
+
         // Voucher
         if(mOrderFinish.hasCouponDiscount()) mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderFinish.getDiscountCouponValue()));
         else mVoucherView.setVisibility(View.GONE);
@@ -516,7 +504,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
             } else {
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, mOrderFinish.getShippingAmount());
+                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, String.valueOf(mOrderFinish.getShippingAmount()));
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, mOrderFinish.getTaxAmount());
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
                 bundle.putDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL, mOrderFinish.getValueForTracking());
@@ -630,7 +618,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
             } else {
                 JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(false);
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, mOrderFinish.getShippingAmount());
+                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, String.valueOf(mOrderFinish.getShippingAmount()));
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, mOrderFinish.getTaxAmount());
                 bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
                 getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK); 

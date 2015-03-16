@@ -34,7 +34,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	private double mCartValueConverted = 0d;
 	private int mCartCount;
 	private String mVatValue;
-	private String mShippingValue;
+	private double mShippingValue;
 	private double mExtraCosts;
 	private String mSumCostsValue;
 	private boolean hasSumCosts;
@@ -77,7 +77,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		mCartCleanValue = jsonObject.optString(RestConstants.JSON_CART_CLEAN_VALUE_TAG);
 		mCartCount = jsonObject.getInt(RestConstants.JSON_CART_COUNT_TAG);
 		mVatValue = jsonObject.optString(RestConstants.JSON_CART_VAT_VALUE_TAG);
-		mShippingValue = jsonObject.optString(RestConstants.JSON_CART_SHIPPING_VALUE_TAG);
+		setShippingValue(jsonObject.optDouble(RestConstants.JSON_CART_SHIPPING_VALUE_TAG));
 		mCouponDiscount = jsonObject.optString(RestConstants.JSON_CART_COUPON_VALUE_TAG);
 		mCouponCode = jsonObject.optString(RestConstants.JSON_CART_COUPON_CODE_TAG);
 		String sCosts = jsonObject.optString(RestConstants.JSON_CART_SUM_COSTS_TAG);
@@ -112,7 +112,6 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		return true;
 	}
 
-	
 	/**
 	 * 
 	 * @param cartObject
@@ -199,8 +198,8 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		return this.mVatValue;
 	}
 
-	public String getShippingValue() {
-		return this.mShippingValue;
+	public double getShippingValue() {
+		return mShippingValue;
 	}
 
 	/**
@@ -243,7 +242,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	/**
 	 * @return the sum_costs
 	 */
-	public boolean isSumCosts() {
+	public boolean hasSumCosts() {
 		return hasSumCosts;
 	}
 
@@ -386,7 +385,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		dest.writeString(mCartCleanValue);
 		dest.writeInt(mCartCount);
 		dest.writeString(mVatValue);
-		dest.writeString(mShippingValue);
+		dest.writeDouble(mShippingValue);
 		dest.writeBooleanArray(new boolean[] { hasSumCosts });
 		dest.writeDouble(mExtraCosts);
 		dest.writeString(mSumCostsValue);
@@ -405,16 +404,16 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 	 * 
 	 * @param in
 	 */
-	private ShoppingCart(Parcel in) {
+	public ShoppingCart(Parcel in) {
 		in.readMap(mCartItems, ShoppingCartItem.class.getClassLoader());
 		mCartValue = in.readString();
 		mCartCleanValue = in.readString();
 		mCartCount = in.readInt();
 		mVatValue = in.readString();
-		mShippingValue = in.readString();
+		setShippingValue(in.readDouble());
 		in.readBooleanArray(new boolean[] { hasSumCosts });
 		mExtraCosts = in.readDouble();
-		mSumCostsValue = in.readString();
+		setSumCostsValue(in.readString());
 		mCouponDiscount = in.readString();
 		mCouponCode = in.readString();
 		mPriceRules = new HashMap<>();
@@ -439,4 +438,11 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		}
 	};
 
+    public void setSumCostsValue(String mSumCostsValue) {
+        this.mSumCostsValue = mSumCostsValue;
+    }
+
+    public void setShippingValue(double mShippingValue) {
+        this.mShippingValue = mShippingValue;
+    }
 }

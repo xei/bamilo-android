@@ -18,5 +18,5 @@ package com.mobile.utils;
  *
  */
 public enum InputType {
-	text, number, password, radioGroup, checkBox, email, date, meta, metadate, semiRequired, list, hide, checkBoxList, rating
+	text, number, password, radioGroup, checkBox, email, date, meta, metadate, semiRequired, list, hide, checkBoxList, rating, sellerReview
 }

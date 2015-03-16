@@ -32,5 +32,6 @@ public class FormConstants {
     public static final int SIGNUP_FORM = 10;
     public static final int RATING_FORM = 11;
     public static final int REVIEW_FORM = 12;
+    public static final int REVIEW_SELLER_FORM = 13;
 
 }

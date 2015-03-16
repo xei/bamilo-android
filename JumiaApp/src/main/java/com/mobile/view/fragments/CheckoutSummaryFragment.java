@@ -32,6 +32,7 @@ import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.cart.GetShoppingCartRemoveItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
 import java.math.BigDecimal;
@@ -259,25 +260,40 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         switch (mCheckoutStep) {
         case ConstantsCheckout.CHECKOUT_PAYMENT:
             // Validate shipping method
-            if(mOrderSummary != null && mOrderSummary.hasShippingMethod()) showShippingMethod(mOrderSummary.getShippingMethod());
+            if(mOrderSummary != null && mOrderSummary.hasShippingMethod()) {
+                showShippingMethod(mOrderSummary.getShippingMethod());
+            }
             // Shipping fees
-            if(mOrderSummary != null) showShippingFees();
+            if(mOrderSummary != null) {
+                if(!mCart.hasSumCosts()){
+                    mCart.setShippingValue(mOrderSummary.getShippingAmount());
+                }
+                ShoppingCartUtils.setShippingRule(mCart, mShippingFeeView, mShippingFeeValue, mExtraCostsContainer,mExtraCosts);
+            }
             // continue
         case ConstantsCheckout.CHECKOUT_SHIPPING:
             // Validate shipping address
-            if(mOrderSummary != null && mOrderSummary.hasShippingAddress()) showShippingAddress(mOrderSummary.getShippingAddress());
+            if(mOrderSummary != null && mOrderSummary.hasShippingAddress()) {
+                showShippingAddress(mOrderSummary.getShippingAddress());
+            }
             // Validate total
-            if(mOrderSummary != null) showTotal(mOrderSummary.getTotal());
+            if(mOrderSummary != null){
+                showTotal(mOrderSummary.getTotal());
+            }
             // continue
         case ConstantsCheckout.CHECKOUT_BILLING:
             // Voucher
-            if(mOrderSummary != null) showVoucher();
+            if(mOrderSummary != null){
+                showVoucher();
+            }
             
         case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
         default:
             // Show cart
             showCart();
-            if(mCart != null) showPriceRules();
+            if(mCart != null){
+                showPriceRules();
+            }
             break;
         }
         
@@ -321,7 +337,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         // Sub total
         mSubTotal.setText(CurrencyFormatter.formatCurrency(mCart.getCartValue()));
         
-        if(!mCart.isSumCosts()){
+        if(!mCart.hasSumCosts() && mCart.getExtraCosts() != 0d){
             // Fix NAFAMZ-7848
             mExtraCosts.setText(CurrencyFormatter.formatCurrency(new BigDecimal(mCart.getExtraCosts()).toString()));
             mExtraCostsContainer.setVisibility(View.VISIBLE);
@@ -367,11 +383,14 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     
     /**
      * Show the shipping fee
+     *
+     * @see com.mobile.utils.ui.ShoppingCartUtils#setShippingRule(com.mobile.framework.objects.ShoppingCart, android.view.View, com.mobile.components.customfontviews.TextView, android.view.View, com.mobile.components.customfontviews.TextView)
      * @author sergiopereira
      */
+    @Deprecated
     private void showShippingFees() {
-        if(!mCart.isSumCosts()){
-            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(mOrderSummary.getShippingAmount()));
+        if(!mCart.hasSumCosts()){
+            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(String.valueOf(mOrderSummary.getShippingAmount())));
         } else {
             mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(mCart.getSumCostsValue()));
         }

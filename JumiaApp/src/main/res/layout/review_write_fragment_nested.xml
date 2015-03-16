@@ -43,7 +43,7 @@
     <com.mobile.components.customfontviews.Button
         android:id="@+id/send_review"
         style="@style/button_orange_bottom"
-        android:layout_below="@+id/product_rating_container"
+        android:layout_below="@id/product_rating_container"
         android:layout_marginEnd="@dimen/rounded_margin_mid"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
