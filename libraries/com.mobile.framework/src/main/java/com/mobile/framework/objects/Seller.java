@@ -1,12 +1,12 @@
 package com.mobile.framework.objects;
 
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
+
+import org.json.JSONObject;
 
 /**
  * Class that represents the Seller of a specific product
@@ -18,90 +18,102 @@ public class Seller implements IJSONSerializable, Parcelable {
 	
 	public final static String TAG = LogTagHelper.create(Seller.class);
 
-    private String name;
+    private String mName;
     
-    private String url;
+    private String mUrl;
+
+    private String mSellerId;
     
-    private int minDeliveryTime;
+    private int mMinDeliveryTime;
     
-    private int maxDeliveryTime;
+    private int mMaxDeliveryTime;
     
-    private int ratingCount;
+    private int mRatingCount;
     
-    private int ratingValue;
+    private int mRatingValue;
     
     
     /**
      * Seller empty constructor.
      */
     public Seller() {
-        name = "";
-        url = "";
-        minDeliveryTime = 1;
-        maxDeliveryTime = 1;
-        ratingCount = 0;
-        ratingValue = 0;
+        mName = "";
+        mUrl = "";
+        mMinDeliveryTime = 1;
+        mMaxDeliveryTime = 1;
+        mRatingCount = 0;
+        mRatingValue = 0;
+        setSellerId("");
     }
     
     /**
      * Seller Json constructor.
      */
     public Seller(JSONObject sellerObject) {
-        name = "";
-        url = "";
-        minDeliveryTime = 1;
-        maxDeliveryTime = 1;
-        ratingCount = 0;
-        ratingValue = 0;
+        mName = "";
+        mUrl = "";
+        mMinDeliveryTime = 1;
+        mMaxDeliveryTime = 1;
+        mRatingCount = 0;
+        mRatingValue = 0;
+        setSellerId("");
         initialize(sellerObject);
     }
    
     public String getName() {
-        return name;
+        return mName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String mName) {
+        this.mName = mName;
     }
 
     public String getUrl() {
-        return url;
+        return mUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrl(String mUrl) {
+        this.mUrl = mUrl;
     }
 
     public int getMinDeliveryTime() {
-        return minDeliveryTime;
+        return mMinDeliveryTime;
     }
 
-    public void setMinDeliveryTime(int minDeliveryTime) {
-        this.minDeliveryTime = minDeliveryTime;
+    public void setMinDeliveryTime(int mMinDeliveryTime) {
+        this.mMinDeliveryTime = mMinDeliveryTime;
     }
 
     public int getMaxDeliveryTime() {
-        return maxDeliveryTime;
+        return mMaxDeliveryTime;
     }
 
-    public void setMaxDeliveryTime(int maxDeliveryTime) {
-        this.maxDeliveryTime = maxDeliveryTime;
+    public void setMaxDeliveryTime(int mMaxDeliveryTime) {
+        this.mMaxDeliveryTime = mMaxDeliveryTime;
     }
 
     public int getRatingCount() {
-        return ratingCount;
+        return mRatingCount;
     }
 
-    public void setRatingCount(int ratingCount) {
-        this.ratingCount = ratingCount;
+    public void setRatingCount(int mRatingCount) {
+        this.mRatingCount = mRatingCount;
     }
 
     public int getRatingValue() {
-        return ratingValue;
+        return mRatingValue;
     }
 
-    public void setRatingValue(int ratingValue) {
-        this.ratingValue = ratingValue;
+    public void setRatingValue(int mRatingValue) {
+        this.mRatingValue = mRatingValue;
+    }
+
+    public String getSellerId() {
+        return mSellerId;
+    }
+
+    public void setSellerId(String mSellerId) {
+        this.mSellerId = mSellerId;
     }
 
     /*
@@ -111,16 +123,17 @@ public class Seller implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) {
-            name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-            url = jsonObject.optString(RestConstants.JSON_URL_TAG);
-            minDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MIN_DELIVERY_TAG);
-            maxDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MAX_DELIVERY_TAG);
+            mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
+            mUrl = jsonObject.optString(RestConstants.JSON_URL_TAG);
+            mSellerId = jsonObject.optString(RestConstants.JSON_ID_TAG);
+            mMinDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MIN_DELIVERY_TAG);
+            mMaxDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MAX_DELIVERY_TAG);
             
             JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
             
             if(reviewObject != null){
-                ratingCount = reviewObject.optInt(RestConstants.JSON_TOTAL_TAG);
-                ratingValue = reviewObject.optInt(RestConstants.JSON_RATINGS_AVERAGE_TAG);
+                mRatingCount = reviewObject.optInt(RestConstants.JSON_TOTAL_TAG);
+                mRatingValue = reviewObject.optInt(RestConstants.JSON_RATINGS_AVERAGE_TAG);
             }
 
         return true;
@@ -155,12 +168,13 @@ public class Seller implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {        
-	    dest.writeString(name);
-	    dest.writeString(url);
-	    dest.writeInt(minDeliveryTime);
-	    dest.writeInt(maxDeliveryTime);
-	    dest.writeInt(ratingCount);
-	    dest.writeInt(ratingValue);
+	    dest.writeString(mName);
+	    dest.writeString(mUrl);
+        dest.writeString(mSellerId);
+	    dest.writeInt(mMinDeliveryTime);
+	    dest.writeInt(mMaxDeliveryTime);
+	    dest.writeInt(mRatingCount);
+	    dest.writeInt(mRatingValue);
 	}
 	
 	/**
@@ -168,12 +182,13 @@ public class Seller implements IJSONSerializable, Parcelable {
 	 * @param in
 	 */
 	protected Seller(Parcel in) {
-	    name = in.readString();
-	    url = in.readString();
-	    minDeliveryTime = in.readInt();
-	    maxDeliveryTime = in.readInt();
-        ratingCount = in.readInt();
-        ratingValue = in.readInt();
+	    mName = in.readString();
+	    mUrl = in.readString();
+        mSellerId = in.readString();
+	    mMinDeliveryTime = in.readInt();
+	    mMaxDeliveryTime = in.readInt();
+        mRatingCount = in.readInt();
+        mRatingValue = in.readInt();
         
     }
 		
@@ -189,6 +204,5 @@ public class Seller implements IJSONSerializable, Parcelable {
             return new Seller[size];
         }
     };
-    
-    
+
 }

@@ -140,11 +140,9 @@ public class JumiaApplication extends A4SApplication {
     
     private PaymentMethodForm paymentMethodForm;
     
-    private static ContentValues review;
-    
-    private static ContentValues rating;
-    
     private static ContentValues ratingReviewValues;
+
+    private static ContentValues sellerReviewValues;
     
     // TODO use an alternative to persist form on rotation
     public Form reviewForm;
@@ -152,7 +150,12 @@ public class JumiaApplication extends A4SApplication {
     // TODO use an alternative to persist form on rotation
     public Form ratingForm;
 
+    // TODO use an alternative to persist form on rotation
+    public Form mSellerReviewForm;
+
     public static GoogleApiClient mGoogleApiClient;
+
+    public static boolean isSellerReview = false;
     /*
      * (non-Javadoc)
      * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()
@@ -707,6 +710,24 @@ public class JumiaApplication extends A4SApplication {
         JumiaApplication.ratingReviewValues = null;
     }
 
+    /**
+     * clean and return last saved seller review
+     *
+     * @return last saved review
+     */
+    public static ContentValues getSellerReviewValues() {
+        return JumiaApplication.sellerReviewValues;
+    }
+
+    /**
+     * clean current rating
+     */
+    public static void cleanSellerReviewValues() {
+        JumiaApplication.sellerReviewValues = null;
+    }
+
+
+
     public static void setRatingReviewValues(ContentValues ratingReviewValues) {
         
 //        if(JumiaApplication.ratingReviewValues != null && ratingReviewValues != null && ratingReviewValues.size() > 0 && JumiaApplication.ratingReviewValues.size() > 0){
@@ -715,6 +736,10 @@ public class JumiaApplication extends A4SApplication {
             JumiaApplication.ratingReviewValues = ratingReviewValues;    
 //        }
         
+    }
+
+    public static void setSellerReviewValues(ContentValues sellerReviewValues) {
+        JumiaApplication.sellerReviewValues = sellerReviewValues;
     }
     
     private static void mergeRatingReviewValuesFormValues(ContentValues ratingReviewValues){
@@ -740,48 +765,20 @@ public class JumiaApplication extends A4SApplication {
     mGoogleApiClient = googleApiClient;
     }
     
-//    /**
-//     * clean and return last saved rating
-//     * 
-//     * @return last saved review
-//     */
-//    public static ContentValues getRating() {
-//        ContentValues currentRating = JumiaApplication.rating;
-//        return currentRating;
-//    }
-//
-//    /**
-//     * clean current rating
-//     */
-//    public static void cleanRating() {
-//        JumiaApplication.rating = null;
-//    }
-//
-//    public static void setRating(ContentValues rating) {
-//        JumiaApplication.rating = rating;
-//    }
-//
-//    
-//    /**
-//     * clean and return last saved review
-//     * 
-//     * @return last saved review
-//     */
-//    public static ContentValues getReview() {
-//        ContentValues currentReview = JumiaApplication.review;
-//        return currentReview;
-//    }
-//
-//    /**
-//     * clean current review
-//     */
-//    public static void cleanReview() {
-//        JumiaApplication.review = null;
-//    }
-//
-//    public static void setReview(ContentValues review) {
-//        JumiaApplication.review = review;
-//    }
+    /**
+     * clean and return last saved rating
+     *
+     * @return last saved review
+     */
+    public static boolean getIsSellerReview() {
+        return JumiaApplication.isSellerReview;
+    }
+
+
+    public static void setIsSellerReview(boolean mIsSellerReview) {
+        JumiaApplication.isSellerReview = mIsSellerReview;
+    }
+
     
     /**
      * @return the paymentsInfoList
@@ -808,9 +805,7 @@ public class JumiaApplication extends A4SApplication {
         paymentMethodForm = null;
         registerSavedInstanceState = null;
         getCustomerUtils().clearCredentials();
-        review = null;
-        rating = null;
-        CUSTOMER = null;        
+        CUSTOMER = null;
         mCustomerUtils = null;
         currentProduct = null;
         cart = null;
@@ -826,7 +821,11 @@ public class JumiaApplication extends A4SApplication {
         requestsResponseList.clear();
         countriesAvailable.clear();
         reviewForm = null;
+        mSellerReviewForm = null;
         ratingForm = null;
+        isSellerReview = false;
+        ratingReviewValues = null;
+        sellerReviewValues = null;
         resetTransactionCount();
     }
     

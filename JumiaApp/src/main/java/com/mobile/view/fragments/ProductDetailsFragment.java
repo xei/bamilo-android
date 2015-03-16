@@ -290,6 +290,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private ViewGroupFactory mGalleryViewGroupFactory;
 
+    public static final String SELLER_ID = "sellerId";
+
     /**
      * Empty constructor
      */
@@ -2429,6 +2431,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
         bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, false);
+        bundle.putString(SELLER_ID, mCompleteProduct.getSeller().getSellerId());
         getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     

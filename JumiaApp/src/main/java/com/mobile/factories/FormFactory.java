@@ -1,7 +1,5 @@
 package com.mobile.factories;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.util.LayoutDirection;
 import android.view.Gravity;
@@ -16,6 +14,8 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.pojo.MetaFormExtractor;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -138,6 +138,8 @@ public class FormFactory {
         case FormConstants.REVIEW_FORM:
         case FormConstants.RATING_FORM:
             parent = createRatingOptionsForm(context, form);
+        case FormConstants.REVIEW_SELLER_FORM:
+            parent = createSellerReviewOptionsForm(context, form);
             break;
         }
         
@@ -286,6 +288,33 @@ public class FormFactory {
         }
         ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
         
+        return createGenericForm(context, form, ratingForm, ctrlParams);
+    }
+
+    /**
+     * create the write seller review form
+     * @param context
+     * @param form
+     * @return
+     */
+    private DynamicForm createSellerReviewOptionsForm(Context context, Form form) {
+
+        final int CTRLMARGIN_LEFT = 0;
+        final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
+        final int CTRLMARGIN_RIGHT = 0;
+        final int CTRLMARGIN_BOTTOM = 0;
+
+        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        //#RTL
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            ctrlParams.setLayoutDirection(LayoutDirection.LOCALE);
+            ctrlParams.setMarginStart(CTRLMARGIN_LEFT);
+            ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
+        }
+        ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
+
         return createGenericForm(context, form, ratingForm, ctrlParams);
     }
     

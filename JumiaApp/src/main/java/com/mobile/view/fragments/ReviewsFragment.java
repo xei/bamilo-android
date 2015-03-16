@@ -78,6 +78,8 @@ public class ReviewsFragment extends BaseFragment {
     
     private Fragment mWriteReviewFragment;
 
+    private Fragment mSellerWriteReviewFragment;
+
     private String mProductUrl;
 
     private boolean firstRequest = false;   
@@ -122,8 +124,14 @@ public class ReviewsFragment extends BaseFragment {
     
     private ArrayList<ProductReviewComment> reviews;
     
-    private static boolean isProductReview = true;
-    
+    private String mSellerId = "";
+
+    public static final String SELLER_NAME = "sellerName";
+
+    public static final String SELLER_COMMENT_COUNT = "sellerCommentCount";
+
+    public static final String SELLER_AVERAGE = "sellerAverage";
+
     /**
      * Get instance
      * 
@@ -134,8 +142,13 @@ public class ReviewsFragment extends BaseFragment {
         sPopularityFragment.mProductRatingPage = null;
         String contentUrl = bundle.getString(ConstantsIntentExtra.CONTENT_URL);
         sPopularityFragment.mProductUrl = contentUrl != null ? contentUrl : "";
-        if(bundle.containsKey(ConstantsIntentExtra.REVIEW_TYPE))
-            sPopularityFragment.isProductReview = bundle.getBoolean(ConstantsIntentExtra.REVIEW_TYPE,true);
+        if(bundle.containsKey(ConstantsIntentExtra.REVIEW_TYPE)){
+            sPopularityFragment.isProductRating = bundle.getBoolean(ConstantsIntentExtra.REVIEW_TYPE,true);
+            if(bundle.containsKey(ProductDetailsFragment.SELLER_ID) && bundle.getString(ProductDetailsFragment.SELLER_ID) != null ){
+                sPopularityFragment.mSellerId = bundle.getString(ProductDetailsFragment.SELLER_ID);
+            }
+        }
+
         sPopularityFragment.setArguments(bundle);
         showRatingForm = true;
         return sPopularityFragment;
@@ -187,10 +200,12 @@ public class ReviewsFragment extends BaseFragment {
             mProductRatingPage = savedInstanceState.getParcelable("rate");
             reviews = savedInstanceState.getParcelableArrayList("reviews");
             isProductRating =  savedInstanceState.getBoolean("review_type");
+            mSellerId =  savedInstanceState.getString(ProductDetailsFragment.SELLER_ID);
             //Log.i(TAG, "ON LOAD SAVED STATE: " + mSavedUrl + " " + mSavedPageNumber);
         } else {
             // clean last saved review
             JumiaApplication.cleanRatingReviewValues();
+            JumiaApplication.cleanSellerReviewValues();
         }
     }
 
@@ -211,7 +226,7 @@ public class ReviewsFragment extends BaseFragment {
         sellerRatingCount = (TextView) getView().findViewById(R.id.seller_reviews_item_reviews);
 
         emptyScreenText = (TextView) getView().findViewById(R.id.fragment_root_empty_text);
-        if(isProductReview){
+        if(isProductRating){
             emptyScreenText.setText(getResources().getString(R.string.reviews_empty));
         } else {
             emptyScreenText.setText(getResources().getString(R.string.reviews_empty_seller));
@@ -252,7 +267,9 @@ public class ReviewsFragment extends BaseFragment {
             }
         } else {
             checkReviewsTypeVisibility();
-            showFragmentContent();    
+            showFragmentContent();
+            showFragmentContentOfSeller();
+
         }
     }
 
@@ -264,15 +281,25 @@ public class ReviewsFragment extends BaseFragment {
         setAppContentLayout();
         
         if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
-            //Validate if country configs allows rating and review, only show write review fragment if both are allowed
-            if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) || getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true) ){
-                if(isProductRating){
-                    startWriteReviewFragment();    
+
+            if(isProductRating){
+                //Validate if country configs allows rating and review, only show write review fragment if both are allowed
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) || getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true) ){
+                    startWriteReviewFragment();
                 }
+
             }
         }
     }
-    
+
+    /**
+     * show nested write review fragment if this is seller reviews
+     */
+    private void showFragmentContentOfSeller(){
+        if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) && mProductRatingPage != null && !isProductRating) {
+            startSellerWriteReviewFragment();
+        }
+    }
     
     /*
      * (non-Javadoc)
@@ -300,6 +327,7 @@ public class ReviewsFragment extends BaseFragment {
         outState.putParcelableArrayList("reviews", reviews);
         outState.putBoolean("review_type", isProductRating);
         outState.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, isProductRating);
+        outState.putString(ProductDetailsFragment.SELLER_ID, mSellerId);
     }
 
     /*
@@ -354,20 +382,43 @@ public class ReviewsFragment extends BaseFragment {
         }
     }
 
+    /**
+     * instanciates and replace fragment in order to show write seller review
+     */
     private void startWriteReviewFragment() {
-        mWriteReviewFragment = new ReviewWriteNestedFragment();
+        if(isProductRating){
+            mWriteReviewFragment = new ReviewWriteNestedFragment();
+            Bundle args = new Bundle();
+            args.putString(ConstantsIntentExtra.CONTENT_URL, mProductUrl);
+            args.putBoolean(CAME_FROM_POPULARITY, true);
+            args.putBoolean(ReviewWriteNestedFragment.RATING_SHOW, showRatingForm);
+            mWriteReviewFragment.setArguments(args);
+            FragmentManager fm = getChildFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment_writereview, mWriteReviewFragment);
+            ft.commit();
+        }
+    }
+
+    /**
+     * instanciate and replace fragment in order to show write seller review
+     */
+    private void startSellerWriteReviewFragment() {
+
+        //create seller review nested fragment
+        mSellerWriteReviewFragment = new WriteSellerReviewNestedFragment();
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.CONTENT_URL, mProductUrl);
-        args.putBoolean(CAME_FROM_POPULARITY, true);
-        
-        args.putBoolean(ReviewWriteNestedFragment.RATING_SHOW, showRatingForm);
-        
-        mWriteReviewFragment.setArguments(args);
+        args.putString(ProductDetailsFragment.SELLER_ID, mSellerId);
+        args.putString(SELLER_NAME, mProductRatingPage.getSellerName());
+        args.putInt(SELLER_COMMENT_COUNT, mProductRatingPage.getCommentsCount());
+        args.putInt(SELLER_AVERAGE, mProductRatingPage.getAverage());
+        mSellerWriteReviewFragment.setArguments(args);
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.fragment_writereview, mWriteReviewFragment);
+        ft.replace(R.id.fragment_writereview, mSellerWriteReviewFragment);
         ft.commit();
-        
+
     }
 
     private void removeWriteReviewFragment() {
@@ -380,6 +431,13 @@ public class ReviewsFragment extends BaseFragment {
             FragmentTransaction ft = fm.beginTransaction();
             ft.remove(mWriteReviewFragment);
             ft.commit();
+        } else if(mSellerWriteReviewFragment != null){
+
+            FragmentManager fm = getChildFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.remove(mSellerWriteReviewFragment);
+            ft.commit();
+
         }
     }
     
@@ -419,6 +477,9 @@ public class ReviewsFragment extends BaseFragment {
             writeComment.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // clean last saved review
+                    JumiaApplication.cleanRatingReviewValues();
+                    JumiaApplication.cleanSellerReviewValues();
                     writeReview();
                 }
             });
@@ -435,8 +496,19 @@ public class ReviewsFragment extends BaseFragment {
     private void writeReview() {
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.CONTENT_URL, mProductUrl);
-        getBaseActivity().onSwitchFragment(FragmentType.WRITE_REVIEW, args, FragmentController.ADD_TO_BACK_STACK);
+        if(isProductRating){
+            getBaseActivity().onSwitchFragment(FragmentType.WRITE_REVIEW, args, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            args.putString(ProductDetailsFragment.SELLER_ID, mSellerId);
+            args.putString(SELLER_NAME, mProductRatingPage.getSellerName());
+            args.putInt(SELLER_COMMENT_COUNT, mProductRatingPage.getCommentsCount());
+            args.putInt(SELLER_AVERAGE, mProductRatingPage.getAverage());
+
+            getBaseActivity().onSwitchFragment(FragmentType.WRITE_REVIEW_SELLER, args, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
+
+
 
     
     /**
@@ -500,9 +572,10 @@ public class ReviewsFragment extends BaseFragment {
                 pageNumber = bundle.getInt(GetProductReviewsHelper.PAGE);
                 totalPages = bundle.getInt(GetProductReviewsHelper.TOTAL_PAGES);
             }
-            
+            showFragmentContentOfSeller();
             // Append the new page to the current
             displayReviews(productRatingPage, true);
+
             showFragmentContentContainer();
             break;
         case GET_PRODUCT_EVENT:
@@ -631,7 +704,7 @@ public class ReviewsFragment extends BaseFragment {
         int numColumns = getBaseActivity().getResources().getInteger(R.integer.catalog_list_num_columns);
 //        numColumns = 2;
         
-        if(mWriteReviewFragment != null){
+        if(mWriteReviewFragment != null || mSellerWriteReviewFragment != null){
             // means there's write fragment attached so the reviews list must be only one column
             numColumns = 1;
         }
@@ -799,7 +872,8 @@ public class ReviewsFragment extends BaseFragment {
                 //#RTL
                 int currentapiVersion = android.os.Build.VERSION.SDK_INT;
                 if(getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-                    typeLine.setLayoutDirection(LayoutDirection.LOCALE);
+                    typeLine.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
+//                    typeLine.setLayoutDirection(View.LaLayoutDirection.LOCALE);
                 }
                
                 typeLine.setLayoutParams(params);
@@ -948,12 +1022,14 @@ public class ReviewsFragment extends BaseFragment {
 //                marginLandscape.setVisibility(View.GONE);
                 writeReviewTitle = (TextView) getView().findViewById(R.id.write_title);
                 Button writeComment = (Button) getView().findViewById(R.id.write_btn);
-                writeReviewTitle.setVisibility(View.GONE);
-                writeComment.setVisibility(View.GONE); 
-//                setWriteButtonTitle();
+                setWriteButtonTitle();
+                setCommentListener();
+                writeReviewTitle.setVisibility(View.VISIBLE);
+                writeComment.setVisibility(View.VISIBLE);
+
             } else {
-                marginLandscape.setVisibility(View.VISIBLE);
-                centerPoint.setVisibility(View.GONE);
+                marginLandscape.setVisibility(View.GONE);
+                centerPoint.setVisibility(View.VISIBLE);
                 
             }
             
@@ -975,7 +1051,6 @@ public class ReviewsFragment extends BaseFragment {
     
     /**
      * set title above write review button
-     * @param title
      */
     private void setWriteButtonTitle(){
         writeReviewTitle = (TextView) getView().findViewById(R.id.write_title);
