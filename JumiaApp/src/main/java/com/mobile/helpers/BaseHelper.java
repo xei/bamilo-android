@@ -118,7 +118,7 @@ public abstract class BaseHelper {
         }
     }
 
-    protected void handleError(JSONObject messagesObject, Bundle bundle) throws JSONException {
+    protected void handleError(JSONObject messagesObject, Bundle bundle) {
         HashMap<String, List<String>> errors = Errors.createErrorMessageMap(messagesObject);
         bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, errors);
         bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);

@@ -149,23 +149,19 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     /**
      * Form param cosntructor.
-     * 
+     * @param maxSize
+     *            . Max size of the characters.
      * @param parent
      *            . Form that encapsulates the field.
      * @param name
-     *            . Name of the field
+*            . Name of the field
      * @param id
-     *            . Id of the form field.
+*            . Id of the form field.
      * @param obligatory
-     *            . Specifies if the field is required.
+*            . Specifies if the field is required.
      * @param inputType
-     *            . Input type of the field.
-     * @param maxSize
-     *            . Max size of the characters.
-     * @param regEx
-     *            . Regular expression used to validate the form field.
      */
-    public FormField(Form parent, String name, String id, boolean obligatory, InputType inputType, int maxSize, String regEx) {
+    public FormField(Form parent, String name, String id, boolean obligatory, InputType inputType) {
         this.id = id;
         this.name = name;
         this.inputType = inputType;

@@ -134,7 +134,7 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
         
         if(fields != null && fields.size() > 0){
             for (ShippingMethodForm field : fields) {
-                ShippingRadioGroupList mGroup = field.generateForm(context, parent);
+                ShippingRadioGroupList mGroup = field.generateForm(context);
                 groupList.add(mGroup);
                 parent.addView(mGroup);
             }
@@ -151,7 +151,7 @@ public class ShippingMethodFormBuilder implements IJSONSerializable, Parcelable 
     public View generateForm(Context context, ViewGroup parent){
         if(fields != null && fields.size() > 0){
             for (ShippingMethodForm field : fields) {
-                ShippingRadioGroupList mGroup = field.generateForm(context, parent);
+                ShippingRadioGroupList mGroup = field.generateForm(context);
                 groupList.add(mGroup);
                 parent.addView(mGroup);
             }

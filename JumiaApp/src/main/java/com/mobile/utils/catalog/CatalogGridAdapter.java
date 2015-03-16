@@ -350,7 +350,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Case favourite
         if(id == R.id.image_is_favourite) onClickFavouriteButton(view);
         // Case other sent to listener
-        else if(mOnViewHolderClicked != null) mOnViewHolderClicked.onViewHolderClick(this, view, (Integer) view.getTag(R.id.position), null);
+        else if(mOnViewHolderClicked != null) mOnViewHolderClicked.onViewHolderClick(this, (Integer) view.getTag(R.id.position));
     }
     
     /**

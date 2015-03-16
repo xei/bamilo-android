@@ -954,7 +954,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
         switch (eventType) {
             case INIT_FORMS:
-                onInitFormSuccessEvent(bundle);
+                onInitFormSuccessEvent();
                 break;
             case GET_CREATE_ADDRESS_FORM_EVENT:
                 onGetCreateAddressFormSuccessEvent(bundle);
@@ -976,7 +976,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         return true;
     }
 
-    protected void onInitFormSuccessEvent(Bundle bundle) {
+    protected void onInitFormSuccessEvent() {
         Log.d(TAG, "RECEIVED INIT_FORMS");
         triggerCreateAddressForm();
     }
@@ -1044,7 +1044,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
         switch (eventType) {
             case INIT_FORMS:
-                onInitFormErrorEvent(bundle);
+                onInitFormErrorEvent();
                 break;
             case GET_CREATE_ADDRESS_FORM_EVENT:
                 onGetCreateAddressFormErrorEvent(bundle);
@@ -1067,7 +1067,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
 
-    protected void onInitFormErrorEvent(Bundle bundle) {
+    protected void onInitFormErrorEvent() {
         Log.d(TAG, "RECEIVED INIT_FORMS");
     }
 
@@ -1106,7 +1106,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             showFragmentContentContainer();
-            dialog = DialogGenericFragment.newInstance(true, true, false,
+            dialog = DialogGenericFragment.newInstance(true, false,
                     getString(R.string.error_login_title),
                     errorMessages.get(0),
                     getString(R.string.ok_label),

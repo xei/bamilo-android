@@ -25,8 +25,8 @@ import com.mobile.framework.objects.Errors;
 import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.AdjustTracker;
-import com.mobile.framework.tracking.GTMEvents.GTMValues;
 import com.mobile.framework.tracking.TrackingPage;
+import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.EventType;
@@ -374,7 +374,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
 
             BaseFragment catalogFragment = (BaseFragment) getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.CATALOG.toString());
             if (null != catalogFragment) {
-                catalogFragment.sendValuesToFragment(BaseFragment.FRAGMENT_VALUE_REMOVE_FAVORITE, addableToCart.getSku());
+                catalogFragment.sendValuesToFragment(addableToCart.getSku());
             }
             String sku = addableToCart.getSku();
             if(addableToCart.getSelectedSimple() != -1 && addableToCart.getSimples().size() > 0)
@@ -1090,7 +1090,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         }
 
         @Override
-        public void onDialogListItemSelect(String id, int position, String value) {
+        public void onDialogListItemSelect(int position, String value) {
             Log.i(TAG, "size selected! onDialogListItemSelect : " + position);
             addableToCart.setChooseVariationWarning(false);
             addableToCart.setVariationStockWarning(false);

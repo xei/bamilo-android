@@ -36,8 +36,8 @@ import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.tracking.GTMEvents.GTMValues;
 import com.mobile.framework.tracking.TrackingEvent;
+import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.framework.utils.EventType;
@@ -129,7 +129,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      *
      * @return {@link BaseFragment}
      */
-    public static CheckoutAboutYouFragment getInstance(Bundle bundle) {
+    public static CheckoutAboutYouFragment getInstance() {
         return new CheckoutAboutYouFragment();
     }
 
@@ -359,7 +359,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         int id = view.getId();
         // Login toggle
         if (id == R.id.checkout_login_toogle) {
-            onClickLoginToogle(view);
+            onClickLoginToogle();
         }
         // Login button
         else if (id == R.id.checkout_login_form_button_enter) {
@@ -371,7 +371,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         }
         // Sign toggle
         else if (id == R.id.checkout_signup_toogle) {
-            onClickSignupToogle(view);
+            onClickSignupToogle();
         }
         // Sign button
         else if (id == R.id.checkout_signup_form_button_enter) {
@@ -410,9 +410,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     /**
      * Process the click on the login toogle
      *
-     * @param view view
      */
-    private void onClickLoginToogle(View view) {
+    private void onClickLoginToogle() {
         Log.i(TAG, "ON CLICK: LOGIN TOOGLE");
         // Validate view
         if (loginMainContainer != null && signupMainContainer != null) {
@@ -434,9 +433,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     /**
      * Process the click on the sign up toogle
      *
-     * @param view view
      */
-    private void onClickSignupToogle(View view) {
+    private void onClickSignupToogle() {
         Log.i(TAG, "ON CLICK: SIGNUP TOOGLE");
         // Validate view
         if (signupMainContainer != null && loginMainContainer != null) {
@@ -1172,7 +1170,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         }
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             showFragmentContentContainer();
-            dialog = DialogGenericFragment.newInstance(true, true, false,
+            dialog = DialogGenericFragment.newInstance(true, false,
                     getString(titleId),
                     errorMessages.get(0),
                     getString(R.string.ok_label),

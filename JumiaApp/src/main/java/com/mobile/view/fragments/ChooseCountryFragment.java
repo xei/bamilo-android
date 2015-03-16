@@ -269,7 +269,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     }
 
     private void showWarningDialog(final int position) {
-        dialog = DialogGenericFragment.newInstance(true, true, false,
+        dialog = DialogGenericFragment.newInstance(true, false,
                 getString(R.string.nav_country),
                 getString(R.string.nav_country_warning), 
                 getString(R.string.cancel_label),

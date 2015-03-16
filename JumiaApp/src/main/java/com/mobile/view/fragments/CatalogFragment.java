@@ -420,7 +420,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Inflate view
         mNoResultStub.setVisibility(View.VISIBLE);
         // Show featured box
-        if (FeaturedBoxHelper.show(this, mSearchQuery, featuredBox)) {
+        if (FeaturedBoxHelper.show(this, featuredBox)) {
             // Case success show container
             showFragmentContentContainer();
         } else {
@@ -459,7 +459,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @see com.mobile.interfaces.OnViewHolderClickListener#onViewHolderClick(android.support.v7.widget.RecyclerView.Adapter, android.view.View, int)
      */
     @Override
-    public void onViewHolderClick(Adapter<?> adapter, View view, int position, Object extra) {
+    public void onViewHolderClick(Adapter<?> adapter, int position) {
         // Get item
         Product product = ((CatalogGridAdapter) adapter).getItem(position);
         // Call Product Details        
@@ -622,7 +622,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @see com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener#onDialogListItemSelect(java.lang.String, int, java.lang.String)
      */
     @Override
-    public void onDialogListItemSelect(String id, int position, String value) {
+    public void onDialogListItemSelect(int position, String value) {
         // Get selected sort position
         mSelectedSort = CatalogSort.values()[position];
         // Set sort button

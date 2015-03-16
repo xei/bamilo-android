@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import com.ad4screen.sdk.ReferrerHandler;
 import com.adjust.sdk.ReferrerReceiver;
 import com.google.android.gms.analytics.CampaignTrackingReceiver;
-import com.mobile.framework.tracking.GTMManager;
+import com.mobile.framework.tracking.gtm.GTMManager;
 
 import java.util.HashMap;
 import java.util.Map;

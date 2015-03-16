@@ -399,6 +399,6 @@ public class LocationHelper implements LocationListener {
      */
     private void sendInitializeMessage(){
         Log.d(TAG, "SEND MESSAGE: INITIALIZE");
-        JumiaApplication.INSTANCE.init(false, callback);
+        JumiaApplication.INSTANCE.init(callback);
     }
 }

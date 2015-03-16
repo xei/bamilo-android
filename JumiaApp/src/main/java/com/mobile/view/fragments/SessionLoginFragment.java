@@ -34,8 +34,8 @@ import com.mobile.forms.FormData;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.tracking.GTMEvents.GTMValues;
 import com.mobile.framework.tracking.TrackingPage;
+import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.framework.utils.EventTask;
@@ -696,7 +696,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
                     }
                     if (errors != null && errorMessages != null && errorMessages.size() > 0) {
                         showFragmentContentContainer();
-                        dialog = DialogGenericFragment.newInstance(true, true, false,
+                        dialog = DialogGenericFragment.newInstance(true, false,
                                 getString(R.string.error_login_title),
                                 errorMessages.get(0),
                                 getString(R.string.ok_label), "", new OnClickListener() {
@@ -732,7 +732,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             
             if (errors != null && errorMessages != null && errorMessages.size() > 0) {
                 showFragmentContentContainer();
-                dialog = DialogGenericFragment.newInstance(true, true, false,
+                dialog = DialogGenericFragment.newInstance(true, false,
                         getString(R.string.error_login_title),
                         errorMessages.get(0),
                         getString(R.string.ok_label), "", new OnClickListener() {

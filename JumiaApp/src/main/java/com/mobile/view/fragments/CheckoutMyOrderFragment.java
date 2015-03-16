@@ -98,8 +98,6 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
 
     private TextView mCoupon;
 
-    private TextView mVatValue;
-
     private ViewGroup mShipFeeView;
     
     /**
@@ -144,18 +142,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        // TODO
-        // coming back from external methods don't call onViewCreated() again and as such
-        // setOnClickListener won't be setup
-
         // Get arguments
-        Bundle arguments = getArguments();
+        Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if(arguments != null) {
             // Save order
             mOrderFinish = arguments.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
         }
-        // Retain instance for rotation
-        setRetainInstance(true);
         // Track
         Bundle params = new Bundle();        
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
@@ -232,14 +224,19 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         super.onResume();
         Log.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.ORDER_CONFIRM, getLoadTime(), true);
-        
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(ConstantsIntentExtra.ORDER_FINISH, mOrderFinish);
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onPause()
-     */
+         * (non-Javadoc)
+         *
+         * @see android.support.v4.app.Fragment#onPause()
+         */
     @Override
     public void onPause() {
         super.onPause();
@@ -731,7 +728,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
             if (getBaseActivity() != null) {
                 showFragmentContentContainer();
             }
-            dialog = DialogGenericFragment.newInstance(true, true, false,
+            dialog = DialogGenericFragment.newInstance(true, false,
                     getString(R.string.error_login_title),
                     errorMessages.get(0),
                     getString(R.string.ok_label),
@@ -771,7 +768,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() == null) {
             return false;
         } else {
-            dialog = DialogGenericFragment.newInstance(true, true, false,
+            dialog = DialogGenericFragment.newInstance(true, false,
                     getString(R.string.confirm_order_loosing_order_title),
                     getString(R.string.confirm_order_loosing_order) + " \n" + JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber(),
                     getString(R.string.ok_label), 

@@ -63,8 +63,8 @@ import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.objects.Variation;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.AdjustTracker;
-import com.mobile.framework.tracking.GTMEvents.GTMValues;
 import com.mobile.framework.tracking.TrackingPage;
+import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.DeviceInfoHelper;
@@ -1421,7 +1421,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
             if(isRTL) mRelatedListView.enableReverseLayout();
 
-            mRelatedListView.setAdapter(new RelatedItemsListAdapter(mContext, relatedItemsList,
+            mRelatedListView.setAdapter(new RelatedItemsListAdapter(relatedItemsList,
                     new OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -1524,7 +1524,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         mDialogAddedToCart = DialogGenericFragment.newInstance(
                 false,
-                false,
                 true,
                 getString(R.string.your_cart),
                 msgText,
@@ -1555,7 +1554,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     }
 
     private void addToShoppingCartFailed() {
-        mDialogAddedToCart = DialogGenericFragment.newInstance(false, false, true, null,
+        mDialogAddedToCart = DialogGenericFragment.newInstance(false, true, null,
                 getResources().getString(R.string.error_add_to_shopping_cart), getResources()
                         .getString(R.string.ok_label), "", new OnClickListener() {
 
@@ -1753,7 +1752,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         BaseFragment catalogFragment = (BaseFragment) getBaseActivity().getSupportFragmentManager()
                 .findFragmentByTag(FragmentType.CATALOG.toString());
         if (null != catalogFragment) {
-            catalogFragment.sendValuesToFragment(fragmentMessage, mCompleteProduct.getSku());
+            catalogFragment.sendValuesToFragment(mCompleteProduct.getSku());
         }
 
     }
@@ -1842,7 +1841,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * (java.lang.String, int, java.lang.String)
      */
     @Override
-    public void onDialogListItemSelect(String id, int position, String value) {
+    public void onDialogListItemSelect(int position, String value) {
         mSelectedSimple = position;
         Log.i(TAG, "size selected! onDialogListItemSelect : " + mSelectedSimple);
         updateVariants();
@@ -2010,7 +2009,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                     }
 
                     FragmentManager fm = getFragmentManager();
-                    dialog = DialogGenericFragment.newInstance(true, true, false,
+                    dialog = DialogGenericFragment.newInstance(true, false,
                             getString(titleRes),
                             message,
                             getString(R.string.ok_label), "", new OnClickListener() {
@@ -2217,7 +2216,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         if(isRTL) mBundleListView.enableReverseLayout();
         // Content
         Log.e("BUNDLE","bundleProducts size:"+bundleProducts.size());
-        mBundleListView.setAdapter(new BundleItemsListAdapter(mContext, bundleProducts, this, this, this, this));
+        mBundleListView.setAdapter(new BundleItemsListAdapter(bundleProducts, this, this, this, this));
         mBundleLoading.setVisibility(View.GONE);
         mBundleButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -2262,11 +2261,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     /**
      * function responsible for handling the item click of the bundle
-     * 
-     * @param selectedProduct
+     *
      */
     @Override
-    public void SelectedItem(ProductBundleProduct selectedProduct) {
+    public void SelectedItem() {
         // TODO TO BE IMPLEMENTED
         Log.d("BUNDLE", "GO TO PDV");
     }
@@ -2316,15 +2314,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     @Override
     public void PressedSimple(ProductBundleProduct selectedProduct) {
-        showBundleSimples(selectedProduct);
+        showBundleSimples();
     }
 
     /**
      * function responsible for showing the the pop with the simples
-     * 
-     * @param selectedProduct
+     *
      */
-    private void showBundleSimples(ProductBundleProduct selectedProduct) {
+    private void showBundleSimples() {
 
     }
 

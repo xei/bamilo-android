@@ -1,9 +1,7 @@
 package com.mobile.utils.dialogfragments;
 
 
-
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
 
 import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
 
@@ -17,11 +15,9 @@ public class WizardFactory {
      * Factory used to show a wizard for first time
      * @param type
      * @param context
-     * @param fragmentManager
-     * @param tag
      * @author sergiopereira
      */
-    public static void show(WizardType type, Context context, FragmentManager fragmentManager, String tag) {
+    public static void show(WizardType type, Context context) {
         // Validate if is first time
         if(!WizardPreferences.isFirstTime(context, type)) return;
         // Show the wizard    

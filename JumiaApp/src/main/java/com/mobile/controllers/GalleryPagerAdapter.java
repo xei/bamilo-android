@@ -138,7 +138,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
         // Check the primary view
-        resetPrimaryView(container, position, object);
+        resetPrimaryView(object);
     }
         
     /**
@@ -147,7 +147,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
      * @author sergiopereira
      * @see <a href="https://github.com/chrisbanes/PhotoView">Github: PhotoView</a>
      */
-    private void resetPrimaryView(ViewGroup container, int position, Object object){
+    private void resetPrimaryView(Object object){
         //Log.d(TAG, "SET PRIMARY ITEM: " + position + " ITEMS: " + getRealCount() );
         // Validate zoom support
         if (this.isZoomAvailable && getRealCount() == MIN_NUM_OF_IMAGES) {

@@ -68,7 +68,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	 *
 	 */
 	public interface OnDialogListListener {
-		public void onDialogListItemSelect(String id, int position, String value);
+		public void onDialogListItemSelect(int position, String value);
 	}
 	
 	/**
@@ -186,7 +186,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         TextView titleView = (TextView) view.findViewById(R.id.dialog_list_title);
         titleView.setText(mTitle);
         // Set size guide
-        setSizeGuide(view, mActivity);
+        setSizeGuide(view);
         // Get list
         list = (ListView) view.findViewById(R.id.dialog_list_view);
         // Validate adapter
@@ -205,11 +205,11 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	
 	/**
 	 * Set the size guide button
-	 * @param view
 	 * @param activity
+	 * @param view
 	 * @author sergiopereira
 	 */
-    private void setSizeGuide(View view, Activity activity) {
+    private void setSizeGuide(View view) {
         Log.i(TAG, "SIZE GUIDE: " + mSizeGuideUrl);
         // Get views 
         View divider = view.findViewById(R.id.dialog_list_size_guide_divider);
@@ -291,7 +291,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
                 public void run() {
                     dismiss();
                     if (mSelectListener != null) {
-                        mSelectListener.onDialogListItemSelect(mId, position, mItems.get(position));
+                        mSelectListener.onDialogListItemSelect(position, mItems.get(position));
                     }
 
                 }

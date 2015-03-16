@@ -59,9 +59,9 @@ import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
-import com.mobile.framework.tracking.GTMEvents.GTMValues;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.tracking.TrackingPage;
+import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.framework.utils.DeviceInfoHelper;
@@ -1342,7 +1342,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
                             FragmentManager fm = getSupportFragmentManager();
 
-                            dialogLogout = DialogGenericFragment.newInstance(false, true, false,
+                            dialogLogout = DialogGenericFragment.newInstance(true, false,
                                     getString(R.string.logout_title),
                                     getString(R.string.logout_text_question),
                                     getString(R.string.no_label), getString(R.string.yes_label),
@@ -1929,9 +1929,9 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Confirm backPress to exit application
      */
-    public Boolean exitApplication(final FragmentController fragC) {
+    public Boolean exitApplication() {
 
-        dialog = DialogGenericFragment.newInstance(false, false,
+        dialog = DialogGenericFragment.newInstance(false,
                 true,
                 null, // no
                 // title
@@ -2073,7 +2073,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             if (showChooseCountry) {
                 MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, onClickListener);
             } else {
-                MaintenancePage.setMaintenancePageBaseActivity(this, eventType, onClickListener);
+                MaintenancePage.setMaintenancePageBaseActivity(this, onClickListener);
             }
         }
     }

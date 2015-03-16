@@ -265,7 +265,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         case FORGET_PASSWORD_EVENT:
             Log.i(TAG, "FORGET_PASSWORD_EVENT successful");
             dialog = DialogGenericFragment.newInstance(
-                    true, true, false, 
+                    true, false,
                     getString(R.string.forgotten_password_resulttitle),
                     getString(R.string.forgotten_password_successtext), 
                     getString(R.string.ok_label), 
@@ -313,7 +313,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
             }
             if (errors != null && errorMessages != null && errorMessages.size() > 0) {
                 showFragmentContentContainer();
-                dialog = DialogGenericFragment.newInstance(true, true, false,
+                dialog = DialogGenericFragment.newInstance(true, false,
                         getString(R.string.error_forgotpassword_title),
                         errorMessages.get(0),
                         getString(R.string.ok_label),

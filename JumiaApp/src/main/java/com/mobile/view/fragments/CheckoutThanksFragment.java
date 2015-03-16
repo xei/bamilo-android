@@ -83,31 +83,21 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
                 R.string.checkout_label,
                 KeyboardState.NO_ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_THANKS);
-        this.setRetainInstance(true);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
-     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Log.i(TAG, "ON ATTACH");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        
-        if(getArguments() != null && 
+        // Get values
+        Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
+        if(arguments != null &&
                 getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING) &&
                 getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX) &&
                 getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD) &&
@@ -121,10 +111,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
-     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -136,23 +122,13 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             showFragmentErrorRetry();
         }
     }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onStart()
-     */
+
     @Override
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");        
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onResume()
-     */
     @Override
     public void onResume() {
         super.onResume();
@@ -160,33 +136,27 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         TrackerDelegator.trackPage(TrackingPage.CHECKOUT_THANKS, getLoadTime(), false);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.view.fragments.MyFragment#onPause()
-     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, orderShipping);
+        outState.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, orderTax);
+        outState.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, paymentMethod);
+        outState.putDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL, mGrandTotalValue);
+    }
+
     @Override
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.view.fragments.MyFragment#onStop()
-     */
     @Override
     public void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onDestroyView()
-     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

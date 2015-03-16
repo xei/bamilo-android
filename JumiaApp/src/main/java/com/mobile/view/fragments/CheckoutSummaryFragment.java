@@ -426,7 +426,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     public void showNoItems() {
         // Show dialog
-        dialog = DialogGenericFragment.newInstance(true, true, false,
+        dialog = DialogGenericFragment.newInstance(true, false,
                 getString(R.string.order_summary_label),
                 getString(R.string.order_no_items),
                 getString(R.string.ok_label),

@@ -207,21 +207,19 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Validate item
         if(parent == this.optionsList){
-            handleOnOptionsListItemClick(parent, view, position, id);
+            handleOnOptionsListItemClick(position);
         } else if(parent == this.appSharingList){
-            handleOnAppSharingListItemClick(parent, view, position, id);
+            handleOnAppSharingListItemClick(position);
         }
     }
     
     /**
      *  Handles the item click of childs of options list.
-     *  
-     *  @param parent
-     *  @param view
-     *  @param position
-     *  @param id
+     *
+     * @param id
+     * @param position
      */
-    private void handleOnOptionsListItemClick(AdapterView<?> parent, View view, int position, long id) {
+    private void handleOnOptionsListItemClick(int position) {
         switch (position) {
         case POSITION_USER_DATA:
             processOnClickUserData();
@@ -246,13 +244,11 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
 
     /**
      *  Handles the item click of childs of app sharing list.
-     *  
-     *  @param parent
-     *  @param view
-     *  @param position
-     *  @param id
+     *
+     * @param id
+     * @param position
      */
-    private void handleOnAppSharingListItemClick(AdapterView<?> parent, View view, int position, long id) {
+    private void handleOnAppSharingListItemClick(int position) {
         switch (position) {
         case POSITION_SHARE_APP:
             Resources resources = getResources();

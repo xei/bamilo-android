@@ -384,7 +384,7 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
                     }
 
                     FragmentManager fm = getFragmentManager();
-                    dialog = DialogGenericFragment.newInstance(true, true, false,
+                    dialog = DialogGenericFragment.newInstance(true, false,
                             getString(titleRes),
                             message,
                             getString(R.string.ok_label), "", new OnClickListener() {
@@ -447,7 +447,6 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
 
         mDialogAddedToCart = DialogGenericFragment.newInstance(
                 false,
-                false,
                 true,
                 getString(R.string.your_cart),
                 msgText,
@@ -478,7 +477,7 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
     }
     
     private void addToShoppingCartFailed() {
-        mDialogAddedToCart = DialogGenericFragment.newInstance(false, false, true, null,
+        mDialogAddedToCart = DialogGenericFragment.newInstance(false, true, null,
                 getResources().getString(R.string.error_add_to_shopping_cart), getResources()
                         .getString(R.string.ok_label), "", new OnClickListener() {
 
