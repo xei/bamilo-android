@@ -132,7 +132,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-
     }
 
     @Override
@@ -385,18 +384,17 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             // Set the other addresses
             addAddresses(mBottomRadioGroup, addresses.getAddresses());
         }else{
+
+            Address shippingAddress = addresses.getShippingAddress();
+            Address billingAddress = addresses.getBillingAddress();
+
             // Set top container
             mTopTitle.setText(getString(R.string.billing_shipping_label));
             // mTopTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.btn_addaddress_orange, 0);
             // Set Shipping Address (checked) and others
             mTopRadioGroup.setCheckedItem(0);
-
-            Address shippingAddress = addresses.getShippingAddress();
-            Address billingAddress = addresses.getBillingAddress();
-
-
             addAddress(mTopRadioGroup, shippingAddress);
-            if(shippingAddress.getId() != billingAddress.getId()){
+            if(!addresses.hasDefaultShippingAndBillingAddress()){
                 addAddress(mTopRadioGroup, billingAddress);
             }
 
@@ -410,7 +408,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             // Set Billing address (checked) and others
             mBottomRadioGroup.setCheckedItem(0);
             addAddress(mBottomRadioGroup, billingAddress);
-            if(shippingAddress.getId() != billingAddress.getId()){
+            if(!addresses.hasDefaultShippingAndBillingAddress()){
                 addAddress(mBottomRadioGroup, shippingAddress);
             }
 

@@ -7,6 +7,8 @@ import android.view.View;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.framework.ErrorCode;
+import com.mobile.framework.tracking.AnalyticsGoogle;
+import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
@@ -87,6 +89,8 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     protected void onCreateAddressSuccessEvent(Bundle bundle) {
         super.onCreateAddressSuccessEvent(bundle);
+        AnalyticsGoogle.get().trackAddressCreation(TrackingEvent.ACCOUNT_CREATE_ADDRESS,
+                (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId()+"":"");
         getBaseActivity().onBackPressed();
     }
 

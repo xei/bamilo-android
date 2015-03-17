@@ -66,7 +66,6 @@ public class AnalyticsGoogle {
 	/**
 	 * Startup GA
 	 * @param context
-	 * @param shopId
 	 */
 	public static void startup(Context context) {
 		sInstance = new AnalyticsGoogle(context);
@@ -93,7 +92,6 @@ public class AnalyticsGoogle {
 	 * this object
 	 * 
 	 * @param context the base context for the analytics to run
-	 * @param shopId the current shop id
 	 */
 	private AnalyticsGoogle(Context context) {
 		// Save data
@@ -234,8 +232,8 @@ public class AnalyticsGoogle {
 	
 	/**
 	 * Build and send a timing.
-	 * @param categoryId
-	 * @param nameId
+	 * @param category
+	 * @param name
 	 * @param milliSeconds
 	 * @param label
 	 * @author sergiopereira
@@ -301,7 +299,6 @@ public class AnalyticsGoogle {
 	
 	/**
 	 * Build and send a GA campaign.
-	 * @param campaign
 	 * @author sergiopereira
 	 */
 	protected void trackGACampaign() {
@@ -448,7 +445,7 @@ public class AnalyticsGoogle {
 	/**
 	 * 
 	 * @param email
-	 * @param payment
+	 * @param action
 	 */
 	public void trackPaymentMethod(String email, String action) {
 		// Validation
@@ -461,7 +458,7 @@ public class AnalyticsGoogle {
 	/**
 	 * 
 	 * @param email
-	 * @param error
+	 * @param action
 	 */
 	public void trackNativeCheckoutError(String email, String action) {
 		// Validation
@@ -473,9 +470,9 @@ public class AnalyticsGoogle {
 	
 	/**
 	 * Tracking the purchase using the EURO currency.
-	 * @param order number
-	 * @param cart value euro converted
-	 * @param list of items
+	 * @param orderNr number
+	 * @param cartValue value euro converted
+	 * @param items list of items
 	 * @author sergiopereira
 	 */
 	public void trackPurchase(String orderNr, double cartValue, List<PurchaseItem> items) {
@@ -552,10 +549,20 @@ public class AnalyticsGoogle {
 		trackEvent(event, label, 0l);
 	}
 
+    /**
+     * Address creation
+     */
+    public void trackAddressCreation(TrackingEvent event, String label){
+        // Validate
+        if (!isEnabled) return;
+        // Data
+        trackEvent(event, label, 0l);
+    }
+
 	/**
 	 * Google Analytics "General Campaign Measurement"
 	 * 
-	 * @param UTM Campaign
+	 * @param campaignString Campaign
 	 * 
 	 */
 	public void setGACampaign(String campaignString) {
@@ -572,7 +579,7 @@ public class AnalyticsGoogle {
 	
 	/**
 	 * Build and send a GA campaign.
-	 * @param campaign
+     *
 	 * @author sergiopereira
 	 */
 	private String getGACampaign() {
