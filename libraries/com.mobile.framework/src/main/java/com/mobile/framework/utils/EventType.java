@@ -87,6 +87,8 @@ public enum EventType {
 
     GET_FORM_RATING_EVENT("http:/forms/rating/", RestContract.MAX_CACHE_TIME),
 
+    GET_FORM_SELLER_REVIEW_EVENT("http:/forms/sellerreview/", RestContract.MAX_CACHE_TIME),
+
     GET_PRODUCT_REVIEWS_EVENT,
 
     REVIEW_RATING_PRODUCT_EVENT,

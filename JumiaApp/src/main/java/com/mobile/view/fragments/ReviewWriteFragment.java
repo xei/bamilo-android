@@ -49,6 +49,8 @@ import java.util.Map;
 import de.akquinet.android.androlog.Log;
 
 /**
+ * This class represents the write product review screen and manages all interactions about it's form.
+ *
  * @author sergiopereira
  * @modified Paulo Carvalho
  * 
@@ -150,6 +152,7 @@ public class ReviewWriteFragment extends BaseFragment {
             mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
         }
         //
+        JumiaApplication.setIsSellerReview(false);
         completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         isExecutingSendReview = false;
         if(savedInstanceState != null){
@@ -175,6 +178,7 @@ public class ReviewWriteFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
+        JumiaApplication.setIsSellerReview(false);
         ratingContainer = (LinearLayout) view.findViewById(R.id.form_rating_container);
         mainContainer = view.findViewById(R.id.product_rating_container);
     }
@@ -229,7 +233,7 @@ public class ReviewWriteFragment extends BaseFragment {
                 triggerAutoLogin();
                 triggerCustomer();*/
                 if(ratingForm != null && reviewForm != null){
-                    loadReviewAndRatingFormValues(isShowingRatingForm);
+                    loadReviewAndRatingFormValues();
                     if(isShowingRatingForm){
                         setRatingLayout(ratingForm);
                     } else {
@@ -254,6 +258,7 @@ public class ReviewWriteFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
+        JumiaApplication.setIsSellerReview(false);
     }
 
     /*
@@ -323,7 +328,7 @@ public class ReviewWriteFragment extends BaseFragment {
             
             ratingContainer.addView(dynamicRatingForm.getContainer());
             
-            loadReviewAndRatingFormValues(isShowingRatingForm);
+            loadReviewAndRatingFormValues();
             setReviewName(dynamicRatingForm);
             restoreTextReview(dynamicRatingForm);
             if(isShowingRatingForm)
@@ -363,6 +368,9 @@ public class ReviewWriteFragment extends BaseFragment {
 
     }
 
+    /**
+     * save the information regarding the review form
+     */
     private void saveTextReview(DynamicForm form){
         if(form != null && form.getItemByKey(NAME) != null){
             reviewName = form.getItemByKey(NAME).getValue();
@@ -374,13 +382,20 @@ public class ReviewWriteFragment extends BaseFragment {
             reviewComment = form.getItemByKey(COMMENT).getValue();
         }
     }
-  
+
+    /**
+     * clean  fields after sending a review
+     */
     private void cleanReviewText(){
         reviewName = "";
         reviewTitle = "";
         reviewComment = "";
     }
-    
+
+    /**
+     * restore information related to the form edit texts
+     * @param form
+     */
     private void restoreTextReview(DynamicForm form){
         if(form != null && form.getItemByKey(NAME) != null){
             form.getItemByKey(NAME).setValue(reviewName);
@@ -426,14 +441,16 @@ public class ReviewWriteFragment extends BaseFragment {
      * Save rating and review form
      */
     private void saveReview() {
-        if(dynamicRatingForm != null)
+        if(dynamicRatingForm != null){
             JumiaApplication.setRatingReviewValues(dynamicRatingForm.save());
+            saveTextReview(dynamicRatingForm);
+        }
     }
 
     /**
      * Load rating and review form
      */
-    private void loadReviewAndRatingFormValues(boolean isShowingRatingForm) {
+    private void loadReviewAndRatingFormValues() {
         
         ContentValues savedRatingReviewValues = new ContentValues();
         
@@ -458,6 +475,11 @@ public class ReviewWriteFragment extends BaseFragment {
             }
     }
 
+    /**
+     * method to display the header price info
+     * @param productPriceNormal
+     * @param productPriceSpecial
+     */
     private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
         String unitPrice = completeProduct.getPrice();
         /*--if (unitPrice == null) unitPrice = completeProduct.getMaxPrice();*/
@@ -670,10 +692,16 @@ public class ReviewWriteFragment extends BaseFragment {
     }
 
 
+    /**
+     * request the ratign form
+     */
     private void triggerRatingForm() {
         triggerContentEvent(new GetRatingFormHelper(), null, mCallBack);
     }
-    
+
+    /**
+     * request the review form
+     */
     private void triggerReviewForm() {
         triggerContentEvent(new GetReviewFormHelper(), null, mCallBack);
     }

@@ -14,6 +14,7 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4SApplication;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.mobile.forms.Form;
 import com.mobile.forms.FormData;
 import com.mobile.forms.PaymentMethodForm;
@@ -89,7 +90,10 @@ public class JumiaApplication extends A4SApplication {
     public Bundle registerSavedInstanceState; // TODO use an alternative to persist filled fields on rotation
     public Form reviewForm; // TODO use an alternative to persist form on rotation
     public Form ratingForm; // TODO use an alternative to persist form on rotation
+    public Form mSellerReviewForm; // TODO use an alternative to persist form on rotation
     private static ContentValues ratingReviewValues;
+    private static ContentValues sellerReviewValues;
+    public static boolean isSellerReview = false;
 
     // TODO : Validate recover
     private static ArrayList<EventType> requestOrder = new ArrayList<>();
@@ -124,7 +128,12 @@ public class JumiaApplication extends A4SApplication {
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
 
+    /**
+     * Wear
+     */
+    public static GoogleApiClient mGoogleApiClient;
 
+    
 
     /*
      * (non-Javadoc)
@@ -502,12 +511,10 @@ public class JumiaApplication extends A4SApplication {
         return requestsResponseList;
     }
     
-    
     // TODO : Validate recover
     public ArrayList<EventType> getRequestOrderList(){
         return requestOrder;
     }
-
 
     public void setResendHandler(Handler mHandler) {
         resendInitializationSignal = true;
@@ -593,6 +600,41 @@ public class JumiaApplication extends A4SApplication {
     public static void setRatingReviewValues(ContentValues ratingReviewValues) {
             JumiaApplication.ratingReviewValues = ratingReviewValues;
     }
+
+    /**
+     * clean and return last saved seller review
+     *
+     * @return last saved review
+     */
+    public static ContentValues getSellerReviewValues() {
+        return JumiaApplication.sellerReviewValues;
+    }
+
+    /**
+     * clean current rating
+     */
+    public static void cleanSellerReviewValues() {
+        JumiaApplication.sellerReviewValues = null;
+    }
+
+    public static void setSellerReviewValues(ContentValues sellerReviewValues) {
+        JumiaApplication.sellerReviewValues = sellerReviewValues;
+    }
+
+    /**
+     * flag to control if it is showing seller review, ou product review
+     * @param mIsSellerReview
+     */
+    public static void setIsSellerReview(boolean mIsSellerReview) {
+        JumiaApplication.isSellerReview = mIsSellerReview;
+    }
+
+    /**
+     * flag to control if it is showing seller review, ou product review
+     */
+    public static boolean getIsSellerReview() {
+        return JumiaApplication.isSellerReview;
+    }
     
     /**
      * @return the paymentsInfoList
@@ -634,6 +676,10 @@ public class JumiaApplication extends A4SApplication {
         countriesAvailable.clear();
         reviewForm = null;
         ratingForm = null;
+        mSellerReviewForm = null;
+        isSellerReview = false;
+        ratingReviewValues = null;
+        sellerReviewValues = null;
         resetTransactionCount();
     }
     

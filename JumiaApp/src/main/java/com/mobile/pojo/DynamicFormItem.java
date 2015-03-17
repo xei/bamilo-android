@@ -23,6 +23,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.Button;
@@ -1794,13 +1795,21 @@ public class DynamicFormItem {
         //#RTL
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-            this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+            this.errorControl.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         }
         
         linearLayout.addView(this.errorControl);
 
-        addCustomRatingCheckbox(linearLayout,params,controlWidth);
-        
+        /**
+         * IMPORTANT
+         * this verification is made in order to not show the checkbox for changing form rating to review form,
+         * because that option is only available on the  write product review screen and not on write seller review screen.
+         */
+
+//        if( context != null && ((MainFragmentActivity) context).getActiveFragment() != null && !((MainFragmentActivity) context).getActiveFragment().getTag().equals(FragmentType.WRITE_REVIEW_SELLER.name())){
+        if(!JumiaApplication.INSTANCE.getIsSellerReview()){
+            addCustomRatingCheckbox(linearLayout, params, controlWidth);
+        }
         this.dataControl = linearLayout;
         
         ((ViewGroup) this.control).addView(this.dataControl);

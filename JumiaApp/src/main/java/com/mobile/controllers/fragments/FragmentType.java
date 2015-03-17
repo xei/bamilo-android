@@ -60,5 +60,6 @@ public enum FragmentType {
     MY_ORDERS,
     PRODUCT_SIZE_GUIDE,
     PRODUCT_OFFERS,
-    INNER_SHOP;
+    INNER_SHOP,
+    WRITE_REVIEW_SELLER;
 }
