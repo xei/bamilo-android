@@ -94,7 +94,11 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set price
-        holder.mPrice.setText(item.getPrice());
+        if(item.getSpecialPriceDouble() != 0d){
+            holder.mPrice.setText(item.getSpecialPrice());
+        } else {
+            holder.mPrice.setText(item.getPrice());
+        }
         // Set listener and tags
         holder.mContainer.setTag(item.getUrl());
         holder.mContainer.setOnClickListener(mParentClickListener);
