@@ -31,7 +31,8 @@ import com.mobile.framework.objects.CustomerGender;
 import com.mobile.framework.objects.PurchaseItem;
 import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.objects.ShoppingCartItem;
-import com.mobile.framework.tracking.GTMEvents.GTMKeys;
+import com.mobile.framework.tracking.gtm.GTMKeys;
+import com.mobile.framework.tracking.gtm.GTMManager;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.NetworkConnectivity;
 

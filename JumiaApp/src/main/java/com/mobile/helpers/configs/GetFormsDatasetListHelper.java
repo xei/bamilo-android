@@ -3,12 +3,6 @@
  */
 package com.mobile.helpers.configs;
 
-import java.util.HashMap;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 
 import com.mobile.framework.enums.RequestType;
@@ -17,6 +11,12 @@ import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import de.akquinet.android.androlog.Log;
 
@@ -51,7 +51,7 @@ public class GetFormsDatasetListHelper extends BaseHelper {
         // TODO Auto-generated method stub
     	Log.d(TAG, "parseResponseBundle GetTeasersHelper");
     	
-        HashMap<String, String> values = new HashMap<String, String>();
+        HashMap<String, String> values = new HashMap<>();
 
         if (JSON_ID_TAG.substring(0, 3).equals("fk_")) {
             JSON_ID_TAG = JSON_ID_TAG.replace("fk_", "id_");

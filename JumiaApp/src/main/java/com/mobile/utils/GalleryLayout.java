@@ -1,9 +1,6 @@
 package com.mobile.utils;
 
-import java.util.List;
-
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.AdapterView;
@@ -43,14 +40,12 @@ public class GalleryLayout {
 	/**
 	 * 
 	 * showGalleryImages(activity, R.id.homepage_brands_gallery, topBrandsImageLayoutWidth, topBrandsImageLayoutHeigh, topBrandsImages)
-	 * 
-	 * @param activity
-	 * @param galleryId
-	 * @param width
 	 * @param heigh
 	 * @param images
+	 * @param activity
+	 * @param galleryId
 	 */
-	public static void showGalleryImages(final Activity activity, int galleryId, int width, int heigh, List<Bitmap> images){
+	public static void showGalleryImages(final Activity activity, int galleryId){
 		// Get Gallery
 	    final Gallery gallery = (Gallery) activity.findViewById(galleryId);
 	    // Set Listener

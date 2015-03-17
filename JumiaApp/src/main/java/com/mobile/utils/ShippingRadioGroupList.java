@@ -66,7 +66,7 @@ public class ShippingRadioGroupList extends RadioGroup {
         mForm = form;
         mItems = mForm.options;
         mDefaultSelected = defaultSelected;
-        subForms = new HashMap<String, ArrayList<ShippingMethodSubForm>>();
+        subForms = new HashMap<>();
         updateRadioGroup();
     }
 
@@ -105,7 +105,7 @@ public class ShippingRadioGroupList extends RadioGroup {
             
             RelativeLayout.LayoutParams mParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-            ArrayList<ShippingMethodSubForm> tmpSubForms = new ArrayList<ShippingMethodSubForm>();
+            ArrayList<ShippingMethodSubForm> tmpSubForms = new ArrayList<>();
 
             /**
              * For each element verify if it has extras if so add them to the view

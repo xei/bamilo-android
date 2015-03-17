@@ -345,7 +345,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             try {
                 entity = new UrlEncodedFormEntity(parameters);
                 Log.d(TAG, "Loading Url complete: " + paymentUrl + "  " + parameters.toString());
-                setProxy(paymentUrl);
+                setProxy();
                 webview.postUrl(paymentUrl, EntityUtils.toByteArray(entity));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -353,7 +353,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         } else if (JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null) {
             Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm()
                     .getContentValues().valueSet();
-            setProxy(paymentUrl);
+            setProxy();
             for (Entry<String, Object> entry : mValues) {
 
                 if (!paymentUrl.contains("?")) {
@@ -365,14 +365,14 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
             webview.loadUrl(paymentUrl);
         } else {
-            setProxy(paymentUrl);
+            setProxy();
             webview.loadUrl(paymentUrl);
         }
 
         isRequestedPage = true;
     }
 
-    private void setProxy(String url) {
+    private void setProxy() {
 //        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
 //            ProxyConfiguration conf = null;
 //            try {

@@ -209,12 +209,12 @@ public class ProductSizeGuideFragment extends BaseFragment {
             }
             
             @Override
-            public void onLoadedError(String url) {
+            public void onLoadedError() {
                 showRetryLayout();
             }
             
             @Override
-            public void onLoadedCancel(String imageUrl) { }
+            public void onLoadedCancel() { }
         });
     }
     

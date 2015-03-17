@@ -80,7 +80,7 @@ public class HorizontalListView extends RecyclerView {
         int lastC = ((LinearLayoutManager) getLayoutManager()).findLastCompletelyVisibleItemPosition();
         //int firstV = ((LinearLayoutManager) getLayoutManager()).findFirstVisibleItemPosition();
         //int lastV = ((LinearLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
-        int count = ((LinearLayoutManager) getLayoutManager()).getItemCount();
+        int count = getLayoutManager().getItemCount();
         //Log.i(TAG, "onInterceptTouchEvent: Complete: " + firstC + "-" + lastC + " Visible:" + firstV + "-" + lastV + " Count:" + count + " " + bool);
 
         // Case empty or not fill
@@ -102,7 +102,7 @@ public class HorizontalListView extends RecyclerView {
     /**
      * Validate the current touch event to disable/enable other views, like ViewPager and ScrollView. 
      * For old versions is necessary disable the intercept of touch event in the parent.
-     * @param event
+     * @param ev
      * @author sergiopereira
      */
     private void validateTouchEvent(MotionEvent ev) {

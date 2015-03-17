@@ -68,7 +68,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * @return CampaignsFragment
      * @author sergiopereira
      */
-    public static NavigationFragment newInstance(Bundle bundle) {
+    public static NavigationFragment newInstance() {
         sNavigationFragment = new NavigationFragment();
         return sNavigationFragment;
     }
@@ -312,14 +312,14 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
 
         switch (action) {
         case Home:
-            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_home, R.string.home_label, this);
+            layout = createGenericComponent(parent, R.drawable.selector_navigation_home, R.string.home_label, this);
             layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             break;
         case Categories:
             layout = createCategoriesHeader();
             break;
         case Country:
-            layout = createGenericComponent(parent, component, R.drawable.selector_navigation_countrychange, R.string.nav_country, this);
+            layout = createGenericComponent(parent, R.drawable.selector_navigation_countrychange, R.string.nav_country, this);
             layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             break;
         default:
@@ -375,7 +375,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * @param listener
      * @return
      */
-    private View createGenericComponent(ViewGroup parent, NavigationListComponent component, int iconRes, int stringId, OnClickListener listener) {
+    private View createGenericComponent(ViewGroup parent, int iconRes, int stringId, OnClickListener listener) {
         View navComponent = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
         TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
         String text = getString(stringId);

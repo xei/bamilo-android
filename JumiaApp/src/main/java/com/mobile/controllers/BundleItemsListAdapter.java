@@ -1,6 +1,5 @@
 package com.mobile.controllers;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,7 +71,7 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
     }
     
     public interface OnItemSelected {
-        public void SelectedItem(ProductBundleProduct selectedProduct);
+        public void SelectedItem();
     }
     
     public interface OnItemChecked {
@@ -85,13 +84,12 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
-     * @param context
      * @param productTeaserGroup
      * @param parentClickListener
      * @author paulocarvalho
      */
-    public BundleItemsListAdapter(Context context, ArrayList<ProductBundleProduct> bundleItemsList, OnItemSelected selectedClickListener,
-            OnItemChecked checkedClickListener, OnSimplePressed simpleClickListener, OnItemSelectedListener simplesSelectedListener) {
+    public BundleItemsListAdapter(ArrayList<ProductBundleProduct> bundleItemsList, OnItemSelected selectedClickListener,
+                                  OnItemChecked checkedClickListener, OnSimplePressed simpleClickListener, OnItemSelectedListener simplesSelectedListener) {
         mDataset = bundleItemsList;
         itemSelected = selectedClickListener;
         itemChecked = checkedClickListener;
@@ -141,7 +139,7 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
             @Override
             public void onClick(View v) {
                 
-                itemSelected.SelectedItem(item);                
+                itemSelected.SelectedItem();
             }
         });
         

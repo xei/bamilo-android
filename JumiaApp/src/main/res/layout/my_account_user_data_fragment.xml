@@ -52,10 +52,8 @@
                         style="@style/text_normal"
                         android:layout_width="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/center"
                         android:focusable="false"
-                        android:gravity="left|start"
-                        android:text="first" />
+                        android:gravity="left|start" />
 
 
                     <com.mobile.components.customfontviews.TextView
@@ -66,8 +64,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_toRightOf="@+id/clientLastName"
                         android:focusable="false"
-                        android:gravity="left|start"
-                        android:text="last" />
+                        android:gravity="left|start" />
                 </RelativeLayout>
 
                 <com.mobile.components.customfontviews.TextView
@@ -78,8 +75,7 @@
                     android:layout_marginLeft="@dimen/rounded_margin_small"
                     android:layout_marginStart="@dimen/rounded_margin_small"
                     android:focusable="false"
-                    android:gravity="left|start"
-                    android:text="email" />
+                    android:gravity="left|start" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -128,7 +124,6 @@
                     android:id="@+id/typeNewPassword"
                     style="@style/form_edittext_style"
                     android:layout_marginBottom="@dimen/margin_mid"
-                    android:contentDescription="@string/myaccount_newpass_description"
                     android:gravity="left|start"
                     android:hint="@string/new_password_hint"
                     android:inputType="textPassword" />
@@ -137,7 +132,6 @@
                     android:id="@+id/retypeNewPassword"
                     style="@style/form_edittext_style"
                     android:layout_marginBottom="@dimen/margin_mid"
-                    android:contentDescription="@string/myaccount_repeatpass_description"
                     android:gravity="left|start"
                     android:hint="@string/retype_new_password_hint"
                     android:inputType="textPassword" />

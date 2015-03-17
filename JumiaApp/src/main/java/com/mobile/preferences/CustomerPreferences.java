@@ -48,7 +48,7 @@ public class CustomerPreferences {
         SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
         Log.i(TAG, "SAVED PREFERENCE: " + key + " = " + value);
     }
     

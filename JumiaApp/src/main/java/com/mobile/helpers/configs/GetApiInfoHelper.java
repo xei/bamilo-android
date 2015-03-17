@@ -135,36 +135,38 @@ public class GetApiInfoHelper extends BaseHelper {
 
         for (Section section : sections) {
             // Case teasers
-            if (section.getName().equals(Section.SECTION_NAME_TEASERS)) {
-                 // IntroTeasersTableHelper.clearTeasers(db);
-            }
-            // Case brands
-            else if (section.getName().equals(Section.SECTION_NAME_BRANDS)) {
-                 // BrandsTableHelper.clearBrands(db);
-            }
-            // Case categories
-            else if (section.getName().equals(Section.SECTION_NAME_CATEGORIES)) {
-                CategoriesTableHelper.clearCategories(db);
-            }
-            // Case segments
-            else if (section.getName().equals(Section.SECTION_NAME_SEGMENTS)) {
-                // SegmentTeasersTableHelper.clearSegmentTeasers(db);
-            }
-            // Case static blocks
-            else if (section.getName().equals(Section.SECTION_NAME_STATIC_BLOCKS)) {
-                //StaticBlocksTableHelper.clearStaticBlocks(db);
-            }
-            // Case image resolutions
-            else if (section.getName().equals(Section.SECTION_NAME_IMAGE_RESOLUTIONS)) {
-                ImageResolutionTableHelper.clearImageResolutions(db);
-            }
-            // Case zip codes
-            else if (section.getName().equals(Section.SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES)) {
-                // ZipCodesTableHelper.clearZipCodes(db);
-            }
-            // Case country configs
-            else if(section.getName().equals(Section.SECTION_NAME_COUNTRY_CONFIGS)) {
-                bundle.putBoolean(Section.SECTION_NAME_COUNTRY_CONFIGS, true);
+            switch (section.getName()) {
+                case Section.SECTION_NAME_TEASERS:
+                    // IntroTeasersTableHelper.clearTeasers(db);
+                    break;
+                // Case brands
+                case Section.SECTION_NAME_BRANDS:
+                    // BrandsTableHelper.clearBrands(db);
+                    break;
+                // Case categories
+                case Section.SECTION_NAME_CATEGORIES:
+                    CategoriesTableHelper.clearCategories(db);
+                    break;
+                // Case segments
+                case Section.SECTION_NAME_SEGMENTS:
+                    // SegmentTeasersTableHelper.clearSegmentTeasers(db);
+                    break;
+                // Case static blocks
+                case Section.SECTION_NAME_STATIC_BLOCKS:
+                    //StaticBlocksTableHelper.clearStaticBlocks(db);
+                    break;
+                // Case image resolutions
+                case Section.SECTION_NAME_IMAGE_RESOLUTIONS:
+                    ImageResolutionTableHelper.clearImageResolutions(db);
+                    break;
+                // Case zip codes
+                case Section.SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES:
+                    // ZipCodesTableHelper.clearZipCodes(db);
+                    break;
+                // Case country configs
+                case Section.SECTION_NAME_COUNTRY_CONFIGS:
+                    bundle.putBoolean(Section.SECTION_NAME_COUNTRY_CONFIGS, true);
+                    break;
             }
         }
     }
@@ -177,7 +179,7 @@ public class GetApiInfoHelper extends BaseHelper {
     private ArrayList<Section> parseSections(JSONArray sessionJSONArray) {
         Log.d(TAG, "ON PARSE SECTIONS");
         int arrayLength = sessionJSONArray.length();
-        ArrayList<Section> sections = new ArrayList<Section>();
+        ArrayList<Section> sections = new ArrayList<>();
         for (int i = 0; i < arrayLength; ++i) {
             JSONObject sessionObject = sessionJSONArray.optJSONObject(i);
             Section section = new Section();
@@ -197,7 +199,7 @@ public class GetApiInfoHelper extends BaseHelper {
      */
     public ArrayList<Section> checkSections(List<Section> oldSections, List<Section> newSections) {
         Log.d(TAG, "ON CHECK SECTIONS");
-        ArrayList<Section> outdatedSections = new ArrayList<Section>();
+        ArrayList<Section> outdatedSections = new ArrayList<>();
 //        if (!oldSections.isEmpty()) {
 //            for (Section oldSection : oldSections) {
 //                Log.d(TAG, "OLD SECTION: " + oldSection.getName() + " " + oldSection.getMd5());
@@ -221,7 +223,7 @@ public class GetApiInfoHelper extends BaseHelper {
                 // Case section is not present    
                 } else if (savedSection == null){
                     Log.d(TAG, "NEW SECTION IS NOT PRESENT: " + newSection.getName() + " " + newSection.getMd5());
-                    ArrayList<Section> temp = new ArrayList<Section>();
+                    ArrayList<Section> temp = new ArrayList<>();
                     temp.add(newSection);
                     SectionsTablesHelper.saveSections(temp);
                     outdatedSections.add(newSection);

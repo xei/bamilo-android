@@ -1,11 +1,5 @@
 package com.mobile.helpers.configs;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 
 import com.mobile.components.NavigationListComponent;
@@ -16,6 +10,12 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -59,7 +59,7 @@ public class NavigationListHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         try {
-            ArrayList<NavigationListComponent> components = new ArrayList<NavigationListComponent>();
+            ArrayList<NavigationListComponent> components = new ArrayList<>();
             JSONArray dataArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
             NavigationListComponent component;
             int dataArrayLenght = dataArray.length();
@@ -70,21 +70,21 @@ public class NavigationListHelper extends BaseHelper {
                 component.initialize(dataArray.getJSONObject(i));
 
                 // Don't add "Search" to the Navigation List
-                if (isToIgnoreSearch && component != null) {
+                if (isToIgnoreSearch) {
                     if (SEARCH_TAG.equalsIgnoreCase(component.getElementText())) {
                         continue;
                     }
                 }
                 
                 // Don't add "Basket" to the Navigation List
-                if (isToIgnoreBasket && component != null) {
+                if (isToIgnoreBasket) {
                     if (BASKET_TAG.equalsIgnoreCase(component.getElementText())) {
                         continue;
                     }
                 }
                 
                 // Don't add "Categories" to the Navigation List
-                if (isToIgnoreCategories && component != null) {
+                if (isToIgnoreCategories) {
                     if (CATEGORIES_TAG.equalsIgnoreCase(component.getElementText())) {
                         continue;
                     }

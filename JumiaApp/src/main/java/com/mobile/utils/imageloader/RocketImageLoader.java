@@ -60,9 +60,9 @@ public class RocketImageLoader {
     public interface RocketImageLoaderListener {
         void onLoadedSuccess(String imageUrl, Bitmap bitmap);
 
-        void onLoadedError(String imageUrl);
+        void onLoadedError();
 
-        void onLoadedCancel(String imageUrl);
+        void onLoadedCancel();
     }
 
     public static void init(Application application) {
@@ -116,7 +116,7 @@ public class RocketImageLoader {
      * @param listener
      */
     public void loadImage(String imageUrl, ImageView imageView, boolean hideView, RocketImageLoaderListener listener) {
-        loadImage(imageUrl, false, imageView, null, NO_VALUE_INTEGER, NO_VALUE_INTEGER, hideView, listener, false, null);
+        loadImage(imageUrl, false, imageView, null, NO_VALUE_INTEGER, hideView, listener, false);
     }
 
     /**
@@ -129,7 +129,7 @@ public class RocketImageLoader {
      * @param tag
      */
     public void loadImage(String imageUrl, ImageView imageView, View progressView, int placeHolderImageId, String tag) {
-        loadImage(imageUrl, false, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, null, false, tag);
+        loadImage(imageUrl, false, imageView, progressView, placeHolderImageId, false, null, false);
     }
 
     /**
@@ -141,7 +141,7 @@ public class RocketImageLoader {
      * @param placeHolderImageId
      */
     public void loadImage(String imageUrl, ImageView imageView, View progressView, int placeHolderImageId) {
-        loadImage(imageUrl, false, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, null, false, null);
+        loadImage(imageUrl, false, imageView, progressView, placeHolderImageId, false, null, false);
     }
     
     
@@ -155,7 +155,7 @@ public class RocketImageLoader {
      * @param placeHolderImageId
      */
     public void loadImage(String imageUrl, boolean isFilePathList, ImageView imageView, View progressView, int placeHolderImageId) {
-        loadImage(imageUrl, isFilePathList, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, null, false, null);
+        loadImage(imageUrl, isFilePathList, imageView, progressView, placeHolderImageId, false, null, false);
     }
     
     /**
@@ -167,7 +167,7 @@ public class RocketImageLoader {
      * @param placeHolderImageId
      */
     public void loadImage(String imageUrl, boolean isFilePathList, ImageView imageView, View progressView, int placeHolderImageId, boolean isDraftImage) {
-        loadImage(imageUrl, isFilePathList, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, null,isDraftImage, null);
+        loadImage(imageUrl, isFilePathList, imageView, progressView, placeHolderImageId, false, null,isDraftImage);
     }
 
     /**
@@ -180,7 +180,7 @@ public class RocketImageLoader {
      * @param listener
      */
     public void loadImage(String imageUrl, ImageView imageView, View progressView, int placeHolderImageId, RocketImageLoaderListener listener) {
-        loadImage(imageUrl, false, imageView, progressView, NO_VALUE_INTEGER, placeHolderImageId, false, listener, false, null);
+        loadImage(imageUrl, false, imageView, progressView, placeHolderImageId, false, listener, false);
     }
 
     /**
@@ -188,23 +188,19 @@ public class RocketImageLoader {
      * Loads an image in an imageview using currently active image library
      * 
      * Some parameters make sense only for specific image libraries
-     * 
-     * @param imageUrl
+     *  @param imageUrl
      * @param imageView
      * @param progressView
-     * @param targetWidth
-     *            aquery specific:
-     *            "Target width for down sampling when reading large images. 0 = no downsampling."
      * @param placeHolderImageId
      * @param hideImageView
      * @param listener
      */
-    public void loadImage(final String imageUrl, boolean isFilePathList, final ImageView imageView, final View progressView, int targetWidth,
-            final int placeHolderImageId, final boolean hideImageView, final RocketImageLoaderListener listener, boolean isDraftImage, String tag) {
+    public void loadImage(final String imageUrl, boolean isFilePathList, final ImageView imageView, final View progressView,
+                          final int placeHolderImageId, final boolean hideImageView, final RocketImageLoaderListener listener, boolean isDraftImage) {
 
         if (!TextUtils.isEmpty(imageUrl) && null != imageView) {
             if(isDraftImage) {
-            	imageView.setImageBitmap(decodeSampledBitmapFromResource(imageUrl, imageView.getWidth(), imageView.getHeight()));
+            	imageView.setImageBitmap(decodeSampledBitmapFromResource(imageUrl));
 
                 if (progressView != null) {
                     progressView.setVisibility(View.GONE);
@@ -222,7 +218,7 @@ public class RocketImageLoader {
                 if (null != imgContainer && !imgContainer.getRequestUrl().equals(imageUrl)) {
                     imgContainer.cancelRequest();
                     if (listener != null) {
-                        listener.onLoadedCancel(imgContainer.getRequestUrl());
+                        listener.onLoadedCancel();
                     }
                 }
 
@@ -245,7 +241,7 @@ public class RocketImageLoader {
                         }
                         
                         if (listener != null) {
-                            listener.onLoadedError(imageUrl);
+                            listener.onLoadedError();
                         }
 
                         if (hideImageView)
@@ -300,13 +296,12 @@ public class RocketImageLoader {
             // clear any previous image
             imageView.setImageResource(placeHolderImageId);
             if (listener != null) {
-                listener.onLoadedError(imageUrl);
+                listener.onLoadedError();
             }            
         }
     }
 
-	public static Bitmap decodeSampledBitmapFromResource(String path,
-			int reqWidth, int reqHeight) {
+	public static Bitmap decodeSampledBitmapFromResource(String path) {
 
 		// First decode with inJustDecodeBounds=true to check dimensions
 		final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -394,10 +389,10 @@ public class RocketImageLoader {
 
     private void initVolley(Application application) {
         context = application.getApplicationContext();
-        initVolley(context);
+        initVolley();
     }
     
-    private void initVolley(Context appContext) {
+    private void initVolley() {
         volleyRequestQueue = newRequestQueue(context, null);
         volleyImageLoader = new ImageLoader(volleyRequestQueue, new BitmapLruCache());
     }
@@ -406,7 +401,7 @@ public class RocketImageLoader {
         volleyImageLoader.get(imageUrl, new ImageListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onLoadedError(imageUrl);
+                listener.onLoadedError();
             }
 
             @Override
@@ -482,12 +477,12 @@ public class RocketImageLoader {
             }
             
             @Override
-            public void onLoadedError(String url) {
+            public void onLoadedError() {
                 checkIfRequestComplete(++images);
             }
             
             @Override
-            public void onLoadedCancel(String imageUrl) {
+            public void onLoadedCancel() {
                 checkIfRequestComplete(++images);
             }
             

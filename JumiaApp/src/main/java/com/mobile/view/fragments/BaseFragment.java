@@ -529,7 +529,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return action;
     }
 
-    public void sendValuesToFragment(int identifier, Object values) {
+    public void sendValuesToFragment(Object values) {
     }
 
     public void notifyFragment(Bundle bundle) {
@@ -1150,7 +1150,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     dialogMsg = getString(R.string.validation_errortext);
                 }
                 // showContentContainer();
-                dialog = DialogGenericFragment.newInstance(true, true, false,
+                dialog = DialogGenericFragment.newInstance(true, false,
                         getString(R.string.validation_title), dialogMsg,
                         getResources().getString(R.string.ok_label), "", new OnClickListener() {
 

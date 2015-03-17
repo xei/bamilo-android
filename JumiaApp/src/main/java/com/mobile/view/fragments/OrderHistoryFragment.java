@@ -111,7 +111,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     }
 
     @Override
-    public void sendValuesToFragment(int identifier, Object values) {
+    public void sendValuesToFragment(Object values) {
     }
 
     /*

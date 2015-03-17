@@ -42,9 +42,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(MyAccountUserDataFragment.class);
 
-    private final static int PASSWORD_MINLENGTH = 6;
-
-    private View mainView;
+    private final static int PASSWORD_MIN_LENGTH = 6;
 
     private TextView firstNameText;
 
@@ -71,8 +69,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
      * Empty constructor
      */
     public MyAccountUserDataFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET,
-                MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyAccount,
                 R.layout.my_account_user_data_fragment,
                 R.string.myaccount_userdata,
@@ -99,8 +96,6 @@ public class MyAccountUserDataFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        // Retain this fragment across configuration changes.
-        setRetainInstance(true);
     }
 
     /*
@@ -113,22 +108,15 @@ public class MyAccountUserDataFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-
-        mainView = view;
-
         if (null != JumiaApplication.CUSTOMER) {
-            setAppContentLayout();
+            setAppContentLayout(view);
             init();
         } else {
             showFragmentErrorRetry();
         }
-
     }
     
     private void init() {
-
-        // triggerCustomer();
-
         if (null != lastNameText) {
             lastNameText.setText(JumiaApplication.CUSTOMER.getLastName());
             firstNameText.setText(JumiaApplication.CUSTOMER.getFirstName());
@@ -137,7 +125,6 @@ public class MyAccountUserDataFragment extends BaseFragment {
         } else {
             restartAllFragments();
         }
-
     }
 
     /*
@@ -208,7 +195,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
     /**
      * Inflates this activity layout into the main template layout
      */
-    public void setAppContentLayout() {
+    public void setAppContentLayout(View mainView) {
         Button saveButton = (Button) mainView.findViewById(R.id.button_save);
         saveButton.setOnClickListener(this);
         Button cancelButton = (Button) mainView.findViewById(R.id.button_cancel);
@@ -231,7 +218,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
     public void changePassword() {
 
         String newPassword = newPasswordText.getText().toString();
-        if (newPassword.length() < PASSWORD_MINLENGTH) {
+        if (newPassword.length() < PASSWORD_MIN_LENGTH) {
             displayErrorHint(getString(R.string.password_new_mincharacters));
             return;
         }
@@ -243,22 +230,16 @@ public class MyAccountUserDataFragment extends BaseFragment {
         }
 
         /**
-         * FIXME: CREATE A TICKET TO FIX THIS METHOD
-         * 
+         * TODO: CREATE A TICKET TO FIX THIS METHOD
          * @author sergiopereira
          */
         ContentValues values = new ContentValues();
-        values.put("Alice_Module_Customer_Model_PasswordForm[password]",
-                newPassword);
-        values.put("Alice_Module_Customer_Model_PasswordForm[password2]",
-                newPassword2);
-        values.put("Alice_Module_Customer_Model_PasswordForm[email]", emailText.getText()
-                .toString());
-
+        values.put("Alice_Module_Customer_Model_PasswordForm[password]", newPassword);
+        values.put("Alice_Module_Customer_Model_PasswordForm[password2]", newPassword2);
+        values.put("Alice_Module_Customer_Model_PasswordForm[email]", emailText.getText().toString());
         triggerChangePass(values);
-
+        //
         displayErrorHint(null);
-
     }
 
     private void displayErrorHint(String hint) {
@@ -273,8 +254,11 @@ public class MyAccountUserDataFragment extends BaseFragment {
 
     protected boolean onSuccessEvent(Bundle bundle) {
         Log.d(TAG, "ON SUCCESS EVENT");
-        if (!isVisible()) {
-            return true;
+
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return false;
         }
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
@@ -283,17 +267,14 @@ public class MyAccountUserDataFragment extends BaseFragment {
         case CHANGE_PASSWORD_EVENT:
             Log.d(TAG, "changePasswordEvent: Password changed with success");
             if (null != getActivity()) {
-                Toast.makeText(getActivity(), getString(R.string.password_changed),
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.password_changed), Toast.LENGTH_SHORT).show();
             }
-            finish();
-
+            gotoBack();
             return true;
         case GET_CUSTOMER:
             Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             JumiaApplication.CUSTOMER = customer;
-            Log.d(TAG, "CUSTOMER: " + customer.getLastName() + " " + customer.getFirstName() + " "
-                    + customer.getEmail());
+            Log.d(TAG, "CUSTOMER: " + customer.getLastName() + " " + customer.getFirstName() + " " + customer.getEmail());
             if (null != lastNameText) {
                 lastNameText.setText(customer.getLastName());
                 firstNameText.setText(customer.getFirstName());
@@ -301,7 +282,6 @@ public class MyAccountUserDataFragment extends BaseFragment {
                 showFragmentContentContainer();
             } else {
                 restartAllFragments();
-                // finish();
                 return true;
             }
             return true;
@@ -312,8 +292,11 @@ public class MyAccountUserDataFragment extends BaseFragment {
 
     protected boolean onErrorEvent(Bundle bundle) {
         Log.i(TAG, "ON ERROR EVENT");
-        if (!isVisible()) {
-            return true;
+        // Validate fragment visibility
+
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return false;
         }
 
         if (super.handleErrorEvent(bundle)) {
@@ -326,8 +309,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
         case CHANGE_PASSWORD_EVENT:
             Log.d(TAG, "changePasswordEvent: Password changed was not successful");
             if (errorCode == ErrorCode.REQUEST_ERROR) {
-                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
-                        .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                 if (errorMessages == null) {
                     return false;
                 }
@@ -338,11 +320,10 @@ public class MyAccountUserDataFragment extends BaseFragment {
                     validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
                 }
 
-                String errorMessage = null;
+                String errorMessage;
                 if (validateMessages.size() == 0) {
                     return false;
                 }
-
                 errorMessage = validateMessages.get(0);
                 displayErrorHint(errorMessage);
                 showFragmentContentContainer();
@@ -361,7 +342,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
         int id = view.getId();
         hideKeyboard();
         // Cancel button
-        if (id == R.id.button_cancel) finish();
+        if (id == R.id.button_cancel) gotoBack();
         // Save button
         else if (id == R.id.button_save) changePassword();
     }
@@ -390,7 +371,7 @@ public class MyAccountUserDataFragment extends BaseFragment {
     /**
      * 
      */
-    private void finish() {
+    private void gotoBack() {
         getActivity().onBackPressed();
     }
 
@@ -399,12 +380,6 @@ public class MyAccountUserDataFragment extends BaseFragment {
      * 
      * @author sergiopereira
      */
-    /*-private void triggerCustomer(){
-    	Log.i(TAG,"TRIGGER GET CUSTOMER");
-        Bundle bundle = new Bundle();
-        triggerContentEvent(new GetCustomerHelper(), bundle, mCallBack);
-    }*/
-
     private void triggerChangePass(ContentValues values) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetChangePasswordHelper.CONTENT_VALUES, values);

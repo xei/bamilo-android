@@ -326,13 +326,13 @@ public class CheckoutWebFragment extends BaseFragment {
             webview.loadUrl("about:blank");
         }
         checkoutUrl = "https://" + RestContract.REQUEST_HOST + CHECKOUT_URL_WITH_PARAM;
-        setProxy(checkoutUrl);
+        setProxy();
         Log.d(TAG, "Loading Url: " + checkoutUrl);
         webview.loadUrl(checkoutUrl);
         isRequestedPage = true;
     }
 
-    private void setProxy(String url) {
+    private void setProxy() {
 //        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
 //            ProxyConfiguration conf = null;
 //            try {

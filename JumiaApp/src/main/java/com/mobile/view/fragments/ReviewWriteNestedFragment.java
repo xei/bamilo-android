@@ -229,7 +229,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 triggerAutoLogin();
                 triggerCustomer();*/
                 if(ratingForm != null && reviewForm != null){
-                    loadReviewAndRatingFormValues(isShowingRatingForm);
+                    loadReviewAndRatingFormValues();
                     if(isShowingRatingForm){
                         setRatingLayout(ratingForm);
                     } else {
@@ -325,7 +325,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             
             ratingContainer.addView(dynamicRatingForm.getContainer());
             
-            loadReviewAndRatingFormValues(isShowingRatingForm);
+            loadReviewAndRatingFormValues();
             setReviewName(dynamicRatingForm);
             restoreTextReview(dynamicRatingForm);
             if(isShowingRatingForm)
@@ -435,7 +435,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     /**
      * Load rating and review form
      */
-    private void loadReviewAndRatingFormValues(boolean isShowingRatingForm) {
+    private void loadReviewAndRatingFormValues() {
         
         ContentValues savedRatingReviewValues = new ContentValues();
         
@@ -539,7 +539,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 buttonMessageText = getResources().getString(R.string.ok_label);
             
             
-            dialog_review_submitted = DialogGenericFragment.newInstance(false, true, false,
+            dialog_review_submitted = DialogGenericFragment.newInstance(true, false,
                     getString(R.string.submit_title),
                     getResources().getString(R.string.submit_text),
                     buttonMessageText,

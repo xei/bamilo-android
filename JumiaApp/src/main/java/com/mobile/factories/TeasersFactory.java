@@ -393,7 +393,7 @@ public class TeasersFactory {
      * @param mInflater
      * @return
      */
-    private View createProductTeaserView(TeaserGroupType type, TeaserProduct product, ViewGroup vg, LayoutInflater mInflater, int size) {
+    private View createProductTeaserView(TeaserGroupType type, TeaserProduct product, ViewGroup vg, LayoutInflater mInflater) {
         View productTeaserView = mInflater.inflate(R.layout.product_item_small, vg, false);
         // Tablet
         if (isTablet && product.getImagesTablet() != null && product.getImagesTablet().size() > 0) {
@@ -598,6 +598,17 @@ public class TeasersFactory {
             // Load image
             RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, placeHolder, new RocketImageLoaderListener() {
 
+
+                @Override
+                public void onLoadedCancel() {
+                    // ...
+                }
+
+                @Override
+                public void onLoadedError() {
+                    // ...
+                }
+
                 @Override
                 public void onLoadedSuccess(String url, Bitmap bitmap) {
                     if (resize) {
@@ -605,13 +616,6 @@ public class TeasersFactory {
                     }
                 }
 
-                @Override
-                public void onLoadedError(String url) {
-                }
-
-                @Override
-                public void onLoadedCancel(String imageUrl) {
-                }
             });
 
         }

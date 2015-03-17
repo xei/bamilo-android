@@ -9,7 +9,6 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
-import com.mobile.utils.CheckoutStepManager;
 
 import org.json.JSONObject;
 

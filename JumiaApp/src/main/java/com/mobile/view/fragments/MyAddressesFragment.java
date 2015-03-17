@@ -551,7 +551,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         }
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             showFragmentContentContainer();
-            dialog = DialogGenericFragment.newInstance(true, true, false,
+            dialog = DialogGenericFragment.newInstance(true, false,
                     getString(titleId),
                     errorMessages.get(0),
                     getString(R.string.ok_label),

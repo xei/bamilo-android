@@ -54,7 +54,7 @@ public class GetSellerReviewFormHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d("TRACK", "parseResponseBundle GetSellerReviewsHelper");
       
-        final ArrayList<Form> forms = new ArrayList<Form>();
+        final ArrayList<Form> forms = new ArrayList<>();
         JSONArray dataObject;
         
         try {

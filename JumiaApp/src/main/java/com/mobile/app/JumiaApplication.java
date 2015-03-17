@@ -173,7 +173,7 @@ public class JumiaApplication extends A4SApplication {
         if(!TextUtils.isEmpty(currencyCode)) CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
     }
 
-    public synchronized void init(boolean isReInit, Handler initializationHandler) {
+    public synchronized void init(Handler initializationHandler) {
         Log.d(TAG, "ON INIT");
         // isInitializing = true;
         AnalyticsGoogle.clearCheckoutStarted();
@@ -309,7 +309,6 @@ public class JumiaApplication extends A4SApplication {
 
         Log.d("TRACK", "sendRequest");
         new Thread(new Runnable() {
-
             @Override
             public void run() {
                 
@@ -362,7 +361,6 @@ public class JumiaApplication extends A4SApplication {
                     /*-bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
                     responseCallback.onRequestError(bundle);*/
                 }
-                
             }
         }).start();
 

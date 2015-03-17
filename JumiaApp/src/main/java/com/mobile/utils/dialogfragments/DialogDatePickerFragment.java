@@ -1,11 +1,5 @@
 package com.mobile.utils.dialogfragments;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -19,6 +13,12 @@ import android.view.WindowManager;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import de.akquinet.android.androlog.Log;
 //import org.holoeverywhere.widget.DatePicker;
@@ -47,7 +47,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public interface OnDatePickerDialogListener {
-        public void onDatePickerDialogSelect(String id, int year, int month, int day);
+        public void onDatePickerDialogSelect(int year, int month, int day);
 
     }
 
@@ -114,7 +114,6 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
         setStyle(R.style.Theme_Jumia_Dialog_NoTitle_DatePicker, R.style.Theme_Jumia_Dialog_NoTitle_DatePicker);
     }
 
@@ -180,7 +179,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
 //            mMonth = mDatePicker.getMonth();
 //            mYear = mDatePicker.getYear();
             if (mListener != null) {
-                mListener.onDatePickerDialogSelect(mId, mYear, mMonth, mDay);
+                mListener.onDatePickerDialogSelect(mYear, mMonth, mDay);
             }
             this.dismiss();
         }
