@@ -1,6 +1,7 @@
 package com.mobile.utils.catalog;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -243,6 +244,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         if(item.hasDiscountPercentage()) {
             holder.discount.setText(item.getSpecialPrice());
             holder.price.setText(item.getPrice());
+            holder.price.setPaintFlags( holder.price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.percentage.setText("-" + item.getMaxSavingPercentage().intValue() + "%");
             holder.percentage.setVisibility(View.VISIBLE);
         }
