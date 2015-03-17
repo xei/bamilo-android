@@ -1,16 +1,16 @@
 package com.mobile.framework.objects;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import de.akquinet.android.androlog.Log;
 
@@ -59,9 +59,9 @@ public class Addresses implements IJSONSerializable, Parcelable {
 		// Get other addresses
 		JSONObject jsonOther = jsonObject.optJSONObject(RestConstants.JSON_OTHER_TAG);
 		if(jsonOther != null && jsonOther.length() > 0) {
-	        Iterator<?> jsonIteretor = jsonOther.keys();
-	        while (jsonIteretor.hasNext()) {
-	            String key = (String) jsonIteretor.next();
+	        Iterator<?> jsonIterator = jsonOther.keys();
+	        while (jsonIterator.hasNext()) {
+	            String key = (String) jsonIterator.next();
 	            addresses.put(key, new Address((JSONObject) jsonOther.get(key)));
 	        }
 		}

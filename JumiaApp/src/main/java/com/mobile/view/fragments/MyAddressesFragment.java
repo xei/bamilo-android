@@ -390,7 +390,16 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             // mTopTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.btn_addaddress_orange, 0);
             // Set Shipping Address (checked) and others
             mTopRadioGroup.setCheckedItem(0);
-            addAddress(mTopRadioGroup, addresses.getShippingAddress());
+
+            Address shippingAddress = addresses.getShippingAddress();
+            Address billingAddress = addresses.getBillingAddress();
+
+
+            addAddress(mTopRadioGroup, shippingAddress);
+            if(shippingAddress.getId() != billingAddress.getId()){
+                addAddress(mTopRadioGroup, billingAddress);
+            }
+
             addAddresses(mTopRadioGroup, addresses.getAddresses());
             // Set the check box checked
             mIsSameCheckBox.setChecked(isSameAddress);
@@ -400,7 +409,11 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             mBottomTitle.setText(getString(R.string.billing_billing_label));
             // Set Billing address (checked) and others
             mBottomRadioGroup.setCheckedItem(0);
-            addAddress(mBottomRadioGroup, addresses.getBillingAddress());
+            addAddress(mBottomRadioGroup, billingAddress);
+            if(shippingAddress.getId() != billingAddress.getId()){
+                addAddress(mBottomRadioGroup, shippingAddress);
+            }
+
             addAddresses(mBottomRadioGroup, addresses.getAddresses());
         }
         // Show content
