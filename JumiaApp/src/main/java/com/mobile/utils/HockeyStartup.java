@@ -105,10 +105,9 @@ public class HockeyStartup {
     public static int checkSignatureForUpdate(Context context) {
         context = context.getApplicationContext();
         PackageManager pM = context.getPackageManager();
-        Signature signature = null;
+        Signature signature;
         try {
             signature  = pM.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES).signatures[0];
-            
         } catch (NameNotFoundException e) {
             Log.e(TAG, "Can't find signature for app", e );
             return RESULT_KEY_OTHER;

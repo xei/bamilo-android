@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
 <resources>
 
     <string name="account_name">ကြ်ႏု္ပ္၏ အေကာင့္</string>
@@ -257,7 +258,7 @@
     <string name="review_this_seller">ဤေရာင္းခ်သူအား ယခု ျပန္လည္သံုးသပ္ရန္!</string>
     <string name="reviews">သံုးသပ္ခ်က္မ်ား &#160;</string>
     <string name="reviews_empty">ဤပစၥည္းအား အမွတ္ေပးျခင္း မရွိေသးပါ</string>
-    <string name="reviews_empty_seller"></string>
+    <string name="reviews_empty_seller"/>
     <string name="same_product_from_other_sellers">အျခားေရာင္းခ်သူမ်ားထံမွ တူညီေသာကုန္ပစၥည္း</string>
     <string name="save_changes_label">ေျပာင္းလဲမႈမ်ားအားသိမ္းဆည္းမည္</string>
     <string name="save_label">သိမ္းဆည္းရန္</string>

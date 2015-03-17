@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
@@ -309,13 +308,13 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
 
     private void saveTextReview(DynamicForm form){
         if(form != null && form.getItemByKey(NAME) != null){
-            reviewName = form.getItemByKey(NAME).getValue().toString();
+            reviewName = form.getItemByKey(NAME).getValue();
         }
         if(form != null && form.getItemByKey(TITLE) != null){
-            reviewTitle = form.getItemByKey(TITLE).getValue().toString();
+            reviewTitle = form.getItemByKey(TITLE).getValue();
         }
         if(form != null && form.getItemByKey(COMMENT) != null){
-            reviewComment = form.getItemByKey(COMMENT).getValue().toString();
+            reviewComment = form.getItemByKey(COMMENT).getValue();
         }
     }
   
@@ -349,7 +348,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
 
         mReviewTitle.setText(R.string.review_this_seller);
 
-        ((Button) getView().findViewById(R.id.send_review)).setOnClickListener(this);
+        getView().findViewById(R.id.send_review).setOnClickListener(this);
 
     }
 
@@ -443,7 +442,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
                 buttonMessageText = getResources().getString(R.string.ok_label);
 
 
-            dialog_review_submitted = DialogGenericFragment.newInstance(false, true, false,
+            dialog_review_submitted = DialogGenericFragment.newInstance(false, true,
                     getString(R.string.submit_title),
                     getResources().getString(R.string.submit_text),
                     buttonMessageText,
@@ -471,7 +470,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
             return false;
         case GET_FORM_SELLER_REVIEW_EVENT:
             Log.i(TAG, "GET_FORM_SELLER_REVIEW_EVENT");
-            mSellerReviewForm = (Form) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            mSellerReviewForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             setReviewLayout(mSellerReviewForm);
             showFragmentContentContainer();
             return true;
@@ -646,7 +645,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
         
         for (int i = 1; i < ratingMap.size()+1; i++) {
            int rate =  (int)((RatingBar)ratingFormContainer.findViewById(i).findViewById(R.id.option_stars)).getRating();
-           String id =  ((RatingBar)ratingFormContainer.findViewById(i).findViewById(R.id.option_stars)).getTag().toString();
+           String id =  ratingFormContainer.findViewById(i).findViewById(R.id.option_stars).getTag().toString();
         
            String key =formName+"["+id+"]";
            values.put(key, rate);

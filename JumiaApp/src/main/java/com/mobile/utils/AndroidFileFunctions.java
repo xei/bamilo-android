@@ -30,7 +30,7 @@ public class AndroidFileFunctions {
         try {
             FileOutputStream fOut = new FileOutputStream(myFile, true);
             OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-            myOutWriter.append(value+"\n");
+            myOutWriter.append(value).append("\n");
             myOutWriter.close();
             fOut.close();
         } 

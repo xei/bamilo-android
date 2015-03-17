@@ -1,7 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
@@ -15,6 +13,8 @@ import com.mobile.framework.objects.Variation;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -36,7 +36,7 @@ public class ProductImagesAdapter extends BaseAdapter {
 	}
 
 	public static ArrayList<String> createImageList(ArrayList<Variation> items) {
-		ArrayList<String> images = new ArrayList<String>();
+		ArrayList<String> images = new ArrayList<>();
 		for (Variation var : items) {
 			images.add(var.getImage());
 		}

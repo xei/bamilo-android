@@ -3,12 +3,6 @@
  */
 package com.mobile.helpers.search;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +18,12 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.interfaces.IResponseCallback;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -85,7 +85,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
     private void getSearchSuggestionList(IResponseCallback requester) {
         Log.d(TAG, "ON GET_SEARCH_SUGGESTIONS_EVENT");
         
-        ArrayList<SearchSuggestion> suggestions = new ArrayList<SearchSuggestion>();
+        ArrayList<SearchSuggestion> suggestions = new ArrayList<>();
         try {
             suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
         } catch (InterruptedException e) {
@@ -136,7 +136,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "ON PARSE RESPONSE");
 
-        ArrayList<SearchSuggestion> suggestions = new ArrayList<SearchSuggestion>();
+        ArrayList<SearchSuggestion> suggestions = new ArrayList<>();
         
         // Get recent queries
         try {
@@ -176,7 +176,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         Log.d(TAG, "ON PARSE ERROR BUNDLE");
         
         // Get the recent queries 
-        ArrayList<SearchSuggestion> suggestions = new ArrayList<SearchSuggestion>();
+        ArrayList<SearchSuggestion> suggestions = new ArrayList<>();
         // Get recent queries
         try {
             if(TextUtils.isEmpty(mQuery)) suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();

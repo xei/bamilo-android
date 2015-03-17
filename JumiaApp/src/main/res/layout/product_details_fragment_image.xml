@@ -10,7 +10,8 @@
         android:id="@+id/product_image_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/pdv_image" 
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <FrameLayout
             android:id="@+id/product_detail_image_gallery_container"

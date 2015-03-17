@@ -55,7 +55,7 @@ public class FragmentController {
 
     private static FragmentController fragmentController;
     
-    private LinkedList<String> backStack = new LinkedList<String>();
+    private LinkedList<String> backStack = new LinkedList<>();
     
     /**
      * ##################### CONSTRUCTOR #####################
@@ -166,9 +166,8 @@ public class FragmentController {
      * Print all entries
      */
     public void printAllEntries(){
-        Iterator<String> iterator = backStack.iterator();
-        while (iterator.hasNext()) {
-            Log.d(TAG, "ENTRY: " + iterator.next());
+        for (String aBackStack : backStack) {
+            Log.d(TAG, "ENTRY: " + aBackStack);
         }
     }
     
@@ -518,7 +517,7 @@ public class FragmentController {
         
         Log.i(TAG, "FRAGMENT CONTROLLER: TRY RECOVER BACKSTACK!");
         
-        List<Fragment> orderedFragments = new ArrayList<Fragment>();
+        List<Fragment> orderedFragments = new ArrayList<>();
         if(originalFragments.size() > 0 && backstackTypes.size() > 0){
             for (int i = 0; i < backstackTypes.size(); i++) {
                 for (int j = 0; j < originalFragments.size(); j++) {

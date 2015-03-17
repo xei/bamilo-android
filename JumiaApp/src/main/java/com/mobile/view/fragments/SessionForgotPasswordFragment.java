@@ -223,7 +223,6 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         if (getView() == null) {
             Log.e(TAG, "NO VIEW - SWITCHING TO HOME");
             restartAllFragments();
-            // getActivity().finish();
             return;
         }
         container = (LinearLayout) getView().findViewById(R.id.form_container);
@@ -250,7 +249,6 @@ public class SessionForgotPasswordFragment extends BaseFragment {
 
         showFragmentContentContainer();
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        // ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         switch (eventType) {
         case INIT_FORMS:
@@ -384,6 +382,5 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     @Override
     protected void onRetryRequest(EventType eventType) {
         onResume();
-        
     }
 }

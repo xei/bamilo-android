@@ -70,7 +70,6 @@ public abstract class BaseHelper {
             Boolean success = jsonObject.optBoolean(JSONConstants.JSON_SUCCESS_TAG, false);
 
             if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
-                success = true;
                 return parseResponseBundle(bundle, jsonObject);
             }
 

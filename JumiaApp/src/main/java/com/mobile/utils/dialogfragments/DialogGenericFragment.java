@@ -98,7 +98,10 @@ public class DialogGenericFragment extends DialogFragment {
      */
     public static DialogGenericFragment newInstance(Boolean main_text,
                                                     Boolean secondary_text,
-                                                    String title, String content, String button1_title, String button2_title,
+                                                    String title,
+                                                    String content,
+                                                    String button1_title,
+                                                    String button2_title,
                                                     String button3_title, OnClickListener click) {
 
         Log.d(TAG, "NEW INSTANCE: 3 Buttons");

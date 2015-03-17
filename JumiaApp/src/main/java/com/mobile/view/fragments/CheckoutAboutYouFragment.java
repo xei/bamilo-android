@@ -1049,7 +1049,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                 // Clear credentials case auto login failed
                 clearCredentials();
                 // Validate type
-                String type = (eventType == EventType.FACEBOOK_LOGIN_EVENT) ? type = GTMValues.FACEBOOK : GTMValues.EMAILAUTH;
+                String type = (eventType == EventType.FACEBOOK_LOGIN_EVENT) ? GTMValues.FACEBOOK : GTMValues.EMAILAUTH;
                 TrackerDelegator.trackLoginFailed(onAutoLogin, GTMValues.CHECKOUT, type);
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
 

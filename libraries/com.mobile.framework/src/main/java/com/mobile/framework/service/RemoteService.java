@@ -20,16 +20,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import de.akquinet.android.androlog.Log;
 
 public class RemoteService extends Service {
     
-    private static final String TAG=RemoteService.class.getSimpleName();
+    private static final String TAG = RemoteService.class.getSimpleName();
+
     public static RemoteCallbackList<IRemoteServiceCallback> mCallbacks = new RemoteCallbackList<>();
 
     //Thread pool manager
@@ -43,6 +42,7 @@ public class RemoteService extends Service {
 
     private static final int DEFAULT_KEEP_ALIVE = 1; // 10
 
+    /*
     private static final ThreadFactory DEFAULT_THREAD_FACTORY = new ThreadFactory() {
         private final AtomicInteger counter = new AtomicInteger(0);
 
@@ -50,12 +50,13 @@ public class RemoteService extends Service {
             return new Thread(runnable, "RemoteService # " + counter.incrementAndGet());
         }
     };
+    */
 
     @Override
     public void onCreate(){
         super.onCreate();
-        tpe = new TestThreadPoolExecutor(INIT_NUMBER_OF_THREADS, MAX_NUMBER_OF_THREADS, DEFAULT_KEEP_ALIVE, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>();
-        tpe.setThreadFactory(DEFAULT_THREAD_FACTORY);
+        tpe = new TestThreadPoolExecutor(INIT_NUMBER_OF_THREADS, MAX_NUMBER_OF_THREADS, DEFAULT_KEEP_ALIVE, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+        //tpe.setThreadFactory(DEFAULT_THREAD_FACTORY);
     }
     @Override
     public int onStartCommand(Intent intent,int flags,int startId){
@@ -85,27 +86,19 @@ public class RemoteService extends Service {
         
         @Override
         public void sendRequest(Bundle bundle) throws RemoteException {
-            // TODO Auto-generated method stub
             RequestWorker request = new RequestWorker(bundle, mHandler, getApplicationContext());
             tpe.execute(request);
-
-            Log.i(TAG,"THREAD POOL "+tpe.getActiveCount());
-
-
+            //Log.i(TAG,"THREAD POOL "+tpe.getActiveCount());
         }
 
         @Override
         public void registerCallback(IRemoteServiceCallback cb) throws RemoteException {
-            // TODO Auto-generated method stub
             mCallbacks.register(cb);
-            
         }
 
         @Override
         public void unregisterCallback(IRemoteServiceCallback cb) throws RemoteException {
-            // TODO Auto-generated method stub
             mCallbacks.unregister(cb);
-            
         }
     };
     

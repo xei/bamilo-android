@@ -1,11 +1,11 @@
 package com.mobile.utils;
 
-import java.util.ArrayList;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.mobile.framework.objects.CompleteProduct;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -44,8 +44,8 @@ public class FragmentCommunicatorForProduct {
     }
     
     private FragmentCommunicatorForProduct(){
-        mFragmentsCallback = new ArrayList<OnActivityFragmentInteraction>();
-        mFragmentsCallbackNames = new ArrayList<String>();
+        mFragmentsCallback = new ArrayList<>();
+        mFragmentsCallbackNames = new ArrayList<>();
     }
     
     public void startFragmentsCallBacks(Fragment... mFragments){
@@ -53,8 +53,8 @@ public class FragmentCommunicatorForProduct {
          // This makes sure that the container activity has implemented
             // the callback interface. If not, it throws an exception
             try {
-                this.mFragmentsCallback.add((OnActivityFragmentInteraction) fragment);
-                this.mFragmentsCallbackNames.add(fragment.toString());
+                mFragmentsCallback.add((OnActivityFragmentInteraction) fragment);
+                mFragmentsCallbackNames.add(fragment.toString());
                 Log.i(TAG, "register fragment : "+fragment.toString());
             } catch (ClassCastException e) {
                 throw new ClassCastException(fragment.toString()

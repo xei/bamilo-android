@@ -3,12 +3,6 @@
  */
 package com.mobile.helpers.address;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -20,6 +14,12 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.utils.JSONConstants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -53,7 +53,7 @@ public class GetCitiesHelper extends BaseHelper {
         int region = bundle.getInt(REGION_ID_TAG);
         // Get action
         String action = bundle.getString(Constants.BUNDLE_URL_KEY);
-        if(TextUtils.isEmpty(action)) action = EVENT_TYPE.action.toString();
+        if(TextUtils.isEmpty(action)) action = EVENT_TYPE.action;
 
         // Validate action
         if(action.contains("fk_customer_address_region")) action = action.replace("fk_customer_address_region", "" + region);
@@ -78,7 +78,7 @@ public class GetCitiesHelper extends BaseHelper {
         Log.d(TAG, "RESPONSE: " + jsonObject.toString());
         try {
             // Regions
-            ArrayList<AddressCity> cities = new ArrayList<AddressCity>();
+            ArrayList<AddressCity> cities = new ArrayList<>();
             // For each item
             JSONArray jsonArray = jsonObject.getJSONArray(JSONConstants.JSON_DATA_TAG);
             for (int i = 0; i < jsonArray.length(); i++) {

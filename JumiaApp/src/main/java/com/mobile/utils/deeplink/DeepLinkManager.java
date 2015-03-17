@@ -81,7 +81,7 @@ public class DeepLinkManager {
         }
         
         //transform int arraylist in order to be able to excute a remove operation
-        ArrayList<String> segmentAux = new ArrayList<String>(segments);
+        ArrayList<String> segmentAux = new ArrayList<>(segments);
         Log.d(TAG, "DEEP LINK SEGMENTS: " + segmentAux.toString());
         //if the deep link is from google app indexing the first element will be JUMIA value
         if(segmentAux.get(PATH_CC_POS).equalsIgnoreCase(context.getString(R.string.dp_app_name_uppercase))){
@@ -329,7 +329,7 @@ public class DeepLinkManager {
     private static Bundle processCartLink(List<String> segments) {
         Log.i(TAG, "DEEP LINK TO CART");
         // Default link 
-        String simpleSkuArray = null;
+        String simpleSkuArray;
         FragmentType fragmentType = FragmentType.SHOPPING_CART;
         Bundle bundle = new Bundle();
         // Validate if has multiple SKUs

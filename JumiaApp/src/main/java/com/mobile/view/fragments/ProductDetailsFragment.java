@@ -146,14 +146,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private static String SELECTED_SIMPLE_POSITION = "selected_simple_position";
 
-    public final static String LOADING_PRODUCT_KEY = "loading_product_key";
-
-    public final static String LOADING_PRODUCT = "loading_product";
-
-    public final static String PRODUCT_COMPLETE = "complete_product";
-
-    public final static String PRODUCT_CATEGORY = "product_category";
-
     public final static String PRODUCT_BUNDLE = "product_bundle";
 
     private Context mContext;
@@ -287,6 +279,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public static final String SELLER_ID = "sellerId";
 
     private View mWizardContainer;
+
+    private View mSellerDeliveryContainer;
 
     /**
      * Empty constructor
@@ -561,6 +555,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mSellerRatingContainer.setOnClickListener(this);
         mSellerRatingValue = (TextView) view.findViewById(R.id.product_detail_product_seller_rating_count);
         mSellerDeliveryTime = (TextView) view.findViewById(R.id.product_detail_seller_delivery_time);
+        mSellerDeliveryContainer = view.findViewById(R.id.delivery_time_container);
         mSellerRating = (RatingBar) view.findViewById(R.id.product_detail_product_seller_rating);
         sellerView.setVisibility(View.GONE);
 
@@ -1044,7 +1039,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * function responsible for showing the seller info
      */
     public void displaySellerInfo() {
-
         if (mCompleteProduct.hasSeller()) {
             sellerView.setVisibility(View.VISIBLE);
             mSellerName.setText(mCompleteProduct.getSeller().getName());
@@ -1053,21 +1047,23 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 rating = getString(R.string.string_rating).toLowerCase();
             mSellerRatingValue.setText(mCompleteProduct.getSeller().getRatingCount() + " " + rating);
             mSellerRating.setRating(mCompleteProduct.getSeller().getRatingValue());
+            //
+            int visibility = View.GONE;
             if(CollectionUtils.isNotEmpty(mCompleteProduct.getSimples()) &&
+                    mCompleteProduct.getSimples().get(0).hasAttributeByKey(ProductSimple.MIN_DELIVERY_TIME_TAG) &&
+                    mCompleteProduct.getSimples().get(0).hasAttributeByKey(ProductSimple.MAX_DELIVERY_TIME_TAG) &&
                     !mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MIN_DELIVERY_TIME_TAG).equals("0") &&
-                    !mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MAX_DELIVERY_TIME_TAG).equals("0") ) {
-                getView().findViewById(R.id.delivery_time_container).setVisibility(View.VISIBLE);
-                mSellerDeliveryTime.setText(mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MIN_DELIVERY_TIME_TAG) + " - "
-                        + mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MAX_DELIVERY_TIME_TAG)
-                        + " " + getResources().getString(R.string.product_delivery_days));
-            } else {
-                getView().findViewById(R.id.delivery_time_container).setVisibility(View.GONE);
+                    !mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MAX_DELIVERY_TIME_TAG).equals("0")) {
+                //
+                String min = mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MIN_DELIVERY_TIME_TAG);
+                String max = mCompleteProduct.getSimples().get(0).getAttributeByKey(ProductSimple.MAX_DELIVERY_TIME_TAG);
+                mSellerDeliveryTime.setText(min + " - " + max + " " + getString(R.string.product_delivery_days));
+                visibility = View.VISIBLE;
             }
-
+            mSellerDeliveryContainer.setVisibility(visibility);
         } else {
             sellerView.setVisibility(View.GONE);
         }
-
     }
 
     public void updateVariants() {

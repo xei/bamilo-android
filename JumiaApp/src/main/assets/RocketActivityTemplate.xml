@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="false" context="java" deleted="false" description="A Rocket Template for Activity that extends MyActivity and implements IEventListenerr" enabled="true" name="RocketActivity">package ${enclosing_package};
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--suppress XmlUnboundNsPrefix -->
+<templates><template autoinsert="false" context="java" deleted="false" description="A Rocket Template for Activity that extends MyActivity and implements IEventListenerr" enabled="true" name="RocketActivity">package ${enclosing_package};
 
 import android.app.Activity;
 import android.content.Context;

@@ -3,12 +3,6 @@
  */
 package com.mobile.helpers.account;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.Bundle;
@@ -21,6 +15,12 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -95,7 +95,7 @@ public class GetMyOrdersListHelper extends BaseHelper {
             
             int totalOrders = jsonObject.optInt(RestConstants.JSON_ORDER_TOTAL_NUM_TAG, -1);
             Log.d(TAG, "ORDERS TOTAL: " + totalOrders);
-            ArrayList<Order> orders = new ArrayList<Order>();
+            ArrayList<Order> orders = new ArrayList<>();
             // Get order history
             JSONArray ordersArray = jsonObject.optJSONArray(RestConstants.JSON_ORDERS_TAG);
             if (null != ordersArray && ordersArray.length() > 0)

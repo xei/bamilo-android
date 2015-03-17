@@ -4,7 +4,6 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,8 +43,6 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     public final static int POSITION_EMAIL = 2;
     
     public final static int POSITION_SHARE_APP = 0;
-    
-    private static MyAccountFragment myAccountFragment;
     
     private ListView optionsList;
     
@@ -91,9 +88,6 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        
-        // Retain this fragment across configuration changes.
-        setRetainInstance(true);
     }
     
     /*
@@ -161,15 +155,6 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     public void onDestroyView() {
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY");
-        
-        // FIXME : The next lines try fix this bug 
-        // java.lang.IllegalStateException: The specified child already has a parent. You must call removeView() on the child's parent first.
-        View view = getView();
-        if (view != null) {
-            unbindDrawables(view);
-        }
-        
-        System.gc();
     }
     
     /**
@@ -194,9 +179,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
      */
     private void showAppSharing(View view) {
         appSharingList = (ListView)view.findViewById(R.id.middle_app_sharing_list);
-        
         appSharingList.setAdapter(new AppSharingAdapter(getActivity(), getResources().getStringArray(R.array.app_sharing_array)));
-        
         appSharingList.setOnItemClickListener(this);
     }
     
@@ -216,7 +199,6 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     /**
      *  Handles the item click of childs of options list.
      *
-     * @param id
      * @param position
      */
     private void handleOnOptionsListItemClick(int position) {
@@ -245,30 +227,24 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     /**
      *  Handles the item click of childs of app sharing list.
      *
-     * @param id
      * @param position
      */
     private void handleOnAppSharingListItemClick(int position) {
         switch (position) {
         case POSITION_SHARE_APP:
-            Resources resources = getResources();
-            
-            String text = "";
+            String text;
             String preText = getString(R.string.install_jumia_android, getString(R.string.app_name_placeholder));
-            if(resources.getBoolean(R.bool.is_bamilo_specific)){
+            if(getResources().getBoolean(R.bool.is_bamilo_specific)){
                 text = getString(R.string.share_app_link) + " " + preText;
             } else {
                 text = preText + " " + getString(R.string.share_app_link);
             }
-            
-            ActivitiesWorkFlow.startActivitySendString(getBaseActivity(), resources.getString(R.string.share_the_app), text) ;
+            ActivitiesWorkFlow.startActivitySendString(getBaseActivity(), getString(R.string.share_the_app), text) ;
             break;
         default:
             break;
         }
-      
-        AnalyticsGoogle.get().trackShareApp(TrackingEvent.SHARE_APP, 
-                (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId()+"":"");
+        AnalyticsGoogle.get().trackShareApp(TrackingEvent.SHARE_APP, (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId()+"":"");
     }
 
     /**

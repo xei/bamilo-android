@@ -3,12 +3,6 @@
  */
 package com.mobile.helpers.search;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -20,6 +14,12 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -65,7 +65,7 @@ public class GetSearchCategoryHelper extends BaseHelper {
         	Log.d("TRACK", "parseResponseBundle GetCategoriesHelper");
         	JSONArray categoriesArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
             int categoriesArrayLenght = categoriesArray.length();
-            ArrayList<Category> categories = new ArrayList<Category>();
+            ArrayList<Category> categories = new ArrayList<>();
             for (int i = 0; i < categoriesArrayLenght; ++i) {
                 JSONObject categoryObject = categoriesArray.getJSONObject(i);
                 Category category = new Category();

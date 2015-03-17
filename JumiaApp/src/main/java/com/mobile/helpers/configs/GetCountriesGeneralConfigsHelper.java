@@ -4,13 +4,6 @@
  */
 package com.mobile.helpers.configs;
 
-import java.net.URLDecoder;
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -30,6 +23,13 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.view.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URLDecoder;
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -70,7 +70,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.i(TAG, "ON PARSE RESPONSE");
         
-        ArrayList<CountryObject> mCountries = new ArrayList<CountryObject>();
+        ArrayList<CountryObject> mCountries = new ArrayList<>();
         JSONObject metadataJsonObject = jsonObject.optJSONObject(RestConstants.JSON_METADATA_TAG);        
         JSONArray sessionJSONArray = null;
         if (null != metadataJsonObject) {
@@ -110,7 +110,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Editor mEditor = sharedPrefs.edit();
         mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
-        mEditor.commit();
+        mEditor.apply();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_GLOBAL_CONFIGURATIONS);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, mCountries);        
         return bundle;
@@ -123,7 +123,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "parseErrorBundle GetCountriesGeneralConfigsHelper");
-        ArrayList<CountryObject> mCountries = new ArrayList<CountryObject>();
+        ArrayList<CountryObject> mCountries = new ArrayList<>();
         // Gets the previous Countries list
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         mCountries = JumiaApplication.INSTANCE.countriesAvailable;
@@ -132,7 +132,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
             SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor mEditor = sharedPrefs.edit();
             mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
-            mEditor.commit();
+            mEditor.apply();
             bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_GLOBAL_CONFIGURATIONS);
             bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, mCountries);
         }
@@ -148,7 +148,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        ArrayList<CountryObject> mCountries = new ArrayList<CountryObject>();
+        ArrayList<CountryObject> mCountries = new ArrayList<>();
         // Gets the previous Countries list
         JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         mCountries = JumiaApplication.INSTANCE.countriesAvailable;
@@ -157,7 +157,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
             SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor mEditor = sharedPrefs.edit();
             mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
-            mEditor.commit();
+            mEditor.apply();
             bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_GLOBAL_CONFIGURATIONS);
             bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, mCountries);
         }
@@ -179,7 +179,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         try {
             Context context = JumiaApplication.INSTANCE.getApplicationContext();
             if(context.getResources().getBoolean(R.bool.is_to_show_dev_env)){
-                ArrayList<CountryObject> stagingServers = new ArrayList<CountryObject>();
+                ArrayList<CountryObject> stagingServers = new ArrayList<>();
                 for (CountryObject countryObject : mCountries) {
                     
                     // Add Integration

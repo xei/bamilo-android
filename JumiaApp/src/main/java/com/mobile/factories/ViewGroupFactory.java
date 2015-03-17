@@ -11,7 +11,7 @@ public class ViewGroupFactory {
     private HashMap<Integer, View> views;
 
     public ViewGroupFactory(ViewGroup viewGroup) {
-        views = new HashMap<Integer, View>();
+        views = new HashMap<>();
         if (viewGroup != null) {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 View child = viewGroup.getChildAt(i);
@@ -21,7 +21,7 @@ public class ViewGroupFactory {
     }
 
     public ViewGroupFactory(View... args) {
-        views = new HashMap<Integer, View>();
+        views = new HashMap<>();
         for (View child : args) {
             if (child != null) {
                 views.put(child.getId(), child);

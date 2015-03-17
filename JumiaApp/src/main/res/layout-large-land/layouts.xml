@@ -1,6 +1,9 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <bool name="isTablet">true</bool>
+    <bool
+        name="isTablet"
+        tools:ignore="ExtraText">true</bool>
+
     <string name="orientation">unspecified</string>
 
 </resources>

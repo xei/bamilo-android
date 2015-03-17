@@ -309,7 +309,6 @@ public class JumiaApplication extends A4SApplication {
 
         Log.d("TRACK", "sendRequest");
         new Thread(new Runnable() {
-
             @Override
             public void run() {
                 
@@ -362,7 +361,6 @@ public class JumiaApplication extends A4SApplication {
                     /*-bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
                     responseCallback.onRequestError(bundle);*/
                 }
-                
             }
         }).start();
 

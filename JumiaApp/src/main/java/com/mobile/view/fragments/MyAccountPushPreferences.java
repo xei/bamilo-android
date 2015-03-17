@@ -17,7 +17,6 @@ public class MyAccountPushPreferences extends PreferenceListFragment {
      */
     public MyAccountPushPreferences() {
         super(R.xml.preferences_push);
-        this.setRetainInstance(true);
     }
     
 }

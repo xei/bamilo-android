@@ -144,7 +144,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends BaseHelper {
      * @return Array of products sku's
      */
     protected ArrayList<String> checkAddedProducts(JSONObject sucessObject) {
-        ArrayList<String> added = new ArrayList<String>();
+        ArrayList<String> added = new ArrayList<>();
         Iterator<?> keys = sucessObject.keys();
 
         while (keys.hasNext()) {
@@ -159,7 +159,7 @@ public class GetShoppingCartAddMultipleItemsHelper extends BaseHelper {
      * @return Array of products sku's
      */
     protected ArrayList<String> checkNotAddedProducts(JSONObject errorObject) {
-        ArrayList<String> notAdded = new ArrayList<String>();
+        ArrayList<String> notAdded = new ArrayList<>();
         Iterator<?> keys = errorObject.keys();
 
         while (keys.hasNext()) {

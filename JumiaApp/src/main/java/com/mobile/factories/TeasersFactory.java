@@ -598,6 +598,17 @@ public class TeasersFactory {
             // Load image
             RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, placeHolder, new RocketImageLoaderListener() {
 
+
+                @Override
+                public void onLoadedCancel() {
+                    // ...
+                }
+
+                @Override
+                public void onLoadedError() {
+                    // ...
+                }
+
                 @Override
                 public void onLoadedSuccess(String url, Bitmap bitmap) {
                     if (resize) {

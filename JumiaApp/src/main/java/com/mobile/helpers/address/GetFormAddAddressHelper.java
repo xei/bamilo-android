@@ -73,7 +73,7 @@ public class GetFormAddAddressHelper extends BaseHelper {
         //Log.d(TAG, "PARSE BUNDLE: " + jsonObject.toString());
         Log.i(TAG, "PARSE BUNDLE");
         
-        final ArrayList<Form> forms = new ArrayList<Form>();
+        final ArrayList<Form> forms = new ArrayList<>();
         JSONArray dataObject;
         try {
             dataObject = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);

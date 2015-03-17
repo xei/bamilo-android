@@ -94,8 +94,18 @@ public class ProductSimple implements IJSONSerializable, Parcelable {
     }
     
     public String getAttributeByKey( String key ) {
-    	return attributes.get( key );
+    	return attributes.get(key);
     }
+
+    /**
+     * Validate if current object has the attribute.
+     * @param key The attribute key
+     * @return true or false
+     */
+    public boolean hasAttributeByKey(String key) {
+        return attributes.containsKey(key);
+    }
+
     
     /**
      * Set the attributes

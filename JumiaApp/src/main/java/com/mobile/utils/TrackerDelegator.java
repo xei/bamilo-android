@@ -34,7 +34,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -322,9 +321,7 @@ public class TrackerDelegator {
         }
         
         if (ratingValues != null && ratingValues.size() > 0) {
-            Iterator<Entry<String, Long>> it = ratingValues.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<String, Long> pairs = it.next();
+            for (Entry<String, Long> pairs : ratingValues.entrySet()) {
                 // GA
                 AnalyticsGoogle.get().trackRateProduct(sContext, product.getSku(), pairs.getValue(), pairs.getKey());
                 // FB
@@ -663,13 +660,13 @@ public class TrackerDelegator {
     public static void storeSignupProcess(Customer customer) {
         Log.d(TAG, "storing signup tags");
         SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
-        prefs.edit().putString(SIGNUP_KEY_FOR_LOGIN, customer.getEmail()).putString(SIGNUP_KEY_FOR_CHECKOUT, customer.getEmail()).commit();
+        prefs.edit().putString(SIGNUP_KEY_FOR_LOGIN, customer.getEmail()).putString(SIGNUP_KEY_FOR_CHECKOUT, customer.getEmail()).apply();
     }
     
     public static void removeFirstCustomer(Customer customer) {
         Log.d(TAG, "remove first customer");
         SharedPreferences prefs = sContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
-        prefs.edit().putBoolean(customer.getEmail(),false).commit();
+        prefs.edit().putBoolean(customer.getEmail(),false).apply();
     }
 
     public static void storeFirstCustomer(Customer customer) {
@@ -679,7 +676,7 @@ public class TrackerDelegator {
         boolean isNewCustomer = prefs.getBoolean(customer.getEmail(), true);
         if (isNewCustomer) {
             Log.d(TAG, "store first customer1");
-            prefs.edit().putBoolean(customer.getEmail(),true).commit();
+            prefs.edit().putBoolean(customer.getEmail(),true).apply();
         }
         
     }
@@ -696,7 +693,7 @@ public class TrackerDelegator {
             return false;
         }
 
-        prefs.edit().remove(SIGNUP_KEY_FOR_LOGIN).commit();
+        prefs.edit().remove(SIGNUP_KEY_FOR_LOGIN).apply();
         return true;
     }
 
@@ -1208,7 +1205,7 @@ public class TrackerDelegator {
             editor.putLong(LAST_SESSION_SAVED, currentTimeStamp);
             sessionCount++;
             editor.putInt(SESSION_COUNTER, sessionCount);
-            editor.commit();
+            editor.apply();
 
         } else {
             Log.i("TIME", " STILL TICKING");
@@ -1241,7 +1238,7 @@ public class TrackerDelegator {
         SharedPreferences settings = sContext.getSharedPreferences(AdjustTracker.ADJUST_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(AdjustTracker.PURCHASE_NUMBER, 0);
-        editor.commit();
+        editor.apply();
     }  
     
 //    private static void saveUtmParams(Context context, String key, String value) {

@@ -63,7 +63,7 @@ public class WizardPreferences {
         default:
             break;
         }
-        editor.commit();
+        editor.apply();
     }
 
     /**
