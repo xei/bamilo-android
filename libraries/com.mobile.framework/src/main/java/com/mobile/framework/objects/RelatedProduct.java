@@ -45,11 +45,19 @@ public class RelatedProduct extends LastViewed{
             setPriceAsDouble(Double.parseDouble(priceJson));
             setPrice(CurrencyFormatter.formatCurrency(priceJson));
 
+            double specialPrice = relatedProductJsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG, 0d);
+            setSpecialPriceDouble(specialPrice);
+            setSpecialPrice(CurrencyFormatter.formatCurrency(String.valueOf(specialPrice)));
+
             String priceEuroConvertedJson = relatedProductJsonObject.getString(RestConstants.JSON_PRICE_CONVERTED_TAG);
             if (!CurrencyFormatter.isNumber(priceEuroConvertedJson)) {
                 throw new JSONException("Price converted is not a number!");
             }
             setPriceConverted(Double.parseDouble(priceEuroConvertedJson));
+
+            double specialPriceEuroConverted = relatedProductJsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
+            setSpecialPriceConverted(specialPriceEuroConverted);
+
 
             JSONArray categoriesJsonArray = relatedProductJsonObject.getJSONArray(RestConstants.JSON_CATEGORIES_TAG);
             if(categoriesJsonArray !=null){

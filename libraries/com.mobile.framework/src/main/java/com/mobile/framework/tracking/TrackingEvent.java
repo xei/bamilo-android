@@ -133,7 +133,9 @@ public enum TrackingEvent {
 	
 	ADD_OFFER_TO_CART(R.string.gcatalog, R.string.gAddSellerToCart),
 	
-	SHARE_APP(R.string.gaccount,R.string.gShareApp)
+	SHARE_APP(R.string.gaccount,R.string.gShareApp),
+
+    ACCOUNT_CREATE_ADDRESS(R.string.gaccount, R.string.gAccountCreateAddress);
 	
 	;
 	

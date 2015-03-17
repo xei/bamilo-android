@@ -397,9 +397,7 @@ public class TrackerDelegator {
     /**
      * Track Checkout Step
      * 
-     * @param sContext
-     * @param result
-     * @param customer
+     * @param params
      */
     public static void trackCheckoutStep(Bundle params) {
 
@@ -443,9 +441,7 @@ public class TrackerDelegator {
     /**
      * Track Payment Method
      * 
-     * @param sContext
-     * @param email
-     * @param payment
+     * @param params
      */
     public static void trackPaymentMethod(Bundle params) {
         String email = params.getString(EMAIL_KEY);
@@ -711,8 +707,7 @@ public class TrackerDelegator {
 
     /**
      * Tracking the continue shopping
-     * 
-     * @param sContext
+     *
      * @param userId
      */
     public static void trackCheckoutContinueShopping(String userId) {
@@ -722,8 +717,7 @@ public class TrackerDelegator {
 
     /**
      * Tracking the start of checkout
-     * 
-     * @param sContext
+     *
      * @param userId
      */
     public static void trackCheckoutStart(TrackingEvent event, String userId, int cartQt, double cartValue) {
@@ -740,8 +734,7 @@ public class TrackerDelegator {
     /**
      * Tracking a timing
      * 
-     * @param location
-     * @param start
+     * @param params
      */
     public static void trackLoadTiming(Bundle params) {
         int location = params.getInt(LOCATION_KEY);
@@ -780,8 +773,7 @@ public class TrackerDelegator {
 
     /**
      * Tracking a product added to cart
-     * 
-     * @param sContext
+     *
      * @param bundle
      */
     public static void trackProductAddedToCart(Bundle bundle) {
@@ -825,8 +817,7 @@ public class TrackerDelegator {
 
     /**
      * Tracking a complete product
-     * 
-     * @param sContext
+     *
      * @param bundle
      */
     public static void trackProduct(Bundle bundle) {
@@ -880,7 +871,7 @@ public class TrackerDelegator {
     /**
      * Track when the user views the favorites page (with the products)
      * 
-     * @param favorites
+     * @param args
      */
     public static void trackViewFavorites(Bundle args) {
         Bundle bundle = new Bundle();
@@ -901,7 +892,8 @@ public class TrackerDelegator {
      * Tracking add product to favorites
      * 
      * @param productSku
-     * @param price 
+     * @param productBrand
+     * @param productPrice
      */
     public static void trackAddToFavorites(String productSku, String productBrand, double productPrice, 
             double averageRating, double productDiscount, boolean fromCatalog, ArrayList<String> categories) {
@@ -944,6 +936,7 @@ public class TrackerDelegator {
     /**
      * Tracking remove product from favorites
      * h375id
+     *
      * @param productSku
      */
     public static void trackRemoveFromFavorites(String productSku, double price, double averageRatingTotal) {
@@ -986,9 +979,7 @@ public class TrackerDelegator {
     /**
      * Tracking a catalog filter
      * 
-     * @param mCatalogFilterValues
-     * @param searchQuery
-     * @param searchQuery
+     * @param catalogFilterValues
      */
     public static void trackCatalogFilter(ContentValues catalogFilterValues) {
         // GA
@@ -1014,9 +1005,7 @@ public class TrackerDelegator {
     /**
      * Tracking a catalog Sort
      * 
-     * @param mCatalogSortValues
-     * @param searchQuery
-     * @param searchQuery
+     * @param sortType
      */
     public static void trackCatalogSorter(String sortType) {
         // GTM

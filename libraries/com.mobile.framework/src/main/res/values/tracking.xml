@@ -101,6 +101,7 @@
     <string name="gAddBundleToCart">BundleAddToCart</string>
     <string name="gAddSellerToCart">SellerAddToCart</string>
     <string name="gShareApp">ShareApp</string>
+    <string name="gAccountCreateAddress">AccountCreateAddress</string>
 
     <!-- Checkout Steps -->
     <string name="gNativeCheckout">NativeCheckout</string>
