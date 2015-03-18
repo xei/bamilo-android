@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+    <ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,7 +25,7 @@
             android:layout_centerHorizontal="true"
             android:text="@string/section_title_account" />
 
-        <ListView
+        <com.mobile.components.FullSizeListView
             android:id="@+id/middle_myaccount_list"
             android:layout_width="@dimen/inner_container_width"
             android:layout_height="wrap_content"
@@ -78,7 +83,7 @@
             style="@style/rounded_box_title_grey"
             android:text="@string/app_social" />
 
-        <ListView
+        <com.mobile.components.FullSizeListView
             android:id="@+id/middle_app_sharing_list"
             android:layout_width="@dimen/inner_container_width"
             android:layout_height="wrap_content"
@@ -93,3 +98,4 @@
     </RelativeLayout>
 
 </LinearLayout>
+</ScrollView>
