@@ -95,7 +95,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private int mNumberOfColumns;
 
-    private boolean noResults = false;
+    private boolean noFilterResults = false;
     /**
      * Create and return a new instance.
      *
@@ -151,7 +151,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mCurrentFilterValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES);
             mBrandQuery = savedInstanceState.getString(ConstantsIntentExtra.CATALOG_FILTER_BRAND);
             mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
-            noResults = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_NO_RESULTS);
+            noFilterResults = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_NO_FILTER_RESULTS);
         }
     }
 
@@ -227,7 +227,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         outState.putParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES, mCurrentFilterValues);
         outState.putString(ConstantsIntentExtra.CATALOG_FILTER_BRAND, mBrandQuery);
         outState.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort.ordinal());
-        outState.putBoolean(ConstantsIntentExtra.CATALOG_NO_RESULTS ,noResults);
+        outState.putBoolean(ConstantsIntentExtra.CATALOG_NO_FILTER_RESULTS, noFilterResults);
     }
 
     /*
@@ -283,12 +283,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case URL or QUERY is empty show continue shopping
         if (TextUtils.isEmpty(mCatalogUrl) && TextUtils.isEmpty(mSearchQuery)) {
             showContinueShopping();
-        } else if(noResults){
-            showFilterNoResult();
         }
         // Case catalog is null get catalog from URL
         else if (mCatalogPage == null) {
             triggerGetPaginatedCatalog();
+        }
+        // Case filter applied and no results
+        else if(noFilterResults){
+            showFilterNoResult();
         }
         // Case catalog was recover
         else {
@@ -778,7 +780,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         CatalogPage catalogPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         // Case valid success response
         if (catalogPage != null && catalogPage.hasProducts()) {
-            noResults = false;
+            noFilterResults = false;
             Log.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
             onUpdateCatalogContainer(catalogPage);
         }
@@ -812,7 +814,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case error on request data with filters
         else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && mCurrentFilterValues != null && mCurrentFilterValues.size() > 0) {
             Log.i(TAG, "ON SHOW FILTER NO RESULT");
-            noResults = true;
+            noFilterResults = true;
             showFilterNoResult();
         }
         // Case error on request data without filters
