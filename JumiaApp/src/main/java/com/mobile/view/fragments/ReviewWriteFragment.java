@@ -2,6 +2,8 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,10 +19,13 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.constants.FormConstants;
+import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.forms.Form;
+import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Customer;
@@ -98,11 +103,11 @@ public class ReviewWriteFragment extends BaseFragment {
     private boolean nestedFragment = true;
     
     private ContentValues formValues;
-    
-    private String reviewName = "";
-    private String reviewTitle = "";
-    private String reviewComment = "";
-    
+
+    private SharedPreferences mSharedPrefs;
+
+    private HashMap<String,String> mFormReviewValues = new HashMap<>();
+
     /**
      * Get instance
      * 
@@ -159,12 +164,6 @@ public class ReviewWriteFragment extends BaseFragment {
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
             reviewForm =  JumiaApplication.INSTANCE.reviewForm;
             isShowingRatingForm = savedInstanceState.getBoolean(SHOWING_FORM);
-            if(savedInstanceState.containsKey(NAME))
-                reviewName = savedInstanceState.getString(NAME);
-            if(savedInstanceState.containsKey(TITLE))
-                reviewTitle = savedInstanceState.getString(TITLE);
-            if(savedInstanceState.containsKey(COMMENT))
-                reviewComment = savedInstanceState.getString(COMMENT);
         } 
     }
 
@@ -181,6 +180,7 @@ public class ReviewWriteFragment extends BaseFragment {
         JumiaApplication.setIsSellerReview(false);
         ratingContainer = (LinearLayout) view.findViewById(R.id.form_rating_container);
         mainContainer = view.findViewById(R.id.product_rating_container);
+
     }
 
     /*
@@ -193,6 +193,17 @@ public class ReviewWriteFragment extends BaseFragment {
         super.onStart();
         Log.i(TAG, "ON START");
         
+    }
+
+    /**
+     * set control flag to know which form is showing
+     */
+    private void setRatingReviewFlag(){
+        if(!getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
+            isShowingRatingForm = false;
+        } else if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && !getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
+            isShowingRatingForm = true;
+        }
     }
 
     /*
@@ -216,7 +227,8 @@ public class ReviewWriteFragment extends BaseFragment {
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
             reviewForm =  JumiaApplication.INSTANCE.reviewForm;
         }
-     // Validate is service is available
+        setRatingReviewFlag();
+        // Validate is service is available
         if (JumiaApplication.mIsBound) {
             // load complete product URL
             if (mCompleteProductUrl.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)) {
@@ -232,7 +244,7 @@ public class ReviewWriteFragment extends BaseFragment {
                 /* Commented due to unnecessary data being fetched
                 triggerAutoLogin();
                 triggerCustomer();*/
-                if(ratingForm != null && reviewForm != null){
+                if(ratingForm != null || reviewForm != null){
                     loadReviewAndRatingFormValues();
                     if(isShowingRatingForm){
                         setRatingLayout(ratingForm);
@@ -240,7 +252,12 @@ public class ReviewWriteFragment extends BaseFragment {
                         setRatingLayout(reviewForm);
                     }
                 } else {
-                    triggerRatingForm();
+                    if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true)){
+                        triggerRatingForm();
+                    } else if(!getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)) {
+                        triggerReviewForm();
+                    }
+
                 }
             }
         } else {
@@ -331,37 +348,41 @@ public class ReviewWriteFragment extends BaseFragment {
             loadReviewAndRatingFormValues();
             setReviewName(dynamicRatingForm);
             restoreTextReview(dynamicRatingForm);
-            if(isShowingRatingForm)
-                ((CheckBox) dynamicRatingForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(false);
-            else 
-                ((CheckBox) dynamicRatingForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(true);
-            
-            ((CheckBox) dynamicRatingForm.getContainer().findViewById(R.id.checkbox_form)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked){
-                        if(reviewForm != null){
-                            formValues = dynamicRatingForm.save();
-                            JumiaApplication.setRatingReviewValues(formValues);
-                            isShowingRatingForm = false;
-                            setRatingLayout(reviewForm);
+
+            //Validate if both reviews and ratings are enabled on country configuration
+            if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
+                if(isShowingRatingForm)
+                    ((CheckBox) dynamicRatingForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(false);
+                else
+                    ((CheckBox) dynamicRatingForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(true);
+
+                ((CheckBox) dynamicRatingForm.getContainer().findViewById(R.id.checkbox_form)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            if (reviewForm != null) {
+                                formValues = dynamicRatingForm.save();
+                                JumiaApplication.setRatingReviewValues(formValues);
+                                isShowingRatingForm = false;
+                                setRatingLayout(reviewForm);
+                            }
+
+                        } else {
+                            if (ratingForm != null) {
+                                formValues = dynamicRatingForm.save();
+                                JumiaApplication.setRatingReviewValues(formValues);
+                                hideKeyboard();
+                                saveTextReview(dynamicRatingForm);
+                                isShowingRatingForm = true;
+                                setRatingLayout(ratingForm);
+                            }
+
                         }
-                      
-                    } else {
-                        if(ratingForm != null){
-                            formValues = dynamicRatingForm.save();
-                            JumiaApplication.setRatingReviewValues(formValues);
-                            isShowingRatingForm = true;
-                            hideKeyboard();
-                            saveTextReview(dynamicRatingForm);
-                            setRatingLayout(ratingForm);
-                        }
-                       
                     }
-                }
-            });
-            
+                });
+            }
+
             setGenericLayout();
             
         }
@@ -372,24 +393,27 @@ public class ReviewWriteFragment extends BaseFragment {
      * save the information regarding the review form
      */
     private void saveTextReview(DynamicForm form){
-        if(form != null && form.getItemByKey(NAME) != null){
-            reviewName = form.getItemByKey(NAME).getValue();
+        if(!isShowingRatingForm){
+            mFormReviewValues = new HashMap<>();
+            if(form != null && form.getItemByKey(NAME) != null){
+                mFormReviewValues.put(NAME,form.getItemByKey(NAME).getValue());
+            }
+            if(form != null && form.getItemByKey(TITLE) != null){
+                mFormReviewValues.put(TITLE, form.getItemByKey(TITLE).getValue());
+            }
+            if(form != null && form.getItemByKey(COMMENT) != null){
+                mFormReviewValues.put(COMMENT,form.getItemByKey(COMMENT).getValue());
+            }
+            JumiaApplication.INSTANCE.setFormReviewValues(mFormReviewValues);
         }
-        if(form != null && form.getItemByKey(TITLE) != null){
-            reviewTitle = form.getItemByKey(TITLE).getValue();
-        }
-        if(form != null && form.getItemByKey(COMMENT) != null){
-            reviewComment = form.getItemByKey(COMMENT).getValue();
-        }
+
     }
 
     /**
      * clean  fields after sending a review
      */
     private void cleanReviewText(){
-        reviewName = "";
-        reviewTitle = "";
-        reviewComment = "";
+        JumiaApplication.INSTANCE.setFormReviewValues(null);
     }
 
     /**
@@ -397,14 +421,18 @@ public class ReviewWriteFragment extends BaseFragment {
      * @param form
      */
     private void restoreTextReview(DynamicForm form){
+        mFormReviewValues = JumiaApplication.INSTANCE.getFormReviewValues();
         if(form != null && form.getItemByKey(NAME) != null){
-            form.getItemByKey(NAME).setValue(reviewName);
+            if(mFormReviewValues != null)
+                form.getItemByKey(NAME).setValue(mFormReviewValues.get(NAME));
         }
         if(form != null && form.getItemByKey(TITLE) != null){
-            form.getItemByKey(TITLE).setValue(reviewTitle);
+            if(mFormReviewValues != null)
+                form.getItemByKey(TITLE).setValue(mFormReviewValues.get(TITLE));
         }
         if(form != null && form.getItemByKey(COMMENT) != null){
-            form.getItemByKey(COMMENT).setValue(reviewComment);
+            if(mFormReviewValues != null)
+                form.getItemByKey(COMMENT).setValue(mFormReviewValues.get(COMMENT));
         }
     }
     
@@ -443,6 +471,7 @@ public class ReviewWriteFragment extends BaseFragment {
     private void saveReview() {
         if(dynamicRatingForm != null){
             JumiaApplication.setRatingReviewValues(dynamicRatingForm.save());
+            formValues = dynamicRatingForm.save();
             saveTextReview(dynamicRatingForm);
         }
     }
@@ -514,6 +543,7 @@ public class ReviewWriteFragment extends BaseFragment {
             dynamicRatingForm.clear();
        
         JumiaApplication.cleanRatingReviewValues();
+        JumiaApplication.INSTANCE.setFormReviewValues(null);
         if(formValues != null)
             formValues = null;
         
@@ -591,7 +621,12 @@ public class ReviewWriteFragment extends BaseFragment {
             Log.i(TAG, "GET_FORM_RATING_EVENT");
             ratingForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             setRatingLayout(ratingForm);
-            triggerReviewForm();
+            if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
+                triggerReviewForm();
+            } else {
+                showFragmentContentContainer();
+            }
+
             return true;
             
         case GET_FORM_REVIEW_EVENT:
@@ -649,7 +684,12 @@ public class ReviewWriteFragment extends BaseFragment {
         
         switch (eventType) {
         case GET_FORM_RATING_EVENT:
-            triggerReviewForm();
+            if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
+                triggerReviewForm();
+            } else {
+                showRetryLayout();
+            }
+
             return false;
         case GET_FORM_REVIEW_EVENT:
             showRetryLayout();
@@ -728,7 +768,9 @@ public class ReviewWriteFragment extends BaseFragment {
     public void onClick(View view) {
         super.onClick(view);
         int id = view.getId();
-        if(id == R.id.send_review) formsValidation();
+        if(id == R.id.send_review){
+            formsValidation();
+        }
     }
     
     /*
@@ -781,8 +823,27 @@ public class ReviewWriteFragment extends BaseFragment {
         isExecutingSendReview = false;
         if (!isExecutingSendReview) {
             isExecutingSendReview = true;
-            if(isShowingRatingForm) executeSendReview(ratingForm.action, dynamicRatingForm);
-            else executeSendReview(reviewForm.action, dynamicRatingForm);
+            if(isShowingRatingForm){
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && !JumiaApplication.INSTANCE.isLoggedIn()){
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
+                    Bundle bundle = getArguments();
+                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
+                    getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+                } else {
+                    executeSendReview(ratingForm.action, dynamicRatingForm);
+                }
+            } else {
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && !JumiaApplication.INSTANCE.isLoggedIn()){
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
+                    Bundle bundle = getArguments();
+                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
+                    getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+                } else {
+                    executeSendReview(reviewForm.action, dynamicRatingForm);
+                }
+            }
         }
     }
     
@@ -840,27 +901,10 @@ public class ReviewWriteFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         Log.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
         saveReview();
-        
-        // TODO, fix Error on Parcer
-//        outState.putParcelable(RATING_FORM, ratingForm);
-//        outState.putParcelable(REVIEW_FORM, reviewForm);
-        
-//        JumiaApplication.INSTANCE.ratingForm = ratingForm;
-//        JumiaApplication.INSTANCE.reviewForm = reviewForm;
 
         outState.putBoolean(SHOWING_FORM, isShowingRatingForm);
-        outState.putString(NAME, reviewName);
-        outState.putString(TITLE, reviewTitle);
-        outState.putString(COMMENT, reviewComment);
         super.onSaveInstanceState(outState);
     }
-    
-
-    
-    protected boolean getIsShowingRatingForm(){
-        return isShowingRatingForm;
-    }
-
     
     /**
      * function responsible for creating a map between the rating option name and it's value
@@ -883,5 +927,13 @@ public class ReviewWriteFragment extends BaseFragment {
         
         return values;
     }
-    
+
+    private SharedPreferences getSharedPref(){
+        if(mSharedPrefs == null){
+            //Validate if country configs allows rating and review, only show write review fragment if both are allowed
+            mSharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        }
+        return mSharedPrefs;
+    }
+
 }

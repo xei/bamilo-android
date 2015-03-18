@@ -1645,6 +1645,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private void onClickRating() {
 
         JumiaApplication.cleanRatingReviewValues();
+        JumiaApplication.cleanSellerReviewValues();
+        JumiaApplication.INSTANCE.setFormReviewValues(null);
 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
@@ -2414,7 +2416,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     private void goToSellerRating() {
         JumiaApplication.cleanRatingReviewValues();
-        
+        JumiaApplication.cleanSellerReviewValues();
+        JumiaApplication.INSTANCE.setFormReviewValues(null);
+
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
         bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, false);

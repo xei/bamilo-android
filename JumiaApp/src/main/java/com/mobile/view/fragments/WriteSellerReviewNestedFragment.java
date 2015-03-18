@@ -31,6 +31,7 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -74,15 +75,11 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
 
     private ContentValues formValues;
 
-    private String reviewName = "";
-
-    private String reviewTitle = "";
-
-    private String reviewComment = "";
-
     private String mSellerId = "";
 
     private TextView mReviewTitle;
+
+    private HashMap<String,String> mFormReviewValues = new HashMap<>();
 
     /**
      * Get instance
@@ -145,12 +142,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
     private void restoreSavedInstance(Bundle savedInstanceState){
 
         mSellerReviewForm =  JumiaApplication.INSTANCE.mSellerReviewForm;
-        if(savedInstanceState.containsKey(NAME))
-            reviewName = savedInstanceState.getString(NAME);
-        if(savedInstanceState.containsKey(TITLE))
-            reviewTitle = savedInstanceState.getString(TITLE);
-        if (savedInstanceState.containsKey(COMMENT))
-            reviewComment = savedInstanceState.getString(COMMENT);
+
         if(savedInstanceState.containsKey(ProductDetailsFragment.SELLER_ID))
             mSellerId = savedInstanceState.getString(ProductDetailsFragment.SELLER_ID);
 
@@ -308,32 +300,38 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
     }
 
     private void saveTextReview(DynamicForm form){
+        mFormReviewValues = new HashMap<>();
         if(form != null && form.getItemByKey(NAME) != null){
-            reviewName = form.getItemByKey(NAME).getValue().toString();
+            mFormReviewValues.put(NAME,form.getItemByKey(NAME).getValue());
         }
         if(form != null && form.getItemByKey(TITLE) != null){
-            reviewTitle = form.getItemByKey(TITLE).getValue().toString();
+            mFormReviewValues.put(TITLE,form.getItemByKey(TITLE).getValue());
         }
         if(form != null && form.getItemByKey(COMMENT) != null){
-            reviewComment = form.getItemByKey(COMMENT).getValue().toString();
+            mFormReviewValues.put(COMMENT,form.getItemByKey(COMMENT).getValue());
         }
+        JumiaApplication.INSTANCE.setFormReviewValues(mFormReviewValues);
     }
   
     private void cleanReviewText(){
-        reviewName = "";
-        reviewTitle = "";
-        reviewComment = "";
+
+        JumiaApplication.INSTANCE.setFormReviewValues(null);
     }
     
     private void restoreTextReview(DynamicForm form){
+
+        mFormReviewValues = JumiaApplication.INSTANCE.getFormReviewValues();
         if(form != null && form.getItemByKey(NAME) != null){
-            form.getItemByKey(NAME).setValue(reviewName);
+            if(mFormReviewValues != null)
+                form.getItemByKey(NAME).setValue(mFormReviewValues.get(NAME));
         }
         if(form != null && form.getItemByKey(TITLE) != null){
-            form.getItemByKey(TITLE).setValue(reviewTitle);
+            if(mFormReviewValues != null)
+                form.getItemByKey(TITLE).setValue(mFormReviewValues.get(TITLE));
         }
         if(form != null && form.getItemByKey(COMMENT) != null){
-            form.getItemByKey(COMMENT).setValue(reviewComment);
+            if(mFormReviewValues != null)
+                form.getItemByKey(COMMENT).setValue(mFormReviewValues.get(COMMENT));
         }
     }
     
@@ -400,6 +398,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
             mDynamicSellerReviewForm.clear();
        
         JumiaApplication.cleanSellerReviewValues();
+        JumiaApplication.INSTANCE.setFormReviewValues(null);
         if(formValues != null)
             formValues = null;
         
@@ -658,10 +657,6 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         Log.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
         saveReview();
-
-        outState.putString(NAME, reviewName);
-        outState.putString(TITLE, reviewTitle);
-        outState.putString(COMMENT, reviewComment);
         super.onSaveInstanceState(outState);
     }
     
