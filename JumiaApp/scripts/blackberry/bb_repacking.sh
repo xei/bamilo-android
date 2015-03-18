@@ -113,9 +113,9 @@ blackberry-signer -storepass $STOREPASS $BAR_FILE
 #######################
 ##### HOCKEY APP ######
 #######################
-#echo "5 - Create HockeyApp file, add bar into apk file"
-#zip -j $HOCKEY_FILE $APK_FILE $BAR_FILE
-#zip -g -j $APK_FILE $BAR_FILE
+echo "5 - Create HockeyApp file, add bar into apk file"
+##zip -j $HOCKEY_FILE $APK_FILE $BAR_FILE
+zip -g -j $APK_FILE $BAR_FILE
 
 ###################
 ##### OTHERS ######
