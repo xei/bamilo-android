@@ -55,4 +55,7 @@
     <!-- INNER SHOP -->
     <item name="shop_fragment_main" type="layout">@layout/_def_shop_fragment_main</item>
 
+    <!-- PDV -->
+    <item name="product_details_fragment_seller_info" type="layout">@layout/_def_product_details_fragment_seller_info</item>
+
 </resources>
