@@ -32,11 +32,11 @@ public class AppSharingAdapter extends MyAccountAdapter{
     @Override
     protected void setViewByPosition(View view, int position) {
         
-        TextView optionsDescripton = (TextView) view.findViewById(R.id.option_info);
+        TextView optionsDescription = (TextView) view.findViewById(R.id.option_info);
         // Validate the current position
            switch (position) {
                case MyAccountFragment.POSITION_SHARE_APP:
-                   optionsDescripton.setText(mContext.getResources().getString(R.string.can_share_app_with_friends));
+                   optionsDescription.setText(mContext.getResources().getString(R.string.can_share_app_with_friends));
                    break;
            }
     }

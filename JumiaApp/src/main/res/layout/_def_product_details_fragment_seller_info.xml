@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/selector_clickableitem_highlight"
         android:layout_marginTop="15dp"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:layoutDirection="locale">
 
                     <!-- android:background="@drawable/selector_listitem_highlight" -->
 
@@ -45,8 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
-            android:layout_toEndOf="@+id/product_detail_seller_sold_by"
-            android:layout_toRightOf="@+id/product_detail_seller_sold_by"
+            android:layout_toEndOf="@id/product_detail_seller_sold_by"
+            android:layout_toRightOf="@id/product_detail_seller_sold_by"
             android:gravity="left|center_vertical|start"
             android:text="Jumia"
             android:textColor="@color/orange_basic"
