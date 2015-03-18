@@ -58,7 +58,7 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements IRespons
     /**
      * @return
      */
-    public static CheckoutPollAnswerFragment getInstance(Bundle bundle) {
+    public static CheckoutPollAnswerFragment getInstance() {
         return new CheckoutPollAnswerFragment();
     }
 
@@ -94,7 +94,6 @@ public class CheckoutPollAnswerFragment extends BaseFragment implements IRespons
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        setRetainInstance(true);
         Bundle params = new Bundle();
         params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
         params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_QUESTION);

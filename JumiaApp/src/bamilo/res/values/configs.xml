@@ -32,8 +32,8 @@
 
     <!-- ACCENGAGE -->
     <item name="ad4push_enabled" type="bool">false</item>
-    <string name="ad4push_partner_id"></string>
-    <string name="ad4push_private_key"></string>
+    <string name="ad4push_partner_id"/>
+    <string name="ad4push_private_key"/>
 
     <!-- ADJUST -->
     <item name="adjust_enabled" type="bool">true</item>
@@ -41,14 +41,14 @@
     
 	<!-- APPTIMIZE -->
     <item name="apptimize_enabled" type="bool">false</item>
-    <string name="apptimize_apikey"></string>
+    <string name="apptimize_apikey"/>
 
 	<!-- GTM -->
     <string name="gtm_key">GTM-5WLGHK</string>  
     <item name="gtm_debug" type="bool">false</item>
     
 	<!-- FACEBOOK -->
-    <string name="facebook_app_id"></string>
+    <string name="facebook_app_id"/>
 
     <!--<string name="app_name_placeholder">بامیلو</string>-->
     <string name="app_name_placeholder">Bamilo</string>

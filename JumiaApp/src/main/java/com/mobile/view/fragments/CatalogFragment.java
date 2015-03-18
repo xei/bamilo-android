@@ -95,6 +95,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private int mNumberOfColumns;
 
+    private boolean noFilterResults = false;
     /**
      * Create and return a new instance.
      *
@@ -150,6 +151,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mCurrentFilterValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES);
             mBrandQuery = savedInstanceState.getString(ConstantsIntentExtra.CATALOG_FILTER_BRAND);
             mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
+            noFilterResults = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_NO_FILTER_RESULTS);
         }
     }
 
@@ -225,6 +227,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         outState.putParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES, mCurrentFilterValues);
         outState.putString(ConstantsIntentExtra.CATALOG_FILTER_BRAND, mBrandQuery);
         outState.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort.ordinal());
+        outState.putBoolean(ConstantsIntentExtra.CATALOG_NO_FILTER_RESULTS, noFilterResults);
     }
 
     /*
@@ -284,6 +287,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case catalog is null get catalog from URL
         else if (mCatalogPage == null) {
             triggerGetPaginatedCatalog();
+        }
+        // Case filter applied and no results
+        else if(noFilterResults){
+            showFilterNoResult();
         }
         // Case catalog was recover
         else {
@@ -420,7 +427,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Inflate view
         mNoResultStub.setVisibility(View.VISIBLE);
         // Show featured box
-        if (FeaturedBoxHelper.show(this, mSearchQuery, featuredBox)) {
+        if (FeaturedBoxHelper.show(this, featuredBox)) {
             // Case success show container
             showFragmentContentContainer();
         } else {
@@ -459,7 +466,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @see com.mobile.interfaces.OnViewHolderClickListener#onViewHolderClick(android.support.v7.widget.RecyclerView.Adapter, android.view.View, int)
      */
     @Override
-    public void onViewHolderClick(Adapter<?> adapter, View view, int position, Object extra) {
+    public void onViewHolderClick(Adapter<?> adapter, int position) {
         // Get item
         Product product = ((CatalogGridAdapter) adapter).getItem(position);
         // Call Product Details        
@@ -622,7 +629,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @see com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener#onDialogListItemSelect(java.lang.String, int, java.lang.String)
      */
     @Override
-    public void onDialogListItemSelect(String id, int position, String value) {
+    public void onDialogListItemSelect(int position, String value) {
         // Get selected sort position
         mSelectedSort = CatalogSort.values()[position];
         // Set sort button
@@ -773,6 +780,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         CatalogPage catalogPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         // Case valid success response
         if (catalogPage != null && catalogPage.hasProducts()) {
+            noFilterResults = false;
             Log.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
             onUpdateCatalogContainer(catalogPage);
         }
@@ -806,6 +814,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case error on request data with filters
         else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && mCurrentFilterValues != null && mCurrentFilterValues.size() > 0) {
             Log.i(TAG, "ON SHOW FILTER NO RESULT");
+            noFilterResults = true;
             showFilterNoResult();
         }
         // Case error on request data without filters

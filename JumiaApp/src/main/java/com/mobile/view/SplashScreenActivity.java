@@ -130,7 +130,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Tracking
         AdjustTracker.onResume(this);
         // Initialize application
-        JumiaApplication.INSTANCE.init(false, initializationHandler);
+        JumiaApplication.INSTANCE.init(initializationHandler);
     }
 
     /*
@@ -523,7 +523,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         } else {
             Log.i(TAG, "SELECTED COUNTRY ID IS NOT NULL");
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
-                JumiaApplication.INSTANCE.init(false, initializationHandler);
+                JumiaApplication.INSTANCE.init(initializationHandler);
             } else {
                 onRequestError(bundle);
             }
@@ -535,7 +535,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessCountryConfigsEvent() {
         Log.i(TAG, "ON PROCESS COUNTRY CONFIGS");
-        JumiaApplication.INSTANCE.init(false, initializationHandler);
+        JumiaApplication.INSTANCE.init(initializationHandler);
     }
 
     /**
@@ -688,7 +688,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                     if (dialogMsg.equals("")) {
                         dialogMsg = getString(R.string.validation_errortext);
                     }
-                    dialog = DialogGenericFragment.newInstance(true, true, false, getString(R.string.validation_title), dialogMsg,
+                    dialog = DialogGenericFragment.newInstance(true, false, getString(R.string.validation_title), dialogMsg,
                             getResources().getString(R.string.ok_label), "", new OnClickListener() {
 
                                 @Override
@@ -894,7 +894,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         else if (id == R.id.fallback_change_country) {
             onClickMaintenanceChooseCountry();
         } else if (id == R.id.fragment_root_error_button) {
-            onClickErrorButton(view);
+            onClickErrorButton();
         }
 
         // Case unknown
@@ -917,7 +917,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      *
      * @author sergiopereira
      */
-    protected void onClickErrorButton(View view) {
+    protected void onClickErrorButton() {
         retryRequest();
         try {
             Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.anim_rotate);
@@ -931,7 +931,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * Retry request
      */
     protected void retryRequest() {
-        JumiaApplication.INSTANCE.init(false, initializationHandler);
+        JumiaApplication.INSTANCE.init(initializationHandler);
     }
 
     /**

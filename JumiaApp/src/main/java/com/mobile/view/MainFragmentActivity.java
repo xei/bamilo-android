@@ -6,7 +6,6 @@ package com.mobile.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceScreen;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 
@@ -356,10 +355,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = SessionLoginFragment.getInstance(bundle);
                 break;
             case ABOUT_YOU:
-                fragment = CheckoutAboutYouFragment.getInstance(bundle);
+                fragment = CheckoutAboutYouFragment.getInstance();
                 break;
             case POLL:
-                fragment = CheckoutPollAnswerFragment.getInstance(bundle);
+                fragment = CheckoutPollAnswerFragment.getInstance();
                 break;
             case MY_ADDRESSES:
                 fragment = CheckoutMyAddressesFragment.getInstance();
@@ -504,7 +503,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
     // ####################### MY ACCOUNT FRAGMENT #######################
     @Override
-    public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
+    public void onPreferenceAttached() {
     }
 
     // ####################### DEEP LINK #######################

@@ -17,27 +17,10 @@ def getAppVersionCode(int releaseVersionCode) {
     }
     return releaseVersionCode
 }
+
 /**
- *
- * if version name is defined on flavour the jenkins will use that name when creating the apk on the CI server or locally.
- *
- * if version name environment variable is setted on CI server and not on the flavour, the apk locally will be build with the versionName value,
- *and on the CI server with the version name setted on the BUILD_VERSION_NAME environment variable.
- *
- * if the version name isn't setted anywhere the apk will be build both locally and on the CI server with version name setted on versionName variable.
- *
- * @return the version name
+ * PROJECT
  */
-def getAppVersionName() {
-
-    def versionName = 2.4
-    if (System.getenv('BUILD_VERSION_NAME') != null) {
-        versionName = System.getenv('BUILD_VERSION_NAME')
-    }
-
-    return versionName
-}
-
 android {
 
     compileSdkVersion 21
@@ -109,25 +92,24 @@ android {
     }
 
     buildTypes {
-
         debug {
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [ AdjustEnvironment:"sandbox" ]
+            manifestPlaceholders = [AdjustEnvironment: "sandbox"]
             debuggable true
-            proguardFile 'proguard-project-dev.txt'
+            //minifyEnabled true
+            //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-dev.txt'
+            //proguardFile 'proguard-project-dev.txt'
         }
-
         live {
             applicationIdSuffix ".live"
-            manifestPlaceholders = [ AdjustEnvironment:"sandbox" ]
+            manifestPlaceholders = [AdjustEnvironment: "sandbox"]
             debuggable true
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-live.txt'
         }
-
         release {
-            manifestPlaceholders = [ AdjustEnvironment:"production" ]
+            manifestPlaceholders = [AdjustEnvironment: "production"]
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-market.txt'
@@ -249,8 +231,9 @@ dependencies {
     darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
 }
 
-
-/** SET CUSTOM APPLICATION IDS DEPENDING ON FLAVOURS AND BUILD TYPE **/
+/**
+ * All flavours and build types
+ */
 android.applicationVariants.all { variant ->
     println "****************************"
     println "variant: ${variant.name}"
@@ -261,43 +244,7 @@ android.applicationVariants.all { variant ->
     println "versionName: ${variant.versionName}"
     println "versionCode: ${variant.versionCode}"
     println "****************************"
-
-    /**
-     * Set application id with "com." + venture + "blackberry" or "android"(when not in debug build type)  + "dev" when in debug build type
-     */
-
-    /*
-    def String venture = variant.productFlavors[0].name
-    def boolean isInstall = false;
-    variant.mergedFlavor.applicationId = "com." + venture + "." + variant.productFlavors[0].name
-    println "application ID: ${variant.mergedFlavor.applicationId}"
-        //e.g. com.jumia.android
-        def String install = "";
-        if(variant.productFlavors[0].name == "jumia_mtnng" ){
-            install = "mtnng";
-            isInstall = true;
-        } else if (variant.productFlavors[0].name == "jumia_nokiax"){
-            install = "nokiax";
-            isInstall = true;
-        }
-        if(isInstall){
-            variant.mergedFlavor.applicationId = "com." + venture + "." + install
-            //e.g. com.jumia.nokiax
-            //e.g. com.jumia.mtnng
-            println "application ID: ${variant.mergedFlavor.applicationId}"
-        }
-    if (!isInstall && variant.buildType.name == android.buildTypes.debug.name) {
-        variant.mergedFlavor.applicationId = variant.mergedFlavor.applicationId + ".dev"
-        println "DEV application ID: ${variant.mergedFlavor.applicationId}"
-        //e.g. com.jumia.android.dev
-    } else if(!isInstall && variant.buildType.name == android.buildTypes.live.name){
-        variant.mergedFlavor.applicationId = variant.mergedFlavor.applicationId + ".live"
-        println "LIVE application ID: ${variant.mergedFlavor.applicationId}"
-        //e.g. com.jumia.android.live
-    }
-    */
 }
-
 
 /**
  *  PMD static analysis

@@ -63,7 +63,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
     }
 
     @Override
-    public void sendValuesToFragment(int identifier, Object values) {
+    public void sendValuesToFragment(Object values) {
     }
 
     /*

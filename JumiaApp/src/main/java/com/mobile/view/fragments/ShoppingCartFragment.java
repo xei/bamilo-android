@@ -30,8 +30,8 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.objects.ShoppingCartItem;
 import com.mobile.framework.tracking.AdjustTracker;
-import com.mobile.framework.tracking.GTMEvents.GTMValues;
 import com.mobile.framework.tracking.TrackingPage;
+import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.DarwinRegex;
@@ -385,7 +385,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                         String title = getString(R.string.shoppingcart_alert_header);
                         String message = getString(R.string.shoppingcart_alert_message_no_items);
                         String buttonText = getString(R.string.ok_label);
-                        messageDialog = DialogGenericFragment.newInstance(false, true, false,
+                        messageDialog = DialogGenericFragment.newInstance(true, false,
                                 title, message, buttonText, null, new OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -551,9 +551,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     /**
      *
-     * @param bundle
      */
-    private void onAddItemsToShoppingCartRequestError(Bundle bundle){
+    private void onAddItemsToShoppingCartRequestError(){
         hideActivityProgress();
         if(JumiaApplication.INSTANCE.getCart() != null)
             displayShoppingCart(JumiaApplication.INSTANCE.getCart());
@@ -591,7 +590,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         // Dismiss any existing dialogs
         dismissDialogFragment();
         
-        dialog = DialogGenericFragment.newInstance(true, true, false,
+        dialog = DialogGenericFragment.newInstance(true, false,
                 getString(R.string.shoppingcart_dialog_title),
                 getString(R.string.shoppingcart_remove_products),
                 getString(R.string.yes_label),
@@ -661,7 +660,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
             break;
         case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
-            onAddItemsToShoppingCartRequestError(bundle);
+            onAddItemsToShoppingCartRequestError();
             break;
         case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
             if (items.size() == 0) {
@@ -1091,7 +1090,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         OnDialogListListener listener = new OnDialogListListener() {
             @Override
-            public void onDialogListItemSelect(String id, int quantity, String value) {
+            public void onDialogListItemSelect(int quantity, String value) {
                 changeQuantityOfItem(position, quantity);
                 if(dialogList != null) {
                     dialogList.dismissAllowingStateLoss();

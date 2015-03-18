@@ -89,7 +89,7 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
         pNotification.setOnPreferenceClickListener(this);
         pNotification.setDefaultValue(Ad4PushTracker.getActiveAd4Push(getActivity().getApplicationContext()));
         postBindPreferences();
-        ((OnPreferenceAttachedListener)getActivity()).onPreferenceAttached(getPreferenceScreen(), xmlId);
+        ((OnPreferenceAttachedListener)getActivity()).onPreferenceAttached();
     }
 
     @Override
@@ -216,10 +216,9 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
     
     /**
      * Adds preferences from activities that match the given {@link Intent}.
-     * 
-     * @param intent The {@link Intent} to query activities.
+     *
      */
-    public void addPreferencesFromIntent(Intent intent) {
+    public void addPreferencesFromIntent() {
         throw new RuntimeException("too lazy to include this bs");
     }
     
@@ -255,7 +254,7 @@ public class PreferenceListFragment extends ListFragment implements OnPreference
     }
     
     public interface OnPreferenceAttachedListener{
-        public void onPreferenceAttached(PreferenceScreen root, int xmlId);
+        public void onPreferenceAttached();
     }
 
     @Override

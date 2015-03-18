@@ -80,7 +80,7 @@ public class DialogPromotionFragment extends DialogFragment {
                     ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor eD = sP.edit();
             eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, false);
-            eD.commit();
+            eD.apply();
             ((TextView) getView().findViewById(R.id.promotion_title)).setText(Html.fromHtml(mPromotion.getTitle()));
             ((TextView) getView().findViewById(R.id.promotion_coupon_code)).setText(Html.fromHtml(mPromotion.getCouponCode()));
             getView().findViewById(R.id.promotion_coupon_code).setOnClickListener(new OnClickListener() {

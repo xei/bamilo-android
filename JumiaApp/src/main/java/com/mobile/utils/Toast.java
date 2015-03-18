@@ -20,7 +20,7 @@ public class Toast  {
     private static TextView mMessageTextView;
     //private static LinearLayout mRootLayout;
     
-    public Toast(Context activity) {
+    public Toast() {
 //        super(activity);
         
         //this.mActivity = activity;

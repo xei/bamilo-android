@@ -16,7 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical" >
+        android:gravity="center_vertical"
+        android:baselineAligned="false">
 
             <!-- Preference should place its actual preference widget here. -->
 
@@ -28,7 +29,7 @@
         android:orientation="vertical" />
         
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/rounded_margin_small"
         android:layout_marginLeft="@dimen/rounded_margin_mid"

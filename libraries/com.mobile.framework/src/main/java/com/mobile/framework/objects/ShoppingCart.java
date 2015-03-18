@@ -28,7 +28,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 
 	private static final String TAG = ShoppingCart.class.getSimpleName();
 
-	private Map<String, ShoppingCartItem> mCartItems = new HashMap<String, ShoppingCartItem>();
+	private Map<String, ShoppingCartItem> mCartItems = new HashMap<>();
 	private String mCartValue;
 	private double mCartValueAsDouble = 0d;
 	private double mCartValueConverted = 0d;
@@ -416,7 +416,7 @@ public class ShoppingCart implements IJSONSerializable, Parcelable {
 		setSumCostsValue(in.readString());
 		mCouponDiscount = in.readString();
 		mCouponCode = in.readString();
-		mPriceRules = new HashMap<String, String>();
+		mPriceRules = new HashMap<>();
 		in.readMap(mPriceRules, String.class.getClassLoader());
 		mCartValueAsDouble = in.readDouble();
 		mCartValueConverted = in.readDouble();

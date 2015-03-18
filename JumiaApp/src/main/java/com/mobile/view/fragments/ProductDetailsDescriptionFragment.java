@@ -148,7 +148,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
          */
         if(mCompleteProduct != null && mainView != null) {
             getViews();
-            displayProductInformation(mainView);
+            displayProductInformation();
         }else{
             if (JumiaApplication.mIsBound && !TextUtils.isEmpty(mCompleteProductUrl)) {
                 Bundle bundle = new Bundle();
@@ -223,7 +223,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         mProductDescriptionText = (TextView) mainView.findViewById(R.id.product_description_text);
     }
     
-    private void displayProductInformation(View view ) {
+    private void displayProductInformation() {
         mProductName.setText( mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         displayPriceInformation();
         displaySpecification();
@@ -351,7 +351,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
             } else {
                 mCompleteProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 getViews();
-                displayProductInformation(mainView);   
+                displayProductInformation();
                 // Waiting for the fragment comunication
                 new Handler().postDelayed(new Runnable() {
                     @Override

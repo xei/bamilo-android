@@ -1,12 +1,12 @@
 package com.mobile.utils;
 
+import android.os.Environment;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import android.content.Context;
-import android.os.Environment;
 import de.akquinet.android.androlog.Log;
 
 public class AndroidFileFunctions {
@@ -26,12 +26,11 @@ public class AndroidFileFunctions {
     }
   
 
-    public void writeToFile(String value,
-            Context context, int writeOrAppendMode) {
+    public void writeToFile(String value) {
         try {
             FileOutputStream fOut = new FileOutputStream(myFile, true);
             OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-            myOutWriter.append(value+"\n");
+            myOutWriter.append(value).append("\n");
             myOutWriter.close();
             fOut.close();
         } 

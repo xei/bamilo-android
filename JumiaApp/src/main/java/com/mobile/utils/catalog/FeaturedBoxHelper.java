@@ -32,12 +32,11 @@ public class FeaturedBoxHelper {
     /**
      * Show the featured response.
      * @param fragment
-     * @param mSearchQuery
      * @param featuredBox
      * @return true or false - Case NPE returns false
      * @author sergiopereira 
      */
-    public static boolean show(BaseFragment fragment, String mSearchQuery, FeaturedBox featuredBox) {
+    public static boolean show(BaseFragment fragment, FeaturedBox featuredBox) {
         Log.i(TAG, "ON ERROR SEARCH RESULT");
         try {
             // define how many items will be displayed on the viewPager

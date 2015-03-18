@@ -41,13 +41,13 @@
     
 	<!-- APPTIMIZE -->
     <item name="apptimize_enabled" type="bool">false</item>
-    <string name="apptimize_apikey"></string>
+    <string name="apptimize_apikey"/>
 
 	<!-- GTM -->
     <string name="gtm_key">GTM-T4Q6VV</string>
     <item name="gtm_debug" type="bool">false</item>
     
 	<!-- FACEBOOK -->
-    <string name="facebook_app_id"></string>
+    <string name="facebook_app_id"/>
     
 </resources>

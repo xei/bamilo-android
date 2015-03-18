@@ -81,7 +81,7 @@ public class DeepLinkManager {
         }
         
         //transform int arraylist in order to be able to excute a remove operation
-        ArrayList<String> segmentAux = new ArrayList<String>(segments);
+        ArrayList<String> segmentAux = new ArrayList<>(segments);
         Log.d(TAG, "DEEP LINK SEGMENTS: " + segmentAux.toString());
         //if the deep link is from google app indexing the first element will be JUMIA value
         if(segmentAux.get(PATH_CC_POS).equalsIgnoreCase(context.getString(R.string.dp_app_name_uppercase))){
@@ -91,7 +91,7 @@ public class DeepLinkManager {
         // Get the country code
         loadCountryCode(context, segmentAux.get(PATH_CC_POS));
         // Get the tag view and return values
-        return loadDeepViewTag(context, segmentAux, data);
+        return loadDeepViewTag(segmentAux, data);
     }
 
     /**
@@ -110,7 +110,7 @@ public class DeepLinkManager {
             Log.w(TAG, "RECEIVED DEEP LINK WITHOUT SEGMENTS");
 
             // Case -> JUMIA://ng/
-            if (isSupporedCountryCode(context, host)) {
+            if (isSupporedCountryCode(host)) {
                 List<String> array = new ArrayList<>();
                 array.add(host);
                 return array;
@@ -121,7 +121,7 @@ public class DeepLinkManager {
             }
 
             // Case -> JUMIA://eg/cart/
-        } else if (isSupporedCountryCode(context, host)) {
+        } else if (isSupporedCountryCode(host)) {
             List<String> array = new ArrayList<>();
             array.addAll(segments);
             array.add(PATH_CC_POS, host);
@@ -136,13 +136,12 @@ public class DeepLinkManager {
     /**
      * Load the deep link view to create the respective bundle for that view
      *
-     * @param context
      * @param segments
      * @param data
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle loadDeepViewTag(Context context, List<String> segments, Uri data) {
+    private static Bundle loadDeepViewTag(List<String> segments, Uri data) {
         // 
         Bundle bundle = null;
         try {
@@ -330,7 +329,7 @@ public class DeepLinkManager {
     private static Bundle processCartLink(List<String> segments) {
         Log.i(TAG, "DEEP LINK TO CART");
         // Default link 
-        String simpleSkuArray = null;
+        String simpleSkuArray;
         FragmentType fragmentType = FragmentType.SHOPPING_CART;
         Bundle bundle = new Bundle();
         // Validate if has multiple SKUs
@@ -575,7 +574,7 @@ public class DeepLinkManager {
      * @param countryCode
      * @author sergiopereira
      */
-    private static boolean isSupporedCountryCode(Context context, String countryCode) {
+    private static boolean isSupporedCountryCode(String countryCode) {
         if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         }

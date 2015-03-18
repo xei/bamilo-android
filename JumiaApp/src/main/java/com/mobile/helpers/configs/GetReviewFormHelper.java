@@ -3,12 +3,6 @@
  */
 package com.mobile.helpers.configs;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 
 import com.mobile.forms.Form;
@@ -20,6 +14,12 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -54,7 +54,7 @@ public class GetReviewFormHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d("TRACK", "parseResponseBundle GetReviewsHelper");
       
-        final ArrayList<Form> forms = new ArrayList<Form>();
+        final ArrayList<Form> forms = new ArrayList<>();
         JSONArray dataObject;
         
         try {

@@ -30,8 +30,8 @@ import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.Errors;
 import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.tracking.GTMEvents.GTMValues;
 import com.mobile.framework.tracking.TrackingPage;
+import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
@@ -655,7 +655,7 @@ public class SessionRegisterFragment extends BaseFragment {
                 // Log.i(TAG, "code1exists : validateMessages : "+validateMessages);
                 if (validateMessages != null && validateMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
                     showFragmentContentContainer();
-                    dialog = DialogGenericFragment.newInstance(true, true, false,
+                    dialog = DialogGenericFragment.newInstance(true, false,
                             getString(R.string.error_register_title),
                             getString(R.string.error_register_alreadyexists),
                             getString(R.string.ok_label), 
@@ -673,7 +673,7 @@ public class SessionRegisterFragment extends BaseFragment {
                     return true;
                 } else {
                     showFragmentContentContainer();
-                    dialog = DialogGenericFragment.newInstance(true, true, false,
+                    dialog = DialogGenericFragment.newInstance(true, false,
                             getString(R.string.error_register_title),
                             getString(R.string.incomplete_alert),
                             getString(R.string.ok_label), 

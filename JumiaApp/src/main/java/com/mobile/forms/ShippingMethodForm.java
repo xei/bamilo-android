@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.ViewGroup;
 
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
@@ -108,7 +107,7 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
         return null;
     }
 
-    public ShippingRadioGroupList generateForm(Context context, ViewGroup parent){
+    public ShippingRadioGroupList generateForm(Context context){
         this.mShippingRadioGroupList = new ShippingRadioGroupList(context);
         this.mShippingRadioGroupList.setItems(this, value);
         return this.mShippingRadioGroupList;

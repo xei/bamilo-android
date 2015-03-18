@@ -2,6 +2,7 @@ package com.mobile.framework.objects;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
@@ -37,6 +38,7 @@ public class Seller implements IJSONSerializable, Parcelable {
      * Seller empty constructor.
      */
     public Seller() {
+        Log.i(TAG, "EMPTY constructor");
         mName = "";
         mUrl = "";
         mMinDeliveryTime = 1;
@@ -50,13 +52,8 @@ public class Seller implements IJSONSerializable, Parcelable {
      * Seller Json constructor.
      */
     public Seller(JSONObject sellerObject) {
-        mName = "";
-        mUrl = "";
-        mMinDeliveryTime = 1;
-        mMaxDeliveryTime = 1;
-        mRatingCount = 0;
-        mRatingValue = 0;
-        setSellerId("");
+        super();
+        Log.i(TAG, "JSON constructor");
         initialize(sellerObject);
     }
    
@@ -123,19 +120,14 @@ public class Seller implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) {
-            mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-            mUrl = jsonObject.optString(RestConstants.JSON_URL_TAG);
-            mSellerId = jsonObject.optString(RestConstants.JSON_ID_TAG);
-//            mMinDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MIN_DELIVERY_TAG);
-//            mMaxDeliveryTime = jsonObject.optInt(RestConstants.JSON_SELLER_MAX_DELIVERY_TAG);
-            
-            JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
-            
-            if(reviewObject != null){
-                mRatingCount = reviewObject.optInt(RestConstants.JSON_TOTAL_TAG);
-                mRatingValue = reviewObject.optInt(RestConstants.JSON_RATINGS_AVERAGE_TAG);
-            }
-
+        mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
+        mUrl = jsonObject.optString(RestConstants.JSON_URL_TAG);
+        mSellerId = jsonObject.optString(RestConstants.JSON_ID_TAG);
+        JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
+        if(reviewObject != null){
+            mRatingCount = reviewObject.optInt(RestConstants.JSON_TOTAL_TAG);
+            mRatingValue = reviewObject.optInt(RestConstants.JSON_RATINGS_AVERAGE_TAG);
+        }
         return true;
     }
     

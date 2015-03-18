@@ -49,7 +49,6 @@ public class DialogGenericFragment extends DialogFragment {
     /**
      * Create a new instance
      * 
-     * @param has_header
      * @param main_text
      * @param secondary_text
      * @param title
@@ -60,12 +59,11 @@ public class DialogGenericFragment extends DialogFragment {
      * @return
      */
     public static DialogGenericFragment newInstance(
-            Boolean has_header, 
             Boolean main_text,
             Boolean secondary_text,
-            String title, 
-            String content, 
-            String button1_title, 
+            String title,
+            String content,
+            String button1_title,
             String button2_title,
             OnClickListener click) {
 
@@ -98,10 +96,13 @@ public class DialogGenericFragment extends DialogFragment {
      * @param click
      * @return
      */
-    public static DialogGenericFragment newInstance(Boolean has_header, Boolean main_text,
-            Boolean secondary_text,
-            String title, String content, String button1_title, String button2_title,
-            String button3_title, android.view.View.OnClickListener click) {
+    public static DialogGenericFragment newInstance(Boolean main_text,
+                                                    Boolean secondary_text,
+                                                    String title,
+                                                    String content,
+                                                    String button1_title,
+                                                    String button2_title,
+                                                    String button3_title, OnClickListener click) {
 
         Log.d(TAG, "NEW INSTANCE: 3 Buttons");
 
@@ -277,7 +278,7 @@ public class DialogGenericFragment extends DialogFragment {
 
         Log.d(TAG, "CREATE NO NETWORK DIALOG");
 
-        return DialogGenericFragment.newInstance(true, true, false,
+        return DialogGenericFragment.newInstance(true, false,
                 activity.getResources().getString(R.string.no_internet_access_warning_title),
                 activity.getResources().getString(R.string.no_connect_dialog_content),
                 activity.getResources().getString(R.string.cancel_label),
@@ -351,7 +352,7 @@ public class DialogGenericFragment extends DialogFragment {
 
         Log.d(TAG, "CREATE ERROR DIALOG");
 
-        return DialogGenericFragment.newInstance(true, true, false,
+        return DialogGenericFragment.newInstance(true, false,
                 title, message, activity
                         .getString(R.string.cancel_label), activity.getString(R.string.try_again),
 

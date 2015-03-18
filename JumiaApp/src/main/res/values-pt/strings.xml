@@ -282,7 +282,7 @@
     <string name="shoppingcart_instock">Em stock.</string>
     <string name="shoppingcart_item_btn_delete">Eliminar</string>
     <string name="shoppingcart_items">Artigos</string>
-    <string name="shoppingcart_minamount">Infelizmente não podemos entregar encomendas que não excedam a encomenda mínima de% s.</string>
+    <string name="shoppingcart_minamount">Infelizmente não podemos entregar encomendas que não excedam a encomenda mínima de %s.</string>
     <string name="shoppingcart_minamount_waiting">À espera de informações do servidor acerca do valor de encomenda mínimo</string>
     <string name="shoppingcart_notinstock">Não está em Stock.</string>
     <string name="shoppingcart_quantity">Quantidade</string>

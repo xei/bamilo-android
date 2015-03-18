@@ -1,4 +1,4 @@
-package com.mobile.framework.tracking;
+package com.mobile.framework.tracking.gtm;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,8 +19,8 @@ import com.mobile.framework.R;
 import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.PurchaseItem;
-import com.mobile.framework.tracking.GTMEvents.GTMKeys;
-import com.mobile.framework.tracking.GTMEvents.GTMValues;
+import com.mobile.framework.tracking.ContainerHolderSingleton;
+import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
 
 import java.util.ArrayList;
@@ -151,18 +151,18 @@ public class GTMManager {
         }
             
             Log.d(TAG, "gtmTrackAppOpen"+" campaignId:"+campaignId+" source:"+source+" countryIso:"+countryIso+" version:"+version+" deviceBrand:"+deviceBrand);
-//            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMEvents.GTMKeys.CAMPAIGN, campaignId, GTMEvents.GTMKeys.SOURCE, source, GTMEvents.GTMKeys.SHOPCOUNTRY,
-//                  countryIso, GTMEvents.GTMKeys.APPVERSION, version,GTMEvents.GTMKeys.DEVICEBRAND, deviceBrand);
+//            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.CAMPAIGN, campaignId, GTMKeys.SOURCE, source, GTMKeys.SHOPCOUNTRY,
+//                  countryIso, GTMKeys.APPVERSION, version,GTMKeys.DEVICEBRAND, deviceBrand);
             
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP,  GTMEvents.GTMKeys.SHOPCOUNTRY, countryIso,GTMEvents.GTMKeys.SOURCE, source,
-                    GTMEvents.GTMKeys.APPVERSION, version,GTMEvents.GTMKeys.DEVICEBRAND, deviceBrand);
+            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP,  GTMKeys.SHOPCOUNTRY, countryIso,GTMKeys.SOURCE, source,
+                    GTMKeys.APPVERSION, version,GTMKeys.DEVICEBRAND, deviceBrand);
             
             if(!TextUtils.isEmpty(campaignId)){
-                message.put(GTMEvents.GTMKeys.CAMPAIGN, campaignId);
+                message.put(GTMKeys.CAMPAIGN, campaignId);
             }
             
             if(!TextUtils.isEmpty(operator))
-                message.put(GTMEvents.GTMKeys.OPERATOR, operator);
+                message.put(GTMKeys.OPERATOR, operator);
             
             sendEvent(message);
             
@@ -179,26 +179,26 @@ public class GTMManager {
 //                Log.d("BETA", "gtmTrackAppOpen 2");
 //                if (appOpenContext.equalsIgnoreCase(GTMValues.PRE_INSTALL)) {
 //                    Log.d("BETA", "gtmTrackAppOpen PREINSTALL");
-//                    message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMEvents.GTMKeys.SOURCE, source, GTMEvents.GTMKeys.MEDIUM, medium,
-//                            GTMEvents.GTMKeys.CAMPAIGN, campaignId, GTMEvents.GTMKeys.SHOPCOUNTRY, countryIso, GTMEvents.GTMKeys.APPVERSION, version,
-//                            GTMEvents.GTMKeys.CUSTOMERID, getUserId());
+//                    message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.SOURCE, source, GTMKeys.MEDIUM, medium,
+//                            GTMKeys.CAMPAIGN, campaignId, GTMKeys.SHOPCOUNTRY, countryIso, GTMKeys.APPVERSION, version,
+//                            GTMKeys.CUSTOMERID, getUserId());
 //                } else {
 //                    Log.d("BETA", "gtmTrackAppOpen 3");
-//                    message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMEvents.GTMKeys.SOURCE, appOpenContext, GTMEvents.GTMKeys.SHOPCOUNTRY,
-//                            countryIso, GTMEvents.GTMKeys.APPVERSION, version);
+//                    message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.SOURCE, appOpenContext, GTMKeys.SHOPCOUNTRY,
+//                            countryIso, GTMKeys.APPVERSION, version);
 //                }
 //
 //            } else {
 //                Log.d("BETA", "gtmTrackAppOpen 4");
 //                if (appOpenContext.equalsIgnoreCase(GTMValues.PRE_INSTALL)) {
 //                    Log.d("BETA", "gtmTrackAppOpen PREINSTALL");
-//                    message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMEvents.GTMKeys.SOURCE, source, GTMEvents.GTMKeys.MEDIUM, medium,
-//                            GTMEvents.GTMKeys.CAMPAIGN, campaignId, GTMEvents.GTMKeys.SHOPCOUNTRY, countryIso, GTMEvents.GTMKeys.APPVERSION, version,
-//                            GTMEvents.GTMKeys.CUSTOMERID, getUserId());
+//                    message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.SOURCE, source, GTMKeys.MEDIUM, medium,
+//                            GTMKeys.CAMPAIGN, campaignId, GTMKeys.SHOPCOUNTRY, countryIso, GTMKeys.APPVERSION, version,
+//                            GTMKeys.CUSTOMERID, getUserId());
 //                } else {
 //                    Log.d("BETA", "gtmTrackAppOpen 5");
-//                    message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMEvents.GTMKeys.SOURCE, appOpenContext, GTMEvents.GTMKeys.SHOPCOUNTRY,
-//                            countryIso, GTMEvents.GTMKeys.APPVERSION, version, GTMEvents.GTMKeys.CUSTOMERID, getUserId());
+//                    message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.SOURCE, appOpenContext, GTMKeys.SHOPCOUNTRY,
+//                            countryIso, GTMKeys.APPVERSION, version, GTMKeys.CUSTOMERID, getUserId());
 //                }
 //
 //            }
@@ -209,14 +209,14 @@ public class GTMManager {
 //            if (TextUtils.isEmpty(getUserId())) {
 //                Log.d(TAG, "getUserId empty");
 //                Log.d("BETA", "gtmTrackAppOpen 7");
-//                message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMEvents.GTMKeys.SOURCE, source, GTMEvents.GTMKeys.MEDIUM, medium,
-//                        GTMEvents.GTMKeys.CAMPAIGN, campaignId, GTMEvents.GTMKeys.SHOPCOUNTRY, countryIso, GTMEvents.GTMKeys.APPVERSION, version);
+//                message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.SOURCE, source, GTMKeys.MEDIUM, medium,
+//                        GTMKeys.CAMPAIGN, campaignId, GTMKeys.SHOPCOUNTRY, countryIso, GTMKeys.APPVERSION, version);
 //            } else {
 //                Log.d(TAG, "getUserId not empty");
 //                Log.d("BETA", "gtmTrackAppOpen 8");
-//                message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMEvents.GTMKeys.SOURCE, source, GTMEvents.GTMKeys.MEDIUM, medium,
-//                        GTMEvents.GTMKeys.CAMPAIGN, campaignId, GTMEvents.GTMKeys.SHOPCOUNTRY, countryIso, GTMEvents.GTMKeys.APPVERSION, version,
-//                        GTMEvents.GTMKeys.CUSTOMERID, getUserId());
+//                message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.SOURCE, source, GTMKeys.MEDIUM, medium,
+//                        GTMKeys.CAMPAIGN, campaignId, GTMKeys.SHOPCOUNTRY, countryIso, GTMKeys.APPVERSION, version,
+//                        GTMKeys.CUSTOMERID, getUserId());
 //            }
 //        }
 //
@@ -310,7 +310,7 @@ public class GTMManager {
     public void gtmTrackRegister(String customerId, String location) {
         Log.i(TAG, " GTM TRACKING -> gtmTrackRegister");
         Map<String, Object> message = null;
-        Log.d(TAG, "gtmTrackRegister"+" GTMValues.EMAILAUTH:"+GTMValues.EMAILAUTH+" location:"+location+" customerId:"+customerId);
+        Log.d(TAG, "gtmTrackRegister"+" GTMValues.EMAILAUTH:"+ GTMValues.EMAILAUTH+" location:"+location+" customerId:"+customerId);
 
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REGISTER, GTMKeys.REGISTRATIONMETHOD, GTMValues.EMAILAUTH,
                     GTMKeys.REGISTRATIONLOCATION, location, GTMKeys.CUSTOMERID, customerId);
@@ -322,7 +322,7 @@ public class GTMManager {
     public void gtmTrackRegisterFailed(String location) {
         Log.i(TAG, " GTM TRACKING -> gtmTrackRegisterFailed");
         Map<String, Object> message = null;
-        Log.d(TAG, "gtmTrackRegisterFailed"+" GTMValues.EMAILAUTH:"+GTMValues.EMAILAUTH+" location:"+location);
+        Log.d(TAG, "gtmTrackRegisterFailed"+" GTMValues.EMAILAUTH:"+ GTMValues.EMAILAUTH+" location:"+location);
 
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REGISTER_FAILED, GTMKeys.REGISTRATIONMETHOD, GTMValues.EMAILAUTH, GTMKeys.REGISTRATIONLOCATION, location);
         
@@ -333,7 +333,7 @@ public class GTMManager {
     public void gtmTrackSignUp(String subscriberId, String location) {
         Log.i(TAG, " GTM TRACKING -> gtmTrackSignUp ");
         Map<String, Object> message = null;
-        Log.d(TAG, "gtmTrackSignUp"+" GTMValues.EMAILAUTH:"+GTMValues.EMAILAUTH+" location:"+location+" subscriberId:"+subscriberId);
+        Log.d(TAG, "gtmTrackSignUp"+" GTMValues.EMAILAUTH:"+ GTMValues.EMAILAUTH+" location:"+location+" subscriberId:"+subscriberId);
             message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SIGNUP, GTMKeys.SUBSCRIBERID, subscriberId, GTMKeys.SIGNUPLOCATION, location);
         
         sendEvent(message);
@@ -407,7 +407,7 @@ public class GTMManager {
         Log.i(TAG, " GTM TRACKING -> gtmTrackChangeCountry");
         Log.d(TAG, "gtmTrackChangeCountry"+" country:"+country);
         Map<String, Object> message = null;
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CHANGE_COUNTRY, GTMEvents.GTMKeys.SHOPCOUNTRY, country);
+            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CHANGE_COUNTRY, GTMKeys.SHOPCOUNTRY, country);
 
         sendEvent(message);
 
@@ -449,7 +449,7 @@ public class GTMManager {
         Log.d(TAG, "gtmTrackAddToCart"+" productSKU:"+productSKU+" productBrand:"+productBrand
                 +" productPrice:"+productPrice+" currencyName:"+currencyName+" discount:"+discount);
         Map<String, Object> message = null;
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_ADD_TO_CART,GTMKeys.PRODUCTSKU, productSKU, GTMKeys.PRODUCTPRICE, productPrice, GTMKeys.PRODUCTBRAND, productBrand, GTMKeys.CURRENCY, currencyName,
+        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_ADD_TO_CART, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.PRODUCTPRICE, productPrice, GTMKeys.PRODUCTBRAND, productBrand, GTMKeys.CURRENCY, currencyName,
                 GTMKeys.DISCOUNT, discount, GTMKeys.PRODUCTQUANTITY, 1, GTMKeys.LOCATION, location);
 
         
@@ -500,7 +500,7 @@ public class GTMManager {
 //        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_RATE_PRODUCT, GTMKeys.PRODUCTCATEGORY,GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(), GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand(), GTMKeys.RATINGPRICE, notPresent,
 //                GTMKeys.RATINGAPPEARANCE, notPresent,GTMKeys.RATINGQUALITY, notPresent, GTMKeys.PRODUCTRATING, product.getRatingsAverage());
         
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_RATE_PRODUCT,GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(),
+        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_RATE_PRODUCT, GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(),
                 GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand(), GTMKeys.PRODUCTRATING, product.getRatingsAverage());
         
         if(!TextUtils.isEmpty(category)) 
@@ -665,7 +665,7 @@ public class GTMManager {
         Log.i(TAG, " GTM TRACKING -> gtmTrackAppClose");
 
         Map<String, Object> message = null;
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CLOSE_APP, GTMEvents.GTMKeys.SCREENNAME, GTMValues.HOME);
+        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CLOSE_APP, GTMKeys.SCREENNAME, GTMValues.HOME);
 
         sendEvent(message);
     }

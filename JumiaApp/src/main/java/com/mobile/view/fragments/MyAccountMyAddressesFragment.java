@@ -75,10 +75,10 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
     @Override
     protected void onClickRetryButton() {
+        resetRequests();
         cleanContainers();
         sameAddress = null;
         triggerGetForm();
-        resetRequests();
     }
 
     @Override
@@ -150,6 +150,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
         // In case of all addresses already are the default ones
         if(isSetBillingComplete && isSetShippingComplete){
+            Toast.makeText(getActivity(), R.string.addresses_saved_message,Toast.LENGTH_SHORT).show();
             resetRequests();
         }
     }
@@ -274,6 +275,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
      */
     protected void checkSettingRequestComplete(){
         if(isSetBillingComplete && isSetShippingComplete){
+            Toast.makeText(getActivity(), R.string.addresses_saved_message,Toast.LENGTH_SHORT).show();
             onClickRetryButton();
         }
     }

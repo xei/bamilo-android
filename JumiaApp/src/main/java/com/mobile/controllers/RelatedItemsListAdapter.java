@@ -1,6 +1,5 @@
 package com.mobile.controllers;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,12 +57,11 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
-     * @param context
      * @param relatedItemsList
      * @param parentClickListener
      * @author sergiopereira
      */
-    public RelatedItemsListAdapter(Context context, ArrayList<LastViewed> relatedItemsList, OnClickListener parentClickListener) {
+    public RelatedItemsListAdapter(ArrayList<LastViewed> relatedItemsList, OnClickListener parentClickListener) {
         mDataset = relatedItemsList;
         mParentClickListener = parentClickListener;
     }
@@ -94,7 +92,11 @@ public class RelatedItemsListAdapter extends RecyclerView.Adapter<RelatedItemsLi
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set price
-        holder.mPrice.setText(item.getPrice());
+        if(item.getSpecialPriceDouble() != 0d){
+            holder.mPrice.setText(item.getSpecialPrice());
+        } else {
+            holder.mPrice.setText(item.getPrice());
+        }
         // Set listener and tags
         holder.mContainer.setTag(item.getUrl());
         holder.mContainer.setOnClickListener(mParentClickListener);

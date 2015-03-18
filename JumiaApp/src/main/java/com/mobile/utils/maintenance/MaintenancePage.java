@@ -137,7 +137,7 @@ public class MaintenancePage {
      * @author manuel
      * @modified sergiopereira
      */
-    public static void setMaintenancePageBaseActivity(Activity activity, EventType eventType, OnClickListener listener) {
+    public static void setMaintenancePageBaseActivity(Activity activity, OnClickListener listener) {
 
         try {
 

@@ -182,7 +182,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment{
         }
     }
 
-    protected void onGetBillingFormEventErrorEvent(Bundle bundle) {
+    protected void onGetBillingFormEventErrorEvent() {
         Log.w(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
         super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT");
     }
@@ -326,7 +326,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment{
 
         switch (eventType) {
             case GET_BILLING_FORM_EVENT:
-                onGetBillingFormEventErrorEvent(bundle);
+                onGetBillingFormEventErrorEvent();
                 break;
             case SET_BILLING_ADDRESS_EVENT:
                 onSetBillingAddressErrorEvent(bundle);

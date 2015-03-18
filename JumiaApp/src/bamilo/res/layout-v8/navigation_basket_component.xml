@@ -58,7 +58,7 @@
         android:gravity="center|top"
         android:paddingRight="3dp"
         android:textColor="@color/orange_basic"
-        android:textSize="11sp"
+        android:textSize="12sp"
         android:textStyle="bold" />
 
 </RelativeLayout>

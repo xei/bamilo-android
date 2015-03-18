@@ -232,7 +232,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
         // Set is new image
         prodItem.isNew.setSelected(addableToCart.isNew());
         // Set image
-        String imageURL = (addableToCart.getImageList().size() > 0) ? imageURL = addableToCart.getImageList().get(0) : "";
+        String imageURL = (addableToCart.getImageList().size() > 0) ? addableToCart.getImageList().get(0) : "";
         RocketImageLoader.instance.loadImage(imageURL, prodItem.image,  null, R.drawable.no_image_small);
     }
 

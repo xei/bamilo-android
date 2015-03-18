@@ -70,6 +70,7 @@ public class ConstantsIntentExtra {
     public static final String CATALOG_FILTER_VALUES = mPackage + "catalogFilter";
     public static final String CATALOG_FILTER_BRAND = mPackage + "catalogBrand";
     public static final String CATALOG_SORT = mPackage + "catalogSort";
+    public static final String CATALOG_NO_FILTER_RESULTS = mPackage + "noFilterResults";
 
     // ########### Home ##############
     public static final String FRAGMENT_TYPE = mPackage + "FragmentType";

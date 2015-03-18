@@ -23,7 +23,6 @@
         android:layout_height="@dimen/item_height_normal"
         android:layout_marginEnd="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"
-        android:layout_weight="1"
         android:layout_toRightOf="@+id/item_img"
         android:layout_toEndOf="@+id/item_img"
         android:gravity="center_vertical|left"

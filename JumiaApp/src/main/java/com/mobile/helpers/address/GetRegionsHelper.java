@@ -3,12 +3,6 @@
  */
 package com.mobile.helpers.address;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -20,6 +14,12 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.utils.JSONConstants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -42,7 +42,7 @@ public class GetRegionsHelper extends BaseHelper {
         Log.d(TAG, "REQUEST");
         Bundle bundle = new Bundle();
         String action = args.getString(Constants.BUNDLE_URL_KEY);
-        if(TextUtils.isEmpty(action)) action = EventType.GET_REGIONS_EVENT.action.toString();
+        if(TextUtils.isEmpty(action)) action = EventType.GET_REGIONS_EVENT.action;
         Log.d(TAG, "URL: " + action);
         bundle.putString(Constants.BUNDLE_URL_KEY, action);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
@@ -61,7 +61,7 @@ public class GetRegionsHelper extends BaseHelper {
         Log.d(TAG, "RESPONSE: " + jsonObject.toString());
         try {
             // Regions
-            ArrayList<AddressRegion> regions = new ArrayList<AddressRegion>();
+            ArrayList<AddressRegion> regions = new ArrayList<>();
             // For each item
             JSONArray jsonArray = jsonObject.getJSONArray(JSONConstants.JSON_DATA_TAG);
             for (int i = 0; i < jsonArray.length(); i++) {

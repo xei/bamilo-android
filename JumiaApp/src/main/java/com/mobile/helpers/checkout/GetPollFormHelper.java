@@ -3,12 +3,6 @@
  */
 package com.mobile.helpers.checkout;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
@@ -21,6 +15,12 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.utils.CheckoutStepManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -64,7 +64,7 @@ public class GetPollFormHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE BUNDLE");
-        final ArrayList<Form> forms = new ArrayList<Form>();
+        final ArrayList<Form> forms = new ArrayList<>();
         JSONArray dataObject;
         try {
             

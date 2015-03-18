@@ -3,12 +3,6 @@
  */
 package com.mobile.helpers.account;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 import android.os.Parcelable;
 
@@ -21,6 +15,12 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -64,7 +64,7 @@ public class SubscribeNewslettersHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE BUNDLE: " + jsonObject);
         try {
-            ArrayList<CustomerNewsletterSubscription> subscriptions = new ArrayList<CustomerNewsletterSubscription>();
+            ArrayList<CustomerNewsletterSubscription> subscriptions = new ArrayList<>();
             // Get subscribed newsletters
             JSONArray jsonArray = jsonObject.optJSONArray(RestConstants.JSON_SUBSCRIBED_CATEGORIES_TAG);
             if(jsonArray != null && jsonArray.length() > 0) {

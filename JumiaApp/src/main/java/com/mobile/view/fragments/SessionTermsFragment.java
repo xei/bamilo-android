@@ -57,7 +57,7 @@ public class SessionTermsFragment extends BaseFragment {
     }
 
     @Override
-    public void sendValuesToFragment(int identifier, Object values) {
+    public void sendValuesToFragment(Object values) {
         this.termsText= (String) values;
     }
     

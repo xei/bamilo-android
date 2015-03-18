@@ -1273,7 +1273,7 @@ public class DynamicFormItem {
         OnDatePickerDialogListener pickerListener = new OnDatePickerDialogListener() {
 
             @Override
-            public void onDatePickerDialogSelect(String id, int year, int month, int day) {
+            public void onDatePickerDialogSelect(int year, int month, int day) {
                 Log.i(TAG, "code1date : year : " + year);
                 GregorianCalendar cal = new GregorianCalendar(year, month, day);
                 Date d = new Date(cal.getTimeInMillis());
@@ -1386,8 +1386,8 @@ public class DynamicFormItem {
     /**
      * Creates the control with hidden value
      */
-    private void buildHide(RelativeLayout dataContainer, RelativeLayout.LayoutParams params,
-            int controlWidth) {
+    private void buildHide(RelativeLayout.LayoutParams params,
+                           int controlWidth) {
         this.control.setLayoutParams(params);
         // Don't allow an hidden control to take visual space
         this.control.setVisibility(View.GONE);
@@ -1457,10 +1457,10 @@ public class DynamicFormItem {
                 buildText(dataContainer, params, controlWidth);
                 break;
             case hide:
-                buildHide(dataContainer, params, controlWidth);
+                buildHide(params, controlWidth);
                 break;
             case rating:
-                buildRatingOptionsTerms(dataContainer, params, controlWidth);
+                buildRatingOptionsTerms(params, controlWidth);
                 break;
 
             default:
@@ -1761,12 +1761,10 @@ public class DynamicFormItem {
     
     /**
      * Function responsible for constructing the ratings form layout
-     * 
-     * @param dataContainer
-     * @param params
+     *  @param params
      * @param controlWidth
      */
-    private void buildRatingOptionsTerms(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
+    private void buildRatingOptionsTerms(RelativeLayout.LayoutParams params, int controlWidth) {
 
         LinearLayout linearLayout = new LinearLayout(context);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

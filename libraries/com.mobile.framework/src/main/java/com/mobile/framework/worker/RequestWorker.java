@@ -32,11 +32,10 @@ public class RequestWorker implements Runnable {
 		this.context = context;
 		uri = Uri.parse(bundle.getString(Constants.BUNDLE_URL_KEY));
 		Log.i(TAG,"Executing => "+uri.toString());
-		type =(RequestType) bundle.getSerializable(Constants.BUNDLE_TYPE_KEY);
-		if(type==RequestType.POST)
-			formData = bundle.getParcelable(Constants.BUNDLE_FORM_DATA_KEY);
+		type = (RequestType) bundle.getSerializable(Constants.BUNDLE_TYPE_KEY);
+		if(type == RequestType.POST) formData = bundle.getParcelable(Constants.BUNDLE_FORM_DATA_KEY);
 		mHandler = handler;
-		mBundle=bundle;
+		mBundle = bundle;
 	}
 
 	@Override

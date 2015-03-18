@@ -725,7 +725,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
         switch (eventType) {
             case INIT_FORMS:
-                onInitFormsErrorEvent(bundle);
+                onInitFormsErrorEvent();
                 break;
             case GET_EDIT_ADDRESS_FORM_EVENT:
                 onGetEditAddressFormErrorEvent(bundle);
@@ -746,7 +746,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         return false;
     }
 
-    protected void onInitFormsErrorEvent(Bundle bundle){
+    protected void onInitFormsErrorEvent(){
         Log.d(TAG, "RECEIVED INIT_FORMS");
     }
 
@@ -802,7 +802,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         }
         if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             showFragmentContentContainer();
-            dialog = DialogGenericFragment.newInstance(true, true, false,
+            dialog = DialogGenericFragment.newInstance(true, false,
                     getString(R.string.error_login_title),
                     errorMessages.get(0),
                     getString(R.string.ok_label),

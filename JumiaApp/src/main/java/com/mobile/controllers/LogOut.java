@@ -57,7 +57,7 @@ public class LogOut {
             public void onRequestError(Bundle bundle) {
                 BaseActivity baseActivity = (BaseActivity) activityRef.get();
                 if (baseActivity != null) {
-                    cleanCartData(baseActivity, bundle);
+                    cleanCartData(baseActivity);
                 }
             }
 
@@ -65,7 +65,7 @@ public class LogOut {
             public void onRequestComplete(Bundle bundle) {
                 BaseActivity baseActivity = (BaseActivity) activityRef.get();
                 if (baseActivity != null) {
-                    cleanCartData(baseActivity, bundle);
+                    cleanCartData(baseActivity);
                 }
             }
         });
@@ -74,10 +74,9 @@ public class LogOut {
     /**
      * Clear cart data from memory and other components.
      * @param baseActivity
-     * @param bundle
      * @author sergiopereira
      */
-    private static void cleanCartData(BaseActivity baseActivity, Bundle bundle) {
+    private static void cleanCartData(BaseActivity baseActivity) {
         // Clear cookies, cart, credentials
         RestClientSingleton.getSingleton(baseActivity).clearCookieStore();
         JumiaApplication.INSTANCE.setCart(new ShoppingCart());

@@ -55,7 +55,7 @@ public class FragmentController {
 
     private static FragmentController fragmentController;
     
-    private LinkedList<String> backStack = new LinkedList<String>();
+    private LinkedList<String> backStack = new LinkedList<>();
     
     /**
      * ##################### CONSTRUCTOR #####################
@@ -166,9 +166,8 @@ public class FragmentController {
      * Print all entries
      */
     public void printAllEntries(){
-        Iterator<String> iterator = backStack.iterator();
-        while (iterator.hasNext()) {
-            Log.d(TAG, "ENTRY: " + iterator.next());
+        for (String aBackStack : backStack) {
+            Log.d(TAG, "ENTRY: " + aBackStack);
         }
     }
     
@@ -325,9 +324,8 @@ public class FragmentController {
     
     /**
      * Pop all back stack
-     * @param tag
      */
-    public void popAllBackStack(BaseActivity activity, String tag){
+    public void popAllBackStack(BaseActivity activity){
         Log.d(TAG, "POP ALL BACK STACK: " + getBackStackSize() + " MANAGER:" + activity.getSupportFragmentManager().getBackStackEntryCount());        
         // Pop all our back stack
         cleanBackStack();
@@ -462,23 +460,22 @@ public class FragmentController {
     }
     
     /**
-     * 
-     * @param activity
+     *  @param activity
      * @param tag
      */
     @Deprecated
-    public void popAllBackStack(BaseActivity activity, String tag, int i){
+    public void popAllBackStack(BaseActivity activity, String tag){
         activity.getSupportFragmentManager().popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
     
     /**
-     * 
+     *
+     * @param inclusive
      * @param activity
      * @param tag
-     * @param inclusive
      */
     @Deprecated
-    public void popBackStackUntilTag(BaseActivity activity, String tag, boolean inclusive) {
+    public void popBackStackUntilTag(BaseActivity activity, String tag) {
         // getSupportFragmentManager().popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         activity.getSupportFragmentManager().popBackStackImmediate(tag, 0);
     }
@@ -520,7 +517,7 @@ public class FragmentController {
         
         Log.i(TAG, "FRAGMENT CONTROLLER: TRY RECOVER BACKSTACK!");
         
-        List<Fragment> orderedFragments = new ArrayList<Fragment>();
+        List<Fragment> orderedFragments = new ArrayList<>();
         if(originalFragments.size() > 0 && backstackTypes.size() > 0){
             for (int i = 0; i < backstackTypes.size(); i++) {
                 for (int j = 0; j < originalFragments.size(); j++) {

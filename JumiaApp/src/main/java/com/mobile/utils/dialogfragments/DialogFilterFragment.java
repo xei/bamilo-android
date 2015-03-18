@@ -83,14 +83,14 @@ public class DialogFilterFragment extends DialogFragment {
     /**
      * 
      * @param bundle
-     * @param onClickListener 
+     * @param mParentFragment
      * @return
      */
-    public static DialogFilterFragment newInstance(Bundle bundle, OnDialogFilterListener mParentFrament) {
+    public static DialogFilterFragment newInstance(Bundle bundle, OnDialogFilterListener mParentFragment) {
         Log.d(TAG, "NEW INSTANCE");
         DialogFilterFragment dialogListFragment = new DialogFilterFragment();
         dialogListFragment.setArguments(bundle);
-        dialogListFragment.mParentFrament = mParentFrament;
+        dialogListFragment.mParentFrament = mParentFragment;
         return dialogListFragment;
     }
 

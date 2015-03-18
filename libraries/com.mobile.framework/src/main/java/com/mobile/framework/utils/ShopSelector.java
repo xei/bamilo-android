@@ -14,7 +14,7 @@ import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.FacebookTracker;
-import com.mobile.framework.tracking.GTMManager;
+import com.mobile.framework.tracking.gtm.GTMManager;
 
 import java.util.Locale;
 

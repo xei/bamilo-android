@@ -43,8 +43,8 @@ import com.mobile.framework.objects.Campaign;
 import com.mobile.framework.objects.CampaignItem;
 import com.mobile.framework.objects.CampaignItemSize;
 import com.mobile.framework.objects.TeaserCampaign;
-import com.mobile.framework.tracking.GTMEvents.GTMValues;
 import com.mobile.framework.tracking.TrackingPage;
+import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.EventType;
@@ -333,7 +333,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 }
                 
                 @Override
-                public void onLoadedError(String url) {
+                public void onLoadedError() {
                     bannerView.setVisibility(View.GONE);
                     mGridView.removeHeaderView(bannerView);
                     bannerState = BannerVisibility.HIDDEN;
@@ -342,7 +342,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 }
                 
                 @Override
-                public void onLoadedCancel(String imageUrl) {
+                public void onLoadedCancel() {
                     bannerView.setVisibility(View.GONE);
                     mGridView.removeHeaderView(bannerView);
                     bannerState = BannerVisibility.HIDDEN;
@@ -662,7 +662,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
         mDialogAddedToCart = DialogGenericFragment.newInstance(
                 false,
-                false,
                 true,
                 getString(R.string.your_cart),
                 msgText,
@@ -694,7 +693,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     
     private void showErrorCartDialog (){
         FragmentManager fm = getFragmentManager();
-        mDialogErrorToCart = DialogGenericFragment.newInstance(true, true, false,
+        mDialogErrorToCart = DialogGenericFragment.newInstance(true, false,
                 getString(R.string.error_add_to_cart_failed),
                 getString(R.string.error_add_to_cart_failed),
                 getString(R.string.ok_label), "", new OnClickListener() {
