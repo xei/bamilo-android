@@ -356,9 +356,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         mProductsNum.setText(getResources().getQuantityString(R.plurals.numberOfItems, size, size));
         // Set cart value
         mSubTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
-
-        ShoppingCartUtils.setShippingRule(cart, mShipFeeView, mShipFeeValue,mExtraCostsContainer,mExtraCosts);
-
+        // Set costs
+        ShoppingCartUtils.setShippingRule(cart, mShipFeeView, mShipFeeValue, mExtraCostsContainer, mExtraCosts);
         // Voucher
         if(mOrderFinish.hasCouponDiscount()) mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderFinish.getDiscountCouponValue()));
         else mVoucherView.setVisibility(View.GONE);

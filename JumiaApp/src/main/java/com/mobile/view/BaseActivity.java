@@ -155,6 +155,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     private boolean isRegistered = false;
 
     private View warningView;
+
     private View warningVariationView;
 
     private final int titleResId;
@@ -773,6 +774,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             mDrawerToggle.setDrawerIndicatorEnabled(true);
         }
     }
+
 
     /**
      * Set the share menu item

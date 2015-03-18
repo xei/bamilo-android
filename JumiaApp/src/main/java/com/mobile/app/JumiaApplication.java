@@ -14,7 +14,6 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4SApplication;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.mobile.forms.Form;
 import com.mobile.forms.FormData;
 import com.mobile.forms.PaymentMethodForm;
@@ -127,13 +126,6 @@ public class JumiaApplication extends A4SApplication {
     // for tracking
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
-
-    /**
-     * Wear
-     */
-    public static GoogleApiClient mGoogleApiClient;
-
-    
 
     /*
      * (non-Javadoc)
