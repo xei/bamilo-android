@@ -469,7 +469,7 @@ public class ReviewsFragment extends BaseFragment {
         final TextView writeReviewTitle = (TextView) getView().findViewById(R.id.write_title);
         
         //Validate if country configs allows rating and review, only show button if both are allowed
-        if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) || getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true) ){
+        if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) || getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true) && isProductRating ){
             writeComment.setVisibility(View.VISIBLE);
             writeReviewTitle.setVisibility(View.VISIBLE);
             writeComment.setOnClickListener(new OnClickListener() {
@@ -482,7 +482,22 @@ public class ReviewsFragment extends BaseFragment {
                     writeReview();
                 }
             });
-        } else {
+        } else if(!isProductRating){
+
+            writeComment.setVisibility(View.VISIBLE);
+            writeReviewTitle.setVisibility(View.VISIBLE);
+            writeComment.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // clean last saved review
+                    JumiaApplication.cleanRatingReviewValues();
+                    JumiaApplication.cleanSellerReviewValues();
+                    JumiaApplication.INSTANCE.setFormReviewValues(null);
+                    writeReview();
+                }
+            });
+
+        }else {
             writeReviewTitle.setVisibility(View.GONE);
             writeComment.setVisibility(View.GONE);
 
