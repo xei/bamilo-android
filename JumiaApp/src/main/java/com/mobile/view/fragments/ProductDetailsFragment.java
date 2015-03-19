@@ -92,6 +92,7 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
 import com.mobile.utils.ui.CompleteProductUtils;
+import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
@@ -1972,6 +1973,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         // Generic errors
         if (super.handleErrorEvent(bundle)) return;
+
         Log.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
         case ADD_PRODUCT_BUNDLE:
@@ -1986,14 +1988,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                     int msgRes = -1;
 
                     String message = null;
-                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(
-                            Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
+                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
                         msgRes = R.string.product_outof_stock;
-                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(
-                            Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
+                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
                         msgRes = R.string.error_add_to_shopping_cart_quantity;
-                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(
-                            Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
+                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
                         List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
                         if (validateMessages != null && validateMessages.size() > 0) {
                             message = validateMessages.get(0);
@@ -2033,11 +2032,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
             if (!errorCode.isNetworkError()) {
-                Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved),
-                        Toast.LENGTH_LONG).show();
-
+                ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
                 showFragmentContentContainer();
-
                 try {
                     getBaseActivity().onBackPressed();
                 } catch (IllegalStateException e) {
@@ -2048,7 +2044,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         case GET_PRODUCT_BUNDLE:
             hideBundle();
             break;
-
         default:
             break;
         }
