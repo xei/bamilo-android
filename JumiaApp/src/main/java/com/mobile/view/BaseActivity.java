@@ -31,8 +31,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -536,8 +534,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         contentContainer = findViewById(R.id.rocket_app_content);
         // Warning layout
         warningView = findViewById(R.id.warning);
-        warningVariationView = findViewById(R.id.warning_variations);
-        warningVariationView.setOnClickListener(new OnClickListener() {
+//        warningVariationView = findViewById(R.id.warning_variations);
+        warningView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 showWarningVariation(false);
@@ -1543,61 +1541,59 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSupportActionBar.setTitle("");
     }
 
+    /**
+     * ################# WARNING BAR #################
+     */
+
+    /**
+     * Show or hide warning message with image
+     */
     public final void showWarning(boolean show) {
-        UIUtils.setVisibility(warningView, show);
-    }
-
-    public void showWarning(int message) {
-        if (warningView != null) {
-            warningView.setVisibility(View.INVISIBLE);
-            ((TextView) findViewById(R.id.warning_text)).setText(message);
-            final Animation mAnimFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-            final Animation mAnimFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        if(warningView != null){
             warningView.clearAnimation();
-            warningView.startAnimation(mAnimFadeIn);
-
-            mAnimFadeIn.setAnimationListener(new Animation.AnimationListener() {
-
-                @Override
-                public void onAnimationStart(final Animation animation) {
-                    warningView.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onAnimationRepeat(final Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(final Animation animation) {
-                    warningView.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            warningView.startAnimation(mAnimFadeOut);
-                        }
-                    }, WARNING_LENGTH);
-                }
-            });
-
-            mAnimFadeOut.setAnimationListener(new Animation.AnimationListener() {
-
-                @Override
-                public void onAnimationStart(final Animation animation) {
-                }
-
-                @Override
-                public void onAnimationRepeat(final Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(final Animation animation) {
-                    warningView.setVisibility(View.GONE);
-                }
-            });
+            if(show){
+                findViewById(R.id.warning_image).setVisibility(View.VISIBLE);
+            }
+            warningView.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
 
+    /**
+     * Show warning message with image and animation
+     */
+    public void showWarning(int message) {
+        if (warningView != null) {
+            warningView.clearAnimation();
+            ((TextView) findViewById(R.id.warning_text)).setText(message);
+            findViewById(R.id.warning_image).setVisibility(View.VISIBLE);
+            UIUtils.animateWarning(this, warningView, WARNING_LENGTH);
+        }
+    }
+
+    /**
+     * Show warning message without image
+     */
+    public void showWarningNoImage(int message) {
+        if(warningView != null){
+            warningView.clearAnimation();
+            ((TextView) findViewById(R.id.warning_text)).setText(message);
+            findViewById(R.id.warning_image).setVisibility(View.GONE);
+            warningView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * Show warning variations message
+     */
     public void showWarningVariation(boolean show) {
-        UIUtils.setVisibility(warningVariationView, show);
+        if(warningView != null){
+            warningView.clearAnimation();
+            if(show){
+                ((TextView) findViewById(R.id.warning_text)).setText(R.string.product_variance_choose_error);
+                findViewById(R.id.warning_image).setVisibility(View.GONE);
+            }
+            warningView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
     }
 
     private void setAppContentLayout() {
@@ -1880,7 +1876,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * This method should be implemented by fragment activity to manage the work flow for fragments. Each fragment should call this method.
      *
-     * @param search
+     * @param type
+     * @param bundle
      * @param addToBackStack
      * @author sergiopereira
      */
@@ -1920,7 +1917,6 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Pop back stack until tag
      *
      * @param tag
-     * @param inclusive
      * @author sergiopereira
      */
     public void popBackStackUntilTag(String tag) {

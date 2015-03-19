@@ -16,6 +16,7 @@ import com.mobile.framework.objects.Favourite;
 import com.mobile.framework.objects.LastViewedAddableToCart;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -129,7 +130,6 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
     
     /**
      * Get the recycled view
-     * @param view
      * @return ItemView
      * @author sergiopereira
      */
@@ -169,6 +169,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
             view.setOnClickListener(null);
             view.setEnabled(false);
             view.setBackgroundResource(R.drawable.btn_grey);
+            UIUtils.setAlpha(view, 0.5f);
         }
     }
     

@@ -43,6 +43,8 @@ import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -407,6 +409,9 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             }
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON ADD ALL TO CART");
+        } catch (IllegalStateException e){
+            Log.w(TAG, "WARNING: ILLEGAL STATE EXCEPTION ON ADD ALL TO CART");
+            getBaseActivity().showWarningNoImage(R.string.server_error);
         }
     }
 
@@ -461,7 +466,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     }
 
     /**
-     * Validate if item has a selected varititon
+     * Validate if item has a selected variation
      * 
      * @param item
      * @return boolean
@@ -509,9 +514,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * 
      * 
      */
-    protected void addAllItemsToCart() {
+    protected void addAllItemsToCart() throws IllegalStateException{
         Log.i(TAG, "ON EXECUTE ADD ALL TO CART");
-
         // Initialize cart vars
         
         mNumberOfItemsForCart = mAddableToCartList.size();
@@ -520,7 +524,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         for (int i = 0; i < mNumberOfItemsForCart; i++) {
             AddableToCart addableToCart = mAddableToCartList.get(i);
             if (addableToCart.isComplete()) {
-
                 ProductSimple simple = getSelectedSimple(addableToCart);
                 String sku = simple.getAttributeByKey(ProductSimple.SKU_TAG);
 
@@ -533,6 +536,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             isOnAddingAllItemsToCart = true;
             showActivityProgress();
             triggerAddAllItems(productBySku);
+        } else {
+            throw new IllegalStateException();
         }
     }
 
@@ -809,7 +814,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             ArrayList<String> notAdded = bundle
                     .getStringArrayList(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             
-            if (notAdded != null && !notAdded.isEmpty()) {
+            if (!CollectionUtils.isEmpty(notAdded)) {
                 if (notAdded.size() == 1) {
                     Toast.makeText(getBaseActivity(), R.string.product_outof_stock,
                             Toast.LENGTH_SHORT).show();
@@ -845,7 +850,9 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                         index = i;
                     }
                 }
-                if(index != -1) mAddableToCartList.remove(index);
+                if(index != -1) {
+                    mAddableToCartList.remove(index);
+                }
             }
 
         }
@@ -854,7 +861,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             ArrayList<String> notAdded = bundle
                     .getStringArrayList(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             
-            if (notAdded != null && !notAdded.isEmpty()) {
+            if (!CollectionUtils.isEmpty(notAdded)) {
                 if (notAdded.size() == 1) {
                     Toast.makeText(getBaseActivity(), R.string.product_outof_stock,
                             Toast.LENGTH_SHORT).show();
