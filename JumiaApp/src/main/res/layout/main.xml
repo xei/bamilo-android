@@ -40,25 +40,12 @@
 
         <!-- WARNING MESSAGE -->
 
-        <RelativeLayout
-            android:id="@+id/warning_container"
+        <include
+            android:id="@+id/warning"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <include
-                android:id="@+id/warning"
-                android:layout_width="match_parent"
-                android:layout_height="34dp"
-                layout="@layout/warning"
-                android:visibility="gone" />
-
-            <include
-                android:id="@+id/warning_variations"
-                android:layout_width="match_parent"
-                android:layout_height="34dp"
-                layout="@layout/warning_variations"
-                android:visibility="gone" />
-        </RelativeLayout>
+            android:layout_height="34dp"
+            layout="@layout/warning"
+            android:visibility="gone" />
 
         <include
             layout="@layout/promotion_layout"

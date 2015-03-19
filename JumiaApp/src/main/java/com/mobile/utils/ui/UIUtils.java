@@ -6,6 +6,10 @@ import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+import com.mobile.view.R;
 
 /**
  * A general Class with UI utils such as set the font <p/><br> 
@@ -71,6 +75,56 @@ public class UIUtils {
      */
     public static void setVisibility(View view, boolean show) {
         if (view != null) view.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    public static void animateWarning(Context context, final View warningView, final int warningLength){
+        if (warningView != null) {
+            warningView.setVisibility(View.INVISIBLE);
+
+            final Animation mAnimFadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+            final Animation mAnimFadeOut = AnimationUtils.loadAnimation(context, R.anim.fade_out);
+            warningView.clearAnimation();
+            warningView.startAnimation(mAnimFadeIn);
+
+            mAnimFadeIn.setAnimationListener(new Animation.AnimationListener() {
+
+                @Override
+                public void onAnimationStart(final Animation animation) {
+                    warningView.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(final Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(final Animation animation) {
+                    warningView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            warningView.startAnimation(mAnimFadeOut);
+                        }
+                    }, warningLength);
+                }
+            });
+
+            mAnimFadeOut.setAnimationListener(new Animation.AnimationListener() {
+
+                @Override
+                public void onAnimationStart(final Animation animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(final Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(final Animation animation) {
+                    warningView.setVisibility(View.GONE);
+                }
+            });
+        }
+
     }
     
 }
