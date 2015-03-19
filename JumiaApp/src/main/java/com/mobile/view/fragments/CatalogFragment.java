@@ -457,8 +457,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     @Override
     protected void onRetryRequest(EventType eventType) {
-        // Validate data
-        onValidateDataState();
+        if(eventType == EventType.GET_PRODUCTS_EVENT && mCatalogPage.hasFilters()){
+            super.onRetryRequest(eventType);
+        } else {
+            // Validate data
+            onValidateDataState();
+        }
+
     }
 
     /*
