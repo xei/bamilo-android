@@ -1543,6 +1543,10 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSupportActionBar.setTitle("");
     }
 
+    /**
+     * ################# WARNING BAR #################
+     */
+
     public final void showWarning(boolean show) {
         UIUtils.setVisibility(warningView, show);
     }
