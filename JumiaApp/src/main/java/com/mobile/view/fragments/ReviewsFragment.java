@@ -699,11 +699,14 @@ public class ReviewsFragment extends BaseFragment {
         // set the number of grid columns depending on the screen size    
         int numColumns = getBaseActivity().getResources().getInteger(R.integer.catalog_list_num_columns);
 //        numColumns = 2;
-        
-        if(mWriteReviewFragment != null || mSellerWriteReviewFragment != null){
-            // means there's write fragment attached so the reviews list must be only one column
+
+        // means there's write fragment attached so the reviews list must be only one column
+        if(reviews != null && reviews.size() > 0 && getBaseActivity() != null &&
+                DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) &&
+                (getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) || getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true))){
             numColumns = 1;
         }
+
 //        reviews.remove(reviews.size()-1);
         int numberReviews = reviews.size();
         // If there are reviews, list them
