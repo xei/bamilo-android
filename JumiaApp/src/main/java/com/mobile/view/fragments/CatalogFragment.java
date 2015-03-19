@@ -162,7 +162,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CRETED");
+        Log.i(TAG, "ON VIEW CREATED");
         // Load user preferences
         boolean isToShowGridLayout = CustomerPreferences.getCatalogLayout(getBaseActivity());
         mNumberOfColumns = getResources().getInteger(isToShowGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns);
@@ -275,8 +275,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
 
     /**
-     * Validate the current data.<br> - Case required arguments are empty show continue shopping<br> - Case is empty get data<br> - Case not empty show
-     * data<br>
+     * Validate the current data.<br>
+     * - Case required arguments are empty show continue shopping<br>
+     * - Case is empty get data<br>
+     * - Case not empty show data<br>
      */
     private void onValidateDataState() {
         Log.i(TAG, "ON VALIDATE DATA STATE");
@@ -289,7 +291,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             triggerGetPaginatedCatalog();
         }
         // Case filter applied and no results
-        else if(noFilterResults){
+        else if (noFilterResults) {
             showFilterNoResult();
         }
         // Case catalog was recover
@@ -457,8 +459,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     @Override
     protected void onRetryRequest(EventType eventType) {
-        if(eventType == EventType.GET_PRODUCTS_EVENT && mCatalogPage.hasFilters()){
-            super.onRetryRequest(eventType);
+        if(eventType == EventType.GET_PRODUCTS_EVENT && mCatalogPage != null && mCatalogPage.hasFilters()) {
+            triggerGetInitialCatalogPage();
         } else {
             // Validate data
             onValidateDataState();
@@ -542,7 +544,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(DialogFilterFragment.FILTER_TAG, mCatalogPage.getFilters());
             DialogFilterFragment newFragment = DialogFilterFragment.newInstance(bundle, this);
-            newFragment.show(getBaseActivity().getSupportFragmentManager(), "dialog");
+            newFragment.show(getBaseActivity().getSupportFragmentManager(), null);
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
         }

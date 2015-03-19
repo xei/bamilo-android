@@ -16,6 +16,7 @@ public enum ToastFactory {
     ERROR_NO_CONNECTION(R.string.no_connect_dialog_content, Toast.LENGTH_LONG),
     ERROR_CATALOG_LOAD_MORE(R.string.products_could_notloaded, Toast.LENGTH_LONG),
     ERROR_OCCURRED(R.string.error_occured, Toast.LENGTH_SHORT),
+    ERROR_PRODUCT_NOT_RETRIEVED(R.string.product_could_not_retrieved, Toast.LENGTH_LONG),
 
     SUCCESS_LOGIN(R.string.succes_login, Toast.LENGTH_LONG),
     ADDED_FAVOURITE(R.string.products_added_favourite, Toast.LENGTH_SHORT),

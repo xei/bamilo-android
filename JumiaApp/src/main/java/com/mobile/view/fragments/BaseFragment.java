@@ -48,6 +48,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.ToastFactory;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
@@ -120,10 +121,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private View mContentView;
 
     private View mFallBackView;
+
+    private View mErrorView;
+
     // For tacking
     protected long mLoadTime = 0l;
 
-    private View mErrorView;
+    private Locale mLocale;
 
     /**
      * Constructor with layout to inflate
@@ -432,8 +436,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (getView() != null && isHidden()) {
             unbindDrawables(getView());
         }
-
-        // System.gc();
     }
 
     /**
@@ -751,11 +753,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Show the content fragment from the root layout
      */
     protected void showFragmentContentContainer() {
-        setVisibility(mContentView, true);
-        setVisibility(mEmptyView, false);
-        setVisibility(mRetryView, false);
-        setVisibility(mErrorView, false);
-        setVisibility(mFallBackView, false);
+        UIUtils.showOrHideViews(View.VISIBLE, mContentView);
+        UIUtils.showOrHideViews(View.GONE, mEmptyView, mRetryView, mErrorView, mFallBackView);
         hideLoadingInfo(mLoadingView);
     }
 
@@ -766,12 +765,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     protected void showFragmentNoNetworkRetry(final OnClickListener listener) {
-        setVisibility(mContentView, false);
-        setVisibility(mEmptyView, false);
+        UIUtils.showOrHideViews(View.VISIBLE, mRetryView);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mErrorView, mFallBackView);
         hideLoadingInfo(mLoadingView);
-        setVisibility(mFallBackView, false);
-        setVisibility(mErrorView, false);
-        setVisibility(mRetryView, true);
         // Set view
         try {
             (getView().findViewById(R.id.fragment_root_retry_button)).setOnClickListener(new OnClickListener() {
@@ -795,7 +791,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showFragmentNoNetworkRetry(final EventType eventType) {
         showFragmentNoNetworkRetry(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 onRetryRequest(eventType);
@@ -807,12 +802,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Show the loading view from the root layout
      */
     protected void showFragmentLoading() {
-        setVisibility(mContentView, false);
-        setVisibility(mEmptyView, false);
-        setVisibility(mRetryView, false);
-        setVisibility(mErrorView, false);
-        setVisibility(mFallBackView, false);
         showLoadingInfo(mLoadingView);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView);
     }
 
     /**
@@ -824,12 +815,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      *            drawable id
      */
     protected void showFragmentEmpty(int emptyStringResId, int emptyDrawableResId) {
-        setVisibility(mContentView, false);
-        setVisibility(mRetryView, false);
-        setVisibility(mErrorView, false);
+        UIUtils.showOrHideViews(View.VISIBLE, mEmptyView);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mRetryView, mErrorView, mFallBackView);
         hideLoadingInfo(mLoadingView);
-        setVisibility(mFallBackView, false);
-        setVisibility(mEmptyView, true);
         // Set view
         try {
             ((ImageView) getView().findViewById(R.id.fragment_root_empty_image)).setImageResource(emptyDrawableResId);
@@ -867,12 +855,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     protected void showFragmentErrorRetry() {
-        setVisibility(mContentView, false);
-        setVisibility(mEmptyView, false);
+        UIUtils.showOrHideViews(View.VISIBLE, mErrorView);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mFallBackView, mRetryView);
         hideLoadingInfo(mLoadingView);
-        setVisibility(mFallBackView, false);
-        setVisibility(mRetryView, false);
-        setVisibility(mErrorView, true);
         // Set view
         try {
             (getView().findViewById(R.id.fragment_root_error_button)).setOnClickListener(this);
@@ -900,50 +885,28 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showContinueShopping() {
         Log.i(TAG, "ON SHOW CONTINUE LAYOUT");
-        showFragmentEmpty(R.string.server_error, R.drawable.img_warning, R.string.continue_shopping, new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                onClickContinueButton();
-            }
-        });
-    }
-
-    /**
-     * Process the click in continue shopping
-     *
-     * @author sergiopereira
-     */
-    protected void onClickContinueButton() {
-        getBaseActivity().onBackPressed();
+        showFragmentEmpty(R.string.server_error, R.drawable.img_warning, R.string.continue_shopping, this);
     }
 
     /**
      * Hide all root views
      */
     protected void hideFragmentRootViews() {
-        setVisibility(mContentView, false);
-        setVisibility(mEmptyView, false);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView);
         hideLoadingInfo(mLoadingView);
-        setVisibility(mRetryView, false);
-        setVisibility(mErrorView, false);
-        setVisibility(mFallBackView, false);
     }
 
     /**
      * Show the fall back view from the root layout
      */
     protected void showFragmentFallBack() {
-        setVisibility(mFallBackView, true);
-        setVisibility(mContentView, false);
-        setVisibility(mEmptyView, false);
+        UIUtils.showOrHideViews(View.VISIBLE, mFallBackView);
+        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView);
         hideLoadingInfo(mLoadingView);
-        setVisibility(mRetryView, false);
-        setVisibility(mErrorView, false);
     }
 
     /**
-     * Hides the loading screen that appears on the front of the fragmetn while it waits for the
+     * Hides the loading screen that appears on the front of the fragment while it waits for the
      * data to arrive from the server
      */
     protected final void hideLoadingInfo(View mLoadingView) {
@@ -954,7 +917,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING NPE ON SHOW LOADING LAYOUT");
         }
-        setVisibility(mLoadingView, false);
+        UIUtils.showOrHideViews(View.GONE, mLoadingView);
     }
 
     /**
@@ -963,7 +926,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected final void showLoadingInfo(View mLoadingView) {
         Log.w(TAG, "SHOWING LOADING LAYOUT");
-        setVisibility(mLoadingView, true);
+        UIUtils.showOrHideViews(View.VISIBLE, mLoadingView);
         // Set view
         try {
             ((LoadingBarView) getView().findViewById(R.id.fragment_root_loading_gif)).startRendering();
@@ -999,22 +962,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * Set the visibility
-     *
-     * @param view
-     * @param show
-     */
-    private void setVisibility(View view, boolean show) {
-        if (view != null) {
-            view.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    /**
      * ########### INPUT FORMS ###########
      */
-
-    private Locale mLocale;
 
     /**
      * Force input align to left
@@ -1057,8 +1006,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
 
     public boolean handleSuccessEvent(Bundle bundle) {
+        Log.i(TAG, "ON HANDLE ERROR EVENT");
+        // Validate event
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-
         switch (eventType) {
             case GET_SHOPPING_CART_ITEMS_EVENT:
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
@@ -1082,7 +1032,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     @SuppressWarnings("unchecked")
     public boolean handleErrorEvent(final Bundle bundle) {
-
         Log.i(TAG, "ON HANDLE ERROR EVENT");
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
@@ -1208,6 +1157,15 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Process the click in continue shopping
      *
+     * @author sergiopereira
+     */
+    protected void onClickContinueButton() {
+        getBaseActivity().onBackPressed();
+    }
+
+    /**
+     * Process the click in continue shopping
+     *
      * @param view
      * @author sergiopereira
      */
@@ -1230,11 +1188,20 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         onClickErrorButton(null);
     }
 
+    /**
+     *
+     * @param eventType
+     */
     protected void onRetryRequest(EventType eventType) {
         Log.i(TAG, "ON RETRY REQUEST");
         retryLastRequest(eventType);
     }
 
+    /**
+     *
+     * @param eventType
+     * @return
+     */
     private String retryLastRequest(EventType eventType) {
         if (eventType != null) {
             return JumiaApplication.INSTANCE.sendRequest(

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="splash_slogan">The only online shopping destination you will need!</string>
+	<string name="splash_slogan">@string/splash_slogan_daraz</string>
 </resources>
