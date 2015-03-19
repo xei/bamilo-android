@@ -120,8 +120,8 @@ public class TrackOrderFragment extends BaseFragment {
             if(TextUtils.isEmpty(order_number)){
                 mOrderTracker = savedInstanceState.getParcelable("track");
                 instanceOrder = savedInstanceState.getString("order_num");
+                Log.i(TAG, "onCreate mOrderTracker: " + mOrderTracker.getId());
             }
-            Log.i("TRACK", "onCreate mOrderTracker:"+mOrderTracker.getId());
         }
 
     }
