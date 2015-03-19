@@ -33,6 +33,8 @@
             <RelativeLayout
                 android:id="@+id/pdv_left_container"
                 style="@style/rounded_box"
+                android:layout_marginLeft="@dimen/margin_24px"
+                android:layout_marginStart="@dimen/margin_24px"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="0dp"
@@ -286,10 +288,10 @@
         android:layout_height="match_parent"
         android:layout_alignEnd="@+id/center_point"
         android:layout_alignRight="@+id/center_point"
-        android:layout_marginEnd="@dimen/rounded_margin_mid"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:layout_marginStart="@dimen/rounded_margin_mid"
+        android:layout_marginEnd="@dimen/margin_24px"
+        android:layout_marginLeft="@dimen/margin_24px"
+        android:layout_marginRight="@dimen/margin_24px"
+        android:layout_marginStart="@dimen/margin_24px"
         android:layout_marginTop="@dimen/rounded_margin_mid"
         layout="@layout/tips"
         android:visibility="visible" />
