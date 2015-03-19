@@ -5,12 +5,12 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.LayoutDirection;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.framework.objects.RatingStar;
@@ -56,8 +56,6 @@ public class ReviewFragment extends BaseFragment {
                 R.layout.review_fragment,
                 NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
-        
-        this.setRetainInstance(true);
     }
 
     /*
@@ -94,6 +92,11 @@ public class ReviewFragment extends BaseFragment {
         Log.i(TAG, "ON VIEW CREATED");
         inflater = LayoutInflater.from(getActivity());
         setAppContentLayout(view);
+
+        //clean form from write Review form
+        JumiaApplication.cleanRatingReviewValues();
+        JumiaApplication.cleanSellerReviewValues();
+        JumiaApplication.INSTANCE.setFormReviewValues(null);
     }
     
     /*
@@ -222,7 +225,7 @@ public class ReviewFragment extends BaseFragment {
                 //#RTL
                 int currentapiVersion = android.os.Build.VERSION.SDK_INT;
                 if(getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-                    typeLine.setLayoutDirection(LayoutDirection.LOCALE);
+                    typeLine.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
                 }
                 typeLine.setLayoutParams(params);
                 parent.addView(typeLine);

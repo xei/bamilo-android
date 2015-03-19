@@ -178,7 +178,9 @@ public class ReviewsFragment extends BaseFragment {
         Bundle arguments = getArguments();
         if(arguments != null) {
             // Get review list type from arguments
-            isProductRating = arguments.getBoolean(ConstantsIntentExtra.REVIEW_TYPE);
+            if(arguments.containsKey(ConstantsIntentExtra.REVIEW_TYPE)) {
+                isProductRating = arguments.getBoolean(ConstantsIntentExtra.REVIEW_TYPE);
+            }
             String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             mProductUrl = TextUtils.isEmpty(contentUrl) ? "" : contentUrl;
             mSellerId = arguments.getString(ProductDetailsFragment.SELLER_ID);
@@ -191,13 +193,10 @@ public class ReviewsFragment extends BaseFragment {
             totalPages = savedInstanceState.getInt("current_page", -1);
             mProductRatingPage = savedInstanceState.getParcelable("rate");
             reviews = savedInstanceState.getParcelableArrayList("reviews");
-            isProductRating =  savedInstanceState.getBoolean("review_type");
+//            isProductRating =  savedInstanceState.getBoolean("review_type");
+            isProductRating =  savedInstanceState.getBoolean(ConstantsIntentExtra.REVIEW_TYPE);
             mSellerId =  savedInstanceState.getString(ProductDetailsFragment.SELLER_ID);
             //Log.i(TAG, "ON LOAD SAVED STATE: " + mSavedUrl + " " + mSavedPageNumber);
-        } else {
-            // clean last saved review
-            JumiaApplication.cleanRatingReviewValues();
-            JumiaApplication.cleanSellerReviewValues();
         }
     }
 
@@ -276,8 +275,14 @@ public class ReviewsFragment extends BaseFragment {
 
             if(isProductRating){
                 //Validate if country configs allows rating and review, only show write review fragment if both are allowed
-                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) || getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true) ){
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) || getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
+                    centerPoint.setVisibility(View.VISIBLE);
+                    marginLandscape.setVisibility(View.GONE);
                     startWriteReviewFragment();
+                } else {
+                    //hide center point in order to list fill all the screen
+                    centerPoint.setVisibility(View.GONE);
+                    marginLandscape.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -316,7 +321,7 @@ public class ReviewsFragment extends BaseFragment {
         outState.putInt("current_page", totalPages);
         outState.putParcelable("rate", mProductRatingPage);
         outState.putParcelableArrayList("reviews", reviews);
-        outState.putBoolean("review_type", isProductRating);
+//        outState.putBoolean("review_type", isProductRating);
         outState.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, isProductRating);
         outState.putString(ProductDetailsFragment.SELLER_ID, mSellerId);
     }
@@ -461,20 +466,24 @@ public class ReviewsFragment extends BaseFragment {
     private void setCommentListener() {
         
         final Button writeComment = (Button) getView().findViewById(R.id.write_btn);
+        final TextView writeReviewTitle = (TextView) getView().findViewById(R.id.write_title);
         
         //Validate if country configs allows rating and review, only show button if both are allowed
         if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) || getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true) ){
             writeComment.setVisibility(View.VISIBLE);
+            writeReviewTitle.setVisibility(View.VISIBLE);
             writeComment.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // clean last saved review
                     JumiaApplication.cleanRatingReviewValues();
                     JumiaApplication.cleanSellerReviewValues();
+                    JumiaApplication.INSTANCE.setFormReviewValues(null);
                     writeReview();
                 }
             });
         } else {
+            writeReviewTitle.setVisibility(View.GONE);
             writeComment.setVisibility(View.GONE);
 
         }
@@ -690,11 +699,14 @@ public class ReviewsFragment extends BaseFragment {
         // set the number of grid columns depending on the screen size    
         int numColumns = getBaseActivity().getResources().getInteger(R.integer.catalog_list_num_columns);
 //        numColumns = 2;
-        
-        if(mWriteReviewFragment != null || mSellerWriteReviewFragment != null){
-            // means there's write fragment attached so the reviews list must be only one column
+
+        // means there's write fragment attached so the reviews list must be only one column
+        if(reviews != null && reviews.size() > 0 && getBaseActivity() != null &&
+                DeviceInfoHelper.isTabletInLandscape(getBaseActivity()) &&
+                (getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) || getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true))){
             numColumns = 1;
         }
+
 //        reviews.remove(reviews.size()-1);
         int numberReviews = reviews.size();
         // If there are reviews, list them

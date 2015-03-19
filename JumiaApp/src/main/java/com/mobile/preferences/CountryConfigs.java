@@ -148,10 +148,13 @@ public class CountryConfigs {
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, phone_number);
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, cs_email);
 
-        mEditor.putBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true);
+        // Rating and Reviews configuration
+        mEditor.putBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, rating_enable);
         mEditor.putBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, rating_login_required);
-        mEditor.putBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true);
+        mEditor.putBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, review_enable);
         mEditor.putBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, review_login_required);
+
+        //facebook configuration
         mEditor.putBoolean(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE, facebook_is_available);
 
         mEditor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, true);

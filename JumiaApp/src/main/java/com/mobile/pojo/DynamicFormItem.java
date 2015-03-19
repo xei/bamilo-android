@@ -3,6 +3,7 @@ package com.mobile.pojo;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils.TruncateAt;
@@ -31,9 +32,11 @@ import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.forms.Form;
 import com.mobile.forms.FormField;
 import com.mobile.forms.IFormField;
+import com.mobile.framework.Darwin;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.InputType;
 import com.mobile.utils.RadioGroupLayout;
@@ -108,6 +111,7 @@ public class DynamicFormItem {
 
     private ArrayList<DynamicForm> childDynamicForm;
 
+    private SharedPreferences mSharedPrefs;
     /**
      * The constructor for the DynamicFormItem
      * 
@@ -1804,8 +1808,7 @@ public class DynamicFormItem {
          * because that option is only available on the  write product review screen and not on write seller review screen.
          */
 
-//        if( context != null && ((MainFragmentActivity) context).getActiveFragment() != null && !((MainFragmentActivity) context).getActiveFragment().getTag().equals(FragmentType.WRITE_REVIEW_SELLER.name())){
-        if(!JumiaApplication.INSTANCE.getIsSellerReview()){
+        if(!JumiaApplication.INSTANCE.getIsSellerReview() && getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true) ){
             addCustomRatingCheckbox(linearLayout, params, controlWidth);
         }
         this.dataControl = linearLayout;
@@ -1813,6 +1816,14 @@ public class DynamicFormItem {
         ((ViewGroup) this.control).addView(this.dataControl);
         
      }
+
+    private SharedPreferences getSharedPref(){
+        if(mSharedPrefs == null){
+            //Validate if country configs allows rating and review, only show write review fragment if both are allowed
+            mSharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        }
+        return mSharedPrefs;
+    }
     
     /**
      * 

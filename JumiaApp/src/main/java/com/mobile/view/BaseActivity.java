@@ -1549,8 +1549,33 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     public void showWarning(int message) {
         if (warningView != null) {
-            warningView.setVisibility(View.INVISIBLE);
             ((TextView) findViewById(R.id.warning_text)).setText(message);
+            animateWarning(warningView);
+        }
+    }
+
+    public void showWarningVariation(boolean show, int message) {
+        if(warningVariationView != null && warningVariationView instanceof TextView) {
+            ((TextView) warningVariationView).setText(message);
+            UIUtils.setVisibility(warningVariationView, show);
+        }
+    }
+
+    public void showWarningVariation(int message) {
+        if(warningVariationView != null && warningVariationView instanceof TextView) {
+            ((TextView) warningVariationView).setText(message);
+            animateWarning(warningVariationView);
+        }
+    }
+
+    public void showWarningVariation(boolean show) {
+        UIUtils.setVisibility(warningVariationView, show);
+    }
+
+    protected void animateWarning(final View warningView){
+        if (warningView != null) {
+            warningView.setVisibility(View.INVISIBLE);
+
             final Animation mAnimFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
             final Animation mAnimFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
             warningView.clearAnimation();
@@ -1594,10 +1619,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                 }
             });
         }
-    }
 
-    public void showWarningVariation(boolean show) {
-        UIUtils.setVisibility(warningVariationView, show);
     }
 
     private void setAppContentLayout() {
@@ -1880,7 +1902,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * This method should be implemented by fragment activity to manage the work flow for fragments. Each fragment should call this method.
      *
-     * @param search
+     * @param type
+     * @param bundle
      * @param addToBackStack
      * @author sergiopereira
      */
@@ -1920,7 +1943,6 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Pop back stack until tag
      *
      * @param tag
-     * @param inclusive
      * @author sergiopereira
      */
     public void popBackStackUntilTag(String tag) {

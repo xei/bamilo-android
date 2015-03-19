@@ -129,7 +129,6 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
     
     /**
      * Get the recycled view
-     * @param view
      * @return ItemView
      * @author sergiopereira
      */
@@ -169,6 +168,7 @@ public class AddableToCartListAdapter extends ArrayAdapter<AddableToCart> {
             view.setOnClickListener(null);
             view.setEnabled(false);
             view.setBackgroundResource(R.drawable.btn_grey);
+            view.setAlpha(0.5f);
         }
     }
     

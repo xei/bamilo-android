@@ -93,6 +93,7 @@ public class JumiaApplication extends A4SApplication {
     private static ContentValues ratingReviewValues;
     private static ContentValues sellerReviewValues;
     public static boolean isSellerReview = false;
+    private static HashMap<String, String> sFormReviewValues = new HashMap<>();
 
     // TODO : Validate recover
     private static ArrayList<EventType> requestOrder = new ArrayList<>();
@@ -634,6 +635,20 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
+     * get the values from the write review form
+     * @return sFormReviewValues
+     */
+    public HashMap<String,String> getFormReviewValues(){
+        return JumiaApplication.sFormReviewValues;
+    }
+    /**
+     * HashMap used to store the values from the write review form
+     */
+    public void setFormReviewValues(HashMap<String, String> sFormReviewValues){
+        JumiaApplication.sFormReviewValues = sFormReviewValues;
+    }
+
+    /**
      * @param paymentsInfoList
      *            the paymentsInfoList to set
      */
@@ -670,6 +685,7 @@ public class JumiaApplication extends A4SApplication {
         isSellerReview = false;
         ratingReviewValues = null;
         sellerReviewValues = null;
+        sFormReviewValues = null;
         resetTransactionCount();
     }
     
