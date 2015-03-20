@@ -77,7 +77,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
      * @author sergiopereira
      */
     public static ProductImageGalleryFragment getInstance(Bundle bundle) {
-        return getInstance(bundle, ISNT_NESTED_FRAGMENT);
+        return getInstance(bundle, IS_NOT_NESTED_FRAGMENT);
     }
     
     /**
@@ -148,7 +148,7 @@ public class ProductImageGalleryFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.viewpager);
-        mViewPagerIndicator = (InfiniteCirclePageIndicator)getView().findViewById(R.id.view_pager_indicator);
+        mViewPagerIndicator = (InfiniteCirclePageIndicator) getView().findViewById(R.id.view_pager_indicator);
         View closeView = view.findViewById(R.id.gallery_button_close);
         // Set view pager
         createGallery();
@@ -357,15 +357,16 @@ public class ProductImageGalleryFragment extends BaseFragment {
         }
     }
 
+    /**
+     *
+     */
     private void launchNewInstance(){
-
         ProductImageGalleryFragment.sSharedSelectedPosition = getViewPagerPosition();
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, imagesList);
         bundle.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, true);
         bundle.putBoolean(ConstantsIntentExtra.SHOW_HORIZONTAL_LIST_VIEW, false);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_GALLERY, bundle, FragmentController.ADD_TO_BACK_STACK);
-
     }
     
     /*

@@ -80,7 +80,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
     private BaseFragment fragment;
 
-    private FragmentType currentFragmentType;
+    private FragmentType mCurrentFragmentType;
 
     private boolean wasReceivedNotification = false;
 
@@ -120,10 +120,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
         } else {
-            currentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
+            mCurrentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
 
-            Log.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + currentFragmentType.toString());
-            fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(currentFragmentType.toString());
+            Log.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + mCurrentFragmentType.toString());
+            fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(mCurrentFragmentType.toString());
             if (null != fragment) {
                 fragment.setActivity(this);
             }
@@ -132,7 +132,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             ArrayList<String> backStackTypes = savedInstanceState.getStringArrayList(ConstantsIntentExtra.BACK_STACK);
             List<Fragment> originalFragments = this.getSupportFragmentManager().getFragments();
             if (backStackTypes != null && backStackTypes.size() > 0) {
-                FragmentController.getInstance().validateCurrentState(this, backStackTypes, originalFragments, currentFragmentType);
+                FragmentController.getInstance().validateCurrentState(this, backStackTypes, originalFragments, mCurrentFragmentType);
             }
 
         }
@@ -166,8 +166,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     /**
      * Validate and process intent from notification
      *
-     * @param intent
-     * @return
+     * @param intent Tthe deep link intent
+     * @return valid or invalid
      */
     private boolean isValidNotification(Intent intent) {
         Log.d(TAG, "VALIDATE INTENT FROM NOTIFICATION");
@@ -259,11 +259,11 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "ON SAVED INSTANCE STATE: " + currentFragmentType.toString());
+        Log.d(TAG, "ON SAVED INSTANCE STATE: " + mCurrentFragmentType.toString());
         ArrayList<String> frags = new ArrayList<>();
         try {
             String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-            currentFragmentType = FragmentType.valueOf(tag);
+            mCurrentFragmentType = FragmentType.valueOf(tag);
             // Save the current back stack
             for (String entry : FragmentController.getInstance().returnAllEntries()) {
                 frags.add(entry);
@@ -272,7 +272,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             Log.w(TAG, "ERROR ON GET CURRENT FRAGMENT TYPE", e);
         }
         // Save the current fragment type on orientation change
-        outState.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, currentFragmentType);
+        outState.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, mCurrentFragmentType);
         // Save the current back stack history
         outState.putStringArrayList(ConstantsIntentExtra.BACK_STACK, frags);
     }
@@ -427,7 +427,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
         Log.i(TAG, "ON SWITCH FRAGMENT: " + type);
         // Save the current state
-        currentFragmentType = type;
+        mCurrentFragmentType = type;
         // Transition
         fragmentManagerTransition(R.id.rocket_app_content, fragment, type.toString(), addToBackStack);
     }
@@ -441,7 +441,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onBackPressed() {
         Log.i(TAG, "ON BACK PRESSED");
         // This situation only occurs when user goes to Choose Country screen on maintenance page and presses back
-        if (isInMaintenance) {
+        if (isInMaintenance()) {
             Intent newIntent = new Intent(this, SplashScreenActivity.class);
             newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(newIntent);
@@ -477,7 +477,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     /**
      * Get the active fragment
      *
-     * @return
+     * @return BaseFragment
      */
     public BaseFragment getActiveFragment() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
@@ -490,9 +490,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     }
 
     /**
-     * Pop back stack
+     * Pop back stack until fragment with tag.
      *
-     * @param tag
+     * @param tag The fragment tag
      */
     public void popBackStack(String tag) {
         // Pop back stack until tag
@@ -509,7 +509,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     // ####################### DEEP LINK #######################
 
     /**
-     * Parse the deep link
+     * Parse the deep link.
      *
      * @author nunocastro
      */

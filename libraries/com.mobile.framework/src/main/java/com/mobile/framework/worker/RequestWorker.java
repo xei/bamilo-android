@@ -31,7 +31,7 @@ public class RequestWorker implements Runnable {
 	public RequestWorker(Bundle bundle,Handler handler, Context context){
 		this.context = context;
 		uri = Uri.parse(bundle.getString(Constants.BUNDLE_URL_KEY));
-		Log.i(TAG,"Executing => "+uri.toString());
+		Log.i(TAG,"Executing => " + uri.toString());
 		type = (RequestType) bundle.getSerializable(Constants.BUNDLE_TYPE_KEY);
 		if(type == RequestType.POST) formData = bundle.getParcelable(Constants.BUNDLE_FORM_DATA_KEY);
 		mHandler = handler;
@@ -40,7 +40,7 @@ public class RequestWorker implements Runnable {
 
 	@Override
 	public void run() {
-		RestClientSingleton client = RestClientSingleton.getSingleton(context);	
+		RestClientSingleton client = RestClientSingleton.getSingleton(context);
 		switch(type){
 		case GET:
 			client.executeGetRestUrlString(uri, mHandler, mBundle);

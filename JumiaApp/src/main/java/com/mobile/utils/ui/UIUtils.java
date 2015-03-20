@@ -77,6 +77,12 @@ public class UIUtils {
         if (view != null) view.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
+    /**
+     * TODO
+     * @param context
+     * @param warningView
+     * @param warningLength
+     */
     public static void animateWarning(Context context, final View warningView, final int warningLength){
         if (warningView != null) {
             warningView.setVisibility(View.INVISIBLE);
