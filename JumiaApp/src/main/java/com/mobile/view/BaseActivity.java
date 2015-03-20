@@ -2048,7 +2048,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Hide the main fall back view with retry button
      */
-    public void hideMainFallBackView() {
+    public void hideLayoutMaintenance() {
         if (mMainFallBackStub != null) {
             mMainFallBackStub.setVisibility(View.GONE);
         }

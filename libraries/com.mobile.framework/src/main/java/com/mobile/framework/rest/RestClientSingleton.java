@@ -246,7 +246,7 @@ public final class RestClientSingleton {
 		EventType eventType = (EventType) metaData.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
 		// Validate if is ventures.json
 		String url = (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) ? uri.toString() : RemoteService.completeUri(uri).toString();
-		
+
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.i(TAG, "executeGetRestUrlString complete: " + url);
 		}

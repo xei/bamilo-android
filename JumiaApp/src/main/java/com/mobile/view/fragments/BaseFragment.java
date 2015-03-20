@@ -80,9 +80,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public static final Boolean IS_NESTED_FRAGMENT = true;
 
-    public static final Boolean ISNT_NESTED_FRAGMENT = false;
-
-    public enum KeyboardState {NO_ADJUST_CONTENT, ADJUST_CONTENT};
+    public static final Boolean IS_NOT_NESTED_FRAGMENT = false;
 
     public static final int NO_INFLATE_LAYOUT = 0;
 
@@ -108,8 +106,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     protected boolean isOnStoppingProcess = true;
 
-    private KeyboardState adjustState = KeyboardState.ADJUST_CONTENT;
-
     private BaseActivity mainActivity;
 
     private View mLoadingView;
@@ -124,10 +120,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private View mErrorView;
 
-    // For tacking
-    protected long mLoadTime = 0l;
+    protected long mLoadTime = 0l; // For tacking
 
     private Locale mLocale;
+
+    public enum KeyboardState {NO_ADJUST_CONTENT, ADJUST_CONTENT}
+
+    private KeyboardState adjustState = KeyboardState.ADJUST_CONTENT;
 
     /**
      * Constructor with layout to inflate
@@ -481,6 +480,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     @Override
     public boolean allowBackPressed() {
+        /**
+         * FIXME: This is a temporary solution to fix a crash case press retry after back pressed.
+         * Hide the Maintenance page on back pressed.
+         */
+        if (action != NavigationAction.Home && !isNestedFragment && !isOnStoppingProcess) {
+            getBaseActivity().hideLayoutMaintenance();
+        }
+        // No intercept the back pressed
         return false;
     }
 
@@ -509,7 +516,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
         // Hide fall back for each fragment request
         if (getBaseActivity() != null) {
-            getBaseActivity().hideMainFallBackView();
+            getBaseActivity().hideLayoutMaintenance();
         }
     }
 
@@ -574,10 +581,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     static {
         Field f = null;
         try {
-            f = Fragment.class.getDeclaredField("mChildFragmentManager");
+            f = Fragment.class.getDeclaredField("ChildFragmentManager");
             f.setAccessible(true);
         } catch (NoSuchFieldException e) {
-            Log.e(TAG, "Error getting mChildFragmentManager field", e);
+            Log.e(TAG, "Error getting ChildFragmentManager field", e);
         }
         sChildFragmentManagerField = f;
     }
@@ -735,8 +742,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-    /**
-     * ########### ROOT LAYOUT ###########
+    /*
+     * ########### ROOT VIEWS ###########
      */
 
     /**
@@ -866,7 +873,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-
     /**
      * Show continue
      *
@@ -961,7 +967,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         hideActivityProgress();
     }
 
-    /**
+    /*
      * ########### INPUT FORMS ###########
      */
 
@@ -1001,10 +1007,15 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return mLoadTime;
     }
 
-    /**
-     * ########### NEXT ###########
+    /*
+     * ########### RESPONSE ###########
      */
 
+    /**
+     * Handle success response
+     * @param bundle The success bundle
+     * @return intercept or not
+     */
     public boolean handleSuccessEvent(Bundle bundle) {
         Log.i(TAG, "ON HANDLE ERROR EVENT");
         // Validate event
@@ -1030,6 +1041,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return false;
     }
 
+    /**
+     * Handle error response.
+     * @param bundle The error bundle
+     * @return intercept or not
+     */
     @SuppressWarnings("unchecked")
     public boolean handleErrorEvent(final Bundle bundle) {
         Log.i(TAG, "ON HANDLE ERROR EVENT");
@@ -1184,7 +1200,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @modified sergiopereira
      */
     protected void onClickMaintenanceRetryButton() {
-        getBaseActivity().hideMainFallBackView();
+        getBaseActivity().hideLayoutMaintenance();
         onClickErrorButton(null);
     }
 
