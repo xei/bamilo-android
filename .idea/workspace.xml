@@ -64,12 +64,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72278d06-ae76-453e-9928-17bc95bbd4d0" name="Default" comment="% removed idea libraries files;">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties.lock" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileHashes.bin" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/outputFileStates.bin" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ReviewWriteFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ReviewWriteFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ReviewWriteNestedFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ReviewWriteNestedFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/recentlyviewed.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/recentlyviewed.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/recentlyviewed_buttons.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/recentlyviewed_buttons.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout-large-land/recentlyviewed_buttons.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout-large-land/recentlyviewed_buttons.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/reviews_fragment_rating_bigtype_item.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/reviews_fragment_rating_bigtype_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/reviews_fragment_rating_samlltype_item.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/reviews_fragment_rating_samlltype_item.xml" />
     </list>
     <list id="82c79d6d-64a6-4279-973e-1869b52bbba0" name="gradle_artifacts" comment="" />
     <ignored path="My Application.iws" />
@@ -17286,7 +17288,13 @@
       <option name="project" value="LOCAL" />
       <updated>1426863467832</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="% removed idea libraries files;">
+      <created>1426863954955</created>
+      <option name="number" value="00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1426863954955</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -17377,12 +17385,12 @@
     <MESSAGE value="% seller reviews;" />
     <MESSAGE value="% seller reviews" />
     <MESSAGE value="% Updated the BB script;" />
-    <MESSAGE value="% removed idea libraries files;" />
     <MESSAGE value="% Updated the Manifest;&#10;% Fixed crash in TrackOrderFragment;&#10;% Updated the BB script." />
     <MESSAGE value="% Code review;" />
     <MESSAGE value="% Updated the bundles in PDV;&#10;% Updated the method to set visibility for root views.&#10;% Updated the splash string for Daraz." />
     <MESSAGE value="% Update the method for back pressed in maintenance page, NAFAMZ-10958;" />
-    <option name="LAST_COMMIT_MESSAGE" value="% Update the method for back pressed in maintenance page, NAFAMZ-10958;" />
+    <MESSAGE value="% removed idea libraries files;" />
+    <option name="LAST_COMMIT_MESSAGE" value="% removed idea libraries files;" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -17494,14 +17502,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="82" column="34" selection-start-line="82" selection-start-column="34" selection-end-line="82" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ReviewWriteFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33221477">
-          <caret line="826" column="125" selection-start-line="826" selection-start-column="125" selection-end-line="826" selection-end-column="125" />
           <folding />
         </state>
       </provider>
@@ -17936,10 +17936,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+    <entry file="file://$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ReviewWriteFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33221477">
+          <caret line="826" column="125" selection-start-line="826" selection-start-column="125" selection-end-line="826" selection-end-column="125" />
           <folding />
         </state>
       </provider>

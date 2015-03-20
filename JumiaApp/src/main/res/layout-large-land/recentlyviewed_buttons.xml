@@ -7,17 +7,7 @@
     <com.mobile.components.customfontviews.Button
         android:id="@+id/recentlyviewed_button_grey"
         style="@style/button_grey_bottom"
-        android:layout_marginRight="@dimen/margin_x_small"
-        android:layout_marginEnd="@dimen/margin_x_small"
         android:layout_weight="1"
         android:text="@string/recentlyview_clear_viewed" />
-
-    <com.mobile.components.customfontviews.Button
-        android:id="@+id/button_shop_all"
-        style="@style/button_orange_bottom"
-        android:layout_marginLeft="@dimen/margin_x_small"
-        android:layout_marginEnd="@dimen/margin_x_small"
-        android:layout_weight="1"
-        android:text="@string/favourite_addalltocart" />
 
 </LinearLayout>

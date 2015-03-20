@@ -824,7 +824,7 @@ public class ReviewWriteFragment extends BaseFragment {
         if (!isExecutingSendReview) {
             isExecutingSendReview = true;
             if(isShowingRatingForm){
-                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && !JumiaApplication.INSTANCE.isLoggedIn()){
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.INSTANCE.CUSTOMER == null){
 //                    Bundle bundle = new Bundle();
 //                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
                     Bundle bundle = getArguments();
@@ -834,7 +834,7 @@ public class ReviewWriteFragment extends BaseFragment {
                     executeSendReview(ratingForm.action, dynamicRatingForm);
                 }
             } else {
-                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && !JumiaApplication.INSTANCE.isLoggedIn()){
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.INSTANCE.CUSTOMER == null){
 //                    Bundle bundle = new Bundle();
 //                    bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WRITE_REVIEW);
                     Bundle bundle = getArguments();
