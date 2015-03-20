@@ -2061,7 +2061,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 mProductFeaturesContainer.setVisibility(View.GONE);
             }
         } else {
-            mProductFeaturesContainer.setVisibility(View.VISIBLE);
+            if (mProductFeaturesContainer != null) {
+                mProductFeaturesContainer.setVisibility(View.VISIBLE);
+            }
+
 
             String translatedDescription = shortDescription.replace("\r", "<br>");
             Log.d(TAG, "displaySpecification: *" + translatedDescription + "*");
