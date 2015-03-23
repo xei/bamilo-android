@@ -49,7 +49,6 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
         style="@style/text_normal"
-        android:layout_width="match_parent"
         android:layout_alignLeft="@id/center_view"
         android:layout_alignStart="@id/center_view"
         android:layout_below="@id/item_brand"
