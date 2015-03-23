@@ -1,16 +1,16 @@
 package ch.boye.httpclientandroidlib.impl.client.cache;
 
+import android.content.Context;
+
+import com.mobile.framework.network.HttpCacheDatabaseHelper;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import android.content.Context;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheEntry;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheStorage;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheUpdateCallback;
-
-import com.mobile.framework.network.HttpCacheDatabaseHelper;
-
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -97,10 +97,17 @@ public class DBHttpCacheStorage implements HttpCacheStorage {
 			Log.d(TAG, "Removing entry for key " + url);
 		}
 		if (entries.remove(url) != null) {
-			dbHelper.delete(url);
+            dbHelper.delete(url);
 		}
 	}
 
+    public void removeEntryDB(String url) throws IOException{
+        if (logDebugEnabled) {
+            Log.d(TAG, "Removing entry from DB for key " + url);
+        }
+        entries.remove(url);
+        dbHelper.delete(url);
+    }
 	/*
 	 * (non-Javadoc)
 	 * 

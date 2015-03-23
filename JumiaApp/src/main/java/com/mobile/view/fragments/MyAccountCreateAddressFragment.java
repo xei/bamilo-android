@@ -1,5 +1,6 @@
 package com.mobile.view.fragments;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,8 +18,6 @@ import com.mobile.utils.Toast;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -91,6 +90,16 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
         super.onCreateAddressSuccessEvent(bundle);
         AnalyticsGoogle.get().trackAddressCreation(TrackingEvent.ACCOUNT_CREATE_ADDRESS,
                 (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId()+"":"");
+
+        if(!mIsSameCheckBox.isChecked() && !oneAddressCreated){
+            oneAddressCreated = true;
+
+            if (null != billingFormGenerator) {
+                ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
+                triggerCreateAddress(mBillValues, true);
+            }
+        }
+
         getBaseActivity().onBackPressed();
     }
 
@@ -120,9 +129,11 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-            @SuppressWarnings("unchecked")
-            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-            showErrorDialog(errors);
+//            @SuppressWarnings("unchecked")
+//            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+//
+//            showErrorDialog(errors, getString(R.string.address_creation_failed));
+              showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
             showFragmentContentContainer();
         } else {
             Log.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode.name());

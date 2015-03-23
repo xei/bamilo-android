@@ -24,8 +24,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -151,9 +149,9 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-            @SuppressWarnings("unchecked")
-            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-            showErrorDialog(errors);
+//            @SuppressWarnings("unchecked")
+//            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
             showFragmentContentContainer();
         } else {
             Log.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode.name());
