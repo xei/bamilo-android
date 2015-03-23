@@ -528,10 +528,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             //Validate if fragment is nested
             nestedFragment = this.getParentFragment() instanceof ReviewsFragment;
 
-            if(nestedFragment)
-                buttonMessageText = getResources().getString(R.string.ok_label);
-            
-            
             dialog_review_submitted = DialogGenericFragment.newInstance(true, false,
                     getString(R.string.submit_title),
                     getResources().getString(R.string.submit_text),
@@ -547,7 +543,8 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                                     cleanForm();
                                     getBaseActivity().onBackPressed();
                                 } else {
-                                    getBaseActivity().onBackPressed();
+                                    // Remove entries until specific tag
+                                    FragmentController.getInstance().removeEntriesUntilTag(FragmentType.POPULARITY.toString());
                                     getBaseActivity().onBackPressed();
                                 }
                             }

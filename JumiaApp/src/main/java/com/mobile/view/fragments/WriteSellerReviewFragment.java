@@ -13,6 +13,8 @@ import android.widget.RelativeLayout;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.FormConstants;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.forms.Form;
 import com.mobile.framework.ErrorCode;
@@ -507,10 +509,6 @@ public class WriteSellerReviewFragment extends BaseFragment {
             //Validate if fragment is nested
             nestedFragment = getParentFragment() instanceof ReviewsFragment;
 
-            if(nestedFragment)
-                buttonMessageText = getResources().getString(R.string.ok_label);
-
-
             dialog_review_submitted = DialogGenericFragment.newInstance(false, true,
                     getString(R.string.submit_title),
                     getResources().getString(R.string.submit_text),
@@ -524,8 +522,10 @@ public class WriteSellerReviewFragment extends BaseFragment {
                             if (getBaseActivity() != null) {
                                 if(nestedFragment){
                                     cleanForm();
-                                } else {
                                     getBaseActivity().onBackPressed();
+                                } else {
+                                    // Remove entries until specific tag
+                                    FragmentController.getInstance().removeEntriesUntilTag(FragmentType.POPULARITY.toString());
                                     getBaseActivity().onBackPressed();
                                 }
                             }

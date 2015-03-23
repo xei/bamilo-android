@@ -41,15 +41,12 @@ import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.InputType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -1098,17 +1095,18 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @param errors
      * @author sergiopereira
      */
-    protected void showErrorDialog(HashMap<String, List<String>> errors) {
+    protected void showErrorDialog(String errorMessage ,String dialogTitle) {
         Log.d(TAG, "SHOW LOGIN ERROR DIALOG");
-        List<String> errorMessages = null;
-        if (errors != null) {
-            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
-        }
-        if (errors != null && errorMessages != null && errorMessages.size() > 0) {
+        // FIXME to be fixed on a next release, where all form validations are made on our side and delt with the the error messages centrally
+//        List<String> errorMessages = null;
+//        if (errors != null) {
+//            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
+//        }
+//        if (errors != null && errorMessages != null && errorMessages.size() > 0) {
             showFragmentContentContainer();
             dialog = DialogGenericFragment.newInstance(true, false,
-                    getString(R.string.error_login_title),
-                    errorMessages.get(0),
+                    dialogTitle,
+                    errorMessage,
                     getString(R.string.ok_label),
                     "",
                     new View.OnClickListener() {
@@ -1121,15 +1119,15 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                         }
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
-        } else {
-            if (mMsgRequired != null) {
-                mMsgRequired.setVisibility(View.VISIBLE);
-                changeMessageState(mMsgRequired, true, ERROR_DELAY);
-
-            } else {
-                Toast.makeText(getBaseActivity(), getString(R.string.register_required_text), Toast.LENGTH_SHORT).show();
-            }
-        }
+//        } else {
+//            if (mMsgRequired != null) {
+//                mMsgRequired.setVisibility(View.VISIBLE);
+//                changeMessageState(mMsgRequired, true, ERROR_DELAY);
+//
+//            } else {
+//                Toast.makeText(getBaseActivity(), getString(R.string.register_required_text), Toast.LENGTH_SHORT).show();
+//            }
+//        }
     }
 
 

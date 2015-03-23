@@ -369,4 +369,6 @@
     <string name="addresses_saved_message">Your addresses settings have been saved.</string>
 
     <string name="dialog_to_product">To Product Details</string>
+    <string name="address_creation_failed_title">Address creation failed</string>
+    <string name="address_creation_failed_main">Please fill correctly all form fields.</string>
 </resources>
