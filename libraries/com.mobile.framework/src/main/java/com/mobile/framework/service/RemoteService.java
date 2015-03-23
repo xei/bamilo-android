@@ -15,6 +15,9 @@ import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.worker.RequestWorker;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +26,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import ch.boye.httpclientandroidlib.client.utils.URIBuilder;
 import de.akquinet.android.androlog.Log;
 
 public class RemoteService extends Service {
@@ -129,39 +133,57 @@ public class RemoteService extends Service {
         }
     }
 
-	public static Uri completeUri( Uri uri ) {
-		if ( Darwin.logDebugEnabled) {
-			Log.d( TAG, "completeUri: uri = " + uri);
-		}
-		Builder builder = uri.buildUpon();
-		
-		if (uri.getAuthority() == null) {
-			builder.authority(RestContract.REQUEST_HOST).path(RestContract.REST_BASE_PATH + uri.getPath());
-			Log.w(TAG, "Url " + uri + " should include authority, authority and base path added");
-		}
-		
-		if(RestContract.USE_ONLY_HTTPS){
-			if ( Darwin.logDebugEnabled) {
-				Log.d(TAG, "Request type changed to https.");
-			}
-			builder.scheme("https");
-		}
-		
-		/**
-		 * Temporary: Force http for Bamilo.
-		 * TODO: Remove me if Bamilo supports https.
-		 */
-		if(RestContract.USE_ONLY_HTTP) {
-		    Log.i(TAG, "BAMILO REQUEST: force http.");
-		    builder.scheme("http");
-		}
-		
-		uri = builder.build();
-		if ( Darwin.logDebugEnabled) {
-			Log.d(TAG, "Rebuilded uri: " + uri);
-		}
-		return uri;
-	}
+    /**
+     *
+     *  Return the complete url of uri. Port is added if possible.
+     *
+     */
+    public static String completeUri( Uri uri ) {
+        if ( Darwin.logDebugEnabled) {
+            Log.d( TAG, "completeUri: uri = " + uri);
+        }
+        Builder builder = uri.buildUpon();
+
+        if (uri.getAuthority() == null) {
+            builder.authority(RestContract.REQUEST_HOST).path(RestContract.REST_BASE_PATH + uri.getPath());
+            Log.w(TAG, "Url " + uri + " should include authority, authority and base path added");
+        }
+
+        if(RestContract.USE_ONLY_HTTPS){
+            if ( Darwin.logDebugEnabled) {
+                Log.d(TAG, "Request type changed to https.");
+            }
+            builder.scheme("https");
+        }
+
+        /**
+         * Temporary: Force http for Bamilo.
+         * TODO: Remove me if Bamilo supports https.
+         */
+        if(RestContract.USE_ONLY_HTTP) {
+            Log.i(TAG, "BAMILO REQUEST: force http.");
+            builder.scheme("http");
+        }
+
+        uri = builder.build();
+
+        String completeUrl = uri.toString();
+        try {
+            URL url = new URL(uri.toString());
+
+            URIBuilder uriBuilder = new URIBuilder(uri.toString());
+            uriBuilder.setPort(url.getDefaultPort());
+            completeUrl = uriBuilder.toString();
+        } catch (MalformedURLException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        if ( Darwin.logDebugEnabled) {
+            Log.d(TAG, "Rebuilded uri: " + completeUrl);
+        }
+
+        return completeUrl;
+    }
     
     private static Handler mHandler = new Handler(){
     	public void handleMessage(android.os.Message msg) {
