@@ -68,8 +68,7 @@ public class GetLoginFormHelper extends BaseHelper {
                 form.setEventType(EventType.LOGIN_EVENT);
                 JSONObject formObject = dataObject.getJSONObject(i);
                 if (!form.initialize(formObject)) {
-                    Log.e(TAG,
-                            "Error initializing the form using the data");
+                    Log.e(TAG, "Error initializing the form using the data");
                 }
                 forms.add(form);
             }

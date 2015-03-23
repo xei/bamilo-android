@@ -41,6 +41,7 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
+import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -69,8 +70,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     protected final static int NO_ERROR = -1;
 
     protected final static int OUT_OF_STOCK_ERROR = -2;
-
-    protected static boolean isOnAddingAllItemsToCart = false;
 
     protected AddableToCartListAdapter mAddableToCartAdapter;
 
@@ -122,8 +121,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        // Set the default value
-        isOnAddingAllItemsToCart = false;
         // Retain the instance to receive callback from add all to cart
         setRetainInstance(true);
     }
@@ -143,19 +140,11 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Get add to cart button
         mAddAllToCartButton = (Button) view.findViewById(R.id.button_shop_all);
         mAddAllToCartButton.setOnClickListener(this);
-
-        // Validate current state
-        if (isOnAddingAllItemsToCart) {
-            // Show progress
-            Log.i(TAG, "IS ON ADDING ALL ITEMS");
-            showActivityProgress();
-        } else {
-            // show Loading View
-            showFragmentLoading();
-            // Get favourites
-            Log.i(TAG, "LOAD FAVOURITE ITEMS");
-            new GetFavouriteHelper(this);
-        }
+        // Show Loading View
+        showFragmentLoading();
+        // Get favourites
+        Log.i(TAG, "LOAD FAVOURITE ITEMS");
+        new GetFavouriteHelper(this);
     }
 
     /*
@@ -213,8 +202,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
-        // Clean flag
-        isOnAddingAllItemsToCart = false;
     }
 
     /**
@@ -497,7 +484,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Show progress
         showActivityProgress();
         // Initialize cart vars
-        isOnAddingAllItemsToCart = false;
         mAddedItemsCounter = 0;
         mNumberOfItemsForCart = SINGLE_ITEM;
         mItemsNotAddedToCart.clear();
@@ -533,7 +519,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         }
 
         if (productBySku.size() != 0) {
-            isOnAddingAllItemsToCart = true;
             showActivityProgress();
             triggerAddAllItems(productBySku);
         } else {
@@ -553,7 +538,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         // Show progress
         showActivityProgress();
         // Initialize cart vars
-        isOnAddingAllItemsToCart = true;
         mAddedItemsCounter = 0;
         mNumberOfItemsForCart = mAddableToCartList.size();
         mItemsNotAddedToCart.clear();
@@ -576,8 +560,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                     Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
                     // Dismiss
                     hideActivityProgress();
-                    // Set flag as default
-                    isOnAddingAllItemsToCart = false;
                 }
             }
         }
@@ -808,24 +790,18 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author ricardo
      */
     private void onAddItemsToShoppingCartRequestError(Bundle bundle){
-        isOnAddingAllItemsToCart = false;
         hideActivityProgress();
         if (bundle.containsKey(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY)) {
-            ArrayList<String> notAdded = bundle
-                    .getStringArrayList(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-            
+            ArrayList<String> notAdded = bundle.getStringArrayList(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             if (!CollectionUtils.isEmpty(notAdded)) {
                 if (notAdded.size() == 1) {
-                    Toast.makeText(getBaseActivity(), R.string.product_outof_stock,
-                            Toast.LENGTH_SHORT).show();
+                    ToastFactory.ERROR_PRODUCT_OUT_OF_STOCK.show(getBaseActivity());
                 } else if (notAdded.size() > 1) {
-                    Toast.makeText(getBaseActivity(), R.string.some_products_not_added,
-                            Toast.LENGTH_SHORT).show();
+                    ToastFactory.ERROR_ADDED_TO_CART.show(getBaseActivity());
                 }
             }
         } else {
-            Toast.makeText(getBaseActivity(), R.string.error_please_try_again, Toast.LENGTH_SHORT)
-            .show();
+            ToastFactory.ERROR_UNEXPECTED_PLEASE_RETRY.show(getBaseActivity());
         }
     }
     
@@ -834,13 +810,10 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author ricardo
      */
     private void onAddItemsToShoppingCartRequestSuccess(Bundle bundle){
-
-        isOnAddingAllItemsToCart = false;
         hideActivityProgress();
         
         if (bundle.containsKey(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY)) {
-            ArrayList<String> added = bundle
-                    .getStringArrayList(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY);
+            ArrayList<String> added = bundle.getStringArrayList(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY);
             
             for (String aSku : added) {
                 FavouriteTableHelper.removeFavouriteProduct(aSku);
@@ -854,24 +827,19 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                     mAddableToCartList.remove(index);
                 }
             }
-
         }
         
         if (bundle.containsKey(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY)) {
-            ArrayList<String> notAdded = bundle
-                    .getStringArrayList(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            ArrayList<String> notAdded = bundle.getStringArrayList(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
             
             if (!CollectionUtils.isEmpty(notAdded)) {
                 if (notAdded.size() == 1) {
-                    Toast.makeText(getBaseActivity(), R.string.product_outof_stock,
-                            Toast.LENGTH_SHORT).show();
+                    ToastFactory.ERROR_PRODUCT_OUT_OF_STOCK.show(getBaseActivity());
                 } else if (notAdded.size() > 1) {
-                    Toast.makeText(getBaseActivity(), R.string.some_products_not_added,
-                            Toast.LENGTH_SHORT).show();
+                    ToastFactory.ERROR_ADDED_TO_CART.show(getBaseActivity());
                 }
             }
         }
-        
         updateLayoutAfterAction();
         getBaseActivity().updateCartInfo();
     }
@@ -938,8 +906,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     protected void validateResponseCounter(boolean success, int pos, int error) {
         // Update adapter
         if (mAddedItemsCounter == mNumberOfItemsForCart) {
-            // Set flag
-            isOnAddingAllItemsToCart = false;
+            // Validate fragment state
             if (!isOnStoppingProcess) {
                 // CASE ALL ITEMS, get items not added to cart
                 if (mNumberOfItemsForCart > SINGLE_ITEM) {

@@ -541,7 +541,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
                 params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.LOGIN);
                 TrackerDelegator.trackLoginSuccessful(params);
 
-                // Persist user email or empty that value after successfull login
+                // Persist user email or empty that value after successfully login
                 CustomerPreferences.setRememberedEmail(baseActivity,
                         rememberEmailCheck.isChecked() ? customer.getEmail() : null);
             }
@@ -732,10 +732,15 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             
             if (errors != null && errorMessages != null && errorMessages.size() > 0) {
                 showFragmentContentContainer();
+                // Dismiss the old fragment
+                dismissDialogFragment();
+                // Show new
                 dialog = DialogGenericFragment.newInstance(true, false,
                         getString(R.string.error_login_title),
                         errorMessages.get(0),
-                        getString(R.string.ok_label), "", new OnClickListener() {
+                        getString(R.string.ok_label),
+                        "",
+                        new OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 int id = v.getId();

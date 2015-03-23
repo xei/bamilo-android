@@ -16,7 +16,8 @@
 
     <LinearLayout
         style="@style/button_container"
-        android:layout_alignBottom="@id/favourites_grid" >
+        android:layout_alignBottom="@id/favourites_grid"
+        android:orientation="vertical">
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/button_shop_all"

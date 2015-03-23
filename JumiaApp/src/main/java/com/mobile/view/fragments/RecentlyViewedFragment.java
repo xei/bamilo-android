@@ -73,8 +73,6 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        // Set the default value
-        isOnAddingAllItemsToCart = false;
         // Retain the instance to receive callbacks from add all to cart
         setRetainInstance(true);
         // Track page name
@@ -99,18 +97,11 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         // Get add to cart button
         mAddAllToCartButton = (Button) view.findViewById(R.id.button_shop_all);
         mAddAllToCartButton.setVisibility(View.GONE);
-        // Validate current state
-        if (isOnAddingAllItemsToCart) {
-            // Show progress
-            Log.i(TAG, "IS ON ADDING ALL ITEMS");
-            showActivityProgress();
-        } else {
-            // show Loading View
-            showFragmentLoading();
-            // Get RecentlyViewed
-            Log.i(TAG, "LOAD LAST VIEWED ITEMS");
-            new GetRecentlyViewedHelper(this);
-        }
+        // Show Loading View
+        showFragmentLoading();
+        // Get RecentlyViewed
+        Log.i(TAG, "LOAD LAST VIEWED ITEMS");
+        new GetRecentlyViewedHelper(this);
     }
 
     /**
@@ -275,7 +266,6 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         // Show progress
         showActivityProgress();
         // Initialize cart vars
-        isOnAddingAllItemsToCart = true;
         mAddedItemsCounter = 0;
         mNumberOfItemsForCart = mAddableToCartList.size();
         mItemsNotAddedToCart.clear();
@@ -298,8 +288,6 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
                     Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
                     // Dismiss
                     hideActivityProgress();
-                    // Set flag as default
-                    isOnAddingAllItemsToCart = false;
                 }
             }
         }

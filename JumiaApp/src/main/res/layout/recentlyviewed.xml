@@ -11,14 +11,9 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginTop="@dimen/rounded_margin_small"
         android:listSelector="@drawable/selector_listitem_highlight"
-        android:numColumns="@integer/favourite_num_columns" />
+        android:numColumns="@integer/favourite_num_columns"
+        android:paddingBottom="@dimen/button_container_height" />
 
-    <!-- android:paddingBottom="@dimen/recently_viewed_button_container_height" -->
-
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/recentlyviewed_grid"
-        layout="@layout/recentlyviewed_buttons" />
+    <include  layout="@layout/recentlyviewed_buttons" />
 
 </RelativeLayout>

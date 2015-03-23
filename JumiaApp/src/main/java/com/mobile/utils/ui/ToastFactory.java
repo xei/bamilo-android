@@ -17,6 +17,9 @@ public enum ToastFactory {
     ERROR_CATALOG_LOAD_MORE(R.string.products_could_notloaded, Toast.LENGTH_LONG),
     ERROR_OCCURRED(R.string.error_occured, Toast.LENGTH_SHORT),
     ERROR_PRODUCT_NOT_RETRIEVED(R.string.product_could_not_retrieved, Toast.LENGTH_LONG),
+    ERROR_PRODUCT_OUT_OF_STOCK(R.string.product_outof_stock, Toast.LENGTH_SHORT),
+    ERROR_ADDED_TO_CART(R.string.some_products_not_added, Toast.LENGTH_SHORT),
+    ERROR_UNEXPECTED_PLEASE_RETRY(R.string.error_please_try_again, Toast.LENGTH_SHORT),
 
     SUCCESS_LOGIN(R.string.succes_login, Toast.LENGTH_LONG),
     ADDED_FAVOURITE(R.string.products_added_favourite, Toast.LENGTH_SHORT),
@@ -41,7 +44,6 @@ public enum ToastFactory {
      * Show a toast.
      *
      * @param context
-     * @param type
      * @author sergiopereira
      */
     public void show(Context context) {
