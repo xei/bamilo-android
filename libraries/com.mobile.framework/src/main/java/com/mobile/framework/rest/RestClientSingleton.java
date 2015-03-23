@@ -589,9 +589,9 @@ public final class RestClientSingleton {
      * @author ricardosoares
      */
     public void removeEntry(String url) {
-        String uri = RemoteService.completeUri(Uri.parse(url)).toString();
+        String completeUrl = RemoteService.completeUrlWithPort(Uri.parse(url));
         try {
-            mCacheStore.removeEntryDB(uri);
+            mCacheStore.removeEntryDB(completeUrl);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -138,7 +138,27 @@ public class RemoteService extends Service {
      *  Return the complete url of uri. Port is added if possible.
      *
      */
-    public static String completeUri( Uri uri ) {
+    public static String completeUrlWithPort(Uri uri) {
+
+        String completeUrl = completeUri(uri).toString();
+        try {
+            URL url = new URL(uri.toString());
+
+            URIBuilder uriBuilder = new URIBuilder(uri.toString());
+            uriBuilder.setPort(url.getDefaultPort());
+            completeUrl = uriBuilder.toString();
+        } catch (MalformedURLException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        if ( Darwin.logDebugEnabled) {
+            Log.d( TAG, "completeUriWithPort: uri = " + completeUrl);
+        }
+
+        return completeUrl;
+    }
+
+    public static Uri completeUri( Uri uri ) {
         if ( Darwin.logDebugEnabled) {
             Log.d( TAG, "completeUri: uri = " + uri);
         }
@@ -166,25 +186,12 @@ public class RemoteService extends Service {
         }
 
         uri = builder.build();
-
-        String completeUrl = uri.toString();
-        try {
-            URL url = new URL(uri.toString());
-
-            URIBuilder uriBuilder = new URIBuilder(uri.toString());
-            uriBuilder.setPort(url.getDefaultPort());
-            completeUrl = uriBuilder.toString();
-        } catch (MalformedURLException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-
         if ( Darwin.logDebugEnabled) {
-            Log.d(TAG, "Rebuilded uri: " + completeUrl);
+            Log.d(TAG, "Rebuilded uri: " + uri);
         }
-
-        return completeUrl;
+        return uri;
     }
-    
+
     private static Handler mHandler = new Handler(){
     	public void handleMessage(android.os.Message msg) {
     		final int N = mCallbacks.beginBroadcast();
