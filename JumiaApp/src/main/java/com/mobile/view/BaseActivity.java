@@ -79,6 +79,7 @@ import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
+import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.HomeFragment;
@@ -153,8 +154,6 @@ public abstract class BaseActivity extends ActionBarActivity {
     private boolean isRegistered = false;
 
     private View warningView;
-
-    private View warningVariationView;
 
     private final int titleResId;
 
@@ -266,6 +265,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         setTitle(titleResId);
         // For tracking
         mLaunchTime = System.currentTimeMillis();
+
+        FacebookHelper.logHashKey(getApplicationContext());
     }
 
     /*
