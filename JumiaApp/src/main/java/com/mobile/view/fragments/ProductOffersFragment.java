@@ -426,12 +426,13 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
         else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
     }
 
-  
 
-    
+
+
     @Override
     protected void onRetryRequest(EventType eventType) {
         Log.i(TAG, "ON RETRY REQUEST");
+        onResume();
     }
 
     @Override
