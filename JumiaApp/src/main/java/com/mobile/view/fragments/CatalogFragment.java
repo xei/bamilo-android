@@ -825,7 +825,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case error on request data with filters
         else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && mCurrentFilterValues != null && mCurrentFilterValues.size() > 0) {
             Log.i(TAG, "ON SHOW FILTER NO RESULT");
-            //noFilterResults = true;
             showFilterNoResult();
         }
         // Case error on request data without filters
