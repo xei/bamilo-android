@@ -52,4 +52,7 @@
 
     <!--<string name="app_name_placeholder">بامیلو</string>-->
     <string name="app_name_placeholder">Bamilo</string>
+
+    <!-- DEEP LINK APP INDEXING -->
+    <string name="dp_app_index_prefix">/BAMILO</string>
 </resources>
