@@ -507,7 +507,16 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void setupDrawerNavigation() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.drawable.ic_drawer);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.drawable.ic_drawer){
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                hideKeyboard();
+            }
+
+        };
+
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 

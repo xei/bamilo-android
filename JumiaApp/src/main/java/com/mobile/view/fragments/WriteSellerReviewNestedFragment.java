@@ -421,7 +421,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
 
             Log.d(TAG, "review seller completed: success");
             // Clean options after success
-            String buttonMessageText = getResources().getString(R.string.dialog_to_reviews);
+            String buttonMessageText = getResources().getString(R.string.dialog_to_product);
 
 
             try {
@@ -452,7 +452,9 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
                             if (getBaseActivity() != null) {
                                 if(nestedFragment){
                                     cleanForm();
+                                    getBaseActivity().onBackPressed();
                                 } else {
+                                    getBaseActivity().onBackPressed();
                                     getBaseActivity().onBackPressed();
                                 }
                             }

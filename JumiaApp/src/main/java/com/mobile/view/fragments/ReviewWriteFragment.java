@@ -579,7 +579,7 @@ public class ReviewWriteFragment extends BaseFragment {
             params.putSerializable(TrackerDelegator.RATINGS_KEY, getRatingsMapValues(dynamicRatingForm));
             
             TrackerDelegator.trackItemReview(params);
-            String buttonMessageText = getResources().getString(R.string.dialog_to_reviews);
+            String buttonMessageText = getResources().getString(R.string.dialog_to_product);
             
            
 
@@ -603,7 +603,9 @@ public class ReviewWriteFragment extends BaseFragment {
                             if (getBaseActivity() != null) {
                                 if(nestedFragment){
                                     cleanForm();
+                                    getBaseActivity().onBackPressed();
                                 } else {
+                                    getBaseActivity().onBackPressed();
                                     getBaseActivity().onBackPressed();
                                 }
                             }

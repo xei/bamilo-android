@@ -367,4 +367,6 @@
     <string name="string_more_choices">More Choices</string>
     <string name="string_vat_included">(VAT incl.)</string>
     <string name="addresses_saved_message">Your addresses settings have been saved.</string>
+
+    <string name="dialog_to_product">To Product Details</string>
 </resources>

@@ -501,7 +501,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
 
             Log.d(TAG, "review seller completed: success");
             // Clean options after success
-            String buttonMessageText = getResources().getString(R.string.dialog_to_reviews);
+            String buttonMessageText = getResources().getString(R.string.dialog_to_product);
 
 
             //Validate if fragment is nested
@@ -525,6 +525,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
                                 if(nestedFragment){
                                     cleanForm();
                                 } else {
+                                    getBaseActivity().onBackPressed();
                                     getBaseActivity().onBackPressed();
                                 }
                             }

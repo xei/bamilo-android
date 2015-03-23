@@ -2061,7 +2061,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 mProductFeaturesContainer.setVisibility(View.GONE);
             }
         } else {
-            mProductFeaturesContainer.setVisibility(View.VISIBLE);
+            if (mProductFeaturesContainer != null) {
+                mProductFeaturesContainer.setVisibility(View.VISIBLE);
+            }
+
 
             String translatedDescription = shortDescription.replace("\r", "<br>");
             Log.d(TAG, "displaySpecification: *" + translatedDescription + "*");
@@ -2365,15 +2368,20 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     @Override
     public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
-        Object object = parent.getItemAtPosition(position);
+        try {
+            Object object = parent.getItemAtPosition(position);
 
-        if (object instanceof ProductBundleSimple) {
-            ProductBundleSimple productSimple = (ProductBundleSimple) object;
-            if (mProductBundle != null) {
-                mProductBundle.getBundleProducts().get(productSimple.getProductParentPos())
-                        .setSimpleSelectedPos(position);
+            if (object instanceof ProductBundleSimple) {
+                ProductBundleSimple productSimple = (ProductBundleSimple) object;
+                if (mProductBundle != null) {
+                    mProductBundle.getBundleProducts().get(productSimple.getProductParentPos())
+                            .setSimpleSelectedPos(position);
+                }
             }
+        } catch (IndexOutOfBoundsException exception){
+            exception.printStackTrace();
         }
+
     }
 
     @Override
