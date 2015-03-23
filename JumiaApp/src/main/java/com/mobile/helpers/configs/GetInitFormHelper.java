@@ -3,10 +3,6 @@
  */
 package com.mobile.helpers.configs;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
@@ -18,6 +14,10 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -50,12 +50,10 @@ public class GetInitFormHelper extends BaseHelper {
 
         JSONArray dataArray = null;
         try {
-            dataArray = jsonObject
-                    .getJSONArray(RestConstants.JSON_DATA_TAG);
+            dataArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
             int dataArrayLength = dataArray.length();
             for (int i = 0; i < dataArrayLength; ++i) {
-                JSONObject formDataObject = dataArray
-                        .getJSONObject(i);
+                JSONObject formDataObject = dataArray.getJSONObject(i);
                 FormData formData = new FormData();
                 formData.initialize(formDataObject);
                 JumiaApplication.INSTANCE.getFormDataRegistry().put(formData.getAction(), formData);

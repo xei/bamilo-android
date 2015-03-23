@@ -1,5 +1,6 @@
 package com.mobile.view.fragments;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -89,6 +90,16 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
         super.onCreateAddressSuccessEvent(bundle);
         AnalyticsGoogle.get().trackAddressCreation(TrackingEvent.ACCOUNT_CREATE_ADDRESS,
                 (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId()+"":"");
+
+        if(!mIsSameCheckBox.isChecked() && !oneAddressCreated){
+            oneAddressCreated = true;
+
+            if (null != billingFormGenerator) {
+                ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
+                triggerCreateAddress(mBillValues, true);
+            }
+        }
+
         getBaseActivity().onBackPressed();
     }
 

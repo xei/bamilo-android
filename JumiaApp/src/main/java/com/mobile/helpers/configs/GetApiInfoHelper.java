@@ -16,6 +16,7 @@ import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.interfaces.IMetaData;
 import com.mobile.framework.objects.Section;
 import com.mobile.framework.objects.VersionInfo;
+import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -137,7 +138,7 @@ public class GetApiInfoHelper extends BaseHelper {
             // Case teasers
             switch (section.getName()) {
                 case Section.SECTION_NAME_TEASERS:
-                    // IntroTeasersTableHelper.clearTeasers(db);
+                    RestClientSingleton.getSingleton(JumiaApplication.INSTANCE).removeEntry(section.getUrl());
                     break;
                 // Case brands
                 case Section.SECTION_NAME_BRANDS:

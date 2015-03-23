@@ -46,7 +46,6 @@ import ch.boye.httpclientandroidlib.client.HttpClient;
 import ch.boye.httpclientandroidlib.client.cache.CacheResponseStatus;
 import ch.boye.httpclientandroidlib.client.cache.HeaderConstants;
 import ch.boye.httpclientandroidlib.client.cache.HttpCacheEntry;
-import ch.boye.httpclientandroidlib.client.cache.HttpCacheStorage;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import ch.boye.httpclientandroidlib.client.methods.HttpGet;
 import ch.boye.httpclientandroidlib.client.methods.HttpPost;
@@ -86,7 +85,7 @@ import de.akquinet.android.androlog.Log;
  * @see https://code.google.com/p/httpclientandroidlib/
  * 
  * @author Jacob Zschunke
- * 
+ *
  */
 public final class RestClientSingleton {
 	
@@ -104,7 +103,7 @@ public final class RestClientSingleton {
 	
 	private HttpContext mHttpContext;
 	
-	private HttpCacheStorage mCacheStore;
+	private DBHttpCacheStorage mCacheStore;
 	
 	private ConnectivityManager mConnManager;
 	
@@ -584,6 +583,20 @@ public final class RestClientSingleton {
 		}
 	}
 
+    /**
+     * Remove entry in cache
+     * @param url
+     * @author ricardosoares
+     */
+    public void removeEntry(String url) {
+        String completeUrl = RemoteService.completeUrlWithPort(Uri.parse(url));
+        try {
+            mCacheStore.removeEntryDB(completeUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 	/**
 	 * Method that builds the response for the information requested
 	 * 
@@ -653,5 +666,4 @@ public final class RestClientSingleton {
 		String uriString = (uri != null) ? uri.toString() : "n.a.";
 		NewRelicTracker.noticeFailureTransaction(uriString, startTimeMillis, System.currentTimeMillis());
 	}
-	
 }

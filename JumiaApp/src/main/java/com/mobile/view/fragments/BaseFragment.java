@@ -584,7 +584,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             f = Fragment.class.getDeclaredField("ChildFragmentManager");
             f.setAccessible(true);
         } catch (NoSuchFieldException e) {
-            Log.e(TAG, "Error getting ChildFragmentManager field", e);
+            Log.w(TAG, "Error getting ChildFragmentManager field", e);
         }
         sChildFragmentManagerField = f;
     }
