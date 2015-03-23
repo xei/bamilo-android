@@ -224,7 +224,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         Log.i(TAG, "ON CLICK CLEAR ALL ITEMS");
         // Show progress
         showActivityProgress();
-
+        // Delete all items in database
         LastViewedTableHelper.deleteAllLastViewed();
         // needed to update mRecentSearchesAdapter
         for (int i = mAddableToCartList.size() - 1; i >= 0; i--) {
@@ -372,7 +372,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      */
     @Override
     public void onRequestError(Bundle bundle) {
-        Log.i(TAG, "ON RESPONSE COMPLETE");
+        Log.i(TAG, "ON ERROR RESPONSE");
         // Get type
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         // Validate the current state

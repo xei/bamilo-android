@@ -739,7 +739,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      */
     @Override
     public void onRequestError(Bundle bundle) {
-        Log.i(TAG, "ON RESPONSE COMPLETE");
+        Log.i(TAG, "ON ERROR RESPONSE");
         // Get type
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         // Validate the current state

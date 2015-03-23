@@ -89,6 +89,7 @@ public class UIUtils {
 
             final Animation mAnimFadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
             final Animation mAnimFadeOut = AnimationUtils.loadAnimation(context, R.anim.fade_out);
+
             warningView.clearAnimation();
             warningView.startAnimation(mAnimFadeIn);
 

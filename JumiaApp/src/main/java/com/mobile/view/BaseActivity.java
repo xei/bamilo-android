@@ -1569,8 +1569,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Show warning message with image and animation
      */
     public void showWarning(int message) {
-        if (warningView != null) {
-            warningView.clearAnimation();
+        if (warningView != null && warningView.getVisibility() != View.VISIBLE) {
             ((TextView) findViewById(R.id.warning_text)).setText(message);
             findViewById(R.id.warning_image).setVisibility(View.VISIBLE);
             UIUtils.animateWarning(this, warningView, WARNING_LENGTH);

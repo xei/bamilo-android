@@ -61,10 +61,10 @@ public class AddableToCart extends BaseProduct {
 	 * Complete favourite empty constructor.
 	 */
 	public AddableToCart() {
-		imageList = new ArrayList<String>();
-		simples = new ArrayList<ProductSimple>();
-		variations = new ArrayList<Variation>();
-		knownVariations = new ArrayList<String>();
+		imageList = new ArrayList<>();
+		simples = new ArrayList<>();
+		variations = new ArrayList<>();
+		knownVariations = new ArrayList<>();
 		priceDouble = 0.0;
 		specialPriceDouble = 0.0;
 		price = CurrencyFormatter.formatCurrency("0");
@@ -77,7 +77,7 @@ public class AddableToCart extends BaseProduct {
 		selectedSimple = NO_SIMPLE_SELECTED;
 		specialPriceConverted = 0d;
 		priceConverted = 0d;
-		mCategories = new ArrayList<String>();
+		mCategories = new ArrayList<>();
 		mRatingsAverage = 0.0;
 		mSizeGuideUrl = "";
 	}
