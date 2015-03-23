@@ -602,7 +602,7 @@ public class ReviewWriteFragment extends BaseFragment {
                                     getBaseActivity().onBackPressed();
                                 } else {
                                     // Remove entries until specific tag
-                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(),FragmentType.PRODUCT_DETAILS.toString());
+                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PRODUCT_DETAILS.toString());
                                 }
                             }
                         }

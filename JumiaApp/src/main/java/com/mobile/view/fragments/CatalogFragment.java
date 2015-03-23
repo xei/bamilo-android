@@ -95,7 +95,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private int mNumberOfColumns;
 
-    private boolean noFilterResults = false;
+    private boolean mSortOrFilterApplied; // Flag to reload or not an initial catalog in case generic error
+
     /**
      * Create and return a new instance.
      *
@@ -151,7 +152,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mCurrentFilterValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES);
             mBrandQuery = savedInstanceState.getString(ConstantsIntentExtra.CATALOG_FILTER_BRAND);
             mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
-            noFilterResults = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_NO_FILTER_RESULTS);
+            mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
         }
     }
 
@@ -227,7 +228,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         outState.putParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES, mCurrentFilterValues);
         outState.putString(ConstantsIntentExtra.CATALOG_FILTER_BRAND, mBrandQuery);
         outState.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort.ordinal());
-        outState.putBoolean(ConstantsIntentExtra.CATALOG_NO_FILTER_RESULTS, noFilterResults);
+        outState.putBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED, mSortOrFilterApplied);
     }
 
     /*
@@ -290,9 +291,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         else if (mCatalogPage == null) {
             triggerGetPaginatedCatalog();
         }
-        // Case filter applied and no results
-        else if (noFilterResults) {
-            showFilterNoResult();
+        // Case sort or filter applied
+        else if (mSortOrFilterApplied) {
+            triggerGetInitialCatalogPage();
+            // Set the filter button selected or not
+            UICatalogHelper.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
         }
         // Case catalog was recover
         else {
@@ -571,6 +574,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mCurrentFilterValues = filterValues;
         // Set the filter button selected or not
         UICatalogHelper.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
+        // Flag to reload or not an initial catalog in case generic error
+        mSortOrFilterApplied = true;
         // Get new catalog
         triggerGetInitialCatalogPage();
     }
@@ -626,9 +631,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mSortOptions.add(getString(sort.name));
         }
         // Show dialog
-        DialogListFragment
-                .newInstance(this, this, "sort", getString(R.string.sort_by), mSortOptions, mSelectedSort.ordinal())
-                .show(getChildFragmentManager(), null);
+        DialogListFragment.newInstance(this, this, "sort", getString(R.string.sort_by), mSortOptions, mSelectedSort.ordinal()).show(getChildFragmentManager(), null);
     }
 
     /*
@@ -641,8 +644,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mSelectedSort = CatalogSort.values()[position];
         // Set sort button
         setSortButton();
-        // Mark the current catalog has null
-        mCatalogPage = null;
+        // Flag to reload or not an initial catalog in case generic error
+        mSortOrFilterApplied = true;
         // Get new data
         triggerGetInitialCatalogPage();
     }
@@ -787,7 +790,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         CatalogPage catalogPage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         // Case valid success response
         if (catalogPage != null && catalogPage.hasProducts()) {
-            noFilterResults = false;
+            // Mark to reload an initial catalog
+            mSortOrFilterApplied = false;
             Log.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
             onUpdateCatalogContainer(catalogPage);
         }
@@ -821,7 +825,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case error on request data with filters
         else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && mCurrentFilterValues != null && mCurrentFilterValues.size() > 0) {
             Log.i(TAG, "ON SHOW FILTER NO RESULT");
-            noFilterResults = true;
+            //noFilterResults = true;
             showFilterNoResult();
         }
         // Case error on request data without filters
