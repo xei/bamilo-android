@@ -49,4 +49,7 @@
 
     <string name="app_name_placeholder">Shop.com.mm</string>
 
+    <!-- DEEP LINK APP INDEXING -->
+    <string name="dp_app_index_prefix">/SHOP</string>
+
 </resources>
