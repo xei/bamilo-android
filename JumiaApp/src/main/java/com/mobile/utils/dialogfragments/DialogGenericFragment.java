@@ -364,7 +364,7 @@ public class DialogGenericFragment extends DialogFragment {
                             if (finishActivity) {
                                 activity.finish();
                             } else {
-                                dialogGenericFragment.dismiss();
+                                dialogGenericFragment.dismissAllowingStateLoss();
                             }
                         } else if (id == R.id.button2) {
                             retryClickListener.onClick(v);

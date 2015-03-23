@@ -1278,6 +1278,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Get the FacebookGraphUser.
      *
      * @param session
+     *
      * @param callback
      * @author sergiopereira
      */
