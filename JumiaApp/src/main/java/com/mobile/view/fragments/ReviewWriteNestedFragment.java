@@ -541,11 +541,10 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                             if (getBaseActivity() != null) {
                                 if(nestedFragment){
                                     cleanForm();
-                                    getBaseActivity().onBackPressed();
+                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PRODUCT_DETAILS.toString());
                                 } else {
                                     // Remove entries until specific tag
-                                    FragmentController.getInstance().removeEntriesUntilTag(FragmentType.POPULARITY.toString());
-                                    getBaseActivity().onBackPressed();
+                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PRODUCT_DETAILS.toString());
                                 }
                             }
                         }
