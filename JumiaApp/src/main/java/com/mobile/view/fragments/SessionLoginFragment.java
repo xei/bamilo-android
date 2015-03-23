@@ -8,7 +8,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.LayoutDirection;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -387,7 +386,13 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         // Other cases
         else if (state.isClosed()) {
             Log.i(TAG, "USER Logged out!");
-            showFragmentContentContainer();
+            //this only happens opening the screen for the first time with no connection after a fresh install
+            if(!NetworkConnectivity.isConnected(getBaseActivity())){
+                showFragmentNoNetworkRetry(EventType.INIT_FORMS);
+            } else {
+                showFragmentContentContainer();
+
+            }
         }
     }
     
@@ -424,7 +429,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         //#RTL
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-            user.setLayoutDirection(LayoutDirection.LOCALE);
+            user.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
         }
         user.setId(21);
 
@@ -436,7 +441,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         pass_p.setId(22);
         //#RTL
         if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-            pass_p.setLayoutDirection(LayoutDirection.LOCALE);
+            pass_p.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
         }
     }
     
@@ -615,7 +620,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         //#RTL
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-            container.setLayoutDirection(LayoutDirection.LOCALE);
+            container.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
         }
         
         container.addView(dynamicForm.getContainer());
@@ -813,14 +818,12 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
     private void triggerLoginForm() {
         wasAutoLogin = false;
-        Bundle bundle = new Bundle();
-        triggerContentEvent(new GetLoginFormHelper(), bundle, mCallBack);
+        triggerContentEvent(new GetLoginFormHelper(), null, mCallBack);
     }
 
     private void triggerInitForm() {
         wasAutoLogin = false;
-        Bundle bundle = new Bundle();
-        triggerContentEvent(new GetInitFormHelper(), bundle, mCallBack);
+        triggerContentEvent(new GetInitFormHelper(), null, mCallBack);
     }
 
     /*
