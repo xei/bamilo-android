@@ -76,7 +76,7 @@
         android:text="Price"
         android:textColor="@color/grey_light" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_name"
@@ -91,19 +91,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:rating="3.5" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_reviews"
             style="@style/text_subtitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
-            android:gravity="start|left|center_vertical"
+            android:layout_toRightOf="@id/item_rating"
+            android:layout_toEndOf="@id/item_rating"
             android:includeFontPadding="false"
             android:text="Reviews"
             android:textColor="@color/grey_light" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/image_is_favourite"
