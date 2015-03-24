@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.facebook.FacebookAuthorizationException;
+import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Request;
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -358,7 +359,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         Log.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
         // Exception handling for no network error
-        if(exception instanceof FacebookAuthorizationException && !NetworkConnectivity.isConnected(getBaseActivity())) {
+        if((exception instanceof FacebookAuthorizationException || exception instanceof FacebookOperationCanceledException ) && !NetworkConnectivity.isConnected(getBaseActivity())) {
             // Show dialog case form is visible
             if(formResponse != null){ 
 //                showFragmentNoNetworkRetry(new OnClickListener() {
@@ -372,6 +373,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             }
             return;
         }
+
         // Validate state
         if (state.isOpened() && session.isOpened()) {
             // Case user not accept the new request for required permissions
