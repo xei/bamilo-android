@@ -296,6 +296,7 @@
     <string name="size_label">Tamanho</string>
     <string name="some_products_not_added">Infelizmente alguns produtos não foram adicionados ao carrinho.</string>
     <string name="splash_slogan">O maior centro comercial online em África</string>
+    <string name="splash_slogan_daraz">O único destino para comprar online que tu precisas!</string>
     <string name="stale_warning">Perda de ligação</string>
     <string name="string_appearance">Aparência</string>
     <string name="string_price">Preço</string>
@@ -345,6 +346,24 @@
     <string name="yes_label">Sim</string>
     <string name="your_cart">O Seu Carrinho</string>
     <string name="your_order">A Sua Encomenda</string>
-    <string name="my_addresses">As Minhas Moradas</string>
-    <string name="create_edit_address">Criar ou editar as suas moradas</string>
+    <string name="app_sharing">Partilha a App</string>
+    <string name="install_jumia_android">Instala a Android App do Jumia num instante</string>
+    <string name="share_the_app">Partilha a App</string>
+    <string name="can_share_app_with_friends">Agora podes partilhar a App com os teus amigos</string>
+    <string name="app_social">App Social</string>
+    <string name="sort_by">Ordena por</string>
+    <string name="plurals_rating">%d Avaliação</string>
+    <string name="plurals_ratings">%d avaliações</string>
+    <string name="plurals_item">%d producto</string>
+    <string name="plurals_items">%d productos</string>
+    <string name="plurals_article">%d artigo</string>
+    <string name="plurals_articles">%d artigos</string>
+    <string name="my_addresses">Meus Endereços</string>
+    <string name="create_edit_address">Cria ou edita endereços</string>
+    <string name="string_more_choices">Opções Adicionais</string>
+    <string name="string_vat_included">(IVA incl.)</string>
+    <string name="addresses_saved_message">As tuas opções da morada foram guardadas.</string>
+    <string name="dialog_to_product">Para os Detalhes do Producto</string>
+    <string name="address_creation_failed_title">A criação da morada falhou</string>
+    <string name="address_creation_failed_main">Por favor preenche o formulário correctamente</string>
 </resources>
