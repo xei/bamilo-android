@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- APP -->
     <bool name="rest_host_auth_use_it">false</bool>
@@ -7,7 +7,7 @@
 	<item name="is_shop_specific" type="bool">false</item>
 	<item name="is_bamilo_specific" type="bool">false</item>
 	<bool name="is_force_http">false</bool>
-	<!-- WARNING: PRE INSTALL ONLY FOR HUAWEI -->
+	<!-- ##### PRE INSTALL ##### -->
 	<bool name="create_pre_install_file">false</bool>
 	<!-- CUSTOM PRE INSTALL FOLDERS -->
     <string-array name="pre_install_folders">

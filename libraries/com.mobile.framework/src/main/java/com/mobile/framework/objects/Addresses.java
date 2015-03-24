@@ -48,13 +48,22 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		Log.d(TAG, "INITIALIZE");
+
 		// Get shipping address and save it
 		JSONObject jsonShip = jsonObject.optJSONObject(RestConstants.JSON_SHIPPING_TAG);
-		if(jsonShip != null) shippingAddress = new Address(jsonShip);
+		if(jsonShip != null) {
+            shippingAddress = new Address(jsonShip);
+        } else {
+           throw new JSONException("");
+        }
 		//addresses.put("" + shippingAddress.getIdCustomerAddress(), shippingAddress);
 		// Get billing address and save it
 		JSONObject jsonBil = jsonObject.optJSONObject(RestConstants.JSON_BILLING_TAG);
-		if(jsonBil != null) billingAddress = new Address(jsonBil);
+		if(jsonBil != null) {
+            billingAddress = new Address(jsonBil);
+        } else {
+            throw new JSONException("");
+        }
 		//addresses.put("" + billingAddress.getIdCustomerAddress(), billingAddress);
 		// Get other addresses
 		JSONObject jsonOther = jsonObject.optJSONObject(RestConstants.JSON_OTHER_TAG);

@@ -61,7 +61,7 @@
     <string name="confirm_order_loosing_order_title">Aviso: compra já efetuada!</string>
     <string name="continue_shopping">Continuar a Comprar</string>
     <string name="copied_to_clipboard">Copiado</string>
-    <string name="create_addresses_success">A morada foi criada com sucesso:</string>
+    <string name="create_addresses_success">A morada foi criada com sucesso.</string>
     <string name="creation_date">Data de Criação:</string>
     <string name="dialog_to_reviews">Opiniões</string>
     <string name="done_label">Validar</string>

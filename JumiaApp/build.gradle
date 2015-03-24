@@ -96,9 +96,6 @@ android {
             applicationIdSuffix ".dev"
             manifestPlaceholders = [AdjustEnvironment: "sandbox"]
             debuggable true
-            //minifyEnabled true
-            //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-dev.txt'
-            //proguardFile 'proguard-project-dev.txt'
         }
         live {
             applicationIdSuffix ".live"
@@ -129,6 +126,28 @@ android {
             resConfigs "en", "fr", "pt"
         }
 
+        jumiaPreInstall {
+            applicationId "com.jumia.android"
+            versionName "2.4"
+            versionCode 48
+            signingConfig signingConfigs.jumiaSigning
+            resConfigs "en", "fr", "pt"
+            android.sourceSets {
+                jumiaPreInstall.res.srcDirs = ['src/jumia/res', 'src/jumiaRelease/res', 'src/jumiaPreInstall/res']
+            }
+        }
+
+        jumiaSamsung {
+            applicationId "com.jumia.android"
+            versionName "2.4"
+            versionCode 48
+            signingConfig signingConfigs.jumiaSigning
+            resConfigs "en", "fr", "pt"
+            android.sourceSets {
+                jumiaSamsung.res.srcDirs = ['src/jumia/res', 'src/jumiaSamsung/res']
+            }
+        }
+
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
             versionName "2.4"
@@ -148,17 +167,6 @@ android {
             resConfigs "en", "fr", "pt"
             android.sourceSets {
                 jumiaNokiaX.res.srcDirs = ['src/jumia/res', 'src/jumiaNokiaX/res']
-            }
-        }
-
-        jumiaSamsung {
-            applicationId "com.jumia.android"
-            versionName "2.4"
-            versionCode 48
-            signingConfig signingConfigs.jumiaSigning
-            resConfigs "en", "fr", "pt"
-            android.sourceSets {
-                jumiaSamsung.res.srcDirs = ['src/jumia/res', 'src/jumiaSamsung/res']
             }
         }
 
@@ -224,6 +232,7 @@ dependencies {
     /** Android wear releases **/
     //wearApp project(':JumiaWear')
     jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaSamsungWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
     bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
