@@ -145,6 +145,7 @@ public class HttpCacheDatabaseHelper extends SQLiteOpenHelper {
 	 */
 	public void delete(String key) {
 		SQLiteDatabase writableDatabase = getWritableDatabase();
-		writableDatabase.delete(TABLE_NAME, COLUMN_ID + " = " + key.hashCode(), null);
+		int result = writableDatabase.delete(TABLE_NAME, COLUMN_ID + " = " + key.hashCode(), null);
+        Log.d(TAG, "KEY: "+ key + " DELETE RESULT : " + result);
 	}
 }
