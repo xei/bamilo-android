@@ -96,9 +96,6 @@ android {
             applicationIdSuffix ".dev"
             manifestPlaceholders = [AdjustEnvironment: "sandbox"]
             debuggable true
-            //minifyEnabled true
-            //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-dev.txt'
-            //proguardFile 'proguard-project-dev.txt'
         }
         live {
             applicationIdSuffix ".live"
@@ -235,6 +232,7 @@ dependencies {
     /** Android wear releases **/
     //wearApp project(':JumiaWear')
     jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaSamsungWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
     bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
