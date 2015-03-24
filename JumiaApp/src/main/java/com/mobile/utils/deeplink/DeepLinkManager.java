@@ -79,9 +79,6 @@ public class DeepLinkManager {
         if (segments == null) {
             return null;
         }
-
-        Log.d(TAG, "DEEP LINK SEGMENTS: " + segments.toString());
-        
         // Get the country code
         loadCountryCode(context, segments.get(PATH_CC_POS));
         // Get the tag view and return values

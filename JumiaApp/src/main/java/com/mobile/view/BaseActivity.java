@@ -152,7 +152,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     private boolean isRegistered = false;
 
-    private View warningView;
+    private View mWarningBar;
 
     private final int titleResId;
 
@@ -540,13 +540,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Get the application container
         contentContainer = findViewById(R.id.rocket_app_content);
         // Warning layout
-        warningView = findViewById(R.id.warning);
-//        warningVariationView = findViewById(R.id.warning_variations);
-        warningView.setOnClickListener(new OnClickListener() {
+        mWarningBar = findViewById(R.id.warning);
+        mWarningBar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 showWarningVariation(false);
-
             }
         });
         // Get the fallback stub
@@ -1556,12 +1554,12 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Show or hide warning message with image
      */
     public final void showWarning(boolean show) {
-        if(warningView != null){
-            warningView.clearAnimation();
-            if(show){
+        if(mWarningBar != null){
+            mWarningBar.clearAnimation();
+            if (show) {
                 findViewById(R.id.warning_image).setVisibility(View.VISIBLE);
             }
-            warningView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mWarningBar.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -1569,10 +1567,10 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Show warning message with image and animation
      */
     public void showWarning(int message) {
-        if (warningView != null && warningView.getVisibility() != View.VISIBLE) {
+        if (mWarningBar != null && mWarningBar.getVisibility() != View.VISIBLE) {
             ((TextView) findViewById(R.id.warning_text)).setText(message);
             findViewById(R.id.warning_image).setVisibility(View.VISIBLE);
-            UIUtils.animateWarning(this, warningView, WARNING_LENGTH);
+            UIUtils.animateFadeInAndOut(this, mWarningBar, WARNING_LENGTH);
         }
     }
 
@@ -1580,11 +1578,11 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Show warning message without image
      */
     public void showWarningNoImage(int message) {
-        if(warningView != null){
-            warningView.clearAnimation();
+        if(mWarningBar != null){
+            mWarningBar.clearAnimation();
             ((TextView) findViewById(R.id.warning_text)).setText(message);
             findViewById(R.id.warning_image).setVisibility(View.GONE);
-            warningView.setVisibility(View.VISIBLE);
+            mWarningBar.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1592,13 +1590,13 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Show warning variations message
      */
     public void showWarningVariation(boolean show) {
-        if(warningView != null){
-            warningView.clearAnimation();
+        if(mWarningBar != null){
+            mWarningBar.clearAnimation();
             if(show){
                 ((TextView) findViewById(R.id.warning_text)).setText(R.string.product_variance_choose_error);
                 findViewById(R.id.warning_image).setVisibility(View.GONE);
             }
-            warningView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mWarningBar.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
 

@@ -7,6 +7,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 
 import com.mobile.view.R;
@@ -42,10 +43,10 @@ public class UIUtils {
     }
 
     /**
-     * Set transparency to view
+     * Set transparency to view.
      * @see https://source.android.com/source/build-numbers.html
-     * @param view
-     * @param alpha
+     * @param view The view, not null
+     * @param alpha The alpha view
      */
     public static void setAlpha(View view, float alpha) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
@@ -60,8 +61,8 @@ public class UIUtils {
     
     /**
      * Show or hide a set of views.
-     * @param visibility
-     * @param views
+     * @param visibility The visibility parameter for all.
+     * @param views The views that some can be null.
      * @author sergiopereira
      */
     public static void showOrHideViews(int visibility, View... views) {
@@ -70,68 +71,47 @@ public class UIUtils {
     
     /**
      * Set the visibility
-     * @param view
-     * @param show
+     * @param view The view that can be null
+     * @param show The visibility parameter
+     * @author sergiopereira
      */
     public static void setVisibility(View view, boolean show) {
         if (view != null) view.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     /**
-     * TODO
-     * @param context
-     * @param warningView
-     * @param warningLength
+     * Animate the view with a fade in, after an offset a fade out.
+     * TODO - Create this animation using XML, http://developer.android.com/guide/topics/graphics/view-animation.html
+     * @param context The application context
+     * @param animatedView The view
+     * @param visibleOffset The visible offset
      */
-    public static void animateWarning(Context context, final View warningView, final int warningLength){
-        if (warningView != null) {
-            warningView.setVisibility(View.INVISIBLE);
-
-            final Animation mAnimFadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
-            final Animation mAnimFadeOut = AnimationUtils.loadAnimation(context, R.anim.fade_out);
-
-            warningView.clearAnimation();
-            warningView.startAnimation(mAnimFadeIn);
-
-            mAnimFadeIn.setAnimationListener(new Animation.AnimationListener() {
-
-                @Override
-                public void onAnimationStart(final Animation animation) {
-                    warningView.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onAnimationRepeat(final Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(final Animation animation) {
-                    warningView.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            warningView.startAnimation(mAnimFadeOut);
-                        }
-                    }, warningLength);
-                }
-            });
-
-            mAnimFadeOut.setAnimationListener(new Animation.AnimationListener() {
-
-                @Override
-                public void onAnimationStart(final Animation animation) {
-                }
-
-                @Override
-                public void onAnimationRepeat(final Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(final Animation animation) {
-                    warningView.setVisibility(View.GONE);
-                }
-            });
+    public static void animateFadeInAndOut(Context context, View animatedView, int visibleOffset){
+        if (!isAnimating(animatedView)) {
+            // Set view as invisible for old Android versions
+            animatedView.setVisibility(View.INVISIBLE);
+            // Create the fade in and fade out animation
+            Animation fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+            Animation fadeOut = AnimationUtils.loadAnimation(context, R.anim.fade_out);
+            fadeOut.setStartOffset(fadeIn.getDuration() + visibleOffset);
+            // Create a set with animations
+            AnimationSet animation = new AnimationSet(false);
+            animation.addAnimation(fadeIn);
+            animation.addAnimation(fadeOut);
+            // Remove the old and start the new animation
+            animatedView.clearAnimation();
+            animatedView.startAnimation(animation);
         }
+    }
 
+    /**
+     * Validate if the current view is being animated
+     * @param view The animated view
+     * @return true or false
+     * @author sergio pereira
+     */
+    public static boolean isAnimating(View view) {
+        return view != null && view.getAnimation() != null && (view.getAnimation().hasStarted() || !view.getAnimation().hasEnded());
     }
     
 }

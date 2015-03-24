@@ -782,6 +782,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 public void onClick(View v) {
                     listener.onClick(v);
                     Animation animation = AnimationUtils.loadAnimation(BaseFragment.this.getActivity(), R.anim.anim_rotate);
+                    getView().findViewById(R.id.fragment_root_retry_spinning).clearAnimation();
                     getView().findViewById(R.id.fragment_root_retry_spinning).setAnimation(animation);
                 }
             });

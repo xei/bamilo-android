@@ -3,7 +3,9 @@
     android:id="@+id/product_seller_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:visibility="visible" >
+    android:visibility="visible"
+    android:layout_marginBottom="10dp"
+    android:paddingBottom="15dp">
 
     <LinearLayout
         android:id="@+id/seller_name_n_rate"
@@ -11,7 +13,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="2"
-        android:baselineAligned="false">
+        android:layout_marginTop="5dp"
+        android:baselineAligned="false"
+        android:layoutDirection="ltr">
 
         <!-- SELLER RATING -->
 
@@ -24,7 +28,8 @@
             android:layout_marginTop="15dp"
             android:layout_weight="1"
             android:background="@drawable/selector_clickableitem_highlight"
-            android:visibility="visible" >
+            android:visibility="visible"
+            >
 
             <!-- android:background="@drawable/selector_clickableitem_highlight" -->
 
@@ -92,8 +97,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/seller_name_n_rate"
-        android:layout_marginBottom="10dp"
-        android:paddingBottom="10dp"
         android:layout_marginTop="5dp" >
 
         <com.mobile.components.customfontviews.TextView

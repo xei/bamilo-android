@@ -293,6 +293,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * @param item
      */
     private void triggerRemoveItem(ShoppingCartItem item) {
+
         ContentValues values = new ContentValues();
         values.put("sku", item.getConfigSimpleSKU());
         itemRemoved_sku = item.getConfigSimpleSKU();
@@ -492,7 +493,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TrackerDelegator.trackProductRemoveFromCart(params);
             TrackerDelegator.trackLoadTiming(params);
             if (!isRemovingAllItems) {
-                //showFragmentContentContainer();
                 displayShoppingCart((ShoppingCart) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY));
                 hideActivityProgress();
             }
@@ -964,13 +964,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 prodItem.variancesContainer.setText(variation);
             }
         }
-
+        prodItem.deleteBtn.setTag(R.id.position, position);
         prodItem.deleteBtn.setOnClickListener(new OnClickListener() {
-
             @Override
-            public void onClick(View v) {
-                prodItem.itemValues.is_checked = true;
-                deleteSelectedElements();
+            public void onClick(View view) {
+                deleteSelectedElements(view);
             }
         });
 
@@ -1058,16 +1056,14 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /**
      * This method manages the deletion of selected elements
      */
-    public void deleteSelectedElements() {
-        for (int position = items.size() - 1; position >= 0; position--) {
-            if (itemsValues.get(position) != null && itemsValues.get(position).is_checked) {
-                itemsValues.remove(position);
-                mBeginRequestMillis = System.currentTimeMillis();
-                triggerRemoveItem(items.get(position));
-                items.remove(position);
-            }
+    public void deleteSelectedElements(View view) {
+        // Get position
+        int position = (int) view.getTag(R.id.position);
+        // Validate position
+        if (position < items.size()) {
+            mBeginRequestMillis = System.currentTimeMillis();
+            triggerRemoveItem(items.get(position));
         }
-
     }
 
     public void hideNoItems() {
@@ -1076,18 +1072,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     public void changeQuantityOfItem(final int position) {
         ArrayList<String> quantities = new ArrayList<>();
-
         long stock = items.get(position).getStock();
         int maxQuantity = items.get(position).getMaxQuantity();
-
         long actualMaxQuantity = stock < maxQuantity ? stock : maxQuantity;
-
         for (int i = 0; i <= actualMaxQuantity; i++) {
             quantities.add(String.valueOf(i));
         }
-
         long crrQuantity = items.get(position).getQuantity();
-
         OnDialogListListener listener = new OnDialogListListener() {
             @Override
             public void onDialogListItemSelect(int quantity, String value) {
@@ -1211,7 +1202,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     @Override
     public void onRequestError(Bundle bundle) {
         onErrorEvent(bundle);
-
     }
 
     @Override
