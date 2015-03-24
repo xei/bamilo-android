@@ -79,19 +79,13 @@ public class DeepLinkManager {
         if (segments == null) {
             return null;
         }
-        
-        //transform int arraylist in order to be able to excute a remove operation
-        ArrayList<String> segmentAux = new ArrayList<>(segments);
-        Log.d(TAG, "DEEP LINK SEGMENTS: " + segmentAux.toString());
-        //if the deep link is from google app indexing the first element will be JUMIA value
-        if(segmentAux.get(PATH_CC_POS).equalsIgnoreCase(context.getString(R.string.dp_app_name_uppercase))){
-            segmentAux.remove(0);
-        }
+
+        Log.d(TAG, "DEEP LINK SEGMENTS: " + segments.toString());
         
         // Get the country code
-        loadCountryCode(context, segmentAux.get(PATH_CC_POS));
+        loadCountryCode(context, segments.get(PATH_CC_POS));
         // Get the tag view and return values
-        return loadDeepViewTag(segmentAux, data);
+        return loadDeepViewTag(segments, data);
     }
 
     /**
