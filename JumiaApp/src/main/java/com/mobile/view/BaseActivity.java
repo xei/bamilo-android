@@ -673,7 +673,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
      */
     @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "ON OPTIONS MENU: CREATE");
         getMenuInflater().inflate(R.menu.main_menu, menu);
         // Save the current menu
@@ -682,10 +682,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         int showActionBar = View.VISIBLE;
         // Flag to show home or back button
         isBackButtonEnabled = false;
-
-        /**
-         * Setting Menu Options
-         */
+        // Setting Menu Options
         for (MyMenuItem item : menuItems) {
             switch (item) {
                 case HIDE_AB:

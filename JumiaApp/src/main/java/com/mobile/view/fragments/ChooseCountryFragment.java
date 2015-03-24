@@ -313,7 +313,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                 countriesAvailable.get(position) != null) {             //Null pointer validation
 
             // Set new country
-            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefs.edit();
             editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
             editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
@@ -344,9 +344,9 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             // Clear Ad4Push prefs
             Ad4PushTracker.clearAllSavedData(getBaseActivity().getApplicationContext());
             // Show splash screen
-            ActivitiesWorkFlow.splashActivityNewTask(getActivity());
+            ActivitiesWorkFlow.splashActivityNewTask(getBaseActivity());
             // Finish MainFragmentActivity
-            getActivity().finish();
+            getBaseActivity().finish();
             return true;
         }
         return false;
