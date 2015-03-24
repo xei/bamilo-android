@@ -524,6 +524,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mBundleLoading = view.findViewById(R.id.loading_related_bundle);
         mBundleButton = (Button) view.findViewById(R.id.bundle_add_cart);
         mBundleTextTotal = (TextView) view.findViewById(R.id.bundle_total_value);
+        //in order to marquee work on 2.3+ devices
+        mBundleTextTotal.setSelected(true);
         mDividerBundle = view.findViewById(R.id.divider_bundle);
         mBundleButton.setSelected(true);
         // OFFERS
