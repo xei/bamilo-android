@@ -240,6 +240,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment{
 
     @Override
     protected void triggerGetForm() {
+        sameAddress = "";
         triggerGetBillingForm();
     }
 
