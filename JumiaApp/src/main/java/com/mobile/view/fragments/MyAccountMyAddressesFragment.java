@@ -1,5 +1,6 @@
 package com.mobile.view.fragments;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -63,7 +64,20 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.i(TAG, "ON ATTACH");
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.i(TAG, "ON CREATE");
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        Log.i(TAG, "ON VIEW CREATED");
         super.onViewCreated(view, savedInstanceState);
         ((Button)view.findViewById(R.id.checkout_addresses_button_enter)).setText(getResources().getString(R.string.save_label));
 
@@ -75,9 +89,6 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
     @Override
     protected void onClickRetryButton() {
-        resetRequests();
-        cleanContainers();
-        sameAddress = null;
         triggerGetForm();
     }
 
@@ -162,6 +173,9 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
     @Override
     protected void triggerGetForm() {
+        resetRequests();
+        cleanContainers();
+        sameAddress = null;
         triggerGetMyAddresses();
     }
 

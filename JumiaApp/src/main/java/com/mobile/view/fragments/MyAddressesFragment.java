@@ -109,8 +109,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         view.findViewById(R.id.checkout_addresses_default_add).setOnClickListener(this);
         view.findViewById(R.id.checkout_addresses_other_add).setOnClickListener(this);
         view.findViewById(R.id.checkout_addresses_button_enter).setOnClickListener(this);
-        // Get and show addresses
-        triggerGetForm();
     }
 
     @Override
@@ -119,7 +117,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         Log.i(TAG, "ON CREATE");
         // Flag
         sameAddress = "";
-
     }
 
     @Override
@@ -132,6 +129,8 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        // Get and show addresses
+        triggerGetForm();
     }
 
     @Override
