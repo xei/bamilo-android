@@ -223,8 +223,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
         switch(eventType){
             case GET_CUSTOMER_ADDRESSES_EVENT:
-                Toast.makeText(getBaseActivity(),getResources().getString(R.string.error_please_try_again),Toast.LENGTH_LONG).show();
-                getBaseActivity().onBackPressed();
+                showContinueShopping();
                 break;
             case SET_DEFAULT_SHIPPING_ADDRESS:
                 showFragmentContentContainer();
@@ -261,12 +260,17 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
                 hiddenForm = bundle.getParcelable(Constants.BUNDLE_FORM_DATA_KEY);
                 this.addresses = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
 
-                // Show addresses using saved value, if is the same address for Bill and Ship
-                if(!TextUtils.isEmpty(sameAddress)){
-                    showAddresses(Boolean.parseBoolean(sameAddress));
-                } else{
-                    showAddresses(addresses.hasDefaultShippingAndBillingAddress());
+                if(this.addresses != null){
+                    // Show addresses using saved value, if is the same address for Bill and Ship
+                    if (!TextUtils.isEmpty(sameAddress)) {
+                        showAddresses(Boolean.parseBoolean(sameAddress));
+                    } else {
+                        showAddresses(addresses.hasDefaultShippingAndBillingAddress());
+                    }
+                } else {
+                    showContinueShopping();
                 }
+
                 break;
             case SET_DEFAULT_SHIPPING_ADDRESS:
                 isSetShippingComplete = true;
