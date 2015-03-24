@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.facebook.FacebookAuthorizationException;
+import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Request.GraphUserCallback;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -535,7 +536,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         Log.i(TAG, "SESSION: " + session.toString() + "STATE: " + state.toString());
         // Exception handling for no network error
-        if (exception instanceof FacebookAuthorizationException && !NetworkConnectivity.isConnected(getBaseActivity())) {
+        if((exception instanceof FacebookAuthorizationException || exception instanceof FacebookOperationCanceledException) && !NetworkConnectivity.isConnected(getBaseActivity())) {
             // Show dialog case form is visible
             if (formResponse != null) {
                 showNoNetworkWarning();
