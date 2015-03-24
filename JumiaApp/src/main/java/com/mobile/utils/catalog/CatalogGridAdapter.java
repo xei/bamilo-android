@@ -229,8 +229,16 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
      * @param position - the current position
      */
     private void setFavourite(ProductViewHolder holder, Product item, int position) {
+        // TODO: REMOVE THIS PLEASE :)
+        boolean isFavourite = false;
+        try {
+            isFavourite = FavouriteTableHelper.verifyIfFavourite(item.getSKU());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // Set favourite data
         holder.favourite.setTag(R.id.position, position);
-        holder.favourite.setSelected(item.getAttributes().isFavourite());
+        holder.favourite.setSelected(isFavourite);
         holder.favourite.setOnClickListener(this);
     }
     

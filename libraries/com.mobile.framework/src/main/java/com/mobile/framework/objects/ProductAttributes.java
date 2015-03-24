@@ -183,17 +183,13 @@ public class ProductAttributes extends BaseProduct implements IJSONSerializable 
 			// Get the is new JSON tag
 			isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG, false);
 
-			// Get the is favourite JSON tag
-			// isFavourite =
-			// jsonObject.optBoolean(RestConstants.JSON_IS_FAVOURITE_TAG,
-			// false);
-
+			/*
 			try {
 				isFavourite = FavouriteTableHelper.verifyIfFavourite(sku);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			*/
 
 		} catch (JSONException e) {
 			Log.e(TAG, "Error Parsing the product json", e);

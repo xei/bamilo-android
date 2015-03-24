@@ -143,7 +143,6 @@ public class RemoteService extends Service {
         String completeUrl = completeUri(uri).toString();
         try {
             URL url = new URL(completeUrl);
-
             URIBuilder uriBuilder = new URIBuilder(completeUrl);
             uriBuilder.setPort(url.getDefaultPort());
             completeUrl = uriBuilder.toString();
