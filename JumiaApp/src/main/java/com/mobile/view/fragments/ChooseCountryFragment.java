@@ -36,6 +36,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
@@ -269,6 +270,9 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     }
 
     private void showWarningDialog(final int position) {
+
+        dismissDialogFragment();
+
         dialog = DialogGenericFragment.newInstance(true, false,
                 getString(R.string.nav_country),
                 getString(R.string.nav_country_warning), 
@@ -284,7 +288,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
                         if (id == R.id.button1) {
                             getBaseActivity().onBackPressed();
                         } else if (id == R.id.button2) {
-                            setCountry(position);
+                            if(!setCountry(position)){
+                                getBaseActivity().onBackPressed();
+                            }
+
                         }
                     }
                 });
@@ -294,46 +301,55 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     /**
      * Save the selected country
      * @param position
+     *
+     * @return true if changed successfully
+     * @return false otherwise
      */
-    protected void setCountry(int position) {
-        
-        // Set new country
-        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPrefs.edit();
-        editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
-        editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
-        editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
-        /** 
-         * Save the Selected Country Configs 
-         * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
-         */
-        Log.i(TAG, "code1DarwinComponent : selected : " + JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
-        editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
-        editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryUrl());
-        editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryFlag());
-        //editor.putString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)));
-        editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
-        editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
-        editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryIsLive());
-        editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
-        editor.apply();
-        
-        // Clean memory
-        JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
-        // Is changing country
-        if(isChangeCountry){
-            LastViewedTableHelper.deleteAllLastViewed();
-            FavouriteTableHelper.deleteAllFavourite();
-            TrackerDelegator.trackShopChanged();
+    protected boolean setCountry(int position) {
+
+        ArrayList<CountryObject> countriesAvailable = JumiaApplication.INSTANCE.countriesAvailable;
+
+        if(position > -1 && position < countriesAvailable.size() &&     // Position validation
+                countriesAvailable.get(position) != null) {             //Null pointer validation
+
+            // Set new country
+            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
+            editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
+            editor.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
+            /**
+             * Save the Selected Country Configs
+             * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
+             */
+            Log.i(TAG, "code1DarwinComponent : selected : " + JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
+            editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryName());
+            editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryUrl());
+            editor.putString(Darwin.KEY_SELECTED_COUNTRY_FLAG, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryFlag());
+            //editor.putString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, calculateMapImageResolution(JumiaApplication.INSTANCE.countriesAvailable.get(position)));
+            editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, JumiaApplication.INSTANCE.countriesAvailable.get(position).getCountryIso().toLowerCase());
+            editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryForceHttps());
+            editor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, JumiaApplication.INSTANCE.countriesAvailable.get(position).isCountryIsLive());
+            editor.putBoolean(ConstantsSharedPrefs.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
+            editor.apply();
+
+            // Clean memory
+            JumiaApplication.INSTANCE.cleanAllPreviousCountryValues();
+            // Is changing country
+            if (isChangeCountry) {
+                LastViewedTableHelper.deleteAllLastViewed();
+                FavouriteTableHelper.deleteAllFavourite();
+                TrackerDelegator.trackShopChanged();
+            }
+            // Clear Ad4Push prefs
+            Ad4PushTracker.clearAllSavedData(getBaseActivity().getApplicationContext());
+            // Show splash screen
+            ActivitiesWorkFlow.splashActivityNewTask(getActivity());
+            // Finish MainFragmentActivity
+            getActivity().finish();
+            return true;
         }
-        // Clear Ad4Push prefs
-        Ad4PushTracker.clearAllSavedData(getBaseActivity().getApplicationContext());
-        // Show splash screen
-        ActivitiesWorkFlow.splashActivityNewTask(getActivity());
-        // Finish MainFragmentActivity
-        getActivity().finish();
-        
-        
+        return false;
     }
 
     /*
