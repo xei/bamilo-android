@@ -62,7 +62,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private final static int EMPTY_CATALOG = 0;
 
-    private final static int ACTIVATE_TOP_BUTTON_IN_LINE = 5;
+    private final static int ACTIVATE_TOP_BUTTON_IN_LINE = 10;
 
     private CatalogGridView mGridView;
 
