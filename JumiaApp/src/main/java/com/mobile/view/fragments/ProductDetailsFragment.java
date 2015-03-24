@@ -563,7 +563,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         // Get and set portrait views
         checkPortraitLayout(view);
         // Get and set landscape views
-        checkLanscapeLayout(view);
+        checkLandscapeLayout(view);
 
         mGalleryViewGroupFactory = new ViewGroupFactory((ViewGroup) view.findViewById(R.id.product_image_layout));
     }
@@ -586,11 +586,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * @param view
      * @author sergiopereira
      */
-    private void checkLanscapeLayout(View view) {
+    private void checkLandscapeLayout(View view) {
         // Get landscape views
         mProductFeaturesContainer = (RelativeLayout) view.findViewById(R.id.features_container);
-        mProductDescriptionContainer = (RelativeLayout) view
-                .findViewById(R.id.description_container);
+        mProductDescriptionContainer = (RelativeLayout) view.findViewById(R.id.description_container);
         mProductFeaturesText = (TextView) view.findViewById(R.id.product_features_text);
         mProductDescriptionText = (TextView) view.findViewById(R.id.product_description_text);
         mProductFeaturesMore = (LinearLayout) view.findViewById(R.id.features_more_container);
@@ -2056,37 +2055,31 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * display product specification on landscape
      */
     private void displaySpecification() {
+        Log.i(TAG, "ON DISPLAY SPECIFIC LANDSCAPE LAYOUT");
         String shortDescription = mCompleteProduct.getShortDescription();
+        // Validate the specific landscape layout
+        if (mProductFeaturesContainer == null) {
+            Log.i(TAG, "SPECIFIC LANDSCAPE LAYOUT IS NULL");
+            return;
+        }
         // Don't show the features box if there is no content for it
         if (TextUtils.isEmpty(shortDescription)) {
             Log.i(TAG, "shortDescription : empty");
-            if (mProductFeaturesContainer != null) {
-                mProductFeaturesContainer.setVisibility(View.GONE);
-            }
+            mProductFeaturesContainer.setVisibility(View.GONE);
         } else {
-            if (mProductFeaturesContainer != null) {
-                mProductFeaturesContainer.setVisibility(View.VISIBLE);
-            }
-
-
+            mProductFeaturesContainer.setVisibility(View.VISIBLE);
             String translatedDescription = shortDescription.replace("\r", "<br>");
-            Log.d(TAG, "displaySpecification: *" + translatedDescription + "*");
-
             Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
-            // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML
-            // with bold tags
+            // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                 Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);
-                MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(),
-                        MetricAffectingSpan.class);
+                MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
                 for (MetricAffectingSpan span : spans) {
                     htmlText.removeSpan(span);
                 }
             }
             mProductFeaturesText.setText(htmlText);
-
             showMoreButton(mProductFeaturesText, mProductFeaturesMore);
-
         }
     }
 
