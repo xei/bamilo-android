@@ -9,13 +9,12 @@
  */
 package com.mobile.framework.objects;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -57,7 +56,7 @@ public class Address implements IJSONSerializable, Parcelable {
      * Constructor
      * @param jsonObject
      */
-    public Address(JSONObject jsonObject) throws JSONException{
+    public Address(JSONObject jsonObject) {
     	initialize(jsonObject);
     }
     
@@ -66,7 +65,7 @@ public class Address implements IJSONSerializable, Parcelable {
      * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
      */
 	@Override
-	public boolean initialize(JSONObject jsonObject) throws JSONException{
+	public boolean initialize(JSONObject jsonObject){
 		Log.d(TAG, "INITIALIZE");
         JSONObject dataObject = jsonObject;
         
