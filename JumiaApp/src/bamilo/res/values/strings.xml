@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="account_name">حساب کاربری من ‎</string>
     <string name="action_label_add_address">اضافه کردن آدرس جدید</string>
     <string name="action_label_basket">سبد کالا</string>
     <string name="action_label_logout">خروج</string>
-    <string name="action_label_search_hint">%s جستجو در بامیلو</string>
+    <string name="action_label_search_hint">جستجو در %s</string>
     <string name="action_label_share">به اشتراک بگذارید</string>
     <string name="action_label_wishlist">فهرست علاقه مندی ها</string>
     <string name="add_address">افزودن نشانی</string>
@@ -295,6 +294,7 @@
     <string name="size_label">اندازه</string>
     <string name="some_products_not_added">متاسفانه برخی از کالاها به سبد خرید اضافه نشدند.</string>
     <string name="splash_slogan">به فروشگاه اینترنتی بامیلو خوش آمدید.</string>
+    <string name="splash_slogan_daraz">به فروشگاه اینترنتی بامیلو خوش آمدید.</string>
     <string name="stale_warning">اتصال قطع شده است.</string>
     <string name="string_appearance">تنظیمات ظاهری</string>
     <string name="string_price">قیمت</string>
@@ -345,10 +345,23 @@
     <string name="your_cart">سبد خرید شم</string>
     <string name="your_order">سفارش شما</string>
     <string name="app_sharing">به اشتراک گذاشتن برنامه</string>
-    <string name="install_jumia_android">%s برنامه Android بامیلو را نصب نمایید</string>
+    <string name="install_jumia_android">برنامه Android بامیلو را نصب کنید.</string>
     <string name="share_the_app">برنامه را به اشتراک بگذار</string>
     <string name="can_share_app_with_friends">هم اکنون می توانید برنامه را با دوستان خود به اشتراک بگذارید</string>
-    <string name="my_addresses">آدرس های من</string>
-    <string name="create_edit_address">ایجاد یا ویرایش آدرس شما</string>
-
+    <string name="app_social">آیکون شبکه های اجتماعی</string>
+    <string name="sort_by">مرتب سازی بر اساس</string>
+    <string name="plurals_rating">%d امتیاز</string>
+    <string name="plurals_ratings">%d امتیاز</string>
+    <string name="plurals_item">%d کالا</string>
+    <string name="plurals_items">%d کالا</string>
+    <string name="plurals_article">%d کالا</string>
+    <string name="plurals_articles">%d کالا</string>
+    <string name="my_addresses">نشانی‌های من</string>
+    <string name="create_edit_address">نشانی‌های خود را ایجاد و ویرایش کنید.</string>
+    <string name="string_more_choices">انتخاب‌های بیشتر</string>
+    <string name="string_vat_included">(شامل مالیات بر ارزش افزوده)</string>
+    <string name="addresses_saved_message">تنظیمات نشانی‌های شما ذخیره شده است.</string>
+    <string name="dialog_to_product">جزئیات محصول</string>
+    <string name="address_creation_failed_title">ثبت نشانی با مشکل مواجه شد.</string>
+    <string name="address_creation_failed_main">لطفا تمام موارد را بطورصحیح وارد کنید.</string>
 </resources>

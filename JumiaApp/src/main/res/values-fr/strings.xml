@@ -258,7 +258,7 @@
     <string name="review_this_seller">Évaluer maintenant ce vendeur !</string>
     <string name="reviews">Avis</string>
     <string name="reviews_empty">Ce produit n\'a pas de avis!</string>
-    <string name="reviews_empty_seller"/>
+    <string name="reviews_empty_seller">Ce vendeur n\'a pas encore de commentaires !</string>
     <string name="same_product_from_other_sellers">Même produit d\'autres vendeurs</string>
     <string name="save_changes_label">Enregistrer les changements</string>
     <string name="save_label">Enregistrer</string>
@@ -296,6 +296,7 @@
     <string name="size_label">Taille</string>
     <string name="some_products_not_added">Malheureusement certains produits n\'ont pas été ajoutés à votre panier.</string>
     <string name="splash_slogan">La boutique en ligne N°1 en Afrique</string>
+    <string name="splash_slogan_daraz">La seule destination de shopping en ligne que vous aurez besoin!</string>
     <string name="stale_warning">Connexion perdue</string>
     <string name="string_appearance">Apparence</string>
     <string name="string_price">Prix</string>
@@ -345,6 +346,24 @@
     <string name="yes_label">Oui</string>
     <string name="your_cart">Votre panier</string>
     <string name="your_order">Votre commande</string>
-    <string name="my_addresses">Mes adresses</string>
+    <string name="app_sharing">Partage d\'application</string>
+    <string name="install_jumia_android">Installez l\'application Jumia Android en un instant</string>
+    <string name="share_the_app">Partagez l\'Application</string>
+    <string name="can_share_app_with_friends">Vous pouvez maintenant partager l\'application avec vos amis</string>
+    <string name="app_social">Cammunauté de l\'App</string>
+    <string name="sort_by">Trier par</string>
+    <string name="plurals_rating">%d évaluation</string>
+    <string name="plurals_ratings">%d évaluations</string>
+    <string name="plurals_item">%d article</string>
+    <string name="plurals_items">%d articles</string>
+    <string name="plurals_article">%d article</string>
+    <string name="plurals_articles">%d articles</string>
+    <string name="my_addresses">Mes Adresses</string>
     <string name="create_edit_address">Créez ou modifiez vos adresses</string>
+    <string name="string_more_choices">Plus de choix</string>
+    <string name="string_vat_included">(TVA incl.)</string>
+    <string name="addresses_saved_message">Les paramètres de vos adresses ont été enregistrées.</string>
+    <string name="dialog_to_product">Détails du produit</string>
+    <string name="address_creation_failed_title">La création d\'adresses échouée</string>
+    <string name="address_creation_failed_main">Veuillez remplir correctement tous les champs du formulaire.</string>
 </resources>
