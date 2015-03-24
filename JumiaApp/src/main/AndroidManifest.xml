@@ -99,8 +99,7 @@
 
                 <data
                     android:scheme="@string/dp_app_index_scheme"
-                    android:host="${applicationId}"
-                    android:pathPrefix="@string/dp_app_index_prefix" />
+                    android:host="${applicationId}" />
             </intent-filter>
 
         </activity>

@@ -1972,7 +1972,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         }
 
         // Generic errors
-        if (super.handleErrorEvent(bundle)) return;
+        if (super.handleErrorEvent(bundle)){
+            mBundleButton.setEnabled(true);
+            return;
+        }
 
         Log.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {

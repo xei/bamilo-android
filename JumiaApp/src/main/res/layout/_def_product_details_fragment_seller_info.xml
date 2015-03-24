@@ -3,95 +3,97 @@
     android:id="@+id/product_seller_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:visibility="visible" >
+    android:visibility="visible"
+    android:layout_marginBottom="10dp"
+    android:paddingBottom="15dp">
 
 
-        <LinearLayout
+    <LinearLayout
         android:id="@+id/seller_name_n_rate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="2"
-            android:baselineAligned="false">
+        android:layout_marginTop="5dp"
+        android:baselineAligned="false">
 
-    <!-- SELLER NAME -->
+        <!-- SELLER NAME -->
 
-    <RelativeLayout
-        android:id="@+id/seller_name_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_clickableitem_highlight"
-        android:layout_marginTop="15dp"
-        android:layout_weight="1"
-        android:layoutDirection="locale">
+        <RelativeLayout
+            android:id="@+id/seller_name_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_clickableitem_highlight"
+            android:layout_weight="1"
+            android:layoutDirection="locale">
 
-                    <!-- android:background="@drawable/selector_listitem_highlight" -->
+            <!-- android:background="@drawable/selector_listitem_highlight" -->
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/product_detail_seller_sold_by"
-            style="@style/text_subtitle"
-            android:layout_width="wrap_content"
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/product_detail_seller_sold_by"
+                style="@style/text_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/rounded_margin_mid"
+                android:layout_marginRight="@dimen/rounded_margin_mid"
+                android:gravity="left|center_vertical|start"
+                android:maxLines="2"
+                android:text="@string/product_sold_by"
+                android:visibility="visible" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/product_detail_seller_name"
+                style="@style/text_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/rounded_margin_mid"
+                android:layout_marginRight="@dimen/rounded_margin_mid"
+                android:layout_toEndOf="@id/product_detail_seller_sold_by"
+                android:layout_toRightOf="@id/product_detail_seller_sold_by"
+                android:gravity="left|center_vertical|start"
+                android:text="Jumia"
+                android:textColor="@color/orange_basic"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <!-- SELLER RATING -->
+
+        <RelativeLayout
+            android:id="@+id/product_detail_product_seller_rating_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/rounded_margin_mid"
+            android:layout_marginLeft="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
-            android:gravity="left|center_vertical|start"
-            android:maxLines="2"
-            android:text="@string/product_sold_by"
-            android:visibility="visible" />
+            android:layout_marginStart="@dimen/rounded_margin_mid"
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/product_detail_seller_name"
-            style="@style/text_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
-            android:layout_toEndOf="@id/product_detail_seller_sold_by"
-            android:layout_toRightOf="@id/product_detail_seller_sold_by"
-            android:gravity="left|center_vertical|start"
-            android:text="Jumia"
-            android:textColor="@color/orange_basic"
-            android:visibility="visible" />
-    </RelativeLayout>
+            android:background="@drawable/selector_clickableitem_highlight"
+            android:layout_weight="1"
+            android:visibility="visible" >
 
-    <!-- SELLER RATING -->
+            <RatingBar
+                android:id="@+id/product_detail_product_seller_rating"
+                style="@style/starRatingBarSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/product_detail_product_seller_rating_count"
+                android:layout_toStartOf="@+id/product_detail_product_seller_rating_count"
+                android:isIndicator="true" />
 
-    <RelativeLayout
-        android:id="@+id/product_detail_product_seller_rating_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/rounded_margin_mid"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:layout_marginStart="@dimen/rounded_margin_mid"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/selector_clickableitem_highlight"
-        android:layout_weight="1"
-        android:visibility="visible" >
-
-        <RatingBar
-            android:id="@+id/product_detail_product_seller_rating"
-            style="@style/starRatingBarSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/product_detail_product_seller_rating_count"
-            android:layout_toStartOf="@+id/product_detail_product_seller_rating_count"
-            android:isIndicator="true" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/product_detail_product_seller_rating_count"
-            style="@style/text_subtitle"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_mid"
-            android:layout_marginStart="@dimen/margin_mid"
-            android:ellipsize="end"
-            android:text="0 Reviews"
-            android:textColor="@color/grey_light" />
-    </RelativeLayout>
-</LinearLayout>
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/product_detail_product_seller_rating_count"
+                style="@style/text_subtitle"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/margin_mid"
+                android:layout_marginStart="@dimen/margin_mid"
+                android:ellipsize="end"
+                android:text="0 Reviews"
+                android:textColor="@color/grey_light" />
+        </RelativeLayout>
+    </LinearLayout>
     <!-- SELLER DELIVERY TIME -->
 
     <RelativeLayout
@@ -99,9 +101,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/seller_name_n_rate"
-        android:layout_marginBottom="10dp"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="5dp" >
+        android:layout_marginTop="5dp"
+        android:visibility="visible">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/product_detail_seller_delivery"
@@ -132,7 +133,4 @@
             android:maxLines="2"
             android:visibility="visible" />
     </RelativeLayout>
-
-
-
 </RelativeLayout>
