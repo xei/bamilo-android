@@ -27,7 +27,7 @@ public enum EventType {
 
     INIT_FORMS("http:/forms/index/", RestContract.MAX_CACHE_TIME),
 
-    GET_CATEGORIES_EVENT("http:/catalog/categories/", RestContract.MAX_CACHE_TIME),
+    GET_CATEGORIES_EVENT("http:/catalog/categories/", RestContract.NO_CACHE), // TODO: FIX THIS-> CASE success:false IS CACHING THE REQUEST
 
     GET_PRODUCTS_EVENT("http:/search?setDevice=mobileApi", RestContract.NO_CACHE),
 
