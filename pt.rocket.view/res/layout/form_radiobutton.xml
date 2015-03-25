@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.mobile.components.customfontviews.RadioButton xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/form_radiobutton_style"
-    android:button="@null"
-    android:drawableLeft="@drawable/btn_radio_holo_orange" />

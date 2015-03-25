@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    
-    <query type="string" method="getString" children="true" optional="false"/>
-    <suggestions type="jsonarray" method="getJSONArray" children="true" optional="false">
-                
-    </suggestions>
-		
-</resources> 

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <cartValue type="integer" method="getInt" children="false" optional="false"/>
-    <cartCount type="integer" method="getInt" children="false" optional="false"/>
-    <cartItems type="jsonobject" method="getJSONObject" children="true" optional="false"/>
-    
-</resources>

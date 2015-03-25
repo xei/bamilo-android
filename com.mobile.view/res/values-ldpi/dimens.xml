@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <dimen name="product_tip_variations_top_margin">25dp</dimen>
-    <dimen name="tips_button_width">180dp</dimen>
-    <dimen name="tips_button_height">45dp</dimen>
-
-</resources>
