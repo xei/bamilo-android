@@ -256,8 +256,8 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     private void addMenuItems() {
         ArrayList<NavigationListComponent> components = new ArrayList<>();
         // Get Navigation items from arrays.xml
-        String[] natigationItems = getResources().getStringArray(R.array.navigation_items);
-        for (String item : natigationItems) {
+        String[] navigationItems = getResources().getStringArray(R.array.navigation_items);
+        for (String item : navigationItems) {
             NavigationListComponent component = new NavigationListComponent();
             component.setElementUrl(item);
             components.add(component);
@@ -684,7 +684,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     
     /**
      * Process the click on categories menu
-     * @param view
+     *
      * @author sergiopereira
      */
     private void onClickCategories() {
@@ -698,12 +698,5 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
         onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL, args);
     }
-    
-    
-    /**
-     * ########### DIALOGS ###########  
-     */    
 
-  
-    
 }

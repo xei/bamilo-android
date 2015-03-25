@@ -165,4 +165,8 @@
     <!-- PDV IMAGE -->
     <dimen name="pdv_image">270dp</dimen>
 
+    <!-- NO CONNECTION -->
+    <dimen name="no_connection_label_small_size">19sp</dimen>
+    <dimen name="no_connection_label_details_small_size">15sp</dimen>
+
 </resources>

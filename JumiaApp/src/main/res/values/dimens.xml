@@ -393,4 +393,8 @@
     <dimen name="pdv_image_alone">320dp</dimen>
     <dimen name="pdv_image_with_bundle">20dp</dimen>
     <dimen name="pdv_image_with_seller">30dp</dimen>
+
+    <!-- NO CONNECTION -->
+    <dimen name="no_connection_label_small_size">16sp</dimen>
+    <dimen name="no_connection_label_details_small_size">12sp</dimen>
 </resources>

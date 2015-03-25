@@ -6,6 +6,7 @@ package com.mobile.view.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -386,7 +387,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     
     /**
      * Show nested categories
-     * @param category key
+     * @param categoryKey key
      * @author sergiopereira
      */
     private void gotoSubCategory(String categoryKey){
@@ -477,5 +478,17 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Show retry
         showRetry();
     }
-    
+
+    @Override
+    protected void showFragmentNoNetworkRetry(View.OnClickListener listener) {
+        super.showFragmentNoNetworkRetry(listener);
+        try{
+            ((TextView)getView().findViewById(R.id.no_connection_label)).setTextSize( TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_small_size) );
+            ((TextView)getView().findViewById(R.id.no_connection_details_label)).setTextSize( TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_details_small_size) );
+
+        }catch(NullPointerException e){
+            Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
+        }
+    }
+
 }
