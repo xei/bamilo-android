@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- APP -->
+    <bool name="rest_host_auth_use_it">false</bool>
+	<item name="is_daraz_specific" type="bool">false</item>
+	<item name="is_shop_specific" type="bool">false</item>
+	<item name="is_bamilo_specific" type="bool">false</item>
+	<bool name="is_force_http">false</bool>
+	<!-- ##### PRE INSTALL ##### -->
+	<bool name="create_pre_install_file">false</bool>
+	<!-- CUSTOM PRE INSTALL FOLDERS -->
+    <string-array name="pre_install_folders">
+        <!-- <item>/system/app</item> : ONLY FOR TESTS-->
+        <item>/data/cust/app</item>
+        <item>/data/cust/delap</item>
+    </string-array>
+    
+	<!-- SINGLE SHOP CONFIG -->
+    <string name="single_shop_country_name"></string>
+    <string name="single_shop_country_url"></string>
+    <string name="single_shop_country_flag"></string>
+    <string name="single_shop_country_iso"></string>
+    <bool name="single_shop_country_force_https">false</bool>
+    <bool name="single_shop_country_is_live">false</bool>
+    <bool name="is_single_shop_country">false</bool>
+
+	<!-- LABEL USED FOR FILTER -->
+    <string name="framework_category_label"></string>
+
+    <!-- Global Country Configuration -->
+    <string name="global_server_shop_name"></string>
+    <string name="global_server_host"></string>
+    <string name="global_server_restbase_path"></string>
+    <string name="global_server_user"></string>
+    <string name="global_server_password"></string>
+    <string name="global_server_api_version"></string>
+
+    <!-- ACCENGAGE -->
+    <item name="ad4push_enabled" type="bool"></item>
+	<string name="ad4push_partner_id"></string>
+    <string name="ad4push_private_key"></string>
+    <string name="ad4push_sender_id">gcm:593252289486</string>
+    
+	<!-- NEW RELIC -->
+    <string name="newrelic_token"></string>
+
+    <!-- ADJUST -->
+    <item name="adjust_enabled" type="bool"></item>
+    
+	<!-- APPTIMIZE -->
+    <item name="apptimize_enabled" type="bool">false</item>
+    <string name="apptimize_apikey"></string>
+    
+    <!-- GTM -->
+    <string name="gtm_key"></string>
+    <item name="gtm_debug" type="bool">false</item>
+    
+</resources>

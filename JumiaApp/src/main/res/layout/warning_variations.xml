@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mobile.components.customfontviews.TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/white_text_16sp_normal"
+    android:layout_width="match_parent"
+    android:layout_height="34dp"
+    android:layout_marginLeft="0dp"
+    android:background="@drawable/titlebar_noaccess"
+    android:gravity="center_horizontal|center_vertical"
+    android:text="@string/product_variance_choose_error"
+    android:shadowColor="@color/black_shadow"
+    android:shadowDx="2"
+    android:shadowDy="2"
+    android:shadowRadius="2" />

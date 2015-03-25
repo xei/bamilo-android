@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- ############ Start attrs definition block  ############ -->
+
+	<!-- CUSTOM SPINNER STYLE -->
+	<attr name="actionCustomSpinnerDropDownStyle" format="reference" />
+    
+	
+	<!-- ############ Start styleable definition block  ############ -->
+	
+	
+    <declare-styleable name="LoadingBarView">
+        <attr name="gifResource" format="reference"></attr>
+    </declare-styleable>
+
+    <!-- ANDROID SLIDING TABS STRIP -->
+    <declare-styleable name="SlidingTabLayout">
+        <attr name="stsDividerThickness" format="dimension" />
+        <attr name="stsDividerColor" format="color" />
+        <attr name="stsIndicatorThickness" format="dimension" />
+        <attr name="stsIndicatorColor" format="color" />
+        <attr name="stsBottomBorderThickness" format="dimension" />
+        <attr name="stsBottomBorderColor" format="color" />
+    </declare-styleable>
+    
+
+    <!-- CUSTOM TEXT -->
+    <declare-styleable name="TextAppearance">
+        <attr name="android:fontFamily" />
+        <attr name="android:textAllCaps" />
+        <attr name="android:textColor" />
+        <attr name="android:textColorHighlight" />
+        <attr name="android:textColorHint" />
+        <attr name="android:textColorLink" />
+        <attr name="android:textSize" />
+        <attr name="android:textStyle" />
+        <attr name="android:typeface" />
+    </declare-styleable>
+    <declare-styleable name="TextView">
+        <attr name="android:textAppearance" />
+    </declare-styleable>
+
+    <!-- CUSTOM SPINNER -->
+    <declare-styleable name="CustomSpinner">
+        <attr name="android:prompt" />
+        <attr name="android:dropDownSelector" />
+        <attr name="android:popupBackground" />
+        <attr name="android:dropDownVerticalOffset" />
+        <attr name="android:dropDownHorizontalOffset" />
+        <attr name="android:dropDownWidth" />
+        <attr name="android:popupPromptView" />
+        <attr name="android:gravity" />
+    </declare-styleable>
+    
+    
+    <declare-styleable name="CustomFontType">
+        <attr name="fontType" format="integer">
+            <enum name="burmese_regular" value="0" />
+            <enum name="roboto_bold" value="1" />
+            <enum name="roboto_light" value="4" />
+            <enum name="roboto_medium" value="5" />
+        </attr>
+        <attr name="strikethrough" format="boolean" />
+        <attr name="autofittext" format="boolean" />
+    </declare-styleable>
+    
+</resources>

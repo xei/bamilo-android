@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <string-array name="myaccount_array">
+        <item>@string/myaccount_userdata</item>
+        <item>@string/my_addresses</item>
+        <item>@string/myaccount_email_notifications</item>
+    </string-array>
+
+    <!-- NAVIGATION MENU ITEMS -->
+    <string-array name="navigation_items">
+        <item>/shop/</item>
+        <item>/customer/language/</item>
+    </string-array>
+
+    <!-- RATING -->
+    <plurals name="numberOfRatings">
+        <item quantity="zero">@string/plurals_rating</item>
+        <item quantity="one">@string/plurals_rating</item>
+        <item quantity="other">@string/plurals_ratings</item>
+    </plurals>
+
+    <!-- ITEM -->
+    <plurals name="numberOfItems">
+        <item quantity="zero">@string/plurals_item</item>
+        <item quantity="one">@string/plurals_item</item>
+        <item quantity="other">@string/plurals_items</item>
+    </plurals>
+
+    <!-- CATALOG SORT -->
+    <string-array name="products_picker">
+        <item>@string/products_sort_bestrated</item>
+        <item>@string/products_sort_popularity</item>
+        <item>@string/products_sort_newin</item>
+        <item>@string/products_sort_priceup</item>
+        <item>@string/products_sort_pricedown</item>
+        <item>@string/products_sort_name</item>
+        <item>@string/products_sort_brand</item>
+    </string-array>
+
+    <!-- SHARE -->
+	<string-array name="app_sharing_array">
+        <item>@string/share_the_app</item>
+    </string-array>
+
+    <!-- ARTICLES -->
+    <plurals name="numberOfArticles">
+        <item quantity="zero">@string/plurals_article</item>
+        <item quantity="one">@string/plurals_article</item>
+        <item quantity="other">@string/plurals_articles</item>
+    </plurals>
+
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?><FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/splash_screen_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_dividerlight" >
+
+    <ImageView
+        android:id="@+id/jumiaMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:src="@drawable/img_splashmap" />
+
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="32dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/img_splashlogo" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="35dp"
+        android:fontFamily="roboto_regular"
+        android:gravity="center"
+        android:text="@string/splash_slogan"
+        android:textColor="@color/grey_middledark"
+        android:textSize="@dimen/text_title" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/dev_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:textColor="@color/grey_middle" />
+
+    <!-- RETRY LAYOUT -->
+
+    <ViewStub
+        android:id="@+id/splash_fragment_retry_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/fragment_retry_stub_inflate"
+        android:layout="@layout/fragment_root_retry" />
+
+    <!-- MAINTENANCE PAGE -->
+
+    <ViewStub
+        android:id="@+id/splash_screen_maintenance_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/splash_screen_maintenance_stub_inflate"
+        android:layout="@layout/maintenance_page" />
+
+        <!-- UNEXPECTED ERROR LAYOUT -->
+
+    <ViewStub
+        android:id="@+id/fragment_unexpected_error_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/fragment_unexpected_error_stub_inflate"
+        android:layout="@layout/fragment_root_error" />
+</FrameLayout>

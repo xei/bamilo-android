@@ -1,0 +1,290 @@
+apply plugin: 'com.android.application'
+apply plugin: 'newrelic'
+apply plugin: 'pmd'
+apply plugin: 'findbugs'
+
+
+/**
+ * Check if BUILD_VERSION_NUMBER environment variable is defined and set it as version code.
+ * This var is defined when the apk is being created by jenkins.
+ *
+ * @return The app versionCode: 1 when app is created locally or current jenkins version number.
+ */
+def getAppVersionCode(int releaseVersionCode) {
+    // CASE DEV: is used a system var
+    if (System.getenv('BUILD_VERSION_NUMBER') != null) {
+        releaseVersionCode = Integer.valueOf(System.getenv('BUILD_VERSION_NUMBER'))
+    }
+    return releaseVersionCode
+}
+
+/**
+ * PROJECT
+ */
+android {
+
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.mobile.view"
+        minSdkVersion 9
+        targetSdkVersion 21
+        resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+    }
+
+    signingConfigs {
+
+        jumiaSigning {
+            storeFile file("keystores/jumia.keystore")
+            storePassword "jumia123"
+            keyAlias "jumia"
+            keyPassword "jumia123"
+        }
+
+        jumiaBlackberrySigning {
+            storeFile file("keystores/jumia_blackberry.keystore")
+            storePassword "jumiablackberry"
+            keyAlias "jumia_blackberry"
+            keyPassword "jumiablackberry"
+        }
+
+        jumiaMtnngSigning {
+            storeFile file("keystores/jumia_mtnng.keystore")
+            storePassword "jumiamtnng"
+            keyAlias "jumia_mtnng"
+            keyPassword "jumiamtnng"
+        }
+
+        jumiaNokiaxSigning {
+            storeFile file("keystores/jumia_nokiax.keystore")
+            storePassword "jumianokiax"
+            keyAlias "jumia_nokiax"
+            keyPassword "jumianokiax"
+        }
+
+        darazSigning {
+            storeFile file("keystores/daraz_android.keystore")
+            storePassword "darazandroid"
+            keyAlias "daraz_android"
+            keyPassword "darazandroid"
+        }
+
+        shopSigning {
+            storeFile file("keystores/shop_android.keystore")
+            storePassword "shopandroid"
+            keyAlias "shop_android"
+            keyPassword "shopandroid"
+        }
+
+        bamiloSigning {
+            storeFile file("keystores/bamilo_android.keystore")
+            storePassword "bamiloandroid"
+            keyAlias "bamilo_android"
+            keyPassword "bamiloandroid"
+        }
+
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".dev"
+            manifestPlaceholders = [AdjustEnvironment: "sandbox"]
+            debuggable true
+        }
+        live {
+            applicationIdSuffix ".live"
+            manifestPlaceholders = [AdjustEnvironment: "sandbox"]
+            debuggable true
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-live.txt'
+        }
+        release {
+            manifestPlaceholders = [AdjustEnvironment: "production"]
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-market.txt'
+        }
+    }
+
+    productFlavors {
+
+        /**
+         * #################### JUMIA ####################
+         */
+        jumia {
+            applicationId "com.jumia.android"
+            versionName "2.4"
+            versionCode getAppVersionCode(48)
+            signingConfig signingConfigs.jumiaSigning
+            resConfigs "en", "fr", "pt"
+        }
+
+        jumiaPreInstall {
+            applicationId "com.jumia.android"
+            versionName "2.4"
+            versionCode 48
+            signingConfig signingConfigs.jumiaSigning
+            resConfigs "en", "fr", "pt"
+            android.sourceSets {
+                jumiaPreInstall.res.srcDirs = ['src/jumia/res', 'src/jumiaRelease/res', 'src/jumiaPreInstall/res']
+            }
+        }
+
+        jumiaSamsung {
+            applicationId "com.jumia.android"
+            versionName "2.4"
+            versionCode 48
+            signingConfig signingConfigs.jumiaSigning
+            resConfigs "en", "fr", "pt"
+            android.sourceSets {
+                jumiaSamsung.res.srcDirs = ['src/jumia/res', 'src/jumiaSamsung/res']
+            }
+        }
+
+        jumiaMTNng {
+            applicationId "com.jumia.mtnng"
+            versionName "2.4"
+            versionCode 48
+            signingConfig signingConfigs.jumiaMtnngSigning
+            resConfigs "en", "fr", "pt"
+            android.sourceSets {
+                jumiaMTNng.res.srcDirs = ['src/jumia/res', 'src/jumiaMTNng/res']
+            }
+        }
+
+        jumiaNokiaX {
+            applicationId "com.jumia.nokiax"
+            versionName "2.4"
+            versionCode 11
+            signingConfig signingConfigs.jumiaNokiaxSigning
+            resConfigs "en", "fr", "pt"
+            android.sourceSets {
+                jumiaNokiaX.res.srcDirs = ['src/jumia/res', 'src/jumiaNokiaX/res']
+            }
+        }
+
+        jumiaBlackberry {
+            applicationId "com.jumia.blackberry"
+            versionName "2.4"
+            versionCode 7
+            signingConfig signingConfigs.jumiaBlackberrySigning
+            resConfigs "en", "fr", "pt"
+            android.sourceSets {
+                jumiaBlackberry.res.srcDirs = ['src/jumia/res', 'src/jumiaBlackberry/res']
+            }
+        }
+
+        /**
+         * #################### SHOP ####################
+         */
+        shop {
+            applicationId "com.shop.android"
+            minSdkVersion 10
+            versionName "1.2"
+            versionCode getAppVersionCode(4)
+            signingConfig signingConfigs.shopSigning
+            resConfigs "en"
+        }
+
+        /**
+         * #################### DARAZ ####################
+         */
+        daraz {
+            applicationId "com.daraz.android"
+            versionName "1.2"
+            versionCode getAppVersionCode(4)
+            signingConfig signingConfigs.darazSigning
+            resConfigs "en"
+        }
+
+        /**
+         * #################### BAMILO ####################
+         */
+        bamilo {
+            applicationId "com.bamilo.android"
+            versionName "1.4"
+            versionCode getAppVersionCode(8)
+            signingConfig signingConfigs.bamiloSigning
+            resConfigs "en"
+        }
+
+    }
+
+    lintOptions {
+        disable 'NewApi', 'RtlSymmetry', 'IconLocation', 'IconDipSize', 'IconXmlAndPng', 'RtlHardcoded'
+        abortOnError false
+    }
+
+}
+
+dependencies {
+    /** LOCAL LIBS **/
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':libraries:com.mobile.framework')
+    compile 'com.google.android.support:wearable:1.1.0'
+    compile 'com.google.android.gms:play-services-wearable:6.5.87'
+    /** Android wear releases **/
+    //wearApp project(':JumiaWear')
+    jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaSamsungWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
+    bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
+    shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
+    darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
+}
+
+/**
+ * All flavours and build types
+ */
+android.applicationVariants.all { variant ->
+    println "****************************"
+    println "variant: ${variant.name}"
+    println "flavor: ${variant.flavorName}"
+    println "productFlavors: ${variant.productFlavors[0].name}"
+    println "buildType: ${variant.buildType.name}"
+    println "applicationId: ${variant.applicationId}"
+    println "versionName: ${variant.versionName}"
+    println "versionCode: ${variant.versionCode}"
+    println "****************************"
+}
+
+/**
+ *  PMD static analysis
+ */
+task pmd(type: Pmd) {
+    ignoreFailures = true
+    source 'src/main/java'
+    include '**/*.java'
+    exclude '**/gen/**'
+    //ruleSets = ["java-basic", "java-strings", "java-braces"]
+    ruleSetFiles = files("pmd-ruleset.xml")
+    ruleSets = []
+
+}
+
+/**
+ * Findbugs static analysis
+ */
+task findbugs(type: FindBugs) {
+    ignoreFailures = true
+    classes = fileTree('build/intermediates/classes/')
+    source = fileTree('src/main/java/')
+    classpath = files()
+    effort = 'max'
+//    shows all warnings: low, medium, high. By default is set to medium and high
+//    reportLevel = "low"
+    excludeFilter = file("findbugs-exclude.xml")
+    reports {
+        xml {
+            destination "build/reports/findbugs/findbugs.xml"
+        }
+    }
+}

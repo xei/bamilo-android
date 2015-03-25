@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- CATALOG WIZARD -->
+    <dimen name="product_tip_top_swipe">20dp</dimen>
+    <dimen name="product_tip_variations_top_margin">35dp</dimen>
+
+    <dimen name="default_circle_indicator_radius">2dp</dimen>
+</resources>
