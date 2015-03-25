@@ -186,6 +186,7 @@ android {
          */
         shop {
             applicationId "com.shop.android"
+            minSdkVersion 10
             versionName "1.2"
             versionCode getAppVersionCode(4)
             signingConfig signingConfigs.shopSigning
