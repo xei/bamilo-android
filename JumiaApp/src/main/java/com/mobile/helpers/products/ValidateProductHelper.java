@@ -71,6 +71,7 @@ public class ValidateProductHelper extends BaseHelper {
                    for (int i = 0; i < validProductsArray.length() ; i++) {
                        CompleteProduct product = new CompleteProduct();
                        status = product.initialize(validProductsArray.getJSONObject(i));
+                       
                        // Validate product initialization
 //                       if(!status){
 //                           return parseErrorBundle(bundle);
