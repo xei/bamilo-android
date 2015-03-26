@@ -477,4 +477,11 @@ public class RestConstants {
     public static final String JSON_OFFERS_MIN_PRICE_TAG = "min_price";
     public static final String JSON_OFFERS_MIN_PRICE_CONVERTED_TAG = "min_price_euroConverted";
 
+    /**
+     * VALIDATE
+     */
+
+    public static final String JSON_VALID_TAG = "valid";
+    public static final String JSON_INVALID_TAG = "invalid";
+
 }

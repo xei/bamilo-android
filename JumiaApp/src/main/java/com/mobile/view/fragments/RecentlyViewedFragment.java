@@ -3,6 +3,7 @@
  */
 package com.mobile.view.fragments;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetRecentlyViewedHelper;
+import com.mobile.helpers.products.ValidateProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -141,8 +143,6 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         else if (id == R.id.button_shop) onClickAddToCart(view);
         // Case clear all
         else if (id == R.id.recentlyviewed_button_grey) onClickClearAll();
-        // Case add all
-        else if (id == R.id.button_shop_all) onClickAddAllToCart();
         // Case simple
         else if (id == R.id.button_variant) onClickVariation(view);
         // Case size guide
@@ -346,8 +346,16 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
             Log.i(TAG, "ON RESPONSE COMPLETE: GET_RECENLTLY_VIEWED_LIST");
             mAddableToCartList = (ArrayList<AddableToCart>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
             Log.d(TAG, "NUMBER : " + mAddableToCartList.size());
+
+            if (mAddableToCartList != null && !mAddableToCartList.isEmpty()) {
+                triggerValidateRecentlyViewed(mAddableToCartList);
+                showContent();
+            } else {
+                Log.i(TAG, "ON SHOW IS EMPTY");
+                showEmpty();
+            }
             // Show content
-            showContent();
+
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             // Update counter
@@ -451,4 +459,18 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         mAddableToCartAdapter = new AddableToCartListAdapter(getBaseActivity(), mAddableToCartList, this);
         mAddableToCartGridView.setAdapter(mAddableToCartAdapter);
     }
+
+    private void triggerValidateRecentlyViewed(ArrayList<AddableToCart> addableToCartList){
+        ContentValues values = new ContentValues();
+
+        for (int i = 0; i < addableToCartList.size(); i++) {
+            values.put(ValidateProductHelper.VALIDATE_PRODUCTS_KEY+i+"]", addableToCartList.get(i).getSku());
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ValidateProductHelper.VALIDATE_PRODUCTS_CONTENT_VALUES, values);
+
+        triggerContentEvent(new ValidateProductHelper(), bundle, this);
+    }
+
 }
