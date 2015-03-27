@@ -836,7 +836,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @author sergiopereira
      */
     protected void triggerCreateAddress(ContentValues values, boolean isBilling) {
-        Log.i(TAG, "TRIGGER: CREATE ADDRESS");
         Bundle args = getArguments();
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetNewAddressHelper.FORM_CONTENT_VALUES, values);
