@@ -483,5 +483,6 @@ public class RestConstants {
 
     public static final String JSON_VALID_TAG = "valid";
     public static final String JSON_INVALID_TAG = "invalid";
-
+    public static final String JSON_VARIATION_NAME_TAG = "variation_name";
+    public static final String JSON_VARIATION_VALUE_TAG = "variation_value";
 }

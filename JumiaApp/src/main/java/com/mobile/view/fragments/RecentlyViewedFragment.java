@@ -99,11 +99,19 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         // Get add to cart button
         mAddAllToCartButton = (Button) view.findViewById(R.id.button_shop_all);
         mAddAllToCartButton.setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "ON RESUME");
         // Show Loading View
         showFragmentLoading();
         // Get RecentlyViewed
         Log.i(TAG, "LOAD LAST VIEWED ITEMS");
         new GetRecentlyViewedHelper(this);
+
     }
 
     /**
@@ -346,16 +354,12 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
             Log.i(TAG, "ON RESPONSE COMPLETE: GET_RECENLTLY_VIEWED_LIST");
             mAddableToCartList = (ArrayList<AddableToCart>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
             Log.d(TAG, "NUMBER : " + mAddableToCartList.size());
-
             if (mAddableToCartList != null && !mAddableToCartList.isEmpty()) {
                 triggerValidateRecentlyViewed(mAddableToCartList);
-                showContent();
             } else {
                 Log.i(TAG, "ON SHOW IS EMPTY");
                 showEmpty();
             }
-            // Show content
-
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             // Update counter
@@ -366,6 +370,19 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
             Log.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT: " + pos + " " + sku + " " + mAddedItemsCounter + " " + mNumberOfItemsForCart);
             // Validate current counter
             validateResponseCounter(true, pos, NO_ERROR);
+            break;
+        case VALIDATE_PRODUCTS:
+            mAddableToCartList = (ArrayList<AddableToCart>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
+
+            if(mAddableToCartList != null && mAddableToCartList.size() > 0){
+                showContent();
+            } else {
+                showEmpty();
+            }
+            //USING AN ASYNC TASK
+//            new updateRecentViewedDatabaseTask().execute(mAddableToCartList);
+            //USING AN THREAD
+            updateRecentViewedDatabaseThread(mAddableToCartList);
             break;
         default:
             Log.d(TAG, "ON RESPONSE COMPLETE: UNKNOWN TYPE");
@@ -397,8 +414,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
 
         // Validate type
         switch (eventType) {
-        case GET_RECENLTLY_VIEWED_LIST:
-            Log.d(TAG, "ON RESPONSE ERROR: GET_RECENTLY_VIEWED_LIST");
+            case GET_RECENLTLY_VIEWED_LIST:
+                Log.d(TAG, "ON RESPONSE ERROR: GET_RECENTLY_VIEWED_LIST");
             showFragmentContentContainer();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
@@ -417,9 +434,28 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
             int error = checkTypeError(bundle, pos);
             // Validate current counter
             validateResponseCounter(false, pos, error);
+            break;
+        case VALIDATE_PRODUCTS:
+            Log.d(TAG, "ON RESPONSE ERROR: VALIDATE_PRODUCTS");
+            showContent();
+            break;
         default:
             Log.d(TAG, "ON RESPONSE ERROR: UNKNOWN TYPE");
             break;
+        }
+    }
+
+
+    protected void onClickErrorButton(View view) {
+        super.onClickErrorButton(view);
+        try {
+            if(mAddableToCartList != null){
+                triggerValidateRecentlyViewed(mAddableToCartList);
+            } else {
+                showEmpty();
+            }
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }
     }
 
@@ -460,6 +496,10 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         mAddableToCartGridView.setAdapter(mAddableToCartAdapter);
     }
 
+    /**
+     * send a array of products sku's to be validated by the API
+     * @param addableToCartList
+     */
     private void triggerValidateRecentlyViewed(ArrayList<AddableToCart> addableToCartList){
         ContentValues values = new ContentValues();
 
@@ -473,4 +513,56 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         triggerContentEvent(new ValidateProductHelper(), bundle, this);
     }
 
+    /**
+     * update recentely viewed products on database
+     * @param validProducts
+     * @return
+     */
+    private boolean updateRecentlyViewedDatabase(ArrayList<AddableToCart> validProducts){
+
+        if(validProducts == null || validProducts.size() == 0){
+            LastViewedTableHelper.deleteAllLastViewed();
+            return false;
+        } else {
+            LastViewedTableHelper.updateLastViewed(validProducts);
+            return true;
+        }
+    }
+
+
+
+    /**
+     * using a new Thread to update the database data in a background thread, not blocking the UI thread
+     */
+    private void updateRecentViewedDatabaseThread(final ArrayList<AddableToCart> validProducts){
+
+        new Thread(new Runnable() {
+            public void run() {
+                updateRecentlyViewedDatabase(validProducts);
+            }
+        }).start();
+
+    }
+
+//    /**
+//     * using an to update the database data in a background thread, not blocking the UI thread
+//     */
+//    private class updateRecentViewedDatabaseTask extends AsyncTask<ArrayList<AddableToCart>,Void, Boolean> {
+//        protected Boolean doInBackground(ArrayList<AddableToCart>... products) {
+//            boolean success = false;
+//
+//            ArrayList<AddableToCart> validProducts = products[0];
+//
+//            success = updateRecentlyViewedDatabase(validProducts);
+//
+//            return success;
+//        }
+//
+//        protected void onProgressUpdate(Void... progress) {
+//        }
+//
+//        protected void onPostExecute(Boolean result) {
+//            Log.d("ASYNC TASK", "result:"+result);
+//        }
+//    }
 }

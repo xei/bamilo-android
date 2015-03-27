@@ -7,7 +7,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.objects.CompleteProduct;
+import com.mobile.framework.objects.LastViewedAddableToCart;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -38,7 +38,7 @@ public class ValidateProductHelper extends BaseHelper {
 
     public static final String VALIDATE_PRODUCTS_CONTENT_VALUES = "contentValues";
 
-    public static final String VALIDATE_PRODUCTS_KEY = "products[]";
+    public static final String VALIDATE_PRODUCTS_KEY = "products[";
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
@@ -61,25 +61,20 @@ public class ValidateProductHelper extends BaseHelper {
         Log.d(TAG, "parseResponseBundle GetValidateProductsHelper");
 
        try {
-           boolean status = false;
-           Log.d(TAG, ":" + jsonObject.toString(4));
-
            JSONArray validProductsArray = jsonObject.optJSONArray(RestConstants.JSON_VALID_TAG);
            if(validProductsArray != null){
-               ArrayList<CompleteProduct> validProducts = new ArrayList<>();
+               ArrayList<LastViewedAddableToCart> validProducts = new ArrayList<>();
                if(validProductsArray.length() > 0){
                    for (int i = 0; i < validProductsArray.length() ; i++) {
-                       CompleteProduct product = new CompleteProduct();
-                       status = product.initialize(validProductsArray.getJSONObject(i));
-                       
-                       // Validate product initialization
-//                       if(!status){
-//                           return parseErrorBundle(bundle);
-//                       }
-                       validProducts.add(product);
+                       LastViewedAddableToCart lastViewedAddableToCart = new LastViewedAddableToCart();
+
+                       lastViewedAddableToCart.initialize(validProductsArray.getJSONObject(i));
+
+                       lastViewedAddableToCart.setComplete(true);
+                       validProducts.add(lastViewedAddableToCart);
                    }
                }
-               bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, validProducts);
+               bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY, validProducts);
                bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.VALIDATE_PRODUCTS);
            }
 
