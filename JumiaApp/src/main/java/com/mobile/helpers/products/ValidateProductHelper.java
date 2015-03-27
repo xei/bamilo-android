@@ -32,7 +32,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class ValidateProductHelper extends BaseHelper {
     
-    private static String TAG = ValidateProductHelper.class.getSimpleName();
+    private static final String TAG = ValidateProductHelper.class.getSimpleName();
     
     private static final EventType EVENT_TYPE = EventType.VALIDATE_PRODUCTS;
 
@@ -42,10 +42,9 @@ public class ValidateProductHelper extends BaseHelper {
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
-
+        Log.i(TAG, "ON GENERATE BUNDLE");
         ContentValues values = new ContentValues();
         values = args.getParcelable(VALIDATE_PRODUCTS_CONTENT_VALUES);
-
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
@@ -58,36 +57,32 @@ public class ValidateProductHelper extends BaseHelper {
     
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        Log.d(TAG, "parseResponseBundle GetValidateProductsHelper");
-
-       try {
-           JSONArray validProductsArray = jsonObject.optJSONArray(RestConstants.JSON_VALID_TAG);
-           if(validProductsArray != null){
-               ArrayList<LastViewedAddableToCart> validProducts = new ArrayList<>();
-               if(validProductsArray.length() > 0){
-                   for (int i = 0; i < validProductsArray.length() ; i++) {
+        Log.i(TAG, "ON PARSE RESPONSE");
+        try {
+            JSONArray validProductsArray = jsonObject.optJSONArray(RestConstants.JSON_VALID_TAG);
+            if(validProductsArray != null){
+                ArrayList<LastViewedAddableToCart> validProducts = new ArrayList<>();
+                if(validProductsArray.length() > 0){
+                    for (int i = 0; i < validProductsArray.length() ; i++) {
                        LastViewedAddableToCart lastViewedAddableToCart = new LastViewedAddableToCart();
-
                        lastViewedAddableToCart.initialize(validProductsArray.getJSONObject(i));
-
                        lastViewedAddableToCart.setComplete(true);
                        validProducts.add(lastViewedAddableToCart);
-                   }
-               }
-               bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY, validProducts);
-               bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.VALIDATE_PRODUCTS);
-           }
-
-       }catch (JSONException e){
+                    }
+                }
+                bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY, validProducts);
+                bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.VALIDATE_PRODUCTS);
+            }
+        } catch (JSONException e){
            e.printStackTrace();
-       }
+        }
 
         return bundle;
     }
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        Log.d(TAG, "parseErrorBundle GetValidateProductsHelper");
+        Log.i(TAG, "ON PARSE ERROR RESPONSE");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.VALIDATE_PRODUCTS);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
@@ -95,6 +90,7 @@ public class ValidateProductHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
+        Log.i(TAG, "ON ERROR RESPONSE");
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.VALIDATE_PRODUCTS);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
