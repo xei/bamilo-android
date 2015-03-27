@@ -19,6 +19,7 @@ import com.mobile.framework.database.LastViewedTableHelper;
 import com.mobile.framework.objects.AddableToCart;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.cart.GetShoppingCartAddItemHelper;
@@ -29,6 +30,8 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -354,7 +357,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
             Log.i(TAG, "ON RESPONSE COMPLETE: GET_RECENLTLY_VIEWED_LIST");
             mAddableToCartList = (ArrayList<AddableToCart>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
             Log.d(TAG, "NUMBER : " + mAddableToCartList.size());
-            if (mAddableToCartList != null && !mAddableToCartList.isEmpty()) {
+            if (!CollectionUtils.isEmpty(mAddableToCartList)) {
                 triggerValidateRecentlyViewed(mAddableToCartList);
             } else {
                 Log.i(TAG, "ON SHOW IS EMPTY");
@@ -374,7 +377,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         case VALIDATE_PRODUCTS:
             mAddableToCartList = (ArrayList<AddableToCart>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_KEY);
 
-            if(mAddableToCartList != null && mAddableToCartList.size() > 0){
+            if(!CollectionUtils.isEmpty(mAddableToCartList)){
                 showContent();
             } else {
                 showEmpty();
@@ -414,8 +417,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
 
         // Validate type
         switch (eventType) {
-            case GET_RECENLTLY_VIEWED_LIST:
-                Log.d(TAG, "ON RESPONSE ERROR: GET_RECENTLY_VIEWED_LIST");
+        case GET_RECENLTLY_VIEWED_LIST:
+            Log.d(TAG, "ON RESPONSE ERROR: GET_RECENTLY_VIEWED_LIST");
             showFragmentContentContainer();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
@@ -445,9 +448,8 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         }
     }
 
-
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickMaintenanceRetryButton() {
+        super.onClickMaintenanceRetryButton();
         try {
             if(mAddableToCartList != null){
                 triggerValidateRecentlyViewed(mAddableToCartList);
@@ -458,6 +460,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
             Log.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }
     }
+
 
     /**
      * Validate the item was added to cart
@@ -508,6 +511,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         }
 
         Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         bundle.putParcelable(ValidateProductHelper.VALIDATE_PRODUCTS_CONTENT_VALUES, values);
 
         triggerContentEvent(new ValidateProductHelper(), bundle, this);
