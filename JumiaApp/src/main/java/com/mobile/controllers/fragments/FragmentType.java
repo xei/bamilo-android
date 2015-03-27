@@ -62,4 +62,19 @@ public enum FragmentType {
     PRODUCT_OFFERS,
     INNER_SHOP,
     WRITE_REVIEW_SELLER;
+
+    private int id;
+
+    @Override
+    public String toString() {
+        return name().toUpperCase() + ((id != 0) ? "_"+getId() : "");
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

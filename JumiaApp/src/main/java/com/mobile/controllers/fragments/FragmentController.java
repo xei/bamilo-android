@@ -252,11 +252,11 @@ public class FragmentController {
      * @param activity
      * @param container
      * @param fragment
-     * @param tag
+     * @param fragmentType
      * @param addToBackStack
      */
-    public void startTransition(BaseActivity activity, int container, Fragment fragment, String tag, Boolean addToBackStack){
-        startTransition(activity, container, fragment, tag, addToBackStack, ANIMATION_IN);
+    public void startTransition(BaseActivity activity, int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack){
+        startTransition(activity, container, fragment, fragmentType, addToBackStack, ANIMATION_IN);
     }
     
     /**
@@ -313,7 +313,7 @@ public class FragmentController {
             Log.i(TAG, "ON POP BACK STACK: TAG " + lastTag);
             // Pop stack until fragment tag
             activity.getSupportFragmentManager().popBackStackImmediate(lastTag, POP_BACK_STACK_NO_INCLUSIVE);
-        } 
+        }
         // Case visible fragment
         else Log.w(TAG, "WARNING ON POP BACK STACK: TAG IS EMPTY " + getBackStackSize());
         // Find fragment on Fragment Manager
@@ -345,7 +345,6 @@ public class FragmentController {
      * Pop all entries until tag, inclusive or not the tag from back stack
      * @param activity
      * @param tag
-     * @param inclusive
      */
     public void popAllEntriesUntil(BaseActivity activity, String tag) {
         Log.d(TAG, "POP ALL ENTRIES UNTIL: " + tag + " " + getBackStackSize());
@@ -380,8 +379,8 @@ public class FragmentController {
      * @param addToBackStack
      * @author sergiopereira
      */
-    private void startTransition(BaseActivity activity, int container, Fragment fragment, String tag, Boolean addToBackStack, Boolean animation) {
-        Log.d(TAG, "START TRANSITION: " + tag + " " + addToBackStack);
+    private void startTransition(BaseActivity activity, int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack, Boolean animation) {
+        Log.d(TAG, "START TRANSITION: " + fragmentType.toString() + " " + addToBackStack);
         FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
         // Animations
         if (animation == ANIMATION_IN)
@@ -393,14 +392,14 @@ public class FragmentController {
          * Case isn't add to back stack
          * Then add with an UNKNOWN tag
          */
-        if(!addToBackStack) tag = FragmentType.UNKNOWN.toString();
+        if(!addToBackStack) fragmentType = FragmentType.UNKNOWN;
             
         // Replace
-        fragmentTransaction.replace(container, fragment, tag);
+        fragmentTransaction.replace(container, fragment, fragmentType.toString());
         // Add the fragment to back stack
-        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.addToBackStack(fragmentType.toString());
         // Add the fragment to our back stack
-        addEntryToBackStack(tag);
+        addEntryToBackStack(fragmentType.toString());
         
         // Commit
         //fragmentTransaction.commit();
@@ -470,7 +469,6 @@ public class FragmentController {
     
     /**
      *
-     * @param inclusive
      * @param activity
      * @param tag
      */

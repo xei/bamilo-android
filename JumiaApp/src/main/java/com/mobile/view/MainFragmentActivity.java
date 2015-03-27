@@ -304,10 +304,12 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = CategoriesCollectionFragment.getInstance(bundle);
                 break;
             case CATALOG:
+                popBackStackUntilHome();
                 fragment = CatalogFragment.getInstance(bundle);
                 break;
             case PRODUCT_DETAILS:
                 fragment = ProductDetailsFragment.getInstance(bundle);
+                type.setId(fragment.hashCode());
                 break;
             case PRODUCT_DESCRIPTION:
                 fragment = ProductDetailsDescriptionFragment.getInstance(bundle);
@@ -391,12 +393,14 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = MyAccountEmailNotificationFragment.newInstance();
                 break;
             case FAVORITE_LIST:
+                popBackStackUntilHome();
                 fragment = FavouritesFragment.getInstance();
                 break;
             case RECENT_SEARCHES_LIST:
                 fragment = RecentSearchFragment.newInstance();
                 break;
             case RECENTLY_VIEWED_LIST:
+                popBackStackUntilHome();
                 fragment = RecentlyViewedFragment.getInstance();
                 break;
             case PRODUCT_SIZE_GUIDE:
@@ -429,7 +433,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         // Save the current state
         mCurrentFragmentType = type;
         // Transition
-        fragmentManagerTransition(R.id.rocket_app_content, fragment, type.toString(), addToBackStack);
+        fragmentManagerTransition(R.id.rocket_app_content, fragment, type, addToBackStack);
     }
 
     /*
@@ -494,11 +498,19 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      *
      * @param tag The fragment tag
      */
-    public void popBackStack(String tag) {
+    protected void popBackStack(String tag) {
         // Pop back stack until tag
         popBackStackUntilTag(tag);
         // Get the current fragment
         fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
+    }
+
+    public boolean popBackStackUntilHome(){
+        if (FragmentController.getInstance().hasEntry(FragmentType.HOME.toString())) {
+            popBackStackUntilTag(FragmentType.HOME.toString());
+            return true;
+        }
+        return false;
     }
 
     // ####################### MY ACCOUNT FRAGMENT #######################

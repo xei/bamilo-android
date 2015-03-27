@@ -359,7 +359,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         super.onResume();
         Log.d(TAG, "ON RESUME");
         // Validate the current product
-        mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+//        mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         if (mCompleteProduct == null) {
             init();
         } else {

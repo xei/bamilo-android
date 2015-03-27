@@ -1891,8 +1891,8 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param addToBackStack
      * @author sergiopereira
      */
-    public void fragmentManagerTransition(int container, Fragment fragment, String tag, Boolean addToBackStack) {
-        fragmentController.startTransition(this, container, fragment, tag, addToBackStack);
+    public void fragmentManagerTransition(int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack) {
+        fragmentController.startTransition(this, container, fragment, fragmentType, addToBackStack);
     }
 
     /**
