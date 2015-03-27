@@ -16,6 +16,7 @@ import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
 import com.mobile.forms.Form;
@@ -839,6 +840,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetNewAddressHelper.FORM_CONTENT_VALUES, values);
         bundle.putBoolean(SetNewAddressHelper.IS_BILLING, isBilling);
+        // Validate origin
+        if (null != args && args.containsKey(ConstantsIntentExtra.IS_SIGN_UP)) {
+            bundle.putBoolean(SetNewAddressHelper.IS_FROM_SIGNUP, args.getBoolean(ConstantsIntentExtra.IS_SIGN_UP, false));
+        }
+        // Trigger
         triggerContentEvent(new SetNewAddressHelper(), bundle, this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
@@ -850,8 +856,16 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @author sergiopereira
      */
     protected void triggerCreateAddressForm() {
-        Log.i(TAG, "TRIGGER: CREATE ADDRESS FORM");
-        triggerContentEvent(new GetFormAddAddressHelper(), null, this);
+        // Get Arguments
+        Bundle args = getArguments();
+        // Validate arguments
+        if (null != args && args.containsKey(ConstantsIntentExtra.IS_SIGN_UP)) {
+            Log.i(TAG, "TRIGGER: CREATE ADDRESS FORM FOR GUEST USER");
+            triggerContentEvent(new GetFormAddAddressHelper(), args, this);
+        } else {
+            Log.i(TAG, "TRIGGER: CREATE ADDRESS FORM");
+            triggerContentEvent(new GetFormAddAddressHelper(), null, this);
+        }
     }
 
     /**
@@ -1077,7 +1091,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     /**
      * Dialog used to show an error
      *
-     * @param errorMessage
+     * @param errors
      * @author sergiopereira
      */
     protected void showErrorDialog(String errorMessage ,String dialogTitle) {
@@ -1088,22 +1102,22 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 //            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
 //        }
 //        if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-            showFragmentContentContainer();
-            dialog = DialogGenericFragment.newInstance(true, false,
-                    dialogTitle,
-                    errorMessage,
-                    getString(R.string.ok_label),
-                    "",
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int id = v.getId();
-                            if (id == R.id.button1) {
-                                dismissDialogFragment();
-                            }
+        showFragmentContentContainer();
+        dialog = DialogGenericFragment.newInstance(true, false,
+                dialogTitle,
+                errorMessage,
+                getString(R.string.ok_label),
+                "",
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int id = v.getId();
+                        if (id == R.id.button1) {
+                            dismissDialogFragment();
                         }
-                    });
-            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+                    }
+                });
+        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
 //        } else {
 //            if (mMsgRequired != null) {
 //                mMsgRequired.setVisibility(View.VISIBLE);
