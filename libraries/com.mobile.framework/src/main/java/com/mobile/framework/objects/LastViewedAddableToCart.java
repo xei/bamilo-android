@@ -34,6 +34,7 @@ public class LastViewedAddableToCart extends AddableToCart implements IJSONSeria
 			sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
 			name = jsonObject.getString(RestConstants.JSON_PROD_NAME_TAG);
 			brand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
+			url = jsonObject.getString(RestConstants.JSON_URL_TAG);
 
 			String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
 			if (!CurrencyFormatter.isNumber(priceJSON)) {
