@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.mobile.view"
     android:installLocation="auto">
 
@@ -10,7 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
@@ -66,7 +67,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Jumia"
-        android:supportsRtl="@bool/rtl_enabled">
+        android:supportsRtl="@bool/rtl_enabled"
+        tools:ignore="UnusedAttribute">
         <activity
             android:name="com.mobile.view.SplashScreenActivity"
             android:noHistory="true"
@@ -157,6 +159,14 @@
             <meta-data
                 android:name="com.ad4screen.senderid"
                 android:value="@string/ad4push_sender_id" />
+
+            <!-- http://wiki.accengage.com/android/doku.php?id=plugins&s[]=useful&s[]=commands -->
+            <meta-data
+                android:name="com.ad4screen.location.priority"
+                android:value="high" />
+            <meta-data
+                android:name="com.ad4screen.advertiser_id"
+                android:value="true" />
             <meta-data
                 android:name="com.ad4screen.logging"
                 android:value="false" />
@@ -177,6 +187,11 @@
             -->
 
         </service>
+
+        <!-- Geofencing Integration -->
+        <service
+            android:name="com.ad4screen.sdk.A4SGeofencingService"
+            android:exported="false" />
 
         <!-- ############# AD4Push: Push Notifications ############# -->
 

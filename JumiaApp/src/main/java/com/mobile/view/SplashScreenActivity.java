@@ -117,6 +117,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         setOrientationForHandsetDevices();
         // Set view
         setContentView(R.layout.splash_screen);
+        // Get map
+        mJumiaMapImage = findViewById(R.id.jumiaMap);
         // Get fall back layout
         mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
         // Get retry layout
@@ -146,21 +148,38 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /*
      * (non-Javadoc)
-     * 
+     *
+     * @see android.support.v4.app.FragmentActivity#onNewIntent(Intent)
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.i(TAG, "ON NEW INTENT: DEEP LINK INTENT: " + intent);
+        super.onNewIntent(intent);
+        this.setIntent(intent);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
      * @see android.support.v4.app.FragmentActivity#onResume()
      */
     @Override
     protected void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        // TODO
+        //Ad4PushTracker.get().startActivity(this);
         //
         shouldHandleEvent = true;
         // Show animated map
-        mJumiaMapImage = findViewById(R.id.jumiaMap);
         Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         animationFadeIn.setDuration(SPLASH_DURATION_IN);
+        mJumiaMapImage.clearAnimation();
         mJumiaMapImage.startAnimation(animationFadeIn);
     }
+
+
+    "contentValues"
 
     /*
      * (non-Javadoc)
@@ -171,6 +190,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
+        // TODO
+        //Ad4PushTracker.get().stopActivity(this);
         // Validate dialog
         if (dialog != null) {
             dialog.dismissAllowingStateLoss();
@@ -317,7 +338,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     public void selectActivity() {
         Log.i(TAG, "START ANIMATION ACTIVITY");
-        mJumiaMapImage = findViewById(R.id.jumiaMap);
+        //mJumiaMapImage = findViewById(R.id.jumiaMap);
         mJumiaMapImage.clearAnimation();
         Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         animationFadeOut.setDuration(SPLASH_DURATION_OUT);
@@ -434,6 +455,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     @Override
     public void onUserLeaveHint() {
+        super.onUserLeaveHint();
         Log.e(TAG,"onUserLeaveHint");
         shouldHandleEvent = false;
     }
@@ -576,7 +598,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessRequiresUserError() {
-        mJumiaMapImage = findViewById(R.id.jumiaMap);
+        //mJumiaMapImage = findViewById(R.id.jumiaMap);
         mJumiaMapImage.clearAnimation();
         Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         animationFadeOut.setDuration(750);

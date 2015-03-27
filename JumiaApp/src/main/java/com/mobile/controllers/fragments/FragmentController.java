@@ -279,10 +279,10 @@ public class FragmentController {
             if (getLastEntry().equals(FragmentType.HOME.toString())) 
                 activity.doubleBackPressToExit();
             else {
+                Log.i(TAG, "THE CURRENT BACK STACK ENTRIES: " + backStack);
                 popAllBackStack(activity, null);
                 activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
-            
             break;
         case 0:
             activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -388,7 +388,9 @@ public class FragmentController {
             fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
         if (animation == ANIMATION_OUT)
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-        
+
+
+
         /**
          * Case isn't add to back stack
          * Then add with an UNKNOWN tag

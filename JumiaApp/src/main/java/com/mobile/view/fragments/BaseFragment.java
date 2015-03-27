@@ -52,7 +52,6 @@ import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -76,7 +75,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public static final int RESTART_FRAGMENTS_DELAY = 500;
 
-    private static Field sChildFragmentManagerField;
+    // private static Field sChildFragmentManagerField;
 
     public static final Boolean IS_NESTED_FRAGMENT = true;
 
@@ -378,6 +377,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
     }
 
     /*
@@ -388,8 +388,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
-
         // Recycle bitmaps
         if (getView() != null) {
             unbindDrawables(getView());
@@ -570,14 +568,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return mainActivity;
     }
 
-    // TODO : Validate if is necessary
 
+
+    // TODO : Validate if is necessary
     /**
      * FIXES 
      * FATAL EXCEPTION: main
      * java.lang.IllegalStateException: No activity
      * see (http://stackoverflow.com/questions/14929907/causing-a-java-illegalstateexception-error-no-activity-only-when-navigating-to)
-     */
     static {
         Field f = null;
         try {
@@ -588,11 +586,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         sChildFragmentManagerField = f;
     }
+     */
 
     @Override
     public void onDetach() {
         super.onDetach();
 
+        /**
         // TODO : Validate if is necessary
         if (sChildFragmentManagerField != null) {
             try {
@@ -601,6 +601,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 Log.e(TAG, "Error setting mChildFragmentManager field", e);
             }
         }
+         */
     }
 
     /**

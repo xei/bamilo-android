@@ -94,7 +94,7 @@ fi
 ##### CERTIFICATE #####
 #######################
 echo -n "3 - Copy Token and Certificate: "
-cp $STUDIO_BB_FLAVOUR_CERT_FOLDER/* "$STORE_CRT_FOLDER"
+test -d "$STORE_CRT_FOLDER" || mkdir -p "$STORE_CRT_FOLDER" && cp $STUDIO_BB_FLAVOUR_CERT_FOLDER/* "$STORE_CRT_FOLDER"
 echo "SUCCESS";
 
 #####################
