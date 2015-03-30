@@ -74,7 +74,6 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
                 R.layout.product_description_fragment,
                 NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
-//        this.mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
     }
 
     /*
@@ -146,7 +145,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-//        mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+
         /**
          * Validate product
          * If null is assumed that the system clean some data

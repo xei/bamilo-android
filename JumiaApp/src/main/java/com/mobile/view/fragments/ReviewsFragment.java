@@ -231,10 +231,9 @@ public class ReviewsFragment extends BaseFragment {
         
         reviewsContainer = (LinearLayout) view.findViewById(R.id.linear_reviews);
         marginLandscape = view.findViewById(R.id.margin_landscape);
-        if(reviews == null)
+        if(reviews == null) {
             reviews = new ArrayList<>();
-        
-//        selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+        }
 
     }
     
@@ -248,7 +247,7 @@ public class ReviewsFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-//        selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+
         inflater = LayoutInflater.from(getActivity());
         if (selectedProduct == null) {
             if(mProductUrl == null && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)){
@@ -604,7 +603,6 @@ public class ReviewsFragment extends BaseFragment {
               return;
           } else {
               selectedProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-              JumiaApplication.INSTANCE.setCurrentProduct(selectedProduct);
               setHeaderReviews();
               showFragmentContent();
               // Waiting for the fragment comunication
@@ -665,7 +663,7 @@ public class ReviewsFragment extends BaseFragment {
     
     private void displayReviews(ProductRatingPage productRatingPage, boolean isFromApi) {
         if(!isFromApi){
-            if(productRatingPage != null & reviews != null){
+            if(productRatingPage != null && reviews != null){
                 Log.d("POINT","DO NOTHING");    
             } else if(productRatingPage == null ){
                 reviews = new ArrayList<>();

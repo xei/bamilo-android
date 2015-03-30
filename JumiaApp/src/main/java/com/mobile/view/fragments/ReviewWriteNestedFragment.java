@@ -163,7 +163,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         }
 
         JumiaApplication.INSTANCE.setIsSellerReview(false);
-//        completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         isExecutingSendReview = false;
         if(savedInstanceState != null){
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
@@ -586,7 +585,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 return true;
             } else {
                 completeProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                JumiaApplication.INSTANCE.setCurrentProduct(completeProduct);
                 // triggerAutoLogin();
                 // triggerCustomer();
                 triggerRatingForm();

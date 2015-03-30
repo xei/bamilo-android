@@ -76,7 +76,6 @@ import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.utils.FragmentCommunicatorForProduct;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TipsOnPageChangeListener;
@@ -302,8 +301,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public static ProductDetailsFragment getInstance(Bundle bundle) {
         ProductDetailsFragment fragment = new ProductDetailsFragment();
         fragment.setArguments(bundle);
-        // Clean current product
-        JumiaApplication.INSTANCE.setCurrentProduct(null);
         return fragment;
     }
 
@@ -358,8 +355,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public void onResume() {
         super.onResume();
         Log.d(TAG, "ON RESUME");
-        // Validate the current product
-//        mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+
         if (mCompleteProduct == null) {
             init();
         } else {
@@ -425,7 +421,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         super.onDestroy();
         Log.d(TAG, "ON DESTROY");
         // Garbage
-        FragmentCommunicatorForProduct.getInstance().destroyInstance();
+//        FragmentCommunicatorForProduct.getInstance().destroyInstance();
     }
 
     /**
@@ -1216,7 +1212,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             locateSimplePosition(mDeepLinkSimpleSize, product);
         }
 
-        JumiaApplication.INSTANCE.setCurrentProduct(product);
         LastViewedTableHelper.insertLastViewedProduct(product);
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
@@ -2172,9 +2167,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         mBundleContainer.setVisibility(View.VISIBLE);
 
-        CompleteProduct curProduct = JumiaApplication.INSTANCE.getCurrentProduct();
-        curProduct.setProductBundle(bundle);
-        JumiaApplication.INSTANCE.setCurrentProduct(curProduct);
+        mCompleteProduct.setProductBundle(bundle);
 
         // calculate the bundle total without the plead product
         double total = 0.0;
