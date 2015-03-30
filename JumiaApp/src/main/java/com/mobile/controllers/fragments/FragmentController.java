@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.WorkerThread;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
@@ -17,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import de.akquinet.android.androlog.Log;
 
@@ -56,6 +58,10 @@ public class FragmentController {
     private static FragmentController fragmentController;
     
     private LinkedList<String> backStack = new LinkedList<>();
+
+    protected ConcurrentLinkedQueue<Runnable> runnableQueue;
+
+    protected WorkerThread auxThread;
     
     /**
      * ##################### CONSTRUCTOR #####################
@@ -191,19 +197,13 @@ public class FragmentController {
     /**
      * Method used to remove entries until a respective tag of fragment
      * @param tag
-     * @return
      */
-    public synchronized String removeEntriesUntilTag(final String tag) {
+    public synchronized void removeEntriesUntilTag(final String tag) {
         Log.i(TAG, "POP ENTRIES UNTIL: " + tag);
-        /**
-         * The idea is use a thread to run in parallel with the FragmentManager not blocking the main thread
-         * FragmentManager has a delay to replace fragments, so i created this method.
-         * @author sergiopereira
-         * TODO - Threads have costs, find a workaround
-         */
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
+
+        executeRunnable(new Runnable() {
+            @Override
+            public void run() {
                 // Create reverse iterator
                 ListIterator<String> iterator = backStack.listIterator(backStack.size());
                 while (iterator.hasPrevious()) {
@@ -211,15 +211,15 @@ public class FragmentController {
                     Log.i(TAG, "POP TAG: " + currentTag + " UNTIL TAG: " + tag + " STACK SIZE: " + backStack.size());
                     // Case HOME
                     if (currentTag.equals(FragmentType.HOME.toString())) break;
-                    // Case TAG
+                        // Case TAG
                     else if (currentTag.equals(tag)) break;
-                    // Case Remove
+                        // Case Remove
                     else iterator.remove();
                 }
                 Log.i(TAG, "AFTER POP UNTIL TAG: " + tag + " STACK SIZE: " + backStack.size());
-            //}
-//        }).start();
-        return null;
+            }
+        });
+
     }
 
     /**
@@ -238,15 +238,37 @@ public class FragmentController {
          * @author sergiopereira
          * TODO - Threads have costs, find a workaround
          */
-        new Thread(new Runnable() {
+
+        executeRunnable(new Runnable() {
             @Override
             public void run() {
                 removeAllEntriesWithTag(tag);
                 addToBackStack(tag);
             }
-        }).start();
+        });
+
     }
-    
+
+    protected void executeRunnable(Runnable runnable) {
+        ConcurrentLinkedQueue<Runnable> runnables = getRunnableQueue();
+        if(auxThread == null){
+            auxThread = new WorkerThread(runnables);
+            auxThread.start();
+        }
+
+        runnables.add(runnable);
+        try {
+            Log.d(TAG, "NOTIFYING AUX THREAD");
+
+            synchronized (auxThread) {
+                auxThread.notify();
+            }
+        }catch(IllegalMonitorStateException ex){
+            Log.d(TAG, "IllegalMonitorStateException on main thread");
+        }
+
+    }
+
     /**
      * Start transition to the new fragment with animation
      * @param activity
@@ -543,5 +565,12 @@ public class FragmentController {
                 restoreBackstack(activity, orderedFragments);          
         }
     }
-    
+
+    protected ConcurrentLinkedQueue<Runnable> getRunnableQueue(){
+        if(this.runnableQueue == null){
+            runnableQueue = new ConcurrentLinkedQueue<Runnable>();
+        }
+        return runnableQueue;
+    }
+
 }
