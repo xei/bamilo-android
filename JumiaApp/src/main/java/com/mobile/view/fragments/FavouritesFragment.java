@@ -326,7 +326,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author sergiopereira
      */
     protected void onItemClick(View view) {
-        Log.i(TAG, "ON ITEM CLICK FAVOURITE");
+        Log.i(TAG, "ON ITEM CLICK");
         try {
             int position = Integer.parseInt(view.getTag().toString());
             AddableToCart addableToCart = mAddableToCartList.get(position);

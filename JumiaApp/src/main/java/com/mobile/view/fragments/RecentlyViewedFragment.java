@@ -5,15 +5,11 @@ package com.mobile.view.fragments;
 
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.GridView;
 
 import com.mobile.components.customfontviews.Button;
-import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.AddableToCartListAdapter;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.LastViewedTableHelper;
 import com.mobile.framework.objects.AddableToCart;
 import com.mobile.framework.tracking.TrackingPage;
@@ -157,68 +153,6 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.FavouritesFragment#onClickSizeGuide(android.view.View)
-     */
-    @Override
-    protected void onClickSizeGuide(View view) {
-        try {
-            // Get size guide url
-            String url = (String) view.getTag();
-            // Validate url
-            if (!TextUtils.isEmpty(url)) {
-                Bundle bundle = new Bundle();
-                bundle.putString(ConstantsIntentExtra.SIZE_GUIDE_URL, url);
-                getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_SIZE_GUIDE, bundle, FragmentController.ADD_TO_BACK_STACK);
-            } else Log.w(TAG, "WARNING: SIZE GUIDE URL IS EMPTY");
-        } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON CLICK SIZE GUIDE");
-        }
-    }
-
-    /**
-     * Process the click on variation button
-     *
-     * @param view
-     * @author sergiopereira
-     */
-    @Override
-    protected void onClickVariation(View view) {
-        try {
-            // Hide warning
-            getBaseActivity().showWarningVariation(false);
-            // Show dialog
-            int position = Integer.parseInt(view.getTag().toString());
-            AddableToCart addableToCart = mAddableToCartList.get(position);
-            addableToCart.setFavoriteSelected(position);
-            showVariantsDialog(addableToCart);
-        } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON CLICK VARIATION");
-        }
-    }
-
-    /**
-     * Process the click on item
-     *
-     * @param view
-     * @author sergiopereira
-     */
-    @Override
-    protected void onItemClick(View view) {
-        Log.i(TAG, "ON ITEM CLICK RECENTT");
-        try {
-            int position = Integer.parseInt(view.getTag().toString());
-            AddableToCart addableToCart = mAddableToCartList.get(position);
-            Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, addableToCart.getUrl());
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING: NPE ON ITEM CLICK");
-        }
-    }
-
     /**
      * Process the click on clear all button
      *
@@ -236,27 +170,6 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         }
 
         updateLayoutAfterAction();
-    }
-
-    /**
-     * Process the click on add button
-     *
-     * @param view
-     * @author sergiopereira
-     */
-    @Override
-    protected void onClickAddToCart(View view) {
-        Log.i(TAG, "ON CLICK ADD ALL TO CART");
-        int position = Integer.parseInt(view.getTag().toString());
-        AddableToCart addableToCart = mAddableToCartList.get(position);
-        // Validate variation
-        if (hasSelectedVariation(addableToCart)) {
-            Log.i(TAG, "SELECTED VARIATION");
-            onAddItemToCart(addableToCart, position);
-        } else {
-            Log.i(TAG, "NOT SELECTED VARIATION");
-            mAddableToCartAdapter.notifyDataSetChanged();
-        }
     }
 
     /**
