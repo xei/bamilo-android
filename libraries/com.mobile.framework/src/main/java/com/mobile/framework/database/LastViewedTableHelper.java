@@ -13,6 +13,7 @@ import com.mobile.framework.objects.LastViewedAddableToCart;
 import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.objects.Variation;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +27,7 @@ import de.akquinet.android.androlog.Log;
  * This class is a helper to manage the Last Viewed products on database.
  * 
  * @author Manuel Silva
- * @modified Andre Lopes
+ * @modified Paulo Carvalho
  *
  */
 public class LastViewedTableHelper extends BaseTable {
@@ -388,7 +389,7 @@ public class LastViewedTableHelper extends BaseTable {
 	 * @param validProducts
 	 * @return
 	 */
-	public static boolean updateLastViewed(ArrayList<AddableToCart> validProducts){
+	public static boolean updateLastViewed(ArrayList<LastViewedAddableToCart> validProducts){
 		boolean success = false;
 		deleteAllLastViewed();
 
@@ -442,7 +443,7 @@ public class LastViewedTableHelper extends BaseTable {
 
 			String simplesJSON = "";
 			ArrayList<ProductSimple> simples = product.getSimples();
-			if (simples != null && !simples.isEmpty()) {
+			if (!CollectionUtils.isEmpty(simples)) {
 				JSONArray simplesJSONArray = new JSONArray();
 				for (ProductSimple productSimple : simples) {
 					simplesJSONArray.put(productSimple.toJSON());
@@ -453,7 +454,7 @@ public class LastViewedTableHelper extends BaseTable {
 
 			String variationsJSON = "";
 			ArrayList<Variation> variations = product.getVariations();
-			if (variations != null && !variations.isEmpty()) {
+			if (!CollectionUtils.isEmpty(variations)) {
 				JSONArray variationsJSONArray = new JSONArray();
 				for (Variation variation : variations) {
 					variationsJSONArray.put(variation.toJSON());
@@ -464,7 +465,7 @@ public class LastViewedTableHelper extends BaseTable {
 
 			String knownVariationsString = "";
 			ArrayList<String> knownVariations = product.getKnownVariations();
-			if (knownVariations != null && !knownVariations.isEmpty()) {
+			if (!CollectionUtils.isEmpty(knownVariations)) {
 				StringBuilder knownVariationsStringBuilder = new StringBuilder();
 				for (String knownVariation : knownVariations) {
 					knownVariationsStringBuilder.append(knownVariation);

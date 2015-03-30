@@ -249,6 +249,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      */
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         // Get view id
         int id = view.getId();
         // Case item
@@ -325,7 +326,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author sergiopereira
      */
     protected void onItemClick(View view) {
-        Log.i(TAG, "ON ITEM CLICK");
+        Log.i(TAG, "ON ITEM CLICK FAVOURITE");
         try {
             int position = Integer.parseInt(view.getTag().toString());
             AddableToCart addableToCart = mAddableToCartList.get(position);

@@ -29,7 +29,6 @@ public class Constants {
     public static final String BUNDLE_WRONG_PARAMETER_MESSAGE_KEY = "parametererrormessage";
     public static final String BUNDLE_ERROR_OCURRED_KEY = "errorocurred";
     public static final String BUNDLE_NEXT_STEP_KEY = "next_step";
-
     public static final String BUNDLE_METADATA_REQUIRED_KEY = "no_metada";
     public static final String BUNDLE_GENERAL_RULES_FALSE_KEY = "general_rules_false";
     public static final String BUNDLE_GENERAL_RULES_GET_COUNTRIES_KEY = "general_rules_get_countries_key";
@@ -69,4 +68,9 @@ public class Constants {
     public static final String INFO_SIM_OPERATOR = "operator";
     public static final String INFO_BUNDLE_VERSION = "bundleVersion";
 
+    /**
+     * generic
+     */
+
+    public static final String CONTENT_VALUES = "contentValues";
 }

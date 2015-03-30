@@ -21,7 +21,6 @@ import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -35,7 +34,7 @@ import de.akquinet.android.androlog.Log;
  * @author Andre Lopes
  * 
  */
-public class AddableToCart extends BaseProduct implements IJSONSerializable  {
+public class AddableToCart extends BaseProduct {
 
 	public final static int NO_SIMPLE_SELECTED = -1;
 
@@ -334,20 +333,6 @@ public class AddableToCart extends BaseProduct implements IJSONSerializable  {
     public boolean hasSizeGuide() {
         return TextUtils.isEmpty(mSizeGuideUrl) ? false : true;
     }
-
-
-
-
-	@Override
-	public boolean initialize(JSONObject jsonObject) {
-		return false;
-	}
-
-	@Override
-	public JSONObject toJSON() {
-		return null;
-	}
-
 
 	/*
 	 * ############ PARCELABLE ############
