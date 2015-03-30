@@ -539,13 +539,10 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                             dialog_review_submitted.dismiss();
                             isExecutingSendReview = false;
                             if (getBaseActivity() != null) {
-                                if(nestedFragment){
+                                if(nestedFragment) {
                                     cleanForm();
-                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PRODUCT_DETAILS.toString());
-                                } else {
-                                    // Remove entries until specific tag
-                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PRODUCT_DETAILS.toString());
                                 }
+                                getBaseActivity().popBackStackUntilTag(FragmentType.PRODUCT_DETAILS.toString());
                             }
                         }
                     });

@@ -304,7 +304,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = CategoriesCollectionFragment.getInstance(bundle);
                 break;
             case CATALOG:
-                popBackStackUntilHome();
+                popBackStackUntilTag(FragmentType.HOME.toString());
                 fragment = CatalogFragment.getInstance(bundle);
                 break;
             case PRODUCT_DETAILS:
@@ -393,14 +393,14 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = MyAccountEmailNotificationFragment.newInstance();
                 break;
             case FAVORITE_LIST:
-                popBackStackUntilHome();
+                popBackStackUntilTag(FragmentType.HOME.toString());
                 fragment = FavouritesFragment.getInstance();
                 break;
             case RECENT_SEARCHES_LIST:
                 fragment = RecentSearchFragment.newInstance();
                 break;
             case RECENTLY_VIEWED_LIST:
-                popBackStackUntilHome();
+                popBackStackUntilTag(FragmentType.HOME.toString());
                 fragment = RecentlyViewedFragment.getInstance();
                 break;
             case PRODUCT_SIZE_GUIDE:
@@ -503,14 +503,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         popBackStackUntilTag(tag);
         // Get the current fragment
         fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
-    }
-
-    public boolean popBackStackUntilHome(){
-        if (FragmentController.getInstance().hasEntry(FragmentType.HOME.toString())) {
-            popBackStackUntilTag(FragmentType.HOME.toString());
-            return true;
-        }
-        return false;
     }
 
     // ####################### MY ACCOUNT FRAGMENT #######################

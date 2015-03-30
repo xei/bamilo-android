@@ -1920,8 +1920,12 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param tag
      * @author sergiopereira
      */
-    public void popBackStackUntilTag(String tag) {
-        fragmentController.popAllEntriesUntil(this, tag);
+    public boolean popBackStackUntilTag(String tag) {
+        if (fragmentController.hasEntry(FragmentType.HOME.toString())) {
+            fragmentController.popAllEntriesUntil(this, tag);
+            return true;
+        }
+        return false;
     }
 
 
@@ -2279,19 +2283,18 @@ public abstract class BaseActivity extends ActionBarActivity {
         // CHECKOUT_BILLING
         if (id == R.id.checkout_header_step_2 && !view.isSelected()) {
             // Validate back stack
-            if (FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString())) {
-                FragmentController.getInstance().popAllEntriesUntil(this, FragmentType.MY_ADDRESSES.toString());
-            } else if (FragmentController.getInstance().hasEntry(FragmentType.CREATE_ADDRESS.toString())) {
+
+            if(!popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString()) &&
+                    fragmentController.hasEntry(FragmentType.CREATE_ADDRESS.toString())){
                 removeAllCheckoutEntries();
                 onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
+
         }
         // CHECKOUT_SHIPPING
         else if (id == R.id.checkout_header_step_3 && !view.isSelected()) {
             // Validate back stack
-            if (FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString())) {
-                FragmentController.getInstance().popAllEntriesUntil(this, FragmentType.SHIPPING_METHODS.toString());
-            }
+            popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString());
         }
         // CHECKOUT_PAYMENT IS THE LAST
     }

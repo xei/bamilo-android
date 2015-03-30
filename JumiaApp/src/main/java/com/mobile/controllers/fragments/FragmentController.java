@@ -59,8 +59,6 @@ public class FragmentController {
     
     private LinkedList<String> backStack = new LinkedList<>();
 
-    protected ConcurrentLinkedQueue<Runnable> runnableQueue;
-
     protected WorkerThread auxThread;
     
     /**
@@ -232,12 +230,6 @@ public class FragmentController {
      */
     public synchronized void addEntryToBackStack(final String tag) {
         Log.d(TAG, "ADD ENTRY TO BACK STACK");
-        /**
-         * The idea is use a thread to run in parallel with the FragmentManager not blocking the main thread
-         * FragmentManager has a delay to replace fragments, so i created this method.
-         * @author sergiopereira
-         * TODO - Threads have costs, find a workaround
-         */
 
         executeRunnable(new Runnable() {
             @Override
@@ -250,21 +242,21 @@ public class FragmentController {
     }
 
     protected void executeRunnable(Runnable runnable) {
-        ConcurrentLinkedQueue<Runnable> runnables = getRunnableQueue();
+
         if(auxThread == null){
-            auxThread = new WorkerThread(runnables);
+            auxThread = new WorkerThread();
             auxThread.start();
         }
 
+        ConcurrentLinkedQueue<Runnable> runnables = auxThread.getRunnableQueue();
+
         runnables.add(runnable);
         try {
-            Log.d(TAG, "NOTIFYING AUX THREAD");
-
             synchronized (auxThread) {
                 auxThread.notify();
             }
         }catch(IllegalMonitorStateException ex){
-            Log.d(TAG, "IllegalMonitorStateException on main thread");
+            Log.e(TAG, "IllegalMonitorStateException: notify()");
         }
 
     }
@@ -565,12 +557,4 @@ public class FragmentController {
                 restoreBackstack(activity, orderedFragments);          
         }
     }
-
-    protected ConcurrentLinkedQueue<Runnable> getRunnableQueue(){
-        if(this.runnableQueue == null){
-            runnableQueue = new ConcurrentLinkedQueue<Runnable>();
-        }
-        return runnableQueue;
-    }
-
 }

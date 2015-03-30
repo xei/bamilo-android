@@ -28,6 +28,10 @@ public class WorkerThread extends Thread{
         mRunnableQueue = (runnableQueue != null) ? runnableQueue : new ConcurrentLinkedQueue<Runnable>();
     }
 
+    public WorkerThread(){
+        this(null);
+    }
+
     @Override
     public void run() {
         while(mToRun){
@@ -37,9 +41,9 @@ public class WorkerThread extends Thread{
                         wait();
                     }
                 } catch (InterruptedException e) {
-                    Log.d(TAG, "InterruptedException on worker thread: wait()");
+                    Log.e(TAG, "InterruptedException on worker thread: wait()");
                 } catch(IllegalMonitorStateException ex){
-                    Log.d(TAG, "IllegalMonitorStateException on worker thread: wait()");
+                    Log.e(TAG, "IllegalMonitorStateException on worker thread: wait()");
                 }
 
             } else {
@@ -53,6 +57,10 @@ public class WorkerThread extends Thread{
 
     public void requestStop(){
         mToRun = false;
+    }
+
+    public ConcurrentLinkedQueue<Runnable> getRunnableQueue(){
+        return mRunnableQueue;
     }
 
 }

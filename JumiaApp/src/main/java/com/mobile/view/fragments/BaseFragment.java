@@ -1236,7 +1236,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     private void onClickMaintenanceChooseCountry() {
         // Show Change country
-        FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
+        getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
         getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
     

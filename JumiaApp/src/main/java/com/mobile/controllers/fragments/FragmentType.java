@@ -67,7 +67,7 @@ public enum FragmentType {
 
     @Override
     public String toString() {
-        return name().toUpperCase() + ((id != 0) ? "_"+getId() : "");
+        return name() + ((id != 0) ? "_"+getId() : "");
     }
 
     public int getId() {
