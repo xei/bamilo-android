@@ -148,7 +148,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
      */
     @Override
@@ -159,7 +159,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
@@ -247,7 +247,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onResume()
      */
     @Override
@@ -268,7 +268,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onPause()
      */
     @Override
@@ -281,7 +281,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStop()
      */
     @Override
@@ -326,7 +326,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
      */
     @Override
@@ -500,7 +500,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     /**
      * ############# FACEBOOK #############
      */
-    
+
     /*
      * (non-Javadoc)
      * @see com.facebook.Request.GraphUserCallback#onCompleted(com.facebook.model.GraphUser, com.facebook.Response)
@@ -514,7 +514,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     }
 
     /*
-     * ################ FACEBOOK ################ 
+     * ################ FACEBOOK ################
      */
     /*
      * (non-Javadoc)
@@ -566,7 +566,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     }
 
     /**
-     * ########## SET FORMS ########## 
+     * ########## SET FORMS ##########
      */
 
     /**
@@ -698,7 +698,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
 
     /**
-     * ########### TRIGGERS ###########  
+     * ########### TRIGGERS ###########
      */
 
     /**
@@ -840,9 +840,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         showFragmentLoading();
         triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
     }
-    
+
     /*
-     * ########## NEXT STEP VALIDATION ########## 
+     * ########## NEXT STEP VALIDATION ##########
      */
 
     /**
@@ -864,7 +864,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             super.removeNativeCheckoutFromBackStack();
             // Goto next step
             Bundle bundle = new Bundle();
-            // Validate if is guest user and sent the flag 
+            // Validate if is guest user and sent the flag
             if (JumiaApplication.CUSTOMER.isGuest()) {
                 bundle.putBoolean(ConstantsIntentExtra.IS_SIGN_UP, true);
             }
@@ -888,9 +888,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         // Next step
         gotoNextStep();
     }
-    
+
     /*
-     * ########## RESPONSE ########## 
+     * ########## RESPONSE ##########
      */
 
     /**
@@ -1099,7 +1099,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     }
 
     /*
-     * ########### RESPONSE LISTENER ###########  
+     * ########### RESPONSE LISTENER ###########
      */
     /*
      * (non-Javadoc)
@@ -1118,9 +1118,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     public void onRequestComplete(Bundle bundle) {
         onSuccessEvent(bundle);
     }
-    
+
     /*
-     * ########### TRACKING ###########  
+     * ########### TRACKING ###########
      */
 
     /**
@@ -1153,9 +1153,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             e.printStackTrace();
         }
     }
-    
+
     /*
-     * ########### DIALOGS ###########  
+     * ########### DIALOGS ###########
      */
 
     /**

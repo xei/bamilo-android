@@ -836,7 +836,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @author sergiopereira
      */
     protected void triggerCreateAddress(ContentValues values, boolean isBilling) {
-        Log.i(TAG, "TRIGGER: CREATE ADDRESS");
         Bundle args = getArguments();
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetNewAddressHelper.FORM_CONTENT_VALUES, values);
@@ -1103,22 +1102,22 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 //            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
 //        }
 //        if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-            showFragmentContentContainer();
-            dialog = DialogGenericFragment.newInstance(true, false,
-                    dialogTitle,
-                    errorMessage,
-                    getString(R.string.ok_label),
-                    "",
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int id = v.getId();
-                            if (id == R.id.button1) {
-                                dismissDialogFragment();
-                            }
+        showFragmentContentContainer();
+        dialog = DialogGenericFragment.newInstance(true, false,
+                dialogTitle,
+                errorMessage,
+                getString(R.string.ok_label),
+                "",
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int id = v.getId();
+                        if (id == R.id.button1) {
+                            dismissDialogFragment();
                         }
-                    });
-            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+                    }
+                });
+        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
 //        } else {
 //            if (mMsgRequired != null) {
 //                mMsgRequired.setVisibility(View.VISIBLE);

@@ -28,4 +28,5 @@ dependencies {
     compile project(':libraries:Volley')
     compile project(':libraries:Adjust')
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('libs/apptimize-android-2.6.5.jar')
 }

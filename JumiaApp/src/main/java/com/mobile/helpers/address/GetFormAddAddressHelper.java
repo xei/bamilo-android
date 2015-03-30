@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.mobile.helpers.address;
 
@@ -25,16 +25,16 @@ import java.util.ArrayList;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Helper used to get the form to create an address 
+ * Helper used to get the form to create an address
  * @author sergiopereira
  *
  */
 public class GetFormAddAddressHelper extends BaseHelper {
-    
+
     private static String TAG = GetFormAddAddressHelper.class.getSimpleName();
 
     private static final EventType EVENT_TYPE = EventType.GET_CREATE_ADDRESS_FORM_EVENT;
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
@@ -42,19 +42,19 @@ public class GetFormAddAddressHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.d(TAG, "REQUEST");
- 
+
         String url = EventType.GET_CREATE_ADDRESS_FORM_FALLBACK_EVENT.action;
         try {
             url = JumiaApplication.INSTANCE.getFormDataRegistry().get(EVENT_TYPE.action).getUrl();
         } catch (NullPointerException e) {
             Log.w(TAG, "FORM DATA IS NULL THEN GET CREATE ADDRESS FORM FALLBACK", e);
         }
-        
+
         // Validate if is guest user
         if (null != args && args.containsKey(ConstantsIntentExtra.IS_SIGN_UP)) {
-              url = EventType.GET_CREATE_ADDRESS_FORM_SIGNUP_EVENT.action;
+            url = EventType.GET_CREATE_ADDRESS_FORM_SIGNUP_EVENT.action;
         }
-        
+
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, url);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
@@ -72,7 +72,7 @@ public class GetFormAddAddressHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         //Log.d(TAG, "PARSE BUNDLE: " + jsonObject.toString());
         Log.i(TAG, "PARSE BUNDLE");
-        
+
         final ArrayList<Form> forms = new ArrayList<>();
         JSONArray dataObject;
         try {
@@ -82,9 +82,9 @@ public class GetFormAddAddressHelper extends BaseHelper {
                 Form form = new Form();
                 form.setEventType(EventType.GET_CREATE_ADDRESS_FORM_EVENT);
                 JSONObject formObject = dataObject.getJSONObject(i);
-                
+
                 if (!form.initialize(formObject)) Log.e(TAG, "Error initializing the form using the data");
-                
+
                 forms.add(form);
             }
             if (forms.size() > 0) {
@@ -98,7 +98,7 @@ public class GetFormAddAddressHelper extends BaseHelper {
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
@@ -122,7 +122,7 @@ public class GetFormAddAddressHelper extends BaseHelper {
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
-    
+
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
         return parseResponseErrorBundle(bundle);
