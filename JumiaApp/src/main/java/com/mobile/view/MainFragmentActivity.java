@@ -169,10 +169,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      * @return valid or invalid
      */
     private boolean isValidDeepLinkNotification(Intent intent) {
-        Log.d(TAG, "DEEP LINK: VALIDATE INTENT FROM NOTIFICATION");
+        Log.i(TAG, "DEEP LINK: VALIDATE INTENT FROM NOTIFICATION");
         // Validate intent
         if (intent.hasExtra(ConstantsIntentExtra.FRAGMENT_TYPE)) {
-            Log.d(TAG, "DEEP LINK: VALID INTENT");
+            Log.i(TAG, "DEEP LINK: VALID INTENT");
             // Get extras from notifications
             FragmentType fragmentType = (FragmentType) intent.getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE);
             Bundle bundle = intent.getBundleExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE);
@@ -185,7 +185,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             // Return result
             return true;
         }
-        Log.d(TAG, "DEEP LINK: INVALID INTENT");
+        Log.i(TAG, "DEEP LINK: INVALID INTENT");
         return false;
     }
 
@@ -198,7 +198,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onResume() {
         super.onResume();
         Log.d(TAG, "ON RESUME");
-        // TODO AD4Push
+        //
         Ad4PushTracker.get().startActivity(this);
         //
         AdjustTracker.onResume(this);
@@ -213,7 +213,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
-        // TODO AD4Push
+        //
         Ad4PushTracker.get().stopActivity(this);
     }
 

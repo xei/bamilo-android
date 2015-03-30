@@ -389,8 +389,6 @@ public class FragmentController {
         if (animation == ANIMATION_OUT)
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
 
-
-
         /**
          * Case isn't add to back stack
          * Then add with an UNKNOWN tag
