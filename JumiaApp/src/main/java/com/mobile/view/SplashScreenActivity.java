@@ -178,9 +178,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mJumiaMapImage.startAnimation(animationFadeIn);
     }
 
-
-    "contentValues"
-
     /*
      * (non-Javadoc)
      * 

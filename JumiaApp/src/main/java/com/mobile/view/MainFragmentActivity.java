@@ -31,7 +31,6 @@ import com.mobile.view.fragments.CheckoutExternalPaymentFragment;
 import com.mobile.view.fragments.CheckoutMyAddressesFragment;
 import com.mobile.view.fragments.CheckoutMyOrderFragment;
 import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
-import com.mobile.view.fragments.CheckoutPollAnswerFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.CheckoutWebFragment;
@@ -354,9 +353,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 break;
             case ABOUT_YOU:
                 fragment = CheckoutAboutYouFragment.getInstance();
-                break;
-            case POLL:
-                fragment = CheckoutPollAnswerFragment.getInstance();
                 break;
             case MY_ADDRESSES:
                 fragment = CheckoutMyAddressesFragment.getInstance();

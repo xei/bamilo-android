@@ -697,7 +697,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Native Checkout
         FragmentType[] type = { FragmentType.CHECKOUT_THANKS,   FragmentType.MY_ORDER,      FragmentType.PAYMENT_METHODS,
                                 FragmentType.SHIPPING_METHODS,  FragmentType.MY_ADDRESSES,  FragmentType.CREATE_ADDRESS,
-                                FragmentType.EDIT_ADDRESS,      FragmentType.POLL,          FragmentType.ABOUT_YOU };
+                                FragmentType.EDIT_ADDRESS,      FragmentType.ABOUT_YOU };
         // Remove tags
         for (FragmentType fragmentType : type) FragmentController.getInstance().removeAllEntriesWithTag(fragmentType.toString());
     }
