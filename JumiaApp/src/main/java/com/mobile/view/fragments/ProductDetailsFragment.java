@@ -1779,7 +1779,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     private void onClickShare(CompleteProduct completeProduct) {
         try {
-            Intent shareIntent = getBaseActivity().createShareIntent();
+            String extraSubject = getString(R.string.share_subject, getString(R.string.app_name_placeholder));
+            String apiVersion = getString(R.string.jumia_global_api_version) + "/";
+            String extraMsg = getString(R.string.share_checkout_this_product) + "\n" + mCompleteProduct.getUrl().replace(apiVersion, "");
+            Intent shareIntent = getBaseActivity().createShareIntent(extraSubject, extraMsg);
+
+            shareIntent.putExtra(RestConstants.JSON_SKU_TAG, mCompleteProduct.getSku());
             startActivity(shareIntent);
             // Track share
             TrackerDelegator.trackItemShared(shareIntent, completeProduct.getCategories().get(0));

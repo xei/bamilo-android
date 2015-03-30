@@ -49,11 +49,9 @@ import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.SearchSuggestion;
 import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
@@ -1280,22 +1278,14 @@ public abstract class BaseActivity extends ActionBarActivity {
      *
      * @return The created intent
      */
-    public Intent createShareIntent() {
+    public Intent createShareIntent(String extraSubject, String extraText) {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         // sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject, getString(R.string.app_name_placeholder)));
-        // Get product
-        CompleteProduct prod = JumiaApplication.INSTANCE.getCurrentProduct();
-        // Validate
-        if (null != prod) {
-            // For tracking when sharing
-            sharingIntent.putExtra(RestConstants.JSON_SKU_TAG, prod.getSku());
-            String apiVersion = getString(R.string.jumia_global_api_version) + "/";
-            String msg = getString(R.string.share_checkout_this_product) + "\n" + prod.getUrl().replace(apiVersion, "");
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, msg);
-        }
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, extraSubject);
+
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, extraText);
         return sharingIntent;
     }
 
