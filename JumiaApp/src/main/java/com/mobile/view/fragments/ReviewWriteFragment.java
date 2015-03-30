@@ -46,6 +46,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
+import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -155,10 +156,15 @@ public class ReviewWriteFragment extends BaseFragment {
         if (arguments != null) {
             String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
+            Serializable serializedProduct = arguments.getSerializable(ConstantsIntentExtra.PRODUCT);
+            if(serializedProduct instanceof CompleteProduct){
+                completeProduct = (CompleteProduct)serializedProduct;
+            }
+
         }
         //
         JumiaApplication.setIsSellerReview(false);
-        completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+//        completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         isExecutingSendReview = false;
         if(savedInstanceState != null){
             ratingForm = JumiaApplication.INSTANCE.ratingForm;

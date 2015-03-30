@@ -31,6 +31,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
 
+import java.io.Serializable;
 import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
@@ -73,7 +74,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
                 R.layout.product_description_fragment,
                 NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
-        this.mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+//        this.mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
     }
 
     /*
@@ -101,6 +102,10 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         if(arguments != null) {
             String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             mCompleteProductUrl = TextUtils.isEmpty(url) ? "" : url;
+            Serializable serializedProduct = arguments.getSerializable(ConstantsIntentExtra.PRODUCT);
+            if(serializedProduct instanceof CompleteProduct){
+                mCompleteProduct = (CompleteProduct)serializedProduct;
+            }
         }
     }
     
@@ -141,7 +146,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+//        mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         /**
          * Validate product
          * If null is assumed that the system clean some data

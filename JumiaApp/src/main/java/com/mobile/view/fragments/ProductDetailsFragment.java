@@ -1647,6 +1647,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+        bundle.putSerializable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
+
         bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, true);
         getBaseActivity().onSwitchFragment(FragmentType.POPULARITY,
                 bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -1659,6 +1661,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         if (null != mCompleteProduct) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+            bundle.putSerializable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle,
                     FragmentController.ADD_TO_BACK_STACK);
         }
@@ -2415,6 +2418,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+        bundle.putSerializable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
         bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, false);
         bundle.putString(SELLER_ID, mCompleteProduct.getSeller().getSellerId());
         getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);

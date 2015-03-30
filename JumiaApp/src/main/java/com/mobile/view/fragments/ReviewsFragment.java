@@ -51,6 +51,7 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
@@ -184,6 +185,11 @@ public class ReviewsFragment extends BaseFragment {
             String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             mProductUrl = TextUtils.isEmpty(contentUrl) ? "" : contentUrl;
             mSellerId = arguments.getString(ProductDetailsFragment.SELLER_ID);
+
+            Serializable serializedProduct = arguments.getSerializable(ConstantsIntentExtra.PRODUCT);
+            if(serializedProduct instanceof CompleteProduct){
+                selectedProduct = (CompleteProduct)serializedProduct;
+            }
         }
         // Load saved state
         if(savedInstanceState != null) {
@@ -228,7 +234,7 @@ public class ReviewsFragment extends BaseFragment {
         if(reviews == null)
             reviews = new ArrayList<>();
         
-        selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+//        selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
 
     }
     
@@ -242,7 +248,7 @@ public class ReviewsFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "ON START");
-        selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+//        selectedProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         inflater = LayoutInflater.from(getActivity());
         if (selectedProduct == null) {
             if(mProductUrl == null && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.CONTENT_URL)){
@@ -512,6 +518,7 @@ public class ReviewsFragment extends BaseFragment {
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.CONTENT_URL, mProductUrl);
         if(isProductRating){
+            args.putSerializable(ConstantsIntentExtra.PRODUCT, selectedProduct);
             getBaseActivity().onSwitchFragment(FragmentType.WRITE_REVIEW, args, FragmentController.ADD_TO_BACK_STACK);
         } else {
             args.putString(ProductDetailsFragment.SELLER_ID, mSellerId);

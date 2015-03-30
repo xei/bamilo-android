@@ -36,6 +36,7 @@ public class ConstantsIntentExtra {
     public static final String SIZE_GUIDE_URL = mPackage + "SizeGuideUrl";
     public static final String PRODUCT_NAME = mPackage + "ProductName";
     public static final String IMAGE_LIST = mPackage + "ProductImages";
+    public static final String PRODUCT = mPackage + "Product";
 
     // ########### Checkout ###########
     public static final String CONTENT_TITLE = mPackage + "ContentTitle";
