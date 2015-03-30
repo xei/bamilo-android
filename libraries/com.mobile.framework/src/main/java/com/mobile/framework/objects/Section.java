@@ -1,12 +1,12 @@
 package com.mobile.framework.objects;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Represents a section of the api.
@@ -25,12 +25,10 @@ public class Section implements IJSONSerializable, Parcelable {
 	public static final String SECTION_NAME_CATEGORIES = "categories";
 	public static final String SECTION_NAME_SEGMENTS = "segments";
 	public static final String SECTION_NAME_STATIC_BLOCKS = "static_blocks";
-	public static final String SECTION_NAME_FORMS = "forms";
-	public static final String SECTION_NAME_FETCHDATA = "fetchdata";
-	public static final String SECTION_NAME_SLIDER = "slider";
 	public static final String SECTION_NAME_IMAGE_RESOLUTIONS = "imageresolutions";
 	public static final String SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES = "get3hourdeliveryzipcodes";
-	public static final String SECTION_NAME_COUNTRY_CONFIGS = "countryconfs";
+	public static final String SECTION_NAME_COUNTRY_CONFIGS = "countryconfs";   // OLD(<1.7)
+    public static final String SECTION_NAME_CONFIGURATIONS = "configurations";  // NEW(>1.6)
 	
     /**
      * Name of the section.

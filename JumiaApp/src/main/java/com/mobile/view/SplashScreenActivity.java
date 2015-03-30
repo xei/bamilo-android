@@ -619,7 +619,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         if (bundle.getBoolean(Section.SECTION_NAME_COUNTRY_CONFIGS, false)) {
             Log.d(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
-        } else if(!CountryConfigs.checkCountryRequirements(sharedPrefs)){
+        } else if(!CountryConfigs.checkCountryRequirements(getApplicationContext())){
             Log.d(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
         } else {

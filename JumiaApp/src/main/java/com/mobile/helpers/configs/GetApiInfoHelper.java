@@ -45,8 +45,6 @@ public class GetApiInfoHelper extends BaseHelper {
     private static String TAG = GetApiInfoHelper.class.getSimpleName();
     
     private static final EventType EVENT_TYPE = EventType.GET_API_INFO;
-    
-    public static final String API_INFO_OUTDATEDSECTIONS = "outDatedSections";
 
     /*
      * (non-Javadoc)
@@ -165,6 +163,7 @@ public class GetApiInfoHelper extends BaseHelper {
                     // ZipCodesTableHelper.clearZipCodes(db);
                     break;
                 // Case country configs
+                case Section.SECTION_NAME_CONFIGURATIONS:
                 case Section.SECTION_NAME_COUNTRY_CONFIGS:
                     bundle.putBoolean(Section.SECTION_NAME_COUNTRY_CONFIGS, true);
                     break;
