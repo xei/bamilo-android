@@ -10,11 +10,9 @@ import com.mobile.framework.utils.LogTagHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-
 import de.akquinet.android.androlog.Log;
 
-public class Variation implements IJSONSerializable, Parcelable, Serializable{
+public class Variation implements IJSONSerializable, Parcelable{
 	private static final String TAG = LogTagHelper.create(Variation.class);
 
 	private String sku;

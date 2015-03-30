@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
@@ -22,7 +21,7 @@ import de.akquinet.android.androlog.Log;
  * @version 1.0
  * @date 2015/03/04
  */
-public class RelatedProduct extends LastViewed implements Serializable {
+public class RelatedProduct extends LastViewed {
 
     private ArrayList<String> categories;
 
