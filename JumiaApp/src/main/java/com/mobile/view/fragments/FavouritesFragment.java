@@ -249,6 +249,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      */
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         // Get view id
         int id = view.getId();
         // Case item

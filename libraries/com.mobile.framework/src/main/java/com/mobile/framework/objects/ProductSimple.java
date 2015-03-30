@@ -47,7 +47,16 @@ public class ProductSimple implements IJSONSerializable, Parcelable {
         attributes.clear();
         try {
 
-            JSONObject attributesObject = jsonObject.getJSONObject(RestConstants.JSON_META_TAG);
+            JSONObject attributesObject = new JSONObject();
+
+            //NORMAL COMPLETE SIMPLE PRODUCT
+            if(jsonObject.optJSONObject(RestConstants.JSON_META_TAG) != null){
+                attributesObject = jsonObject.getJSONObject(RestConstants.JSON_META_TAG);
+            } else {
+                //RECENTLY VIEWED SIMPLE PRODUCT
+                attributesObject = jsonObject;
+            }
+
             JSONArray attributesObjectNames = attributesObject.names();
 
             for (int i = 0; i < attributesObjectNames.length(); ++i) {
@@ -55,10 +64,11 @@ public class ProductSimple implements IJSONSerializable, Parcelable {
                 String value = attributesObject.getString(key);
                 attributes.put(key, value);
             }
-            
+
             if(attributes.containsKey("quantity")) {
                 attributes.put("real_quantity", attributes.get("quantity"));
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
