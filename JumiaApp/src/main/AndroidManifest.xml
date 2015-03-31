@@ -160,20 +160,14 @@
             <meta-data
                 android:name="com.ad4screen.logging"
                 android:value="false" />
-
-            <!-- Optional Code for >= Kitkat (4.4) Notifications
+            <!-- Optional Code for >= Kitkat (4.4) Notifications -->
             <meta-data android:name="com.ad4screen.notifications.icon"
-            android:value="img_success" />
-            -->
-
-            <!-- Optional Code for >= Lollipop (5.0) Notifications
+                android:value="ic_stat_notifications" />
+            <!-- Optional Code for >= Lollipop (5.0) Notifications -->
             <meta-data android:name="com.ad4screen.notifications.accent_color"
-                android:value="@color/blue_basic" />
-             -->
-
+                android:value="@color/color_accent" />
             <!-- Cache delay in seconds
-            <meta-data android:name="com.ad4screen.cache.delay"
-                android:value="15" />
+            <meta-data android:name="com.ad4screen.cache.delay" android:value="15" />
             -->
 
         </service>

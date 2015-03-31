@@ -27,7 +27,7 @@
                 android:fontFamily="roboto_regular"
                 android:gravity="left"
                 android:text="@string/poll_question_label"
-                android:textColor="@color/orange_basic"
+                android:textColor="@color/orange_ffa200"
                 android:textSize="@dimen/text_l" />
 
             <View

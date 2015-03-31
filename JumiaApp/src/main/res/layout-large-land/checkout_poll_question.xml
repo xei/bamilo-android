@@ -40,7 +40,7 @@
                     android:fontFamily="roboto_regular"
                     android:gravity="left"
                     android:text="@string/poll_question_label"
-                    android:textColor="@color/orange_basic"
+                    android:textColor="@color/orange_ffa200"
                     android:textSize="@dimen/text_l" />
 
                 <View
@@ -79,7 +79,7 @@
         style="@style/divider_vertical"
         android:layout_marginBottom="@dimen/margin_mid"
         android:layout_marginTop="@dimen/margin_mid"
-        android:background="@color/orange_basic" />
+        android:background="@color/orange_ffa200" />
 
     <!-- ORDER SUMMARY -->
 
