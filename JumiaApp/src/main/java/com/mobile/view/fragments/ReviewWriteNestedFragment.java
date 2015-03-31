@@ -248,7 +248,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 }
             }
         } else {
-            showRetryLayout();
+            showFragmentErrorRetry();
         }
         
     }
@@ -304,11 +304,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         }
     }
     
-    
-    private void showRetryLayout() {
-        showFragmentErrorRetry();
-    }
-    
     /**
      * Set the Products layout using inflate
      */
@@ -319,7 +314,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
-                showRetryLayout();
+                showFragmentErrorRetry();
             }
             
         } else {
@@ -425,7 +420,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
-                showRetryLayout();
+                showFragmentErrorRetry();
             }
             
         } else {
@@ -629,7 +624,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
                 triggerReviewForm();
             } else {
-                showRetryLayout();
+                showFragmentErrorRetry();
             }
             return false;
         case REVIEW_RATING_PRODUCT_EVENT:

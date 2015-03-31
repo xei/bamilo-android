@@ -261,11 +261,13 @@ public class ReviewsFragment extends BaseFragment {
             } else {
                 showFragmentErrorRetry();
             }
-        } else {
+        } else if (JumiaApplication.mIsBound){
             checkReviewsTypeVisibility();
             showFragmentContent();
             showFragmentContentOfSeller();
 
+        } else {
+            showFragmentErrorRetry();
         }
     }
 
@@ -694,29 +696,29 @@ public class ReviewsFragment extends BaseFragment {
             reviewsContainer = (LinearLayout) getView().findViewById(R.id.linear_reviews);
             pageNumber = 1;
         }
-        
+
         if(reviewsContainer.getChildCount() > 0)
             reviewsContainer.removeAllViews();
-        
+
         if(productRatingContainer.getChildCount() > 0)
             productRatingContainer.removeAllViews();
-        
-       
+
+
         if(!isProductRating){
             String reviewsString = getResources().getString(R.string.reviews);
             if(productRatingPage.getCommentsCount() == 1)
                 reviewsString = getResources().getString(R.string.review);
-            
+
             sellerRatingCount.setText(""+productRatingPage.getCommentsCount()+" "+reviewsString);
             productName.setText(productRatingPage.getSellerName());
             sellerRatingBar.setRating(productRatingPage.getAverage());
-            
+
         } else {
             insertRatingTypes(productRatingPage.getRatingTypes(), productRatingContainer, true,productRatingPage.getAverage());
         }
-        
-       
-        // set the number of grid columns depending on the screen size    
+
+
+        // set the number of grid columns depending on the screen size
         int numColumns = getBaseActivity().getResources().getInteger(R.integer.catalog_list_num_columns);
 //        numColumns = 2;
 
@@ -739,7 +741,7 @@ public class ReviewsFragment extends BaseFragment {
             int group =(int) Math.ceil(numberReviews / numColumns);
             if(rest > 0)
                 group = group + 1;
-            
+
             for (int j = 0; j < group; j++) {
                 LinearLayout gridElement = new LinearLayout(getActivity().getApplicationContext());
                 gridElement.setOrientation(LinearLayout.HORIZONTAL);
@@ -764,24 +766,24 @@ public class ReviewsFragment extends BaseFragment {
                         if(i == startPoint+numColumns -1){
                             theInflatedView.findViewById(R.id.horizintal_review_line).setVisibility(View.GONE);
                         }
-                        
+
 //                        theInflatedView.setBackgroundColor(Color.CYAN);
                         final TextView userName = (TextView) theInflatedView.findViewById(R.id.user_review);
                         final TextView userDate = (TextView) theInflatedView.findViewById(R.id.date_review);
                         final TextView textReview = (TextView) theInflatedView.findViewById(R.id.textreview);
-                        
+
                         final TextView titleReview = (TextView) theInflatedView.findViewById(R.id.title_review);
                         LinearLayout ratingsContainer = (LinearLayout) theInflatedView.findViewById(R.id.ratings_container);
 
                         if(ratingsContainer.getChildCount() > 0)
                             ratingsContainer.removeAllViews();
-                        
-                        
+
+
                         ArrayList<RatingStar> ratingOptionArray = new ArrayList<>();
                         ratingOptionArray = review.getRatingStars();
 
                         insertRatingTypes(ratingOptionArray, ratingsContainer,false,review.getAverage());
-                        
+
                         final String[] stringCor = review.getDate().split(" ");
                         userName.setText(review.getName() + ",");
                         userDate.setText(stringCor[0]);
@@ -800,7 +802,7 @@ public class ReviewsFragment extends BaseFragment {
                                 bundle.putString(ConstantsIntentExtra.REVIEW_NAME, review.getName());
                                 bundle.putString(ConstantsIntentExtra.REVIEW_COMMENT, review.getComment());
                                 if(isProductRating){
-                                    bundle.putParcelableArrayList(ConstantsIntentExtra.REVIEW_RATING, review.getRatingStars());    
+                                    bundle.putParcelableArrayList(ConstantsIntentExtra.REVIEW_RATING, review.getRatingStars());
                                 } else {
                                     bundle.putInt(ConstantsIntentExtra.REVIEW_RATING, review.getAverage());
                                 }
@@ -810,10 +812,10 @@ public class ReviewsFragment extends BaseFragment {
                         });
 
                         gridElement.addView(theInflatedView);
-                        
+
                     } else {
 //                        final View theInflatedView = inflater.inflate(R.layout.reviews_fragment_item, reviewsContainer, false);
-//                        
+//
 //                        final TextView postedBy = (TextView) theInflatedView.findViewById(R.id.posted_by);
 //                        postedBy.setText("");
 
@@ -822,21 +824,21 @@ public class ReviewsFragment extends BaseFragment {
 //                        emptyView.setBackgroundColor(Color.YELLOW);
                         emptyView.setLayoutParams(emptyParams);
                         gridElement.addView(emptyView);
-                        
-                        
+
+
                     }
-                   
+
                 }
                 startPoint = startPoint+numColumns;
                 reviewsContainer.addView(gridElement);
                 isLoadingMore = false;
-                
+
             }
-            
-            
+
+
         } else {
             // Only hide reviews list and show empty on first request
-            // Otherwise it was only a empty response for a page after the first 
+            // Otherwise it was only a empty response for a page after the first
             if (firstRequest) {
                 reviewsContainer.setVisibility(View.GONE);
                 getView().findViewById(R.id.reviews_empty).setVisibility(View.VISIBLE);
@@ -847,10 +849,10 @@ public class ReviewsFragment extends BaseFragment {
         View loadingLayout = getView().findViewById(R.id.catalog_loading_more);
         loadingLayout.setVisibility(View.GONE);
         loadingLayout.refreshDrawableState();
-        
+
         // Validate if the current request size is < MAX_REVIEW_COUNT
         // Or from saved values the current size == comments max count
-        
+
         // FIXME commented only for testing purpose
         if (reviews.size() < REVIEWS_PER_PAGE || (reviews.size() > REVIEWS_PER_PAGE && reviews.size() == mProductRatingPage.getCommentsCount())) {
             isLoadingMore = true;
