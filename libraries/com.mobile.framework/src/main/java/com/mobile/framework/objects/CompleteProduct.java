@@ -25,7 +25,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,7 +37,7 @@ import de.akquinet.android.androlog.Log;
  * @author GuilhermeSilva
  * 
  */
-public class CompleteProduct extends BaseProduct implements IJSONSerializable, Serializable{
+public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 
 	private static final String TAG = LogTagHelper.create(CompleteProduct.class);
 

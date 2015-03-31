@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.TextUtils;
@@ -31,7 +32,6 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
 
-import java.io.Serializable;
 import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
@@ -101,9 +101,9 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         if(arguments != null) {
             String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             mCompleteProductUrl = TextUtils.isEmpty(url) ? "" : url;
-            Serializable serializedProduct = arguments.getSerializable(ConstantsIntentExtra.PRODUCT);
-            if(serializedProduct instanceof CompleteProduct){
-                mCompleteProduct = (CompleteProduct)serializedProduct;
+            Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
+            if(parcelableProduct instanceof CompleteProduct){
+                mCompleteProduct = (CompleteProduct)parcelableProduct;
             }
         }
     }

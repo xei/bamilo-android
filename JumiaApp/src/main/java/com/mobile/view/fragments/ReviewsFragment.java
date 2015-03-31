@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -51,7 +52,6 @@ import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
@@ -186,9 +186,9 @@ public class ReviewsFragment extends BaseFragment {
             mProductUrl = TextUtils.isEmpty(contentUrl) ? "" : contentUrl;
             mSellerId = arguments.getString(ProductDetailsFragment.SELLER_ID);
 
-            Serializable serializedProduct = arguments.getSerializable(ConstantsIntentExtra.PRODUCT);
-            if(serializedProduct instanceof CompleteProduct){
-                selectedProduct = (CompleteProduct)serializedProduct;
+            Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
+            if(parcelableProduct instanceof CompleteProduct){
+                selectedProduct = (CompleteProduct)parcelableProduct;
             }
         }
         // Load saved state
@@ -519,7 +519,7 @@ public class ReviewsFragment extends BaseFragment {
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.CONTENT_URL, mProductUrl);
         if(isProductRating){
-            args.putSerializable(ConstantsIntentExtra.PRODUCT, selectedProduct);
+            args.putParcelable(ConstantsIntentExtra.PRODUCT, selectedProduct);
             getBaseActivity().onSwitchFragment(FragmentType.WRITE_REVIEW, args, FragmentController.ADD_TO_BACK_STACK);
         } else {
             args.putString(ProductDetailsFragment.SELLER_ID, mSellerId);

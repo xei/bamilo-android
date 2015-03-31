@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,7 +47,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
-import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -156,9 +156,9 @@ public class ReviewWriteFragment extends BaseFragment {
         if (arguments != null) {
             String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
-            Serializable serializedProduct = arguments.getSerializable(ConstantsIntentExtra.PRODUCT);
-            if(serializedProduct instanceof CompleteProduct){
-                completeProduct = (CompleteProduct)serializedProduct;
+            Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
+            if(parcelableProduct instanceof CompleteProduct){
+                completeProduct = (CompleteProduct)parcelableProduct;
             }
 
         }
