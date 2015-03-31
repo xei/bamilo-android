@@ -63,4 +63,23 @@ public class WorkerThread extends Thread{
         return mRunnableQueue;
     }
 
+    public static void executeRunnable(WorkerThread auxThread, Runnable runnable) {
+
+        if(auxThread == null){
+            auxThread = new WorkerThread();
+            auxThread.start();
+        }
+
+        ConcurrentLinkedQueue<Runnable> runnables = auxThread.getRunnableQueue();
+
+        runnables.add(runnable);
+        try {
+            synchronized (auxThread) {
+                auxThread.notify();
+            }
+        }catch(IllegalMonitorStateException ex){
+            Log.e(auxThread.TAG, "IllegalMonitorStateException: notify()");
+        }
+    }
+
 }

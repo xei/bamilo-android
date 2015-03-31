@@ -18,7 +18,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import de.akquinet.android.androlog.Log;
 
@@ -199,7 +198,7 @@ public class FragmentController {
     public synchronized void removeEntriesUntilTag(final String tag) {
         Log.i(TAG, "POP ENTRIES UNTIL: " + tag);
 
-        executeRunnable(new Runnable() {
+        WorkerThread.executeRunnable(auxThread, new Runnable() {
             @Override
             public void run() {
                 // Create reverse iterator
@@ -231,33 +230,13 @@ public class FragmentController {
     public synchronized void addEntryToBackStack(final String tag) {
         Log.d(TAG, "ADD ENTRY TO BACK STACK");
 
-        executeRunnable(new Runnable() {
+        WorkerThread.executeRunnable(auxThread, new Runnable() {
             @Override
             public void run() {
                 removeAllEntriesWithTag(tag);
                 addToBackStack(tag);
             }
         });
-
-    }
-
-    protected void executeRunnable(Runnable runnable) {
-
-        if(auxThread == null){
-            auxThread = new WorkerThread();
-            auxThread.start();
-        }
-
-        ConcurrentLinkedQueue<Runnable> runnables = auxThread.getRunnableQueue();
-
-        runnables.add(runnable);
-        try {
-            synchronized (auxThread) {
-                auxThread.notify();
-            }
-        }catch(IllegalMonitorStateException ex){
-            Log.e(TAG, "IllegalMonitorStateException: notify()");
-        }
 
     }
 
