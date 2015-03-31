@@ -99,11 +99,11 @@ public class Ad4PushTracker {
     private static final String FILTER_PRICE = "filterPrice";
     private static final String FILTER_SIZE = "filterSize";
 
-    private final String FILTER_BRAND_KEY = "searchQuery";
-    private final String FILTER_COLOR_KEY = "color_family";
-    private final String FILTER_PRICE_KEY = "price";
-    private final String FILTER_CATEGORY_KEY = "productUrl";
-    private final String FILTER_SIZE_KEY = "size";
+    private static final String FILTER_BRAND_KEY = "searchQuery";
+    private static final String FILTER_COLOR_KEY = "color_family";
+    private static final String FILTER_PRICE_KEY = "price";
+    private static final String FILTER_CATEGORY_KEY = "productUrl";
+    private static final String FILTER_SIZE_KEY = "size";
 
     private static final String STATUS_PROSPECT = "Prospect";
     private static final String STATUS_CUSTOMER = "Customer";
@@ -116,12 +116,12 @@ public class Ad4PushTracker {
     private static final String HAS_OPENED_APP = "app_opened";
 
     // View States for In-App Messages
-    private String HOME_VIEW = "HOME";
-    private String CATEGORY_VIEW = "CATEGORY";
-    private String PRODUCT_VIEW = "PRODUCT";
-    private String LOGIN_SIGNUP_VIEW = "ACCOUNT";
-    private String FAVORITES_VIEW = "MYFAVORITES";
-    private String CART_VIEW = "CART";
+    private static final String HOME_VIEW = "HOME";
+    private static final String CATEGORY_VIEW = "CATEGORY";
+    private static final String PRODUCT_VIEW = "PRODUCT";
+    private static final String LOGIN_SIGNUP_VIEW = "ACCOUNT";
+    private static final String FAVORITES_VIEW = "MYFAVORITES";
+    private static final String CART_VIEW = "CART";
 
     private static final String IS_ENABLED = "Enabled";
     private static final String AD4PUSH_PREFERENCES_PERSIST = "Ad4PushPreferencesPersist";
@@ -698,11 +698,7 @@ public class Ad4PushTracker {
                 prefs.putString(MOST_VISITED_CATEGORY, category);
                 mA4S.updateDeviceInfo(prefs);
                 Log.i(TAG, "TRACK TOP CATEGORY: " + prefs.toString());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (NullPointerException e) {
+            } catch (InterruptedException | UnsupportedEncodingException | NullPointerException e) {
                 e.printStackTrace();
             }
         }

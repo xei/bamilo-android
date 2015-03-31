@@ -84,7 +84,7 @@ public class JumiaWearableListenerService extends WearableListenerService {
 //                    Log.d(TAG, "APP BUNDLE ->  data " + data);
 //                    Bundle gcmBundle = new Bundle();
 //                    gcmBundle.putString(BundleConstants.DEEPLINKING_PAGE_INDICATION,deepLinkUrl);
-//                    Bundle deepLinkBundle =  DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
+//                    Bundle deepLinkBundle =  DeepLinkManager.loadDeepLink(getApplicationContext(), data);
 //                    Log.d(TAG, "APP BUNDLE ->  deepLinkBundle " + deepLinkBundle);
                 }
 

@@ -67,9 +67,7 @@ public class FragmentController {
      * @return {@link FragmentController}
      */
     public static FragmentController getInstance(){
-        if (fragmentController == null)
-            fragmentController = new FragmentController();
-        return fragmentController;
+        return fragmentController == null ? fragmentController = new FragmentController() : fragmentController;
     }
 
     /**
@@ -185,7 +183,7 @@ public class FragmentController {
      * @return
      */
     public Boolean hasEntry(String tag){
-        return (backStack != null) ? backStack.contains(tag) : false ;
+        return backStack != null && backStack.contains(tag);
     }
     
     /**
@@ -279,10 +277,10 @@ public class FragmentController {
             if (getLastEntry().equals(FragmentType.HOME.toString())) 
                 activity.doubleBackPressToExit();
             else {
+                init();
                 popAllBackStack(activity, null);
                 activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
-            
             break;
         case 0:
             activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -463,7 +461,6 @@ public class FragmentController {
      *  @param activity
      * @param tag
      */
-    @Deprecated
     public void popAllBackStack(BaseActivity activity, String tag){
         activity.getSupportFragmentManager().popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }

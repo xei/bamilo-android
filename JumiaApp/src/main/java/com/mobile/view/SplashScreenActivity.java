@@ -259,7 +259,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Uri data = intent.getData();
         // ## DEEP LINK FROM EXTERNAL URIs ##
         if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
-            mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
+            mDeepLinkBundle = DeepLinkManager.loadDeepLink(data);
             return isDeepLinkLaunch = true;
         }
         Log.i(TAG, "DEEP LINK: NO EXTERNAL URI");
@@ -290,7 +290,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 Uri data = Uri.parse(deepLink);
                 Log.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
                 // Load deep link
-                mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
+                mDeepLinkBundle = DeepLinkManager.loadDeepLink(data);
                 return isDeepLinkLaunch = true;
             }
         }
@@ -377,7 +377,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         // Validate fragment type
-        if (fragmentType != FragmentType.HOME || fragmentType != FragmentType.UNKNOWN) {
+        if (fragmentType != FragmentType.HOME && fragmentType != FragmentType.UNKNOWN) {
             intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, fragmentType);
             intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
         }

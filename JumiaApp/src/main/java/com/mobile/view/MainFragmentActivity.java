@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
 
 import com.ad4screen.sdk.Tag;
 import com.mobile.app.JumiaApplication;
@@ -21,6 +22,7 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.PreferenceListFragment.OnPreferenceAttachedListener;
+import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
@@ -513,6 +515,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      *
      * @author nunocastro
      */
+    /*
     private void parseDeeplinkIntent(Intent intent) {
         Bundle mBundle = intent.getExtras();
         Uri data = intent.getData();
@@ -523,14 +526,63 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         if (null != mBundle) {
             Bundle payload = intent.getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
             if (null != payload) {
-                Intent newIntent = new Intent(this, SplashScreenActivity.class);
-                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                newIntent.putExtra(BundleConstants.EXTRA_GCM_PAYLOAD, payload);
+                Bundle deepLinkBundle = DeepLinkManager.loadDeepLink(data);
 
-                startActivity(newIntent);
-                finish();
+
+                //Intent newIntent = new Intent(this, SplashScreenActivity.class);
+                //newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //newIntent.putExtra(BundleConstants.EXTRA_GCM_PAYLOAD, payload);
+                //startActivity(newIntent);
+                //finish();
             }
         }
+    }
+
+*/
+
+    /**
+     * Validate deep link from Push Notification.
+     *
+     * @param intent
+     * @return true or false
+     * @author sergiopereira
+     */
+    private boolean parseDeeplinkIntent(Intent intent) {
+        // ## DEEP LINK FROM NOTIFICATION ##
+        Bundle payload = intent.getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
+        // Get Deep link
+        if (null != payload) {
+            // Get UTM TODO
+            String mUtm = payload.getString(ConstantsIntentExtra.UTM_STRING);
+            Log.i(TAG, "UTM FROM GCM: " + mUtm);
+            // Get value from deep link key
+            String deepLink = payload.getString(BundleConstants.DEEPLINKING_PAGE_INDICATION);
+            Log.i(TAG, "DEEP LINK: GCM " + deepLink);
+            // Validate deep link
+            if (!TextUtils.isEmpty(deepLink)) {
+                // Create uri from the value
+                Uri data = Uri.parse(deepLink);
+                Log.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
+                // Load deep link
+                Bundle mDeepLinkBundle = DeepLinkManager.loadDeepLink(data);
+
+                // Get fragment type
+                FragmentType fragmentType = (FragmentType) mDeepLinkBundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
+                Log.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
+                // Default Start
+                Intent newIntent = new Intent();
+                // Validate fragment type
+                if (fragmentType != FragmentType.HOME && fragmentType != FragmentType.UNKNOWN) {
+                    newIntent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, fragmentType);
+                    newIntent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, mDeepLinkBundle);
+                }
+                isValidNotification(newIntent);
+
+                return true;
+            }
+        }
+        Log.i(TAG, "DEEP LINK: NO GCM TAG");
+        return false;
     }
 
     public boolean isInMaintenance() {

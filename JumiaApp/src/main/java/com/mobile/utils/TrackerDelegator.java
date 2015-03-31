@@ -298,14 +298,18 @@ public class TrackerDelegator {
      * 
      */
     public static void trackCategoryView(Bundle params) {
-        // Data
-        String category = params.getString(CATEGORY_KEY);
-        //int page = params.getInt(PAGE_NUMBER_KEY);
-        TrackingEvent event = (TrackingEvent) params.getSerializable(LOCATION_KEY);
-        // AD4Push
-        Ad4PushTracker.get().trackCategorySelection();
-        // GA
-        AnalyticsGoogle.get().trackEvent(event, category, 0l);
+        try  {
+            // Data
+            String category = params.getString(CATEGORY_KEY);
+            //int page = params.getInt(PAGE_NUMBER_KEY);
+            TrackingEvent event = (TrackingEvent) params.getSerializable(LOCATION_KEY);
+            // AD4Push
+            Ad4PushTracker.get().trackCategorySelection();
+            // GA
+            AnalyticsGoogle.get().trackEvent(event, category, 0l);
+        } catch (NullPointerException e) {
+            Log.i(TAG, "WARNING: NPE ON TRACK CATEGORY ");
+        }
     }
     
     /**
@@ -982,24 +986,25 @@ public class TrackerDelegator {
      * @param catalogFilterValues
      */
     public static void trackCatalogFilter(ContentValues catalogFilterValues) {
-        // GA
-        String filter = (catalogFilterValues != null) ? catalogFilterValues.toString() : "";
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.CATALOG_FILTER, filter, 0l);
-        // AD4Push
-        Ad4PushTracker.get().trackCatalogFilter(catalogFilterValues);
-        
-        //GTM
-        if(catalogFilterValues.containsKey(TrackerDelegator.CATALOG_FILTER_KEY)){
-            String activeFilters = catalogFilterValues.getAsString(TrackerDelegator.CATALOG_FILTER_KEY);
-            if (!TextUtils.isEmpty(activeFilters)) {
-                String[] filters = activeFilters.split(",");
-                for (String activefilter : filters) {
-                    Log.d("GTM FILTER",":"+activefilter);
-                    GTMManager.get().gtmTrackFilterCatalog(activefilter);
+        // Validate filters
+        if(catalogFilterValues != null) {
+            // GA
+            String filter = catalogFilterValues.toString();
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.CATALOG_FILTER, filter, 0l);
+            // AD4Push
+            Ad4PushTracker.get().trackCatalogFilter(catalogFilterValues);
+            //GTM
+            if(catalogFilterValues.containsKey(TrackerDelegator.CATALOG_FILTER_KEY)){
+                String activeFilters = catalogFilterValues.getAsString(TrackerDelegator.CATALOG_FILTER_KEY);
+                if (!TextUtils.isEmpty(activeFilters)) {
+                    String[] filters = activeFilters.split(",");
+                    for (String activefilter : filters) {
+                        Log.d("GTM FILTER",":"+activefilter);
+                        GTMManager.get().gtmTrackFilterCatalog(activefilter);
+                    }
                 }
             }
         }
-
     }
     
     /**

@@ -21,6 +21,7 @@ import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.CatalogPage;
 import com.mobile.framework.objects.FeaturedBox;
 import com.mobile.framework.objects.Product;
+import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -31,6 +32,7 @@ import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.CatalogGridAdapter;
 import com.mobile.utils.catalog.CatalogGridView;
 import com.mobile.utils.catalog.CatalogSort;
@@ -57,6 +59,10 @@ import de.akquinet.android.androlog.Log;
 public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogFilterListener, OnDialogListListener {
 
     private static final String TAG = CatalogFragment.class.getSimpleName();
+
+    private final static String TRACK_LIST = "list";
+
+    private final static String TRACK_GRID = "grid";
 
     private final static int FIRST_POSITION = 0;
 
@@ -155,6 +161,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
         }
+        // Track catalog
+        Bundle tracking = new Bundle();
+        tracking.putString(TrackerDelegator.CATEGORY_KEY, !TextUtils.isEmpty(mTitle) ? mTitle : mSearchQuery);
+        TrackerDelegator.trackCategoryView(tracking);
     }
 
     /*
@@ -211,6 +221,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
     }
 
     /*
@@ -579,6 +590,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mSortOrFilterApplied = true;
         // Get new catalog
         triggerGetInitialCatalogPage();
+        // Track catalog filtered
+        TrackerDelegator.trackCatalogFilter(mCurrentFilterValues);
     }
 
     /**
@@ -601,6 +614,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         manager.setSpanCount(mNumberOfColumns);
         manager.requestLayout();
         ((CatalogGridAdapter) mGridView.getAdapter()).updateLayout(!isShowingGridLayout);
+        // Track catalog
+        TrackerDelegator.trackCatalogSwitchLayout((!isShowingGridLayout) ? TRACK_LIST : TRACK_GRID);
     }
 
     /**
@@ -649,6 +664,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mSortOrFilterApplied = true;
         // Get new data
         triggerGetInitialCatalogPage();
+        // Track catalog sorted
+        TrackerDelegator.trackCatalogSorter(mSelectedSort.toString());
     }
 
     /**
