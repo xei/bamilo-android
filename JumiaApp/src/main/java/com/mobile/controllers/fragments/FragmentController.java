@@ -279,10 +279,10 @@ public class FragmentController {
             if (getLastEntry().equals(FragmentType.HOME.toString())) 
                 activity.doubleBackPressToExit();
             else {
+                Log.i(TAG, "THE CURRENT BACK STACK ENTRIES: " + backStack);
                 popAllBackStack(activity, null);
                 activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
-            
             break;
         case 0:
             activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -388,7 +388,7 @@ public class FragmentController {
             fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
         if (animation == ANIMATION_OUT)
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-        
+
         /**
          * Case isn't add to back stack
          * Then add with an UNKNOWN tag
@@ -525,7 +525,6 @@ public class FragmentController {
                         //validating that none of the checkout steps are entered in the new backstack because it will have an empty shopping cart 
                         //and will redirected to the shopping cart fragment, making it the top one
                         if(!backstackTypes.get(i).equalsIgnoreCase(FragmentType.ABOUT_YOU.toString()) &&
-                                !backstackTypes.get(i).equalsIgnoreCase(FragmentType.POLL.toString()) &&
                                 !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CREATE_ADDRESS.toString()) &&
                                 !backstackTypes.get(i).equalsIgnoreCase(FragmentType.EDIT_ADDRESS.toString()) &&
                                 !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ADDRESSES.toString()) &&

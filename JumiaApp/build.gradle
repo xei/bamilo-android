@@ -120,16 +120,16 @@ android {
          */
         jumia {
             applicationId "com.jumia.android"
-            versionName "2.4"
-            versionCode getAppVersionCode(48)
+            versionName "2.5"
+            versionCode getAppVersionCode(49)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "pt"
         }
 
         jumiaPreInstall {
             applicationId "com.jumia.android"
-            versionName "2.4"
-            versionCode 48
+            versionName "2.5"
+            versionCode 49
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
@@ -139,8 +139,8 @@ android {
 
         jumiaSamsung {
             applicationId "com.jumia.android"
-            versionName "2.4"
-            versionCode 48
+            versionName "2.5"
+            versionCode 49
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
@@ -150,8 +150,8 @@ android {
 
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
-            versionName "2.4"
-            versionCode 48
+            versionName "2.5"
+            versionCode 49
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
@@ -161,8 +161,8 @@ android {
 
         jumiaNokiaX {
             applicationId "com.jumia.nokiax"
-            versionName "2.4"
-            versionCode 11
+            versionName "2.5"
+            versionCode 12
             signingConfig signingConfigs.jumiaNokiaxSigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
@@ -172,8 +172,8 @@ android {
 
         jumiaBlackberry {
             applicationId "com.jumia.blackberry"
-            versionName "2.4"
-            versionCode 7
+            versionName "2.5"
+            versionCode 8
             signingConfig signingConfigs.jumiaBlackberrySigning
             resConfigs "en", "fr", "pt"
             android.sourceSets {
@@ -187,8 +187,8 @@ android {
         shop {
             applicationId "com.shop.android"
             minSdkVersion 10
-            versionName "1.2"
-            versionCode getAppVersionCode(4)
+            versionName "1.3"
+            versionCode getAppVersionCode(5)
             signingConfig signingConfigs.shopSigning
             resConfigs "en"
         }
@@ -198,8 +198,8 @@ android {
          */
         daraz {
             applicationId "com.daraz.android"
-            versionName "1.2"
-            versionCode getAppVersionCode(4)
+            versionName "1.3"
+            versionCode getAppVersionCode(5)
             signingConfig signingConfigs.darazSigning
             resConfigs "en"
         }
@@ -209,8 +209,8 @@ android {
          */
         bamilo {
             applicationId "com.bamilo.android"
-            versionName "1.4"
-            versionCode getAppVersionCode(8)
+            versionName "1.5"
+            versionCode getAppVersionCode(9)
             signingConfig signingConfigs.bamiloSigning
             resConfigs "en"
         }
@@ -229,9 +229,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':libraries:com.mobile.framework')
     compile 'com.google.android.support:wearable:1.1.0'
-    compile 'com.google.android.gms:play-services-wearable:6.5.87'
+    compile 'com.google.android.gms:play-services-wearable:7.0.0'
     /** Android wear releases **/
-    //wearApp project(':JumiaWear')
     jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaSamsungWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
