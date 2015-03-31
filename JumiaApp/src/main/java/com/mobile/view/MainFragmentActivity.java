@@ -64,6 +64,8 @@ import com.mobile.view.fragments.SessionTermsFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.WriteSellerReviewFragment;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -131,8 +133,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             // Get FC back stack from saved state and get fragments from FM
             ArrayList<String> backStackTypes = savedInstanceState.getStringArrayList(ConstantsIntentExtra.BACK_STACK);
             List<Fragment> originalFragments = this.getSupportFragmentManager().getFragments();
-            if (backStackTypes != null && backStackTypes.size() > 0) {
+            if (!CollectionUtils.isEmpty(backStackTypes)) {
                 FragmentController.getInstance().validateCurrentState(this, backStackTypes, originalFragments, mCurrentFragmentType);
+            } else {
+                Log.d(TAG, "COULDN'T RECOVER BACKSTACK");
             }
 
         }
@@ -263,10 +267,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         ArrayList<String> frags = new ArrayList<>();
         try {
             String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-            mCurrentFragmentType = FragmentType.valueOf(tag);
+            mCurrentFragmentType = FragmentType.getValue(tag);
             // Save the current back stack
             for (String entry : FragmentController.getInstance().returnAllEntries()) {
-                frags.add(entry);
+                frags.add(entry.toString());
             }
         } catch (Exception e) {
             Log.w(TAG, "ERROR ON GET CURRENT FRAGMENT TYPE", e);
