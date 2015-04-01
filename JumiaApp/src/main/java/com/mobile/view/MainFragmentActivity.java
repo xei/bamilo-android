@@ -34,7 +34,6 @@ import com.mobile.view.fragments.CheckoutExternalPaymentFragment;
 import com.mobile.view.fragments.CheckoutMyAddressesFragment;
 import com.mobile.view.fragments.CheckoutMyOrderFragment;
 import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
-import com.mobile.view.fragments.CheckoutPollAnswerFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.CheckoutWebFragment;
@@ -109,8 +108,12 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
 
-        // Parse deep link from service
-        parseDeeplinkIntent(getIntent());
+        /**
+         * CASE APP IN QUICK LAUNCHER:
+         * - parse the deep link intent from notification service
+         * - start splash screen case valid intent
+         */
+        onParseValidDeepLinkIntent(getIntent());
 
         // ON ORIENTATION CHANGE
         if (savedInstanceState == null) {
@@ -118,7 +121,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             // Initialize fragment controller
             FragmentController.getInstance().init();
             // Validate intent
-            if (!isValidNotification(getIntent())) {
+            if (!isValidDeepLinkNotification(getIntent())) {
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
         } else {
@@ -136,7 +139,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             if (backStackTypes != null && backStackTypes.size() > 0) {
                 FragmentController.getInstance().validateCurrentState(this, backStackTypes, originalFragments, mCurrentFragmentType);
             }
-
         }
 
         /*
@@ -160,22 +162,20 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         // For AD4 - http://wiki.accengage.com/android/doku.php?id=sub-classing-any-activity-type
         this.setIntent(intent);
         // Parse deep link from splash screen
-        parseDeeplinkIntent(intent);
-        // Validate deep link
-        isValidNotification(intent);
+        onParseValidDeepLinkIntent(intent);
     }
 
     /**
      * Validate and process intent from notification
      *
-     * @param intent Tthe deep link intent
+     * @param intent The deep link intent
      * @return valid or invalid
      */
-    private boolean isValidNotification(Intent intent) {
-        Log.d(TAG, "VALIDATE INTENT FROM NOTIFICATION");
+    private boolean isValidDeepLinkNotification(Intent intent) {
+        Log.i(TAG, "DEEP LINK: VALIDATE INTENT FROM NOTIFICATION");
         // Validate intent
         if (intent.hasExtra(ConstantsIntentExtra.FRAGMENT_TYPE)) {
-            Log.d(TAG, "VALID INTENT");
+            Log.i(TAG, "DEEP LINK: VALID INTENT");
             // Get extras from notifications
             FragmentType fragmentType = (FragmentType) intent.getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE);
             Bundle bundle = intent.getBundleExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE);
@@ -188,7 +188,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             // Return result
             return true;
         }
-        Log.d(TAG, "INVALID INTENT");
+        Log.i(TAG, "DEEP LINK: INVALID INTENT");
         return false;
     }
 
@@ -201,11 +201,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onResume() {
         super.onResume();
         Log.d(TAG, "ON RESUME");
-
-        // AD4Push activity tracking for in-app messages
-        //Ad4PushTracker.startActivityForInAppMessages(this);
+        //
         Ad4PushTracker.get().startActivity(this);
-        //Ad4PushTracker.setPushNotificationLocked(true);
+        //
         AdjustTracker.onResume(this);
     }
 
@@ -218,6 +216,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
+        //
+        Ad4PushTracker.get().stopActivity(this);
     }
 
     /*
@@ -228,8 +228,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     protected void onStop() {
         Log.i(TAG, "ON STOP");
         super.onStop();
-        // AD4Push activity tracking for in-app messages
-        Ad4PushTracker.get().stopActivity(this);
     }
 
     /*
@@ -359,9 +357,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case ABOUT_YOU:
                 fragment = CheckoutAboutYouFragment.getInstance();
                 break;
-            case POLL:
-                fragment = CheckoutPollAnswerFragment.getInstance();
-                break;
             case MY_ADDRESSES:
                 fragment = CheckoutMyAddressesFragment.getInstance();
                 break;
@@ -430,6 +425,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         Log.i(TAG, "ON SWITCH FRAGMENT: " + type);
         // Save the current state
         mCurrentFragmentType = type;
+
         // Transition
         fragmentManagerTransition(R.id.rocket_app_content, fragment, type.toString(), addToBackStack);
     }
@@ -511,29 +507,24 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     // ####################### DEEP LINK #######################
 
     /**
-     * Parse the deep link.
+     * Parse a valid deep link and redirect to Splash.
      *
      * @author nunocastro
+     * @modified sergiopereira
      */
-    /*
-    private void parseDeeplinkIntent(Intent intent) {
+    private void onParseValidDeepLinkIntent(Intent intent) {
+        Log.i(TAG, "ON PARSE DEEP LINK INTENT");
         Bundle mBundle = intent.getExtras();
-        Uri data = intent.getData();
-
-        Log.i(TAG, "PARSE DEEP LINK - Bundle -> " + (null != mBundle ? mBundle.keySet().toString() : "null"));
-        Log.i(TAG, "PARSE DEEP LINK - data -> " + data);
-
+        Log.i(TAG, "DEEP LINK - Bundle -> " + mBundle);
         if (null != mBundle) {
             Bundle payload = intent.getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
             if (null != payload) {
-                Bundle deepLinkBundle = DeepLinkManager.loadDeepLink(data);
-
-
-                //Intent newIntent = new Intent(this, SplashScreenActivity.class);
-                //newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                //newIntent.putExtra(BundleConstants.EXTRA_GCM_PAYLOAD, payload);
-                //startActivity(newIntent);
-                //finish();
+                Log.i(TAG, "DEEP LINK: START SPLASH ACTIVITY");
+                Intent newIntent = new Intent(this, SplashScreenActivity.class);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                newIntent.putExtra(BundleConstants.EXTRA_GCM_PAYLOAD, payload);
+                startActivity(newIntent);
+                finish();
             }
         }
     }

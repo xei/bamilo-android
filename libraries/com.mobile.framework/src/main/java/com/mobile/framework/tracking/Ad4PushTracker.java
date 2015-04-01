@@ -23,15 +23,13 @@ import com.mobile.framework.R;
 import com.mobile.framework.database.CategoriesTableHelper;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.framework.utils.DateTimeUtils;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.ShopSelector;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 import de.akquinet.android.androlog.Log;
 
@@ -163,8 +161,7 @@ public class Ad4PushTracker {
     /**
      * Constructor.
      * 
-     * @param Aplication
-     *            context
+     * @param context The aplication context
      * @author sergiopereira
      */
     private Ad4PushTracker(Context context) {
@@ -226,7 +223,7 @@ public class Ad4PushTracker {
      */
     public void stopActivity(Activity activity) {
         if (null != mA4S && isEnabled) {
-            Log.i(TAG, "Stoped Activity -> " + activity.getLocalClassName());
+            Log.i(TAG, "Stopped Activity -> " + activity.getLocalClassName());
             mA4S.stopActivity(activity);
         }
     }
@@ -249,7 +246,7 @@ public class Ad4PushTracker {
     /**
      * Lock or unlock the push notifications.
      * 
-     * @param true/false
+     * @param bool
      * @author sergiopereira
      */
     public void setPushNotificationLocked(boolean bool) {
@@ -262,7 +259,7 @@ public class Ad4PushTracker {
     /**
      * Lock or unlock the in-app messages.
      * 
-     * @param true/false
+     * @param bool
      * @author sergiopereira
      */
     public void setInAppDisplayLocked(boolean bool) {
@@ -365,10 +362,8 @@ public class Ad4PushTracker {
             boolean alreadyOpened = settings.getBoolean(HAS_OPENED_APP, false);
 
             if (!alreadyOpened) {
-                String currentDateandTime = getCurrentDateTime();
-
-                mA4S.trackEvent(EVENT_FIRST_OPEN_APP, "firstOpenDate=" + currentDateandTime);
-
+                String currentDateAndTime = DateTimeUtils.getCurrentDateTime();
+                mA4S.trackEvent(EVENT_FIRST_OPEN_APP, "firstOpenDate=" + currentDateAndTime);
                 alreadyOpened = true;
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean(HAS_OPENED_APP, alreadyOpened);
@@ -514,7 +509,7 @@ public class Ad4PushTracker {
             prefs.putDouble(CART_AVERAGE_VALUE, average);
             // Order
             prefs.putDouble(PURCHASE_GRAND_TOTAL, grandTotal);
-            prefs.putString(PURCHASE_LAST_DATE, getCurrentDateTime());
+            prefs.putString(PURCHASE_LAST_DATE, DateTimeUtils.getCurrentDateTime());
             prefs.putString(PURCHASE_COUPON_STATUS, coupon);
             prefs.putDouble(PURCHASES_SUM_VALUE, ordersSum);
             prefs.putInt(PURCHASES_COUNTER, purchasesNumber);
@@ -544,7 +539,7 @@ public class Ad4PushTracker {
             // Create bundle
             Bundle prefs = new Bundle();
             prefs.putInt(WISHLIST_STATUS, wishlistNumber);
-            prefs.putString(WISHLIST_DATE, getCurrentDateTime());
+            prefs.putString(WISHLIST_DATE, DateTimeUtils.getCurrentDateTime());
             prefs.putString(WISHLIST_PRODUCT, productSKU);
             mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK ADD TO FAV: " + prefs.toString());
@@ -567,7 +562,7 @@ public class Ad4PushTracker {
             // Create bundle
             Bundle prefs = new Bundle();
             prefs.putInt(WISHLIST_STATUS, wishlistNumber);
-            prefs.putString(WISHLIST_DATE, getCurrentDateTime());
+            prefs.putString(WISHLIST_DATE, DateTimeUtils.getCurrentDateTime());
             prefs.putString(WISHLIST_PRODUCT, productSKU);
             mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK REMOVE FROM FAV: " + prefs.toString());
@@ -678,10 +673,10 @@ public class Ad4PushTracker {
 
     public void trackSearch(String searchTerm) {
         if (isEnabled) {
-            String currentDateandTime = getCurrentDateTime();
+            String currentDateAndTime = DateTimeUtils.getCurrentDateTime();
             Bundle prefs = new Bundle();
             prefs.putString(LAST_SEARCH, searchTerm);
-            prefs.putString(LAST_SEARCH_DATE, currentDateandTime);
+            prefs.putString(LAST_SEARCH_DATE, currentDateAndTime);
             mA4S.updateDeviceInfo(prefs);
             Log.i(TAG, "TRACK SEARCH: " + prefs.toString());
         }
@@ -770,23 +765,28 @@ public class Ad4PushTracker {
         }
     }
 
-    private String getCurrentDateTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        return sdf.format(new Date());
-    }
 
+
+    /**
+     *
+     * @param context
+     * @return
+     */
     public static boolean getActiveAd4Push(Context context) {
         SharedPreferences settings = context.getSharedPreferences(AD4PUSH_PREFERENCES_PERSIST, Context.MODE_PRIVATE);
         return settings.getBoolean(IS_ENABLED, context.getResources().getBoolean(R.bool.ad4push_enabled));
     }
 
+    /**
+     *
+     * @param context
+     * @param isActive
+     */
     public static void setActiveAd4Push(Context context, boolean isActive) {
         SharedPreferences settings = context.getSharedPreferences(AD4PUSH_PREFERENCES_PERSIST, Context.MODE_PRIVATE);
-
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean(IS_ENABLED, isActive);
         editor.apply();
-
         Ad4PushTracker.startup(context);
     }
 
@@ -805,15 +805,7 @@ public class Ad4PushTracker {
                     Bundle bundle = new Bundle();
                     bundle.putString("gps_adid", id);
                     mA4S.updateDeviceInfo(bundle);
-                } catch (IllegalStateException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                } catch (NullPointerException e) {
+                } catch (IllegalStateException | GooglePlayServicesRepairableException | IOException | GooglePlayServicesNotAvailableException | NullPointerException e) {
                     e.printStackTrace();
                 }
             }
