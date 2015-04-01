@@ -1,11 +1,13 @@
 package com.mobile.utils.deeplink;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.constants.BundleConstants;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
@@ -15,6 +17,7 @@ import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.preferences.ShopPreferences;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.view.R;
 import com.mobile.view.fragments.CampaignsFragment;
@@ -127,7 +130,7 @@ public class DeepLinkManager {
      */
     private static Bundle loadDeepViewTag(Uri data, List<String> segments) {
         Log.i(TAG, "DEEP LINK URI: " + data + " " + segments);
-        // 
+        //
         Bundle bundle = null;
         try {
             // Default case
@@ -292,7 +295,7 @@ public class DeepLinkManager {
      */
     private static Bundle processCartLink(List<String> segments) {
         Log.i(TAG, "DEEP LINK TO CART");
-        // Default link 
+        // Default link
         String simpleSkuArray;
         FragmentType fragmentType = FragmentType.SHOPPING_CART;
         Bundle bundle = new Bundle();
@@ -442,7 +445,7 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle processCatalogLink(CatalogSort page, List<String> segments, Uri data) {
-        // Get catalog 
+        // Get catalog
         String catalogUrlKey = segments.get(PATH_DATA_POS);
         // Get filters
         Set<String> filters = getQueryParameterNames(data);
@@ -621,6 +624,108 @@ public class DeepLinkManager {
             start = end + 1;
         } while (start < query.length());
         return Collections.unmodifiableSet(names);
+    }
+
+    /*
+     * ############ DEEP LINK VALIDATIONS ############
+     */
+    /**
+     * Create a deep link bundle from deep link intent.<br>
+     * - From initial choose country<br>
+     * - From external uri<br>
+     * - From notification<br>
+     */
+    public static Bundle hasDeepLink(Intent intent) {
+        Log.i(TAG, "DEEP LINK RECEIVED INTENT: " + intent.toString());
+        // Create bundle from initial CC intent
+        Bundle bundle = hasInitialChooseCountry(intent);
+        // Create bundle from external URI intent
+        if(bundle == null) {
+            bundle = hasDeepLinkFromURI(intent);
+        }
+        // Create bundle from GCM intent
+        if(bundle == null) {
+            bundle = hasDeepLinkFromGCM(intent);
+        }
+        return bundle;
+    }
+
+    /**
+     * Validate deep link from External URI.
+     *
+     * @param intent The CC intent from Splash Screen
+     * @return Bundle or null
+     * @author sergiopereira
+     */
+    private static Bundle hasInitialChooseCountry(Intent intent) {
+        Log.i(TAG, "DEEP LINK: FROM INITIAL CHOOSE COUNTRY");
+        Bundle bundle = null;
+        // Validate intent
+        if (intent.hasExtra(ConstantsIntentExtra.FRAGMENT_TYPE)) {
+            Log.i(TAG, "DEEP LINK: VALID INTENT");
+            // Get extras from notifications
+            bundle = new Bundle();
+            bundle.putSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG, FragmentType.CHOOSE_COUNTRY);
+            bundle.putBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
+        }
+        Log.i(TAG, "DEEP LINK: INVALID INTENT");
+        return bundle;
+    }
+
+    /**
+     * Validate deep link from External URI.
+     *
+     * @param intent The URI intent
+     * @return Bundle or null
+     * @author sergiopereira
+     */
+    private static Bundle hasDeepLinkFromURI(Intent intent) {
+        Log.i(TAG, "DEEP LINK: FROM URI");
+        Bundle bundle = null;
+        // Get intent action ACTION_VIEW
+        String action = intent.getAction();
+        // Get intent data
+        Uri data = intent.getData();
+        // ## DEEP LINK FROM EXTERNAL URIs ##
+        if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
+            bundle = loadDeepLink(data);
+        }
+        return bundle;
+    }
+
+    /**
+     * Validate deep link from Push Notification.
+     *
+     * @param intent
+     * @return true or false
+     * @author sergiopereira
+     */
+    private static Bundle hasDeepLinkFromGCM(Intent intent) {
+        Log.i(TAG, "DEEP LINK: FROM GCM");
+        Bundle bundle = null;
+        // ## DEEP LINK FROM NOTIFICATION ##
+        Bundle payload = intent.getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
+        // Get Deep link
+        if (null != payload) {
+            // Get UTM
+            String mUtm = payload.getString(ConstantsIntentExtra.UTM_STRING);
+            // ## Google Analytics "General Campaign Measurement" ##
+            TrackerDelegator.trackGACampaign(JumiaApplication.INSTANCE.getApplicationContext(), mUtm);
+            Log.i(TAG, "UTM FROM GCM: " + mUtm);
+            // Get value from deep link key
+            String deepLink = payload.getString(BundleConstants.DEEPLINKING_PAGE_INDICATION);
+            Log.i(TAG, "DEEP LINK: GCM " + deepLink);
+            // Validate deep link
+            if (!TextUtils.isEmpty(deepLink)) {
+                // Create uri from the value
+                Uri data = Uri.parse(deepLink);
+                Log.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
+                // Load deep link
+                bundle = loadDeepLink(data);
+            }
+        }
+        Log.i(TAG, "DEEP LINK: NO GCM TAG");
+        return bundle;
     }
 
 }

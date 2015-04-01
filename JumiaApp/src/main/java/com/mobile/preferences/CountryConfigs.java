@@ -171,8 +171,14 @@ public class CountryConfigs {
         return mPhone2Call;
     }
 
-    public static boolean checkCountryRequirements(SharedPreferences sharedPrefs) {
-        return (sharedPrefs.contains(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE)) ? true : false;
+    /**
+     *
+     * @param context
+     * @return
+     */
+    public static boolean checkCountryRequirements(Context context) {
+        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPrefs.contains(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE);
     }
 
 }
