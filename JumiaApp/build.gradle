@@ -94,19 +94,16 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [AdjustEnvironment: "sandbox"]
             debuggable true
         }
         live {
             applicationIdSuffix ".live"
-            manifestPlaceholders = [AdjustEnvironment: "sandbox"]
             debuggable true
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-live.txt'
         }
         release {
-            manifestPlaceholders = [AdjustEnvironment: "production"]
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-market.txt'

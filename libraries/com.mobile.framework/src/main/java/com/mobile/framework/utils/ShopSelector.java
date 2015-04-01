@@ -6,6 +6,11 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.text.TextUtils;
 
+import com.adjust.sdk.Adjust;
+import com.adjust.sdk.AdjustAttribution;
+import com.adjust.sdk.AdjustConfig;
+import com.adjust.sdk.LogLevel;
+import com.adjust.sdk.OnAttributionChangedListener;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
 import com.mobile.framework.rest.RestClientSingleton;
@@ -60,7 +65,10 @@ public final class ShopSelector {
 		RestClientSingleton.getSingleton(context).init();
 
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
+		//ADJUST
 		AdjustTracker.startup(context);
+		initializeAdjust(context);
+
 		CurrencyFormatter.initialize(context, currencyCode);
 		AnalyticsGoogle.startup(context);
 		Ad4PushTracker.startup(context);
@@ -81,6 +89,33 @@ public final class ShopSelector {
     public static void init(Context context) {
         RestContract.init(context);
         RestClientSingleton.getSingleton(context).init();
+	}
+
+	/**
+	 * initialized Adjust tracker
+ 	 * @param context
+	 */
+	private static void initializeAdjust(final Context context) {
+		String appToken = context.getString(R.string.adjust_app_token);
+		String environment = AdjustConfig.ENVIRONMENT_SANDBOX;
+		if (context.getResources().getBoolean(R.bool.adjust_is_production_env)) {
+			environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
+		}
+		AdjustConfig config = new AdjustConfig(context, appToken, environment);
+		config.setLogLevel(LogLevel.VERBOSE); // if not configured, INFO is used by default
+		//PRE_INSTALL DEFAULT TRACKER
+		if (!TextUtils.isEmpty(context.getString(R.string.adjust_default_tracker))) {
+			config.setDefaultTracker(context.getString(R.string.adjust_default_tracker));
+		}
+
+		config.setOnAttributionChangedListener(new OnAttributionChangedListener() {
+			@Override
+			public void onAttributionChanged(AdjustAttribution attribution) {
+				AdjustTracker.saveResponseDataInfo(context, attribution.adgroup, attribution.network, attribution.campaign, attribution.creative);
+			}
+		});
+		Adjust.onCreate(config);
+
 	}
 
 	/**

@@ -38,6 +38,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.adjust.sdk.Adjust;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -323,8 +324,8 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         // Get the cart and perform auto login
         recoverUserDataFromBackground();
-
-        AdjustTracker.onResume(this);
+        if(Adjust.isEnabled())
+            AdjustTracker.onResume();
 
         TrackerDelegator.trackAppOpenAdjust(getApplicationContext(), mLaunchTime);
     }
@@ -354,7 +355,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         hideSearchComponent();
         // Dispatch saved hits
         AnalyticsGoogle.get().dispatchHits();
-        AdjustTracker.onPause();
+        if(Adjust.isEnabled())
+            AdjustTracker.onPause();
     }
 
     /*

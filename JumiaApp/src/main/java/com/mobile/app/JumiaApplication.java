@@ -14,6 +14,11 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4SApplication;
+import com.adjust.sdk.Adjust;
+import com.adjust.sdk.AdjustAttribution;
+import com.adjust.sdk.AdjustConfig;
+import com.adjust.sdk.LogLevel;
+import com.adjust.sdk.OnAttributionChangedListener;
 import com.mobile.forms.Form;
 import com.mobile.forms.FormData;
 import com.mobile.forms.PaymentMethodForm;
@@ -190,6 +195,35 @@ public class JumiaApplication extends A4SApplication {
         //
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
     }
+
+
+    /**
+     * initialized Adjust tracker
+     * @param context
+     */
+    private static void initializeAdjust(final Context context) {
+        String appToken = context.getString(com.mobile.framework.R.string.adjust_app_token);
+        String environment = AdjustConfig.ENVIRONMENT_SANDBOX;
+        if (context.getResources().getBoolean(com.mobile.framework.R.bool.adjust_is_production_env)) {
+            environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
+        }
+        AdjustConfig config = new AdjustConfig(context, appToken, environment);
+        config.setLogLevel(LogLevel.VERBOSE); // if not configured, INFO is used by default
+        //PRE_INSTALL DEFAULT TRACKER
+        if (!TextUtils.isEmpty(context.getString(com.mobile.framework.R.string.adjust_default_tracker))) {
+            config.setDefaultTracker(context.getString(com.mobile.framework.R.string.adjust_default_tracker));
+        }
+
+        config.setOnAttributionChangedListener(new OnAttributionChangedListener() {
+            @Override
+            public void onAttributionChanged(AdjustAttribution attribution) {
+                AdjustTracker.saveResponseDataInfo(context, attribution.adgroup, attribution.network, attribution.campaign, attribution.creative);
+            }
+        });
+        Adjust.onCreate(config);
+
+    }
+
 
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
         Log.d(TAG, "ON HANDLE");

@@ -6,5 +6,5 @@
 
     <!-- ##### PRE INSTALL ##### -->
     <bool name="create_pre_install_file">true</bool>
-    
+    <string name="adjust_default_tracker">6ohr47</string>
 </resources>

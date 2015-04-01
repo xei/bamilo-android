@@ -33,7 +33,6 @@ import com.mobile.framework.objects.Section;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.service.IRemoteServiceCallback;
-import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
@@ -128,7 +127,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get values from intent
         getDeepLinkView();
         // Tracking
-        AdjustTracker.onResume(this);
+//        if(Adjust.isEnabled())
+//            AdjustTracker.onResume();
         // Initialize application
         JumiaApplication.INSTANCE.init(initializationHandler);
     }

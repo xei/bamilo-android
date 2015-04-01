@@ -16,7 +16,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.tracking.Ad4PushTracker;
-import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.utils.EventType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -199,12 +198,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onResume() {
         super.onResume();
         Log.d(TAG, "ON RESUME");
-
         // AD4Push activity tracking for in-app messages
         //Ad4PushTracker.startActivityForInAppMessages(this);
         Ad4PushTracker.get().startActivity(this);
         //Ad4PushTracker.setPushNotificationLocked(true);
-        AdjustTracker.onResume(this);
     }
 
     /*
