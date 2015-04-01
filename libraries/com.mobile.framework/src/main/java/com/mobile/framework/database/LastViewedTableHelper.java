@@ -2,15 +2,18 @@ package com.mobile.framework.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
+import com.mobile.framework.objects.AddableToCart;
 import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.LastViewedAddableToCart;
 import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.objects.Variation;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +27,7 @@ import de.akquinet.android.androlog.Log;
  * This class is a helper to manage the Last Viewed products on database.
  * 
  * @author Manuel Silva
- * @modified Andre Lopes
+ * @modified Paulo Carvalho
  *
  */
 public class LastViewedTableHelper extends BaseTable {
@@ -380,6 +383,105 @@ public class LastViewedTableHelper extends BaseTable {
 		db.close();
 		return listLastViewed;
 	}
+
+	/**
+	 * updates the recent viewed on the database by removing all the entries and adding the new validated from the API
+	 * @param validProducts
+	 * @return
+	 */
+	public static boolean updateLastViewed(ArrayList<LastViewedAddableToCart> validProducts){
+		boolean success = false;
+		deleteAllLastViewed();
+
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+
+		try {
+			db.beginTransaction();
+
+			for (AddableToCart validProduct : validProducts) {
+				insertRecentlyViewedProduct(validProduct,db);
+			}
+
+			db.setTransactionSuccessful();
+			success = true;
+		} catch (SQLException e) {
+			Log.e(e.getMessage());
+			e.printStackTrace();
+			success = false;
+		}
+		finally {
+			db.endTransaction();
+		}
+		return success;
+
+	}
+
+
+	/**
+	 * insert Addable To Cart items retrieved from the validate call
+	 * @param product
+	 * @param db
+	 */
+	public static void insertRecentlyViewedProduct(AddableToCart product, SQLiteDatabase db) {
+		if (product != null) {
+
+			ContentValues values = new ContentValues();
+			values.put(LastViewedTableHelper._PRODUCT_SKU, product.getSku());
+			values.put(LastViewedTableHelper._PRODUCT_BRAND, product.getBrand());
+			values.put(LastViewedTableHelper._PRODUCT_NAME, product.getName());
+			values.put(LastViewedTableHelper._PRODUCT_PRICE, product.getPrice());
+			values.put(LastViewedTableHelper._PRODUCT_PRICE_ORIG, product.getPriceDouble());
+			values.put(LastViewedTableHelper._PRODUCT_PRICE_CONVERTED, product.getPriceConverted());
+			values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE, product.getSpecialPrice());
+			values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_ORIG, product.getSpecialPriceDouble());
+			values.put(LastViewedTableHelper._PRODUCT_SPECIAL_PRICE_CONVERTED, product.getSpecialPriceConverted());
+			values.put(LastViewedTableHelper._PRODUCT_DISCOUNT_PERCENTAGE, product.getMaxSavingPercentage());
+			values.put(LastViewedTableHelper._PRODUCT_URL, product.getUrl());
+			values.put(LastViewedTableHelper._PRODUCT_IMAGE_URL, product.getImageList().size() == 0 ? "" : product.getImageList().get(0));
+			values.put(LastViewedTableHelper._PRODUCT_IS_NEW, product.isNew());
+			values.put(LastViewedTableHelper._PRODUCT_SIZE_GUIDE, product.getSizeGuideUrl());
+
+			String simplesJSON = "";
+			ArrayList<ProductSimple> simples = product.getSimples();
+			if (!CollectionUtils.isEmpty(simples)) {
+				JSONArray simplesJSONArray = new JSONArray();
+				for (ProductSimple productSimple : simples) {
+					simplesJSONArray.put(productSimple.toJSON());
+				}
+				simplesJSON = simplesJSONArray.toString();
+			}
+			values.put(LastViewedTableHelper._PRODUCT_SIMPLES_JSON, simplesJSON);
+
+			String variationsJSON = "";
+			ArrayList<Variation> variations = product.getVariations();
+			if (!CollectionUtils.isEmpty(variations)) {
+				JSONArray variationsJSONArray = new JSONArray();
+				for (Variation variation : variations) {
+					variationsJSONArray.put(variation.toJSON());
+				}
+				variationsJSON = variationsJSONArray.toString();
+			}
+			values.put(LastViewedTableHelper._PRODUCT_VARIATIONS_JSON, variationsJSON);
+
+			String knownVariationsString = "";
+			ArrayList<String> knownVariations = product.getKnownVariations();
+			if (!CollectionUtils.isEmpty(knownVariations)) {
+				StringBuilder knownVariationsStringBuilder = new StringBuilder();
+				for (String knownVariation : knownVariations) {
+					knownVariationsStringBuilder.append(knownVariation);
+					knownVariationsStringBuilder.append(DELIMITER);
+				}
+				knownVariationsString = knownVariationsStringBuilder.toString();
+			}
+			values.put(LastViewedTableHelper._PRODUCT_KNOWN_VARIATIONS_LIST, knownVariationsString);
+
+			values.put(LastViewedTableHelper._PRODUCT_IS_COMPLETE, true);
+
+			db.insert(LastViewedTableHelper.TABLE_NAME, null, values);
+		}
+	}
+
+
 
 	/**
 	 * Remove lastViewed from database

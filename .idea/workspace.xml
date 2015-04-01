@@ -64,8 +64,129 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72278d06-ae76-453e-9928-17bc95bbd4d0" name="Default" comment="% Merge;">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/libs/A4SSDK-GooglePlayServices-1.5.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/DateTimeUtils.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/ValidateProductHelper.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/navigation_fragment_main.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/checkout/GetPollFormHelper.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/checkout/SetPollAnswerHelper.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutPollAnswerFragment.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout-large-land/checkout_poll_question.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/checkout_poll_question.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/build.gradle" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/libs/A4SSDK.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/libs/A4SSDK.jar.properties" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/AndroidManifest.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/anim/com_ad4screen_sdk_fade_in.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/anim/com_ad4screen_sdk_fade_out.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/anim/com_ad4screen_sdk_notification_slide_from_bottom.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/anim/com_ad4screen_sdk_notification_slide_to_bottom.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/animator/com_ad4screen_sdk_flip_in.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_actionbar_background_bottom_holo_dark.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_actionbar_background_top_holo_dark.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_back_dark.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_borderless_button_background.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_close.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_location_web_site.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_navigation_back.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_navigation_back_disabled.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_navigation_cancel.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_navigation_forward.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_navigation_forward_disabled.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_navigation_refresh.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_actionbar_background_bottom_holo_dark.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_actionbar_background_top_holo_dark.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_back_dark.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_borderless_button_background.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_close.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_location_web_site.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_navigation_back.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_navigation_back_disabled.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_navigation_cancel.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_navigation_forward.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_navigation_forward_disabled.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_navigation_refresh.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-v21/com_ad4screen_sdk_borderless_button.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_actionbar_background_bottom_holo_dark.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_actionbar_background_top_holo_dark.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_back_dark.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_borderless_button_background.9.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_close.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_location_web_site.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_navigation_back.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_navigation_back_disabled.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_navigation_cancel.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_navigation_forward.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_navigation_forward_disabled.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_navigation_refresh.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_backbutton.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_borderless_button.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_browsebutton.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_closebutton.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_forwardbutton.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_reloadbutton.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_reloadbutton_off.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_reloadbutton_on.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout-land-v21/com_ad4screen_sdk_template_interstitial.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout-land/com_ad4screen_sdk_template_interstitial.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout-land/com_ad4screen_sdk_template_interstitial_nobuttons.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout-v21/com_ad4screen_sdk_template_interstitial.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_banner.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_fullscreen.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_fullscreen_nobuttons.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_fullscreen_transparent.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_fullscreen_transparent_nobuttons.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_nobuttons.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_transparent.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_transparent_nobuttons.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_interstitial.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_interstitial_nobuttons.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_text.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_text_fullscreen.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_text_fullscreen_nobuttons.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_text_nobuttons.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values-fr/com_ad4screen_sdk_strings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values-v11/com_ad4screen_sdk_styles.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values-v14/com_ad4screen_sdk_styles.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values-xlarge/com_ad4screen_sdk_dimen.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values/com_ad4screen_sdk_attrs.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values/com_ad4screen_sdk_colors.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values/com_ad4screen_sdk_dimen.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values/com_ad4screen_sdk_strings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values/com_ad4screen_sdk_styles.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/tracking/Ad4PushTracker.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/tracking/Ad4PushTracker.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/AddableToCart.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/AddableToCart.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/tracking/AnalyticsGoogle.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/tracking/AnalyticsGoogle.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/BaseActivity.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/BaseActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/BaseFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/BaseFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CampaignPageFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CampaignPageFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/utils/CheckoutStepManager.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/utils/CheckoutStepManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/Constants.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/Constants.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/EventType.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/EventType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/FavouritesFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/FavouritesFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/controllers/fragments/FragmentController.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/controllers/fragments/FragmentController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/controllers/fragments/FragmentType.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/controllers/fragments/FragmentType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/components/customfontviews/HoloFontLoader.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/components/customfontviews/HoloFontLoader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/LastViewedAddableToCart.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/LastViewedAddableToCart.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/database/LastViewedTableHelper.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/database/LastViewedTableHelper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/MainFragmentActivity.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/MainFragmentActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/NavigationCategoryFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/NavigationCategoryFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/NavigationFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/NavigationFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/ProductSimple.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/ProductSimple.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/RecentlyViewedFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/RecentlyViewedFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/rest/RestConstants.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/rest/RestConstants.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/SplashScreenActivity.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/SplashScreenActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/scripts/blackberry/bb_repacking.sh" afterPath="$PROJECT_DIR$/JumiaApp/scripts/blackberry/bb_repacking.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/build.gradle" afterPath="$PROJECT_DIR$/JumiaApp/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaWear/build.gradle" afterPath="$PROJECT_DIR$/JumiaWear/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/FacebookSDK/build.gradle" afterPath="$PROJECT_DIR$/libraries/FacebookSDK/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/build.gradle" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/navigation_fragment_main.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/navigation_fragment_main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/proguard-project-live.txt" afterPath="$PROJECT_DIR$/JumiaApp/proguard-project-live.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/proguard-project-market.txt" afterPath="$PROJECT_DIR$/JumiaApp/proguard-project-market.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout/splash_screen.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout/splash_screen.xml" />
     </list>
     <ignored path="My Application.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -5866,6 +5987,46 @@
                 <option name="name" value="assembleJumiaNokiaXReleaseUnitTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Assembles all JumiaPreInstall builds." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="assembleJumiaPreInstall" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles the DebugJumiaPreInstall build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="assembleJumiaPreInstallDebug" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles the android (on device) tests for the JumiaPreInstallDebug build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="assembleJumiaPreInstallDebugAndroidTest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles the unit tests for the JumiaPreInstallDebug build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="assembleJumiaPreInstallDebugUnitTest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles the LiveJumiaPreInstall build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="assembleJumiaPreInstallLive" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles the unit tests for the JumiaPreInstallLive build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="assembleJumiaPreInstallLiveUnitTest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles the ReleaseJumiaPreInstall build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="assembleJumiaPreInstallRelease" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles the unit tests for the JumiaPreInstallRelease build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="assembleJumiaPreInstallReleaseUnitTest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Assembles the ReleaseJumia build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="assembleJumiaRelease" />
@@ -6052,6 +6213,18 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="checkJumiaNokiaXReleaseManifest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="checkJumiaPreInstallDebugManifest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="checkJumiaPreInstallLiveManifest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="checkJumiaPreInstallReleaseManifest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
@@ -6684,6 +6857,110 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallDebugAidl" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallDebugAndroidTestAidl" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallDebugAndroidTestJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallDebugAndroidTestNdk" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallDebugAndroidTestRenderscript" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallDebugAndroidTestSources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallDebugJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallDebugNdk" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallDebugRenderscript" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallDebugSources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallDebugUnitTestJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallDebugUnitTestSources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallLiveAidl" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallLiveJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallLiveNdk" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallLiveRenderscript" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallLiveSources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallLiveUnitTestJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallLiveUnitTestSources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallReleaseAidl" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallReleaseJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallReleaseNdk" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallReleaseRenderscript" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallReleaseSources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallReleaseUnitTestJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="compileJumiaPreInstallReleaseUnitTestSources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="compileJumiaReleaseAidl" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -6958,6 +7235,11 @@
                 <option name="name" value="connectedAndroidTestJumiaNokiaXDebug" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Installs and runs the tests for DebugJumiaPreInstall build on connected devices." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="connectedAndroidTestJumiaPreInstallDebug" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Installs and runs the tests for DebugJumiaSamsung build on connected devices." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="connectedAndroidTestJumiaSamsungDebug" />
@@ -7073,6 +7355,22 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="dexJumiaNokiaXRelease" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="dexJumiaPreInstallDebug" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="dexJumiaPreInstallDebugAndroidTest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="dexJumiaPreInstallLive" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="dexJumiaPreInstallRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
@@ -7576,6 +7874,86 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallDebugAndroidTestAssets" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallDebugAndroidTestBuildConfig" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallDebugAndroidTestResValues" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallDebugAndroidTestResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallDebugAndroidTestSources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallDebugAssets" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallDebugBuildConfig" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallDebugResValues" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallDebugResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallDebugSources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallLiveAssets" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallLiveBuildConfig" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallLiveResValues" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallLiveResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallLiveSources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallReleaseAssets" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallReleaseBuildConfig" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallReleaseResValues" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallReleaseResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="generateJumiaPreInstallReleaseSources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="generateJumiaReleaseAssets" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -7784,6 +8162,14 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="handleJumiaPreInstallLiveMicroApk" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="handleJumiaPreInstallReleaseMicroApk" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="handleJumiaReleaseMicroApk" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -7916,6 +8302,26 @@
                 <option name="description" value="Installs the ReleaseJumiaNokiaX build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="installJumiaNokiaXRelease" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Installs the DebugJumiaPreInstall build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="installJumiaPreInstallDebug" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Installs the android (on device) tests for the JumiaPreInstallDebug build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="installJumiaPreInstallDebugAndroidTest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Installs the LiveJumiaPreInstall build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="installJumiaPreInstallLive" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Installs the ReleaseJumiaPreInstall build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="installJumiaPreInstallRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Installs the ReleaseJumia build." />
@@ -8053,6 +8459,21 @@
                 <option name="name" value="lintJumiaNokiaXRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Runs lint on the JumiaPreInstallDebug build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="lintJumiaPreInstallDebug" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Runs lint on the JumiaPreInstallLive build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="lintJumiaPreInstallLive" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Runs lint on the JumiaPreInstallRelease build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="lintJumiaPreInstallRelease" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Runs lint on the JumiaRelease build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="lintJumiaRelease" />
@@ -8111,6 +8532,11 @@
                 <option name="description" value="Runs lint on just the fatal issues in the JumiaNokiaXRelease build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="lintVitalJumiaNokiaXRelease" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Runs lint on just the fatal issues in the JumiaPreInstallRelease build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="lintVitalJumiaPreInstallRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Runs lint on just the fatal issues in the JumiaRelease build." />
@@ -8313,6 +8739,38 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="mergeJumiaPreInstallDebugAndroidTestAssets" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="mergeJumiaPreInstallDebugAndroidTestResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="mergeJumiaPreInstallDebugAssets" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="mergeJumiaPreInstallDebugResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="mergeJumiaPreInstallLiveAssets" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="mergeJumiaPreInstallLiveResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="mergeJumiaPreInstallReleaseAssets" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="mergeJumiaPreInstallReleaseResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="mergeJumiaReleaseAssets" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -8490,6 +8948,22 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="packageJumiaPreInstallDebug" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="packageJumiaPreInstallDebugAndroidTest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="packageJumiaPreInstallLive" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="packageJumiaPreInstallRelease" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="packageJumiaRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -8618,6 +9092,18 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="preCompileJumiaPreInstallDebugUnitTestJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="preCompileJumiaPreInstallLiveUnitTestJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="preCompileJumiaPreInstallReleaseUnitTestJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="preCompileJumiaReleaseUnitTestJava" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -8710,6 +9196,14 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="preDexJumiaPreInstallDebug" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="preDexJumiaPreInstallDebugAndroidTest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="preDexJumiaSamsungDebug" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -8786,6 +9280,22 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="preJumiaPreInstallDebugAndroidTestBuild" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="preJumiaPreInstallDebugBuild" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="preJumiaPreInstallLiveBuild" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="preJumiaPreInstallReleaseBuild" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="preJumiaReleaseBuild" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -8837,6 +9347,11 @@
                 <option name="name" value="prepareBamiloReleaseDependencies" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare com.ad4screen.sdk:A4SSDK:3.1.2" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="prepareComAd4screenSdkA4SSDK312Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Prepare com.android.support:appcompat-v7:21.0.3" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="prepareComAndroidSupportAppcompatV72103Library" />
@@ -8850,16 +9365,6 @@
                 <option name="description" value="Prepare com.android.support:support-v4:21.0.3" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="prepareComAndroidSupportSupportV42103Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare com.google.android.gms:play-services-base:6.5.87" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
-                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesBase6587Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare com.google.android.gms:play-services-wearable:6.5.87" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
-                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesWearable6587Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare com.google.android.support:wearable:1.1.0" />
@@ -8881,16 +9386,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="prepareDarazReleaseDependencies" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare JUMIAAND.libraries:A4SSDK:unspecified" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
-                <option name="name" value="prepareJUMIAANDLibrariesA4SSDKUnspecifiedLibrary" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare JUMIAAND.libraries:Adjust:unspecified" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
-                <option name="name" value="prepareJUMIAANDLibrariesAdjustUnspecifiedLibrary" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare JUMIAAND.libraries:com.mobile.framework:unspecified" />
@@ -8971,6 +9466,22 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="prepareJumiaNokiaXReleaseDependencies" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="prepareJumiaPreInstallDebugAndroidTestDependencies" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="prepareJumiaPreInstallDebugDependencies" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="prepareJumiaPreInstallLiveDependencies" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="prepareJumiaPreInstallReleaseDependencies" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
@@ -9286,6 +9797,54 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="processJumiaPreInstallDebugAndroidTestJavaRes" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="processJumiaPreInstallDebugAndroidTestManifest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="processJumiaPreInstallDebugAndroidTestResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="processJumiaPreInstallDebugJavaRes" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="processJumiaPreInstallDebugManifest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="processJumiaPreInstallDebugResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="processJumiaPreInstallLiveJavaRes" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="processJumiaPreInstallLiveManifest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="processJumiaPreInstallLiveResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="processJumiaPreInstallReleaseJavaRes" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="processJumiaPreInstallReleaseManifest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="processJumiaPreInstallReleaseResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="processJumiaReleaseJavaRes" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -9438,6 +9997,14 @@
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="proguardJumiaPreInstallLive" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="proguardJumiaPreInstallRelease" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="proguardJumiaRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
@@ -9499,6 +10066,14 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="shrinkJumiaNokiaXReleaseResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="shrinkJumiaPreInstallLiveResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="shrinkJumiaPreInstallReleaseResources" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
@@ -9614,6 +10189,21 @@
                 <option name="description" value="Run unit tests for the JumiaNokiaXRelease build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="testJumiaNokiaXRelease" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Run unit tests for the JumiaPreInstallDebug build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="testJumiaPreInstallDebug" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Run unit tests for the JumiaPreInstallLive build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="testJumiaPreInstallLive" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Run unit tests for the JumiaPreInstallRelease build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="testJumiaPreInstallRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Run unit tests for the JumiaRelease build." />
@@ -9771,6 +10361,26 @@
                 <option name="name" value="uninstallJumiaNokiaXRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Uninstalls the DebugJumiaPreInstall build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="uninstallJumiaPreInstallDebug" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Uninstalls the android (on device) tests for the JumiaPreInstallDebug build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="uninstallJumiaPreInstallDebugAndroidTest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Uninstalls the LiveJumiaPreInstall build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="uninstallJumiaPreInstallLive" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Uninstalls the ReleaseJumiaPreInstall build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="uninstallJumiaPreInstallRelease" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Uninstalls the ReleaseJumia build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="uninstallJumiaRelease" />
@@ -9914,6 +10524,18 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
                 <option name="name" value="zipalignJumiaNokiaXRelease" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="zipalignJumiaPreInstallDebug" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="zipalignJumiaPreInstallLive" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="zipalignJumiaPreInstallRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
@@ -11974,16 +12596,6 @@
                 <option name="name" value="prepareComAndroidSupportSupportV42100Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare com.google.android.gms:play-services-base:6.5.87" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaWear" />
-                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesBase6587Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare com.google.android.gms:play-services-wearable:6.5.87" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaWear" />
-                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesWearable6587Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Prepare com.google.android.support:wearable:1.1.0" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaWear" />
                 <option name="name" value="prepareComGoogleAndroidSupportWearable110Library" />
@@ -13369,6 +13981,10 @@
                 <option name="description" value="Installs the android (on device) tests for the Debug build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/Adjust" />
                 <option name="name" value="installDebugAndroidTest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/Adjust" />
+                <option name="name" value="jar" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Runs lint on all variants." />
@@ -14922,6 +15538,11 @@
                 <option name="name" value="preReleaseBuild" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare com.ad4screen.sdk:A4SSDK:3.1.2" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
+                <option name="name" value="prepareComAd4screenSdkA4SSDK312Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Prepare com.android.support:appcompat-v7:21.0.3" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
                 <option name="name" value="prepareComAndroidSupportAppcompatV72103Library" />
@@ -14937,27 +15558,12 @@
                 <option name="name" value="prepareComAndroidSupportSupportV42103Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare com.google.android.gms:play-services-base:6.5.87" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
-                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesBase6587Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
                 <option name="name" value="prepareDebugAndroidTestDependencies" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
                 <option name="name" value="prepareDebugDependencies" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare JUMIAAND.libraries:A4SSDK:unspecified" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
-                <option name="name" value="prepareJUMIAANDLibrariesA4SSDKUnspecifiedLibrary" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare JUMIAAND.libraries:Adjust:unspecified" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
-                <option name="name" value="prepareJUMIAANDLibrariesAdjustUnspecifiedLibrary" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare JUMIAAND.libraries:com.viewpagerindicator:unspecified" />
@@ -15715,12 +16321,11 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/commons-codec/commons-codec/1.4/commons-codec-1.4.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.jar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/google/m2repository/com/google/android/support/wearable/1.1.0/wearable-1.1.0.aar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/google/m2repository/com/google/android/gms/play-services-wearable/6.5.87/play-services-wearable-6.5.87.aar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/android/m2repository/com/android/support/recyclerview-v7/21.0.3/recyclerview-v7-21.0.3.aar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/google/m2repository/com/google/android/gms/play-services-base/6.5.87/play-services-base-6.5.87.aar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/android/m2repository/com/android/support/support-v4/21.0.3/support-v4-21.0.3.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/support/wearable/1.1.0/wearable-1.1.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/recyclerview-v7/21.0.3/recyclerview-v7-21.0.3.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-v4/21.0.3/support-v4-21.0.3.aar" />
+                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-wearable 7.0.0" />
                           </list>
                         </option>
                         <option name="path" value="$PROJECT_DIR$/JumiaApp" />
@@ -15806,12 +16411,11 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/commons-codec/commons-codec/1.4/commons-codec-1.4.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.jar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/google/m2repository/com/google/android/support/wearable/1.1.0/wearable-1.1.0.aar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/google/m2repository/com/google/android/gms/play-services-wearable/6.5.87/play-services-wearable-6.5.87.aar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/android/m2repository/com/android/support/support-v4/21.0.0/support-v4-21.0.0.aar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/android/m2repository/com/android/support/recyclerview-v7/21.0.0/recyclerview-v7-21.0.0.aar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/google/m2repository/com/google/android/gms/play-services-base/6.5.87/play-services-base-6.5.87.aar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/21.0.0/support-annotations-21.0.0.jar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/support/wearable/1.1.0/wearable-1.1.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-v4/21.0.0/support-v4-21.0.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/recyclerview-v7/21.0.0/recyclerview-v7-21.0.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.0/support-annotations-21.0.0.jar" />
+                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-wearable 7.0.0" />
                           </list>
                         </option>
                         <option name="path" value="$PROJECT_DIR$/JumiaWear" />
@@ -16067,7 +16671,6 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/commons-codec/commons-codec/1.4/commons-codec-1.4.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.jar" />
-                            <option value="$MODULE_DIR$/libs/A4SSDK.jar" />
                           </list>
                         </option>
                         <option name="path" value="$PROJECT_DIR$/libraries/A4SSDK" />
@@ -16409,18 +17012,25 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/commons-codec/commons-codec/1.4/commons-codec-1.4.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.jar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/android/m2repository/com/android/support/appcompat-v7/21.0.3/appcompat-v7-21.0.3.aar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/android/m2repository/com/android/support/recyclerview-v7/21.0.3/recyclerview-v7-21.0.3.aar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/google/m2repository/com/google/android/gms/play-services-base/6.5.87/play-services-base-6.5.87.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/appcompat-v7/21.0.3/appcompat-v7-21.0.3.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/recyclerview-v7/21.0.3/recyclerview-v7-21.0.3.aar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.newrelic.agent.android/android-agent/4.120.0/37e9769c21827e9b8c4c3a686f8264fda9c41075/android-agent-4.120.0.jar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/android/m2repository/com/android/support/support-v4/21.0.3/support-v4-21.0.3.aar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ad4screen.sdk/A4SSDK/3.1.2/47a594820e2c7bd9b6c084afb883bb8850fa9d49/A4SSDK-3.1.2.aar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.adjust.sdk/adjust-android/4.0.2/29ec0ffa1cab5077c2f9efc5ff7c9fd608477dfa/adjust-android-4.0.2.jar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-v4/21.0.3/support-v4-21.0.3.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar" />
+                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-base 7.0.0" />
+                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-location 7.0.0" />
+                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-analytics 7.0.0" />
+                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-gcm 7.0.0" />
+                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-appindexing 7.0.0" />
+                            <option value="$MODULE_DIR$/libs/A4SSDK-GooglePlayServices-1.5.jar" />
                             <option value="$MODULE_DIR$/libs/androlog-1.0.1.jar" />
                             <option value="$MODULE_DIR$/libs/httpclientandroidlib-1.1.2.jar" />
                             <option value="$MODULE_DIR$/libs/commons-collections4-4.0.jar" />
                             <option value="$MODULE_DIR$/libs/commons-io-2.4.jar" />
                             <option value="$MODULE_DIR$/libs/android-async-http-1.4.3.jar" />
-                            <option value="$MODULE_DIR$/libs/apptimize-android-2.4.0.jar" />
+                            <option value="$MODULE_DIR$/libs/apptimize-android-2.6.5.jar" />
                             <option value="$MODULE_DIR$/libs/HockeySDK-3.0.2.jar" />
                           </list>
                         </option>
@@ -16507,8 +17117,8 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/commons-codec/commons-codec/1.4/commons-codec-1.4.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.jar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/android/m2repository/com/android/support/support-v4/21.0.3/support-v4-21.0.3.aar" />
-                            <option value="$PROJECT_DIR$/../../../DEV/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-v4/21.0.3/support-v4-21.0.3.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar" />
                           </list>
                         </option>
                         <option name="path" value="$PROJECT_DIR$/libraries/com.viewpagerindicator" />
@@ -16703,7 +17313,7 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1985" />
+    <option name="x" value="65" />
     <option name="y" value="24" />
     <option name="width" value="1855" />
     <option name="height" value="1056" />
@@ -16731,29 +17341,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scratches">
-        <subPane />
-      </pane>
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="Scope">
         <subPane subId="Default">
           <PATH>
@@ -16772,7 +17359,6 @@
           </PATH>
         </subPane>
         <subPane subId="Problems" />
-        <subPane subId="Tests" />
         <subPane subId="Production">
           <PATH>
             <PATH_ELEMENT USER_OBJECT="Root">
@@ -16781,6 +17367,7 @@
             </PATH_ELEMENT>
           </PATH>
         </subPane>
+        <subPane subId="Tests" />
         <subPane subId="Project Files">
           <PATH>
             <PATH_ELEMENT USER_OBJECT="Root">
@@ -16840,6 +17427,26 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="JumiaApp" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JumiaApp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JumiaApp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JumiaApp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -16909,6 +17516,9 @@
             </PATH_ELEMENT>
           </PATH>
         </subPane>
+      </pane>
+      <pane id="Scratches">
+        <subPane />
       </pane>
     </panes>
   </component>
@@ -17022,17 +17632,6 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="BashConfigurationType" factoryName="Bash">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="INTERPRETER_PATH" value="/bin/bash" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <module name="" />
-      <envs />
-      <method />
-    </configuration>
     <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -17077,9 +17676,7 @@
       </option>
       <envs />
       <patterns />
-      <method>
-        <option name="Android.Gradle.BeforeRunTask" enabled="false" />
-      </method>
+      <method />
     </configuration>
     <configuration default="true" type="JarApplication" factoryName="JAR Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -17208,7 +17805,6 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="72278d06-ae76-453e-9928-17bc95bbd4d0" name="Default" comment="" />
-      <changelist id="" name="gradle_artifacts" comment="" />
       <created>1424081520632</created>
       <option name="number" value="Default" />
       <updated>1424081520632</updated>
@@ -17363,16 +17959,13 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1985" y="24" width="1855" height="1056" extended-state="6" />
+    <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946378" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3279743" sideWeight="0.49640685" order="16" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.4997236" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39978564" sideWeight="0.4997236" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.50469875" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3290461" sideWeight="0.49530128" order="10" side_tool="false" content_ui="tabs" />
@@ -17380,22 +17973,25 @@
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.249309" sideWeight="0.43610224" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29474813" sideWeight="0.4997236" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25080386" sideWeight="0.49751243" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32984003" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.4997236" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32984003" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2498618" sideWeight="0.49369368" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.249309" sideWeight="0.5638978" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.4997236" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="165" y="96" width="1655" height="884" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.4997236" order="7" side_tool="false" content_ui="tabs" x="65" y="-4" width="1855" height="1084" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30868167" sideWeight="0.4991708" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.4997236" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46516612" sideWeight="0.6053068" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946378" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.4997236" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39978564" sideWeight="0.4997236" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -17412,9 +18008,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <option name="myTodoPanelSettings">
-      <TodoPanelSettings />
-    </option>
     <MESSAGE value="% create temp branch for android studio project;" />
     <MESSAGE value="% final gradle settings;" />
     <MESSAGE value="% final project structure;" />
@@ -17503,7 +18096,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.3114755">
           <caret line="117" column="47" selection-start-line="117" selection-start-column="45" selection-end-line="117" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17511,7 +18103,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.0163934">
           <caret line="381" column="52" selection-start-line="381" selection-start-column="48" selection-end-line="381" selection-end-column="56" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17519,7 +18110,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33221477">
           <caret line="60" column="87" selection-start-line="60" selection-start-column="74" selection-end-line="60" selection-end-column="87" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17527,7 +18117,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33221477">
           <caret line="78" column="32" selection-start-line="78" selection-start-column="32" selection-end-line="78" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17535,12 +18124,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="480" column="13" selection-start-line="480" selection-start-column="13" selection-end-line="480" selection-end-column="13" />
-          <folding>
-            <element signature="e#18001#18002#0" expanded="false" />
-            <element signature="e#18032#18033#0" expanded="false" />
-            <element signature="e#18158#18159#0" expanded="false" />
-            <element signature="e#18198#18199#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -17548,7 +18131,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="82" column="34" selection-start-line="82" selection-start-column="34" selection-end-line="82" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17556,7 +18138,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33221477">
           <caret line="272" column="43" selection-start-line="272" selection-start-column="43" selection-end-line="272" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17564,9 +18145,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="2.7516778">
           <caret line="128" column="57" selection-start-line="128" selection-start-column="57" selection-end-line="128" selection-end-column="57" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -17582,18 +18160,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.4798658">
           <caret line="63" column="90" selection-start-line="63" selection-start-column="82" selection-end-line="63" selection-end-column="90" />
-          <folding>
-            <element signature="e#11155#11320#0" expanded="false" />
-            <element signature="e#11319#11320#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../DEV/android-sdk-linux/sources/android-21/android/view/View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33221477">
-          <caret line="17768" column="16" selection-start-line="17768" selection-start-column="16" selection-end-line="17768" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17601,7 +18167,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.30201343">
           <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17614,14 +18179,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/res/layout/fragment_root_error.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.875">
           <caret line="37" column="44" selection-start-line="37" selection-start-column="44" selection-end-line="37" selection-end-column="44" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/res/values/styles.xml">
@@ -17649,37 +18213,29 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_no_connection_button_retry.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.375">
           <caret line="17" column="54" selection-start-line="17" selection-start-column="54" selection-end-line="17" selection-end-column="54" />
-          <folding>
-            <element signature="e#227#257#0" expanded="true" />
-            <element signature="e#654#674#0" expanded="true" />
-            <element signature="e#1090#1115#0" expanded="true" />
-            <element signature="e#1190#1205#0" expanded="true" />
-          </folding>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_no_connection_layout.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_no_connection_layout.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.48037678">
           <caret line="17" column="44" selection-start-line="17" selection-start-column="44" selection-end-line="17" selection-end-column="44" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/libraries/com.mobile.framework/libs/httpclientandroidlib-1.1.2.jar!/ch/boye/httpclientandroidlib/client/cache/HttpCacheStorage.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34676006">
           <caret line="17" column="9" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17687,7 +18243,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-7.2">
           <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17695,7 +18250,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.18914185">
           <caret line="18" column="17" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17703,10 +18257,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.7348995">
           <caret line="74" column="30" selection-start-line="74" selection-start-column="30" selection-end-line="74" selection-end-column="30" />
-          <folding>
-            <element signature="e#3201#4209#0" expanded="false" />
-            <element signature="e#4208#4209#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -17714,18 +18264,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.50437826">
           <caret line="108" column="5" selection-start-line="108" selection-start-column="5" selection-end-line="108" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../DEV/android-sdk-linux/sources/android-21/android/net/Uri.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36241612">
-          <caret line="431" column="23" selection-start-line="431" selection-start-column="23" selection-end-line="431" selection-end-column="23" />
-          <folding>
-            <element signature="e#15029#15030#0" expanded="false" />
-            <element signature="e#15076#15077#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -17733,10 +18271,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.50437826">
           <caret line="23" column="27" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
-          <folding>
-            <element signature="e#586#587#0" expanded="true" />
-            <element signature="e#630#631#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -17744,10 +18278,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-7.6">
           <caret line="62" column="16" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
-          <folding>
-            <element signature="e#2187#2188#0" expanded="true" />
-            <element signature="e#2217#2218#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -17755,7 +18285,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5771812">
           <caret line="184" column="23" selection-start-line="184" selection-start-column="23" selection-end-line="184" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17763,7 +18292,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33221477">
           <caret line="27" column="20" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17771,10 +18299,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7281879">
           <caret line="146" column="29" selection-start-line="146" selection-start-column="29" selection-end-line="146" selection-end-column="29" />
-          <folding>
-            <element signature="e#2396#2397#0" expanded="false" />
-            <element signature="e#2430#2431#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -17782,15 +18306,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6502242">
           <caret line="47" column="30" selection-start-line="47" selection-start-column="30" selection-end-line="47" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../DEV/android-sdk-linux/sources/android-21/java/net/URI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0427631">
-          <caret line="458" column="29" selection-start-line="458" selection-start-column="25" selection-end-line="458" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17798,10 +18313,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.44720498">
           <caret line="23" column="26" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
-          <folding>
-            <element signature="e#551#552#0" expanded="true" />
-            <element signature="e#595#596#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -17809,23 +18320,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3064275">
           <caret line="133" column="51" selection-start-line="133" selection-start-column="51" selection-end-line="133" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/res/layout/fragment_root_retry.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-12.375">
           <caret line="22" column="42" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
-          <folding>
-            <element signature="e#439#459#0" expanded="true" />
-            <element signature="e#613#641#0" expanded="true" />
-            <element signature="e#682#702#0" expanded="true" />
-          </folding>
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/BaseActivity.java">
@@ -17840,7 +18345,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="396" column="22" selection-start-line="396" selection-start-column="22" selection-end-line="396" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17864,7 +18368,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="202" column="21" selection-start-line="202" selection-start-column="21" selection-end-line="202" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17872,18 +18375,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="89" column="16" selection-start-line="89" selection-start-column="16" selection-end-line="89" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../DEV/android-sdk-linux/sources/android-21/android/os/Handler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39261746">
-          <caret line="506" column="38" selection-start-line="506" selection-start-column="38" selection-end-line="506" selection-end-column="38" />
-          <folding>
-            <element signature="e#21094#21095#0" expanded="false" />
-            <element signature="e#21143#21144#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -17891,7 +18382,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="364" column="32" selection-start-line="364" selection-start-column="32" selection-end-line="364" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17908,41 +18398,9 @@
         <state vertical-scroll-proportion="0.2147651">
           <caret line="475" column="6" selection-start-line="475" selection-start-column="6" selection-end-line="475" selection-end-column="6" />
           <folding>
-            <element signature="e#6653#6654#0" expanded="true" />
-            <element signature="e#6703#6704#0" expanded="true" />
-            <element signature="e#10266#10267#0" expanded="true" />
-            <element signature="e#10297#10298#0" expanded="true" />
             <element signature="e#11892#11893#0" expanded="true" />
             <element signature="e#11929#11930#0" expanded="true" />
-            <element signature="e#12807#13051#0" expanded="true" />
-            <element signature="e#13050#13051#0" expanded="true" />
-            <element signature="e#21779#21821#0" expanded="true" />
             <element signature="e#23219#23220#0" expanded="true" />
-            <element signature="e#23275#23276#0" expanded="true" />
-            <element signature="e#24949#24950#0" expanded="true" />
-            <element signature="e#25011#25012#0" expanded="true" />
-            <element signature="e#25866#26262#0" expanded="true" />
-            <element signature="e#26261#26262#0" expanded="true" />
-            <element signature="e#26632#26786#0" expanded="true" />
-            <element signature="e#26785#26786#0" expanded="true" />
-            <element signature="e#29636#29657#0" expanded="true" />
-            <element signature="e#29683#29709#0" expanded="true" />
-            <element signature="e#29950#29971#0" expanded="true" />
-            <element signature="e#29997#30023#0" expanded="true" />
-            <element signature="e#31851#31852#0" expanded="true" />
-            <element signature="e#31899#31900#0" expanded="true" />
-            <element signature="e#32002#32003#0" expanded="true" />
-            <element signature="e#32053#32054#0" expanded="true" />
-            <element signature="e#32138#32179#0" expanded="true" />
-            <element signature="e#32349#32370#0" expanded="true" />
-            <element signature="e#33422#33423#0" expanded="true" />
-            <element signature="e#33454#33455#0" expanded="true" />
-            <element signature="e#34726#34756#0" expanded="true" />
-            <element signature="e#37706#37746#0" expanded="true" />
-            <element signature="e#37905#37941#0" expanded="true" />
-            <element signature="e#37978#38021#0" expanded="true" />
-            <element signature="e#39946#39947#0" expanded="true" />
-            <element signature="e#39995#39996#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -17951,7 +18409,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.24161074">
           <caret line="77" column="93" selection-start-line="77" selection-start-column="93" selection-end-line="77" selection-end-column="93" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17959,7 +18416,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.66442955">
           <caret line="55" column="93" selection-start-line="55" selection-start-column="93" selection-end-line="55" selection-end-column="93" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17967,10 +18423,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="448" column="9" selection-start-line="448" selection-start-column="9" selection-end-line="448" selection-end-column="9" />
-          <folding>
-            <element signature="e#20164#20165#0" expanded="true" />
-            <element signature="e#20202#20203#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -17978,7 +18431,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.42281878">
           <caret line="148" column="94" selection-start-line="148" selection-start-column="94" selection-end-line="148" selection-end-column="94" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17986,7 +18438,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -17994,7 +18445,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33221477">
           <caret line="826" column="125" selection-start-line="826" selection-start-column="125" selection-end-line="826" selection-end-column="125" />
-          <folding />
         </state>
       </provider>
     </entry>

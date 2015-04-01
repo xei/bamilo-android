@@ -12,15 +12,21 @@ android {
 }
 
 dependencies {
+    /** REMOTE MAVEN LIBS  **/
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:recyclerview-v7:21.0.3'
-    compile 'com.google.android.gms:play-services-base:6.5.87'
-    /** REMOTE MAVEN LIBS  **/
+    compile 'com.google.android.gms:play-services-base:7.0.0'
+    compile 'com.google.android.gms:play-services-location:7.0.0'
+    compile 'com.google.android.gms:play-services-analytics:7.0.0'
+    compile 'com.google.android.gms:play-services-gcm:7.0.0'
+    compile 'com.google.android.gms:play-services-appindexing:7.0.0'
     compile 'com.newrelic.agent.android:android-agent:4.120.0'
+    compile 'com.ad4screen.sdk:A4SSDK:3.1.2'
     compile 'com.adjust.sdk:adjust-android:4.0.2'
+    compile files('libs/A4SSDK-GooglePlayServices-1.5.jar')
+    /** LOCAL LIBS  **/
     compile project(':libraries:FacebookSDK')
     compile project(':libraries:Volley')
-    compile project(':libraries:A4SSDK')
 //    compile project(':libraries:Adjust')
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('libs/apptimize-android-2.6.5.jar')

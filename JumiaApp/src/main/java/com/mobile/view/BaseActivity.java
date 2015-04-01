@@ -2309,7 +2309,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ADDRESSES.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.CREATE_ADDRESS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.EDIT_ADDRESS.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.POLL.toString());
     }
     
     /*
