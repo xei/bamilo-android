@@ -29,8 +29,8 @@
     <string name="adjust_app_token">edrwbcb5wtns</string>
 
     <!-- APPTIMIZE -->
-    <item name="apptimize_enabled" type="bool">false</item>
-    <string name="apptimize_apikey"/>
+    <item name="apptimize_enabled" type="bool">true</item>
+    <string name="apptimize_apikey">CTbngwXi_7DNjjfYwEj--L_JYKHHUug</string>
 
     <!-- GTM -->
     <string name="gtm_key">GTM-NXV7V2</string>

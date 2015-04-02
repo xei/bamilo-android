@@ -99,8 +99,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
     private HeaderGridView mGridView;
 
-    private View mBannerView;
-
     private DialogGenericFragment mDialogAddedToCart;
 
     private boolean isAddingProductToCart;
@@ -263,6 +261,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     public void onDestroyView() {
         Log.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
+
     }
     
     /*
@@ -295,7 +294,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private void showCampaign() {
         Log.i(TAG, "LOAD CAMPAIGN");
         // Get banner
-        mBannerView = getBannerView();
+        View mBannerView = getBannerView();
 		// Add banner to header
         if (BannerVisibility.HIDDEN != bannerState) mGridView.addHeaderView(mBannerView);
         // Validate the current data
