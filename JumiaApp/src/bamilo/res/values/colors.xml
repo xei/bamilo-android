@@ -2,6 +2,6 @@
 <resources>
 
     <!-- ANDROID 5.0: COLOR ACCENT -->
-    <color name="color_accent">@color/orange_basic</color>
+    <color name="color_accent">@color/orange_ffa200</color>
 
 </resources>
