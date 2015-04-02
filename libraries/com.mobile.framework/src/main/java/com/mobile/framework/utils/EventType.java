@@ -213,6 +213,8 @@ public enum EventType {
 
     GET_SELLER_REVIEWS,
 
+    VALIDATE_PRODUCTS("http:/catalog/validate/", RestContract.NO_CACHE),
+
     GET_SHOP_EVENT;
 
     public final String action;

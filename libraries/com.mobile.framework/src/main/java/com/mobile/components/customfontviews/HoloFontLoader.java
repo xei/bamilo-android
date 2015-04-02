@@ -1,15 +1,5 @@
 package com.mobile.components.customfontviews;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -21,6 +11,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mobile.framework.R;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class HoloFontLoader {
     
@@ -35,11 +35,9 @@ public class HoloFontLoader {
     public static final int TEXT_STYLE_ITALIC;
     public static final int TEXT_STYLE_LIGHT;
     public static final int TEXT_STYLE_NORMAL;
-    
-    public static Font BURMESE;
 
     static {
-        sFontStyleMapping = new HashMap<String, Integer>();
+        sFontStyleMapping = new HashMap<>();
 
         TEXT_STYLE_NORMAL = 0;
         TEXT_STYLE_BOLD = registerTextStyle("bold");
