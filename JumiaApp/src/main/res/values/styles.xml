@@ -45,7 +45,7 @@
     <style name="activity_sectionheader_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/orange_basic</item>
+        <item name="android:textColor">@color/orange_ffa200</item>
         <item name="android:textSize">@dimen/text_s</item>
         <item name="android:layout_marginLeft">@dimen/margin_huge</item>
         <item name="android:layout_marginStart">@dimen/margin_huge</item>
@@ -150,7 +150,7 @@
         <item name="android:layout_height">@dimen/action_bar_icon_size</item>
         <item name="android:textSize">11sp</item>
         <item name="android:text">0</item>
-        <item name="android:textColor">@color/orange_basic</item>
+        <item name="android:textColor">@color/orange_ffa200</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:paddingStart">5dp</item>
@@ -393,7 +393,7 @@
     <style name="divider_horizontal_orange">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/divider_height</item>
-        <item name="android:background">@color/orange_basic</item>
+        <item name="android:background">@color/orange_ffa200</item>
     </style>
 
     <!-- BUTTON FOR BOTTOM CONTAINER -->
@@ -552,7 +552,7 @@
         <item name="android:layout_width">33dp</item>
         <item name="android:layout_height">33dp</item>
         <item name="android:gravity">top|center_horizontal</item>
-        <item name="android:textColor">@color/orange_basic</item>
+        <item name="android:textColor">@color/orange_ffa200</item>
         <item name="android:textSize">11sp</item>
         <item name="android:textStyle">bold</item>
     </style>

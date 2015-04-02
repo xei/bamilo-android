@@ -40,7 +40,7 @@
     
 	<!-- APPTIMIZE -->
     <item name="apptimize_enabled" type="bool">true</item>
-    <string name="apptimize_apikey">CTbngwXi_7DNjjfYwEj\u2013\u2013L_JYKHHUug</string>
+    <string name="apptimize_apikey">CTbngwXi_7DNjjfYwEj--L_JYKHHUug</string>
     
 	<!-- GTM -->
     <string name="gtm_key">GTM-NJ8Q4T</string>

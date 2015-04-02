@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ANDROID 5.0: COLOR ACCENT -->
+    <color name="color_accent">@color/orange_ffa200</color>
+
+</resources>

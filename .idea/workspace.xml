@@ -64,129 +64,59 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72278d06-ae76-453e-9928-17bc95bbd4d0" name="Default" comment="% Merge;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/libs/A4SSDK-GooglePlayServices-1.5.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/DateTimeUtils.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/ValidateProductHelper.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/navigation_fragment_main.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/checkout/GetPollFormHelper.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/checkout/SetPollAnswerHelper.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutPollAnswerFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout-large-land/checkout_poll_question.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/checkout_poll_question.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/build.gradle" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/libs/A4SSDK.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/libs/A4SSDK.jar.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/AndroidManifest.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/anim/com_ad4screen_sdk_fade_in.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/anim/com_ad4screen_sdk_fade_out.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/anim/com_ad4screen_sdk_notification_slide_from_bottom.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/anim/com_ad4screen_sdk_notification_slide_to_bottom.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/animator/com_ad4screen_sdk_flip_in.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_actionbar_background_bottom_holo_dark.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_actionbar_background_top_holo_dark.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_back_dark.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_borderless_button_background.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_close.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_location_web_site.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_navigation_back.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_navigation_back_disabled.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_navigation_cancel.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_navigation_forward.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_navigation_forward_disabled.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-hdpi/com_ad4screen_sdk_navigation_refresh.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_actionbar_background_bottom_holo_dark.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_actionbar_background_top_holo_dark.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_back_dark.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_borderless_button_background.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_close.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_location_web_site.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_navigation_back.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_navigation_back_disabled.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_navigation_cancel.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_navigation_forward.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_navigation_forward_disabled.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-mdpi/com_ad4screen_sdk_navigation_refresh.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-v21/com_ad4screen_sdk_borderless_button.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_actionbar_background_bottom_holo_dark.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_actionbar_background_top_holo_dark.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_back_dark.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_borderless_button_background.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_close.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_location_web_site.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_navigation_back.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_navigation_back_disabled.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_navigation_cancel.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_navigation_forward.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_navigation_forward_disabled.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable-xhdpi/com_ad4screen_sdk_navigation_refresh.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_backbutton.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_borderless_button.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_browsebutton.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_closebutton.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_forwardbutton.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_reloadbutton.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_reloadbutton_off.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/drawable/com_ad4screen_sdk_reloadbutton_on.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout-land-v21/com_ad4screen_sdk_template_interstitial.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout-land/com_ad4screen_sdk_template_interstitial.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout-land/com_ad4screen_sdk_template_interstitial_nobuttons.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout-v21/com_ad4screen_sdk_template_interstitial.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_banner.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_fullscreen.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_fullscreen_nobuttons.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_fullscreen_transparent.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_fullscreen_transparent_nobuttons.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_nobuttons.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_transparent.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_banner_transparent_nobuttons.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_interstitial.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_interstitial_nobuttons.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_text.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_text_fullscreen.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_text_fullscreen_nobuttons.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/layout/com_ad4screen_sdk_template_text_nobuttons.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values-fr/com_ad4screen_sdk_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values-v11/com_ad4screen_sdk_styles.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values-v14/com_ad4screen_sdk_styles.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values-xlarge/com_ad4screen_sdk_dimen.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values/com_ad4screen_sdk_attrs.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values/com_ad4screen_sdk_colors.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values/com_ad4screen_sdk_dimen.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values/com_ad4screen_sdk_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/libraries/A4SSDK/src/main/res/values/com_ad4screen_sdk_styles.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/tracking/Ad4PushTracker.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/tracking/Ad4PushTracker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/AddableToCart.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/AddableToCart.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/tracking/AnalyticsGoogle.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/tracking/AnalyticsGoogle.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/drawable-hdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/drawable-mdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/drawable-xhdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/drawable-xxhdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/res/drawable-hdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/res/drawable-mdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/res/drawable-xhdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/res/drawable-xxhdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-hdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-mdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-xhdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable-xxhdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/shop/res/drawable-hdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/shop/res/drawable-mdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/shop/res/drawable-xhdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/shop/res/drawable-xxhdpi/ic_stat_notifications.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/values/colors.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/daraz/res/values/colors.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/shop/res/values/colors.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/BaseActivity.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/BaseActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/BaseFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/BaseFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CampaignPageFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CampaignPageFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/utils/CheckoutStepManager.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/utils/CheckoutStepManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/Constants.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/EventType.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/EventType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/FavouritesFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/FavouritesFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/controllers/fragments/FragmentController.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/controllers/fragments/FragmentController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/controllers/fragments/FragmentType.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/controllers/fragments/FragmentType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/components/customfontviews/HoloFontLoader.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/components/customfontviews/HoloFontLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/LastViewedAddableToCart.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/LastViewedAddableToCart.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/database/LastViewedTableHelper.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/database/LastViewedTableHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/MainFragmentActivity.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/MainFragmentActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/NavigationCategoryFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/NavigationCategoryFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/NavigationFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/NavigationFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/ProductSimple.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/ProductSimple.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/RecentlyViewedFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/RecentlyViewedFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/rest/RestConstants.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/rest/RestConstants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/SplashScreenActivity.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/SplashScreenActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/scripts/blackberry/bb_repacking.sh" afterPath="$PROJECT_DIR$/JumiaApp/scripts/blackberry/bb_repacking.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/build.gradle" afterPath="$PROJECT_DIR$/JumiaApp/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaWear/build.gradle" afterPath="$PROJECT_DIR$/JumiaWear/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/FacebookSDK/build.gradle" afterPath="$PROJECT_DIR$/libraries/FacebookSDK/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/build.gradle" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/navigation_fragment_main.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/navigation_fragment_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/proguard-project-live.txt" afterPath="$PROJECT_DIR$/JumiaApp/proguard-project-live.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/proguard-project-market.txt" afterPath="$PROJECT_DIR$/JumiaApp/proguard-project-market.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout/splash_screen.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout/splash_screen.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/BaseProduct.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/objects/BaseProduct.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/pojo/DynamicFormItem.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/pojo/DynamicFormItem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_catalog_item_list_rounded.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_catalog_item_list_rounded.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_checkout_header.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_checkout_header.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_checkout_payment_methods.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_checkout_payment_methods.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_form_field_root.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_form_field_root.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout-large-land/_def_product_details_fragment_main.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout-large-land/_def_product_details_fragment_main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_product_details_fragment_seller_info.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_product_details_fragment_seller_info.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/_v8_catalog_item_list_rounded.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/_v8_catalog_item_list_rounded.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/_v8_checkout_header.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/_v8_checkout_header.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/_v8_checkout_payment_methods.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/_v8_checkout_payment_methods.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/_v8_product_details_fragment_seller_info.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/_v8_product_details_fragment_seller_info.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/values/colors.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values/colors.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/darazRelease/res/values/configs.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/darazRelease/res/values/configs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/jumiaBlackberry/res/values/configs.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaBlackberry/res/values/configs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/jumiaLive/res/values/configs.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaLive/res/values/configs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNng/res/values/configs.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaMTNng/res/values/configs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/res/values/configs.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaNokiaX/res/values/configs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung/res/values/configs.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaSamsung/res/values/configs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/dialog_list_content.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/dialog_list_content.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/dialog_list_content.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/dialog_list_content.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/header_title.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/header_title.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/header_title.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/header_title.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/navigation_basket_component.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-v8/navigation_basket_component.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-large-land-v8/product_details_fragment_main.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout-large-land-v8/product_details_fragment_main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable/selector_campaign_tab_text.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable/selector_campaign_tab_text.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable/selector_clearall.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable/selector_clearall.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable/selector_link_blue.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable/selector_link_blue.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable/selector_productdetails_item_underline.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable/selector_productdetails_item_underline.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable/selector_text_secondary.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable/selector_text_secondary.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable/shape_pageindicator.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/drawable/shape_pageindicator.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/values/styles.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values/styles.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/values/themes.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values/themes.xml" />
     </list>
     <ignored path="My Application.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -9362,9 +9292,44 @@
                 <option name="name" value="prepareComAndroidSupportRecyclerviewV72103Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare com.android.support:support-v4:21.0.3" />
+                <option name="description" value="Prepare com.android.support:support-v4:22.0.0" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
-                <option name="name" value="prepareComAndroidSupportSupportV42103Library" />
+                <option name="name" value="prepareComAndroidSupportSupportV42200Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-analytics:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesAnalytics700Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-appindexing:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesAppindexing700Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-base:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesBase700Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-gcm:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesGcm700Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-location:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesLocation700Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-maps:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesMaps700Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-wearable:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaApp" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesWearable700Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare com.google.android.support:wearable:1.1.0" />
@@ -12591,9 +12556,19 @@
                 <option name="name" value="prepareComAndroidSupportRecyclerviewV72100Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare com.android.support:support-v4:21.0.0" />
+                <option name="description" value="Prepare com.android.support:support-v4:22.0.0" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaWear" />
-                <option name="name" value="prepareComAndroidSupportSupportV42100Library" />
+                <option name="name" value="prepareComAndroidSupportSupportV42200Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-base:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaWear" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesBase700Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-wearable:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/JumiaWear" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesWearable700Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare com.google.android.support:wearable:1.1.0" />
@@ -15553,9 +15528,39 @@
                 <option name="name" value="prepareComAndroidSupportRecyclerviewV72103Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare com.android.support:support-v4:21.0.3" />
+                <option name="description" value="Prepare com.android.support:support-v4:22.0.0" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
-                <option name="name" value="prepareComAndroidSupportSupportV42103Library" />
+                <option name="name" value="prepareComAndroidSupportSupportV42200Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-analytics:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesAnalytics700Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-appindexing:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesAppindexing700Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-base:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesBase700Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-gcm:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesGcm700Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-location:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesLocation700Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.google.android.gms:play-services-maps:7.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
+                <option name="name" value="prepareComGoogleAndroidGmsPlayServicesMaps700Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/libraries/com.mobile.framework" />
@@ -16322,10 +16327,11 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.jar" />
                             <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/support/wearable/1.1.0/wearable-1.1.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/gms/play-services-wearable/7.0.0/play-services-wearable-7.0.0.aar" />
                             <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/recyclerview-v7/21.0.3/recyclerview-v7-21.0.3.aar" />
-                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar" />
-                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-v4/21.0.3/support-v4-21.0.3.aar" />
-                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-wearable 7.0.0" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/gms/play-services-base/7.0.0/play-services-base-7.0.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-v4/22.0.0/support-v4-22.0.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar" />
                           </list>
                         </option>
                         <option name="path" value="$PROJECT_DIR$/JumiaApp" />
@@ -16412,10 +16418,11 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.jar" />
                             <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/support/wearable/1.1.0/wearable-1.1.0.aar" />
-                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-v4/21.0.0/support-v4-21.0.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/gms/play-services-wearable/7.0.0/play-services-wearable-7.0.0.aar" />
                             <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/recyclerview-v7/21.0.0/recyclerview-v7-21.0.0.aar" />
-                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.0/support-annotations-21.0.0.jar" />
-                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-wearable 7.0.0" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/gms/play-services-base/7.0.0/play-services-base-7.0.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-v4/22.0.0/support-v4-22.0.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar" />
                           </list>
                         </option>
                         <option name="path" value="$PROJECT_DIR$/JumiaWear" />
@@ -17014,16 +17021,17 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.jar" />
                             <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/appcompat-v7/21.0.3/appcompat-v7-21.0.3.aar" />
                             <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/recyclerview-v7/21.0.3/recyclerview-v7-21.0.3.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/gms/play-services-base/7.0.0/play-services-base-7.0.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/gms/play-services-location/7.0.0/play-services-location-7.0.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/gms/play-services-analytics/7.0.0/play-services-analytics-7.0.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/gms/play-services-gcm/7.0.0/play-services-gcm-7.0.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/gms/play-services-appindexing/7.0.0/play-services-appindexing-7.0.0.aar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.newrelic.agent.android/android-agent/4.120.0/37e9769c21827e9b8c4c3a686f8264fda9c41075/android-agent-4.120.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ad4screen.sdk/A4SSDK/3.1.2/47a594820e2c7bd9b6c084afb883bb8850fa9d49/A4SSDK-3.1.2.aar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.adjust.sdk/adjust-android/4.0.2/29ec0ffa1cab5077c2f9efc5ff7c9fd608477dfa/adjust-android-4.0.2.jar" />
-                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-v4/21.0.3/support-v4-21.0.3.aar" />
-                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar" />
-                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-base 7.0.0" />
-                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-location 7.0.0" />
-                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-analytics 7.0.0" />
-                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-gcm 7.0.0" />
-                            <option value="$PROJECT_DIR$/unresolved dependency - com.google.android.gms play-services-appindexing 7.0.0" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/google/m2repository/com/google/android/gms/play-services-maps/7.0.0/play-services-maps-7.0.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-v4/22.0.0/support-v4-22.0.0.aar" />
+                            <option value="$PROJECT_DIR$/../../sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar" />
                             <option value="$MODULE_DIR$/libs/A4SSDK-GooglePlayServices-1.5.jar" />
                             <option value="$MODULE_DIR$/libs/androlog-1.0.1.jar" />
                             <option value="$MODULE_DIR$/libs/httpclientandroidlib-1.1.2.jar" />
@@ -17314,9 +17322,9 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="65" />
-    <option name="y" value="24" />
+    <option name="y" value="-4" />
     <option name="width" value="1855" />
-    <option name="height" value="1056" />
+    <option name="height" value="1084" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -17341,6 +17349,26 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JumiaApp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JumiaApp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JumiaApp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="Scope">
         <subPane subId="Default">
           <PATH>
@@ -17359,6 +17387,7 @@
           </PATH>
         </subPane>
         <subPane subId="Problems" />
+        <subPane subId="Tests" />
         <subPane subId="Production">
           <PATH>
             <PATH_ELEMENT USER_OBJECT="Root">
@@ -17367,7 +17396,6 @@
             </PATH_ELEMENT>
           </PATH>
         </subPane>
-        <subPane subId="Tests" />
         <subPane subId="Project Files">
           <PATH>
             <PATH_ELEMENT USER_OBJECT="Root">
@@ -17421,35 +17449,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
+      <pane id="Scratches">
+        <subPane />
       </pane>
       <pane id="ProjectPane">
         <subPane>
@@ -17517,8 +17518,15 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches">
-        <subPane />
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JumiaApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
       </pane>
     </panes>
   </component>
@@ -17959,7 +17967,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -17987,8 +17995,8 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46516612" sideWeight="0.6053068" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946378" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.4997236" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39978564" sideWeight="0.4997236" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -18152,7 +18160,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.67264575">
           <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -18174,18 +18181,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="100" column="17" selection-start-line="100" selection-start-column="17" selection-end-line="100" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/res/layout/fragment_root_error.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.875">
           <caret line="37" column="44" selection-start-line="37" selection-start-column="44" selection-end-line="37" selection-end-column="44" />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/res/values/styles.xml">
@@ -18208,28 +18214,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="42" column="74" selection-start-line="42" selection-start-column="74" selection-end-line="42" selection-end-column="74" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_no_connection_button_retry.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.375">
           <caret line="17" column="54" selection-start-line="17" selection-start-column="54" selection-end-line="17" selection-end-column="54" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_no_connection_layout.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_no_connection_layout.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.48037678">
           <caret line="17" column="44" selection-start-line="17" selection-start-column="44" selection-end-line="17" selection-end-column="44" />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/libraries/com.mobile.framework/libs/httpclientandroidlib-1.1.2.jar!/ch/boye/httpclientandroidlib/client/cache/HttpCacheStorage.class">
@@ -18324,20 +18329,19 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/res/layout/fragment_root_retry.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-12.375">
           <caret line="22" column="42" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/BaseActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="2050" column="37" selection-start-line="2050" selection-start-column="16" selection-end-line="2050" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -18352,7 +18356,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -18360,7 +18363,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="130" column="112" selection-start-line="130" selection-start-column="112" selection-end-line="130" selection-end-column="112" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -18389,7 +18391,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.24161074">
           <caret line="651" column="8" selection-start-line="651" selection-start-column="8" selection-end-line="651" selection-end-column="93" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -18397,11 +18398,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2147651">
           <caret line="475" column="6" selection-start-line="475" selection-start-column="6" selection-end-line="475" selection-end-column="6" />
-          <folding>
-            <element signature="e#11892#11893#0" expanded="true" />
-            <element signature="e#11929#11930#0" expanded="true" />
-            <element signature="e#23219#23220#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -18423,7 +18419,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="448" column="9" selection-start-line="448" selection-start-column="9" selection-end-line="448" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>

@@ -57,7 +57,7 @@
         android:background="@drawable/selector_shop"
         android:gravity="center|top"
         android:paddingRight="3dp"
-        android:textColor="@color/orange_basic"
+        android:textColor="@color/orange_ffa200"
         android:textSize="12sp"
         android:textStyle="bold" />
 
