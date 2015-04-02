@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.BundleConstants;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
@@ -41,6 +40,11 @@ import de.akquinet.android.androlog.Log;
 public class DeepLinkManager {
 
     public static final String TAG = DeepLinkManager.class.getSimpleName();
+
+    public static final String DEEP_LINK_PAGE_INDICATION = "u";
+
+    public static final String EXTRA_GCM_PAYLOAD = "com.ad4screen.sdk.extra.GCM_PAYLOAD";
+
     private static final int PATH_CC_POS = 0;
     private static final int PATH_VIEW_POS = 1;
     private static final int PATH_DATA_POS = 2;
@@ -680,7 +684,6 @@ public class DeepLinkManager {
      * @author sergiopereira
      */
     private static Bundle hasDeepLinkFromURI(Intent intent) {
-        Log.i(TAG, "DEEP LINK: FROM URI");
         Bundle bundle = null;
         // Get intent action ACTION_VIEW
         String action = intent.getAction();
@@ -689,6 +692,7 @@ public class DeepLinkManager {
         // ## DEEP LINK FROM EXTERNAL URIs ##
         if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
             bundle = loadDeepLink(data);
+            Log.i(TAG, "DEEP LINK: RECEIVED FROM URI");
         }
         return bundle;
     }
@@ -704,7 +708,7 @@ public class DeepLinkManager {
         Log.i(TAG, "DEEP LINK: FROM GCM");
         Bundle bundle = null;
         // ## DEEP LINK FROM NOTIFICATION ##
-        Bundle payload = intent.getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
+        Bundle payload = intent.getBundleExtra(EXTRA_GCM_PAYLOAD);
         // Get Deep link
         if (null != payload) {
             // Get UTM
@@ -713,7 +717,7 @@ public class DeepLinkManager {
             TrackerDelegator.trackGACampaign(JumiaApplication.INSTANCE.getApplicationContext(), mUtm);
             Log.i(TAG, "UTM FROM GCM: " + mUtm);
             // Get value from deep link key
-            String deepLink = payload.getString(BundleConstants.DEEPLINKING_PAGE_INDICATION);
+            String deepLink = payload.getString(DEEP_LINK_PAGE_INDICATION);
             Log.i(TAG, "DEEP LINK: GCM " + deepLink);
             // Validate deep link
             if (!TextUtils.isEmpty(deepLink)) {
@@ -722,9 +726,9 @@ public class DeepLinkManager {
                 Log.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
                 // Load deep link
                 bundle = loadDeepLink(data);
+                Log.i(TAG, "DEEP LINK: RECEIVED FROM GCM");
             }
         }
-        Log.i(TAG, "DEEP LINK: NO GCM TAG");
         return bundle;
     }
 

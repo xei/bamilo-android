@@ -70,14 +70,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
     private static final String TAG = LogTagHelper.create(CheckoutExternalPaymentFragment.class);
 
-    // private static final String CHECKOUT_URL_WITH_PARAM =
-    // "/checkout/multistep/?setDevice=mobileApi&iosApp=1";
-
     private WebView webview;
 
     private String paymentUrl;
 
     private String failedPageRequest;
+
     private boolean isRequestedPage;
 
     private Handler handler = new Handler();

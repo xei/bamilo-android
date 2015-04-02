@@ -267,13 +267,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void startMainActivity() {
         Log.d(TAG, "START MAIN FRAGMENT ACTIVITY");
-        // Default Start
-        Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
-        // Get extras from deep link intent
-        if (getIntent().getExtras() != null) {
-            intent.putExtras(getIntent().getExtras());
-        }
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        // Clone the current intent, but only the relevant parts for Deep Link (URI or GCM)
+        Intent intent = (Intent) getIntent().clone();
+        intent.setClass(getApplicationContext(), getActivityClassForDevice());
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
@@ -327,7 +324,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     @Override
     public void onUserLeaveHint() {
         super.onUserLeaveHint();
-        Log.e(TAG,"onUserLeaveHint");
+        Log.e(TAG, "onUserLeaveHint");
         shouldHandleEvent = false;
     }
 
@@ -781,10 +778,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Case choose country
         else if (id == R.id.fallback_change_country) {
             onClickMaintenanceChooseCountry();
-        } else if (id == R.id.fragment_root_error_button) {
+        }
+        // Case retry button
+        else if (id == R.id.fragment_root_error_button) {
             onClickErrorButton();
         }
-
         // Case unknown
         else {
             Log.w(TAG, "WARNING: UNEXPECTED CLICK ENVENT");
