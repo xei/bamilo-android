@@ -135,7 +135,9 @@ public enum TrackingEvent {
 	
 	SHARE_APP(R.string.gaccount,R.string.gShareApp),
 
-    ACCOUNT_CREATE_ADDRESS(R.string.gaccount, R.string.gAccountCreateAddress);
+    ACCOUNT_CREATE_ADDRESS(R.string.gaccount, R.string.gAccountCreateAddress),
+
+	BANNER_CLICK(R.string.gbanner, R.string.gPurchase);
 	
 	;
 	

@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -272,10 +273,8 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      * Show the current home page for landscape
      *
      * @param homePage
-     * @param mainView
      * @param rightViewBrands
      * @param rightViewCategories
-     * @author sergiopereira
      * @author sergiopereira
      */
     private void showHomePage(Homepage homePage, ViewGroup leftView, ViewGroup rightView, ViewGroup rightViewCategories, ViewGroup rightViewBrands) {
@@ -429,6 +428,9 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         String targetTitle = (String) view.getTag(R.id.target_title);
         // Get origin
         TeaserGroupType originType = (TeaserGroupType) view.getTag(R.id.origin_type);
+
+        validateBannerFlow(originType);
+
         // Validate type
         if (targetType != null) {
             Bundle bundle = new Bundle();
@@ -458,6 +460,20 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
             }
         }
     }
+
+    /**
+     * validate from where the click needs to be tracked
+     * @param originType
+     */
+    private void validateBannerFlow(TeaserGroupType originType){
+        if(originType == TeaserGroupType.MAIN_ONE_SLIDE || originType == TeaserGroupType.STATIC_BANNER){
+            Log.e(TAG,"to TRACK:"+originType);
+            JumiaApplication.INSTANCE.setIsFromBanner(true);
+        } else {
+            JumiaApplication.INSTANCE.setIsFromBanner(false);
+        }
+    }
+
 
     /**
      * Process the click on shops in shop

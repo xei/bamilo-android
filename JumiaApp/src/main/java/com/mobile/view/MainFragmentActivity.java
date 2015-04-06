@@ -290,6 +290,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         // Validate fragment type
         switch (type) {
             case HOME:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 // Pop back stack until TEASERS
                 if (FragmentController.getInstance().hasEntry(FragmentType.HOME.toString())) {
                     popBackStack(FragmentType.HOME.toString());
@@ -298,6 +299,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = HomeFragment.newInstance();
                 break;
             case CATEGORIES:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = CategoriesCollectionFragment.getInstance(bundle);
                 break;
             case CATALOG:
@@ -322,90 +324,117 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = ReviewFragment.getInstance(bundle);
                 break;
             case SHOPPING_CART:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = ShoppingCartFragment.getInstance(bundle);
                 break;
             case CHECKOUT_BASKET:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = CheckoutWebFragment.getInstance();
                 break;
             case REGISTER:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = SessionRegisterFragment.getInstance(bundle);
                 break;
             case FORGOT_PASSWORD:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = SessionForgotPasswordFragment.getInstance();
                 break;
             case TERMS:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = SessionTermsFragment.getInstance(bundle);
                 break;
             case MY_ACCOUNT:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = MyAccountFragment.getInstance();
                 break;
             case MY_USER_DATA:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = MyAccountUserDataFragment.getInstance();
                 break;
             case MY_ORDERS:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = MyOrdersFragment.getInstance(bundle);
                 break;
             case CHOOSE_COUNTRY:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = ChooseCountryFragment.getInstance();
                 break;
             case LOGIN:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = SessionLoginFragment.getInstance(bundle);
                 break;
             case ABOUT_YOU:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = CheckoutAboutYouFragment.getInstance();
                 break;
             case MY_ADDRESSES:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = CheckoutMyAddressesFragment.getInstance();
                 break;
             case CREATE_ADDRESS:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = CheckoutCreateAddressFragment.getInstance();
                 break;
             case EDIT_ADDRESS:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = CheckoutEditAddressFragment.getInstance(bundle);
                 break;
             case SHIPPING_METHODS:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = CheckoutShippingMethodsFragment.getInstance();
                 break;
             case PAYMENT_METHODS:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = CheckoutPaymentMethodsFragment.getInstance();
                 break;
             case MY_ORDER:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = CheckoutMyOrderFragment.getInstance(bundle);
                 break;
             case CHECKOUT_THANKS:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = CheckoutThanksFragment.getInstance(bundle);
                 break;
             case CHECKOUT_EXTERNAL_PAYMENT:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = CheckoutExternalPaymentFragment.getInstance();
                 break;
             case CAMPAIGNS:
                 fragment = CampaignsFragment.newInstance(bundle);
                 break;
             case EMAIL_NOTIFICATION:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = MyAccountEmailNotificationFragment.newInstance();
                 break;
             case FAVORITE_LIST:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = FavouritesFragment.getInstance();
                 break;
             case RECENT_SEARCHES_LIST:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = RecentSearchFragment.newInstance();
                 break;
             case RECENTLY_VIEWED_LIST:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = RecentlyViewedFragment.getInstance();
                 break;
             case PRODUCT_SIZE_GUIDE:
                 fragment = ProductSizeGuideFragment.newInstance(bundle);
                 break;
             case PRODUCT_OFFERS:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = ProductOffersFragment.newInstance(bundle);
                 break;
             case MY_ACCOUNT_MY_ADDRESSES:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = MyAccountMyAddressesFragment.newInstance();
                 break;
             case MY_ACCOUNT_CREATE_ADDRESS:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = MyAccountCreateAddressFragment.newInstance();
                 break;
             case MY_ACCOUNT_EDIT_ADDRESS:
+                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 fragment = MyAccountEditAddressFragment.newInstance(bundle);
                 break;
             case INNER_SHOP:

@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.CategoriesAdapter;
@@ -405,6 +406,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @author sergiopereira
      */
     private void gotoCatalog(Category category) {
+        JumiaApplication.INSTANCE.setIsFromBanner(false);
         // Update counter for tracking
         CategoriesTableHelper.updateCategoryCounter(category.getId(), category.getName());
         // Close navigation

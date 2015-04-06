@@ -44,6 +44,8 @@ import com.mobile.utils.CheckVersion;
 import com.mobile.utils.ServiceSingleton;
 import com.mobile.utils.imageloader.RocketImageLoader;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -127,7 +129,8 @@ public class JumiaApplication extends A4SApplication {
     // for tracking
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
-
+    private ArrayList<String> bannerSkus = new ArrayList<>();
+    private boolean isFromBanner = false;
     /*
      * (non-Javadoc)
      * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()
@@ -687,6 +690,9 @@ public class JumiaApplication extends A4SApplication {
         sellerReviewValues = null;
         sFormReviewValues = null;
         resetTransactionCount();
+        isFromBanner = false;
+        bannerSkus = null;
+
     }
     
     private void resetTransactionCount() {
@@ -694,8 +700,60 @@ public class JumiaApplication extends A4SApplication {
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(AdjustTracker.PURCHASE_NUMBER, 0);
         editor.apply();
-    }  
+    }
 
+
+    /**
+     * add a sku to a list of sku products that were added from a banner flow
+     * @param sku
+     */
+    public void setBannerFlowSkus(String sku) {
+        if(bannerSkus == null){
+            bannerSkus = new ArrayList<>();
+        }
+        if(!TextUtils.isEmpty(sku)){
+            if(bannerSkus.size() == 0){
+                bannerSkus.add(sku);
+            } else {
+                if(!bannerSkus.contains(sku)){
+                    bannerSkus.add(sku);
+                }
+            }
+
+        }
+    }
+
+    /**
+     * returns a list of skus of products that were added to cart from a banner flow
+     *
+     * @return list of skus
+     */
+    public ArrayList<String> getBannerFlowSkus() {
+        if(CollectionUtils.isEmpty(bannerSkus)){
+            bannerSkus = new ArrayList<>();
+        }
+        return bannerSkus;
+    }
+
+    /**
+     * clear all skus from banner flow
+     */
+    public void clearBannerFlowSkus() {
+        bannerSkus = new ArrayList<>();
+
+    }
+
+    /**
+     * flag to control if the product added is from banner ir not
+     * @return
+     */
+    public boolean isFromBanner(){
+        return isFromBanner;
+    }
+
+    public void setIsFromBanner(boolean bannerClick){
+        isFromBanner = bannerClick;
+    }
     /*
     @SuppressWarnings("unused")
     @Deprecated

@@ -288,7 +288,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     
     /**
      * Load the dynamic form
-     * @param form
      * @author sergiopereira
      */
     private void showCampaign() {
