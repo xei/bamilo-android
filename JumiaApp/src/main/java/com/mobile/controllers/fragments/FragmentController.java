@@ -37,19 +37,9 @@ public class FragmentController {
     
     private static final boolean ANIMATION_OUT = false;
     
-    public static final Boolean ANIMATED = true;
-    
-    public static final Boolean NO_ANIMATED = false;
-    
     public static final Boolean ADD_TO_BACK_STACK = true;
     
-    public static final Boolean NO_ADD_TO_BACK_STACK = false;
-    
     public static final Bundle NO_BUNDLE = null;
-    
-    public static final boolean INCLUSIVE = true;
-
-    public static final boolean NO_INCLUSIVE = false;
     
     private final int POP_BACK_STACK_NO_INCLUSIVE = 0;
 
@@ -105,7 +95,7 @@ public class FragmentController {
     
     /**
      * Add the tag of fragment to back stack
-     * @param tag
+     * @param tag The fragment tag
      */
     private synchronized void addToBackStack(String tag) {
         Log.i(TAG, "ADD TO BACK STACK: " + tag);
@@ -122,7 +112,7 @@ public class FragmentController {
     
     /**
      * Remove the last entry if is the tag
-     * @param tag
+     * @param tag The fragment tag
      */
     public void popLastEntry(String tag){
         if(!backStack.isEmpty() && backStack.getLast().equals(tag))
@@ -149,7 +139,7 @@ public class FragmentController {
     
     /**
      * Remove all old entries
-     * @param tag
+     * @param tag The fragment tag
      */
     public synchronized void removeAllEntriesWithTag(String tag) {
         Log.i(TAG, "REMOVE OLD ENTRIES: " + tag);
@@ -171,7 +161,7 @@ public class FragmentController {
     
     /**
      * Print all entries
-     * @return 
+     * @return The back stack
      */
     public LinkedList<String> returnAllEntries(){
        return backStack;
@@ -179,8 +169,8 @@ public class FragmentController {
     
     /**
      * Search for a tag
-     * @param tag
-     * @return
+     * @param tag The fragment tag
+     * @return true or false
      */
     public Boolean hasEntry(String tag){
         return backStack != null && backStack.contains(tag);
@@ -188,10 +178,10 @@ public class FragmentController {
     
     /**
      * Method used to remove entries until a respective tag of fragment
-     * @param tag
+     * @param tag The fragment tag
      * @return
      */
-    public synchronized String removeEntriesUntilTag(final String tag) {
+    public synchronized void removeEntriesUntilTag(final String tag) {
         Log.i(TAG, "POP ENTRIES UNTIL: " + tag);
         /**
          * The idea is use a thread to run in parallel with the FragmentManager not blocking the main thread
@@ -217,16 +207,14 @@ public class FragmentController {
                 Log.i(TAG, "AFTER POP UNTIL TAG: " + tag + " STACK SIZE: " + backStack.size());
             //}
 //        }).start();
-        return null;
     }
 
-    /**
+    /*
      * ##################### PUSH #####################
      */
-
     /**
      * Add the tag to the back stack removing duplicates 
-     * @param tag
+     * @param tag The fragment tag
      */
     public synchronized void addEntryToBackStack(final String tag) {
         Log.d(TAG, "ADD ENTRY TO BACK STACK");
@@ -247,11 +235,11 @@ public class FragmentController {
     
     /**
      * Start transition to the new fragment with animation
-     * @param activity
-     * @param container
-     * @param fragment
-     * @param tag
-     * @param addToBackStack
+     * @param activity The current activity
+     * @param container The frame layout
+     * @param fragment The new fragment The new fragment
+     * @param tag The fragment tag
+     * @param addToBackStack The flag to add or not to back stack Flag to add or not to back stack
      */
     public void startTransition(BaseActivity activity, int container, Fragment fragment, String tag, Boolean addToBackStack){
         startTransition(activity, container, fragment, tag, addToBackStack, ANIMATION_IN);
@@ -268,22 +256,24 @@ public class FragmentController {
     public void fragmentBackPressed(BaseActivity activity){
         int size = getBackStackSize();
         Log.i(TAG, "BACK STACK SIZE: " + size);
+        Log.i(TAG, "THE CURRENT BACK STACK ENTRIES: " + backStack);
         switch (size) {
         case 1:
             /**
              * In this point if fragment type isn't HOME then something wrong is happening, to fix show the HOME
              * @author sergiopereira
              */
-            if (getLastEntry().equals(FragmentType.HOME.toString())) 
+            if (getLastEntry().equals(FragmentType.HOME.toString()))
                 activity.doubleBackPressToExit();
             else {
-                Log.i(TAG, "THE CURRENT BACK STACK ENTRIES: " + backStack);
+                Log.i(TAG, "WARNING: THE FIRST ENTRY IS NOT HOME, GOTO HOME");
                 init();
                 popAllBackStack(activity, null);
                 activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
             break;
         case 0:
+            Log.i(TAG, "WARNING: NO ENTRIES, GOTO HOME");
             activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
         default:
@@ -294,7 +284,7 @@ public class FragmentController {
    
     /**
      * Simulate the back pressed removing the current fragment
-     * @param activity
+     * @param activity The current activity
      */
     private void popBackStack(BaseActivity activity) {
         Log.i(TAG, "POP BACK STACK");
@@ -342,9 +332,8 @@ public class FragmentController {
     
     /**
      * Pop all entries until tag, inclusive or not the tag from back stack
-     * @param activity
-     * @param tag
-     * @param inclusive
+     * @param activity The current activity
+     * @param tag The fragment tag
      */
     public void popAllEntriesUntil(BaseActivity activity, String tag) {
         Log.d(TAG, "POP ALL ENTRIES UNTIL: " + tag + " " + getBackStackSize());
@@ -375,8 +364,8 @@ public class FragmentController {
     /**
      * Method used to switch fragment on UI with back stack support
      * 
-     * @param fragment
-     * @param addToBackStack
+     * @param fragment The new fragment
+     * @param addToBackStack The flag to add or not to back stack
      * @author sergiopereira
      */
     private void startTransition(BaseActivity activity, int container, Fragment fragment, String tag, Boolean addToBackStack, Boolean animation) {
@@ -419,8 +408,8 @@ public class FragmentController {
     /**
      * Method used to switch fragment on UI with/without back stack support
      * 
-     * @param fragment
-     * @param addToBackStack
+     * @param fragment The new fragment
+     * @param addToBackStack The flag to add or not to back stack
      * @author sergiopereira
      */
     @Deprecated
@@ -459,8 +448,8 @@ public class FragmentController {
     }
     
     /**
-     *  @param activity
-     * @param tag
+     *  @param activity The current activity
+     * @param tag The fragment tag
      */
     public void popAllBackStack(BaseActivity activity, String tag){
         activity.getSupportFragmentManager().popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -468,9 +457,8 @@ public class FragmentController {
     
     /**
      *
-     * @param inclusive
-     * @param activity
-     * @param tag
+     * @param activity The current activity
+     * @param tag The fragment tag
      */
     @Deprecated
     public void popBackStackUntilTag(BaseActivity activity, String tag) {
@@ -482,7 +470,7 @@ public class FragmentController {
      * Restore the backstack using the provided fragment list
      * This is useful for when the application is released form memory by the OS and the user opens it again.
      *   
-     * @param fragments the list of current opened fragments
+     * @param fragments The list of current opened fragments
      */
     private void restoreBackstack(BaseActivity activity, List<Fragment> fragments) {
         Log.i(TAG, "ON RESTORE BACKSTACK:");
@@ -499,7 +487,7 @@ public class FragmentController {
     
     /**
      * Validate the current state and try restore the saved state if necessary 
-     * @param activity
+     * @param activity The current activity
      * @param backstackTypes
      * @param originalFragments
      * @param currentFragmentType
