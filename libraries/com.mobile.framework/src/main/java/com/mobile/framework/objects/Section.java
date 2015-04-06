@@ -18,11 +18,11 @@ import org.json.JSONObject;
  */
 public class Section implements IJSONSerializable, Parcelable {
 	
-	public static final String TAG = Section.class.getSimpleName();
+    public static final String TAG = Section.class.getSimpleName();
 	
-	public static final String SECTION_NAME_TEASERS = "teasers";
-	public static final String SECTION_NAME_CATEGORIES = "categories";
-	public static final String SECTION_NAME_IMAGE_RESOLUTIONS = "imageresolutions";
+    public static final String SECTION_NAME_TEASERS = "teasers";
+    public static final String SECTION_NAME_CATEGORIES = "categories";
+    public static final String SECTION_NAME_IMAGE_RESOLUTIONS = "imageresolutions";
     public static final String SECTION_NAME_CONFIGURATIONS = "configurations";
 
     //public static final String SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES = "get3hourdeliveryzipcodes";
