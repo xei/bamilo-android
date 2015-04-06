@@ -1,15 +1,15 @@
 package com.mobile.framework.database;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.mobile.framework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.framework.objects.ImageResolution;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -221,8 +221,9 @@ public class ImageResolutionTableHelper extends BaseTable {
 	  * 
 	  * @param db
 	  */
-	 public static void clearImageResolutions(SQLiteDatabase db) {
+	 public static void clearImageResolutions() {
 		 Log.d(TAG, "ON CLEAN TABLE");
+		 SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		 db.delete(TABLE_NAME, null, null);
 	 }    
     
