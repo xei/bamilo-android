@@ -500,6 +500,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
+            bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES,false);
             getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
         } else {
             Log.w(TAG, "WARNING: URL IS NULL");
@@ -539,6 +540,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, targetUrl);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES,false);
             getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             Log.i(TAG, "WARNING: URL IS NULL");

@@ -294,6 +294,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         showWarningVariation(false);
         // 
         hideKeyboard();
+
+        boolean removeEntries = false;
+
         // Validate fragment type
         switch (type) {
             case HOME:
@@ -308,7 +311,12 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = CategoriesCollectionFragment.getInstance(bundle);
                 break;
             case CATALOG:
-                popBackStackUntilTag(FragmentType.HOME.toString());
+                if(bundle != null && bundle.containsKey(ConstantsIntentExtra.REMOVE_ENTRIES)){
+                    removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_ENTRIES);
+                    bundle.remove(ConstantsIntentExtra.REMOVE_ENTRIES);
+                } else {
+                    removeEntries = true;
+                }
                 fragment = CatalogFragment.getInstance(bundle);
                 break;
             case PRODUCT_DETAILS:
@@ -397,14 +405,14 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = MyAccountEmailNotificationFragment.newInstance();
                 break;
             case FAVORITE_LIST:
-                popBackStackUntilTag(FragmentType.HOME.toString());
+                removeEntries = true;
                 fragment = FavouritesFragment.getInstance();
                 break;
             case RECENT_SEARCHES_LIST:
                 fragment = RecentSearchFragment.newInstance();
                 break;
             case RECENTLY_VIEWED_LIST:
-                popBackStackUntilTag(FragmentType.HOME.toString());
+                removeEntries = true;
                 fragment = RecentlyViewedFragment.getInstance();
                 break;
             case PRODUCT_SIZE_GUIDE:
@@ -431,6 +439,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             default:
                 Log.w(TAG, "INVALID FRAGMENT TYPE");
                 return;
+        }
+
+        if(removeEntries){
+            popBackStackUntilTag(FragmentType.HOME.toString());
         }
 
         Log.i(TAG, "ON SWITCH FRAGMENT: " + type);
