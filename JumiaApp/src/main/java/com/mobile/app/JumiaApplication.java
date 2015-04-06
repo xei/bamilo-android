@@ -44,8 +44,6 @@ import com.mobile.utils.CheckVersion;
 import com.mobile.utils.ServiceSingleton;
 import com.mobile.utils.imageloader.RocketImageLoader;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -729,7 +727,7 @@ public class JumiaApplication extends A4SApplication {
      * @return list of skus
      */
     public ArrayList<String> getBannerFlowSkus() {
-        if(CollectionUtils.isEmpty(bannerSkus)){
+        if(bannerSkus == null){
             bannerSkus = new ArrayList<>();
         }
         return bannerSkus;
