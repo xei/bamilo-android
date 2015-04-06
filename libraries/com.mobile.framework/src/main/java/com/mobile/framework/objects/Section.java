@@ -21,14 +21,17 @@ public class Section implements IJSONSerializable, Parcelable {
 	public static final String TAG = Section.class.getSimpleName();
 	
 	public static final String SECTION_NAME_TEASERS = "teasers";
-	public static final String SECTION_NAME_BRANDS = "brands";
 	public static final String SECTION_NAME_CATEGORIES = "categories";
-	public static final String SECTION_NAME_SEGMENTS = "segments";
-	public static final String SECTION_NAME_STATIC_BLOCKS = "static_blocks";
 	public static final String SECTION_NAME_IMAGE_RESOLUTIONS = "imageresolutions";
-	public static final String SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES = "get3hourdeliveryzipcodes";
-	public static final String SECTION_NAME_COUNTRY_CONFIGS = "countryconfs";   // OLD(<1.7)
-    public static final String SECTION_NAME_CONFIGURATIONS = "configurations";  // NEW(>1.6)
+    public static final String SECTION_NAME_CONFIGURATIONS = "configurations";
+
+    //public static final String SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES = "get3hourdeliveryzipcodes";
+    //public static final String SECTION_NAME_BRANDS = "brands";
+    //public static final String SECTION_NAME_SEGMENTS = "segments";
+    //public static final String SECTION_NAME_STATIC_BLOCKS = "static_blocks";
+    //public static final String SECTION_NAME_FORMS = "forms";
+    //public static final String SECTION_NAME_FETCHDATA = "fetchdata";
+    //public static final String SECTION_NAME_SLIDER = "slider";
 	
     /**
      * Name of the section.
@@ -83,7 +86,6 @@ public class Section implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) {
         try {
             String name = jsonObject.getString(RestConstants.JSON_SECTION_NAME_TAG);
-            
             /**
              * HACK - while API dont return md5 for each section, 
              * use System.currentTimeMillis in the mean time to "replace" md5.
@@ -92,13 +94,9 @@ public class Section implements IJSONSerializable, Parcelable {
             String url = jsonObject.getString(RestConstants.JSON_SECTION_URL_TAG);
             if(jsonObject.has(RestConstants.JSON_SECTION_MD5_TAG)){
             	md5 = jsonObject.getString(RestConstants.JSON_SECTION_MD5_TAG);
-//            	Log.i(TAG, "code1md5 got md5 for : "+url+ " md5 is : "+md5);
+                //Log.i(TAG, "code1md5 got md5 for : "+url+ " md5 is : "+md5);
             }
-             
-            
-            
         	init(name, md5, url);
-
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
