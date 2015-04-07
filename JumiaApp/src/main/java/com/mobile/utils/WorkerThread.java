@@ -16,14 +16,21 @@ import de.akquinet.android.androlog.Log;
  * @author ricardosoares
  * @version 1.0
  * @date 2015/03/30
+ *
+ * @see <a href="http://tutorials.jenkov.com/java-concurrency/volatile.html">volatile</a>
  */
 public class WorkerThread extends Thread{
 
     private static final String TAG = LogTagHelper.create(WorkerThread.class);
-    //Must be volatile because all I/O operations must be done on main memory instead of CPU's cache.
+    //Must be volatile because all R/W operations must be done on main memory instead of CPU's cache.
     private volatile boolean mToRun;
     private ConcurrentLinkedQueue<Runnable> mRunnableQueue;
 
+    /**
+     * Creates a new WorkerThread.
+     *
+     * @param runnableQueue If queue is null, thread will initialize a new one.
+     */
     public WorkerThread(ConcurrentLinkedQueue<Runnable> runnableQueue){
         mToRun = true;
         mRunnableQueue = (runnableQueue != null) ? runnableQueue : new ConcurrentLinkedQueue<Runnable>();
@@ -38,6 +45,7 @@ public class WorkerThread extends Thread{
     public void run() {
         while(mToRun){
             if(mRunnableQueue.isEmpty()) {
+                // If list is empty, then thread will interrupt and wait for a new job to be done
                 try {
                     synchronized (this){
                         wait();
@@ -49,7 +57,8 @@ public class WorkerThread extends Thread{
                 }
 
             } else {
-                print();
+//                print();
+                //If list is not empty, task will be removed from it and executed
                 Runnable runnable = mRunnableQueue.poll();
                 if(runnable != null){
                     runnable.run();
@@ -58,7 +67,10 @@ public class WorkerThread extends Thread{
         }
     }
 
-    private void print() {
+    /**
+     * Print the queue.
+     */
+    private void printQueue() {
         Iterator<Runnable> itr= mRunnableQueue.iterator();
         String string = "";
         while(itr.hasNext()){
@@ -67,6 +79,9 @@ public class WorkerThread extends Thread{
         Log.e(TAG, "Queue: " + string);
     }
 
+    /**
+     *  Requests the thread to stop. The thread may stop with pending jobs.
+     */
     public void requestStop(){
         mToRun = false;
     }
@@ -75,16 +90,25 @@ public class WorkerThread extends Thread{
         return mRunnableQueue;
     }
 
+    /**
+     * Execute the runnable on the thread.
+     *
+     * @param auxThread
+     * @param runnable
+     *
+     * @throws java.lang.IllegalStateException If auxThread is null.
+     */
     public static void executeRunnable(WorkerThread auxThread, Runnable runnable) {
 
         if(auxThread == null){
             throw new IllegalStateException("Thread must be not null");
         }
 
-        ConcurrentLinkedQueue<Runnable> runnables = auxThread.getRunnableQueue();
-
-        runnables.add(runnable);
+        ConcurrentLinkedQueue<Runnable> runnableQueue = auxThread.getRunnableQueue();
+        //Adds runnable to queue
+        runnableQueue.add(runnable);
         try {
+            //Notifies thread that there are jobs to be done
             synchronized (auxThread) {
                 auxThread.notify();
             }
