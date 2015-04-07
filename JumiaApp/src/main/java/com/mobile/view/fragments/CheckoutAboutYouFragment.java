@@ -26,7 +26,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.constants.ConstantsCheckout;
-import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -863,13 +862,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             // Clean stack for new native checkout on the back stack (auto login)
             super.removeNativeCheckoutFromBackStack();
             // Goto next step
-            Bundle bundle = new Bundle();
-            // Validate if is guest user and sent the flag
-            if (JumiaApplication.CUSTOMER.isGuest()) {
-                bundle.putBoolean(ConstantsIntentExtra.IS_SIGN_UP, true);
-            }
-            // Go
-            getBaseActivity().onSwitchFragment(mNextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(mNextFragment, null, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 

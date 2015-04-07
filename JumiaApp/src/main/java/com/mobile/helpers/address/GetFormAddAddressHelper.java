@@ -6,7 +6,6 @@ package com.mobile.helpers.address;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.forms.Form;
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.rest.RestConstants;
@@ -48,11 +47,6 @@ public class GetFormAddAddressHelper extends BaseHelper {
             url = JumiaApplication.INSTANCE.getFormDataRegistry().get(EVENT_TYPE.action).getUrl();
         } catch (NullPointerException e) {
             Log.w(TAG, "FORM DATA IS NULL THEN GET CREATE ADDRESS FORM FALLBACK", e);
-        }
-
-        // Validate if is guest user
-        if (null != args && args.containsKey(ConstantsIntentExtra.IS_SIGN_UP)) {
-            url = EventType.GET_CREATE_ADDRESS_FORM_SIGNUP_EVENT.action;
         }
 
         Bundle bundle = new Bundle();
