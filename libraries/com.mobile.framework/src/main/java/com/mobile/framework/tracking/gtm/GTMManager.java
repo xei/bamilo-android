@@ -122,24 +122,26 @@ public class GTMManager {
     /**
      * This method tracks if either the application was opened either by push
      * notification or if the app was started directly
-     * 
-     * @param appOpenContext
      */
     public void gtmTrackAppOpen(Bundle deviceInfo, String countryIso, String campaignId, String source, String medium, boolean isFromPush) {
         Log.i(TAG, " GTM TRACKING -> gtmTrackAppOpen ( cointair available ? " + isContainerAvailable + " )");
-        Log.d(TAG, "gtmTrackAppOpen campaignId:"+campaignId);
+        Log.d(TAG, "gtmTrackAppOpen campaignId:" + campaignId);
         Log.d(TAG, "gtmTrackAppOpen source:"+source);
         Log.d(TAG, "gtmTrackAppOpen medium:"+medium);
         
-        String version = "";
-        version = deviceInfo.getString(Constants.INFO_BUNDLE_VERSION);
-        
+        String version = deviceInfo.getString(Constants.INFO_BUNDLE_VERSION);
+        if(version == null){
+            version = "";
+        }
         Map<String, Object> message = null;
-        String operator = "";
-        operator = deviceInfo.getString(Constants.INFO_SIM_OPERATOR);        
-        
-        String deviceBrand = "";
-        deviceBrand = deviceInfo.getString(Constants.INFO_BRAND);
+        String operator = deviceInfo.getString(Constants.INFO_SIM_OPERATOR);
+        if(operator == null){
+            operator = "";
+        }
+        String deviceBrand = deviceInfo.getString(Constants.INFO_BRAND);
+        if(deviceBrand == null){
+            deviceBrand = "";
+        }
 
         
         boolean isPreInstall = false;
