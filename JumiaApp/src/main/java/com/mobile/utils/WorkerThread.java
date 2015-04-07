@@ -23,7 +23,8 @@ public class WorkerThread extends Thread{
 
     private static final String TAG = LogTagHelper.create(WorkerThread.class);
     //Must be volatile because all R/W operations must be done on main memory instead of CPU's cache.
-    private volatile boolean mToRun;
+    private volatile boolean mToStop;
+    private volatile boolean mStopRequested;
     private ConcurrentLinkedQueue<Runnable> mRunnableQueue;
 
     /**
@@ -32,7 +33,7 @@ public class WorkerThread extends Thread{
      * @param runnableQueue If queue is null, thread will initialize a new one.
      */
     public WorkerThread(ConcurrentLinkedQueue<Runnable> runnableQueue){
-        mToRun = true;
+        mToStop = false;
         mRunnableQueue = (runnableQueue != null) ? runnableQueue : new ConcurrentLinkedQueue<Runnable>();
         setName("WorkerThread_"+getId());
     }
@@ -43,7 +44,7 @@ public class WorkerThread extends Thread{
 
     @Override
     public void run() {
-        while(mToRun){
+        while(isToRun()){
             if(mRunnableQueue.isEmpty()) {
                 // If list is empty, then thread will interrupt and wait for a new job to be done
                 try {
@@ -68,6 +69,14 @@ public class WorkerThread extends Thread{
     }
 
     /**
+     *
+     * @return True if will thread will continue running, false otherwise
+     */
+    private boolean isToRun(){
+        return mStopRequested ? !mRunnableQueue.isEmpty() : !mToStop;
+    }
+
+    /**
      * Print the queue.
      */
     private void printQueue() {
@@ -80,10 +89,25 @@ public class WorkerThread extends Thread{
     }
 
     /**
-     *  Requests the thread to stop. The thread may stop with pending jobs.
+     *  Stop the thread by natural way. The thread may stop with pending jobs.
+     */
+    public void end(){
+        mToStop = true;
+        try {
+            //Notifies thread to terminate flow
+            synchronized (this) {
+                notify();
+            }
+        }catch(IllegalMonitorStateException ex){
+            Log.e(TAG, "IllegalMonitorStateException: notify()");
+        }
+    }
+
+    /**
+     *  Request the thread to stop by natural way. The thread will stop only after pending jobs are all done.
      */
     public void requestStop(){
-        mToRun = false;
+        mStopRequested = true;
     }
 
     public ConcurrentLinkedQueue<Runnable> getRunnableQueue(){
