@@ -112,7 +112,7 @@ public class FragmentController {
      * Add the tag of fragment to back stack
      * @param tag
      */
-    private synchronized void addToBackStack(String tag) {
+    private void addToBackStack(String tag) {
         Log.i(TAG, "ADD TO BACK STACK: " + tag);
         this.backStack.addLast(tag);
     }
@@ -120,7 +120,7 @@ public class FragmentController {
     /**
      * Remove the last entry
      */
-    public synchronized void popLastEntry() {
+    public void popLastEntry() {
         if(!backStack.isEmpty())
             backStack.removeLast();
     }
@@ -138,7 +138,7 @@ public class FragmentController {
      * Get the last entry
      * @return {@link String}
      */
-    public synchronized String getLastEntry(){
+    public String getLastEntry(){
 //        Log.i(TAG, "GET LAST ENTRY: " + backStack.getLast());
         String lastElement = "";
         try {
@@ -156,7 +156,7 @@ public class FragmentController {
      * Remove all old entries
      * @param tag
      */
-    public synchronized void removeAllEntriesWithTag(String tag) {
+    public void removeAllEntriesWithTag(String tag) {
         Log.i(TAG, "REMOVE OLD ENTRIES: " + tag);
         Iterator<String> iterator = backStack.iterator();
         while (iterator.hasNext()) {
@@ -169,11 +169,13 @@ public class FragmentController {
      * Print all entries
      */
     public void printAllEntries(){
+        String entries ="";
         for (String aBackStack : backStack) {
-            Log.d(TAG, "ENTRY: " + aBackStack);
+            entries += " " + aBackStack;
         }
+        Log.d(TAG, "ENTRY: " + entries);
     }
-    
+
     /**
      * Print all entries
      * @return 
@@ -195,13 +197,19 @@ public class FragmentController {
      * Method used to remove entries until a respective tag of fragment
      * @param tag
      */
-    public synchronized void removeEntriesUntilTag(final String tag) {
+    public void removeEntriesUntilTag(final String tag) {
         Log.i(TAG, "POP ENTRIES UNTIL: " + tag);
 
-        WorkerThread.executeRunnable(auxThread, new Runnable() {
+        WorkerThread.executeRunnable(getSingletonThread(), new Runnable() {
+            @Override
+            public String toString() {
+                return "removeEntriesUntilTag";
+            }
+
             @Override
             public void run() {
                 // Create reverse iterator
+//               Log.e(TAG, "Doing work: removeEntriesUntilTag");
                 ListIterator<String> iterator = backStack.listIterator(backStack.size());
                 while (iterator.hasPrevious()) {
                     String currentTag = iterator.previous();
@@ -227,12 +235,17 @@ public class FragmentController {
      * Add the tag to the back stack removing duplicates 
      * @param tag
      */
-    public synchronized void addEntryToBackStack(final String tag) {
+    public void addEntryToBackStack(final String tag) {
         Log.d(TAG, "ADD ENTRY TO BACK STACK");
 
-        WorkerThread.executeRunnable(auxThread, new Runnable() {
+        WorkerThread.executeRunnable(getSingletonThread(), new Runnable() {
+            @Override
+            public String toString() {
+                return "addEntryToBackStack";
+            }
             @Override
             public void run() {
+//                Log.e(TAG, "Doing work: addEntryToBackStack");
                 removeAllEntriesWithTag(tag);
                 addToBackStack(tag);
             }
@@ -535,5 +548,13 @@ public class FragmentController {
                     !currentFragmentType.toString().equalsIgnoreCase(FragmentType.CHECKOUT_THANKS.toString()))
                 restoreBackstack(activity, orderedFragments);          
         }
+    }
+
+    private WorkerThread getSingletonThread(){
+        if (auxThread == null) {
+            auxThread = new WorkerThread();
+            auxThread.start();
+        }
+        return auxThread;
     }
 }

@@ -2,6 +2,7 @@ package com.mobile.utils;
 
 import com.mobile.framework.utils.LogTagHelper;
 
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import de.akquinet.android.androlog.Log;
@@ -18,7 +19,7 @@ import de.akquinet.android.androlog.Log;
  */
 public class WorkerThread extends Thread{
 
-    private final String TAG = LogTagHelper.create(WorkerThread.class);
+    private static final String TAG = LogTagHelper.create(WorkerThread.class);
     //Must be volatile because all I/O operations must be done on main memory instead of CPU's cache.
     private volatile boolean mToRun;
     private ConcurrentLinkedQueue<Runnable> mRunnableQueue;
@@ -26,6 +27,7 @@ public class WorkerThread extends Thread{
     public WorkerThread(ConcurrentLinkedQueue<Runnable> runnableQueue){
         mToRun = true;
         mRunnableQueue = (runnableQueue != null) ? runnableQueue : new ConcurrentLinkedQueue<Runnable>();
+        setName("WorkerThread_"+getId());
     }
 
     public WorkerThread(){
@@ -47,12 +49,22 @@ public class WorkerThread extends Thread{
                 }
 
             } else {
+                print();
                 Runnable runnable = mRunnableQueue.poll();
                 if(runnable != null){
                     runnable.run();
                 }
             }
         }
+    }
+
+    private void print() {
+        Iterator<Runnable> itr= mRunnableQueue.iterator();
+        String string = "";
+        while(itr.hasNext()){
+            string += " " + itr.next().toString();
+        }
+        Log.e(TAG, "Queue: " + string);
     }
 
     public void requestStop(){
@@ -66,8 +78,7 @@ public class WorkerThread extends Thread{
     public static void executeRunnable(WorkerThread auxThread, Runnable runnable) {
 
         if(auxThread == null){
-            auxThread = new WorkerThread();
-            auxThread.start();
+            throw new IllegalStateException("Thread must be not null");
         }
 
         ConcurrentLinkedQueue<Runnable> runnables = auxThread.getRunnableQueue();
@@ -80,6 +91,6 @@ public class WorkerThread extends Thread{
         }catch(IllegalMonitorStateException ex){
             Log.e(auxThread.TAG, "IllegalMonitorStateException: notify()");
         }
-    }
 
+    }
 }
