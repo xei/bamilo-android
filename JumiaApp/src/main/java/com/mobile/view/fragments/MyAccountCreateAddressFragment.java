@@ -36,7 +36,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
 
     private static final String TAG = LogTagHelper.create(MyAccountCreateAddressFragment.class);
 
-    protected boolean firstUserAddress;
+    protected boolean isFirstUserAddress;
 
     /**
      * Fragment used to create an address
@@ -45,9 +45,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
      */
     public static MyAccountCreateAddressFragment newInstance(Bundle bundle) {
         MyAccountCreateAddressFragment myAccountCreateAddressFragment = new MyAccountCreateAddressFragment();
-        if(bundle != null) {
-            myAccountCreateAddressFragment.firstUserAddress = bundle.getBoolean(TrackerDelegator.LOGIN_KEY, false);
-        }
+        myAccountCreateAddressFragment.setArguments(bundle);
         return myAccountCreateAddressFragment;
     }
 
@@ -60,6 +58,17 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
                 NavigationAction.MyAccount,
                 R.string.my_addresses,
                 KeyboardState.ADJUST_CONTENT);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle bundle = getArguments();
+
+        if(bundle != null) {
+            isFirstUserAddress = bundle.getBoolean(TrackerDelegator.LOGIN_KEY, false);
+        }
     }
 
     @Override
@@ -108,9 +117,9 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
                 triggerCreateAddress(mBillValues, true);
             }
         } else {
-            if(firstUserAddress){
+            if(isFirstUserAddress){
                 FragmentController.getInstance().popLastEntry(FragmentType.MY_ACCOUNT_CREATE_ADDRESS.toString());
-                getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_MY_ADDRESSES, null, true);
+                getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             } else {
                 getBaseActivity().onBackPressed();
             }
