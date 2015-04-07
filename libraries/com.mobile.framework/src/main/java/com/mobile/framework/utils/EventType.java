@@ -29,11 +29,11 @@ public enum EventType {
 
     GET_CATEGORIES_EVENT("http:/catalog/categories/", RestContract.NO_CACHE), // TODO: FIX THIS-> CASE success:false IS CACHING THE REQUEST
 
-    GET_PRODUCTS_EVENT("http:/search?setDevice=mobileApi", RestContract.NO_CACHE),
+    GET_PRODUCTS_EVENT("http:/search/", RestContract.NO_CACHE),
 
-    LOGIN_EVENT("https:/customer/login?setDevice=mobileApi", RestContract.NO_CACHE),
+    LOGIN_EVENT("https:/customer/login/", RestContract.NO_CACHE),
 
-    FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin?setDevice=mobileApi&facebook=true", RestContract.NO_CACHE),
+    FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin?facebook=true", RestContract.NO_CACHE),
 
     GET_LOGIN_FORM_EVENT("login", RestContract.MAX_CACHE_TIME),
 
@@ -53,19 +53,19 @@ public enum EventType {
 
     GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggest/", RestContract.DEFAULT_CACHE_TIME),
 
-    ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/order/add?setDevice=mobileApi", RestContract.NO_CACHE),
+    ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/order/add/", RestContract.NO_CACHE),
 
-    ADD_ITEMS_TO_SHOPPING_CART_EVENT("https:/order/addmultiple?setDevice=mobileApi", RestContract.NO_CACHE),
+    ADD_ITEMS_TO_SHOPPING_CART_EVENT("https:/order/addmultiple/", RestContract.NO_CACHE),
 
-    REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/order/remove?setDevice=mobileApi", RestContract.NO_CACHE),
+    REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/order/remove/", RestContract.NO_CACHE),
 
-    GET_SHOPPING_CART_ITEMS_EVENT("https:/order/cartdata?setDevice=mobileApi", RestContract.NO_CACHE),
+    GET_SHOPPING_CART_ITEMS_EVENT("https:/order/cartdata/", RestContract.NO_CACHE),
 
     GET_REGISTRATION_FORM_EVENT("register", RestContract.MAX_CACHE_TIME),
 
     GET_REGISTRATION_FORM_FALLBACK_EVENT("http:/forms/register/", RestContract.MAX_CACHE_TIME),
 
-    CHANGE_PASSWORD_EVENT("https:/customer/changepass?setDevice=mobileApi", RestContract.NO_CACHE),
+    CHANGE_PASSWORD_EVENT("https:/customer/changepass/", RestContract.NO_CACHE),
 
     GET_CHANGE_PASSWORD_FORM_EVENT("changepassword", RestContract.MAX_CACHE_TIME),
 
@@ -73,9 +73,9 @@ public enum EventType {
 
     GET_FORGET_PASSWORD_FORM_FALLBACK_EVENT("http:/forms/forgotpassword/", RestContract.MAX_CACHE_TIME),
 
-    FORGET_PASSWORD_EVENT("https:/customer/forgotpassword?setDevice=mobileApi", RestContract.NO_CACHE),
+    FORGET_PASSWORD_EVENT("https:/customer/forgotpassword/", RestContract.NO_CACHE),
 
-    REGISTER_ACCOUNT_EVENT("https:/customer/create?setDevice=mobileApi", RestContract.NO_CACHE),
+    REGISTER_ACCOUNT_EVENT("https:/customer/create/", RestContract.NO_CACHE),
 
     EDIT_ACCOUNT_EVENT("https:/customer/edit/", RestContract.NO_CACHE),
 
@@ -97,11 +97,9 @@ public enum EventType {
 
     GET_FORMS_DATASET_LIST_EVENT,
 
-    GET_API_INFO("http:/main/md5?setDevice=mobileApi", RestContract.NO_CACHE),
+    GET_API_INFO("http:/main/md5/", RestContract.NO_CACHE),
 
-    GET_CUSTOMER("https:/customer/getdetails?setDevice=mobileApi", RestContract.MIN_CACHE_TIME),
-
-    //STORE_LOGIN,
+    GET_CUSTOMER("https:/customer/getdetails/", RestContract.MIN_CACHE_TIME),
 
     GET_MIN_ORDER_AMOUNT("http:/main/getstatic?key=api_cartminorderamount", RestContract.MAX_CACHE_TIME),
 
@@ -109,7 +107,7 @@ public enum EventType {
 
     GET_PROMOTIONS("http:/main/getstatic?key=mobile_promotions", RestContract.NO_CACHE),
 
-    TRACK_ORDER_EVENT("http:/order/trackingorder/?setDevice=mobileApi", RestContract.NO_CACHE),
+    TRACK_ORDER_EVENT("http:/order/trackingorder/", RestContract.NO_CACHE),
 
     /**
      * NATIVE CHECKOUT EVENTS
@@ -143,17 +141,11 @@ public enum EventType {
 
     GET_BILLING_FORM_EVENT("https:/multistep/billing/", RestContract.NO_CACHE),
 
-    GET_DEFAULT_BILLING_ADDRESS_EVENT("https:/customer/billingaddress/", RestContract.NO_CACHE),
-
-    //GET_DEFAULT_SHIPPING_ADDRESS_EVENT("https:/customer/shippingaddress/", RestContract.NO_CACHE),
-
     CREATE_ADDRESS_EVENT("https:/customer/address/create/", RestContract.NO_CACHE),
 
     CREATE_ADDRESS_SIGNUP_EVENT("https:/customer/address/create/?showGender=true", RestContract.NO_CACHE),
 
     EDIT_ADDRESS_EVENT("https:/customer/address/save/", RestContract.NO_CACHE),
-
-    // DELETE_ADDRESS_EVENT("https:/customer/address/delete/", RestContract.NO_CACHE),
 
     SET_BILLING_ADDRESS_EVENT("https:/multistep/billing/", RestContract.NO_CACHE),
 
@@ -195,7 +187,7 @@ public enum EventType {
 
     GET_GLOBAL_CONFIGURATIONS,
 
-    GET_COUNTRY_CONFIGURATIONS("http:/main/getcountryconfs/", RestContract.NO_CACHE),
+    GET_COUNTRY_CONFIGURATIONS("http:/main/getconfigurations/", RestContract.NO_CACHE),
 
     HOME_NEWSLETTERS_SIGNUP_FORM_EVENT,
 
@@ -220,15 +212,20 @@ public enum EventType {
     public final String action;
     public final Integer cacheTime;
 
+    /**
+     * Constructor with action and cache time
+     * @param action The action
+     * @param cacheTime The cache time {@link RestContract}
+     */
     EventType(String action, Integer cacheTime) {
         this.action = action;
         this.cacheTime = cacheTime;
     }
 
     /**
-     *
+     * Empty constructor
      */
-    private EventType() {
+    EventType() {
         this(null, RestContract.NO_CACHE);
     }
 
