@@ -126,7 +126,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get unexpected error layout
         mUnexpectedError = findViewById(R.id.fragment_unexpected_error_stub);
         // Get prefs
-        sharedPrefs = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        sharedPrefs = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         // Get values from intent
         getDeepLinkView();
         // Tracking
