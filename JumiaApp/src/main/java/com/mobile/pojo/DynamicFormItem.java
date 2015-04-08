@@ -689,7 +689,7 @@ public class DynamicFormItem {
      * 
      * @return true, if there is no errors; false, if there are errors
      */
-    public boolean Validate() {
+    public boolean validate() {
         boolean result = true;
         switch (this.entry.getInputType()) {
         case checkBox:
@@ -829,7 +829,7 @@ public class DynamicFormItem {
      * 
      * @return true, if the field if OK; false, if the field is empty and is required
      */
-    public boolean ValidateRequired() {
+    public boolean validateRequired() {
         boolean result = true;
 
         switch (this.entry.getInputType()) {
@@ -1110,11 +1110,11 @@ public class DynamicFormItem {
 
     private void buildCheckBoxInflated(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
 
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
         
         this.control.setLayoutParams(params);
         //#RTL
-        if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
             params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         } else {
@@ -1176,11 +1176,12 @@ public class DynamicFormItem {
     private void buildRadioGroup(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
         // data controls
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
         dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
-        
+
         //#RTL
         if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
             params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -1195,6 +1196,17 @@ public class DynamicFormItem {
             Log.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_HORIZONTAL");
             createRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
         }
+
+        this.errorControl = createErrorControl(dataContainer.getId(), controlWidth);
+
+        //#RTL
+        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+        }
+
+        ((ViewGroup) this.control).addView(this.errorControl);
+
     }
 
     private void buildList(RelativeLayout dataContainer, RelativeLayout.LayoutParams params, int controlWidth) {
@@ -1306,19 +1318,17 @@ public class DynamicFormItem {
         this.errorControl = createErrorControl(dataControlId, controlWidth);
         
         //#RTL
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
             this.errorControl.setLayoutDirection(LayoutDirection.RTL);
         }
         //#RTL
-        if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentApiVersion < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
             ((EditText) this.dataControl).setGravity(Gravity.RIGHT);
         } 
         
         ((ViewGroup) this.control).addView(dataContainer);
         ((ViewGroup) this.control).addView(this.errorControl);
-
-        final CharSequence editText = ((EditText) this.dataControl).getHint();
         
         this.dataControl.setContentDescription(this.entry.getKey());
         // Listeners
@@ -1464,7 +1474,7 @@ public class DynamicFormItem {
                 break;
 
             default:
-                Log.w(TAG, "buildControl: Field type not suported (" + this.entry.getInputType()
+                Log.w(TAG, "buildControl: Field type not supported (" + this.entry.getInputType()
                         + ") - " + this.entry.getInputType());
                 break;
             }
@@ -1656,6 +1666,9 @@ public class DynamicFormItem {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
+//                if(DynamicFormItem.this.errorControl != null){
+//                    DynamicFormItem.this.errorControl.setVisibility(View.GONE);
+//                }
             }
         });
         
@@ -1731,6 +1744,9 @@ public class DynamicFormItem {
                     }
                 }
                 DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
+//                if(DynamicFormItem.this.errorControl != null){
+//                    DynamicFormItem.this.errorControl.setVisibility(View.GONE);
+//                }
             }
         });
 
@@ -1979,7 +1995,7 @@ public class DynamicFormItem {
         }
 
         //#RTL
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
         
         // specifics
         if (this.entry.getInputType() == InputType.number) {
@@ -1992,7 +2008,7 @@ public class DynamicFormItem {
             //#RTL
             if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
                 textDataControl.setGravity(Gravity.RIGHT);
-                if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+                if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
                     textDataControl.setGravity(Gravity.END);
                 }
             }
@@ -2068,9 +2084,9 @@ public class DynamicFormItem {
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.rightMargin = MANDATORYSIGNALMARGIN;
         //#RTL
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
         if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
-            if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
                 params.addRule(RelativeLayout.ALIGN_PARENT_END);
                 params.setMarginEnd(MANDATORYSIGNALMARGIN);
             } else {
@@ -2091,7 +2107,7 @@ public class DynamicFormItem {
         dataContainer.addView(this.mandatoryControl);
         //#RTL
         if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
-            if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
                 dataContainer.setLayoutDirection(LayoutDirection.RTL);
             }
         }
