@@ -902,7 +902,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSearchAutoComplete.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-                JumiaApplication.INSTANCE.setIsFromBanner(false);
                 Log.d(TAG, "SEARCH: CLICKED ITEM " + position);
                 // Get suggestion
                 SearchSuggestion selectedSuggestion = (SearchSuggestion) adapter.getItemAtPosition(position);
@@ -954,7 +953,6 @@ public abstract class BaseActivity extends ActionBarActivity {
             @Override
             public boolean onEditorAction(android.widget.TextView textView, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO) {
-                    JumiaApplication.INSTANCE.setIsFromBanner(false);
                     String searchTerm = textView.getText().toString();
                     Log.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
                     if (TextUtils.isEmpty(searchTerm)) {

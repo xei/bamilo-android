@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -429,11 +428,13 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         // Get origin
         TeaserGroupType originType = (TeaserGroupType) view.getTag(R.id.origin_type);
 
-        validateBannerFlow(originType);
 
         // Validate type
         if (targetType != null) {
             Bundle bundle = new Bundle();
+            // add flag to validate if comes from banner or not
+            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, validateBannerFlow(originType));
+
             Log.d(TAG, "targetType = " + targetType.name() + " targetUrl = " + targetUrl);
             switch (targetType) {
                 case CATEGORY:
@@ -465,12 +466,11 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      * validate from where the click needs to be tracked
      * @param originType
      */
-    private void validateBannerFlow(TeaserGroupType originType){
+    private boolean validateBannerFlow(TeaserGroupType originType){
         if(originType == TeaserGroupType.MAIN_ONE_SLIDE || originType == TeaserGroupType.STATIC_BANNER){
-            Log.e(TAG,"to TRACK:"+originType);
-            JumiaApplication.INSTANCE.setIsFromBanner(true);
+            return true;
         } else {
-            JumiaApplication.INSTANCE.setIsFromBanner(false);
+            return false;
         }
     }
 

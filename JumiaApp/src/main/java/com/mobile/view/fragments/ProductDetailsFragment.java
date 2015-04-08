@@ -1179,6 +1179,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         } else {
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
         }
+        Bundle args = getArguments();
+        //verify if product detail page was open via a banner
+        if(args != null && args.containsKey(ConstantsIntentExtra.BANNER_TRACKING)){
+            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING));
+        }
         TrackerDelegator.trackProductAddedToCart(bundle);
     }
 
@@ -1341,7 +1346,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             mVariationsListView.setOnItemSelectedListener(new OnViewSelectedListener() {
                 @Override
                 public void onViewSelected(View view, int position, String url) {
-                    JumiaApplication.INSTANCE.setIsFromBanner(false);
                     Log.i(TAG, "ON SELECTED ITEM: " + position + " " + url);
                     // Validate if current product has variations
                     if (mCompleteProduct.getVariations() == null
@@ -1425,7 +1429,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                     new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            JumiaApplication.INSTANCE.setIsFromBanner(false);
                             // Show related item
                             Bundle bundle = new Bundle();
                             bundle.putString(ConstantsIntentExtra.CONTENT_URL, (String) v.getTag());
@@ -2394,7 +2397,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private void goToSellerCatalog() {
         Log.d("SELLER", "GO TO CATALOG");
         if (mCompleteProduct.hasSeller()) {
-            JumiaApplication.INSTANCE.setIsFromBanner(false);
             Bundle bundle = new Bundle();
             String targetUrl = mCompleteProduct.getSeller().getUrl();
             String targetTitle = mCompleteProduct.getSeller().getName();

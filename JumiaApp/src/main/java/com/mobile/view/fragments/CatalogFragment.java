@@ -487,6 +487,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, product.getUrl());
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
+            Bundle args = getArguments();
+            //verify if campaign page was open via a banner
+            if(args != null && args.containsKey(ConstantsIntentExtra.BANNER_TRACKING)){
+                bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING));
+            }
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {

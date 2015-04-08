@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.PurchaseItem;
@@ -573,7 +574,7 @@ public class TrackerDelegator {
         bundle.putString(AdjustTracker.TRANSACTION_ID, orderNr);
         bundle.putStringArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, skus);
         bundle.putBoolean(AdjustTracker.IS_GUEST_CUSTOMER, customer.isGuest());
-        bundle.putParcelableArrayList(AdjustTracker.CART, (ArrayList<PurchaseItem>)items);
+        bundle.putParcelableArrayList(AdjustTracker.CART, (ArrayList<PurchaseItem>) items);
         bundle.putDouble(AdjustTracker.TRANSACTION_VALUE, value);
         
         AdjustTracker.get().trackEvent(sContext, TrackingEvent.CHECKOUT_FINISHED, bundle);
@@ -815,8 +816,8 @@ public class TrackerDelegator {
         GTMManager.get().gtmTrackAddToCart(sku, price, brand, EUR_CURRENCY, discount, rating, category, subCategory, location);
         // FB
         FacebookTracker.get(sContext).trackAddedToCart(sku, price, category);
-        //GA
-        if(JumiaApplication.INSTANCE.isFromBanner()){
+        //GA Banner Flow
+        if(bundle.getBoolean(ConstantsIntentExtra.BANNER_TRACKING)){
             JumiaApplication.INSTANCE.setBannerFlowSkus(sku);
         }
     }

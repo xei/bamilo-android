@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -128,7 +127,6 @@ public class JumiaApplication extends A4SApplication {
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
     private ArrayList<String> bannerSkus = new ArrayList<>();
-    private boolean isFromBanner = false;
     /*
      * (non-Javadoc)
      * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()
@@ -687,19 +685,10 @@ public class JumiaApplication extends A4SApplication {
         ratingReviewValues = null;
         sellerReviewValues = null;
         sFormReviewValues = null;
-        resetTransactionCount();
-        isFromBanner = false;
-        bannerSkus = null;
-
+//        resetTransactionCount();
+        AdjustTracker.resetTransactionCount(getApplicationContext());
+        clearBannerFlowSkus();
     }
-    
-    private void resetTransactionCount() {
-        SharedPreferences settings = getApplicationContext().getSharedPreferences(AdjustTracker.ADJUST_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putInt(AdjustTracker.PURCHASE_NUMBER, 0);
-        editor.apply();
-    }
-
 
     /**
      * add a sku to a list of sku products that were added from a banner flow
@@ -737,21 +726,9 @@ public class JumiaApplication extends A4SApplication {
      * clear all skus from banner flow
      */
     public void clearBannerFlowSkus() {
-        bannerSkus = new ArrayList<>();
-
+        bannerSkus = null;
     }
 
-    /**
-     * flag to control if the product added is from banner ir not
-     * @return
-     */
-    public boolean isFromBanner(){
-        return isFromBanner;
-    }
-
-    public void setIsFromBanner(boolean bannerClick){
-        isFromBanner = bannerClick;
-    }
     /*
     @SuppressWarnings("unused")
     @Deprecated

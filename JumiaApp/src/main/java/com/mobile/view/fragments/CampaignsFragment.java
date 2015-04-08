@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
@@ -215,6 +216,11 @@ public class CampaignsFragment extends BaseFragment {
         @Override
         public Fragment getItem(int position) {
             Bundle bundle = new Bundle();
+            Bundle args = getArguments();
+            //verify if campaign page was open via a banner
+            if(args != null && args.containsKey(ConstantsIntentExtra.BANNER_TRACKING)){
+                bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING));
+            }
             bundle.putParcelable(CampaignPageFragment.TAG, this.mCampaigns.get(position));
             return CampaignPageFragment.getInstance(bundle);
         }

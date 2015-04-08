@@ -471,7 +471,13 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.CAMPAINGS);
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
             bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, "");
-            
+
+            Bundle args = getArguments();
+            //verify if campaign page was open via a banner
+            if(args != null && args.containsKey(ConstantsIntentExtra.BANNER_TRACKING)){
+                bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING));
+            }
+
             TrackerDelegator.trackProductAddedToCart(bundle);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -494,6 +500,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         bundle.putString(DeepLinkManager.PDV_SIZE_TAG, size);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcampaign);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+        Bundle args = getArguments();
+        //verify if campaign page was open via a banner
+        if(args != null && args.containsKey(ConstantsIntentExtra.BANNER_TRACKING)){
+            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING));
+        }
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
