@@ -685,7 +685,6 @@ public class JumiaApplication extends A4SApplication {
         ratingReviewValues = null;
         sellerReviewValues = null;
         sFormReviewValues = null;
-//        resetTransactionCount();
         AdjustTracker.resetTransactionCount(getApplicationContext());
         clearBannerFlowSkus();
     }
