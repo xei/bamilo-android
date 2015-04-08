@@ -75,9 +75,7 @@ public class GetCountryConfigsHelper extends BaseHelper {
             e.printStackTrace();
             bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         }
-       
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_COUNTRY_CONFIGURATIONS);
-
         return bundle;
     }
 

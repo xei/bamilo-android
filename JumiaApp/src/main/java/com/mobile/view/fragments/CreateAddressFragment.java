@@ -565,11 +565,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onClickRetryButton();
     }
 
@@ -608,7 +608,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             }
             return;
         }
-        ;
 
         // Validate check
         if (mIsSameCheckBox.isChecked()) {

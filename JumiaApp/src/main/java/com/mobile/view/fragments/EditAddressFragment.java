@@ -427,8 +427,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     }
 
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onClickRetryButton();
     }
 

@@ -95,9 +95,6 @@ public class JumiaApplication extends A4SApplication {
     public static boolean isSellerReview = false;
     private static HashMap<String, String> sFormReviewValues = new HashMap<>();
 
-    // TODO : Validate recover
-    private static ArrayList<EventType> requestOrder = new ArrayList<>();
-
     /**
      * The md5 registry
      */
@@ -266,11 +263,6 @@ public class JumiaApplication extends A4SApplication {
         }
     }
 
-    // TODO : Validate recover
-    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
-        return sendRequest(helper, args, responseCallback, true);
-    }
-
     /**
      * Triggers the request for a new api call
      * 
@@ -279,8 +271,7 @@ public class JumiaApplication extends A4SApplication {
      * @param responseCallback
      * @return the md5 of the reponse
      */
-    // TODO : Validate recover
-    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback, boolean addToRequestOrder) {
+    public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
         if (helper == null) {
             return "";
         }
@@ -291,13 +282,10 @@ public class JumiaApplication extends A4SApplication {
             requestsRetryHelperList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), helper);
             requestsRetryBundleList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), args);
             requestsResponseList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), responseCallback);
-            // TODO : Validate recover
-            if (addToRequestOrder) {
-                requestOrder.add((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-            }
         } else {
             Log.w(TAG, " MISSING EVENT TYPE from " + helper.toString());
         }
+
         final String md5 = bundle.getString(Constants.BUNDLE_MD5_KEY);
 
         Log.d("TRACK", "sendRequest");
@@ -347,12 +335,9 @@ public class JumiaApplication extends A4SApplication {
                     }
                 });
 
-                
-                // TODO : Validate recover
+                // Send request
                 if (!sendRequest(bundle)) {
-                    Log.e(TAG, "SERVICE NOT AVAILABLE FOR EVENTTYPE " + bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-                    /*-bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, ErrorCode.REQUEST_ERROR);
-                    responseCallback.onRequestError(bundle);*/
+                    Log.e(TAG, "SERVICE NOT AVAILABLE FOR EVENT TYPE " + bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
                 }
             }
         }).start();
@@ -360,7 +345,6 @@ public class JumiaApplication extends A4SApplication {
         return md5;
     }
 
-    // TODO : Validate recover
     public boolean sendRequest(Bundle bundle) {
         if(ServiceSingleton.getInstance().getService() != null){
             try {
@@ -373,7 +357,6 @@ public class JumiaApplication extends A4SApplication {
         } else {
             return false;
         }
-
     }
 
     /**
@@ -501,11 +484,6 @@ public class JumiaApplication extends A4SApplication {
     public HashMap<EventType, IResponseCallback> getRequestsResponseList() {
         return requestsResponseList;
     }
-    
-    // TODO : Validate recover
-    public ArrayList<EventType> getRequestOrderList(){
-        return requestOrder;
-    }
 
     public void setResendHandler(Handler mHandler) {
         resendInitializationSignal = true;
@@ -535,18 +513,7 @@ public class JumiaApplication extends A4SApplication {
             Log.i(TAG, "onServiceConnected");
             mIsBound = true;
             ServiceSingleton.getInstance().setService(IRemoteService.Stub.asInterface(service));
-            
-            // TODO : Validate recover
-            // TODO uncomment this to re execute pending requests
-            
-            /*-if (requestOrder != null && requestOrder.size() > 0) {
-                Log.i(TAG, " RE-EXECUTING PENDING REQUESTS " + requestOrder.size());
-                for (int i = 0; i < requestOrder.size(); i++) {
-                    Log.i(TAG, " RE-EXECUTING PENDING REQUESTS " + requestOrder.get(i).toString());
-                    sendRequest(requestsRetryHelperList.get(requestOrder.get(i)), requestsRetryBundleList.get(requestOrder.get(i)), requestsResponseList.get(requestOrder.get(i)), false);
-                }
-                requestOrder.clear();
-            } else {*/
+
             if (resendInitializationSignal) {
                 resendHandler.sendMessage(resendMsg);
                 resendInitializationSignal = false;
@@ -555,8 +522,6 @@ public class JumiaApplication extends A4SApplication {
             if (resendMenuHandler != null) {
                 resendMenuHandler.sendEmptyMessage(0);
                 resendMenuHandler = null;
-                /* } */
-
             }
             // Register the fragment callback
             registerCallBackIsWaiting();
@@ -673,7 +638,6 @@ public class JumiaApplication extends A4SApplication {
         paymentsInfoList = null;
         itemSimpleDataRegistry.clear();
         formDataRegistry.clear();
-        requestOrder.clear();       
         responseCallbacks.clear();
         requestsRetryBundleList.clear();
         requestsRetryHelperList.clear();

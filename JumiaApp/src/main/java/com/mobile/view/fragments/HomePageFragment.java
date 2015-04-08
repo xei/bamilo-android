@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -39,7 +38,7 @@ import de.akquinet.android.androlog.Log;
  *
  * @author sergiopereira
  */
-public class HomePageFragment extends BaseFragment implements OnClickListener {
+public class HomePageFragment extends BaseFragment {
 
     public static final String TAG = LogTagHelper.create(HomePageFragment.class);
 
@@ -384,26 +383,33 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      */
     @Override
     public void onClick(View view) {
-        // Get view id
-        int id = view.getId();
-        // Retry button
-        if (id == R.id.fragment_root_retry_button) {
-            onClickRetryButton();
-        }
-        // Retry button
-        if (id == R.id.fragment_root_error_button) {
-            onClickRetryButton();
-        }
-        // Teaser item
-        else {
-            onClickTeaserItem(view);
+        // Validated clicked view
+        if(!onClickTeaserItem(view)) {
+            super.onClick(view);
         }
     }
 
     /**
      * Process the click on retry button
+
+    @Override
+    protected void onRetryRequest(EventType eventType) {
+        // Send to parent reload content
+        Log.i(TAG, "ON CLICK RETRY");
+        Fragment parent = getParentFragment();
+        // Validate parent
+        if (parent != null && parent instanceof HomeFragment) {
+            ((HomeFragment) parent).onReloadContent();
+        }
+    }
      */
-    private void onClickRetryButton() {
+
+    /**
+     * Process the click on retry button
+     */
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         // Send to parent reload content
         Log.i(TAG, "ON CLICK RETRY");
         Fragment parent = getParentFragment();
@@ -419,8 +425,10 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      * @param view
      * @author sergiopereira
      */
-    private void onClickTeaserItem(View view) {
+    private boolean onClickTeaserItem(View view) {
         Log.i(TAG, "ON CLICK TEASER ITEM");
+        //
+        boolean intercepted = true;
         // Get url
         String targetUrl = (String) view.getTag(R.id.target_url);
         // Get type
@@ -454,9 +462,13 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
                     break;
                 default:
                     Log.w(TAG, "WARNING ON CLICK: UNKNOWN VIEW");
+                    intercepted = false;
                     break;
             }
+        } else {
+            intercepted = false;
         }
+        return intercepted;
     }
 
     /**

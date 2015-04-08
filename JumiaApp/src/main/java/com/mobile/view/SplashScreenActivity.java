@@ -124,7 +124,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get retry layout
         mRetryFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
         // Get unexpected error layout
-        mUnexpectedError = findViewById(R.id.fragment_unexpected_error_stub);
+        mUnexpectedError = findViewById(R.id.fragment_stub_unexpected_error);
         // Get prefs
         sharedPrefs = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         // Get values from intent
@@ -798,7 +798,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mRetryFallBackStub.setVisibility(View.VISIBLE);
         // Set view
         try {
-            findViewById(R.id.fragment_root_retry_button).setOnClickListener(this);
+            findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
@@ -818,7 +818,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mUnexpectedError.setVisibility(View.VISIBLE);
         // Set view
         try {
-            findViewById(R.id.fragment_root_error_button).setOnClickListener(this);
+            findViewById(R.id.fragment_root_retry_unexpected_error).setOnClickListener(this);
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
@@ -901,17 +901,17 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get id
         int id = view.getId();
         // Case retry button from no network
-        if (id == R.id.fragment_root_retry_button) {
+        if (id == R.id.fragment_root_retry_network) {
             onClickRetryNoNetwork();
         }
         // Case retry button from maintenance
-        else if (id == R.id.fallback_retry) {
+        else if (id == R.id.fragment_root_retry_maintenance) {
             onClickMaintenanceRetryButton(view);
         }
         // Case choose country
-        else if (id == R.id.fallback_change_country) {
+        else if (id == R.id.fragment_root_cc_maintenance) {
             onClickMaintenanceChooseCountry();
-        } else if (id == R.id.fragment_root_error_button) {
+        } else if (id == R.id.fragment_root_retry_unexpected_error) {
             onClickErrorButton();
         }
 

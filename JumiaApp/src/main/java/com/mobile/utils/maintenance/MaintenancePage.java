@@ -65,13 +65,13 @@ public class MaintenancePage {
             // Get prefs
             SharedPreferences sharedPrefs = activity.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             // Set retry
-            Button retry = (Button) activity.findViewById(R.id.fallback_retry);
+            Button retry = (Button) activity.findViewById(R.id.fragment_root_retry_maintenance);
             retry.setText(R.string.try_again);
             retry.setTag(eventType.toString());
             retry.setOnClickListener(onClickRetryButton);
             // Set choose country case multi shops
             if (!activity.getResources().getBoolean(R.bool.is_single_shop_country)) {
-                Button changeCountry = (Button) activity.findViewById(R.id.fallback_change_country);
+                Button changeCountry = (Button) activity.findViewById(R.id.fragment_root_cc_maintenance);
                 changeCountry.setVisibility(View.VISIBLE);
                 changeCountry.setText(R.string.nav_country);
                 changeCountry.setOnClickListener(onClickChooseCountry);
@@ -142,7 +142,7 @@ public class MaintenancePage {
         try {
 
             // Get retry button
-            Button retry = (Button) activity.findViewById(R.id.fallback_retry);
+            Button retry = (Button) activity.findViewById(R.id.fragment_root_retry_maintenance);
             retry.setText(R.string.try_again);
             retry.setOnClickListener(listener);
 
@@ -209,8 +209,25 @@ public class MaintenancePage {
     public static void setMaintenancePageBamilo(Activity activity, EventType eventType, OnClickListener listener) {
         try {
             // Get retry button
-            Button retry = (Button) activity.findViewById(R.id.fallback_retry);
+            Button retry = (Button) activity.findViewById(R.id.fragment_root_retry_maintenance);
             retry.setTag(eventType.toString());
+            retry.setOnClickListener(listener);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Set the maintenance page for Bamilo.
+     * @param view
+     * @param listener
+     * @author sergiopereira
+     */
+    public static void setMaintenancePageBamilo(View view, OnClickListener listener) {
+        try {
+            // Get retry button
+            Button retry = (Button) view.findViewById(R.id.fragment_root_retry_maintenance);
             retry.setOnClickListener(listener);
         } catch (NullPointerException e) {
             e.printStackTrace();

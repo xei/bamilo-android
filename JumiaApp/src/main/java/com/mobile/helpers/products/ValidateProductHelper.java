@@ -42,8 +42,7 @@ public class ValidateProductHelper extends BaseHelper {
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Log.i(TAG, "ON GENERATE BUNDLE");
-        ContentValues values = new ContentValues();
-        values = args.getParcelable(Constants.CONTENT_VALUES);
+        ContentValues values = args.getParcelable(Constants.CONTENT_VALUES);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.BUNDLE_URL_KEY, EVENT_TYPE.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
@@ -57,7 +56,7 @@ public class ValidateProductHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.i(TAG, "ON PARSE RESPONSE");
-        boolean status = false;
+        boolean status;
         try {
             JSONArray validProductsArray = jsonObject.optJSONArray(RestConstants.JSON_VALID_TAG);
             if (validProductsArray != null) {

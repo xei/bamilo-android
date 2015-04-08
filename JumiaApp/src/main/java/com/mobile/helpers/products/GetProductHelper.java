@@ -53,6 +53,7 @@ public class GetProductHelper extends BaseHelper {
         // Return product
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, product);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCT_EVENT);
+
         return bundle;
     }
 

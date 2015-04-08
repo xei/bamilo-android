@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils.TruncateAt;
 import android.text.TextWatcher;
@@ -1356,30 +1357,30 @@ public class DynamicFormItem {
 //            }
 //        });
 //
-//        ((EditText) this.dataControl).addTextChangedListener(new TextWatcher() {
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if (null != textWatcher) {
-//                    textWatcher.afterTextChanged(s);
-//                }
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                if (null != textWatcher) {
-//                    textWatcher.beforeTextChanged(s, start, count, after);
-//                }
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (null != textWatcher) {
-//                    textWatcher.onTextChanged(s, start, before, count);
-//                }
-//            }
-//
-//        });
+        ((EditText) this.dataControl).addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (null != textWatcher) {
+                    textWatcher.afterTextChanged(s);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (null != textWatcher) {
+                    textWatcher.beforeTextChanged(s, start, count, after);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (null != textWatcher) {
+                    textWatcher.onTextChanged(s, start, before, count);
+                }
+            }
+
+        });
 
     }
 

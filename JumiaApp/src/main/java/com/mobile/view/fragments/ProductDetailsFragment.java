@@ -1192,9 +1192,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     private void triggerAddItemToCart(String sku, String simpleSKU) {
         ContentValues values = new ContentValues();
-        values.put("p", sku);
-        values.put("sku", simpleSKU);
-        values.put("quantity", "1");
+        values.put(GetShoppingCartAddItemHelper.PRODUCT_TAG, sku);
+        values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSKU);
+        values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
         triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, responseCallback);
@@ -1614,15 +1614,17 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     }
 
+    /*
     @Override
     protected void onRetryRequest(EventType eventType) {
         super.onRetryRequest(eventType);
         //onResume();
     }
+    */
     
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onResume();
     }
 

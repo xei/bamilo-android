@@ -162,7 +162,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     }
 
     private void triggerGetCustomer() {
-
         triggerContentEventNoLoading(new GetCustomerHelper(), null, mCallback);
     }
 
@@ -216,12 +215,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-
         // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
         prepareCookieStore();
         setupWebView();
-
         startCheckout();
     }
 
@@ -233,10 +230,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
+        Log.i(TAG, "ON PAUSE");
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        Log.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -247,10 +244,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
+        Log.i(TAG, "ON STOP");
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        Log.i(TAG, "ON STOP");
     }
 
     /*
@@ -261,7 +258,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         Log.i(TAG, "ON DESTROY");
     }
 
@@ -275,12 +271,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             } catch (IllegalArgumentException e) {
                 // TODO: handle exception
             }
-
             webview.destroy();
             webview = null;
         }
         System.gc();
-
     }
 
     @Override
@@ -434,19 +428,15 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
         @SuppressWarnings("deprecation")
         @Override
-        public void onReceivedError(WebView view, int errorCode,
-                                    String description, final String failingUrl) {
-            Log.e(TAG, "Received error: " + errorCode + " " + description + " "
-                    + failingUrl);
+        public void onReceivedError(WebView view, int errorCode, String description, final String failingUrl) {
+            Log.e(TAG, "Received error: " + errorCode + " " + description + " " + failingUrl);
             failedPageRequest = failingUrl;
             webview.stopLoading();
             webview.clearView();
-
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
             return false;
         }
 
@@ -457,11 +447,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
          * android.webkit.HttpAuthHandler, java.lang.String, java.lang.String)
          */
         @Override
-        public void onReceivedHttpAuthRequest(WebView view,
-                                              HttpAuthHandler handler, String host, String realm) {
+        public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
             Log.i(TAG, "code1payment : onReceivedHttpAuthRequest");
-            handler.proceed(RestContract.AUTHENTICATION_USER,
-                    RestContract.AUTHENTICATION_PASS);
+            handler.proceed(RestContract.AUTHENTICATION_USER, RestContract.AUTHENTICATION_PASS);
         }
 
         /*
@@ -516,7 +504,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 Log.d(TAG, "onLoadResource: url = OOF");
                 e.printStackTrace();
             }
-
         }
 
         /*
@@ -552,24 +539,16 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
          * android.webkit.SslErrorHandler, android.net.http.SslError)
          */
         @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler,
-                                       SslError error) {
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
             Log.i(TAG, "code1payment : onReceivedSslError : " + error);
             Log.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
-                Toast.makeText(
-                        getActivity(),
-                        "The host name does not match the certificate: "
-                                + error, Toast.LENGTH_LONG).show();
-
+                Toast.makeText(getActivity(), "The host name does not match the certificate: " + error, Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(getActivity(),
-                        "An SSL error occurred: " + error, Toast.LENGTH_LONG)
-                        .show();
+                Toast.makeText(getActivity(), "An SSL error occurred: " + error, Toast.LENGTH_LONG).show();
             }
             handler.proceed();
         }
-
     }
 
     private class JavaScriptInterface {
@@ -585,8 +564,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                     // Defining event as having no priority
                     Bundle args = new Bundle();
                     args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
-                    triggerContentEventNoLoading(new GetShoppingCartItemsHelper(), args,
-                            mCallback);
+                    triggerContentEventNoLoading(new GetShoppingCartItemsHelper(), args, mCallback);
 
                     // Measure to escape the webview thread
                     handler.post(new Runnable() {
@@ -648,11 +626,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         Bundle bundle = new Bundle();
         if (null != JumiaApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);

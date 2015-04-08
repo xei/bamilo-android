@@ -36,6 +36,8 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -48,8 +50,9 @@ import de.akquinet.android.androlog.Log;
 /**
  * Class used to show the product offers
  * @author Paulo Carvalho
+ * @modified sergiopereira
  */
-public class ProductOffersFragment extends BaseFragment implements OnClickListener, OffersListAdapter.IOffersAdapterService, android.widget.AdapterView.OnItemClickListener {
+public class ProductOffersFragment extends BaseFragment implements OffersListAdapter.IOffersAdapterService, AdapterView.OnItemClickListener, IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(ProductOffersFragment.class);
     
@@ -70,15 +73,22 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
     private GridView mOffersList;
     
     private DialogFragment mDialogAddedToCart;
-    
 
+
+    /**
+     * Get a new instance of {@link #ProductOffersFragment}.
+     * @param bundle The arguments
+     * @return ProductOffersFragment
+     */
     public static ProductOffersFragment newInstance(Bundle bundle) {
         ProductOffersFragment fragment = new ProductOffersFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
 
-
+    /**
+     * Empty constructor
+     */
     public ProductOffersFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Offers,
@@ -118,7 +128,6 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
             mCompleteProductName = savedInstanceState.getString(ConstantsIntentExtra.PRODUCT_NAME);
             productOffers = savedInstanceState.getParcelable(PRODUCT_OFFERS);
         }
-            
     }
 
     /*
@@ -160,11 +169,10 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
         Bundle arg = new Bundle();
         if(productOffers == null){
             arg.putString(GetProductOffersHelper.PRODUCT_URL, mCompleteProductUrl);
-            triggerContentEvent(new GetProductOffersHelper(), arg, responseCallback);
+            triggerContentEvent(new GetProductOffersHelper(), arg, this);
         } else {
             setAppContent();
         }
-
     }
 
     /*
@@ -176,7 +184,7 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
         super.onSaveInstanceState(outState);
         outState.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProductUrl);
         outState.putString(ConstantsIntentExtra.PRODUCT_NAME, mCompleteProductName);
-        if(productOffers != null && productOffers.getOffers().size() > 0){
+        if(productOffers != null && CollectionUtils.isEmpty(productOffers.getOffers())){
             outState.putParcelable(PRODUCT_OFFERS, productOffers);
         }
     }
@@ -226,22 +234,26 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
     /*
      * ############# LAYOUT #############
      */
-    
+
+    /**
+     * Show content
+     */
     private void setAppContent(){
-        
         mProductName.setText(mCompleteProductName);
-        mOffersCount.setText(""+productOffers.getTotalOffers());
-        mOffersMinPrice.setText(""+productOffers.getMinPriceOffer());
+        mOffersCount.setText("" + productOffers.getTotalOffers());
+        mOffersMinPrice.setText("" + productOffers.getMinPriceOffer());
         // set the number of grid columns depending on the screen size    
         int numColumns = getBaseActivity().getResources().getInteger(R.integer.catalog_list_num_columns);
         mOffersList.setNumColumns(numColumns);
-        
         OffersListAdapter offersAdapter = new OffersListAdapter(getActivity().getApplicationContext(), productOffers.getOffers(), this);
-        
         mOffersList.setAdapter(offersAdapter);
         mOffersList.setOnItemClickListener(this);
     }
 
+    /**
+     * Order offers by price
+     * @param productOffersArray The product offers
+     */
     private void orderOffersByLowerPrice(ProductOffers productOffersArray){
         if(productOffersArray != null){
             ArrayList<Offer> offers = productOffersArray.getOffers();
@@ -252,24 +264,9 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "ON ITEM CLICK");
-        Offer offer = productOffers.getOffers().get(position);
-        if(offer.getSeller() != null){
-            Bundle bundle = new Bundle();
-            String targetUrl = offer.getSeller().getUrl();
-            String targetTitle = offer.getSeller().getName();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
-            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
-            //bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
-            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
-        }
-
-    }
-
+    /**
+     * Sort
+     */
     public class CustomComparator implements Comparator<Offer> {
         @Override
         public int compare(Offer o1, Offer o2) {
@@ -279,24 +276,11 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
     
     
     /*
-     * ############# LISTENERS #############
+     * ############# RESPONSE #############
      */
-    
-    
-    IResponseCallback responseCallback = new IResponseCallback() {
 
-        @Override
-        public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
-        }
-    };
-
-    public void onSuccessEvent(Bundle bundle) {
+    @Override
+    public void onRequestComplete(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
@@ -322,7 +306,6 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
             getBaseActivity().updateCartInfo();
             hideActivityProgress();
             showFragmentContentContainer();
-//            mAddToCartButton.setEnabled(true);
             executeAddToShoppingCartCompleted();
             break;
         default:
@@ -330,7 +313,8 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
         }
     }
 
-    public void onErrorEvent(Bundle bundle) {
+    @Override
+    public void onRequestError(Bundle bundle) {
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -349,15 +333,14 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
         case GET_PRODUCT_OFFERS:
             hideActivityProgress();
             showFragmentContentContainer();
-            showFragmentNoNetworkRetry(EventType.GET_PRODUCT_OFFERS);
+            showFragmentNoNetworkRetry();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
 //            mBundleButton.setEnabled(true);
 //            isAddingProductToCart = false;
             hideActivityProgress();
             if (errorCode == ErrorCode.REQUEST_ERROR) {
-                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
-                        .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
 
                 if (errorMessages != null) {
                     int titleRes = R.string.error_add_to_cart_failed;
@@ -410,28 +393,38 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
             break;
         }
     }
-    
-    
+
     /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     * ############# LISTENERS #############
      */
+
     @Override
-    public void onClick(View v) {
-        // Get view id
-        int id = v.getId();
-        // Case retry
-        if(id == R.id.fragment_root_empty_button) onClickContinueButton();
-        // Case unknown
-        else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "ON ITEM CLICK");
+        Offer offer = productOffers.getOffers().get(position);
+        if(offer.getSeller() != null){
+            Bundle bundle = new Bundle();
+            String targetUrl = offer.getSeller().getUrl();
+            String targetTitle = offer.getSeller().getName();
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
+        }
     }
 
-
-
-
+    /*
     @Override
     protected void onRetryRequest(EventType eventType) {
         Log.i(TAG, "ON RETRY REQUEST");
+        onResume();
+    }
+    */
+
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onResume();
     }
 
@@ -439,7 +432,6 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
     public void onAddOfferToCart(Offer offer) {
         // Add one unity to cart 
         triggerAddItemToCart(offer.getSku(), offer.getSimpleSku(),offer.getPriceForTracking());
-        
     }
     
     private void executeAddToShoppingCartCompleted() {
@@ -478,38 +470,49 @@ public class ProductOffersFragment extends BaseFragment implements OnClickListen
     }
     
     private void addToShoppingCartFailed() {
-        mDialogAddedToCart = DialogGenericFragment.newInstance(false, true, null,
-                getResources().getString(R.string.error_add_to_shopping_cart), getResources()
-                        .getString(R.string.ok_label), "", new OnClickListener() {
+        mDialogAddedToCart = DialogGenericFragment.newInstance(
+                false,
+                true,
+                null,
+                getResources().getString(R.string.error_add_to_shopping_cart),
+                getResources().getString(R.string.ok_label),
+                "",
+                new OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
                         int id = v.getId();
                         if (id == R.id.button1) {
                             mDialogAddedToCart.dismiss();
-                        } else if (id == R.id.button2) {
+                        }
+                        /*
+                        else if (id == R.id.button2) {
 
                         }
+                        */
                     }
                 });
 
         mDialogAddedToCart.show(getFragmentManager(), null);
     }
-    
-   
-    
+
+
+    /**
+     * Trigger to add an item to cart
+     * @param sku The sku
+     * @param simpleSKU The simple sku
+     * @param price The price
+     */
     private void triggerAddItemToCart(String sku, String simpleSKU, double price) {
         ContentValues values = new ContentValues();
-        values.put("p", sku);
-        values.put("sku", simpleSKU);
-        values.put("quantity", "1");
+        values.put(GetShoppingCartAddItemHelper.PRODUCT_TAG, sku);
+        values.put(GetShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSKU);
+        values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
-        triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, responseCallback);
-        
+        triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, this);
         // GA OFFER TRACKING              
-        Log.d("TRACK","SIMLPE SKU:"+simpleSKU+" PRICE:"+price);
+        Log.d(TAG,"SIMLPE SKU:" + simpleSKU+ " PRICE:" + price);
         TrackerDelegator.trackAddOfferToCart(simpleSKU,price);
-        
     }
 }

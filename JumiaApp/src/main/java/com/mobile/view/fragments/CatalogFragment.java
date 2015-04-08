@@ -23,7 +23,6 @@ import com.mobile.framework.objects.FeaturedBox;
 import com.mobile.framework.objects.Product;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
-import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnDialogFilterListener;
@@ -448,11 +447,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         // Validate data
         onValidateDataState();
     }
@@ -460,7 +459,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
+
     @Override
     protected void onRetryRequest(EventType eventType) {
         if(eventType == EventType.GET_PRODUCTS_EVENT && mCatalogPage != null && mCatalogPage.hasFilters()) {
@@ -469,8 +468,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Validate data
             onValidateDataState();
         }
-
     }
+    */
 
     /*
      * (non-Javadoc)

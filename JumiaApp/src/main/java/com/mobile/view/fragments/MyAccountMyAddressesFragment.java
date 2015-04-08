@@ -92,10 +92,12 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
         triggerGetForm();
     }
 
+    /*
     @Override
     protected void onRetryRequest(EventType eventType) {
         onClickRetryButton();
     }
+    */
 
     @Override
     protected void onClickCreateAddressButton() {

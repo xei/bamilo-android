@@ -249,7 +249,7 @@ public class ReviewsFragment extends BaseFragment {
                 String contentUrl = getArguments().getString(ConstantsIntentExtra.CONTENT_URL);
                 mProductUrl = contentUrl != null ? contentUrl : "";
             }
-            if (JumiaApplication.mIsBound && !mProductUrl.equalsIgnoreCase("")) {
+            if (JumiaApplication.mIsBound && !TextUtils.isEmpty(mProductUrl)) {
                 Bundle bundle = new Bundle();
                 bundle.putString(GetProductHelper.PRODUCT_URL, mProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
@@ -772,8 +772,7 @@ public class ReviewsFragment extends BaseFragment {
                             ratingsContainer.removeAllViews();
                         
                         
-                        ArrayList<RatingStar> ratingOptionArray = new ArrayList<>();
-                        ratingOptionArray = review.getRatingStars();
+                        ArrayList<RatingStar> ratingOptionArray = review.getRatingStars();
 
                         insertRatingTypes(ratingOptionArray, ratingsContainer,false,review.getAverage());
                         
@@ -1075,21 +1074,22 @@ public class ReviewsFragment extends BaseFragment {
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onStart();
     }
     
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
+
     @Override
     protected void onRetryRequest(EventType eventType) {
         //super.onRetryRequest(eventType);
         onStart();
     }
+    */
 }

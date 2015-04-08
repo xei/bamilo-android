@@ -146,6 +146,7 @@ public class GetCatalogPageHelper extends BaseHelper {
             e.printStackTrace();
             return parseErrorBundle(bundle);
         }
+
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PRODUCTS_EVENT);
         return bundle;
     }

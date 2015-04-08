@@ -14,7 +14,6 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.teasers.GetShopHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.MyMenuItem;
@@ -239,22 +238,23 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onValidateDataState();
     }
 
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
+
     @Override
     protected void onRetryRequest(EventType eventType) {
         onValidateDataState();
     }
+    */
 
     /**
      * The web client to intercept the clicks in the deep links to show the respective view:<br> - Case product: the link is pdv::http://... - Case catalog: the
