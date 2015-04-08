@@ -583,7 +583,7 @@ public class AdjustTracker {
                     sbSkus.deleteCharAt(sbSkus.length() - 1);
                     sbSkus.append("]");
 
-                    // Track Revenue (Sale or Gues Sale)
+                    // Track Revenue (Sale or Guest Sale)
                     String eventString = bundle.getBoolean(IS_GUEST_CUSTOMER) ? mContext.getString(R.string.adjust_token_guest_sale) : mContext.getString(R.string.adjust_token_sale);
                     AdjustEvent eventRevenue = new AdjustEvent(eventString);
                     eventRevenue = getBaseParameters(eventRevenue, bundle);
@@ -595,7 +595,7 @@ public class AdjustTracker {
 
                     double finalValue = bundle.getDouble(TRANSACTION_VALUE) * ADJUST_CENT_VALUE;
                     eventRevenue.setRevenue(finalValue, EURO_CURRENCY);
-
+                    Adjust.trackEvent(eventRevenue);
 
                     AdjustEvent eventTransaction = new AdjustEvent(mContext.getString(R.string.adjust_token_transaction_confirmation));
                     eventTransaction = getBaseParameters(eventTransaction, bundle);
@@ -802,47 +802,39 @@ public class AdjustTracker {
                 ArrayList<AddableToCart> favourites = bundle.getParcelableArrayList(FAVORITES);
 
                 Double WishlistTotal = 0.0;
+
                 if (null != favourites) {
+
                     for (AddableToCart fav : favourites) {
                         WishlistTotal += fav.getPriceForTracking();
                     }
-                }
 
-//                parameters.put(AdjustKeys.WISHLIST_CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
-                eventViewWishlist.addCallbackParameter(AdjustKeys.TOTAL_WISHLIST, WishlistTotal.toString());
-                eventViewWishlist.addPartnerParameter(AdjustKeys.TOTAL_WISHLIST, WishlistTotal.toString());
-
-                if (null != favourites) {
                     for (AddableToCart fav : favourites) {
 
                         eventViewWishlist.addCallbackParameter(AdjustKeys.BRAND, fav.getBrand());
                         eventViewWishlist.addPartnerParameter(AdjustKeys.BRAND, fav.getBrand());
-                        AdjustEvent eventViewWishlistFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_wishlist));
-                        eventViewWishlistFB = getFBBaseParameters(eventViewWishlistFB, bundle);
-                        eventViewWishlistFB.addCallbackParameter(AdjustKeys.TOTAL_WISHLIST, WishlistTotal.toString());
-                        eventViewWishlistFB.addPartnerParameter(AdjustKeys.TOTAL_WISHLIST, WishlistTotal.toString());
+                        eventViewWishlist.addCallbackParameter(AdjustKeys.TOTAL_WISHLIST, WishlistTotal.toString());
+                        eventViewWishlist.addPartnerParameter(AdjustKeys.TOTAL_WISHLIST, WishlistTotal.toString());
 
 //                        if( null != fav.getAttributes() && !TextUtils.isEmpty(fav.getAttributes().get("color"))){
 //                        	 parameters.put(AdjustKeys.COLOUR, fav.getAttributes().get("color"));
 //                        }
 //                        fbParams.put(AdjustKeys.SKU + countString, fav.getSku());
-                        eventViewWishlistFB.addCallbackParameter(AdjustKeys.SKU, fav.getSku());
-                        eventViewWishlistFB.addPartnerParameter(AdjustKeys.SKU, fav.getSku());
-                        eventViewWishlistFB.addCallbackParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                        eventViewWishlistFB.addPartnerParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                        eventViewWishlistFB.addCallbackParameter(AdjustKeys.QUANTITY, "1");
-                        eventViewWishlistFB.addPartnerParameter(AdjustKeys.QUANTITY, "1");
-                        eventViewWishlistFB.addCallbackParameter(AdjustKeys.DISCOUNT, fav.hasDiscount() ? "y" : "n");
-                        eventViewWishlistFB.addPartnerParameter(AdjustKeys.DISCOUNT, fav.hasDiscount() ? "y" : "n");
-                        eventViewWishlistFB.addCallbackParameter(AdjustKeys.BRAND, fav.getBrand());
-                        eventViewWishlistFB.addPartnerParameter(AdjustKeys.BRAND, fav.getBrand());
+                        eventViewWishlist.addCallbackParameter(AdjustKeys.SKU, fav.getSku());
+                        eventViewWishlist.addPartnerParameter(AdjustKeys.SKU, fav.getSku());
+                        eventViewWishlist.addCallbackParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
+                        eventViewWishlist.addPartnerParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
+                        eventViewWishlist.addCallbackParameter(AdjustKeys.QUANTITY, "1");
+                        eventViewWishlist.addPartnerParameter(AdjustKeys.QUANTITY, "1");
+                        eventViewWishlist.addCallbackParameter(AdjustKeys.DISCOUNT, fav.hasDiscount() ? "y" : "n");
+                        eventViewWishlist.addPartnerParameter(AdjustKeys.DISCOUNT, fav.hasDiscount() ? "y" : "n");
                         if (fav.hasSimples() && AddableToCart.NO_SIMPLE_SELECTED != fav.getSelectedSimple()) {
-                            eventViewWishlistFB.addCallbackParameter(AdjustKeys.SIZE, fav.getSelectedSimpleValue());
-                            eventViewWishlistFB.addPartnerParameter(AdjustKeys.SIZE, fav.getSelectedSimpleValue());
+                            eventViewWishlist.addCallbackParameter(AdjustKeys.SIZE, fav.getSelectedSimpleValue());
+                            eventViewWishlist.addPartnerParameter(AdjustKeys.SIZE, fav.getSelectedSimpleValue());
                         }
-                        eventViewWishlistFB.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(fav.getPriceForTracking()));
-                        eventViewWishlistFB.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(fav.getPriceForTracking()));
-                        Adjust.trackEvent(eventViewWishlistFB);
+                        eventViewWishlist.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(fav.getPriceForTracking()));
+                        eventViewWishlist.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(fav.getPriceForTracking()));
+                        Adjust.trackEvent(eventViewWishlist);
                     }
                 } else {
                     Adjust.trackEvent(eventViewWishlist);
