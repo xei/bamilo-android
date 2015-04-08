@@ -160,7 +160,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         Log.i(TAG, "ON CREATE");
     	// Verify if campaign page was open via a banner
 	Bundle args = getArguments();
-	if(args != null && args.containsKey(ConstantsIntentExtra.BANNER_TRACKING)){
+	if(args != null) {
             isFromBanner = args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
 	}
         // Get campaigns from arguments
