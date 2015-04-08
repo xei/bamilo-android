@@ -97,6 +97,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private int mNumberOfColumns;
 
     private boolean mSortOrFilterApplied; // Flag to reload or not an initial catalog in case generic error
+    
+    private boolean isFromBanner; // Verify if campaign page was open via a banner
 
     /**
      * Create and return a new instance.
@@ -142,6 +144,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             }
+            // Verify if campaign page was open via a banner
+            isFromBanner = args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
@@ -487,11 +491,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, product.getUrl());
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
-            Bundle args = getArguments();
-            //verify if campaign page was open via a banner
-            if(args != null && args.containsKey(ConstantsIntentExtra.BANNER_TRACKING)){
-                bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING));
-            }
+            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
