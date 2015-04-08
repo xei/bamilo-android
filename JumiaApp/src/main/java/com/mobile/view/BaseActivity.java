@@ -1911,7 +1911,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @author sergiopereira
      */
     public boolean popBackStackUntilTag(String tag) {
-        if (fragmentController.hasEntry(FragmentType.HOME.toString())) {
+        if (fragmentController.hasEntry(tag)) {
             fragmentController.popAllEntriesUntil(this, tag);
             return true;
         }
@@ -2263,7 +2263,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         // CHECKOUT_ABOUT_YOU
         if (id == R.id.checkout_header_step_1 && !view.isSelected()) {
             // Uncomment if you want click on about you step
-            // removeAllCheckoutEntries();
+            // removeCheckoutEntries();
             // onSwitchFragment(FragmentType.ABOUT_YOU,
             // FragmentController.NO_BUNDLE,
             // FragmentController.ADD_TO_BACK_STACK);
@@ -2294,7 +2294,8 @@ public abstract class BaseActivity extends ActionBarActivity {
      *
      * @author sergiopereira
      */
-    private void removeAllCheckoutEntries() {
+    @Deprecated
+    private void removeCheckoutEntries() {
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.PAYMENT_METHODS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.SHIPPING_METHODS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ADDRESSES.toString());
@@ -2302,7 +2303,51 @@ public abstract class BaseActivity extends ActionBarActivity {
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.EDIT_ADDRESS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.POLL.toString());
     }
-    
+
+    /**
+     * Remove all checkout entries to call the base of checkout
+     *
+     * @author ricardosoares
+     */
+    private void removeAllCheckoutEntries() {
+        // Native Checkout
+        String[] tags = {    FragmentType.PAYMENT_METHODS.toString(), FragmentType.SHIPPING_METHODS.toString(),  FragmentType.MY_ADDRESSES.toString(),
+                FragmentType.CREATE_ADDRESS.toString(), FragmentType.EDIT_ADDRESS.toString(),      FragmentType.POLL.toString() };
+
+        // Remove tags
+        FragmentController.getInstance().removeAllEntriesWithTag(tags);
+    }
+
+    /**
+     * Method used to remove all native checkout entries from the back stack on the Fragment Controller
+     * Note: Updated this method if you add a new native checkout stepremoveAllCheckoutEntries
+     * @author sergiopereira
+     */
+    @Deprecated
+    protected void removeNativeCheckoutFromBackStack() {
+        // Native Checkout
+        FragmentType[] type = { FragmentType.CHECKOUT_THANKS,   FragmentType.MY_ORDER,      FragmentType.PAYMENT_METHODS,
+                FragmentType.SHIPPING_METHODS,  FragmentType.MY_ADDRESSES,  FragmentType.CREATE_ADDRESS,
+                FragmentType.EDIT_ADDRESS,      FragmentType.POLL,          FragmentType.ABOUT_YOU };
+        // Remove tags
+        for (FragmentType fragmentType : type) FragmentController.getInstance().removeAllEntriesWithTag(fragmentType.toString());
+    }
+
+    /**
+     * Method used to remove all native checkout entries from the back stack on the Fragment Controller
+     * Note: This method must be updated in case of adding more screens to native checkout.
+     * @author ricardosoares
+     */
+    public void removeAllNativeCheckoutFromBackStack(){
+        // Native Checkout
+        String[] tags = { FragmentType.CHECKOUT_THANKS.toString(),   FragmentType.MY_ORDER.toString(),      FragmentType.PAYMENT_METHODS.toString(),
+                FragmentType.SHIPPING_METHODS.toString(),  FragmentType.MY_ADDRESSES.toString(),  FragmentType.CREATE_ADDRESS.toString(),
+                FragmentType.EDIT_ADDRESS.toString(),      FragmentType.POLL.toString(),          FragmentType.ABOUT_YOU.toString() };
+
+        // Remove tags
+        FragmentController.getInstance().removeAllEntriesWithTag(tags);
+    }
+
     /*
      * ##### REQUESTS TO RECOVER #####
      */

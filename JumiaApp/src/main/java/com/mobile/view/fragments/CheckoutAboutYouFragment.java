@@ -861,7 +861,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
             // Clean stack for new native checkout on the back stack (auto login)
-            super.removeNativeCheckoutFromBackStack();
+            getBaseActivity().removeAllNativeCheckoutFromBackStack();
             // Goto next step
             Bundle bundle = new Bundle();
             // Validate if is guest user and sent the flag 

@@ -342,7 +342,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      */
     private void onClickSpannableString(View view) {
         // Remove all checkout process entries
-        super.removeNativeCheckoutFromBackStack();
+        getBaseActivity().removeAllNativeCheckoutFromBackStack();
         // Switch to track order
         Bundle bundle = new Bundle();
         // Validate orderNumber from tag

@@ -14,10 +14,9 @@ import com.mobile.view.fragments.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import de.akquinet.android.androlog.Log;
 
@@ -56,9 +55,9 @@ public class FragmentController {
 
     private static FragmentController fragmentController;
     
-    private LinkedList<String> backStack = new LinkedList<>();
+    private ConcurrentLinkedDeque<String> backStack = new ConcurrentLinkedDeque<>();
 
-    protected WorkerThread auxThread;
+    protected WorkerThread mWorkerThread;
     
     /**
      * ##################### CONSTRUCTOR #####################
@@ -164,7 +163,18 @@ public class FragmentController {
                 iterator.remove();
         }
     }
-    
+
+    public void removeAllEntriesWithTag(final String... tags) {
+        WorkerThread.executeRunnable(mWorkerThread, new Runnable() {
+            @Override
+            public void run() {
+                for (String tag : tags){
+                    removeAllEntriesWithTag(tag);
+                }
+            }
+        });
+    }
+
     /**
      * Print all entries
      */
@@ -180,7 +190,7 @@ public class FragmentController {
      * Print all entries
      * @return 
      */
-    public LinkedList<String> returnAllEntries(){
+    public ConcurrentLinkedDeque<String> returnAllEntries(){
        return backStack;
     }
     
@@ -210,9 +220,9 @@ public class FragmentController {
             public void run() {
                 // Create reverse iterator
 //               Log.e(TAG, "Doing work: removeEntriesUntilTag");
-                ListIterator<String> iterator = backStack.listIterator(backStack.size());
-                while (iterator.hasPrevious()) {
-                    String currentTag = iterator.previous();
+                Iterator<String> iterator = backStack.descendingIterator();
+                while (iterator.hasNext()) {
+                    String currentTag = iterator.next();
                     Log.i(TAG, "POP TAG: " + currentTag + " UNTIL TAG: " + tag + " STACK SIZE: " + backStack.size());
                     // Case HOME
                     if (currentTag.equals(FragmentType.HOME.toString())) break;
@@ -550,11 +560,11 @@ public class FragmentController {
         }
     }
 
-    private WorkerThread getSingletonThread(){
-        if (auxThread == null) {
-            auxThread = new WorkerThread();
-            auxThread.start();
+    protected WorkerThread getSingletonThread(){
+        if (mWorkerThread == null) {
+            mWorkerThread = new WorkerThread();
+            mWorkerThread.start();
         }
-        return auxThread;
+        return mWorkerThread;
     }
 }

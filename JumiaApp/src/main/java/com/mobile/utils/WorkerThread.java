@@ -35,7 +35,7 @@ public class WorkerThread extends Thread{
     public WorkerThread(ConcurrentLinkedQueue<Runnable> runnableQueue){
         mToStop = false;
         mRunnableQueue = (runnableQueue != null) ? runnableQueue : new ConcurrentLinkedQueue<Runnable>();
-        setName("WorkerThread_"+getId());
+        setName(TAG+"_"+getId());
     }
 
     public WorkerThread(){
@@ -70,7 +70,7 @@ public class WorkerThread extends Thread{
 
     /**
      *
-     * @return True if will thread will continue running, false otherwise
+     * @return True if thread will continue running, false otherwise
      */
     private boolean isToRun(){
         return mStopRequested ? !mRunnableQueue.isEmpty() : !mToStop;
