@@ -467,11 +467,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      * @param originType
      */
     private boolean validateBannerFlow(TeaserGroupType originType){
-        if(originType == TeaserGroupType.MAIN_ONE_SLIDE || originType == TeaserGroupType.STATIC_BANNER){
-            return true;
-        } else {
-            return false;
-        }
+        return originType == TeaserGroupType.MAIN_ONE_SLIDE || originType == TeaserGroupType.STATIC_BANNER;
     }
 
 
