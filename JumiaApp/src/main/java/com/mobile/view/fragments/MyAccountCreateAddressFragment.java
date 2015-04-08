@@ -7,6 +7,8 @@ import android.view.View;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.TrackingEvent;
@@ -15,6 +17,7 @@ import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -33,24 +36,39 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
 
     private static final String TAG = LogTagHelper.create(MyAccountCreateAddressFragment.class);
 
+    protected boolean isFirstUserAddress;
+
     /**
      * Fragment used to create an address
-     * @return CheckoutCreateAddressFragment
-     * @author sergiopereira
+     * @return MyAccountCreateAddressFragment
+     *
      */
-    public static MyAccountCreateAddressFragment newInstance() {
-        return new MyAccountCreateAddressFragment();
+    public static MyAccountCreateAddressFragment newInstance(Bundle bundle) {
+        MyAccountCreateAddressFragment myAccountCreateAddressFragment = new MyAccountCreateAddressFragment();
+        myAccountCreateAddressFragment.setArguments(bundle);
+        return myAccountCreateAddressFragment;
     }
 
     /**
      * Empty constructor
-     * @author sergiopereira
+     *
      */
     public MyAccountCreateAddressFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyAccount,
                 R.string.my_addresses,
                 KeyboardState.ADJUST_CONTENT);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle bundle = getArguments();
+
+        if(bundle != null) {
+            isFirstUserAddress = bundle.getBoolean(TrackerDelegator.LOGIN_KEY, false);
+        }
     }
 
     @Override
@@ -98,9 +116,14 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
                 ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
                 triggerCreateAddress(mBillValues, true);
             }
+        } else {
+            if(isFirstUserAddress){
+                FragmentController.getInstance().popLastEntry(FragmentType.MY_ACCOUNT_CREATE_ADDRESS.toString());
+                getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                getBaseActivity().onBackPressed();
+            }
         }
-
-        getBaseActivity().onBackPressed();
     }
 
     @Override

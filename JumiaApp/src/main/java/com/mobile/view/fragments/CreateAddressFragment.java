@@ -24,7 +24,6 @@ import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.AddressCity;
 import com.mobile.framework.objects.AddressRegion;
 import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -149,11 +148,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         } else {
             Log.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_CREATE_ADDRESS);
-
-        TrackerDelegator.trackCheckoutStep(params);
     }
 
     /*
