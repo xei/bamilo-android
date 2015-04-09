@@ -1802,20 +1802,19 @@ public class DynamicFormItem {
             starts.setTag(pairs.getKey().toString());
             label.setText(""+pairs.getValue());
             linearLayout.addView(ratingLine);
-            
-            
         }
+
         int id = count-1;
-        //add error mesage to ratings form
+        //add error message to ratings form
         this.errorText = context.getString(R.string.rating_option_error_message);
         this.errorControl = createErrorControl(id, controlWidth);
-        
+
         //#RTL
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
             this.errorControl.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         }
-        
+
         linearLayout.addView(this.errorControl);
 
         /**
@@ -1850,10 +1849,10 @@ public class DynamicFormItem {
      * @param controlWidth
      */
     private void addCustomRatingCheckbox(LinearLayout linearLayout, RelativeLayout.LayoutParams params, int controlWidth){
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
         
         
-        if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+        if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
             params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         } else {
             params = new RelativeLayout.LayoutParams(controlWidth,RelativeLayout.LayoutParams.WRAP_CONTENT);    
@@ -1865,7 +1864,7 @@ public class DynamicFormItem {
         params.height = context.getResources().getDimensionPixelOffset(R.dimen.checkbox_rating_height);
         
         //#RTL
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+        if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
             checkWriteFull.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT|Gravity.START);
         } 
     
