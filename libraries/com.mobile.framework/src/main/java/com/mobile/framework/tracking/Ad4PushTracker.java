@@ -693,11 +693,7 @@ public class Ad4PushTracker {
                 prefs.putString(MOST_VISITED_CATEGORY, category);
                 mA4S.updateDeviceInfo(prefs);
                 Log.i(TAG, "TRACK TOP CATEGORY: " + prefs.toString());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (NullPointerException e) {
+            } catch (InterruptedException | UnsupportedEncodingException | NullPointerException e) {
                 e.printStackTrace();
             }
         }
