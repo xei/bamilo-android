@@ -59,6 +59,7 @@
     <string name="gcheckout">Checkout</string>
     <string name="gcampaign">Campaign</string>
     <string name="grelateditem">RelatedItem</string>
+    <string name="gbanner">Banner</string>
 
     <!-- Action -->
     <string name="gpdv">pdv</string>
@@ -102,6 +103,7 @@
     <string name="gAddSellerToCart">SellerAddToCart</string>
     <string name="gShareApp">ShareApp</string>
     <string name="gAccountCreateAddress">AccountCreateAddress</string>
+    <string name="gPurchase">Purchase</string>
 
     <!-- Checkout Steps -->
     <string name="gNativeCheckout">NativeCheckout</string>
