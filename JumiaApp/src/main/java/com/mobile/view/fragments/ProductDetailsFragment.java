@@ -282,6 +282,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private View mWizardContainer;
 
     private View mSellerDeliveryContainer;
+    
+    private boolean isFromBanner;
 
     /**
      * Empty constructor
@@ -324,6 +326,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             } else {
                 categoryTree = "";
             }
+            // Verify if campaign page was open via a banner
+            isFromBanner = arguments.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
@@ -1170,6 +1174,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getRatingsAverage());
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
+        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
         if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 0) {
             bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(0));
             if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 1) {
@@ -1179,7 +1184,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         } else {
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
         }
-
         TrackerDelegator.trackProductAddedToCart(bundle);
     }
 
@@ -1907,12 +1911,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 TrackerDelegator.trackLoadTiming(params);
 
                 params = new Bundle();
-                params.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
-                if (JumiaApplication.CUSTOMER != null) {
-                    params.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
-                }
-                params.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-                params.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
                 params.putParcelable(AdjustTracker.PRODUCT, mCompleteProduct);
                 params.putString(AdjustTracker.TREE, categoryTree);
                 TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, getLoadTime(), false);

@@ -13,7 +13,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
@@ -26,6 +25,7 @@ import com.mobile.framework.objects.AddableToCart;
 import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.CustomerGender;
+import com.mobile.framework.objects.Product;
 import com.mobile.framework.objects.PurchaseItem;
 import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.objects.ShoppingCartItem;
@@ -69,8 +69,6 @@ public class AdjustTracker {
     public static final String SEARCH_TERM = "searchTerm";
     public static final String CART = "cart";
     public static final String DEVICE = "device";
-    public static final String REGION = "region";
-    public static final String CITY = "city";
     public static final String CATEGORY = "category";
     public static final String CATEGORY_ID = "categoryId";
     public static final String TREE = "tree";
@@ -79,20 +77,6 @@ public class AdjustTracker {
     
     public final static String ADJUST_PREFERENCES = "AdjustPreferences";
     public final static String PURCHASE_NUMBER = "aggregatedNumberOfPurchases";
-
-
-
-    protected static class AdjustConstants {
-        public static final String NO_DATA = "";
-        public static final String NO_CURRENCY = "";
-        public static final String FIXED_PRICE = "FixedPrice";
-        public static final String NOT_AVAILABLE = "n.a.";
-
-        public static final String FILTERS_BRAND = "brand";
-        public static final String FILTERS_COLOR = "color";
-        public static final String FILTERS_PRICE_RANGE = "price_range";
-        public static final String FILTERS_CATEGORY = "category";
-    }
 
     protected static class AdjustKeys {
         public static final String SHOP_COUNTRY = "shop_country";
@@ -105,33 +89,13 @@ public class AdjustTracker {
         public static final String DEVICE_MANUFACTURER = "device_manufacturer";
         public static final String DEVICE_MODEL = "device_model";
         public static final String TRANSACTION_ID = "transaction_id";
-        public static final String LISTING_ID = "listingID";
-        public static final String AVG_RATING_SELLER = "average_rating_seller";
-        public static final String TRUSTED_SELLER = "trusted_seller";
-        public static final String OFFERING_TYPE = "offering_type";
-        public static final String SELLER_ID = "seller_id";
         public static final String CURRENCY_CODE = "currency_code";
         public static final String CURRENCY = "currency";
         public static final String PRICE = "price";
-        public static final String RATE_GIVEN = "rategiven";
-        public static final String COMMENT = "comment";
         public static final String CATEGORY_TREE = "tree";
         public static final String CATEGORY = "category";
         public static final String CATEGORY_ID = "category_id";
-        public static final String SUBCATEGORY = "subcategory";
-        public static final String CONDITION = "condition";
         public static final String QUANTITY = "quantity";
-        public static final String PRODUCT_TYPE = "product_type";
-        public static final String PRODUCT_IMAGE = "product_image";
-        public static final String PRODUCT_NAME = "product_name";
-        public static final String SALE_DURATION = "sale_duration";
-        public static final String PAYMENT_OPTIONS = "payment_options";
-        public static final String SHIPPING_OPTIONS = "shipping_options";
-        public static final String SHIPMENT_TIME = "shipment_time";
-        public static final String SHIPMENT_FEES = "shipment_fees";
-        public static final String DESTINATION = "destination";
-        public static final String SEARCH_PHRASE = "search_phrase";
-        public static final String SEARCH_RESULTS = "number_of_search_results";
         public static final String GENDER = "gender";
         public static final String SKU = "sku";
         public static final String SKUS = "skus";
@@ -190,13 +154,9 @@ public class AdjustTracker {
     private String TABLET = "Tablet";
     private String PHONE = "Phone";
 
-//    private static Context context;
-    
     private final String TRACKING_PREFS = "tracking_prefs";
     private final String SESSION_COUNTER = "sessionCounter";
 
-    private Handler handler;
-    
     private static boolean isEnabled = false;
     
     private static AdjustTracker sInstance;
@@ -237,7 +197,6 @@ public class AdjustTracker {
 
         isEnabled = context.getResources().getBoolean(R.bool.adjust_enabled);
 
-//        Adjust.setEnabled(isEnabled);
 
         mContext = context;
         if (isEnabled) {
@@ -396,17 +355,18 @@ public class AdjustTracker {
                     eventCatalogSorted.addPartnerParameter(AdjustKeys.GENDER, gender);
                 }
             }
-            ArrayList<String> skus = bundle.getStringArrayList(TRANSACTION_ITEM_SKUS);
+            ArrayList<Product> skus = bundle.getParcelableArrayList(TRANSACTION_ITEM_SKUS);
             StringBuilder sbSkus;
             sbSkus = new StringBuilder();
             if (skus.size() > 0) {
                 sbSkus.append("[");
                 final int skusLimit = 3;
                 int skusCount = 0;
-                for (String sku : skus) {
-                    skusCount++;
+                
+                for (Product sku : skus) {
 //                    sku = "\""+sku+"\"";
-                    sbSkus.append(sku).append(",");
+                    sbSkus.append(sku.getSKU()).append(",");
+                    skusCount++;
                     if (skusLimit <= skusCount) {
                         break;
                     }
@@ -852,7 +812,7 @@ public class AdjustTracker {
      * @param mp
      */
     public static void printParameters(Map mp) {
-        Log.e("Adjust","init ----------");
+        Log.e("Adjust", "init ----------");
         Iterator it = mp.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry)it.next();
@@ -1073,5 +1033,12 @@ public class AdjustTracker {
         Log.i(TAG, "SELECTED PROVIDER: " + bestProvider);
         return bestProvider;
     }
-    
+
+    public static void resetTransactionCount(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(AdjustTracker.ADJUST_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(AdjustTracker.PURCHASE_NUMBER, 0);
+        editor.apply();
+    }
+
 }

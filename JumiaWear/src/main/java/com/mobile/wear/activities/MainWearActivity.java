@@ -47,7 +47,6 @@ public class MainWearActivity extends BaseActivity {
                         displaySpeechRecognizer();
                     }
                 });
-
             }
         });
 
@@ -64,15 +63,9 @@ public class MainWearActivity extends BaseActivity {
      */
     private void displaySpeechRecognizer() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         // Start the activity, the intent will be populated with the speech text
         startActivityForResult(intent, SPEECH_REQUEST_CODE);
-
-        //TODO to remove, test purpose
-//        String spokenText = "nike";
-//        JumiaDataReceiverService.performSearch(spokenText);
-
     }
 
 
@@ -84,18 +77,14 @@ public class MainWearActivity extends BaseActivity {
      * @param data
      */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // This callback is invoked when the Speech Recognizer returns.
         // This is where you process the intent and extract the speech text from the intent.
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
-            List<String> results = data.getStringArrayListExtra(
-                    RecognizerIntent.EXTRA_RESULTS);
-
+            List<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0).replaceAll(" ", "%20");
             JumiaDataReceiverService.performSearch(spokenText);
-
         }
     }
 

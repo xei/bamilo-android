@@ -7,23 +7,21 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 
+import com.ad4screen.sdk.Tag;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.BundleConstants;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.fragments.FragmentType;
@@ -33,6 +31,7 @@ import com.mobile.framework.objects.Section;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.service.IRemoteServiceCallback;
+import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
@@ -42,8 +41,6 @@ import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.preferences.CountryConfigs;
 import com.mobile.utils.HockeyStartup;
-import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
@@ -68,7 +65,7 @@ import de.akquinet.android.androlog.Log;
  * @date 25/04/2013
  * @description
  */
-
+@Tag(name = "SplashScreenActivity")
 public class SplashScreenActivity extends FragmentActivity implements IResponseCallback, OnClickListener {
 
     private final static String TAG = LogTagHelper.create(SplashScreenActivity.class);
@@ -81,15 +78,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private static boolean shouldHandleEvent = true;
 
-    private String mUtm;
-
-    private Bundle mDeepLinkBundle;
-
-    private boolean isDeepLinkLaunch = false;
-
     private View mJumiaMapImage;
-
-    SharedPreferences sharedPrefs;
 
     private View mMainFallBackStub;
 
@@ -106,12 +95,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        //set Font
-        if (getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific)) {
-            HoloFontLoader.initFont(true);
-        } else {
-            HoloFontLoader.initFont(false);
-        }
+        // Disable rich push notifications
+        Ad4PushTracker.get().setPushNotificationLocked(true);
+        // Set Font
+        boolean isSpecificApp = getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific);
+        HoloFontLoader.initFont(isSpecificApp);
         // Validate if is phone and force orientation
         setOrientationForHandsetDevices();
         // Set view
@@ -124,10 +112,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mRetryFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
         // Get unexpected error layout
         mUnexpectedError = findViewById(R.id.fragment_unexpected_error_stub);
-        // Get prefs
-        sharedPrefs = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        // Get values from intent
-        getDeepLinkView();
         // Tracking
 //        if(Adjust.isEnabled())
 //            AdjustTracker.onResume();
@@ -149,26 +133,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     /*
      * (non-Javadoc)
      *
-     * @see android.support.v4.app.FragmentActivity#onNewIntent(Intent)
-     */
-    @Override
-    protected void onNewIntent(Intent intent) {
-        Log.i(TAG, "ON NEW INTENT: DEEP LINK INTENT: " + intent);
-        super.onNewIntent(intent);
-        this.setIntent(intent);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
      * @see android.support.v4.app.FragmentActivity#onResume()
      */
     @Override
     protected void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        // TODO - Remove cc from DL and add this
-        //Ad4PushTracker.get().startActivity(this);
+        //
+        Ad4PushTracker.get().startActivity(this);
+        //
         shouldHandleEvent = true;
         // Show animated map
         Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
@@ -186,8 +159,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
-        // TODO - Remove cc from DL and add this
-        // Ad4PushTracker.get().stopActivity(this);
+        //
+        Ad4PushTracker.get().stopActivity(this);
         // Validate dialog
         if (dialog != null) {
             dialog.dismissAllowingStateLoss();
@@ -203,6 +176,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
+        SharedPreferences sharedPrefs = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor eD = sharedPrefs.edit();
         eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         eD.apply();
@@ -218,8 +192,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
-        // Clean push notifications
-        cleanIntent(getIntent());
+        // Mark data for GC
+        dialog = null;
+        mJumiaMapImage = null;
+        mMainFallBackStub = null;
+        mRetryFallBackStub = null;
+        mUnexpectedError = null;
+        initializationHandler = null;
     }
 
 
@@ -238,83 +217,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
     };
 
-    private void cleanIntent(Intent intent) {
-        Log.d(TAG, "CLEAN NOTIFICATION");
-        mUtm = null;
-        mDeepLinkBundle = null;
-        intent.putExtra(ConstantsIntentExtra.UTM_STRING, "");
-        intent.putExtra(ConstantsIntentExtra.CONTENT_URL, "");
-        intent.putExtra(ConstantsIntentExtra.DEEP_LINK_TAG, "");
-        intent.putExtra(ConstantsIntentExtra.CART_DEEP_LINK_TAG, "");
-    }
-
-    /**
-     * Get values from intent, sent by push notification
-     */
-    private void getDeepLinkView() {
-        // Get intent, action and MIME type
-        Intent intent = getIntent();
-        Log.d(TAG, "DEEP LINK RECEIVED INTENT: " + intent.toString());
-        // ## DEEP LINK FROM EXTERNAL URIs ##
-        if (!hasDeepLinkFromURI(intent)) {
-            // ## DEEP LINK FROM NOTIFICATION ##
-            hasDeepLinkFromGCM(intent);
-        }
-    }
-
-    /**
-     * Validate deep link from External URI.
-     *
-     * @param intent
-     * @return true or false
-     * @author sergiopereira
-     */
-    private boolean hasDeepLinkFromURI(Intent intent) {
-        // Get intent action ACTION_VIEW
-        String action = intent.getAction();
-        // Get intent data
-        Uri data = intent.getData();
-        // ## DEEP LINK FROM EXTERNAL URIs ##
-        if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
-            mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
-            return isDeepLinkLaunch = true;
-        }
-        Log.i(TAG, "DEEP LINK: NO EXTERNAL URI");
-        return isDeepLinkLaunch = false;
-    }
-
-    /**
-     * Validate deep link from Push Notification.
-     *
-     * @param intent
-     * @return true or false
-     * @author sergiopereira
-     */
-    private boolean hasDeepLinkFromGCM(Intent intent) {
-        // ## DEEP LINK FROM NOTIFICATION ##
-        Bundle payload = intent.getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
-        // Get Deep link
-        if (null != payload) {
-            // Get UTM
-            mUtm = payload.getString(ConstantsIntentExtra.UTM_STRING);
-            Log.i(TAG, "UTM FROM GCM: " + mUtm);
-            // Get value from deep link key
-            String deepLink = payload.getString(BundleConstants.DEEPLINKING_PAGE_INDICATION);
-            Log.i(TAG, "DEEP LINK: GCM " + deepLink);
-            // Validate deep link
-            if (!TextUtils.isEmpty(deepLink)) {
-                // Create uri from the value
-                Uri data = Uri.parse(deepLink);
-                Log.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
-                // Load deep link
-                mDeepLinkBundle = DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
-                return isDeepLinkLaunch = true;
-            }
-        }
-        Log.i(TAG, "DEEP LINK: NO GCM TAG");
-        return isDeepLinkLaunch = false;
-    }
-
     /**
      * Get the main class for mobile(Portrait) or tablet(Unspecified).
      *
@@ -322,11 +224,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private Class<?> getActivityClassForDevice() {
-        if (!getResources().getBoolean(R.bool.isTablet)) {
-            return MainFragmentActivity.class;
-        } else {
-            return MainFragmentTabletActivity.class;
-        }
+        return !getResources().getBoolean(R.bool.isTablet) ? MainFragmentActivity.class : MainFragmentTabletActivity.class;
     }
 
     /**
@@ -334,7 +232,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     public void selectActivity() {
         Log.i(TAG, "START ANIMATION ACTIVITY");
-        //mJumiaMapImage = findViewById(R.id.jumiaMap);
         mJumiaMapImage.clearAnimation();
         Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         animationFadeOut.setDuration(SPLASH_DURATION_OUT);
@@ -354,12 +251,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             public void onAnimationEnd(Animation animation) {
                 Log.i(TAG, "ON ANIMATION END");
                 mJumiaMapImage.setVisibility(View.GONE);
-                // Validate deep link bundle    
-                if (mDeepLinkBundle != null) {
-                    startActivityWithDeepLink(mDeepLinkBundle);
-                } else {
-                    startMainActivity();
-                }
+                // Validate deep link bundle
+                startMainActivity();
                 overridePendingTransition(R.animator.activityfadein, R.animator.splashfadeout);
                 finish();
             }
@@ -374,31 +267,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void startMainActivity() {
         Log.d(TAG, "START MAIN FRAGMENT ACTIVITY");
-        // Default Start
-        Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-    }
-
-    /**
-     * Start deep view with the respective bundle and set the ADX event
-     *
-     * @param bundle
-     * @author sergiopereira
-     */
-    private void startActivityWithDeepLink(Bundle bundle) {
-        // Get fragment type
-        FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
-        Log.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
-        // Default Start
-        Intent intent = new Intent(getApplicationContext(), getActivityClassForDevice());
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        // Validate fragment type
-        if (fragmentType != FragmentType.HOME || fragmentType != FragmentType.UNKNOWN) {
-            intent.putExtra(ConstantsIntentExtra.FRAGMENT_TYPE, fragmentType);
-            intent.putExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE, bundle);
-        }
-        // Start activity
+        // Clone the current intent, but only the relevant parts for Deep Link (URI or GCM)
+        Intent intent = (Intent) getIntent().clone();
+        intent.setClass(getApplicationContext(), getActivityClassForDevice());
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
@@ -448,11 +320,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     /*
      * (non-Javadoc)
      * @see android.app.Activity#onUserLeaveHint()
-     */
+    */
     @Override
     public void onUserLeaveHint() {
         super.onUserLeaveHint();
-        Log.e(TAG,"onUserLeaveHint");
+        Log.e(TAG, "onUserLeaveHint");
         shouldHandleEvent = false;
     }
 
@@ -471,7 +343,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onRequestComplete(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS RESPONSE");
         if (!shouldHandleEvent) {
-            Log.e(TAG,"shouldHandleEvent"+shouldHandleEvent);
+            Log.e(TAG,"shouldHandleEvent" + shouldHandleEvent);
             return;
         }
 
@@ -529,7 +401,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessGlobalConfigsEvent(Bundle bundle) {
         Log.i(TAG, "ON PROCESS: GLOBAL CONFIGS");
-
+        SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         if (sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null) == null) {
             Log.i(TAG, "SELECTED COUNTRY ID IS NULL");
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
@@ -537,7 +409,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             } else {
                 onRequestError(bundle);
             }
-
         } else {
             Log.i(TAG, "SELECTED COUNTRY ID IS NOT NULL");
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
@@ -594,7 +465,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     private void onProcessRequiresUserError() {
-        //mJumiaMapImage = findViewById(R.id.jumiaMap);
         mJumiaMapImage.clearAnimation();
         Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         animationFadeOut.setDuration(750);
@@ -634,24 +504,22 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     private void onProcessApiEvent(Bundle bundle) {
         Log.d(TAG, "ON PROCESS API EVENT");
         // Validate out dated sections
-        if (bundle.getBoolean(Section.SECTION_NAME_COUNTRY_CONFIGS, false)) {
+        if (bundle.getBoolean(Section.SECTION_NAME_CONFIGURATIONS, false)) {
             Log.d(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
-        } else if(!CountryConfigs.checkCountryRequirements(sharedPrefs)){
+        } else if(!CountryConfigs.checkCountryRequirements(getApplicationContext())){
             Log.d(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
         } else {
             Log.d(TAG, "START MAIN ACTIVITY");
-            // ## Google Analytics "General Campaign Measurement" ##
-            TrackerDelegator.trackGACampaign(getApplicationContext(), mUtm);
-            //track open app event for all tracker but Adjust
-            TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
             // Show activity
             selectActivity();
         }
-
     }
 
+    /**
+     * Trigger to get the country configurations
+     */
     private void triggerGetCountryConfigs(){
         JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
@@ -674,7 +542,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Log.i(TAG, "codeerror " + errorCode);
 
         if (errorCode.isNetworkError()) {
-//            errorCode = ErrorCode.IO;
             switch (errorCode) {
                 case IO:
                 case CONNECT_ERROR:
@@ -911,10 +778,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Case choose country
         else if (id == R.id.fallback_change_country) {
             onClickMaintenanceChooseCountry();
-        } else if (id == R.id.fragment_root_error_button) {
+        }
+        // Case retry button
+        else if (id == R.id.fragment_root_error_button) {
             onClickErrorButton();
         }
-
         // Case unknown
         else {
             Log.w(TAG, "WARNING: UNEXPECTED CLICK ENVENT");

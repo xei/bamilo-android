@@ -41,7 +41,6 @@ public class ConstantsIntentExtra {
     public static final String CONTENT_TITLE = mPackage + "ContentTitle";
     public static final String SUCCESS_INFORMATION = mPackage + "SuccessInformation";
     public static final String CUSTOMER_EMAIL = mPackage + "CustomerEmail";
-    public static final String IS_SIGN_UP = mPackage + "isSignUp";
 
     // ########### REVIEW ##############
     public static final String REVIEW_TITLE = mPackage + "ReviewTitle";
@@ -96,5 +95,8 @@ public class ConstantsIntentExtra {
     // ########### MY ORDER ##############
     public static final String MY_ORDER_POS = "position";
     public static final String ORDER_FINISH = mPackage + "OrderFinish";
+
+    // ############ BANNER TRACKING ###############
+    public static final String BANNER_TRACKING = "isFromBanner";
 
 }

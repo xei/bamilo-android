@@ -2398,12 +2398,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void trackPageAdjust() {
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
-        bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-        if (JumiaApplication.CUSTOMER != null) {
-            bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
-        }
         TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
     }
 

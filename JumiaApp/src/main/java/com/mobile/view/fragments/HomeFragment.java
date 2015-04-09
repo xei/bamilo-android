@@ -566,12 +566,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         try {
             if(isAdded()){
                 Bundle bundle = new Bundle();
-                bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
                 bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
-                bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-                if (JumiaApplication.CUSTOMER != null) {
-                    bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER); 
-                }
                 TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);    
             }
         } catch (IllegalStateException e) {
