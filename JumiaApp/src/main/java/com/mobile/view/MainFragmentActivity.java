@@ -45,6 +45,7 @@ import com.mobile.view.fragments.MyAccountEmailNotificationFragment;
 import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
+import com.mobile.view.fragments.MyAddressesSessionLogin;
 import com.mobile.view.fragments.MyOrdersFragment;
 import com.mobile.view.fragments.ProductDetailsDescriptionFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
@@ -320,6 +321,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case LOGIN:
                 fragment = SessionLoginFragment.getInstance(bundle);
                 break;
+            case MY_ADDRESSES_LOGIN:
+                fragment = MyAddressesSessionLogin.getInstance(bundle);
+                break;
             case ABOUT_YOU:
                 fragment = CheckoutAboutYouFragment.getInstance();
                 break;
@@ -372,7 +376,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = MyAccountMyAddressesFragment.newInstance();
                 break;
             case MY_ACCOUNT_CREATE_ADDRESS:
-                fragment = MyAccountCreateAddressFragment.newInstance();
+                fragment = MyAccountCreateAddressFragment.newInstance(bundle);
                 break;
             case MY_ACCOUNT_EDIT_ADDRESS:
                 fragment = MyAccountEditAddressFragment.newInstance(bundle);

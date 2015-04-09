@@ -1,15 +1,15 @@
 package com.mobile.framework.objects;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Iterator;
 
 import de.akquinet.android.androlog.Log;
 
@@ -22,7 +22,7 @@ public class VersionInfo implements IJSONSerializable, Parcelable {
 	private final HashMap<String, Version> mVersions;
 	
 	public VersionInfo() {
-		mVersions = new HashMap<String, Version>();
+		mVersions = new HashMap<>();
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class VersionInfo implements IJSONSerializable, Parcelable {
 	}
 	
 	private VersionInfo(Parcel in) {
-		mVersions = new HashMap<String, Version>();
+		mVersions = new HashMap<>();
 		in.readMap(mVersions, Version.class.getClassLoader());
 	}
 
