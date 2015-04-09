@@ -264,8 +264,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         else if (id == R.id.button_variant) onClickVariation(view);
         // Case size guide
         else if (id == R.id.dialog_list_size_guide_button) onClickSizeGuide(view);
-        // Case continue shopping
-        else if (id == R.id.fragment_root_empty_button) onClickContinueShopping();
         // Case unknown
         else Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
     }

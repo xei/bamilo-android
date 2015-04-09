@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import com.mobile.forms.Form;
 import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.objects.ProductsPage;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -36,8 +35,6 @@ public class GetSellerReviewFormHelper extends BaseHelper {
     private static final EventType EVENT_TYPE = EventType.GET_FORM_SELLER_REVIEW_EVENT;
 
     public static final String PRODUCT_URL = "productUrl";
-
-    ProductsPage mProductsPage = new ProductsPage();
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {
