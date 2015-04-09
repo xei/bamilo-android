@@ -9,6 +9,7 @@ package com.mobile.controllers.fragments;
 public enum FragmentType {
     UNKNOWN,
     LOGIN,
+    MY_ADDRESSES_LOGIN,
     REGISTER,
     FORGOT_PASSWORD,
     POPULARITY,

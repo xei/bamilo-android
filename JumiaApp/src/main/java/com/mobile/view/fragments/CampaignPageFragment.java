@@ -115,6 +115,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     }
 
     private BannerVisibility bannerState;
+    
+    private boolean isFromBanner;
         
     /**
      * Constructor via bundle
@@ -155,6 +157,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+    	// Verify if campaign page was open via a banner
+	    Bundle args = getArguments();
+	    if(args != null) {
+            isFromBanner = args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
+	    }
         // Get campaigns from arguments
         mTeaserCampaign = getArguments().getParcelable(TAG);
         // Validate the saved state
@@ -490,7 +497,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.CAMPAINGS);
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
             bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, "");
-            
+            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
             TrackerDelegator.trackProductAddedToCart(bundle);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -512,6 +519,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         bundle.putString(DeepLinkManager.PDV_SIZE_TAG, size);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcampaign);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
@@ -525,15 +533,15 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      */
     private void triggerGetCampaign(String id){
         Log.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
-      //Validate is service is available
-      if(JumiaApplication.mIsBound){
+        // Validate is service is available
+        if(JumiaApplication.mIsBound){
             // Create request
             Bundle bundle = new Bundle();
             bundle.putString(GetCampaignHelper.CAMPAIGN_ID, id);
             triggerContentEvent(new GetCampaignHelper(), bundle, this);
-       } else {
-           showRetry();
-       }
+        } else {
+            showRetry();
+        }
     }
     
     /**

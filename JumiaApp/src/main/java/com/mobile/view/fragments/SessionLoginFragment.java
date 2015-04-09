@@ -81,7 +81,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
     private final static String FORM_ITEM_PASSWORD = "password";
 
-    private CheckBox rememberEmailCheck;
+    protected CheckBox rememberEmailCheck;
 
     private View signInButton;
 
@@ -97,17 +97,17 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
 
     private Form formResponse = null;
 
-    private boolean wasAutoLogin = false;
+    protected boolean wasAutoLogin = false;
 
     private DynamicForm dynamicForm;
 
     private Bundle savedInstanceState;
 
-    private FragmentType nextFragmentType;
+    protected FragmentType nextFragmentType;
 
     private UiLifecycleHelper uiHelper;
 
-    private boolean cameFromRegister = false;
+    protected boolean cameFromRegister = false;
     
     private FacebookTextView mFacebookButton;
     
@@ -515,9 +515,9 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
                 // Validate the next step
                 if (nextFragmentType != null) {
                     FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
-                    Bundle agrs = new Bundle();
-                    agrs.putBoolean(TrackerDelegator.LOGIN_KEY, true);
-                    getBaseActivity().onSwitchFragment(nextFragmentType, agrs, FragmentController.ADD_TO_BACK_STACK);
+                    Bundle args = new Bundle();
+                    args.putBoolean(TrackerDelegator.LOGIN_KEY, true);
+                    getBaseActivity().onSwitchFragment(nextFragmentType, args, FragmentController.ADD_TO_BACK_STACK);
                 } else {
                     getBaseActivity().onBackPressed();
                 }
@@ -530,42 +530,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             return true;
 
         case LOGIN_EVENT:
-            Log.d(TAG, "ON SUCCESS EVENT: LOGIN_EVENT");
-            JumiaApplication.INSTANCE.setLoggedIn(true);
-            // Get Customer
-            baseActivity.hideKeyboard();
-            baseActivity.updateSlidingMenuCompletly();
-
-            // NullPointerException on orientation change
-            if (baseActivity != null && !cameFromRegister) {
-                Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                JumiaApplication.CUSTOMER = customer;
-
-                Bundle params = new Bundle();
-                params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
-                params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutoLogin);
-                params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
-                params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.LOGIN);
-                TrackerDelegator.trackLoginSuccessful(params);
-
-                // Persist user email or empty that value after successfully login
-                CustomerPreferences.setRememberedEmail(baseActivity,
-                        rememberEmailCheck.isChecked() ? customer.getEmail() : null);
-            }
-
-            cameFromRegister = false;
-            // Validate the next step
-            if (nextFragmentType != null && baseActivity != null) {
-                Log.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
-                FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
-                Bundle agrs = new Bundle();
-                agrs.putBoolean(TrackerDelegator.LOGIN_KEY, true);
-                baseActivity.onSwitchFragment(nextFragmentType, agrs, FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                Log.d(TAG, "NEXT STEP: BACK");
-                baseActivity.onBackPressed();
-            }
-
+            onLoginSuccessEvent(bundle);
             return true;
         case GET_LOGIN_FORM_EVENT:
             Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
@@ -590,6 +555,46 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             break;
         }
         return true;
+    }
+
+    protected void onLoginSuccessEvent(Bundle bundle){
+        Log.d(TAG, "ON SUCCESS EVENT: LOGIN_EVENT");
+
+        BaseActivity baseActivity = getBaseActivity();
+        JumiaApplication.INSTANCE.setLoggedIn(true);
+        // Get Customer
+        baseActivity.hideKeyboard();
+        baseActivity.updateSlidingMenuCompletly();
+
+        // NullPointerException on orientation change
+        if (baseActivity != null && !cameFromRegister) {
+            Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            JumiaApplication.CUSTOMER = customer;
+
+            Bundle params = new Bundle();
+            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, customer);
+            params.putBoolean(TrackerDelegator.AUTOLOGIN_KEY, wasAutoLogin);
+            params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, false);
+            params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.LOGIN);
+            TrackerDelegator.trackLoginSuccessful(params);
+
+            // Persist user email or empty that value after successfully login
+            CustomerPreferences.setRememberedEmail(baseActivity,
+                    rememberEmailCheck.isChecked() ? customer.getEmail() : null);
+        }
+
+        cameFromRegister = false;
+        // Validate the next step
+        if (nextFragmentType != null && baseActivity != null) {
+            Log.d(TAG, "NEXT STEP: " + nextFragmentType.toString());
+            FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
+            Bundle args = new Bundle();
+            args.putBoolean(TrackerDelegator.LOGIN_KEY, true);
+            baseActivity.onSwitchFragment(nextFragmentType, args, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            Log.d(TAG, "NEXT STEP: BACK");
+            baseActivity.onBackPressed();
+        }
     }
 
     /**
@@ -620,8 +625,8 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         }
         
         //#RTL
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
             container.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
         }
         

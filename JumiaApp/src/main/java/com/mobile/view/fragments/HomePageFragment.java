@@ -271,10 +271,8 @@ public class HomePageFragment extends BaseFragment {
      * Show the current home page for landscape
      *
      * @param homePage
-     * @param mainView
      * @param rightViewBrands
      * @param rightViewCategories
-     * @author sergiopereira
      * @author sergiopereira
      */
     private void showHomePage(Homepage homePage, ViewGroup leftView, ViewGroup rightView, ViewGroup rightViewCategories, ViewGroup rightViewBrands) {
@@ -437,9 +435,14 @@ public class HomePageFragment extends BaseFragment {
         String targetTitle = (String) view.getTag(R.id.target_title);
         // Get origin
         TeaserGroupType originType = (TeaserGroupType) view.getTag(R.id.origin_type);
+
+
         // Validate type
         if (targetType != null) {
             Bundle bundle = new Bundle();
+            // add flag to validate if comes from banner or not
+            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, validateBannerFlow(originType));
+
             Log.d(TAG, "targetType = " + targetType.name() + " targetUrl = " + targetUrl);
             switch (targetType) {
                 case CATEGORY:
@@ -470,6 +473,15 @@ public class HomePageFragment extends BaseFragment {
         }
         return intercepted;
     }
+
+    /**
+     * validate from where the click needs to be tracked
+     * @param originType
+     */
+    private boolean validateBannerFlow(TeaserGroupType originType){
+        return originType == TeaserGroupType.MAIN_ONE_SLIDE || originType == TeaserGroupType.STATIC_BANNER;
+    }
+
 
     /**
      * Process the click on shops in shop
