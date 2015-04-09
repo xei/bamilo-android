@@ -83,10 +83,6 @@ public class TrackOrderFragment extends BaseFragment {
                 KeyboardState.ADJUST_CONTENT);
     }
 
-    @Override
-    public void sendValuesToFragment(Object values) {
-    }
-
     /*
      * (non-Javadoc)
      * 

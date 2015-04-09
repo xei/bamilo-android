@@ -110,10 +110,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                 KeyboardState.ADJUST_CONTENT);
     }
 
-    @Override
-    public void sendValuesToFragment(Object values) {
-    }
-
     /*
      * (non-Javadoc)
      * 

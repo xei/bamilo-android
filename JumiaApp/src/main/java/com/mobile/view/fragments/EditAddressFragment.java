@@ -42,6 +42,8 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -675,7 +677,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             case GET_REGIONS_EVENT:
                 Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
                 mRegions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-                if (super.hasContent(mRegions)){
+                if (CollectionUtils.isNotEmpty(mRegions)) {
                     setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
                 } else {
                     Log.w(TAG, "GET REGIONS EVENT: IS EMPTY");

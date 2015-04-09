@@ -103,13 +103,6 @@ public class JumiaApplication extends A4SApplication {
     private Handler resendMenuHandler;
     private Message resendMsg;
 
-    /**
-     * Fallback and retry backups
-     */
-    private HashMap<EventType, Bundle> requestsRetryBundleList = new HashMap<>();
-    private HashMap<EventType, BaseHelper> requestsRetryHelperList = new HashMap<>();
-    private HashMap<EventType, IResponseCallback> requestsResponseList = new HashMap<>();
-
     private IRemoteServiceCallback callBackWaitingService;
 
     /**
@@ -124,6 +117,7 @@ public class JumiaApplication extends A4SApplication {
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
     private ArrayList<String> bannerSkus = new ArrayList<>();
+
     /*
      * (non-Javadoc)
      * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()
@@ -275,15 +269,6 @@ public class JumiaApplication extends A4SApplication {
             return "";
         }
         final Bundle bundle = helper.newRequestBundle(args);
-
-        if (bundle.containsKey(Constants.BUNDLE_EVENT_TYPE_KEY)) {
-            Log.i(TAG, "codesave saving : " + bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-            requestsRetryHelperList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), helper);
-            requestsRetryBundleList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), args);
-            requestsResponseList.put((EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY), responseCallback);
-        } else {
-            Log.w(TAG, " MISSING EVENT TYPE from " + helper.toString());
-        }
 
         final String md5 = bundle.getString(Constants.BUNDLE_MD5_KEY);
 
@@ -463,26 +448,6 @@ public class JumiaApplication extends A4SApplication {
         this.loggedIn = loggedIn;
     }
 
-    /**
-     * @return the requestsRetryBundleList
-     */
-    public HashMap<EventType, Bundle> getRequestsRetryBundleList() {
-        return requestsRetryBundleList;
-    }
-
-    /**
-     * @return the requestsRetryHelperList
-     */
-    public HashMap<EventType, BaseHelper> getRequestsRetryHelperList() {
-        return requestsRetryHelperList;
-    }
-
-    /**
-     * @return the requestsResponseList
-     */
-    public HashMap<EventType, IResponseCallback> getRequestsResponseList() {
-        return requestsResponseList;
-    }
 
     public void setResendHandler(Handler mHandler) {
         resendInitializationSignal = true;
@@ -534,8 +499,7 @@ public class JumiaApplication extends A4SApplication {
     public PaymentMethodForm getPaymentMethodForm() {
         return this.paymentMethodForm;
     }
-    
-    //FIXME
+
     /**
      * clean and return last saved rating
      * 
@@ -638,9 +602,6 @@ public class JumiaApplication extends A4SApplication {
         itemSimpleDataRegistry.clear();
         formDataRegistry.clear();
         responseCallbacks.clear();
-        requestsRetryBundleList.clear();
-        requestsRetryHelperList.clear();
-        requestsResponseList.clear();
         countriesAvailable.clear();
         reviewForm = null;
         ratingForm = null;
@@ -669,7 +630,6 @@ public class JumiaApplication extends A4SApplication {
                     bannerSkus.add(sku);
                 }
             }
-
         }
     }
 
@@ -691,40 +651,5 @@ public class JumiaApplication extends A4SApplication {
     public void clearBannerFlowSkus() {
         bannerSkus = null;
     }
-
-    /*
-    @SuppressWarnings("unused")
-    @Deprecated
-    private class ParseSuccessAsyncTask extends AsyncTask<Void, Void, Bundle> {
-
-        private BaseHelper helper;
-        private Bundle bundle;
-        private IResponseCallback callback;
-
-        private ParseSuccessAsyncTask(BaseHelper helper, Bundle bundle, IResponseCallback callback) {
-            this.helper = helper;
-            this.bundle = bundle;
-            this.callback = callback;
-        }
-        
-        @Override
-        protected Bundle doInBackground(Void... params) {
-            Log.i(TAG, "############ AS CURRENT THREAD ID: " + Thread.currentThread().getId());
-            Log.i(TAG, "############ AS MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());
-            return helper.checkResponseForStatus(bundle);
-        }
-        
-        @Override
-        protected void onPostExecute(Bundle result) {
-            if (callback != null) {
-                if (result.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
-                    callback.onRequestError(result);
-                } else {
-                    callback.onRequestComplete(result);
-                }
-            }
-        }
-    }
-    */
 
 }

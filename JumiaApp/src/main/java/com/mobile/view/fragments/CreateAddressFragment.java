@@ -43,6 +43,8 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -972,7 +974,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
         regions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         // Validate response
-        if (super.hasContent(regions)) {
+        if (CollectionUtils.isNotEmpty(regions)) {
             setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
             setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
         } else {

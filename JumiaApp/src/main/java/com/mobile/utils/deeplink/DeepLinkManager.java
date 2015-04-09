@@ -217,7 +217,7 @@ public class DeepLinkManager {
     }
 
     /**
-     * Method used to create a bundle for campaign view with the respective campaign id. JUMIA://com.jumia.android/ng/cam/deals-of-the-day
+     * Method used to create a bundle for campaign view with the respective campaign id. JUMIA://com.jumia.android/ng/camp/deals-of-the-day
      *
      * @param campaignId The campaign id
      * @return {@link Bundle}

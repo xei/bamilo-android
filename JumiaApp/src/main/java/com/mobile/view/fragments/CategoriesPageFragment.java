@@ -24,12 +24,14 @@ import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
 /**
- * Class used to shoe the categories in the main container
+ * Class used to show the categories in the main container
  * @author sergiopereira
  */
 public class CategoriesPageFragment extends BaseFragment implements OnItemClickListener, IResponseCallback {
@@ -345,7 +347,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      */
     private void showLandscapeLoading() {
         // Show inner loading
-        showLoadingInfo(mLandscapeLoading);
+        mLandscapeLoading.setVisibility(View.VISIBLE);
     }
     
     /**
@@ -354,7 +356,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
      */
     private void hideLandscapeLoading() {
         // Hide inner loading
-        hideLoadingInfo(mLandscapeLoading);
+        mLandscapeLoading.setVisibility(View.GONE);
     }
     
     /**
@@ -397,7 +399,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             public void onRequestError(Bundle bundle) {
                 // Validate fragment state
                 if (isOnStoppingProcess) return;
-                // Hide laoding
+                // Hide loading
                 hideLandscapeLoading();
             }
 
@@ -408,7 +410,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
                 // Get categories
                 ArrayList<Category> categories = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
                 // Show categories and hide loading
-                showChildrenInLandscape((hasContent(categories)) ? categories.get(0) : new Category());
+                showChildrenInLandscape(CollectionUtils.isNotEmpty(categories) ? categories.get(0) : new Category());
                 hideLandscapeLoading();
             }
         });
