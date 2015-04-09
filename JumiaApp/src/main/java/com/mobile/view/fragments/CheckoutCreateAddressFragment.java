@@ -15,6 +15,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.forms.Form;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.OrderSummary;
+import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
@@ -56,6 +57,16 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
                 R.string.checkout_label,
                 KeyboardState.ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_BILLING);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle params = new Bundle();
+        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_CREATE_ADDRESS);
+
+        TrackerDelegator.trackCheckoutStep(params);
     }
 
     @Override
