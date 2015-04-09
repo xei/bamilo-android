@@ -138,17 +138,13 @@ public class MaintenancePage {
      * @modified sergiopereira
      */
     public static void setMaintenancePageBaseActivity(Activity activity, OnClickListener listener) {
-
         try {
-
             // Get retry button
             Button retry = (Button) activity.findViewById(R.id.fragment_root_retry_maintenance);
             retry.setText(R.string.try_again);
             retry.setOnClickListener(listener);
 
             SharedPreferences sharedPrefs = activity.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            //ImageView mapImageView = (ImageView) activity.findViewById(R.id.fallback_country_map);
-            //RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapImageView, null, R.drawable.img_maintenance_map);
             
             // Get flag for single shop
             boolean isSingleShop = activity.getResources().getBoolean(R.bool.is_single_shop_country);
@@ -199,24 +195,6 @@ public class MaintenancePage {
         }
 
     }
-
-    /**
-     * Set the maintenance page for Bamilo.
-     * @param activity
-     * @param listener
-     * @author sergiopereira
-     */
-    public static void setMaintenancePageBamilo(Activity activity, EventType eventType, OnClickListener listener) {
-        try {
-            // Get retry button
-            Button retry = (Button) activity.findViewById(R.id.fragment_root_retry_maintenance);
-            retry.setTag(eventType.toString());
-            retry.setOnClickListener(listener);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     /**
      * Set the maintenance page for Bamilo.

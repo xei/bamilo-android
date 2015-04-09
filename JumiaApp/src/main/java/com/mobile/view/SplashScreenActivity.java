@@ -642,12 +642,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mMainFallBackStub.setVisibility(View.VISIBLE);
         // Get config
         boolean isBamilo = getResources().getBoolean(R.bool.is_bamilo_specific);
-        // Case BAMILO
+        // Show maintenance page
         if (isBamilo) {
-            MaintenancePage.setMaintenancePageBamilo(this, eventType, this);
-        }
-        // Case JUMIA
-        else {
+            MaintenancePage.setMaintenancePageBamilo(getWindow().getDecorView(), this);
+        } else {
             MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, this);
         }
     }
