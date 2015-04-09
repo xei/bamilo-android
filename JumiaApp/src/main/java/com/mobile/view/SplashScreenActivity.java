@@ -518,7 +518,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     }
 
     /**
-     *
+     * Trigger to get the country configurations
      */
     private void triggerGetCountryConfigs(){
         JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
