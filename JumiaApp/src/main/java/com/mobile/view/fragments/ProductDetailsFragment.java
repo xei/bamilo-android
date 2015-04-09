@@ -327,7 +327,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 categoryTree = "";
             }
             // Verify if campaign page was open via a banner
-            isFromBanner = args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
+            isFromBanner = arguments.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {

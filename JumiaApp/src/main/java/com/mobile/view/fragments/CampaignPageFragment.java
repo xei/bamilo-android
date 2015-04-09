@@ -159,10 +159,10 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
     	// Verify if campaign page was open via a banner
-	Bundle args = getArguments();
-	if(args != null) {
+	    Bundle args = getArguments();
+	    if(args != null) {
             isFromBanner = args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
-	}
+	    }
         // Get campaigns from arguments
         mTeaserCampaign = getArguments().getParcelable(TAG);
         // Validate the saved state
