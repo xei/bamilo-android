@@ -389,21 +389,6 @@ public class HomePageFragment extends BaseFragment {
 
     /**
      * Process the click on retry button
-
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        // Send to parent reload content
-        Log.i(TAG, "ON CLICK RETRY");
-        Fragment parent = getParentFragment();
-        // Validate parent
-        if (parent != null && parent instanceof HomeFragment) {
-            ((HomeFragment) parent).onReloadContent();
-        }
-    }
-     */
-
-    /**
-     * Process the click on retry button
      */
     @Override
     protected void onClickRetryButton(View view) {

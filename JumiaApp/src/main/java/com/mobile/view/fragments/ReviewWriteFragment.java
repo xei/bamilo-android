@@ -784,26 +784,6 @@ public class ReviewWriteFragment extends BaseFragment {
         onResume();
     }
     
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        switch(eventType){
-        case GET_FORM_RATING_EVENT:
-            triggerRatingForm();
-            break;
-        case REVIEW_RATING_PRODUCT_EVENT:
-            formsValidation();
-            break;
-        default:
-            super.onRetryRequest(eventType);
-            break;
-        }
-    }
-    */
-    
     /**
      * function that validates if the form is correctly filled
      */

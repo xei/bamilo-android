@@ -473,21 +473,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        if(eventType == EventType.GET_PRODUCTS_EVENT && mCatalogPage != null && mCatalogPage.hasFilters()) {
-            triggerGetInitialCatalogPage();
-        } else {
-            // Validate data
-            onValidateDataState();
-        }
-    }
-    */
-
-    /*
-     * (non-Javadoc)
      * @see com.mobile.interfaces.OnViewHolderClickListener#onViewHolderClick(android.support.v7.widget.RecyclerView.Adapter, android.view.View, int)
      */
     @Override

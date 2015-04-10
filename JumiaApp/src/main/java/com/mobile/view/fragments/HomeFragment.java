@@ -415,17 +415,6 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         super.onClickRetryButton(view);
         onReloadContent();
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        //super.onRetryRequest(eventType);
-        onReloadContent();
-    }
-    */
 
     /*
      * ########### TRIGGERS ###########

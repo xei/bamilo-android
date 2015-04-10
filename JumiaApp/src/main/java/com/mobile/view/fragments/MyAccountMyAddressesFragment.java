@@ -92,13 +92,6 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
         triggerGetForm();
     }
 
-    /*
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        onClickRetryButton();
-    }
-    */
-
     @Override
     protected void onClickCreateAddressButton() {
         getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);

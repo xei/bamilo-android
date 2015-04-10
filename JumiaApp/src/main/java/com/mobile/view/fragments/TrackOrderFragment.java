@@ -289,14 +289,6 @@ public class TrackOrderFragment extends BaseFragment {
         }
     }
 
-    /*
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        super.onRetryRequest(eventType);
-        showFragmentContentContainer();
-    }
-    */
-
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);

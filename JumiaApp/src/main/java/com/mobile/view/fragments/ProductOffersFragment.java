@@ -414,14 +414,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
         }
     }
 
-    /*
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        Log.i(TAG, "ON RETRY REQUEST");
-        onResume();
-    }
-    */
-
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);

@@ -374,14 +374,5 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         super.onClickRetryButton(view);
         onResume();
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
 
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        onResume();
-    }
-    */
 }

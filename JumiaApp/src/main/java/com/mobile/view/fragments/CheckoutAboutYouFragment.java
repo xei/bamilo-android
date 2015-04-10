@@ -397,17 +397,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         triggerAutoLogin();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        // super.onRetryRequest(eventType);
-        triggerAutoLogin();
-    }
-    */
-
     /**
      * Process the click on the login toogle
      *

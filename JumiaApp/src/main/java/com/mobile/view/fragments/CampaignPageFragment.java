@@ -421,32 +421,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         super.onClickRetryButton(view);
         getAndShowCampaign();
     }
-
-    /*
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        Log.i(TAG, "ON CLICK RETRY BUTTON");
-        // super.onRetryRequest(eventType);
-        getAndShowCampaign();
-    }
-    */
-
-    /*
-    @Override
-    protected void onClickMaintenanceRetryButton() {
-        super.onClickMaintenanceRetryButton();
-    }
-    */
-
-    /*
-    @Override
-    protected void onClickMaintenanceRetryButton() {
-        Fragment fragment = getParentFragment();
-        if(fragment instanceof CampaignsFragment){
-            ((CampaignsFragment)fragment).onClickMaintenanceRetryButton();
-        }
-    }
-    */
     
     /**
      * Process the click on the buy button

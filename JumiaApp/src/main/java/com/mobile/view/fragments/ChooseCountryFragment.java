@@ -383,16 +383,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         onClickRetryButton();
     }
     
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        onClickRetryButton();
-    }
-    */
-    
     /**
      * Process the click on retry button
      * @author sergiopereira

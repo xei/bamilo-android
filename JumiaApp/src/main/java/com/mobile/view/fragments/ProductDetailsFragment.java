@@ -1611,14 +1611,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         else if (id == R.id.offers_container || id == R.id.product_detail_product_offers_container) goToProductOffers();
 
     }
-
-    /*
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        super.onRetryRequest(eventType);
-        //onResume();
-    }
-    */
     
     @Override
     protected void onClickRetryButton(View view) {

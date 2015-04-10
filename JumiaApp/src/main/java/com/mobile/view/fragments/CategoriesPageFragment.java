@@ -433,17 +433,6 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        // super.onRetryRequest(eventType);
-        triggerGetCategories(mCategoryKey);
-    }
-    */
-    
-    /*
-     * (non-Javadoc)
      * 
      * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView,
      * android.view.View, int, long)

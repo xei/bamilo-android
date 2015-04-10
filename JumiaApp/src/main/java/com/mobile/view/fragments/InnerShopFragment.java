@@ -246,16 +246,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         onValidateDataState();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        onValidateDataState();
-    }
-    */
-
     /**
      * The web client to intercept the clicks in the deep links to show the respective view:<br> - Case product: the link is pdv::http://... - Case catalog: the
      * link is catalog::http://... - Case campaign: the link is campaign::http://...

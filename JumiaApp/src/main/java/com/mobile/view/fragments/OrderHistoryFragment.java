@@ -510,22 +510,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             }
             
         }
-            
-        
   }
-    
-//    /**
-//     * setup products on landscape view
-//     * 
-//     * @param order
-//     */
-//    private void setupProductslandScape(Order order){
-//     
-////        ordersProductsPayment.setText(order.getmPayment());
-////        ordersProductDate.setText(order.getmDate());
-////        if (BaseActivity.isTabletInLandscape(getBaseActivity())) setOrderProducts(order,productsLanscapeContainer, true);
-//    }
-
     
     /*
      * (non-Javadoc)

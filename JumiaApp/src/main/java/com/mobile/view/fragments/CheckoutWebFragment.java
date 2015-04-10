@@ -609,18 +609,4 @@ public class CheckoutWebFragment extends BaseFragment {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
-        webview.loadUrl(failedPageRequest);
-        showFragmentContentContainer();
-    }
-    */
-
 }

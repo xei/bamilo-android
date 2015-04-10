@@ -361,14 +361,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         // Exception handling for no network error
         if((exception instanceof FacebookAuthorizationException || exception instanceof FacebookOperationCanceledException ) && !NetworkConnectivity.isConnected(getBaseActivity())) {
             // Show dialog case form is visible
-            if(formResponse != null){ 
-//                showFragmentNoNetworkRetry(new OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(View v) {
-//                        mFacebookButton.performClick();
-//                    }
-//                });
+            if(formResponse != null){
                 showNoNetworkWarning();
             }
             return;
@@ -878,13 +871,4 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         onResume();
     }
 
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        onResume();
-    }
-     */
 }

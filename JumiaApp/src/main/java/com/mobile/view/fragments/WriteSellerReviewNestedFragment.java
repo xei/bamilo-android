@@ -556,26 +556,6 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
         onResume();
     }
     
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        switch(eventType){
-        case GET_FORM_SELLER_REVIEW_EVENT:
-            triggerSellerReviewForm();
-            return;
-        case REVIEW_RATING_PRODUCT_EVENT:
-            formsValidation();
-            return;
-        default:
-            super.onRetryRequest(eventType);
-            return;
-        }
-    }
-    */
-    
     /**
      * function that validates if the form is correctly filled
      */

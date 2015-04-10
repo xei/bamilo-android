@@ -331,10 +331,6 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
-                // getActivity().setResult( Activity.RESULT_CANCELED);
-                // getActivity().finish();
-                // getActivity().overridePendingTransition(R.anim.slide_in_left,
-                // R.anim.slide_out_right);
                 Log.d(TAG, "register canceled via login click");
             }
         });
@@ -700,17 +696,6 @@ public class SessionRegisterFragment extends BaseFragment {
      */
 
     /**
-     * 
-     */
-    // private void saveCredentialsFromForm() {
-    // EditText userView = (EditText) serverForm.getItemByKey( "email" ).getEditControl();
-    // username = userView.getText().toString();
-    //
-    // EditText passwordView = (EditText) serverForm.getItemByKey( "password" ).getEditControl();
-    // password = passwordView.getText().toString();
-    // }
-
-    /**
      * Measures a text against a text textview size to determine if the text will fit
      * 
      * @param v
@@ -747,10 +732,6 @@ public class SessionRegisterFragment extends BaseFragment {
         triggerContentEventNoLoading(new GetTermsConditionsHelper(), null, mCallBack);
     }
 
-    // private void triggerStoreLogin(ContentValues values) {
-    // JumiaApplication.INSTANCE.getCustomerUtils().storeLogin(values);
-    // }
-
     /**
      * CALLBACK
      * 
@@ -776,17 +757,6 @@ public class SessionRegisterFragment extends BaseFragment {
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
         onResume();
-    };
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        onResume();
     }
-    */
-
 
 }

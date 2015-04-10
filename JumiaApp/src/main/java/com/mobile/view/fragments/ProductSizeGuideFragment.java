@@ -286,15 +286,5 @@ public class ProductSizeGuideFragment extends BaseFragment {
         super.onClickRetryButton(view);
         showSizeGuide(mImageView, mSizeGuideUrl);
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
 
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        Log.i(TAG, "ON RETRY REQUEST");
-        showSizeGuide(mImageView, mSizeGuideUrl);
-    }
-    */
 }

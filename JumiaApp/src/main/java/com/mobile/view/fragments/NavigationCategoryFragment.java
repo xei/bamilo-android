@@ -312,18 +312,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        //super.onRetryRequest(eventType);
-        // Get categories from no network
-        triggerGetCategories(mCategoryKey);
-    }
-    */
-    
-    /*
-     * (non-Javadoc)
      * 
      * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView,
      * android.view.View, int, long)
