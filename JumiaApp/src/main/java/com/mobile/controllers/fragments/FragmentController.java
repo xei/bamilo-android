@@ -152,7 +152,8 @@ public class FragmentController {
     }
     
     /**
-     * Remove all old entries
+     * Remove all old entries.
+     *
      * @param tag
      */
     public void removeAllEntriesWithTag(String tag) {
@@ -164,6 +165,12 @@ public class FragmentController {
         }
     }
 
+    /**
+     * Remove all old entries.
+     * Warning: Async operation.
+     *
+     * @param tags
+     */
     public void removeAllEntriesWithTag(final String... tags) {
         WorkerThread.executeRunnable(mWorkerThread, new Runnable() {
             @Override
@@ -204,7 +211,9 @@ public class FragmentController {
     }
     
     /**
-     * Method used to remove entries until a respective tag of fragment
+     * Method used to remove entries until a respective tag of fragment.
+     * Warning: Async operation.
+     *
      * @param tag
      */
     public void removeEntriesUntilTag(final String tag) {
@@ -242,7 +251,9 @@ public class FragmentController {
      */
 
     /**
-     * Add the tag to the back stack removing duplicates 
+     * Add the tag to the back stack removing duplicates.
+     * Warning: Async operation.
+     *
      * @param tag
      */
     public void addEntryToBackStack(final String tag) {
@@ -560,6 +571,11 @@ public class FragmentController {
         }
     }
 
+    /**
+     * Start singleton thread if not initialized yet.
+     *
+     * @return The singleton thread.
+     */
     protected WorkerThread getSingletonThread(){
         if (mWorkerThread == null) {
             mWorkerThread = new WorkerThread();
