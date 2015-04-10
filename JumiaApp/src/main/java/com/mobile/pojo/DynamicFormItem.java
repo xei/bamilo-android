@@ -38,6 +38,7 @@ import com.mobile.forms.Form;
 import com.mobile.forms.FormField;
 import com.mobile.forms.IFormField;
 import com.mobile.framework.Darwin;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.InputType;
 import com.mobile.utils.RadioGroupLayout;
@@ -1330,6 +1331,8 @@ public class DynamicFormItem {
         
         ((ViewGroup) this.control).addView(dataContainer);
         ((ViewGroup) this.control).addView(this.errorControl);
+
+        final CharSequence editText = ((EditText) this.dataControl).getHint();
         
         this.dataControl.setContentDescription(this.entry.getKey());
         // Listeners
@@ -1836,7 +1839,7 @@ public class DynamicFormItem {
     private SharedPreferences getSharedPref(){
         if(mSharedPrefs == null){
             //Validate if country configs allows rating and review, only show write review fragment if both are allowed
-            mSharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            mSharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         }
         return mSharedPrefs;
     }

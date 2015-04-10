@@ -14,10 +14,10 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.framework.objects.Version;
 import com.mobile.framework.objects.VersionInfo;
+import com.mobile.framework.utils.Constants;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
@@ -80,7 +80,7 @@ public class CheckVersion {
         if (runEvents())
             return false;
 
-        sSharedPrefs = context.getSharedPreferences( ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        sSharedPrefs = context.getSharedPreferences( Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
         updateUnwantedVersionFromPrefs();
         if (!checkVersionInfo())
@@ -134,7 +134,7 @@ public class CheckVersion {
     }
     
     public static void clearDialogSeenInLaunch(Context context) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putBoolean(DIALOG_SEEN_AFTER_THIS_LAUNCH_KEY, false);
         editor.apply();

@@ -221,7 +221,7 @@ public class MyAccountFragment extends BaseFragment implements OnItemClickListen
     private void processOnClickMyAddresses() {
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_ACCOUNT_MY_ADDRESSES);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES_LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**

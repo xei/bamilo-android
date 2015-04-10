@@ -591,8 +591,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onDetach() {
         super.onDetach();
-
-        /**
+        /*
         // TODO : Validate if is necessary
         if (sChildFragmentManagerField != null) {
             try {
@@ -681,25 +680,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Warning user
         Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
         // Remove native checkout
-        removeNativeCheckoutFromBackStack();
+        getBaseActivity().removeAllNativeCheckoutFromBackStack();
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
         activity.onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Method used to remove all native checkout entries from the back stack on the Fragment Controller
-     * Note: Updated this method if you add a new native checkout step
-     * @author sergiopereira 
-     */
-    protected void removeNativeCheckoutFromBackStack() {
-        // Native Checkout
-        FragmentType[] type = { FragmentType.CHECKOUT_THANKS,   FragmentType.MY_ORDER,      FragmentType.PAYMENT_METHODS,
-                                FragmentType.SHIPPING_METHODS,  FragmentType.MY_ADDRESSES,  FragmentType.CREATE_ADDRESS,
-                                FragmentType.EDIT_ADDRESS,      FragmentType.ABOUT_YOU };
-        // Remove tags
-        for (FragmentType fragmentType : type) FragmentController.getInstance().removeAllEntriesWithTag(fragmentType.toString());
     }
 
     /**
@@ -1237,7 +1222,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     private void onClickMaintenanceChooseCountry() {
         // Show Change country
-        FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
+        getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
         getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
     

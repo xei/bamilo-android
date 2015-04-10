@@ -16,7 +16,6 @@ import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
 import com.mobile.forms.Form;
@@ -25,7 +24,6 @@ import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.AddressCity;
 import com.mobile.framework.objects.AddressRegion;
 import com.mobile.framework.rest.RestConstants;
-import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
@@ -149,11 +147,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         } else {
             Log.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putSerializable(TrackerDelegator.GA_STEP_KEY, TrackingEvent.CHECKOUT_STEP_CREATE_ADDRESS);
-
-        TrackerDelegator.trackCheckoutStep(params);
     }
 
     /*
@@ -818,15 +811,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @author sergiopereira
      */
     protected void triggerCreateAddress(ContentValues values, boolean isBilling) {
+        Log.i(TAG, "TRIGGER: CREATE ADDRESS");
         Bundle args = getArguments();
         Bundle bundle = new Bundle();
         bundle.putParcelable(SetNewAddressHelper.FORM_CONTENT_VALUES, values);
         bundle.putBoolean(SetNewAddressHelper.IS_BILLING, isBilling);
-        // Validate origin
-        if (null != args && args.containsKey(ConstantsIntentExtra.IS_SIGN_UP)) {
-            bundle.putBoolean(SetNewAddressHelper.IS_FROM_SIGNUP, args.getBoolean(ConstantsIntentExtra.IS_SIGN_UP, false));
-        }
-        // Trigger
         triggerContentEvent(new SetNewAddressHelper(), bundle, this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
@@ -838,16 +827,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @author sergiopereira
      */
     protected void triggerCreateAddressForm() {
-        // Get Arguments
-        Bundle args = getArguments();
-        // Validate arguments
-        if (null != args && args.containsKey(ConstantsIntentExtra.IS_SIGN_UP)) {
-            Log.i(TAG, "TRIGGER: CREATE ADDRESS FORM FOR GUEST USER");
-            triggerContentEvent(new GetFormAddAddressHelper(), args, this);
-        } else {
-            Log.i(TAG, "TRIGGER: CREATE ADDRESS FORM");
-            triggerContentEvent(new GetFormAddAddressHelper(), null, this);
-        }
+        Log.i(TAG, "TRIGGER: CREATE ADDRESS FORM");
+        triggerContentEvent(new GetFormAddAddressHelper(), null, this);
     }
 
     /**
@@ -1073,7 +1054,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     /**
      * Dialog used to show an error
      *
-     * @param errors
+     * @param errorMessage
      * @author sergiopereira
      */
     protected void showErrorDialog(String errorMessage ,String dialogTitle) {

@@ -792,7 +792,7 @@ public class AdjustTracker {
      * @param mp
      */
     public static void printParameters(Map mp) {
-        Log.e("Adjust","init ----------");
+        Log.e("Adjust", "init ----------");
         Iterator it = mp.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry)it.next();
@@ -996,5 +996,12 @@ public class AdjustTracker {
         Log.i(TAG, "SELECTED PROVIDER: " + bestProvider);
         return bestProvider;
     }
-    
+
+    public static void resetTransactionCount(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(AdjustTracker.ADJUST_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(AdjustTracker.PURCHASE_NUMBER, 0);
+        editor.apply();
+    }
+
 }

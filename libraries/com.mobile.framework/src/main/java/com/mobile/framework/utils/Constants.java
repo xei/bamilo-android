@@ -73,4 +73,10 @@ public class Constants {
      */
 
     public static final String CONTENT_VALUES = "contentValues";
+
+    /**
+     * Shared Preferences
+     */
+
+    public static final String SHARED_PREFERENCES = "whitelabel_prefs";
 }
