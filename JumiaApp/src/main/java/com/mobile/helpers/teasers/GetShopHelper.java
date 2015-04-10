@@ -6,6 +6,7 @@ package com.mobile.helpers.teasers;
 import android.os.Bundle;
 
 import com.mobile.framework.enums.RequestType;
+import com.mobile.framework.objects.StaticPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
@@ -43,8 +44,12 @@ public class GetShopHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.i(TAG, "ON PARSE RESPONSE");
         try {
-            String html = jsonObject.getJSONArray(Constants.BUNDLE_DATA_KEY).getString(0);
-            bundle.putString(Constants.BUNDLE_RESPONSE_KEY, html);
+            StaticPage staticPage = new StaticPage();
+            staticPage.initialize(jsonObject);
+            if(!staticPage.getStaticPageType().equals(StaticPage.SHOPS_IN_SHOP)){
+                return parseErrorBundle(bundle);
+            }
+            bundle.putString(Constants.BUNDLE_RESPONSE_KEY, staticPage.getHtml());
         } catch (JSONException e) {
             e.printStackTrace();
             return parseErrorBundle(bundle);

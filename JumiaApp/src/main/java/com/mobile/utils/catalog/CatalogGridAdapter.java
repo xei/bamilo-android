@@ -3,6 +3,7 @@ package com.mobile.utils.catalog;
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,7 +15,10 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.mobile.framework.database.FavouriteTableHelper;
+import com.mobile.framework.objects.CatalogPage;
 import com.mobile.framework.objects.Product;
+import com.mobile.framework.utils.DeviceInfoHelper;
+import com.mobile.interfaces.OnHeaderClickListener;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.TrackerDelegator;
@@ -57,6 +61,15 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
 
     private OnViewHolderClickListener mOnViewHolderClicked;
 
+    private String mBannerImage = "";
+
+    private String mUrl = "";
+
+    private String mTargetType = "";
+
+    private String mTitle = "";
+
+    private OnHeaderClickListener mOnHeaderClicked;
     /**
      * Provide a reference to the views for each data item.<br>
      * Complex data items may need more than one view per item, and you provide access to all the views for a data item in a view holder<br> 
@@ -76,6 +89,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         public TextView reviews;
         public ImageView recent;
         public ImageView favourite;
+        public ImageView headerImage;
         
         /**
          * Constructor 
@@ -95,6 +109,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
             brand = (TextView) view.findViewById(R.id.item_brand);
             recent = (ImageView) view.findViewById(R.id.image_is_new);
             favourite = (ImageView) view.findViewById(R.id.image_is_favourite);
+            headerImage = (ImageView) view.findViewById(R.id.catalog_header_image);
         }
     }
 
@@ -177,9 +192,14 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Set animation
         setAnimation(holder, position);
         // Case header
-        if(isHeader(position)) return;
+        if(isHeader(position)){
+            setHeaderImage(holder);
+            return;
+        }
         // Case footer
-        if(isFooter(position)) return;
+        if(isFooter(position)){
+            return;
+        }
         // Get real position
         position = getRealPosition(position);
         // Get item
@@ -349,6 +369,14 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         this.mOnViewHolderClicked = listener;
     }
 
+    /**
+     * Set the listener the header.
+     * @param listener - the listener
+     */
+    public void setOnHeaderClickListener(OnHeaderClickListener listener) {
+        this.mOnHeaderClicked = listener;
+    }
+
     /*
      * (non-Javadoc)
      * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -358,9 +386,20 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         // Get view id
         int id = view.getId();
         // Case favourite
-        if(id == R.id.image_is_favourite) onClickFavouriteButton(view);
+        if(id == R.id.image_is_favourite){
+            onClickFavouriteButton(view);
+        }
+        // Header Click
+        else if(id == R.id.catalog_header_image){
+            if(mOnHeaderClicked != null){
+                mOnHeaderClicked.onHeaderClick(mTargetType, mUrl, mTitle);
+            }
+        }
         // Case other sent to listener
-        else if(mOnViewHolderClicked != null) mOnViewHolderClicked.onViewHolderClick(this, (Integer) view.getTag(R.id.position));
+        else if(mOnViewHolderClicked != null){
+            mOnViewHolderClicked.onViewHolderClick(this, (Integer) view.getTag(R.id.position));
+        }
+
     }
     
     /**
@@ -391,6 +430,40 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
         }
     }
 
+    /**
+     * store info related to catalog header, and show it
+     * @param catalogPage
+     */
+    public void setHeader(CatalogPage catalogPage){
+        if(mContext != null){
+            if(!DeviceInfoHelper.isTabletInLandscape(mContext)){
+                mBannerImage = catalogPage.getmCatalogBanner().getPhoneImage();
+            } else {
+                mBannerImage = catalogPage.getmCatalogBanner().getTabletImage();
+            }
+            mUrl = catalogPage.getmCatalogBanner().getUrl();
+            mTitle = catalogPage.getmCatalogBanner().getTitle();
+            mTargetType = catalogPage.getmCatalogBanner().getTargetType();
+            showHeaderView();
+        } else {
+            hideHeaderView();
+        }
+
+    }
+
+    /**
+     * set header image and and listener
+     * @param holder
+     */
+    private void setHeaderImage(ProductViewHolder holder){
+        if(!TextUtils.isEmpty(mBannerImage)){
+            // set listener
+            holder.headerImage.setOnClickListener(this);
+            // Set image
+            RocketImageLoader.instance.loadImage(mBannerImage, holder.headerImage, null, R.drawable.no_image_large);
+        }
+
+    }
 
     /*
      * TODO: Implement a better approach for header view and footer view

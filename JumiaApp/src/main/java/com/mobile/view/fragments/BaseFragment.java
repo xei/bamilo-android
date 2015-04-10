@@ -31,6 +31,8 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.OrderSummary;
+import com.mobile.framework.objects.TeaserCampaign;
+import com.mobile.framework.objects.TeaserGroupType;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.utils.Constants;
@@ -1334,6 +1336,122 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (dialog != null) {
             dialog.dismissAllowingStateLoss();
         }
+    }
+
+    /**
+     * Process the product click
+     *
+     * @param targetUrl
+     * @param bundle
+     * @author sergiopereira
+     */
+    protected void onClickProduct(String targetUrl, Bundle bundle) {
+        Log.i(TAG, "ON CLICK PRODUCT");
+        if (targetUrl != null) {
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            Log.i(TAG, "WARNING: URL IS NULL");
+        }
+    }
+
+    /**
+     * Process the click on shops in shop
+     *
+     * @param url    The url for CMS block
+     * @param title  The shop title
+     * @param bundle The new bundle
+     */
+    protected void onClickInnerShop(String url, String title, Bundle bundle) {
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
+        getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    /**
+     * Process the category click
+     *
+     * @param targetUrl
+     * @param bundle
+     * @author sergiopereira
+     */
+    protected void onClickCategory(String targetUrl, Bundle bundle) {
+        Log.i(TAG, "ON CLICK CATEGORY");
+        bundle.putString(ConstantsIntentExtra.CATEGORY_URL, targetUrl);
+        getBaseActivity().onSwitchFragment(FragmentType.CATEGORIES, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    /**
+     * Process the catalog click
+     *
+     * @param targetUrl
+     * @param targetTitle
+     * @param bundle
+     */
+    protected void onClickCatalog(String targetUrl, String targetTitle, Bundle bundle) {
+        Log.i(TAG, "ON CLICK CATALOG");
+        if (targetUrl != null) {
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
+        } else {
+            Log.w(TAG, "WARNING: URL IS NULL");
+        }
+    }
+
+
+
+    /**
+     * Process the brand click
+     *
+     * @param targetUrl
+     * @param bundle
+     */
+    protected void onClickBrand(String targetUrl, Bundle bundle) {
+        Log.i(TAG, "ON CLICK BRAND");
+        if (targetUrl != null) {
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetUrl);
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, targetUrl);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            Log.i(TAG, "WARNING: URL IS NULL");
+        }
+    }
+
+    /**
+     * Process the campaign click.
+     *
+     * @param view
+     * @param targetUrl
+     * @param targetTitle
+     * @param bundle
+     */
+    protected void onClickCampaign(View view, TeaserGroupType origin, String targetUrl, String targetTitle, Bundle bundle) {
+    }
+
+    /**
+     * Create an array with a single campaign
+     *
+     * @param targetTitle
+     * @param targetUrl
+     * @return ArrayList with one campaign
+     * @author sergiopereira
+     */
+    protected ArrayList<TeaserCampaign> createSignleCampaign(String targetTitle, String targetUrl) {
+        ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
+        TeaserCampaign campaign = new TeaserCampaign();
+        campaign.setTitle(targetTitle);
+        campaign.setUrl(targetUrl);
+        campaigns.add(campaign);
+        return campaigns;
     }
 
 }

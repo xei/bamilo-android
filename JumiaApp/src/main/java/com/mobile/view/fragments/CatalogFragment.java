@@ -20,13 +20,19 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.CatalogPage;
 import com.mobile.framework.objects.FeaturedBox;
+import com.mobile.framework.objects.ITargeting;
 import com.mobile.framework.objects.Product;
+import com.mobile.framework.objects.TeaserCampaign;
+import com.mobile.framework.objects.TeaserGroupType;
+import com.mobile.framework.tracking.AnalyticsGoogle;
+import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnDialogFilterListener;
+import com.mobile.interfaces.OnHeaderClickListener;
 import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
@@ -54,7 +60,7 @@ import de.akquinet.android.androlog.Log;
  *
  * @author sergiopereira
  */
-public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogFilterListener, OnDialogListListener {
+public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogFilterListener, OnDialogListListener, OnHeaderClickListener {
 
     private static final String TAG = CatalogFragment.class.getSimpleName();
 
@@ -331,6 +337,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         } else {
             mGridView.hideFooterView();
         }
+        // Show header
+        showHeaderBanner();
         // Show container
         showFragmentContentContainer();
         // Validate if is to show wizard
@@ -372,6 +380,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             isLoadingMoreData = false;
             // Append new data
             adapter.notifyDataSetChanged();
+
         }
         // Case filter applied/clean replace the current data
         else {
@@ -384,6 +393,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Hide the goto top button
             UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);
         }
+
+        // Show header
+        if(catalogPage.getPage() == 1){
+            showHeaderBanner();
+        }
+
         // Set title bar
         UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, mCatalogPage.getTotal());
         // Validate if user can load more pages
@@ -396,6 +411,17 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         showFragmentContentContainer();
         // Validate if is to show wizard
         UICatalogHelper.isToShowWizard(this, mWizardStub, this);
+    }
+
+    /**
+     * Method responsible for validating if the catalog page has banner, and if it so, show it
+     */
+    private void showHeaderBanner(){
+        // Show header
+        if(mGridView != null && mCatalogPage.getmCatalogBanner() != null){
+            ((CatalogGridAdapter) mGridView.getAdapter()).setOnHeaderClickListener(this);
+            mGridView.setHeaderView(mCatalogPage);
+        }
     }
 
     /**
@@ -861,5 +887,41 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.SMALL_TASK);
         // Case super not handle the error show unexpected error
         if(!super.handleErrorEvent(bundle)) showUnexpectedErrorWarning();
+    }
+
+    @Override
+    public void onHeaderClick(String targetType, String url, String title) {
+        ITargeting.TargetType target = ITargeting.TargetType.byValue(targetType);
+        Bundle bundle = new Bundle();
+        switch (target){
+            case CATALOG:
+                onClickCatalog(url, title, bundle);
+                break;
+            case CAMPAIGN:
+                //http://integration-www.jumia.ug/mobapi/v1.7/campaign/get/?campaign_slug=samsung_madness
+                onClickCampaign(null, null, url, title, bundle);
+                break;
+            case PRODUCT:
+                // http://integration-www.jumia.ug/mobapi/v1.7/blue-long-sleeves-shirt-straight-cut-24932.html
+                onClickProduct(url, bundle);
+                break;
+            case SHOP:
+                // http://integration-www.jumia.ug/mobapi/1.7/main/getstatic/?key=buy-2-get-1-free
+                onClickInnerShop(url, title, bundle);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onClickCampaign(View view, TeaserGroupType origin, String targetUrl, String targetTitle, Bundle bundle) {
+        // Tracking event
+        AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, targetTitle, 0l);
+        // Create campaign using the URL
+        ArrayList<TeaserCampaign> campaigns = createSignleCampaign(targetTitle, targetUrl);
+        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
+        bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, 0);
+        getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 }

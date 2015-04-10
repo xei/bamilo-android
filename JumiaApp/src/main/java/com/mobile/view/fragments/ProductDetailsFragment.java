@@ -92,7 +92,6 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
 import com.mobile.utils.ui.CompleteProductUtils;
-import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
@@ -2035,16 +2034,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             }
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
-            if (!errorCode.isNetworkError()) {
-                ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
-                showFragmentContentContainer();
-                try {
-                    getBaseActivity().onBackPressed();
-                } catch (IllegalStateException e) {
-                    getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
-                }
-                return;
-            }
+            showContinueShopping();
         case GET_PRODUCT_BUNDLE:
             hideBundle();
             break;
