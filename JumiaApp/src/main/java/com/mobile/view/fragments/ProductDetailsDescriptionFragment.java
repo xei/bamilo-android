@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.TextUtils;
@@ -73,7 +74,6 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
                 R.layout.product_description_fragment,
                 NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
-        this.mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
     }
 
     /*
@@ -101,6 +101,10 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
         if(arguments != null) {
             String url = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             mCompleteProductUrl = TextUtils.isEmpty(url) ? "" : url;
+            Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
+            if(parcelableProduct instanceof CompleteProduct){
+                mCompleteProduct = (CompleteProduct)parcelableProduct;
+            }
         }
     }
     
@@ -141,7 +145,7 @@ public class ProductDetailsDescriptionFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+
         /**
          * Validate product
          * If null is assumed that the system clean some data

@@ -18,7 +18,6 @@ import com.mobile.forms.FormData;
 import com.mobile.forms.PaymentMethodForm;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.DarwinDatabaseHelper;
-import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.CountryObject;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.PaymentInfo;
@@ -71,8 +70,6 @@ public class JumiaApplication extends A4SApplication {
     /**
      * General Persistent Variables
      */
-    private CompleteProduct currentProduct = null;
-
     /**
      * Cart
      */
@@ -376,21 +373,6 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * @return the currentProduct
-     */
-    public CompleteProduct getCurrentProduct() {
-        return currentProduct;
-    }
-
-    /**
-     * @param currentProduct
-     *            the currentProduct to set
-     */
-    public void setCurrentProduct(CompleteProduct currentProduct) {
-        this.currentProduct = currentProduct;
-    }
-
-    /**
      * @return the mMobApiVersionInfo
      */
     public VersionInfo getMobApiVersionInfo() {
@@ -667,7 +649,6 @@ public class JumiaApplication extends A4SApplication {
         getCustomerUtils().clearCredentials();
         CUSTOMER = null;        
         mCustomerUtils = null;
-        currentProduct = null;
         cart = null;
         paymentsInfoList = null;
         itemSimpleDataRegistry.clear();

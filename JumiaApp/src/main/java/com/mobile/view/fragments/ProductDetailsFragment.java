@@ -75,7 +75,6 @@ import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.utils.FragmentCommunicatorForProduct;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TipsOnPageChangeListener;
@@ -303,8 +302,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public static ProductDetailsFragment getInstance(Bundle bundle) {
         ProductDetailsFragment fragment = new ProductDetailsFragment();
         fragment.setArguments(bundle);
-        // Clean current product
-        JumiaApplication.INSTANCE.setCurrentProduct(null);
         return fragment;
     }
 
@@ -361,8 +358,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public void onResume() {
         super.onResume();
         Log.d(TAG, "ON RESUME");
-        // Validate the current product
-        mCompleteProduct = JumiaApplication.INSTANCE.getCurrentProduct();
+
         if (mCompleteProduct == null) {
             init();
         } else {
@@ -428,7 +424,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         super.onDestroy();
         Log.d(TAG, "ON DESTROY");
         // Garbage
-        FragmentCommunicatorForProduct.getInstance().destroyInstance();
+//        FragmentCommunicatorForProduct.getInstance().destroyInstance();
     }
 
     /**
@@ -1219,7 +1215,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             locateSimplePosition(mDeepLinkSimpleSize, product);
         }
 
-        JumiaApplication.INSTANCE.setCurrentProduct(product);
         LastViewedTableHelper.insertLastViewedProduct(product);
         mCompleteProduct = product;
         mCompleteProductUrl = product.getUrl();
@@ -1650,6 +1645,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+        bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
+
         bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, true);
         getBaseActivity().onSwitchFragment(FragmentType.POPULARITY,
                 bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -1662,6 +1659,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         if (null != mCompleteProduct) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+            bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle,
                     FragmentController.ADD_TO_BACK_STACK);
         }
@@ -1779,7 +1777,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     private void onClickShare(CompleteProduct completeProduct) {
         try {
-            Intent shareIntent = getBaseActivity().createShareIntent();
+            String extraSubject = getString(R.string.share_subject, getString(R.string.app_name_placeholder));
+            String apiVersion = getString(R.string.jumia_global_api_version) + "/";
+            String extraMsg = getString(R.string.share_checkout_this_product) + "\n" + mCompleteProduct.getUrl().replace(apiVersion, "");
+            Intent shareIntent = getBaseActivity().createShareIntent(extraSubject, extraMsg);
+
+            shareIntent.putExtra(RestConstants.JSON_SKU_TAG, mCompleteProduct.getSku());
             startActivity(shareIntent);
             // Track share
             TrackerDelegator.trackItemShared(shareIntent, completeProduct.getCategories().get(0));
@@ -2167,9 +2170,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         mBundleContainer.setVisibility(View.VISIBLE);
 
-        CompleteProduct curProduct = JumiaApplication.INSTANCE.getCurrentProduct();
-        curProduct.setProductBundle(bundle);
-        JumiaApplication.INSTANCE.setCurrentProduct(curProduct);
+        mCompleteProduct.setProductBundle(bundle);
 
         // calculate the bundle total without the plead product
         double total = 0.0;
@@ -2418,6 +2419,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
+        bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
         bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, false);
         bundle.putString(SELLER_ID, mCompleteProduct.getSeller().getSellerId());
         getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
