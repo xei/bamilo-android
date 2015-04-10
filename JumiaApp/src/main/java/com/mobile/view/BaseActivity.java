@@ -2311,7 +2311,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     private void removeAllCheckoutEntries() {
         // Native Checkout
         String[] tags = {    FragmentType.PAYMENT_METHODS.toString(), FragmentType.SHIPPING_METHODS.toString(),  FragmentType.MY_ADDRESSES.toString(),
-                FragmentType.CREATE_ADDRESS.toString(), FragmentType.EDIT_ADDRESS.toString(),      FragmentType.POLL.toString() };
+                FragmentType.CREATE_ADDRESS.toString(), FragmentType.EDIT_ADDRESS.toString() };
 
         // Remove tags
         FragmentController.getInstance().removeAllEntriesWithTag(tags);
@@ -2327,7 +2327,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Native Checkout
         FragmentType[] type = { FragmentType.CHECKOUT_THANKS,   FragmentType.MY_ORDER,      FragmentType.PAYMENT_METHODS,
                 FragmentType.SHIPPING_METHODS,  FragmentType.MY_ADDRESSES,  FragmentType.CREATE_ADDRESS,
-                FragmentType.EDIT_ADDRESS,      FragmentType.POLL,          FragmentType.ABOUT_YOU };
+                FragmentType.EDIT_ADDRESS,         FragmentType.ABOUT_YOU };
         // Remove tags
         for (FragmentType fragmentType : type) FragmentController.getInstance().removeAllEntriesWithTag(fragmentType.toString());
     }
@@ -2341,7 +2341,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Native Checkout
         String[] tags = { FragmentType.CHECKOUT_THANKS.toString(),   FragmentType.MY_ORDER.toString(),      FragmentType.PAYMENT_METHODS.toString(),
                 FragmentType.SHIPPING_METHODS.toString(),  FragmentType.MY_ADDRESSES.toString(),  FragmentType.CREATE_ADDRESS.toString(),
-                FragmentType.EDIT_ADDRESS.toString(),      FragmentType.POLL.toString(),          FragmentType.ABOUT_YOU.toString() };
+                FragmentType.EDIT_ADDRESS.toString(),         FragmentType.ABOUT_YOU.toString() };
 
         // Remove tags
         FragmentController.getInstance().removeAllEntriesWithTag(tags);

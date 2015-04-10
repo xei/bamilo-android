@@ -265,7 +265,7 @@ public class FragmentController {
      * @param activity The current activity
      * @param container The frame layout
      * @param fragment The new fragment The new fragment
-     * @param tag The fragment tag
+     * @param fragmentType The fragment type
      * @param addToBackStack The flag to add or not to back stack Flag to add or not to back stack
      */
     public void startTransition(BaseActivity activity, int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack){
