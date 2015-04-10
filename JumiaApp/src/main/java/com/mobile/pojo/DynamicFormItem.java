@@ -32,7 +32,6 @@ import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.forms.FieldValidation;
 import com.mobile.forms.Form;
 import com.mobile.forms.FormField;
@@ -690,86 +689,86 @@ public class DynamicFormItem {
      * the field is mandatory or not
      * 
      * @return true, if there is no errors; false, if there are errors
+     * @modified ricardosoares
      */
     public boolean validate() {
         boolean result = true;
-        switch (this.entry.getInputType()) {
-        case checkBox:
-            if (this.entry.getValidation().isRequired())
-                result = ((CheckBox) this.dataControl).isChecked();
-            break;
-        case checkBoxList:
-            result = ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked();
-            break;
-        case radioGroup:
-            boolean valid;
+        if(hasRules() && this.dataControl != null) {
+            switch (this.entry.getInputType()) {
+                case checkBox:
+                    if (this.entry.getValidation().isRequired())
+                        result = ((CheckBox) this.dataControl).isChecked();
+                    break;
+                case checkBoxList:
+                    result = ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked();
+                    break;
+                case radioGroup:
+                    boolean valid;
 
-            if (this.dataControl instanceof IcsSpinner) {
-                valid = ((IcsSpinner) this.dataControl).getSelectedItemPosition() != Spinner.INVALID_POSITION;
-            } else if (this.dataControl instanceof RadioGroupLayoutVertical) {
-                if (childDynamicForm != null && childDynamicForm.size() > 0) {
-                    for (int i = 0; i < childDynamicForm.size(); i++) {
-                        if (!childDynamicForm.get(i).validate()) {
-                            valid = false;
-                            break;
+                    if (this.dataControl instanceof IcsSpinner) {
+                        valid = ((IcsSpinner) this.dataControl).getSelectedItemPosition() != Spinner.INVALID_POSITION;
+                    } else if (this.dataControl instanceof RadioGroupLayoutVertical) {
+                        if (childDynamicForm != null && childDynamicForm.size() > 0) {
+                            for (int i = 0; i < childDynamicForm.size(); i++) {
+                                if (!childDynamicForm.get(i).validate()) {
+                                    valid = false;
+                                    break;
+                                }
+                            }
                         }
+                        Log.i(TAG, "code1validate validating  : instanceof RadioGroupLayoutVertical");
+                        valid = ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
+                        // validate if accepted terms of payment method
+                        if (valid) {
+                            valid = ((RadioGroupLayoutVertical) this.dataControl).validateSelected();
+                            if (!valid) {
+                                result = !this.entry.getValidation().isRequired();
+                                if (!result) {
+                                    // this.errorControl = createErrorControlWithMargin(parent.getNextId(),
+                                    // MARGIN_TOP_LEFT, 50, RelativeLayout.LayoutParams.MATCH_PARENT);
+                                    // ((ViewGroup) this.dataControl).addView(this.errorControl);
+                                    String errorMsg = ((RadioGroupLayoutVertical) this.dataControl)
+                                            .getErrorMessage();
+                                    if (errorMsg != null && !errorMsg.equalsIgnoreCase("")) {
+                                        Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show();
+                                    }
+
+                                }
+                                break;
+                            }
+                        }
+                    } else {
+                        Log.i(TAG, "code1validate validating  : instanceof RadioGroupLayout");
+                        valid = ((RadioGroupLayout) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                     }
-                }
-                Log.i(TAG, "code1validate validating  : instanceof RadioGroupLayoutVertical");
-                valid = ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
-                // validate if accepted terms of payment method
-                if (valid) {
-                    valid = ((RadioGroupLayoutVertical) this.dataControl).validateSelected();
+
                     if (!valid) {
                         result = !this.entry.getValidation().isRequired();
-                        if (!result) {
-                            // this.errorControl = createErrorControlWithMargin(parent.getNextId(),
-                            // MARGIN_TOP_LEFT, 50, RelativeLayout.LayoutParams.MATCH_PARENT);
-                            // ((ViewGroup) this.dataControl).addView(this.errorControl);
-                            String errorMsg = ((RadioGroupLayoutVertical) this.dataControl)
-                                    .getErrorMessage();
-                            if (errorMsg != null && !errorMsg.equalsIgnoreCase("")) {
-                                Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show();
-                            }
-
-                        }
-                        break;
+                        setErrorText(context.getString(R.string.error_ismandatory) + " " + this.entry.getLabel());
                     }
+                    break;
+
+                case metadate:
+                case date:
+                    result = dialogDate.isSetOnce();
+                    break;
+                case email:
+                case text:
+                case password:
+                case number: {
+                    String value = ((EditText) this.dataControl).getText().toString();
+                    result = validateStringToPattern(value);
+
+                    break;
                 }
-            } else {
-                Log.i(TAG, "code1validate validating  : instanceof RadioGroupLayout");
-                valid = ((RadioGroupLayout) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
+                case hide:
+                    break;
+                case rating:
+                    result = validateRatingSet();
+                    break;
+                default:
+                    break;
             }
-
-            if (!valid) {
-                result = !this.entry.getValidation().isRequired();
-                setErrorText(context.getString(R.string.error_ismandatory) + " " + this.entry.getLabel());
-            }
-            break;
-
-        case metadate:
-        case date:
-            result = dialogDate.isSetOnce();
-            break;
-        case email:
-        case text:
-        case password:
-        case number: {
-            String value = ((EditText) this.dataControl).getText().toString();
-            result = validateStringToPattern(value);
-
-            break;
-        }
-        case hide:
-            break;
-        case rating:
-            result = validateRatingSet();
-            break;
-        default:
-            break;
-        }
-
-        if (null != errorControl) {
             this.errorControl.setVisibility(!result ? View.VISIBLE : View.GONE);
         }
 
@@ -1199,15 +1198,17 @@ public class DynamicFormItem {
             createRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
         }
 
-        this.errorControl = createErrorControl(dataContainer.getId(), controlWidth);
+        if(hasRules()) {
+            this.errorControl = createErrorControl(dataContainer.getId(), controlWidth);
 
-        //#RTL
-        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-            this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+            //#RTL
+            int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+            }
+
+            ((ViewGroup) this.control).addView(this.errorControl);
         }
-
-        ((ViewGroup) this.control).addView(this.errorControl);
 
     }
 
@@ -1260,15 +1261,13 @@ public class DynamicFormItem {
         dataContainer.addView(this.dataControl);
         dataContainer.addView(this.mandatoryControl);
 
-        String text = "";
-
         if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
-            text = this.entry.getLabel();
+            String text = this.entry.getLabel();
             ((Button) this.dataControl).setText(text);
             ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
         } else if (this.entry.getKey().equals("birthday")) {
             Log.i("ENTERED BIRTHDAY", " HERE ");
-            text = context.getString(R.string.register_birthday);
+            String text = context.getString(R.string.register_birthday);
             ((Button) this.dataControl).setHint(text);
             ((Button) this.dataControl).setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
             ((Button) this.dataControl).setTextColor(context.getResources().getColor(R.color.form_text));
@@ -1317,12 +1316,16 @@ public class DynamicFormItem {
         
         dataContainer = createTextDataContainer(controlWidth);
         int dataControlId = dataContainer.getId();
-        this.errorControl = createErrorControl(dataControlId, controlWidth);
-
-        //#RTL
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-            this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+
+        if(hasRules()) {
+            this.errorControl = createErrorControl(dataControlId, controlWidth);
+
+            //#RTL
+            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+            }
+            ((ViewGroup) this.control).addView(this.errorControl);
         }
         //#RTL
         if(context.getResources().getBoolean(R.bool.is_bamilo_specific) && currentApiVersion < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
@@ -1330,15 +1333,12 @@ public class DynamicFormItem {
         } 
         
         ((ViewGroup) this.control).addView(dataContainer);
-        ((ViewGroup) this.control).addView(this.errorControl);
-
-        final CharSequence editText = ((EditText) this.dataControl).getHint();
         
         this.dataControl.setContentDescription(this.entry.getKey());
         // Listeners
         
         //TODO
-        //FIXME to be fixed on previous rating reform, uncomment crashs app
+        //FIXME to be fixed on previous rating reform, uncomment crashes app
         
 //        this.dataControl.setOnFocusChangeListener(new OnFocusChangeListener() {
 //
@@ -1811,16 +1811,17 @@ public class DynamicFormItem {
         int id = count-1;
         //add error message to ratings form
         this.errorText = context.getString(R.string.rating_option_error_message);
-        this.errorControl = createErrorControl(id, controlWidth);
+        if(hasRules()) {
+            this.errorControl = createErrorControl(id, controlWidth);
 
-        //#RTL
-        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-            this.errorControl.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            //#RTL
+            int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                this.errorControl.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            }
+
+            linearLayout.addView(this.errorControl);
         }
-
-        linearLayout.addView(this.errorControl);
-
         /**
          * IMPORTANT
          * this verification is made in order to not show the checkbox for changing form rating to review form,
@@ -2174,13 +2175,18 @@ public class DynamicFormItem {
         return this.entry.getInputType() == null;
     }
 
+    /**
+     * Check if item has rules.
+     *
+     * @return True if item has at least one rule. False otherwise.
+     */
     public boolean hasRules(){
         boolean hasRules = false;
         FieldValidation validation = entry.getValidation();
         if(validation != null){
-            hasRules &= validation.isRequired();
-            hasRules &= !validation.regex.equals(FieldValidation.DEFAULT_REGEX);
-            hasRules &= validation.min != FieldValidation.MIN_CHARACTERS;
+            hasRules |= validation.isRequired();
+            hasRules |= !validation.regex.equals(FieldValidation.DEFAULT_REGEX);
+            hasRules |= validation.min != FieldValidation.MIN_CHARACTERS;
         }
         return hasRules;
     }
