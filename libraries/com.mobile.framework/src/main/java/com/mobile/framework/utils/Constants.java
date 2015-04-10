@@ -78,5 +78,5 @@ public class Constants {
      * Shared Preferences
      */
 
-    public static String SHARED_PREFERENCES = "whitelabel_prefs";
+    public static final String SHARED_PREFERENCES = "whitelabel_prefs";
 }
