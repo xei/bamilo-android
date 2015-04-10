@@ -521,10 +521,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     private void onClickEditProdButton() {
         Log.i(TAG, "ON CLICK: EDIT PROD");
-        if(FragmentController.getInstance().hasEntry(FragmentType.SHOPPING_CART.toString()))
-            FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.SHOPPING_CART.toString());
-        else
+        if(!getBaseActivity().popBackStackUntilTag(FragmentType.SHOPPING_CART.toString())) {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
     
     /**
@@ -533,10 +532,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     private void onClickEditAddessButton() {
         Log.i(TAG, "ON CLICK: EDIT ADDRESS");
-        if(FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString()))
-            FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.MY_ADDRESSES.toString());
-        else
+        if(!getBaseActivity().popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString())) {
             getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
     
     /**
@@ -544,10 +542,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     private void onClickEditMethodButton() {
         Log.i(TAG, "ON CLICK: EDIT METHOD");
-        if(FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString()))
-            FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.SHIPPING_METHODS.toString());
-        else
+        if(!getBaseActivity().popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString())) {
             getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     /**

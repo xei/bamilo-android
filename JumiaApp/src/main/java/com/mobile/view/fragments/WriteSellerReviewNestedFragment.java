@@ -12,7 +12,6 @@ import android.widget.RatingBar;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.FormConstants;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.forms.Form;
@@ -449,13 +448,10 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
                             dialog_review_submitted.dismiss();
                             isExecutingSendReview = false;
                             if (getBaseActivity() != null) {
-                                if(nestedFragment){
+                                if(nestedFragment) {
                                     cleanForm();
-                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PRODUCT_DETAILS.toString());
-                                } else {
-                                    // Remove entries until specific tag
-                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PRODUCT_DETAILS.toString());
                                 }
+                                getBaseActivity().popBackStackUntilTag(FragmentType.PRODUCT_DETAILS.toString());
                             }
                         }
                     });

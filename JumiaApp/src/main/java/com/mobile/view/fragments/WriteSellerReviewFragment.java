@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.FormConstants;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.forms.Form;
@@ -525,7 +524,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
                                     getBaseActivity().onBackPressed();
                                 } else {
                                     // Remove entries until specific tag
-                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PRODUCT_DETAILS.toString());
+                                    getBaseActivity().popBackStackUntilTag(FragmentType.PRODUCT_DETAILS.toString());
                                 }
                             }
                         }

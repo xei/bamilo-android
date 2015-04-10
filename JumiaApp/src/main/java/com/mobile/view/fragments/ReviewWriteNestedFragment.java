@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -154,10 +155,13 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         if (arguments != null) {
             String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
+            Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
+            if(parcelableProduct instanceof CompleteProduct){
+                completeProduct = (CompleteProduct)parcelableProduct;
+            }
         }
 
         JumiaApplication.INSTANCE.setIsSellerReview(false);
-        completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         isExecutingSendReview = false;
         if(savedInstanceState != null){
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
@@ -243,7 +247,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 }
             }
         } else {
-            showRetryLayout();
+            showFragmentErrorRetry();
         }
         
     }
@@ -299,11 +303,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
         }
     }
     
-    
-    private void showRetryLayout() {
-        showFragmentErrorRetry();
-    }
-    
     /**
      * Set the Products layout using inflate
      */
@@ -314,7 +313,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
-                showRetryLayout();
+                showFragmentErrorRetry();
             }
             
         } else {
@@ -420,7 +419,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 bundle.putString(GetProductHelper.PRODUCT_URL, mCompleteProductUrl);
                 triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
             } else {
-                showRetryLayout();
+                showFragmentErrorRetry();
             }
             
         } else {
@@ -538,13 +537,10 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                             dialog_review_submitted.dismiss();
                             isExecutingSendReview = false;
                             if (getBaseActivity() != null) {
-                                if(nestedFragment){
+                                if(nestedFragment) {
                                     cleanForm();
-                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PRODUCT_DETAILS.toString());
-                                } else {
-                                    // Remove entries until specific tag
-                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PRODUCT_DETAILS.toString());
                                 }
+                                getBaseActivity().popBackStackUntilTag(FragmentType.PRODUCT_DETAILS.toString());
                             }
                         }
                     });
@@ -583,7 +579,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
                 return true;
             } else {
                 completeProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                JumiaApplication.INSTANCE.setCurrentProduct(completeProduct);
                 // triggerAutoLogin();
                 // triggerCustomer();
                 triggerRatingForm();
@@ -628,7 +623,7 @@ public class ReviewWriteNestedFragment extends BaseFragment {
             if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
                 triggerReviewForm();
             } else {
-                showRetryLayout();
+                showFragmentErrorRetry();
             }
             return false;
         case REVIEW_RATING_PRODUCT_EVENT:

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -154,10 +155,14 @@ public class ReviewWriteFragment extends BaseFragment {
         if (arguments != null) {
             String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
+            Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
+            if(parcelableProduct instanceof CompleteProduct){
+                completeProduct = (CompleteProduct)parcelableProduct;
+            }
+
         }
         //
         JumiaApplication.setIsSellerReview(false);
-        completeProduct = JumiaApplication.INSTANCE.getCurrentProduct();
         isExecutingSendReview = false;
         if(savedInstanceState != null){
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
@@ -601,7 +606,7 @@ public class ReviewWriteFragment extends BaseFragment {
                                     getBaseActivity().onBackPressed();
                                 } else {
                                     // Remove entries until specific tag
-                                    FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PRODUCT_DETAILS.toString());
+                                    getBaseActivity().popBackStackUntilTag(FragmentType.PRODUCT_DETAILS.toString());
                                 }
                             }
                         }
@@ -642,7 +647,6 @@ public class ReviewWriteFragment extends BaseFragment {
                 return true;
             } else {
                 completeProduct = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                JumiaApplication.INSTANCE.setCurrentProduct(completeProduct);
                 // triggerAutoLogin();
                 // triggerCustomer();
                 triggerRatingForm();

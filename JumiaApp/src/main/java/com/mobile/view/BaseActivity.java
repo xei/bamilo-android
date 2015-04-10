@@ -49,11 +49,9 @@ import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.SearchSuggestion;
 import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
@@ -1275,22 +1273,14 @@ public abstract class BaseActivity extends ActionBarActivity {
      *
      * @return The created intent
      */
-    public Intent createShareIntent() {
+    public Intent createShareIntent(String extraSubject, String extraText) {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         // sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject, getString(R.string.app_name_placeholder)));
-        // Get product
-        CompleteProduct prod = JumiaApplication.INSTANCE.getCurrentProduct();
-        // Validate
-        if (null != prod) {
-            // For tracking when sharing
-            sharingIntent.putExtra(RestConstants.JSON_SKU_TAG, prod.getSku());
-            String apiVersion = getString(R.string.jumia_global_api_version) + "/";
-            String msg = getString(R.string.share_checkout_this_product) + "\n" + prod.getUrl().replace(apiVersion, "");
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, msg);
-        }
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, extraSubject);
+
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, extraText);
         return sharingIntent;
     }
 
@@ -1718,8 +1708,8 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param addToBackStack
      * @author sergiopereira
      */
-    public void fragmentManagerTransition(int container, Fragment fragment, String tag, Boolean addToBackStack) {
-        fragmentController.startTransition(this, container, fragment, tag, addToBackStack);
+    public void fragmentManagerTransition(int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack) {
+        fragmentController.startTransition(this, container, fragment, fragmentType, addToBackStack);
     }
 
     /**
@@ -1747,8 +1737,12 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param tag
      * @author sergiopereira
      */
-    public void popBackStackUntilTag(String tag) {
-        fragmentController.popAllEntriesUntil(this, tag);
+    public boolean popBackStackUntilTag(String tag) {
+        if (fragmentController.hasEntry(tag)) {
+            fragmentController.popAllEntriesUntil(this, tag);
+            return true;
+        }
+        return false;
     }
 
 
@@ -2061,7 +2055,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         // CHECKOUT_ABOUT_YOU
         if (id == R.id.checkout_header_step_1 && !view.isSelected()) {
             // Uncomment if you want click on about you step
-            // removeAllCheckoutEntries();
+            // removeCheckoutEntries();
             // onSwitchFragment(FragmentType.ABOUT_YOU,
             // FragmentController.NO_BUNDLE,
             // FragmentController.ADD_TO_BACK_STACK);
@@ -2071,19 +2065,18 @@ public abstract class BaseActivity extends ActionBarActivity {
         // CHECKOUT_BILLING
         if (id == R.id.checkout_header_step_2 && !view.isSelected()) {
             // Validate back stack
-            if (FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString())) {
-                FragmentController.getInstance().popAllEntriesUntil(this, FragmentType.MY_ADDRESSES.toString());
-            } else if (FragmentController.getInstance().hasEntry(FragmentType.CREATE_ADDRESS.toString())) {
+
+            if(!popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString()) &&
+                    fragmentController.hasEntry(FragmentType.CREATE_ADDRESS.toString())){
                 removeAllCheckoutEntries();
                 onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
+
         }
         // CHECKOUT_SHIPPING
         else if (id == R.id.checkout_header_step_3 && !view.isSelected()) {
             // Validate back stack
-            if (FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString())) {
-                FragmentController.getInstance().popAllEntriesUntil(this, FragmentType.SHIPPING_METHODS.toString());
-            }
+            popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString());
         }
         // CHECKOUT_PAYMENT IS THE LAST
     }
@@ -2093,14 +2086,59 @@ public abstract class BaseActivity extends ActionBarActivity {
      *
      * @author sergiopereira
      */
-    private void removeAllCheckoutEntries() {
+    @Deprecated
+    private void removeCheckoutEntries() {
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.PAYMENT_METHODS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.SHIPPING_METHODS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ADDRESSES.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.CREATE_ADDRESS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.EDIT_ADDRESS.toString());
     }
-    
+
+    /**
+     * Remove all checkout entries to call the base of checkout
+     *
+     * @author ricardosoares
+     */
+    private void removeAllCheckoutEntries() {
+        // Native Checkout
+        String[] tags = {    FragmentType.PAYMENT_METHODS.toString(), FragmentType.SHIPPING_METHODS.toString(),  FragmentType.MY_ADDRESSES.toString(),
+                FragmentType.CREATE_ADDRESS.toString(), FragmentType.EDIT_ADDRESS.toString() };
+
+        // Remove tags
+        FragmentController.getInstance().removeAllEntriesWithTag(tags);
+    }
+
+    /**
+     * Method used to remove all native checkout entries from the back stack on the Fragment Controller
+     * Note: Updated this method if you add a new native checkout stepremoveAllCheckoutEntries
+     * @author sergiopereira
+     */
+    @Deprecated
+    protected void removeNativeCheckoutFromBackStack() {
+        // Native Checkout
+        FragmentType[] type = { FragmentType.CHECKOUT_THANKS,   FragmentType.MY_ORDER,      FragmentType.PAYMENT_METHODS,
+                FragmentType.SHIPPING_METHODS,  FragmentType.MY_ADDRESSES,  FragmentType.CREATE_ADDRESS,
+                FragmentType.EDIT_ADDRESS,         FragmentType.ABOUT_YOU };
+        // Remove tags
+        for (FragmentType fragmentType : type) FragmentController.getInstance().removeAllEntriesWithTag(fragmentType.toString());
+    }
+
+    /**
+     * Method used to remove all native checkout entries from the back stack on the Fragment Controller
+     * Note: This method must be updated in case of adding more screens to native checkout.
+     * @author ricardosoares
+     */
+    public void removeAllNativeCheckoutFromBackStack(){
+        // Native Checkout
+        String[] tags = { FragmentType.CHECKOUT_THANKS.toString(),   FragmentType.MY_ORDER.toString(),      FragmentType.PAYMENT_METHODS.toString(),
+                FragmentType.SHIPPING_METHODS.toString(),  FragmentType.MY_ADDRESSES.toString(),  FragmentType.CREATE_ADDRESS.toString(),
+                FragmentType.EDIT_ADDRESS.toString(),         FragmentType.ABOUT_YOU.toString() };
+
+        // Remove tags
+        FragmentController.getInstance().removeAllEntriesWithTag(tags);
+    }
+
     /*
      * ##### REQUESTS TO RECOVER #####
      */

@@ -64,6 +64,8 @@ import com.mobile.view.fragments.SessionTermsFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.WriteSellerReviewFragment;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -132,8 +134,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             // Get FC back stack from saved state and get fragments from FM
             ArrayList<String> backStackTypes = savedInstanceState.getStringArrayList(ConstantsIntentExtra.BACK_STACK);
             List<Fragment> originalFragments = this.getSupportFragmentManager().getFragments();
-            if (backStackTypes != null && backStackTypes.size() > 0) {
+            if (!CollectionUtils.isEmpty(backStackTypes)) {
                 FragmentController.getInstance().validateCurrentState(this, backStackTypes, originalFragments, mCurrentFragmentType);
+            } else {
+                Log.d(TAG, "COULDN'T RECOVER BACKSTACK");
             }
         }
 
@@ -230,10 +234,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         ArrayList<String> frags = new ArrayList<>();
         try {
             String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-            mCurrentFragmentType = FragmentType.valueOf(tag);
+            mCurrentFragmentType = FragmentType.getValue(tag);
             // Save the current back stack
             for (String entry : FragmentController.getInstance().returnAllEntries()) {
-                frags.add(entry);
+                frags.add(entry.toString());
             }
         } catch (Exception e) {
             Log.w(TAG, "ERROR ON GET CURRENT FRAGMENT TYPE", e);
@@ -257,6 +261,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         showWarningVariation(false);
         // 
         hideKeyboard();
+
+        boolean removeEntries = false;
+
         // Validate fragment type
         switch (type) {
             case HOME:
@@ -271,10 +278,17 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = CategoriesCollectionFragment.getInstance(bundle);
                 break;
             case CATALOG:
+                if(bundle != null && bundle.containsKey(ConstantsIntentExtra.REMOVE_ENTRIES)){
+                    removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_ENTRIES);
+                    bundle.remove(ConstantsIntentExtra.REMOVE_ENTRIES);
+                } else {
+                    removeEntries = true;
+                }
                 fragment = CatalogFragment.getInstance(bundle);
                 break;
             case PRODUCT_DETAILS:
                 fragment = ProductDetailsFragment.getInstance(bundle);
+                type.setId(fragment.hashCode());
                 break;
             case PRODUCT_DESCRIPTION:
                 fragment = ProductDetailsDescriptionFragment.getInstance(bundle);
@@ -358,12 +372,14 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = MyAccountEmailNotificationFragment.newInstance();
                 break;
             case FAVORITE_LIST:
+                removeEntries = true;
                 fragment = FavouritesFragment.getInstance();
                 break;
             case RECENT_SEARCHES_LIST:
                 fragment = RecentSearchFragment.newInstance();
                 break;
             case RECENTLY_VIEWED_LIST:
+                removeEntries = true;
                 fragment = RecentlyViewedFragment.getInstance();
                 break;
             case PRODUCT_SIZE_GUIDE:
@@ -392,12 +408,16 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 return;
         }
 
+        if(removeEntries){
+            popBackStackUntilTag(FragmentType.HOME.toString());
+        }
+
         Log.i(TAG, "ON SWITCH FRAGMENT: " + type);
         // Save the current state
         mCurrentFragmentType = type;
 
         // Transition
-        fragmentManagerTransition(R.id.rocket_app_content, fragment, type.toString(), addToBackStack);
+        fragmentManagerTransition(R.id.rocket_app_content, fragment, type, addToBackStack);
     }
 
     /*
@@ -462,7 +482,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      *
      * @param tag The fragment tag
      */
-    public void popBackStack(String tag) {
+    protected void popBackStack(String tag) {
         // Pop back stack until tag
         popBackStackUntilTag(tag);
         // Get the current fragment

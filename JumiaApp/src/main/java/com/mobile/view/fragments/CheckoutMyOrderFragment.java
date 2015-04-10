@@ -521,10 +521,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     private void onClickEditAddressesButton() {
         Log.i(TAG, "ON CLICK: EditAddresses");
         if(JumiaApplication.INSTANCE.getPaymentMethodForm() == null){
-            if(FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString()))
-                FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.MY_ADDRESSES.toString());
-            else
+            if(!getBaseActivity().popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString())) {
                 getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
         }
     }
 
@@ -536,10 +535,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     private void onClickEditShippingMethodButton() {
         Log.i(TAG, "ON CLICK: EditShippingMethod");
         if(JumiaApplication.INSTANCE.getPaymentMethodForm() == null){
-            if(FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString()))
-                FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.SHIPPING_METHODS.toString());
-            else
+            if(!getBaseActivity().popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString())) {
                 getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
         }
     }
     
@@ -550,10 +548,9 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     private void onClickEditPaymentOptionsButton() {
         Log.i(TAG, "ON CLICK: EditPaymentOptions");
         if(JumiaApplication.INSTANCE.getPaymentMethodForm() == null){
-            if(FragmentController.getInstance().hasEntry(FragmentType.PAYMENT_METHODS.toString()))
-                FragmentController.getInstance().popAllEntriesUntil(getBaseActivity(), FragmentType.PAYMENT_METHODS.toString());
-            else
+            if(!getBaseActivity().popBackStackUntilTag(FragmentType.PAYMENT_METHODS.toString())) {
                 getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
         }
     }
     
