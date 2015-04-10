@@ -33,6 +33,7 @@ import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsSharedPrefs;
+import com.mobile.forms.FieldValidation;
 import com.mobile.forms.Form;
 import com.mobile.forms.FormField;
 import com.mobile.forms.IFormField;
@@ -1316,7 +1317,7 @@ public class DynamicFormItem {
         dataContainer = createTextDataContainer(controlWidth);
         int dataControlId = dataContainer.getId();
         this.errorControl = createErrorControl(dataControlId, controlWidth);
-        
+
         //#RTL
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
@@ -2168,6 +2169,17 @@ public class DynamicFormItem {
      */
     public boolean hasNoType() {
         return this.entry.getInputType() == null;
+    }
+
+    public boolean hasRules(){
+        boolean hasRules = false;
+        FieldValidation validation = entry.getValidation();
+        if(validation != null){
+            hasRules &= validation.isRequired();
+            hasRules &= !validation.regex.equals(FieldValidation.DEFAULT_REGEX);
+            hasRules &= validation.min != FieldValidation.MIN_CHARACTERS;
+        }
+        return hasRules;
     }
 
 }
