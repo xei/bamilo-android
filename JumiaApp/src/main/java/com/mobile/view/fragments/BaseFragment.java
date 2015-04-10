@@ -680,66 +680,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
 
     /**
-     * Set the inflated stub
-     * @param stub The view stub
-     * @param inflated The inflated view
-     */
-    @Override
-    public void onInflate(ViewStub stub, View inflated) {
-        // Get stub id
-        int id = stub.getId();
-        // Validate stub
-        if(id == R.id.fragment_stub_empty) {
-            Log.i(TAG, "ON INFLATE STUB: EMPTY");
-            // Get associated data
-            int emptyStringResId = (int) stub.getTag(R.id.stub_text_title);
-            int emptyDrawableResId = (int) stub.getTag(R.id.stub_drawable);
-            int buttonEmptyStringResId = (int) stub.getTag(R.id.stub_text_button);
-            OnClickListener onClickListener = (OnClickListener) stub.getTag(R.id.stub_listener);
-            // Set view
-            ((ImageView) inflated.findViewById(R.id.fragment_root_empty_image)).setImageResource(emptyDrawableResId);
-            ((TextView) inflated.findViewById(R.id.fragment_root_empty_text)).setText(getString(emptyStringResId));
-            Button emptyContinueButton = (Button) inflated.findViewById(R.id.fragment_root_empty_button);
-            emptyContinueButton.setVisibility(View.VISIBLE);
-            emptyContinueButton.setText(getString(buttonEmptyStringResId));
-            emptyContinueButton.setOnClickListener(onClickListener);
-
-            UIUtils.showOrHideViews(View.GONE, mContentView, mRetryView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
-        }
-        else if(id == R.id.fragment_stub_home_fall_back)  {
-            Log.i(TAG, "ON INFLATE STUB: FALL BACK");
-            UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mMaintenanceView, mLoadingView);
-        }
-        else if(id == R.id.fragment_stub_loading) {
-            Log.i(TAG, "ON INFLATE STUB: LOADING");
-            //((LoadingBarView) inflated.findViewById(R.id.fragment_root_loading_gif)).startRendering();
-            UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView);
-        }
-        else if(id == R.id.fragment_stub_retry) {
-            Log.i(TAG, "ON INFLATE STUB: RETRY");
-            inflated.findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
-            UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
-        }
-        else if(id == R.id.fragment_stub_unexpected_error) {
-            Log.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
-            inflated.findViewById(R.id.fragment_root_retry_unexpected_error).setOnClickListener(this);
-            UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mFallBackView, mRetryView, mMaintenanceView, mLoadingView);
-        }
-        else if(id == R.id.fragment_stub_maintenance) {
-            Log.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
-            // Case BAMILO
-            if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
-                MaintenancePage.setMaintenancePageBamilo(inflated, this);
-            } else {
-                MaintenancePage.setMaintenancePageBaseActivity(getBaseActivity(), this);
-            }
-            UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mLoadingView);
-        }
-    }
-
-    /**
      * Validate if is to inflate a fragment layout into root layout
-     *
      * @return true/false
      * @author sergiopereira
      */
@@ -757,12 +698,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Show the retry view from the root layout
-     *
      * @author sergiopereira
      */
     protected void showFragmentNoNetworkRetry() {
         UIUtils.showOrHideViews(View.VISIBLE, mRetryView);
-        //UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
     }
 
     /**
@@ -770,12 +709,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showFragmentLoading() {
         UIUtils.showOrHideViews(View.VISIBLE, mLoadingView);
-        //UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView);
     }
 
     /**
      * Show continue with listener for going back.
-     *
      * @author sergiopereira
      */
     protected void showContinueShopping() {
@@ -798,17 +735,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         mEmptyView.setTag(R.id.stub_listener, onClickListener);
         // Show empty view
         UIUtils.showOrHideViews(View.VISIBLE, mEmptyView);
-        //UIUtils.showOrHideViews(View.GONE, mContentView, mRetryView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
     }
 
     /**
      * Show the retry view from the root layout
-     *
      * @author sergiopereira
      */
     protected void showFragmentErrorRetry() {
         UIUtils.showOrHideViews(View.VISIBLE, mErrorView);
-        //UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mFallBackView, mRetryView, mMaintenanceView, mLoadingView);
     }
 
     /**
@@ -816,7 +750,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showFragmentFallBack() {
         UIUtils.showOrHideViews(View.VISIBLE, mFallBackView);
-        //UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mMaintenanceView, mLoadingView);
     }
 
     /**
@@ -824,7 +757,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     public void showFragmentMaintenance() {
         UIUtils.showOrHideViews(View.VISIBLE, mMaintenanceView);
-        //UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mLoadingView);
     }
 
     /**
@@ -857,6 +789,126 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         getBaseActivity().showWarning(R.string.server_error);
         showFragmentContentContainer();
         hideActivityProgress();
+    }
+
+    /**
+     * Set the inflated stub
+     * @param stub The view stub
+     * @param inflated The inflated view
+     */
+    @Override
+    public void onInflate(ViewStub stub, View inflated) {
+        // Get stub id
+        int id = stub.getId();
+        // Case continue shopping
+        if(id == R.id.fragment_stub_empty) {
+            onInflateContinue(stub, inflated);
+        }
+        // Case home fall back
+        else if(id == R.id.fragment_stub_home_fall_back)  {
+            onInflateHomeFallBack();
+        }
+        // Case loading
+        else if(id == R.id.fragment_stub_loading) {
+            onInflateLoading();
+        }
+        // Case no network
+        else if(id == R.id.fragment_stub_retry) {
+            onInflateNoNetwork(inflated);
+        }
+        // Case unexpected error
+        else if(id == R.id.fragment_stub_unexpected_error) {
+            onInflateUnexpectedError(inflated);
+        }
+        // Case maintenance
+        else if(id == R.id.fragment_stub_maintenance) {
+            onInflateMaintenance(inflated);
+        }
+        // Case unknown
+        else {
+            Log.w(TAG, "WARNING: UNKNOWN INFLATED STUB");
+        }
+    }
+
+    /**
+     * Set the continue view after inflate stub.
+     * @param stub The continue stub
+     * @param inflated The inflated view
+     */
+    private void onInflateContinue(ViewStub stub, View inflated) {
+        Log.i(TAG, "ON INFLATE STUB: EMPTY");
+        // Get associated data
+        int emptyStringResId = (int) stub.getTag(R.id.stub_text_title);
+        int emptyDrawableResId = (int) stub.getTag(R.id.stub_drawable);
+        int buttonEmptyStringResId = (int) stub.getTag(R.id.stub_text_button);
+        OnClickListener onClickListener = (OnClickListener) stub.getTag(R.id.stub_listener);
+        // Set view
+        ((ImageView) inflated.findViewById(R.id.fragment_root_empty_image)).setImageResource(emptyDrawableResId);
+        ((TextView) inflated.findViewById(R.id.fragment_root_empty_text)).setText(getString(emptyStringResId));
+        Button emptyContinueButton = (Button) inflated.findViewById(R.id.fragment_root_empty_button);
+        emptyContinueButton.setVisibility(View.VISIBLE);
+        emptyContinueButton.setText(getString(buttonEmptyStringResId));
+        emptyContinueButton.setOnClickListener(onClickListener);
+        // Hide other stubs
+        UIUtils.showOrHideViews(View.GONE, mContentView, mRetryView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
+    }
+
+    /**
+     * Set the home fall back view.
+     */
+    private void onInflateHomeFallBack() {
+        Log.i(TAG, "ON INFLATE STUB: FALL BACK");
+        // Hide other stubs
+        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mMaintenanceView, mLoadingView);
+    }
+
+    /**
+     * Set the loading view.
+     */
+    private void onInflateLoading() {
+        Log.i(TAG, "ON INFLATE STUB: LOADING");
+        // Hide other stubs
+        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView);
+    }
+
+
+    /**
+     * Set no network view.
+     * @param inflated The inflated view
+     */
+    private void onInflateNoNetwork(View inflated) {
+        Log.i(TAG, "ON INFLATE STUB: RETRY");
+        // Set view
+        inflated.findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
+        // Hide other stubs
+        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
+    }
+
+    /**
+     * Set unexpected error view.
+     * @param inflated The inflated view
+     */
+    private void onInflateUnexpectedError(View inflated) {
+        Log.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
+        inflated.findViewById(R.id.fragment_root_retry_unexpected_error).setOnClickListener(this);
+        // Hide other stubs
+        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mFallBackView, mRetryView, mMaintenanceView, mLoadingView);
+    }
+
+    /**
+     * Set maintenance view.
+     * @param inflated The inflated view
+     */
+    private void onInflateMaintenance(View inflated) {
+        Log.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
+        // Validate venture
+        if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
+            MaintenancePage.setMaintenancePageBamilo(inflated, this);
+        } else {
+            MaintenancePage.setMaintenancePageBaseActivity(getBaseActivity(), this);
+        }
+        // Hide other stubs
+        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mLoadingView);
     }
 
     /*

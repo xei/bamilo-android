@@ -178,7 +178,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onStop() {
         super.onStop();
         Log.i(TAG, "ON STOP");
-        SharedPreferences sharedPrefs = getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor eD = sharedPrefs.edit();
         eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true);
         eD.apply();
@@ -407,7 +407,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessGlobalConfigsEvent(Bundle bundle) {
         Log.i(TAG, "ON PROCESS: GLOBAL CONFIGS");
-        SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         if (sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null) == null) {
             Log.i(TAG, "SELECTED COUNTRY ID IS NULL");
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
