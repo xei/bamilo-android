@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.mobile.constants.ConstantsSharedPrefs;
+import com.mobile.framework.utils.Constants;
 
 import de.akquinet.android.androlog.Log;
 
@@ -31,7 +32,7 @@ public class CustomerPreferences {
      * @author sergiopereira
      */
     private static String load(Context context, String key) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String value = sharedPrefs.getString(key, null);
         Log.i(TAG, "LOAD PREFERENCE: " + key + " = " + value);
         return value;
@@ -45,7 +46,7 @@ public class CustomerPreferences {
      * @author sergiopereira
      */
     private static void store(Context context, String key, String value) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(key, value);
         editor.apply();

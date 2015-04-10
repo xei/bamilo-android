@@ -28,7 +28,6 @@ import com.mobile.components.ScrollViewEx;
 import com.mobile.components.ScrollViewEx.OnScrollBottomReachedListener;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.Darwin;
@@ -981,7 +980,7 @@ public class ReviewsFragment extends BaseFragment {
     private SharedPreferences getSharedPref(){
         if(sharedPrefs == null){
           //Validate if country configs allows rating and review, only show write review fragment if both are allowed
-            sharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE); 
+            sharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         }
         return sharedPrefs;
     }
