@@ -37,7 +37,6 @@ import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.BundleItemsListAdapter;
 import com.mobile.controllers.BundleItemsListAdapter.OnItemChecked;
 import com.mobile.controllers.BundleItemsListAdapter.OnItemSelected;
@@ -281,6 +280,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private View mWizardContainer;
 
     private View mSellerDeliveryContainer;
+    
+    private boolean isFromBanner;
 
     /**
      * Empty constructor
@@ -321,6 +322,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             } else {
                 categoryTree = "";
             }
+            // Verify if campaign page was open via a banner
+            isFromBanner = arguments.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
@@ -1166,6 +1169,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getRatingsAverage());
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
+        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
         if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 0) {
             bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(0));
             if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 1) {
@@ -1175,7 +1179,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         } else {
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
         }
-
         TrackerDelegator.trackProductAddedToCart(bundle);
     }
 
@@ -1460,7 +1463,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * 
      */
     private void setCallPhone() {
-        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, "");
         if (mPhone2Call.equalsIgnoreCase(""))
             mPhone2Call = getString(R.string.call_to_order_number);

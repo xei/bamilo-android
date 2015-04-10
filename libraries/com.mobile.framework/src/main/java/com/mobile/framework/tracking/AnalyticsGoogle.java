@@ -73,7 +73,7 @@ public class AnalyticsGoogle {
 
 	/**
 	 * Gets the current instance of the analytics object to use.
-	 * @return the global {@link AnalyticsUtils} singleton object, creating one
+	 * @return the global {@link GoogleAnalytics} singleton object, creating one
 	 *         if necessary.
 	 */
 	public static AnalyticsGoogle get() {

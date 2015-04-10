@@ -53,9 +53,9 @@ public class AddableToCart extends BaseProduct {
 	protected String mSelectedSimpleValue;
 	protected Boolean mChooseVariationWarning = false;
 	protected boolean mStockVariationWarning = false;
-	private ArrayList<String> mCategories;
-	private Double mRatingsAverage;
-	private String mSizeGuideUrl;
+	protected ArrayList<String> mCategories;
+	protected Double mRatingsAverage;
+	protected String mSizeGuideUrl;
 
 	/**
 	 * Complete favourite empty constructor.
@@ -333,7 +333,6 @@ public class AddableToCart extends BaseProduct {
     public boolean hasSizeGuide() {
         return TextUtils.isEmpty(mSizeGuideUrl) ? false : true;
     }
-    
 
 	/*
 	 * ############ PARCELABLE ############
@@ -409,4 +408,5 @@ public class AddableToCart extends BaseProduct {
 			return new AddableToCart[size];
 		}
 	};
+
 }

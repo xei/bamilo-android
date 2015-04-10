@@ -442,13 +442,13 @@ public class RestConstants {
     public static final String JSON_COUNTRY_THOUSANDS_SEP = "thousands_sep";
     public static final String JSON_COUNTRY_DECIMALS_SEP = "decimals_sep";
     public static final String JSON_COUNTRY_LANGUAGES = "languages";
-    public static final String JSON_COUNTRY_LANG_CODE = "lang_code";
-    public static final String JSON_COUNTRY_LANG_NAME = "lang_name";
-    public static final String JSON_COUNTRY_LANG_DEFAULT = "lang_default";
-    public static final String JSON_COUNTRY_GA_ID = "ga_id";
+    public static final String JSON_COUNTRY_LANG_CODE = "code";
+    public static final String JSON_COUNTRY_LANG_NAME = "name";
+    public static final String JSON_COUNTRY_LANG_DEFAULT = "default";
+    public static final String JSON_COUNTRY_GA_ID = "ga_android_id";
     public static final String JSON_COUNTRY_CS_EMAIL = "cs_email";
     public static final String JSON_FACEBOOK_IS_AVAILABLE = "facebook_is_available";
-
+    public static final String JSON_COUNTRY_GTM_ID = "gtm_android";
 
     public static final String JSON_ITEM_TAG = "item";
     public static final String JSON_RELEVANCE_TAG = "relevance";
@@ -477,4 +477,12 @@ public class RestConstants {
     public static final String JSON_OFFERS_MIN_PRICE_TAG = "min_price";
     public static final String JSON_OFFERS_MIN_PRICE_CONVERTED_TAG = "min_price_euroConverted";
 
+    /**
+     * VALIDATE
+     */
+
+    public static final String JSON_VALID_TAG = "valid";
+    public static final String JSON_INVALID_TAG = "invalid";
+    public static final String JSON_VARIATION_NAME_TAG = "variation_name";
+    public static final String JSON_VARIATION_VALUE_TAG = "variation_value";
 }

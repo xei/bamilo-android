@@ -222,7 +222,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private void triggerClearCart() {
         Log.i(TAG, "TRIGGER: CHECKOUT FINISH");
         triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, this);
-        //triggerContentEventWithNoLoading(new SetVoucherHelper(), null, this);
     }
 
     private void trackPurchase() {

@@ -37,8 +37,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
 
     private static final String TAG = LogTagHelper.create(NavigationFragment.class);
     
-    private static NavigationFragment sNavigationFragment;
-    
     private static final int TAB_MENU = 0;
     
     private static final int TAB_CATEGORIES = 1;
@@ -69,8 +67,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * @author sergiopereira
      */
     public static NavigationFragment newInstance() {
-        sNavigationFragment = new NavigationFragment();
-        return sNavigationFragment;
+        return new NavigationFragment();
     }
 
     /**

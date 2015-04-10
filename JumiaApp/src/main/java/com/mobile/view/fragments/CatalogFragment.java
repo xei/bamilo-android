@@ -21,6 +21,7 @@ import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.CatalogPage;
 import com.mobile.framework.objects.FeaturedBox;
 import com.mobile.framework.objects.Product;
+import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -31,6 +32,7 @@ import com.mobile.interfaces.OnViewHolderClickListener;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.CatalogGridAdapter;
 import com.mobile.utils.catalog.CatalogGridView;
 import com.mobile.utils.catalog.CatalogSort;
@@ -57,6 +59,10 @@ import de.akquinet.android.androlog.Log;
 public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogFilterListener, OnDialogListListener {
 
     private static final String TAG = CatalogFragment.class.getSimpleName();
+
+    private final static String TRACK_LIST = "list";
+
+    private final static String TRACK_GRID = "grid";
 
     private final static int FIRST_POSITION = 0;
 
@@ -97,6 +103,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private int mNumberOfColumns;
 
     private boolean mSortOrFilterApplied; // Flag to reload or not an initial catalog in case generic error
+    
+    private boolean isFromBanner; // Verify if campaign page was open via a banner
 
     /**
      * Create and return a new instance.
@@ -142,6 +150,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             }
+            // Verify if campaign page was open via a banner
+            isFromBanner = arguments.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
@@ -155,6 +165,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
         }
+        // Track catalog
+        Bundle tracking = new Bundle();
+        tracking.putString(TrackerDelegator.CATEGORY_KEY, !TextUtils.isEmpty(mTitle) ? mTitle : mSearchQuery);
+        TrackerDelegator.trackCategoryView(tracking);
     }
 
     /*
@@ -211,6 +225,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
     }
 
     /*
@@ -487,6 +502,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, product.getUrl());
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
+            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
@@ -579,6 +595,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mSortOrFilterApplied = true;
         // Get new catalog
         triggerGetInitialCatalogPage();
+        // Track catalog filtered
+        TrackerDelegator.trackCatalogFilter(mCurrentFilterValues);
     }
 
     /**
@@ -601,6 +619,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         manager.setSpanCount(mNumberOfColumns);
         manager.requestLayout();
         ((CatalogGridAdapter) mGridView.getAdapter()).updateLayout(!isShowingGridLayout);
+        // Track catalog
+        TrackerDelegator.trackCatalogSwitchLayout((!isShowingGridLayout) ? TRACK_LIST : TRACK_GRID);
     }
 
     /**
@@ -649,6 +669,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mSortOrFilterApplied = true;
         // Get new data
         triggerGetInitialCatalogPage();
+        // Track catalog sorted
+        TrackerDelegator.trackCatalogSorter(mSelectedSort.toString());
     }
 
     /**

@@ -28,7 +28,7 @@
         android:layout_marginLeft="@dimen/form_check_padding"
         android:layout_marginRight="@dimen/form_check_padding"
         android:text="*"
-        android:textColor="@color/orange_basic"
+        android:textColor="@color/orange_ffa200"
         android:textSize="18sp" />
 
 </RelativeLayout>
