@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.framework.objects.Promotion;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
@@ -77,7 +78,7 @@ public class DialogPromotionFragment extends DialogFragment {
         
         if(mPromotion != null && mPromotion.getTitle() != null){
             SharedPreferences sP = getActivity().getSharedPreferences(
-                    ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+                    Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor eD = sP.edit();
             eD.putBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, false);
             eD.apply();

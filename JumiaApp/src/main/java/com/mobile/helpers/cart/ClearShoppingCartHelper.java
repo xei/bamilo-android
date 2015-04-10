@@ -4,8 +4,6 @@
  */
 package com.mobile.helpers.cart;
 
-import org.json.JSONObject;
-
 import android.content.ContentValues;
 import android.os.Bundle;
 
@@ -17,6 +15,8 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -32,8 +32,6 @@ public class ClearShoppingCartHelper extends BaseHelper {
     private static String TAG = ClearShoppingCartHelper.class.getSimpleName();
     
     private static final EventType EVENT_TYPE = EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT;
-    
-    public static final String CART_ITEMS = "cart_items";
 
     @Override
     public Bundle generateRequestBundle(Bundle args) {

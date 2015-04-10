@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
@@ -42,6 +43,8 @@ public class CampaignsFragment extends BaseFragment {
     private ArrayList<TeaserCampaign> mCampaigns;
 
     private SlidingTabLayout mCampaignPagerTabStrip;
+    
+    private boolean isFromBanner;
     
     /**
      * Constructor via bundle
@@ -85,6 +88,11 @@ public class CampaignsFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE"); 
+        // Verify if campaign page was open via a banner
+        Bundle args = getArguments();
+        if(args != null) {
+            isFromBanner = args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
+        }
     }
     
     /*
@@ -215,6 +223,7 @@ public class CampaignsFragment extends BaseFragment {
         @Override
         public Fragment getItem(int position) {
             Bundle bundle = new Bundle();
+            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
             bundle.putParcelable(CampaignPageFragment.TAG, this.mCampaigns.get(position));
             return CampaignPageFragment.getInstance(bundle);
         }

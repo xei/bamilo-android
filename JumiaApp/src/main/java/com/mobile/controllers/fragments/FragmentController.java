@@ -7,16 +7,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.WorkerThread;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import de.akquinet.android.androlog.Log;
 
@@ -37,25 +37,17 @@ public class FragmentController {
     
     private static final boolean ANIMATION_OUT = false;
     
-    public static final Boolean ANIMATED = true;
-    
-    public static final Boolean NO_ANIMATED = false;
-    
     public static final Boolean ADD_TO_BACK_STACK = true;
     
-    public static final Boolean NO_ADD_TO_BACK_STACK = false;
-    
     public static final Bundle NO_BUNDLE = null;
-    
-    public static final boolean INCLUSIVE = true;
-
-    public static final boolean NO_INCLUSIVE = false;
     
     private final int POP_BACK_STACK_NO_INCLUSIVE = 0;
 
     private static FragmentController fragmentController;
     
-    private LinkedList<String> backStack = new LinkedList<>();
+    private ConcurrentLinkedDeque<String> backStack = new ConcurrentLinkedDeque<>();
+
+    protected WorkerThread mWorkerThread;
     
     /**
      * ##################### CONSTRUCTOR #####################
@@ -67,9 +59,7 @@ public class FragmentController {
      * @return {@link FragmentController}
      */
     public static FragmentController getInstance(){
-        if (fragmentController == null)
-            fragmentController = new FragmentController();
-        return fragmentController;
+        return fragmentController == null ? fragmentController = new FragmentController() : fragmentController;
     }
 
     /**
@@ -107,9 +97,9 @@ public class FragmentController {
     
     /**
      * Add the tag of fragment to back stack
-     * @param tag
+     * @param tag The fragment tag
      */
-    private synchronized void addToBackStack(String tag) {
+    private void addToBackStack(String tag) {
         Log.i(TAG, "ADD TO BACK STACK: " + tag);
         this.backStack.addLast(tag);
     }
@@ -117,14 +107,14 @@ public class FragmentController {
     /**
      * Remove the last entry
      */
-    public synchronized void popLastEntry() {
+    public void popLastEntry() {
         if(!backStack.isEmpty())
             backStack.removeLast();
     }
     
     /**
      * Remove the last entry if is the tag
-     * @param tag
+     * @param tag The fragment tag
      */
     public void popLastEntry(String tag){
         if(!backStack.isEmpty() && backStack.getLast().equals(tag))
@@ -135,7 +125,7 @@ public class FragmentController {
      * Get the last entry
      * @return {@link String}
      */
-    public synchronized String getLastEntry(){
+    public String getLastEntry(){
 //        Log.i(TAG, "GET LAST ENTRY: " + backStack.getLast());
         String lastElement = "";
         try {
@@ -151,9 +141,9 @@ public class FragmentController {
     
     /**
      * Remove all old entries
-     * @param tag
+     * @param tag The fragment tag
      */
-    public synchronized void removeAllEntriesWithTag(String tag) {
+    public void removeAllEntriesWithTag(String tag) {
         Log.i(TAG, "REMOVE OLD ENTRIES: " + tag);
         Iterator<String> iterator = backStack.iterator();
         while (iterator.hasNext()) {
@@ -161,21 +151,40 @@ public class FragmentController {
                 iterator.remove();
         }
     }
-    
+
+    /**
+     * Remove all old entries.
+     * Warning: Async operation.
+     *
+     * @param tags
+     */
+    public void removeAllEntriesWithTag(final String... tags) {
+        WorkerThread.executeRunnable(mWorkerThread, new Runnable() {
+            @Override
+            public void run() {
+                for (String tag : tags){
+                    removeAllEntriesWithTag(tag);
+                }
+            }
+        });
+    }
+
     /**
      * Print all entries
      */
     public void printAllEntries(){
+        String entries ="";
         for (String aBackStack : backStack) {
-            Log.d(TAG, "ENTRY: " + aBackStack);
+            entries += " " + aBackStack;
         }
+        Log.d(TAG, "ENTRY: " + entries);
     }
-    
+
     /**
      * Print all entries
-     * @return 
+     * @return The back stack
      */
-    public LinkedList<String> returnAllEntries(){
+    public ConcurrentLinkedDeque<String> returnAllEntries(){
        return backStack;
     }
     
@@ -185,29 +194,31 @@ public class FragmentController {
      * @return
      */
     public Boolean hasEntry(String tag){
-        return (backStack != null) ? backStack.contains(tag) : false ;
+        return backStack != null && backStack.contains(tag);
     }
     
     /**
      * Method used to remove entries until a respective tag of fragment
-     * @param tag
+     * Warning: Async operation.
+     * @param tag The fragment tag
      * @return
      */
-    public synchronized String removeEntriesUntilTag(final String tag) {
+    public void removeEntriesUntilTag(final String tag) {
         Log.i(TAG, "POP ENTRIES UNTIL: " + tag);
-        /**
-         * The idea is use a thread to run in parallel with the FragmentManager not blocking the main thread
-         * FragmentManager has a delay to replace fragments, so i created this method.
-         * @author sergiopereira
-         * TODO - Threads have costs, find a workaround
-         */
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
+
+        WorkerThread.executeRunnable(getSingletonThread(), new Runnable() {
+            @Override
+            public String toString() {
+                return "removeEntriesUntilTag";
+            }
+
+            @Override
+            public void run() {
                 // Create reverse iterator
-                ListIterator<String> iterator = backStack.listIterator(backStack.size());
-                while (iterator.hasPrevious()) {
-                    String currentTag = iterator.previous();
+//               Log.e(TAG, "Doing work: removeEntriesUntilTag");
+                Iterator<String> iterator = backStack.descendingIterator();
+                while (iterator.hasNext()) {
+                    String currentTag = iterator.next();
                     Log.i(TAG, "POP TAG: " + currentTag + " UNTIL TAG: " + tag + " STACK SIZE: " + backStack.size());
                     // Case HOME
                     if (currentTag.equals(FragmentType.HOME.toString())) break;
@@ -217,46 +228,48 @@ public class FragmentController {
                     else iterator.remove();
                 }
                 Log.i(TAG, "AFTER POP UNTIL TAG: " + tag + " STACK SIZE: " + backStack.size());
-            //}
-//        }).start();
-        return null;
+            }
+        });
+
     }
 
     /**
      * ##################### PUSH #####################
      */
-
     /**
-     * Add the tag to the back stack removing duplicates 
+     * Add the tag to the back stack removing duplicates.
+     * Warning: Async operation.
+     *
      * @param tag
      */
-    public synchronized void addEntryToBackStack(final String tag) {
+    public void addEntryToBackStack(final String tag) {
         Log.d(TAG, "ADD ENTRY TO BACK STACK");
-        /**
-         * The idea is use a thread to run in parallel with the FragmentManager not blocking the main thread
-         * FragmentManager has a delay to replace fragments, so i created this method.
-         * @author sergiopereira
-         * TODO - Threads have costs, find a workaround
-         */
-        new Thread(new Runnable() {
+
+        WorkerThread.executeRunnable(getSingletonThread(), new Runnable() {
+            @Override
+            public String toString() {
+                return "addEntryToBackStack";
+            }
             @Override
             public void run() {
+//                Log.e(TAG, "Doing work: addEntryToBackStack");
                 removeAllEntriesWithTag(tag);
                 addToBackStack(tag);
             }
-        }).start();
+        });
+
     }
-    
+
     /**
      * Start transition to the new fragment with animation
-     * @param activity
-     * @param container
-     * @param fragment
-     * @param tag
-     * @param addToBackStack
+     * @param activity The current activity
+     * @param container The frame layout
+     * @param fragment The new fragment The new fragment
+     * @param fragmentType The fragment type
+     * @param addToBackStack The flag to add or not to back stack Flag to add or not to back stack
      */
-    public void startTransition(BaseActivity activity, int container, Fragment fragment, String tag, Boolean addToBackStack){
-        startTransition(activity, container, fragment, tag, addToBackStack, ANIMATION_IN);
+    public void startTransition(BaseActivity activity, int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack){
+        startTransition(activity, container, fragment, fragmentType, addToBackStack, ANIMATION_IN);
     }
     
     /**
@@ -270,21 +283,25 @@ public class FragmentController {
     public void fragmentBackPressed(BaseActivity activity){
         int size = getBackStackSize();
         Log.i(TAG, "BACK STACK SIZE: " + size);
+        Log.i(TAG, "THE CURRENT BACK STACK ENTRIES: " + backStack);
         switch (size) {
         case 1:
             /**
              * In this point if fragment type isn't HOME then something wrong is happening, to fix show the HOME
              * @author sergiopereira
              */
-            if (getLastEntry().equals(FragmentType.HOME.toString())) 
+            if (getLastEntry().equals(FragmentType.HOME.toString()))
                 activity.doubleBackPressToExit();
             else {
-                Log.i(TAG, "THE CURRENT BACK STACK ENTRIES: " + backStack);
+                Log.i(TAG, "WARNING: THE FIRST ENTRY IS NOT HOME, GOTO HOME");
+                init();
                 popAllBackStack(activity, null);
                 activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
+            
             break;
         case 0:
+            Log.i(TAG, "WARNING: NO ENTRIES, GOTO HOME");
             activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
         default:
@@ -295,7 +312,7 @@ public class FragmentController {
    
     /**
      * Simulate the back pressed removing the current fragment
-     * @param activity
+     * @param activity The current activity
      */
     private void popBackStack(BaseActivity activity) {
         Log.i(TAG, "POP BACK STACK");
@@ -313,7 +330,7 @@ public class FragmentController {
             Log.i(TAG, "ON POP BACK STACK: TAG " + lastTag);
             // Pop stack until fragment tag
             activity.getSupportFragmentManager().popBackStackImmediate(lastTag, POP_BACK_STACK_NO_INCLUSIVE);
-        } 
+        }
         // Case visible fragment
         else Log.w(TAG, "WARNING ON POP BACK STACK: TAG IS EMPTY " + getBackStackSize());
         // Find fragment on Fragment Manager
@@ -343,9 +360,8 @@ public class FragmentController {
     
     /**
      * Pop all entries until tag, inclusive or not the tag from back stack
-     * @param activity
-     * @param tag
-     * @param inclusive
+     * @param activity The current activity
+     * @param tag The fragment tag
      */
     public void popAllEntriesUntil(BaseActivity activity, String tag) {
         Log.d(TAG, "POP ALL ENTRIES UNTIL: " + tag + " " + getBackStackSize());
@@ -376,12 +392,12 @@ public class FragmentController {
     /**
      * Method used to switch fragment on UI with back stack support
      * 
-     * @param fragment
-     * @param addToBackStack
+     * @param fragment The new fragment
+     * @param addToBackStack The flag to add or not to back stack
      * @author sergiopereira
      */
-    private void startTransition(BaseActivity activity, int container, Fragment fragment, String tag, Boolean addToBackStack, Boolean animation) {
-        Log.d(TAG, "START TRANSITION: " + tag + " " + addToBackStack);
+    private void startTransition(BaseActivity activity, int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack, Boolean animation) {
+        Log.d(TAG, "START TRANSITION: " + fragmentType.toString() + " " + addToBackStack);
         FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
         // Animations
         if (animation == ANIMATION_IN)
@@ -393,14 +409,14 @@ public class FragmentController {
          * Case isn't add to back stack
          * Then add with an UNKNOWN tag
          */
-        if(!addToBackStack) tag = FragmentType.UNKNOWN.toString();
+        if(!addToBackStack) fragmentType = FragmentType.UNKNOWN;
             
         // Replace
-        fragmentTransaction.replace(container, fragment, tag);
+        fragmentTransaction.replace(container, fragment, fragmentType.toString());
         // Add the fragment to back stack
-        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.addToBackStack(fragmentType.toString());
         // Add the fragment to our back stack
-        addEntryToBackStack(tag);
+        addEntryToBackStack(fragmentType.toString());
         
         // Commit
         //fragmentTransaction.commit();
@@ -420,8 +436,8 @@ public class FragmentController {
     /**
      * Method used to switch fragment on UI with/without back stack support
      * 
-     * @param fragment
-     * @param addToBackStack
+     * @param fragment The new fragment
+     * @param addToBackStack The flag to add or not to back stack
      * @author sergiopereira
      */
     @Deprecated
@@ -460,19 +476,17 @@ public class FragmentController {
     }
     
     /**
-     *  @param activity
-     * @param tag
+     *  @param activity The current activity
+     * @param tag The fragment tag
      */
-    @Deprecated
     public void popAllBackStack(BaseActivity activity, String tag){
         activity.getSupportFragmentManager().popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
     
     /**
      *
-     * @param inclusive
-     * @param activity
-     * @param tag
+     * @param activity The current activity
+     * @param tag The fragment tag
      */
     @Deprecated
     public void popBackStackUntilTag(BaseActivity activity, String tag) {
@@ -484,7 +498,7 @@ public class FragmentController {
      * Restore the backstack using the provided fragment list
      * This is useful for when the application is released form memory by the OS and the user opens it again.
      *   
-     * @param fragments the list of current opened fragments
+     * @param fragments The list of current opened fragments
      */
     private void restoreBackstack(BaseActivity activity, List<Fragment> fragments) {
         Log.i(TAG, "ON RESTORE BACKSTACK:");
@@ -501,7 +515,7 @@ public class FragmentController {
     
     /**
      * Validate the current state and try restore the saved state if necessary 
-     * @param activity
+     * @param activity The current activity
      * @param backstackTypes
      * @param originalFragments
      * @param currentFragmentType
@@ -544,5 +558,17 @@ public class FragmentController {
                 restoreBackstack(activity, orderedFragments);          
         }
     }
-    
+
+    /**
+     * Start singleton thread if not initialized yet.
+     *
+     * @return The singleton thread.
+     */
+    protected WorkerThread getSingletonThread(){
+        if (mWorkerThread == null) {
+            mWorkerThread = new WorkerThread();
+            mWorkerThread.start();
+        }
+        return mWorkerThread;
+    }
 }

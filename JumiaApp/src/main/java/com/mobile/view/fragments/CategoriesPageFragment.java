@@ -655,6 +655,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());
+        bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES,false);
         // Goto Catalog
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }

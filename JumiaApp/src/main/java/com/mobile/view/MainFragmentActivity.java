@@ -10,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 
 import com.ad4screen.sdk.Tag;
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.BundleConstants;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -20,6 +19,8 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.PreferenceListFragment.OnPreferenceAttachedListener;
+import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
@@ -63,6 +64,8 @@ import com.mobile.view.fragments.SessionTermsFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.WriteSellerReviewFragment;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -80,8 +83,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     private BaseFragment fragment;
 
     private FragmentType mCurrentFragmentType;
-
-    private boolean wasReceivedNotification = false;
 
     private boolean isInMaintenance = false;
 
@@ -105,37 +106,38 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
-
-        /**
-         * CASE APP IN QUICK LAUNCHER:
-         * - parse the deep link intent from notification service
-         * - start splash screen case valid intent
-         */
-        onParseValidDeepLinkIntent(getIntent());
-
+        // Enable rich push notifications
+        Ad4PushTracker.get().setPushNotificationLocked(false);
         // ON ORIENTATION CHANGE
         if (savedInstanceState == null) {
             Log.d(TAG, "################### SAVED INSTANCE IS NULL");
             // Initialize fragment controller
             FragmentController.getInstance().init();
-            // Validate intent
-            if (!isValidDeepLinkNotification(getIntent())) {
+            // Get deep link
+            Bundle mDeepLinkBundle = DeepLinkManager.hasDeepLink(getIntent());
+            // Validate deep link
+            boolean isDeepLinkLaunch = isValidDeepLinkNotification(mDeepLinkBundle);
+            // Track open app event for all tracker but Adjust
+            TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
+            // Invalid deep link
+            if (!isDeepLinkLaunch) {
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
+
         } else {
             mCurrentFragmentType = (FragmentType) savedInstanceState.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
-
             Log.d(TAG, "################### SAVED INSTANCE ISN'T NULL: " + mCurrentFragmentType.toString());
             fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(mCurrentFragmentType.toString());
             if (null != fragment) {
                 fragment.setActivity(this);
             }
-
             // Get FC back stack from saved state and get fragments from FM
             ArrayList<String> backStackTypes = savedInstanceState.getStringArrayList(ConstantsIntentExtra.BACK_STACK);
             List<Fragment> originalFragments = this.getSupportFragmentManager().getFragments();
-            if (backStackTypes != null && backStackTypes.size() > 0) {
+            if (!CollectionUtils.isEmpty(backStackTypes)) {
                 FragmentController.getInstance().validateCurrentState(this, backStackTypes, originalFragments, mCurrentFragmentType);
+            } else {
+                Log.d(TAG, "COULDN'T RECOVER BACKSTACK");
             }
         }
 
@@ -150,45 +152,23 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
 
     /*
      * (non-Javadoc)
+     * For 4DS - http://wiki.accengage.com/android/doku.php?id=sub-classing-any-activity-type
      * 
      * @see com.mobile.utils.BaseActivity#onNewIntent(android.content.Intent)
      */
     @Override
     protected void onNewIntent(Intent intent) {
         Log.d(TAG, "ON NEW INTENT");
-        super.onNewIntent(intent);
         // For AD4 - http://wiki.accengage.com/android/doku.php?id=sub-classing-any-activity-type
         this.setIntent(intent);
-        // Parse deep link from splash screen
-        onParseValidDeepLinkIntent(intent);
+        // Get deep link
+        Bundle mDeepLinkBundle = DeepLinkManager.hasDeepLink(intent);
+        // Validate deep link
+        boolean isDeepLinkLaunch = isValidDeepLinkNotification(mDeepLinkBundle);
+        //track open app event for all tracker but Adjust
+        TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
     }
 
-    /**
-     * Validate and process intent from notification
-     *
-     * @param intent The deep link intent
-     * @return valid or invalid
-     */
-    private boolean isValidDeepLinkNotification(Intent intent) {
-        Log.i(TAG, "DEEP LINK: VALIDATE INTENT FROM NOTIFICATION");
-        // Validate intent
-        if (intent.hasExtra(ConstantsIntentExtra.FRAGMENT_TYPE)) {
-            Log.i(TAG, "DEEP LINK: VALID INTENT");
-            // Get extras from notifications
-            FragmentType fragmentType = (FragmentType) intent.getSerializableExtra(ConstantsIntentExtra.FRAGMENT_TYPE);
-            Bundle bundle = intent.getBundleExtra(ConstantsIntentExtra.FRAGMENT_BUNDLE);
-            // Validate this step to maintain the base TAG
-            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            // Switch to fragment with respective bundle
-            onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
-            // Set flag
-            wasReceivedNotification = true;
-            // Return result
-            return true;
-        }
-        Log.i(TAG, "DEEP LINK: INVALID INTENT");
-        return false;
-    }
 
     /*
      * (non-Javadoc)
@@ -237,14 +217,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     protected void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
-
         JumiaApplication.INSTANCE.setLoggedIn(false);
-
-        //
-        if (wasReceivedNotification) {
-            wasReceivedNotification = false;
-            getIntent().removeExtra(ConstantsIntentExtra.FRAGMENT_TYPE);
-        }
     }
 
     /*
@@ -261,10 +234,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         ArrayList<String> frags = new ArrayList<>();
         try {
             String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-            mCurrentFragmentType = FragmentType.valueOf(tag);
+            mCurrentFragmentType = FragmentType.getValue(tag);
             // Save the current back stack
             for (String entry : FragmentController.getInstance().returnAllEntries()) {
-                frags.add(entry);
+                frags.add(entry.toString());
             }
         } catch (Exception e) {
             Log.w(TAG, "ERROR ON GET CURRENT FRAGMENT TYPE", e);
@@ -288,6 +261,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         showWarningVariation(false);
         // 
         hideKeyboard();
+
+        boolean removeEntries = false;
+
         // Validate fragment type
         switch (type) {
             case HOME:
@@ -302,10 +278,17 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = CategoriesCollectionFragment.getInstance(bundle);
                 break;
             case CATALOG:
+                if(bundle != null && bundle.containsKey(ConstantsIntentExtra.REMOVE_ENTRIES)){
+                    removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_ENTRIES);
+                    bundle.remove(ConstantsIntentExtra.REMOVE_ENTRIES);
+                } else {
+                    removeEntries = true;
+                }
                 fragment = CatalogFragment.getInstance(bundle);
                 break;
             case PRODUCT_DETAILS:
                 fragment = ProductDetailsFragment.getInstance(bundle);
+                type.setId(fragment.hashCode());
                 break;
             case PRODUCT_DESCRIPTION:
                 fragment = ProductDetailsDescriptionFragment.getInstance(bundle);
@@ -389,12 +372,14 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = MyAccountEmailNotificationFragment.newInstance();
                 break;
             case FAVORITE_LIST:
+                removeEntries = true;
                 fragment = FavouritesFragment.getInstance();
                 break;
             case RECENT_SEARCHES_LIST:
                 fragment = RecentSearchFragment.newInstance();
                 break;
             case RECENTLY_VIEWED_LIST:
+                removeEntries = true;
                 fragment = RecentlyViewedFragment.getInstance();
                 break;
             case PRODUCT_SIZE_GUIDE:
@@ -423,12 +408,16 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 return;
         }
 
+        if(removeEntries){
+            popBackStackUntilTag(FragmentType.HOME.toString());
+        }
+
         Log.i(TAG, "ON SWITCH FRAGMENT: " + type);
         // Save the current state
         mCurrentFragmentType = type;
 
         // Transition
-        fragmentManagerTransition(R.id.rocket_app_content, fragment, type.toString(), addToBackStack);
+        fragmentManagerTransition(R.id.rocket_app_content, fragment, type, addToBackStack);
     }
 
     /*
@@ -493,7 +482,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
      *
      * @param tag The fragment tag
      */
-    public void popBackStack(String tag) {
+    protected void popBackStack(String tag) {
         // Pop back stack until tag
         popBackStackUntilTag(tag);
         // Get the current fragment
@@ -505,33 +494,35 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onPreferenceAttached() {
     }
 
+    public boolean isInMaintenance() {
+        return isInMaintenance;
+    }
+
     // ####################### DEEP LINK #######################
 
     /**
-     * Parse a valid deep link and redirect to Splash.
+     * Validate and process intent from notification
      *
-     * @author nunocastro
-     * @modified sergiopereira
+     * @param bundle The deep link intent
+     * @return valid or invalid
      */
-    private void onParseValidDeepLinkIntent(Intent intent) {
-        Log.i(TAG, "ON PARSE DEEP LINK INTENT");
-        Bundle mBundle = intent.getExtras();
-        Log.i(TAG, "DEEP LINK - Bundle -> " + mBundle);
-        if (null != mBundle) {
-            Bundle payload = intent.getBundleExtra(BundleConstants.EXTRA_GCM_PAYLOAD);
-            if (null != payload) {
-                Log.i(TAG, "DEEP LINK: START SPLASH ACTIVITY");
-                Intent newIntent = new Intent(this, SplashScreenActivity.class);
-                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                newIntent.putExtra(BundleConstants.EXTRA_GCM_PAYLOAD, payload);
-                startActivity(newIntent);
-                finish();
+    private boolean isValidDeepLinkNotification(Bundle bundle) {
+        Log.i(TAG, "DEEP LINK: VALIDATE INTENT FROM NOTIFICATION");
+        if (bundle != null) {
+            // Get fragment type
+            FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
+            Log.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
+            // Validate fragment type
+            if (fragmentType != FragmentType.HOME && fragmentType != FragmentType.UNKNOWN) {
+                // Validate this step to maintain the base TAG
+                onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                // Switch to fragment with respective bundle
+                onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
+                return true;
             }
         }
-    }
-
-    public boolean isInMaintenance() {
-        return isInMaintenance;
+        Log.i(TAG, "DEEP LINK: INVALID INTENT");
+        return false;
     }
 
 }

@@ -44,7 +44,6 @@
     <string name="apptimize_apikey"/>
 
 	<!-- GTM -->
-    <string name="gtm_key">GTM-5WLGHK</string>  
     <item name="gtm_debug" type="bool">false</item>
     
 	<!-- FACEBOOK -->
