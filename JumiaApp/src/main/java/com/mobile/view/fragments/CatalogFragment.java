@@ -22,11 +22,11 @@ import com.mobile.framework.objects.CatalogPage;
 import com.mobile.framework.objects.FeaturedBox;
 import com.mobile.framework.objects.ITargeting;
 import com.mobile.framework.objects.Product;
-import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.objects.TeaserGroupType;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.TrackingEvent;
+import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.framework.utils.EventType;
@@ -171,11 +171,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
         }
-        // Track catalog
-        Bundle tracking = new Bundle();
-        tracking.putString(TrackerDelegator.CATEGORY_KEY, !TextUtils.isEmpty(mTitle) ? mTitle : mSearchQuery);
-        //TODO
-        TrackerDelegator.trackCategoryView(tracking);
     }
 
     /*
