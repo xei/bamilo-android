@@ -106,19 +106,19 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private BaseActivity mainActivity;
 
-    private View mLoadingView;
+    private ViewStub mLoadingView;
 
-    private View mEmptyView;
+    private ViewStub mEmptyView;
 
-    private View mRetryView;
+    private ViewStub mRetryView;
 
     private View mContentView;
 
-    private View mFallBackView;
+    private ViewStub mFallBackView;
 
-    private View mErrorView;
+    private ViewStub mErrorView;
 
-    private View mMaintenanceView;
+    private ViewStub mMaintenanceView;
 
     protected long mLoadTime = 0l; // For tacking
 
@@ -239,25 +239,23 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Get content layout
         mContentView = view.findViewById(R.id.content_container);
         // Get loading layout
-        mLoadingView = view.findViewById(R.id.fragment_stub_loading);
+        mLoadingView = (ViewStub) view.findViewById(R.id.fragment_stub_loading);
+        mLoadingView.setOnInflateListener(this);
         // Get empty layout
-        mEmptyView = view.findViewById(R.id.fragment_stub_empty);
+        mEmptyView = (ViewStub) view.findViewById(R.id.fragment_stub_empty);
+        mEmptyView.setOnInflateListener(this);
         // Get retry layout
-        mRetryView = view.findViewById(R.id.fragment_stub_retry);
+        mRetryView = (ViewStub) view.findViewById(R.id.fragment_stub_retry);
+        mRetryView.setOnInflateListener(this);
         // Get fall back layout
-        mFallBackView = view.findViewById(R.id.fragment_stub_home_fall_back);
+        mFallBackView = (ViewStub) view.findViewById(R.id.fragment_stub_home_fall_back);
+        mFallBackView.setOnInflateListener(this);
         // Get fall back layout
-        mErrorView = view.findViewById(R.id.fragment_stub_unexpected_error);
+        mErrorView = (ViewStub) view.findViewById(R.id.fragment_stub_unexpected_error);
+        mErrorView.setOnInflateListener(this);
         // Get maintenance layout
-        mMaintenanceView = view.findViewById(R.id.fragment_stub_maintenance);
-
-
-        ((ViewStub) mLoadingView).setOnInflateListener(this);
-        ((ViewStub) mEmptyView).setOnInflateListener(this);
-        ((ViewStub) mRetryView).setOnInflateListener(this);
-        ((ViewStub) mFallBackView).setOnInflateListener(this);
-        ((ViewStub) mErrorView).setOnInflateListener(this);
-        ((ViewStub) mMaintenanceView).setOnInflateListener(this);
+        mMaintenanceView = (ViewStub) view.findViewById(R.id.fragment_stub_maintenance);
+        mMaintenanceView.setOnInflateListener(this);
 
         // Hide search component for change country
         if (this.action == NavigationAction.Country) {
@@ -705,21 +703,27 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             emptyContinueButton.setVisibility(View.VISIBLE);
             emptyContinueButton.setText(getString(buttonEmptyStringResId));
             emptyContinueButton.setOnClickListener(onClickListener);
+
+            UIUtils.showOrHideViews(View.GONE, mContentView, mRetryView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
         }
         else if(id == R.id.fragment_stub_home_fall_back)  {
             Log.i(TAG, "ON INFLATE STUB: FALL BACK");
+            UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mMaintenanceView, mLoadingView);
         }
         else if(id == R.id.fragment_stub_loading) {
             Log.i(TAG, "ON INFLATE STUB: LOADING");
             //((LoadingBarView) inflated.findViewById(R.id.fragment_root_loading_gif)).startRendering();
+            UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView);
         }
         else if(id == R.id.fragment_stub_retry) {
             Log.i(TAG, "ON INFLATE STUB: RETRY");
             inflated.findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
+            UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
         }
         else if(id == R.id.fragment_stub_unexpected_error) {
             Log.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
             inflated.findViewById(R.id.fragment_root_retry_unexpected_error).setOnClickListener(this);
+            UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mFallBackView, mRetryView, mMaintenanceView, mLoadingView);
         }
         else if(id == R.id.fragment_stub_maintenance) {
             Log.i(TAG, "ON INFLATE STUB: UNEXPECTED ERROR");
@@ -729,6 +733,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             } else {
                 MaintenancePage.setMaintenancePageBaseActivity(getBaseActivity(), this);
             }
+            UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mLoadingView);
         }
     }
 
@@ -757,7 +762,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showFragmentNoNetworkRetry() {
         UIUtils.showOrHideViews(View.VISIBLE, mRetryView);
-        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
+        //UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
     }
 
     /**
@@ -765,7 +770,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showFragmentLoading() {
         UIUtils.showOrHideViews(View.VISIBLE, mLoadingView);
-        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView);
+        //UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView);
     }
 
     /**
@@ -793,7 +798,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         mEmptyView.setTag(R.id.stub_listener, onClickListener);
         // Show empty view
         UIUtils.showOrHideViews(View.VISIBLE, mEmptyView);
-        UIUtils.showOrHideViews(View.GONE, mContentView, mRetryView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
+        //UIUtils.showOrHideViews(View.GONE, mContentView, mRetryView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
     }
 
     /**
@@ -803,7 +808,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showFragmentErrorRetry() {
         UIUtils.showOrHideViews(View.VISIBLE, mErrorView);
-        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mFallBackView, mRetryView, mMaintenanceView, mLoadingView);
+        //UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mFallBackView, mRetryView, mMaintenanceView, mLoadingView);
     }
 
     /**
@@ -811,7 +816,15 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showFragmentFallBack() {
         UIUtils.showOrHideViews(View.VISIBLE, mFallBackView);
-        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mMaintenanceView, mLoadingView);
+        //UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mMaintenanceView, mLoadingView);
+    }
+
+    /**
+     * Show the maintenance page
+     */
+    public void showFragmentMaintenance() {
+        UIUtils.showOrHideViews(View.VISIBLE, mMaintenanceView);
+        //UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mLoadingView);
     }
 
     /**
@@ -844,14 +857,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         getBaseActivity().showWarning(R.string.server_error);
         showFragmentContentContainer();
         hideActivityProgress();
-    }
-
-    /**
-     * Show the maintenance page
-     */
-    public void showFragmentMaintenance() {
-        UIUtils.showOrHideViews(View.VISIBLE, mMaintenanceView);
-        UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mLoadingView);
     }
 
     /*
