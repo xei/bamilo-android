@@ -32,11 +32,11 @@ import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.forms.Form;
 import com.mobile.forms.FormField;
 import com.mobile.forms.IFormField;
 import com.mobile.framework.Darwin;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.InputType;
 import com.mobile.utils.RadioGroupLayout;
@@ -1820,7 +1820,7 @@ public class DynamicFormItem {
     private SharedPreferences getSharedPref(){
         if(mSharedPrefs == null){
             //Validate if country configs allows rating and review, only show write review fragment if both are allowed
-            mSharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            mSharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         }
         return mSharedPrefs;
     }

@@ -10,7 +10,6 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.database.CountriesConfigsTableHelper;
 import com.mobile.framework.enums.RequestType;
@@ -96,17 +95,17 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
                     Log.w(TAG, "WARNING JSON EXCEPTION ON PARSE COUNTRIES", e);
                 }
             }
-            if(CollectionUtils.isNotEmpty(mCountries)){
+            if (CollectionUtils.isNotEmpty(mCountries)) {
                 JumiaApplication.INSTANCE.countriesAvailable = mCountries;
                 CountriesConfigsTableHelper.insertCountriesConfigs(mCountries);
                 Log.i(TAG, "INSERT INTO DB FROM JSON");
-            } else if(CollectionUtils.isNotEmpty(JumiaApplication.INSTANCE.countriesAvailable)) {
+            } else if (CollectionUtils.isNotEmpty(JumiaApplication.INSTANCE.countriesAvailable)) {
                 Log.i(TAG, "INSERT INTO DB FROM MEM");
                 CountriesConfigsTableHelper.insertCountriesConfigs(JumiaApplication.INSTANCE.countriesAvailable);
             }
         }
-        
-        SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+
+        SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Editor mEditor = sharedPrefs.edit();
         mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
         mEditor.apply();
@@ -127,7 +126,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         ArrayList<CountryObject> mCountries = JumiaApplication.INSTANCE.countriesAvailable;
         if(CollectionUtils.isNotEmpty(mCountries)){
             JumiaApplication.INSTANCE.countriesAvailable = mCountries;
-            SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor mEditor = sharedPrefs.edit();
             mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
             mEditor.apply();

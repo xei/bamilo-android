@@ -11,8 +11,8 @@ import android.widget.RelativeLayout.LayoutParams;
 
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.framework.Darwin;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.EventType;
 import com.mobile.view.R;
@@ -63,7 +63,7 @@ public class MaintenancePage {
         try {
 
             // Get prefs
-            SharedPreferences sharedPrefs = activity.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             // Set retry
             Button retry = (Button) activity.findViewById(R.id.fragment_root_retry_maintenance);
             retry.setText(R.string.try_again);
@@ -144,7 +144,7 @@ public class MaintenancePage {
             retry.setText(R.string.try_again);
             retry.setOnClickListener(listener);
 
-            SharedPreferences sharedPrefs = activity.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             
             // Get flag for single shop
             boolean isSingleShop = activity.getResources().getBoolean(R.bool.is_single_shop_country);
