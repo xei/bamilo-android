@@ -68,10 +68,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     protected static final String TAG = LogTagHelper.create(BaseFragment.class);
 
-    public static final int FRAGMENT_VALUE_SET_FAVORITE = 100;
-
-    public static final int FRAGMENT_VALUE_REMOVE_FAVORITE = 101;
-
     public static final int RESTART_FRAGMENTS_DELAY = 500;
 
     // private static Field sChildFragmentManagerField;
@@ -256,13 +252,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Get maintenance layout
         mMaintenanceView = (ViewStub) view.findViewById(R.id.fragment_stub_maintenance);
         mMaintenanceView.setOnInflateListener(this);
-
         // Hide search component for change country
         if (this.action == NavigationAction.Country) {
             // Hide search component
             getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
         }
-
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
             Log.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
@@ -531,8 +525,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return mainActivity;
     }
 
-
-
     // TODO : Validate if is necessary
     /**
      * FIXES 
@@ -554,7 +546,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onDetach() {
         super.onDetach();
-
         /**
         // TODO : Validate if is necessary
         if (sChildFragmentManagerField != null) {
@@ -679,7 +670,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void showFragmentContentContainer() {
         UIUtils.showOrHideViews(View.VISIBLE, mContentView);
-        UIUtils.showOrHideViews(View.GONE, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
+        UIUtils.showOrHideViews(View.GONE, mLoadingView, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView);
     }
 
     /**
