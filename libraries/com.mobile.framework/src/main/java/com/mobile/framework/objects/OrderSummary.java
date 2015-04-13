@@ -13,9 +13,9 @@ import org.json.JSONObject;
 import de.akquinet.android.androlog.Log;
 
 /**
- * 
+ * The OrderSummary class representation.<br/>
+ * Contains: Order, Cart, Shipping, Payment and Billing.
  * @author sergiopereira
- *
  */
 public class OrderSummary implements IJSONSerializable, Parcelable {
 
@@ -60,8 +60,8 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * 
-	 * @param jsonObject
+	 * Constructor
+	 * @param jsonObject The json response
 	 * @throws JSONException
 	 */
 	public OrderSummary(JSONObject jsonObject) throws JSONException {
@@ -77,8 +77,6 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
-		
-		
 		// Get order
         JSONObject jsonOrder = null;
         if(!jsonObject.isNull(RestConstants.JSON_ORDER_TAG)) {
@@ -89,12 +87,11 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
     		mShippingAmount = jsonOrder.optDouble(RestConstants.JSON_ORDER_SHIP_AMOUNT_TAG);
     		mExtraCost = jsonOrder.optString(RestConstants.JSON_ORDER_EXTRA_PAYMENTS_TAG);
     		mInstallmentFees = jsonOrder.optString(RestConstants.JSON_ORDER_INSTALLMENT_FEES_TAG);
-    		mTaxAmount = jsonOrder.optString(RestConstants.JSON_TAX_AMOUNT_TAG);				// VAT
+    		mTaxAmount = jsonOrder.optString(RestConstants.JSON_TAX_AMOUNT_TAG);
     		mCustomerDevice = jsonOrder.optString(RestConstants.JSON_ORDER_USER_DEVICE_TAG);
     		mDiscountCouponValue = jsonOrder.optString(RestConstants.JSON_ORDER_COUPON_DISCOUNT_TAG);
     		mDiscountCouponCode = jsonOrder.optString(RestConstants.JSON_ORDER_COUPON_CODE_TAG);
         }
-        
         // Get cart
         if(jsonOrder != null && !jsonObject.isNull(RestConstants.JSON_CART_TAG)) {
             JSONObject jsonCart = jsonObject.optJSONObject(RestConstants.JSON_CART_TAG);
@@ -103,57 +100,44 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
             cart.initialize(jsonCart);
             mCart = cart;
         }
-        
         // Get shipping method
         if(jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_SHIP_MET_TAG)) {
             JSONObject jsonShip = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_SHIP_MET_TAG);
             Log.d(TAG, "SHIP METHOD: " + jsonShip.toString());
-            String shipMethod = jsonShip.optString(RestConstants.JSON_METHOD_TAG);
-            mShippingMethod = shipMethod;
-            String shipMethodLabel = jsonShip.optString(RestConstants.JSON_LABEL_TAG);
-            if("".equals(shipMethodLabel))
-                mShippingMethodLabel = mShippingMethod;
-            
-            mShippingMethodLabel = shipMethodLabel;
+            mShippingMethod = jsonShip.optString(RestConstants.JSON_METHOD_TAG);
+			mShippingMethodLabel = jsonShip.optString(RestConstants.JSON_LABEL_TAG);
+            if(TextUtils.isEmpty(mShippingMethodLabel)) {
+				mShippingMethodLabel = mShippingMethod;
+			}
         }
-    
         // Get payment method
         if(jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG)) {
             JSONObject jsonPay = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
             if(jsonPay != null){
             	Log.d(TAG, "PAY METHOD: " + jsonPay.toString());
                 // String payId = jsonPay.optString("id");
-                String payProvider = jsonPay.optString(RestConstants.JSON_ORDER_PAYMENT_PROVIDER_TAG);
-                mPaymentMethod = payProvider;	
-                
-                String paymentMethodLabel = jsonPay.optString(RestConstants.JSON_LABEL_TAG);
-                if("".equals(paymentMethodLabel))
-                    mPaymentMethodLabel = mPaymentMethod;
-                
-                mPaymentMethodLabel = paymentMethodLabel;
-                
+                mPaymentMethod = jsonPay.optString(RestConstants.JSON_ORDER_PAYMENT_PROVIDER_TAG);
+				mPaymentMethodLabel = jsonPay.optString(RestConstants.JSON_LABEL_TAG);
+                if(TextUtils.isEmpty(mPaymentMethodLabel)) {
+					mPaymentMethodLabel = mPaymentMethod;
+				}
             } else {
             	mPaymentMethod = jsonOrder.optString(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
             }
-            
         }
-        
         // Get billing address
         if(jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_BIL_ADDRESS_TAG)) {
             JSONObject jsonBilAddress = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_BIL_ADDRESS_TAG);
             Log.d(TAG, "BILLING ADDRESS: " + jsonBilAddress.toString());
-            Address billingAddress = new Address(jsonBilAddress);
-            mBillingAddress = billingAddress;
+			mBillingAddress = new Address(jsonBilAddress);
         }
-        
         // Get shipping address
         if(jsonOrder != null && !jsonOrder.isNull(RestConstants.JSON_ORDER_SHIP_ADDRESS_TAG)) {
             JSONObject jsonShipAddress = jsonOrder.optJSONObject(RestConstants.JSON_ORDER_SHIP_ADDRESS_TAG);
             Log.d(TAG, "SHIPPING ADDRESS: " + jsonShipAddress.toString());
-            Address shippingAddress = new Address(jsonShipAddress);
-            mShippingAddress = shippingAddress;
+			mShippingAddress = new Address(jsonShipAddress);
         }
-
+		//
 		return true;
 	}
 
@@ -164,7 +148,6 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public JSONObject toJSON() {
-		// TODO
 		return null;
 	}
 	
@@ -205,31 +188,10 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @return the extraCost
-	 */
-	public String getExtraCost() {
-		return mExtraCost;
-	}
-
-	/**
-	 * @return the installmentFees
-	 */
-	public String getInstallmentFees() {
-		return mInstallmentFees;
-	}
-
-	/**
 	 * @return the taxAmount
 	 */
 	public String getTaxAmount() {
 		return mTaxAmount;
-	}
-
-	/**
-	 * @return the customerDevice
-	 */
-	public String getCustomerDevice() {
-		return mCustomerDevice;
 	}
 	
 	/**
@@ -282,89 +244,16 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	public void setTotal(String total) {
 		this.mGrandTotal = total;
 	}
-
-	/**
-	 * @param shippingAmount
-	 *            the shippingAmount to set
-	 */
-	public void setShippingAmount(double shippingAmount) {
-		this.mShippingAmount = shippingAmount;
-	}
-
-	/**
-	 * @param extraCost
-	 *            the extraCost to set
-	 */
-	public void setExtraCost(String extraCost) {
-		this.mExtraCost = extraCost;
-	}
-
-	/**
-	 * @param installmentFees
-	 *            the installmentFees to set
-	 */
-	public void setInstallmentFees(String installmentFees) {
-		this.mInstallmentFees = installmentFees;
-	}
-
-	/**
-	 * @param taxAmount
-	 *            the taxAmount to set
-	 */
-	public void setTaxAmount(String taxAmount) {
-		this.mTaxAmount = taxAmount;
-	}
-
-	/**
-	 * @param customerDevice
-	 *            the customerDevice to set
-	 */
-	public void setCustomerDevice(String customerDevice) {
-		this.mCustomerDevice = customerDevice;
-	}
 	
 	/**
-	 * @param cart
+	 * Set the cart
+	 * @param cart The current cart
 	 *
 	 */
 	public void setCart(ShoppingCart cart) {
 		this.mCart = cart;
 	}
-	
-	/**
-	 * @param method
-	 *
-	 */
-	public void setShippingMethod(String method) {
-		this.mShippingMethod = method;
-	}
-	
-	/**
-	 * @param method
-	 *
-	 */
-	public void setPaymentMethod(String method) {
-		this.mPaymentMethod = method;
-	}
-	
-	/**
-	 * @param address
-	 *
-	 */
-	public void setShippingAddress(Address address) {
-		this.mShippingAddress = address;
-	}
-	
-	/**
-	 * @param address
-	 *
-	 */
-	public void setBillingAddress(Address address) {
-		this.mBillingAddress = address;
-	}
-	
-	
-	
+
 	/**
 	 * @return the mDiscountCouponValue
 	 */
@@ -380,61 +269,37 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @param mDiscountCouponValue the mDiscountCouponValue to set
-	 */
-	public void setDiscountCouponValue(String mDiscountCouponValue) {
-		this.mDiscountCouponValue = mDiscountCouponValue;
-	}
-
-	/**
-	 * @param mDiscountCouponCode the mDiscountCouponCode to set
-	 */
-	public void setDiscountCouponCode(String mDiscountCouponCode) {
-		this.mDiscountCouponCode = mDiscountCouponCode;
-	}
-
-	/**
 	 * ########### VALIDATORS ###########
 	 */
 	
 	
 	public boolean hasShippingAddress(){
-		return (mShippingAddress != null) ? true : false;
+		return mShippingAddress != null;
 	}
 	
 	public boolean hasShippingMethod(){
-		return (mShippingMethod != null) ? true : false;
-	}
-	
-	public boolean hasShippingFees(){
-		return (!TextUtils.isEmpty(mExtraCost)) ? true : false;
+		return mShippingMethod != null;
 	}
 	
 	public boolean hasCouponCode(){
 		Log.d(TAG, "DISCOUNT CODE: " + mDiscountCouponCode);
-		return (!TextUtils.isEmpty(mDiscountCouponCode)) ? true : false;
+		return !TextUtils.isEmpty(mDiscountCouponCode);
 	}
 
 	public boolean hasCouponDiscount(){
 		Log.d(TAG, "DISCOUNT VALUE: " + mDiscountCouponValue);
-		return (!TextUtils.isEmpty(mDiscountCouponValue) && !mDiscountCouponValue.equals("0")) ? true : false;
+		return !TextUtils.isEmpty(mDiscountCouponValue) && !mDiscountCouponValue.equals("0");
 	}
 	
-	public String getmShippingMethodLabel() {
+	public String getShippingMethodLabel() {
         return mShippingMethodLabel;
     }
 
-    public void setmShippingMethodLabel(String mShippingMethodLabel) {
-        this.mShippingMethodLabel = mShippingMethodLabel;
-    }
 
-    public String getmPaymentMethodLabel() {
+    public String getPaymentMethodLabel() {
         return mPaymentMethodLabel;
     }
 
-    public void setmPaymentMethodLabel(String mPaymentMethodLabel) {
-        this.mPaymentMethodLabel = mPaymentMethodLabel;
-    }
 
     /**
 	 * ########### Parcelable ###########
@@ -477,8 +342,6 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 
 	/**
 	 * Parcel constructor
-	 * 
-	 * @param in
 	 */
 	private OrderSummary(Parcel in) {
 		 mGrandTotal = in.readString();

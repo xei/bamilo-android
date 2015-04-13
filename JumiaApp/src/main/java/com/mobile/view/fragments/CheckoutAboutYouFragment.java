@@ -26,6 +26,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.constants.ConstantsCheckout;
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -107,9 +108,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     private Form signupFormResponse;
 
-    @SuppressWarnings("unused")
-    private boolean temp;
-
     private View loginToogle;
 
     private View signupToogle;
@@ -121,8 +119,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     private boolean cameFromSignUp = false;
 
     private int retryForms = 0;
-
-    private LoginButton mLoginFacebookButton;
 
     /**
      * Get the instance of CheckoutAboutYouFragment
@@ -212,7 +208,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         view.findViewById(R.id.checkout_signup_form_button_enter).setOnClickListener(this);
 
         // FACEBOOK
-        mLoginFacebookButton = (LoginButton) view.findViewById(R.id.checkout_login_form_button_facebook);
+        LoginButton mLoginFacebookButton = (LoginButton) view.findViewById(R.id.checkout_login_form_button_facebook);
         LoginButton facebookButton2 = (LoginButton) view.findViewById(R.id.checkout_signup_form_button_facebook);
         View facebookDivider1 = view.findViewById(R.id.checkout_login_form_divider_facebook);
         View facebookDivider2 = view.findViewById(R.id.checkout_signup_form_divider_facebook);
@@ -227,9 +223,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             Log.d(TAG, "TRIGGER: INIT FORM");
             triggerInitForm();
         } else {
-            Log.d(TAG, "VALIDATE: LOGIN/SIGNUP FORM");
-            temp = (formResponse != null) ? loadForm(formResponse) : triggerLoginForm();
-            temp = (signupFormResponse != null && mOrderSummary != null) ? loadSignupForm(signupFormResponse) : triggerSignupForm();
+            boolean temp1 = (formResponse != null) ? loadForm(formResponse) : triggerLoginForm();
+            boolean temp2 = (signupFormResponse != null && mOrderSummary != null) ? loadSignUpForm(signupFormResponse) : triggerSignupForm();
+            Log.i(TAG, "VALIDATE: LOGIN/SIGNUP FORM: " + temp1 + " " + temp2);
         }
     }
 
@@ -526,10 +522,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /**
      * Validate Facebook session.
-     *
-     * @param session
-     * @param state
-     * @param exception
+     * @param session The Facebook session
+     * @param state The session state
+     * @param exception The session exception
      * @author sergiopereira
      */
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
@@ -638,8 +633,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      *
      * @param form
      */
-    private boolean loadSignupForm(Form form) {
-        Log.i(TAG, "LOAD SIGNUP FORM: " + form.name);
+    private boolean loadSignUpForm(Form form) {
+        Log.i(TAG, "LOAD SIGN UP FORM: " + form.name);
         signupForm = FormFactory.getSingleton().CreateForm(FormConstants.SIGNUP_FORM, getBaseActivity(), form);
         signupFormContainer.removeAllViews();
         signupFormContainer.addView(signupForm.getContainer());
@@ -845,7 +840,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      */
 
     /**
-     * Method used to switch the checkoput step
+     * Method used to switch the checkout step
      *
      * @author sergiopereira
      */
@@ -857,12 +852,20 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         } else {
             Log.i(TAG, "GOTO NEXT STEP: " + mNextFragment.toString());
             // Update
-            getBaseActivity().hideKeyboard();
+            //getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
             // Clean stack for new native checkout on the back stack (auto login)
             getBaseActivity().removeAllNativeCheckoutFromBackStack();
+
+            mNextFragment = FragmentType.MY_ORDER;
+
             // Goto next step
-            getBaseActivity().onSwitchFragment(mNextFragment, null, FragmentController.ADD_TO_BACK_STACK);
+            Bundle bundle = null;
+            if(mNextFragment == FragmentType.MY_ORDER) {
+                bundle = new Bundle();
+                bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, mOrderSummary);
+            }
+            getBaseActivity().onSwitchFragment(mNextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -969,7 +972,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                 mOrderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
                 // Save and load form
                 Form signupForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                loadSignupForm(signupForm);
+                loadSignUpForm(signupForm);
                 this.signupFormResponse = signupForm;
                 break;
             case GET_LOGIN_FORM_EVENT:

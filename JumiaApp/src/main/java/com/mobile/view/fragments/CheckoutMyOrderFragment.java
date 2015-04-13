@@ -297,10 +297,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         billingAddress = mOrderFinish.getBillingAddress();
         if(billingAddress != null) showBillingAddress();
         // Get shipping method
-        shipMethod = mOrderFinish.getmShippingMethodLabel();
+        shipMethod = mOrderFinish.getShippingMethodLabel();
         if(shipMethod != null) showShippingMethod();
         // Get payment options
-        payMethod = mOrderFinish.getmPaymentMethodLabel();
+        payMethod = mOrderFinish.getPaymentMethodLabel();
         if(payMethod != null) showPaymentOptions();
         // Show container
         showFragmentContentContainer();

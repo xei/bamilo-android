@@ -51,8 +51,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 
     private static final String TAG = LogTagHelper.create(CheckoutSummaryFragment.class);
 
-    private static CheckoutSummaryFragment sOrderSummaryFragment;
-
     private ViewGroup mProductList;
 
     private TextView mSubTotal;
@@ -93,7 +91,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     public static CheckoutSummaryFragment getInstance(int checkoutStep, OrderSummary orderSummary) {
         //if (mOrderSummaryFragment == null) 
-        sOrderSummaryFragment = new CheckoutSummaryFragment();
+        CheckoutSummaryFragment sOrderSummaryFragment = new CheckoutSummaryFragment();
         // Save order summary
         sOrderSummaryFragment.mCheckoutStep = checkoutStep;
         // Save order summary
