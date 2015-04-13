@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<manifest>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- ##### MERGE: BASE MANIFEST ##### -->
 
@@ -10,9 +10,12 @@
         <!-- ######################################## -->
 
         <!-- Injoo: 6ohr47 -->
+        <!-- Tigo: mkcqip -->
 
         <!-- PRE INSTALL -->
-        <!-- <meta-data android:name="AdjustDefaultTracker" android:value="6ohr47" /> -->
+        <meta-data
+            android:name="AdjustDefaultTracker"
+            android:value="mkcqip" />
 
     </application>
 
