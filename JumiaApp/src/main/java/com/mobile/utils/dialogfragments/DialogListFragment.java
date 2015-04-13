@@ -205,7 +205,6 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	
 	/**
 	 * Set the size guide button
-	 * @param activity
 	 * @param view
 	 * @author sergiopereira
 	 */
@@ -299,7 +298,6 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         }
     }
 
-    
     /*
      * ########### ADAPTER ###########
      */

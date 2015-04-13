@@ -860,14 +860,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         ProductSimple simple = null;
         try {
             // Case invalid selection
-            if (mSelectedSimple >= mCompleteProduct.getSimples().size())
-                ;
-            // Case no selected
-            else if (mSelectedSimple == NO_SIMPLE_SELECTED)
-                ;
-            // Case success
-            else
+            if (!(mSelectedSimple >= mCompleteProduct.getSimples().size()) && !(mSelectedSimple == NO_SIMPLE_SELECTED)) {
                 simple = mCompleteProduct.getSimples().get(mSelectedSimple);
+            }
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON GET SELECTED SIMPLE");
         }
@@ -1122,7 +1117,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             isAddingProductToCart = false;
             return;
         } else if (simple == null) {
-            getBaseActivity().showWarningVariation(true);
+//            getBaseActivity().showWarningVariation(true);
             isAddingProductToCart = false;
             return;
         }
@@ -1853,7 +1848,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mSelectedSimple = position;
         Log.i(TAG, "size selected! onDialogListItemSelect : " + mSelectedSimple);
         updateVariants();
-        updateStockInfo();
+//        updateStockInfo();
         displayPriceInfoOverallOrForSimple();
 
     }
