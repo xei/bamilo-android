@@ -49,6 +49,7 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.utils.ui.UIUtils;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
@@ -326,8 +327,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
 
         if (getBaseActivity() != null) {
-            getBaseActivity().showWarning(false);
-            getBaseActivity().showWarningVariation(false);
+            getBaseActivity().warningFactory.hideWarning();
         }
 
         /**
@@ -943,13 +943,15 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     protected void showNoNetworkWarning() {
-        getBaseActivity().showWarning(R.string.no_internet_access_warning_title);
+//        getBaseActivity().showWarning(R.string.no_internet_access_warning_title);
+        getBaseActivity().warningFactory.showWarning(WarningFactory.NO_INTERNET);
         hideActivityProgress();
         showFragmentContentContainer();
     }
 
     protected void showUnexpectedErrorWarning() {
-        getBaseActivity().showWarning(R.string.server_error);
+//        getBaseActivity().showWarning(R.string.server_error);
+        getBaseActivity().warningFactory.showWarning(WarningFactory.PROBLEM_FETCHING_DATA_ANIMATION);
         showFragmentContentContainer();
         hideActivityProgress();
     }

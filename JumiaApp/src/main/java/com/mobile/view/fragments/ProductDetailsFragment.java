@@ -91,6 +91,7 @@ import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
 import com.mobile.utils.ui.CompleteProductUtils;
 import com.mobile.utils.ui.ToastFactory;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
@@ -1118,11 +1119,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private void executeAddProductToCart() {
         ProductSimple simple = getSelectedSimple();
         if (simple == null && !DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
-            showChooseReminder();
+            getBaseActivity().warningFactory.showWarning(WarningFactory.CHOOSE_ONE_SIZE);
             isAddingProductToCart = false;
             return;
         } else if (simple == null) {
-            getBaseActivity().showWarningVariation(true);
+            getBaseActivity().warningFactory.showWarning(WarningFactory.CHOOSE_ONE_SIZE);
             isAddingProductToCart = false;
             return;
         }
@@ -1197,10 +1198,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         Bundle bundle = new Bundle();
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
         triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, responseCallback);
-    }
-
-    private void showChooseReminder() {
-        getBaseActivity().showWarningVariation(true);
     }
 
     private void displayProduct(CompleteProduct product) {
@@ -1516,39 +1513,41 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private void executeAddToShoppingCartCompleted(boolean isBundle) {
 
-        String msgText = "1 " + getResources().getString(R.string.added_to_shop_cart_dialog_text);
-        if (isBundle)
-            msgText = getResources().getString(R.string.added_bundle_to_shop_cart_dialog_text);
+        if (!isBundle) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+        } else {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEMS_TO_CART);
+        }
 
-        mDialogAddedToCart = DialogGenericFragment.newInstance(
-                false,
-                true,
-                getString(R.string.your_cart),
-                msgText,
-                getString(R.string.go_to_cart), getString(R.string.continue_shopping),
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        if (id == R.id.button1) {
-                            if (getBaseActivity() != null) {
-                                getBaseActivity().onSwitchFragment(
-                                        FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
-                                        FragmentController.ADD_TO_BACK_STACK);
-                            }
-                            if (mDialogAddedToCart != null) {
-                                mDialogAddedToCart.dismiss();
-                            }
-
-                        } else if (id == R.id.button2) {
-                            showFragmentContentContainer();
-                            mDialogAddedToCart.dismiss();
-                        }
-                    }
-                });
-
-        mDialogAddedToCart.show(getFragmentManager(), null);
+//        mDialogAddedToCart = DialogGenericFragment.newInstance(
+//                false,
+//                true,
+//                getString(R.string.your_cart),
+//                msgText,
+//                getString(R.string.go_to_cart), getString(R.string.continue_shopping),
+//                new OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        int id = v.getId();
+//                        if (id == R.id.button1) {
+//                            if (getBaseActivity() != null) {
+//                                getBaseActivity().onSwitchFragment(
+//                                        FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
+//                                        FragmentController.ADD_TO_BACK_STACK);
+//                            }
+//                            if (mDialogAddedToCart != null) {
+//                                mDialogAddedToCart.dismiss();
+//                            }
+//
+//                        } else if (id == R.id.button2) {
+//                            showFragmentContentContainer();
+//                            mDialogAddedToCart.dismiss();
+//                        }
+//                    }
+//                });
+//
+//        mDialogAddedToCart.show(getFragmentManager(), null);
     }
 
     private void addToShoppingCartFailed() {
@@ -1826,7 +1825,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private void showVariantsDialog() {
         try {
-            getBaseActivity().showWarningVariation(false);
+            getBaseActivity().warningFactory.hideWarning();
             String title = getString(R.string.product_variance_choose);
             dialogListFragment = DialogListFragment.newInstance(this,
                     VARIATION_PICKER_ID,
