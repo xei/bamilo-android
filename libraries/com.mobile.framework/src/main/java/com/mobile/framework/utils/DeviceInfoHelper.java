@@ -1,9 +1,5 @@
 package com.mobile.framework.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -22,6 +18,10 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import com.mobile.framework.R;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Locale;
 
 import de.akquinet.android.androlog.Log;
 
@@ -359,6 +359,19 @@ public class DeviceInfoHelper {
         if (context == null) return false;
         if (context.getResources().getBoolean(R.bool.isTablet) && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) return true;
         return false;
+    }
+    /**
+     * method that verifies if the device is tablet or phone
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isTabletDevice(Context context) {
+        if (context.getResources().getBoolean(R.bool.isTablet)) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
 }

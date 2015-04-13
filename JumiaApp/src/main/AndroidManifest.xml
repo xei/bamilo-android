@@ -120,6 +120,11 @@
             android:screenOrientation="unspecified"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name="net.hockeyapp.android.UpdateActivity" />
+        <activity
+            android:name="com.mobile.view.ProductImageGalleryActivity"
+            android:exported="true"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustPan" />
 
         <service
             android:name="com.mobile.framework.service.RemoteService"
