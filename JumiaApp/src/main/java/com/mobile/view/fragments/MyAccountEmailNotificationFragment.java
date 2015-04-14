@@ -282,8 +282,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     }
 
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onClickRetryButton();
     }
     

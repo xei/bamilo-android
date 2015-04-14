@@ -625,31 +625,12 @@ public class WriteSellerReviewFragment extends BaseFragment {
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onResume();
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        switch(eventType){
-        case GET_FORM_SELLER_REVIEW_EVENT:
-            triggerSellerReviewForm();
-            return;
-        case REVIEW_RATING_PRODUCT_EVENT:
-            formsValidation();
-            return;
-        default:
-            super.onRetryRequest(eventType);
-            return;
-        }
     }
     
     /**

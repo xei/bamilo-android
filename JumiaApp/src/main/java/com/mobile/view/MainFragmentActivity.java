@@ -106,7 +106,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "ON CREATE");
-        // Enable rich push notifications
+        // Enable Accengage rich push notifications
         Ad4PushTracker.get().setPushNotificationLocked(false);
         // ON ORIENTATION CHANGE
         if (savedInstanceState == null) {
@@ -258,7 +258,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     public void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack) {
         //
-        showWarningVariation(false);
+        warningFactory.hideWarning();
         // 
         hideKeyboard();
 
