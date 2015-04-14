@@ -110,10 +110,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                 KeyboardState.ADJUST_CONTENT);
     }
 
-    @Override
-    public void sendValuesToFragment(Object values) {
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -514,30 +510,15 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
             }
             
         }
-            
-        
   }
-    
-//    /**
-//     * setup products on landscape view
-//     * 
-//     * @param order
-//     */
-//    private void setupProductslandScape(Order order){
-//     
-////        ordersProductsPayment.setText(order.getmPayment());
-////        ordersProductDate.setText(order.getmDate());
-////        if (BaseActivity.isTabletInLandscape(getBaseActivity())) setOrderProducts(order,productsLanscapeContainer, true);
-//    }
-
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         Bundle bundle = new Bundle();
         getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }

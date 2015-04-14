@@ -1182,20 +1182,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
-        onResume();
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onResume();
     }
 

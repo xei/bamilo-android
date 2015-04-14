@@ -361,14 +361,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         // Exception handling for no network error
         if((exception instanceof FacebookAuthorizationException || exception instanceof FacebookOperationCanceledException ) && !NetworkConnectivity.isConnected(getBaseActivity())) {
             // Show dialog case form is visible
-            if(formResponse != null){ 
-//                showFragmentNoNetworkRetry(new OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(View v) {
-//                        mFacebookButton.performClick();
-//                    }
-//                });
+            if(formResponse != null){
                 showNoNetworkWarning();
             }
             return;
@@ -390,7 +383,7 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             Log.i(TAG, "USER Logged out!");
             //this only happens opening the screen for the first time with no connection after a fresh install
             if(!NetworkConnectivity.isConnected(getBaseActivity())){
-                showFragmentNoNetworkRetry(EventType.INIT_FORMS);
+                showFragmentNoNetworkRetry();
             } else {
                 showFragmentContentContainer();
 
@@ -870,20 +863,12 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onResume();
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        onResume();
-    }
+
 }

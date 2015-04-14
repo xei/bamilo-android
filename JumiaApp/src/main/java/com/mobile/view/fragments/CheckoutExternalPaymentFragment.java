@@ -160,7 +160,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     }
 
     private void triggerGetCustomer() {
-
         triggerContentEventNoLoading(new GetCustomerHelper(), null, mCallback);
     }
 
@@ -214,12 +213,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-
         // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
         prepareCookieStore();
         setupWebView();
-
         startCheckout();
     }
 
@@ -231,10 +228,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
+        Log.i(TAG, "ON PAUSE");
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        Log.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -245,10 +242,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
+        Log.i(TAG, "ON STOP");
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
             webview.loadUrl("about:blank");
         }
-        Log.i(TAG, "ON STOP");
     }
 
     /*
@@ -259,7 +256,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         Log.i(TAG, "ON DESTROY");
     }
 
@@ -273,12 +269,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             } catch (IllegalArgumentException e) {
                 // TODO: handle exception
             }
-
             webview.destroy();
             webview = null;
         }
         System.gc();
-
     }
 
     @Override
@@ -424,7 +418,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
 
         @SuppressWarnings("deprecation")
         @Override
-        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+        public void onReceivedError(WebView view, int errorCode, String description, final String failingUrl) {
             Log.e(TAG, "Received error: " + errorCode + " " + description + " " + failingUrl);
             failedPageRequest = failingUrl;
             webview.stopLoading();
@@ -545,7 +539,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             }
             handler.proceed();
         }
-
     }
 
     private class JavaScriptInterface {
@@ -622,8 +615,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
      * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         Bundle bundle = new Bundle();
         if (null != JumiaApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);

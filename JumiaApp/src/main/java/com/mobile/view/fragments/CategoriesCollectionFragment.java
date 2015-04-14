@@ -27,9 +27,9 @@ public class CategoriesCollectionFragment extends BaseFragment {
     private static final int BACK_STACK_EMPTY = 0;
 
     /**
-     * Get instance of CategoryColletionFragment
-     * @param bundle
-     * @return CategoryColletionFragment
+     * Get instance of CategoriesCollectionFragment
+     * @param bundle The arguments
+     * @return CategoriesCollectionFragment
      * @author sergiopereira
      */
     public static CategoriesCollectionFragment getInstance(Bundle bundle) {
@@ -175,8 +175,8 @@ public class CategoriesCollectionFragment extends BaseFragment {
     
     /**
      * Method used to switch between the filter fragments
-     * @param filterType
-     * @param bundle 
+     * @param filterType The fragment type
+     * @param bundle  The arguments
      * @author sergiopereira
      */
     public void onSwitchChildFragment(FragmentType filterType, Bundle bundle) {
@@ -197,10 +197,11 @@ public class CategoriesCollectionFragment extends BaseFragment {
     
     /**
      * Method used to associate the container and fragment 
-     * @param container
-     * @param fragment
-     * @param filterType 
-     * @param animated
+     * @param container The content container
+     * @param filterType The fragment type
+     * @param fragment The new fragment
+     * @param animated The animate flag
+     * @param addToBackStack The back stack flag
      * @author sergiopereira
      */
     public void fragmentChildManagerTransition(int container, FragmentType filterType, Fragment fragment, boolean animated, boolean addToBackStack) {
@@ -221,7 +222,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
 
     /**
      * Goto back until type
-     * @param type
+     * @param type The fragment type
      * @author sergiopereira
      */
     public void goToBackUntil(FragmentType type){

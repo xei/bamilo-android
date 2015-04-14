@@ -87,6 +87,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     private View mUnexpectedError;
 
+    private Bundle mLastSuccessResponse;
+
     /*
      * (non-Javadoc)
      * 
@@ -96,7 +98,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        // Disable rich push notifications
+        // Disable Accengage rich push notifications
         Ad4PushTracker.get().setPushNotificationLocked(true);
         // Set Font
         HoloFontLoader.initFont(getResources().getBoolean(R.bool.is_shop_specific));
@@ -111,7 +113,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get retry layout
         mRetryFallBackStub = findViewById(R.id.splash_fragment_retry_stub);
         // Get unexpected error layout
-        mUnexpectedError = findViewById(R.id.fragment_unexpected_error_stub);
+        mUnexpectedError = findViewById(R.id.fragment_stub_unexpected_error);
         // Tracking
         AdjustTracker.onResume(this);
         // Initialize application
@@ -138,9 +140,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-        //
+        // Start Accengage for this activity
         Ad4PushTracker.get().startActivity(this);
-        //
+        // Intercept event
         shouldHandleEvent = true;
         // Show animated map
         Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
@@ -158,7 +160,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
-        //
+        // Stop Accengage for this activity
         Ad4PushTracker.get().stopActivity(this);
         // Validate dialog
         if (dialog != null) {
@@ -198,6 +200,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mRetryFallBackStub = null;
         mUnexpectedError = null;
         initializationHandler = null;
+        mLastSuccessResponse = null;
     }
 
 
@@ -305,8 +308,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             ZipEntry ze = zf.getEntry("classes.dex");
             zf.close();
             devText.append("\nBuild: " + SimpleDateFormat.getInstance().format(new java.util.Date(ze.getTime())));
-            ze = null;
-            zf = null;
+            //ze = null;
+            //zf = null;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -345,6 +348,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             Log.e(TAG,"shouldHandleEvent" + shouldHandleEvent);
             return;
         }
+
+        // Case error use the last success response to request the next step
+        mLastSuccessResponse = bundle;
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
@@ -501,17 +507,16 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @param bundle
      */
     private void onProcessApiEvent(Bundle bundle) {
-        Log.d(TAG, "ON PROCESS API EVENT");
+        Log.i(TAG, "ON PROCESS API EVENT");
         // Validate out dated sections
         if (bundle.getBoolean(Section.SECTION_NAME_CONFIGURATIONS, false)) {
-            Log.d(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
+            Log.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
         } else if(!CountryConfigs.checkCountryRequirements(getApplicationContext())){
-            Log.d(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
+            Log.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
         } else {
-            Log.d(TAG, "START MAIN ACTIVITY");
-            // Show activity
+            Log.i(TAG, "START MAIN ACTIVITY");
             selectActivity();
         }
     }
@@ -636,12 +641,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mMainFallBackStub.setVisibility(View.VISIBLE);
         // Get config
         boolean isBamilo = getResources().getBoolean(R.bool.is_bamilo_specific);
-        // Case BAMILO
+        // Show maintenance page
         if (isBamilo) {
-            MaintenancePage.setMaintenancePageBamilo(this, eventType, this);
-        }
-        // Case JUMIA
-        else {
+            MaintenancePage.setMaintenancePageBamilo(getWindow().getDecorView(), this);
+        } else {
             MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, this);
         }
     }
@@ -664,7 +667,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mRetryFallBackStub.setVisibility(View.VISIBLE);
         // Set view
         try {
-            findViewById(R.id.fragment_root_retry_button).setOnClickListener(this);
+            findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
@@ -684,7 +687,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mUnexpectedError.setVisibility(View.VISIBLE);
         // Set view
         try {
-            findViewById(R.id.fragment_root_error_button).setOnClickListener(this);
+            findViewById(R.id.fragment_root_retry_unexpected_error).setOnClickListener(this);
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
@@ -756,19 +759,19 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get id
         int id = view.getId();
         // Case retry button from no network
-        if (id == R.id.fragment_root_retry_button) {
+        if (id == R.id.fragment_root_retry_network) {
             onClickRetryNoNetwork();
         }
         // Case retry button from maintenance
-        else if (id == R.id.fallback_retry) {
+        else if (id == R.id.fragment_root_retry_maintenance) {
             onClickMaintenanceRetryButton(view);
         }
         // Case choose country
-        else if (id == R.id.fallback_change_country) {
+        else if (id == R.id.fragment_root_cc_maintenance) {
             onClickMaintenanceChooseCountry();
         }
         // Case retry button
-        else if (id == R.id.fragment_root_error_button) {
+        else if (id == R.id.fragment_root_retry_unexpected_error) {
             onClickErrorButton();
         }
         // Case unknown
@@ -802,10 +805,17 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     }
 
     /**
-     * Retry request
+     * Retry request validating the last success response.
      */
     protected void retryRequest() {
-        JumiaApplication.INSTANCE.init(initializationHandler);
+        // Case first time
+        if(mLastSuccessResponse == null) {
+            JumiaApplication.INSTANCE.init(initializationHandler);
+        }
+        // Case received error from a request
+        else {
+            onRequestComplete(mLastSuccessResponse);
+        }
     }
 
     /**
@@ -827,21 +837,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
     /**
      * Process the click on retry button in maintenance page.
-     *
-     * @modified sergiopereira
      */
     private void onClickMaintenanceRetryButton(View view) {
-        // Get tag
-        String type = (String) view.getTag();
-        // Get event type
-        EventType eventType = EventType.valueOf(type);
         // Retry
         mMainFallBackStub.setVisibility(View.GONE);
-        JumiaApplication.INSTANCE.sendRequest(
-                JumiaApplication.INSTANCE.getRequestsRetryHelperList().get(eventType),
-                JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
-                JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+        // Retry
+        retryRequest();
     }
-
 
 }

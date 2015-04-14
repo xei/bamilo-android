@@ -14,6 +14,7 @@ import com.mobile.framework.database.CountriesConfigsTableHelper;
 import com.mobile.framework.objects.CountryObject;
 import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.utils.EventType;
+import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.search.GetSearchProductHelper;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.TrackerDelegator;
@@ -216,7 +217,7 @@ public class DeepLinkManager {
     }
 
     /**
-     * Method used to create a bundle for campaign view with the respective campaign id. JUMIA://com.jumia.android/ng/cam/deals-of-the-day
+     * Method used to create a bundle for campaign view with the respective campaign id. JUMIA://com.jumia.android/ng/camp/deals-of-the-day
      *
      * @param campaignId The campaign id
      * @return {@link Bundle}
@@ -229,7 +230,7 @@ public class DeepLinkManager {
         ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<>();
         TeaserCampaign campaign = new TeaserCampaign();
         campaign.setTitle(campaignId.replace("-", " "));
-        campaign.setUrl(EventType.GET_CAMPAIGN_EVENT.action + "?campaign_slug=" + campaignId);
+        campaign.setUrl(EventType.GET_CAMPAIGN_EVENT.action + "?" + GetCampaignHelper.CAMPAIGN_TAG + "=" + campaignId);
         teaserCampaigns.add(campaign);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CAMPAIGNS);

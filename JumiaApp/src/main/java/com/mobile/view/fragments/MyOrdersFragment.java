@@ -62,10 +62,6 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
                 KeyboardState.ADJUST_CONTENT);
     }
 
-    @Override
-    public void sendValuesToFragment(Object values) {
-    }
-
     /*
      * (non-Javadoc)
      * 
