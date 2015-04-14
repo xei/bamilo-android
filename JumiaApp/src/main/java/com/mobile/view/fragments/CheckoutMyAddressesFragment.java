@@ -126,7 +126,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         super.onResume();
         Log.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.ADDRESS_SCREEN, getLoadTime(), true);
-        
+
     }
 
     /*
