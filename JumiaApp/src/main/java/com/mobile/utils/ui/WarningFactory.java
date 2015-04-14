@@ -23,7 +23,7 @@ public class WarningFactory {
      * ################# ANIMATION DURATION #################
      */
 
-    public static final int _4_SECONDS = 4000;
+//    public static final int _4_SECONDS = 4000;
     public static final int _5_SECONDS = 5000;
 
     /**
@@ -140,7 +140,7 @@ public class WarningFactory {
             new Builder().setText(R.string.no_internet_access_warning_title)
                     .setBackground(R.drawable.titlebar_noaccess)
                     .setImageVisibility(true)
-                    .setAnimationDuration(_4_SECONDS)
+                    .setAnimationDuration(_5_SECONDS)
                     .startAnimation();
             actualWarning = NO_INTERNET;
         } else {
@@ -167,7 +167,7 @@ public class WarningFactory {
                 new Builder().setText(R.string.server_error)
                         .setBackground(R.drawable.titlebar_noaccess)
                         .setImageVisibility(true)
-                        .setAnimationDuration(_4_SECONDS)
+                        .setAnimationDuration(_5_SECONDS)
                         .startAnimation();
                 actualWarning = PROBLEM_FETCHING_DATA_ANIMATION;
             } else {
@@ -185,13 +185,20 @@ public class WarningFactory {
      * Class used for building the warning.
      */
     private class Builder {
+
+        Builder(){
+            mWarningBar.clearAnimation();
+        }
+
+        private int animationLength = _5_SECONDS;
+
         Builder setText(int message){
             View label = mWarningBar.findViewById(R.id.warning_text);
             if(label instanceof TextView){
                 ((TextView)label).setText(message);
             }
             return this;
-        }        private int animationLength = _5_SECONDS;
+        }
 
         Builder setBackground(int drawable){
             Drawable backgroundDrawable = mWarningBar.getContext().getDrawable(drawable);
