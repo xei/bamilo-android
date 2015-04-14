@@ -209,9 +209,9 @@
     <string name="product_could_not_retrieved">The product information could not be retrieved!</string>
     <string name="product_delivery_days">days</string>
     <string name="product_delivery_time">Delivery Within:</string>
-    <string name="product_description_title">Product Description</string>
+    <!--<string name="product_description_title">Product Description</string>-->
     <string name="product_details_title">Product Details</string>
-    <string name="product_features_title">Product Features</string>
+    <!--<string name="product_features_title">Product Features</string>-->
     <string name="product_offer_from_title">Offers from</string>
     <string name="product_outof_stock">Item is out of stock</string>
     <string name="product_sold_by">Sold by:</string>
@@ -371,4 +371,8 @@
     <string name="dialog_to_product">To Product Details</string>
     <string name="address_creation_failed_title">Address creation failed</string>
     <string name="address_creation_failed_main">Please fill correctly all form fields.</string>
+
+    <string name="product_desc_summary_title">Summary</string>
+    <string name="description">Description</string>
+    <string name="key_features">Key Features</string>
 </resources>

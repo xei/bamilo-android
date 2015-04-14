@@ -485,4 +485,13 @@ public class RestConstants {
     public static final String JSON_INVALID_TAG = "invalid";
     public static final String JSON_VARIATION_NAME_TAG = "variation_name";
     public static final String JSON_VARIATION_VALUE_TAG = "variation_value";
+
+    /**
+     * PDV BUCKET INFO
+     */
+
+    public static final String JSON_SUMMARY_TAG = "summary";
+    public static final String JSON_SPECIFICATIONS_TAG = "specifications";
+    public static final String JSON_HEAD_LABEL_TAG = "head_label";
+    public static final String JSON_BODY_TAG = "body";
 }

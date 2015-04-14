@@ -1660,7 +1660,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
             bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle,
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle,
                     FragmentController.ADD_TO_BACK_STACK);
         }
     }

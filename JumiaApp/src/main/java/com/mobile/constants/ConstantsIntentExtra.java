@@ -101,4 +101,8 @@ public class ConstantsIntentExtra {
     // ############ BANNER TRACKING ###############
     public static final String BANNER_TRACKING = "isFromBanner";
 
+    // ########### MY ORDER ##############
+    public static final String PRODUCT_INFO_POS = "ProductInfoPosition";
+
+
 }

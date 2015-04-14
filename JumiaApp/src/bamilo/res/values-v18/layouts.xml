@@ -50,4 +50,10 @@
 
     <!-- PDV -->
     <item name="product_details_fragment_seller_info" type="layout">@layout/_def_product_details_fragment_seller_info</item>
+    <item name="product_summary_fragment" type="layout">@layout/_def_product_summary_fragment</item>
+    <item name="product_specs_fragment" type="layout">@layout/_def_product_specs_fragment</item>
+    <item name="product_specs_container" type="layout">@layout/_def_product_specs_container</item>
+    <item name="product_specs_container_item" type="layout">@layout/_def_product_specs_container_item</item>
+    <item name="details_info_fragment_main" type="layout">@layout/_def_details_info_fragment_main</item>
+
 </resources>

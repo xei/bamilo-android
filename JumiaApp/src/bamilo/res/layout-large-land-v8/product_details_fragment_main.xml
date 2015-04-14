@@ -393,7 +393,7 @@
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/features_label"
                         style="@style/rounded_box_title_grey"
-                        android:text="@string/product_features_title" />
+                        android:text="@string/key_features" />
 
                     <View
                         android:id="@+id/features_divider"
@@ -460,7 +460,7 @@
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/description_label"
                         style="@style/rounded_box_title_grey"
-                        android:text="@string/product_description_title" />
+                        android:text="@string/description" />
 
                     <View
                         android:id="@+id/description_divider"

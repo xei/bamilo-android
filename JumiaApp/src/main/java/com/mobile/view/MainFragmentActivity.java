@@ -47,8 +47,8 @@ import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyAddressesSessionLogin;
 import com.mobile.view.fragments.MyOrdersFragment;
-import com.mobile.view.fragments.ProductDetailsDescriptionFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
+import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
 import com.mobile.view.fragments.ProductOffersFragment;
 import com.mobile.view.fragments.ProductSizeGuideFragment;
@@ -290,8 +290,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = ProductDetailsFragment.getInstance(bundle);
                 type.setId(fragment.hashCode());
                 break;
-            case PRODUCT_DESCRIPTION:
-                fragment = ProductDetailsDescriptionFragment.getInstance(bundle);
+            case PRODUCT_INFO:
+                fragment = ProductDetailsInfoFragment.getInstance(bundle);
                 break;
             case PRODUCT_GALLERY:
                 fragment = ProductImageGalleryFragment.getInstance(bundle);
