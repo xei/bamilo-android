@@ -537,7 +537,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         contentContainer = findViewById(R.id.rocket_app_content);
         // Warning layout
         try {
-            warningFactory = new WarningFactory(this, findViewById(R.id.warning));
+            warningFactory = new WarningFactory(findViewById(R.id.warning));
         } catch(IllegalStateException ex){
             Log.e(TAG,ex.getLocalizedMessage(),ex);
         }

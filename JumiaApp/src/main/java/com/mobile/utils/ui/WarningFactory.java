@@ -1,6 +1,5 @@
 package com.mobile.utils.ui;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,8 +19,16 @@ import com.mobile.view.R;
  */
 public class WarningFactory {
 
-    public static final int SECONDS_4 = 4000;
-    public static final int SECONDS_5 = 4000;
+    /**
+     * ################# ANIMATION DURATION #################
+     */
+
+    public static final int _4_SECONDS = 4000;
+    public static final int _5_SECONDS = 5000;
+
+    /**
+     * ################# WARNING BAR #################
+     */
 
     public static final int CHOOSE_ONE_SIZE = 1;
     public static final int ADDED_ITEM_TO_CART = 2;
@@ -30,16 +37,27 @@ public class WarningFactory {
     public static final int PROBLEM_FETCHING_DATA = 6;
     public static final int PROBLEM_FETCHING_DATA_ANIMATION = 7;
 
-    private View mWarningBar;
-    private Activity mActivity;
+    /**
+     * The last warning that was built and might be re-used.
+     */
+    protected int actualWarning;
 
-    public WarningFactory(Activity activity, View warningBar){
+    protected View mWarningBar;
 
-        if(activity == null || warningBar == null){
+    /**
+     * Create a new instance of WarningFactory.
+     *
+     * @param warningBar
+     * @throws java.lang.IllegalStateException In case of warningBar is null.
+     */
+    public WarningFactory(View warningBar){
+
+        if(warningBar == null){
             throw new IllegalStateException("Warning bar not initialized");
         }
 
-        this.mActivity = activity;
+        actualWarning = -1;
+
         this.mWarningBar = warningBar;
         mWarningBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +67,11 @@ public class WarningFactory {
         });
     }
 
+    /**
+     * Constructs warning bar.
+     *
+     * @param warning The warning desired.
+     */
     public void showWarning(int warning){
         switch (warning){
             case CHOOSE_ONE_SIZE:
@@ -72,53 +95,85 @@ public class WarningFactory {
         }
     }
 
-    /**
-     * ################# WARNING BAR #################
-     */
-
     private void showWarningChooseOneSize(){
-        new Builder().setText(R.string.product_variance_choose_error)
-                .setBackground(R.drawable.titlebar_noaccess)
-                .setImageVisibility(false)
-                .show();
+        if(actualWarning != CHOOSE_ONE_SIZE) {
+            new Builder().setText(R.string.product_variance_choose_error)
+                    .setBackground(R.drawable.titlebar_noaccess)
+                    .setImageVisibility(false)
+                    .show();
+
+            actualWarning = CHOOSE_ONE_SIZE;
+        } else {
+            new Builder().show();
+        }
     }
 
     private void showWarningAddedItemToCart(){
+        if(actualWarning != ADDED_ITEM_TO_CART) {
         new Builder().setText(R.string.added_to_shop_cart_dialog_text)
                 .setBackground(R.color.green_warning)
                 .setImageVisibility(false)
-                .setAnimationLength(SECONDS_5)
+                .setAnimationDuration(_5_SECONDS)
                 .startAnimation();
+            actualWarning = ADDED_ITEM_TO_CART;
+        } else {
+            new Builder().startAnimation();
+        }
     }
 
     private void showWarningAddedItemsToCart(){
+        if(actualWarning != ADDED_ITEMS_TO_CART) {
+
         new Builder().setText(R.string.added_bundle_to_shop_cart_dialog_text)
                 .setBackground(R.color.green_warning)
                 .setImageVisibility(false)
-                .setAnimationLength(SECONDS_5)
+                .setAnimationDuration(_5_SECONDS)
                 .startAnimation();
+            actualWarning = ADDED_ITEMS_TO_CART;
+        } else {
+            new Builder().startAnimation();
+        }
     }
 
     private void showWarningNoInternet(){
-        new Builder().setText(R.string.no_internet_access_warning_title)
-                .setBackground(R.drawable.titlebar_noaccess)
-                .setImageVisibility(true)
-                .setAnimationLength(SECONDS_4)
-                .startAnimation();
+        if(actualWarning != NO_INTERNET) {
+            new Builder().setText(R.string.no_internet_access_warning_title)
+                    .setBackground(R.drawable.titlebar_noaccess)
+                    .setImageVisibility(true)
+                    .setAnimationDuration(_4_SECONDS)
+                    .startAnimation();
+            actualWarning = NO_INTERNET;
+        } else {
+            new Builder().startAnimation();
+        }
     }
 
     private void showWarningProblemFetchingData(boolean withAnimation){
         if(!withAnimation){
-            new Builder().setText(R.string.server_error)
-                    .setBackground(R.drawable.titlebar_noaccess)
-                    .setImageVisibility(true)
-                    .show();
+
+            if(actualWarning != PROBLEM_FETCHING_DATA) {
+                new Builder().setText(R.string.server_error)
+                        .setBackground(R.drawable.titlebar_noaccess)
+                        .setImageVisibility(true)
+                        .show();
+                actualWarning = PROBLEM_FETCHING_DATA;
+            } else {
+                new Builder().show();
+            }
+
         } else {
-            new Builder().setText(R.string.server_error)
-                    .setBackground(R.drawable.titlebar_noaccess)
-                    .setImageVisibility(true)
-                    .setAnimationLength(SECONDS_4)
-                    .startAnimation();
+
+            if(actualWarning != PROBLEM_FETCHING_DATA_ANIMATION) {
+                new Builder().setText(R.string.server_error)
+                        .setBackground(R.drawable.titlebar_noaccess)
+                        .setImageVisibility(true)
+                        .setAnimationDuration(_4_SECONDS)
+                        .startAnimation();
+                actualWarning = PROBLEM_FETCHING_DATA_ANIMATION;
+            } else {
+                new Builder().startAnimation();
+            }
+
         }
     }
 
@@ -126,19 +181,20 @@ public class WarningFactory {
         new Builder().hide();
     }
 
+    /**
+     * Class used for building the warning.
+     */
     private class Builder {
-        private int animationLength = SECONDS_5;
-
         Builder setText(int message){
             View label = mWarningBar.findViewById(R.id.warning_text);
             if(label instanceof TextView){
                 ((TextView)label).setText(message);
             }
             return this;
-        }
+        }        private int animationLength = _5_SECONDS;
 
         Builder setBackground(int drawable){
-            Drawable backgroundDrawable = mActivity.getDrawable(drawable);
+            Drawable backgroundDrawable = mWarningBar.getContext().getDrawable(drawable);
             if(backgroundDrawable != null){
                 mWarningBar.setBackground(backgroundDrawable);
             }
@@ -162,13 +218,13 @@ public class WarningFactory {
             return this;
         }
 
-        Builder setAnimationLength(int animationLength){
+        Builder setAnimationDuration(int animationLength){
             this.animationLength = animationLength;
             return this;
         }
 
         Builder startAnimation(){
-            UIUtils.animateFadeInAndOut(mActivity, mWarningBar, animationLength);
+            UIUtils.animateFadeInAndOut(mWarningBar.getContext(), mWarningBar, animationLength);
             return this;
         }
 
@@ -181,5 +237,7 @@ public class WarningFactory {
             mWarningBar.setVisibility(View.GONE);
             return this;
         }
+
+
     }
 }
