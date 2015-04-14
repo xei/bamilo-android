@@ -67,98 +67,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72278d06-ae76-453e-9928-17bc95bbd4d0" name="Default" comment="% Merge from dev;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/ProductImageGalleryActivity.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout/maintenance_page.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout/fragment_root_maintenance.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/fragment_root_error.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/fragment_root_unexpected_error.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/fragment_root_fallback.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/fragment_root_home_fall_back.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/maintenance_page.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/fragment_root_maintenance.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/jumiaPreInstall/AndroidManifest.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaPreInstall/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/BaseActivity.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/BaseActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/BaseFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/BaseFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CampaignPageFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CampaignPageFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CampaignsFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CampaignsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CatalogFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CatalogFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CategoriesCollectionFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CategoriesCollectionFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CategoriesPageFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CategoriesPageFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/database/CategoriesTableHelper.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/database/CategoriesTableHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutAboutYouFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutAboutYouFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutExternalPaymentFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutExternalPaymentFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutMyAddressesFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutMyAddressesFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutMyOrderFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutMyOrderFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutPaymentMethodsFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutPaymentMethodsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutShippingMethodsFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutShippingMethodsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutSummaryFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutSummaryFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutThanksFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutThanksFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutWebFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CheckoutWebFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ChooseCountryFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ChooseCountryFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/constants/ConstantsIntentExtra.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/constants/ConstantsIntentExtra.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CreateAddressFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/CreateAddressFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/utils/deeplink/DeepLinkManager.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/utils/deeplink/DeepLinkManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/DeviceInfoHelper.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/DeviceInfoHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/EditAddressFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/EditAddressFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/EventType.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/EventType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/FavouritesFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/FavouritesFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/tracking/gtm/GTMManager.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/tracking/gtm/GTMManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/campaign/GetCampaignHelper.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/campaign/GetCampaignHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetCatalogPageHelper.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetCatalogPageHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/categories/GetCategoriesPerLevelsHelper.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/categories/GetCategoriesPerLevelsHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/configs/GetCountriesGeneralConfigsHelper.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/configs/GetCountriesGeneralConfigsHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetFavouriteHelper.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetFavouriteHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetProductHelper.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetProductHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetProductOffersHelper.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetProductOffersHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetProductReviewsHelper.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetProductReviewsHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetRecentlyViewedHelper.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetRecentlyViewedHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetSellerReviewsHelper.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/GetSellerReviewsHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/HomeFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/HomeFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/account/HomeNewslettersSignupHelper.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/account/HomeNewslettersSignupHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/HomePageFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/HomePageFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/InnerShopFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/InnerShopFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/app/JumiaApplication.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/app/JumiaApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/LoadingBarView.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/utils/LoadingBarView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/MainFragmentActivity.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/MainFragmentActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/utils/maintenance/MaintenancePage.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/utils/maintenance/MaintenancePage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/MyAccountEmailNotificationFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/MyAccountEmailNotificationFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/MyAccountMyAddressesFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/MyAccountMyAddressesFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/MyAccountUserDataFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/MyAccountUserDataFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/MyAddressesFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/MyAddressesFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/MyOrdersFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/MyOrdersFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/NavigationCategoryFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/NavigationCategoryFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/OrderHistoryFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/OrderHistoryFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ProductDetailsDescriptionFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ProductDetailsDescriptionFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ProductDetailsFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ProductDetailsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ProductImageGalleryFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ProductImageGalleryFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ProductOffersFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ProductOffersFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ProductSizeGuideFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ProductSizeGuideFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/RatingReviewProductHelper.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/RatingReviewProductHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/RecentlyViewedFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/RecentlyViewedFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/database/RelatedItemsTableHelper.java" afterPath="$PROJECT_DIR$/libraries/com.mobile.framework/src/main/java/com/mobile/framework/database/RelatedItemsTableHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ReviewWriteFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ReviewWriteFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ReviewWriteNestedFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ReviewWriteNestedFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ReviewsFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ReviewsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/SessionForgotPasswordFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/SessionForgotPasswordFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/SessionLoginFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/SessionLoginFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/SessionRegisterFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/SessionRegisterFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/SessionTermsFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/SessionTermsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ShoppingCartFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/ShoppingCartFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/SplashScreenActivity.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/SplashScreenActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/TrackOrderFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/TrackOrderFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/utils/TrackerDelegator.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/utils/TrackerDelegator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/ValidateProductHelper.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/helpers/products/ValidateProductHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/factories/ViewGroupFactory.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/factories/ViewGroupFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/WriteSellerReviewFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/WriteSellerReviewFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/WriteSellerReviewNestedFragment.java" afterPath="$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/WriteSellerReviewNestedFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_no_connection_button_retry.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/_def_no_connection_button_retry.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout/bamilo_maintenance_page.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout/bamilo_maintenance_page.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/jumiaRelease/res/values/configs.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/jumiaRelease/res/values/configs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/fragment_root_layout.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/fragment_root_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/fragment_root_retry.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/fragment_root_retry.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/values/ids.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/values/ids.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/main.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout/splash_screen.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/bamilo/res/layout/splash_screen.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/splash_screen.xml" afterPath="$PROJECT_DIR$/JumiaApp/src/main/res/layout/splash_screen.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
     </list>
     <ignored path="My Application.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -381,7 +290,7 @@
       <file leaf-file-name="BaseFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/fragments/BaseFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="11386" max-vertical-offset="20268">
+            <state vertical-scroll-proportion="0.0" vertical-offset="13140" max-vertical-offset="21906">
               <caret line="730" column="0" selection-start-line="730" selection-start-column="0" selection-end-line="730" selection-end-column="0" />
               <folding />
             </state>
@@ -391,16 +300,9 @@
       <file leaf-file-name="WarningFactory.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/utils/ui/WarningFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2553" max-vertical-offset="4428">
+            <state vertical-scroll-proportion="0.0" vertical-offset="3258" max-vertical-offset="4608">
               <caret line="181" column="5" selection-start-line="181" selection-start-column="5" selection-end-line="181" selection-end-column="5" />
-              <folding>
-                <element signature="e#4711#4732#0" expanded="true" />
-                <element signature="e#5138#5159#0" expanded="true" />
-                <element signature="e#5576#5577#0" expanded="true" />
-                <element signature="e#5612#5613#0" expanded="true" />
-                <element signature="e#5721#5722#0" expanded="true" />
-                <element signature="e#5773#5774#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -408,8 +310,8 @@
       <file leaf-file-name="BaseActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/BaseActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="4.211236" vertical-offset="28688" max-vertical-offset="39978">
-              <caret line="1940" column="7" selection-start-line="1940" selection-start-column="7" selection-end-line="1941" selection-end-column="32" />
+            <state vertical-scroll-proportion="0.06861063" vertical-offset="28688" max-vertical-offset="39978">
+              <caret line="1717" column="42" selection-start-line="1717" selection-start-column="42" selection-end-line="1717" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -418,7 +320,7 @@
       <file leaf-file-name="UIUtils.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/utils/ui/UIUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1067" max-vertical-offset="1998">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1602" max-vertical-offset="2214">
               <caret line="89" column="41" selection-start-line="89" selection-start-column="41" selection-end-line="89" selection-end-column="41" />
               <folding />
             </state>
@@ -17948,6 +17850,26 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JumiaApp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JumiaApp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JumiaApp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="Scope">
         <subPane subId="Problems" />
         <subPane subId="Production">
@@ -18027,6 +17949,16 @@
           </PATH>
         </subPane>
         <subPane subId="Tests" />
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JumiaApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
       </pane>
       <pane id="ProjectPane">
         <subPane>
@@ -18214,36 +18146,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value=".idea" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JumiaApp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -18651,9 +18553,8 @@
     <frame x="1985" y="24" width="1855" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.4997236" order="7" side_tool="false" content_ui="tabs" x="65" y="-4" width="1855" height="1084" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3290461" sideWeight="0.4997236" order="7" side_tool="false" content_ui="tabs" x="65" y="-4" width="1855" height="1084" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.4997236" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29474813" sideWeight="0.4997236" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.249309" sideWeight="0.4426581" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -18668,7 +18569,6 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.249309" sideWeight="0.55734193" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46516612" sideWeight="0.6053068" order="11" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.4997236" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32984003" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2498618" sideWeight="0.49369368" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39978564" sideWeight="0.4997236" order="3" side_tool="false" content_ui="tabs" />
@@ -18678,10 +18578,12 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29474813" sideWeight="0.4997236" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="165" y="96" width="1655" height="884" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946378" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946378" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290461" sideWeight="0.4997236" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -19131,7 +19033,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3191" max-vertical-offset="9090">
           <caret line="217" column="16" selection-start-line="217" selection-start-column="16" selection-end-line="217" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -19155,14 +19056,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2553" max-vertical-offset="4428">
           <caret line="181" column="5" selection-start-line="181" selection-start-column="5" selection-end-line="181" selection-end-column="5" />
-          <folding>
-            <element signature="e#4711#4732#0" expanded="true" />
-            <element signature="e#5138#5159#0" expanded="true" />
-            <element signature="e#5576#5577#0" expanded="true" />
-            <element signature="e#5612#5613#0" expanded="true" />
-            <element signature="e#5721#5722#0" expanded="true" />
-            <element signature="e#5773#5774#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -19176,8 +19070,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/JumiaApp/src/main/java/com/mobile/view/BaseActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="4.211236" vertical-offset="28688" max-vertical-offset="39978">
-          <caret line="1940" column="7" selection-start-line="1940" selection-start-column="7" selection-end-line="1941" selection-end-column="32" />
+        <state vertical-scroll-proportion="0.06861063" vertical-offset="28688" max-vertical-offset="39978">
+          <caret line="1717" column="42" selection-start-line="1717" selection-start-column="42" selection-end-line="1717" selection-end-column="42" />
           <folding />
         </state>
       </provider>
