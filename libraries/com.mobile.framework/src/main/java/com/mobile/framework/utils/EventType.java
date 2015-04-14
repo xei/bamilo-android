@@ -23,8 +23,6 @@ import com.mobile.framework.rest.RestContract;
 public enum EventType {
     INITIALIZE,
 
-    INIT_SHOP,
-
     INIT_FORMS("http:/forms/index/", RestContract.MAX_CACHE_TIME),
 
     GET_CATEGORIES_EVENT("http:/catalog/categories/", RestContract.NO_CACHE), // TODO: FIX THIS-> CASE success:false IS CACHING THE REQUEST
@@ -40,12 +38,6 @@ public enum EventType {
     GET_LOGIN_FORM_FALLBACK_EVENT("http:/forms/login/", RestContract.MAX_CACHE_TIME),
 
     LOGOUT_EVENT("https:/customer/logout/", RestContract.NO_CACHE),
-
-    GET_WISHLIST_EVENT,
-
-    ADD_ITEMS_TO_WISHLIST_EVENT,
-
-    REMOVE_ITEM_FROM_WISHLIST_EVENT,
 
     GET_TEASERS_EVENT("http:/main/getteasers/", RestContract.MAX_CACHE_TIME),
 
@@ -67,7 +59,7 @@ public enum EventType {
 
     CHANGE_PASSWORD_EVENT("https:/customer/changepass/", RestContract.NO_CACHE),
 
-    GET_CHANGE_PASSWORD_FORM_EVENT("changepassword", RestContract.MAX_CACHE_TIME),
+    //GET_CHANGE_PASSWORD_FORM_EVENT("changepassword", RestContract.MAX_CACHE_TIME), // TODO - implement
 
     GET_FORGET_PASSWORD_FORM_EVENT("forgotpassword", RestContract.MAX_CACHE_TIME),
 
@@ -76,8 +68,6 @@ public enum EventType {
     FORGET_PASSWORD_EVENT("https:/customer/forgotpassword/", RestContract.NO_CACHE),
 
     REGISTER_ACCOUNT_EVENT("https:/customer/create/", RestContract.NO_CACHE),
-
-    EDIT_ACCOUNT_EVENT("https:/customer/edit/", RestContract.NO_CACHE),
 
     GET_NAVIGATION_LIST_COMPONENTS_EVENT("http:/main/getstatic?key=mobile_navigation", RestContract.MAX_CACHE_TIME),
 
@@ -101,8 +91,6 @@ public enum EventType {
 
     GET_CUSTOMER("https:/customer/getdetails/", RestContract.MIN_CACHE_TIME),
 
-    GET_MIN_ORDER_AMOUNT("http:/main/getstatic?key=api_cartminorderamount", RestContract.MAX_CACHE_TIME),
-
     GET_RESOLUTIONS("http:/main/imageresolutions/", RestContract.MAX_CACHE_TIME),
 
     GET_PROMOTIONS("http:/main/getstatic?key=mobile_promotions", RestContract.NO_CACHE),
@@ -118,12 +106,6 @@ public enum EventType {
     GET_SIGNUP_FORM_FALLBACK_EVENT("http:/forms/registersignup/", RestContract.MAX_CACHE_TIME),
 
     SET_SIGNUP_EVENT("https:/customer/create/", RestContract.NO_CACHE),
-
-    GET_POLL_FORM_EVENT("poll", RestContract.MAX_CACHE_TIME),
-
-    GET_POLL_FORM_FALLBACK_EVENT("http:/forms/poll/", RestContract.MAX_CACHE_TIME),
-
-    SET_POLL_ANSWER_EVENT("https:/multistep/checkoutpoll/", RestContract.NO_CACHE),
 
     GET_CREATE_ADDRESS_FORM_EVENT("addresscreate", RestContract.MAX_CACHE_TIME),
 
