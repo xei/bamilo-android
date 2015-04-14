@@ -70,7 +70,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	 */
 	public interface OnDialogListListener {
 		public void onDialogListItemSelect(int position, String value);
-        public void onDismiss();
+        	public void onDismiss();
 	}
 	
 	/**
