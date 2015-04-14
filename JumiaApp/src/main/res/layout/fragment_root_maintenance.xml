@@ -147,13 +147,13 @@
         android:orientation="vertical" >
 
         <com.mobile.components.customfontviews.Button
-            android:id="@+id/fallback_retry"
+            android:id="@+id/fragment_root_retry_maintenance"
             style="@style/button_orange_landscape"
             android:contentDescription="@string/try_again"
             android:text="@string/try_again" />
 
         <com.mobile.components.customfontviews.Button
-            android:id="@+id/fallback_change_country"
+            android:id="@+id/fragment_root_cc_maintenance"
             style="@style/button_grey_landscape"
             android:layout_marginTop="0dp"
             android:contentDescription="@string/try_again"

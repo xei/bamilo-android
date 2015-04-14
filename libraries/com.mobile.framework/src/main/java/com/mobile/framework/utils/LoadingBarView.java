@@ -1,15 +1,17 @@
 package com.mobile.framework.utils;
 
-import java.io.InputStream;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.mobile.framework.R;
+
+import java.io.InputStream;
 
 import de.akquinet.android.androlog.Log;
 
@@ -20,6 +22,7 @@ import de.akquinet.android.androlog.Log;
  * 
  */
 public class LoadingBarView extends ImageView {
+
 	private final static String TAG = LoadingBarView.class.getSimpleName();
 
 	private static GifDecoder mGifDecoder = null;
@@ -43,7 +46,6 @@ public class LoadingBarView extends ImageView {
 		}
 	};
 
-
 	/**
 	 * Default constructor
 	 * 
@@ -54,10 +56,8 @@ public class LoadingBarView extends ImageView {
 	 */
 	public LoadingBarView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		TypedArray ta = context.obtainStyledAttributes(attrs,
-				R.styleable.LoadingBarView);
-		int drawableId = ta.getResourceId(
-				R.styleable.LoadingBarView_gifResource, 0);
+		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.LoadingBarView);
+		int drawableId = ta.getResourceId(R.styleable.LoadingBarView_gifResource, 0);
 		if (drawableId != 0) {
 			initialize(context.getResources().openRawResource(drawableId));
 		} else {
@@ -67,12 +67,40 @@ public class LoadingBarView extends ImageView {
 	}
 
 	public void initialize(InputStream stream) {
-
 		if (mGifDecoder == null) {
 			mGifDecoder = new GifDecoder();
 			mGifDecoder.read(stream);
 		}
+	}
 
+	@Override
+	protected void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		Log.i(TAG, "ON ATTACH TO WINDOW: START RENDERING");
+		// TODO: Validate this approach
+		startRendering();
+	}
+
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		Log.i(TAG, "ON DETACHED FROM WINDOW: STOP RENDERING");
+		// TODO: Validate this approach
+		stopRendering();
+	}
+
+	@Override
+	protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+		super.onVisibilityChanged(changedView, visibility);
+		// TODO: Validate this approach
+		/*
+		Log.i(TAG, "ON VISIBILITY CHANGED: IS VISIBLE: " + (visibility == View.VISIBLE));
+		if (visibility == View.VISIBLE) {
+			startRendering();
+		} else {
+			stopRendering();
+		}
+		*/
 	}
 
 	/**
@@ -96,15 +124,12 @@ public class LoadingBarView extends ImageView {
 						if (Thread.interrupted()) {
 							return;
 						}
-
 						mTmpBitmap = mGifDecoder.getFrame(i);
 						int t = mGifDecoder.getDelay(i);
 						mHandler.post(mUpdateResults);
 						try {
 							Thread.sleep(t);
-						} catch (InterruptedException e) {
-							return;
-						} catch (IllegalArgumentException e ) {
+						} catch (InterruptedException | IllegalArgumentException e) {
 							return;
 						}
 					}
@@ -119,6 +144,7 @@ public class LoadingBarView extends ImageView {
 				} while (repetitionCounter <= ntimes);
 			}
 		});
+		mThread.setName(TAG);
 		mThread.start();
 	}
 
@@ -127,7 +153,7 @@ public class LoadingBarView extends ImageView {
 	 */
 	public synchronized void stopRendering() {
 		Log.d( TAG, "stopRendering" );
-		if ( mThread != null) {
+		if (mThread != null) {
 			mThread.interrupt();
 			mThread = null;
 		}

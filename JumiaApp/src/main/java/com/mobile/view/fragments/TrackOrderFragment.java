@@ -24,7 +24,6 @@ import com.mobile.framework.objects.OrderTrackerItem;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.EventTask;
-import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LoadingBarView;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.checkout.GetTrackOrderHelper;
@@ -82,10 +81,6 @@ public class TrackOrderFragment extends BaseFragment {
                 R.layout.track_order_fragment,
                 R.string.my_orders_label,
                 KeyboardState.ADJUST_CONTENT);
-    }
-
-    @Override
-    public void sendValuesToFragment(Object values) {
     }
 
     /*
@@ -293,13 +288,13 @@ public class TrackOrderFragment extends BaseFragment {
             getView().findViewById(R.id.tip_tracking_order).setVisibility(View.VISIBLE);
         }
     }
-    
+
     @Override
-    protected void onRetryRequest(EventType eventType) {
-        super.onRetryRequest(eventType);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         showFragmentContentContainer();
     }
-    
+
     /**
      * 
      */
