@@ -83,21 +83,11 @@ public class GetCategoriesPerLevelsHelper extends BaseHelper {
             // Add categories
             bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, categories);
 
-            /*-
-            // Save categories for tracking
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    CategoriesTableHelper.saveCategories(categories);
-                }
-            }).start();
-             */
-            
-            
         } catch (JSONException e) {
             e.printStackTrace();
             return parseErrorBundle(bundle);
         }
+
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         return bundle;
     }

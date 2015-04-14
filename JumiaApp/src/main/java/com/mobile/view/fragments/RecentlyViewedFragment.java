@@ -352,16 +352,15 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         }
     }
 
-    protected void onClickMaintenanceRetryButton() {
-        Log.d(TAG,"onClickMaintenanceRetryButton");
-        super.onClickMaintenanceRetryButton();
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         if (!CollectionUtils.isEmpty(mAddableToCartList)) {
             triggerValidateRecentlyViewed(mAddableToCartList);
         } else {
             showEmpty();
         }
     }
-
 
     /**
      * Validate the item was added to cart
@@ -416,26 +415,4 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
         triggerContentEvent(new ValidateProductHelper(), bundle, this);
     }
 
-
-//    /**
-//     * using an to update the database data in a background thread, not blocking the UI thread
-//     */
-//    private class updateRecentViewedDatabaseTask extends AsyncTask<ArrayList<AddableToCart>,Void, Boolean> {
-//        protected Boolean doInBackground(ArrayList<AddableToCart>... products) {
-//            boolean success = false;
-//
-//            ArrayList<AddableToCart> validProducts = products[0];
-//
-//            success = updateRecentlyViewedDatabase(validProducts);
-//
-//            return success;
-//        }
-//
-//        protected void onProgressUpdate(Void... progress) {
-//        }
-//
-//        protected void onPostExecute(Boolean result) {
-//            Log.d("ASYNC TASK", "result:"+result);
-//        }
-//    }
 }

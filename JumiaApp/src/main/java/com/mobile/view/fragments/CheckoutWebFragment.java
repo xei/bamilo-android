@@ -390,7 +390,7 @@ public class CheckoutWebFragment extends BaseFragment {
     private void handleWebError(int errorCode) {
         switch (errorCode) {
             case WebViewClient.ERROR_HOST_LOOKUP:
-                showFragmentNoNetworkRetry(this);
+                showFragmentNoNetworkRetry();
                 break;
         }
     }
@@ -595,11 +595,11 @@ public class CheckoutWebFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         Bundle bundle = new Bundle();
         if (null != JumiaApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
@@ -607,19 +607,6 @@ public class CheckoutWebFragment extends BaseFragment {
         } else {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
-        webview.loadUrl(failedPageRequest);
-        showFragmentContentContainer();
     }
 
 }

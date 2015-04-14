@@ -36,6 +36,7 @@ public class CampaignsFragment extends BaseFragment {
     
     public static final String CAMPAIGN_POSITION_TAG = "campaign_position";
 
+    /*
     private ViewPager mCampaignPager;
 
     private CampaignPagerAdapter mCampaignPagerAdapter;
@@ -43,6 +44,7 @@ public class CampaignsFragment extends BaseFragment {
     private ArrayList<TeaserCampaign> mCampaigns;
 
     private SlidingTabLayout mCampaignPagerTabStrip;
+    */
     
     private boolean isFromBanner;
     
@@ -104,17 +106,17 @@ public class CampaignsFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         // Get campaigns from arguments
-        mCampaigns = getArguments().getParcelableArrayList(CAMPAIGNS_TAG);
+        ArrayList<TeaserCampaign> mCampaigns = getArguments().getParcelableArrayList(CAMPAIGNS_TAG);
         // Get pre selection 
         int selectedPosition = getArguments().getInt(CAMPAIGN_POSITION_TAG);
         // Instantiate a ViewPager and a PagerAdapter.
         // Get view pager 
-        mCampaignPager = (ViewPager) view.findViewById(R.id.campaign_pager);
+        ViewPager mCampaignPager = (ViewPager) view.findViewById(R.id.campaign_pager);
         // Get tab pager
-        mCampaignPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.campaign_pager_tab);
+        SlidingTabLayout mCampaignPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.campaign_pager_tab);
         mCampaignPagerTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
         // Validate the current view
-        mCampaignPagerAdapter = (CampaignPagerAdapter) mCampaignPager.getAdapter();
+        CampaignPagerAdapter mCampaignPagerAdapter = (CampaignPagerAdapter) mCampaignPager.getAdapter();
         if(mCampaignPagerAdapter != null && mCampaignPagerAdapter.getCount() > 0) {
             // Show the pre selection
             mCampaignPager.setCurrentItem(selectedPosition, true);
@@ -207,8 +209,8 @@ public class CampaignsFragment extends BaseFragment {
         
         /**
          * Constructor
-         * @param fm
-         * @param campaigns
+         * @param fm The fragment manager
+         * @param campaigns The list of campaigns
          * @author sergiopereira
          */
         public CampaignPagerAdapter(FragmentManager fm, ArrayList<TeaserCampaign> campaigns) {
@@ -234,7 +236,7 @@ public class CampaignsFragment extends BaseFragment {
          */
         @Override
         public int getCount() {
-            return (mCampaigns != null) ? mCampaigns.size() : 0;
+            return mCampaigns != null ? mCampaigns.size() : 0;
         }
         
         /*
@@ -248,10 +250,12 @@ public class CampaignsFragment extends BaseFragment {
         
     }
 
+    /*
     @Override
     protected void onClickMaintenanceRetryButton() {
         mCampaignPagerAdapter = new CampaignPagerAdapter(getChildFragmentManager(), mCampaigns);
         mCampaignPager.setAdapter(mCampaignPagerAdapter);
         mCampaignPagerTabStrip.setViewPager(mCampaignPager);
     }
+    */
 }

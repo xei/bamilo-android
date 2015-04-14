@@ -65,13 +65,13 @@ public class MaintenancePage {
             // Get prefs
             SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             // Set retry
-            Button retry = (Button) activity.findViewById(R.id.fallback_retry);
+            Button retry = (Button) activity.findViewById(R.id.fragment_root_retry_maintenance);
             retry.setText(R.string.try_again);
             retry.setTag(eventType.toString());
             retry.setOnClickListener(onClickRetryButton);
             // Set choose country case multi shops
             if (!activity.getResources().getBoolean(R.bool.is_single_shop_country)) {
-                Button changeCountry = (Button) activity.findViewById(R.id.fallback_change_country);
+                Button changeCountry = (Button) activity.findViewById(R.id.fragment_root_cc_maintenance);
                 changeCountry.setVisibility(View.VISIBLE);
                 changeCountry.setText(R.string.nav_country);
                 changeCountry.setOnClickListener(onClickChooseCountry);
@@ -138,17 +138,13 @@ public class MaintenancePage {
      * @modified sergiopereira
      */
     public static void setMaintenancePageBaseActivity(Activity activity, OnClickListener listener) {
-
         try {
-
             // Get retry button
-            Button retry = (Button) activity.findViewById(R.id.fallback_retry);
+            Button retry = (Button) activity.findViewById(R.id.fragment_root_retry_maintenance);
             retry.setText(R.string.try_again);
             retry.setOnClickListener(listener);
 
             SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            //ImageView mapImageView = (ImageView) activity.findViewById(R.id.fallback_country_map);
-            //RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapImageView, null, R.drawable.img_maintenance_map);
             
             // Get flag for single shop
             boolean isSingleShop = activity.getResources().getBoolean(R.bool.is_single_shop_country);
@@ -202,15 +198,14 @@ public class MaintenancePage {
 
     /**
      * Set the maintenance page for Bamilo.
-     * @param activity
+     * @param view
      * @param listener
      * @author sergiopereira
      */
-    public static void setMaintenancePageBamilo(Activity activity, EventType eventType, OnClickListener listener) {
+    public static void setMaintenancePageBamilo(View view, OnClickListener listener) {
         try {
             // Get retry button
-            Button retry = (Button) activity.findViewById(R.id.fallback_retry);
-            retry.setTag(eventType.toString());
+            Button retry = (Button) view.findViewById(R.id.fragment_root_retry_maintenance);
             retry.setOnClickListener(listener);
         } catch (NullPointerException e) {
             e.printStackTrace();

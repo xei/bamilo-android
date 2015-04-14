@@ -77,7 +77,7 @@ import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
-import com.mobile.utils.ui.WarningFactory;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.HomeFragment;
 import com.mobile.view.fragments.NavigationFragment;
@@ -172,8 +172,6 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected SearchAutoComplete mSearchAutoComplete;
 
     protected boolean isSearchComponentOpened = false;
-
-    private ViewStub mMainFallBackStub;
 
     private ActionBar mSupportActionBar;
 

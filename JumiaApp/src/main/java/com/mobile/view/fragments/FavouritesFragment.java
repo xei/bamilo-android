@@ -361,10 +361,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             // Update layout
             updateLayoutAfterAction();
 
-            BaseFragment catalogFragment = (BaseFragment) getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.CATALOG.toString());
-            if (null != catalogFragment) {
-                catalogFragment.sendValuesToFragment(addableToCart.getSku());
-            }
             String sku = addableToCart.getSku();
             if(addableToCart.getSelectedSimple() != -1 && addableToCart.getSimples().size() > 0)
                 sku = addableToCart.getSimples().get(addableToCart.getSelectedSimple()).getAttributeByKey(RestConstants.JSON_SKU_TAG);
