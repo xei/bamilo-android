@@ -367,11 +367,7 @@ public class DeviceInfoHelper {
      * @return
      */
     public static boolean isTabletDevice(Context context) {
-        if (context.getResources().getBoolean(R.bool.isTablet)) {
-            return true;
-        } else {
-            return false;
-        }
+        return context.getResources().getBoolean(R.bool.isTablet);
     }
     
 }
