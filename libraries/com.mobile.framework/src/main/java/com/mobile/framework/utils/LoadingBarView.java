@@ -144,7 +144,7 @@ public class LoadingBarView extends ImageView {
 				} while (repetitionCounter <= ntimes);
 			}
 		});
-		mThread.setName("LoadingBar");
+		mThread.setName(TAG);
 		mThread.start();
 	}
 
