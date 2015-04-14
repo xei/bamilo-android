@@ -38,7 +38,7 @@
     
 	<!-- APPTIMIZE -->
     <item name="apptimize_enabled" type="bool">true</item>
-    <string name="apptimize_apikey">CTbngwXi_7DNjjfYwEj\u2013\u2013L_JYKHHUug</string>
+    <string name="apptimize_apikey">CTbngwXi_7DNjjfYwEj--L_JYKHHUug</string>
 
 	<!-- GTM -->
     <item name="gtm_debug" type="bool">false</item>

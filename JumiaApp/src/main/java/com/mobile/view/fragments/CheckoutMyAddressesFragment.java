@@ -45,7 +45,7 @@ import de.akquinet.android.androlog.Log;
 public class CheckoutMyAddressesFragment extends MyAddressesFragment{
 
     private static final String TAG = LogTagHelper.create(CheckoutMyAddressesFragment.class);
-    
+
     /**
      * Get instance
      * @return CheckoutMyAddressesFragment
@@ -126,7 +126,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment{
         super.onResume();
         Log.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.ADDRESS_SCREEN, getLoadTime(), true);
-        
+
     }
 
     /*
