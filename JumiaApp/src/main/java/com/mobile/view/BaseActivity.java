@@ -76,8 +76,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
-import com.mobile.utils.maintenance.MaintenancePage;
-import com.mobile.utils.ui.UIUtils;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.HomeFragment;
 import com.mobile.view.fragments.NavigationFragment;
@@ -539,8 +538,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         } catch(IllegalStateException ex){
             Log.e(TAG,ex.getLocalizedMessage(),ex);
         }
-        // Get the fallback stub
-        mMainFallBackStub = (ViewStub) findViewById(R.id.main_fall_back_stub);
     }
     
     /*
@@ -1976,42 +1973,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
     }
 
-    /**
-     * ################ MAIN MAINTENANCE PAGE ################
-     */
-
-    /**
-     * Hide the main fall back view with retry button
-     */
-    public void hideLayoutMaintenance() {
-        if (mMainFallBackStub != null) {
-            mMainFallBackStub.setVisibility(View.GONE);
-        }
-    }
-
-    /**
-     * Sets Maintenance page
-     */
-    public void setLayoutMaintenance(final EventType eventType, OnClickListener onClickListener, boolean showChooseCountry) {
-        // Inflate maintenance
-        mMainFallBackStub.setVisibility(View.VISIBLE);
-
-        // Case BAMILO
-        if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
-            MaintenancePage.setMaintenancePageBamilo(this, eventType, onClickListener);
-        }
-        // Case JUMIA
-        else {
-            // Set content
-            if (showChooseCountry) {
-                MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, onClickListener);
-            } else {
-                MaintenancePage.setMaintenancePageBaseActivity(this, onClickListener);
-            }
-        }
-    }
-
-    /**
+    /*
      * ########## CHECKOUT HEADER ##########
      */
 

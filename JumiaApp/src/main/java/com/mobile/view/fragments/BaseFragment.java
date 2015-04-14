@@ -750,6 +750,19 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         getBaseActivity().dismissProgress();
     }
 
+
+    protected void showNoNetworkWarning() {
+        getBaseActivity().warningFactory.showWarning(WarningFactory.NO_INTERNET);
+        hideActivityProgress();
+        showFragmentContentContainer();
+    }
+
+    protected void showUnexpectedErrorWarning() {
+        getBaseActivity().warningFactory.showWarning(WarningFactory.PROBLEM_FETCHING_DATA_ANIMATION);
+        showFragmentContentContainer();
+        hideActivityProgress();
+    }
+
     /**
      * Set the inflated stub
      * @param stub The view stub
