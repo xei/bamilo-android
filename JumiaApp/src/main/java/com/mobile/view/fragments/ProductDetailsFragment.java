@@ -1112,13 +1112,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private void executeAddProductToCart() {
         ProductSimple simple = getSelectedSimple();
-        if (simple == null && !DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
-            showChooseReminder();
-            isAddingProductToCart = false;
-            return;
-        } else if (simple == null) {
+        if (simple == null) {
 //            getBaseActivity().showWarningVariation(true);
-            isAddingProductToCart = false;
+            showVariantsDialog();
             return;
         }
 
@@ -1822,7 +1818,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private void showVariantsDialog() {
         try {
             getBaseActivity().showWarningVariation(false);
-            String title = getString(R.string.product_variance_choose);
+            String title = getString(R.string.campaign_choose_size);
             dialogListFragment = DialogListFragment.newInstance(this,
                     VARIATION_PICKER_ID,
                     title,
@@ -1851,6 +1847,15 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 //        updateStockInfo();
         displayPriceInfoOverallOrForSimple();
 
+        if(isAddingProductToCart) {
+            executeAddProductToCart();
+        }
+
+    }
+
+    @Override
+    public void onDismiss() {
+        isAddingProductToCart = false;
     }
 
     IResponseCallback responseCallback = new IResponseCallback() {
