@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -22,6 +21,8 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Shops in shop Fragment. Created by Sergio Pereira on 3/4/15.
@@ -98,6 +99,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         if (arguments != null) {
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
+            Log.i(TAG, "RECEIVED DATA: " + mTitle + " " + mUrl);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
