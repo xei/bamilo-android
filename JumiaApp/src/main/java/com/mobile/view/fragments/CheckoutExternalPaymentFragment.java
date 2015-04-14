@@ -312,15 +312,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "NO PAYMENT METHOD DEFINED");
             return;
         }
-
-        Log.i(TAG, "trackPaymentMethod : payment method : " + JumiaApplication.INSTANCE.getPaymentMethodForm().getName() + " email : " + JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-        params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, JumiaApplication.INSTANCE.getPaymentMethodForm().getName());
-
-        TrackerDelegator.trackPaymentMethod(params);
-
         Log.d(TAG, "Loading Url: " + paymentUrl);
+        // Track
+        String userId = JumiaApplication.CUSTOMER.getIdAsString();
+        String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
+        String payment = JumiaApplication.INSTANCE.getPaymentMethodForm().getName();
+        TrackerDelegator.trackPaymentMethod(userId, email, payment);
 
         List<NameValuePair> parameters = new ArrayList<>();
 

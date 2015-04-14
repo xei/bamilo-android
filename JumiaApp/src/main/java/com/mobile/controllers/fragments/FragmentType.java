@@ -64,17 +64,25 @@ public enum FragmentType {
     WRITE_REVIEW_SELLER;
 
     private int id;
-    private static String DIVIDER = ":";
+    private final static String DIVIDER = ":";
 
     @Override
     public String toString() {
-        return name() + ((id != 0) ? DIVIDER+id : "");
+        return name() + (id != 0 ? DIVIDER + id : "");
     }
 
+    /**
+     * Get id associated to type.
+     * @return int
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Associate an id to type.
+     * @param id The fragment id
+     */
     public void setId(int id) {
         this.id = id;
     }
@@ -87,9 +95,7 @@ public enum FragmentType {
      */
     public static FragmentType getValue(String tag){
         String[] strings = tag.split(DIVIDER);
-        FragmentType fragmentType = FragmentType.valueOf(strings[0]);
-//        fragmentType.id = Integer.getInteger(strings[1]);
-        return fragmentType;
+        return FragmentType.valueOf(strings[0]);
     }
 
 }

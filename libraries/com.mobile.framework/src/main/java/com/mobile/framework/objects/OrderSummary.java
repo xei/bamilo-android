@@ -123,6 +123,7 @@ public class OrderSummary implements IJSONSerializable, Parcelable {
 				}
             } else {
             	mPaymentMethod = jsonOrder.optString(RestConstants.JSON_ORDER_PAYMENT_METHOD_TAG);
+				Log.d(TAG, "PAY METHOD: " + mPaymentMethod);
             }
         }
         // Get billing address

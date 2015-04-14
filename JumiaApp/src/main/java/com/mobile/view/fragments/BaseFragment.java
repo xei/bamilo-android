@@ -672,11 +672,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     public void gotoOldCheckoutMethod(BaseActivity activity, String email, String error) {
         Log.w(TAG, "WARNING: GOTO WEB CHECKOUT");
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.EMAIL_KEY, email);
-        params.putString(TrackerDelegator.ERROR_KEY, error);
-        TrackerDelegator.trackNativeCheckoutError(params);
-
+        // Tracking
+        String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+        TrackerDelegator.trackNativeCheckoutError(userId, email, error);
         // Warning user
         Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
         // Remove native checkout

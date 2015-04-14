@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.RemoteException;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -52,7 +51,6 @@ import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.SearchSuggestion;
 import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.TrackingEvent;
@@ -69,6 +67,7 @@ import com.mobile.helpers.search.GetSearchSuggestionHelper;
 import com.mobile.helpers.session.GetLoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.CheckVersion;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.MyProfileActionProvider;
 import com.mobile.utils.NavigationAction;
@@ -148,8 +147,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     public ActionBarDrawerToggle mDrawerToggle;
 
-    private boolean isRegistered = false;
-
     private View mWarningBar;
 
     private final int titleResId;
@@ -186,6 +183,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     private long mLaunchTime;
 
     public MenuItem mSearchMenuItem;
+
+    public static KeyboardState currentAdjustState;
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
@@ -254,8 +253,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         setupContentViews();
         // Update the content view if initial country selection
         updateContentViewsIfInitialCountrySelection();
-
-        isRegistered = true;
         // Set main layout
         setAppContentLayout();
         // Set title in AB or TitleBar
@@ -296,15 +293,6 @@ public abstract class BaseActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
-
-        if (!isRegistered) {
-            // OLD FRAMEWORK
-            /**
-             * Register service callback
-             */
-            JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
-            isRegistered = true;
-        }
 
         // Disabled for Samsung and Blackberry (check_version_enabled)
         CheckVersion.run(getApplicationContext());
@@ -376,9 +364,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
-        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
         JumiaApplication.INSTANCE.setLoggedIn(false);
-        isRegistered = false;
         // Tracking
         TrackerDelegator.trackCloseApp();
     }
@@ -1918,38 +1904,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         return false;
     }
 
-
-    /**
-     * Confirm backPress to exit application
-     */
-    public Boolean exitApplication() {
-
-        dialog = DialogGenericFragment.newInstance(false,
-                true,
-                null, // no
-                // title
-                getString(R.string.logout_text_question), getString(R.string.no_label),
-                getString(R.string.yes_label), new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismissAllowingStateLoss();
-                        int id = v.getId();
-                        /*
-                        if (id == R.id.button1) {
-                            // fragC.popLastEntry();
-                        } else
-                         */
-                        if (id == R.id.button2) {
-                            finish();
-                        }
-
-                    }
-                });
-        dialog.show(getSupportFragmentManager(), null);
-        return false;
-    }
-
     /**
      * Method used to control the double back pressed
      *
@@ -1974,66 +1928,6 @@ public abstract class BaseActivity extends ActionBarActivity {
                 backPressedOnce = false;
             }
         }, TOAST_LENGTH_SHORT);
-    }
-
-    /**
-     * Requests and Callbacks methods
-     */
-
-    /**
-     * Callback which deals with the IRemoteServiceCallback
-     */
-    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() {
-
-        @Override
-        public void getError(Bundle response) throws RemoteException {
-            Log.i(TAG, "Set target to handle error");
-            handleError(response);
-        }
-
-        @Override
-        public void getResponse(Bundle response) throws RemoteException {
-            handleResponse(response);
-        }
-    };
-
-    public static KeyboardState currentAdjustState;
-
-    /**
-     * Handles correct responses
-     *
-     * @param bundle
-     */
-    private void handleResponse(Bundle bundle) {
-
-        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
-        // Log.i(TAG, "code1removing callback from request type : "+
-        // bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+
-        // " size is : "
-        // +JumiaApplication.INSTANCE.responseCallbacks.size());
-        // Log.i(TAG, "code1removing callback with id : "+ id);
-        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
-            // Log.i(TAG, "code1removing removed callback with id : "+ id);
-            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestComplete(bundle);
-        }
-        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
-    }
-
-    /**
-     * Handles error responses
-     *
-     * @param bundle
-     */
-    private void handleError(Bundle bundle) {
-        String id = bundle.getString(Constants.BUNDLE_MD5_KEY);
-        // Log.i(TAG, "code1removing callback from request type : "+
-        // bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
-        // Log.i(TAG, "code1removing callback with id : "+ id);
-        if (JumiaApplication.INSTANCE.responseCallbacks.containsKey(id)) {
-            // Log.i(TAG, "code1removing removed callback with id : "+ id);
-            JumiaApplication.INSTANCE.responseCallbacks.get(id).onRequestError(bundle);
-        }
-        JumiaApplication.INSTANCE.responseCallbacks.remove(id);
     }
 
     /**
@@ -2273,10 +2167,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         // CHECKOUT_BILLING
         if (id == R.id.checkout_header_step_2 && !view.isSelected()) {
             // Validate back stack
-
-            if(!popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString()) &&
-                    fragmentController.hasEntry(FragmentType.CREATE_ADDRESS.toString())){
-                removeAllCheckoutEntries();
+            if(!popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString()) && fragmentController.hasEntry(FragmentType.CREATE_ADDRESS.toString())){
+                removeAllNativeCheckoutFromBackStack();
                 onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
 
@@ -2290,61 +2182,13 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     /**
-     * Remove all checkout entries to call the base of checkout
-     *
-     * @author sergiopereira
-     */
-    @Deprecated
-    private void removeCheckoutEntries() {
-        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.PAYMENT_METHODS.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.SHIPPING_METHODS.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ADDRESSES.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.CREATE_ADDRESS.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.EDIT_ADDRESS.toString());
-    }
-
-    /**
-     * Remove all checkout entries to call the base of checkout
-     *
-     * @author ricardosoares
-     */
-    private void removeAllCheckoutEntries() {
-        // Native Checkout
-        String[] tags = {    FragmentType.PAYMENT_METHODS.toString(), FragmentType.SHIPPING_METHODS.toString(),  FragmentType.MY_ADDRESSES.toString(),
-                FragmentType.CREATE_ADDRESS.toString(), FragmentType.EDIT_ADDRESS.toString() };
-
-        // Remove tags
-        FragmentController.getInstance().removeAllEntriesWithTag(tags);
-    }
-
-    /**
-     * Method used to remove all native checkout entries from the back stack on the Fragment Controller
-     * Note: Updated this method if you add a new native checkout stepremoveAllCheckoutEntries
-     * @author sergiopereira
-     */
-    @Deprecated
-    protected void removeNativeCheckoutFromBackStack() {
-        // Native Checkout
-        FragmentType[] type = { FragmentType.CHECKOUT_THANKS,   FragmentType.MY_ORDER,      FragmentType.PAYMENT_METHODS,
-                FragmentType.SHIPPING_METHODS,  FragmentType.MY_ADDRESSES,  FragmentType.CREATE_ADDRESS,
-                FragmentType.EDIT_ADDRESS,         FragmentType.ABOUT_YOU };
-        // Remove tags
-        for (FragmentType fragmentType : type) FragmentController.getInstance().removeAllEntriesWithTag(fragmentType.toString());
-    }
-
-    /**
      * Method used to remove all native checkout entries from the back stack on the Fragment Controller
      * Note: This method must be updated in case of adding more screens to native checkout.
      * @author ricardosoares
      */
     public void removeAllNativeCheckoutFromBackStack(){
-        // Native Checkout
-        String[] tags = { FragmentType.CHECKOUT_THANKS.toString(),   FragmentType.MY_ORDER.toString(),      FragmentType.PAYMENT_METHODS.toString(),
-                FragmentType.SHIPPING_METHODS.toString(),  FragmentType.MY_ADDRESSES.toString(),  FragmentType.CREATE_ADDRESS.toString(),
-                FragmentType.EDIT_ADDRESS.toString(),         FragmentType.ABOUT_YOU.toString() };
-
-        // Remove tags
-        FragmentController.getInstance().removeAllEntriesWithTag(tags);
+        // Remove all native checkout tags
+        FragmentController.getInstance().removeAllEntriesWithTag(CheckoutStepManager.getAllNativeCheckout());
     }
 
     /*
