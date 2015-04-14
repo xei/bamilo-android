@@ -122,7 +122,7 @@ public class RecentlyViewedFragment extends FavouritesFragment implements IRespo
      * @author Andre Lopes
      */
     protected void showEmpty() {
-        getBaseActivity().showWarningVariation(false);
+        getBaseActivity().warningFactory.hideWarning();
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(null);
         mAddAllToCartButton.setVisibility(View.GONE);

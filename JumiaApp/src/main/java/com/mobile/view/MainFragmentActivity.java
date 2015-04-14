@@ -258,7 +258,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     @Override
     public void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack) {
         //
-        showWarningVariation(false);
+        warningFactory.hideWarning();
         // 
         hideKeyboard();
 

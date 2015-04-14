@@ -76,7 +76,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
-import com.mobile.utils.ui.UIUtils;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.HomeFragment;
 import com.mobile.view.fragments.NavigationFragment;
@@ -117,8 +117,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
-    private static final int WARNING_LENGTH = 4000;
-
     // REMOVED FINAL ATRIBUTE
     private NavigationAction action;
 
@@ -148,8 +146,6 @@ public abstract class BaseActivity extends ActionBarActivity {
     public ActionBarDrawerToggle mDrawerToggle;
 
     private boolean isRegistered = false;
-
-    private View mWarningBar;
 
     private final int titleResId;
 
@@ -183,6 +179,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     private long mLaunchTime;
 
     public MenuItem mSearchMenuItem;
+
+    public WarningFactory warningFactory;
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
@@ -535,13 +533,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Get the application container
         contentContainer = findViewById(R.id.rocket_app_content);
         // Warning layout
-        mWarningBar = findViewById(R.id.warning);
-        mWarningBar.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showWarningVariation(false);
-            }
-        });
+        try {
+            warningFactory = new WarningFactory(findViewById(R.id.warning));
+        } catch(IllegalStateException ex){
+            Log.e(TAG,ex.getLocalizedMessage(),ex);
+        }
     }
     
     /*
@@ -1528,60 +1524,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSupportActionBar.setTitle("");
     }
 
-    /**
-     * ################# WARNING BAR #################
-     */
-
-    /**
-     * Show or hide warning message with image
-     */
-    public final void showWarning(boolean show) {
-        if(mWarningBar != null){
-            mWarningBar.clearAnimation();
-            if (show) {
-                findViewById(R.id.warning_image).setVisibility(View.VISIBLE);
-            }
-            mWarningBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    /**
-     * Show warning message with image and animation
-     */
-    public void showWarning(int message) {
-        if (mWarningBar != null && mWarningBar.getVisibility() != View.VISIBLE) {
-            ((TextView) findViewById(R.id.warning_text)).setText(message);
-            findViewById(R.id.warning_image).setVisibility(View.VISIBLE);
-            UIUtils.animateFadeInAndOut(this, mWarningBar, WARNING_LENGTH);
-        }
-    }
-
-    /**
-     * Show warning message without image
-     */
-    public void showWarningNoImage(int message) {
-        if(mWarningBar != null){
-            mWarningBar.clearAnimation();
-            ((TextView) findViewById(R.id.warning_text)).setText(message);
-            findViewById(R.id.warning_image).setVisibility(View.GONE);
-            mWarningBar.setVisibility(View.VISIBLE);
-        }
-    }
-
-    /**
-     * Show warning variations message
-     */
-    public void showWarningVariation(boolean show) {
-        if(mWarningBar != null){
-            mWarningBar.clearAnimation();
-            if(show){
-                ((TextView) findViewById(R.id.warning_text)).setText(R.string.product_variance_choose_error);
-                findViewById(R.id.warning_image).setVisibility(View.GONE);
-            }
-            mWarningBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-    }
-
     private void setAppContentLayout() {
         if (contentLayoutId == 0) {
             return;
@@ -1677,6 +1619,174 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Hide progress
         dismissProgress();
     }
+
+    /**
+     * Handles a successful event and reflects necessary changes on the UI.
+     *
+     * @param event
+     *            The successful event with {@link ResponseEvent#getSuccess()} == <code>true</code>
+     */
+
+//    public void handleSuccessEvent(Bundle bundle) {
+//        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+//
+//        switch (eventType) {
+//        case GET_SHOPPING_CART_ITEMS_EVENT:
+//        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+//        case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+//        case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+//            updateCartInfo();
+//            break;
+//        case LOGOUT_EVENT:
+//            Log.i(TAG, "LOGOUT EVENT");
+//            /*
+//             * NOTE: Others sign out methods are performed in {@link LogOut}.
+//             */
+//            // Track logout
+//            TrackerDelegator.trackLogoutSuccessful();
+//            // Goto Home
+//            onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+//            // Hide progress
+//            dismissProgress();
+//            break;
+//        case LOGIN_EVENT:
+//            JumiaApplication.INSTANCE.setLoggedIn(true);
+//            Bundle b = new Bundle();
+//            b.putBoolean(Constants.BUNDLE_PRIORITY_KEY, false);
+//            triggerContentEventWithNoLoading(new GetShoppingCartItemsHelper(), b, mIResponseCallback);
+//            break;
+//        default:
+//            break;
+//        }
+//    }
+
+    /**
+     * Handles a failed event and shows dialogs to the user.
+     *
+     * @param event
+     *            The failed event with {@link ResponseEvent#getSuccess()} == <code>false</code>
+     */
+//    @SuppressWarnings("unchecked")
+//    public boolean handleErrorEvent(final Bundle bundle) {
+//
+//        Log.i(TAG, "ON HANDLE ERROR EVENT");
+//
+//        final EventType eventType = (EventType) bundle
+//                .getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+//        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+//
+//        if (eventType == EventType.LOGIN_EVENT) {
+//            JumiaApplication.INSTANCE.setLoggedIn(false);
+//            JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
+//            updateNavigationMenu();
+//        }
+//
+//        if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
+//            return false;
+//        }
+//
+//        HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle
+//                .getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+//        if (errorCode == null) {
+//            return false;
+//        }
+//        if (errorCode.isNetworkError()) {
+//            switch (errorCode) {
+//            case SSL:
+//            case IO:
+//            case CONNECT_ERROR:
+//            case TIME_OUT:
+//            case HTTP_STATUS:
+//            case NO_NETWORK:
+//                createNoNetworkDialog(eventType);
+//                return true;
+//            case SERVER_IN_MAINTENANCE:
+//                setLayoutMaintenance(eventType);
+//                return true;
+//            case REQUEST_ERROR:
+//                List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+//                String dialogMsg = "";
+//                if (validateMessages == null || validateMessages.isEmpty()) {
+//                    validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
+//                }
+//                if (validateMessages != null) {
+//                    for (String message : validateMessages) {
+//                        dialogMsg += message + "\n";
+//                    }
+//                } else {
+//                    for (Entry<String, ? extends List<String>> entry : errorMessages.entrySet()) {
+//                        dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
+//                    }
+//                }
+//                if (dialogMsg.equals("")) {
+//                    dialogMsg = getString(R.string.validation_errortext);
+//                }
+//                // showContentContainer();
+//                dialog = DialogGenericFragment.newInstance(true, true, false,
+//                        getString(R.string.validation_title), dialogMsg,
+//                        getResources().getString(R.string.ok_label), "", new OnClickListener() {
+//
+//                            @Override
+//                            public void onClick(View v) {
+//                                int id = v.getId();
+//                                if (id == R.id.button1) {
+//                                    dialog.dismiss();
+//                                }
+//                            }
+//                        });
+//                
+//                dialog.show(getSupportFragmentManager(), null);
+//                return true;
+//            default:
+//                createNoNetworkDialog(eventType);
+//                return true;
+//            }
+//
+//        }
+//        return false;
+//
+//    }
+
+//    private void createNoNetworkDialog(final EventType eventType) {
+//        // Remove dialog if exist
+//        if (dialog != null) {
+//            try {
+//                dialog.dismiss();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        dialog = DialogGenericFragment.createNoNetworkDialog(this,
+//                new OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        JumiaApplication.INSTANCE.sendRequest(JumiaApplication.INSTANCE
+//                                .getRequestsRetryHelperList().get(eventType),
+//                                JumiaApplication.INSTANCE.getRequestsRetryBundleList().get(eventType),
+//                                JumiaApplication.INSTANCE.getRequestsResponseList().get(eventType));
+//                        if (dialog != null) dialog.dismiss();
+//                        dialog = null;
+//                    }
+//                },
+//                new OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        if (dialog != null) dialog.dismiss();
+//                        dialog = null;
+//                    }
+//                },
+//                false);
+//
+//        try {
+//            dialog.show(getSupportFragmentManager(), null);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
 
     /**
      * Set action

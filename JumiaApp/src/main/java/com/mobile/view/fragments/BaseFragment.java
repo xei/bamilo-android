@@ -49,6 +49,7 @@ import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.utils.ui.UIUtils;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
@@ -309,8 +310,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
 
         if (getBaseActivity() != null) {
-            getBaseActivity().showWarning(false);
-            getBaseActivity().showWarningVariation(false);
+            getBaseActivity().warningFactory.hideWarning();
         }
 
         /**
@@ -750,20 +750,15 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         getBaseActivity().dismissProgress();
     }
 
-    /**
-     * Show the no network in the warning bar
-     */
+
     protected void showNoNetworkWarning() {
-        getBaseActivity().showWarning(R.string.no_internet_access_warning_title);
+        getBaseActivity().warningFactory.showWarning(WarningFactory.NO_INTERNET);
         hideActivityProgress();
         showFragmentContentContainer();
     }
 
-    /**
-     * Show the unexpected error in the warning bar
-     */
     protected void showUnexpectedErrorWarning() {
-        getBaseActivity().showWarning(R.string.server_error);
+        getBaseActivity().warningFactory.showWarning(WarningFactory.PROBLEM_FETCHING_DATA_ANIMATION);
         showFragmentContentContainer();
         hideActivityProgress();
     }
@@ -848,7 +843,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mFallBackView, mMaintenanceView);
     }
 
-
     /**
      * Set no network view.
      * @param inflated The inflated view
@@ -860,7 +854,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Hide other stubs
         UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mErrorView, mFallBackView, mMaintenanceView, mLoadingView);
     }
-
+    
     /**
      * Set unexpected error view.
      * @param inflated The inflated view
