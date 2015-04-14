@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -63,10 +64,6 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
                 KeyboardState.ADJUST_CONTENT);
     }
 
-    @Override
-    public void sendValuesToFragment(Object values) {
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -105,10 +102,10 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
         // Get tab pager
         mProductInfoTabStrip = (SlidingTabLayout) view.findViewById(R.id.product_info_pager_tab);
 
-        int layout = R.layout.tab_simple_item;
-//        if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
-//            layout = R.layout.tab_simple_half_item;
-//        }
+        int layout = R.layout.tab_simple_half_item;
+        if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
+            layout = R.layout.tab_simple_item;
+        }
         mProductInfoTabStrip.setCustomTabView(layout, R.id.tab);
         // Validate the current view
         mProductInfoPagerAdapter = (MyOrdersPagerAdapter) mProductInfoPager.getAdapter();

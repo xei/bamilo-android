@@ -286,19 +286,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         parent.addView(theInflatedView);
     }
 
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
-     */
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
-        Log.d(TAG,"RETRY");
-        onResume();        
-    };
-    
-    
-    
     IResponseCallback responseCallback = new IResponseCallback() {
 
         @Override
