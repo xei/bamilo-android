@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Classm used to shoe the categories in the navigation container
+ * Class used to shoe the categories in the navigation container
  * @author sergiopereira
  */
 public class NavigationCategoryFragment extends BaseFragment implements OnItemClickListener, IResponseCallback {
@@ -120,7 +120,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Get inflater
         mInflater = LayoutInflater.from(getBaseActivity());
         // Get category list view
-        mCategoryList = (ListView) getView().findViewById(R.id.nav_sub_categories_grid);
+        mCategoryList = (ListView) view.findViewById(R.id.nav_sub_categories_grid);
         
         // Validation to show content
         // Case cache
@@ -133,7 +133,10 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
                 triggerGetCategories(mCategoryKey);
         }
         // Case recover from background
-        else { Log.w(TAG, "APPLICATION IS ON BIND PROCESS"); showRetry(); }
+        else {
+            Log.w(TAG, "APPLICATION IS ON BIND PROCESS");
+            showRetry();
+        }
     }
 
     /*
@@ -413,8 +416,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());
-        // Remove entries until Home
-        FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
         // Goto Catalog
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }

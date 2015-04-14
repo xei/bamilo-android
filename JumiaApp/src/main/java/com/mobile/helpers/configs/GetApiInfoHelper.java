@@ -4,12 +4,10 @@
  */
 package com.mobile.helpers.configs;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.framework.database.CategoriesTableHelper;
-import com.mobile.framework.database.DarwinDatabaseHelper;
 import com.mobile.framework.database.ImageResolutionTableHelper;
 import com.mobile.framework.database.SectionsTablesHelper;
 import com.mobile.framework.enums.RequestType;
@@ -24,6 +22,7 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,8 +44,6 @@ public class GetApiInfoHelper extends BaseHelper {
     private static String TAG = GetApiInfoHelper.class.getSimpleName();
     
     private static final EventType EVENT_TYPE = EventType.GET_API_INFO;
-    
-    public static final String API_INFO_OUTDATEDSECTIONS = "outDatedSections";
 
     /*
      * (non-Javadoc)
@@ -71,21 +68,23 @@ public class GetApiInfoHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "ON PARSE RESPONSE");
-        
+        // Validate sections
         JSONArray sessionJSONArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
         ArrayList<Section> outDatedSections = null;
         if (sessionJSONArray != null) {
+            // Get old sections
             List<Section> oldSections = SectionsTablesHelper.getSections();
+            // Get new sections
             List<Section> sections = parseSections(sessionJSONArray);
-            outDatedSections = checkSections(oldSections,sections);
+            // Get out dated sections
+            outDatedSections = checkSections(oldSections, sections);
+            // Save all new sections
             SectionsTablesHelper.saveSections(sections);
         }
-        
-        if (outDatedSections != null && outDatedSections.size() != 0) {
+        // Validate out dated sections
+        if (CollectionUtils.isNotEmpty(outDatedSections)) {
             clearOutDatedMainSections(outDatedSections, bundle);
         }
-
-        
         // VERSION
         VersionInfo info = new VersionInfo();
         try {
@@ -93,31 +92,6 @@ public class GetApiInfoHelper extends BaseHelper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        
-        /**
-         * FIXME : Created a new new method. Needs more tests.
-         * @author sergiopereira
-         */ 
-//      JSONArray sessionJSONArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
-//      // Get new sections
-//      List<Section> sections = new ArrayList<Section>();
-//      if (sessionJSONArray != null) sections = parseSections(sessionJSONArray);
-//      // Get old sections
-//      List<Section> oldSections = SectionsTablesHelper.getSections();
-//      // Get out dated sections
-//      ArrayList<Section> outDatedSections = checkSections(oldSections, sections);
-//      
-//      // Validate sections out of dated
-//      if (CollectionUtils.isEmpty(oldSections)) {
-//          Log.i(TAG, "SECTIONS: EMPTY");
-//          SectionsTablesHelper.saveSections(sections);
-//      } else if (CollectionUtils.isNotEmpty(outDatedSections)) {
-//          Log.i(TAG, "SECTIONS: OUT DATED");
-//          clearOutDatedMainSections(outDatedSections, bundle);
-//      } else {
-//          Log.i(TAG, "SECTIONS: DATED");
-//      }
-        
         JumiaApplication.INSTANCE.setMobApiVersionInfo(info);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, info);
@@ -131,58 +105,58 @@ public class GetApiInfoHelper extends BaseHelper {
      */
     private void clearOutDatedMainSections(List<Section> sections, Bundle bundle) {
         Log.d(TAG, "ON CLEAR OUT DATED SECTIONS");
-
-        SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-
+        // Update each outdated section
         for (Section section : sections) {
             // Case teasers
             switch (section.getName()) {
-                case Section.SECTION_NAME_TEASERS:
-                    RestClientSingleton.getSingleton(JumiaApplication.INSTANCE).removeEntry(section.getUrl());
-                    break;
-                // Case brands
-                case Section.SECTION_NAME_BRANDS:
-                    // BrandsTableHelper.clearBrands(db);
-                    break;
-                // Case categories
-                case Section.SECTION_NAME_CATEGORIES:
-                    CategoriesTableHelper.clearCategories(db);
-                    break;
-                // Case segments
-                case Section.SECTION_NAME_SEGMENTS:
-                    // SegmentTeasersTableHelper.clearSegmentTeasers(db);
+                /*
+                // Case zip codes
+                case Section.SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES:
+                    ZipCodesTableHelper.clearZipCodes(db);
                     break;
                 // Case static blocks
                 case Section.SECTION_NAME_STATIC_BLOCKS:
-                    //StaticBlocksTableHelper.clearStaticBlocks(db);
+                    StaticBlocksTableHelper.clearStaticBlocks(db);
+                    break;
+                // Case segments
+                case Section.SECTION_NAME_SEGMENTS:
+                    SegmentTeasersTableHelper.clearSegmentTeasers(db);
+                    break;
+                // Case brands
+                case Section.SECTION_NAME_BRANDS:
+                    BrandsTableHelper.clearBrands(db);
+                    break;
+                 */
+                case Section.SECTION_NAME_TEASERS:
+                    RestClientSingleton.getSingleton(JumiaApplication.INSTANCE).removeEntry(section.getUrl());
+                    break;
+                // Case categories
+                case Section.SECTION_NAME_CATEGORIES:
+                    CategoriesTableHelper.clearCategories();
                     break;
                 // Case image resolutions
                 case Section.SECTION_NAME_IMAGE_RESOLUTIONS:
-                    ImageResolutionTableHelper.clearImageResolutions(db);
-                    break;
-                // Case zip codes
-                case Section.SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES:
-                    // ZipCodesTableHelper.clearZipCodes(db);
+                    ImageResolutionTableHelper.clearImageResolutions();
                     break;
                 // Case country configs
-                case Section.SECTION_NAME_COUNTRY_CONFIGS:
-                    bundle.putBoolean(Section.SECTION_NAME_COUNTRY_CONFIGS, true);
+                case Section.SECTION_NAME_CONFIGURATIONS:
+                    bundle.putBoolean(Section.SECTION_NAME_CONFIGURATIONS, true);
                     break;
             }
         }
     }
+
     /**
-     * Parses the json array containing the
-     * 
-     * @param sessionJSONArray
-     * @return
+     * Parses the json array containing sections.
+     * @param jsonArray The section json array
+     * @return The list of section
      */
-    private ArrayList<Section> parseSections(JSONArray sessionJSONArray) {
+    private ArrayList<Section> parseSections(JSONArray jsonArray) {
         Log.d(TAG, "ON PARSE SECTIONS");
-        int arrayLength = sessionJSONArray.length();
+        int arrayLength = jsonArray.length();
         ArrayList<Section> sections = new ArrayList<>();
         for (int i = 0; i < arrayLength; ++i) {
-            JSONObject sessionObject = sessionJSONArray.optJSONObject(i);
+            JSONObject sessionObject = jsonArray.optJSONObject(i);
             Section section = new Section();
             section.initialize(sessionObject);
             sections.add(section);
@@ -199,57 +173,38 @@ public class GetApiInfoHelper extends BaseHelper {
      * @return
      */
     public ArrayList<Section> checkSections(List<Section> oldSections, List<Section> newSections) {
-        Log.d(TAG, "ON CHECK SECTIONS");
+        Log.i(TAG, "ON CHECK SECTIONS");
         ArrayList<Section> outdatedSections = new ArrayList<>();
-//        if (!oldSections.isEmpty()) {
-//            for (Section oldSection : oldSections) {
-//                Log.d(TAG, "OLD SECTION: " + oldSection.getName() + " " + oldSection.getMd5());
-//                Section newSection = getSection(oldSection.getName(), newSections);
-//                // Case MD5 is different
-//                if (newSection != null && !oldSection.getMd5().equals(newSection.getMd5())) {
-//                    outdatedSections.add(newSection);
-//                }
-//            }
-
-        // 
-        if (!oldSections.isEmpty()) {
+        // Case is first time
+        if (CollectionUtils.isEmpty(oldSections)) {
+            outdatedSections.addAll(newSections);
+        }
+        // Default case
+        else {
             // For each new section
             for (Section newSection : newSections) {
                 // Get the saved section
                 Section savedSection = getSection(newSection.getName(), oldSections);
                 // Case MD5 is different
                 if (savedSection != null && !savedSection.getMd5().equals(newSection.getMd5())) {
-                    Log.d(TAG, "SECTION IS OUT DATED: " + newSection.getName() + " " + newSection.getMd5());
+                    Log.i(TAG, "SECTION IS OUT DATED: " + newSection.getName() + " " + newSection.getMd5());
                     outdatedSections.add(newSection);
-                // Case section is not present    
-                } else if (savedSection == null){
-                    Log.d(TAG, "NEW SECTION IS NOT PRESENT: " + newSection.getName() + " " + newSection.getMd5());
+                }
+                // Case section is not present
+                else if (savedSection == null) {
+                    Log.i(TAG, "NEW SECTION IS NOT PRESENT: " + newSection.getName() + " " + newSection.getMd5());
                     ArrayList<Section> temp = new ArrayList<>();
                     temp.add(newSection);
                     SectionsTablesHelper.saveSections(temp);
                     outdatedSections.add(newSection);
+
+                }
                 // Case section MD5 is the same
-                } else {
-                    Log.d(TAG, "SECTION IS DATED: " + newSection.getName() + " " + newSection.getMd5());
+                else {
+                    Log.i(TAG, "SECTION IS DATED: " + newSection.getName() + " " + newSection.getMd5());
                 }
             }
-        
-        } else {
-            outdatedSections.addAll(newSections);
         }
-        
-        for (Section section : outdatedSections) {
-            Log.d(TAG, "OUT DATED SECTIONS: " + section.getName());
-        }
-        
-        /**
-         * Used with new method
-         * @author sergiopereira
-         */ 
-        //else outdatedSections.addAll(newSections);
-        //for (Section section : outdatedSections) {
-        //    Log.d(TAG, "OUT DATED SECTIONS: " + section.getName());
-        //}
 
         return outdatedSections;
     }

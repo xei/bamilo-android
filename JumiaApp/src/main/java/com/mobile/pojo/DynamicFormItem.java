@@ -32,11 +32,11 @@ import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.forms.Form;
 import com.mobile.forms.FormField;
 import com.mobile.forms.IFormField;
 import com.mobile.framework.Darwin;
+import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.InputType;
 import com.mobile.utils.RadioGroupLayout;
@@ -1094,7 +1094,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
@@ -1162,7 +1162,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
@@ -1239,7 +1239,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
@@ -1521,7 +1521,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
@@ -1628,7 +1628,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
                 : View.GONE);
@@ -1679,7 +1679,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.mandatoryControl);
@@ -1746,7 +1746,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
 
@@ -1820,7 +1820,7 @@ public class DynamicFormItem {
     private SharedPreferences getSharedPref(){
         if(mSharedPrefs == null){
             //Validate if country configs allows rating and review, only show write review fragment if both are allowed
-            mSharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            mSharedPrefs = JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         }
         return mSharedPrefs;
     }
@@ -2083,7 +2083,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_basic));
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
         

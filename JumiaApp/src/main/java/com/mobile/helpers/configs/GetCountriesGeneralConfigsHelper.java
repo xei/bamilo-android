@@ -10,7 +10,6 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.database.CountriesConfigsTableHelper;
 import com.mobile.framework.enums.RequestType;
@@ -107,7 +106,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         
         Log.i(TAG, "code1configs " + sessionJSONArray == null ? "null" : sessionJSONArray.toString());
         
-        SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Editor mEditor = sharedPrefs.edit();
         mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
         mEditor.apply();
@@ -129,7 +128,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         mCountries = JumiaApplication.INSTANCE.countriesAvailable;
         if(mCountries != null && mCountries.size() > 0){
             JumiaApplication.INSTANCE.countriesAvailable = mCountries;
-            SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor mEditor = sharedPrefs.edit();
             mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
             mEditor.apply();
@@ -154,7 +153,7 @@ public class GetCountriesGeneralConfigsHelper extends BaseHelper {
         mCountries = JumiaApplication.INSTANCE.countriesAvailable;
         if(mCountries != null && mCountries.size() > 0){
             JumiaApplication.INSTANCE.countriesAvailable = mCountries;
-            SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sharedPrefs =  JumiaApplication.INSTANCE.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             Editor mEditor = sharedPrefs.edit();
             mEditor.putBoolean(Darwin.KEY_COUNTRIES_CONFIGS_LOADED, true);
             mEditor.apply();

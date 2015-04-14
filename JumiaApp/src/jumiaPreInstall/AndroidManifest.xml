@@ -10,11 +10,12 @@
         <!-- ######################################## -->
 
         <!-- Injoo: 6ohr47 -->
+        <!-- Tigo: mkcqip -->
 
         <!-- PRE INSTALL -->
         <meta-data
             android:name="AdjustDefaultTracker"
-            android:value="6ohr47" />
+            android:value="mkcqip" />
 
     </application>
 

@@ -222,7 +222,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private void triggerClearCart() {
         Log.i(TAG, "TRIGGER: CHECKOUT FINISH");
         triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, this);
-        //triggerContentEventWithNoLoading(new SetVoucherHelper(), null, this);
     }
 
     private void trackPurchase() {
@@ -342,7 +341,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      */
     private void onClickSpannableString(View view) {
         // Remove all checkout process entries
-        super.removeNativeCheckoutFromBackStack();
+        getBaseActivity().removeAllNativeCheckoutFromBackStack();
         // Switch to track order
         Bundle bundle = new Bundle();
         // Validate orderNumber from tag

@@ -40,7 +40,7 @@ public class PurchaseItem implements Parcelable {
 	 * For WebCheckout
 	 */
 	public static List<PurchaseItem> parseItems(JSONObject itemsJson) {
-		List<PurchaseItem> items = new ArrayList<PurchaseItem>();
+		List<PurchaseItem> items = new ArrayList<>();
 
 		int indexBegin = 0;
 		while (!TextUtils.isEmpty(itemsJson.optString(String.valueOf(indexBegin)))) {

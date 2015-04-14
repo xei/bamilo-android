@@ -127,10 +127,10 @@ public class JumiaDataReceiverService extends WearableListenerService {
                     String title = dataMap.getString(EXTRA_A4STITLE);
                     String bigContent = dataMap.getString(EXTRA_A4SBIGCONTENT);
                     String content = dataMap.getString(EXTRA_A4SCONTENT);
-                    Log.e("WEAR", "bigContent:" + bigContent.toString());
-                    Log.e("WEAR", "content:" + content.toString());
+                    Log.e("WEAR", "bigContent:" + bigContent);
+                    Log.e("WEAR", "content:" + content);
                     Log.e("WEAR", "index:" + index);
-                    Log.e("WEAR", "title:" + title.toString());
+                    Log.e("WEAR", "title:" + title);
 
                     createNotification(index, title, content, dataMap);
 
@@ -193,22 +193,17 @@ public class JumiaDataReceiverService extends WearableListenerService {
         viewIntent.putExtra(EXTRA_INDEX, key);
         viewIntent.putExtra(EXTRA_DATAMAP, buildBundleForNotification(dataMap));
 
-        PendingIntent viewPendingIntent =
-                PendingIntent.getService(getApplicationContext(), 105, viewIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent viewPendingIntent = PendingIntent.getService(getApplicationContext(), 105, viewIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.small_icon)
-                        .setContentTitle(title)
-                        .setContentText(content)
-                        .setAutoCancel(true)
-                        .setLargeIcon(BitmapFactory.decodeResource(
-                                getApplicationContext().getResources(), R.drawable.background))
-                        .addAction(new NotificationCompat.Action.Builder(R.drawable.go_to_phone_00156,
-                                getApplicationContext().getString(R.string.common_open_on_phone), viewPendingIntent)
-                                .extend(new NotificationCompat.Action.WearableExtender()
-                                        .setAvailableOffline(false))
-                                .build());
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+        .setSmallIcon(R.drawable.small_icon)
+        .setContentTitle(title)
+        .setContentText(content)
+        .setAutoCancel(true)
+        .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.background))
+        .addAction(new NotificationCompat.Action.Builder(R.drawable.go_to_phone_00156, getApplicationContext().getString(R.string.common_open_on_phone), viewPendingIntent)
+                .extend(new NotificationCompat.Action.WearableExtender().setAvailableOffline(false))
+                .build());
         // Get an instance of the NotificationManager service
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         // Build the notification and issues it with notification manager.
@@ -223,8 +218,7 @@ public class JumiaDataReceiverService extends WearableListenerService {
     protected void showAnimation() {
         Intent openOnPhoneIntent = new Intent(this, ConfirmationActivity.class);
         openOnPhoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        openOnPhoneIntent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE,
-                ConfirmationActivity.OPEN_ON_PHONE_ANIMATION);
+        openOnPhoneIntent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.OPEN_ON_PHONE_ANIMATION);
         startActivity(openOnPhoneIntent);
     }
 
@@ -261,14 +255,11 @@ public class JumiaDataReceiverService extends WearableListenerService {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-
                     Log.i(TAG, "code1wear sendStarLoadingCatalog ");
-
                     PutDataMapRequest putRequest = PutDataMapRequest.create("/wearnotification");
                     Log.i(TAG, "code1wear building : " + putRequest.getUri().toString());
-                    //TODO uncomment
                     DataMap map = putRequest.getDataMap();
-//                    map.putString(EXTRA_CONTENT, searchTerm);
+                    //map.putString(EXTRA_CONTENT, searchTerm);
                     map.putLong(EXTRA_INDEX, System.currentTimeMillis());
                     for (String key : bundle.keySet()) {
                         if (bundle.get(key) != null) {
@@ -295,20 +286,17 @@ public class JumiaDataReceiverService extends WearableListenerService {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-
                     Log.i(TAG, "code1wear sendStarLoadingCatalog ");
-
                     PutDataMapRequest putRequest = PutDataMapRequest.create("/wearperformsearch");
                     Log.i(TAG, "code1wear building : " + putRequest.getUri().toString());
                     DataMap map = putRequest.getDataMap();
                     map.putString(EXTRA_SEARCH_TERM, searchTerm);
                     map.putLong(EXTRA_INDEX, System.currentTimeMillis());
-                    DataApi.DataItemResult result = Wearable.DataApi.putDataItem(CustomApplication.INSTANCE.getGoogleApiClient(), putRequest.asPutDataRequest()).await();
+                    Wearable.DataApi.putDataItem(CustomApplication.INSTANCE.getGoogleApiClient(), putRequest.asPutDataRequest()).await();
                 }
             }).start();
 
         } else {
-
             Message msg = new Message();
             msg.getData().putString("searchQuery", searchTerm);
             Log.i(TAG, "code1retry search :" + searchTerm);

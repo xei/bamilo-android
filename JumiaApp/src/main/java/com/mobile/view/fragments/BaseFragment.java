@@ -52,7 +52,6 @@ import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -76,7 +75,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public static final int RESTART_FRAGMENTS_DELAY = 500;
 
-    private static Field sChildFragmentManagerField;
+    // private static Field sChildFragmentManagerField;
 
     public static final Boolean IS_NESTED_FRAGMENT = true;
 
@@ -378,6 +377,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
     }
 
     /*
@@ -388,8 +388,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
-
         // Recycle bitmaps
         if (getView() != null) {
             unbindDrawables(getView());
@@ -570,14 +568,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return mainActivity;
     }
 
-    // TODO : Validate if is necessary
 
+
+    // TODO : Validate if is necessary
     /**
      * FIXES 
      * FATAL EXCEPTION: main
      * java.lang.IllegalStateException: No activity
      * see (http://stackoverflow.com/questions/14929907/causing-a-java-illegalstateexception-error-no-activity-only-when-navigating-to)
-     */
     static {
         Field f = null;
         try {
@@ -588,11 +586,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         sChildFragmentManagerField = f;
     }
+     */
 
     @Override
     public void onDetach() {
         super.onDetach();
-
+        /*
         // TODO : Validate if is necessary
         if (sChildFragmentManagerField != null) {
             try {
@@ -601,6 +600,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 Log.e(TAG, "Error setting mChildFragmentManager field", e);
             }
         }
+         */
     }
 
     /**
@@ -680,25 +680,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Warning user
         Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
         // Remove native checkout
-        removeNativeCheckoutFromBackStack();
+        getBaseActivity().removeAllNativeCheckoutFromBackStack();
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.CHECKOUT_BASKET);
         activity.onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Method used to remove all native checkout entries from the back stack on the Fragment Controller
-     * Note: Updated this method if you add a new native checkout step
-     * @author sergiopereira 
-     */
-    protected void removeNativeCheckoutFromBackStack() {
-        // Native Checkout
-        FragmentType[] type = { FragmentType.CHECKOUT_THANKS,   FragmentType.MY_ORDER,      FragmentType.PAYMENT_METHODS,
-                                FragmentType.SHIPPING_METHODS,  FragmentType.MY_ADDRESSES,  FragmentType.CREATE_ADDRESS,
-                                FragmentType.EDIT_ADDRESS,      FragmentType.POLL,          FragmentType.ABOUT_YOU };
-        // Remove tags
-        for (FragmentType fragmentType : type) FragmentController.getInstance().removeAllEntriesWithTag(fragmentType.toString());
     }
 
     /**
@@ -1236,7 +1222,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     private void onClickMaintenanceChooseCountry() {
         // Show Change country
-        FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
+        getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
         getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
     
