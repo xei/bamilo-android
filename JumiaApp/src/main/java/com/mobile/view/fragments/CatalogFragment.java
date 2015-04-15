@@ -67,8 +67,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private final static int EMPTY_CATALOG = 0;
 
-    private final static int ACTIVATE_TOP_BUTTON_IN_LINE = 10;
-
     private CatalogGridView mGridView;
 
     private TextView mSortButton;
@@ -615,7 +613,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         GridLayoutManager manager = (GridLayoutManager) mGridView.getLayoutManager();
         int columns = manager.getSpanCount();
         // Scroll faster until mark line
-        mGridView.scrollToPosition(columns * ACTIVATE_TOP_BUTTON_IN_LINE);
+        mGridView.scrollToPosition(columns * getResources().getInteger(R.integer.activate_go_top_buttom_line));
         // Scroll smooth until top position
         mGridView.post(new Runnable() {
             @Override
@@ -702,8 +700,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 // Set the goto top button
                 GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
                 int last = manager.findLastVisibleItemPosition();
-                // Show or hide top button after 4 arrow
-                if (last > mNumberOfColumns * ACTIVATE_TOP_BUTTON_IN_LINE) {
+                // Show or hide top button after X arrow
+                if (last > mNumberOfColumns * getResources().getInteger(R.integer.activate_go_top_buttom_line)) {
                     UICatalogHelper.showGotoTopButton(getBaseActivity(), mTopButton);
                 } else {
                     UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);
