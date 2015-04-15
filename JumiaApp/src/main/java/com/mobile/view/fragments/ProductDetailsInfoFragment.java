@@ -5,20 +5,25 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.EnumSet;
 
@@ -36,11 +41,17 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
 
     private ViewPager mProductInfoPager;
 
-    private MyOrdersPagerAdapter mProductInfoPagerAdapter;
+    private ProductInfoPagerAdapter mProductInfoPagerAdapter;
 
     private SlidingTabLayout mProductInfoTabStrip;
 
     public static int mPositionToStart = 0;
+
+    private int mTabsCount = 2;
+
+    private boolean hasSummary = true;
+//    private boolean hasSpecification = true;
+
 
     /**
      * Get instance
@@ -108,13 +119,14 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
         }
         mProductInfoTabStrip.setCustomTabView(layout, R.id.tab);
         // Validate the current view
-        mProductInfoPagerAdapter = (MyOrdersPagerAdapter) mProductInfoPager.getAdapter();
+        validateVisibleTabs();
+        mProductInfoPagerAdapter = (ProductInfoPagerAdapter) mProductInfoPager.getAdapter();
         if (mProductInfoPagerAdapter != null && mProductInfoPagerAdapter.getCount() > 0) {
             // Show the pre selection
             mProductInfoPager.setCurrentItem(mPositionToStart, true);
         } else {
             // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
-            mProductInfoPagerAdapter = new MyOrdersPagerAdapter(getChildFragmentManager());
+            mProductInfoPagerAdapter = new ProductInfoPagerAdapter(getChildFragmentManager());
             mProductInfoPager.setAdapter(mProductInfoPagerAdapter);
             mProductInfoTabStrip.setViewPager(mProductInfoPager);
             // Show the pre selection
@@ -184,11 +196,35 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
     }
 
     /**
+     * method that validates and controls which tab will be shown to the user
+     */
+    private void validateVisibleTabs(){
+        Bundle arguments = getArguments();
+
+        if(arguments != null){
+            Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
+            if(parcelableProduct instanceof CompleteProduct){
+                CompleteProduct completeProduct = (CompleteProduct) parcelableProduct;
+
+                if(CollectionUtils.isEmpty(completeProduct.getProductSpecifications())){
+//                    hasSpecification = false;
+                    mTabsCount--;
+                }
+                if(TextUtils.isEmpty(completeProduct.getDescription()) && TextUtils.isEmpty(completeProduct.getShortDescription())){
+                    hasSummary = false;
+                    mTabsCount--;
+                }
+            }
+        }
+    }
+
+
+    /**
      * Class used as an simple pager adapter that represents each fragment
      * 
      * @author Paulo Carvalho
      */
-    private class MyOrdersPagerAdapter extends FragmentPagerAdapter {
+    private class ProductInfoPagerAdapter extends FragmentPagerAdapter {
 
         /**
          * Constructor
@@ -196,7 +232,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
          * @param fm
          * @author Paulo Carvalho
          */
-        public MyOrdersPagerAdapter(FragmentManager fm) {
+        public ProductInfoPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -210,14 +246,33 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
 
             switch (position) {
             case 0:
-                return ProductDetailsSummaryFragment.getInstance(getArguments());
+                return chooseFragment(position);
             case 1:
-                return ProductDetailsSpecificationsFragment.getInstance(getArguments());
+                return chooseFragment(position);
             default:
                 return ProductDetailsSummaryFragment.getInstance(getArguments());
 
             }
 
+        }
+
+        /**
+         * control which fragment to inflate acordingly to which information is available
+         * @param position
+         * @return
+         */
+        private Fragment chooseFragment(int position){
+            Fragment fragment = ProductDetailsSummaryFragment.getInstance(getArguments());
+
+            if(position == 0){
+                if(!hasSummary){
+                    fragment = ProductDetailsSpecificationsFragment.getInstance(getArguments());
+                }
+            } else {
+                fragment = ProductDetailsSpecificationsFragment.getInstance(getArguments());
+            }
+
+            return fragment;
         }
 
         /*
@@ -227,7 +282,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
          */
         @Override
         public int getCount() {
-            return 2;
+            return mTabsCount;
         }
 
         /*

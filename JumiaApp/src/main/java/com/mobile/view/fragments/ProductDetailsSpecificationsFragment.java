@@ -232,7 +232,10 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      * Display the product specifications
      */
     private void displaySpecification() {
-        mProductSpecifications = mCompleteProduct.getProductSpecifications();
+
+        if(CollectionUtils.isEmpty(mProductSpecifications)){
+            mProductSpecifications = mCompleteProduct.getProductSpecifications();
+        }
 
         if(!CollectionUtils.isEmpty(mProductSpecifications)){
             for (ProductDetailsSpecification productSpecification : mProductSpecifications) {
@@ -246,6 +249,10 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      * @param productSpecification
      */
     private void addSpecTable(ProductDetailsSpecification productSpecification){
+
+        if(mProductSpecsContainer != null){
+            mProductSpecsContainer.removeAllViews();
+        }
 
         final View theInflatedView = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
         final TextView specHeader = (TextView) theInflatedView.findViewById(R.id.specs_container_title);

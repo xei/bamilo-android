@@ -5,6 +5,7 @@
     android:layout_marginRight="@dimen/margin_20px"
     android:layout_marginStart="@dimen/margin_20px"
     android:layout_marginEnd="@dimen/margin_20px"
+    android:layout_marginBottom="0dp"
     style="@style/rounded_box"
     android:layout_width="match_parent">
 

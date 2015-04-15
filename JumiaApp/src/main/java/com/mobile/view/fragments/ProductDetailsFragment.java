@@ -1649,7 +1649,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * Show the product description
      */
     private void onClickShowDescription() {
-        if (null != mCompleteProduct) {
+        if (null != mCompleteProduct && (!CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications()) ||
+                (!TextUtils.isEmpty(mCompleteProduct.getShortDescription()) && !TextUtils.isEmpty(mCompleteProduct.getDescription())) )) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
             bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
