@@ -98,7 +98,7 @@ public class WarningFactory {
     private void showWarningChooseOneSize(){
         if(actualWarning != CHOOSE_ONE_SIZE) {
             new Builder().setText(R.string.product_variance_choose_error)
-                    .setBackground(R.color.red)
+                    .setBackground(R.color.red_warning)
                     .setImageVisibility(false)
                     .show();
 
@@ -139,7 +139,7 @@ public class WarningFactory {
     private void showWarningNoInternet(){
         if(actualWarning != NO_INTERNET) {
             new Builder().setText(R.string.no_internet_access_warning_title)
-                    .setBackground(R.color.red)
+                    .setBackground(R.color.red_warning)
                     .setImageVisibility(true)
                     .setAnimationDuration(_5_SECONDS)
                     .startAnimation();
@@ -153,7 +153,7 @@ public class WarningFactory {
         if(!withAnimation){
             if(actualWarning != PROBLEM_FETCHING_DATA) {
                 new Builder().setText(R.string.server_error)
-                        .setBackground(R.color.red)
+                        .setBackground(R.color.red_warning)
                         .setImageVisibility(true)
                         .show();
                 actualWarning = PROBLEM_FETCHING_DATA;
@@ -165,7 +165,7 @@ public class WarningFactory {
 
             if(actualWarning != PROBLEM_FETCHING_DATA_ANIMATION) {
                 new Builder().setText(R.string.server_error)
-                        .setBackground(R.color.red)
+                        .setBackground(R.color.red_warning)
                         .setImageVisibility(true)
                         .setAnimationDuration(_5_SECONDS)
                         .startAnimation();
@@ -202,6 +202,7 @@ public class WarningFactory {
 
         Builder setBackground(int drawable){
             mWarningBar.setBackgroundResource(drawable);
+            UIUtils.setAlpha(mWarningBar, 0.95f);
             return this;
         }
 
