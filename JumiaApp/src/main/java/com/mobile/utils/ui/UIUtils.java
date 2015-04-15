@@ -2,7 +2,6 @@ package com.mobile.utils.ui;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -10,6 +9,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 
+import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.view.R;
 
 /**
@@ -48,15 +48,22 @@ public class UIUtils {
      * @param view The view, not null
      * @param alpha The alpha view
      */
-    public static void setAlpha(View view, float alpha) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            final AlphaAnimation animation = new AlphaAnimation(alpha, alpha);
-            animation.setDuration(0);
-            animation.setFillAfter(true);
-            view.startAnimation(animation);
-        } else {
-            view.setAlpha(alpha);
-        }
+    public static void setAlpha(final View view, final float alpha) {
+        DeviceInfoHelper.executeCodeBasedOnHoneyCombVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
+
+            @Override
+            public void highVersionCallback() {
+                view.setAlpha(alpha);
+            }
+
+            @Override
+            public void lowerVersionCallback() {
+                final AlphaAnimation animation = new AlphaAnimation(alpha, alpha);
+                animation.setDuration(0);
+                animation.setFillAfter(true);
+                view.startAnimation(animation);
+            }
+        });
     }
     
     /**

@@ -3,7 +3,6 @@ package com.mobile.utils.ui;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.view.R;
 
@@ -114,8 +113,7 @@ public class WarningFactory {
                 .setBackground(R.color.green_warning)
                 .setImageVisibility(false)
                 .setAnimationDuration(_5_SECONDS)
-                .startAnimation()
-                ;
+                .startAnimation();
             actualWarning = ADDED_ITEM_TO_CART;
         } else {
             new Builder().startAnimation();
@@ -230,7 +228,7 @@ public class WarningFactory {
 
         Builder startAnimation(){
             mWarningBar.setVisibility(View.VISIBLE);
-            UIUtils.animateFadeInAndOut(JumiaApplication.INSTANCE, mWarningBar, animationLength);
+            UIUtils.animateFadeInAndOut(mWarningBar.getContext(), mWarningBar, animationLength);
             return this;
         }
 
