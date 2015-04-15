@@ -94,21 +94,21 @@ public class UIUtils {
      * @param visibleOffset The visible offset
      */
     public static void animateFadeInAndOut(Context context, View animatedView, int visibleOffset){
-        if (!isAnimating(animatedView)) {
-            // Set view as invisible for old Android versions
-            animatedView.setVisibility(View.INVISIBLE);
-            // Create the fade in and fade out animation
-            Animation fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
-            Animation fadeOut = AnimationUtils.loadAnimation(context, R.anim.fade_out);
-            fadeOut.setStartOffset(fadeIn.getDuration() + visibleOffset);
-            // Create a set with animations
-            AnimationSet animation = new AnimationSet(false);
-            animation.addAnimation(fadeIn);
-            animation.addAnimation(fadeOut);
-            // Remove the old and start the new animation
-            animatedView.clearAnimation();
-            animatedView.startAnimation(animation);
-        }
+//        if (!isAnimating(animatedView)) {
+        // Set view as invisible for old Android versions
+        animatedView.setVisibility(View.INVISIBLE);
+        // Create the fade in and fade out animation
+        Animation fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+        Animation fadeOut = AnimationUtils.loadAnimation(context, R.anim.fade_out);
+        fadeOut.setStartOffset(fadeIn.getDuration() + visibleOffset);
+        // Create a set with animations
+        AnimationSet animation = new AnimationSet(false);
+        animation.addAnimation(fadeIn);
+        animation.addAnimation(fadeOut);
+        // Remove the old and start the new animation
+        animatedView.clearAnimation();
+        animatedView.startAnimation(animation);
+//        }
     }
 
     /**
