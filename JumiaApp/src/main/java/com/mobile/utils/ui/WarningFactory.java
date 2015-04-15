@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.view.R;
 
 /**
@@ -201,9 +202,19 @@ public class WarningFactory {
         }
 
         Builder setBackground(int drawable){
-            Drawable backgroundDrawable = mWarningBar.getContext().getDrawable(drawable);
+            final Drawable backgroundDrawable = mWarningBar.getContext().getResources().getDrawable(drawable);
             if(backgroundDrawable != null){
-                mWarningBar.setBackground(backgroundDrawable);
+                DeviceInfoHelper.executeCodeBasedOnJellyBeanVersion(new Runnable() {
+                    @Override
+                    public void run() {
+                        mWarningBar.setBackground(backgroundDrawable);
+                    }
+                }, new Runnable() {
+                    @Override
+                    public void run() {
+                        mWarningBar.setBackgroundDrawable(backgroundDrawable);
+                    }
+                });
             }
             return this;
         }

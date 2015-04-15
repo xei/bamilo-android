@@ -369,5 +369,30 @@ public class DeviceInfoHelper {
     public static boolean isTabletDevice(Context context) {
         return context.getResources().getBoolean(R.bool.isTablet);
     }
-    
+
+    /**
+     * Execute callbacks based on version code of device.
+     *
+     * @param version
+     * @param highVersionCallback
+     * @param lowerVersionCallback
+     */
+    public static void executeCodeBasedOnVersion(int version, Runnable highVersionCallback, Runnable lowerVersionCallback){
+        if(android.os.Build.VERSION.SDK_INT > version){
+            highVersionCallback.run();
+        } else {
+            lowerVersionCallback.run();
+        }
+    }
+
+    /**
+     * Execute callbacks based on Jelly Bean version.
+     *
+     * @param highVersionCallback
+     * @param lowerVersionCallback
+     */
+    public static void executeCodeBasedOnJellyBeanVersion(Runnable highVersionCallback, Runnable lowerVersionCallback){
+        executeCodeBasedOnVersion(android.os.Build.VERSION_CODES.JELLY_BEAN, highVersionCallback,lowerVersionCallback);
+    }
+
 }
