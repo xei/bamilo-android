@@ -1,11 +1,10 @@
 package com.mobile.utils.ui;
 
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.view.R;
 
 /**
@@ -99,7 +98,7 @@ public class WarningFactory {
     private void showWarningChooseOneSize(){
         if(actualWarning != CHOOSE_ONE_SIZE) {
             new Builder().setText(R.string.product_variance_choose_error)
-                    .setBackground(R.drawable.titlebar_noaccess)
+                    .setBackground(R.color.red)
                     .setImageVisibility(false)
                     .show();
 
@@ -115,7 +114,8 @@ public class WarningFactory {
                 .setBackground(R.color.green_warning)
                 .setImageVisibility(false)
                 .setAnimationDuration(_5_SECONDS)
-                .startAnimation();
+                .startAnimation()
+                ;
             actualWarning = ADDED_ITEM_TO_CART;
         } else {
             new Builder().startAnimation();
@@ -139,7 +139,7 @@ public class WarningFactory {
     private void showWarningNoInternet(){
         if(actualWarning != NO_INTERNET) {
             new Builder().setText(R.string.no_internet_access_warning_title)
-                    .setBackground(R.drawable.titlebar_noaccess)
+                    .setBackground(R.color.red)
                     .setImageVisibility(true)
                     .setAnimationDuration(_5_SECONDS)
                     .startAnimation();
@@ -151,10 +151,9 @@ public class WarningFactory {
 
     private void showWarningProblemFetchingData(boolean withAnimation){
         if(!withAnimation){
-
             if(actualWarning != PROBLEM_FETCHING_DATA) {
                 new Builder().setText(R.string.server_error)
-                        .setBackground(R.drawable.titlebar_noaccess)
+                        .setBackground(R.color.red)
                         .setImageVisibility(true)
                         .show();
                 actualWarning = PROBLEM_FETCHING_DATA;
@@ -166,7 +165,7 @@ public class WarningFactory {
 
             if(actualWarning != PROBLEM_FETCHING_DATA_ANIMATION) {
                 new Builder().setText(R.string.server_error)
-                        .setBackground(R.drawable.titlebar_noaccess)
+                        .setBackground(R.color.red)
                         .setImageVisibility(true)
                         .setAnimationDuration(_5_SECONDS)
                         .startAnimation();
@@ -202,20 +201,7 @@ public class WarningFactory {
         }
 
         Builder setBackground(int drawable){
-            final Drawable backgroundDrawable = mWarningBar.getContext().getResources().getDrawable(drawable);
-            if(backgroundDrawable != null){
-                DeviceInfoHelper.executeCodeBasedOnJellyBeanVersion(new Runnable() {
-                    @Override
-                    public void run() {
-                        mWarningBar.setBackground(backgroundDrawable);
-                    }
-                }, new Runnable() {
-                    @Override
-                    public void run() {
-                        mWarningBar.setBackgroundDrawable(backgroundDrawable);
-                    }
-                });
-            }
+            mWarningBar.setBackgroundResource(drawable);
             return this;
         }
 
@@ -242,7 +228,8 @@ public class WarningFactory {
         }
 
         Builder startAnimation(){
-            UIUtils.animateFadeInAndOut(mWarningBar.getContext(), mWarningBar, animationLength);
+            mWarningBar.setVisibility(View.VISIBLE);
+            UIUtils.animateFadeInAndOut(JumiaApplication.INSTANCE, mWarningBar, animationLength);
             return this;
         }
 

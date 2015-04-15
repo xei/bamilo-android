@@ -1870,11 +1870,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+            executeAddToShoppingCartCompleted(false);
             isAddingProductToCart = false;
-            getBaseActivity().updateCartInfo();
             hideActivityProgress();
             mAddToCartButton.setEnabled(true);
-            executeAddToShoppingCartCompleted(false);
             break;
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
