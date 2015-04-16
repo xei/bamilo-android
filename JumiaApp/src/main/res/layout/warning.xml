@@ -8,7 +8,7 @@
     android:shadowDx="2"
     android:shadowDy="2"
     android:shadowRadius="2"
-    android:background="@color/orange_ffa200">
+    android:background="@color/color_accent">
 
     <ImageView
         android:id="@+id/warning_image"
