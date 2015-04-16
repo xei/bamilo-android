@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.framework.utils.LoadingBarView;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
 
@@ -24,7 +23,7 @@ public class DialogProgressFragment extends DialogFragment {
     
     private final static String TAG = LogTagHelper.create( DialogProgressFragment.class );
     
-    private LoadingBarView loadingBarView;
+//    private LoadingBarView loadingBarView;
 
     
     /**
@@ -59,9 +58,9 @@ public class DialogProgressFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
         view = inflater.inflate(R.layout.dialog_progress, container);
-        loadingBarView = (LoadingBarView) view.findViewById(R.id.fragment_root_loading_gif);
+//        loadingBarView = (LoadingBarView) view.findViewById(R.id.fragment_root_loading_gif);
         view.findViewById(R.id.loading_bar).setVisibility(View.VISIBLE);
-        loadingBarView.startRendering();
+//        loadingBarView.startRendering();
         return view;
     }
     
@@ -88,7 +87,7 @@ public class DialogProgressFragment extends DialogFragment {
     @Override
     public void dismiss() {
         super.dismiss();
-        if(loadingBarView != null) loadingBarView.stopRendering();
+//        if(loadingBarView != null) loadingBarView.stopRendering();
     }
     
     /*

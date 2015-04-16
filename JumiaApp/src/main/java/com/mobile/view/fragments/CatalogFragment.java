@@ -659,6 +659,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         TrackerDelegator.trackCatalogSorter(mSelectedSort.toString());
     }
 
+    @Override
+    public void onDismiss() {
+    }
+
     /**
      * The listener for grid view
      */
