@@ -23,25 +23,10 @@
 
     <!-- BUTTONS -->
 
-    <LinearLayout
-        android:id="@id/checkout_my_order_buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center"
-        android:orientation="vertical" >
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/checkout_edit_address_required_text"
-            style="@style/text_header"
-            android:layout_margin="@dimen/rounded_margin_mid"
-            android:text="@string/register_required_text"
-            android:textColor="@color/red_basic"
-            android:visibility="gone" />
-
         <LinearLayout
             style="@style/button_container"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/checkout_edit_button_cancel"
@@ -57,6 +42,6 @@
                 android:layout_weight="1"
                 android:text="@string/save_changes_label" />
         </LinearLayout>
-    </LinearLayout>
+
 
 </RelativeLayout>
