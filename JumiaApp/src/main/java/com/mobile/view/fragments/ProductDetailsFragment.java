@@ -830,14 +830,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         ProductSimple simple = null;
         try {
             // Case invalid selection
-            if (mSelectedSimple >= mCompleteProduct.getSimples().size())
-                ;
-            // Case no selected
-            else if (mSelectedSimple == NO_SIMPLE_SELECTED)
-                ;
-            // Case success
-            else
+            if (!(mSelectedSimple >= mCompleteProduct.getSimples().size()) && !(mSelectedSimple == NO_SIMPLE_SELECTED)) {
                 simple = mCompleteProduct.getSimples().get(mSelectedSimple);
+            }
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON GET SELECTED SIMPLE");
         }
@@ -1087,13 +1082,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private void executeAddProductToCart() {
         ProductSimple simple = getSelectedSimple();
-        if (simple == null && !DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.CHOOSE_ONE_SIZE);
-            isAddingProductToCart = false;
-            return;
-        } else if (simple == null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.CHOOSE_ONE_SIZE);
-            isAddingProductToCart = false;
+        if (simple == null) {
+//            getBaseActivity().showWarningVariation(true);
+            showVariantsDialog();
             return;
         }
 
@@ -1799,9 +1790,18 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mSelectedSimple = position;
         Log.i(TAG, "size selected! onDialogListItemSelect : " + mSelectedSimple);
         updateVariants();
-        updateStockInfo();
+//        updateStockInfo();
         displayPriceInfoOverallOrForSimple();
 
+        if(isAddingProductToCart) {
+            executeAddProductToCart();
+        }
+
+    }
+
+    @Override
+    public void onDismiss() {
+        isAddingProductToCart = false;
     }
 
     IResponseCallback responseCallback = new IResponseCallback() {
@@ -1834,11 +1834,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+            executeAddToShoppingCartCompleted(false);
             isAddingProductToCart = false;
-            getBaseActivity().updateCartInfo();
             hideActivityProgress();
             mAddToCartButton.setEnabled(true);
-            executeAddToShoppingCartCompleted(false);
             break;
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:

@@ -78,8 +78,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private TextView mandatory;
 
-    private TextView registerRequiredText;
-
     private static DynamicForm serverForm;
 
     private DynamicFormItem termsLink;
@@ -267,7 +265,6 @@ public class SessionRegisterFragment extends BaseFragment {
         rememberEmailCheck = (CheckBox) getView().findViewById( R.id.login_remember_user_email);
         loginText = (TextView) getView().findViewById(R.id.loginText);
         // checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
-        registerRequiredText = (TextView) getView().findViewById(R.id.register_required_text);
 
         registerButton.setTextAppearance(getActivity(), R.style.text_normal_programatically);
         HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_REGULAR);
@@ -296,18 +293,18 @@ public class SessionRegisterFragment extends BaseFragment {
             public void onClick(View arg0) {
                 Log.d(TAG, "registerButton onClick");
 
-                if (serverForm != null && !serverForm.checkRequired()) {
-                    registerRequiredText.setVisibility(View.VISIBLE);
-                    // Tracking signup failed
-                    TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-                    return;
-                } else {
-                    registerRequiredText.setVisibility(View.GONE);
-                }
+//                if (serverForm != null && !serverForm.checkRequired()) {
+//                    registerRequiredText.setVisibility(View.VISIBLE);
+//                    // Tracking signup failed
+//                    TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
+//                    return;
+//                } else {
+//                    registerRequiredText.setVisibility(View.GONE);
+//                }
 
                 if (checkPasswords() && serverForm.validate() && checkTermsIfRequired()) {
                     getBaseActivity().hideKeyboard();
-                    registerRequiredText.setVisibility(View.GONE);
+
                     requestRegister();
                 } else if (!checkTermsIfRequired()) {
                     mandatory.setVisibility(View.VISIBLE);
@@ -438,7 +435,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
         if (serverForm.checkRequired() && checkTermsIfRequired()) {
             // Log.d( TAG, "checkInputFieds: check passed" );
-            registerRequiredText.setVisibility(View.GONE);
             registerButton.setTextAppearance(getActivity(), R.style.text_bold_programatically);
             HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_BOLD);
         } else {
