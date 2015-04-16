@@ -197,7 +197,7 @@ public class RelatedItemsTableHelper extends BaseTable {
      * @return
      */
     public static ArrayList<LastViewed> getRelatedItemsList(){
-    	ArrayList<LastViewed> lastViewed = new ArrayList<LastViewed>();
+    	ArrayList<LastViewed> lastViewed = new ArrayList<>();
     	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
     	String query ="select * from "+TABLE_NAME+" order by "+_ID+" desc";
     	Cursor cursor = db.rawQuery(query, null);

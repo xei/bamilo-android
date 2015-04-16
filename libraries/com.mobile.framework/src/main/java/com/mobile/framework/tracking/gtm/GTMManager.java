@@ -39,6 +39,7 @@ public class GTMManager {
 
     volatile static Container mContainer;
     private static String EVENT_TYPE = "event";
+    private static String EVENT_TYPE_TRANSACTION = "transaction";
     private String CONTAINER_ID = "";
     private static boolean isContainerAvailable = false;
     private static DataLayer dataLayer;
@@ -372,7 +373,7 @@ public class GTMManager {
 //        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_TRANSACTION, GTMKeys.PREVIOUSPURCHASES, DataLayer.OBJECT_NOT_PRESENT, GTMKeys.TRANSACTIONID, transactionId, GTMKeys.TRANSACTIONAFFILIATION, DataLayer.OBJECT_NOT_PRESENT,
 //                GTMKeys.TRANSACTIONTOTAL, transactionValue, GTMKeys.TRANSACTIONCURRENCY,currencyName , GTMKeys.TRANSACTIONPRODUCTS, products);
         
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_TRANSACTION, GTMKeys.TRANSACTIONID, transactionId,
+        message = DataLayer.mapOf(EVENT_TYPE_TRANSACTION, GTMEvents.GTM_TRANSACTION, GTMKeys.TRANSACTIONID, transactionId,
                 GTMKeys.TRANSACTIONTOTAL, transactionValue, GTMKeys.TRANSACTIONCURRENCY,currencyName , GTMKeys.TRANSACTIONPRODUCTS, products);
         
         if(!TextUtils.isEmpty(coupon))

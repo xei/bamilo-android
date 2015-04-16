@@ -24,7 +24,6 @@ import com.mobile.framework.objects.Product;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
-import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnDialogFilterListener;
@@ -68,8 +67,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private final static int EMPTY_CATALOG = 0;
 
-    private final static int ACTIVATE_TOP_BUTTON_IN_LINE = 10;
-
     private CatalogGridView mGridView;
 
     private TextView mSortButton;
@@ -101,6 +98,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private boolean isLoadingMoreData = false;
 
     private int mNumberOfColumns;
+    
+    private int mTopButtonActivateLine;
 
     private boolean mSortOrFilterApplied; // Flag to reload or not an initial catalog in case generic error
     
@@ -140,6 +139,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Load line to active top button
+        mTopButtonActivateLine = getResources().getInteger(R.integer.activate_go_top_buttom_line);
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -463,28 +464,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         // Validate data
         onValidateDataState();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        if(eventType == EventType.GET_PRODUCTS_EVENT && mCatalogPage != null && mCatalogPage.hasFilters()) {
-            triggerGetInitialCatalogPage();
-        } else {
-            // Validate data
-            onValidateDataState();
-        }
-
     }
 
     /*
@@ -631,7 +617,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         GridLayoutManager manager = (GridLayoutManager) mGridView.getLayoutManager();
         int columns = manager.getSpanCount();
         // Scroll faster until mark line
-        mGridView.scrollToPosition(columns * ACTIVATE_TOP_BUTTON_IN_LINE);
+        mGridView.scrollToPosition(columns * mTopButtonActivateLine);
         // Scroll smooth until top position
         mGridView.post(new Runnable() {
             @Override
@@ -718,8 +704,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 // Set the goto top button
                 GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
                 int last = manager.findLastVisibleItemPosition();
-                // Show or hide top button after 4 arrow
-                if (last > mNumberOfColumns * ACTIVATE_TOP_BUTTON_IN_LINE) {
+                // Show or hide top button after X arrow
+                if (last > mNumberOfColumns * mTopButtonActivateLine) {
                     UICatalogHelper.showGotoTopButton(getBaseActivity(), mTopButton);
                 } else {
                     UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);

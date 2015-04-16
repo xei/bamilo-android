@@ -55,15 +55,15 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:inflatedId="@+id/splash_screen_maintenance_stub_inflate"
-        android:layout="@layout/maintenance_page" />
+        android:layout="@layout/fragment_root_maintenance" />
 
         <!-- UNEXPECTED ERROR LAYOUT -->
 
     <ViewStub
-        android:id="@+id/fragment_unexpected_error_stub"
+        android:id="@+id/fragment_stub_unexpected_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:inflatedId="@+id/fragment_unexpected_error_stub_inflate"
-        android:layout="@layout/fragment_root_error" />
+        android:layout="@layout/fragment_root_unexpected_error" />
 </FrameLayout>
