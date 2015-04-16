@@ -42,6 +42,8 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,8 +79,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     protected Address mCurrentAddress;
 
     protected OrderSummary orderSummary;
-
-    protected View mMsgRequired;
 
     protected boolean isCityIdAnEditText = false;
 
@@ -129,8 +129,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
         // Create address form
         mEditFormContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
-        // Message
-        mMsgRequired = view.findViewById(R.id.checkout_edit_address_required_text);
         // Next button
         view.findViewById(R.id.checkout_edit_button_enter).setOnClickListener(this);
         // Cancel button
@@ -427,8 +425,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     }
 
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onClickRetryButton();
     }
 
@@ -444,18 +442,21 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     private void onClickEditAddressButton() {
         Log.i(TAG, "ON CLICK: EDIT");
 
-        // Hide error message
-        if(mMsgRequired!=null) mMsgRequired.setVisibility(View.GONE);
-
-        // Validate spinner
-        ViewGroup mRegionGroup = (ViewGroup) mEditFormGenerator.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
-        // Validate if region group is filled
-        if(!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) {
-            Log.w(TAG, "REGION SPINNER NOT FILL YET");
-            // Show error message
-            if(mMsgRequired != null) mMsgRequired.setVisibility(View.VISIBLE);
+        if(!mEditFormGenerator.validate())
             return;
-        };
+
+        /**
+         *
+         *
+         // Validate mandatory spinner
+         ViewGroup mRegionGroup = (ViewGroup) mEditFormGenerator.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
+         // Validate if region group is filled
+         if(!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) {
+         Log.w(TAG, "REGION SPINNER NOT FILL YET");
+         return;
+         };
+         *
+         */
 
         triggerEditAddress(createContentValues(mEditFormGenerator));
     }
@@ -675,7 +676,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             case GET_REGIONS_EVENT:
                 Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
                 mRegions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-                if (super.hasContent(mRegions)){
+                if (CollectionUtils.isNotEmpty(mRegions)) {
                     setRegions(mEditFormGenerator, mRegions, mCurrentAddress);
                 } else {
                     Log.w(TAG, "GET REGIONS EVENT: IS EMPTY");
@@ -818,8 +819,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
         } else {
-            if (mMsgRequired != null) mMsgRequired.setVisibility(View.VISIBLE);
-            else Toast.makeText(getBaseActivity(), getString(R.string.register_required_text), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseActivity(), getString(R.string.register_required_text), Toast.LENGTH_SHORT).show();
         }
     }
 }

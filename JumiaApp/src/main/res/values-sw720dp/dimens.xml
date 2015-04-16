@@ -54,6 +54,7 @@
     
     <!-- CATALOG -->
     <dimen name="root_empty_container_height">360dp</dimen>
+    <integer name="activate_go_top_buttom_line">8</integer>
 
 	<!-- Toast -->
     <dimen name="toast_hover">75dp</dimen>

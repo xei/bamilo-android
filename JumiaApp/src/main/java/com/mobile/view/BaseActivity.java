@@ -76,8 +76,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
-import com.mobile.utils.maintenance.MaintenancePage;
-import com.mobile.utils.ui.UIUtils;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.HomeFragment;
 import com.mobile.view.fragments.NavigationFragment;
@@ -118,8 +117,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
-    private static final int WARNING_LENGTH = 4000;
-
     // REMOVED FINAL ATRIBUTE
     private NavigationAction action;
 
@@ -150,8 +147,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     private boolean isRegistered = false;
 
-    private View mWarningBar;
-
     private final int titleResId;
 
     private final int contentLayoutId;
@@ -177,8 +172,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     protected boolean isSearchComponentOpened = false;
 
-    private ViewStub mMainFallBackStub;
-
     private ActionBar mSupportActionBar;
 
     private boolean isBackButtonEnabled = false;
@@ -186,6 +179,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     private long mLaunchTime;
 
     public MenuItem mSearchMenuItem;
+
+    public WarningFactory warningFactory;
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
@@ -538,15 +533,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Get the application container
         contentContainer = findViewById(R.id.rocket_app_content);
         // Warning layout
-        mWarningBar = findViewById(R.id.warning);
-        mWarningBar.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showWarningVariation(false);
-            }
-        });
-        // Get the fallback stub
-        mMainFallBackStub = (ViewStub) findViewById(R.id.main_fall_back_stub);
+        try {
+            warningFactory = new WarningFactory(findViewById(R.id.warning));
+        } catch(IllegalStateException ex){
+            Log.e(TAG,ex.getLocalizedMessage(),ex);
+        }
     }
     
     /*
@@ -1533,60 +1524,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         mSupportActionBar.setTitle("");
     }
 
-    /**
-     * ################# WARNING BAR #################
-     */
-
-    /**
-     * Show or hide warning message with image
-     */
-    public final void showWarning(boolean show) {
-        if(mWarningBar != null){
-            mWarningBar.clearAnimation();
-            if (show) {
-                findViewById(R.id.warning_image).setVisibility(View.VISIBLE);
-            }
-            mWarningBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    /**
-     * Show warning message with image and animation
-     */
-    public void showWarning(int message) {
-        if (mWarningBar != null && mWarningBar.getVisibility() != View.VISIBLE) {
-            ((TextView) findViewById(R.id.warning_text)).setText(message);
-            findViewById(R.id.warning_image).setVisibility(View.VISIBLE);
-            UIUtils.animateFadeInAndOut(this, mWarningBar, WARNING_LENGTH);
-        }
-    }
-
-    /**
-     * Show warning message without image
-     */
-    public void showWarningNoImage(int message) {
-        if(mWarningBar != null){
-            mWarningBar.clearAnimation();
-            ((TextView) findViewById(R.id.warning_text)).setText(message);
-            findViewById(R.id.warning_image).setVisibility(View.GONE);
-            mWarningBar.setVisibility(View.VISIBLE);
-        }
-    }
-
-    /**
-     * Show warning variations message
-     */
-    public void showWarningVariation(boolean show) {
-        if(mWarningBar != null){
-            mWarningBar.clearAnimation();
-            if(show){
-                ((TextView) findViewById(R.id.warning_text)).setText(R.string.product_variance_choose_error);
-                findViewById(R.id.warning_image).setVisibility(View.GONE);
-            }
-            mWarningBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-    }
-
     private void setAppContentLayout() {
         if (contentLayoutId == 0) {
             return;
@@ -2036,42 +1973,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
     }
 
-    /**
-     * ################ MAIN MAINTENANCE PAGE ################
-     */
-
-    /**
-     * Hide the main fall back view with retry button
-     */
-    public void hideLayoutMaintenance() {
-        if (mMainFallBackStub != null) {
-            mMainFallBackStub.setVisibility(View.GONE);
-        }
-    }
-
-    /**
-     * Sets Maintenance page
-     */
-    public void setLayoutMaintenance(final EventType eventType, OnClickListener onClickListener, boolean showChooseCountry) {
-        // Inflate maintenance
-        mMainFallBackStub.setVisibility(View.VISIBLE);
-
-        // Case BAMILO
-        if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
-            MaintenancePage.setMaintenancePageBamilo(this, eventType, onClickListener);
-        }
-        // Case JUMIA
-        else {
-            // Set content
-            if (showChooseCountry) {
-                MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, onClickListener);
-            } else {
-                MaintenancePage.setMaintenancePageBaseActivity(this, onClickListener);
-            }
-        }
-    }
-
-    /**
+    /*
      * ########## CHECKOUT HEADER ##########
      */
 

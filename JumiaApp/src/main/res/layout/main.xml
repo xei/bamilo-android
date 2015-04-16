@@ -25,8 +25,6 @@
             layout="@layout/checkout_header"
             android:visibility="gone" />
 
-        <!-- Main Content Layout -->
-
         <!-- CONTENT LAYOUT -->
         <ViewStub
             android:id="@+id/stub_app_content"
@@ -47,19 +45,12 @@
             layout="@layout/warning"
             android:visibility="gone" />
 
+        <!-- PROMOTIONS LAYOUT -->
+
         <include
             layout="@layout/promotion_layout"
             android:visibility="gone" />
 
-        <!-- FALL BACK LAYOUT -->
-
-        <ViewStub
-            android:id="@+id/main_fall_back_stub"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:inflatedId="@+id/main_fall_back_stub_inflate"
-            android:layout="@layout/maintenance_page" />
     </RelativeLayout>
 
     <!-- NAVIGATION -->

@@ -43,6 +43,8 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -101,7 +103,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected CheckBox mIsSameCheckBox;
     protected TextView mShippingTitle;
 
-    protected View mMsgRequired;
     protected Boolean oneAddressCreated = false;
     protected ContentValues mShippingSavedValues;
     protected ContentValues mBillingSavedValues;
@@ -172,9 +173,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         mIsSameCheckBox = (CheckBox) view.findViewById(R.id.checkout_address_billing_checkbox);
         mIsSameCheckBox.setOnCheckedChangeListener(this);
         mIsSameCheckBox.setChecked(true);
-        // Message
-        mMsgRequired = view.findViewById(R.id.checkout_address_required_text);
-        mMsgRequired.setOnClickListener(this);
         // Next button
         view.findViewById(R.id.checkout_address_button_enter).setOnClickListener(this);
 
@@ -535,34 +533,19 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         if (id == R.id.checkout_address_button_enter) {
             onClickCreateAddressButton();
         }
-        // message view
-        else if (id == R.id.checkout_address_required_text) {
-            onClickRequired(view);
-        }
         // Unknown view
         else {
             Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
         }
     }
 
-    /**
-     * Process the click required text.
-     *
-     * @author paulo
-     */
-    private void onClickRequired(View view) {
-        if (view.isShown()) {
-            mMsgRequired.setVisibility(View.GONE);
-        }
-    }
-
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onClickRetryButton();
     }
 
@@ -584,24 +567,25 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Clean the flag for each click
         oneAddressCreated = false;
 
-        // Hide error message
-        if (mMsgRequired != null) {
-            mMsgRequired.setVisibility(View.GONE);
+        if(mIsSameCheckBox.isChecked()){
+            if(!shippingFormGenerator.validate()){
+                return;
+            }
+        } else {
+            if (!shippingFormGenerator.validate() | !billingFormGenerator.validate()) {
+                return;
+            }
         }
 
+        /*
         // Validate spinner
         ViewGroup mRegionGroup = (ViewGroup) shippingFormGenerator.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
         // Validate if region group is filled
         if (!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) {
             Log.w(TAG, "REGION SPINNER NOT FILL YET");
-            // Show error message
-            if (mMsgRequired != null) {
-                mMsgRequired.setVisibility(View.VISIBLE);
-                changeMessageState(mMsgRequired, true, ERROR_DELAY);
-            }
             return;
         }
-        ;
+        */
 
         // Validate check
         if (mIsSameCheckBox.isChecked()) {
@@ -973,7 +957,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Log.d(TAG, "RECEIVED GET_REGIONS_EVENT");
         regions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
         // Validate response
-        if (super.hasContent(regions)) {
+        if (CollectionUtils.isNotEmpty(regions)) {
             setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
             setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
         } else {
@@ -1109,26 +1093,4 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 //            }
 //        }
     }
-
-
-    /**
-     * function that changes visibility state of a view giving a delay
-     *
-     * @param view
-     * @param isToHide
-     * @param delay
-     */
-    private void changeMessageState(final View view, final boolean isToHide, long delay) {
-        view.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isToHide) {
-                    view.setVisibility(View.GONE);
-                } else {
-                    view.setVisibility(View.VISIBLE);
-                }
-            }
-        }, delay);
-    }
-
 }
