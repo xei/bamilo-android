@@ -26,5 +26,11 @@
     
     <!-- ARRAY ADAPTER -->
     <item type="id" name="recycled_view"/>
+
+    <!-- STUB IDS -->
+    <item type="id" name="stub_text_title"/>
+    <item type="id" name="stub_drawable"/>
+    <item type="id" name="stub_text_button"/>
+    <item type="id" name="stub_listener"/>
     
 </resources>

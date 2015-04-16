@@ -11,6 +11,7 @@ import com.mobile.framework.database.CountriesConfigsTableHelper;
 import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.database.LastViewedTableHelper;
 import com.mobile.framework.objects.CountryObject;
+import com.mobile.framework.utils.Constants;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class ShopPreferences {
      * @author sergiopereira
      */
     public static String getShopId(Context context) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, SHOP_NOT_SELECTED);
         Log.d(TAG, "SHOP ID: " + shopId);
         return shopId;
@@ -45,7 +46,7 @@ public class ShopPreferences {
      * @author sergiopereira
      */
     public static String getShopName(Context context) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String name = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
         Log.i(TAG, "SHOP NAME: " + name);
         return name;
@@ -57,7 +58,7 @@ public class ShopPreferences {
      * @author sergiopereira
      */
     public static String getShopCountryCurrencyIso(Context context) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String currency = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
         Log.i(TAG, "SHOP COUNTRY CURRENCY ISO: " + currency);
         return currency;
@@ -67,7 +68,7 @@ public class ShopPreferences {
      * Function used to get the shop country code
      */
     public static String getShopCountryISO(Context context) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopCountryISO = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, SHOP_NOT_SELECTED);
         Log.d(TAG, "SHOP COUNTRY: " + shopCountryISO);
         return shopCountryISO;
@@ -80,7 +81,7 @@ public class ShopPreferences {
      * @author sergiopereira
      */
     public static void setShopId(Context context, int shopPosition) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition).getCountryIso().toLowerCase());
         editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, true);
@@ -121,7 +122,7 @@ public class ShopPreferences {
         countryObject.setCountryForceHttps(context.getResources().getBoolean(R.bool.single_shop_country_force_https));
         countryObject.setCountryIsLive(context.getResources().getBoolean(R.bool.single_shop_country_is_live));
         // Save in shared preferences
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, countryObject.getCountryIso().toLowerCase());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ISO, countryObject.getCountryIso().toLowerCase());

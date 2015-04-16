@@ -2,6 +2,7 @@ package com.mobile.framework.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -23,7 +24,7 @@ public class CategoriesTableHelper extends BaseTable {
 
     public static final String TABLE_NAME = "categories";
 
-    public static interface Columns {
+    public interface Columns {
         String ID = "id";
         String ID_CATALOG = "category_id";
         String NAME = "category_name";
@@ -128,16 +129,6 @@ public class CategoriesTableHelper extends BaseTable {
     public static void updateCategoryCounter(String categoryId, String categoryName) {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         try {
-            /*- // Old method only update if exist
-            String update = new StringBuilder()
-                                .append("UPDATE ").append(TABLE_NAME).append(" ")
-                                .append("SET ")
-                                .append(Columns.VIEW_COUNT).append(" = ").append(Columns.VIEW_COUNT).append(" + 1 ")
-                                .append("WHERE ")
-                                .append(Columns.ID_CATALOG).append(" = ").append(categoryId)
-                                .toString();
-            */
-            
             // Select id to replace
             String QUERY_ID = "SELECT " + Columns.ID + " " +
             		            "FROM " + TABLE_NAME + " " +
@@ -153,7 +144,7 @@ public class CategoriesTableHelper extends BaseTable {
             .append("VALUES ( ")
             .append("(").append(QUERY_ID).append("), ")
             .append("(").append(categoryId).append("), ")
-            .append("('").append(categoryName).append("'), ")
+            .append("(").append(DatabaseUtils.sqlEscapeString(categoryName)).append("), ")
             .append("(").append(QUERY_CT).append(") + 1")
             .append(" )")
             .toString();

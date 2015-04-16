@@ -74,6 +74,7 @@ public class Darwin {
 	public static final String KEY_SELECTED_COUNTRY_LANG_CODE = "selected_country_lang_code";
 	public static final String KEY_SELECTED_COUNTRY_LANG_NAME = "selected_country_lang_name";
 	public static final String KEY_SELECTED_COUNTRY_GA_ID = "selected_country_ga_id";
+	public static final String KEY_SELECTED_COUNTRY_GTM_ID = "selected_country_gtm_id";
 	public static final String KEY_SELECTED_COUNTRY_PHONE_NUMBER = "selected_country_phone_number";
 	public static final String KEY_SELECTED_COUNTRY_CS_EMAIL = "selected_country_cs_email";
 	public static final String KEY_SELECTED_FACEBOOK_IS_AVAILABLE = "selected_facebook_is_available";

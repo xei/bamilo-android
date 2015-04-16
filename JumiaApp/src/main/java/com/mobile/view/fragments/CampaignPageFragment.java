@@ -12,7 +12,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -197,7 +196,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         mGridView.setOnScrollListener(this);
         // Validate the current state
         getAndShowCampaign();
-        
     }
         
     /*
@@ -221,7 +219,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         Log.i(TAG, "ON RESUME");
         isScrolling = false;
         // Track page
-        TrackerDelegator.trackPage(TrackingPage.CAMPAIGNS,getLoadTime(), false);
+        TrackerDelegator.trackPage(TrackingPage.CAMPAIGNS, getLoadTime(), false);
     }
     
     /*
@@ -286,6 +284,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      * @author sergiopereira
      */
     private void getAndShowCampaign() {
+        Log.i(TAG, "VALIDATE CAMPAIGN STATE");
         // Get the campaign id
         String id = (mTeaserCampaign != null) ? mTeaserCampaign.getTargetUrl() : null;
         // Validate the current state
@@ -294,7 +293,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     }
     
     /**
-     * Load the dynamic form
+     * Show campaign
      * @author sergiopereira
      */
     private void showCampaign() {
@@ -406,32 +405,26 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      */
     @Override
     public void onClick(View view) {
-        super.onClick(view);
         // Get view id
         int id = view.getId();
         // Buy button
         if(id == R.id.campaign_item_button_buy) onClickBuyButton(view);
         // Product name and image container
         else if (id == R.id.image_container || id == R.id.campaign_item_name) onClickProduct(view);
-        // Unknown view
-        else Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        // Parent view
+        else super.onClick(view);
     }
     
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
-        getAndShowCampaign();
-    }
-    
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        // super.onRetryRequest(eventType);
+    protected void onClickRetryButton(View view) {
+        Log.i(TAG, "ON CLICK ERROR BUTTON");
+        super.onClickRetryButton(view);
         getAndShowCampaign();
     }
     
     /**
      * Process the click on the buy button
-     * @param view 
+     * @param view The buy button with some tags
      * @author sergiopereira
      */
     private void onClickBuyButton(View view) {
@@ -457,7 +450,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             values.put(GetShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
             triggerAddToCart(values);
             // Tracking
-            trackAddtoCart(sku, name, brand, price, discount);
+            trackAddToCart(sku, name, brand, price, discount);
         } 
     }
     
@@ -465,7 +458,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      * Track item added to cart
      * @author sergiopereira
      */
-    private void trackAddtoCart(String sku, String name, String brand, double price, double discount){
+    private void trackAddToCart(String sku, String name, String brand, double price, double discount){
         try {
             // Tracking
             Bundle bundle = new Bundle();
@@ -487,12 +480,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     
     /**
      * Process the click on the item
-     * @param view
+     * @param view The product button with some tags
      * @author sergiopereira
      */
     private void onClickProduct(View view){
         String prod = (String) view.getTag(PROD);
-        // String sku = (String) view.getTag(SKU);
         String size = (String) view.getTag(SIZE);
         Log.d(TAG, "ON CLICK PRODUCT " + prod + " " + size);
         // Create bundle
@@ -510,20 +502,20 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      */
     /**
      * Trigger to get the campaign via id
-     * @param id
+     * @param id The campaign id
      * @author sergiopereira
      */
     private void triggerGetCampaign(String id){
-      //Validate is service is available
-      if(JumiaApplication.mIsBound){
-            Log.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
+        Log.i(TAG, "TRIGGER TO GET CAMPAIGN: " + id);
+        // Validate is service is available
+        if(JumiaApplication.mIsBound){
             // Create request
             Bundle bundle = new Bundle();
             bundle.putString(GetCampaignHelper.CAMPAIGN_ID, id);
             triggerContentEvent(new GetCampaignHelper(), bundle, this);
-       } else {
-           showRetry();
-       }
+        } else {
+            showRetry();
+        }
     }
     
     /**
@@ -537,23 +529,25 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         bundle.putParcelable(GetShoppingCartAddItemHelper.ADD_ITEM, values);
         triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, this);
     }
-   
+
     /**
      * ############# RESPONSE #############
      */
+
     /**
      * Filter the success response
      * @param bundle
      * @return boolean
      */
-    protected boolean onSuccessEvent(Bundle bundle) {
+    @Override
+    public void onRequestComplete(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
         
         switch (eventType) {
@@ -561,7 +555,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             Log.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
             // Get and show campaign
             mCampaign = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-            /*--TODO
+            /*--
              * Don't apply Timer if there are no products with remainingTime defined
              */
             // Set startTime after getting request
@@ -578,7 +572,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         default:
             break;
         }
-        return true;
     }
     
     /**
@@ -586,7 +579,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      * @param bundle
      * @return boolean
      */
-    protected boolean onErrorEvent(Bundle bundle) {
+    @Override
+    public void onRequestError(Bundle bundle) {
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
@@ -594,9 +588,10 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
-        
+
+        /*
         if(eventType != null){
 //            if(errorCode == ErrorCode.NO_NETWORK){
 //                ((CatalogFragment) getParentFragment()).disableCatalogButtons();
@@ -613,9 +608,10 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 return true;
             }
         }
+        */
         
         // Generic errors
-        if(super.handleErrorEvent(bundle)) return true;
+        if(super.handleErrorEvent(bundle)) return;
         
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
@@ -631,30 +627,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         default:
             break;
         }
-        
-        return false;
-    }
-    
-    
-    /**
-     * ########### RESPONSE LISTENER ###########  
-     */
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
-     */
-    @Override
-    public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
-    }
-       
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
-     */
-    @Override
-    public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
+
     }
     
     /**
@@ -712,14 +685,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     }
                 });
         mDialogErrorToCart.show(fm, null);
-    }
-    
-    @Override
-    protected void onClickMaintenanceRetryButton() {
-        Fragment fragment = getParentFragment();
-        if(fragment instanceof CampaignsFragment){
-            ((CampaignsFragment)fragment).onClickMaintenanceRetryButton();
-        }
     }
     
     /**

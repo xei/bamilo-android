@@ -41,7 +41,6 @@
     <string name="apptimize_apikey"/>
     
 	<!-- GTM -->
-    <string name="gtm_key">GTM-PC42L7</string>
     <item name="gtm_debug" type="bool">false</item>
     
 	<!-- FACEBOOK -->

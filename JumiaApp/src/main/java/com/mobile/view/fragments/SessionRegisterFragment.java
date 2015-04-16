@@ -78,8 +78,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
     private TextView mandatory;
 
-    private TextView registerRequiredText;
-
     private static DynamicForm serverForm;
 
     private DynamicFormItem termsLink;
@@ -267,7 +265,6 @@ public class SessionRegisterFragment extends BaseFragment {
         rememberEmailCheck = (CheckBox) getView().findViewById( R.id.login_remember_user_email);
         loginText = (TextView) getView().findViewById(R.id.loginText);
         // checkTerms = (CheckBox) getView().findViewById(R.id.checkTerms);
-        registerRequiredText = (TextView) getView().findViewById(R.id.register_required_text);
 
         registerButton.setTextAppearance(getActivity(), R.style.text_normal_programatically);
         HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_REGULAR);
@@ -296,18 +293,18 @@ public class SessionRegisterFragment extends BaseFragment {
             public void onClick(View arg0) {
                 Log.d(TAG, "registerButton onClick");
 
-                if (serverForm != null && !serverForm.checkRequired()) {
-                    registerRequiredText.setVisibility(View.VISIBLE);
-                    // Tracking signup failed
-                    TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-                    return;
-                } else {
-                    registerRequiredText.setVisibility(View.GONE);
-                }
+//                if (serverForm != null && !serverForm.checkRequired()) {
+//                    registerRequiredText.setVisibility(View.VISIBLE);
+//                    // Tracking signup failed
+//                    TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
+//                    return;
+//                } else {
+//                    registerRequiredText.setVisibility(View.GONE);
+//                }
 
                 if (checkPasswords() && serverForm.validate() && checkTermsIfRequired()) {
                     getBaseActivity().hideKeyboard();
-                    registerRequiredText.setVisibility(View.GONE);
+
                     requestRegister();
                 } else if (!checkTermsIfRequired()) {
                     mandatory.setVisibility(View.VISIBLE);
@@ -331,10 +328,6 @@ public class SessionRegisterFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
-                // getActivity().setResult( Activity.RESULT_CANCELED);
-                // getActivity().finish();
-                // getActivity().overridePendingTransition(R.anim.slide_in_left,
-                // R.anim.slide_out_right);
                 Log.d(TAG, "register canceled via login click");
             }
         });
@@ -442,7 +435,6 @@ public class SessionRegisterFragment extends BaseFragment {
 
         if (serverForm.checkRequired() && checkTermsIfRequired()) {
             // Log.d( TAG, "checkInputFieds: check passed" );
-            registerRequiredText.setVisibility(View.GONE);
             registerButton.setTextAppearance(getActivity(), R.style.text_bold_programatically);
             HoloFontLoader.apply(registerButton, HoloFontLoader.ROBOTO_BOLD);
         } else {
@@ -700,17 +692,6 @@ public class SessionRegisterFragment extends BaseFragment {
      */
 
     /**
-     * 
-     */
-    // private void saveCredentialsFromForm() {
-    // EditText userView = (EditText) serverForm.getItemByKey( "email" ).getEditControl();
-    // username = userView.getText().toString();
-    //
-    // EditText passwordView = (EditText) serverForm.getItemByKey( "password" ).getEditControl();
-    // password = passwordView.getText().toString();
-    // }
-
-    /**
      * Measures a text against a text textview size to determine if the text will fit
      * 
      * @param v
@@ -747,10 +728,6 @@ public class SessionRegisterFragment extends BaseFragment {
         triggerContentEventNoLoading(new GetTermsConditionsHelper(), null, mCallBack);
     }
 
-    // private void triggerStoreLogin(ContentValues values) {
-    // JumiaApplication.INSTANCE.getCustomerUtils().storeLogin(values);
-    // }
-
     /**
      * CALLBACK
      * 
@@ -770,22 +747,12 @@ public class SessionRegisterFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
-        onResume();
-    };
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onResume();
     }
-
 
 }

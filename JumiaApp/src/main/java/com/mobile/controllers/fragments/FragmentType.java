@@ -62,4 +62,34 @@ public enum FragmentType {
     PRODUCT_OFFERS,
     INNER_SHOP,
     WRITE_REVIEW_SELLER;
+
+    private int id;
+    private static String DIVIDER = ":";
+
+    @Override
+    public String toString() {
+        return name() + ((id != 0) ? DIVIDER+id : "");
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Return the last value (FragmentType) of the tag.
+     *
+     * @param tag The fragment tag.
+     * @author ricardosoares
+     */
+    public static FragmentType getValue(String tag){
+        String[] strings = tag.split(DIVIDER);
+        FragmentType fragmentType = FragmentType.valueOf(strings[0]);
+//        fragmentType.id = Integer.getInteger(strings[1]);
+        return fragmentType;
+    }
+
 }

@@ -448,6 +448,7 @@ public class RestConstants {
     public static final String JSON_COUNTRY_GA_ID = "ga_android_id";
     public static final String JSON_COUNTRY_CS_EMAIL = "cs_email";
     public static final String JSON_FACEBOOK_IS_AVAILABLE = "facebook_is_available";
+    public static final String JSON_COUNTRY_GTM_ID = "gtm_android";
 
     public static final String JSON_ITEM_TAG = "item";
     public static final String JSON_RELEVANCE_TAG = "relevance";

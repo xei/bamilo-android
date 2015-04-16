@@ -19,8 +19,8 @@ import com.facebook.Session;
 import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.facebook.widget.LoginButton;
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.framework.Darwin;
+import com.mobile.framework.utils.Constants;
 import com.mobile.utils.ui.UIUtils;
 
 import java.security.MessageDigest;
@@ -51,7 +51,7 @@ public class FacebookHelper {
      */
     public static void showOrHideFacebookButton(Fragment fragment, View... views) {
         // Validate the Facebook configuration
-        SharedPreferences sharedPrefs = fragment.getActivity().getApplicationContext().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = fragment.getActivity().getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         boolean hideFacebook = !sharedPrefs.getBoolean(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE, false);
         
         Log.i(TAG, "ENABLED FACEBOOK: " + hideFacebook);

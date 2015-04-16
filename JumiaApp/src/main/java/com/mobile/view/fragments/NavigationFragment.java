@@ -632,7 +632,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             // Case Change Country
             case Country:
                 Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: COUNTRY");
-                FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
+                getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
                 getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY,FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 break;
             // Case unknown
@@ -657,8 +657,9 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         try {
             // Close 
             getBaseActivity().closeNavigationDrawer();
+            // Clean stack until home
+            getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
             // Goto cart
-            FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING NPE ON CLICK CART");

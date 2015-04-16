@@ -6,9 +6,11 @@ import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.utils.Constants;
 import com.mobile.view.R;
 
 import org.json.JSONArray;
@@ -44,6 +46,7 @@ public class CountryConfigs {
     private String mLangCode;
     private String mLangName;
     private String mGaId;
+    private String mGTMId;
     private String mPhoneNumber;
     private String mCsEmail;
     private boolean isRatingEnable;
@@ -65,6 +68,7 @@ public class CountryConfigs {
         mLangCode = null;
         mLangName = null;
         mGaId = null;
+        mGTMId = null;
         mPhoneNumber = null;
         mCsEmail = null;
         isRatingEnable = true;
@@ -105,6 +109,8 @@ public class CountryConfigs {
         }
         // Get GA id
         mGaId = jsonObject.getString(RestConstants.JSON_COUNTRY_GA_ID);
+        // Get GTM id
+        mGTMId = jsonObject.optString(RestConstants.JSON_COUNTRY_GTM_ID);
         // Get phone number
         mPhoneNumber = jsonObject.getString(RestConstants.JSON_CALL_PHONE_TAG);
         // Get email
@@ -133,7 +139,7 @@ public class CountryConfigs {
      */
     public void writePreferences(Context context) {
         // Get shared prefs
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Editor mEditor = sharedPrefs.edit();
         // Currency info
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, mCurrencyIso);
@@ -155,6 +161,8 @@ public class CountryConfigs {
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, mLangName);
         // GA
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, mGaId);
+        // GTM
+        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, mGTMId);
         // Phone number
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, mPhoneNumber);
         // Email
@@ -177,7 +185,7 @@ public class CountryConfigs {
      * @param context The application context
      */
     public static String getCountryPhoneNumber(Context context) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null);
         Log.i(TAG, "SHOP COUNTRY PHONE NUMBER: " + mPhone2Call);
         return mPhone2Call;
@@ -189,7 +197,7 @@ public class CountryConfigs {
      * @return true or false
      */
     public static boolean checkCountryRequirements(Context context) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPrefs.contains(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE);
     }
 

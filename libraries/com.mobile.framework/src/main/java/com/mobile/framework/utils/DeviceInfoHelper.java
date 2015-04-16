@@ -1,9 +1,5 @@
 package com.mobile.framework.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -22,6 +18,10 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import com.mobile.framework.R;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Locale;
 
 import de.akquinet.android.androlog.Log;
 
@@ -360,5 +360,52 @@ public class DeviceInfoHelper {
         if (context.getResources().getBoolean(R.bool.isTablet) && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) return true;
         return false;
     }
-    
+    /**
+     * method that verifies if the device is tablet or phone
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isTabletDevice(Context context) {
+        return context.getResources().getBoolean(R.bool.isTablet);
+    }
+
+    public interface IDeviceVersionBasedCode{
+        public void highVersionCallback();
+        public void lowerVersionCallback();
+    }
+    /**
+     * Execute callbacks based on version code of device.
+     *
+     * @param version
+     * @param iDeviceVersionBasedCode
+     */
+    public static void executeCodeBasedOnVersion(int version, IDeviceVersionBasedCode iDeviceVersionBasedCode){
+        if(iDeviceVersionBasedCode != null) {
+            if (android.os.Build.VERSION.SDK_INT > version) {
+                iDeviceVersionBasedCode.highVersionCallback();
+            } else {
+                iDeviceVersionBasedCode.lowerVersionCallback();
+            }
+        }
+    }
+
+    /**
+     * Execute callbacks based on Jelly Bean version.
+     *
+     * @param iDeviceVersionBasedCode
+     */
+    public static void executeCodeBasedOnJellyBeanVersion(IDeviceVersionBasedCode iDeviceVersionBasedCode){
+        executeCodeBasedOnVersion(android.os.Build.VERSION_CODES.JELLY_BEAN, iDeviceVersionBasedCode);
+    }
+
+    /**
+     * Execute callbacks based on HoneyComb version.
+     *
+     * @param iDeviceVersionBasedCode
+     */
+    public static void executeCodeBasedOnHoneyCombVersion(IDeviceVersionBasedCode iDeviceVersionBasedCode){
+        executeCodeBasedOnVersion(Build.VERSION_CODES.HONEYCOMB, iDeviceVersionBasedCode);
+    }
+
 }

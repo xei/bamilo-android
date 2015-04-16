@@ -19,11 +19,9 @@ import com.mobile.controllers.CategoriesAdapter;
 import com.mobile.controllers.SubCategoriesAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.CategoriesTableHelper;
 import com.mobile.framework.objects.Category;
 import com.mobile.framework.utils.Constants;
-import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.framework.utils.ShopSelector;
 import com.mobile.helpers.categories.GetCategoriesPerLevelsHelper;
@@ -67,11 +65,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      */
     public static NavigationCategoryFragment getInstance(Bundle bundle) {
         NavigationCategoryFragment categoriesFragment = new NavigationCategoryFragment();
-        // Get data
-        if(bundle != null) {
-            Log.i(TAG, "ON GET INSTANCE: SAVE DATA");
-            categoriesFragment.mCategoryKey = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
-        }
+        categoriesFragment.setArguments(bundle);
         return categoriesFragment;
     }
 
@@ -102,10 +96,11 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        // Validate saved state
-        if(savedInstanceState != null) {
+        Bundle bundle = savedInstanceState == null ? getArguments() : savedInstanceState;
+        // Get data
+        if(bundle != null) {
             Log.i(TAG, "ON LOAD SAVED STATE");
-            mCategoryKey = savedInstanceState.getString(ConstantsIntentExtra.CATEGORY_ID);
+            mCategoryKey = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
         }
     }
     
@@ -306,23 +301,12 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         // Get categories from unexpected error
-        triggerGetCategories(mCategoryKey);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        //super.onRetryRequest(eventType);
-        // Get categories from no network
         triggerGetCategories(mCategoryKey);
     }
     
@@ -416,8 +400,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());
-        // Remove entries until Home
-        FragmentController.getInstance().removeEntriesUntilTag(FragmentType.HOME.toString());
         // Goto Catalog
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
@@ -469,6 +451,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         Log.i(TAG, "ON ERROR EVENT");
         // Validate fragment state
         if (isOnStoppingProcess) return;
+        /*
         // Generic errors
         if(super.handleErrorEvent(bundle)){
             ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
@@ -478,17 +461,17 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             }
             return;
         }
+        */
         // Show retry
         showRetry();
     }
 
     @Override
-    protected void showFragmentNoNetworkRetry(View.OnClickListener listener) {
-        super.showFragmentNoNetworkRetry(listener);
+    protected void showFragmentNoNetworkRetry() {
+        super.showFragmentNoNetworkRetry();
         try{
             ((TextView)getView().findViewById(R.id.no_connection_label)).setTextSize( TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_small_size) );
             ((TextView)getView().findViewById(R.id.no_connection_details_label)).setTextSize( TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_details_small_size) );
-
         }catch(NullPointerException e){
             Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }

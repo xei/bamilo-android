@@ -42,6 +42,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.ui.ToastFactory;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -232,7 +233,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
      * @author Andre Lopes
      */
     protected void showEmpty() {
-        getBaseActivity().showWarningVariation(false);
+        getBaseActivity().warningFactory.hideWarning();
         mAddAllToCartButton.setVisibility(View.GONE);
         mAddAllToCartButton.setOnClickListener(null);
         showFragmentEmpty(R.string.favourite_no_favourites, R.drawable.img_nofavourites, R.string.continue_shopping, this);
@@ -306,7 +307,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
     protected void onClickVariation(View view) {
         try {
             // Hide warning
-            getBaseActivity().showWarningVariation(false);
+            getBaseActivity().warningFactory.hideWarning();
             // Show dialog
             int position = Integer.parseInt(view.getTag().toString());
             AddableToCart addableToCart = mAddableToCartList.get(position);
@@ -360,10 +361,6 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             // Update layout
             updateLayoutAfterAction();
 
-            BaseFragment catalogFragment = (BaseFragment) getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.CATALOG.toString());
-            if (null != catalogFragment) {
-                catalogFragment.sendValuesToFragment(addableToCart.getSku());
-            }
             String sku = addableToCart.getSku();
             if(addableToCart.getSelectedSimple() != -1 && addableToCart.getSimples().size() > 0)
                 sku = addableToCart.getSimples().get(addableToCart.getSelectedSimple()).getAttributeByKey(RestConstants.JSON_SKU_TAG);
@@ -389,7 +386,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
                 addAllItemsToCart();
             } else {
                 // Show the warning on header
-                getBaseActivity().showWarningVariation(true);
+                getBaseActivity().warningFactory.showWarning(WarningFactory.CHOOSE_ONE_SIZE);
                 // Update content
                 mAddableToCartAdapter.notifyDataSetChanged();
             }
@@ -397,7 +394,7 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             Log.w(TAG, "WARNING: NPE ON ADD ALL TO CART");
         } catch (IllegalStateException e){
             Log.w(TAG, "WARNING: ILLEGAL STATE EXCEPTION ON ADD ALL TO CART");
-            getBaseActivity().showWarningNoImage(R.string.server_error);
+            getBaseActivity().warningFactory.showWarning(WarningFactory.PROBLEM_FETCHING_DATA);
         }
     }
 
@@ -1070,6 +1067,10 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             addableToCart.setSelectedSimple(position);
             addableToCart.setSelectedSimpleValue(value);
             mAddableToCartAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onDismiss() {
         }
 
     }

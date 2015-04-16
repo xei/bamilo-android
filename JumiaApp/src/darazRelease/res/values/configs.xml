@@ -33,7 +33,6 @@
     <string name="apptimize_apikey">CTbngwXi_7DNjjfYwEj--L_JYKHHUug</string>
 
     <!-- GTM -->
-    <string name="gtm_key">GTM-NXV7V2</string>
     <item name="gtm_debug" type="bool">false</item>
 
     <!-- FACEBOOK -->

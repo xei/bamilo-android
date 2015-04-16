@@ -3,8 +3,6 @@
  */
 package com.mobile.helpers.account;
 
-import org.json.JSONObject;
-
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -16,6 +14,8 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 
+import org.json.JSONObject;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -24,6 +24,7 @@ import de.akquinet.android.androlog.Log;
  * @author Andre Lopes
  *
  */
+@Deprecated
 public class HomeNewslettersSignupHelper extends BaseHelper {
     
     private static String TAG = HomeNewslettersSignupHelper.class.getSimpleName();

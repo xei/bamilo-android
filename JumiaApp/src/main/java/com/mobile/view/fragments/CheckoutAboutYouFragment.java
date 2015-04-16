@@ -389,21 +389,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
-        getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, null, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        // super.onRetryRequest(eventType);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         triggerAutoLogin();
     }
 
@@ -860,7 +850,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
             // Clean stack for new native checkout on the back stack (auto login)
-            super.removeNativeCheckoutFromBackStack();
+            getBaseActivity().removeAllNativeCheckoutFromBackStack();
             // Goto next step
             getBaseActivity().onSwitchFragment(mNextFragment, null, FragmentController.ADD_TO_BACK_STACK);
         }

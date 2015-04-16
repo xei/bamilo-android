@@ -1264,10 +1264,8 @@ public class TrackerDelegator {
                     }
                 }
             }).start();
-            JumiaApplication.INSTANCE.clearBannerFlowSkus();
-        } else {
-            JumiaApplication.INSTANCE.clearBannerFlowSkus();
         }
+        JumiaApplication.INSTANCE.clearBannerFlowSkus();
     }
 
 
