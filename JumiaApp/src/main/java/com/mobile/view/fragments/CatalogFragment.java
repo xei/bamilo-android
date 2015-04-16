@@ -98,6 +98,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private boolean isLoadingMoreData = false;
 
     private int mNumberOfColumns;
+    
+    private int mTopButtonActivateLine;
 
     private boolean mSortOrFilterApplied; // Flag to reload or not an initial catalog in case generic error
     
@@ -137,6 +139,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
+        // Load line to active top button
+        mTopButtonActivateLine = getResources().getInteger(R.integer.activate_go_top_buttom_line);
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -613,7 +617,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         GridLayoutManager manager = (GridLayoutManager) mGridView.getLayoutManager();
         int columns = manager.getSpanCount();
         // Scroll faster until mark line
-        mGridView.scrollToPosition(columns * getResources().getInteger(R.integer.activate_go_top_buttom_line));
+        mGridView.scrollToPosition(columns * mTopButtonActivateLine);
         // Scroll smooth until top position
         mGridView.post(new Runnable() {
             @Override
@@ -701,7 +705,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
                 int last = manager.findLastVisibleItemPosition();
                 // Show or hide top button after X arrow
-                if (last > mNumberOfColumns * getResources().getInteger(R.integer.activate_go_top_buttom_line)) {
+                if (last > mNumberOfColumns * mTopButtonActivateLine) {
                     UICatalogHelper.showGotoTopButton(getBaseActivity(), mTopButton);
                 } else {
                     UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);
