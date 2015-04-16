@@ -309,7 +309,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
     /**
      * 
      * @param collection
-     * @param mPagerSavedPosition
+     * @param defaultPosition
      */
     private void onShowCollection(ArrayList<Homepage> collection, int defaultPosition) {
         Log.i(TAG, "ON SHOW");
