@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -39,7 +38,7 @@ import de.akquinet.android.androlog.Log;
  *
  * @author sergiopereira
  */
-public class HomePageFragment extends BaseFragment implements OnClickListener {
+public class HomePageFragment extends BaseFragment {
 
     public static final String TAG = LogTagHelper.create(HomePageFragment.class);
 
@@ -272,10 +271,8 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      * Show the current home page for landscape
      *
      * @param homePage
-     * @param mainView
      * @param rightViewBrands
      * @param rightViewCategories
-     * @author sergiopereira
      * @author sergiopereira
      */
     private void showHomePage(Homepage homePage, ViewGroup leftView, ViewGroup rightView, ViewGroup rightViewCategories, ViewGroup rightViewBrands) {
@@ -384,26 +381,18 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      */
     @Override
     public void onClick(View view) {
-        // Get view id
-        int id = view.getId();
-        // Retry button
-        if (id == R.id.fragment_root_retry_button) {
-            onClickRetryButton();
-        }
-        // Retry button
-        if (id == R.id.fragment_root_error_button) {
-            onClickRetryButton();
-        }
-        // Teaser item
-        else {
-            onClickTeaserItem(view);
+        // Validated clicked view
+        if(!onClickTeaserItem(view)) {
+            super.onClick(view);
         }
     }
 
     /**
      * Process the click on retry button
      */
-    private void onClickRetryButton() {
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         // Send to parent reload content
         Log.i(TAG, "ON CLICK RETRY");
         Fragment parent = getParentFragment();
@@ -419,8 +408,10 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
      * @param view
      * @author sergiopereira
      */
-    private void onClickTeaserItem(View view) {
+    private boolean onClickTeaserItem(View view) {
         Log.i(TAG, "ON CLICK TEASER ITEM");
+        //
+        boolean intercepted = true;
         // Get url
         String targetUrl = (String) view.getTag(R.id.target_url);
         // Get type
@@ -429,9 +420,14 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
         String targetTitle = (String) view.getTag(R.id.target_title);
         // Get origin
         TeaserGroupType originType = (TeaserGroupType) view.getTag(R.id.origin_type);
+
+
         // Validate type
         if (targetType != null) {
             Bundle bundle = new Bundle();
+            // add flag to validate if comes from banner or not
+            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, validateBannerFlow(originType));
+
             Log.d(TAG, "targetType = " + targetType.name() + " targetUrl = " + targetUrl);
             switch (targetType) {
                 case CATEGORY:
@@ -454,10 +450,23 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
                     break;
                 default:
                     Log.w(TAG, "WARNING ON CLICK: UNKNOWN VIEW");
+                    intercepted = false;
                     break;
             }
+        } else {
+            intercepted = false;
         }
+        return intercepted;
     }
+
+    /**
+     * validate from where the click needs to be tracked
+     * @param originType
+     */
+    private boolean validateBannerFlow(TeaserGroupType originType){
+        return originType == TeaserGroupType.MAIN_ONE_SLIDE || originType == TeaserGroupType.STATIC_BANNER;
+    }
+
 
     /**
      * Process the click on shops in shop
@@ -500,6 +509,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
+            bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES,false);
             getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
         } else {
             Log.w(TAG, "WARNING: URL IS NULL");
@@ -539,6 +549,7 @@ public class HomePageFragment extends BaseFragment implements OnClickListener {
             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, targetUrl);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES,false);
             getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             Log.i(TAG, "WARNING: URL IS NULL");

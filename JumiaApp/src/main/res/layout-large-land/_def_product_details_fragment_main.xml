@@ -488,7 +488,7 @@
                                 android:layout_marginEnd="10dp"
                                 android:layout_marginRight="10dp"
                                 android:text="@string/show_more"
-                                android:textColor="@color/orange_basic" />
+                                android:textColor="@color/orange_ffa200" />
                         </RelativeLayout>
                     </LinearLayout>
                 </RelativeLayout>
@@ -560,7 +560,7 @@
                                 android:layout_marginEnd="10dp"
                                 android:layout_marginRight="10dp"
                                 android:text="@string/show_more"
-                                android:textColor="@color/orange_basic" />
+                                android:textColor="@color/orange_ffa200" />
                         </RelativeLayout>
                     </LinearLayout>
                 </RelativeLayout>

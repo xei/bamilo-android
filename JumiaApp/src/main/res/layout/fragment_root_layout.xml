@@ -13,7 +13,7 @@
     <!-- LOADING LAYOUT -->
 
     <ViewStub
-        android:id="@+id/fragment_loading_stub"
+        android:id="@+id/fragment_stub_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -23,7 +23,7 @@
     <!-- RETRY LAYOUT -->
 
     <ViewStub
-        android:id="@+id/fragment_retry_stub"
+        android:id="@+id/fragment_stub_retry"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -33,7 +33,7 @@
     <!-- EMPTY LAYOUT -->
 
     <ViewStub
-        android:id="@+id/fragment_empty_stub"
+        android:id="@+id/fragment_stub_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -43,21 +43,32 @@
     <!-- UNEXPECTED ERROR LAYOUT -->
 
     <ViewStub
-        android:id="@+id/fragment_unexpected_error_stub"
+        android:id="@+id/fragment_stub_unexpected_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:inflatedId="@+id/fragment_unexpected_error_stub_inflate"
-        android:layout="@layout/fragment_root_error" />
+        android:layout="@layout/fragment_root_unexpected_error" />
 
-    <!-- FALL BACK LAYOUT -->
+    <!-- HOME FALL BACK LAYOUT -->
 
     <ViewStub
-        android:id="@+id/fragment_fall_back_stub"
+        android:id="@+id/fragment_stub_home_fall_back"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:inflatedId="@+id/fragment_fall_back_stub_inflate"
-        android:layout="@layout/fragment_root_fallback" />
+        android:layout="@layout/fragment_root_home_fall_back" />
+
+    <!-- MAINTENANCE PAGE LAYOUT -->
+
+    <ViewStub
+        android:id="@+id/fragment_stub_maintenance"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:inflatedId="@+id/fragment_maintenance_stub_inflate"
+        android:layout="@layout/fragment_root_maintenance" />
+
 
 </FrameLayout>

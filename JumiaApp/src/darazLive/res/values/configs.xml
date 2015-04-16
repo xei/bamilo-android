@@ -34,7 +34,6 @@
     <string name="apptimize_apikey"/>
 
     <!-- GTM -->
-    <string name="gtm_key">GTM-NXV7V2</string>
     <item name="gtm_debug" type="bool">false</item>
 
     <!-- FACEBOOK -->

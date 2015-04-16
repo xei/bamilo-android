@@ -49,11 +49,9 @@ import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.database.FavouriteTableHelper;
-import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.SearchSuggestion;
 import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
@@ -78,8 +76,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
-import com.mobile.utils.maintenance.MaintenancePage;
-import com.mobile.utils.ui.UIUtils;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.HomeFragment;
 import com.mobile.view.fragments.NavigationFragment;
@@ -120,8 +117,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
-    private static final int WARNING_LENGTH = 4000;
-
     // REMOVED FINAL ATRIBUTE
     private NavigationAction action;
 
@@ -152,8 +147,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     private boolean isRegistered = false;
 
-    private View mWarningBar;
-
     private final int titleResId;
 
     private final int contentLayoutId;
@@ -179,8 +172,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     protected boolean isSearchComponentOpened = false;
 
-    private ViewStub mMainFallBackStub;
-
     private ActionBar mSupportActionBar;
 
     private boolean isBackButtonEnabled = false;
@@ -188,6 +179,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     private long mLaunchTime;
 
     public MenuItem mSearchMenuItem;
+
+    public WarningFactory warningFactory;
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
@@ -540,15 +533,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Get the application container
         contentContainer = findViewById(R.id.rocket_app_content);
         // Warning layout
-        mWarningBar = findViewById(R.id.warning);
-        mWarningBar.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showWarningVariation(false);
-            }
-        });
-        // Get the fallback stub
-        mMainFallBackStub = (ViewStub) findViewById(R.id.main_fall_back_stub);
+        try {
+            warningFactory = new WarningFactory(findViewById(R.id.warning));
+        } catch(IllegalStateException ex){
+            Log.e(TAG,ex.getLocalizedMessage(),ex);
+        }
     }
     
     /*
@@ -1280,22 +1269,14 @@ public abstract class BaseActivity extends ActionBarActivity {
      *
      * @return The created intent
      */
-    public Intent createShareIntent() {
+    public Intent createShareIntent(String extraSubject, String extraText) {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         // sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject, getString(R.string.app_name_placeholder)));
-        // Get product
-        CompleteProduct prod = JumiaApplication.INSTANCE.getCurrentProduct();
-        // Validate
-        if (null != prod) {
-            // For tracking when sharing
-            sharingIntent.putExtra(RestConstants.JSON_SKU_TAG, prod.getSku());
-            String apiVersion = getString(R.string.jumia_global_api_version) + "/";
-            String msg = getString(R.string.share_checkout_this_product) + "\n" + prod.getUrl().replace(apiVersion, "");
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, msg);
-        }
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, extraSubject);
+
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, extraText);
         return sharingIntent;
     }
 
@@ -1541,60 +1522,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         //getSupportActionBar().setTitle("");
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
         mSupportActionBar.setTitle("");
-    }
-
-    /**
-     * ################# WARNING BAR #################
-     */
-
-    /**
-     * Show or hide warning message with image
-     */
-    public final void showWarning(boolean show) {
-        if(mWarningBar != null){
-            mWarningBar.clearAnimation();
-            if (show) {
-                findViewById(R.id.warning_image).setVisibility(View.VISIBLE);
-            }
-            mWarningBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    /**
-     * Show warning message with image and animation
-     */
-    public void showWarning(int message) {
-        if (mWarningBar != null && mWarningBar.getVisibility() != View.VISIBLE) {
-            ((TextView) findViewById(R.id.warning_text)).setText(message);
-            findViewById(R.id.warning_image).setVisibility(View.VISIBLE);
-            UIUtils.animateFadeInAndOut(this, mWarningBar, WARNING_LENGTH);
-        }
-    }
-
-    /**
-     * Show warning message without image
-     */
-    public void showWarningNoImage(int message) {
-        if(mWarningBar != null){
-            mWarningBar.clearAnimation();
-            ((TextView) findViewById(R.id.warning_text)).setText(message);
-            findViewById(R.id.warning_image).setVisibility(View.GONE);
-            mWarningBar.setVisibility(View.VISIBLE);
-        }
-    }
-
-    /**
-     * Show warning variations message
-     */
-    public void showWarningVariation(boolean show) {
-        if(mWarningBar != null){
-            mWarningBar.clearAnimation();
-            if(show){
-                ((TextView) findViewById(R.id.warning_text)).setText(R.string.product_variance_choose_error);
-                findViewById(R.id.warning_image).setVisibility(View.GONE);
-            }
-            mWarningBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
     }
 
     private void setAppContentLayout() {
@@ -1891,8 +1818,8 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param addToBackStack
      * @author sergiopereira
      */
-    public void fragmentManagerTransition(int container, Fragment fragment, String tag, Boolean addToBackStack) {
-        fragmentController.startTransition(this, container, fragment, tag, addToBackStack);
+    public void fragmentManagerTransition(int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack) {
+        fragmentController.startTransition(this, container, fragment, fragmentType, addToBackStack);
     }
 
     /**
@@ -1920,8 +1847,12 @@ public abstract class BaseActivity extends ActionBarActivity {
      * @param tag
      * @author sergiopereira
      */
-    public void popBackStackUntilTag(String tag) {
-        fragmentController.popAllEntriesUntil(this, tag);
+    public boolean popBackStackUntilTag(String tag) {
+        if (fragmentController.hasEntry(tag)) {
+            fragmentController.popAllEntriesUntil(this, tag);
+            return true;
+        }
+        return false;
     }
 
 
@@ -2042,42 +1973,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
     }
 
-    /**
-     * ################ MAIN MAINTENANCE PAGE ################
-     */
-
-    /**
-     * Hide the main fall back view with retry button
-     */
-    public void hideLayoutMaintenance() {
-        if (mMainFallBackStub != null) {
-            mMainFallBackStub.setVisibility(View.GONE);
-        }
-    }
-
-    /**
-     * Sets Maintenance page
-     */
-    public void setLayoutMaintenance(final EventType eventType, OnClickListener onClickListener, boolean showChooseCountry) {
-        // Inflate maintenance
-        mMainFallBackStub.setVisibility(View.VISIBLE);
-
-        // Case BAMILO
-        if (getResources().getBoolean(R.bool.is_bamilo_specific)) {
-            MaintenancePage.setMaintenancePageBamilo(this, eventType, onClickListener);
-        }
-        // Case JUMIA
-        else {
-            // Set content
-            if (showChooseCountry) {
-                MaintenancePage.setMaintenancePageWithChooseCountry(this, eventType, onClickListener);
-            } else {
-                MaintenancePage.setMaintenancePageBaseActivity(this, onClickListener);
-            }
-        }
-    }
-
-    /**
+    /*
      * ########## CHECKOUT HEADER ##########
      */
 
@@ -2269,7 +2165,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         // CHECKOUT_ABOUT_YOU
         if (id == R.id.checkout_header_step_1 && !view.isSelected()) {
             // Uncomment if you want click on about you step
-            // removeAllCheckoutEntries();
+            // removeCheckoutEntries();
             // onSwitchFragment(FragmentType.ABOUT_YOU,
             // FragmentController.NO_BUNDLE,
             // FragmentController.ADD_TO_BACK_STACK);
@@ -2279,19 +2175,18 @@ public abstract class BaseActivity extends ActionBarActivity {
         // CHECKOUT_BILLING
         if (id == R.id.checkout_header_step_2 && !view.isSelected()) {
             // Validate back stack
-            if (FragmentController.getInstance().hasEntry(FragmentType.MY_ADDRESSES.toString())) {
-                FragmentController.getInstance().popAllEntriesUntil(this, FragmentType.MY_ADDRESSES.toString());
-            } else if (FragmentController.getInstance().hasEntry(FragmentType.CREATE_ADDRESS.toString())) {
+
+            if(!popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString()) &&
+                    fragmentController.hasEntry(FragmentType.CREATE_ADDRESS.toString())){
                 removeAllCheckoutEntries();
                 onSwitchFragment(FragmentType.ABOUT_YOU, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             }
+
         }
         // CHECKOUT_SHIPPING
         else if (id == R.id.checkout_header_step_3 && !view.isSelected()) {
             // Validate back stack
-            if (FragmentController.getInstance().hasEntry(FragmentType.SHIPPING_METHODS.toString())) {
-                FragmentController.getInstance().popAllEntriesUntil(this, FragmentType.SHIPPING_METHODS.toString());
-            }
+            popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString());
         }
         // CHECKOUT_PAYMENT IS THE LAST
     }
@@ -2301,15 +2196,59 @@ public abstract class BaseActivity extends ActionBarActivity {
      *
      * @author sergiopereira
      */
-    private void removeAllCheckoutEntries() {
+    @Deprecated
+    private void removeCheckoutEntries() {
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.PAYMENT_METHODS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.SHIPPING_METHODS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ADDRESSES.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.CREATE_ADDRESS.toString());
         FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.EDIT_ADDRESS.toString());
-        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.POLL.toString());
     }
-    
+
+    /**
+     * Remove all checkout entries to call the base of checkout
+     *
+     * @author ricardosoares
+     */
+    private void removeAllCheckoutEntries() {
+        // Native Checkout
+        String[] tags = {    FragmentType.PAYMENT_METHODS.toString(), FragmentType.SHIPPING_METHODS.toString(),  FragmentType.MY_ADDRESSES.toString(),
+                FragmentType.CREATE_ADDRESS.toString(), FragmentType.EDIT_ADDRESS.toString() };
+
+        // Remove tags
+        FragmentController.getInstance().removeAllEntriesWithTag(tags);
+    }
+
+    /**
+     * Method used to remove all native checkout entries from the back stack on the Fragment Controller
+     * Note: Updated this method if you add a new native checkout stepremoveAllCheckoutEntries
+     * @author sergiopereira
+     */
+    @Deprecated
+    protected void removeNativeCheckoutFromBackStack() {
+        // Native Checkout
+        FragmentType[] type = { FragmentType.CHECKOUT_THANKS,   FragmentType.MY_ORDER,      FragmentType.PAYMENT_METHODS,
+                FragmentType.SHIPPING_METHODS,  FragmentType.MY_ADDRESSES,  FragmentType.CREATE_ADDRESS,
+                FragmentType.EDIT_ADDRESS,         FragmentType.ABOUT_YOU };
+        // Remove tags
+        for (FragmentType fragmentType : type) FragmentController.getInstance().removeAllEntriesWithTag(fragmentType.toString());
+    }
+
+    /**
+     * Method used to remove all native checkout entries from the back stack on the Fragment Controller
+     * Note: This method must be updated in case of adding more screens to native checkout.
+     * @author ricardosoares
+     */
+    public void removeAllNativeCheckoutFromBackStack(){
+        // Native Checkout
+        String[] tags = { FragmentType.CHECKOUT_THANKS.toString(),   FragmentType.MY_ORDER.toString(),      FragmentType.PAYMENT_METHODS.toString(),
+                FragmentType.SHIPPING_METHODS.toString(),  FragmentType.MY_ADDRESSES.toString(),  FragmentType.CREATE_ADDRESS.toString(),
+                FragmentType.EDIT_ADDRESS.toString(),         FragmentType.ABOUT_YOU.toString() };
+
+        // Remove tags
+        FragmentController.getInstance().removeAllEntriesWithTag(tags);
+    }
+
     /*
      * ##### REQUESTS TO RECOVER #####
      */

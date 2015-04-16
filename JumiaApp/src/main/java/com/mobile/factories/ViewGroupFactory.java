@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class ViewGroupFactory {
-    // TODO validate if it's better wih SparceArray
+
+    // TODO validate if it's better wih SparseArray
     private HashMap<Integer, View> views;
 
     public ViewGroupFactory(ViewGroup viewGroup) {

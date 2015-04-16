@@ -1,9 +1,9 @@
 package com.mobile.utils;
 
-import org.json.JSONObject;
-
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.rest.RestConstants;
+
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -70,10 +70,8 @@ public class CheckoutStepManager {
         Log.i(TAG, "NEXT STEP STRING: " + nextStep);
         // Default case
         FragmentType fragmentType = FragmentType.UNKNOWN;
-        // Poll answer
-        if (nextStep.equalsIgnoreCase(POLL_STEP)) fragmentType = FragmentType.POLL;
         // Create addresses step
-        else if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.CREATE_ADDRESS;
+        if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.CREATE_ADDRESS;
         // Billing and shipping address step
         else if (nextStep.equalsIgnoreCase(BILLING_STEP)) fragmentType = FragmentType.MY_ADDRESSES;
         // Shipping method step

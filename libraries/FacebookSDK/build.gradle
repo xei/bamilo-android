@@ -11,8 +11,6 @@ android {
 }
 
 dependencies {
-
     compile project(':libraries:com.viewpagerindicator')
-
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

@@ -3,9 +3,6 @@
  */
 package com.mobile.helpers.campaign;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 
 import com.mobile.framework.enums.RequestType;
@@ -16,7 +13,9 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
-import com.mobile.utils.CheckoutStepManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -70,7 +69,6 @@ public class GetCampaignHelper extends BaseHelper {
             return parseErrorBundle(bundle);
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
         return bundle;
     }
     

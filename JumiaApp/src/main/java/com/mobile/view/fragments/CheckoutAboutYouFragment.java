@@ -26,7 +26,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.constants.ConstantsCheckout;
-import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -148,7 +147,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
      */
     @Override
@@ -159,7 +158,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
@@ -247,7 +246,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onResume()
      */
     @Override
@@ -268,7 +267,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onPause()
      */
     @Override
@@ -281,7 +280,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStop()
      */
     @Override
@@ -326,7 +325,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
      */
     @Override
@@ -390,21 +389,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
-        getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, null, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        // super.onRetryRequest(eventType);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         triggerAutoLogin();
     }
 
@@ -500,7 +489,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     /**
      * ############# FACEBOOK #############
      */
-    
+
     /*
      * (non-Javadoc)
      * @see com.facebook.Request.GraphUserCallback#onCompleted(com.facebook.model.GraphUser, com.facebook.Response)
@@ -514,7 +503,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     }
 
     /*
-     * ################ FACEBOOK ################ 
+     * ################ FACEBOOK ################
      */
     /*
      * (non-Javadoc)
@@ -566,7 +555,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     }
 
     /**
-     * ########## SET FORMS ########## 
+     * ########## SET FORMS ##########
      */
 
     /**
@@ -698,7 +687,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
 
     /**
-     * ########### TRIGGERS ###########  
+     * ########### TRIGGERS ###########
      */
 
     /**
@@ -840,9 +829,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         showFragmentLoading();
         triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
     }
-    
+
     /*
-     * ########## NEXT STEP VALIDATION ########## 
+     * ########## NEXT STEP VALIDATION ##########
      */
 
     /**
@@ -861,15 +850,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             getBaseActivity().hideKeyboard();
             getBaseActivity().updateSlidingMenuCompletly();
             // Clean stack for new native checkout on the back stack (auto login)
-            super.removeNativeCheckoutFromBackStack();
+            getBaseActivity().removeAllNativeCheckoutFromBackStack();
             // Goto next step
-            Bundle bundle = new Bundle();
-            // Validate if is guest user and sent the flag 
-            if (JumiaApplication.CUSTOMER.isGuest()) {
-                bundle.putBoolean(ConstantsIntentExtra.IS_SIGN_UP, true);
-            }
-            // Go
-            getBaseActivity().onSwitchFragment(mNextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(mNextFragment, null, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -888,9 +871,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         // Next step
         gotoNextStep();
     }
-    
+
     /*
-     * ########## RESPONSE ########## 
+     * ########## RESPONSE ##########
      */
 
     /**
@@ -1099,7 +1082,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     }
 
     /*
-     * ########### RESPONSE LISTENER ###########  
+     * ########### RESPONSE LISTENER ###########
      */
     /*
      * (non-Javadoc)
@@ -1118,9 +1101,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     public void onRequestComplete(Bundle bundle) {
         onSuccessEvent(bundle);
     }
-    
+
     /*
-     * ########### TRACKING ###########  
+     * ########### TRACKING ###########
      */
 
     /**
@@ -1153,9 +1136,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             e.printStackTrace();
         }
     }
-    
+
     /*
-     * ########### DIALOGS ###########  
+     * ########### DIALOGS ###########
      */
 
     /**

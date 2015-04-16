@@ -20,8 +20,8 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
-import com.mobile.constants.BundleConstants;
 import com.mobile.preferences.ShopPreferences;
+import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.view.SplashScreenActivity;
 
 import java.util.List;
@@ -74,7 +74,7 @@ public class JumiaWearableListenerService extends WearableListenerService {
 
                 if (bundle != null) {
                     Intent newIntent = new Intent(this, SplashScreenActivity.class);
-                    newIntent.putExtra(BundleConstants.EXTRA_GCM_PAYLOAD, bundle);
+                    newIntent.putExtra(DeepLinkManager.EXTRA_GCM_PAYLOAD, bundle);
                     newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplication().startActivity(newIntent);
 
@@ -83,8 +83,8 @@ public class JumiaWearableListenerService extends WearableListenerService {
 //                    Uri data = Uri.parse(deepLinkUrl);
 //                    Log.d(TAG, "APP BUNDLE ->  data " + data);
 //                    Bundle gcmBundle = new Bundle();
-//                    gcmBundle.putString(BundleConstants.DEEPLINKING_PAGE_INDICATION,deepLinkUrl);
-//                    Bundle deepLinkBundle =  DeepLinkManager.loadExternalDeepLink(getApplicationContext(), data);
+//                    gcmBundle.putString(BundleConstants.DEEP_LINK_PAGE_INDICATION,deepLinkUrl);
+//                    Bundle deepLinkBundle =  DeepLinkManager.loadDeepLink(getApplicationContext(), data);
 //                    Log.d(TAG, "APP BUNDLE ->  deepLinkBundle " + deepLinkBundle);
                 }
 
@@ -103,10 +103,10 @@ public class JumiaWearableListenerService extends WearableListenerService {
                 Log.e(TAG, "deepLinkUrl:" + deepLinkUrl);
                 Uri data = Uri.parse(deepLinkUrl);
                 Bundle gcmBundle = new Bundle();
-                gcmBundle.putString(BundleConstants.DEEPLINKING_PAGE_INDICATION, deepLinkUrl);
+                gcmBundle.putString(DeepLinkManager.DEEP_LINK_PAGE_INDICATION, deepLinkUrl);
                 Log.e(TAG, "gcmBundle:" + gcmBundle);
                 Intent newIntent = new Intent(this, SplashScreenActivity.class);
-                newIntent.putExtra(BundleConstants.EXTRA_GCM_PAYLOAD, gcmBundle);
+                newIntent.putExtra(DeepLinkManager.EXTRA_GCM_PAYLOAD, gcmBundle);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplication().startActivity(newIntent);
             }

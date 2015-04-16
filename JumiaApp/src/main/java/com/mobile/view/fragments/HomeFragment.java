@@ -149,7 +149,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
          * 
          * @author sergiopereira
          */
-        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
         // Case app is bound and has shop id and not in maintenance
         if (JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry()) 
@@ -236,7 +236,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         }
         
         // Validate promotions
-        SharedPreferences sP = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sP = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         if (sP.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true)) {
             triggerPromotions();
         }
@@ -377,7 +377,7 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
         Log.i(TAG, "ON SHOW FALLBACK");
         try {
             //ImageView mapBg = (ImageView) getView().findViewById(R.id.home_fallback_country_map);
-            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(ConstantsSharedPrefs.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             //RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_splashmap);
             String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "Jumia");
             TextView fallbackBest = (TextView) getView().findViewById(R.id.fallback_best);
@@ -408,21 +408,11 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
     
     /*
      * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickErrorButton(android.view.View)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
     @Override
-    protected void onClickErrorButton(View view) {
-        super.onClickErrorButton(view);
-        onReloadContent();
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onRetryRequest(com.mobile.framework.utils.EventType)
-     */
-    @Override
-    protected void onRetryRequest(EventType eventType) {
-        //super.onRetryRequest(eventType);
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
         onReloadContent();
     }
 
