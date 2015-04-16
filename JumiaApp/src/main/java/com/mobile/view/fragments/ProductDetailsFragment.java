@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -15,10 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
-import android.text.Spannable;
 import android.text.TextUtils;
-import android.text.style.MetricAffectingSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -216,18 +212,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private View mRelatedContainer;
 
-    private RelativeLayout mProductFeaturesContainer;
-
-    private TextView mProductFeaturesText;
-
-    private TextView mProductDescriptionText;
-
-    private LinearLayout mProductFeaturesMore;
-
-    private LinearLayout mProductDescriptionMore;
-
-    private RelativeLayout mProductDescriptionContainer;
-
     private boolean isRelatedItem = false;
 
     private HorizontalListView mRelatedListView;
@@ -273,6 +257,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private TextView numOffers;
 
     private TextView minOffers;
+
+    private TextView mDetailsSection;
+
+    private View mDetailsSectionLine;
 
     private ViewGroupFactory mGalleryViewGroupFactory;
 
@@ -561,47 +549,28 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mSellerDeliveryContainer = view.findViewById(R.id.delivery_time_container);
         mSellerRating = (RatingBar) view.findViewById(R.id.product_detail_product_seller_rating);
         sellerView.setVisibility(View.GONE);
-
-        // Get and set portrait views
-        checkPortraitLayout(view);
-        // Get and set landscape views
-        checkLandscapeLayout(view);
+        //Details section
+        mDetailsSection = (TextView) view.findViewById(R.id.product_detail_specifications);
+        mDetailsSectionLine = view.findViewById(R.id.review_details_line);
 
         mGalleryViewGroupFactory = new ViewGroupFactory((ViewGroup) view.findViewById(R.id.product_image_layout));
     }
 
     /**
-     * Get and set the portrait views
-     * 
-     * @param view
-     * @author sergiopereira
+     * Validate its to show specifications or not
      */
-    private void checkPortraitLayout(View view) {
-        View specs = view.findViewById(R.id.product_detail_specifications);
-        if (specs != null)
-            specs.setOnClickListener(this);
+    private void checkProductDetailsVisibility() {
+        if (mCompleteProduct != null && mDetailsSection != null && mDetailsSectionLine != null) {
+            if (CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications() &&
+                    TextUtils.isEmpty(mCompleteProduct.getShortDescription()) &&
+                    TextUtils.isEmpty(mCompleteProduct.getDescription()))) {
+                mDetailsSection.setVisibility(View.GONE);
+                mDetailsSectionLine.setVisibility(View.GONE);
+            }
+            mDetailsSection.setOnClickListener(this);
+        }
     }
 
-    /**
-     * Get and set the landscape views
-     * 
-     * @param view
-     * @author sergiopereira
-     */
-    private void checkLandscapeLayout(View view) {
-        // Get landscape views
-        mProductFeaturesContainer = (RelativeLayout) view.findViewById(R.id.features_container);
-        mProductDescriptionContainer = (RelativeLayout) view.findViewById(R.id.description_container);
-        mProductFeaturesText = (TextView) view.findViewById(R.id.product_features_text);
-        mProductDescriptionText = (TextView) view.findViewById(R.id.product_description_text);
-        mProductFeaturesMore = (LinearLayout) view.findViewById(R.id.features_more_container);
-        mProductDescriptionMore = (LinearLayout) view.findViewById(R.id.description_more_container);
-        // Set listeners
-        if (mProductDescriptionMore != null)
-            mProductDescriptionMore.setOnClickListener(this);
-        if (mProductFeaturesMore != null)
-            mProductFeaturesMore.setOnClickListener(this);
-    }
 
 //    /**
 //     * function responsible for handling the size of the image according to existence of other
@@ -1206,7 +1175,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         isToShowWizard();
         // Call phone
         setCallPhone();
-
+        // validate specifications layout
+        checkProductDetailsVisibility();
         // Get simple position from deep link value
         if (mDeepLinkSimpleSize != null) {
             locateSimplePosition(mDeepLinkSimpleSize, product);
@@ -1252,11 +1222,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         setContentInformation();
         // Bundles
         setBundles(product);
-
-        if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
-            displayDescription();
-            displaySpecification();
-        }
         // Tracking
         TrackerDelegator.trackProduct(createBundleProduct());
         // Show container
@@ -1580,12 +1545,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         // Get id
         int id = view.getId();
         // Case rating
-        if (id == R.id.product_detail_product_rating_container) onClickRating();
+        if (id == R.id.product_detail_product_rating_container )
+            onClickRating();
         // Case description
         else if (id == R.id.product_detail_specifications ||
-                id == R.id.product_detail_name ||
-                id == R.id.features_more_container ||
-                id == R.id.description_more_container) {
+                id == R.id.product_detail_name) {
             onClickShowDescription();
         }
         // Case variation button
@@ -2041,69 +2005,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         }
     }
 
-    /**
-     * display product specification on landscape
-     */
-    private void displaySpecification() {
-        Log.i(TAG, "ON DISPLAY SPECIFIC LANDSCAPE LAYOUT");
-        String shortDescription = mCompleteProduct.getShortDescription();
-        // Validate the specific landscape layout
-        if (mProductFeaturesContainer == null) {
-            Log.i(TAG, "SPECIFIC LANDSCAPE LAYOUT IS NULL");
-            return;
-        }
-        // Don't show the features box if there is no content for it
-        if (TextUtils.isEmpty(shortDescription)) {
-            Log.i(TAG, "shortDescription : empty");
-            mProductFeaturesContainer.setVisibility(View.GONE);
-        } else {
-            mProductFeaturesContainer.setVisibility(View.VISIBLE);
-            String translatedDescription = shortDescription.replace("\r", "<br>");
-            Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
-            // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);
-                MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
-                for (MetricAffectingSpan span : spans) {
-                    htmlText.removeSpan(span);
-                }
-            }
-            mProductFeaturesText.setText(htmlText);
-            showMoreButton(mProductFeaturesText, mProductFeaturesMore);
-        }
-    }
 
-    /**
-     * display product description on landscape
-     */
-    private void displayDescription() {
-        if (mProductDescriptionContainer == null) {
-            Log.w(TAG, "Product details container is null on landscape");
-            return;
-        }
-        String longDescription = mCompleteProduct.getDescription();
-        if (longDescription.isEmpty()) {
-            mProductDescriptionContainer.setVisibility(View.GONE);
-        } else {
-            mProductDescriptionContainer.setVisibility(View.VISIBLE);
-        }
-        String translatedDescription = longDescription.replace("\r", "<br>");
-        Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
-        // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with
-        // bold tags
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);
-            MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(),
-                    MetricAffectingSpan.class);
-            for (MetricAffectingSpan span : spans) {
-                htmlText.removeSpan(span);
-            }
-        }
-        mProductDescriptionText.setText(htmlText);
 
-        showMoreButton(mProductDescriptionText, mProductDescriptionMore);
 
-    }
 
     /**
      * function used to calculate if text is all visible or not, on order to show the show more

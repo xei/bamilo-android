@@ -50,5 +50,6 @@
 
     <!-- PDV -->
     <item name="product_details_fragment_seller_info" type="layout">@layout/_v8_product_details_fragment_seller_info</item>
+    <item name="product_details_fragment_info" type="layout">@layout/_v8_product_details_fragment_info</item>
 
 </resources>
