@@ -1375,6 +1375,9 @@ public abstract class BaseActivity extends ActionBarActivity {
                         onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE,
                                 FragmentController.ADD_TO_BACK_STACK);
                         break;
+                    case Country:
+                        onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
                     default:
                         Log.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
                         break;

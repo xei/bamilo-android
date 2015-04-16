@@ -3,9 +3,6 @@
  */
 package com.mobile.utils;
 
-import java.util.Arrays;
-import java.util.List;
-
 import android.content.Context;
 import android.os.Build;
 import android.support.v4.view.ActionProvider;
@@ -24,12 +21,16 @@ import com.mobile.components.widget.DismissibleSpinner;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
 
+import java.util.Arrays;
+import java.util.List;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * ActionProvider to present a Menu on ActionBar. used on main_menu.xml
  * 
  * @author Andre Lopes
+ * @modified Paulo Carvalho
  * 
  */
 public class MyProfileActionProvider extends ActionProvider {
@@ -42,7 +43,8 @@ public class MyProfileActionProvider extends ActionProvider {
             NavigationAction.RecentSearch,
             NavigationAction.RecentlyView,
             NavigationAction.MyAccount,
-            NavigationAction.MyOrders
+            NavigationAction.MyOrders,
+            NavigationAction.Country
             );
 
     private DismissibleSpinner mSpinner;
@@ -247,6 +249,10 @@ public class MyProfileActionProvider extends ActionProvider {
                 title.setText(R.string.my_orders_label);
                 icon.setImageResource(R.drawable.ic_orderstatuts_highlighted);
                 break;
+            case Country:
+                    title.setText(R.string.nav_country);
+                    icon.setImageResource(R.drawable.ico_dropdown_changecountry);
+                    break;
             default:
                 Log.w(TAG, "WARNING GETDROPDOWNVIEW UNKNOWN VIEW");
                 break;

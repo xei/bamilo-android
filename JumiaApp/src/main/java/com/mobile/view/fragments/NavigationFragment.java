@@ -315,10 +315,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         case Categories:
             layout = createCategoriesHeader();
             break;
-        case Country:
-            layout = createGenericComponent(parent, R.drawable.selector_navigation_countrychange, R.string.nav_country, this);
-            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
-            break;
         default:
             layout = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
             TextView tVd = (TextView) layout.findViewById(R.id.component_text);
@@ -628,12 +624,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             case Home:
                 Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: HOME");
                 getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,FragmentController.ADD_TO_BACK_STACK);
-                break;
-            // Case Change Country
-            case Country:
-                Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: COUNTRY");
-                getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
-                getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY,FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 break;
             // Case unknown
             default:
