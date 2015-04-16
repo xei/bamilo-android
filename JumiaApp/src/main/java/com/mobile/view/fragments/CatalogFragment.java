@@ -23,7 +23,6 @@ import com.mobile.framework.objects.FeaturedBox;
 import com.mobile.framework.objects.Product;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventTask;
 import com.mobile.helpers.products.GetCatalogPageHelper;

@@ -45,9 +45,7 @@ public class CampaignsFragment extends BaseFragment {
 
     private SlidingTabLayout mCampaignPagerTabStrip;
     */
-    
-    private boolean isFromBanner;
-    
+
     private boolean isFromBanner;
     
     /**

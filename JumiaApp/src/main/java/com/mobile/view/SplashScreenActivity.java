@@ -32,7 +32,6 @@ import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.tracking.Ad4PushTracker;
-import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;

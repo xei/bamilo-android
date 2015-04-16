@@ -6,7 +6,6 @@ import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.rest.RestConstants;
