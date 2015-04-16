@@ -607,7 +607,6 @@ public abstract class BaseActivity extends ActionBarActivity {
     public void updateSlidingMenuCompletly() {
         NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
         if (slideMenuFragment != null) {
-            slideMenuFragment.onUpdateCart();
             slideMenuFragment.onUpdateMenu();
         }
     }
@@ -1232,7 +1231,6 @@ public abstract class BaseActivity extends ActionBarActivity {
                     + JumiaApplication.INSTANCE.getCart().getCartCount());
         }
         updateCartInfoInActionBar();
-        updateCartInfoInNavigation();
     }
 
     public void updateCartInfoInActionBar() {
@@ -1254,15 +1252,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         });
     }
 
-    private void updateCartInfoInNavigation() {
-        Log.d(TAG, "ON UPDATE CART IN NAVIGATION");
-        NavigationFragment navigation = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
-        if (navigation != null) {
-            navigation.onUpdateCart();
-        } else {
-            Log.w(TAG, "updateCartInfoInNavigation: navigation container empty - doing nothing");
-        }
-    }
 
     /**
      * Create the share intent to be used to store the needed information
