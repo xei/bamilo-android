@@ -46,9 +46,6 @@ public class GetShopHelper extends BaseHelper {
         try {
             StaticPage staticPage = new StaticPage();
             staticPage.initialize(jsonObject);
-            if(!staticPage.getStaticPageType().equals(StaticPage.SHOPS_IN_SHOP)){
-                return parseErrorBundle(bundle);
-            }
             bundle.putString(Constants.BUNDLE_RESPONSE_KEY, staticPage.getHtml());
         } catch (JSONException e) {
             e.printStackTrace();

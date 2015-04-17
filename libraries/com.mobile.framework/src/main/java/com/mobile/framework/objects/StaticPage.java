@@ -47,8 +47,6 @@ public class StaticPage implements IJSONSerializable {
         JSONObject dataObject = jsonObject.getJSONObject(Constants.BUNDLE_DATA_KEY);
         if(dataObject != null){
             mStaticPageType = dataObject.optString(RestConstants.JSON_TYPE_TAG);
-            //FIXME
-            mStaticPageType = SHOPS_IN_SHOP;
             mHtml = dataObject.optString(RestConstants.JSON_HTML_TAG);
         } else {
             return false;
