@@ -67,11 +67,8 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     private RelativeLayout productsContainer;
     
     OrdersListAdapter ordersAdapter;
-    
-    
+
     private boolean isVisible = false;
-    
-    private MyOrdersFragment parentFragment;
     
     private int selectedProduct = -1;
     
@@ -130,7 +127,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        parentFragment = (MyOrdersFragment) getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.MY_ORDERS.toString());
         
         if(savedInstanceState != null) {
             selectedProduct = savedInstanceState.getInt("selectedPos");
@@ -153,10 +149,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");               
-        
-        if(parentFragment != null)
-            MyOrdersFragment.mPositionToStart = 1;
+        Log.i(TAG, "ON VIEW CREATED");
         
         ordersListView = (ListView) view.findViewById(R.id.orders_list);
         ordersListView.setOnScrollListener(onScrollListener);
@@ -608,9 +601,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
       Bundle bundle = new Bundle();
       bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_ORDERS);
       bundle.putInt(ConstantsIntentExtra.MY_ORDER_POS, 1);
-      //set pager position to the original
-      if(null != parentFragment)
-          parentFragment.setPagerPosition(0);
       
       getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
