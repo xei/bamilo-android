@@ -4,12 +4,7 @@
     style="@style/rounded_box"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="0dp"
-    android:layout_marginLeft="0dp"
-    android:layout_marginRight="0dp"
-    android:layout_marginStart="0dp"
-    android:layout_marginEnd="0dp"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/title_status_text"
@@ -27,7 +22,7 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginStart="@dimen/rounded_margin_mid"
         android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <!-- TIP -->
 
@@ -49,7 +44,7 @@
             android:id="@+id/loading_status"
             android:layout_width="match_parent"
             android:layout_height="@dimen/track_order_content_height"
-            android:visibility="gone" >
+            android:visibility="gone">
 
             <include
                 android:layout_width="wrap_content"
@@ -65,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/track_order_error_content_height"
             android:gravity="center"
-            android:visibility="gone" >
+            android:visibility="gone">
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/text_normal"
@@ -85,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/track_order_content_height"
-            android:visibility="gone" >
+            android:visibility="gone">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_creation_date_title"
@@ -139,8 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/order_products_title"
-                android:orientation="vertical" >
-            </LinearLayout>
+                android:orientation="vertical"></LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 
