@@ -242,16 +242,7 @@
                 layout="@layout/product_details_fragment_offers"
                 android:visibility="gone" />
 
-            <!-- BUNDLE PRODUCTS -->
 
-            <include
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/product_detail_product_offers_container"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="@dimen/rounded_margin_mid"
-                android:layout_marginTop="0dp"
-                layout="@layout/product_details_fragment_bundle" />
         </RelativeLayout>
     </com.mobile.utils.ScrollViewWithHorizontal>
 
@@ -396,15 +387,27 @@
 
                 </RelativeLayout>
 
+
+                <!-- BUNDLE PRODUCTS -->
+
+                <include
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/product_detail_stars_container"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginRight="@dimen/rounded_margin_small"
+                    android:layout_marginTop="@dimen/rounded_margin_small"
+                    layout="@layout/product_details_fragment_bundle" />
+
                 <!-- RELATED PRODUCTS -->
 
                 <include
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="@dimen/rounded_margin_small"
                     android:layout_marginLeft="0dp"
                     android:layout_marginRight="0dp"
-                    android:layout_marginTop="0dp"
+                    android:layout_marginTop="@dimen/rounded_margin_small"
                     layout="@layout/product_details_fragment_related" />
             </LinearLayout>
         </com.mobile.utils.ScrollViewWithHorizontal>
