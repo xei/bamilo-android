@@ -848,7 +848,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Show no result layout
             showFeaturedBoxNoResult(featuredBox);
         }
-        // Case network errors
+        // Case network errors except No network
+        else if(errorCode != null && errorCode.isNetworkError() && errorCode != ErrorCode.NO_NETWORK){
+            showFilterNoResult();
+        }
+        // Case No Network
         else if (super.handleErrorEvent(bundle)) {
             Log.i(TAG, "HANDLE BASE FRAGMENT");
         }
