@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><!-- A CardView that contains a TextView -->
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="140dp"
+    android:layout_height="match_parent"
+    style="@style/JumiaCardViewStyle">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/home_teaser_top_sellers_image"
+            android:layout_width="match_parent"
+            android:layout_height="124dp"
+            android:src="@drawable/no_image_small"
+            android:contentDescription="@string/home_label" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/home_teaser_top_sellers_brand"
+            style="@style/TextSubHead" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/home_teaser_top_sellers_name"
+            style="@style/TextSubHead" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/home_teaser_top_sellers_price"
+            style="@style/TextSubHeadOrange" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

@@ -2,6 +2,7 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
@@ -29,6 +30,7 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.rest.RestConstants;
@@ -778,7 +780,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         // Case home fall back
         else if(id == R.id.fragment_stub_home_fall_back)  {
-            onInflateHomeFallBack();
+            onInflateHomeFallBack(inflated);
         }
         // Case loading
         else if(id == R.id.fragment_stub_loading) {
@@ -828,8 +830,36 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Set the home fall back view.
      */
-    private void onInflateHomeFallBack() {
+    private void onInflateHomeFallBack(View inflated) {
         Log.i(TAG, "ON INFLATE STUB: FALL BACK");
+        try {
+            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "Jumia");
+
+            TextView fallbackBest = (TextView) inflated.findViewById(R.id.fallback_best);
+            TextView tView = (TextView) inflated.findViewById(R.id.fallback_country);
+            View countryD = inflated.findViewById(R.id.fallback_country_double);
+            TextView tViewBottom = (TextView) inflated.findViewById(R.id.fallback_country_bottom);
+
+            TextView tView2 = (TextView) inflated.findViewById(R.id.fallback_country_top);
+
+            fallbackBest.setText(R.string.fallback_best);
+
+            if (country.split(" ").length == 1) {
+                tView.setText(country.toUpperCase());
+                tView.setVisibility(View.VISIBLE);
+                countryD.setVisibility(View.GONE);
+            } else {
+                tView2.setText(country.split(" ")[0].toUpperCase());
+                tViewBottom.setText(country.split(" ")[1].toUpperCase());
+                fallbackBest.setTextSize(11.88f);
+                countryD.setVisibility(View.VISIBLE);
+                tView.setVisibility(View.GONE);
+            }
+            fallbackBest.setSelected(true);
+        } catch (NullPointerException | ClassCastException e) {
+            e.printStackTrace();
+        }
         // Hide other stubs
         UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mMaintenanceView, mLoadingView);
     }
@@ -931,7 +961,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @return intercept or not
      */
     public boolean handleSuccessEvent(Bundle bundle) {
-        Log.i(TAG, "ON HANDLE ERROR EVENT");
+        Log.i(TAG, "ON HANDLE SUCCESS EVENT");
         // Validate event
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {

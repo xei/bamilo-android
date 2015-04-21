@@ -9,7 +9,6 @@
     <color name="red_basic">#c11800</color>
     <color name="red_middle">#cc0000</color>
     <color name="blue_basic">#004789</color>
-    <color name="orange_ffa200">#ffa200</color>
     <color name="grey_dark">#333333</color>
     <color name="grey_middledark">#4e4e4e</color>
     <color name="grey_middle">#666666</color>
@@ -68,5 +67,8 @@
 
     <!-- ANDROID 5.0: COLOR ACCENT -->
     <color name="color_accent">@color/orange_ffa200</color>
+    <color name="orange_ffa200">#ffa200</color>
+    <color name="white_f9f9f9">#f9f9f9</color>
+    <color name="red_cc0000">#cc0000</color>
 
 </resources>

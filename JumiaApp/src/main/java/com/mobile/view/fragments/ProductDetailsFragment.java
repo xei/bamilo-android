@@ -1333,7 +1333,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
             if(isRTL) mVariationsListView.enableReverseLayout();
             mVariationsListView.setAdapter(adapter);
-            mVariationsListView.setSelecetedItem(position);
+            mVariationsListView.setSelectedItem(position);
             mVariationsListView.setOnItemSelectedListener(new OnViewSelectedListener() {
                 @Override
                 public void onViewSelected(View view, int position, String url) {
@@ -1870,9 +1870,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            isAddingProductToCart = false;
-            getBaseActivity().updateCartInfo();
             hideActivityProgress();
+            isAddingProductToCart = false;
             mAddToCartButton.setEnabled(true);
             executeAddToShoppingCartCompleted(false);
             break;

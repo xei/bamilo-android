@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:background="@color/white_f9f9f9"
+    android:orientation="vertical"
+    android:padding="4dp">
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/home_teaser_shop_title"
+        style="@style/TextBody_1" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/home_teaser_shop_sub_title"
+        style="@style/TextCaption" />
+
+    <ImageView
+        android:id="@+id/home_teaser_shop_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/no_image_small"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@string/home_label" />
+
+</LinearLayout>
+
+

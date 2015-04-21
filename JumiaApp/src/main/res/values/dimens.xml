@@ -397,4 +397,17 @@
     <!-- NO CONNECTION -->
     <dimen name="no_connection_label_small_size">16sp</dimen>
     <dimen name="no_connection_label_details_small_size">12sp</dimen>
+
+    <!-- MATERIAL DIMENSION 1:1 -->
+    <dimen name="dimen_mat_4px">4dp</dimen>
+    <dimen name="dimen_mat_8px">8dp</dimen>
+    <dimen name="dimen_mat_110px">110dp</dimen>
+    <dimen name="dimen_mat_128px">128dp</dimen>
+    <dimen name="dimen_mat_140px">140dp</dimen>
+    <dimen name="dimen_mat_148px">148dp</dimen>
+    <dimen name="dimen_mat_150px">150dp</dimen>
+    <dimen name="dimen_mat_158px">158dp</dimen>
+
+
+
 </resources>

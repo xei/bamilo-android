@@ -28,7 +28,9 @@ public class HorizontalListView extends RecyclerView {
     private float mLastX;
     
     private float mLastY;
-    
+
+    private boolean interceptTouchEvent;
+
     /**
      * Constructor
      * @param context
@@ -67,6 +69,13 @@ public class HorizontalListView extends RecyclerView {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         setLayoutManager(mLayoutManager);
     }
+
+    /**
+     * TODO
+     */
+    public void enableTouchInterception(){
+        interceptTouchEvent = true;
+    }
     
     /*
      * (non-Javadoc)
@@ -75,6 +84,7 @@ public class HorizontalListView extends RecyclerView {
      */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if(!interceptTouchEvent) return super.onInterceptTouchEvent(ev);
         // Get layout manager
         int firstC = ((LinearLayoutManager) getLayoutManager()).findFirstCompletelyVisibleItemPosition();
         int lastC = ((LinearLayoutManager) getLayoutManager()).findLastCompletelyVisibleItemPosition();
@@ -155,7 +165,7 @@ public class HorizontalListView extends RecyclerView {
      * @author sergiopereira
      * @throws RuntimeException
      */
-    public void setSelecetedItem(int position) {
+    public void setSelectedItem(int position) {
         Adapter<?> adapter = getAdapter();
         if(adapter instanceof OnViewHolderSelected) {
             ((OnViewHolderSelected) adapter).setSelectedPosition(position);

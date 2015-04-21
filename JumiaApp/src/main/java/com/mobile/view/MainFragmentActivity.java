@@ -37,7 +37,6 @@ import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.CheckoutWebFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
 import com.mobile.view.fragments.FavouritesFragment;
-import com.mobile.view.fragments.HomeFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
@@ -47,6 +46,7 @@ import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyAddressesSessionLogin;
 import com.mobile.view.fragments.MyOrdersFragment;
+import com.mobile.view.fragments.NewHomeFragment;
 import com.mobile.view.fragments.ProductDetailsDescriptionFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -237,7 +237,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             mCurrentFragmentType = FragmentType.getValue(tag);
             // Save the current back stack
             for (String entry : FragmentController.getInstance().returnAllEntries()) {
-                frags.add(entry.toString());
+                frags.add(entry);
             }
         } catch (Exception e) {
             Log.w(TAG, "ERROR ON GET CURRENT FRAGMENT TYPE", e);
@@ -272,7 +272,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                     popBackStack(FragmentType.HOME.toString());
                     return;
                 }
-                fragment = HomeFragment.newInstance();
+                fragment = NewHomeFragment.newInstance();
                 break;
             case CATEGORIES:
                 fragment = CategoriesCollectionFragment.getInstance(bundle);

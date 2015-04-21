@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_teaser_featured_stores_container"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_mat_158px"
+    android:gravity="center"
+    android:background="@android:color/holo_blue_bright"
+    app:columnCount="3"
+    app:rowCount="1">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_gravity="fill"
+        app:layout_row="0"
+        app:layout_column="0"
+        app:layout_columnWeight="1">
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/home_teaser_small_title"
+            style="@style/TextBody_1" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/home_teaser_small_sub_title"
+            style="@style/TextCaption" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_gravity="fill"
+        app:layout_row="0"
+        app:layout_column="1"
+        app:layout_columnWeight="1">
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/TextBody_1" />
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/TextCaption" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_gravity="fill"
+        app:layout_row="0"
+        app:layout_column="2"
+        app:layout_columnWeight="1">
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/TextBody_1" />
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/TextCaption" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.GridLayout>

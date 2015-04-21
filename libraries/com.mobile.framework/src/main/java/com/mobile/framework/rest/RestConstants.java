@@ -11,6 +11,7 @@ public class RestConstants {
 
     // Common JSON constants
     public static final String JSON_DATA_TAG = "data";
+    public static final String JSON_ACTION_NAME_TAG = "action_name";
     public static final String JSON_ID_TAG = "id";
     public final static String JSON_SUCCESS_TAG = "success";
     public final static String JSON_MESSAGE_IN_MESSAGES_TAG = "message";
@@ -300,6 +301,7 @@ public class RestConstants {
 
     // ProductReviewComment Tags
     public static final String JSON_TITLE_TAG = "title";
+    public static final String JSON_SUB_TITLE_TAG = "sub_title";
 
     // ProductSimple Tags
     public static final String JSON_META_TAG = "meta";
