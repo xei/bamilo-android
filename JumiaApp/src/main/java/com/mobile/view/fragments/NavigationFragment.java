@@ -7,20 +7,16 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.components.NavigationListComponent;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.objects.ShoppingCart;
-import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
@@ -44,16 +40,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     private View mTabMenu;
 
     private View mTabCategories;
-
-    private View mCartView;
-
-    private TextView mCartCount;
-
-    private TextView mCartElements;
-
-    private TextView mCartVat;
-
-    private View mCartEmpty;
 
     private FragmentType mSavedStateType;
 
@@ -111,23 +97,14 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        // Set cart
-        mCartView = view.findViewById(R.id.nav_basket);
-        mCartCount = (TextView) view.findViewById(R.id.nav_cart_count);
-        mCartElements = (TextView) view.findViewById(R.id.nav_basket_elements);
-        mCartVat = (TextView) view.findViewById(R.id.nav_basket_vat);
-        mCartEmpty = view.findViewById(R.id.nav_basket_empty);
         // Set tabs
         mTabMenu = view.findViewById(R.id.navigation_tabs_button_menu);
         mTabCategories = view.findViewById(R.id.navigation_tabs_button_categories);
         // Set listeners
-        mCartView.setOnClickListener(this);
         mTabMenu.setOnClickListener(this);
         mTabCategories.setOnClickListener(this);
         // Get container
         mNavigationContainer = (ViewGroup) view.findViewById(R.id.slide_menu_scrollable_container);
-        // Set cart
-        onUpdateCart();
         // Check if mNavigationContainer is being reconstructed
         if (mNavigationContainer.getChildCount() <= 1) addMenuItems();
         // Validate saved state
@@ -291,11 +268,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
 
     /**
      * Retrieves the layout element associated with a given action of the navigation list
-     * 
-     * @param action
-     *            The action we want to retrieve the layout for
-     * @param id
-     *            The id
+     *
      * @return The layout of the navigation list element
      */
     public View getActionElementLayout(NavigationListComponent component, ViewGroup parent) {
@@ -314,10 +287,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             break;
         case Categories:
             layout = createCategoriesHeader();
-            break;
-        case Country:
-            layout = createGenericComponent(parent, R.drawable.selector_navigation_countrychange, R.string.nav_country, this);
-            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
             break;
         default:
             layout = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
@@ -450,49 +419,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         setActionSelected(view);
     }
     
-  
-    /**
-     * Method used to update the cart info
-     * @author sergiopereira
-     */
-    public synchronized void onUpdateCart() {
-        Log.d(TAG, "ON UPDATE CART");
-        // Validate current cart and current state
-        if (JumiaApplication.INSTANCE.getCart() == null || isOnStoppingProcess) return;
-        // Get the current cart
-        ShoppingCart currentCart = JumiaApplication.INSTANCE.getCart();
-        // Get cart value
-        String value = currentCart != null ? currentCart.getCartValue() : "";
-        // Get cart quantity
-        String quantity = currentCart == null ? "0" : String.valueOf(currentCart.getCartCount());
-        // Set layout
-        setCartLayout(value, quantity);
-    }
-    
-    /**
-     * Show the cart values
-     * @param value
-     * @param quantity
-     * @author sergiopereira
-     */
-    private void setCartLayout(String value, String quantity) {
-        // Validate quantity
-        if (!TextUtils.isEmpty(quantity) && !"0".equals(quantity)) {
-            Log.d(TAG, "CART IS NOT EMPTY: " + value);
-            mCartCount.setText(quantity);
-            mCartElements.setText(CurrencyFormatter.formatCurrency(value));
-            mCartElements.setVisibility(View.VISIBLE);
-            mCartVat.setVisibility(View.VISIBLE);
-            mCartEmpty.setVisibility(View.INVISIBLE);
-        } else {
-            Log.d(TAG, "CART IS EMPTY");
-            mCartCount.setText(quantity);
-            mCartElements.setVisibility(View.INVISIBLE);
-            mCartVat.setVisibility(View.INVISIBLE);
-            mCartEmpty.setVisibility(View.VISIBLE);
-        }
-    }
-    
     /**
      * Set selected tag with respective tag
      * @param tab
@@ -602,12 +528,10 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         Log.d(TAG, "ON CLICK");
         //Get view id 
         int id = view.getId();
-        // Case button menu
-        if (id == R.id.nav_basket) onClickCart();
         /*-// Case button menu
         else if (id == R.id.navigation_tabs_button_menu) onClickMenu();*/
         // Case button categories
-        else if (id == R.id.navigation_tabs_button_categories) onClickCategories();
+        if (id == R.id.navigation_tabs_button_categories) onClickCategories();
         // Case NavigationAction
         else if (onClickNavigationAction(view));
         // Case unknown
@@ -629,12 +553,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
                 Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: HOME");
                 getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,FragmentController.ADD_TO_BACK_STACK);
                 break;
-            // Case Change Country
-            case Country:
-                Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: COUNTRY");
-                getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
-                getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY,FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                break;
             // Case unknown
             default:
                 Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: UNKNOWN");
@@ -647,23 +565,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             return false;
         }
         return true;
-    }
-
-    /**
-     * Process the click on cart
-     * @author sergiopereira
-     */
-    private void onClickCart(){
-        try {
-            // Close 
-            getBaseActivity().closeNavigationDrawer();
-            // Clean stack until home
-            getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
-            // Goto cart
-            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-        } catch (NullPointerException e) {
-            Log.w(TAG, "WARNING NPE ON CLICK CART");
-        }
     }
     
     /**

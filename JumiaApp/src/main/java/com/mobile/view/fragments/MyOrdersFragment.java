@@ -38,7 +38,7 @@ public class MyOrdersFragment extends BaseFragment implements OnClickListener {
 
     private SlidingTabLayout mMyOrdersPagerTabStrip;
 
-    public static int mPositionToStart = 0;
+    private int mPositionToStart = 0;
 
     /**
      * Get instance
