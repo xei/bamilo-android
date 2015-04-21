@@ -1,6 +1,7 @@
 package com.mobile.utils.dialogfragments;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -69,6 +70,7 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	 */
 	public interface OnDialogListListener {
 		public void onDialogListItemSelect(int position, String value);
+        	public void onDismiss();
 	}
 	
 	/**
@@ -205,7 +207,6 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
 	
 	/**
 	 * Set the size guide button
-	 * @param activity
 	 * @param view
 	 * @author sergiopereira
 	 */
@@ -251,7 +252,15 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         mSelectListener = null;
         mClickListener = null;
     }
-    
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if(mSelectListener != null){
+            mSelectListener.onDismiss();
+        }
+    }
+
     /*
      * ########### LISTENERS ###########
      */
@@ -299,7 +308,6 @@ public class DialogListFragment extends DialogFragment implements OnItemClickLis
         }
     }
 
-    
     /*
      * ########### ADAPTER ###########
      */

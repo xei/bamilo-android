@@ -1087,6 +1087,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                     dialogList.dismissAllowingStateLoss();
                 }
             }
+
+            @Override
+            public void onDismiss() {
+            }
         };
 
         dialogList = DialogListFragment.newInstance(this, listener, ID_CHANGE_QUANTITY,

@@ -1069,6 +1069,10 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
             mAddableToCartAdapter.notifyDataSetChanged();
         }
 
+        @Override
+        public void onDismiss() {
+        }
+
     }
 
     protected ArrayList<String> createSimpleVariants(AddableToCart addableToCart, ArrayList<String> mSimpleVariantsAvailable) {

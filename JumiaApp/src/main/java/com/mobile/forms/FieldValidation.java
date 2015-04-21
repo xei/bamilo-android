@@ -35,9 +35,9 @@ private static final String TAG = FieldValidation.class.getName();
 //	private static final String JSON_MAX_TAG = "max";
 //    private static final String JSON_REGEX_TAG = "regex";
 
-	private static int MIN_CHARACTERS = 0;
-	private static int MAX_CHARACTERS = 40;
-	private static String DEFAULT_REGEX = "[0-9a-zA-Z-]*";
+	public static int MIN_CHARACTERS = 0;
+	public static int MAX_CHARACTERS = 40;
+	public static String DEFAULT_REGEX = "[0-9a-zA-Z-]*";
 
 	public boolean required;
 	public int min;

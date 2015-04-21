@@ -99,7 +99,7 @@
     <string name="fallback_maintenance_text">در حال بروزرسانی است</string>
     <string name="fallback_maintenance_text_bottom">ما به این موضوع رسیدگی خواهیم کرد، شما می توانید بعدا دوباره اقدام نمایید.</string>
     <string name="fallback_mobile">تلفن های همراه</string>
-    <string name="fallback_welcome">به %name خوش آمدید</string>
+    <string name="fallback_welcome">خوش آمدید به</string>
     <string name="favourite_add_to_cart">کالا به سبد خرید شما اضافه شد.</string>
     <string name="favourite_addalltocart">اضافه کردن تمام کالاها به سبد خرید</string>
     <string name="favourite_no_favourites">شما هیچ کالای مورد علاقه ای در لیست ندارد</string>
