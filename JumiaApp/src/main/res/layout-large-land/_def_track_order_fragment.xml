@@ -3,29 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    android:orientation="horizontal" >
+    android:orientation="horizontal">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingBottom="@dimen/rounded_margin_mid"
-        android:paddingLeft="@dimen/rounded_margin_mid"
-        android:paddingRight="@dimen/rounded_margin_small" >
+        android:layout_weight="1">
 
         <include layout="@layout/track_order_form" />
+
     </ScrollView>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingBottom="@dimen/rounded_margin_mid"
-        android:paddingLeft="@dimen/rounded_margin_small"
-        android:paddingRight="@dimen/rounded_margin_mid" >
+        android:layout_weight="1">
 
         <include
             layout="@layout/track_order_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/rounded_margin_mid"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_marginEnd="@dimen/rounded_margin_mid"
+            android:layout_marginTop="@dimen/rounded_margin_mid"
             android:visibility="gone" />
     </ScrollView>
 

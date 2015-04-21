@@ -21,4 +21,7 @@
     <!-- PDV -->
     <item name="product_details_fragment_main" 	type="layout">@layout/_v8_product_details_fragment_main</item>
 
+    <!-- MY ORDERS -->
+    <item name="track_order_fragment"           type="layout">@layout/_v8_track_order_fragment</item>
+    
 </resources>

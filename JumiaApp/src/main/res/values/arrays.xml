@@ -12,7 +12,6 @@
     <!-- NAVIGATION MENU ITEMS -->
     <string-array name="navigation_items">
         <item>/shop/</item>
-        <item>/customer/language/</item>
     </string-array>
 
     <!-- RATING -->
