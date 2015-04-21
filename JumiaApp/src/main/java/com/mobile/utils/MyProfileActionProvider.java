@@ -3,9 +3,6 @@
  */
 package com.mobile.utils;
 
-import java.util.Arrays;
-import java.util.List;
-
 import android.content.Context;
 import android.os.Build;
 import android.support.v4.view.ActionProvider;
@@ -24,27 +21,22 @@ import com.mobile.components.widget.DismissibleSpinner;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.akquinet.android.androlog.Log;
 
 /**
  * ActionProvider to present a Menu on ActionBar. used on main_menu.xml
  * 
  * @author Andre Lopes
+ * @modified Paulo Carvalho
  * 
  */
 public class MyProfileActionProvider extends ActionProvider {
 
     public final static String TAG = LogTagHelper.create(MyProfileActionProvider.class);
-
-    private List<NavigationAction> subMenuItems = Arrays.asList(
-            NavigationAction.LoginOut,
-            NavigationAction.Favorite,
-            NavigationAction.RecentSearch,
-            NavigationAction.RecentlyView,
-            NavigationAction.MyAccount,
-            NavigationAction.MyOrders
-            );
-
+    private List<NavigationAction> subMenuItems;
     private DismissibleSpinner mSpinner;
     private MyProfileAdapter mAdapter;
     private OnClickListener mAdapterOnClickListener;
@@ -87,6 +79,8 @@ public class MyProfileActionProvider extends ActionProvider {
 
         mIcon = spinnerContainer.findViewById(R.id.image_myprofile);
         mIcon.setTag(R.id.nav_action, NavigationAction.MyProfile);
+        //create overflow list
+        createDropdownList();
         // Validate listener
         if (mAdapterOnClickListener != null) {
             mIcon.setOnClickListener(mAdapterOnClickListener);
@@ -97,6 +91,27 @@ public class MyProfileActionProvider extends ActionProvider {
         mSpinner.setAdapter(mAdapter);
         // Return view
         return spinnerContainer;
+    }
+
+    /**
+     * method that creates the overflow menu list, validating it the app is shop or bamilo
+     */
+    private void createDropdownList(){
+        if(subMenuItems == null){
+            subMenuItems = new ArrayList<>();
+        }
+        subMenuItems.clear();
+
+        subMenuItems.add(NavigationAction.LoginOut);
+        subMenuItems.add(NavigationAction.Favorite);
+        subMenuItems.add(NavigationAction.RecentSearch);
+        subMenuItems.add(NavigationAction.RecentlyView);
+        subMenuItems.add(NavigationAction.MyAccount);
+        subMenuItems.add(NavigationAction.MyOrders);
+
+        if(!getContext().getResources().getBoolean(R.bool.is_bamilo_specific) && !getContext().getResources().getBoolean(R.bool.is_shop_specific)){
+            subMenuItems.add(NavigationAction.Country);
+        }
     }
     
     /**
@@ -246,6 +261,10 @@ public class MyProfileActionProvider extends ActionProvider {
             case MyOrders:
                 title.setText(R.string.my_orders_label);
                 icon.setImageResource(R.drawable.ic_orderstatuts_highlighted);
+                break;
+            case Country:
+                title.setText(R.string.nav_country);
+                icon.setImageResource(R.drawable.ico_dropdown_changecountry);
                 break;
             default:
                 Log.w(TAG, "WARNING GETDROPDOWNVIEW UNKNOWN VIEW");
