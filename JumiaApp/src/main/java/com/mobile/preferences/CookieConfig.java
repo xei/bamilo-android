@@ -3,7 +3,9 @@ package com.mobile.preferences;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.text.TextUtils;
 
+import com.mobile.framework.rest.ICurrentCookie;
 import com.mobile.framework.utils.CustomerUtils;
 import com.newrelic.com.google.gson.Gson;
 
@@ -15,30 +17,39 @@ import oak.ObscuredSharedPreferences;
  * Created by rsoares on 4/21/15.
  */
 public class CookieConfig extends CustomerUtils{
+
+    public static final String CURRENT_COOKIE = "current_cookie";
+
     private String country;
 
     private ContentValues values;
+
+    private ICurrentCookie cookieStore;
 
     /**
      * Constructor
      *
      * @param ctx
      */
-    public CookieConfig(Context ctx, String country) {
+    public CookieConfig(Context ctx, String country, ICurrentCookie cookieStore) {
         super(ctx);
         this.country = country;
-        this.values = null;
+        this.cookieStore = cookieStore;
+        this.values = getValues();
+
+        Object cookieObj = values.get(CURRENT_COOKIE);
+        if(cookieObj instanceof String) {
+            storeCookie((String) values.get(CURRENT_COOKIE));
+        }
     }
 
     @Override
     public ContentValues getCredentials() {
         return getValues();
-//        return super.getCredentials();
     }
 
     @Override
     public String getEmail() {
-//        return super.getEmail();
         ContentValues values = getValues();
         for(Map.Entry<String, Object> entry : values.valueSet()){
             if(entry.getValue() instanceof CharSequence && entry.getKey().contains("email")){
@@ -50,43 +61,46 @@ public class CookieConfig extends CustomerUtils{
 
     @Override
     public void storeCredentials(ContentValues values) {
-//        super.storeCredentials(values);
-        this.values = values;
+        if(values.size() > 0) {
+            this.values.putAll(values);
 
-        Gson gson = new Gson();
-        String json = gson.toJson(values);
+            Gson gson = new Gson();
+            String json = gson.toJson(this.values);
 
-        ObscuredSharedPreferences.Editor editor = obscuredPreferences.edit();
+            ObscuredSharedPreferences.Editor editor = obscuredPreferences.edit();
 
-        editor.putString(country, json);
-        editor.putBoolean(USER_LOGGED_ONCE_FLAG, true);
+            editor.putString(country, json);
+            editor.putBoolean(USER_LOGGED_ONCE_FLAG, true);
 
-        editor.commit();
+            editor.commit();
+        }
+    }
 
+    protected void storeCookie(String cookie){
+        if(!TextUtils.isEmpty(cookie) && cookieStore != null){
+            cookieStore.addCookie(cookie);
+        }
     }
 
     @Override
     public boolean hasCredentials() {
-//        return super.hasCredentials();
         return getValues().containsKey(INTERNAL_AUTOLOGIN_FLAG);
     }
 
     @Override
     public void clearCredentials() {
-//        super.clearCredentials();
         ObscuredSharedPreferences.Editor editor = obscuredPreferences.edit();
         editor.remove(country).commit();
+        values.clear();
     }
 
     @Override
     public boolean userNeverLoggedIn() {
-//        return super.userNeverLoggedIn();
         return !obscuredPreferences.contains(USER_LOGGED_ONCE_FLAG);
     }
 
     private ContentValues getValues() {
         if(values == null) {
-//        ObscuredSharedPreferences.Editor editor = obscuredPreferences.edit();
             Gson gson = new Gson();
             String json = obscuredPreferences.getString(country, null);
             this.values = (json != null) ? gson.fromJson(json, ContentValues.class) : new ContentValues();
@@ -94,6 +108,11 @@ public class CookieConfig extends CustomerUtils{
         return values;
     }
 
-
-
+    public void save(){
+        if(cookieStore != null) {
+            String cookie = cookieStore.getCurrentCookie();
+            this.values.put(CURRENT_COOKIE, cookie);
+        }
+        storeCredentials(this.values);
+    }
 }

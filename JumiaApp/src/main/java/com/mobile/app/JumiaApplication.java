@@ -23,6 +23,8 @@ import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.objects.VersionInfo;
+import com.mobile.framework.rest.ICurrentCookie;
+import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.service.IRemoteService;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.service.RemoteService;
@@ -31,7 +33,6 @@ import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.ApptimizeTracking;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
-import com.mobile.framework.utils.CustomerUtils;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.ImageResolutionHelper;
 import com.mobile.framework.utils.SingletonMap;
@@ -361,9 +362,10 @@ public class JumiaApplication extends A4SApplication {
     /**
      * @return the mCustomerUtils
      */
-    public CustomerUtils getCustomerUtils() {
+    public CookieConfig getCustomerUtils() {
         if (mCustomerUtils == null) {
-            mCustomerUtils = new CookieConfig(getApplicationContext(), SHOP_ID);
+            ch.boye.httpclientandroidlib.client.CookieStore cookieStore = RestClientSingleton.getSingleton(getApplicationContext()).getCookieStore();
+            mCustomerUtils = new CookieConfig(getApplicationContext(), SHOP_ID, cookieStore instanceof ICurrentCookie ? (ICurrentCookie)cookieStore : null);
         }
         return mCustomerUtils;
     }
@@ -578,8 +580,8 @@ public class JumiaApplication extends A4SApplication {
         registerForm = null;
         paymentMethodForm = null;
         registerSavedInstanceState = null;
-//        getCustomerUtils().clearCredentials();
         CUSTOMER = null;
+        getCustomerUtils().save();
         mCustomerUtils = null;
         cart = null;
         paymentsInfoList = null;

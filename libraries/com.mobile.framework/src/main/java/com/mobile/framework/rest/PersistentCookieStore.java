@@ -22,7 +22,7 @@ import de.akquinet.android.androlog.Log;
  * @see https://github.com/loopj/android-async-http/blob/master/library/src/main/java/com/loopj/android/http/PersistentCookieStore.java
  * @author spereira
  */
-public class PersistentCookieStore extends BasicCookieStore {
+public class PersistentCookieStore extends BasicCookieStore implements ICurrentCookie{
 
     private static final String TAG = PersistentCookieStore.class.getSimpleName();
 
@@ -74,6 +74,10 @@ public class PersistentCookieStore extends BasicCookieStore {
         if(cookie.getName().contains(PHPSESSID_TAG)) {
             this.domain = cookie.getDomain();
         }
+    }
+
+    public void addCookie(String encodedCookie){
+        addCookie(decodeCookie(encodedCookie));
     }
 
     /**
@@ -197,6 +201,16 @@ public class PersistentCookieStore extends BasicCookieStore {
             data[i / 2] = (byte) ((Character.digit(hexString.charAt(i), 16) << 4) + Character.digit(hexString.charAt(i + 1), 16));
         }
         return data;
+    }
+
+    public String getCurrentCookie(){
+        List<Cookie> cookies =  getCookies();
+        for (Cookie cookie : cookies) {
+            if(cookie.getName().contains(PHPSESSID_TAG) && cookie.getDomain().equals(domain)) {
+                return encodeCookie(new PersistentCookie(cookie));
+            }
+        }
+        return null;
     }
 
 }
