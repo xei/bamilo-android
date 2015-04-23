@@ -63,4 +63,7 @@
     <item name="product_specs_container_item" type="layout">@layout/_def_product_specs_container_item</item>
     <item name="details_info_fragment_main" type="layout">@layout/_def_details_info_fragment_main</item>
 
+    <!-- MY ORDERS -->
+    <item name="track_order_fragment" type="layout">@layout/_def_track_order_fragment</item>
+    <item name="myorders_fragment_main" type="layout">@layout/_def_myorders_fragment_main</item>
 </resources>

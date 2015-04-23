@@ -693,7 +693,7 @@ public class DynamicFormItem {
      */
     public boolean validate() {
         boolean result = true;
-        if(hasRules() && this.dataControl != null) {
+        if(hasRules() && this.errorControl != null) {
             switch (this.entry.getInputType()) {
                 case checkBox:
                     if (this.entry.getValidation().isRequired())

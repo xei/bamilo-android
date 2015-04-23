@@ -379,6 +379,8 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
             //ImageView mapBg = (ImageView) getView().findViewById(R.id.home_fallback_country_map);
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             //RocketImageLoader.instance.loadImage(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_MAP_FLAG, ""), mapBg, null, R.drawable.img_splashmap);
+            // Get flag for single shop
+            boolean isSingleShop = getResources().getBoolean(R.bool.is_single_shop_country);
             String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "Jumia");
             TextView fallbackBest = (TextView) getView().findViewById(R.id.fallback_best);
             fallbackBest.setText(R.string.fallback_best);
@@ -386,7 +388,14 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
                 TextView tView = (TextView) getView().findViewById(R.id.fallback_country);
                 tView.setVisibility(View.VISIBLE);
                 getView().findViewById(R.id.fallback_country_double).setVisibility(View.GONE);
+                tView.setText(isSingleShop ? "" : country.toUpperCase());
+                if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+                    getView().findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
+                }
                 tView.setText(country.toUpperCase());
+                if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+                    getView().findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
+                }
             } else {
                 TextView tView = (TextView) getView().findViewById(R.id.fallback_country_top);
                 tView.setText(country.split(" ")[0].toUpperCase());
