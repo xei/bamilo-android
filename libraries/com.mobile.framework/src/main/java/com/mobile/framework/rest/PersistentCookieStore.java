@@ -76,6 +76,11 @@ public class PersistentCookieStore extends BasicCookieStore implements ICurrentC
         }
     }
 
+    /**
+     * Add the encoded string to the store.
+     *
+     * @param encodedCookie Cookie in string format.
+     */
     public void addCookie(String encodedCookie){
         addCookie(decodeCookie(encodedCookie));
     }
@@ -203,6 +208,11 @@ public class PersistentCookieStore extends BasicCookieStore implements ICurrentC
         return data;
     }
 
+    /**
+     * Return the cookie that is being used.
+     *
+     * @return The current cookie.
+     */
     public String getCurrentCookie(){
         List<Cookie> cookies =  getCookies();
         for (Cookie cookie : cookies) {

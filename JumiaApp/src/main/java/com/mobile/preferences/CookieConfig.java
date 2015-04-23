@@ -14,7 +14,14 @@ import java.util.Map;
 import oak.ObscuredSharedPreferences;
 
 /**
- * Created by rsoares on 4/21/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ * @author Ricardo Soares
+ * @version 1.0
+ * @date 2015/04/22
  */
 public class CookieConfig extends CustomerUtils{
 
@@ -30,6 +37,8 @@ public class CookieConfig extends CustomerUtils{
      * Constructor
      *
      * @param ctx
+     * @param country
+     * @param cookieStore
      */
     public CookieConfig(Context ctx, String country, ICurrentCookie cookieStore) {
         super(ctx);
@@ -76,6 +85,11 @@ public class CookieConfig extends CustomerUtils{
         }
     }
 
+    /**
+     * Store the cookie on cookieStore.
+     *
+     * @param cookie Encoded cookie.
+     */
     protected void storeCookie(String cookie){
         if(!TextUtils.isEmpty(cookie) && cookieStore != null){
             cookieStore.addCookie(cookie);
@@ -108,6 +122,9 @@ public class CookieConfig extends CustomerUtils{
         return values;
     }
 
+    /**
+     * Save on preferences the credentials and cookie.
+     */
     public void save(){
         if(cookieStore != null) {
             String cookie = cookieStore.getCurrentCookie();
