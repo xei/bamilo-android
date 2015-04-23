@@ -75,7 +75,7 @@ public class PersistentCookieStore extends BasicCookieStore {
             this.domain = cookie.getDomain();
         }
     }
-    
+
     /**
      * Save the session cookie into shared preferences.
      * @author spereira
@@ -139,7 +139,7 @@ public class PersistentCookieStore extends BasicCookieStore {
 
     /**
      * Create a cookie from cookie string Base64. 
-     * @param string
+     * @param cookieString
      * @return Cookie or null
      * @author spereira
      */

@@ -37,6 +37,7 @@ import com.mobile.framework.utils.ImageResolutionHelper;
 import com.mobile.framework.utils.SingletonMap;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.preferences.CookieConfig;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.ServiceSingleton;
@@ -64,7 +65,7 @@ public class JumiaApplication extends A4SApplication {
     private VersionInfo mMobApiVersionInfo;
     // Account variables
     public static Customer CUSTOMER;
-    private CustomerUtils mCustomerUtils;
+    private CookieConfig mCustomerUtils;
     private boolean loggedIn = false;
 
     /**
@@ -150,7 +151,9 @@ public class JumiaApplication extends A4SApplication {
          */
         Log.i(TAG, "INIT CURRENCY");
         String currencyCode = ShopPreferences.getShopCountryCurrencyIso(getApplicationContext());
-        if(!TextUtils.isEmpty(currencyCode)) CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
+        if(!TextUtils.isEmpty(currencyCode)){
+            CurrencyFormatter.initialize(getApplicationContext(), currencyCode);
+        }
     }
 
     public synchronized void init(Handler initializationHandler) {
@@ -360,7 +363,7 @@ public class JumiaApplication extends A4SApplication {
      */
     public CustomerUtils getCustomerUtils() {
         if (mCustomerUtils == null) {
-            mCustomerUtils = new CustomerUtils(getApplicationContext());
+            mCustomerUtils = new CookieConfig(getApplicationContext(), SHOP_ID);
         }
         return mCustomerUtils;
     }
@@ -575,8 +578,8 @@ public class JumiaApplication extends A4SApplication {
         registerForm = null;
         paymentMethodForm = null;
         registerSavedInstanceState = null;
-        getCustomerUtils().clearCredentials();
-        CUSTOMER = null;        
+//        getCustomerUtils().clearCredentials();
+        CUSTOMER = null;
         mCustomerUtils = null;
         cart = null;
         paymentsInfoList = null;
