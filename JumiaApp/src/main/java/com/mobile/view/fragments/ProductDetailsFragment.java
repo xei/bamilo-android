@@ -561,9 +561,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     private void checkProductDetailsVisibility() {
         if (mCompleteProduct != null && mDetailsSection != null && mDetailsSectionLine != null) {
-            if (CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications() &&
+            if (CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications()) &&
                     TextUtils.isEmpty(mCompleteProduct.getShortDescription()) &&
-                    TextUtils.isEmpty(mCompleteProduct.getDescription()))) {
+                    TextUtils.isEmpty(mCompleteProduct.getDescription())) {
                 mDetailsSection.setVisibility(View.GONE);
                 mDetailsSectionLine.setVisibility(View.GONE);
             }

@@ -49,7 +49,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
 
     private int mTabsCount = 2;
 
-    private boolean hasSummary = true;
+    private boolean mHasSummary = true;
 //    private boolean hasSpecification = true;
 
 
@@ -211,7 +211,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
                     mTabsCount--;
                 }
                 if(TextUtils.isEmpty(completeProduct.getDescription()) && TextUtils.isEmpty(completeProduct.getShortDescription())){
-                    hasSummary = false;
+                    mHasSummary = false;
                     mTabsCount--;
                 }
             }
@@ -265,7 +265,7 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
             Fragment fragment = ProductDetailsSummaryFragment.getInstance(getArguments());
 
             if(position == 0){
-                if(!hasSummary){
+                if(!mHasSummary){
                     fragment = ProductDetailsSpecificationsFragment.getInstance(getArguments());
                 }
             } else {
@@ -294,7 +294,11 @@ public class ProductDetailsInfoFragment extends BaseFragment implements OnClickL
         public CharSequence getPageTitle(int position) {
             switch (position) {
             case 0:
-                return getString(R.string.product_desc_summary_title).toUpperCase();
+                if(mHasSummary){
+                    return getString(R.string.product_desc_summary_title).toUpperCase();
+                } else {
+                    return getString(R.string.product_specifications).toUpperCase();
+                }
             case 1:
                 return getString(R.string.product_specifications).toUpperCase();
             default:
