@@ -427,7 +427,7 @@ public final class RestClientSingleton {
 				EntityUtils.consumeQuietly(entity);
 				return null;
 			}
-			
+
             // Save the session cookie into preferences
             persistSessionCookie();
 			
