@@ -24,6 +24,6 @@ public class PickUpStationListView extends NestedVerticalListView{
             ((LinearLayout)this.getParent()).setMinimumHeight(this.getContext().getResources().getDimensionPixelSize(R.dimen.dimen_780px));
         }
     }
- 
-    
+
+
 }
