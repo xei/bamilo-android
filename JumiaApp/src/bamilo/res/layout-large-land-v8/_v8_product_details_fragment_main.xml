@@ -241,8 +241,7 @@
                 android:layout_marginRight="@dimen/rounded_margin_mid"
                 layout="@layout/product_details_fragment_offers"
                 android:visibility="gone" />
-
-
+            
         </RelativeLayout>
     </com.mobile.utils.ScrollViewWithHorizontal>
 

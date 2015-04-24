@@ -561,9 +561,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     private void checkProductDetailsVisibility() {
         if (mCompleteProduct != null && mDetailsSection != null && mDetailsSectionLine != null) {
-            if (CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications() &&
+            if (CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications()) &&
                     TextUtils.isEmpty(mCompleteProduct.getShortDescription()) &&
-                    TextUtils.isEmpty(mCompleteProduct.getDescription()))) {
+                    TextUtils.isEmpty(mCompleteProduct.getDescription())) {
                 mDetailsSection.setVisibility(View.GONE);
                 mDetailsSectionLine.setVisibility(View.GONE);
             }
@@ -1604,11 +1604,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * Show the product description
      */
     private void onClickShowDescription() {
-        if (null != mCompleteProduct) {
+        if (null != mCompleteProduct && (!CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications()) ||
+                (!TextUtils.isEmpty(mCompleteProduct.getShortDescription()) && !TextUtils.isEmpty(mCompleteProduct.getDescription())) )) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
             bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
