@@ -22,6 +22,8 @@ import java.util.ArrayList;
  */
 public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaserAdapter.ViewHolder> {
 
+    private View.OnClickListener mOnClickListener;
+
     private ArrayList<BaseTeaserObject> mDataSet;
 
     /**
@@ -35,6 +37,7 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
         public TextView mTitle;
         private TextView mSubTitle;
         private ImageView mImage;
+        private View mProgress;
         /**
          * Constructor
          * @param view
@@ -43,8 +46,8 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
             super(view);
             mTitle = (TextView) view.findViewById(R.id.home_teaser_small_title);
             mSubTitle = (TextView) view.findViewById(R.id.home_teaser_small_sub_title);
-            mImage = (ImageView) view.findViewById(R.id.home_teaser_small_image);
-
+            mImage = (ImageView) view.findViewById(R.id.home_teaser_item_image);
+            mProgress = view.findViewById(R.id.home_teaser_item_progress);
         }
     }
 
@@ -53,8 +56,9 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
      * @param teasers
      * @author sergiopereira
      */
-    public HomeSmallTeaserAdapter(ArrayList<BaseTeaserObject> teasers) {
+    public HomeSmallTeaserAdapter(ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener) {
         mDataSet = teasers;
+        mOnClickListener = listener;
     }
 
     /*
@@ -81,9 +85,9 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
         // Set title
         holder.mSubTitle.setText(item.getSubTitle());
         // Set image
-        RocketImageLoader.instance.loadImage(item.getImagePhone(), holder.mImage);
+        RocketImageLoader.instance.loadImage(item.getImagePhone(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set listener and tags
-        //holder.mContainer.setOnClickListener(mParentClickListener);
+        setClickableView(holder.itemView, item);
     }
 
     /*
@@ -94,6 +98,16 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
     public int getItemCount() {
         // Return the size of your data set (invoked by the layout manager)
         return CollectionUtils.isNotEmpty(mDataSet) ? mDataSet.size() : 0;
+    }
+
+
+    private void setClickableView(View view, BaseTeaserObject teaser) {
+        if(mOnClickListener != null) {
+            view.setTag(R.id.target_title, teaser.getTitle());
+            view.setTag(R.id.target_type, teaser.getTargetType());
+            view.setTag(R.id.target_url, teaser.getUrl());
+            view.setOnClickListener(mOnClickListener);
+        }
     }
     
 }

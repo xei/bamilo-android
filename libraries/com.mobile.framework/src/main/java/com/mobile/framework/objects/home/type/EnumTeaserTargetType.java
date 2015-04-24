@@ -1,5 +1,7 @@
 package com.mobile.framework.objects.home.type;
 
+import android.text.TextUtils;
+
 /**
  * Enumeration for teaser target types
  *
@@ -36,6 +38,23 @@ public enum EnumTeaserTargetType {
      */
     public String getType() {
         return mType;
+    }
+
+    /**
+     * Get the enum by group key.
+     *
+     * @param string The group key.
+     * @return EnumTeaserTargetType or UNKNOWN.
+     */
+    public static EnumTeaserTargetType byString(String string) {
+        EnumTeaserTargetType result = UNKNOWN;
+        for (EnumTeaserTargetType type : EnumTeaserTargetType.values()) {
+            if (TextUtils.equals(type.mType, string)) {
+                result = type;
+                break;
+            }
+        }
+        return result;
     }
 
 }

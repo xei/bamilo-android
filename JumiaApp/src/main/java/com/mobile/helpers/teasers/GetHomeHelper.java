@@ -6,7 +6,7 @@ package com.mobile.helpers.teasers;
 import android.os.Bundle;
 
 import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.objects.home.NewHomePage;
+import com.mobile.framework.objects.home.NewHomePageObject;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
@@ -57,9 +57,9 @@ public class GetHomeHelper extends BaseHelper {
         Log.i(TAG, "ON PARSE RESPONSE BUNDLE");
         try {
             // Get home
-            NewHomePage newHomePage = new NewHomePage();
-            newHomePage.initialize(jsonObject);
-            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, newHomePage);
+            NewHomePageObject newHomePageObject = new NewHomePageObject();
+            newHomePageObject.initialize(jsonObject);
+            bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, newHomePageObject);
         } catch (JSONException e) {
             Log.w(TAG, "WARNING: JE ON PARSE RESPONSE", e);
             return parseErrorBundle(bundle);

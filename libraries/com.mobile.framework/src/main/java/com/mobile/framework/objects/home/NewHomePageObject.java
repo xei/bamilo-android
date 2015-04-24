@@ -5,7 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.IJSONSerializable;
-import com.mobile.framework.objects.home.group.BaseTeaserType;
+import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.framework.objects.home.group.BrandsTeaserGroup;
 import com.mobile.framework.objects.home.group.CampaignTeaserGroup;
 import com.mobile.framework.objects.home.group.FeaturedStoresTeaserGroup;
@@ -31,18 +31,18 @@ import de.akquinet.android.androlog.Log;
 /**
  * TODO
  */
-public class NewHomePage implements IJSONSerializable, Parcelable {
+public class NewHomePageObject implements IJSONSerializable, Parcelable {
 
-    public static final String TAG = NewHomePage.class.getSimpleName();
+    public static final String TAG = NewHomePageObject.class.getSimpleName();
 
     private String mName;
 
-    private ArrayList<BaseTeaserType> mTeasers;
+    private ArrayList<BaseTeaserGroupType> mTeasers;
 
     /**
      * Empty constructor
      */
-    public NewHomePage() {
+    public NewHomePageObject() {
         //...
     }
 
@@ -64,7 +64,7 @@ public class NewHomePage implements IJSONSerializable, Parcelable {
      *
      * @return An array list
      */
-    public ArrayList<BaseTeaserType> getTeasers() {
+    public ArrayList<BaseTeaserGroupType> getTeasers() {
         return mTeasers;
     }
 
@@ -89,6 +89,7 @@ public class NewHomePage implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
+        Log.i(TAG, "ON INITIALIZE");
         // Get name
         mName = jsonObject.getString(RestConstants.JSON_ACTION_NAME_TAG);
         // Get teaser
@@ -97,20 +98,21 @@ public class NewHomePage implements IJSONSerializable, Parcelable {
         if (size > 0) {
             mTeasers = new ArrayList<>();
             // Save unordered response
-            Map<String, BaseTeaserType> map = new HashMap<>();
+            Map<String, BaseTeaserGroupType> map = new HashMap<>();
             for (int i = 0; i < size; i++) {
                 // Get teaser group
                 JSONObject json = data.getJSONObject(i);
                 // Get group type
                 String type = json.getString(RestConstants.JSON_TYPE_TAG);
                 // Parse and create group
-                BaseTeaserType group = createTeaserGroupType(type, json);
+                BaseTeaserGroupType group = createTeaserGroupType(type, json);
                 // Save into an hash map
                 map.put(type, group);
             }
             // Create an array with an order
             for (EnumTeaserGroupType type : EnumTeaserGroupType.values()) {
-                BaseTeaserType group = map.get(type.getType());
+                BaseTeaserGroupType group = map.get(type.getType());
+                Log.i(TAG, "ON ADD GROUP: " + type + " DATA IS NULL: " + (group == null));
                 // Append case not null
                 if (group != null) {
                     mTeasers.add(group);
@@ -138,8 +140,8 @@ public class NewHomePage implements IJSONSerializable, Parcelable {
      * @param json - the json object
      * @return TeaserSpecification
      */
-    private BaseTeaserType createTeaserGroupType(String groupType, JSONObject json) {
-        BaseTeaserType teaserGroup = null;
+    private BaseTeaserGroupType createTeaserGroupType(String groupType, JSONObject json) {
+        BaseTeaserGroupType teaserGroup = null;
         // Get type
         EnumTeaserGroupType type = EnumTeaserGroupType.byString(groupType);
         Log.i(TAG, "CREATE TEASER GROUP: " + type.toString() + " " + json.toString());
@@ -177,6 +179,11 @@ public class NewHomePage implements IJSONSerializable, Parcelable {
         } catch (JSONException e) {
             Log.w(TAG, "WARNING: ON PARSE GROUP TYPE: " + groupType, e);
         }
+        // Discard groups with items
+        if (teaserGroup != null && !teaserGroup.hasData()) {
+            Log.w(TAG, "WARNING: DISCARDED GROUP EMPTY: " + groupType);
+            teaserGroup = null;
+        }
         // Return the group or null
         return teaserGroup;
     }
@@ -201,23 +208,23 @@ public class NewHomePage implements IJSONSerializable, Parcelable {
         }
     }
 
-    private NewHomePage(Parcel in) {
+    private NewHomePageObject(Parcel in) {
         mName = in.readString();
         if (in.readByte() == 0x01) {
             mTeasers = new ArrayList<>();
-            in.readList(mTeasers, BaseTeaserType.class.getClassLoader());
+            in.readList(mTeasers, BaseTeaserGroupType.class.getClassLoader());
         } else {
             mTeasers = null;
         }
     }
 
-    public static final Parcelable.Creator<NewHomePage> CREATOR = new Parcelable.Creator<NewHomePage>() {
-        public NewHomePage createFromParcel(Parcel source) {
-            return new NewHomePage(source);
+    public static final Parcelable.Creator<NewHomePageObject> CREATOR = new Parcelable.Creator<NewHomePageObject>() {
+        public NewHomePageObject createFromParcel(Parcel source) {
+            return new NewHomePageObject(source);
         }
 
-        public NewHomePage[] newArray(int size) {
-            return new NewHomePage[size];
+        public NewHomePageObject[] newArray(int size) {
+            return new NewHomePageObject[size];
         }
     };
 }

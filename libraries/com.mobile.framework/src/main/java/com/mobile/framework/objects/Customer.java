@@ -1,17 +1,17 @@
 package com.mobile.framework.objects;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import de.akquinet.android.androlog.Log;
 
@@ -356,7 +356,7 @@ public class Customer implements IJSONSerializable, Parcelable{
             // Save addresses :> "address_collection": { "4040": {}, "8241": {} }
             JSONObject addressesJson = jsonObject.optJSONObject(RestConstants.JSON_CUSTOMER_ADDRESS_COLLECTION_TAG);
             if(addressesJson != null && addressesJson.length() > 0 ){
-            	addresses = new ArrayList<String>();
+            	addresses = new ArrayList<>();
             	Iterator<?> iterator = addressesJson.keys();
             	while (iterator.hasNext()) {
 					String key = (String) iterator.next();
@@ -364,8 +364,8 @@ public class Customer implements IJSONSerializable, Parcelable{
 				}
             }
             
-            mNewsletterSubscriptions = new ArrayList<CustomerNewsletterSubscription>();
-            
+            mNewsletterSubscriptions = new ArrayList<>();
+            // TODO Validate this
             JSONArray newsletterArray = jsonObject.optJSONArray("customer_newsletter_subscription");
             if(newsletterArray != null) {
             	for (int i = 0; i < newsletterArray.length(); i++) {

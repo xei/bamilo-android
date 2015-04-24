@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -8,8 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,10 +13,19 @@ import android.view.View.OnTouchListener;
 import android.widget.RelativeLayout;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.ConstantsSharedPrefs;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.objects.Promotion;
+import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.objects.home.NewHomePageObject;
+import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.framework.objects.home.group.CampaignTeaserGroup;
+import com.mobile.framework.objects.home.object.BaseTeaserObject;
+import com.mobile.framework.objects.home.type.EnumTeaserGroupType;
+import com.mobile.framework.objects.home.type.EnumTeaserTargetType;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.tracking.gtm.GTMValues;
@@ -38,9 +43,10 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogPromotionFragment;
 import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
-import com.mobile.utils.home.HomeAdapter;
+import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
@@ -50,11 +56,13 @@ import de.akquinet.android.androlog.Log;
  *
  * @author sergiopereira
  */
-public class NewHomeFragment extends BaseFragment implements IResponseCallback {
+public class NewHomeFragment2 extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(NewHomeFragment.class);
+    private static final String TAG = LogTagHelper.create(NewHomeFragment2.class);
 
-    private RecyclerView mListView;
+    private LinearLayoutCompat container;
+
+    private NewHomePageObject mHomePage;
 
     /**
      * Constructor via bundle
@@ -62,17 +70,17 @@ public class NewHomeFragment extends BaseFragment implements IResponseCallback {
      * @return CampaignsFragment
      * @author sergiopereira
      */
-    public static NewHomeFragment newInstance() {
-        return new NewHomeFragment();
+    public static NewHomeFragment2 newInstance() {
+        return new NewHomeFragment2();
     }
 
     /**
      * Empty constructor
      */
-    public NewHomeFragment() {
+    public NewHomeFragment2() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Home,
-                R.layout._def_home_fragment_main,
+                R.layout._def_home_fragment_main_2,
                 R.string.home_label,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -117,9 +125,7 @@ public class NewHomeFragment extends BaseFragment implements IResponseCallback {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         // Get recycler view
-        mListView = (RecyclerView) view.findViewById(R.id.home_container);
-        //
-        mListView.setLayoutManager(new LinearLayoutManager(getBaseActivity()));
+        container = (LinearLayoutCompat) view.findViewById(R.id.home_container);
 
         /**
          * TODO: Validate this method is necessary to recover the app from
@@ -196,19 +202,13 @@ public class NewHomeFragment extends BaseFragment implements IResponseCallback {
         if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
 
         // Validate current state
-        /*
-        if (mHomePagerAdapter != null && mHomePagerAdapter.getCount() > 0) {
-            Log.i(TAG, "ADAPTER IS NOT NULL");
-            mHomePager.setAdapter(mHomePagerAdapter);
-            mHomePagerTabStrip.setViewPager(mHomePager);
-            // Show container
-            showContent();
+        if(mHomePage != null && mHomePage.hasTeasers()) {
+            Log.i(TAG, "HOME IS NOT NULL");
+            showHome(mHomePage);
         } else {
-            Log.i(TAG, "ADAPTER IS NULL");
+            Log.i(TAG, "HOME IS NULL");
             triggerTeasers();
         }
-        */
-        triggerTeasers();
 
         // Validate promotions
         SharedPreferences sP = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
@@ -281,48 +281,12 @@ public class NewHomeFragment extends BaseFragment implements IResponseCallback {
      * ########### LAYOUT ###########
      */
 
-    /*
-     * @param collection
-     * @param mPagerSavedPosition
-
-    private void onShowCollection(ArrayList<Homepage> collection, int defaultPosition) {
-        Log.i(TAG, "ON SHOW");
-        if (mHomePagerAdapter == null) {
-            Log.i(TAG, "ADAPTER IS NULL");
-            mHomePagerAdapter = new HomePagerAdapter(getChildFragmentManager(), collection);
-            mHomePager.setAdapter(null);
-            mHomePager.setAdapter(mHomePagerAdapter);
-            mHomePagerTabStrip.setViewPager(mHomePager);
-            // Valdiate the saved position
-            if (mPagerSavedPosition != 0 && mPagerSavedPosition < mHomePagerAdapter.getCount())
-                mHomePager.setCurrentItem(mPagerSavedPosition, false);
-            else mHomePager.setCurrentItem(defaultPosition, false);
-        } else {
-            Log.i(TAG, "UPDATE ADAPTER");
-            mHomePagerAdapter.updateCollection(collection);
-        }
-        // Validate if is to show home wizard
-        showHomeWizard();
-        // Show container
-        showContent();
-    }
-    */
-
     private void showHome(NewHomePageObject homePage) {
-        // Create adapter
-        mListView.setAdapter(new HomeAdapter(getBaseActivity(), homePage.getTeasers()));
+        // Create view
+        for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers()) {
+            container.addView(TeaserViewFactory.onBindView(getBaseActivity(), baseTeaserType, container, this));
+        }
         // Show container
-        showFragmentContentContainer();
-    }
-
-    /**
-     * Show only the content view
-     *
-     * @author sergiopereira
-     */
-    private void showContent() {
-        //mHomePager.setVisibility(View.VISIBLE);
-        //mHomePagerTabStrip.setVisibility(View.VISIBLE);
         showFragmentContentContainer();
     }
 
@@ -354,6 +318,125 @@ public class NewHomeFragment extends BaseFragment implements IResponseCallback {
     /*
      * ########### LISTENERS ###########
      */
+
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
+    @Override
+    public void onClick(View view) {
+        // Validated clicked view
+        if(!onClickTeaserItem(view)) {
+            super.onClick(view);
+        }
+    }
+
+    /**
+     * Process the click on teaser
+     *
+     * @param view
+     * @author sergiopereira
+     */
+    private boolean onClickTeaserItem(View view) {
+        Log.i(TAG, "ON CLICK TEASER ITEM");
+        //
+        boolean intercepted = true;
+        // Get type
+        String targetType = (String) view.getTag(R.id.target_type);
+        // Get url
+        String targetUrl = (String) view.getTag(R.id.target_url);
+        // Get title
+        String targetTitle = (String) view.getTag(R.id.target_title);
+        Log.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " URL:" + targetUrl);
+        // Get target type
+        EnumTeaserTargetType target = EnumTeaserTargetType.byString(targetType);
+        switch (target) {
+            case CATALOG:
+                gotoCatalog(targetUrl, targetTitle);
+                break;
+            case CAMPAIGN:
+                gotoCampaignPage();
+                break;
+            case PAGE:
+                gotoStaticPage(targetTitle, targetUrl);
+                break;
+            case PDV:
+                gotoProductDetail(targetUrl);
+                break;
+            case UNKNOWN:
+            default:
+                intercepted = false;
+                Log.w(TAG, "WARNING: RECEIVED UNKNOWN TARGET TYPE: " + targetType);
+                break;
+        }
+        return intercepted;
+    }
+
+    private void gotoCatalog(String title, String url) {
+        Log.i(TAG, "GOTO CATALOG PAGE: " + title + " " + url);
+        // Validate url
+        if (!TextUtils.isEmpty(url)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
+            bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES, false);
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+
+    private void gotoProductDetail(String url) {
+        Log.i(TAG, "GOTO PRODUCT DETAIL: " + url);
+        // Validate url
+        if (!TextUtils.isEmpty(url)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+
+    private void gotoStaticPage(String title, String url) {
+        Log.i(TAG, "GOTO STATIC PAGE: " + title + " " + url);
+        // Validate url
+        if (!TextUtils.isEmpty(url)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+            getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+
+    private void gotoCampaignPage() {
+        // Get campaign group
+        int position = EnumTeaserGroupType.CAMPAIGN_TEASERS.ordinal();
+        // Validate
+        if(mHomePage != null && mHomePage.hasTeasers()) {
+            // Campaign group
+            CampaignTeaserGroup group = (CampaignTeaserGroup) mHomePage.getTeasers().get(position);
+            ArrayList<TeaserCampaign> list = createCampaign(group);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, list);
+            //bundle.putParcelable(CampaignsFragment.CAMPAIGNS_TAG, group);
+            getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+
+    /**
+     * Create an array with a single campaign
+     * @return ArrayList with one campaign
+     * @author sergiopereira
+     */
+    private ArrayList<TeaserCampaign> createCampaign(CampaignTeaserGroup group) {
+        ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
+        for (BaseTeaserObject baseTeaserObject : group.getData()) {
+            TeaserCampaign campaign = new TeaserCampaign();
+            campaign.setTitle(baseTeaserObject.getTitle());
+            campaign.setUrl(baseTeaserObject.getUrl());
+            campaigns.add(campaign);
+        }
+        return campaigns;
+    }
 
     /*
      * (non-Javadoc)
@@ -413,6 +496,9 @@ public class NewHomeFragment extends BaseFragment implements IResponseCallback {
                 NewHomePageObject homePage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 if (homePage != null && homePage.hasTeasers()) {
                     Log.i(TAG, "SHOW HOME PAGE: " + homePage.hasTeasers());
+                    //
+                    mHomePage = homePage;
+                    //
                     showHome(homePage);
                 } else {
                     Log.i(TAG, "SHOW FALL BAK");

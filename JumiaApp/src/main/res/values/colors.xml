@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background_color">@color/grey_background</color>
+    <color name="background_color">@color/white_f9f9f9</color>
     <color name="test_color">@color/red_basic</color>
 
     <!-- New Colors for redesign -->
@@ -73,5 +73,6 @@
     <color name="orange_ffa200">#ffa200</color>
     <color name="white_f9f9f9">#f9f9f9</color>
     <color name="red_cc0000">#cc0000</color>
+    <color name="color_selection">#7FC0C0C0</color>
 
 </resources>

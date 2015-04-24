@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/TeaserWhiteContainerStyle"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_mat_148px"
-    style="@style/TeaserWhiteContainerStyle" >
+    android:layout_height="@dimen/dimen_mat_148px">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/home_teaser_main_pager"

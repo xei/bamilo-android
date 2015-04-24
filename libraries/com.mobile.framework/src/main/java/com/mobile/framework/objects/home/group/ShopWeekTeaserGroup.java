@@ -10,7 +10,7 @@ import org.json.JSONObject;
 /**
  * Created by spereira on 4/15/15.
  */
-public class ShopWeekTeaserGroup extends BaseTeaserType implements android.os.Parcelable {
+public class ShopWeekTeaserGroup extends BaseTeaserGroupType implements android.os.Parcelable {
 
     public ShopWeekTeaserGroup() {
     }

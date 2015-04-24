@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.framework.objects.home.object.BaseTeaserObject;
-import com.mobile.interfaces.OnViewHolderClickListener;
+import com.mobile.framework.objects.home.type.EnumTeaserTargetType;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -23,11 +23,11 @@ import java.util.ArrayList;
  *
  * @author sergiopereira
  */
-public class HomeFeaturedTeaserAdapter extends RecyclerView.Adapter<HomeFeaturedTeaserAdapter.ProductViewHolder> implements OnClickListener {
+public class HomeFeaturedTeaserAdapter extends RecyclerView.Adapter<HomeFeaturedTeaserAdapter.ProductViewHolder> {
 
     private ArrayList<BaseTeaserObject> mDataSet;
 
-    private OnViewHolderClickListener mOnViewHolderClicked;
+    private OnClickListener mOnClickListener;
 
     /**
      * Provide a reference to the views for each data item.<br>
@@ -59,8 +59,9 @@ public class HomeFeaturedTeaserAdapter extends RecyclerView.Adapter<HomeFeatured
      *
      * @param data - the array lisl
      */
-    public HomeFeaturedTeaserAdapter(ArrayList<BaseTeaserObject> data) {
+    public HomeFeaturedTeaserAdapter(ArrayList<BaseTeaserObject> data, OnClickListener listener) {
         mDataSet = data;
+        mOnClickListener = listener;
     }
 
     /*
@@ -94,29 +95,18 @@ public class HomeFeaturedTeaserAdapter extends RecyclerView.Adapter<HomeFeatured
         // Set sub title
         holder.sub.setText(item.getSubTitle());
         // Set image
-        RocketImageLoader.instance.loadImage(item.getImagePhone(), holder.image);
+        RocketImageLoader.instance.loadImage(item.getImagePhone(), holder.image, null, R.drawable.no_image_large);
+        // Set listener
+        setClickableView(holder.itemView, item);
     }
 
-    /**
-     * Set the listener the click on view holder.
-     *
-     * @param listener - the listener
-     */
-    public void setOnViewHolderClickListener(OnViewHolderClickListener listener) {
-        this.mOnViewHolderClicked = listener;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-    @Override
-    public void onClick(View view) {
-        // Get view id
-        int id = view.getId();
-        // Case other sent to listener
-        if (mOnViewHolderClicked != null)
-            mOnViewHolderClicked.onViewHolderClick(this, (Integer) view.getTag(R.id.position));
+    private void setClickableView(View view, BaseTeaserObject teaser) {
+        if(mOnClickListener != null) {
+            view.setTag(R.id.target_title, teaser.getTitle());
+            view.setTag(R.id.target_type, EnumTeaserTargetType.CATALOG.getType());
+            view.setTag(R.id.target_url, teaser.getUrl());
+            view.setOnClickListener(mOnClickListener);
+        }
     }
 
 }

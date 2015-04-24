@@ -12,7 +12,7 @@ import org.json.JSONObject;
 /**
  * Created by spereira on 4/15/15.
  */
-public class TopSellersTeaserGroup extends BaseTeaserType {
+public class TopSellersTeaserGroup extends BaseTeaserGroupType {
 
     public TopSellersTeaserGroup() {
     }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobile.framework.objects.home.object.BaseTeaserObject;
+import com.mobile.framework.objects.home.type.EnumTeaserTargetType;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -21,6 +22,8 @@ import java.util.ArrayList;
  */
 public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaserAdapter.ViewHolder> {
 
+    private final View.OnClickListener mOnClickListener;
+
     private ArrayList<BaseTeaserObject> mDataSet;
 
     /**
@@ -32,6 +35,7 @@ public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaser
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Data
         private ImageView mImage;
+        private View mProgress;
 
         /**
          * Constructor
@@ -39,7 +43,8 @@ public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaser
          */
         public ViewHolder(View view) {
             super(view);
-            mImage = (ImageView) view.findViewById(R.id.home_teaser_brand_image);
+            mImage = (ImageView) view.findViewById(R.id.home_teaser_item_image);
+            mProgress = view.findViewById(R.id.home_teaser_item_progress);
         }
     }
 
@@ -48,8 +53,9 @@ public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaser
      * @param teasers
      * @author sergiopereira
      */
-    public HomeBrandTeaserAdapter(ArrayList<BaseTeaserObject> teasers) {
+    public HomeBrandTeaserAdapter(ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener) {
         mDataSet = teasers;
+        mOnClickListener = listener;
     }
 
     /*
@@ -68,13 +74,12 @@ public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaser
      */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // Replace the contents of a view (invoked by the layout manager)
         // Get item
         BaseTeaserObject item = mDataSet.get(position);
         // Set image
-        RocketImageLoader.instance.loadImage(item.getImagePhone(), holder.mImage);
+        RocketImageLoader.instance.loadImage(item.getImagePhone(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set listener and tags
-        //holder.mContainer.setOnClickListener(mParentClickListener);
+        setClickableView(holder.itemView, item);
     }
 
     /*
@@ -85,6 +90,15 @@ public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaser
     public int getItemCount() {
         // Return the size of your data set (invoked by the layout manager)
         return CollectionUtils.isNotEmpty(mDataSet) ? mDataSet.size() : 0;
+    }
+
+    private void setClickableView(View view, BaseTeaserObject teaser) {
+        if(mOnClickListener != null) {
+            view.setTag(R.id.target_title, teaser.getTitle());
+            view.setTag(R.id.target_type, EnumTeaserTargetType.PDV.getType());
+            view.setTag(R.id.target_url, teaser.getUrl());
+            view.setOnClickListener(mOnClickListener);
+        }
     }
     
 }

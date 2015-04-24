@@ -2,22 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/home_teaser_shop_container"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:layout_marginTop="@dimen/dimen_mat_8px"
+    android:layout_height="@dimen/dimen_mat_150px"
     android:layout_marginBottom="@dimen/dimen_mat_8px"
+    android:layout_marginTop="@dimen/dimen_mat_8px"
     android:orientation="horizontal">
 
     <include
         android:id="@+id/home_teaser_shop_image_left"
         layout="@layout/_def_home_teaser_shop_item" />
 
-    <View style="@style/divider_vertical" />
-
     <include
         android:id="@+id/home_teaser_shop_image_middle"
         layout="@layout/_def_home_teaser_shop_item" />
-
-    <View style="@style/divider_vertical" />
 
     <include
         android:id="@+id/home_teaser_shop_image_right"

@@ -21,13 +21,16 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
 
     public static final String TAG = LogTagHelper.create(HomeMainTeaserAdapter.class);
 
+    private final View.OnClickListener mOnClickListener;
+
     private ArrayList<BaseTeaserObject> mTeasers;
 
     private LayoutInflater mInflater;
 
-    public HomeMainTeaserAdapter(Context context, ArrayList<BaseTeaserObject> teasers) {
+    public HomeMainTeaserAdapter(Context context, ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener) {
         mTeasers = teasers;
         mInflater = LayoutInflater.from(context);
+        mOnClickListener = listener;
     }
 
     /*
@@ -59,20 +62,16 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
      */
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        int virtualPosition = position;
-        /*
-        if (getRealCount() > 0) {
-            virtualPosition = position % getRealCount();
-        }
-        */
-        return instantiateVirtualItem(container, virtualPosition);
+        return instantiateVirtualItem(container, position);
     }
 
     public Object instantiateVirtualItem(ViewGroup container, int position) {
         View view = null;
         try {
-            view = mInflater.inflate(R.layout.image_loadable, container, false);
-            String imageUrl = mTeasers.get(position).getImagePhone();
+            view = mInflater.inflate(R.layout._def_home_teaser_main_item, container, false);
+            BaseTeaserObject teaser = mTeasers.get(position);
+            String imageUrl = teaser.getImagePhone();
+            setClickableView(view, teaser);
             setImageToLoad(imageUrl, view);
             container.addView(view);
         } catch (InflateException | IndexOutOfBoundsException e) {
@@ -81,9 +80,18 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
         return view;
     }
 
+    private void setClickableView(View view, BaseTeaserObject teaser) {
+        if(mOnClickListener != null) {
+            view.setTag(R.id.target_title, teaser.getTitle());
+            view.setTag(R.id.target_type, teaser.getTargetType());
+            view.setTag(R.id.target_url, teaser.getUrl());
+            view.setOnClickListener(mOnClickListener);
+        }
+    }
+
     private void setImageToLoad(String imageUrl, View imageTeaserView) {
-        View progressBar = imageTeaserView.findViewById(R.id.image_loading_progress);
-        ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.image_view);
+        View progressBar = imageTeaserView.findViewById(R.id.home_teaser_item_progress);
+        ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.home_teaser_item_image);
         RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
     }
 

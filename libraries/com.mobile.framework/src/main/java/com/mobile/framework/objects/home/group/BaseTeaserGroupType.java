@@ -19,16 +19,16 @@ import java.util.ArrayList;
 /**
  * Created by spereira on 4/15/15.
  */
-public abstract class BaseTeaserType implements IJSONSerializable, Parcelable {
+public abstract class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
 
-    public static final String TAG = BaseTeaserType.class.getSimpleName();
+    public static final String TAG = BaseTeaserGroupType.class.getSimpleName();
 
     private ArrayList<BaseTeaserObject> mData;
 
     /**
      *
      */
-    public BaseTeaserType() {
+    public BaseTeaserGroupType() {
         //...
     }
 
@@ -36,7 +36,7 @@ public abstract class BaseTeaserType implements IJSONSerializable, Parcelable {
      * @param jsonObject
      * @throws JSONException
      */
-    public BaseTeaserType(JSONObject jsonObject) throws JSONException {
+    public BaseTeaserGroupType(JSONObject jsonObject) throws JSONException {
         initialize(jsonObject);
     }
 
@@ -122,7 +122,7 @@ public abstract class BaseTeaserType implements IJSONSerializable, Parcelable {
      * ########## PARCELABLE ##########
      */
 
-    protected BaseTeaserType(Parcel in) {
+    protected BaseTeaserGroupType(Parcel in) {
         if (in.readByte() == 0x01) {
             mData = new ArrayList<>();
             in.readList(mData, BaseTeaserObject.class.getClassLoader());

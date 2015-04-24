@@ -90,6 +90,8 @@ public class RestConstants {
     public static final String JSON_NAVIGATION_URL_TAG = "navigation_url";
     public static final String JSON_IMAGE_TAG = "image";
     public static final String JSON_IMAGE_URL_TAG = "image_url";
+    public static final String JSON_IMAGE_PORTRAIT_TAG = "image_portrait";
+    public static final String JSON_IMAGE_LANDSCAPE_TAG = "image_landscape";
 
     // ProductService Tags
     public static final String JSON_SUGGESTIONS_TAG = "suggestions";
@@ -105,7 +107,7 @@ public class RestConstants {
     public static final String JSON_ACTIVATED_AT_TAG = "activated_at";
     public static final String JSON_MAX_PRICE_TAG = "max_price";
     public static final String JSON_PRICE_TAG = "price";
-    public static final String JSON_PRICE_CONVERTED_TAG = "price_euroConverted";
+    public static final String JSON_PRICE_CONVERTED_TAG = "price_converted";
     public static final String JSON_BRAND_TAG = "brand";
     public static final String JSON_CATEGORIES_TAG = "categories";
     public static final String JSON_PROD_ATTRIBUTES_TAG = JSON_ATTRIBUTES_TAG;
@@ -117,7 +119,7 @@ public class RestConstants {
     public static final String JSON_MAX_SAVING_PERCENTAGE_TAG = "max_saving_percentage";
     public static final String JSON_MAX_SPECIAL_PRICE_TAG = "max_special_price";
     public static final String JSON_SPECIAL_PRICE_TAG = "special_price";
-    public static final String JSON_SPECIAL_PRICE_CONVERTED_TAG = "special_price_euroConverted";
+    public static final String JSON_SPECIAL_PRICE_CONVERTED_TAG = "special_price_converted";
     public static final String JSON_IS_NEW_TAG = "is_new";
     public static final String JSON_PROD_UNIQUES_TAG = "uniques";
     public static final String JSON_IS_FAVOURITE_TAG = "is_favourite";
@@ -187,7 +189,7 @@ public class RestConstants {
     // ShoppingCart Tags
     public static final String JSON_CART_TAG = "cart";
     public static final String JSON_CART_VALUE_TAG = "cartValue";
-    public static final String JSON_CART_VALUE_CONVERTED_TAG = "cartValue_euroConverted";
+    public static final String JSON_CART_VALUE_CONVERTED_TAG = "cartValue_converted";
     public static final String JSON_CART_COUNT_TAG = "cartCount";
     public static final String JSON_CART_ITEMS_TAG = "cartItems";
     public static final String JSON_CART_VAT_VALUE_TAG = "vat_value";
@@ -200,7 +202,7 @@ public class RestConstants {
     public static final String JSON_CART_SUM_COSTS_VALUE_TAG = "sum_costs_value";
     public static final String JSON_CART_PRICE_RULES_TAG = "price_rules";
     public static final String JSON_CART_SUB_TOTAL = "sub_total";
-    public static final String JSON_CART_SUB_TOTAL_CONVERTED = "sub_total_euroConverted";
+    public static final String JSON_CART_SUB_TOTAL_CONVERTED = "sub_total_converted";
 
     // ShoppingCartItem Tags
     public static final String JSON_ITEM_IMAGE_TAG = JSON_IMAGE_TAG;
@@ -211,9 +213,9 @@ public class RestConstants {
     public static final String JSON_ITEM_NAME_TAG = JSON_NAME_TAG;
     public static final String JSON_STOCK_TAG = "stock";
     public static final String JSON_ITEM_SPECIAL_PRICE_TAG = "specialPrice";
-    public static final String JSON_ITEM_SPECIAL_PRICE_CONVERTED_TAG = "specialPrice_euroConverted";
+    public static final String JSON_ITEM_SPECIAL_PRICE_CONVERTED_TAG = "specialPrice_converted";
     public static final String JSON_ITEM_PRICE_TAG = "unit_price";
-    public static final String JSON_ITEM_PRICE_CONVERTED_TAG = "unit_price_euroConverted";
+    public static final String JSON_ITEM_PRICE_CONVERTED_TAG = "unit_price_converted";
     public static final String JSON_TAX_AMOUNT_TAG = "tax_amount";
     public static final String JSON_MAX_QUANTITY = "max_quantity";
     public static final String JSON_VARIATION_TAG = "variation";
@@ -310,7 +312,7 @@ public class RestConstants {
     public static final String JSON_PURCHASE_NAME_TAG = "name";
     public static final String JSON_CATEGORY_TAG = "category";
     public static final String JSON_PAID_PRICE_TAG = "paidprice";
-    public static final String JSON_PAID_PRICE_CONVERTED_TAG = "paidprice_euroConverted";
+    public static final String JSON_PAID_PRICE_CONVERTED_TAG = "paidprice_converted";
 
     // Section Tags
     public static final String JSON_SECTION_NAME_TAG = "section_name";
@@ -355,7 +357,7 @@ public class RestConstants {
     public static final String JSON_ORDER_ITEM_STATUS_TAG = "item_status";
     public static final String JSON_ORDER_ITEM_STATUS_UPDATE_TAG = "last_status_change";
     public static final String JSON_ORDER_GRAND_TOTAL_TAG = "grand_total";
-    public static final String JSON_ORDER_GRAND_TOTAL_CONVERTED_TAG = "grand_total_euroConverted";
+    public static final String JSON_ORDER_GRAND_TOTAL_CONVERTED_TAG = "grand_total_converted";
     public static final String JSON_ORDER_SHIP_AMOUNT_TAG = "shipping_amount";
     public static final String JSON_ORDER_EXTRA_PAYMENTS_TAG = "extra_payment_cost";
     public static final String JSON_ORDER_INSTALLMENT_FEES_TAG = "installment_fees";
@@ -463,13 +465,13 @@ public class RestConstants {
     public static final String JSON_BUNDLE_ID = "bundle_id";
     public static final String JSON_BUNDLE_NAME = "bundle_name";
     public static final String JSON_BUNDLE_PRICE = "bundle_price";
-    public static final String JSON_BUNDLE_PRICE_CONVERTED = "bundle_price_euroConverted";
+    public static final String JSON_BUNDLE_PRICE_CONVERTED = "bundle_price_converted";
     public static final String JSON_BUNDLE_LEADER_POS = "bundle_leader_config_position";
     public static final String JSON_BUNDLE_PRODUCTS = "bundle_products";
 
-    public static final String JSON_MAX_PRICE_CONVERTED_TAG = "max_price_euroConverted";
+    public static final String JSON_MAX_PRICE_CONVERTED_TAG = "max_price_converted";
     public static final String JSON_BUNDLE_PRODUCT_LEADER_POS = "leader_simple_position";
-    public static final String JSON_MAX_SPECIAL_PRICE_CONVERTED_TAG = "max_special_price_euroConverted";
+    public static final String JSON_MAX_SPECIAL_PRICE_CONVERTED_TAG = "max_special_price_converted";
 
     /**
      * OFFERS
@@ -477,7 +479,7 @@ public class RestConstants {
 
     public static final String JSON_OFFERS_TAG = "offers";
     public static final String JSON_OFFERS_MIN_PRICE_TAG = "min_price";
-    public static final String JSON_OFFERS_MIN_PRICE_CONVERTED_TAG = "min_price_euroConverted";
+    public static final String JSON_OFFERS_MIN_PRICE_CONVERTED_TAG = "min_price_converted";
 
     /**
      * VALIDATE

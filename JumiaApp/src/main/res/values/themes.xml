@@ -52,6 +52,11 @@
         <item name="android:navigationBarColor">@color/grey_dark</item>
         <!-- Color for app background -->
         <item name="android:windowBackground">@color/background_color</item>
+
+        <item name="android:selectableItemBackground">@drawable/selector_card_view</item>
+        <item name="selectableItemBackground">@drawable/selector_card_view</item>
+
+
         <!-- #### Text -->
         <item name="android:textColorPrimary">@color/grey_middle</item>
         <item name="android:textColorSecondary">@color/grey_middle</item>

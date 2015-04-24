@@ -78,13 +78,13 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         // Get title
         mTitle = jsonObject.optString(RestConstants.JSON_TITLE_TAG);
         // Get sub title
-        mSubTitle = jsonObject.optString(RestConstants.JSON_TITLE_TAG);
+        mSubTitle = jsonObject.optString(RestConstants.JSON_SUB_TITLE_TAG);
         // Get url
         mUrl = jsonObject.getString(RestConstants.JSON_URL_TAG);
         // Get image phone
-        mImagePhone = jsonObject.getString("image_portrait");
+        mImagePhone = jsonObject.optString(RestConstants.JSON_IMAGE_PORTRAIT_TAG);
         // Get image tablet
-        mImageTablet = jsonObject.getString("image_landscape");
+        mImageTablet = jsonObject.optString(RestConstants.JSON_IMAGE_LANDSCAPE_TAG);
         // Get target type
         mTargetType = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG);
         return false;

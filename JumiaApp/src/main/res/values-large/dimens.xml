@@ -13,4 +13,51 @@
 
     <dimen name="delete_button_size">23dp</dimen>
     <dimen name="delete_button_margin">3dp</dimen>
+
+
+    <!-- MATERIAL DIMENSION 1:2
+    <dimen name="dimen_mat_2px">4dp</dimen>
+    <dimen name="dimen_mat_3px">6dp</dimen>
+    <dimen name="dimen_mat_4px">8dp</dimen>
+    <dimen name="dimen_mat_8px">16dp</dimen>
+    <dimen name="dimen_mat_36px">72dp</dimen>
+    <dimen name="dimen_mat_45px">90dp</dimen>
+    <dimen name="dimen_mat_48px">96dp</dimen>
+    <dimen name="dimen_mat_60px">120dp</dimen>
+    <dimen name="dimen_mat_80px">160dp</dimen>
+    <dimen name="dimen_mat_88px">176dp</dimen>
+    <dimen name="dimen_mat_110px">220dp</dimen>
+    <dimen name="dimen_mat_123px">246dp</dimen>
+    <dimen name="dimen_mat_124px">248dp</dimen>
+    <dimen name="dimen_mat_128px">256dp</dimen>
+    <dimen name="dimen_mat_140px">280dp</dimen>
+    <dimen name="dimen_mat_148px">296dp</dimen>
+    <dimen name="dimen_mat_150px">300dp</dimen>
+    <dimen name="dimen_mat_158px">316dp</dimen>
+    <dimen name="dimen_mat_210px">420dp</dimen>
+    -->
+
+
+    <!-- MATERIAL DIMENSION 1:1.5 -->
+    <dimen name="dimen_mat_2px">3dp</dimen>
+    <dimen name="dimen_mat_3px">4.5dp</dimen>
+    <dimen name="dimen_mat_4px">6dp</dimen>
+    <dimen name="dimen_mat_8px">12dp</dimen>
+    <dimen name="dimen_mat_36px">54dp</dimen>
+    <dimen name="dimen_mat_45px">67.5dp</dimen>
+    <dimen name="dimen_mat_48px">72dp</dimen>
+    <dimen name="dimen_mat_60px">90dp</dimen>
+    <dimen name="dimen_mat_80px">120dp</dimen>
+    <dimen name="dimen_mat_88px">132dp</dimen>
+    <dimen name="dimen_mat_110px">165dp</dimen>
+    <dimen name="dimen_mat_123px">184.5dp</dimen>
+    <dimen name="dimen_mat_124px">186dp</dimen>
+    <dimen name="dimen_mat_128px">192dp</dimen>
+    <dimen name="dimen_mat_140px">210dp</dimen>
+    <dimen name="dimen_mat_148px">222dp</dimen>
+    <dimen name="dimen_mat_150px">225dp</dimen>
+    <dimen name="dimen_mat_158px">237dp</dimen>
+    <dimen name="dimen_mat_210px">315dp</dimen>
+
+
 </resources>
