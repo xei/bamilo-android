@@ -52,7 +52,7 @@ public class TeaserImage implements IJSONSerializable, ITargeting, Parcelable {
             return false;
         }
         setDescription(attributes.optString(RestConstants.JSON_TEASER_DESCRIPTION_TAG));
-        targetType = TargetType.byValue(attributes.optInt(RestConstants.JSON_TARGET_TYPE_TAG, TargetType.UNKNOWN.getValue()));
+        targetType = TargetType.byValue(attributes.optString(RestConstants.JSON_TARGET_TYPE_TAG, TargetType.UNKNOWN.getValue()));
 
         // Get image list
         JSONArray imageList = attributes.optJSONArray(RestConstants.JSON_TEASER_IMAGES_TAG);

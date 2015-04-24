@@ -1986,16 +1986,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             }
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
-            if (!errorCode.isNetworkError()) {
-                ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
-                showFragmentContentContainer();
-                try {
-                    getBaseActivity().onBackPressed();
-                } catch (IllegalStateException e) {
-                    getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
-                }
-                return;
-            }
+            showContinueShopping();
         case GET_PRODUCT_BUNDLE:
             hideBundle();
             break;
