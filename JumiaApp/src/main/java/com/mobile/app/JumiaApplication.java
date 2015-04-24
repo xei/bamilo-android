@@ -38,7 +38,7 @@ import com.mobile.framework.utils.ImageResolutionHelper;
 import com.mobile.framework.utils.SingletonMap;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.preferences.CookieConfig;
+import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.ServiceSingleton;
@@ -66,7 +66,7 @@ public class JumiaApplication extends A4SApplication {
     private VersionInfo mMobApiVersionInfo;
     // Account variables
     public static Customer CUSTOMER;
-    private CookieConfig mCustomerUtils;
+    private PersistentSessionStore mCustomerUtils;
     private boolean loggedIn = false;
 
     /**
@@ -362,10 +362,10 @@ public class JumiaApplication extends A4SApplication {
     /**
      * @return the mCustomerUtils
      */
-    public CookieConfig getCustomerUtils() {
+    public PersistentSessionStore getCustomerUtils() {
         if (mCustomerUtils == null) {
             ch.boye.httpclientandroidlib.client.CookieStore cookieStore = RestClientSingleton.getSingleton(getApplicationContext()).getCookieStore();
-            mCustomerUtils = new CookieConfig(getApplicationContext(), SHOP_ID, cookieStore instanceof ICurrentCookie ? (ICurrentCookie)cookieStore : null);
+            mCustomerUtils = new PersistentSessionStore(getApplicationContext(), SHOP_ID, cookieStore instanceof ICurrentCookie ? (ICurrentCookie)cookieStore : null);
         }
         return mCustomerUtils;
     }
