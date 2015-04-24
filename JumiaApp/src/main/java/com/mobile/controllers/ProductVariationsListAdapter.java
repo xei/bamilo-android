@@ -1,7 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.mobile.components.HorizontalListView.OnViewHolderSelected;
-import com.mobile.components.HorizontalListView.OnViewSelectedListener;
+import com.mobile.components.recycler.HorizontalListView.OnViewHolderSelected;
+import com.mobile.components.recycler.HorizontalListView.OnViewSelectedListener;
 import com.mobile.framework.objects.Variation;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 /**
  * Ad
@@ -129,7 +129,7 @@ public class ProductVariationsListAdapter extends RecyclerView.Adapter<ProductVa
 
     /*
      * (non-Javadoc)
-     * @see com.mobile.components.HorizontalListView.OnViewHolderSelected#setOnViewHolderSelected(com.mobile.components.HorizontalListView.OnViewSelectedListener)
+     * @see com.mobile.components.recycler.HorizontalListView.OnViewHolderSelected#setOnViewHolderSelected(com.mobile.components.recycler.HorizontalListView.OnViewSelectedListener)
      */
     @Override
     public void setOnViewHolderSelected(OnViewSelectedListener listener) {

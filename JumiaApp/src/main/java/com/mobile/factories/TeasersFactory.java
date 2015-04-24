@@ -11,8 +11,8 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
-import com.mobile.components.HorizontalListView;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.controllers.TeaserProductsAdapter;
 import com.mobile.framework.objects.ITargeting;
 import com.mobile.framework.objects.TeaserBrand;

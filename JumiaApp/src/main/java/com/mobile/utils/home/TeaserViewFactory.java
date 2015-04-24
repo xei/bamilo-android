@@ -10,10 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobile.components.ExpandableGridViewComponent;
-import com.mobile.components.HorizontalListView;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.framework.objects.home.object.BaseTeaserObject;
+import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -108,7 +109,38 @@ public class TeaserViewFactory {
         public MainTeaser(Context context, View itemView) {
             super(context, itemView);
             pager = (ViewPager) itemView.findViewById(R.id.home_teaser_main_pager);
+            pager.setOffscreenPageLimit(2);
+            //pager.setPageMargin(100);
+            //pager.setPadding(200, 0, 200, 0);
+            float width = DeviceInfoHelper.getWidth(context) * 0.15f;
+            pager.setPadding((int)width, 0, (int)width, 0);
+            //pager.setPadding((int)width, 0, 0, 0);
+            //pager.setHorizontalFadingEdgeEnabled(true);
+            //pager.setFadingEdgeLength(100);
+            pager.setClipToPadding(false);
+            //If hardware acceleration is enabled, you should also remove
+            // clipping on the pager for its children.
+            pager.setClipChildren(false);
             indicator = (CirclePageIndicator) itemView.findViewById(R.id.home_teaser_main_indicator);
+
+            pager.setPageTransformer(false, new ViewPager.PageTransformer() {
+                private static final float MIN_ALPHA = 0.4f;
+                @Override
+                public void transformPage(View page, float position) {
+                    Log.i(TAG,"PAGE POSITION: " + position);
+                    // TODO
+                    position = position - 0.21031746F;
+                    if(position <= -1.0F || position >= 1.0F) {
+                        page.setAlpha(MIN_ALPHA);
+                    } else if( position == 0.0F ) {
+                        page.setAlpha(1.0F);
+                    } else {
+                        // position is between -1.0F & 0.0F OR 0.0F & 1.0F
+                        float alpha = 1.0F - Math.abs(position);
+                        page.setAlpha(alpha < MIN_ALPHA ? MIN_ALPHA : alpha);
+                    }
+                }
+            });
         }
 
         @Override

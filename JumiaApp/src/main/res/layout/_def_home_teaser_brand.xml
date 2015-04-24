@@ -9,7 +9,7 @@
         style="@style/HeaderTeaser"
         android:text="@string/shops_of_the_week" />
 
-    <com.mobile.components.HorizontalListView
+    <com.mobile.components.recycler.HorizontalListView
         android:id="@+id/home_teaser_brand_horizontal_list"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_mat_48px"

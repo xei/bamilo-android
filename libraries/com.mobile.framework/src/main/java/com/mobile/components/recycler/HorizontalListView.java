@@ -1,4 +1,4 @@
-package com.mobile.components;
+package com.mobile.components.recycler;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

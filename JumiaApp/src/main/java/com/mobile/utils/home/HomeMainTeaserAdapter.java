@@ -106,4 +106,11 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
         container.removeView((View) object);
     }
 
+
+    @Override
+    public float getPageWidth(int position) {
+        return super.getPageWidth(position);
+        //return mWidth;
+        //return 0.7f;
+    }
 }

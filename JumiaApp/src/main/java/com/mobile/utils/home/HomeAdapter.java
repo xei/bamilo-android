@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobile.components.ExpandableGridViewComponent;
-import com.mobile.components.HorizontalListView;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.framework.objects.home.object.BaseTeaserObject;
 import com.mobile.framework.objects.home.type.EnumTeaserGroupType;
