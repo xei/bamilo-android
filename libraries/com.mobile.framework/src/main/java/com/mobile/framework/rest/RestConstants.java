@@ -489,4 +489,19 @@ public class RestConstants {
     public static final String JSON_INVALID_TAG = "invalid";
     public static final String JSON_VARIATION_NAME_TAG = "variation_name";
     public static final String JSON_VARIATION_VALUE_TAG = "variation_value";
+
+    /**
+     * BANNER
+     */
+
+    public static final String JSON_BANNER_TAG = "banner";
+    public static final String JSON_BANNER_PHONE_IMG_TAG = "phone_image";
+    public static final String JSON_BANNER_TABLET_IMG_TAG = "tablet_image";
+
+
+    /**
+     * SHOP IN SHOP
+     */
+
+    public static final String JSON_HTML_TAG = "html";
 }
