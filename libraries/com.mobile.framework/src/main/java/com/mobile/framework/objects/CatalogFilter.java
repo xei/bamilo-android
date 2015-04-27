@@ -21,7 +21,7 @@ import java.util.Locale;
  * @see https://wiki.jira.rocket-internet.de/display/NAFAMZ/Filters
  * 
  */
-public class CatalogFilter implements IJSONSerializable, Parcelable {
+public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
 
     public static final String TAG = LogTagHelper.create(CatalogFilter.class);
 
@@ -413,4 +413,20 @@ public class CatalogFilter implements IJSONSerializable, Parcelable {
         return "id: "+mId + ", name: "+mName + ", options:" +mFilterOptions.size()+", multi: "+mMulti+";";
     }
 
+    @Override
+    public Object clone() {
+        try {
+            CatalogFilter catalogFilter = (CatalogFilter)super.clone();
+            catalogFilter.mFilterOptions = new ArrayList<>();
+
+            for(CatalogFilterOption catalogFilterOption : mFilterOptions){
+                catalogFilter.mFilterOptions.add((CatalogFilterOption)catalogFilterOption.clone());
+            }
+            return catalogFilter;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
