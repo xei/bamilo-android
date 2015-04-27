@@ -11,17 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
-import com.mobile.components.NavigationListComponent;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
-
-import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
@@ -32,18 +29,10 @@ import de.akquinet.android.androlog.Log;
 public class NavigationFragment extends BaseFragment implements OnClickListener{
 
     private static final String TAG = LogTagHelper.create(NavigationFragment.class);
-    
-    private static final int TAB_MENU = 0;
-    
-    private static final int TAB_CATEGORIES = 1;
-    
-    private View mTabMenu;
 
-    private View mTabCategories;
+    private LinearLayout mNavigationOptions;
 
-    private FragmentType mSavedStateType;
-
-    private ViewGroup mNavigationContainer;
+//    private ViewGroup mNavigationContainer;
 
     private LayoutInflater mInflater;
     
@@ -85,8 +74,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         Log.i(TAG, "ON CREATE");
         // Get inflater
         mInflater = LayoutInflater.from(getBaseActivity());
-        // Get the pre selected tab
-        mSavedStateType = savedInstanceState != null ? (FragmentType) savedInstanceState.getSerializable(TAG) : null;
     }
     
     /*
@@ -98,46 +85,19 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         // Set tabs
-        mTabMenu = view.findViewById(R.id.navigation_tabs_button_menu);
-        mTabCategories = view.findViewById(R.id.navigation_tabs_button_categories);
-        // Set listeners
-        mTabMenu.setOnClickListener(this);
-        mTabCategories.setOnClickListener(this);
         // Get container
-        mNavigationContainer = (ViewGroup) view.findViewById(R.id.slide_menu_scrollable_container);
+        mNavigationOptions = (LinearLayout) view.findViewById(R.id.navigation_options_container);
         // Check if mNavigationContainer is being reconstructed
-        if (mNavigationContainer.getChildCount() <= 1) addMenuItems();
-        // Validate saved state
-        if (mSavedStateType == null) {
-            Log.d(TAG, "SAVED IS NULL");
-            onClick(mTabCategories);
-        } else {
-            Log.d(TAG, "SAVED STACK SIZE: " + getChildFragmentManager().getBackStackEntryCount());
-            // Validate pre selected tab (onSaveInstanceState)
-            onLoadSavedState(mSavedStateType);
+        if (mNavigationOptions.getChildCount() <= 0){
+            addMenuItems();
         }
+        addListItems();
     }
 
-    /**
-     * Load and show the saved state
-     * @param mPreSelectedTab
-     * @author sergiopereira
-     */
-    private void onLoadSavedState(FragmentType mPreSelectedTab) {
-        // Validate type
-        switch (mPreSelectedTab) {
-        case NAVIGATION_MENU:
-            Log.i(TAG, "ON LOAD SAVED STATE: NAVIGATION_MENU");
-            //setSelectedTab(TAB_MENU);
-            break;
-        case NAVIGATION_CATEGORIES_ROOT_LEVEL:
-            Log.i(TAG, "ON LOAD SAVED STATE: NAVIGATION_CATEGORIES_ROOT_LEVEL");
-            setSelectedTab(TAB_CATEGORIES);
-            break;
-        default:
-            Log.w(TAG, "WARNING ON LOAD UNKNOWN SAVED STATE");
-            break;
-        }
+    private void addListItems(){
+        Bundle args = new Bundle();
+        args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
+        onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL, args);
     }
     
     /*
@@ -169,12 +129,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE");
-        // Case Menu
-        if(mTabMenu.isSelected()) outState.putSerializable(TAG, FragmentType.NAVIGATION_MENU);
-        // Case Categories
-        else if (mTabCategories.isSelected()) outState.putSerializable(TAG, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
-        // Case Unknown
-        else Log.w(TAG, "WARNING UNKNOWN TAB SELECTED");
     }
 
     /*
@@ -228,109 +182,15 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * Add Categories header to Menu
      */
     private void addMenuItems() {
-        ArrayList<NavigationListComponent> components = new ArrayList<>();
-        // Get Navigation items from arrays.xml
-        String[] navigationItems = getResources().getStringArray(R.array.navigation_items);
-        for (String item : navigationItems) {
-            NavigationListComponent component = new NavigationListComponent();
-            component.setElementUrl(item);
-            components.add(component);
-        }
-        // Fill container
-        fillNavigationContainer(components);
-        // Add Categories Header
-        mNavigationContainer.addView(createCategoriesHeader());
-    }
-
-    /**
-     * 
-     * @param components
-     */
-    private void fillNavigationContainer(ArrayList<NavigationListComponent> components) {
-        Log.d(TAG, "FILL NAVIGATION CONTAINER");
         try {
-            mNavigationContainer.removeAllViews();
+            mNavigationOptions.removeAllViews();
+            // Add Home
+            createGenericComponent(mNavigationOptions, R.drawable.selector_navigation_home, R.string.home_label, this);
+            // Add Category
+            createGenericComponent(mNavigationOptions, R.drawable.selector_navigation_categories, R.string.categories_label, null);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-
-        // Scrollable container
-        if (components != null) {
-            for (NavigationListComponent component : components) {
-                // Others
-                View actionElementLayout = getActionElementLayout(component, mNavigationContainer);
-                if (actionElementLayout != null) {
-                    mNavigationContainer.addView(actionElementLayout);
-                }
-            }
-        }
-    }
-
-    /**
-     * Retrieves the layout element associated with a given action of the navigation list
-     *
-     * @return The layout of the navigation list element
-     */
-    public View getActionElementLayout(NavigationListComponent component, ViewGroup parent) {
-        View layout = null;
-        String elementUrl = component.getElementUrl();
-        if (elementUrl == null) {
-            elementUrl = "";
-        }
-        String[] nav = elementUrl.split("/");
-        NavigationAction action = NavigationAction.byAction(nav[nav.length - 1].trim());
-
-        switch (action) {
-        case Home:
-            layout = createGenericComponent(parent, R.drawable.selector_navigation_home, R.string.home_label, this);
-            layout.findViewById(R.id.component_text).setTag(R.id.nav_action, action);
-            break;
-        case Categories:
-            layout = createCategoriesHeader();
-            break;
-        default:
-            layout = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
-            TextView tVd = (TextView) layout.findViewById(R.id.component_text);
-            tVd.setText(component.getElementText());
-            break;
-        }
-        if (layout != null) {
-            layout.setTag(R.id.nav_action, action);
-            setActionSelected(layout);
-        }
-        return layout;
-    }
-
-    /**
-     * 
-     * @param view
-     */
-    private void setActionSelected(View view) {
-        try {
-            NavigationAction action = getBaseActivity().getAction();
-            Log.i(TAG, "SELECTED ACTION: " + action);
-            if (!view.isSelected() && action == view.getTag(R.id.nav_action)) view.setSelected(true);
-            else view.setSelected(false);
-        } catch (NullPointerException e) {
-            Log.w(TAG, "ON SET ACTION SELECTED: NULL POINTER EXCEPTION");
-            e.printStackTrace();
-            view.setSelected(false);
-        }
-    }
-
-    /**
-     * 
-     * @return
-     */
-    private View createCategoriesHeader() {
-        View navComponent = mInflater.inflate(R.layout.navigation_categories_component, mNavigationContainer, false);
-        TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
-        String text = getString(R.string.categories_label);
-        tVSearch.setText(text.toUpperCase());
-        tVSearch.setContentDescription("calabash_" + text);
-        navComponent.setOnClickListener(null);
-        navComponent.setTag(R.id.nav_action, NavigationAction.Categories);
-        return navComponent;
     }
 
     /* 
@@ -341,7 +201,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * @param listener
      * @return
      */
-    private View createGenericComponent(ViewGroup parent, int iconRes, int stringId, OnClickListener listener) {
+    private void createGenericComponent(ViewGroup parent, int iconRes, int stringId, OnClickListener listener) {
         View navComponent = mInflater.inflate(R.layout.navigation_generic_component, parent, false);
         TextView tVSearch = (TextView) navComponent.findViewById(R.id.component_text);
         String text = getString(stringId);
@@ -356,7 +216,8 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         }
         
         tVSearch.setOnClickListener(listener);
-        return navComponent;
+        tVSearch.setTag(stringId);
+        parent.addView(navComponent);
     }
 
     /**
@@ -365,20 +226,10 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      */
     public void onUpdateMenu() {
         Log.i(TAG, "ON UPDATE NAVIGATION MENU");
-//        try {
-//            Fragment navMenu = getChildFragmentManager().getFragments().get(0);
-//            if (navMenu instanceof NavigationMenuFragment) ((NavigationMenuFragment) navMenu).onUpdate();
-//        } catch (NullPointerException e) {
-//            Log.w(TAG, "WARNING: NPE ON UPDATE NAVIGATION MENU");
-//        } catch (IndexOutOfBoundsException e) {
-//            Log.w(TAG, "WARNING: IOE ON UPDATE NAVIGATION MENU");
-//        }
-
         // Update items
         if (!isOnStoppingProcess)
             updateNavigationItems();
     }
-    
     
     /**
      * Updated generic items
@@ -386,60 +237,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * @author sergiopereira
      */
     private void updateNavigationItems() {
-        try {
-            // For each child validate the selected item
-            int count = mNavigationContainer.getChildCount();
-            for (int i = 0; i < count; i++) updateItem(mNavigationContainer.getChildAt(i));
-        } catch (NullPointerException e) {
-            Log.w(TAG, "ON UPDATE NAVIGATION: NULL POINTER EXCEPTION");
-            e.printStackTrace();
-        } catch (IndexOutOfBoundsException e) {
-            Log.w(TAG, "ON UPDATE NAVIGATION: INDEX OUT OF BOUNDS EXCEPTION");
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * Update item
-     * 
-     * @param view
-     */
-    private void updateItem(View view) {
-        NavigationAction navAction = (NavigationAction) view.getTag(R.id.nav_action);
-        Log.d(TAG, "UPDATE NAV: " + navAction.toString());
-        switch (navAction) {
-        case Home:
-            // ...
-        case Country:
-            // ...
-        default:
-            break;
-        }
-        // Set selected
-        setActionSelected(view);
-    }
-    
-    /**
-     * Set selected tag with respective tag
-     * @param tab
-     * @author sergiopereira
-     */
-    private void setSelectedTab(int tab) {
-        switch (tab) {
-        case TAB_MENU:
-            Log.i(TAG, "ON SELECT TAB: TAB_MENU");
-            mTabMenu.setSelected(true);
-            mTabCategories.setSelected(false);
-            break;
-        case TAB_CATEGORIES:
-            Log.i(TAG, "ON SELECT TAB: TAB_CATEGORIES");
-            mTabMenu.setSelected(false);
-            mTabCategories.setSelected(true);
-            break;
-        default:
-            Log.w(TAG, "WARINING: ON SELECT UNKNOWN TAB");
-            break;
-        }
+
     }
 
     /**
@@ -451,21 +249,12 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void onSwitchChildFragment(FragmentType filterType, Bundle bundle) {
         Log.i(TAG, "ON SWITCH CHILD FRAG: " + filterType);
         switch (filterType) {
-        case NAVIGATION_MENU:
-//            // Check back stack
-//            if(getChildFragmentManager().findFragmentByTag(FragmentType.NAVIGATION_MENU.toString()) != null)
-//                goToBackUntil(FragmentType.NAVIGATION_MENU);
-//            else {
-//                NavigationMenuFragment slideMenuFragment = NavigationMenuFragment.getInstance();
-//                fragmentChildManagerTransition(R.id.navigation_container, filterType, slideMenuFragment, false, true);
-//            }
-            break;
         case NAVIGATION_CATEGORIES_SUB_LEVEL:
             // No tag fragment on back stack
             filterType = null; 
         case NAVIGATION_CATEGORIES_ROOT_LEVEL:
             NavigationCategoryFragment fragment = NavigationCategoryFragment.getInstance(bundle);
-            fragmentChildManagerTransition(R.id.navigation_container, filterType, fragment, false, true);
+            fragmentChildManagerTransition(R.id.navigation_container_list, filterType, fragment, false, true);
             break;
         default:
             Log.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
@@ -526,45 +315,25 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     @Override
     public void onClick(View view) {
         Log.d(TAG, "ON CLICK");
-        //Get view id 
         int id = view.getId();
-        /*-// Case button menu
-        else if (id == R.id.navigation_tabs_button_menu) onClickMenu();*/
-        // Case button categories
-        if (id == R.id.navigation_tabs_button_categories) onClickCategories();
-        // Case NavigationAction
-        else if (onClickNavigationAction(view));
-        // Case unknown
-        else Log.d(TAG, "ON CLICK: UNKNOWN VIEW");
-    }
-
-    /**
-     * OnClick to process NavigationAction items
-     * 
-     * @param v
-     * @return
-     */
-    public boolean onClickNavigationAction(View v) {
-        NavigationAction navAction = (NavigationAction) v.getTag(R.id.nav_action);
-        if (navAction != null && getBaseActivity().getAction() != navAction) {
-            switch (navAction) {
+        int tag = (int) view.getTag();
+        switch (id) {
             // Case Home
-            case Home:
-                Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: HOME");
-                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE,FragmentController.ADD_TO_BACK_STACK);
+            case R.id.component_text:
+                if(tag == R.string.home_label){
+                    Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: HOME");
+                    getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                } else {
+                    Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: CATALOG");
+                }
                 break;
             // Case unknown
             default:
                 Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: UNKNOWN");
-                return false;
-            }
-            // Close 
-            getBaseActivity().closeNavigationDrawer();
-        } else {
-            Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: NOT HANDLE " + navAction);
-            return false;
+                break;
         }
-        return true;
+        // Close
+        getBaseActivity().closeNavigationDrawer();
     }
     
     /**
@@ -581,21 +350,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         onSwitchChildFragment(FragmentType.NAVIGATION_MENU, null);
     }*/
     
-    /**
-     * Process the click on categories menu
-     *
-     * @author sergiopereira
-     */
-    private void onClickCategories() {
-        Log.d(TAG, "ON CLICK: TAB CAT");
-        // Validate state
-        if(mTabCategories.isSelected()) return;
-        // Update state
-        setSelectedTab(TAB_CATEGORIES);
-        // Switch content
-        Bundle args = new Bundle();
-        args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
-        onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL, args);
-    }
+
 
 }

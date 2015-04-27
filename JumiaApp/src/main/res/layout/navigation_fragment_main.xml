@@ -4,22 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <!-- MENU -->
 
-    <include layout="@layout/navigation_menu_component" />
+    <LinearLayout
+        android:id="@+id/navigation_options_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/white" />
 
-    <!-- TABS -->
-
-    <include
-        layout="@layout/navigation_fragment_tabs"
-        android:visibility="gone" />
-
-    <!-- CONTENT -->
+    <!-- CONTENT ic_categories -->
 
     <FrameLayout
-        android:id="@+id/navigation_container"
+        android:id="@+id/navigation_container_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
