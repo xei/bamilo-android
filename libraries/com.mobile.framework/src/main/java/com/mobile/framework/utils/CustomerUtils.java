@@ -1,20 +1,21 @@
 package com.mobile.framework.utils;
 
-import java.util.Map.Entry;
-import java.util.Set;
-
-import oak.ObscuredSharedPreferences;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+
+import java.util.Map.Entry;
+import java.util.Set;
+
 import de.akquinet.android.androlog.Log;
+import oak.ObscuredSharedPreferences;
 
 public class CustomerUtils {
 	
 	private static final String TAG = CustomerUtils.class.getName();
 	
-	private ObscuredSharedPreferences obscuredPreferences;
+	protected ObscuredSharedPreferences obscuredPreferences;
 	
 	public static final String INTERNAL_AUTOLOGIN_FLAG = "__autologin_requested__";
 	
@@ -28,7 +29,7 @@ public class CustomerUtils {
 	
     private static final String CRED_PREFS = "cred";
     // Flag used for Accengage tracking
-    private static final String USER_LOGGED_ONCE_FLAG = "user_logged_once";
+    public static final String USER_LOGGED_ONCE_FLAG = "user_logged_once";
 
     /**
      * Constructor
@@ -130,7 +131,7 @@ public class CustomerUtils {
 	public boolean userNeverLoggedIn() {
 		boolean loggedOnce = getCredentials().containsKey(USER_LOGGED_ONCE_FLAG);
 		Log.i(TAG, "USER LOGGED ONCE: " + loggedOnce);
-		return (!loggedOnce) ? true : false;
+		return !loggedOnce;
 	}
 	
 	/**
