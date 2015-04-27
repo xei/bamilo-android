@@ -325,6 +325,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         if (null != getBaseActivity()) {
             getBaseActivity().hideSearchComponent();
+            if(action != null){
+                getBaseActivity().updateNavigationMenu(action);
+            }
         }
     }
 
@@ -1056,7 +1059,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void clearCredentials() {
         JumiaApplication.INSTANCE.setLoggedIn(false);
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-        getBaseActivity().updateNavigationMenu();
     }
 
     /*

@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import de.akquinet.android.androlog.Log;
@@ -32,9 +34,11 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
 
     private LinearLayout mNavigationOptions;
 
-//    private ViewGroup mNavigationContainer;
+    private RelativeLayout mCategoryBack;
 
     private LayoutInflater mInflater;
+
+    NavigationCategoryFragment navigationCategoryFragment;
     
     /**
      * Constructor via bundle
@@ -49,7 +53,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * Empty constructor
      */
     public NavigationFragment() {
-        super(IS_NESTED_FRAGMENT, R.layout.navigation_fragment_main);
+        super(IS_NESTED_FRAGMENT, R.layout._def_navigation_fragment_main);
     }
 
     /*
@@ -84,7 +88,9 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        // Set tabs
+        mCategoryBack = (RelativeLayout) view.findViewById(R.id.categories_back_navigation);
+        ((TextView)mCategoryBack.findViewById(R.id.text)).setText(getString(R.string.back_label));
+        mCategoryBack.setOnClickListener(this);
         // Get container
         mNavigationOptions = (LinearLayout) view.findViewById(R.id.navigation_options_container);
         // Check if mNavigationContainer is being reconstructed
@@ -224,11 +230,11 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * Method used to update the navigation menu
      * @author sergiopereira
      */
-    public void onUpdateMenu() {
+    public void onUpdateMenu(NavigationAction page) {
         Log.i(TAG, "ON UPDATE NAVIGATION MENU");
         // Update items
         if (!isOnStoppingProcess)
-            updateNavigationItems();
+            updateNavigationItems(page);
     }
     
     /**
@@ -236,7 +242,30 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * 
      * @author sergiopereira
      */
-    private void updateNavigationItems() {
+    private void updateNavigationItems(NavigationAction page) {
+
+        switch (page){
+            case Home:
+                Log.i(TAG, "ON UPDATE NAVIGATION MENU: HOME");
+                if(mNavigationOptions != null){
+                    mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(true);
+                    clearNavigationCategorySelection();
+                }
+                break;
+            case Products:
+                Log.i(TAG, "ON UPDATE NAVIGATION MENU: CATALOG");
+                if(mNavigationOptions != null && navigationCategoryFragment != null){
+                    mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(false);
+                }
+                break;
+            default:
+                Log.i(TAG, "ON UPDATE NAVIGATION MENU: UNKNOWN");
+                if(mNavigationOptions != null){
+                    mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(false);
+                    clearNavigationCategorySelection();
+                }
+                break;
+        }
 
     }
 
@@ -253,8 +282,8 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             // No tag fragment on back stack
             filterType = null; 
         case NAVIGATION_CATEGORIES_ROOT_LEVEL:
-            NavigationCategoryFragment fragment = NavigationCategoryFragment.getInstance(bundle);
-            fragmentChildManagerTransition(R.id.navigation_container_list, filterType, fragment, false, true);
+            navigationCategoryFragment = NavigationCategoryFragment.getInstance(bundle);
+            fragmentChildManagerTransition(R.id.navigation_container_list, filterType, navigationCategoryFragment, false, true);
             break;
         default:
             Log.w(TAG, "ON SWITCH FILTER: UNKNOWN TYPE");
@@ -316,40 +345,51 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void onClick(View view) {
         Log.d(TAG, "ON CLICK");
         int id = view.getId();
-        int tag = (int) view.getTag();
+
         switch (id) {
             // Case Home
             case R.id.component_text:
+                int tag = (int) view.getTag();
                 if(tag == R.string.home_label){
                     Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: HOME");
                     getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    getBaseActivity().closeNavigationDrawer();
                 } else {
                     Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: CATALOG");
                 }
                 break;
+            // Case Back button
+            case R.id.categories_back_navigation:
+                goToParentCategory();
+                break;
             // Case unknown
             default:
                 Log.d(TAG, "ON CLICK NAVIGATION MENU ITEM: UNKNOWN");
+                getBaseActivity().closeNavigationDrawer();
                 break;
         }
         // Close
-        getBaseActivity().closeNavigationDrawer();
+
     }
-    
+
     /**
-     * Process the click on menu tab
-     * @author sergiopereira
+     * control back button visibility
      */
-    /*-private void onClickMenu() {
-        Log.d(TAG, "ON CLICK: TAB MENU");
-        // Validate state
-        if(mTabMenu.isSelected()) return;
-        // Update state
-        setSelectedTab(TAB_MENU);
-        // Switch content
-        onSwitchChildFragment(FragmentType.NAVIGATION_MENU, null);
-    }*/
-    
+    public void setBackButtonVisibility(int visibility){
+        if(mCategoryBack == null){
+            mCategoryBack = (RelativeLayout) getView().findViewById(R.id.categories_back_navigation);
+        }
+        mCategoryBack.setVisibility(visibility);
+    }
+
+    /**
+     * Clear selected Category
+     */
+    public void clearNavigationCategorySelection(){
+        if(navigationCategoryFragment != null){
+            navigationCategoryFragment.clearSelectedCategory();
+        }
+    }
 
 
 }

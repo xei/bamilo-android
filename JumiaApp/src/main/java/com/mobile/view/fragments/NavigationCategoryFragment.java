@@ -41,9 +41,8 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
 
     private static final String TAG = LogTagHelper.create(NavigationCategoryFragment.class);
     
-    private static final int HEADER_FOR_BACK_POSITION = 0;
-    
-    private static final int HEADER_FOR_ALL_POSITION = 1;
+
+    private static final int HEADER_FOR_ALL_POSITION = 0;
     
     private static final String ROOT_CATEGORIES = null;
 
@@ -209,13 +208,20 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      */
     private void showCategoryList(ArrayList<Category> categories) {
         // Case root
-        if(mCategoryKey == ROOT_CATEGORIES) showRootCategories(categories);
+        if(mCategoryKey == ROOT_CATEGORIES){
+            showRootCategories(categories);
+            // Show content
+            showFragmentContentContainer();
+        }
         // Case branch
-        else if(categories != null && categories.size() > 0) showSubCategory(categories.get(0));
+        else if(categories != null && categories.size() > 0){
+            showSubCategory(categories.get(0));
+            // Show content
+            showFragmentContentContainer();
+        }
         // Case error
         else showRetry();
-        // Show content
-        showFragmentContentContainer();
+
     }
     
     /**
@@ -227,6 +233,8 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         CategoriesAdapter mCategoryAdapter = new CategoriesAdapter(getBaseActivity(), categories);
         mCategoryList.setAdapter(mCategoryAdapter);
         mCategoryList.setOnItemClickListener(this);
+        //Hide back button
+        ((NavigationFragment)getParentFragment()).setBackButtonVisibility(View.GONE);
     }
     
     /**
@@ -236,17 +244,17 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     private void showSubCategory(Category category) {
         Log.i(TAG, "ON SHOW NESTED CATEGORIES");
         try {
+            //Show back button
+            ((NavigationFragment)getParentFragment()).setBackButtonVisibility(View.VISIBLE);
             // Get data
             this.currentCategory = category;
             ArrayList<Category> child = category.getChildren();
             String categoryName = category.getName();
-            // Create and add the header for back
-            // Use always word BACK
-            View headerForBack = createHeader(R.layout.category_inner_top_back, getString(R.string.back_label)); 
-            mCategoryList.addHeaderView(headerForBack);
             // Set Adapter
             SubCategoriesAdapter mSubCategoryAdapter = new SubCategoriesAdapter(getBaseActivity(), child, categoryName);
             mCategoryList.setAdapter(mSubCategoryAdapter);
+//            mSubCategoryAdapter.setSelectedCategory(category.getId());
+
             // Set listener
             mCategoryList.setOnItemClickListener(this);
         } catch (NullPointerException e) {
@@ -254,25 +262,17 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             showRetry();
         }
     }
-    
-    /**
-     * Create a header using a layout with R.id.text
-     * @param layout
-     * @param text
-     * @return View
-     * @author sergiopereira
-     */
-    private View createHeader(int layout, String text){
-        View headerForAll = mInflater.inflate(layout, null);
-        ((TextView) headerForAll.findViewById(R.id.text)).setText(text);
-        return headerForAll;
-    }
+
     
     /**
      * Show only the retry view
      * @author sergiopereira
      */
     private void showRetry() {
+        if(mCategoryKey != ROOT_CATEGORIES){
+            //Show back button if error occurs on inner
+            ((NavigationFragment)getParentFragment()).setBackButtonVisibility(View.VISIBLE);
+        }
         showFragmentErrorRetry();
     }
     
@@ -322,7 +322,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         // Case root
         if(mCategoryKey == ROOT_CATEGORIES) onClickRootCategory(parent, position);
         // Case branch or leaf
-        else onClickNestedCategory(parent, position);
+        else onClickNestedCategory(parent, position,view);
     }
     
     /**
@@ -347,13 +347,9 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @param position
      * @author sergiopereira
      */
-    private void onClickNestedCategory(AdapterView<?> parent, int position) {
+    private void onClickNestedCategory(AdapterView<?> parent, int position,View view) {
         try {
             switch (position) {
-            case HEADER_FOR_BACK_POSITION:
-                // First header goes to parent
-                gotoParentCategoryFromType(FragmentType.NAVIGATION_CATEGORIES_SUB_LEVEL);
-                break;
             case HEADER_FOR_ALL_POSITION:
                 // Second header goes to all
                 gotoCatalog(currentCategory);
@@ -361,6 +357,8 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             default:
                 // Validate item goes to product list or a sub level
                 Category selectedCategory = (Category) parent.getAdapter().getItem(position);
+                // set selected
+                ((SubCategoriesAdapter)parent.getAdapter()).setSelectedCategory(selectedCategory.getId());
                 // Show product list
                 if (!selectedCategory.hasChildren()) gotoCatalog(selectedCategory);
                 // Show sub level
@@ -475,6 +473,10 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         }catch(NullPointerException e){
             Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
+    }
+
+    protected void clearSelectedCategory(){
+
     }
 
 }

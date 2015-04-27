@@ -51,7 +51,6 @@ public class MyAddressesSessionLogin extends SessionLoginFragment {
         JumiaApplication.INSTANCE.setLoggedIn(true);
         // Get Customer
         baseActivity.hideKeyboard();
-        baseActivity.updateSlidingMenuCompletly();
 
         // NullPointerException on orientation change
         if (baseActivity != null && !cameFromRegister) {

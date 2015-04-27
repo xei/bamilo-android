@@ -9,13 +9,15 @@
         android:id="@+id/text"
         style="@style/text_normal"
         android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height_normal"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/home_items_margin"
-        android:layout_marginStart="@dimen/home_items_margin"
-        android:fontFamily="roboto_light"
+        android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginStart="@dimen/margin_huge"
+        android:drawablePadding="@dimen/margin_mid"
         android:gravity="center_vertical"
-        android:text="Category"
-        android:textSize="@dimen/text_form" />
+        android:text="Inner category"
+        android:textColor="@color/grey_light"
+        android:textSize="@dimen/text_m" />
 
     <View
         android:id="@+id/divider"

@@ -1,11 +1,9 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +13,9 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.Category;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This Class is used to create an adapter for the list of categories. It is called by Category Activity <p/><br> 
@@ -46,7 +47,7 @@ public class SubCategoriesAdapter extends BaseAdapter {
     private final int CATEGORIES_LAYOUT = R.layout.category_inner_childcat;
     private final int CATEGORIES_ALL_LAYOUT = R.layout.category_inner_currentcat;
 	private String categoryName;
-    
+    private String selectedCategoryId = "";
 
     /**
      * A representation of each item on the list
@@ -138,17 +139,29 @@ public class SubCategoriesAdapter extends BaseAdapter {
         	
         	item = new Item();
             item.textView = (TextView) itemView.findViewById( R.id.text);
-            itemView.setTag( item );
+            itemView.setTag(item);
         } else {
         	item = (Item)itemView.getTag();
         }
         	
        
-        if ( position == 0 )
-        	item.textView.setText(categoryName);
-        else
-        	item.textView.setText( categories.get(position - 1).getName());
-    	
+        if ( position == 0 ) {
+            item.textView.setText(categoryName);
+            if(!TextUtils.isEmpty(selectedCategoryId) && categories.get(position).getId().equals(selectedCategoryId)){
+                itemView.setSelected(true);
+            } else {
+                itemView.setSelected(false);
+            }
+        } else {
+            item.textView.setText(categories.get(position - 1).getName());
+            if(!TextUtils.isEmpty(selectedCategoryId) && categories.get(position - 1).getId().equals(selectedCategoryId)){
+                itemView.setSelected(true);
+            } else {
+                itemView.setSelected(false);
+            }
+        }
+        itemView.setSelected(true);
+
         return itemView;
         	
     }
@@ -163,5 +176,9 @@ public class SubCategoriesAdapter extends BaseAdapter {
             super.unregisterDataSetObserver(observer);    
         }
     }
-    
+
+    public void setSelectedCategory(String catId){
+        selectedCategoryId = catId;
+        notifyDataSetChanged();
+    }
 }

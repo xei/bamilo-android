@@ -848,7 +848,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             Log.i(TAG, "GOTO NEXT STEP: " + mNextFragment.toString());
             // Update
             getBaseActivity().hideKeyboard();
-            getBaseActivity().updateSlidingMenuCompletly();
             // Clean stack for new native checkout on the back stack (auto login)
             getBaseActivity().removeAllNativeCheckoutFromBackStack();
             // Goto next step

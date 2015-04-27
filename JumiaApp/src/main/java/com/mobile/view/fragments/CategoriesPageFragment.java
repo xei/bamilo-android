@@ -331,7 +331,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
     private void showChildrenInLandscape(Category category) {
         // Create and add the header for back
         if(mLandscapeCategoryChildrenList.getHeaderViewsCount() == 0 && mCategoryKey != ROOT_CATEGORIES) {
-            View headerForBack = createHeader(R.layout.category_inner_top_back, getString(R.string.back_label));
+            View headerForBack = createHeader(R.layout._def_category_inner_top_back, getString(R.string.back_label));
             mLandscapeCategoryChildrenList.addHeaderView(headerForBack);
         }
         // Set adapter, tag and listener
