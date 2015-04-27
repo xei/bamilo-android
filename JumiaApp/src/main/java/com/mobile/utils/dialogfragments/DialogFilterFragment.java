@@ -44,13 +44,13 @@ public class DialogFilterFragment extends DialogFragment {
     public static final int NO_INITIAL_POSITION = -1;
 
     private static final int FILTER_CATEGORY_TYPE = 0;
-    
+
     private static final int FILTER_BRAND_TYPE = 1;
-    
+
     private static final int FILTER_SIZE_TYPE = 2;
-    
+
     private static final int FILTER_PRICE_TYPE = 3;
-    
+
     private static final int FILTER_COLOR_TYPE = 4;
 
     private static final int FILTER_MAIN_TYPE = 5;
@@ -230,7 +230,7 @@ public class DialogFilterFragment extends DialogFragment {
     public void onSubmitFilterValues(ContentValues filterValues){
         if(mParentFrament != null) mParentFrament.onSubmitFilterValues(filterValues);
     }
-    
+
     /*
      * ################# MAIN FRAGMENT ################
      */
@@ -238,14 +238,14 @@ public class DialogFilterFragment extends DialogFragment {
      * Class used to create the main fragment that shows the list of supported filters
      * @author sergiopereira
      */
-    private static class FilterMainFragment extends Fragment implements OnClickListener, OnItemClickListener {
+    static class FilterMainFragment extends Fragment implements OnClickListener, OnItemClickListener {
 
         private DialogFilterFragment mParent;
-        
+
         private ListView mFilterListView;
-        
+
         private ContentValues mContentValues;
-        
+
         /**
          * Constructor
          * @param parent
@@ -260,7 +260,7 @@ public class DialogFilterFragment extends DialogFragment {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
          * android.view.ViewGroup, android.os.Bundle)
          */
@@ -271,7 +271,7 @@ public class DialogFilterFragment extends DialogFragment {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
          */
         @Override
@@ -280,7 +280,7 @@ public class DialogFilterFragment extends DialogFragment {
             // Clean button
             view.findViewById(R.id.dialog_filter_header_clear).setOnClickListener(this);
             // Filter list
-            mFilterListView = (ListView) view.findViewById(R.id.dialog_filter_list); 
+            mFilterListView = (ListView) view.findViewById(R.id.dialog_filter_list);
             mFilterListView.setOnItemClickListener(this);
             mFilterListView.setAdapter(new FiltersArrayAdapter(getActivity(), mFilters));
             // Button cancel
@@ -291,7 +291,7 @@ public class DialogFilterFragment extends DialogFragment {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView,
          * android.view.View, int, long)
@@ -307,18 +307,18 @@ public class DialogFilterFragment extends DialogFragment {
             Bundle bundle = new Bundle();
             bundle.putParcelable(FILTER_TAG, selectedFilter);
             // Goto for respective fragment
-            if(filterId.contains(CATEGORY_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_CATEGORY_TYPE, bundle); 
+            if(filterId.contains(CATEGORY_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_CATEGORY_TYPE, bundle);
             else if(filterId.contains(BRAND_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_BRAND_TYPE, bundle);
             else if(filterId.contains(SIZE_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_SIZE_TYPE, bundle);
             else if(filterId.contains(PRICE_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_PRICE_TYPE, bundle);
             else if(filterId.contains(COLOR_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_COLOR_TYPE, bundle);
-            else { Log.w(TAG, "UNKNOWN FILTER ID"); bundle = null; }
+            else { Log.w(TAG, "UNKNOWN FILTER ID");}
         }
-        
-        
+
+
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see android.view.View.OnClickListener#onClick(android.view.View)
          */
         @Override
@@ -326,19 +326,29 @@ public class DialogFilterFragment extends DialogFragment {
             // Get view id
             int id = view.getId();
             // Clean
-            if (id == R.id.dialog_filter_header_clear) processOnClickClean();
-            // Cancel 
-            else if (id == R.id.dialog_filter_button_cancel) mParent.dismiss();
+            if (id == R.id.dialog_filter_header_clear) {
+                processOnClickClean();
+            }
+            // Cancel
+            else if (id == R.id.dialog_filter_button_cancel){
+                processOnClickCancel();
+            }
             // Save
-            else if (id == R.id.dialog_filter_button_done) proccessOnClickDone();
+            else if (id == R.id.dialog_filter_button_done){
+                processOnClickDone();
+            }
         }
-        
+
+        private void processOnClickCancel() {
+            mParent.dismiss();
+        }
+
         /**
          * Process the click on save button.
          * Create a content values and send it to parent
          * @author sergiopereira
          */
-        private void proccessOnClickDone(){
+        private void processOnClickDone(){
             Log.d(TAG, "CLICKED ON: DONE");
             // Create query
             mContentValues = createContentValues();
@@ -347,7 +357,7 @@ public class DialogFilterFragment extends DialogFragment {
             // Dismiss dialog
             mParent.dismiss();
         }
-        
+
         /**
          * Create content values to filter catalog
          * @return ContentValues
@@ -369,45 +379,45 @@ public class DialogFilterFragment extends DialogFragment {
                 // Case generic filter
                 } else if(filter.hasOptionSelected()){
                     addGenericFilter(filter, contentValues);
-                // Case price filter, get range value 
+                // Case price filter, get range value
                 } else if(filter.hasRangeValues() || filter.isRangeWithDiscount()){
                     addPriceFilter(filter, contentValues);
                 }
-                
+
                 if(TrackerDelegator.FILTER_COLOR.equalsIgnoreCase(filterId)) filterId = COLOR_ID;
             }
             return contentValues;
         }
-        
+
         /**
          * Clean all saved values from filters
-         * 
+         *
          */
         private void cleanAllFilters(){
             for (CatalogFilter filter : mFilters) {
                 cleanFilter(filter);
-               
+
               //Log.d(TAG, "FILTER: " + filter.getId() + " VALUE:" + filter.getMinRangeValue() + " " + filter.getMaxRangeValue() + " " + filter.isRangeWithDiscount());
             }
         }
-        
+
         /**
          * Clean values of specified filter
          * @param filter
-         * 
+         *
          */
         private void cleanFilter(CatalogFilter filter){
             // Generic filter: Get filter id and values, clean and disable old selection
             if(filter.hasOptionSelected())
                 filter.cleanSelectedOption();
-            // Price filter: Get range value 
+            // Price filter: Get range value
             if(filter.hasRangeValues())
                 filter.cleanRangeValues();
             // Price filter: Get discount only
             if(filter.isRangeWithDiscount())
                 filter.setRangeWithDiscount(false);
         }
-        
+
         /**
          * Add to content values the selected category into the PRODUCT_URL tag
          * @param filter
@@ -416,7 +426,7 @@ public class DialogFilterFragment extends DialogFragment {
          */
         private void addCategoryFilter(CatalogFilter filter, ContentValues contentValues){
             CatalogFilterOption selectedOption = filter.getSelectedOption().valueAt(0);
-            if(selectedOption != null && selectedOption instanceof CategoryFilterOption){
+            if(selectedOption instanceof CategoryFilterOption){
                 String url = ((CategoryFilterOption) selectedOption).getUrl();
                 Log.d(TAG, "SELECTED A NEW CATEGORY: " + url );
                 if(url != null)
@@ -426,7 +436,7 @@ public class DialogFilterFragment extends DialogFragment {
                 Toast.makeText(getActivity(), getResources().getString(R.string.category_filter_error), Toast.LENGTH_SHORT).show();
             }
         }
-        
+
         /**
          * Add to content values all selected brands into the SEARCH_QUERY tag
          * @param filter
@@ -440,7 +450,7 @@ public class DialogFilterFragment extends DialogFragment {
                 query += filter.getSelectedOption().valueAt(i).getLabel() + ((i + 1 < size) ? "--" : "");
             contentValues.put(BRAND, query);
         }
-        
+
         /**
          * Add to the content values selected filter
          * @param filter
@@ -451,13 +461,13 @@ public class DialogFilterFragment extends DialogFragment {
             // Get filter id and values
             String filterId = filter.getId();
             String filterValue = "";
-            // Get 
+            // Get
             int size = filter.getSelectedOption().size();
             for(int i = 0; i < size; i++)
                 filterValue += filter.getSelectedOption().valueAt(i).getLabel() + ((i + 1 < size) ? "--" : "");
             contentValues.put(filterId, filterValue);
         }
-        
+
         /**
          * Add to the content values selected price filter
          * @param filter
@@ -478,7 +488,7 @@ public class DialogFilterFragment extends DialogFragment {
                 contentValues.put("special_price", "1");
             }
         }
-        
+
         /**
          * Process the click on clean button
          * @author sergiopereira
