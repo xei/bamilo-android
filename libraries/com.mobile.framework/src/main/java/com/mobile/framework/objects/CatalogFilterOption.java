@@ -9,7 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Class used to represnt a filter option for catalog
+ * Class used to represent a filter option for catalog
  * 
  * @author sergiopereira
  */

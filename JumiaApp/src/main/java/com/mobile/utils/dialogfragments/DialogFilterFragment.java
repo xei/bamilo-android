@@ -233,6 +233,11 @@ public class DialogFilterFragment extends DialogFragment {
         if(mParentFrament != null) mParentFrament.onSubmitFilterValues(filterValues);
     }
 
+    /**
+     * Add catalog filter to initial filter values
+     * 
+     * @param catalogFilter
+     */
     void addToInitialFilterValues(CatalogFilter catalogFilter){
         if(initialCatalogFilterValues == null) {
             initialCatalogFilterValues = new ArrayList<>(mFilters.size());
@@ -240,6 +245,10 @@ public class DialogFilterFragment extends DialogFragment {
         initialCatalogFilterValues.add((CatalogFilter)catalogFilter.clone());
     }
 
+    /**
+     * Go to initial state of filters.
+     *
+     */
     void goToInitialFilterValues() {
         for(CatalogFilter catalogFilter : initialCatalogFilterValues) {
             for (int i = 0; i < mFilters.size(); i++) {

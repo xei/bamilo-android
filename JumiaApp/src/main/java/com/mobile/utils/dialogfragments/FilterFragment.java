@@ -8,7 +8,14 @@ import com.mobile.framework.objects.CatalogFilterOption;
 import com.mobile.view.R;
 
 /**
- * Created by rsoares on 4/27/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ * @author
+ * @version 1.0
+ * @date 2015/04/27
  */
 public class FilterFragment extends Fragment {
     protected static int mBackButtonId = R.id.dialog_filter_header_title;
