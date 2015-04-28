@@ -740,7 +740,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
             ShoppingCartUtils.setShippingRule(cart, shippingContainer, shippingValue, extraCostsMain, extraCostsValue);
 
-            articlesCount.setText(getResources().getQuantityString(R.plurals.numberOfArticles, cart.getCartCount(), cart.getCartCount()));
+            articlesCount.setText(getResources().getQuantityString(R.plurals.numberOfItems, cart.getCartCount(), cart.getCartCount()));
 
             lView = (LinearLayout) getView().findViewById(R.id.shoppingcart_list);
             lView.removeAllViewsInLayout();
