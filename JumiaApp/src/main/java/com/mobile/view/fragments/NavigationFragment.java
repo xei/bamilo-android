@@ -236,6 +236,17 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         if (!isOnStoppingProcess)
             updateNavigationItems(page);
     }
+
+    /**
+     * Method used to update the navigation menu
+     * @author sergiopereira
+     */
+    public void onUpdateCategorySelected(String categoryId) {
+        Log.i(TAG, "ON UPDATE NAVIGATION MENU");
+        // Update items
+        if (!isOnStoppingProcess)
+            setNavigationCategorySelection(categoryId);
+    }
     
     /**
      * Updated generic items
@@ -388,6 +399,15 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void clearNavigationCategorySelection(){
         if(navigationCategoryFragment != null){
             navigationCategoryFragment.clearSelectedCategory();
+        }
+    }
+
+    /**
+     * Clear selected Category
+     */
+    public void setNavigationCategorySelection(String categoryId){
+        if(navigationCategoryFragment != null){
+            navigationCategoryFragment.setSelectedCategory(categoryId);
         }
     }
 

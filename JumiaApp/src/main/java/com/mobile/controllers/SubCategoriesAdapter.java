@@ -48,6 +48,8 @@ public class SubCategoriesAdapter extends BaseAdapter {
     private final int CATEGORIES_ALL_LAYOUT = R.layout.category_inner_currentcat;
 	private String categoryName;
     private String selectedCategoryId = "";
+    private Activity mActivity;
+
 
     /**
      * A representation of each item on the list
@@ -70,6 +72,8 @@ public class SubCategoriesAdapter extends BaseAdapter {
         this.categories = categories;
         this.categoryName = categoryName;
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mActivity = activity;
+        selectedCategoryId = "";
     }
 
     /*
@@ -147,17 +151,14 @@ public class SubCategoriesAdapter extends BaseAdapter {
        
         if ( position == 0 ) {
             item.textView.setText(categoryName);
-            if(!TextUtils.isEmpty(selectedCategoryId) && categories.get(position).getId().equals(selectedCategoryId)){
-                itemView.setSelected(true);
-            } else {
-                itemView.setSelected(false);
-            }
         } else {
             item.textView.setText(categories.get(position - 1).getName());
             if(!TextUtils.isEmpty(selectedCategoryId) && categories.get(position - 1).getId().equals(selectedCategoryId)){
                 itemView.setSelected(true);
+                itemView.setBackground(mActivity.getResources().getDrawable(R.drawable.shape_itemhighlight));
             } else {
                 itemView.setSelected(false);
+                itemView.setBackground(mActivity.getResources().getDrawable(R.drawable.selector_listitem_highlight));
             }
         }
         itemView.setSelected(true);

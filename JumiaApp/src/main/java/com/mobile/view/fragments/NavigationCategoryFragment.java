@@ -48,13 +48,15 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
 
     private ListView mCategoryList;
 
-    private Category currentCategory;
+    private static Category sCurrentCategory;
 
     private LayoutInflater mInflater;
     
     private String mCategoryKey;
 
     private ArrayList<Category>  mCategories;
+
+    private static String sSelectedCategoryId;
 
     /**
      * Create a new instance and save the bundle data
@@ -100,6 +102,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         if(bundle != null) {
             Log.i(TAG, "ON LOAD SAVED STATE");
             mCategoryKey = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
+            sSelectedCategoryId = bundle.getString(ConstantsIntentExtra.CATALOG_SOURCE);
         }
     }
     
@@ -164,6 +167,8 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE");
         outState.putString(ConstantsIntentExtra.CATEGORY_ID, mCategoryKey);
+        outState.putString(ConstantsIntentExtra.CATALOG_SOURCE, sSelectedCategoryId);
+
     }
 
     /*
@@ -247,14 +252,15 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             //Show back button
             ((NavigationFragment)getParentFragment()).setBackButtonVisibility(View.VISIBLE);
             // Get data
-            this.currentCategory = category;
+            sCurrentCategory = category;
             ArrayList<Category> child = category.getChildren();
             String categoryName = category.getName();
             // Set Adapter
             SubCategoriesAdapter mSubCategoryAdapter = new SubCategoriesAdapter(getBaseActivity(), child, categoryName);
             mCategoryList.setAdapter(mSubCategoryAdapter);
-//            mSubCategoryAdapter.setSelectedCategory(category.getId());
-
+            if (!TextUtils.isEmpty(sSelectedCategoryId)) {
+                mSubCategoryAdapter.setSelectedCategory(sSelectedCategoryId);
+            }
             // Set listener
             mCategoryList.setOnItemClickListener(this);
         } catch (NullPointerException e) {
@@ -352,13 +358,11 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             switch (position) {
             case HEADER_FOR_ALL_POSITION:
                 // Second header goes to all
-                gotoCatalog(currentCategory);
+                gotoCatalog(sCurrentCategory);
                 break;
             default:
                 // Validate item goes to product list or a sub level
                 Category selectedCategory = (Category) parent.getAdapter().getItem(position);
-                // set selected
-                ((SubCategoriesAdapter)parent.getAdapter()).setSelectedCategory(selectedCategory.getId());
                 // Show product list
                 if (!selectedCategory.hasChildren()) gotoCatalog(selectedCategory);
                 // Show sub level
@@ -398,6 +402,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());
+        bundle.putString(ConstantsIntentExtra.CATALOG_SOURCE, category.getId());
         // Goto Catalog
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
@@ -475,8 +480,18 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         }
     }
 
-    protected void clearSelectedCategory(){
+    protected void clearSelectedCategory() {
+        if(sCurrentCategory != null){
+            sSelectedCategoryId = "";
+            showSubCategory(sCurrentCategory);
+        }
+    }
 
+    protected void setSelectedCategory(String categoryId){
+        if(sCurrentCategory != null){
+            sSelectedCategoryId = categoryId;
+            showSubCategory(sCurrentCategory);
+        }
     }
 
 }

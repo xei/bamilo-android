@@ -111,6 +111,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     
     private boolean isFromBanner; // Verify if campaign page was open via a banner
 
+    private String mCategoryId; // Verify if catalog page was open via navigation drawer
+
     /**
      * Create and return a new instance.
      *
@@ -159,6 +161,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             }
             // Verify if campaign page was open via a banner
             isFromBanner = arguments.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
+            // Verify if catalog page was open via navigation drawer
+            mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
@@ -229,6 +233,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onResume();
         Log.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
+        if(!TextUtils.isEmpty(mCategoryId) && getBaseActivity() != null){
+            getBaseActivity().updateNavigationCategorySelection(mCategoryId);
+        }
     }
 
     /*

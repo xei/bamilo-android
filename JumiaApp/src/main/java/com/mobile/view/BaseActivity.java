@@ -598,6 +598,17 @@ public abstract class BaseActivity extends ActionBarActivity {
             slideMenuFragment.onUpdateMenu(page);
         }
     }
+    /**
+     * Update the sliding menu
+     */
+    public void updateNavigationCategorySelection(String categoryId) {
+        Log.d(TAG, "UPDATE SLIDE MENU");
+        NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
+        if (slideMenuFragment != null) {
+            slideMenuFragment.onUpdateCategorySelected(categoryId);
+        }
+    }
+
 
     /*
      * ############### OPTIONS MENU #################

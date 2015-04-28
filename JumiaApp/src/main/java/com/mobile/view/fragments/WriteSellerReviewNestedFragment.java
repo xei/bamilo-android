@@ -100,7 +100,7 @@ public class WriteSellerReviewNestedFragment extends BaseFragment {
      */
     public WriteSellerReviewNestedFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
+                NavigationAction.Product,
                 R.layout.review_write_fragment_nested,
                 0,
                 KeyboardState.ADJUST_CONTENT);

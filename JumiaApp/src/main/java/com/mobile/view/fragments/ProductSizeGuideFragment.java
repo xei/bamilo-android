@@ -57,7 +57,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
      */
     public ProductSizeGuideFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
+                NavigationAction.Product,
                 R.layout.product_size_guide_main,
                 R.string.size_guide_label,
                 KeyboardState.NO_ADJUST_CONTENT,
