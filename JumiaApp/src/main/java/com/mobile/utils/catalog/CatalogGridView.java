@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+import com.mobile.framework.objects.CatalogPage;
+
 /**
  * Created by spereira on 2/27/15.
  */
@@ -38,12 +40,9 @@ public class CatalogGridView extends RecyclerView {
     @Override
     public void setAdapter(Adapter adapter) {
         super.setAdapter(adapter);
-        //
         if(adapter instanceof CatalogGridAdapter) {
-            //showHeaderView();
             showFooterView();
         }
-
     }
 
     /* */
@@ -65,6 +64,11 @@ public class CatalogGridView extends RecyclerView {
     public void hideFooterView() {
         mGridLayoutManager.hideFooterView();
         ((CatalogGridAdapter) getAdapter()).hideFooterView();
+    }
+
+    public void setHeaderView(CatalogPage mCatalogPage) {
+        mGridLayoutManager.showHeaderView();
+        ((CatalogGridAdapter) getAdapter()).setHeader(mCatalogPage);
     }
 
 }
