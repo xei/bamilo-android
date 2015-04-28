@@ -252,11 +252,11 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
      */
 
     public boolean hasRangeValues() {
-        return (mRangeValues != null) ? true : false;
+        return (mRangeValues != null);
     }
 
     public boolean hasOptionSelected() {
-        return (mSelectedOption != null && mSelectedOption.size() > 0) ? true : false;
+        return (mSelectedOption != null && mSelectedOption.size() > 0);
     }
 
     public boolean isMulti() {
@@ -417,11 +417,24 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
     public Object clone() {
         try {
             CatalogFilter catalogFilter = (CatalogFilter)super.clone();
-            catalogFilter.mFilterOptions = new ArrayList<>();
+            catalogFilter.mFilterOptions = new ArrayList<>(mFilterOptions.size());
 
             for(CatalogFilterOption catalogFilterOption : mFilterOptions){
                 catalogFilter.mFilterOptions.add((CatalogFilterOption)catalogFilterOption.clone());
             }
+
+            if(mSelectedOption != null) {
+                catalogFilter.mSelectedOption = new SparseArray<>(mSelectedOption.size());
+                for (int i = 0; i < mSelectedOption.size(); i++) {
+                    for (int j = 0; j < catalogFilter.mFilterOptions.size(); j++) {
+                        CatalogFilterOption filterOption = catalogFilter.mFilterOptions.get(j);
+                        if (mSelectedOption.valueAt(i).getId().equals(filterOption.getId())) {
+                            catalogFilter.mSelectedOption.put(i, filterOption);
+                        }
+                    }
+                }
+            }
+
             return catalogFilter;
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
