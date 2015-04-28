@@ -107,10 +107,6 @@ public class DialogFilterFragment extends DialogFragment {
         setStyle(R.style.Theme_Jumia_Dialog_NoTitle, R.style.Theme_Jumia_Dialog_NoTitle);
         Bundle bundle = getArguments();
         mFilters = bundle.getParcelableArrayList(FILTER_TAG);
-        initialCatalogFilterValues = new ArrayList<>(mFilters.size());
-        for(int i = 0; i<mFilters.size();i++){
-            initialCatalogFilterValues.add((CatalogFilter)mFilters.get(i).clone());
-        }
     }
 
     /*
@@ -237,9 +233,21 @@ public class DialogFilterFragment extends DialogFragment {
         if(mParentFrament != null) mParentFrament.onSubmitFilterValues(filterValues);
     }
 
+    void addToInitialFilterValues(CatalogFilter catalogFilter){
+        if(initialCatalogFilterValues == null) {
+            initialCatalogFilterValues = new ArrayList<>(mFilters.size());
+        }
+        initialCatalogFilterValues.add((CatalogFilter)catalogFilter.clone());
+    }
+
     void goToInitialFilterValues() {
-        mFilters.clear();
-        mFilters.addAll(initialCatalogFilterValues);
+        for(CatalogFilter catalogFilter : initialCatalogFilterValues) {
+            for (int i = 0; i < mFilters.size(); i++) {
+                if (catalogFilter.getId().equals(mFilters.get(i).getId())) {
+                    mFilters.set(i, catalogFilter);
+                }
+            }
+        }
     }
 
     /*
@@ -312,6 +320,7 @@ public class DialogFilterFragment extends DialogFragment {
             Log.d(TAG, "ON ITEM CLICK: " + position);
             // Get selected filter
             CatalogFilter selectedFilter = mFilters.get(position);
+            mParent.addToInitialFilterValues(selectedFilter);
             // Get the id
             String filterId = selectedFilter.getId();
             // Create bundle
