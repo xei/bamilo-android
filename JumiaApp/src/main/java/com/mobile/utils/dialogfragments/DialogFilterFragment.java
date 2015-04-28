@@ -75,6 +75,8 @@ public class DialogFilterFragment extends DialogFragment {
 
     private OnDialogFilterListener mParentFrament;
 
+    private List<CatalogFilter> initialCatalogFilterValues;
+
     /**
      * Empty constructor
      */
@@ -105,6 +107,10 @@ public class DialogFilterFragment extends DialogFragment {
         setStyle(R.style.Theme_Jumia_Dialog_NoTitle, R.style.Theme_Jumia_Dialog_NoTitle);
         Bundle bundle = getArguments();
         mFilters = bundle.getParcelableArrayList(FILTER_TAG);
+        initialCatalogFilterValues = new ArrayList<>(mFilters.size());
+        for(int i = 0; i<mFilters.size();i++){
+            initialCatalogFilterValues.add((CatalogFilter)mFilters.get(i).clone());
+        }
     }
 
     /*
@@ -231,6 +237,11 @@ public class DialogFilterFragment extends DialogFragment {
         if(mParentFrament != null) mParentFrament.onSubmitFilterValues(filterValues);
     }
 
+    void goToInitialFilterValues() {
+        mFilters.clear();
+        mFilters.addAll(initialCatalogFilterValues);
+    }
+
     /*
      * ################# MAIN FRAGMENT ################
      */
@@ -307,11 +318,21 @@ public class DialogFilterFragment extends DialogFragment {
             Bundle bundle = new Bundle();
             bundle.putParcelable(FILTER_TAG, selectedFilter);
             // Goto for respective fragment
-            if(filterId.contains(CATEGORY_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_CATEGORY_TYPE, bundle);
-            else if(filterId.contains(BRAND_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_BRAND_TYPE, bundle);
-            else if(filterId.contains(SIZE_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_SIZE_TYPE, bundle);
-            else if(filterId.contains(PRICE_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_PRICE_TYPE, bundle);
-            else if(filterId.contains(COLOR_ID)) ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_COLOR_TYPE, bundle);
+            if(filterId.contains(CATEGORY_ID)){
+                ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_CATEGORY_TYPE, bundle);
+            }
+            else if(filterId.contains(BRAND_ID)){
+                ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_BRAND_TYPE, bundle);
+            }
+            else if(filterId.contains(SIZE_ID)){
+                ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_SIZE_TYPE, bundle);
+            }
+            else if(filterId.contains(PRICE_ID)){
+                ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_PRICE_TYPE, bundle);
+            }
+            else if(filterId.contains(COLOR_ID)){
+                ((DialogFilterFragment) getParentFragment()).onSwitchChildFragment(FILTER_COLOR_TYPE, bundle);
+            }
             else { Log.w(TAG, "UNKNOWN FILTER ID");}
         }
 
@@ -341,6 +362,7 @@ public class DialogFilterFragment extends DialogFragment {
 
         private void processOnClickCancel() {
             mParent.dismiss();
+            mParent.goToInitialFilterValues();
         }
 
         /**

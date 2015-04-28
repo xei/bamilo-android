@@ -74,8 +74,8 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
         super.onViewCreated(view, savedInstanceState);
         
         // Get multi selection option
-        allowMultiselection = mCatalogFilter.isMulti();
-        Log.d(TAG, "IS MULTI SELECTION: " + allowMultiselection);
+        allowMultiSelection = mCatalogFilter.isMulti();
+        Log.d(TAG, "IS MULTI SELECTION: " + allowMultiSelection);
         
         // Get pre selected option
         if(mCatalogFilter.hasOptionSelected()) loadSelectedItems();
@@ -143,7 +143,7 @@ public class FilterColorFragment extends FilterFragment implements View.OnClickL
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "ON ITEM CLICK: FILTER OPTION " + position);
         // Validate if is multi
-        if(allowMultiselection) processMultiSelection(parent, position);
+        if(allowMultiSelection) processMultiSelection(parent, position);
         else processSingleSelection(parent, position);
         // Update adapter
         ((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();

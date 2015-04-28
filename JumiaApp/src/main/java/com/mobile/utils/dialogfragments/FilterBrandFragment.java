@@ -81,8 +81,8 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Get multi selection option
-        allowMultiselection = mCatalogFilter.isMulti();
-        Log.d(TAG, "IS MULTI SELECTION: " + allowMultiselection);
+        allowMultiSelection = mCatalogFilter.isMulti();
+        Log.d(TAG, "IS MULTI SELECTION: " + allowMultiSelection);
         
         // Get pre selected option
         if(mCatalogFilter.hasOptionSelected()) loadSelectedItems();
@@ -156,7 +156,7 @@ public class FilterBrandFragment extends FilterFragment implements OnClickListen
         if(selectedOption.isSectionItem()) return;
         
         // Validate if is multi
-        if(allowMultiselection) processMultiSelection(parent, position);
+        if(allowMultiSelection) processMultiSelection(parent, position);
         else processSingleSelection(parent, position);
         // Update adapter
         ((FilterOptionArrayAdapter) parent.getAdapter()).notifyDataSetChanged();

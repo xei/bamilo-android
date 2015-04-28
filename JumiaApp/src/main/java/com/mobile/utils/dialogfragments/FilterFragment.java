@@ -27,7 +27,7 @@ public class FilterFragment extends Fragment {
 
     protected SparseArray<CatalogFilterOption> mCurrentSelectedOptions = new SparseArray<>();
 
-    protected boolean allowMultiselection;
+    protected boolean allowMultiSelection;
 
     /**
      * Clean all old selections
