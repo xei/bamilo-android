@@ -46,7 +46,7 @@ public class SubCategoriesAdapter extends BaseAdapter {
     //private Context context;
     private final int CATEGORIES_LAYOUT = R.layout.category_inner_childcat;
     private final int CATEGORIES_ALL_LAYOUT = R.layout.category_inner_currentcat;
-	private String categoryName;
+	private Category headCategory;
     private String selectedCategoryId = "";
     private Activity mActivity;
 
@@ -68,9 +68,9 @@ public class SubCategoriesAdapter extends BaseAdapter {
      * @param imageLoader
      *            NOT USED
      */
-    public SubCategoriesAdapter(Activity activity, ArrayList<Category> categories, String categoryName) {
+    public SubCategoriesAdapter(Activity activity, ArrayList<Category> categories, Category category) {
         this.categories = categories;
-        this.categoryName = categoryName;
+        this.headCategory = category;
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mActivity = activity;
         selectedCategoryId = "";
@@ -92,7 +92,7 @@ public class SubCategoriesAdapter extends BaseAdapter {
      */
     public Object getItem(int position) {
     	if ( position == 0 )
-    		return categoryName;
+    		return headCategory.getName();
     	else
     		return categories.get( position - 1 );
     }
@@ -106,8 +106,8 @@ public class SubCategoriesAdapter extends BaseAdapter {
         return position;
     }
 
-    public void setAdapterData(List<Category> children, String categoryName) {
-    	this.categoryName = categoryName;
+    public void setAdapterData(List<Category> children, Category category) {
+    	this.headCategory = category;
         this.categories = children;
         notifyDataSetChanged();
     }
@@ -150,22 +150,22 @@ public class SubCategoriesAdapter extends BaseAdapter {
         	
        
         if ( position == 0 ) {
-            item.textView.setText(categoryName);
-//            if(!TextUtils.isEmpty(selectedCategoryId) && categories.get(0).getId().equals(selectedCategoryId)){
-//                itemView.setSelected(true);
-//                itemView.setBackground(mActivity.getResources().getDrawable(R.drawable.shape_itemhighlight));
-//            } else {
-//                itemView.setSelected(false);
-//                itemView.setBackground(mActivity.getResources().getDrawable(R.drawable.selector_listitem_highlight));
-//            }
-        } else {
-            item.textView.setText(categories.get(position - 1).getName());
-            if(!TextUtils.isEmpty(selectedCategoryId) && categories.get(position - 1).getId().equals(selectedCategoryId)){
+            item.textView.setText(headCategory.getName());
+            if(!TextUtils.isEmpty(selectedCategoryId) && headCategory.getId().equals(selectedCategoryId)){
                 itemView.setSelected(true);
-                itemView.setBackground(mActivity.getResources().getDrawable(R.drawable.shape_itemhighlight));
+                itemView.setBackgroundResource(R.drawable.shape_itemhighlight);
             } else {
                 itemView.setSelected(false);
-                itemView.setBackground(mActivity.getResources().getDrawable(R.drawable.selector_listitem_highlight));
+                itemView.setBackgroundResource(R.drawable.selector_listitem_highlight);
+            }
+        } else {
+            item.textView.setText(categories.get(position - 1).getName());
+            if(!TextUtils.isEmpty(selectedCategoryId) && categories.get(position - 1).getId().equals(selectedCategoryId) ){
+                itemView.setSelected(true);
+                itemView.setBackgroundResource(R.drawable.shape_itemhighlight);
+            } else {
+                itemView.setSelected(false);
+                itemView.setBackgroundResource(R.drawable.selector_listitem_highlight);
             }
         }
         itemView.setSelected(true);

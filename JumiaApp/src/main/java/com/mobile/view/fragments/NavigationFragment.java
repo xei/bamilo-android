@@ -382,7 +382,9 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             // Case Back button
             case R.id.categories_back_navigation:
                 // should I clear the selected category?
+                clearNavigationCategorySelection();
                 goToParentCategory();
+
                 break;
             // Case unknown
             default:

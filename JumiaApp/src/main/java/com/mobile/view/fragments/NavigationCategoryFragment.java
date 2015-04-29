@@ -58,6 +58,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
 
     private static String sSelectedCategoryId;
 
+
     /**
      * Create a new instance and save the bundle data
      * @param bundle
@@ -256,10 +257,32 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             ArrayList<Category> child = category.getChildren();
             String categoryName = category.getName();
             // Set Adapter
-            SubCategoriesAdapter mSubCategoryAdapter = new SubCategoriesAdapter(getBaseActivity(), child, categoryName);
+
+
+//            if(mSubCategoryAdapter == null){
+//                mSubCategoryAdapter = new SubCategoriesAdapter(getBaseActivity(), child, category);
+//                mCategoryList.setAdapter(mSubCategoryAdapter);
+//
+//            } else {
+//                mSubCategoryAdapter.setAdapterData(child, category);
+//                mCategoryList.setAdapter(mSubCategoryAdapter);
+//                if (!TextUtils.isEmpty(sSelectedCategoryId)) {
+//                    mSubCategoryAdapter.setSelectedCategory(sSelectedCategoryId);
+//                }
+//            }
+
+
+
+            SubCategoriesAdapter mSubCategoryAdapter = new SubCategoriesAdapter(getBaseActivity(), child, category);
+//            if (mCategoryList.getChildCount() > 0){
+//                mCategoryList.setAdapter(null);
+//            mCategoryList.getAdapter().notify();
+//            }
+
             mCategoryList.setAdapter(mSubCategoryAdapter);
             if (!TextUtils.isEmpty(sSelectedCategoryId)) {
                 mSubCategoryAdapter.setSelectedCategory(sSelectedCategoryId);
+                mSubCategoryAdapter.notifyDataSetChanged();
             }
             // Set listener
             mCategoryList.setOnItemClickListener(this);

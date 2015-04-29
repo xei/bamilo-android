@@ -299,7 +299,7 @@
     </dimen>
 
     <dimen name="home_items_margin">18dp</dimen>
-
+    <dimen name="double_home_items_margin">50dp</dimen>
     <!-- dimen name="fragment_root_text_size">18sp</dimen -->
 
     <dimen name="login_container_width">@dimen/inner_container_width</dimen>

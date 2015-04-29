@@ -9,7 +9,7 @@
         style="@style/text_normal"
         android:layout_width="match_parent"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/margin_90px"
         android:gravity="center_vertical|right"
         android:text="Inner category"
         android:textSize="@dimen/text_form" />
