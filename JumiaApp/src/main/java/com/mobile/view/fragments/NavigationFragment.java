@@ -38,8 +38,9 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
 
     private LayoutInflater mInflater;
 
-    NavigationCategoryFragment navigationCategoryFragment;
-    
+    private NavigationCategoryFragment navigationCategoryFragment;
+
+    private FragmentType mSavedStateType;
     /**
      * Constructor via bundle
      * @return CampaignsFragment
@@ -53,7 +54,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
      * Empty constructor
      */
     public NavigationFragment() {
-        super(IS_NESTED_FRAGMENT, R.layout._def_navigation_fragment_main);
+        super(IS_NESTED_FRAGMENT, R.layout.navigation_fragment_main);
     }
 
     /*
@@ -78,6 +79,9 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         Log.i(TAG, "ON CREATE");
         // Get inflater
         mInflater = LayoutInflater.from(getBaseActivity());
+
+        mSavedStateType = savedInstanceState != null ? (FragmentType) savedInstanceState.getSerializable(TAG) : null;
+
     }
     
     /*
@@ -97,10 +101,15 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         if (mNavigationOptions.getChildCount() <= 0){
             addMenuItems();
         }
-        addListItems();
+
+        if (mSavedStateType == null) {
+            Log.d(TAG, "SAVED IS NULL");
+            addListItems();
+        }
+
     }
 
-    private void addListItems(){
+    private void addListItems() {
         Bundle args = new Bundle();
         args.putSerializable(ConstantsIntentExtra.CATEGORY_LEVEL, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
         onSwitchChildFragment(FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL, args);
@@ -135,6 +144,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE");
+        outState.putSerializable(TAG, FragmentType.NAVIGATION_CATEGORIES_ROOT_LEVEL);
     }
 
     /*
@@ -263,12 +273,12 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
                     clearNavigationCategorySelection();
                 }
                 break;
-            case Products:
-                Log.i(TAG, "ON UPDATE NAVIGATION MENU: CATALOG");
-                if(mNavigationOptions != null && navigationCategoryFragment != null){
-                    mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(false);
-                }
-                break;
+//            case Products:
+//                Log.i(TAG, "ON UPDATE NAVIGATION MENU: CATALOG");
+//                if(mNavigationOptions != null && navigationCategoryFragment != null){
+//                    mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(false);
+//                }
+//                break;
             default:
                 Log.i(TAG, "ON UPDATE NAVIGATION MENU: UNKNOWN");
                 if(mNavigationOptions != null){
@@ -371,6 +381,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
                 break;
             // Case Back button
             case R.id.categories_back_navigation:
+                // should I clear the selected category?
                 goToParentCategory();
                 break;
             // Case unknown
@@ -403,7 +414,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     }
 
     /**
-     * Clear selected Category
+     * Set selected Category
      */
     public void setNavigationCategorySelection(String categoryId){
         if(navigationCategoryFragment != null){

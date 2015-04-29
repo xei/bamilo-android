@@ -102,7 +102,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         if(bundle != null) {
             Log.i(TAG, "ON LOAD SAVED STATE");
             mCategoryKey = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
-            sSelectedCategoryId = bundle.getString(ConstantsIntentExtra.CATALOG_SOURCE);
+//            sSelectedCategoryId = bundle.getString(ConstantsIntentExtra.CATALOG_SOURCE);
         }
     }
     

@@ -151,6 +151,13 @@ public class SubCategoriesAdapter extends BaseAdapter {
        
         if ( position == 0 ) {
             item.textView.setText(categoryName);
+//            if(!TextUtils.isEmpty(selectedCategoryId) && categories.get(0).getId().equals(selectedCategoryId)){
+//                itemView.setSelected(true);
+//                itemView.setBackground(mActivity.getResources().getDrawable(R.drawable.shape_itemhighlight));
+//            } else {
+//                itemView.setSelected(false);
+//                itemView.setBackground(mActivity.getResources().getDrawable(R.drawable.selector_listitem_highlight));
+//            }
         } else {
             item.textView.setText(categories.get(position - 1).getName());
             if(!TextUtils.isEmpty(selectedCategoryId) && categories.get(position - 1).getId().equals(selectedCategoryId)){
