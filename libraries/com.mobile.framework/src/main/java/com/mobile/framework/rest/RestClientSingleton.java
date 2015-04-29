@@ -249,9 +249,14 @@ public final class RestClientSingleton {
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.i(TAG, "executeGetRestUrlString complete: " + url);
 		}
-		
-		HttpGet httpRequest = new HttpGet(url.replaceAll(" ", "%20"));
-		return executeHttpRequest(httpRequest, mHandler, metaData);
+		try {
+            HttpGet httpRequest = new HttpGet(url.replaceAll(" ", "%20"));
+            return executeHttpRequest(httpRequest, mHandler, metaData);
+        } catch (IllegalArgumentException ex){
+            // Catch error in case of malformed url
+            Log.e(TAG, ex.getLocalizedMessage(), ex);
+            return executeHttpRequest(new HttpGet(""), mHandler,metaData);
+        }
 	}
 	
 	/**
@@ -281,28 +286,33 @@ public final class RestClientSingleton {
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.i(TAG, "executePostRestUrlString complete: " + url);
 		}
-		
-		HttpPost httpRequest = new HttpPost(url);
 
-		List<NameValuePair> params = new ArrayList<>();
-		if(formData != null){
-			for (Entry<String, Object> entry : formData.valueSet()) {
-				Object value = entry.getValue();
-				if (value == null) {
-					Log.w(TAG, "entry for key " + entry.getKey() + " is null - ignoring - form request will fail");
-					continue;
-				}
-	
-				params.add(new BasicNameValuePair(entry.getKey(), value.toString()));
-				if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-					Log.d(TAG, "post: " + entry.getKey() + "=" + entry.getValue());
-				}
-			}
-		}
-		
-		httpRequest.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
+        try {
+            HttpPost httpRequest = new HttpPost(url);
 
-		return executeHttpRequest(httpRequest, mHandler, metaData);
+            List<NameValuePair> params = new ArrayList<>();
+            if (formData != null) {
+                for (Entry<String, Object> entry : formData.valueSet()) {
+                    Object value = entry.getValue();
+                    if (value == null) {
+                        Log.w(TAG, "entry for key " + entry.getKey() + " is null - ignoring - form request will fail");
+                        continue;
+                    }
+
+                    params.add(new BasicNameValuePair(entry.getKey(), value.toString()));
+                    if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
+                        Log.d(TAG, "post: " + entry.getKey() + "=" + entry.getValue());
+                    }
+                }
+            }
+
+            httpRequest.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
+            return executeHttpRequest(httpRequest, mHandler, metaData);
+        } catch(IllegalArgumentException ex){
+            // Catch error in case of malformed url
+            Log.e(TAG, ex.getLocalizedMessage(), ex);
+            return executeHttpRequest(new HttpPost(""), mHandler,metaData);
+        }
 	}
 
 	/**
