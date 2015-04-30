@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.mobile.view.fragments;
+package com.mobile.view.fragments.old;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -28,6 +28,8 @@ import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.ScrollViewWithHorizontal;
 import com.mobile.view.R;
+import com.mobile.view.fragments.BaseFragment;
+import com.mobile.view.fragments.CampaignsFragment;
 
 import java.util.ArrayList;
 
@@ -38,9 +40,9 @@ import de.akquinet.android.androlog.Log;
  *
  * @author sergiopereira
  */
-public class HomePageFragment extends BaseFragment {
+public class HomePageFragmentOld extends BaseFragment {
 
-    public static final String TAG = LogTagHelper.create(HomePageFragment.class);
+    public static final String TAG = LogTagHelper.create(HomePageFragmentOld.class);
 
     public static final String HOME_PAGE_KEY = "homepage";
 
@@ -62,8 +64,8 @@ public class HomePageFragment extends BaseFragment {
      * @return CampaignFragment
      * @author sergiopereira
      */
-    public static HomePageFragment getInstance(Bundle bundle) {
-        HomePageFragment homePageFragment = new HomePageFragment();
+    public static HomePageFragmentOld getInstance(Bundle bundle) {
+        HomePageFragmentOld homePageFragment = new HomePageFragmentOld();
         homePageFragment.setArguments(bundle);
         return homePageFragment;
     }
@@ -71,7 +73,7 @@ public class HomePageFragment extends BaseFragment {
     /**
      * Empty constructor
      */
-    public HomePageFragment() {
+    public HomePageFragmentOld() {
         super(IS_NESTED_FRAGMENT, R.layout.home_page_fragment);
     }
 
@@ -397,8 +399,8 @@ public class HomePageFragment extends BaseFragment {
         Log.i(TAG, "ON CLICK RETRY");
         Fragment parent = getParentFragment();
         // Validate parent
-        if (parent != null && parent instanceof HomeFragment) {
-            ((HomeFragment) parent).onReloadContent();
+        if (parent != null && parent instanceof HomeFragmentOld) {
+            ((HomeFragmentOld) parent).onReloadContent();
         }
     }
 

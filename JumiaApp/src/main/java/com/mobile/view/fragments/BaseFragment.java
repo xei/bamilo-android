@@ -314,7 +314,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
          */
         JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
 
-        if (getBaseActivity() != null) {
+        if (getBaseActivity() != null && !isNestedFragment) {
             getBaseActivity().warningFactory.hideWarning();
         }
 

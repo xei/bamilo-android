@@ -69,6 +69,8 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 	private double minPriceOfferConverted;
 	private int totalOffers;
     private ArrayList<RelatedProduct> relatedProducts;
+	private String mShortDescription;
+	private ArrayList<ProductDetailsSpecification> mProductSpecs;
 	
 //	private int simpleSkuPosition;
 
@@ -77,13 +79,13 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 	 */
 	public CompleteProduct() {
         super();
-		categories = new ArrayList<String>();
-		attributes = new HashMap<String, String>();
-		shipmentData = new HashMap<String, String>();
-		simples = new ArrayList<ProductSimple>();
-		imageList = new ArrayList<String>();
-		variations = new ArrayList<Variation>();
-		known_variations = new ArrayList<String>();
+		categories = new ArrayList<>();
+		attributes = new HashMap<>();
+		shipmentData = new HashMap<>();
+		simples = new ArrayList<>();
+		imageList = new ArrayList<>();
+		variations = new ArrayList<>();
+		known_variations = new ArrayList<>();
 		description = "";
 		specialPrice = CurrencyFormatter.formatCurrency("0");
 		maxSavingPercentage = 0.0;
@@ -101,7 +103,9 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 		minPriceOffer = "";
 		minPriceOfferConverted = 0.0;
 		totalOffers = 0;
-        relatedProducts = new ArrayList<RelatedProduct>();
+        relatedProducts = new ArrayList<>();
+		mShortDescription = "";
+		mProductSpecs = new ArrayList<>();
 	}
 
 	/*
@@ -123,7 +127,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 			idCatalogConfig = dataObject.getString(RestConstants.JSON_ID_CATALOG_CONFIG_TAG);
 			attributeSetId = dataObject.getString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
 			activatedAt = dataObject.getString(RestConstants.JSON_ACTIVATED_AT_TAG);
-			description = dataObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
+
 			url = dataObject.optString(RestConstants.JSON_PROD_URL_TAG, "");
 			mSizeGuideUrl = dataObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
 			// Throw JSONException if JSON_PRICE_TAG is not present
@@ -281,6 +285,21 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
                     }
                 }
             }
+			// PDV bucket info
+			JSONObject summaryObject = dataObject.optJSONObject(RestConstants.JSON_SUMMARY_TAG);
+			if(summaryObject != null){
+				description = summaryObject.optString(RestConstants.JSON_DESCRIPTION_TAG, "");
+				mShortDescription = summaryObject.optString(RestConstants.JSON_SHORT_DESC_TAG, "");
+			}
+
+			JSONArray specificationsArray = dataObject.optJSONArray(RestConstants.JSON_SPECIFICATIONS_TAG);
+			if(specificationsArray != null && specificationsArray.length() > 0){
+				for (int i = 0; i < specificationsArray.length() ; i++) {
+					ProductDetailsSpecification prodSpecs = new ProductDetailsSpecification();
+					prodSpecs.initialize(specificationsArray.getJSONObject(i));
+					mProductSpecs.add(prodSpecs);
+				}
+			}
 
 			JSONObject variationsObject = dataObject.optJSONObject(RestConstants.JSON_VARIATIONS_TAG);
 			if (variationsObject == null)
@@ -500,7 +519,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 	}
 
 	public String getShortDescription() {
-		return attributes.get(RestConstants.JSON_SHORT_DESC_TAG);
+		return mShortDescription;
 	}
 
 	public boolean hasDiscount() {
@@ -632,8 +651,18 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
     public void setTotalOffers(int totalOffers) {
         this.totalOffers = totalOffers;
     }
-    
-    
+
+	public ArrayList<ProductDetailsSpecification> getProductSpecifications() {
+		return mProductSpecs;
+	}
+
+	public void setProductSpecifications(ArrayList<ProductDetailsSpecification> specs) {
+		this.mProductSpecs = specs;
+	}
+
+	public ArrayList<RelatedProduct> getRelatedProducts() {
+		return relatedProducts;
+	}
     
     /*
      * ############ PARCELABLE ############
@@ -656,6 +685,7 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		super.writeToParcel(dest,flags);
 		dest.writeList(categories);
 		dest.writeMap(attributes);
 		dest.writeMap(shipmentData);
@@ -681,10 +711,12 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 		dest.writeString(minPriceOffer);
 		dest.writeDouble(minPriceOfferConverted);
 		dest.writeInt(totalOffers);
+		dest.writeList(mProductSpecs);
+		dest.writeString(mShortDescription);
 	}
 
 	private CompleteProduct(Parcel in) {
-        super();
+		super(in);
 		categories = new ArrayList<String>();
 		in.readList(categories, String.class.getClassLoader());
 
@@ -722,6 +754,11 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 		minPriceOffer = in.readString();
         minPriceOfferConverted = in.readDouble();
         totalOffers = in.readInt();
+
+		mProductSpecs = new ArrayList<ProductDetailsSpecification>();
+		in.readList(mProductSpecs, ProductDetailsSpecification.class.getClassLoader());
+
+		mShortDescription = in.readString();
 	}
 
 	public static final Parcelable.Creator<CompleteProduct> CREATOR = new Parcelable.Creator<CompleteProduct>() {
@@ -734,7 +771,5 @@ public class CompleteProduct extends BaseProduct implements IJSONSerializable {
 		}
 	};
 
-    public ArrayList<RelatedProduct> getRelatedProducts() {
-        return relatedProducts;
-    }
+
 }

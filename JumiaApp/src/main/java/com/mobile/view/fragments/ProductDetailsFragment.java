@@ -560,14 +560,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     private void checkProductDetailsVisibility() {
         if (mCompleteProduct != null && mDetailsSection != null && mDetailsSectionLine != null) {
-            /*
-            if (CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications() &&
+            if (CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications()) &&
                     TextUtils.isEmpty(mCompleteProduct.getShortDescription()) &&
-                    TextUtils.isEmpty(mCompleteProduct.getDescription()))) {
+                    TextUtils.isEmpty(mCompleteProduct.getDescription())) {
                 mDetailsSection.setVisibility(View.GONE);
                 mDetailsSectionLine.setVisibility(View.GONE);
             }
-            */
             mDetailsSection.setOnClickListener(this);
         }
     }
@@ -1605,11 +1603,12 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * Show the product description
      */
     private void onClickShowDescription() {
-        if (null != mCompleteProduct) {
+        if (null != mCompleteProduct && (!CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications()) ||
+                (!TextUtils.isEmpty(mCompleteProduct.getShortDescription()) && !TextUtils.isEmpty(mCompleteProduct.getDescription())) )) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
             bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -1822,6 +1821,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
+        // Hide dialog progress
+        hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -1908,12 +1909,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public void onErrorEvent(Bundle bundle) {
         Log.i(TAG, "ON ERROR EVENT");
         // Validate fragment visibility
+
+        // Hide dialog progress
+        hideActivityProgress();
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        // Hide dialog progress
-        hideActivityProgress();
 
         // Specific errors
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);

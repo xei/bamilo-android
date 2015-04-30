@@ -444,20 +444,36 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     /**
-     * Show the no filter result
+     * Show the no filter layout error.
+     *
+     * @param  stringId The message.
      */
-    private void showFilterNoResult() {
+    private void showFilterError(int stringId){
         Log.i(TAG, "ON SHOW FILTER NO RESULT");
         // Set title
         UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, EMPTY_CATALOG);
         // Show layout
-        showFragmentEmpty(R.string.catalog_no_results, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
+        showFragmentEmpty(stringId, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "ON CLICK: FILTER BUTTON");
                 onClickFilterButton();
             }
         });
+    }
+
+    /**
+     * Show the no filter result.
+     */
+    private void showFilterNoResult() {
+        showFilterError(R.string.catalog_no_results);
+    }
+
+    /**
+     * Show the no filter unexpected error.
+     */
+    private void showFilterUnexpectedError(){
+        showFilterError(R.string.server_error);
     }
 
     /**
@@ -872,7 +888,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Show no result layout
             showFeaturedBoxNoResult(featuredBox);
         }
-        // Case network errors
+        // Case network errors except No network
+        else if(errorCode != null && errorCode.isNetworkError() && errorCode != ErrorCode.NO_NETWORK){
+            showFilterUnexpectedError();
+        }
+        // Case No Network
         else if (super.handleErrorEvent(bundle)) {
             Log.i(TAG, "HANDLE BASE FRAGMENT");
         }

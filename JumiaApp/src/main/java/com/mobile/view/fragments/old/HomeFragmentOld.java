@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.mobile.view.fragments;
+package com.mobile.view.fragments.old;
 
 import android.app.Activity;
 import android.content.Context;
@@ -43,6 +43,7 @@ import com.mobile.utils.dialogfragments.DialogPromotionFragment;
 import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
 import com.mobile.view.R;
+import com.mobile.view.fragments.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -54,9 +55,9 @@ import de.akquinet.android.androlog.Log;
  * 
  * @author sergiopereira
  */
-public class HomeFragment extends BaseFragment implements IResponseCallback {
+public class HomeFragmentOld extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(HomeFragment.class);
+    private static final String TAG = LogTagHelper.create(HomeFragmentOld.class);
 
     private static final String PAGER_POSITION_KEY = "current_position";
 
@@ -78,14 +79,14 @@ public class HomeFragment extends BaseFragment implements IResponseCallback {
      * @return CampaignsFragment
      * @author sergiopereira
      */
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
+    public static HomeFragmentOld newInstance() {
+        return new HomeFragmentOld();
     }
 
     /**
      * Empty constructor
      */
-    public HomeFragment() {
+    public HomeFragmentOld() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Home,
                 R.layout.home_fragment_main,

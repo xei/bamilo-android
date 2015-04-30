@@ -19,6 +19,7 @@ import com.mobile.controllers.CategoriesAdapter;
 import com.mobile.controllers.SubCategoriesAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.CategoriesTableHelper;
 import com.mobile.framework.objects.Category;
 import com.mobile.framework.utils.Constants;
@@ -462,8 +463,13 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             return;
         }
         */
-        // Show retry
-        showRetry();
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        if(errorCode == ErrorCode.TIME_OUT || errorCode == ErrorCode.NO_NETWORK){
+            showFragmentNoNetworkRetry();
+        } else {
+            // Show retry
+            showRetry();
+        }
     }
 
     @Override
