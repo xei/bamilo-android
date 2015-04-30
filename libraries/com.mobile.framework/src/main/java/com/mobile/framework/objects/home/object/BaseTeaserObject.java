@@ -5,12 +5,13 @@ import android.os.Parcelable;
 
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
+import com.mobile.framework.utils.DateTimeUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by spereira on 4/15/15.
+ * Class used to represent the base of a teaser item.
  * @author spereira
  */
 public class BaseTeaserObject implements IJSONSerializable, Parcelable {
@@ -68,10 +69,6 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         return mTimerInMillis > 0;
     }
 
-    public long getTimer() {
-        return mTimerInMillis;
-    }
-
     public boolean hasValidRealTimer() {
         return mTimerInMillis - System.currentTimeMillis() > 0;
     }
@@ -99,16 +96,7 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         // Get target type
         mTargetType = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG);
         // Get timer in seconds and convert to millis
-        mTimerInMillis = jsonObject.optLong(RestConstants.JSON_UNIX_TIME_TAG) * 1000;
-
-
-        /*
-        if(!TextUtils.isEmpty(mTitle) && mTitle.contains("deals"))
-            mTimerInMillis = System.currentTimeMillis() + 15000;
-        else
-            mTimerInMillis = System.currentTimeMillis() + 7000;
-            */
-
+        mTimerInMillis = jsonObject.optLong(RestConstants.JSON_UNIX_TIME_TAG) * DateTimeUtils.UNIT_SEC_TO_MILLIS;
         // Validate images
         if (jsonObject.has(RestConstants.JSON_IMAGE_TAG)) {
             // Get image

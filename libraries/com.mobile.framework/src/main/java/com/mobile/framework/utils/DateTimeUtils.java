@@ -9,6 +9,9 @@ import java.util.Locale;
  */
 public class DateTimeUtils {
 
+    public static final int UNIT_SEC_TO_MILLIS = 1000;
+
+
     /**
      * Return the current date and time as string "yyyy-MM-dd HH:mm:ss"
      * @return String

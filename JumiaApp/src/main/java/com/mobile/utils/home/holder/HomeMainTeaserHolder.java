@@ -11,7 +11,7 @@ import com.mobile.view.R;
 import com.viewpagerindicator.CirclePageIndicator;
 
 /**
- *
+ * Main teaser
  */
 public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
 

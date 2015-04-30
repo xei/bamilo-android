@@ -21,11 +21,12 @@ import java.util.Map;
 import de.akquinet.android.androlog.Log;
 
 /**
- * TODO
+ * Class used to represent a home page response
+ * @author spereira
  */
-public class NewHomePageObject implements IJSONSerializable, Parcelable {
+public class HomePageObject implements IJSONSerializable, Parcelable {
 
-    public static final String TAG = NewHomePageObject.class.getSimpleName();
+    public static final String TAG = HomePageObject.class.getSimpleName();
 
     private String mName;
 
@@ -34,7 +35,7 @@ public class NewHomePageObject implements IJSONSerializable, Parcelable {
     /**
      * Empty constructor
      */
-    public NewHomePageObject() {
+    public HomePageObject() {
         //...
     }
 
@@ -176,7 +177,7 @@ public class NewHomePageObject implements IJSONSerializable, Parcelable {
         }
     }
 
-    private NewHomePageObject(Parcel in) {
+    private HomePageObject(Parcel in) {
         mName = in.readString();
         if (in.readByte() == 0x01) {
             mTeasers = new ArrayList<>();
@@ -186,13 +187,13 @@ public class NewHomePageObject implements IJSONSerializable, Parcelable {
         }
     }
 
-    public static final Parcelable.Creator<NewHomePageObject> CREATOR = new Parcelable.Creator<NewHomePageObject>() {
-        public NewHomePageObject createFromParcel(Parcel source) {
-            return new NewHomePageObject(source);
+    public static final Parcelable.Creator<HomePageObject> CREATOR = new Parcelable.Creator<HomePageObject>() {
+        public HomePageObject createFromParcel(Parcel source) {
+            return new HomePageObject(source);
         }
 
-        public NewHomePageObject[] newArray(int size) {
-            return new NewHomePageObject[size];
+        public HomePageObject[] newArray(int size) {
+            return new HomePageObject[size];
         }
     };
 }

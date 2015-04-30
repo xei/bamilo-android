@@ -8,7 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by spereira on 4/15/15.
+ * Class used to represent a top seller teaser item.
+ * @author spereira
  */
 public class TeaserTopSellerObject extends BaseTeaserObject {
 
@@ -21,14 +22,13 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
     private double mSpecialPriceConverted;
 
     /**
-     *
+     * Constructor
      */
     public TeaserTopSellerObject() {
         //...
     }
 
-
-/*
+    /*
      * ########## GETTERS ##########
      */
 
@@ -65,10 +65,8 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
      */
 
     /**
-     * TODO
-     *
+     * Initialize
      * @param jsonObject JSONObject containing the parameters of the object
-     * @return
      * @throws JSONException
      */
     @Override

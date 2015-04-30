@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
@@ -19,14 +19,13 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.objects.Promotion;
 import com.mobile.framework.objects.TeaserCampaign;
-import com.mobile.framework.objects.home.NewHomePageObject;
+import com.mobile.framework.objects.home.HomePageObject;
 import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.framework.objects.home.object.BaseTeaserObject;
 import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.objects.home.type.TeaserTargetType;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.TrackingPage;
-import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
@@ -51,19 +50,19 @@ import java.util.EnumSet;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Class used to show all campaigns
+ * Class used to show the home page.
  *
  * @author sergiopereira
  */
-public class NewHomeFragment2 extends BaseFragment implements IResponseCallback {
+public class HomePageFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = LogTagHelper.create(NewHomeFragment2.class);
+    private static final String TAG = LogTagHelper.create(HomePageFragment.class);
 
-    private LinearLayoutCompat mContainer;
+    private ViewGroup mContainer;
 
-    private NewHomePageObject mHomePage;
+    private HomePageObject mHomePage;
 
-    private ScrollView mScrollViewWithHorizontal;
+    private ScrollView mScrollView;
 
     private ArrayList<BaseTeaserViewHolder> mViewHolders;
 
@@ -77,17 +76,17 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
      * @return CampaignsFragment
      * @author sergiopereira
      */
-    public static NewHomeFragment2 newInstance() {
-        return new NewHomeFragment2();
+    public static HomePageFragment newInstance() {
+        return new HomePageFragment();
     }
 
     /**
      * Empty constructor
      */
-    public NewHomeFragment2() {
+    public HomePageFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Home,
-                R.layout._def_home_fragment_main_2,
+                R.layout._def_home_fragment_main,
                 R.string.home_label,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -117,11 +116,8 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
         // Get saved scroll position
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
-            Log.d(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
+            Log.i(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
         }
-        // Track auto login failed if hasn't saved credentials TODO ????
-        if (!JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials())
-            TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
     }
 
     /*
@@ -134,10 +130,10 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        // Get recycler view
-        mContainer = (LinearLayoutCompat) view.findViewById(R.id.home_container);
         // Get scroll view
-        mScrollViewWithHorizontal = (ScrollView) view.findViewById(R.id.home_scroll_container);
+        mScrollView = (ScrollView) view.findViewById(R.id.home_page_scroll);
+        // Get recycler view
+        mContainer = (ViewGroup) view.findViewById(R.id.home_page_container);
 
         /**
          * TODO: Validate this method is necessary to recover the app from
@@ -204,20 +200,20 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
     }
 
     /**
-     * Method used to resume the content for Home Frament
+     * Method used to resume the content for Home Fragment
      *
      * @author sergiopereira
      */
     public void onResumeExecution() {
         Log.i(TAG, "ON RESUME EXECUTION");
         // Disabled for Samsung and Blackberry (check_version_enabled)
-        if (CheckVersion.needsToShowDialog()) CheckVersion.showDialog(getActivity());
+        if (CheckVersion.needsToShowDialog()) {
+            CheckVersion.showDialog(getActivity());
+        }
         // Validate current state
         if(mHomePage != null && mHomePage.hasTeasers()) {
-            Log.i(TAG, "HOME IS NOT NULL");
-            validateState();
+            validateDataState();
         } else {
-            Log.i(TAG, "HOME IS NULL");
             triggerTeasers();
         }
         // Validate promotions
@@ -276,6 +272,7 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
     public void onDestroyView() {
         super.onDestroyView();
         Log.i(TAG, "ON DESTROY VIEW");
+        // Remove parent from views
         TeaserViewFactory.onDetachedViewHolder(mViewHolders);
     }
 
@@ -298,19 +295,28 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
      * ########### LAYOUT ###########
      */
 
-    private void validateState() {
+    /**
+     * Validate the current data
+     */
+    private void validateDataState() {
         if(CollectionUtils.isNotEmpty(mViewHolders)) {
-            rebuildHomePage();
+            rebuildHomePage(mViewHolders);
         } else {
             buildHomePage(mHomePage);
         }
     }
 
-    private void rebuildHomePage() {
-        Log.i(TAG, "VIEW HOLDER ADAPTER IS NOT NULL");
-        //
+    /**
+     * Rebuild the home updating all views.<br>
+     * Warning: To perform this method is necessary detached view from parent.
+     */
+    private void rebuildHomePage(ArrayList<BaseTeaserViewHolder> mViewHolders) {
+        Log.i(TAG, "REBUILD HOME PAGE");
+        // Update each view older
         for (BaseTeaserViewHolder viewHolder : mViewHolders) {
+            // Update view
             viewHolder.onUpdate();
+            // Add view
             mContainer.addView(viewHolder.itemView);
         }
         // Restore the scroll state
@@ -319,15 +325,22 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
         showFragmentContentContainer();
     }
 
-    private void buildHomePage(NewHomePageObject homePage) {
-        Log.i(TAG, "VIEW HOLDER ADAPTER IS NULL");
+    /**
+     * Create the home page
+     */
+    private void buildHomePage(HomePageObject homePage) {
+        Log.i(TAG, "BUILD HOME PAGE");
         LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
         for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers()) {
+            // Create view
             BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
             if (viewHolder != null) {
+                // Set view
                 viewHolder.onBind(baseTeaserType);
+                // Add to container
                 mContainer.addView(viewHolder.itemView);
+                // Save
                 mViewHolders.add(viewHolder);
             }
         }
@@ -337,27 +350,22 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
         showFragmentContentContainer();
     }
 
-
     /**
      * Method to save the current scroll state
-     *
      * @return int[]
-     * @author sergiopereira
      */
     private boolean saveScrollState() {
         Log.i(TAG, "ON SAVE SCROLL STATE");
         // Validate view
-        if (mScrollViewWithHorizontal == null) {
-            return false;
+        if (mScrollView != null) {
+            mScrollSavedPosition = new int[]{mScrollView.getScrollX(), mScrollView.getScrollY()};
+            return true;
         }
-        // Save state
-        mScrollSavedPosition = new int[]{mScrollViewWithHorizontal.getScrollX(), mScrollViewWithHorizontal.getScrollY()};
-        return true;
+        return false;
     }
 
     /**
      * Restore the saved scroll position
-     *
      * @author sergiopereira
      */
     private void restoreScrollState() {
@@ -365,10 +373,10 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
         // Validate state
         if (mScrollSavedPosition != null) {
             // Scroll to saved position
-            mScrollViewWithHorizontal.post(new Runnable() {
+            mScrollView.post(new Runnable() {
                 public void run() {
                     Log.d(TAG, "SCROLL TO POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
-                    mScrollViewWithHorizontal.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
+                    mScrollView.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
                 }
             });
         }
@@ -392,9 +400,6 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
 
     /**
      * Process the click on teaser
-     *
-     * @param view
-     * @author sergiopereira
      */
     private boolean onClickTeaserItem(View view) {
         Log.i(TAG, "ON CLICK TEASER ITEM");
@@ -431,6 +436,9 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
         return intercepted;
     }
 
+    /**
+     * Goto catalog page
+     */
     private void gotoCatalog(String title, String url) {
         Log.i(TAG, "GOTO CATALOG PAGE: " + title + " " + url);
         // Validate url
@@ -444,6 +452,9 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
         }
     }
 
+    /**
+     * Goto product detail
+     */
     private void gotoProductDetail(String url) {
         Log.i(TAG, "GOTO PRODUCT DETAIL: " + url);
         // Validate url
@@ -455,6 +466,9 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
         }
     }
 
+    /**
+     * Goto static page
+     */
     private void gotoStaticPage(String title, String url) {
         Log.i(TAG, "GOTO STATIC PAGE: " + title + " " + url);
         // Validate url
@@ -466,6 +480,9 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
         }
     }
 
+    /**
+     * Goto campaign page
+     */
     private void gotoCampaignPage() {
         // Get campaign group
         int position = TeaserGroupType.CAMPAIGN_TEASERS.ordinal();
@@ -538,25 +555,21 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
     @Override
     public void onRequestComplete(Bundle bundle) {
         Log.i(TAG, "ON SUCCESS");
-
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            //if (eventType == EventType.GET_TEASERS_EVENT) mReceivedInBackgroundAndDiscarded = true;
             return;
         }
-
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
             case GET_HOME_EVENT:
                 Log.i(TAG, "ON GET_HOME_EVENT");
-                NewHomePageObject homePage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                HomePageObject homePage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
                 if (homePage != null && homePage.hasTeasers()) {
                     Log.i(TAG, "SHOW HOME PAGE: " + homePage.hasTeasers());
-                    //
+                    // Save home page
                     mHomePage = homePage;
-                    //
+                    // Build home page
                     buildHomePage(homePage);
                 } else {
                     Log.i(TAG, "SHOW FALL BAK");
@@ -574,7 +587,7 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
     }
 
     /**
-     * @param bundle
+     * Show promotions
      */
     private void onGetPromotions(Bundle bundle) {
         if (((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getIsStillValid()) {
@@ -597,16 +610,14 @@ public class NewHomeFragment2 extends BaseFragment implements IResponseCallback 
     @Override
     public void onRequestError(Bundle bundle) {
         Log.i(TAG, "ON ERROR RESPONSE");
-
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
         // Check base errors
         if (super.handleErrorEvent(bundle)) return;
-
+        // Check home types
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
             case GET_HOME_EVENT:

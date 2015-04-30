@@ -37,6 +37,7 @@ import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.CheckoutWebFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
 import com.mobile.view.fragments.FavouritesFragment;
+import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
@@ -46,8 +47,6 @@ import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyAddressesSessionLogin;
 import com.mobile.view.fragments.MyOrdersFragment;
-import com.mobile.view.fragments.NewHomeFragment2;
-import com.mobile.view.fragments.ProductDetailsDescriptionFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -273,8 +272,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                     popBackStack(FragmentType.HOME.toString());
                     return;
                 }
-                //fragment = NewHomeFragment.newInstance();
-                fragment = NewHomeFragment2.newInstance();
+                fragment = HomePageFragment.newInstance();
                 break;
             case CATEGORIES:
                 fragment = CategoriesCollectionFragment.getInstance(bundle);

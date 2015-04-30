@@ -6,7 +6,7 @@ package com.mobile.helpers.teasers;
 import android.os.Bundle;
 
 import com.mobile.framework.enums.RequestType;
-import com.mobile.framework.objects.home.NewHomePageObject;
+import com.mobile.framework.objects.home.HomePageObject;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
@@ -19,8 +19,7 @@ import org.json.JSONObject;
 import de.akquinet.android.androlog.Log;
 
 /**
- * TODO
- *
+ * Helper used to get the home page
  * @author sergiopereira
  */
 public class GetHomeHelper extends BaseHelper {
@@ -30,9 +29,7 @@ public class GetHomeHelper extends BaseHelper {
     private EventType type = EventType.GET_HOME_EVENT;
 
     /**
-     * // TODO
-     * @param args
-     * @return
+     * Create request
      */
     @Override
     public Bundle generateRequestBundle(Bundle args) {
@@ -47,17 +44,14 @@ public class GetHomeHelper extends BaseHelper {
     }
 
     /**
-     * // TODO
-     * @param bundle
-     * @param jsonObject
-     * @return
+     * Parse the response
      */
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.i(TAG, "ON PARSE RESPONSE BUNDLE");
         try {
             // Get home
-            NewHomePageObject newHomePageObject = new NewHomePageObject();
+            HomePageObject newHomePageObject = new HomePageObject();
             newHomePageObject.initialize(jsonObject);
             bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, newHomePageObject);
         } catch (JSONException e) {
@@ -69,9 +63,7 @@ public class GetHomeHelper extends BaseHelper {
     }
 
     /**
-     *
-     * @param bundle
-     * @return
+     * Error on parsing json
      */
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
@@ -82,9 +74,7 @@ public class GetHomeHelper extends BaseHelper {
     }
 
     /**
-     *
-     * @param bundle
-     * @return
+     * Error on response
      */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
@@ -95,10 +85,7 @@ public class GetHomeHelper extends BaseHelper {
     }
 
     /**
-     *
-     * @param bundle
-     * @param jsonObject
-     * @return
+     * Parent error on parsing json
      */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {

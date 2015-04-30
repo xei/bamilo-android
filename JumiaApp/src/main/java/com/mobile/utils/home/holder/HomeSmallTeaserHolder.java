@@ -8,7 +8,7 @@ import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.view.R;
 
 /**
- *
+ * Small teaser
  */
 public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
 

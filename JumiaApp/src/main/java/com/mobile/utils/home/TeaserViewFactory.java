@@ -17,22 +17,24 @@ import com.mobile.utils.home.holder.HomeSmallTeaserHolder;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserHolder;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 
 /**
- *
+ * Class used to create each teaser view
  */
 public class TeaserViewFactory {
 
     public static final String TAG = TeaserViewFactory.class.getSimpleName();
 
     /**
-     *
-     * @param inflater
-     * @param type
-     * @param parent
-     * @param listener
-     * @return
+     * Create a teaser view holder
+     * @param inflater The inflater
+     * @param type The group type
+     * @param parent The container
+     * @param listener The click listener
+     * @return BaseTeaserViewHolder or null
      */
     public static BaseTeaserViewHolder onCreateViewHolder(LayoutInflater inflater, TeaserGroupType type, ViewGroup parent, View.OnClickListener listener) {
         switch (type) {
@@ -59,23 +61,25 @@ public class TeaserViewFactory {
     }
 
     /**
-     *
-     * @param viewHolders
+     * Method used to remove parent from view holder.
+     * @param viewHolders The list of view holders.
      */
     public static void onDetachedViewHolder(ArrayList<BaseTeaserViewHolder> viewHolders) {
-        for (BaseTeaserViewHolder viewHolder : viewHolders) {
-            ViewGroup parent = (ViewGroup) viewHolder.itemView.getParent();
-            if (parent != null) {
-                parent.removeView(viewHolder.itemView);
+        if(CollectionUtils.isNotEmpty(viewHolders)) {
+            for (BaseTeaserViewHolder viewHolder : viewHolders) {
+                ViewGroup parent = (ViewGroup) viewHolder.itemView.getParent();
+                if (parent != null) {
+                    parent.removeView(viewHolder.itemView);
+                }
             }
         }
     }
 
     /**
-     *
-     * @param view
-     * @param teaser
-     * @param listener
+     * Set a teaser clickable.
+     * @param view The view
+     * @param teaser The teaser
+     * @param listener The callback
      */
     public static void setClickableView(View view, BaseTeaserObject teaser, View.OnClickListener listener) {
         if (listener != null) {

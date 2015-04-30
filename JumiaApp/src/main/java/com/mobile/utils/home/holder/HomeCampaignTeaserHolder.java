@@ -21,7 +21,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.util.ArrayList;
 
 /**
- *
+ * Campaign teaser
  */
 public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
 
@@ -76,14 +76,14 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         }
         // Case valid campaign
         else {
-            setMainCampaignLayout(campaigns.get(0));
+            setMainCampaignLayout(campaigns.get(MAIN_POSITION));
         }
     }
 
     private void popOutDatedMainCampaign() {
         // Remove main campaign
         if (CollectionUtils.isNotEmpty(campaigns)) {
-            campaigns.remove(0);
+            campaigns.remove(MAIN_POSITION);
         }
         // Case not show new main campaign
         if (CollectionUtils.isNotEmpty(campaigns)) {
@@ -161,7 +161,7 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         } else {
         */
             Log.i(TAG, "START COUNTDOWN: " + timeInMilliSeconds);
-            counter = new CountDownTimer(timeInMilliSeconds, 1000) {
+            counter = new CountDownTimer(timeInMilliSeconds, DateTimeUtils.UNIT_SEC_TO_MILLIS) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     timer.setText(DateTimeUtils.getTimeFromMillis(millisUntilFinished));

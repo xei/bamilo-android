@@ -78,7 +78,6 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
-import com.mobile.view.fragments.HomeFragment;
 import com.mobile.view.fragments.NavigationFragment;
 
 import java.lang.ref.WeakReference;
@@ -571,7 +570,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     /**
-     * Method used to validate if is to show the initial country selection or is in maintenance.<br> Used in {@link HomeFragment#onCreate(Bundle)}.
+     * Method used to validate if is to show the initial country selection or is in maintenance.<br> Used in {@link HomeFragmentOld#onCreate(Bundle)}.
      *
      * @return true or false
      * @author sergiopereira
@@ -2249,6 +2248,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Validate the user credentials
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && JumiaApplication.CUSTOMER == null) {
             triggerAutoLogin();
+        } else {
+            // Track auto login failed if hasn't saved credentials
+            TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
         }
         // Validate the user credentials
         if (JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null) {

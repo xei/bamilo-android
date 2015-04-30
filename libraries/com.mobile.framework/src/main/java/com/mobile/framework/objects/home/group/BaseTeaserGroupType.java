@@ -2,7 +2,6 @@ package com.mobile.framework.objects.home.group;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.mobile.framework.objects.IJSONSerializable;
@@ -19,7 +18,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by spereira on 4/15/15.
+ * Class used to represent the base of a group of teasers.
+ * @author spereira
  */
 public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
 
@@ -32,9 +32,7 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
     private TeaserGroupType mType = TeaserGroupType.UNKNOWN;
 
     /**
-     *
-     * @param jsonObject
-     * @throws JSONException
+     * Constructor
      */
     public BaseTeaserGroupType(TeaserGroupType type, JSONObject jsonObject) throws JSONException {
         mType = type;
@@ -57,19 +55,13 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
         return CollectionUtils.isNotEmpty(mData);
     }
 
-    public boolean hasTitle() {
-        return !TextUtils.isEmpty(mTitle);
-    }
-
     /*
      * ########## JSON ##########
      */
 
     /**
-     * TODO
-     *
+     * Initialize object using json.
      * @param jsonObject JSONObject containing the parameters of the object
-     * @return
      * @throws JSONException
      */
     @Override
@@ -95,9 +87,8 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
     }
 
     /**
-     *
-     * @param object
-     * @return
+     * Create teaser object for respective json.
+     * @return BaseTeaserObject or null
      */
     protected BaseTeaserObject createTeaserObject(JSONObject object) {
         // Validate type to create a specific teaser object
@@ -117,11 +108,6 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
         return teaser;
     }
 
-    /**
-     * TODO
-     *
-     * @return
-     */
     @Override
     public JSONObject toJSON() {
         return null;
