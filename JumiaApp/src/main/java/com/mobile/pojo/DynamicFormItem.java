@@ -1659,12 +1659,28 @@ public class DynamicFormItem {
      * @param dataContainer
      */
     private void createRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
+        //Preselection
+        int defaultSelect =  0;
+        boolean foundDefaultSelect = false;
+        for ( Entry<String, String> entryValue: this.entry.getDataSet().entrySet()) {
+            if(!foundDefaultSelect) {
+                if(!entry.getValue().equals(entryValue.getKey())){
+                    defaultSelect++;
+                } else {
+                    foundDefaultSelect = true;
+                }
+            }
+        }
+
+        if(!foundDefaultSelect){
+            defaultSelect = RadioGroupLayoutVertical.NO_DEFAULT_SELECTION;
+        }
 
         // Force the match the parent
         RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null);
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         radioGroup.setLayoutParams(params);
-        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), RadioGroupLayout.NO_DEFAULT_SELECTION);
+        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), defaultSelect);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
@@ -1715,9 +1731,20 @@ public class DynamicFormItem {
     private void createRadioGroupVertical(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
 
         RadioGroupLayoutVertical radioGroup = (RadioGroupLayoutVertical) View.inflate(this.context, R.layout.form_radiolistlayout, null);
+        //Preselection
+        int defaultSelect =  0;
+        boolean foundDefaultSelect = false;
         HashMap<String, Form> formsMap = new HashMap<>();
-        for (String key : this.entry.getDataSet().values()) {
-
+        for ( Entry<String, String> entryValue: this.entry.getDataSet().entrySet()) {
+            String key = entryValue.getValue();
+            // Verify if current value is to preselect
+            if(!foundDefaultSelect){
+                if(!entry.getValue().equals(entryValue.getKey())){
+                    defaultSelect++;
+                } else {
+                    foundDefaultSelect = true;
+                }
+            }
             if (this.parent.getForm().fields != null && this.parent.getForm().fields.size() > 0) {
                 HashMap<String, Form> paymentMethodsField = this.parent.getForm().fields.get(0).getPaymentMethodsField();
                 if (paymentMethodsField != null) {
@@ -1729,7 +1756,12 @@ public class DynamicFormItem {
             }
         }
 
-        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), formsMap, RadioGroupLayoutVertical.NO_DEFAULT_SELECTION);
+        //If not found
+        if(!foundDefaultSelect){
+            defaultSelect = RadioGroupLayoutVertical.NO_DEFAULT_SELECTION;
+        }
+
+        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), formsMap, defaultSelect);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
