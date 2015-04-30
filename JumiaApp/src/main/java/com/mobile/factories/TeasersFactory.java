@@ -674,7 +674,7 @@ public class TeasersFactory {
 //         * .View, int)
 //         */
 //        @Override
-//        public Object instantiateItem(ViewGroup container, int position) {  
+//        public Object instantiateItem(ViewGroup container, int position) {
 //            int virtualPosition = position % getRealCount();
 //            return instantiateVirtualItem(container, virtualPosition);
 //        }

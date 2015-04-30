@@ -1,15 +1,16 @@
-package com.mobile.utils.home;
+package com.mobile.utils.home.holder;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobile.framework.objects.home.object.BaseTeaserObject;
+import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -23,14 +24,23 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
 
     private final View.OnClickListener mOnClickListener;
 
+    private final boolean isTablet;
+
     private ArrayList<BaseTeaserObject> mTeasers;
 
     private LayoutInflater mInflater;
 
+    /**
+     *
+     * @param context
+     * @param teasers
+     * @param listener
+     */
     public HomeMainTeaserAdapter(Context context, ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener) {
         mTeasers = teasers;
         mInflater = LayoutInflater.from(context);
         mOnClickListener = listener;
+        isTablet = DeviceInfoHelper.isTabletDevice(context);
     }
 
     /*
@@ -54,7 +64,6 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
         return arg0 == arg1;
     }
 
-
     /*
      * (non-Javadoc)
      * 
@@ -62,31 +71,12 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
      */
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        return instantiateVirtualItem(container, position);
-    }
-
-    public Object instantiateVirtualItem(ViewGroup container, int position) {
-        View view = null;
-        try {
-            view = mInflater.inflate(R.layout._def_home_teaser_main_item, container, false);
-            BaseTeaserObject teaser = mTeasers.get(position);
-            String imageUrl = teaser.getImagePhone();
-            setClickableView(view, teaser);
-            setImageToLoad(imageUrl, view);
-            container.addView(view);
-        } catch (InflateException | IndexOutOfBoundsException e) {
-            e.printStackTrace();
-        }
+        View view = mInflater.inflate(R.layout._def_home_teaser_main_item, container, false);
+        BaseTeaserObject teaser = mTeasers.get(position);
+        setImageToLoad(teaser.getImage(isTablet), view);
+        TeaserViewFactory.setClickableView(view, teaser, mOnClickListener);
+        container.addView(view);
         return view;
-    }
-
-    private void setClickableView(View view, BaseTeaserObject teaser) {
-        if(mOnClickListener != null) {
-            view.setTag(R.id.target_title, teaser.getTitle());
-            view.setTag(R.id.target_type, teaser.getTargetType());
-            view.setTag(R.id.target_url, teaser.getUrl());
-            view.setOnClickListener(mOnClickListener);
-        }
     }
 
     private void setImageToLoad(String imageUrl, View imageTeaserView) {
@@ -109,8 +99,8 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
 
     @Override
     public float getPageWidth(int position) {
-        return super.getPageWidth(position);
         //return mWidth;
         //return 0.7f;
+        return super.getPageWidth(position);
     }
 }

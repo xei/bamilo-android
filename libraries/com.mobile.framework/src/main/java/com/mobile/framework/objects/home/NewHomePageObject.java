@@ -6,15 +6,7 @@ import android.os.Parcelable;
 
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.framework.objects.home.group.BrandsTeaserGroup;
-import com.mobile.framework.objects.home.group.CampaignTeaserGroup;
-import com.mobile.framework.objects.home.group.FeaturedStoresTeaserGroup;
-import com.mobile.framework.objects.home.group.MainTeaserGroup;
-import com.mobile.framework.objects.home.group.ShopTeaserGroup;
-import com.mobile.framework.objects.home.group.ShopWeekTeaserGroup;
-import com.mobile.framework.objects.home.group.SmallTeaserGroup;
-import com.mobile.framework.objects.home.group.TopSellersTeaserGroup;
-import com.mobile.framework.objects.home.type.EnumTeaserGroupType;
+import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.rest.RestConstants;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -110,7 +102,7 @@ public class NewHomePageObject implements IJSONSerializable, Parcelable {
                 map.put(type, group);
             }
             // Create an array with an order
-            for (EnumTeaserGroupType type : EnumTeaserGroupType.values()) {
+            for (TeaserGroupType type : TeaserGroupType.values()) {
                 BaseTeaserGroupType group = map.get(type.getType());
                 Log.i(TAG, "ON ADD GROUP: " + type + " DATA IS NULL: " + (group == null));
                 // Append case not null
@@ -143,38 +135,14 @@ public class NewHomePageObject implements IJSONSerializable, Parcelable {
     private BaseTeaserGroupType createTeaserGroupType(String groupType, JSONObject json) {
         BaseTeaserGroupType teaserGroup = null;
         // Get type
-        EnumTeaserGroupType type = EnumTeaserGroupType.byString(groupType);
+        TeaserGroupType type = TeaserGroupType.byString(groupType);
         Log.i(TAG, "CREATE TEASER GROUP: " + type.toString() + " " + json.toString());
         // Validate group type
         try {
-            switch (type) {
-                case MAIN_TEASERS:
-                    teaserGroup = new MainTeaserGroup(json);
-                    break;
-                case SHOP_TEASERS:
-                    teaserGroup = new ShopTeaserGroup(json);
-                    break;
-                case SHOP_WEEK_TEASERS:
-                    teaserGroup = new ShopWeekTeaserGroup(json);
-                    break;
-                case SMALL_TEASERS:
-                    teaserGroup = new SmallTeaserGroup(json);
-                    break;
-                case CAMPAIGN_TEASERS:
-                    teaserGroup = new CampaignTeaserGroup(json);
-                    break;
-                case FEATURED_STORES:
-                    teaserGroup = new FeaturedStoresTeaserGroup(json);
-                    break;
-                case BRAND_TEASERS:
-                    teaserGroup = new BrandsTeaserGroup(json);
-                    break;
-                case TOP_SELLERS:
-                    teaserGroup = new TopSellersTeaserGroup(json);
-                    break;
-                default:
-                    Log.w(TAG, "WARNING: RECEIVED UNKNOWN GROUP OF TEASERS: " + json.toString());
-                    break;
+            if( type != TeaserGroupType.UNKNOWN) {
+                teaserGroup = new BaseTeaserGroupType(type, json);
+            } else {
+                Log.w(TAG, "WARNING: RECEIVED UNKNOWN GROUP OF TEASERS: " + json.toString());
             }
         } catch (JSONException e) {
             Log.w(TAG, "WARNING: ON PARSE GROUP TYPE: " + groupType, e);

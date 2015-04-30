@@ -256,6 +256,7 @@ public class RestConstants {
     public static final String JSON_SIZES_TAG = "sizes";
     public static final String JSON_SIZE_TAG = "size";
     public static final String JSON_REMAINING_TIME_TAG = "remaining_time";
+    public static final String JSON_UNIX_TIME_TAG = "unix_time";
 
 
     // TeaserBrandElement Tags

@@ -9,6 +9,8 @@ import android.net.http.AndroidHttpClient;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.android.volley.Network;
@@ -24,6 +26,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.mobile.view.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -261,8 +264,10 @@ public class RocketImageLoader {
                                 if (progressView != null) {
                                     progressView.setVisibility(View.GONE);
                                 }
-                                
+
+                                Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in);
                                 imageView.setImageBitmap(response.getBitmap());
+                                imageView.startAnimation(animation);
                                 
                                 if (listener != null) {
                                     listener.onLoadedSuccess(imageUrl, response.getBitmap());

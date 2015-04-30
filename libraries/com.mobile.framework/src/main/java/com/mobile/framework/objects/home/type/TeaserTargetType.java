@@ -7,7 +7,7 @@ import android.text.TextUtils;
  *
  * @author Sergio Pereira
  */
-public enum EnumTeaserTargetType {
+public enum TeaserTargetType {
 
     CATALOG("catalog"),
     PDV("product_detail"),
@@ -20,7 +20,7 @@ public enum EnumTeaserTargetType {
     /**
      * Empty constructor
      */
-    EnumTeaserTargetType() {
+    TeaserTargetType() {
         // ...
     }
 
@@ -28,7 +28,7 @@ public enum EnumTeaserTargetType {
      * Constructor
      * @param type The target key
      */
-    EnumTeaserTargetType(String type) {
+    TeaserTargetType(String type) {
         mType = type;
     }
 
@@ -44,11 +44,11 @@ public enum EnumTeaserTargetType {
      * Get the enum by group key.
      *
      * @param string The group key.
-     * @return EnumTeaserTargetType or UNKNOWN.
+     * @return TeaserTargetType or UNKNOWN.
      */
-    public static EnumTeaserTargetType byString(String string) {
-        EnumTeaserTargetType result = UNKNOWN;
-        for (EnumTeaserTargetType type : EnumTeaserTargetType.values()) {
+    public static TeaserTargetType byString(String string) {
+        TeaserTargetType result = UNKNOWN;
+        for (TeaserTargetType type : TeaserTargetType.values()) {
             if (TextUtils.equals(type.mType, string)) {
                 result = type;
                 break;

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/CardViewFloatStyle"
-    android:layout_width="@dimen/dimen_mat_128px"
+    android:layout_width="@dimen/home_small_teaser_item_width"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/dimen_mat_4px">
+    android:layout_marginLeft="@dimen/dimen_mat_4px"
+    android:layout_gravity="center"
+    android:gravity="center">
 
     <LinearLayout
         android:layout_width="match_parent"

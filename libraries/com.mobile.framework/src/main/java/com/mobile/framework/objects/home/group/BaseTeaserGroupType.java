@@ -2,11 +2,13 @@ package com.mobile.framework.objects.home.group;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.objects.home.object.BaseTeaserObject;
-import com.mobile.framework.objects.home.type.EnumTeaserGroupType;
+import com.mobile.framework.objects.home.object.TeaserTopSellerObject;
+import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.rest.RestConstants;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -19,24 +21,23 @@ import java.util.ArrayList;
 /**
  * Created by spereira on 4/15/15.
  */
-public abstract class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
+public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
 
     public static final String TAG = BaseTeaserGroupType.class.getSimpleName();
 
+    private String mTitle;
+
     private ArrayList<BaseTeaserObject> mData;
+
+    private TeaserGroupType mType = TeaserGroupType.UNKNOWN;
 
     /**
      *
-     */
-    public BaseTeaserGroupType() {
-        //...
-    }
-
-    /**
      * @param jsonObject
      * @throws JSONException
      */
-    public BaseTeaserGroupType(JSONObject jsonObject) throws JSONException {
+    public BaseTeaserGroupType(TeaserGroupType type, JSONObject jsonObject) throws JSONException {
+        mType = type;
         initialize(jsonObject);
     }
 
@@ -44,12 +45,20 @@ public abstract class BaseTeaserGroupType implements IJSONSerializable, Parcelab
      * ########## GETTERS ##########
      */
 
+    public TeaserGroupType getType() {
+        return mType;
+    }
+
     public ArrayList<BaseTeaserObject> getData() {
         return mData;
     }
 
     public boolean hasData() {
         return CollectionUtils.isNotEmpty(mData);
+    }
+
+    public boolean hasTitle() {
+        return !TextUtils.isEmpty(mTitle);
     }
 
     /*
@@ -66,6 +75,8 @@ public abstract class BaseTeaserGroupType implements IJSONSerializable, Parcelab
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         Log.i(TAG, "ON INITIALIZE: " + jsonObject.toString());
+        // Get title
+        mTitle = jsonObject.optString(RestConstants.JSON_TITLE_TAG);
         // Get data
         JSONArray teasersData = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
         // Validate size
@@ -89,7 +100,14 @@ public abstract class BaseTeaserGroupType implements IJSONSerializable, Parcelab
      * @return
      */
     protected BaseTeaserObject createTeaserObject(JSONObject object) {
-        BaseTeaserObject teaser = new BaseTeaserObject();
+        // Validate type to create a specific teaser object
+        BaseTeaserObject teaser;
+        if(mType == TeaserGroupType.TOP_SELLERS) {
+            teaser = new TeaserTopSellerObject();
+        } else {
+            teaser = new BaseTeaserObject();
+        }
+        // Initialize
         try {
             teaser.initialize(object);
         } catch (JSONException e) {
@@ -109,20 +127,18 @@ public abstract class BaseTeaserGroupType implements IJSONSerializable, Parcelab
         return null;
     }
 
-
-
-    /*
-     * ########## ABSTRACT ##########
-    */
-    //protected abstract BaseTeaserObject createTeaserObject(JSONObject object);
-
-    public abstract EnumTeaserGroupType getType();
-
     /*
      * ########## PARCELABLE ##########
      */
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
     protected BaseTeaserGroupType(Parcel in) {
+        mType = (TeaserGroupType) in.readValue(TeaserGroupType.class.getClassLoader());
+        mTitle = in.readString();
         if (in.readByte() == 0x01) {
             mData = new ArrayList<>();
             in.readList(mData, BaseTeaserObject.class.getClassLoader());
@@ -132,12 +148,9 @@ public abstract class BaseTeaserGroupType implements IJSONSerializable, Parcelab
     }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(mType);
+        dest.writeString(mTitle);
         if (mData == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -145,5 +158,15 @@ public abstract class BaseTeaserGroupType implements IJSONSerializable, Parcelab
             dest.writeList(mData);
         }
     }
+
+    public static final Creator<BaseTeaserGroupType> CREATOR = new Creator<BaseTeaserGroupType>() {
+        public BaseTeaserGroupType createFromParcel(Parcel source) {
+            return new BaseTeaserGroupType(source);
+        }
+
+        public BaseTeaserGroupType[] newArray(int size) {
+            return new BaseTeaserGroupType[size];
+        }
+    };
 
 }

@@ -93,6 +93,8 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
         mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
         // Get discount percentage
         mMaxSavingPercentage = jsonObject.optInt(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
+        // Get target type
+        mTargetType = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG);
         return true;
     }
 

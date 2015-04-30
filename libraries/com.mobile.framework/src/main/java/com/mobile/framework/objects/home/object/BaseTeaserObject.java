@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 /**
  * Created by spereira on 4/15/15.
+ * @author spereira
  */
 public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
@@ -26,6 +27,7 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
     protected String mTargetType;
 
+    protected long mTimerInMillis;
 
     /**
      * Empty constructor
@@ -50,16 +52,32 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         return mUrl;
     }
 
-    public String getImagePhone() {
+    public String getImage() {
         return mImagePhone;
     }
 
-    public String getImageTablet() {
-        return mImageTablet;
+    public String getImage(Boolean isTablet) {
+        return isTablet ? mImageTablet : mImagePhone;
     }
 
     public String getTargetType() {
         return mTargetType;
+    }
+
+    public boolean hasTimer() {
+        return mTimerInMillis > 0;
+    }
+
+    public long getTimer() {
+        return mTimerInMillis;
+    }
+
+    public boolean hasValidRealTimer() {
+        return mTimerInMillis - System.currentTimeMillis() > 0;
+    }
+
+    public long getRealTimer() {
+        return mTimerInMillis - System.currentTimeMillis();
     }
 
     /*
@@ -67,10 +85,7 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
      */
 
     /**
-     * TODO
-     *
-     * @param jsonObject JSONObject containing the parameters of the object
-     * @return
+     * Initialize object via JSONObject
      * @throws JSONException
      */
     @Override
@@ -81,20 +96,32 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         mSubTitle = jsonObject.optString(RestConstants.JSON_SUB_TITLE_TAG);
         // Get url
         mUrl = jsonObject.getString(RestConstants.JSON_URL_TAG);
-        // Get image phone
-        mImagePhone = jsonObject.optString(RestConstants.JSON_IMAGE_PORTRAIT_TAG);
-        // Get image tablet
-        mImageTablet = jsonObject.optString(RestConstants.JSON_IMAGE_LANDSCAPE_TAG);
         // Get target type
         mTargetType = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG);
+        // Get timer in seconds and convert to millis
+        mTimerInMillis = jsonObject.optLong(RestConstants.JSON_UNIX_TIME_TAG) * 1000;
+
+
+        /*
+        if(!TextUtils.isEmpty(mTitle) && mTitle.contains("deals"))
+            mTimerInMillis = System.currentTimeMillis() + 15000;
+        else
+            mTimerInMillis = System.currentTimeMillis() + 7000;
+            */
+
+        // Validate images
+        if (jsonObject.has(RestConstants.JSON_IMAGE_TAG)) {
+            // Get image
+            mImagePhone = mImageTablet = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
+        } else {
+            // Get image phone
+            mImagePhone = jsonObject.optString(RestConstants.JSON_IMAGE_PORTRAIT_TAG);
+            // Get image tablet
+            mImageTablet = jsonObject.optString(RestConstants.JSON_IMAGE_LANDSCAPE_TAG);
+        }
         return false;
     }
 
-    /**
-     * TODO
-     *
-     * @return
-     */
     @Override
     public JSONObject toJSON() {
         return null;
@@ -117,6 +144,7 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         dest.writeString(this.mImagePhone);
         dest.writeString(this.mImageTablet);
         dest.writeString(this.mTargetType);
+        dest.writeLong(this.mTimerInMillis);
     }
 
     protected BaseTeaserObject(Parcel in) {
@@ -126,6 +154,17 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         this.mImagePhone = in.readString();
         this.mImageTablet = in.readString();
         this.mTargetType = in.readString();
+        this.mTimerInMillis = in.readLong();
     }
+
+    public static final Creator<BaseTeaserObject> CREATOR = new Creator<BaseTeaserObject>() {
+        public BaseTeaserObject createFromParcel(Parcel source) {
+            return new BaseTeaserObject(source);
+        }
+
+        public BaseTeaserObject[] newArray(int size) {
+            return new BaseTeaserObject[size];
+        }
+    };
 
 }

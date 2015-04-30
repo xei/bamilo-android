@@ -1,4 +1,4 @@
-package com.mobile.utils.home;
+package com.mobile.utils.home.holder;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.framework.objects.home.object.BaseTeaserObject;
-import com.mobile.framework.objects.home.type.EnumTeaserTargetType;
+import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -23,16 +23,17 @@ import java.util.ArrayList;
  *
  * @author sergiopereira
  */
-public class HomeFeaturedTeaserAdapter2 extends ArrayAdapter<BaseTeaserObject> {
+public class HomeFeaturedTeaserAdapter extends ArrayAdapter<BaseTeaserObject> {
 
     private final LayoutInflater mInflater;
 
     private OnClickListener mOnClickListener;
 
 
-    public HomeFeaturedTeaserAdapter2(Context context, int textViewResourceId, ArrayList<BaseTeaserObject> objects) {
+    public HomeFeaturedTeaserAdapter(Context context, int textViewResourceId, ArrayList<BaseTeaserObject> objects, OnClickListener listener) {
         super(context, textViewResourceId, objects);
         mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mOnClickListener = listener;
     }
 
     @Override
@@ -52,22 +53,12 @@ public class HomeFeaturedTeaserAdapter2 extends ArrayAdapter<BaseTeaserObject> {
         // Set sub title
         holder.sub.setText(item.getSubTitle());
         // Set image
-        RocketImageLoader.instance.loadImage(item.getImagePhone(), holder.image, holder.progress, R.drawable.no_image_large);
+        RocketImageLoader.instance.loadImage(item.getImage(), holder.image, holder.progress, R.drawable.no_image_large);
         // Set listener
-        setClickableView(convertView, item);
-
+        TeaserViewFactory.setClickableView(convertView, item, mOnClickListener);
+        // Return convert view
         return convertView;
     }
-
-    private void setClickableView(View view, BaseTeaserObject teaser) {
-        if (mOnClickListener != null) {
-            view.setTag(R.id.target_title, teaser.getTitle());
-            view.setTag(R.id.target_type, EnumTeaserTargetType.CATALOG.getType());
-            view.setTag(R.id.target_url, teaser.getUrl());
-            view.setOnClickListener(mOnClickListener);
-        }
-    }
-
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         public TextView title;

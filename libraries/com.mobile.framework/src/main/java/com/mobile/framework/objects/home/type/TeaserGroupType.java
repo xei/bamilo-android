@@ -7,7 +7,7 @@ import android.text.TextUtils;
  *
  * @author Sergio Pereira
  */
-public enum EnumTeaserGroupType {
+public enum TeaserGroupType {
 
     MAIN_TEASERS("main_teasers"),
     SMALL_TEASERS("small_teasers"),
@@ -24,7 +24,7 @@ public enum EnumTeaserGroupType {
     /**
      * Empty constructor
      */
-    EnumTeaserGroupType() {
+    TeaserGroupType() {
         // ...
     }
 
@@ -33,7 +33,7 @@ public enum EnumTeaserGroupType {
      *
      * @param type The group key
      */
-    EnumTeaserGroupType(String type) {
+    TeaserGroupType(String type) {
         mType = type;
     }
 
@@ -50,11 +50,11 @@ public enum EnumTeaserGroupType {
      * Get the enum by group key.
      *
      * @param string The group key.
-     * @return EnumTeaserGroupType or UNKNOWN.
+     * @return TeaserGroupType or UNKNOWN.
      */
-    public static EnumTeaserGroupType byString(String string) {
-        EnumTeaserGroupType result = UNKNOWN;
-        for (EnumTeaserGroupType type : EnumTeaserGroupType.values()) {
+    public static TeaserGroupType byString(String string) {
+        TeaserGroupType result = UNKNOWN;
+        for (TeaserGroupType type : TeaserGroupType.values()) {
             if (TextUtils.equals(type.mType, string)) {
                 result = type;
                 break;

@@ -1,4 +1,4 @@
-package com.mobile.utils.home;
+package com.mobile.utils.home.holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.home.object.BaseTeaserObject;
+import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -20,9 +20,9 @@ import java.util.ArrayList;
  * @author sergiopereira
  *
  */
-public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaserAdapter.ViewHolder> {
+public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaserAdapter.ViewHolder> {
 
-    private View.OnClickListener mOnClickListener;
+    private final View.OnClickListener mOnClickListener;
 
     private ArrayList<BaseTeaserObject> mDataSet;
 
@@ -33,19 +33,16 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
      *
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // Views
-        public TextView mTitle;
-        private TextView mSubTitle;
+        // Data
         private ImageView mImage;
         private View mProgress;
+
         /**
          * Constructor
          * @param view
          */
         public ViewHolder(View view) {
             super(view);
-            mTitle = (TextView) view.findViewById(R.id.home_teaser_small_title);
-            mSubTitle = (TextView) view.findViewById(R.id.home_teaser_small_sub_title);
             mImage = (ImageView) view.findViewById(R.id.home_teaser_item_image);
             mProgress = view.findViewById(R.id.home_teaser_item_progress);
         }
@@ -56,7 +53,7 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
      * @param teasers
      * @author sergiopereira
      */
-    public HomeSmallTeaserAdapter(ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener) {
+    public HomeBrandTeaserAdapter(ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener) {
         mDataSet = teasers;
         mOnClickListener = listener;
     }
@@ -66,9 +63,9 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
      * @see android.support.v7.widget.RecyclerView.Adapter#onCreateViewHolder(android.view.ViewGroup, int)
      */
     @Override
-    public HomeSmallTeaserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public HomeBrandTeaserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Create a new view
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout._def_home_teaser_small_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout._def_home_teaser_brand_item, parent, false));
     }
 
     /*
@@ -77,17 +74,12 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
      */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // Replace the contents of a view (invoked by the layout manager)
         // Get item
         BaseTeaserObject item = mDataSet.get(position);
-        // Set title
-        holder.mTitle.setText(item.getTitle());
-        // Set title
-        holder.mSubTitle.setText(item.getSubTitle());
         // Set image
-        RocketImageLoader.instance.loadImage(item.getImagePhone(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
+        RocketImageLoader.instance.loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set listener and tags
-        setClickableView(holder.itemView, item);
+        TeaserViewFactory.setClickableView(holder.itemView, item, mOnClickListener);
     }
 
     /*
@@ -98,16 +90,6 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
     public int getItemCount() {
         // Return the size of your data set (invoked by the layout manager)
         return CollectionUtils.isNotEmpty(mDataSet) ? mDataSet.size() : 0;
-    }
-
-
-    private void setClickableView(View view, BaseTeaserObject teaser) {
-        if(mOnClickListener != null) {
-            view.setTag(R.id.target_title, teaser.getTitle());
-            view.setTag(R.id.target_type, teaser.getTargetType());
-            view.setTag(R.id.target_url, teaser.getUrl());
-            view.setOnClickListener(mOnClickListener);
-        }
     }
     
 }

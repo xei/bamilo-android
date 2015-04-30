@@ -1,4 +1,4 @@
-package com.mobile.utils.home;
+package com.mobile.utils.home.holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,9 +8,7 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.home.object.BaseTeaserObject;
-import com.mobile.framework.objects.home.object.TeaserTopSellerObject;
-import com.mobile.framework.objects.home.type.EnumTeaserTargetType;
-import com.mobile.framework.utils.CurrencyFormatter;
+import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -23,7 +21,7 @@ import java.util.ArrayList;
  * @author sergiopereira
  *
  */
-public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSellersTeaserAdapter.ViewHolder> {
+public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaserAdapter.ViewHolder> {
 
     private View.OnClickListener mOnClickListener;
 
@@ -33,26 +31,23 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
      * Provide a reference to the views for each data item.<br>
      * Complex data items may need more than one view per item, and you provide access to all the views for a data item in a view holder<br>
      * @author sergiopereira
-     *
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Views
+        public TextView mTitle;
+        private TextView mSubTitle;
         private ImageView mImage;
         private View mProgress;
-        private TextView mBrand;
-        private TextView mName;
-        private TextView mPrice;
         /**
          * Constructor
          * @param view
          */
         public ViewHolder(View view) {
             super(view);
+            mTitle = (TextView) view.findViewById(R.id.home_teaser_small_title);
+            mSubTitle = (TextView) view.findViewById(R.id.home_teaser_small_sub_title);
             mImage = (ImageView) view.findViewById(R.id.home_teaser_item_image);
             mProgress = view.findViewById(R.id.home_teaser_item_progress);
-            mBrand = (TextView) view.findViewById(R.id.home_teaser_top_sellers_brand);
-            mName = (TextView) view.findViewById(R.id.home_teaser_top_sellers_name);
-            mPrice = (TextView) view.findViewById(R.id.home_teaser_top_sellers_price);
         }
     }
 
@@ -61,7 +56,7 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
      * @param teasers
      * @author sergiopereira
      */
-    public HomeTopSellersTeaserAdapter(ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener) {
+    public HomeSmallTeaserAdapter(ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener) {
         mDataSet = teasers;
         mOnClickListener = listener;
     }
@@ -71,9 +66,9 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
      * @see android.support.v7.widget.RecyclerView.Adapter#onCreateViewHolder(android.view.ViewGroup, int)
      */
     @Override
-    public HomeTopSellersTeaserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public HomeSmallTeaserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Create a new view
-        return new ViewHolder(LayoutInflater.from(parent.getContext()) .inflate(R.layout._def_home_teaser_top_sellers_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout._def_home_teaser_small_item, parent, false));
     }
 
     /*
@@ -83,17 +78,15 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // Get item
-        TeaserTopSellerObject item = (TeaserTopSellerObject) mDataSet.get(position);
+        BaseTeaserObject item = mDataSet.get(position);
+        // Set title
+        holder.mTitle.setText(item.getTitle());
+        // Set title
+        holder.mSubTitle.setText(item.getSubTitle());
         // Set image
-        RocketImageLoader.instance.loadImage(item.getImagePhone(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
-        // Set brand
-        holder.mBrand.setText(item.getBrand());
-        // Set name
-        holder.mName.setText(item.getTitle());
-        // Set price
-        holder.mPrice.setText(CurrencyFormatter.formatCurrency(String.valueOf(item.getPrice())));
+        RocketImageLoader.instance.loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set listener and tags
-        setClickableView(holder.itemView, item);
+        TeaserViewFactory.setClickableView(holder.itemView, item, mOnClickListener);
     }
 
     /*
@@ -103,16 +96,6 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
     @Override
     public int getItemCount() {
         return CollectionUtils.isNotEmpty(mDataSet) ? mDataSet.size() : 0;
-    }
-
-
-    private void setClickableView(View view, BaseTeaserObject teaser) {
-        if(mOnClickListener != null) {
-            view.setTag(R.id.target_title, teaser.getTitle());
-            view.setTag(R.id.target_type, EnumTeaserTargetType.PDV.getType());
-            view.setTag(R.id.target_url, teaser.getUrl());
-            view.setOnClickListener(mOnClickListener);
-        }
     }
     
 }

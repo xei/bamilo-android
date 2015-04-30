@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/dimen_mat_8px"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/home_margin"
+    android:paddingRight="@dimen/home_margin">
 
     <TextView
         style="@style/HeaderTeaser"
@@ -15,7 +17,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dimen_mat_2px"
         android:paddingRight="@dimen/dimen_mat_2px"
-        android:numColumns="2"
+        android:numColumns="@integer/home_featured_stores_teaser_num_columns"
         android:scrollbars="none" />
 
 </LinearLayout>

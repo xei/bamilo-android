@@ -229,14 +229,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         ShopSelector.setLocaleOnOrientationChanged(getApplicationContext());
         // Bind service
         JumiaApplication.INSTANCE.doBindService();
-        /*
-         * In case app is killed in background needs to restore font type
-         */
-        if (getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific)) {
-            HoloFontLoader.initFont(true);
-        } else {
-            HoloFontLoader.initFont(false);
-        }
+        // In case app is killed in background needs to restore font type
+        HoloFontLoader.initFont(getResources().getBoolean(R.bool.is_shop_specific));
         // Get fragment controller
         fragmentController = FragmentController.getInstance();
         // Set content
@@ -530,7 +524,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void setupContentViews() {
         Log.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
-        // Get the application container
+        // Get the application horizontalListView
         contentContainer = findViewById(R.id.rocket_app_content);
         // Warning layout
         try {

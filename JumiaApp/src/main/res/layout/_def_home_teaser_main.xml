@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pager="http://schemas.android.com/apk/res-auto"
     style="@style/TeaserWhiteContainerStyle"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_mat_148px"
-    android:layout_gravity="center">
+    android:layout_height="@dimen/home_main_teaser_height">
 
-    <android.support.v4.view.ViewPager
+    <com.mobile.components.viewpager.PreviewViewPager
         android:id="@+id/home_teaser_main_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center" />
+        pager:previewOffset="@dimen/home_margin"
+        pager:transformer="fade" />
 
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/home_teaser_main_indicator"
