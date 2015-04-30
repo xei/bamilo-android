@@ -251,9 +251,11 @@ public class DialogFilterFragment extends DialogFragment {
      */
     void goToInitialFilterValues() {
         for(CatalogFilter catalogFilter : initialCatalogFilterValues) {
-            for (int i = 0; i < mFilters.size(); i++) {
-                if (catalogFilter.getId().equals(mFilters.get(i).getId())) {
-                    mFilters.set(i, catalogFilter);
+            if(catalogFilter != null) {
+                for (int i = 0; i < mFilters.size(); i++) {
+                    if (catalogFilter.getId().equals(mFilters.get(i).getId())) {
+                        mFilters.set(i, catalogFilter);
+                    }
                 }
             }
         }
