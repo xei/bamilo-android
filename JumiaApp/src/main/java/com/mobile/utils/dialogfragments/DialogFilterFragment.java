@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.CatalogFilter;
+import com.mobile.framework.objects.CatalogFilter.RangeValuesFilter;
 import com.mobile.framework.objects.CatalogFilterOption;
 import com.mobile.framework.objects.CategoryFilterOption;
 import com.mobile.framework.utils.LogTagHelper;
@@ -75,7 +76,7 @@ public class DialogFilterFragment extends DialogFragment {
 
     private OnDialogFilterListener mParentFrament;
 
-    private List<CatalogFilter> initialCatalogFilterValues;
+    private Object[] initialFilterValues;
 
     /**
      * Empty constructor
@@ -107,6 +108,7 @@ public class DialogFilterFragment extends DialogFragment {
         setStyle(R.style.Theme_Jumia_Dialog_NoTitle, R.style.Theme_Jumia_Dialog_NoTitle);
         Bundle bundle = getArguments();
         mFilters = bundle.getParcelableArrayList(FILTER_TAG);
+        initialFilterValues = new Object[mFilters.size()];
     }
 
     /*
@@ -235,14 +237,36 @@ public class DialogFilterFragment extends DialogFragment {
 
     /**
      * Add catalog filter to initial filter values
-     * 
+     *
      * @param catalogFilter
      */
-    void addToInitialFilterValues(CatalogFilter catalogFilter){
-        if(initialCatalogFilterValues == null) {
-            initialCatalogFilterValues = new ArrayList<>(mFilters.size());
+    void addToInitialFilterValues(int position, CatalogFilter catalogFilter){
+        if(initialFilterValues[position] != null){
+            return;
         }
-        initialCatalogFilterValues.add((CatalogFilter)catalogFilter.clone());
+
+
+        // If normal Catalog filter
+        if(!catalogFilter.isPriceFilter()){
+
+            SparseArray<CatalogFilterOption> catalogFilterOptions = catalogFilter.getSelectedOption();
+            initialFilterValues[position] =  (catalogFilterOptions != null) ? catalogFilterOptions.clone() : null;
+
+        //If Catalog filter price
+        } else {
+            RangeValuesFilter rangeValuesFilter = new RangeValuesFilter();
+
+            if(catalogFilter.hasRangeValues()) {
+                rangeValuesFilter.range = new int[2];
+                rangeValuesFilter.range[0] = catalogFilter.getMinRangeValue();
+                rangeValuesFilter.range[1] = catalogFilter.getMaxRangeValue();
+            }
+
+            rangeValuesFilter.rangeWithDiscount = catalogFilter.isRangeWithDiscount();
+            initialFilterValues[position] = rangeValuesFilter;
+
+        }
+
     }
 
     /**
@@ -250,15 +274,25 @@ public class DialogFilterFragment extends DialogFragment {
      *
      */
     void goToInitialFilterValues() {
-        for(CatalogFilter catalogFilter : initialCatalogFilterValues) {
-            if(catalogFilter != null) {
-                for (int i = 0; i < mFilters.size(); i++) {
-                    if (catalogFilter.getId().equals(mFilters.get(i).getId())) {
-                        mFilters.set(i, catalogFilter);
-                    }
+
+        for(int i = 0; i < initialFilterValues.length; i++){
+
+            CatalogFilter catalogFilter = mFilters.get(i);
+
+            //Normal filter
+            if (!catalogFilter.isPriceFilter()) {
+                if(initialFilterValues[i] instanceof SparseArray){
+                    catalogFilter.switchSelectedOption((SparseArray<CatalogFilterOption>)initialFilterValues[i]);
                 }
+             //Price Filter
+            } else {
+                if(initialFilterValues[i] instanceof RangeValuesFilter){
+                    catalogFilter.setPriceValues((RangeValuesFilter) initialFilterValues[i]);
+                }
+
             }
         }
+
     }
 
     /*
@@ -331,7 +365,7 @@ public class DialogFilterFragment extends DialogFragment {
             Log.d(TAG, "ON ITEM CLICK: " + position);
             // Get selected filter
             CatalogFilter selectedFilter = mFilters.get(position);
-            mParent.addToInitialFilterValues(selectedFilter);
+            mParent.addToInitialFilterValues(position, selectedFilter);
             // Get the id
             String filterId = selectedFilter.getId();
             // Create bundle

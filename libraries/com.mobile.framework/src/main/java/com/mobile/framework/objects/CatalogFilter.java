@@ -6,6 +6,7 @@ import android.util.SparseArray;
 
 import com.mobile.framework.utils.LogTagHelper;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -212,6 +213,21 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
 
     public void setSelectedOption(SparseArray<CatalogFilterOption> selectedOption) {
         this.mSelectedOption = selectedOption;
+    }
+
+    public void switchSelectedOption(SparseArray<CatalogFilterOption> selectedOptions){
+        if(mSelectedOption != null){
+
+            for (int j = 0; j < mSelectedOption.size(); j++) {
+                mSelectedOption.valueAt(j).setSelected(false);
+            }
+
+            for(int j = 0; j < selectedOptions.size();j++){
+                selectedOptions.valueAt(j).setSelected(true);
+            }
+        }
+
+        this.mSelectedOption = selectedOptions;
     }
 
     public void cleanSelectedOption() {
@@ -441,5 +457,21 @@ public class CatalogFilter implements IJSONSerializable, Parcelable, Cloneable{
         }
 
         return null;
+    }
+
+    public boolean isPriceFilter(){
+        return CollectionUtils.isEmpty(mFilterOptions) && mFilterOption != null;
+    }
+
+    public static class RangeValuesFilter{
+        public RangeValuesFilter(){}
+        public int[] range;
+        public boolean rangeWithDiscount;
+
+    }
+
+    public void setPriceValues(RangeValuesFilter rangeValuesFilter){
+        mRangeValues = rangeValuesFilter.range;
+        isRangeWithDiscount = rangeValuesFilter.rangeWithDiscount;
     }
 }
