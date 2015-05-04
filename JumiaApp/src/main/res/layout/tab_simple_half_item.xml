@@ -9,6 +9,7 @@
     android:gravity="center"
     android:paddingLeft="@dimen/margin_midhuge"
     android:paddingRight="@dimen/margin_midhuge"
+    android:singleLine="true"
     android:text="@string/menu_label_uppercase"
     android:textColor="@drawable/selector_campaign_tab_text"
     android:textSize="@dimen/sliding_tab_text_size" />
