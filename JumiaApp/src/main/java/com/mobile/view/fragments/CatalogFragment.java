@@ -146,7 +146,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         // Load line to active top button
-        mTopButtonActivateLine = getResources().getInteger(R.integer.activate_go_top_buttom_line);
+        setButtonActiveLine(false);
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -193,6 +193,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         View mColumnsButton = view.findViewById(R.id.catalog_bar_button_columns);
         mColumnsButton.setOnClickListener(this);
         mColumnsButton.setSelected(isToShowGridLayout);
+        setButtonActiveLine(isToShowGridLayout);
         // Get up button
         mTopButton = view.findViewById(R.id.catalog_button_top);
         mTopButton.setOnClickListener(this);
@@ -636,6 +637,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         CustomerPreferences.saveCatalogLayout(getBaseActivity(), !isShowingGridLayout);
         // Update the icon
         button.setSelected(!isShowingGridLayout);
+        //change back to top line number
+        setButtonActiveLine(!isShowingGridLayout);
         // Update the number of columns
         mNumberOfColumns = getResources().getInteger(!isShowingGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns);
         // Update the columns and layout
@@ -655,7 +658,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Log.i(TAG, "ON CLICK SCROLL TOP BUTTON");
         GridLayoutManager manager = (GridLayoutManager) mGridView.getLayoutManager();
         int columns = manager.getSpanCount();
-        setButtonActiveLine();
         // Scroll faster until mark line
         mGridView.scrollToPosition(columns * mTopButtonActivateLine);
         // Scroll smooth until top position
@@ -672,12 +674,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      *
      * @return line number
      */
-    private int setButtonActiveLine (){
-        if(getView() != null){
-            if(getView().findViewById(R.id.catalog_bar_button_columns).isSelected()){
-                mTopButtonActivateLine = mTopButtonActivateLine / 2;
-            }
-
+    private int setButtonActiveLine(Boolean isShowingGridLayout){
+        if (!isShowingGridLayout) {
+            mTopButtonActivateLine = getResources().getInteger(R.integer.activate_go_top_buttom_line);
+        } else {
+            mTopButtonActivateLine = getResources().getInteger(R.integer.activate_go_top_buttom_line_grid);
         }
         return mTopButtonActivateLine;
     }
@@ -765,7 +766,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
                 int last = manager.findLastVisibleItemPosition();
                 // Show or hide top button after X arrow
-                setButtonActiveLine();
                 if (last > mNumberOfColumns * mTopButtonActivateLine) {
                     UICatalogHelper.showGotoTopButton(getBaseActivity(), mTopButton);
                 } else {
