@@ -31,7 +31,9 @@ public class HomeBrandTeaserHolder extends BaseTeaserViewHolder {
             container.setHasFixedSize(true);
             // RTL
             Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-            if (isRTL) container.enableReverseLayout();
+            if (isRTL){
+                container.enableReverseLayout();
+            } 
             // Set adapter
             container.setAdapter(new HomeBrandTeaserAdapter(group.getData(), mParentClickListener));
         } else {
