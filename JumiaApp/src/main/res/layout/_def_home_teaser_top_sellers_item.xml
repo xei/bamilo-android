@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><!-- A CardView that contains a TextView -->
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ProductTeaserStyle"
+    android:layout_marginLeft="@dimen/dimen_mat_4px">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <include layout="@layout/home_teaser_image_loadable" />
+
+        </FrameLayout>
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/home_teaser_top_sellers_brand"
+            style="@style/TextSubHead" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/home_teaser_top_sellers_name"
+            style="@style/TextSubHead" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/home_teaser_top_sellers_price"
+            style="@style/TextPriceSubHead" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

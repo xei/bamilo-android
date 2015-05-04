@@ -78,7 +78,6 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
-import com.mobile.view.fragments.HomeFragment;
 import com.mobile.view.fragments.NavigationFragment;
 
 import java.lang.ref.WeakReference;
@@ -229,14 +228,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         ShopSelector.setLocaleOnOrientationChanged(getApplicationContext());
         // Bind service
         JumiaApplication.INSTANCE.doBindService();
-        /*
-         * In case app is killed in background needs to restore font type
-         */
-        if (getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific)) {
-            HoloFontLoader.initFont(true);
-        } else {
-            HoloFontLoader.initFont(false);
-        }
+        // In case app is killed in background needs to restore font type
+        HoloFontLoader.initFont(getResources().getBoolean(R.bool.is_shop_specific));
         // Get fragment controller
         fragmentController = FragmentController.getInstance();
         // Set content
@@ -530,7 +523,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void setupContentViews() {
         Log.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
-        // Get the application container
+        // Get the application horizontalListView
         contentContainer = findViewById(R.id.rocket_app_content);
         // Warning layout
         try {
@@ -577,7 +570,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     /**
-     * Method used to validate if is to show the initial country selection or is in maintenance.<br> Used in {@link HomeFragment#onCreate(Bundle)}.
+     * Method used to validate if is to show the initial country selection or is in maintenance.<br> Used in {@link HomeFragmentOld#onCreate(Bundle)}.
      *
      * @return true or false
      * @author sergiopereira
@@ -2255,6 +2248,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         // Validate the user credentials
         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials() && JumiaApplication.CUSTOMER == null) {
             triggerAutoLogin();
+        } else {
+            // Track auto login failed if hasn't saved credentials
+            TrackerDelegator.trackLoginFailed(TrackerDelegator.IS_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
         }
         // Validate the user credentials
         if (JumiaApplication.SHOP_ID != null && JumiaApplication.INSTANCE.getCart() == null) {

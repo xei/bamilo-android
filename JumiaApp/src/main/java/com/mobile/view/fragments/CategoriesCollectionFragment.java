@@ -196,7 +196,7 @@ public class CategoriesCollectionFragment extends BaseFragment {
     }
     
     /**
-     * Method used to associate the container and fragment 
+     * Method used to associate the container and fragment
      * @param container The content container
      * @param filterType The fragment type
      * @param fragment The new fragment

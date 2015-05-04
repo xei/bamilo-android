@@ -681,7 +681,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     protected void showUnexpectedError() {
         // Hide maintenance visibility
-        if (mMainFallBackStub.getVisibility() == View.VISIBLE) {
+        if (mMainFallBackStub != null && mMainFallBackStub.getVisibility() == View.VISIBLE) {
             mMainFallBackStub.setVisibility(View.GONE);
         }
         // Show no network

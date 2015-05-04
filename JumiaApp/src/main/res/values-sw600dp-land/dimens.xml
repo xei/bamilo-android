@@ -78,4 +78,11 @@
     <dimen name="form_btn_address_padding_fix">@dimen/margin_40px</dimen>
 
     <dimen name="teaser_campaigns_margin_bottom">@dimen/margin_10px</dimen>
+
+
+    <!-- HOME -->
+    <dimen name="home_margin_15_percentage">150dp</dimen>
+    <dimen name="home_margin">@dimen/home_margin_15_percentage</dimen>
+    <dimen name="home_small_teaser_item_width">215dp</dimen>
+
 </resources>
