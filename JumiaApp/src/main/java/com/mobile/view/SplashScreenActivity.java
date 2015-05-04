@@ -665,13 +665,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     protected void showFragmentRetry() {
-        // Hide maintenance visibility
-        if (mMainFallBackStub.getVisibility() == View.VISIBLE) {
-            mMainFallBackStub.setVisibility(View.GONE);
+        if(mMainFallBackStub != null){
+            // Hide maintenance visibility
+            if (mMainFallBackStub.getVisibility() == View.VISIBLE) {
+                mMainFallBackStub.setVisibility(View.GONE);
+            }
+            // Show no network
+            mRetryFallBackStub.setVisibility(View.VISIBLE);
+            // Set view
         }
-        // Show no network
-        mRetryFallBackStub.setVisibility(View.VISIBLE);
-        // Set view
         try {
             findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
         } catch (NullPointerException e) {
