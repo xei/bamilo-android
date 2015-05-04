@@ -47,14 +47,17 @@
 
             </LinearLayout>
 
-            <ImageView
+            <FrameLayout
                 android:id="@+id/home_teaser_campaign_image_container"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:contentDescription="@string/home_label"
-                android:src="@drawable/no_image_small" />
+                android:layout_weight="1">
+
+                <include layout="@layout/_def_home_teaser_image_loadable" />
+
+            </FrameLayout>
+
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/home_teaser_campaign_more"

@@ -15,11 +15,13 @@
         android:id="@+id/home_teaser_brand_horizontal_list"
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_brand_teaser_item_height"
+        android:background="@android:color/white"
         android:fadingEdge="horizontal"
         android:fadingEdgeLength="@dimen/home_horizontal_fade"
+        android:paddingBottom="1dp"
+        android:paddingTop="1dp"
         android:requiresFadingEdge="horizontal"
-        android:scrollbars="none"
-        android:background="@android:color/white" />
+        android:scrollbars="none" />
 
 
     <!--style="@style/TeaserWhiteContainerStyle"/-->

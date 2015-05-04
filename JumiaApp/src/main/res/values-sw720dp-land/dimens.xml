@@ -60,5 +60,6 @@
     <dimen name="home_margin_15_percentage">200dp</dimen>
     <dimen name="home_margin">@dimen/home_margin_15_percentage</dimen>
     <dimen name="home_small_teaser_item_width">288dp</dimen>
-    
+    <dimen name="home_main_teaser_height">320dp</dimen>
+
 </resources>

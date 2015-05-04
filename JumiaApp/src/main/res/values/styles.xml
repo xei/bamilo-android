@@ -629,6 +629,18 @@
         <item name="android:paddingLeft">@dimen/dimen_mat_8px</item>
     </style>
 
+    <!-- SMALL TEASER -->
+    <style name="SmallTeaserStyle" parent="CardViewFloatStyle">
+        <item name="android:layout_width">@dimen/home_small_teaser_item_width</item>
+        <item name="android:layout_height">@dimen/home_small_teaser_item_height</item>
+    </style>
+
+    <!-- PRODUCT TEASER -->
+    <style name="ProductTeaserStyle" parent="CardViewFloatStyle">
+        <item name="android:layout_width">@dimen/home_top_sellers_teaser_item_width</item>
+        <item name="android:layout_height">@dimen/home_top_sellers_teaser_item_height</item>
+    </style>
+
     <!-- FLOAT CARD VIEW -->
     <style name="CardViewFloatStyle" parent="ClickableStyle">
         <item name="cardCornerRadius">@dimen/dimen_mat_2px</item>
@@ -713,6 +725,10 @@
 
     <style name="TextSubHeadOrange" parent="TextSubHead">
         <item name="android:textColor">@color/orange_ffa200</item>
+    </style>
+
+    <style name="TextPriceSubHead" parent="TextSubHead">
+        <item name="android:textColor">@color/red_basic</item>
     </style>
 
     <!-- BASE BUTTONS STYLES -->
