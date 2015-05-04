@@ -108,6 +108,3 @@ proguard/
 
 ### Android Patch ###
 gen-external-apklibs
-
-.idea
-.idea/workspace.xml

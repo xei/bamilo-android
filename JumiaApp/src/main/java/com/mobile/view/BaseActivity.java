@@ -144,8 +144,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     public ActionBarDrawerToggle mDrawerToggle;
 
-    private boolean isRegistered = false;
-
     private final int titleResId;
 
     private final int contentLayoutId;
@@ -180,6 +178,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     public MenuItem mSearchMenuItem;
 
     public WarningFactory warningFactory;
+
+    public static KeyboardState currentAdjustState;
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
