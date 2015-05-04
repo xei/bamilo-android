@@ -655,6 +655,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Log.i(TAG, "ON CLICK SCROLL TOP BUTTON");
         GridLayoutManager manager = (GridLayoutManager) mGridView.getLayoutManager();
         int columns = manager.getSpanCount();
+        setButtonActiveLine();
         // Scroll faster until mark line
         mGridView.scrollToPosition(columns * mTopButtonActivateLine);
         // Scroll smooth until top position
@@ -664,6 +665,21 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 mGridView.smoothScrollToPosition(FIRST_POSITION);
             }
         });
+    }
+
+    /**
+     * method that calculates the line number where back to top button shows
+     *
+     * @return line number
+     */
+    private int setButtonActiveLine (){
+        if(getView() != null){
+            if(getView().findViewById(R.id.catalog_bar_button_columns).isSelected()){
+                mTopButtonActivateLine = mTopButtonActivateLine / 2;
+            }
+
+        }
+        return mTopButtonActivateLine;
     }
 
     /**
@@ -749,6 +765,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
                 int last = manager.findLastVisibleItemPosition();
                 // Show or hide top button after X arrow
+                setButtonActiveLine();
                 if (last > mNumberOfColumns * mTopButtonActivateLine) {
                     UICatalogHelper.showGotoTopButton(getBaseActivity(), mTopButton);
                 } else {
