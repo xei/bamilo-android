@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/catalog_header_image_frame"
+    style="@style/ClickableStyle"
     android:layout_width="match_parent"
-    android:id="@+id/catalog_header_image"
     android:layout_height="wrap_content"
-    android:minHeight="@dimen/margin_150px"
+    android:layout_marginBottom="@dimen/margin_20px"
+    android:layout_marginEnd="-7dp"
     android:layout_marginLeft="-7dp"
     android:layout_marginRight="-7dp"
     android:layout_marginStart="-7dp"
-    android:layout_marginEnd="-7dp"
-    android:layout_marginBottom="@dimen/margin_20px"
     android:layout_marginTop="@dimen/margin_10px"
-    android:layout_gravity="center"
-    android:adjustViewBounds="false"
-    android:scaleType="fitCenter" />
+    android:minHeight="@dimen/margin_150px">
+
+
+
+    <ImageView
+        android:id="@+id/catalog_header_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:adjustViewBounds="false"
+        android:minHeight="@dimen/margin_150px"
+        android:scaleType="fitCenter" />
+</FrameLayout>
