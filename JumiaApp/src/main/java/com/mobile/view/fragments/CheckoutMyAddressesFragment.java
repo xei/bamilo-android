@@ -25,8 +25,8 @@ import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.helpers.address.SetBillingAddressHelper;
 import com.mobile.helpers.checkout.GetBillingFormHelper;
+import com.mobile.helpers.checkout.SetBillingAddressHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -42,7 +42,7 @@ import de.akquinet.android.androlog.Log;
  * Class used to show the my addresses and set the on process checkout the billing and shipping address. 
  * @author sergiopereira
  */
-public class CheckoutMyAddressesFragment extends MyAddressesFragment{
+public class CheckoutMyAddressesFragment extends MyAddressesFragment {
 
     private static final String TAG = LogTagHelper.create(CheckoutMyAddressesFragment.class);
 
@@ -171,25 +171,21 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment{
         Log.i(TAG, "ON DESTROY");
     }
 
-    @Override
-    protected void onClickRetryButton() {
-        Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-        }
-    }
-
+    /**
+     * Goto web checkout case received a form error event.
+     */
     protected void onGetBillingFormEventErrorEvent() {
         Log.w(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
         super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT");
     }
 
+    /**
+     * Show form.
+     * @param bundle
+     */
     protected void onGetBillingFormEventSuccessEvent(Bundle bundle) {
         Log.d(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
-          hiddenForm = bundle.getParcelable(Constants.BUNDLE_FORM_DATA_KEY);
+        hiddenForm = bundle.getParcelable(Constants.BUNDLE_FORM_DATA_KEY);
         Addresses addresses = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
         this.addresses = addresses;
         // Validate response
@@ -197,15 +193,13 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment{
             super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "RECEIVED GET_BILLING_FORM_EVENT");
             return;
         }
-
         // Show addresses using saved value, if is the same address for Bill and Ship
         if(!TextUtils.isEmpty(sameAddress)){
             showAddresses(Boolean.parseBoolean(sameAddress));
         } else {
             showAddresses(addresses.hasDefaultShippingAndBillingAddress());
         }
-
-          // Get order summary
+        // Get order summary
         OrderSummary orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
 
@@ -227,11 +221,10 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment{
 
     protected void onSetBillingAddressSuccessEvent(Bundle bundle) {
         Log.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
-
         // Get next step
         FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
         nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.SHIPPING_METHODS;
-        getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -339,6 +332,24 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment{
         return false;
     }
 
+    /*
+     * ############# LISTENERS #############
+     */
+
+    /**
+     * Process the retry button
+     */
+    @Override
+    protected void onClickRetryButton() {
+        Bundle bundle = new Bundle();
+        if(null != JumiaApplication.CUSTOMER){
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+
     /**
      * Process the click on add button.
      * @author sergiopereira
@@ -383,7 +394,6 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment{
             else if (field.getKey().contains(SHIPPING_ID_TAG)) contentValues.put(field.getName(), shippingAddressId);
             else if (field.getKey().contains(IS_SAME_TAG)) contentValues.put(field.getName(), isDifferent);
         }
-
         // Trigger
         triggerSetBilling(contentValues);
     }

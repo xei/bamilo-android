@@ -15,6 +15,7 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,20 +69,16 @@ public class GetSignupFormHelper extends BaseHelper {
         final ArrayList<Form> forms = new ArrayList<>();
         JSONArray dataObject;
         try {
-            
             dataObject = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
-
             for (int i = 0; i < dataObject.length(); ++i) {
                 Form form = new Form();
                 JSONObject formObject = dataObject.getJSONObject(i);
-                
                 if (!form.initialize(formObject)) Log.e(TAG, "Error initializing the form using the data");
-                
                 forms.add(form);
             }
-
-            if (forms.size() > 0)  bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, forms.get(0));
-            
+            if (CollectionUtils.isNotEmpty(forms)) {
+                bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, forms.get(0));
+            }
         } catch (JSONException e) {
             Log.d(TAG, "PARSE JSON", e);
             return parseErrorBundle(bundle);

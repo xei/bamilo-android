@@ -3,12 +3,10 @@
  */
 package com.mobile.helpers.checkout;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 import android.os.Parcelable;
 
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.framework.enums.RequestType;
 import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.utils.Constants;
@@ -17,6 +15,9 @@ import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.utils.CheckoutStepManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -57,18 +58,18 @@ public class SetPaymentMethodHelper extends BaseHelper {
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         Log.d(TAG, "PARSE BUNDLE");
-        
-        try {
-            // Get order
-            OrderSummary orderSummary = new OrderSummary(jsonObject);
-            bundle.putParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY, orderSummary);
-            
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        
+        // Get and set next step
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextCheckoutStep(jsonObject));
+        // Get order summary from response
+        try {
+            OrderSummary orderSummary = new OrderSummary(jsonObject);
+            bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, orderSummary);
+            Log.i(TAG, "ORDER SUMMARY: " + orderSummary.toString());
+        } catch (NullPointerException | JSONException e) {
+            Log.w(TAG, "WARNING: PARSING ORDER RESPONSE", e);
+        }
+        // Return response
         return bundle;
     }
     
