@@ -46,6 +46,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     private ArrayList<CatalogFilter> mFilters;
 
+    private Banner mCatalogBanner;
+
 
     /*
      * ########### CONSTRUCTOR ###########
@@ -108,6 +110,14 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
                 // save filter
                 mFilters.add(catalogFilter);
             }
+        }
+
+        //Get Banner
+        if(!metadataObject.isNull(RestConstants.JSON_BANNER_TAG)){
+            JSONObject bannerObject = metadataObject.getJSONObject(RestConstants.JSON_BANNER_TAG);
+           Banner banner = new Banner();
+            banner.initialize(bannerObject);
+            mCatalogBanner = banner;
         }
 
         return true;
@@ -274,6 +284,14 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         return mId;
     }
 
+    public Banner getmCatalogBanner() {
+        return mCatalogBanner;
+    }
+
+    public void setmCatalogBanner(Banner mCatalogBanner) {
+        this.mCatalogBanner = mCatalogBanner;
+    }
+
     /*
      * ############### Parcelable ###############
      */
@@ -302,6 +320,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(mFilters);
         }
+        dest.writeValue(mCatalogBanner);
     }
 
     /**
@@ -326,6 +345,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         } else {
             mFilters = null;
         }
+        mCatalogBanner = (Banner) in.readValue(Banner.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<CatalogPage> CREATOR = new Parcelable.Creator<CatalogPage>() {
@@ -337,5 +357,6 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             return new CatalogPage[size];
         }
     };
+
 
 }

@@ -27,29 +27,13 @@
                 android:orientation="vertical" >
 
                 <LinearLayout
+                    android:id="@+id/registerform_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/rounded_margin_mid"
                     android:layout_marginRight="@dimen/rounded_margin_mid"
                     android:layout_marginTop="@dimen/rounded_margin_mid"
                     android:orientation="vertical" >
-
-                    <com.mobile.components.customfontviews.TextView
-                        android:id="@+id/register_required_text"
-                        style="@style/form_style"
-                        android:layout_marginLeft="@dimen/margin_small"
-                        android:text="@string/register_required_text"
-                        android:textColor="@color/red_basic"
-                        android:visibility="gone" />
-
-                    <!-- FORM -->
-
-                    <LinearLayout
-                        android:id="@+id/registerform_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" >
-                    </LinearLayout>
                 </LinearLayout>
 
                 <!-- REMEMBER EMAIL -->

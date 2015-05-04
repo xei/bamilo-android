@@ -108,7 +108,8 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <View style="@style/divider_horizontal" />
+    <View style="@style/divider_horizontal"
+        android:id="@+id/review_details_line"/>
 
     <!-- SPECICATIONS -->
 
@@ -125,7 +126,7 @@
         android:gravity="right|center_vertical"
         android:maxLines="2"
         android:minHeight="@dimen/product_detail_item_title_height"
-        android:text="@string/product_specifications" />
+        android:text="@string/product_details_title" />
 
     <!-- OTHER SELLERS -->
 

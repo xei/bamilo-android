@@ -420,8 +420,6 @@ public class HomePageFragment extends BaseFragment {
         String targetTitle = (String) view.getTag(R.id.target_title);
         // Get origin
         TeaserGroupType originType = (TeaserGroupType) view.getTag(R.id.origin_type);
-
-
         // Validate type
         if (targetType != null) {
             Bundle bundle = new Bundle();
@@ -458,102 +456,13 @@ public class HomePageFragment extends BaseFragment {
         }
         return intercepted;
     }
-
+    
     /**
      * validate from where the click needs to be tracked
      * @param originType
      */
     private boolean validateBannerFlow(TeaserGroupType originType){
         return originType == TeaserGroupType.MAIN_ONE_SLIDE || originType == TeaserGroupType.STATIC_BANNER;
-    }
-
-
-    /**
-     * Process the click on shops in shop
-     *
-     * @param url    The url for CMS block
-     * @param title  The shop title
-     * @param bundle The new bundle
-     */
-    private void onClickInnerShop(String url, String title, Bundle bundle) {
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-        getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Process the category click
-     *
-     * @param targetUrl
-     * @param bundle
-     * @author sergiopereira
-     */
-    private void onClickCategory(String targetUrl, Bundle bundle) {
-        Log.i(TAG, "ON CLICK CATEGORY");
-        bundle.putString(ConstantsIntentExtra.CATEGORY_URL, targetUrl);
-        getBaseActivity().onSwitchFragment(FragmentType.CATEGORIES, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Process the catalog click
-     *
-     * @param targetUrl
-     * @param targetTitle
-     * @param bundle
-     */
-    private void onClickCatalog(String targetUrl, String targetTitle, Bundle bundle) {
-        Log.i(TAG, "ON CLICK CATALOG");
-        if (targetUrl != null) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
-            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
-            bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES,false);
-            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
-        } else {
-            Log.w(TAG, "WARNING: URL IS NULL");
-        }
-    }
-
-    /**
-     * Process the product click
-     *
-     * @param targetUrl
-     * @param bundle
-     * @author sergiopereira
-     */
-    private void onClickProduct(String targetUrl, Bundle bundle) {
-        Log.i(TAG, "ON CLICK PRODUCT");
-        if (targetUrl != null) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            Log.i(TAG, "WARNING: URL IS NULL");
-        }
-    }
-
-    /**
-     * Process the brand click
-     *
-     * @param targetUrl
-     * @param bundle
-     */
-    private void onClickBrand(String targetUrl, Bundle bundle) {
-        Log.i(TAG, "ON CLICK BRAND");
-        if (targetUrl != null) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetUrl);
-            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, targetUrl);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES,false);
-            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            Log.i(TAG, "WARNING: URL IS NULL");
-        }
     }
 
     /**
@@ -564,7 +473,8 @@ public class HomePageFragment extends BaseFragment {
      * @param targetTitle
      * @param bundle
      */
-    private void onClickCampaign(View view, TeaserGroupType origin, String targetUrl, String targetTitle, Bundle bundle) {
+    @Override
+    protected void onClickCampaign(View view, TeaserGroupType origin, String targetUrl, String targetTitle, Bundle bundle) {
         // Get selected position
         String targetPosition = view.getTag(R.id.position) != null ? view.getTag(R.id.position).toString() : "0";
         // Case teaser campaign
@@ -572,8 +482,8 @@ public class HomePageFragment extends BaseFragment {
             Log.i(TAG, "ON CLICK CAMPAIGN FROM CAMPAIGN TEASER: " + targetTitle + " " + targetUrl + " " + targetPosition);
             // Tracking event
             AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, targetTitle, 0l);
-            // Show campaigns 
-            gotoCampaigns(mCampaigns, targetPosition, bundle);
+            // Show campaigns
+            gotoCampaigns(getSavedTeaserCampaigns(), targetPosition, bundle);
         }
         // Case teaser image
         else if ((origin == TeaserGroupType.MAIN_ONE_SLIDE || origin == TeaserGroupType.STATIC_BANNER) && !TextUtils.isEmpty(targetUrl)) {
@@ -608,23 +518,6 @@ public class HomePageFragment extends BaseFragment {
     }
 
     /**
-     * Create an array with a single campaign
-     *
-     * @param targetTitle
-     * @param targetUrl
-     * @return ArrayList with one campaign
-     * @author sergiopereira
-     */
-    private ArrayList<TeaserCampaign> createSignleCampaign(String targetTitle, String targetUrl) {
-        ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
-        TeaserCampaign campaign = new TeaserCampaign();
-        campaign.setTitle(targetTitle);
-        campaign.setUrl(targetUrl);
-        campaigns.add(campaign);
-        return campaigns;
-    }
-
-    /**
      * Validate if the current homepage has campaigns
      *
      * @return true or false
@@ -632,6 +525,10 @@ public class HomePageFragment extends BaseFragment {
      */
     private boolean hasSavedTeaserCampaigns() {
         return mCampaigns != null;
+    }
+
+    private ArrayList<TeaserCampaign> getSavedTeaserCampaigns() {
+        return mCampaigns;
     }
 
 }

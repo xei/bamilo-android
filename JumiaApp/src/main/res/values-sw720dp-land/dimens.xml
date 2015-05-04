@@ -55,6 +55,7 @@
     <!-- CATALOG REDESIGN -->
     <integer name="catalog_list_num_columns">3</integer>
     <integer name="catalog_grid_num_columns">4</integer>
+    <integer name="activate_go_top_buttom_line">5</integer>
 
     <!-- PDV IMAGE LANDSCAPE --> 
     <dimen name="pdv_image_with_var_simple">370dp</dimen>

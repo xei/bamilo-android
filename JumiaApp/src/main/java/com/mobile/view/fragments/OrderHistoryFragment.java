@@ -22,8 +22,11 @@ import com.mobile.controllers.OrdersListAdapter;
 import com.mobile.controllers.OrdersListAdapter.OnSelectedOrderChange;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.ErrorCode;
+import com.mobile.framework.objects.Errors;
 import com.mobile.framework.objects.Order;
 import com.mobile.framework.objects.OrderItem;
+import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.CurrencyFormatter;
@@ -39,6 +42,8 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
 
 import de.akquinet.android.androlog.Log;
 
@@ -67,11 +72,8 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     private RelativeLayout productsContainer;
     
     OrdersListAdapter ordersAdapter;
-    
-    
+
     private boolean isVisible = false;
-    
-    private MyOrdersFragment parentFragment;
     
     private int selectedProduct = -1;
     
@@ -130,7 +132,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        parentFragment = (MyOrdersFragment) getBaseActivity().getSupportFragmentManager().findFragmentByTag(FragmentType.MY_ORDERS.toString());
         
         if(savedInstanceState != null) {
             selectedProduct = savedInstanceState.getInt("selectedPos");
@@ -153,10 +154,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "ON VIEW CREATED");               
-        
-        if(parentFragment != null)
-            MyOrdersFragment.mPositionToStart = 1;
+        Log.i(TAG, "ON VIEW CREATED");
         
         ordersListView = (ListView) view.findViewById(R.id.orders_list);
         ordersListView.setOnScrollListener(onScrollListener);
@@ -368,11 +366,9 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
         
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         switch (eventType) {
         case GET_MY_ORDERS_LIST_EVENT:
-
-           
             if(isVisible && !errorHandled){
                 Log.w("ORDER","ERROR Visible");
                     if(null == JumiaApplication.CUSTOMER){
@@ -380,27 +376,29 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                     } else {
                         Log.w("ORDER","ERROR Visible");
                         //used for when the user session expires on the server side
-                        if(ordersList != null && ordersList.size() > 0)
-                            triggerLogin();
-                        else{
+                        try{
+                            boolean isNotLoggedIn = false;
+                            if (errorCode == ErrorCode.REQUEST_ERROR) {
+                                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                                if (errorMessages != null) {
+                                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_LOGOUT_NOTLOGGED_IN)) {
+                                        triggerLogin();
+                                        isNotLoggedIn =true;
+                                    }
+                                }
+                            }
+                            if(!isNotLoggedIn){
+                                setEmptyScreenState(true);
+                                showProductsLoading(false);
+                            }
+                        } catch (ClassCastException | NullPointerException e){
                             setEmptyScreenState(true);
                             showProductsLoading(false);
                         }
-
                     }
-
-                
             } else {
                 Log.w("ORDER","ERROR notVisible");
-                if(null != JumiaApplication.CUSTOMER){
-                    Log.w("ORDER","ERROR CUSTOMER != null");
-                    mReceivedError = true;
-//                    setEmptyScreenState(true);
-//                    showProductsLoading(false);
-                }else{
-                    Log.w("ORDER","ERROR CUSTOMER == null");
-                    mReceivedError = true;
-                }
+                mReceivedError = true;
             }
 
             return true;
@@ -608,9 +606,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
       Bundle bundle = new Bundle();
       bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_ORDERS);
       bundle.putInt(ConstantsIntentExtra.MY_ORDER_POS, 1);
-      //set pager position to the original
-      if(null != parentFragment)
-          parentFragment.setPagerPosition(0);
       
       getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }

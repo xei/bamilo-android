@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -15,10 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
-import android.text.Spannable;
 import android.text.TextUtils;
-import android.text.style.MetricAffectingSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -90,7 +86,7 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
 import com.mobile.utils.ui.CompleteProductUtils;
-import com.mobile.utils.ui.ToastFactory;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
@@ -215,18 +211,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private View mRelatedContainer;
 
-    private RelativeLayout mProductFeaturesContainer;
-
-    private TextView mProductFeaturesText;
-
-    private TextView mProductDescriptionText;
-
-    private LinearLayout mProductFeaturesMore;
-
-    private LinearLayout mProductDescriptionMore;
-
-    private RelativeLayout mProductDescriptionContainer;
-
     private boolean isRelatedItem = false;
 
     private HorizontalListView mRelatedListView;
@@ -272,6 +256,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private TextView numOffers;
 
     private TextView minOffers;
+
+    private TextView mDetailsSection;
+
+    private View mDetailsSectionLine;
 
     private ViewGroupFactory mGalleryViewGroupFactory;
 
@@ -560,47 +548,28 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mSellerDeliveryContainer = view.findViewById(R.id.delivery_time_container);
         mSellerRating = (RatingBar) view.findViewById(R.id.product_detail_product_seller_rating);
         sellerView.setVisibility(View.GONE);
-
-        // Get and set portrait views
-        checkPortraitLayout(view);
-        // Get and set landscape views
-        checkLandscapeLayout(view);
+        //Details section
+        mDetailsSection = (TextView) view.findViewById(R.id.product_detail_specifications);
+        mDetailsSectionLine = view.findViewById(R.id.review_details_line);
 
         mGalleryViewGroupFactory = new ViewGroupFactory((ViewGroup) view.findViewById(R.id.product_image_layout));
     }
 
     /**
-     * Get and set the portrait views
-     * 
-     * @param view
-     * @author sergiopereira
+     * Validate its to show specifications or not
      */
-    private void checkPortraitLayout(View view) {
-        View specs = view.findViewById(R.id.product_detail_specifications);
-        if (specs != null)
-            specs.setOnClickListener(this);
+    private void checkProductDetailsVisibility() {
+        if (mCompleteProduct != null && mDetailsSection != null && mDetailsSectionLine != null) {
+            if (CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications()) &&
+                    TextUtils.isEmpty(mCompleteProduct.getShortDescription()) &&
+                    TextUtils.isEmpty(mCompleteProduct.getDescription())) {
+                mDetailsSection.setVisibility(View.GONE);
+                mDetailsSectionLine.setVisibility(View.GONE);
+            }
+            mDetailsSection.setOnClickListener(this);
+        }
     }
 
-    /**
-     * Get and set the landscape views
-     * 
-     * @param view
-     * @author sergiopereira
-     */
-    private void checkLandscapeLayout(View view) {
-        // Get landscape views
-        mProductFeaturesContainer = (RelativeLayout) view.findViewById(R.id.features_container);
-        mProductDescriptionContainer = (RelativeLayout) view.findViewById(R.id.description_container);
-        mProductFeaturesText = (TextView) view.findViewById(R.id.product_features_text);
-        mProductDescriptionText = (TextView) view.findViewById(R.id.product_description_text);
-        mProductFeaturesMore = (LinearLayout) view.findViewById(R.id.features_more_container);
-        mProductDescriptionMore = (LinearLayout) view.findViewById(R.id.description_more_container);
-        // Set listeners
-        if (mProductDescriptionMore != null)
-            mProductDescriptionMore.setOnClickListener(this);
-        if (mProductFeaturesMore != null)
-            mProductFeaturesMore.setOnClickListener(this);
-    }
 
 //    /**
 //     * function responsible for handling the size of the image according to existence of other
@@ -860,14 +829,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         ProductSimple simple = null;
         try {
             // Case invalid selection
-            if (mSelectedSimple >= mCompleteProduct.getSimples().size())
-                ;
-            // Case no selected
-            else if (mSelectedSimple == NO_SIMPLE_SELECTED)
-                ;
-            // Case success
-            else
+            if (!(mSelectedSimple >= mCompleteProduct.getSimples().size()) && !(mSelectedSimple == NO_SIMPLE_SELECTED)) {
                 simple = mCompleteProduct.getSimples().get(mSelectedSimple);
+            }
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON GET SELECTED SIMPLE");
         }
@@ -1117,13 +1081,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private void executeAddProductToCart() {
         ProductSimple simple = getSelectedSimple();
-        if (simple == null && !DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
-            showChooseReminder();
-            isAddingProductToCart = false;
-            return;
-        } else if (simple == null) {
-            getBaseActivity().showWarningVariation(true);
-            isAddingProductToCart = false;
+        if (simple == null) {
+//            getBaseActivity().showWarningVariation(true);
+            showVariantsDialog();
             return;
         }
 
@@ -1199,17 +1159,14 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         triggerContentEventProgress(new GetShoppingCartAddItemHelper(), bundle, responseCallback);
     }
 
-    private void showChooseReminder() {
-        getBaseActivity().showWarningVariation(true);
-    }
-
     private void displayProduct(CompleteProduct product) {
         Log.d(TAG, "SHOW PRODUCT");
         // Show wizard
         isToShowWizard();
         // Call phone
         setCallPhone();
-
+        // validate specifications layout
+        checkProductDetailsVisibility();
         // Get simple position from deep link value
         if (mDeepLinkSimpleSize != null) {
             locateSimplePosition(mDeepLinkSimpleSize, product);
@@ -1255,11 +1212,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         setContentInformation();
         // Bundles
         setBundles(product);
-
-        if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) {
-            displayDescription();
-            displaySpecification();
-        }
         // Tracking
         TrackerDelegator.trackProduct(createBundleProduct());
         // Show container
@@ -1516,39 +1468,41 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private void executeAddToShoppingCartCompleted(boolean isBundle) {
 
-        String msgText = "1 " + getResources().getString(R.string.added_to_shop_cart_dialog_text);
-        if (isBundle)
-            msgText = getResources().getString(R.string.added_bundle_to_shop_cart_dialog_text);
+        if (!isBundle) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+        } else {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEMS_TO_CART);
+        }
 
-        mDialogAddedToCart = DialogGenericFragment.newInstance(
-                false,
-                true,
-                getString(R.string.your_cart),
-                msgText,
-                getString(R.string.go_to_cart), getString(R.string.continue_shopping),
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        if (id == R.id.button1) {
-                            if (getBaseActivity() != null) {
-                                getBaseActivity().onSwitchFragment(
-                                        FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
-                                        FragmentController.ADD_TO_BACK_STACK);
-                            }
-                            if (mDialogAddedToCart != null) {
-                                mDialogAddedToCart.dismiss();
-                            }
-
-                        } else if (id == R.id.button2) {
-                            showFragmentContentContainer();
-                            mDialogAddedToCart.dismiss();
-                        }
-                    }
-                });
-
-        mDialogAddedToCart.show(getFragmentManager(), null);
+//        mDialogAddedToCart = DialogGenericFragment.newInstance(
+//                false,
+//                true,
+//                getString(R.string.your_cart),
+//                msgText,
+//                getString(R.string.go_to_cart), getString(R.string.continue_shopping),
+//                new OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        int id = v.getId();
+//                        if (id == R.id.button1) {
+//                            if (getBaseActivity() != null) {
+//                                getBaseActivity().onSwitchFragment(
+//                                        FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
+//                                        FragmentController.ADD_TO_BACK_STACK);
+//                            }
+//                            if (mDialogAddedToCart != null) {
+//                                mDialogAddedToCart.dismiss();
+//                            }
+//
+//                        } else if (id == R.id.button2) {
+//                            showFragmentContentContainer();
+//                            mDialogAddedToCart.dismiss();
+//                        }
+//                    }
+//                });
+//
+//        mDialogAddedToCart.show(getFragmentManager(), null);
     }
 
     private void addToShoppingCartFailed() {
@@ -1581,12 +1535,11 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         // Get id
         int id = view.getId();
         // Case rating
-        if (id == R.id.product_detail_product_rating_container) onClickRating();
+        if (id == R.id.product_detail_product_rating_container )
+            onClickRating();
         // Case description
         else if (id == R.id.product_detail_specifications ||
-                id == R.id.product_detail_name ||
-                id == R.id.features_more_container ||
-                id == R.id.description_more_container) {
+                id == R.id.product_detail_name) {
             onClickShowDescription();
         }
         // Case variation button
@@ -1650,11 +1603,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      * Show the product description
      */
     private void onClickShowDescription() {
-        if (null != mCompleteProduct) {
+        if (null != mCompleteProduct && (!CollectionUtils.isEmpty(mCompleteProduct.getProductSpecifications()) ||
+                (!TextUtils.isEmpty(mCompleteProduct.getShortDescription()) && !TextUtils.isEmpty(mCompleteProduct.getDescription())) )) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
             bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DESCRIPTION, bundle, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle,
+                    FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -1809,7 +1764,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
     private void showVariantsDialog() {
         try {
-            getBaseActivity().showWarningVariation(false);
+            getBaseActivity().warningFactory.hideWarning();
             String title = getString(R.string.product_variance_choose);
             dialogListFragment = DialogListFragment.newInstance(this,
                     VARIATION_PICKER_ID,
@@ -1836,9 +1791,18 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         mSelectedSimple = position;
         Log.i(TAG, "size selected! onDialogListItemSelect : " + mSelectedSimple);
         updateVariants();
-        updateStockInfo();
+//        updateStockInfo();
         displayPriceInfoOverallOrForSimple();
 
+        if(isAddingProductToCart) {
+            executeAddProductToCart();
+        }
+
+    }
+
+    @Override
+    public void onDismiss() {
+        isAddingProductToCart = false;
     }
 
     IResponseCallback responseCallback = new IResponseCallback() {
@@ -1858,6 +1822,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
+        hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -1871,11 +1836,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
 
         switch (eventType) {
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+            executeAddToShoppingCartCompleted(false);
             isAddingProductToCart = false;
-            getBaseActivity().updateCartInfo();
             hideActivityProgress();
             mAddToCartButton.setEnabled(true);
-            executeAddToShoppingCartCompleted(false);
             break;
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
@@ -1945,12 +1909,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public void onErrorEvent(Bundle bundle) {
         Log.i(TAG, "ON ERROR EVENT");
         // Validate fragment visibility
+
+        // Hide dialog progress
+        hideActivityProgress();
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        // Hide dialog progress
-        hideActivityProgress();
 
         // Specific errors
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
@@ -2024,16 +1989,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             }
         case SEARCH_PRODUCT:
         case GET_PRODUCT_EVENT:
-            if (!errorCode.isNetworkError()) {
-                ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
-                showFragmentContentContainer();
-                try {
-                    getBaseActivity().onBackPressed();
-                } catch (IllegalStateException e) {
-                    getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
-                }
-                return;
-            }
+            showContinueShopping();
         case GET_PRODUCT_BUNDLE:
             hideBundle();
             break;
@@ -2042,69 +1998,9 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         }
     }
 
-    /**
-     * display product specification on landscape
-     */
-    private void displaySpecification() {
-        Log.i(TAG, "ON DISPLAY SPECIFIC LANDSCAPE LAYOUT");
-        String shortDescription = mCompleteProduct.getShortDescription();
-        // Validate the specific landscape layout
-        if (mProductFeaturesContainer == null) {
-            Log.i(TAG, "SPECIFIC LANDSCAPE LAYOUT IS NULL");
-            return;
-        }
-        // Don't show the features box if there is no content for it
-        if (TextUtils.isEmpty(shortDescription)) {
-            Log.i(TAG, "shortDescription : empty");
-            mProductFeaturesContainer.setVisibility(View.GONE);
-        } else {
-            mProductFeaturesContainer.setVisibility(View.VISIBLE);
-            String translatedDescription = shortDescription.replace("\r", "<br>");
-            Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
-            // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with bold tags
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);
-                MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(), MetricAffectingSpan.class);
-                for (MetricAffectingSpan span : spans) {
-                    htmlText.removeSpan(span);
-                }
-            }
-            mProductFeaturesText.setText(htmlText);
-            showMoreButton(mProductFeaturesText, mProductFeaturesMore);
-        }
-    }
 
-    /**
-     * display product description on landscape
-     */
-    private void displayDescription() {
-        if (mProductDescriptionContainer == null) {
-            Log.w(TAG, "Product details container is null on landscape");
-            return;
-        }
-        String longDescription = mCompleteProduct.getDescription();
-        if (longDescription.isEmpty()) {
-            mProductDescriptionContainer.setVisibility(View.GONE);
-        } else {
-            mProductDescriptionContainer.setVisibility(View.VISIBLE);
-        }
-        String translatedDescription = longDescription.replace("\r", "<br>");
-        Spannable htmlText = (Spannable) Html.fromHtml(translatedDescription);
-        // Issue with ICS (4.1) TextViews giving IndexOutOfBoundsException when passing HTML with
-        // bold tags
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            Log.d(TAG, "REMOVE STYLE TAGS: " + translatedDescription);
-            MetricAffectingSpan spans[] = htmlText.getSpans(0, htmlText.length(),
-                    MetricAffectingSpan.class);
-            for (MetricAffectingSpan span : spans) {
-                htmlText.removeSpan(span);
-            }
-        }
-        mProductDescriptionText.setText(htmlText);
 
-        showMoreButton(mProductDescriptionText, mProductDescriptionMore);
 
-    }
 
     /**
      * function used to calculate if text is all visible or not, on order to show the show more

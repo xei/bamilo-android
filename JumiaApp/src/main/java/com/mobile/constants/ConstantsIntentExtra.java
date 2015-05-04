@@ -37,6 +37,7 @@ public class ConstantsIntentExtra {
     public static final String PRODUCT_NAME = mPackage + "ProductName";
     public static final String IMAGE_LIST = mPackage + "ProductImages";
     public static final String PRODUCT = mPackage + "Product";
+    public static final String PRODUCT_GALLERY_POS = mPackage + "ProductPosition";
 
     // ########### Checkout ###########
     public static final String CONTENT_TITLE = mPackage + "ContentTitle";
@@ -100,5 +101,9 @@ public class ConstantsIntentExtra {
 
     // ############ BANNER TRACKING ###############
     public static final String BANNER_TRACKING = "isFromBanner";
+
+    // ########### MY ORDER ##############
+    public static final String PRODUCT_INFO_POS = "ProductInfoPosition";
+
 
 }

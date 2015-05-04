@@ -68,6 +68,7 @@
     <!-- CATALOG REDESIGN -->
     <integer name="catalog_list_num_columns">2</integer>
     <integer name="catalog_grid_num_columns">3</integer>
+    <integer name="activate_go_top_buttom_line">4</integer>
 
     <!-- rounded_margin_mid + button_big_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
     <dimen name="recently_viewed_button_container_height">90dp</dimen>

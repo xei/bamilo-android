@@ -43,6 +43,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     private RadioGroup mGroup;
     private LayoutInflater mInflater;
     Context mContext;
+    private OnCheckedChangeListener onCheckChangeListener;
 
     public RadioGroupLayoutVertical(Context context) {
         super(context);
@@ -91,11 +92,21 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                 RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, null, false);
                 button.setId(idx);
                 button.setText(mItems.get(idx));
-                if (idx == mDefaultSelected) button.setChecked(true);
+                if (idx == mDefaultSelected){
+                    button.setChecked(true);
+                }
                 RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
                 mGroup.addView(button, idx, layoutParams);
             }
 
+        }
+
+        if(mDefaultSelected != NO_DEFAULT_SELECTION){
+            for(int i = 0; i < mGroup.getChildCount(); i++) {
+                if(i == mDefaultSelected){
+                    check(mGroup.getChildAt(i).getId());
+                }
+            }
         }
 
     }
@@ -164,7 +175,6 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.checkout_shipping_item_height));
         layoutParams.setMargins(0, 0, getResources().getDimensionPixelSize(R.dimen.form_radiobutton_shipping_margin), 0);
         button.setText(mItems.get(idx));
-        if (idx == mDefaultSelected) button.setChecked(true);
         button.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -174,7 +184,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                         extras.setVisibility(View.VISIBLE);
                     } else {
                         extras.setVisibility(View.GONE);
-                    }    
+                    }
                 } catch (StackOverflowError e) {
                     e.printStackTrace();
                 }
@@ -182,6 +192,11 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                 mGroup.check(mLinearLayout.getId());
             }
         });
+
+        if (idx == mDefaultSelected){
+            button.setChecked(true);
+        }
+
 
         buttonContainer.addView(button, layoutParams);
 
@@ -267,6 +282,12 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     public String getSelectedFieldName() {
         String result = mItems.get(mGroup.getCheckedRadioButtonId());
         return result;
+    }
+
+    @Override
+    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
+        super.setOnCheckedChangeListener(listener);
+        this.onCheckChangeListener = listener;
     }
 
 }
