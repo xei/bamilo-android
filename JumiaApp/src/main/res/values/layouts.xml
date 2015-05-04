@@ -66,4 +66,7 @@
     <!-- MY ORDERS -->
     <item name="track_order_fragment" type="layout">@layout/_def_track_order_fragment</item>
     <item name="myorders_fragment_main" type="layout">@layout/_def_myorders_fragment_main</item>
+
+    <!--KICK OUT -->
+    <item name="kickout_page" type="layout">@layout/_def_kickout_page</item>
 </resources>

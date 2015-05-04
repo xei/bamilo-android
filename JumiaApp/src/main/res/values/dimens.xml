@@ -398,4 +398,8 @@
     <!-- NO CONNECTION -->
     <dimen name="no_connection_label_small_size">16sp</dimen>
     <dimen name="no_connection_label_details_small_size">12sp</dimen>
+
+    <!-- KICKOUT -->
+
+    <dimen name="kickout_box_width">@integer/wrap_content</dimen>
 </resources>

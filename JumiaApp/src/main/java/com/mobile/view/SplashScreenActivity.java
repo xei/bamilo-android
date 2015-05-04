@@ -43,6 +43,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.preferences.CountryConfigs;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.dialogfragments.OverlayDialogFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
 
@@ -594,6 +595,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
                     dialog.show(getSupportFragmentManager(), null);
                     break;
+                case SERVER_OVERLOAD:
+                    Log.w("SHOW OVERLOAD");
+                    showOverLoadView();
+                    break;
                 default:
                     if (dialog != null) {
                         try {
@@ -855,6 +860,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mMainFallBackStub.setVisibility(View.GONE);
         // Retry
         retryRequest();
+    }
+
+    /**
+     * Shows Overload screen
+     */
+    private void showOverLoadView(){
+        if(getSupportFragmentManager() != null){
+            OverlayDialogFragment.getInstance(R.layout.kickout_page).show(getSupportFragmentManager(), null);
+        }
     }
 
 }

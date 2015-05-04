@@ -72,4 +72,7 @@
     <!-- ANDROID 5.0: COLOR ACCENT -->
     <color name="color_accent">@color/orange_ffa200</color>
 
+    <color name="kickout_background">#111111</color>
+    <color name="white_95_op">#f2ffffff</color>
+
 </resources>

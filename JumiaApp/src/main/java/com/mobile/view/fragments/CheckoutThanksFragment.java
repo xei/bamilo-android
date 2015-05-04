@@ -465,6 +465,12 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         Log.i(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+
+        // Generic error
+        if (super.handleErrorEvent(bundle)) {
+            Log.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
+            return true;
+        }
         return false;
     }
 

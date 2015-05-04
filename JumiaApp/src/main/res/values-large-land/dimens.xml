@@ -7,4 +7,7 @@
     
     <dimen name="retry_layout_height">@dimen/dimen_810px</dimen>
 
+    <!-- KICKOUT -->
+
+    <dimen name="kickout_box_width">446.67dp</dimen>
 </resources>

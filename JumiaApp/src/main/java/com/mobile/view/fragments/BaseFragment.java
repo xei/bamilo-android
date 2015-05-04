@@ -970,6 +970,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         EventTask eventTask = (EventTask) bundle.getSerializable(Constants.BUNDLE_EVENT_TASK);
 
+        //change priority if error is SERVER_OVERLOAD in order to
+        // show overload view even for request with lower priority
+        if(errorCode == ErrorCode.SERVER_OVERLOAD){
+            bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY,true);
+        }
+
         if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
             return false;
         }
@@ -1044,6 +1050,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                         });
 
                 dialog.show(getActivity().getSupportFragmentManager(), null);
+                return true;
+            case SERVER_OVERLOAD:
+                if(getBaseActivity() != null){
+                    getBaseActivity().showOverLoadView();
+                    showFragmentErrorRetry();
+                }
                 return true;
             default:
                 break;

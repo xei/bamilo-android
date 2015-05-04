@@ -875,6 +875,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Log.i(TAG, "ON ERROR RESPONSE: IS LOADING MORE");
             onLoadingMoreRequestError(bundle);
         }
+        // Case SERVER OVERLOAD Error
+        else if(errorCode == ErrorCode.SERVER_OVERLOAD){
+            hideActivityProgress();
+            super.handleErrorEvent(bundle);
+        }
         // Case error on request data with filters
         else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && mCurrentFilterValues != null && mCurrentFilterValues.size() > 0) {
             Log.i(TAG, "ON SHOW FILTER NO RESULT");

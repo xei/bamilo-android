@@ -48,6 +48,7 @@ import com.mobile.controllers.LogOut;
 import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.SearchSuggestion;
@@ -76,6 +77,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
+import com.mobile.utils.dialogfragments.OverlayDialogFragment;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.HomeFragment;
@@ -1104,6 +1106,10 @@ public abstract class BaseActivity extends ActionBarActivity {
                     @Override
                     public void onRequestError(Bundle bundle) {
                         processErrorSearchEvent(bundle);
+                        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+                        if(errorCode == ErrorCode.SERVER_OVERLOAD){
+                            showOverLoadView();
+                        }
                     }
 
                     @Override
@@ -2274,6 +2280,10 @@ public abstract class BaseActivity extends ActionBarActivity {
             public void onRequestError(Bundle bundle) {
                 Log.i(TAG, "ON REQUEST ERROR: CART");
                 //...
+                ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+                if(errorCode == ErrorCode.SERVER_OVERLOAD){
+                    showOverLoadView();
+                }
             }
 
             @Override
@@ -2299,6 +2309,10 @@ public abstract class BaseActivity extends ActionBarActivity {
                 JumiaApplication.INSTANCE.setLoggedIn(false);
                 JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
                 updateNavigationMenu();
+                ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+                if(errorCode == ErrorCode.SERVER_OVERLOAD){
+                    showOverLoadView();
+                }
             }
 
             @Override
@@ -2341,4 +2355,13 @@ public abstract class BaseActivity extends ActionBarActivity {
      * ##### WIZARDS #####
      */
 
+    /**
+     * Shows server overload page
+     */
+    public void showOverLoadView(){
+        if(getSupportFragmentManager() != null){
+            OverlayDialogFragment.getInstance(R.layout.kickout_page).show(getSupportFragmentManager(),null);
+
+        }
+    }
 }
