@@ -28,7 +28,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_gravity="center_vertical">
 
-                <include layout="@layout/_def_home_teaser_image_loadable" />
+                <include layout="@layout/home_teaser_image_loadable" />
 
             </FrameLayout>
 

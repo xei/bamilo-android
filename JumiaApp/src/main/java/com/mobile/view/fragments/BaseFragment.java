@@ -837,27 +837,23 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         Log.i(TAG, "ON INFLATE STUB: FALL BACK");
         try {
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, "Jumia");
-
+            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, getString(R.string.app_name));
             TextView fallbackBest = (TextView) inflated.findViewById(R.id.fallback_best);
-            TextView tView = (TextView) inflated.findViewById(R.id.fallback_country);
+            TextView fallbackCountry = (TextView) inflated.findViewById(R.id.fallback_country);
             View countryD = inflated.findViewById(R.id.fallback_country_double);
-            TextView tViewBottom = (TextView) inflated.findViewById(R.id.fallback_country_bottom);
-
-            TextView tView2 = (TextView) inflated.findViewById(R.id.fallback_country_top);
-
+            TextView bottomCountry = (TextView) inflated.findViewById(R.id.fallback_country_bottom);
+            TextView topCountry = (TextView) inflated.findViewById(R.id.fallback_country_top);
             fallbackBest.setText(R.string.fallback_best);
-
             if (country.split(" ").length == 1) {
-                tView.setText(country.toUpperCase());
-                tView.setVisibility(View.VISIBLE);
+                fallbackCountry.setText(country.toUpperCase());
+                fallbackCountry.setVisibility(View.VISIBLE);
                 countryD.setVisibility(View.GONE);
             } else {
-                tView2.setText(country.split(" ")[0].toUpperCase());
-                tViewBottom.setText(country.split(" ")[1].toUpperCase());
+                topCountry.setText(country.split(" ")[0].toUpperCase());
+                bottomCountry.setText(country.split(" ")[1].toUpperCase());
                 fallbackBest.setTextSize(11.88f);
                 countryD.setVisibility(View.VISIBLE);
-                tView.setVisibility(View.GONE);
+                fallbackCountry.setVisibility(View.GONE);
             }
             fallbackBest.setSelected(true);
         } catch (NullPointerException | ClassCastException e) {

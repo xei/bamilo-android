@@ -31,7 +31,7 @@ public class HomeFeaturedTeaserHolder extends BaseTeaserViewHolder {
             // Expand grid view
             container.setExpanded(true);
             // Set adapter
-            container.setAdapter(new HomeFeaturedTeaserAdapter(mContext, R.layout._def_home_teaser_featured_stores_item, group.getData(), mParentClickListener));
+            container.setAdapter(new HomeFeaturedTeaserAdapter(mContext, R.layout.home_teaser_featured_stores_item, group.getData(), mParentClickListener));
         } else {
             Log.i(TAG, "FEATURED_TEASER: ADAPTER IS NOT NULL");
         }

@@ -12,7 +12,7 @@ public enum TeaserTargetType {
     CATALOG("catalog"),
     PDV("product_detail"),
     CAMPAIGN("campaign"),
-    PAGE("static_page"),
+    STATIC_PAGE("static_page"),
     UNKNOWN;
 
     private String mType;

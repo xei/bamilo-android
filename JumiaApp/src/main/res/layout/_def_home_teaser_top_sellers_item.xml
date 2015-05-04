@@ -13,7 +13,7 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <include layout="@layout/_def_home_teaser_image_loadable" />
+            <include layout="@layout/home_teaser_image_loadable" />
 
         </FrameLayout>
 

@@ -68,7 +68,7 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
     @Override
     public HomeSmallTeaserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Create a new view
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout._def_home_teaser_small_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_teaser_small_item, parent, false));
     }
 
     /*

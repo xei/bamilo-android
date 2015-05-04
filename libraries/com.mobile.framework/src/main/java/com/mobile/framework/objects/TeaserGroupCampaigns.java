@@ -3,10 +3,11 @@
  */
 package com.mobile.framework.objects;
 
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import org.json.JSONObject;
+
 import de.akquinet.android.androlog.Log;
 
 /**
@@ -14,6 +15,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  *
  */
+@Deprecated
 public class TeaserGroupCampaigns extends TeaserSpecification<TeaserCampaign> {
 
 	private static final String TAG = TeaserGroupCampaigns.class.getSimpleName();

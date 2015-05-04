@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dimen_mat_4px">
 
-            <include layout="@layout/_def_home_teaser_image_loadable" />
+            <include layout="@layout/home_teaser_image_loadable" />
 
         </FrameLayout>
 

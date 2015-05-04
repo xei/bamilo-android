@@ -6,6 +6,6 @@
     android:layout_marginLeft="@dimen/dimen_mat_8px"
     android:layout_marginRight="@dimen/dimen_mat_8px">
 
-    <include layout="@layout/_def_home_teaser_image_loadable" />
+    <include layout="@layout/home_teaser_image_loadable" />
 
 </FrameLayout>

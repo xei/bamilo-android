@@ -12,40 +12,38 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
 /**
- *
+ * Class used to set the shop week teaser.
  */
 public class HomeShopWeekTeaserHolder extends BaseTeaserViewHolder {
 
-    private static final String TAG = TeaserViewFactory.class.getSimpleName();
+    public static final String TAG = TeaserViewFactory.class.getSimpleName();
 
     // Data
-    public View container;
-    public ImageView left;
-    public ViewGroup leftC;
-    public ViewGroup rightC;
-    public View leftP;
-    public ImageView right;
-    public View rightP;
+    public ImageView leftImage;
+    public ViewGroup leftContainer;
+    public View leftProgress;
+    public ViewGroup rightContainer;
+    public ImageView rightImage;
+    public View rightProgress;
 
     public HomeShopWeekTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
-        container = view.findViewById(R.id.home_teaser_shop_week_container);
-        leftC = (ViewGroup) view.findViewById(R.id.home_teaser_shop_week_image_left);
-        left = (ImageView) leftC.findViewById(R.id.home_teaser_item_image);
-        leftP = leftC.findViewById(R.id.home_teaser_item_progress);
-        rightC = (ViewGroup) view.findViewById(R.id.home_teaser_shop_week_image_right);
-        right = (ImageView) rightC.findViewById(R.id.home_teaser_item_image);
-        rightP = rightC.findViewById(R.id.home_teaser_item_progress);
+        leftContainer = (ViewGroup) view.findViewById(R.id.home_teaser_shop_week_image_left);
+        leftImage = (ImageView) leftContainer.findViewById(R.id.home_teaser_item_image);
+        leftProgress = leftContainer.findViewById(R.id.home_teaser_item_progress);
+        rightContainer = (ViewGroup) view.findViewById(R.id.home_teaser_shop_week_image_right);
+        rightImage = (ImageView) rightContainer.findViewById(R.id.home_teaser_item_image);
+        rightProgress = rightContainer.findViewById(R.id.home_teaser_item_progress);
     }
 
     @Override
     public void onBind(BaseTeaserGroupType group) {
         BaseTeaserObject leftX = group.getData().get(0);
         BaseTeaserObject rightX = group.getData().get(1);
-        RocketImageLoader.instance.loadImage(leftX.getImage(), left, leftP, R.drawable.no_image_large);
-        RocketImageLoader.instance.loadImage(rightX.getImage(), right, rightP, R.drawable.no_image_large);
-        TeaserViewFactory.setClickableView(leftC, leftX, mParentClickListener);
-        TeaserViewFactory.setClickableView(rightC, rightX, mParentClickListener);
+        RocketImageLoader.instance.loadImage(leftX.getImage(), leftImage, leftProgress, R.drawable.no_image_large);
+        RocketImageLoader.instance.loadImage(rightX.getImage(), rightImage, rightProgress, R.drawable.no_image_large);
+        TeaserViewFactory.setClickableView(leftContainer, leftX, mParentClickListener);
+        TeaserViewFactory.setClickableView(rightContainer, rightX, mParentClickListener);
     }
 
     @Override

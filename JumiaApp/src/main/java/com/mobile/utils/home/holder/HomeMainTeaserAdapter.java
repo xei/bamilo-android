@@ -72,7 +72,7 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
      */
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View view = mInflater.inflate(R.layout._def_home_teaser_main_item, container, false);
+        View view = mInflater.inflate(R.layout.home_teaser_main_item, container, false);
         BaseTeaserObject teaser = mTeasers.get(position);
         setImageToLoad(teaser.getImage(isTablet), view);
         TeaserViewFactory.setClickableView(view, teaser, mOnClickListener);

@@ -40,7 +40,7 @@ public class HomeFeaturedTeaserAdapter extends ArrayAdapter<BaseTeaserObject> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ProductViewHolder holder;
         if(convertView == null) {
-            convertView = mInflater.inflate(R.layout._def_home_teaser_featured_stores_item, parent, false);
+            convertView = mInflater.inflate(R.layout.home_teaser_featured_stores_item, parent, false);
             holder = new ProductViewHolder(convertView);
             convertView.setTag(holder);
         } else {

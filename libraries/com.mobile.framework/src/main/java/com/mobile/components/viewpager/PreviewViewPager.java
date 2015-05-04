@@ -15,6 +15,14 @@ public class PreviewViewPager extends ViewPager {
 
     public static final String TAG = PreviewViewPager.class.getSimpleName();
 
+    private static final int NO_PREVIEW_OFFSET = 0;
+
+    private static final int PREVIEW_OFFSCREEN_PAGE_LIMIT = 2;
+
+    // These values must be the same used in PreviewViewPagerStyleable_transformer
+    private static final int NONE_TRANSFORMER = 0;
+    private static final int FADE_TRANSFORMER = 1;
+
     private int previewOffset;
 
     private int pageTransformer;
@@ -40,9 +48,9 @@ public class PreviewViewPager extends ViewPager {
     private void init(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PreviewViewPagerStyleable);
         // Get preview offset
-        previewOffset = a.getDimensionPixelSize(R.styleable.PreviewViewPagerStyleable_previewOffset, 0);
+        previewOffset = a.getDimensionPixelSize(R.styleable.PreviewViewPagerStyleable_previewOffset, NO_PREVIEW_OFFSET);
         // Get page transformer
-        pageTransformer = a.getInt(R.styleable.PreviewViewPagerStyleable_transformer, 0);
+        pageTransformer = a.getInt(R.styleable.PreviewViewPagerStyleable_transformer, NONE_TRANSFORMER);
         a.recycle();
         // Set view pager with preview offset and page transformer
         setViewPager();
@@ -53,8 +61,8 @@ public class PreviewViewPager extends ViewPager {
      */
     private void setViewPager() {
         // Set preview offset
-        if (previewOffset > 0) {
-            setOffscreenPageLimit(2);
+        if (previewOffset > NO_PREVIEW_OFFSET) {
+            setOffscreenPageLimit(PREVIEW_OFFSCREEN_PAGE_LIMIT);
             //float mLandscapeMarginFromWidth = DeviceInfoHelper.getWidth(getContext()) * 0.075f;
             setPadding(previewOffset, getPaddingTop(), previewOffset, getPaddingBottom());
             setClipToPadding(false);
@@ -62,7 +70,7 @@ public class PreviewViewPager extends ViewPager {
             //pager.setPageMargin(100);
         }
         // Set page transformer
-        if (pageTransformer == 2) {
+        if (pageTransformer == FADE_TRANSFORMER) {
             setPageTransformer(false, new FadePageTransformer(this));
         }
     }

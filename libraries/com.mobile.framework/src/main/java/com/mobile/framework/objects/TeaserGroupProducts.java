@@ -3,17 +3,18 @@
  */
 package com.mobile.framework.objects;
 
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.TeaserGroupProducts.TeaserProduct;
 
+import org.json.JSONObject;
+
 /**
  * @author nutzer2
  * 
  */
+@Deprecated
 public class TeaserGroupProducts extends TeaserSpecification<TeaserProduct> {
 
 	/**

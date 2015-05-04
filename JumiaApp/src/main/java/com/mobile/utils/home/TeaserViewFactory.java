@@ -39,21 +39,21 @@ public class TeaserViewFactory {
     public static BaseTeaserViewHolder onCreateViewHolder(LayoutInflater inflater, TeaserGroupType type, ViewGroup parent, View.OnClickListener listener) {
         switch (type) {
             case MAIN_TEASERS:
-                return new HomeMainTeaserHolder(inflater.getContext(), inflater.inflate(R.layout._def_home_teaser_main, parent, false), listener);
+                return new HomeMainTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_main, parent, false), listener);
             case SMALL_TEASERS:
-                return new HomeSmallTeaserHolder(inflater.getContext(), inflater.inflate(R.layout._def_home_teaser_small, parent, false), listener);
+                return new HomeSmallTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_small, parent, false), listener);
             case CAMPAIGN_TEASERS:
-                return new HomeCampaignTeaserHolder(inflater.getContext(), inflater.inflate(R.layout._def_home_teaser_campaign, parent, false), listener);
+                return new HomeCampaignTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_campaign, parent, false), listener);
             case SHOP_TEASERS:
-                return new HomeShopTeaserHolder(inflater.getContext(), inflater.inflate(R.layout._def_home_teaser_shop, parent, false), listener);
+                return new HomeShopTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_shop, parent, false), listener);
             case SHOP_WEEK_TEASERS:
-                return new HomeShopWeekTeaserHolder(inflater.getContext(), inflater.inflate(R.layout._def_home_teaser_shop_week, parent, false), listener);
+                return new HomeShopWeekTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_shop_week, parent, false), listener);
             case FEATURED_STORES:
-                return new HomeFeaturedTeaserHolder(inflater.getContext(), inflater.inflate(R.layout._def_home_teaser_featured_stores, parent, false), listener);
+                return new HomeFeaturedTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_featured_stores, parent, false), listener);
             case BRAND_TEASERS:
-                return new HomeBrandTeaserHolder(inflater.getContext(), inflater.inflate(R.layout._def_home_teaser_brand, parent, false), listener);
+                return new HomeBrandTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_brand, parent, false), listener);
             case TOP_SELLERS:
-                return new HomeTopSellersTeaserHolder(inflater.getContext(), inflater.inflate(R.layout._def_home_teaser_top_sellers, parent, false), listener);
+                return new HomeTopSellersTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_top_sellers, parent, false), listener);
             case UNKNOWN:
             default:
                 return null;

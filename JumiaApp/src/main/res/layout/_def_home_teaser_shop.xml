@@ -11,14 +11,14 @@
 
     <include
         android:id="@+id/home_teaser_shop_image_left"
-        layout="@layout/_def_home_teaser_shop_item" />
+        layout="@layout/home_teaser_shop_item" />
 
     <include
         android:id="@+id/home_teaser_shop_image_middle"
-        layout="@layout/_def_home_teaser_shop_item" />
+        layout="@layout/home_teaser_shop_item" />
 
     <include
         android:id="@+id/home_teaser_shop_image_right"
-        layout="@layout/_def_home_teaser_shop_item" />
+        layout="@layout/home_teaser_shop_item" />
 
 </LinearLayout>

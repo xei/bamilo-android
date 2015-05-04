@@ -65,7 +65,7 @@ public class HomeBrandTeaserAdapter extends RecyclerView.Adapter<HomeBrandTeaser
     @Override
     public HomeBrandTeaserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Create a new view
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout._def_home_teaser_brand_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_teaser_brand_item, parent, false));
     }
 
     /*

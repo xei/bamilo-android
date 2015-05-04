@@ -73,7 +73,7 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
     @Override
     public HomeTopSellersTeaserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Create a new view
-        return new ViewHolder(LayoutInflater.from(parent.getContext()) .inflate(R.layout._def_home_teaser_top_sellers_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()) .inflate(R.layout.home_teaser_top_sellers_item, parent, false));
     }
 
     /*

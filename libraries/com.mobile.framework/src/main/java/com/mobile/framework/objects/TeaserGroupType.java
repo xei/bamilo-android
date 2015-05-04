@@ -6,7 +6,7 @@ package com.mobile.framework.objects;
  * @author GuilhermeSilva
  * @modified sergiopereira
  */
-
+@Deprecated
 public enum TeaserGroupType {
 
     UNKNOWN(-1),

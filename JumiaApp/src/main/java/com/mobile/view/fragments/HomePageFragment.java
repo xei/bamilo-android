@@ -86,7 +86,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     public HomePageFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.Home,
-                R.layout._def_home_fragment_main,
+                R.layout.home_fragment_main,
                 R.string.home_label,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
@@ -421,7 +421,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             case CAMPAIGN:
                 gotoCampaignPage();
                 break;
-            case PAGE:
+            case STATIC_PAGE:
                 gotoStaticPage(targetTitle, targetUrl);
                 break;
             case PDV:
