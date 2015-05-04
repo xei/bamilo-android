@@ -469,8 +469,13 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             return;
         }
         */
-        // Show retry
-        showRetry();
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        if(errorCode == ErrorCode.TIME_OUT || errorCode == ErrorCode.NO_NETWORK){
+            showFragmentNoNetworkRetry();
+        } else {
+            // Show retry
+            showRetry();
+        }
     }
 
     @Override

@@ -1659,22 +1659,27 @@ public class DynamicFormItem {
      * @param dataContainer
      */
     private void createRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
+        //Preselection
+        int defaultSelect =  0;
+        boolean foundDefaultSelect = false;
+        for ( Entry<String, String> entryValue: this.entry.getDataSet().entrySet()) {
+            if(!foundDefaultSelect) {
+                if(!entry.getValue().equals(entryValue.getKey())){
+                    defaultSelect++;
+                } else {
+                    foundDefaultSelect = true;
+                }
+            }
+        }
+
+        if(!foundDefaultSelect){
+            defaultSelect = RadioGroupLayoutVertical.NO_DEFAULT_SELECTION;
+        }
 
         // Force the match the parent
         RadioGroupLayout radioGroup = (RadioGroupLayout) View.inflate(this.context, R.layout.form_radiolayout, null);
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         radioGroup.setLayoutParams(params);
-        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), RadioGroupLayout.NO_DEFAULT_SELECTION);
-        radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
-//                if(DynamicFormItem.this.errorControl != null){
-//                    DynamicFormItem.this.errorControl.setVisibility(View.GONE);
-//                }
-            }
-        });
         
         this.dataControl = radioGroup;
         this.dataControl.setId(parent.getNextId());
@@ -1701,6 +1706,18 @@ public class DynamicFormItem {
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.mandatoryControl);
 
+        radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
+//                if(DynamicFormItem.this.errorControl != null){
+//                    DynamicFormItem.this.errorControl.setVisibility(View.GONE);
+//                }
+            }
+        });
+        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), defaultSelect);
+
         ((ViewGroup) this.control).addView(dataContainer);
     }
 
@@ -1715,9 +1732,20 @@ public class DynamicFormItem {
     private void createRadioGroupVertical(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
 
         RadioGroupLayoutVertical radioGroup = (RadioGroupLayoutVertical) View.inflate(this.context, R.layout.form_radiolistlayout, null);
+        //Preselection
+        int defaultSelect =  0;
+        boolean foundDefaultSelect = false;
         HashMap<String, Form> formsMap = new HashMap<>();
-        for (String key : this.entry.getDataSet().values()) {
-
+        for ( Entry<String, String> entryValue: this.entry.getDataSet().entrySet()) {
+            String key = entryValue.getValue();
+            // Verify if current value is to preselect
+            if(!foundDefaultSelect){
+                if(!entry.getValue().equals(entryValue.getKey())){
+                    defaultSelect++;
+                } else {
+                    foundDefaultSelect = true;
+                }
+            }
             if (this.parent.getForm().fields != null && this.parent.getForm().fields.size() > 0) {
                 HashMap<String, Form> paymentMethodsField = this.parent.getForm().fields.get(0).getPaymentMethodsField();
                 if (paymentMethodsField != null) {
@@ -1729,7 +1757,32 @@ public class DynamicFormItem {
             }
         }
 
-        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), formsMap, RadioGroupLayoutVertical.NO_DEFAULT_SELECTION);
+        //If not found
+        if(!foundDefaultSelect){
+            defaultSelect = RadioGroupLayoutVertical.NO_DEFAULT_SELECTION;
+        }
+
+        this.dataControl = radioGroup;
+        this.dataControl.setId(parent.getNextId());
+        this.dataControl.setLayoutParams(params);
+        dataContainer.addView(this.dataControl);
+
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        params.addRule(RelativeLayout.CENTER_VERTICAL);
+        params.rightMargin = MANDATORYSIGNALMARGIN;
+        this.mandatoryControl = new TextView(this.context);
+        this.mandatoryControl.setLayoutParams(params);
+        this.mandatoryControl.setText("*");
+        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
+        this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+
+        // in order to position the mandatory signal on the payment method screen in the requested position, we don't inflate the dynamic form mandatory sign,
+        // we use a hardcode mandatory signal since the  payment method is always a mandatory section        
+        if(!this.getKey().equalsIgnoreCase("payment_method"))
+            dataContainer.addView(this.mandatoryControl);
+
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
@@ -1753,28 +1806,8 @@ public class DynamicFormItem {
 //                }
             }
         });
+        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), formsMap, defaultSelect);
 
-        this.dataControl = radioGroup;
-        this.dataControl.setId(parent.getNextId());
-        this.dataControl.setLayoutParams(params);
-        dataContainer.addView(this.dataControl);
-
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = MANDATORYSIGNALMARGIN;
-        this.mandatoryControl = new TextView(this.context);
-        this.mandatoryControl.setLayoutParams(params);
-        this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_ffa200));
-        this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
-
-        // in order to position the mandatory signal on the payment method screen in the requested position, we don't inflate the dynamic form mandatory sign,
-        // we use a hardcode mandatory signal since the  payment method is always a mandatory section        
-        if(!this.getKey().equalsIgnoreCase("payment_method"))
-            dataContainer.addView(this.mandatoryControl);
-        
         ((ViewGroup) this.control).addView(dataContainer);
     }
     
