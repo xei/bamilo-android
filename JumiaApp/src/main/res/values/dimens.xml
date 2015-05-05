@@ -452,4 +452,8 @@
     <dimen name="home_top_sellers_teaser_item_width">@dimen/dimen_mat_148px</dimen>
     <dimen name="home_top_sellers_teaser_item_height">@dimen/dimen_mat_160px</dimen>
 
+
+    <!-- KICKOUT -->
+
+    <dimen name="kickout_box_width">@integer/wrap_content</dimen>
 </resources>
