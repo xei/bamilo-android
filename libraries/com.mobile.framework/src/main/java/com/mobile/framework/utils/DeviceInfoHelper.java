@@ -1,7 +1,6 @@
 package com.mobile.framework.utils;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -328,26 +327,11 @@ public class DeviceInfoHelper {
      * Used other approach:<br>
      * - Created a new Activity with specific screen orientation
      */
-    @Deprecated
-    public void setOrientationForHandsetDevices(Activity activity) {
-        // Validate if is phone and force portrait orientaion
+    public static void setOrientationForHandsetDevices(Activity activity) {
+        // Validate if is phone and force portrait orientation
         if (!activity.getResources().getBoolean(R.bool.isTablet)) {
             Log.i(TAG, "IS PHONE: FORCE PORTRAIT ORIENTATION");
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-    }
-
-    /**
-     * Used other approach:<br>
-     * - Created a new Activity with specific screen orientation
-     */
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-    @Deprecated
-    public void setOrientationForTabletDevices(Activity activity) {
-        // Validate if is tablet and force landscape orientaion
-        if (activity.getResources().getBoolean(R.bool.isTablet)) {
-            Log.i(TAG, "IS TABLET: FORCE LANDSPAPE ORIENTATION");
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
         }
     }
 
@@ -356,9 +340,7 @@ public class DeviceInfoHelper {
      * @return true if yes, false otherwise
      */
     public static boolean isTabletInLandscape(Context context) {
-        if (context == null) return false;
-        if (context.getResources().getBoolean(R.bool.isTablet) && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) return true;
-        return false;
+        return context != null && context.getResources().getBoolean(R.bool.isTablet) && context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
     /**
      * method that verifies if the device is tablet or phone

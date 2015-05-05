@@ -2,7 +2,9 @@
 <!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
 <resources>
 
-    <!-- CONFIGS: Shop.com.mm -->
+    <!-- CONFIGS: Shop.com.mm
     <string name="single_shop_country_url">alice-staging.shop.com.mm</string>
+    -->
+    <string name="single_shop_country_url">integration-mobile-www.shop.com.mm</string>
 
 </resources>

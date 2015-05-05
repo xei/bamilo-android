@@ -63,5 +63,13 @@
     <dimen name="pdv_image">370dp</dimen>
 
     <dimen name="delete_button_size">26dp</dimen>
+
+    <!-- HOME -->
+    <dimen name="home_margin_7.5_percentage">68dp</dimen>
+    <dimen name="home_margin">@dimen/home_margin_7.5_percentage</dimen>
+    <dimen name="home_main_teaser_height">260dp</dimen>
+    <dimen name="home_small_teaser_item_width">216dp</dimen>
+    <dimen name="home_shop_week_teaser_height">258dp</dimen>
+    <integer name="home_featured_stores_teaser_num_columns">3</integer>
     
 </resources>

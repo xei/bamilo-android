@@ -64,5 +64,14 @@
         <attr name="strikethrough" format="boolean" />
         <attr name="autofittext" format="boolean" />
     </declare-styleable>
+
+    <!-- PREVIEW VIEW PAGER -->
+    <declare-styleable name="PreviewViewPagerStyleable">
+        <attr name="previewOffset" format="dimension"/>
+        <attr name="transformer" format="enum">
+            <enum name="none" value="0" />
+            <enum name="fade" value="1" />
+        </attr>
+    </declare-styleable>
     
 </resources>

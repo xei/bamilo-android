@@ -3,18 +3,19 @@
  */
 package com.mobile.framework.objects;
 
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.TeaserGroupTopBrands.TeaserTopBrand;
+
+import org.json.JSONObject;
 
 /**
  * Class used to represent a group of top brands
  * @author sergiopereira
  *
  */
+@Deprecated
 public class TeaserGroupTopBrands extends TeaserSpecification<TeaserTopBrand> {
 
 	/**

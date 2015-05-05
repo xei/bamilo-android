@@ -171,4 +171,12 @@
     <dimen name="no_connection_label_small_size">19sp</dimen>
     <dimen name="no_connection_label_details_small_size">15sp</dimen>
 
+
+    <!-- HOME -->
+    <dimen name="home_margin">0dp</dimen>
+    <dimen name="home_main_teaser_height">260dp</dimen>
+    <dimen name="home_small_teaser_item_width">195dp</dimen>
+    <dimen name="home_shop_week_teaser_height">258dp</dimen>
+    <integer name="home_featured_stores_teaser_num_columns">3</integer>
+
 </resources>

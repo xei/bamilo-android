@@ -1653,7 +1653,7 @@ public class DynamicFormItem {
 
     
     /**
-     * Create an horizontal radio group 
+     * Create an horizontal radio group
      * @param MANDATORYSIGNALSIZE
      * @param params
      * @param dataContainer

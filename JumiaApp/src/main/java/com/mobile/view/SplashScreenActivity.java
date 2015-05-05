@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
@@ -34,6 +33,7 @@ import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.helpers.configs.GetApiInfoHelper;
@@ -101,10 +101,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Disable Accengage rich push notifications
         Ad4PushTracker.get().setPushNotificationLocked(true);
         // Set Font
-        boolean isSpecificApp = getApplicationContext().getResources().getBoolean(R.bool.is_shop_specific);
-        HoloFontLoader.initFont(isSpecificApp);
+        HoloFontLoader.initFont(getResources().getBoolean(R.bool.is_shop_specific));
         // Validate if is phone and force orientation
-        setOrientationForHandsetDevices();
+        DeviceInfoHelper.setOrientationForHandsetDevices(this);
         // Set view
         setContentView(R.layout.splash_screen);
         // Get map
@@ -681,7 +680,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     protected void showUnexpectedError() {
         // Hide maintenance visibility
-        if (mMainFallBackStub.getVisibility() == View.VISIBLE) {
+        if (mMainFallBackStub != null && mMainFallBackStub.getVisibility() == View.VISIBLE) {
             mMainFallBackStub.setVisibility(View.GONE);
         }
         // Show no network
@@ -745,17 +744,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
         JumiaApplication.INSTANCE.responseCallbacks.remove(id);
 
-    }
-
-    /**
-     * Set orientation
-     */
-    public void setOrientationForHandsetDevices() {
-        // Validate if is phone and force portrait orientation
-        if (!getResources().getBoolean(R.bool.isTablet)) {
-            Log.i(TAG, "IS PHONE: FORCE PORTRAIT ORIENTATION");
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
     }
 
     /*
