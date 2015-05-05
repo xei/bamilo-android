@@ -1,7 +1,5 @@
 package com.mobile.framework.objects.home.type;
 
-import android.text.TextUtils;
-
 /**
  * Enumeration for teaser group types.
  *
@@ -11,10 +9,10 @@ public enum TeaserGroupType {
 
     MAIN_TEASERS("main_teasers"),
     SMALL_TEASERS("small_teasers"),
-    CAMPAIGN_TEASERS("campaigns"),
+    CAMPAIGNS("campaigns"),
     SHOP_TEASERS("shop_teasers"),
     BRAND_TEASERS("brand_teasers"),
-    SHOP_WEEK_TEASERS("shop_of_week"),
+    SHOP_OF_WEEK("shop_of_week"),
     FEATURED_STORES("featured_stores"),
     TOP_SELLERS("top_sellers"),
     UNKNOWN;
@@ -54,11 +52,10 @@ public enum TeaserGroupType {
      */
     public static TeaserGroupType byString(String string) {
         TeaserGroupType result = UNKNOWN;
-        for (TeaserGroupType type : TeaserGroupType.values()) {
-            if (TextUtils.equals(type.mType, string)) {
-                result = type;
-                break;
-            }
+        try {
+            result = valueOf(string.toUpperCase());
+        } catch (IllegalArgumentException | NullPointerException e) {
+            //...
         }
         return result;
     }

@@ -24,8 +24,8 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
     /**
      * Constructor
      */
-    public TeaserTopSellerObject() {
-        //...
+    public TeaserTopSellerObject(int teaserTypeId) {
+        super(teaserTypeId);
     }
 
     /*

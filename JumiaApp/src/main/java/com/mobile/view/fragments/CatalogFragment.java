@@ -364,7 +364,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void onUpdateCatalogContainer(CatalogPage catalogPage) {
         Log.i(TAG, "ON UPDATE CATALOG CONTAINER: " + catalogPage.getPage());
-
         // Case first time save catalog
         if (mCatalogPage == null) {
             mCatalogPage = catalogPage;
@@ -395,9 +394,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Case filter applied/clean replace the current data
         else {
-            // TODO: Try clean the data and the animations from the current adapter
-            // Replace the data
-            //adapter.replaceData(mCatalogPage.getProducts());
             adapter = new CatalogGridAdapter(getBaseActivity(), mCatalogPage.getProducts());
             adapter.setOnViewHolderClickListener(this);
             mGridView.setAdapter(adapter);
@@ -405,13 +401,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);
         }
 
-        // Show header
-        if(catalogPage.getPage() == 1){
-            showHeaderBanner();
-        }
-
+        // Save title
+        mTitle = catalogPage.getName();
         // Set title bar
         UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle, mCatalogPage.getTotal());
+        // Show header
+        if (catalogPage.getPage() == CatalogPage.FIRST_PAGE) {
+            showHeaderBanner();
+        }
         // Validate if user can load more pages
         if (mCatalogPage.hasMorePagesToLoad()) {
             mGridView.showFooterView();
@@ -619,7 +616,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get new catalog
         triggerGetInitialCatalogPage();
         // Track catalog filtered
-        //TODO
         TrackerDelegator.trackCatalogFilter(mCurrentFilterValues);
     }
 
@@ -644,7 +640,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         manager.requestLayout();
         ((CatalogGridAdapter) mGridView.getAdapter()).updateLayout(!isShowingGridLayout);
         // Track catalog
-        //TODO
         TrackerDelegator.trackCatalogSwitchLayout((!isShowingGridLayout) ? TRACK_LIST : TRACK_GRID);
     }
 
@@ -695,7 +690,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get new data
         triggerGetInitialCatalogPage();
         // Track catalog sorted
-        //TODO
         TrackerDelegator.trackCatalogSorter(mSelectedSort.toString());
     }
 
