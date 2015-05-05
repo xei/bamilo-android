@@ -2,5 +2,7 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/campaign_banner"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/campaign_banner_height"
-    android:scaleType="fitCenter" />
+    android:background="#f26340"
+    android:adjustViewBounds="true"
+    android:layout_height="wrap_content"
+    android:scaleType="fitXY" />
