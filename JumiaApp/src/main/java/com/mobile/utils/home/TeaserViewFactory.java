@@ -86,6 +86,7 @@ public class TeaserViewFactory {
             view.setTag(R.id.target_title, teaser.getTitle());
             view.setTag(R.id.target_type, teaser.getTargetType());
             view.setTag(R.id.target_url, teaser.getUrl());
+            view.setTag(R.id.target_teaser_origin, teaser.getTeaserTypeId());
             view.setOnClickListener(listener);
         }
     }

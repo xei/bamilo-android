@@ -94,9 +94,9 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
         // Validate type to create a specific teaser object
         BaseTeaserObject teaser;
         if(mType == TeaserGroupType.TOP_SELLERS) {
-            teaser = new TeaserTopSellerObject();
+            teaser = new TeaserTopSellerObject(mType.ordinal());
         } else {
-            teaser = new BaseTeaserObject();
+            teaser = new BaseTeaserObject(mType.ordinal());
         }
         // Initialize
         try {

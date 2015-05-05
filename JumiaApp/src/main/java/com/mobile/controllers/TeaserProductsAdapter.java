@@ -1,9 +1,5 @@
 package com.mobile.controllers;
 
-import java.util.ArrayList;
-
-import org.apache.commons.collections4.CollectionUtils;
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -21,11 +17,16 @@ import com.mobile.framework.objects.TeaserGroupType;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.ArrayList;
+
 /**
  * 
  * @author sergiopereira
  *
  */
+@Deprecated
 public class TeaserProductsAdapter extends RecyclerView.Adapter<TeaserProductsAdapter.ViewHolder> {
     
     private ArrayList<TeaserProduct> mDataset;
