@@ -454,10 +454,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         if (isOnStoppingProcess) return;
 
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-
-        if(errorCode == ErrorCode.SERVER_OVERLOAD && getBaseActivity() != null){
-        getBaseActivity().showOverLoadView();
-        }
         /*
         // Generic errors
         if(super.handleErrorEvent(bundle)){

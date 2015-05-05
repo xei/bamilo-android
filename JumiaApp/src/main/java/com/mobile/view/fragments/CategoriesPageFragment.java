@@ -15,7 +15,6 @@ import com.mobile.controllers.CategoriesAdapter;
 import com.mobile.controllers.SubCategoriesAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.CategoriesTableHelper;
 import com.mobile.framework.objects.Category;
 import com.mobile.framework.utils.Constants;
@@ -402,10 +401,6 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
                 if (isOnStoppingProcess) return;
                 // Hide loading
                 hideLandscapeLoading();
-                ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-                if(errorCode == ErrorCode.SERVER_OVERLOAD && getBaseActivity() != null){
-                    getBaseActivity().showOverLoadView();
-                }
             }
 
             @Override

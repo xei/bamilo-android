@@ -47,7 +47,6 @@ import com.mobile.controllers.LogOut;
 import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.framework.ErrorCode;
 import com.mobile.framework.database.FavouriteTableHelper;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.SearchSuggestion;
@@ -1084,10 +1083,6 @@ public abstract class BaseActivity extends ActionBarActivity {
                     @Override
                     public void onRequestError(Bundle bundle) {
                         processErrorSearchEvent(bundle);
-                        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-                        if(errorCode == ErrorCode.SERVER_OVERLOAD){
-                            showOverLoadView();
-                        }
                     }
 
                     @Override
@@ -1951,10 +1946,6 @@ public abstract class BaseActivity extends ActionBarActivity {
             public void onRequestError(Bundle bundle) {
                 Log.i(TAG, "ON REQUEST ERROR: CART");
                 //...
-                ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-                if(errorCode == ErrorCode.SERVER_OVERLOAD){
-                    showOverLoadView();
-                }
             }
 
             @Override
@@ -1980,10 +1971,6 @@ public abstract class BaseActivity extends ActionBarActivity {
                 JumiaApplication.INSTANCE.setLoggedIn(false);
                 JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
                 updateNavigationMenu();
-                ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-                if(errorCode == ErrorCode.SERVER_OVERLOAD){
-                    showOverLoadView();
-                }
             }
 
             @Override
@@ -2026,17 +2013,17 @@ public abstract class BaseActivity extends ActionBarActivity {
      * ##### WIZARDS #####
      */
 
-    /**
-     * Shows server overload page
-     */
-    public void showOverLoadView(){
-
-        Intent intent = new Intent(getApplicationContext(), OverLoadErrorActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-        //if(getSupportFragmentManager() != null){
-        //    OverlayDialogFragment.getInstance(R.layout.kickout_page).show(getSupportFragmentManager(),null);
-        //}
-    }
+//    /**
+//     * Shows server overload page
+//     */
+//    public void showOverLoadView(){
+//
+//        Intent intent = new Intent(getApplicationContext(), OverLoadErrorActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//        startActivity(intent);
+//        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//        //if(getSupportFragmentManager() != null){
+//        //    OverlayDialogFragment.getInstance(R.layout.kickout_page).show(getSupportFragmentManager(),null);
+//        //}
+//    }
 }

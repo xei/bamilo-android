@@ -23,6 +23,7 @@ import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.ConstantsSharedPrefs;
+import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
@@ -595,7 +596,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                     break;
                 case SERVER_OVERLOAD:
                     Log.w("SHOW OVERLOAD");
-                    showOverLoadView();
+                    ActivitiesWorkFlow.showOverLoadErrorActivity(this);
                     break;
                 default:
                     if (dialog != null) {
@@ -850,18 +851,4 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Retry
         retryRequest();
     }
-
-    /**
-     * Shows Overload screen
-     */
-    private void showOverLoadView(){
-        Intent intent = new Intent(getApplicationContext(), OverLoadErrorActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-    //    if(getSupportFragmentManager() != null){
-    //        OverlayDialogFragment.getInstance(R.layout.kickout_page).show(getSupportFragmentManager(), null);
-    //    }
-    }
-
 }

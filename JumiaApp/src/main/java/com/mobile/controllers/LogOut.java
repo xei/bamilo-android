@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.rest.RestClientSingleton;
-import com.mobile.framework.utils.Constants;
 import com.mobile.helpers.session.GetLogoutHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.utils.TrackerDelegator;
@@ -58,12 +56,8 @@ public class LogOut {
             @Override
             public void onRequestError(Bundle bundle) {
                 BaseActivity baseActivity = (BaseActivity) activityRef.get();
-                ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
                 if (baseActivity != null) {
                     cleanCartData(baseActivity);
-                    if(errorCode == ErrorCode.SERVER_OVERLOAD){
-                        baseActivity.showOverLoadView();
-                    }
                 }
             }
 
