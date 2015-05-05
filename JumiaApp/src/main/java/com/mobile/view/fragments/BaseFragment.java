@@ -835,6 +835,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private void onInflateHomeFallBack(View inflated) {
         Log.i(TAG, "ON INFLATE STUB: FALL BACK");
         try {
+            boolean isSingleShop = getResources().getBoolean(R.bool.is_single_shop_country);
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, getString(R.string.app_name));
             TextView fallbackBest = (TextView) inflated.findViewById(R.id.fallback_best);
@@ -847,6 +848,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 fallbackCountry.setText(country.toUpperCase());
                 fallbackCountry.setVisibility(View.VISIBLE);
                 countryD.setVisibility(View.GONE);
+                fallbackCountry.setText(isSingleShop ? "" : country.toUpperCase());
+                if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+                    getView().findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
+                }
             } else {
                 topCountry.setText(country.split(" ")[0].toUpperCase());
                 bottomCountry.setText(country.split(" ")[1].toUpperCase());
