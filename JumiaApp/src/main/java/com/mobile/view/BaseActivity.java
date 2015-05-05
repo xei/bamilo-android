@@ -77,7 +77,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
-import com.mobile.utils.dialogfragments.OverlayDialogFragment;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 import com.mobile.view.fragments.HomeFragment;
@@ -2359,9 +2358,13 @@ public abstract class BaseActivity extends ActionBarActivity {
      * Shows server overload page
      */
     public void showOverLoadView(){
-        if(getSupportFragmentManager() != null){
-            OverlayDialogFragment.getInstance(R.layout.kickout_page).show(getSupportFragmentManager(),null);
 
-        }
+        Intent intent = new Intent(getApplicationContext(), OverLoadErrorActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+        //if(getSupportFragmentManager() != null){
+        //    OverlayDialogFragment.getInstance(R.layout.kickout_page).show(getSupportFragmentManager(),null);
+        //}
     }
 }

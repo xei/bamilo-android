@@ -43,7 +43,6 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.preferences.CountryConfigs;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
-import com.mobile.utils.dialogfragments.OverlayDialogFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
 
@@ -868,9 +867,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * Shows Overload screen
      */
     private void showOverLoadView(){
-        if(getSupportFragmentManager() != null){
-            OverlayDialogFragment.getInstance(R.layout.kickout_page).show(getSupportFragmentManager(), null);
-        }
+
+        Intent intent = new Intent(getApplicationContext(), OverLoadErrorActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+    //    if(getSupportFragmentManager() != null){
+    //        OverlayDialogFragment.getInstance(R.layout.kickout_page).show(getSupportFragmentManager(), null);
+    //    }
     }
 
 }

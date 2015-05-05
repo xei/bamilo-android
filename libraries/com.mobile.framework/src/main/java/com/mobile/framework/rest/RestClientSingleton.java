@@ -377,7 +377,7 @@ public final class RestClientSingleton {
 				} else if(statusCode == SC_SERVER_OVERLOAD){
 					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SERVER_OVERLOAD, result, md5, priority,eventTask));
 					trackError(mContext, e, httpRequest.getURI(), ErrorCode.SERVER_OVERLOAD, result, false, startTimeMillis);
-				} else{
+				} else {
 					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_STATUS, result, md5, priority,eventTask));
 					trackError(mContext, e, httpRequest.getURI(), ErrorCode.HTTP_STATUS, result, false, startTimeMillis);
 				}
