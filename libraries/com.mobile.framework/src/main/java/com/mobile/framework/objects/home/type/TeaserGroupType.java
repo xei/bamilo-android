@@ -1,7 +1,5 @@
 package com.mobile.framework.objects.home.type;
 
-import android.text.TextUtils;
-
 /**
  * Enumeration for teaser group types.
  *
@@ -54,11 +52,10 @@ public enum TeaserGroupType {
      */
     public static TeaserGroupType byString(String string) {
         TeaserGroupType result = UNKNOWN;
-        for (TeaserGroupType type : TeaserGroupType.values()) {
-            if (TextUtils.equals(type.mType, string)) {
-                result = type;
-                break;
-            }
+        try {
+            result = valueOf(string);
+        } catch (IllegalArgumentException e) {
+            //...
         }
         return result;
     }
