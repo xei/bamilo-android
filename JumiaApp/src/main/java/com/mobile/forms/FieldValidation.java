@@ -62,7 +62,12 @@ private static final String TAG = FieldValidation.class.getName();
 	 */
 	@Override
 	public boolean initialize(JSONObject jsonObject) {
+        // Validate json
+        if(jsonObject == null) {
+            return false;
+        }
 
+        //
 		required = jsonObject.optBoolean(RestConstants.JSON_REQUIRED_TAG, false);
 		Log.i(TAG, "code1message :  jsonObject : "+jsonObject.toString()+" required : "+required);
 		if(!required){
@@ -90,6 +95,7 @@ private static final String TAG = FieldValidation.class.getName();
 		max = jsonObject.optInt(RestConstants.JSON_MAX_TAG, MAX_CHARACTERS);
         regex = jsonObject.optString(RestConstants.JSON_REGEX_TAG, "");
 
+        // CASE "match: {pattern: "/^[0-9]+$/u" }"
         if(regex.equalsIgnoreCase("")){        
             //this extra parsing option exists because
             JSONObject matchObject = jsonObject.optJSONObject(RestConstants.JSON_MATCH_TAG);

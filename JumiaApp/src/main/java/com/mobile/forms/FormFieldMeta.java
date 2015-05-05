@@ -1,11 +1,12 @@
 package com.mobile.forms;
 
+import com.mobile.forms.FormField.OnDataSetReceived;
+import com.mobile.utils.InputType;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import com.mobile.forms.FormField.OnDataSetReceived;
-import com.mobile.utils.InputType;
 
 public class FormFieldMeta implements IFormField {
 	private IFormField metaFormField;
@@ -55,15 +56,15 @@ public class FormFieldMeta implements IFormField {
 	}
 
 	@Override
-	public String getDatasetSource() {
+	public ArrayList<RelatedFieldOption> getRelatedFieldOptions() {
 		return null;
 	}
 
 	@Override
-	public OnDataSetReceived getOnDataSetReceived() {
+	public String getRelatedFieldKey() {
 		return null;
 	}
-	
+
 	@Override
 	public void setOnDataSetReceived(OnDataSetReceived dataset_Listener) {
 		// noop
@@ -80,20 +81,14 @@ public class FormFieldMeta implements IFormField {
 	}
 
 	@Override
-	public String getRegEx() {
-		return null;
+	public void setValidation(FieldValidation validation) {
+
 	}
 
 	@Override
 	public String getValue() {
 		return null;
 	}
-	
-	@Override
-	public void setValue( String value ) {
-		// noop
-	}
-
 
 	@Override
 	public Map<String, IFormField> getSubFormFields() {
@@ -125,7 +120,6 @@ public class FormFieldMeta implements IFormField {
     public Map<String, String> getDataValues() {
         return metaFormField.getDataValues();
     }
-
     
     @Override
     public Map<String, String> getDataCalls() {

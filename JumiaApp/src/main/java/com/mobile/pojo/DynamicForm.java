@@ -60,11 +60,9 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     public DynamicForm(ViewGroup base) {
         this.base = base;
         this.controls = new LinkedList<>();
-
         this.focus_listener = null;
         this.itemSelected_listener = null;
         this.text_watcher = null;
-
     }
 
     /**
@@ -75,7 +73,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     public void addControl(DynamicFormItem ctrl) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-
         addControl(ctrl, params);
     }
 
@@ -90,13 +87,10 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     public void addControl(DynamicFormItem ctrl, ViewGroup.LayoutParams params) {
         View controlView = ctrl.getControl();
-
         if (null != controlView) {
             ctrl.setOnFocusChangeListener(focus_listener);
             ctrl.setOnItemSelectedListener(itemSelected_listener);
-
             controls.add(ctrl);
-
             base.addView(ctrl.getControl(), params);
         }
     }
@@ -412,28 +406,28 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     // return model;
     // }
 
-    /**
-     * Stores the current values of the edit controls on the server fields
-     * 
-     * @return The server form with the values stored in the fields
-     */
-    public Form storeInServerForm() {
-        DynamicFormItem control;
-
-        for (DynamicFormItem dynamicFormItem : this) {
-
-            control = dynamicFormItem;
-            if (null != control && null != control.getValue()) {
-                control.storeValueInField();
-            } else if (null != control) {
-                control.storeValueInField("");
-            } else {
-                Log.e(TAG, "control is null");
-            }
-        }
-
-        return this.form;
-    }
+//    /**
+//     * Stores the current values of the edit controls on the server fields
+//     *
+//     * @return The server form with the values stored in the fields
+//     */
+//    public Form storeInServerForm() {
+//        DynamicFormItem control;
+//
+//        for (DynamicFormItem dynamicFormItem : this) {
+//
+//            control = dynamicFormItem;
+//            if (null != control && null != control.getValue()) {
+//                control.storeValueInField();
+//            } else if (null != control) {
+//                control.storeValueInField("");
+//            } else {
+//                Log.e(TAG, "control is null");
+//            }
+//        }
+//
+//        return this.form;
+//    }
 
     /**
      * Resets all the fields on the form to their original values.

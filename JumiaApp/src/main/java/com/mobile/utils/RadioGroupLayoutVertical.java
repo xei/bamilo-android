@@ -62,9 +62,30 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         mGroup = this;
     }
 
+    public void setItems(ArrayList<?> items, OnCheckedChangeListener listener) {
+        Log.i(TAG, "RADIO RELATED: items size = " + items.size());
+        addGroupItems(items);
+        mGroup.setOnCheckedChangeListener(listener);
+    }
+
+    /**
+     * TODO: Validate this method to use the R.layout.form_radiobutton and not button.setPadding()
+     */
+    private void addGroupItems(ArrayList<?> items) {
+        try {
+            mGroup.removeAllViews();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        for (Object item : items) {
+            RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, mGroup, false);
+            button.setText(item.toString());
+            mGroup.addView(button);
+        }
+    }
+
     public void setItems(ArrayList<String> items, HashMap<String, Form> map, int defaultSelected) {
-        Log.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = "
-                + defaultSelected);
+        Log.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = " + defaultSelected);
         mItems = items;
         formsMap = map;
         mDefaultSelected = defaultSelected;
