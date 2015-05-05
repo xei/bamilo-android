@@ -56,6 +56,7 @@ import com.mobile.framework.objects.ProductBundleProduct;
 import com.mobile.framework.objects.ProductBundleSimple;
 import com.mobile.framework.objects.ProductSimple;
 import com.mobile.framework.objects.Variation;
+import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.TrackingPage;
@@ -271,6 +272,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     
     private boolean isFromBanner;
 
+    private TeaserGroupType mGroupType;
     /**
      * Empty constructor
      */
@@ -312,6 +314,10 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             }
             // Verify if campaign page was open via a banner
             isFromBanner = arguments.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
+            if(arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) != null){
+                mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
+            }
+
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
@@ -1130,6 +1136,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
         bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
         if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 0) {
             bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(0));
             if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 1) {

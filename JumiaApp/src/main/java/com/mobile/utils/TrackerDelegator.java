@@ -14,6 +14,7 @@ import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.PurchaseItem;
 import com.mobile.framework.objects.ShoppingCartItem;
+import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.tracking.AdjustTracker;
@@ -34,7 +35,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -781,7 +784,10 @@ public class TrackerDelegator {
         FacebookTracker.get(sContext).trackAddedToCart(sku, price, category);
         //GA Banner Flow
         if(bundle.getBoolean(ConstantsIntentExtra.BANNER_TRACKING)){
-            JumiaApplication.INSTANCE.setBannerFlowSkus(sku);
+            if(bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) == null){
+                bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE,TeaserGroupType.UNKNOWN);
+            }
+            JumiaApplication.INSTANCE.setBannerFlowSkus(sku,(TeaserGroupType)bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE));
         }
     }
 
@@ -1206,23 +1212,71 @@ public class TrackerDelegator {
      * @param items
      */
     public static void trackBannerClick(final List<PurchaseItem> items) {
-        final ArrayList<String> skus = JumiaApplication.INSTANCE.getBannerFlowSkus();
-        if (!CollectionUtils.isEmpty(skus) && !CollectionUtils.isEmpty(items)) {
+        final HashMap<String,TeaserGroupType> skus = JumiaApplication.INSTANCE.getBannerFlowSkus();
+        if (skus != null && skus.size() > 0 && !CollectionUtils.isEmpty(items)) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     for (PurchaseItem item : items) {
-                        if (skus.contains(item.sku)) {
-                            AnalyticsGoogle.get().trackEvent(TrackingEvent.MAIN_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+                        Iterator it = skus.entrySet().iterator();
+                        try{
+                            while (it.hasNext()) {
+                                Map.Entry pair = (Map.Entry)it.next();
+
+                                if (pair.getKey().equals(item.sku)) {
+                                    Log.e(TAG,"BANNER KEY:"+pair.getKey() +" VALUE:"+pair.getValue());
+                                    trackBannerType(item, (TeaserGroupType) pair.getValue());
+                                    it.remove();
+                                }
+                            }
+                        }catch(ConcurrentModificationException e){
+                            JumiaApplication.INSTANCE.clearBannerFlowSkus();
+                            return;
                         }
+
                     }
+                    JumiaApplication.INSTANCE.clearBannerFlowSkus();
                 }
             }).start();
         }
-        JumiaApplication.INSTANCE.clearBannerFlowSkus();
     }
 
+    /**
+     * fires the GA event for a specific Home teaser
+     * @param item
+     * @param groupType
+     */
+    private static void trackBannerType(PurchaseItem item,TeaserGroupType groupType){
 
+    switch (groupType){
+        case MAIN_TEASERS:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.MAIN_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case SMALL_TEASERS:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SMALL_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case CAMPAIGN_TEASERS:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.CAMPAIGNS_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case SHOP_TEASERS:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOP_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case BRAND_TEASERS:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.BRAND_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case SHOP_WEEK_TEASERS:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOPS_WEEK_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case FEATURED_STORES:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.FEATURE_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case UNKNOWN:
+            Log.w(TAG,"UNKNOWN TEASER GROUP");
+            break;
+        default:
+            break;
+    }
+}
 
 //    private static void saveUtmParams(Context context, String key, String value) {
 //        Log.d(TAG, "saving saveUtmParams params, key: " + key + ", value : " + value);

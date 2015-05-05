@@ -34,7 +34,7 @@ import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.objects.TeaserCampaign;
-import com.mobile.framework.objects.TeaserGroupType;
+import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.utils.Constants;

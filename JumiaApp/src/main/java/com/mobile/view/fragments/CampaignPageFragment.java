@@ -42,6 +42,7 @@ import com.mobile.framework.objects.Campaign;
 import com.mobile.framework.objects.CampaignItem;
 import com.mobile.framework.objects.CampaignItemSize;
 import com.mobile.framework.objects.TeaserCampaign;
+import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.tracking.TrackingPage;
 import com.mobile.framework.tracking.gtm.GTMValues;
 import com.mobile.framework.utils.Constants;
@@ -117,6 +118,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private BannerVisibility bannerState;
     
     private boolean isFromBanner;
+
+    private TeaserGroupType mGroupType;
         
     /**
      * Constructor via bundle
@@ -161,6 +164,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 	    Bundle args = getArguments();
 	    if(args != null) {
             isFromBanner = args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
+            if(args.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) != null){
+                mGroupType =(TeaserGroupType) args.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
+            }
 	    }
         // Get campaigns from arguments
         mTeaserCampaign = getArguments().getParcelable(TAG);
@@ -472,6 +478,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
             bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, "");
             bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
+            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
             TrackerDelegator.trackProductAddedToCart(bundle);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -494,6 +501,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcampaign);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     

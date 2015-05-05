@@ -23,7 +23,7 @@ import com.mobile.framework.objects.FeaturedBox;
 import com.mobile.framework.objects.ITargeting;
 import com.mobile.framework.objects.Product;
 import com.mobile.framework.objects.TeaserCampaign;
-import com.mobile.framework.objects.TeaserGroupType;
+import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.tracking.TrackingPage;
@@ -110,6 +110,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private boolean mSortOrFilterApplied; // Flag to reload or not an initial catalog in case generic error
     
     private boolean isFromBanner; // Verify if campaign page was open via a banner
+    private TeaserGroupType mGroupType;
 
     /**
      * Create and return a new instance.
@@ -159,6 +160,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             }
             // Verify if campaign page was open via a banner
             isFromBanner = arguments.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
+            if(arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) != null){
+                mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
+            }
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
@@ -523,6 +527,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
             bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
+            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {

@@ -413,21 +413,23 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         String targetTitle = (String) view.getTag(R.id.target_title);
         // Get origin id
         int origin = (int) view.getTag(R.id.target_teaser_origin);
+        // Get teaser group type
+        TeaserGroupType groupType = TeaserGroupType.values()[origin];
         Log.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " URL:" + targetUrl);
         // Get target type
         TeaserTargetType target = TeaserTargetType.byString(targetType);
         switch (target) {
             case CATALOG:
-                gotoCatalog(targetUrl, targetTitle);
+                gotoCatalog(targetUrl, targetTitle, groupType);
                 break;
             case CAMPAIGN:
-                gotoCampaignPage(origin, targetTitle, targetUrl);
+                gotoCampaignPage(origin, targetTitle, targetUrl, groupType);
                 break;
             case STATIC_PAGE:
-                gotoStaticPage(targetTitle, targetUrl);
+                gotoStaticPage(targetTitle, targetUrl, groupType);
                 break;
             case PDV:
-                gotoProductDetail(targetUrl);
+                gotoProductDetail(targetUrl, groupType);
                 break;
             case UNKNOWN:
             default:
@@ -441,42 +443,48 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     /**
      * Goto catalog page
      */
-    private void gotoCatalog(String title, String url) {
+    private void gotoCatalog(String title, String url, TeaserGroupType groupType) {
         Log.i(TAG, "GOTO CATALOG PAGE: " + title + " " + url);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
         bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES, false);
+        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
      * Goto product detail
      */
-    private void gotoProductDetail(String url) {
+    private void gotoProductDetail(String url, TeaserGroupType groupType) {
         Log.i(TAG, "GOTO PRODUCT DETAIL: " + url);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
      * Goto static page
      */
-    private void gotoStaticPage(String title, String url) {
+    private void gotoStaticPage(String title, String url, TeaserGroupType groupType) {
         Log.i(TAG, "GOTO STATIC PAGE: " + title + " " + url);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
         getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
      * Goto campaign page
      */
-    private void gotoCampaignPage(int origin, String targetTitle, String targetUrl) {
+    private void gotoCampaignPage(int origin, String targetTitle, String targetUrl, TeaserGroupType groupType) {
         // Get group
         BaseTeaserGroupType group = mHomePage.getTeasers().get(origin);
         // Case campaign origin
@@ -495,6 +503,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
+        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
         // Switch
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }

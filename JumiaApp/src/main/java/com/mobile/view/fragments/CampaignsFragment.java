@@ -14,6 +14,7 @@ import android.view.View;
 import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.framework.objects.TeaserCampaign;
+import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -47,7 +48,9 @@ public class CampaignsFragment extends BaseFragment {
     */
     
     private boolean isFromBanner;
-    
+
+    private TeaserGroupType mGroupType;
+
     /**
      * Constructor via bundle
      * @return CampaignsFragment
@@ -94,6 +97,9 @@ public class CampaignsFragment extends BaseFragment {
         Bundle args = getArguments();
         if(args != null) {
             isFromBanner = args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
+            if(args.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) != null){
+                mGroupType =(TeaserGroupType) args.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
+            }
         }
     }
     
@@ -226,6 +232,7 @@ public class CampaignsFragment extends BaseFragment {
         public Fragment getItem(int position) {
             Bundle bundle = new Bundle();
             bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
+            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
             bundle.putParcelable(CampaignPageFragment.TAG, this.mCampaigns.get(position));
             return CampaignPageFragment.getInstance(bundle);
         }
