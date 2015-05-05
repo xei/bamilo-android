@@ -1,7 +1,5 @@
 package com.mobile.framework.objects.home.type;
 
-import android.text.TextUtils;
-
 /**
  * Enumeration for teaser target types
  *
@@ -48,11 +46,10 @@ public enum TeaserTargetType {
      */
     public static TeaserTargetType byString(String string) {
         TeaserTargetType result = UNKNOWN;
-        for (TeaserTargetType type : TeaserTargetType.values()) {
-            if (TextUtils.equals(type.mType, string)) {
-                result = type;
-                break;
-            }
+        try {
+            result = valueOf(string);
+        } catch (IllegalArgumentException e) {
+            //...
         }
         return result;
     }
