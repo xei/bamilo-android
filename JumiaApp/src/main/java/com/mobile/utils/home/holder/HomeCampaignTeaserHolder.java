@@ -71,7 +71,7 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
             itemView.setVisibility(View.GONE);
         }
         // Case campaign with timer but is invalid
-        else if (!campaigns.get(MAIN_POSITION).hasTimer() && !campaigns.get(MAIN_POSITION).hasValidRealTimer()) {
+        else if (campaigns.get(MAIN_POSITION).hasTimer() && !campaigns.get(MAIN_POSITION).hasValidRealTimer()) {
             popOutDatedMainCampaign();
         }
         // Case valid campaign
@@ -146,8 +146,10 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            counter.cancel();
-            counter = null;
+            if (counter != null) {
+                counter.cancel();
+                counter = null;
+            }
             mParentClickListener.onClick(v);
         }
     };

@@ -405,18 +405,15 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         Log.i(TAG, "ON CLICK TEASER ITEM");
         // Flag to mark as intercepted
         boolean intercepted = true;
-        // Get origin
-        TeaserGroupType originType = (TeaserGroupType) view.getTag(R.id.origin_type);
         // Get type
         String targetType = (String) view.getTag(R.id.target_type);
         // Get url
         String targetUrl = (String) view.getTag(R.id.target_url);
         // Get title
         String targetTitle = (String) view.getTag(R.id.target_title);
+        // Get origin id
+        int origin = (int) view.getTag(R.id.target_teaser_origin);
         Log.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " URL:" + targetUrl);
-        if(originType != null){
-            Log.i(TAG, "CLICK ORIGIN: TYPE:" + originType);
-        }
         // Get target type
         TeaserTargetType target = TeaserTargetType.byString(targetType);
         switch (target) {
@@ -424,7 +421,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
                 gotoCatalog(targetUrl, targetTitle);
                 break;
             case CAMPAIGN:
-                gotoCampaignPage();
+                gotoCampaignPage(origin, targetTitle, targetUrl);
                 break;
             case STATIC_PAGE:
                 gotoStaticPage(targetTitle, targetUrl);
@@ -446,16 +443,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     private void gotoCatalog(String title, String url) {
         Log.i(TAG, "GOTO CATALOG PAGE: " + title + " " + url);
-        // Validate url
-        if (!TextUtils.isEmpty(url)) {
-            Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
-            bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES, false);
-            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
-            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-        }
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
+        bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES, false);
+        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -463,14 +456,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     private void gotoProductDetail(String url) {
         Log.i(TAG, "GOTO PRODUCT DETAIL: " + url);
-        // Validate url
-        if (!TextUtils.isEmpty(url)) {
-            Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-        }
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -478,32 +467,36 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     private void gotoStaticPage(String title, String url) {
         Log.i(TAG, "GOTO STATIC PAGE: " + title + " " + url);
-        // Validate url
-        if (!TextUtils.isEmpty(url)) {
-            Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
-            getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
-        }
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+        getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
      * Goto campaign page
      */
-    private void gotoCampaignPage() {
-        // Get campaign group
-        int position = TeaserGroupType.CAMPAIGN_TEASERS.ordinal();
-        // Validate
-        if(mHomePage != null && mHomePage.hasTeasers()) {
-            // Campaign group
-            BaseTeaserGroupType group = mHomePage.getTeasers().get(position);
-            ArrayList<TeaserCampaign> list = createCampaign(group);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, list);
-            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
-            getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    private void gotoCampaignPage(int origin, String targetTitle, String targetUrl) {
+        // Get group
+        BaseTeaserGroupType group = mHomePage.getTeasers().get(origin);
+        // Case campaign origin
+        ArrayList<TeaserCampaign> campaigns;
+        if (origin == TeaserGroupType.CAMPAIGN_TEASERS.ordinal()) {
+            campaigns = createCampaign(group);
         }
+        // Case other origin
+        else {
+            campaigns = new ArrayList<>();
+            TeaserCampaign campaign = new TeaserCampaign();
+            campaign.setTitle(targetTitle);
+            campaign.setUrl(targetUrl);
+            campaigns.add(campaign);
+        }
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
+        // Switch
+        getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**

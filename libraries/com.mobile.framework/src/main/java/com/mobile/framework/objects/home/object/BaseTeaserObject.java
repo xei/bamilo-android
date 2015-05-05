@@ -30,11 +30,13 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
     protected long mTimerInMillis;
 
+    protected int mTeaserTypeId;
+
     /**
      * Empty constructor
      */
-    public BaseTeaserObject() {
-        // ...
+    public BaseTeaserObject(int teaserTypeId) {
+        mTeaserTypeId = teaserTypeId;
     }
 
     /*
@@ -75,6 +77,10 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
     public long getRealTimer() {
         return mTimerInMillis - System.currentTimeMillis();
+    }
+
+    public int getTeaserTypeId() {
+        return mTeaserTypeId;
     }
 
     /*
@@ -133,6 +139,7 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         dest.writeString(this.mImageTablet);
         dest.writeString(this.mTargetType);
         dest.writeLong(this.mTimerInMillis);
+        dest.writeInt(this.mTeaserTypeId);
     }
 
     protected BaseTeaserObject(Parcel in) {
@@ -143,6 +150,7 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         this.mImageTablet = in.readString();
         this.mTargetType = in.readString();
         this.mTimerInMillis = in.readLong();
+        this.mTeaserTypeId = in.readInt();
     }
 
     public static final Creator<BaseTeaserObject> CREATOR = new Creator<BaseTeaserObject>() {
