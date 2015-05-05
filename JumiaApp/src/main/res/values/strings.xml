@@ -388,10 +388,4 @@
     <string name="kickout_page_text1">So much that the shop is currently full, and we cannot welcome new customers at the moment.</string>
     <string name="kickout_page_text2">We want to provide you with the best possible shopping experience, so we would like to ask you to try again later.</string>
 
-    <string name="see_more_offers">SEE MORE OFFERS</string>
-    <string name="shops_of_the_week">Shops of the week</string>
-    <string name="featured_stores">Featured Stores</string>
-    <string name="you_may_like">You May Like</string>
-    <string name="top_sellers">Top Sellers</string>
-
 </resources>

@@ -855,12 +855,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * Shows Overload screen
      */
     private void showOverLoadView(){
-
         Intent intent = new Intent(getApplicationContext(), OverLoadErrorActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
     //    if(getSupportFragmentManager() != null){
     //        OverlayDialogFragment.getInstance(R.layout.kickout_page).show(getSupportFragmentManager(), null);
     //    }

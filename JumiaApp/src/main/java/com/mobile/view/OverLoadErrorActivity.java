@@ -1,12 +1,10 @@
 package com.mobile.view;
 
 import android.annotation.TargetApi;
-import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 
 import de.akquinet.android.androlog.Log;
@@ -19,29 +17,16 @@ import de.akquinet.android.androlog.Log;
 public class OverLoadErrorActivity extends FragmentActivity {
 
     private final static String TAG = LogTagHelper.create(OverLoadErrorActivity.class);
-    private boolean IsconfigChange ;
+//    private boolean IsconfigChange ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         setContentView(R.layout.kickout_page);
-
-        // control whether to allow the activity to rotate or not
-        if(DeviceInfoHelper.isTabletDevice(getApplicationContext())){
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-        IsconfigChange = true ;
-        setContent();
+//        IsconfigChange = true ;
     }
 
-    /**
-     * set activity content
-     */
-    private void setContent(){
-    }
 
     @Override
     protected void onStart() {
@@ -70,50 +55,32 @@ public class OverLoadErrorActivity extends FragmentActivity {
         Log.i(TAG, "ON PAUSE");
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onStop()
-     */
+
+//    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 //    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        Log.i(TAG, "ON STOP");
+//    public boolean isChangingConfigurations() {
+//        if(android.os.Build.VERSION.SDK_INT >= 11){
+//            Log.i("DEBUG", "Orientation changed api >= 11 ");
+//            return super.isChangingConfigurations();
+//        }else {
+//            Log.i("DEBUG", "Orientation changed api < 11 ");
+//            return IsconfigChange;
+//        }
 //    }
-
-
-
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    @Override
-    public boolean isChangingConfigurations() {
-        if(android.os.Build.VERSION.SDK_INT >= 11){
-            Log.i("DEBUG", "Orientation changed api >= 11 ");
-            return super.isChangingConfigurations();
-        }else {
-            Log.i("DEBUG", "Orientation changed api < 11 ");
-            return IsconfigChange;
-        }
-    }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onStop() {
         super.onStop();
-        if(isChangingConfigurations()){
-            Log.i("DEBUG", "isChangingConfirgurations OnStop Called");
-        }  else{
-            finish();
-            Log.i("DEBUG", "OnStop Called");
-        }
+//        if(isChangingConfigurations()){
+//            Log.i("DEBUG", "isChangingConfirgurations OnStop Called");
+//        }  else{
+//            finish();
+//            Log.i("DEBUG", "OnStop Called");
+//        }
     }
 
 
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onDestroy()
-     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
