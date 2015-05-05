@@ -9,6 +9,7 @@ import org.json.JSONObject;
  * @author nutzer2
  *
  */
+@Deprecated
 public class UnknownTeaserGroup extends TeaserSpecification<ITargeting> {
 	
 	public static final UnknownTeaserGroup INSTANCE = new UnknownTeaserGroup();

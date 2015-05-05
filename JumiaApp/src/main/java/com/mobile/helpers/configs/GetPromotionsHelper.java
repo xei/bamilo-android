@@ -3,9 +3,6 @@
  */
 package com.mobile.helpers.configs;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Bundle;
 
 import com.mobile.framework.enums.RequestType;
@@ -16,6 +13,9 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -44,34 +44,23 @@ public class GetPromotionsHelper extends BaseHelper {
 
     @Override
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-        // TODO Auto-generated method stub
         Log.d(TAG, "parseResponseBundle GetPromotionsHelper");
-
         Promotion promo = new Promotion();
         try {
-
             if (null != jsonObject) {
                 promo.initialize(jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG));
             }
-
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PROMOTIONS);
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, promo);
-//        long elapsed = System.currentTimeMillis() - JumiaApplication.INSTANCE.timeTrackerMap.get(EventType.GET_PROMOTIONS);
-//        Log.i("REQUEST", "event EVENT_TYPE response : "+bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY)+" time spent : "+elapsed);
-//        String trackValue = bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY) + " : "+elapsed;
-//        JumiaApplication.INSTANCE.writeToTrackerFile(trackValue);
         return bundle;
     }
 
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
-        // TODO Auto-generated method stub
         Log.d("TRACK", "parseErrorBundle GetTeasersHelper");
-
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_PROMOTIONS);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);

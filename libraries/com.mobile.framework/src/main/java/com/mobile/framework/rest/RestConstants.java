@@ -11,6 +11,7 @@ public class RestConstants {
 
     // Common JSON constants
     public static final String JSON_DATA_TAG = "data";
+    public static final String JSON_ACTION_NAME_TAG = "action_name";
     public static final String JSON_ID_TAG = "id";
     public final static String JSON_SUCCESS_TAG = "success";
     public final static String JSON_MESSAGE_IN_MESSAGES_TAG = "message";
@@ -89,6 +90,8 @@ public class RestConstants {
     public static final String JSON_NAVIGATION_URL_TAG = "navigation_url";
     public static final String JSON_IMAGE_TAG = "image";
     public static final String JSON_IMAGE_URL_TAG = "image_url";
+    public static final String JSON_IMAGE_PORTRAIT_TAG = "image_portrait";
+    public static final String JSON_IMAGE_LANDSCAPE_TAG = "image_landscape";
 
     // ProductService Tags
     public static final String JSON_SUGGESTIONS_TAG = "suggestions";
@@ -253,6 +256,7 @@ public class RestConstants {
     public static final String JSON_SIZES_TAG = "sizes";
     public static final String JSON_SIZE_TAG = "size";
     public static final String JSON_REMAINING_TIME_TAG = "remaining_time";
+    public static final String JSON_UNIX_TIME_TAG = "unix_time";
 
 
     // TeaserBrandElement Tags
@@ -300,6 +304,7 @@ public class RestConstants {
 
     // ProductReviewComment Tags
     public static final String JSON_TITLE_TAG = "title";
+    public static final String JSON_SUB_TITLE_TAG = "sub_title";
 
     // ProductSimple Tags
     public static final String JSON_META_TAG = "meta";

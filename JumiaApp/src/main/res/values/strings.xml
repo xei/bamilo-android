@@ -372,6 +372,14 @@
     <string name="address_creation_failed_title">Address creation failed</string>
     <string name="address_creation_failed_main">Please fill correctly all form fields.</string>
 
+    <!--NEW 2.5 -->
+    <string name="see_more_offers">SEE MORE OFFERS</string>
+    <string name="shops_of_the_week">Shops of the week</string>
+    <string name="featured_stores">Featured Stores</string>
+    <string name="you_may_like">You May Like</string>
+    <string name="top_sellers">Top Sellers</string>
+
+
     <string name="product_desc_summary_title">Summary</string>
     <string name="description">Description</string>
     <string name="key_features">Key Features</string>

@@ -96,7 +96,7 @@ public class TrackerDelegator {
 
     private static final String JSON_TAG_ORDER_NR = "orderNr";
     private static final String JSON_TAG_GRAND_TOTAL = "grandTotal";
-    private static final String JSON_TAG_GRAND_TOTAL_CONVERTED = "grandTotal_euroConverted";
+    private static final String JSON_TAG_GRAND_TOTAL_CONVERTED = "grandTotal_converted";
     private static final String JSON_TAG_ITEMS_JSON = "itemsJson";
     
     private static final String SESSION_COUNTER = "sessionCounter";
@@ -405,88 +405,47 @@ public class TrackerDelegator {
      * @param params
      */
     public static void trackCheckoutStep(Bundle params) {
-
-        String email = params.getString(EMAIL_KEY);
-        final TrackingEvent event = (TrackingEvent) params.getSerializable(GA_STEP_KEY);
-
-        final String hashedemail = Utils.cleanMD5(email);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String user_id = hashedemail;
-                if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null
-                        && JumiaApplication.CUSTOMER.getIdAsString().length() > 0) {
-                    user_id = JumiaApplication.CUSTOMER.getIdAsString();
-                }
-                
-                AnalyticsGoogle.get().trackEvent(event, user_id, 0l);
-                
-            }
-
-        }).start();
+        try {
+            String email = params.getString(EMAIL_KEY);
+            TrackingEvent event = (TrackingEvent) params.getSerializable(GA_STEP_KEY);
+            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+            AnalyticsGoogle.get().trackEvent(event, TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, 0l);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON TRACK CHECKOUT STEP");
+        }
     }
 
     public static void trackSignUp(String email) {
-        final String hashedemail = Utils.cleanMD5(email);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String user = hashedemail;
-                if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null
-                        && JumiaApplication.CUSTOMER.getIdAsString().length() > 0) {
-                    user = JumiaApplication.CUSTOMER.getIdAsString();
-                }
-                // GA
-                AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, user, 0l);
-            }
-
-        }).start();
+        try {
+            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+            // GA
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, 0l);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON TRACK SIGN UP");
+        }
     }
 
     /**
      * Track Payment Method
-     * 
-     * @param params
      */
-    public static void trackPaymentMethod(Bundle params) {
-        String email = params.getString(EMAIL_KEY);
-        final String payment = params.getString(PAYMENT_METHOD_KEY);
-
-        final String hashedemail = Utils.cleanMD5(email);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String user_id = hashedemail;
-                if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null
-                        && JumiaApplication.CUSTOMER.getIdAsString().length() > 0) {
-                    user_id = JumiaApplication.CUSTOMER.getIdAsString();
-                }
-                AnalyticsGoogle.get().trackPaymentMethod(user_id, payment);
-                //GTM
-                GTMManager.get().gtmTrackChoosePayment(payment);
-            }
-
-        }).start();
-        
+    public static void trackPaymentMethod(String userId, String email, String payment) {
+        try {
+            // GA
+            AnalyticsGoogle.get().trackPaymentMethod(TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, payment);
+            // GTM
+            GTMManager.get().gtmTrackChoosePayment(payment);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON TRACK PAYMENT METHOD");
+        }
     }
 
-    public static void trackNativeCheckoutError(Bundle params) {
-        String email = params.getString(EMAIL_KEY);
-        final String error = params.getString(ERROR_KEY);
-
-        final String hashedemail = Utils.cleanMD5(email);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String user_id = hashedemail;
-                if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null
-                        && JumiaApplication.CUSTOMER.getIdAsString().length() > 0) {
-                    user_id = JumiaApplication.CUSTOMER.getIdAsString();
-                }
-                AnalyticsGoogle.get().trackNativeCheckoutError(user_id, error);
-            }
-
-        }).start();
+    public static void trackNativeCheckoutError(String userId, String email, String error) {
+        try {
+            // GA
+            AnalyticsGoogle.get().trackNativeCheckoutError(TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, error);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON TRACK NC ERROR");
+        }
     }
 
     /**

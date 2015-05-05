@@ -22,7 +22,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  *
  */
-class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListener<Integer>, OnClickListener {
+public class FilterPriceFragment extends Fragment implements OnRangeSeekBarChangeListener<Integer>, OnClickListener {
 
     private static final String TAG = FilterPriceFragment.class.getSimpleName();
     
