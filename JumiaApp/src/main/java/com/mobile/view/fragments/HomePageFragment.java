@@ -426,7 +426,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             case STATIC_PAGE:
                 gotoStaticPage(targetTitle, targetUrl);
                 break;
-            case PDV:
+            case PRODUCT_DETAIL:
                 gotoProductDetail(targetUrl);
                 break;
             case UNKNOWN:
@@ -481,7 +481,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         BaseTeaserGroupType group = mHomePage.getTeasers().get(origin);
         // Case campaign origin
         ArrayList<TeaserCampaign> campaigns;
-        if (origin == TeaserGroupType.CAMPAIGN_TEASERS.ordinal()) {
+        if (origin == TeaserGroupType.CAMPAIGNS.ordinal()) {
             campaigns = createCampaign(group);
         }
         // Case other origin
