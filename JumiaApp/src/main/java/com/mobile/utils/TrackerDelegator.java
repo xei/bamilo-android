@@ -1213,7 +1213,7 @@ public class TrackerDelegator {
                 public void run() {
                     for (PurchaseItem item : items) {
                         if (skus.contains(item.sku)) {
-                            AnalyticsGoogle.get().trackEvent(TrackingEvent.BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+                            AnalyticsGoogle.get().trackEvent(TrackingEvent.MAIN_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
                         }
                     }
                 }

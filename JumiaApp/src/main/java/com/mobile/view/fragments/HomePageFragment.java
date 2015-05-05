@@ -405,6 +405,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         Log.i(TAG, "ON CLICK TEASER ITEM");
         // Flag to mark as intercepted
         boolean intercepted = true;
+        // Get origin
+        TeaserGroupType originType = (TeaserGroupType) view.getTag(R.id.origin_type);
         // Get type
         String targetType = (String) view.getTag(R.id.target_type);
         // Get url
@@ -412,6 +414,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         // Get title
         String targetTitle = (String) view.getTag(R.id.target_title);
         Log.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " URL:" + targetUrl);
+        if(originType != null){
+            Log.i(TAG, "CLICK ORIGIN: TYPE:" + originType);
+        }
         // Get target type
         TeaserTargetType target = TeaserTargetType.byString(targetType);
         switch (target) {
@@ -448,6 +453,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
             bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES, false);
+            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
             getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
@@ -462,6 +468,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
@@ -476,6 +483,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
             getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
@@ -493,6 +501,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             ArrayList<TeaserCampaign> list = createCampaign(group);
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, list);
+            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
             getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
