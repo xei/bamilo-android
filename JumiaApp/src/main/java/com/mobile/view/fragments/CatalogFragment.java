@@ -600,11 +600,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     public void onSubmitFilterValues(ContentValues filterValues) {
         Log.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
-        // TODO: Validate new filterValues and current are the same
         // Contains the new search query (Brand filter)
         if (filterValues.containsKey(DialogFilterFragment.BRAND)) {
             // Used to indicate that has filter q=<BRAND>
             mBrandQuery = filterValues.getAsString(DialogFilterFragment.BRAND);
+            // Remove brand from values (API: not supported)
+            filterValues.remove(DialogFilterFragment.BRAND);
         }
         // Clean brand filter
         else {
