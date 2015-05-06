@@ -48,6 +48,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.social.FacebookHelper;
@@ -130,6 +131,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private KeyboardState adjustState = KeyboardState.ADJUST_CONTENT;
 
+    private int mDeepLinkOrigin = -1;
+
     /**
      * Constructor with layout to inflate
      */
@@ -198,6 +201,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle arguments = getArguments();
+        if(arguments != null && arguments.containsKey(ConstantsIntentExtra.DEEP_LINK_ORIGIN)){
+            mDeepLinkOrigin = arguments.getInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN);
+        }
     }
 
     /*
@@ -465,6 +472,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     @Override
     public boolean allowBackPressed() {
+        if (mDeepLinkOrigin != -1 && mDeepLinkOrigin == DeepLinkManager.FROM_URI && getBaseActivity() != null) {
+            getBaseActivity().finish();
+            return true;
+        }
         // No intercept the back pressed
         return false;
     }
