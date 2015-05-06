@@ -40,6 +40,7 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.RadioGroupLayoutVertical;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
@@ -258,6 +259,14 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         paymentMethodsContainer.addView(formGenerator.getContainer());
         loadSavedValues(mSavedState, formGenerator.getIterator());
         paymentMethodsContainer.refreshDrawableState();
+        try{
+            if(formGenerator.getControlsCount() == 1){
+                int selected = ((RadioGroupLayoutVertical)formGenerator.getItem(0).getEditControl()).getSelectedIndex();
+                ((RadioGroupLayoutVertical)formGenerator.getItem(0).getEditControl()).getChildAt(selected).requestFocus();
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }desktop_banner
         prepareCouponView();
         showFragmentContentContainer();
     }
