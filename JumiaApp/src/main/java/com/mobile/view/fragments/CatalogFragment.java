@@ -111,6 +111,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     
     private boolean isFromBanner; // Verify if campaign page was open via a banner
 
+    private boolean mIsToShowGridLayout = false;
+
     /**
      * Create and return a new instance.
      *
@@ -146,7 +148,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         // Load line to active top button
-        mTopButtonActivateLine = getResources().getInteger(R.integer.activate_go_top_buttom_line);
+        mTopButtonActivateLine = setButtonActiveLine(mIsToShowGridLayout);
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -183,8 +185,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
         // Load user preferences
-        boolean isToShowGridLayout = CustomerPreferences.getCatalogLayout(getBaseActivity());
-        mNumberOfColumns = getResources().getInteger(isToShowGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns);
+        mIsToShowGridLayout = CustomerPreferences.getCatalogLayout(getBaseActivity());
+        mNumberOfColumns = getResources().getInteger(mIsToShowGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns);
         // Get sort button 
         mSortButton = (TextView) view.findViewById(R.id.catalog_bar_button_sort);
         // Get filter button
@@ -192,7 +194,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get switch button
         View mColumnsButton = view.findViewById(R.id.catalog_bar_button_columns);
         mColumnsButton.setOnClickListener(this);
-        mColumnsButton.setSelected(isToShowGridLayout);
+        mColumnsButton.setSelected(mIsToShowGridLayout);
+        mTopButtonActivateLine = setButtonActiveLine(mIsToShowGridLayout);
         // Get up button
         mTopButton = view.findViewById(R.id.catalog_button_top);
         mTopButton.setOnClickListener(this);
@@ -627,20 +630,22 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onClickSwitchColumnsButton(View button) {
         Log.i(TAG, "ON CLICK COLUMNS BUTTON");
         // Case selected is showing the GRID LAYOUT and the LIST ICON
-        boolean isShowingGridLayout = button.isSelected();
+        boolean mIsToShowGridLayout = button.isSelected();
         // Save user preference 
-        CustomerPreferences.saveCatalogLayout(getBaseActivity(), !isShowingGridLayout);
+        CustomerPreferences.saveCatalogLayout(getBaseActivity(), !mIsToShowGridLayout);
         // Update the icon
-        button.setSelected(!isShowingGridLayout);
+        button.setSelected(!mIsToShowGridLayout);
+        //change back to top line number
+        mTopButtonActivateLine = setButtonActiveLine(!mIsToShowGridLayout);
         // Update the number of columns
-        mNumberOfColumns = getResources().getInteger(!isShowingGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns);
+        mNumberOfColumns = getResources().getInteger(!mIsToShowGridLayout ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns);
         // Update the columns and layout
         GridLayoutManager manager = (GridLayoutManager) mGridView.getLayoutManager();
         manager.setSpanCount(mNumberOfColumns);
         manager.requestLayout();
-        ((CatalogGridAdapter) mGridView.getAdapter()).updateLayout(!isShowingGridLayout);
+        ((CatalogGridAdapter) mGridView.getAdapter()).updateLayout(!mIsToShowGridLayout);
         // Track catalog
-        TrackerDelegator.trackCatalogSwitchLayout((!isShowingGridLayout) ? TRACK_LIST : TRACK_GRID);
+        TrackerDelegator.trackCatalogSwitchLayout((!mIsToShowGridLayout) ? TRACK_LIST : TRACK_GRID);
     }
 
     /**
@@ -659,6 +664,19 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 mGridView.smoothScrollToPosition(FIRST_POSITION);
             }
         });
+    }
+
+    /**
+     * method that calculates the line number where back to top button shows
+     *
+     * @return line number
+     */
+    private int setButtonActiveLine(Boolean isShowingGridLayout){
+        if (!isShowingGridLayout) {
+            return getResources().getInteger(R.integer.activate_go_top_buttom_line);
+        } else {
+            return getResources().getInteger(R.integer.activate_go_top_buttom_line_grid);
+        }
     }
 
     /**
@@ -883,7 +901,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             showFeaturedBoxNoResult(featuredBox);
         }
         // Case network errors except No network
-        else if(errorCode != null && errorCode.isNetworkError() && errorCode != ErrorCode.NO_NETWORK){
+        else if(errorCode != null && errorCode.isNetworkError() && errorCode != ErrorCode.NO_NETWORK && errorCode != ErrorCode.SERVER_OVERLOAD){
             showFilterUnexpectedError();
         }
         // Case No Network
