@@ -76,6 +76,7 @@ public class RestConstants {
     public static final String JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG = "newsletter_categories_subscribed";
     public static final String JSON_DELIVERY_TIME = "delivery_time";
     public static final String JSON_RELATED_FIELD_TAG = "related_field";
+    public static final String JSON_CHECKED_TAG = "checked";
 
     // FieldValidation Tags
     public static final String JSON_REQUIRED_TAG = "required";
@@ -489,7 +490,6 @@ public class RestConstants {
      */
 
     public static final String JSON_VALID_TAG = "valid";
-    public static final String JSON_INVALID_TAG = "invalid";
     public static final String JSON_VARIATION_NAME_TAG = "variation_name";
     public static final String JSON_VARIATION_VALUE_TAG = "variation_value";
 

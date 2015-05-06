@@ -57,7 +57,12 @@ public class FormFieldMeta implements IFormField {
 
 	@Override
 	public ArrayList<RelatedFieldOption> getRelatedFieldOptions() {
-		return null;
+		return metaFormField.getRelatedFieldOptions();
+	}
+
+	@Override
+	public int getPreSelectedRelatedOptionPosition() {
+		return metaFormField.getPreSelectedRelatedOptionPosition();
 	}
 
 	@Override
@@ -82,7 +87,7 @@ public class FormFieldMeta implements IFormField {
 
 	@Override
 	public void setValidation(FieldValidation validation) {
-
+		metaFormField.setValidation(validation);
 	}
 
 	@Override
@@ -111,15 +116,6 @@ public class FormFieldMeta implements IFormField {
 				
 		return sb.toString();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.mobile.forms.IFormField#getDataValues()
-	 */
-    @Override
-    public Map<String, String> getDataValues() {
-        return metaFormField.getDataValues();
-    }
     
     @Override
     public Map<String, String> getDataCalls() {

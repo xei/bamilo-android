@@ -14,6 +14,7 @@ package com.mobile.forms;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.rest.RestConstants;
@@ -30,10 +31,6 @@ import de.akquinet.android.androlog.Log;
  */
 public class FieldValidation implements IJSONSerializable, Parcelable {
 private static final String TAG = FieldValidation.class.getName();
-//	private static final String JSON_REQUIRED_TAG = "required";
-//	private static final String JSON_MIN_TAG = "min";
-//	private static final String JSON_MAX_TAG = "max";
-//    private static final String JSON_REGEX_TAG = "regex";
 
 	public static int MIN_CHARACTERS = 0;
 	public static int MAX_CHARACTERS = 40;
@@ -93,17 +90,20 @@ private static final String TAG = FieldValidation.class.getName();
 		
 		min = jsonObject.optInt(RestConstants.JSON_MIN_TAG, MIN_CHARACTERS);
 		max = jsonObject.optInt(RestConstants.JSON_MAX_TAG, MAX_CHARACTERS);
-        regex = jsonObject.optString(RestConstants.JSON_REGEX_TAG, "");
+        regex = jsonObject.optString(RestConstants.JSON_REGEX_TAG);
 
         // CASE "match: {pattern: "/^[0-9]+$/u" }"
-        if(regex.equalsIgnoreCase("")){        
+        if (TextUtils.isEmpty(regex)) {
             //this extra parsing option exists because
             JSONObject matchObject = jsonObject.optJSONObject(RestConstants.JSON_MATCH_TAG);
             if(null != matchObject){
                 regex = matchObject.optString(RestConstants.JSON_PATTERN_TAG, DEFAULT_REGEX);
+                // TODO: Remove this hack after API fix
+                regex = regex.replace("$/u", "$/");
             } else {
                 regex =  DEFAULT_REGEX;
             }
+            //Log.i(TAG, "RADIO RELATED: set regex" + regex + " " + jsonObject.toString());
         }
         
         
@@ -117,7 +117,7 @@ private static final String TAG = FieldValidation.class.getName();
         
         if ( regex.charAt( regex.length() - 1) == '/' ) {
             regex = regex.substring(0, regex.length() - 1);
-        }        
+        }
         
 		return true;
 	}

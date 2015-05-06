@@ -29,11 +29,6 @@ import de.akquinet.android.androlog.Log;
 
 public class RadioGroupLayoutVertical extends RadioGroup {
     private final static String TAG = LogTagHelper.create(RadioGroupLayoutVertical.class);
-
-    public interface OnRadioGroupSelected {
-        public void onRadioGroupItemSelected(int position);
-    }
-
     public static final int NO_DEFAULT_SELECTION = -1;
 
     private ArrayList<String> mItems;
@@ -43,7 +38,6 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     private RadioGroup mGroup;
     private LayoutInflater mInflater;
     Context mContext;
-    private OnCheckedChangeListener onCheckChangeListener;
 
     public RadioGroupLayoutVertical(Context context) {
         super(context);
@@ -60,28 +54,6 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     private void init() {
         mInflater = LayoutInflater.from(getContext());
         mGroup = this;
-    }
-
-    public void setItems(ArrayList<?> items, OnCheckedChangeListener listener) {
-        Log.i(TAG, "RADIO RELATED: items size = " + items.size());
-        addGroupItems(items);
-        mGroup.setOnCheckedChangeListener(listener);
-    }
-
-    /**
-     * TODO: Validate this method to use the R.layout.form_radiobutton and not button.setPadding()
-     */
-    private void addGroupItems(ArrayList<?> items) {
-        try {
-            mGroup.removeAllViews();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-        for (Object item : items) {
-            RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, mGroup, false);
-            button.setText(item.toString());
-            mGroup.addView(button);
-        }
     }
 
     public void setItems(ArrayList<String> items, HashMap<String, Form> map, int defaultSelected) {
@@ -271,7 +243,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     }
 
     public boolean validateSelected() {
-        boolean result = false;
+        boolean result;
         if (mGroup.getChildAt(mGroup.getCheckedRadioButtonId()) instanceof RadioButton) {
             result = true;
         } else if(!(mGroup.getChildAt(mGroup.getCheckedRadioButtonId()) instanceof RadioButton) && !generatedForms.containsKey(mGroup.getCheckedRadioButtonId())){
@@ -303,12 +275,6 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     public String getSelectedFieldName() {
         String result = mItems.get(mGroup.getCheckedRadioButtonId());
         return result;
-    }
-
-    @Override
-    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
-        super.setOnCheckedChangeListener(listener);
-        this.onCheckChangeListener = listener;
     }
 
 }

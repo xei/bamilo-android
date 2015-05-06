@@ -9,10 +9,8 @@ import com.mobile.framework.rest.RestConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.akquinet.android.androlog.Log;
-
 /**
- *
+ * Class used to represent the new generic item from data set form field
  */
 public class RelatedFieldOption implements IJSONSerializable, Parcelable {
 
@@ -24,6 +22,11 @@ public class RelatedFieldOption implements IJSONSerializable, Parcelable {
 
     private FieldValidation mRules;
 
+    private boolean isDefault;
+
+    /**
+     * Constructor
+     */
     public RelatedFieldOption() {
         // ...
     }
@@ -40,8 +43,8 @@ public class RelatedFieldOption implements IJSONSerializable, Parcelable {
         return mRules;
     }
 
-    public boolean hasRules() {
-        return mRules != null;
+    public boolean isDefault() {
+        return isDefault;
     }
 
     @Override
@@ -50,8 +53,8 @@ public class RelatedFieldOption implements IJSONSerializable, Parcelable {
     }
 
     /* (non-Javadoc)
-         * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
-         */
+     * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
+     */
     @Override
     public boolean initialize(JSONObject jsonObject) {
         boolean result = false;
@@ -60,13 +63,15 @@ public class RelatedFieldOption implements IJSONSerializable, Parcelable {
             mLabel = jsonObject.getString(RestConstants.JSON_LABEL_TAG);
             // Get value
             mValue = jsonObject.getString(RestConstants.JSON_VALUE_TAG);
+            // Get default
+            isDefault = jsonObject.optBoolean(RestConstants.JSON_CHECKED_TAG);
             // Get rules
             JSONObject rules = jsonObject.optJSONObject(RestConstants.JSON_RULES_TAG);
             if (rules != null) {
                 mRules = new FieldValidation();
                 mRules.initialize(rules);
             }
-            Log.i(TAG, "DATASET: " + mLabel + " " + mValue + " " + hasRules());
+            //Log.i(TAG, "DATASET: " + mLabel + " " + mValue + " " + hasRules() + " " + isDefault);
             result = true;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -92,16 +97,17 @@ public class RelatedFieldOption implements IJSONSerializable, Parcelable {
         dest.writeString(mLabel);
         dest.writeString(mValue);
         dest.writeValue(mRules);
+        dest.writeByte((byte) (isDefault ? 0x01 : 0x00));
     }
 
     /**
      * Parcel constructor
-     * @param in
      */
     private RelatedFieldOption(Parcel in) {
         mLabel = in.readString();
         mValue = in.readString();
         mRules = (FieldValidation) in.readValue(FieldValidation.class.getClassLoader());
+        isDefault = in.readByte() != 0x00;
     }
 
     /**

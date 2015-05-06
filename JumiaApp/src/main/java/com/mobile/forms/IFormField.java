@@ -26,6 +26,8 @@ public interface IFormField {
 
     ArrayList<RelatedFieldOption> getRelatedFieldOptions();
 
+    int getPreSelectedRelatedOptionPosition();
+
     String getRelatedFieldKey();
 
     void setOnDataSetReceived(OnDataSetReceived listener);
@@ -39,8 +41,6 @@ public interface IFormField {
     Map<String, IFormField> getSubFormFields();
 
     void setSubFormFields(Map<String, IFormField> formFields);
-
-    Map<String, String> getDataValues();
 
     Map<String, String> getDataCalls();
 
