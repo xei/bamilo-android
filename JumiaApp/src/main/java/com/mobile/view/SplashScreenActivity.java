@@ -23,6 +23,7 @@ import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.ConstantsSharedPrefs;
+import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
@@ -593,6 +594,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
                     dialog.show(getSupportFragmentManager(), null);
                     break;
+                case SERVER_OVERLOAD:
+                    Log.w("SHOW OVERLOAD");
+                    ActivitiesWorkFlow.showOverLoadErrorActivity(this);
+                    break;
                 default:
                     if (dialog != null) {
                         try {
@@ -659,13 +664,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @author sergiopereira
      */
     protected void showFragmentRetry() {
-        // Hide maintenance visibility
-        if (mMainFallBackStub.getVisibility() == View.VISIBLE) {
-            mMainFallBackStub.setVisibility(View.GONE);
+        if(mMainFallBackStub != null){
+            // Hide maintenance visibility
+            if (mMainFallBackStub.getVisibility() == View.VISIBLE) {
+                mMainFallBackStub.setVisibility(View.GONE);
+            }
+            // Show no network
+            mRetryFallBackStub.setVisibility(View.VISIBLE);
+            // Set view
         }
-        // Show no network
-        mRetryFallBackStub.setVisibility(View.VISIBLE);
-        // Set view
         try {
             findViewById(R.id.fragment_root_retry_network).setOnClickListener(this);
         } catch (NullPointerException e) {
@@ -844,5 +851,4 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Retry
         retryRequest();
     }
-
 }

@@ -28,6 +28,7 @@ import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.Darwin;
@@ -1000,6 +1001,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         EventTask eventTask = (EventTask) bundle.getSerializable(Constants.BUNDLE_EVENT_TASK);
 
+
         if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
             return false;
         }
@@ -1074,6 +1076,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                         });
 
                 dialog.show(getActivity().getSupportFragmentManager(), null);
+                return true;
+            case SERVER_OVERLOAD:
+                if(getBaseActivity() != null){
+                    ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
+                    showFragmentErrorRetry();
+                }
                 return true;
             default:
                 break;
