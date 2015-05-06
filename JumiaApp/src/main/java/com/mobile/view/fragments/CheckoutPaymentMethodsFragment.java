@@ -266,7 +266,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             }
         } catch(Exception e) {
             e.printStackTrace();
-        }desktop_banner
+        }
         prepareCouponView();
         showFragmentContentContainer();
     }
