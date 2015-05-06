@@ -35,7 +35,7 @@
     <dimen name="form_date_width">100dp</dimen>
 
     <!-- NO CONNECTION -->
-    <dimen name="no_connection_label_small_size">16sp</dimen>
+    <dimen name="no_connection_label_small_size">14sp</dimen>
     <dimen name="no_connection_label_details_small_size">11sp</dimen>
 
 

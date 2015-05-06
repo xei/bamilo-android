@@ -183,7 +183,7 @@ android {
          */
         shop {
             applicationId "com.shop.android"
-            minSdkVersion 10
+            minSdkVersion 9
             versionName "1.3"
             versionCode getAppVersionCode(5)
             signingConfig signingConfigs.shopSigning
@@ -228,13 +228,13 @@ dependencies {
     compile 'com.google.android.support:wearable:1.1.0'
     compile 'com.google.android.gms:play-services-wearable:7.0.0'
     /** Android wear releases **/
-    jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
-    jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
-    jumiaSamsungWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
-    jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
-    bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
-    shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
-    darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
+//    jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+//    jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+//    jumiaSamsungWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+//    jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
+//    bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
+//    shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
+//    darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
 }
 
 /**

@@ -9,15 +9,15 @@
  */
 package com.mobile.framework.objects;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.framework.objects.ITargeting.TargetType;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Class that represents the server side product. Contains id, name,
@@ -27,6 +27,7 @@ import com.mobile.framework.utils.LogTagHelper;
  * @author GuilhermeSilva
  * 
  */
+@Deprecated
 public class TeaserBrandElement implements IJSONSerializable, Parcelable{
 	
 	protected final static String TAG = LogTagHelper.create( TeaserBrandElement.class );

@@ -16,6 +16,7 @@ import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.utils.EventType;
 import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.search.GetSearchProductHelper;
+import com.mobile.helpers.teasers.GetShopHelper;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.CatalogSort;
@@ -73,6 +74,7 @@ public class DeepLinkManager {
     private static final String RECENTLY_VIEWED_TAG = "rv";
     private static final String RECENT_SEARCHES_TAG = "rc";
     private static final String FAVORITES_TAG = "w";
+    private static final String SHOPS_IN_SHOP_TAG = "ss";
     public static final String FRAGMENT_TYPE_TAG = "fragment_type";
     public static final String PDV_SIZE_TAG = "size";
 
@@ -128,8 +130,8 @@ public class DeepLinkManager {
     /**
      * Load the deep link view to create the respective bundle for that view.
      *
-     * @param data
-     * @param segments
+     * @param data The URI.
+     * @param segments The list of segments from URI.
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -206,6 +208,9 @@ public class DeepLinkManager {
                 case FAVORITES_TAG:
                     bundle = processFavoritesLink();
                     break;
+                case SHOPS_IN_SHOP_TAG:
+                    bundle = processShopsInShopLink(segments.get(PATH_DATA_POS));
+                    break;
                 default:
                     bundle = processHomeLink();
                     break;
@@ -273,7 +278,7 @@ public class DeepLinkManager {
     /**
      * Method used to create a bundle for catalog view with the search query. <p>JUMIA://com.mobile.jumia.dev/ng/s/cart <p>key: u value: ng/s/cart
      *
-     * @param query
+     * @param query The search query.
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -294,7 +299,7 @@ public class DeepLinkManager {
      * Method used to create a bundle for cart or headless cart view with the respective SKUs. JUMIA://com.jumia.android/ng/cart
      * JUMIA://com.jumia.android/ng/cart/sku1_sku2_sku3
      *
-     * @param segments
+     * @param segments The list of segments from URI.
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -322,8 +327,8 @@ public class DeepLinkManager {
     /**
      * Method used to create a bundle for PDV view with the respective product SKU and size. JUMIA://ng/d/HO525HLAC8VKAFRAMZ?size=6.5
      *
-     * @param segments
-     * @param data
+     * @param segments The list of segments from URI.
+     * @param data The URI.
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -444,8 +449,8 @@ public class DeepLinkManager {
     /**
      * Method used to create a bundle for Catalog view with the respective catalog value. JUMIA://com.jumia.android/eg/c/surprise-your-guests?q=AKOZ--225&price=11720-53620&color_family=Noir--Bleu&size=38--40
      *
-     * @param segments
-     * @param data
+     * @param segments The list of segments from URI.
+     * @param data The URI.
      * @return {@link Bundle}
      * @author sergiopereira
      */
@@ -473,25 +478,23 @@ public class DeepLinkManager {
         return bundle;
     }
 
-//    /**
-//     * Get the adx id value and add it to the received bundle
-//     * @param deepLinkBundle
-//     * @param data
-//     * @author sergiopereira
-//     */
-//    private static void getAdxValues(Bundle deepLinkBundle, Uri data){
-//        // Validate current bundle
-//        if(deepLinkBundle == null || data == null) return;
-//        try {
-//            // Get the adx id
-//            String adxIdValue = data.getQueryParameter(ADX_ID_TAG);
-//            // Add to bundle
-//            deepLinkBundle.putString(ADX_ID_TAG, adxIdValue);
-//        } catch (UnsupportedOperationException e) {
-//            Log.w(TAG, "ON GET ADX VALUE FROM: " + data.toString(), e);
-//            deepLinkBundle.putString(ADX_ID_TAG, null);
-//        }
-//    }
+    /**
+     * Method used to create a bundle for shops in shop view with the respective shop id.<br/>
+     * JUMIA://com.jumia.android/ug/ss/lego_shop_en_UG
+     *
+     * @param innerShopId The shop id
+     * @return {@link Bundle}
+     * @author sergiopereira
+     */
+    private static Bundle processShopsInShopLink(String innerShopId) {
+        Log.i(TAG, "DEEP LINK TO SHOPS IN SHOP: " + innerShopId);
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, innerShopId.replaceAll("-", " "));
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, EventType.GET_SHOP_EVENT.action + "?" + GetShopHelper.INNER_SHOP_TAG + "=" + innerShopId);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.INNER_SHOP);
+        return bundle;
+    }
 
     /**
      * Validate if is a valid link <p># Default case -> JUMIA://com.mobile.jumia.dev/eg/ <p># Other case   -> JUMIA://eg/
@@ -536,7 +539,7 @@ public class DeepLinkManager {
     /**
      * Load the country and set
      *
-     * @param context
+     * @param context The application context
      * @param countryCode The country code
      * @author sergiopereira
      */
@@ -561,7 +564,7 @@ public class DeepLinkManager {
      */
     @Deprecated
     private static void locateCountryCode(Context context, String countryCode) {
-        // Valdiate countries available
+        // Validate countries available
         if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         }
@@ -606,7 +609,7 @@ public class DeepLinkManager {
     /**
      * Get all query parameters from Uri
      *
-     * @param uri
+     * @param uri The URI.
      * @return set of keys
      */
     private static Set<String> getQueryParameterNames(Uri uri) {
@@ -701,7 +704,7 @@ public class DeepLinkManager {
     /**
      * Validate deep link from Push Notification.
      *
-     * @param intent
+     * @param intent The GCM intent.
      * @return true or false
      * @author sergiopereira
      */

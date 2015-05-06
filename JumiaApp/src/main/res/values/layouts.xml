@@ -57,5 +57,36 @@
 
     <!-- PDV -->
     <item name="product_details_fragment_seller_info" type="layout">@layout/_def_product_details_fragment_seller_info</item>
+    <item name="product_summary_fragment" type="layout">@layout/_def_product_summary_fragment</item>
+    <item name="product_specs_fragment" type="layout">@layout/_def_product_specs_fragment</item>
+    <item name="product_specs_container" type="layout">@layout/_def_product_specs_container</item>
+    <item name="product_specs_container_item" type="layout">@layout/_def_product_specs_container_item</item>
+    <item name="details_info_fragment_main" type="layout">@layout/_def_details_info_fragment_main</item>
 
+    <!-- MY ORDERS -->
+    <item name="track_order_fragment" type="layout">@layout/_def_track_order_fragment</item>
+    <item name="myorders_fragment_main" type="layout">@layout/_def_myorders_fragment_main</item>
+
+    <!-- HOME TODO: for Bamilo -->
+    <item name="home_fragment_main" type="layout">@layout/_def_home_fragment_main</item>
+    <item name="home_teaser_brand" type="layout">@layout/_def_home_teaser_brand</item>
+    <item name="home_teaser_brand_item" type="layout">@layout/_def_home_teaser_brand_item</item>
+    <item name="home_teaser_campaign" type="layout">@layout/_def_home_teaser_campaign</item>
+    <item name="home_teaser_featured_stores" type="layout">@layout/_def_home_teaser_featured_stores</item>
+    <item name="home_teaser_featured_stores_item" type="layout">@layout/_def_home_teaser_featured_stores_item</item>
+    <item name="home_teaser_image_loadable" type="layout">@layout/_def_home_teaser_image_loadable</item>
+    <item name="home_teaser_main" type="layout">@layout/_def_home_teaser_main</item>
+    <item name="home_teaser_main_item" type="layout">@layout/_def_home_teaser_main_item</item>
+    <item name="home_teaser_shop" type="layout">@layout/_def_home_teaser_shop</item>
+    <item name="home_teaser_shop_item" type="layout">@layout/_def_home_teaser_shop_item</item>
+    <item name="home_teaser_shop_week" type="layout">@layout/_def_home_teaser_shop_week</item>
+    <item name="home_teaser_small" type="layout">@layout/_def_home_teaser_small</item>
+    <item name="home_teaser_small_item" type="layout">@layout/_def_home_teaser_small_item</item>
+    <item name="home_teaser_top_sellers" type="layout">@layout/_def_home_teaser_top_sellers</item>
+    <item name="home_teaser_top_sellers_item" type="layout">@layout/_def_home_teaser_top_sellers_item</item>
+
+
+
+    <!--KICK OUT -->
+    <item name="kickout_page" type="layout">@layout/_def_kickout_page</item>
 </resources>

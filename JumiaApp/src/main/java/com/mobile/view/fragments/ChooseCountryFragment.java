@@ -258,17 +258,17 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         countryList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 countryList.setItemChecked(position, true);
-                if (position == selected) {
-                } else if (selected == SHOP_NOT_SELECTED) {
+                if (selected == SHOP_NOT_SELECTED) {
                     setCountry(position);
                 } else if (position != selected) {
                     isChangeCountry = true;
-                    showWarningDialog(position);
+                    setCountry(position);
                 }
             }
         });
     }
 
+    @Deprecated
     private void showWarningDialog(final int position) {
 
         dismissDialogFragment();

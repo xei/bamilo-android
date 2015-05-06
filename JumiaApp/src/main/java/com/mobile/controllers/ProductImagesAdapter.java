@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
+@Deprecated
 public class ProductImagesAdapter extends BaseAdapter {
 
 	private final static String TAG = LogTagHelper.create(ProductImagesAdapter.class);

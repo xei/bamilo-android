@@ -165,6 +165,8 @@
         <item name="fillColor">@color/color_accent</item>
         <item name="pageColor">@color/grey_middlelight</item>
         <item name="snap">true</item>
+        <item name="extraSpacing">2dp</item>
+        <item name="radius">2.5dp</item>
     </style>
 
 </resources>

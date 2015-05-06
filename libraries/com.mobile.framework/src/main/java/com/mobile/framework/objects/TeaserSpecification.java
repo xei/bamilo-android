@@ -18,6 +18,7 @@ import de.akquinet.android.androlog.Log;
  *
  * @author GuilhermeSilva
  */
+@Deprecated
 public abstract class TeaserSpecification<T extends ITargeting> implements IJSONSerializable, Parcelable {
 
     private final static String TAG = LogTagHelper.create(TeaserSpecification.class);

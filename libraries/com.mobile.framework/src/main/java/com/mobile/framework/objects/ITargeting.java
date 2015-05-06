@@ -10,30 +10,31 @@ package com.mobile.framework.objects;
  * @author Ralph Holland-Moritz
  * @modified sergiopereira
  */
+@Deprecated
 public interface ITargeting {
 
     public enum TargetType {
-        CATALOG(0),
-        PRODUCT(1),
-        CAMPAIGN(2),
-        BRAND(3),
-        SHOP(4),
-        CATEGORY(5),
-        UNKNOWN(-1);
+        CATALOG("catalog"),
+        PRODUCT("product_detail"),
+        CAMPAIGN("campaign"),
+        BRAND("brands"),
+        SHOP("static_page"),
+        CATEGORY("categories"),
+        UNKNOWN("unknown");
 
-        private final int value;
+        private final String value;
 
-        private TargetType(int value) {
+        private TargetType(String value) {
             this.value = value;
         }
 
-        public int getValue() {
+        public String getValue() {
             return value;
         }
 
-        public static TargetType byValue(int value) {
+        public static TargetType byValue(String value) {
             for (TargetType type : TargetType.values()) {
-                if (type.value == value) {
+                if (type.value.equals(value)) {
                     return type;
                 }
             }

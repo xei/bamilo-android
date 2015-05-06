@@ -1,78 +1,94 @@
-/**
- *
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.TeasersFactory;
-import com.mobile.framework.objects.Homepage;
-import com.mobile.framework.objects.ITargeting.TargetType;
+import com.mobile.framework.Darwin;
+import com.mobile.framework.objects.Promotion;
 import com.mobile.framework.objects.TeaserCampaign;
-import com.mobile.framework.objects.TeaserGroupCampaigns;
-import com.mobile.framework.objects.TeaserGroupType;
-import com.mobile.framework.objects.TeaserSpecification;
-import com.mobile.framework.tracking.AnalyticsGoogle;
-import com.mobile.framework.tracking.TrackingEvent;
-import com.mobile.framework.utils.DeviceInfoHelper;
+import com.mobile.framework.objects.home.HomePageObject;
+import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.framework.objects.home.object.BaseTeaserObject;
+import com.mobile.framework.objects.home.type.TeaserGroupType;
+import com.mobile.framework.objects.home.type.TeaserTargetType;
+import com.mobile.framework.tracking.AdjustTracker;
+import com.mobile.framework.tracking.TrackingPage;
+import com.mobile.framework.utils.Constants;
+import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.LogTagHelper;
-import com.mobile.utils.ScrollViewWithHorizontal;
+import com.mobile.helpers.configs.GetPromotionsHelper;
+import com.mobile.helpers.teasers.GetHomeHelper;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.utils.CheckVersion;
+import com.mobile.utils.HockeyStartup;
+import com.mobile.utils.MyMenuItem;
+import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.dialogfragments.DialogPromotionFragment;
+import com.mobile.utils.home.TeaserViewFactory;
+import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 import de.akquinet.android.androlog.Log;
 
 /**
- * Class used to show an home page
+ * Class used to show the home page.
  *
  * @author sergiopereira
  */
-public class HomePageFragment extends BaseFragment {
+public class HomePageFragment extends BaseFragment implements IResponseCallback {
 
-    public static final String TAG = LogTagHelper.create(HomePageFragment.class);
+    private static final String TAG = LogTagHelper.create(HomePageFragment.class);
 
-    public static final String HOME_PAGE_KEY = "homepage";
+    private ViewGroup mContainer;
+
+    private HomePageObject mHomePage;
+
+    private ScrollView mScrollView;
+
+    private ArrayList<BaseTeaserViewHolder> mViewHolders;
 
     public static final String SCROLL_STATE_KEY = "scroll";
 
-    private LayoutInflater mInflater;
-
-    private ScrollViewWithHorizontal mScrollViewWithHorizontal;
-
-    private Homepage mHomePage;
-
     private int[] mScrollSavedPosition;
-
-    private ArrayList<TeaserCampaign> mCampaigns;
 
     /**
      * Constructor via bundle
      *
-     * @return CampaignFragment
+     * @return CampaignsFragment
      * @author sergiopereira
      */
-    public static HomePageFragment getInstance(Bundle bundle) {
-        HomePageFragment homePageFragment = new HomePageFragment();
-        homePageFragment.setArguments(bundle);
-        return homePageFragment;
+    public static HomePageFragment newInstance() {
+        return new HomePageFragment();
     }
 
     /**
      * Empty constructor
      */
     public HomePageFragment() {
-        super(IS_NESTED_FRAGMENT, R.layout.home_page_fragment);
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
+                NavigationAction.Home,
+                R.layout.home_fragment_main,
+                R.string.home_label,
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
     /*
@@ -95,64 +111,53 @@ public class HomePageFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        // Get home page from arguments
-        mHomePage = getArguments().getParcelable(HOME_PAGE_KEY);
-
-        // Validate the saved state
-        if (savedInstanceState != null && savedInstanceState.containsKey(HOME_PAGE_KEY)) {
-            Log.i(TAG, "ON GET SAVED STATE");
-            if (mHomePage == null) {
-                mHomePage = savedInstanceState.getParcelable(HOME_PAGE_KEY);
-            }
-        }
-
+        // Register Hockey
+        HockeyStartup.register(getBaseActivity());
         // Get saved scroll position
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
-            Log.d(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
+            Log.i(TAG, "SCROLL POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
         }
-
     }
 
     /*
      * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     * 
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
      */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        mInflater = LayoutInflater.from(getBaseActivity());
-        // Get portrait container
-        LinearLayout singleContainer = (LinearLayout) view.findViewById(R.id.home_page_single_container);
         // Get scroll view
-        mScrollViewWithHorizontal = (ScrollViewWithHorizontal) view.findViewById(R.id.home_page_single_scrollview);
+        mScrollView = (ScrollView) view.findViewById(R.id.home_page_scroll);
+        // Get recycler view
+        mContainer = (ViewGroup) view.findViewById(R.id.home_page_container);
 
-        // Get landscape containers
-        ViewGroup leftContainer = (ViewGroup) view.findViewById(R.id.home_page_left_container);
-        ViewGroup rightContainer = (ViewGroup) view.findViewById(R.id.home_page_right_container);
-        ViewGroup rightContainerCategories = (ViewGroup) view.findViewById(R.id.home_page_right_container_categories);
-        ViewGroup rightContainerBrands = (ViewGroup) view.findViewById(R.id.home_page_right_container_brands);
-
-        // Validate current home 
-        if (mHomePage != null) {
-            // CASE portrait
-            if (singleContainer != null) {
-                showHomePage(mHomePage, singleContainer);
-            }
-            // CASE landscape
-            else {
-                showHomePage(mHomePage, leftContainer, rightContainer, rightContainerCategories, rightContainerBrands);
-            }
-        } else {
-            // CASE homepage null
-            Log.w(TAG, "WARNING: HOME PAGE IS NULL");
-            showRetry();
-        }
+        /**
+         * TODO: Validate this method is necessary to recover the app from
+         * strange behavior In case Application is connected and has shop id
+         * show HomePage Otherwise, waiting for connection and shop id WARNING:
+         * THIS FRAGMENT CAN BE EXECUTED WITHOUT SHOP ID( HOME -> COUNTRY)
+         * 
+         * @author sergiopereira
+         */
+        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);
+        // Case app is bound and has shop id and not in maintenance
+        if (JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry())
+            onResumeExecution();
+        // Case app is not bound and has shop id and not in maintenance
+        else if (!JumiaApplication.mIsBound && !TextUtils.isEmpty(shopId) && !getBaseActivity().isInitialCountry())
+            showFragmentErrorRetry();
+        // Case app not bound and not shop id and in maintenance country selection
+        else JumiaApplication.INSTANCE.setResendHandler(mServiceConnectedHandler);
     }
 
     /*
      * (non-Javadoc)
+     * 
      * @see com.mobile.view.fragments.BaseFragment#onStart()
      */
     @Override
@@ -170,6 +175,68 @@ public class HomePageFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+        // Track page
+        trackPage(false);
+    }
+
+    /**
+     * Handler used to receive a message from application
+     */
+    private Handler mServiceConnectedHandler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            onReloadContent();
+        }
+    };
+
+    /**
+     * Method used to reload the collection in case some child is null
+     *
+     * @author sergiopereira
+     */
+    public void onReloadContent() {
+        Log.i(TAG, "ON RELOAD CONTENT");
+        onResumeExecution();
+    }
+
+    /**
+     * Method used to resume the content for Home Fragment
+     *
+     * @author sergiopereira
+     */
+    public void onResumeExecution() {
+        Log.i(TAG, "ON RESUME EXECUTION");
+        // Disabled for Samsung and Blackberry (check_version_enabled)
+        if (CheckVersion.needsToShowDialog()) {
+            CheckVersion.showDialog(getActivity());
+        }
+        // Validate current state
+        if(mHomePage != null && mHomePage.hasTeasers()) {
+            validateDataState();
+        } else {
+            triggerTeasers();
+        }
+        // Validate promotions
+        SharedPreferences sP = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        if (sP.getBoolean(ConstantsSharedPrefs.KEY_SHOW_PROMOTIONS, true)) {
+            triggerPromotions();
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "ON SAVE INSTANCE");
+        // Save the scroll state for rotation
+        if (saveScrollState() && mScrollSavedPosition != null) {
+            outState.putIntArray(SCROLL_STATE_KEY, mScrollSavedPosition);
+        }
     }
 
     /*
@@ -181,41 +248,8 @@ public class HomePageFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG, "ON PAUSE");
-        // Save the scroll state for background
-        savedScrollState();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.i(TAG, "ON SAVE INSTANCE STATE: HOME PAGE");
-        // Save home page
-        outState.putParcelable(HOME_PAGE_KEY, mHomePage);
-        // Save the scroll state for rotation
-        if (savedScrollState() && mScrollSavedPosition != null) {
-            outState.putIntArray(SCROLL_STATE_KEY, mScrollSavedPosition);
-        }
-    }
-
-    /**
-     * Method to save the current scroll state
-     *
-     * @return int[]
-     * @author sergiopereira
-     */
-    private boolean savedScrollState() {
-        Log.i(TAG, "ON SAVE SCROLL STATE");
-        // Validate view
-        if (mScrollViewWithHorizontal == null) {
-            return false;
-        }
-        // Save state
-        mScrollSavedPosition = new int[]{mScrollViewWithHorizontal.getScrollX(), mScrollViewWithHorizontal.getScrollY()};
-        return true;
+        // Save the scroll state
+        saveScrollState();
     }
 
     /*
@@ -231,150 +265,127 @@ public class HomePageFragment extends BaseFragment {
 
     /*
      * (non-Javadoc)
+     * 
      * @see com.mobile.view.fragments.BaseFragment#onDestroyView()
      */
     @Override
     public void onDestroyView() {
-        Log.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
+        Log.i(TAG, "ON DESTROY VIEW");
+        // Remove parent from views
+        TeaserViewFactory.onDetachedViewHolder(mViewHolders);
     }
 
     /*
      * (non-Javadoc)
+     * 
      * @see com.mobile.view.fragments.BaseFragment#onDestroy()
      */
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "ON DESTROY");
+        // Clean data
+        mHomePage = null;
+        mViewHolders = null;
+        mServiceConnectedHandler = null;
+    }
+
+    /*
+     * ########### LAYOUT ###########
+     */
+
+    /**
+     * Validate the current data
+     */
+    private void validateDataState() {
+        if(CollectionUtils.isNotEmpty(mViewHolders)) {
+            rebuildHomePage(mViewHolders);
+        } else {
+            buildHomePage(mHomePage);
+        }
     }
 
     /**
-     * Show the current home page
-     *
-     * @param homePage
-     * @param mainView
-     * @author sergiopereira
+     * Rebuild the home updating all views.<br>
+     * Warning: To perform this method is necessary detached view from parent.
      */
-    private void showHomePage(Homepage homePage, LinearLayout mainView) {
-        Log.i(TAG, "SHOW HOME WITH TEASERS");
-        // Create and show each teaser
-        createAndShowTeasers(homePage, mainView);
+    private void rebuildHomePage(ArrayList<BaseTeaserViewHolder> mViewHolders) {
+        Log.i(TAG, "REBUILD HOME PAGE");
+        // Update each view older
+        for (BaseTeaserViewHolder viewHolder : mViewHolders) {
+            // Update view
+            viewHolder.onUpdate();
+            // Add view
+            mContainer.addView(viewHolder.itemView);
+        }
         // Restore the scroll state
         restoreScrollState();
-        // Force to show content
-        showContent();
-    }
-
-
-    /**
-     * Show the current home page for landscape
-     *
-     * @param homePage
-     * @param rightViewBrands
-     * @param rightViewCategories
-     * @author sergiopereira
-     */
-    private void showHomePage(Homepage homePage, ViewGroup leftView, ViewGroup rightView, ViewGroup rightViewCategories, ViewGroup rightViewBrands) {
-        Log.i(TAG, "SHOW HOME WITH TEASERS");
-        // Create the teaser factory
-        TeasersFactory mTeasersFactory = new TeasersFactory(getBaseActivity(), mInflater, this);
-        mTeasersFactory.setContainerWidthToLoadImage(DeviceInfoHelper.getWidth(getBaseActivity()) / 2); // For product list
-        // For each teaser create a view and add to container
-        for (TeaserSpecification<?> teaser : homePage.getTeaserSpecification()) {
-            switch (teaser.getType()) {
-                // CASE LEFT SIDE
-                case CAMPAIGNS_LIST:
-                    // Save campaigns
-                    mCampaigns = ((TeaserGroupCampaigns) teaser).getTeasers();
-                case MAIN_ONE_SLIDE:
-                case STATIC_BANNER:
-                case BRANDS_LIST:
-                    leftView.addView(mTeasersFactory.getSpecificTeaser(leftView, teaser));
-                    break;
-                // CASE RIGHT SIDE
-                case PRODUCT_LIST:
-                    rightView.addView(mTeasersFactory.getSpecificTeaser(rightView, teaser));
-                    break;
-                case CATEGORIES:
-                    rightViewCategories.addView(mTeasersFactory.getSpecificTeaser(rightViewCategories, teaser));
-                    rightViewCategories.setVisibility(View.VISIBLE);
-                    break;
-                case TOP_BRANDS_LIST:
-                    rightViewBrands.addView(mTeasersFactory.getSpecificTeaser(rightViewBrands, teaser));
-                    rightViewBrands.setVisibility(View.VISIBLE);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        // Force to show content
-        showContent();
+        // Show mContainer
+        showFragmentContentContainer();
     }
 
     /**
-     * Create and add the each teaser to main container
-     *
-     * @param homePage
-     * @param mainView
-     * @author sergiopereira
+     * Create the home page
      */
-    private void createAndShowTeasers(Homepage homePage, LinearLayout mainView) {
-        // Create the teaser factory
-        //TeasersFactory mTeasersFactory = new TeasersFactory(getBaseActivity(), mInflater, (OnClickListener) this);
-        TeasersFactory mTeasersFactory = TeasersFactory.getSingleton(getBaseActivity(), mInflater, this);
-        // For each teaser create a view and add to container
-        for (TeaserSpecification<?> teaser : homePage.getTeaserSpecification()) {
-            mainView.addView(mTeasersFactory.getSpecificTeaser(mainView, teaser));
-            // Save campaigns
-            if (teaser.getType() == TeaserGroupType.CAMPAIGNS_LIST) {
-                mCampaigns = ((TeaserGroupCampaigns) teaser).getTeasers();
+    private void buildHomePage(HomePageObject homePage) {
+        Log.i(TAG, "BUILD HOME PAGE");
+        LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+        mViewHolders = new ArrayList<>();
+        for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers()) {
+            // Create view
+            BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
+            if (viewHolder != null) {
+                // Set view
+                viewHolder.onBind(baseTeaserType);
+                // Add to container
+                mContainer.addView(viewHolder.itemView);
+                // Save
+                mViewHolders.add(viewHolder);
             }
         }
+        // Restore the scroll state
+        restoreScrollState();
+        // Show mContainer
+        showFragmentContentContainer();
+    }
+
+    /**
+     * Method to save the current scroll state
+     * @return int[]
+     */
+    private boolean saveScrollState() {
+        Log.i(TAG, "ON SAVE SCROLL STATE");
+        // Validate view
+        if (mScrollView != null) {
+            mScrollSavedPosition = new int[]{mScrollView.getScrollX(), mScrollView.getScrollY()};
+            return true;
+        }
+        return false;
     }
 
     /**
      * Restore the saved scroll position
-     *
      * @author sergiopereira
      */
     private void restoreScrollState() {
         Log.i(TAG, "ON RESTORE SCROLL SAVED STATE");
-        // Validate state 
+        // Validate state
         if (mScrollSavedPosition != null) {
             // Scroll to saved position
-            mScrollViewWithHorizontal.post(new Runnable() {
+            mScrollView.post(new Runnable() {
                 public void run() {
                     Log.d(TAG, "SCROLL TO POS: " + mScrollSavedPosition[0] + " " + mScrollSavedPosition[1]);
-                    mScrollViewWithHorizontal.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
+                    mScrollView.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
                 }
             });
         }
     }
 
-    /**
-     * Show only the content view
-     *
-     * @author sergiopereira
+    /*
+     * ########### LISTENERS ###########
      */
-    private void showContent() {
-        showFragmentContentContainer();
-    }
 
-    /**
-     * Show only the retry view
-     *
-     * @author sergiopereira
-     */
-    private void showRetry() {
-        showFragmentErrorRetry();
-    }
-
-    /**
-     * ############# LISTENERS #############
-     */
-    
     /*
      * (non-Javadoc)
      * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -388,250 +399,273 @@ public class HomePageFragment extends BaseFragment {
     }
 
     /**
-     * Process the click on retry button
-     */
-    @Override
-    protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
-        // Send to parent reload content
-        Log.i(TAG, "ON CLICK RETRY");
-        Fragment parent = getParentFragment();
-        // Validate parent
-        if (parent != null && parent instanceof HomeFragment) {
-            ((HomeFragment) parent).onReloadContent();
-        }
-    }
-
-    /**
      * Process the click on teaser
-     *
-     * @param view
-     * @author sergiopereira
      */
     private boolean onClickTeaserItem(View view) {
         Log.i(TAG, "ON CLICK TEASER ITEM");
-        //
+        // Flag to mark as intercepted
         boolean intercepted = true;
+        // Get type
+        String targetType = (String) view.getTag(R.id.target_type);
         // Get url
         String targetUrl = (String) view.getTag(R.id.target_url);
-        // Get type
-        TargetType targetType = (TargetType) view.getTag(R.id.target_type);
         // Get title
         String targetTitle = (String) view.getTag(R.id.target_title);
-        // Get origin
-        TeaserGroupType originType = (TeaserGroupType) view.getTag(R.id.origin_type);
-
-
-        // Validate type
-        if (targetType != null) {
-            Bundle bundle = new Bundle();
-            // add flag to validate if comes from banner or not
-            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, validateBannerFlow(originType));
-
-            Log.d(TAG, "targetType = " + targetType.name() + " targetUrl = " + targetUrl);
-            switch (targetType) {
-                case CATEGORY:
-                    onClickCategory(targetUrl, bundle);
-                    break;
-                case CATALOG:
-                    onClickCatalog(targetUrl, targetTitle, bundle);
-                    break;
-                case PRODUCT:
-                    onClickProduct(targetUrl, bundle);
-                    break;
-                case BRAND:
-                    onClickBrand(targetUrl, bundle);
-                    break;
-                case CAMPAIGN:
-                    onClickCampaign(view, originType, targetUrl, targetTitle, bundle);
-                    break;
-                case SHOP:
-                    onClickInnerShop(targetUrl, targetTitle, bundle);
-                    break;
-                default:
-                    Log.w(TAG, "WARNING ON CLICK: UNKNOWN VIEW");
-                    intercepted = false;
-                    break;
-            }
-        } else {
-            intercepted = false;
+        // Get origin id
+        int origin = (int) view.getTag(R.id.target_teaser_origin);
+        Log.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " URL:" + targetUrl);
+        // Get target type
+        TeaserTargetType target = TeaserTargetType.byString(targetType);
+        switch (target) {
+            case CATALOG:
+                gotoCatalog(targetUrl, targetTitle);
+                break;
+            case CAMPAIGN:
+                gotoCampaignPage(origin, targetTitle, targetUrl);
+                break;
+            case STATIC_PAGE:
+                gotoStaticPage(targetTitle, targetUrl);
+                break;
+            case PRODUCT_DETAIL:
+                gotoProductDetail(targetUrl);
+                break;
+            case UNKNOWN:
+            default:
+                intercepted = false;
+                Log.w(TAG, "WARNING: RECEIVED UNKNOWN TARGET TYPE: " + targetType);
+                break;
         }
         return intercepted;
     }
 
     /**
-     * validate from where the click needs to be tracked
-     * @param originType
+     * Goto catalog page
      */
-    private boolean validateBannerFlow(TeaserGroupType originType){
-        return originType == TeaserGroupType.MAIN_ONE_SLIDE || originType == TeaserGroupType.STATIC_BANNER;
+    private void gotoCatalog(String title, String url) {
+        Log.i(TAG, "GOTO CATALOG PAGE: " + title + " " + url);
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
+        bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES, false);
+        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
+    /**
+     * Goto product detail
+     */
+    private void gotoProductDetail(String url) {
+        Log.i(TAG, "GOTO PRODUCT DETAIL: " + url);
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
 
     /**
-     * Process the click on shops in shop
-     *
-     * @param url    The url for CMS block
-     * @param title  The shop title
-     * @param bundle The new bundle
+     * Goto static page
      */
-    private void onClickInnerShop(String url, String title, Bundle bundle) {
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+    private void gotoStaticPage(String title, String url) {
+        Log.i(TAG, "GOTO STATIC PAGE: " + title + " " + url);
+        Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
         getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
-     * Process the category click
-     *
-     * @param targetUrl
-     * @param bundle
-     * @author sergiopereira
+     * Goto campaign page
      */
-    private void onClickCategory(String targetUrl, Bundle bundle) {
-        Log.i(TAG, "ON CLICK CATEGORY");
-        bundle.putString(ConstantsIntentExtra.CATEGORY_URL, targetUrl);
-        getBaseActivity().onSwitchFragment(FragmentType.CATEGORIES, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Process the catalog click
-     *
-     * @param targetUrl
-     * @param targetTitle
-     * @param bundle
-     */
-    private void onClickCatalog(String targetUrl, String targetTitle, Bundle bundle) {
-        Log.i(TAG, "ON CLICK CATALOG");
-        if (targetUrl != null) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
-            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
-            bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES,false);
-            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
-        } else {
-            Log.w(TAG, "WARNING: URL IS NULL");
+    private void gotoCampaignPage(int origin, String targetTitle, String targetUrl) {
+        // Get group
+        BaseTeaserGroupType group = mHomePage.getTeasers().get(origin);
+        // Case campaign origin
+        ArrayList<TeaserCampaign> campaigns;
+        if (origin == TeaserGroupType.CAMPAIGNS.ordinal()) {
+            campaigns = createCampaign(group);
         }
-    }
-
-    /**
-     * Process the product click
-     *
-     * @param targetUrl
-     * @param bundle
-     * @author sergiopereira
-     */
-    private void onClickProduct(String targetUrl, Bundle bundle) {
-        Log.i(TAG, "ON CLICK PRODUCT");
-        if (targetUrl != null) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            Log.i(TAG, "WARNING: URL IS NULL");
-        }
-    }
-
-    /**
-     * Process the brand click
-     *
-     * @param targetUrl
-     * @param bundle
-     */
-    private void onClickBrand(String targetUrl, Bundle bundle) {
-        Log.i(TAG, "ON CLICK BRAND");
-        if (targetUrl != null) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetUrl);
-            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, targetUrl);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES,false);
-            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            Log.i(TAG, "WARNING: URL IS NULL");
-        }
-    }
-
-    /**
-     * Process the campaign click.
-     *
-     * @param view
-     * @param targetUrl
-     * @param targetTitle
-     * @param bundle
-     */
-    private void onClickCampaign(View view, TeaserGroupType origin, String targetUrl, String targetTitle, Bundle bundle) {
-        // Get selected position
-        String targetPosition = view.getTag(R.id.position) != null ? view.getTag(R.id.position).toString() : "0";
-        // Case teaser campaign
-        if (origin == TeaserGroupType.CAMPAIGNS_LIST && hasSavedTeaserCampaigns()) {
-            Log.i(TAG, "ON CLICK CAMPAIGN FROM CAMPAIGN TEASER: " + targetTitle + " " + targetUrl + " " + targetPosition);
-            // Tracking event
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, targetTitle, 0l);
-            // Show campaigns 
-            gotoCampaigns(mCampaigns, targetPosition, bundle);
-        }
-        // Case teaser image
-        else if ((origin == TeaserGroupType.MAIN_ONE_SLIDE || origin == TeaserGroupType.STATIC_BANNER) && !TextUtils.isEmpty(targetUrl)) {
-            Log.i(TAG, "ON CLICK CAMPAIGN FROM IMAGE TEASER: " + targetTitle + " " + targetUrl + " " + targetPosition);
-            // Tracking event
-            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, targetTitle, 0l);
-            // Create campaign using the URL
-            ArrayList<TeaserCampaign> campaigns = createSignleCampaign(targetTitle, targetUrl);
-            // Default position
-            targetPosition = "0";
-            // Show campaign
-            gotoCampaigns(campaigns, targetPosition, bundle);
-        }
-        // Case unknown
+        // Case other origin
         else {
-            Log.w(TAG, "WARNING: NPE OR UNKNOWN CLICK FOR CAMPAIGNS: " + targetTitle + " " + targetUrl + " " + targetPosition + " " + hasSavedTeaserCampaigns());
+            campaigns = new ArrayList<>();
+            TeaserCampaign campaign = new TeaserCampaign();
+            campaign.setTitle(targetTitle);
+            campaign.setUrl(targetUrl);
+            campaigns.add(campaign);
         }
-    }
-
-    /**
-     * Show {@link CampaignsFragment}
-     *
-     * @param campaigns
-     * @param targetPosition
-     * @param bundle
-     * @author sergiopereira
-     */
-    private void gotoCampaigns(ArrayList<TeaserCampaign> campaigns, String targetPosition, Bundle bundle) {
+        // Create bundle
+        Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
-        bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, Integer.valueOf(targetPosition));
+        // Switch
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
      * Create an array with a single campaign
-     *
-     * @param targetTitle
-     * @param targetUrl
      * @return ArrayList with one campaign
      * @author sergiopereira
      */
-    private ArrayList<TeaserCampaign> createSignleCampaign(String targetTitle, String targetUrl) {
+    private ArrayList<TeaserCampaign> createCampaign(BaseTeaserGroupType group) {
         ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
-        TeaserCampaign campaign = new TeaserCampaign();
-        campaign.setTitle(targetTitle);
-        campaign.setUrl(targetUrl);
-        campaigns.add(campaign);
+        for (BaseTeaserObject baseTeaserObject : group.getData()) {
+            TeaserCampaign campaign = new TeaserCampaign();
+            campaign.setTitle(baseTeaserObject.getTitle());
+            campaign.setUrl(baseTeaserObject.getUrl());
+            campaigns.add(campaign);
+        }
         return campaigns;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
+     */
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        onReloadContent();
+    }
+
+    /*
+     * ########### TRIGGERS ###########
+     */
+
     /**
-     * Validate if the current homepage has campaigns
+     * Trigger to get teasers
      *
-     * @return true or false
      * @author sergiopereira
      */
-    private boolean hasSavedTeaserCampaigns() {
-        return mCampaigns != null;
+    private void triggerTeasers() {
+        Log.d(TAG, "ON TRIGGER: GET TEASERS");
+        // Get teaser collection
+        triggerContentEvent(new GetHomeHelper(), null, this);
+    }
+
+    /**
+     * Trigger to get promotions
+     *
+     * @author sergiopereira
+     */
+    private void triggerPromotions() {
+        Log.d(TAG, "ON TRIGGER: GET PROMOTIONS");
+        triggerContentEventNoLoading(new GetPromotionsHelper(), null, this);
+    }
+
+    /*
+     * ########### RESPONSES ###########
+     */
+
+    @Override
+    public void onRequestComplete(Bundle bundle) {
+        Log.i(TAG, "ON SUCCESS");
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        switch (eventType) {
+            case GET_HOME_EVENT:
+                Log.i(TAG, "ON GET_HOME_EVENT");
+                HomePageObject homePage = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                if (homePage != null && homePage.hasTeasers()) {
+                    Log.i(TAG, "SHOW HOME PAGE: " + homePage.hasTeasers());
+                    // Save home page
+                    mHomePage = homePage;
+                    // Build home page
+                    buildHomePage(homePage);
+                } else {
+                    Log.i(TAG, "SHOW FALL BAK");
+                    showFragmentFallBack();
+                }
+                break;
+            case GET_PROMOTIONS:
+                Log.i(TAG, "ON SUCCESS RESPONSE: GET_TEASERS_EVENT");
+                onGetPromotions(bundle);
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    /**
+     * Show promotions
+     */
+    private void onGetPromotions(Bundle bundle) {
+        if (((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getIsStillValid()) {
+            try {
+                DialogPromotionFragment.newInstance((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).show(getChildFragmentManager(), null);
+            } catch (IllegalStateException e) {
+                Log.w(TAG, "promotion expired!" + ((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getEndDate());
+            }
+        } else {
+            Log.i(TAG, "promotion expired!" + ((Promotion) bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY)).getEndDate());
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
+     */
+    @Override
+    public void onRequestError(Bundle bundle) {
+        Log.i(TAG, "ON ERROR RESPONSE");
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        // Check base errors
+        if (super.handleErrorEvent(bundle)) return;
+        // Check home types
+        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        switch (eventType) {
+            case GET_HOME_EVENT:
+                Log.i(TAG, "ON ERROR RESPONSE: GET_HOME_EVENT");
+                showFragmentFallBack();
+                break;
+            case GET_PROMOTIONS:
+                Log.i(TAG, "ON ERROR RESPONSE: GET_PROMOTIONS");
+                break;
+            default:
+                break;
+        }
+    }
+    
+    /*
+     * ########### TRACKING ###########  
+     */
+
+    /**
+     * Track Page for Home
+     */
+    private void trackPage(boolean justGTM) {
+        // Generic track page
+        TrackerDelegator.trackPage(TrackingPage.HOME, mLoadTime, justGTM);
+        // Adjust track page
+        trackPageAdjust();
+    }
+
+    /**
+     * Track Page only for adjust
+     */
+    private void trackPageAdjust() {
+        try {
+            if (isAdded()) {
+                Bundle bundle = new Bundle();
+                bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
+                bundle.putLong(AdjustTracker.BEGIN_TIME, mLoadTime);
+                bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
+                if (JumiaApplication.CUSTOMER != null) {
+                    bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
+                }
+                TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
+            }
+        } catch (IllegalStateException e) {
+            Log.w(TAG, "WARNING: ISE ON TRACK PAGE ADJUST");
+        }
     }
 
 }

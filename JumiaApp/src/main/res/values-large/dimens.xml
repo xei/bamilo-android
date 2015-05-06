@@ -13,4 +13,5 @@
 
     <dimen name="delete_button_size">23dp</dimen>
     <dimen name="delete_button_margin">3dp</dimen>
+
 </resources>

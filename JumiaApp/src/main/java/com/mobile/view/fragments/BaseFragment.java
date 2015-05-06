@@ -2,6 +2,7 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
@@ -27,10 +28,14 @@ import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.OrderSummary;
+import com.mobile.framework.objects.TeaserCampaign;
+import com.mobile.framework.objects.TeaserGroupType;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.utils.Constants;
@@ -53,6 +58,7 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -309,7 +315,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
          */
         JumiaApplication.INSTANCE.registerFragmentCallback(mCallback);
 
-        if (getBaseActivity() != null) {
+        if (getBaseActivity() != null && !isNestedFragment) {
             getBaseActivity().warningFactory.hideWarning();
         }
 
@@ -608,10 +614,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     public void gotoOldCheckoutMethod(BaseActivity activity, String email, String error) {
         Log.w(TAG, "WARNING: GOTO WEB CHECKOUT");
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.EMAIL_KEY, email);
-        params.putString(TrackerDelegator.ERROR_KEY, error);
-        TrackerDelegator.trackNativeCheckoutError(params);
+        // Tracking
+        String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+        TrackerDelegator.trackNativeCheckoutError(userId, email, error);
         // Warning user
         Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
         // Remove native checkout
@@ -778,7 +783,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         // Case home fall back
         else if(id == R.id.fragment_stub_home_fall_back)  {
-            onInflateHomeFallBack();
+            onInflateHomeFallBack(inflated);
         }
         // Case loading
         else if(id == R.id.fragment_stub_loading) {
@@ -828,8 +833,37 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Set the home fall back view.
      */
-    private void onInflateHomeFallBack() {
+    private void onInflateHomeFallBack(View inflated) {
         Log.i(TAG, "ON INFLATE STUB: FALL BACK");
+        try {
+            boolean isSingleShop = getResources().getBoolean(R.bool.is_single_shop_country);
+            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, getString(R.string.app_name));
+            TextView fallbackBest = (TextView) inflated.findViewById(R.id.fallback_best);
+            TextView fallbackCountry = (TextView) inflated.findViewById(R.id.fallback_country);
+            View countryD = inflated.findViewById(R.id.fallback_country_double);
+            TextView bottomCountry = (TextView) inflated.findViewById(R.id.fallback_country_bottom);
+            TextView topCountry = (TextView) inflated.findViewById(R.id.fallback_country_top);
+            fallbackBest.setText(R.string.fallback_best);
+            if (country.split(" ").length == 1) {
+                fallbackCountry.setText(country.toUpperCase());
+                fallbackCountry.setVisibility(View.VISIBLE);
+                countryD.setVisibility(View.GONE);
+                fallbackCountry.setText(isSingleShop ? "" : country.toUpperCase());
+                if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+                    getView().findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
+                }
+            } else {
+                topCountry.setText(country.split(" ")[0].toUpperCase());
+                bottomCountry.setText(country.split(" ")[1].toUpperCase());
+                fallbackBest.setTextSize(11.88f);
+                countryD.setVisibility(View.VISIBLE);
+                fallbackCountry.setVisibility(View.GONE);
+            }
+            fallbackBest.setSelected(true);
+        } catch (NullPointerException | ClassCastException e) {
+            e.printStackTrace();
+        }
         // Hide other stubs
         UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mMaintenanceView, mLoadingView);
     }
@@ -931,7 +965,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @return intercept or not
      */
     public boolean handleSuccessEvent(Bundle bundle) {
-        Log.i(TAG, "ON HANDLE ERROR EVENT");
+        Log.i(TAG, "ON HANDLE SUCCESS EVENT");
         // Validate event
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
@@ -966,6 +1000,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         EventTask eventTask = (EventTask) bundle.getSerializable(Constants.BUNDLE_EVENT_TASK);
+
 
         if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
             return false;
@@ -1041,6 +1076,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                         });
 
                 dialog.show(getActivity().getSupportFragmentManager(), null);
+                return true;
+            case SERVER_OVERLOAD:
+                if(getBaseActivity() != null){
+                    ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
+                    showFragmentErrorRetry();
+                }
                 return true;
             default:
                 break;
@@ -1207,6 +1248,122 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (dialog != null) {
             dialog.dismissAllowingStateLoss();
         }
+    }
+
+    /**
+     * Process the product click
+     *
+     * @param targetUrl
+     * @param bundle
+     * @author sergiopereira
+     */
+    protected void onClickProduct(String targetUrl, Bundle bundle) {
+        Log.i(TAG, "ON CLICK PRODUCT");
+        if (targetUrl != null) {
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            Log.i(TAG, "WARNING: URL IS NULL");
+        }
+    }
+
+    /**
+     * Process the click on shops in shop
+     *
+     * @param url    The url for CMS block
+     * @param title  The shop title
+     * @param bundle The new bundle
+     */
+    protected void onClickInnerShop(String url, String title, Bundle bundle) {
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
+        getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    /**
+     * Process the category click
+     *
+     * @param targetUrl
+     * @param bundle
+     * @author sergiopereira
+     */
+    protected void onClickCategory(String targetUrl, Bundle bundle) {
+        Log.i(TAG, "ON CLICK CATEGORY");
+        bundle.putString(ConstantsIntentExtra.CATEGORY_URL, targetUrl);
+        getBaseActivity().onSwitchFragment(FragmentType.CATEGORIES, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    /**
+     * Process the catalog click
+     *
+     * @param targetUrl
+     * @param targetTitle
+     * @param bundle
+     */
+    protected void onClickCatalog(String targetUrl, String targetTitle, Bundle bundle) {
+        Log.i(TAG, "ON CLICK CATALOG");
+        if (targetUrl != null) {
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
+        } else {
+            Log.w(TAG, "WARNING: URL IS NULL");
+        }
+    }
+
+
+
+    /**
+     * Process the brand click
+     *
+     * @param targetUrl
+     * @param bundle
+     */
+    protected void onClickBrand(String targetUrl, Bundle bundle) {
+        Log.i(TAG, "ON CLICK BRAND");
+        if (targetUrl != null) {
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetUrl);
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, targetUrl);
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            Log.i(TAG, "WARNING: URL IS NULL");
+        }
+    }
+
+    /**
+     * Process the campaign click.
+     *
+     * @param view
+     * @param targetUrl
+     * @param targetTitle
+     * @param bundle
+     */
+    protected void onClickCampaign(View view, TeaserGroupType origin, String targetUrl, String targetTitle, Bundle bundle) {
+    }
+
+    /**
+     * Create an array with a single campaign
+     *
+     * @param targetTitle
+     * @param targetUrl
+     * @return ArrayList with one campaign
+     * @author sergiopereira
+     */
+    protected ArrayList<TeaserCampaign> createSignleCampaign(String targetTitle, String targetUrl) {
+        ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
+        TeaserCampaign campaign = new TeaserCampaign();
+        campaign.setTitle(targetTitle);
+        campaign.setUrl(targetUrl);
+        campaigns.add(campaign);
+        return campaigns;
     }
 
 }

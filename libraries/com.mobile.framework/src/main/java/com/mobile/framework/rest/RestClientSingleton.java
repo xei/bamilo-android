@@ -93,6 +93,7 @@ public final class RestClientSingleton {
 	
 	private static final int MAX_CACHE_OBJECT_SIZE = 131072;
 
+	private static final int SC_SERVER_OVERLOAD = 429;
     public static RestClientSingleton sRestClientSingleton;
 	
 	private DarwinHttpClient mDarwinHttpClient;
@@ -249,9 +250,14 @@ public final class RestClientSingleton {
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.i(TAG, "executeGetRestUrlString complete: " + url);
 		}
-		
-		HttpGet httpRequest = new HttpGet(url.replaceAll(" ", "%20"));
-		return executeHttpRequest(httpRequest, mHandler, metaData);
+		try {
+            HttpGet httpRequest = new HttpGet(url.replaceAll(" ", "%20"));
+            return executeHttpRequest(httpRequest, mHandler, metaData);
+        } catch (IllegalArgumentException ex){
+            // Catch error in case of malformed url
+            Log.e(TAG, ex.getLocalizedMessage(), ex);
+            return executeHttpRequest(new HttpGet(""), mHandler,metaData);
+        }
 	}
 	
 	/**
@@ -281,28 +287,33 @@ public final class RestClientSingleton {
 		if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
 			Log.i(TAG, "executePostRestUrlString complete: " + url);
 		}
-		
-		HttpPost httpRequest = new HttpPost(url);
 
-		List<NameValuePair> params = new ArrayList<>();
-		if(formData != null){
-			for (Entry<String, Object> entry : formData.valueSet()) {
-				Object value = entry.getValue();
-				if (value == null) {
-					Log.w(TAG, "entry for key " + entry.getKey() + " is null - ignoring - form request will fail");
-					continue;
-				}
-	
-				params.add(new BasicNameValuePair(entry.getKey(), value.toString()));
-				if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
-					Log.d(TAG, "post: " + entry.getKey() + "=" + entry.getValue());
-				}
-			}
-		}
-		
-		httpRequest.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
+        try {
+            HttpPost httpRequest = new HttpPost(url);
 
-		return executeHttpRequest(httpRequest, mHandler, metaData);
+            List<NameValuePair> params = new ArrayList<>();
+            if (formData != null) {
+                for (Entry<String, Object> entry : formData.valueSet()) {
+                    Object value = entry.getValue();
+                    if (value == null) {
+                        Log.w(TAG, "entry for key " + entry.getKey() + " is null - ignoring - form request will fail");
+                        continue;
+                    }
+
+                    params.add(new BasicNameValuePair(entry.getKey(), value.toString()));
+                    if (ConfigurationConstants.LOG_DEBUG_ENABLED) {
+                        Log.d(TAG, "post: " + entry.getKey() + "=" + entry.getValue());
+                    }
+                }
+            }
+
+            httpRequest.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
+            return executeHttpRequest(httpRequest, mHandler, metaData);
+        } catch(IllegalArgumentException ex){
+            // Catch error in case of malformed url
+            Log.e(TAG, ex.getLocalizedMessage(), ex);
+            return executeHttpRequest(new HttpPost(""), mHandler,metaData);
+        }
 	}
 
 	/**
@@ -363,6 +374,9 @@ public final class RestClientSingleton {
 				if(statusCode == HttpStatus.SC_SERVICE_UNAVAILABLE){
 					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SERVER_IN_MAINTENANCE, result, md5, priority,eventTask));
 					trackError(mContext, e, httpRequest.getURI(), ErrorCode.SERVER_IN_MAINTENANCE, result, false, startTimeMillis);
+				} else if(statusCode == SC_SERVER_OVERLOAD){
+					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SERVER_OVERLOAD, result, md5, priority,eventTask));
+					trackError(mContext, e, httpRequest.getURI(), ErrorCode.SERVER_OVERLOAD, result, false, startTimeMillis);
 				} else {
 					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_STATUS, result, md5, priority,eventTask));
 					trackError(mContext, e, httpRequest.getURI(), ErrorCode.HTTP_STATUS, result, false, startTimeMillis);
@@ -427,7 +441,7 @@ public final class RestClientSingleton {
 				EntityUtils.consumeQuietly(entity);
 				return null;
 			}
-			
+
             // Save the session cookie into preferences
             persistSessionCookie();
 			
@@ -440,7 +454,7 @@ public final class RestClientSingleton {
 			// closes the stream
 			EntityUtils.consumeQuietly(entity);
 			// Send success message
-			mHandler.sendMessage(buildResponseSuccessMessage(eventType, httpRequest.getURI(), Constants.SUCCESS, ErrorCode.NO_ERROR, result, md5, priority,eventTask, startTimeMillis, byteCountResponse));
+			mHandler.sendMessage(buildResponseSuccessMessage(eventType, httpRequest.getURI(), Constants.SUCCESS, ErrorCode.NO_ERROR, result, md5, priority, eventTask, startTimeMillis, byteCountResponse));
 			// Return the result string
 			return result;
 			

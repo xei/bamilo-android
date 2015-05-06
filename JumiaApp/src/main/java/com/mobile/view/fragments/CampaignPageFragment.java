@@ -549,6 +549,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+
+        // Update cart info
+        super.handleSuccessEvent(bundle);
         
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
@@ -565,7 +568,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             Log.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
             isAddingProductToCart = false;
-            getBaseActivity().updateCartInfo();
             hideActivityProgress();
             showSuccessCartDialog();
             break;

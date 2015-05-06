@@ -36,7 +36,7 @@ import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.CheckoutWebFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
 import com.mobile.view.fragments.FavouritesFragment;
-import com.mobile.view.fragments.HomeFragment;
+import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
@@ -46,8 +46,8 @@ import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyAddressesSessionLogin;
 import com.mobile.view.fragments.MyOrdersFragment;
-import com.mobile.view.fragments.ProductDetailsDescriptionFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
+import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
 import com.mobile.view.fragments.ProductOffersFragment;
 import com.mobile.view.fragments.ProductSizeGuideFragment;
@@ -234,7 +234,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             mCurrentFragmentType = FragmentType.getValue(tag);
             // Save the current back stack
             for (String entry : FragmentController.getInstance().returnAllEntries()) {
-                frags.add(entry.toString());
+                frags.add(entry);
             }
         } catch (Exception e) {
             Log.w(TAG, "ERROR ON GET CURRENT FRAGMENT TYPE", e);
@@ -269,7 +269,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                     popBackStack(FragmentType.HOME.toString());
                     return;
                 }
-                fragment = HomeFragment.newInstance();
+                fragment = HomePageFragment.newInstance();
                 break;
             case CATEGORIES:
                 fragment = CategoriesCollectionFragment.getInstance(bundle);
@@ -287,8 +287,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = ProductDetailsFragment.getInstance(bundle);
                 type.setId(fragment.hashCode());
                 break;
-            case PRODUCT_DESCRIPTION:
-                fragment = ProductDetailsDescriptionFragment.getInstance(bundle);
+            case PRODUCT_INFO:
+                fragment = ProductDetailsInfoFragment.getInstance(bundle);
                 break;
             case PRODUCT_GALLERY:
                 fragment = ProductImageGalleryFragment.getInstance(bundle);
