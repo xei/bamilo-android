@@ -77,4 +77,7 @@
     <color name="color_selection">#33C0C0C0</color>
 
 
+    <color name="kickout_background">#111111</color>
+    <color name="white_95_op">#f2ffffff</color>
+
 </resources>

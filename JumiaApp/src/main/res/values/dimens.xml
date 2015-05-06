@@ -263,7 +263,8 @@
     <!-- CATALOG -->
     <integer name="catalog_list_num_columns">1</integer>
     <integer name="catalog_grid_num_columns">2</integer>
-    <integer name="activate_go_top_buttom_line">6</integer>
+    <integer name="activate_go_top_buttom_line">6</integer>.
+    <integer name="activate_go_top_buttom_line_grid">3</integer>
     <dimen name="catalog_list_item_height">111dp</dimen>
     <dimen name="catalog_grid_item_height">200dp</dimen>
     <dimen name="catalog_list_item_image_width">74.67dp</dimen>
@@ -451,4 +452,8 @@
     <dimen name="home_top_sellers_teaser_item_width">@dimen/dimen_mat_148px</dimen>
     <dimen name="home_top_sellers_teaser_item_height">@dimen/dimen_mat_160px</dimen>
 
+
+    <!-- KICKOUT -->
+
+    <dimen name="kickout_box_width">@integer/wrap_content</dimen>
 </resources>
