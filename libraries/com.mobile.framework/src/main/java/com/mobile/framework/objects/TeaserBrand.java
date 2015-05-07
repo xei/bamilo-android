@@ -11,7 +11,7 @@ import android.os.Parcelable;
  * @author Manuel Silva
  * 
  */
-
+@Deprecated
 public class TeaserBrand extends TeaserBrandElement implements ITargeting, Parcelable {
 	/*
 	 * (non-Javadoc)

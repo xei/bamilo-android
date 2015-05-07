@@ -93,6 +93,7 @@ public final class RestClientSingleton {
 	
 	private static final int MAX_CACHE_OBJECT_SIZE = 131072;
 
+	private static final int SC_SERVER_OVERLOAD = 429;
     public static RestClientSingleton sRestClientSingleton;
 	
 	private DarwinHttpClient mDarwinHttpClient;
@@ -373,6 +374,9 @@ public final class RestClientSingleton {
 				if(statusCode == HttpStatus.SC_SERVICE_UNAVAILABLE){
 					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SERVER_IN_MAINTENANCE, result, md5, priority,eventTask));
 					trackError(mContext, e, httpRequest.getURI(), ErrorCode.SERVER_IN_MAINTENANCE, result, false, startTimeMillis);
+				} else if(statusCode == SC_SERVER_OVERLOAD){
+					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.SERVER_OVERLOAD, result, md5, priority,eventTask));
+					trackError(mContext, e, httpRequest.getURI(), ErrorCode.SERVER_OVERLOAD, result, false, startTimeMillis);
 				} else {
 					mHandler.sendMessage(buildResponseMessage(eventType, Constants.FAILURE, ErrorCode.HTTP_STATUS, result, md5, priority,eventTask));
 					trackError(mContext, e, httpRequest.getURI(), ErrorCode.HTTP_STATUS, result, false, startTimeMillis);
@@ -450,7 +454,7 @@ public final class RestClientSingleton {
 			// closes the stream
 			EntityUtils.consumeQuietly(entity);
 			// Send success message
-			mHandler.sendMessage(buildResponseSuccessMessage(eventType, httpRequest.getURI(), Constants.SUCCESS, ErrorCode.NO_ERROR, result, md5, priority,eventTask, startTimeMillis, byteCountResponse));
+			mHandler.sendMessage(buildResponseSuccessMessage(eventType, httpRequest.getURI(), Constants.SUCCESS, ErrorCode.NO_ERROR, result, md5, priority, eventTask, startTimeMillis, byteCountResponse));
 			// Return the result string
 			return result;
 			

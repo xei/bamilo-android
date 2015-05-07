@@ -15,7 +15,7 @@ public interface IJSONSerializable {
 	 * @return
 	 */
 	public boolean initialize(JSONObject obj);
-	
-	
+
+
 
 }

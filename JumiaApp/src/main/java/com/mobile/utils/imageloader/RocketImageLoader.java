@@ -1,6 +1,5 @@
 package com.mobile.utils.imageloader;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -10,6 +9,8 @@ import android.net.http.AndroidHttpClient;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.android.volley.Network;
@@ -25,6 +26,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.mobile.view.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,6 +57,7 @@ public class RocketImageLoader {
                                                                 // and universal
     private RequestQueue volleyRequestQueue;
     private boolean isVolleyRequestQueueRunning = true;
+
     private Context context;
 
     public interface RocketImageLoaderListener {
@@ -65,9 +68,9 @@ public class RocketImageLoader {
         void onLoadedCancel();
     }
 
-    public static void init(Application application) {
+    public static void init(Context context) {
         instance = new RocketImageLoader();
-        instance.initLibrary(application);
+        instance.initVolley(context);
     }
 
     public ImageLoader getImageLoader(){
@@ -79,12 +82,6 @@ public class RocketImageLoader {
             throw new IllegalStateException("RocketImageLoader has to be initialized in initialization of application object and before calling getInstance()");
         }
         return instance;
-    }
-
-    private void initLibrary(Application application) {
-
-        initVolley(application);
-
     }
 
     /**
@@ -143,8 +140,6 @@ public class RocketImageLoader {
     public void loadImage(String imageUrl, ImageView imageView, View progressView, int placeHolderImageId) {
         loadImage(imageUrl, false, imageView, progressView, placeHolderImageId, false, null, false);
     }
-    
-    
     
     /**
      * Convenience method
@@ -239,7 +234,7 @@ public class RocketImageLoader {
                         if (progressView != null) {
                             progressView.setVisibility(View.GONE);
                         }
-                        
+
                         if (listener != null) {
                             listener.onLoadedError();
                         }
@@ -262,15 +257,17 @@ public class RocketImageLoader {
 //                                }
 //                            });
 //                            return;
-//                        }         
+//                        }
                         
                         if (null != response.getBitmap() && response.getBitmap().getWidth() != -1) {
                             if (response.getRequestUrl().equals(imageUrl)) {
                                 if (progressView != null) {
                                     progressView.setVisibility(View.GONE);
                                 }
-                                
+
+                                Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in);
                                 imageView.setImageBitmap(response.getBitmap());
+                                imageView.startAnimation(animation);
                                 
                                 if (listener != null) {
                                     listener.onLoadedSuccess(imageUrl, response.getBitmap());
@@ -387,8 +384,8 @@ public class RocketImageLoader {
         }
     }
 
-    private void initVolley(Application application) {
-        context = application.getApplicationContext();
+    private void initVolley(Context context) {
+        this.context = context;
         initVolley();
     }
     

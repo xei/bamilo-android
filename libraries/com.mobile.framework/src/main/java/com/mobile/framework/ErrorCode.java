@@ -25,7 +25,8 @@ public enum ErrorCode {
 	REQUIRES_USER_INTERACTION(-201), 
 	SERVER_IN_MAINTENANCE(-503), 
 	NO_COUNTRIES_CONFIGS(-12),
-	NO_COUNTRY_CONFIGS_AVAILABLE(-13); 
+	NO_COUNTRY_CONFIGS_AVAILABLE(-13),
+	SERVER_OVERLOAD(-429);
 	
 
 	public final int id;
@@ -56,6 +57,7 @@ public enum ErrorCode {
 		case TIME_OUT:
 		case SSL:
 		case IO:
+		case SERVER_OVERLOAD:
 		case HTTP_STATUS:
             return true;
         case AUTO_COUNTRY_SELECTION:

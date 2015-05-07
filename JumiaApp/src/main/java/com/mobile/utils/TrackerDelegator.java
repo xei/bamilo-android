@@ -14,6 +14,7 @@ import com.mobile.framework.objects.CompleteProduct;
 import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.PurchaseItem;
 import com.mobile.framework.objects.ShoppingCartItem;
+import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.Ad4PushTracker;
 import com.mobile.framework.tracking.AdjustTracker;
@@ -34,7 +35,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -96,7 +99,7 @@ public class TrackerDelegator {
 
     private static final String JSON_TAG_ORDER_NR = "orderNr";
     private static final String JSON_TAG_GRAND_TOTAL = "grandTotal";
-    private static final String JSON_TAG_GRAND_TOTAL_CONVERTED = "grandTotal_euroConverted";
+    private static final String JSON_TAG_GRAND_TOTAL_CONVERTED = "grandTotal_converted";
     private static final String JSON_TAG_ITEMS_JSON = "itemsJson";
     
     private static final String SESSION_COUNTER = "sessionCounter";
@@ -405,88 +408,47 @@ public class TrackerDelegator {
      * @param params
      */
     public static void trackCheckoutStep(Bundle params) {
-
-        String email = params.getString(EMAIL_KEY);
-        final TrackingEvent event = (TrackingEvent) params.getSerializable(GA_STEP_KEY);
-
-        final String hashedemail = Utils.cleanMD5(email);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String user_id = hashedemail;
-                if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null
-                        && JumiaApplication.CUSTOMER.getIdAsString().length() > 0) {
-                    user_id = JumiaApplication.CUSTOMER.getIdAsString();
-                }
-                
-                AnalyticsGoogle.get().trackEvent(event, user_id, 0l);
-                
-            }
-
-        }).start();
+        try {
+            String email = params.getString(EMAIL_KEY);
+            TrackingEvent event = (TrackingEvent) params.getSerializable(GA_STEP_KEY);
+            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+            AnalyticsGoogle.get().trackEvent(event, TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, 0l);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON TRACK CHECKOUT STEP");
+        }
     }
 
     public static void trackSignUp(String email) {
-        final String hashedemail = Utils.cleanMD5(email);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String user = hashedemail;
-                if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null
-                        && JumiaApplication.CUSTOMER.getIdAsString().length() > 0) {
-                    user = JumiaApplication.CUSTOMER.getIdAsString();
-                }
-                // GA
-                AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, user, 0l);
-            }
-
-        }).start();
+        try {
+            String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+            // GA
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SIGNUP, TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, 0l);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON TRACK SIGN UP");
+        }
     }
 
     /**
      * Track Payment Method
-     * 
-     * @param params
      */
-    public static void trackPaymentMethod(Bundle params) {
-        String email = params.getString(EMAIL_KEY);
-        final String payment = params.getString(PAYMENT_METHOD_KEY);
-
-        final String hashedemail = Utils.cleanMD5(email);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String user_id = hashedemail;
-                if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null
-                        && JumiaApplication.CUSTOMER.getIdAsString().length() > 0) {
-                    user_id = JumiaApplication.CUSTOMER.getIdAsString();
-                }
-                AnalyticsGoogle.get().trackPaymentMethod(user_id, payment);
-                //GTM
-                GTMManager.get().gtmTrackChoosePayment(payment);
-            }
-
-        }).start();
-        
+    public static void trackPaymentMethod(String userId, String email, String payment) {
+        try {
+            // GA
+            AnalyticsGoogle.get().trackPaymentMethod(TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, payment);
+            // GTM
+            GTMManager.get().gtmTrackChoosePayment(payment);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON TRACK PAYMENT METHOD");
+        }
     }
 
-    public static void trackNativeCheckoutError(Bundle params) {
-        String email = params.getString(EMAIL_KEY);
-        final String error = params.getString(ERROR_KEY);
-
-        final String hashedemail = Utils.cleanMD5(email);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String user_id = hashedemail;
-                if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null
-                        && JumiaApplication.CUSTOMER.getIdAsString().length() > 0) {
-                    user_id = JumiaApplication.CUSTOMER.getIdAsString();
-                }
-                AnalyticsGoogle.get().trackNativeCheckoutError(user_id, error);
-            }
-
-        }).start();
+    public static void trackNativeCheckoutError(String userId, String email, String error) {
+        try {
+            // GA
+            AnalyticsGoogle.get().trackNativeCheckoutError(TextUtils.isEmpty(userId) ? Utils.cleanMD5(email) : userId, error);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "WARNING: NPE ON TRACK NC ERROR");
+        }
     }
 
     /**
@@ -821,9 +783,10 @@ public class TrackerDelegator {
         // FB
         FacebookTracker.get(sContext).trackAddedToCart(sku, price, category);
         //GA Banner Flow
-        if(bundle.getBoolean(ConstantsIntentExtra.BANNER_TRACKING)){
-            JumiaApplication.INSTANCE.setBannerFlowSkus(sku);
+        if (bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) != null) {
+            JumiaApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE));
         }
+
     }
 
     /**
@@ -1247,23 +1210,71 @@ public class TrackerDelegator {
      * @param items
      */
     public static void trackBannerClick(final List<PurchaseItem> items) {
-        final ArrayList<String> skus = JumiaApplication.INSTANCE.getBannerFlowSkus();
-        if (!CollectionUtils.isEmpty(skus) && !CollectionUtils.isEmpty(items)) {
+        final HashMap<String,TeaserGroupType> skus = JumiaApplication.INSTANCE.getBannerFlowSkus();
+        if (skus != null && skus.size() > 0 && !CollectionUtils.isEmpty(items)) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     for (PurchaseItem item : items) {
-                        if (skus.contains(item.sku)) {
-                            AnalyticsGoogle.get().trackEvent(TrackingEvent.BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+                        Iterator it = skus.entrySet().iterator();
+                        try{
+                            while (it.hasNext()) {
+                                Map.Entry pair = (Map.Entry)it.next();
+
+                                if (pair.getKey().equals(item.sku)) {
+                                    Log.e(TAG,"BANNER KEY:"+pair.getKey() +" VALUE:"+pair.getValue());
+                                    trackBannerType(item, (TeaserGroupType) pair.getValue());
+                                    it.remove();
+                                }
+                            }
+                        }catch(ConcurrentModificationException e){
+                            JumiaApplication.INSTANCE.clearBannerFlowSkus();
+                            return;
                         }
+
                     }
+                    JumiaApplication.INSTANCE.clearBannerFlowSkus();
                 }
             }).start();
         }
-        JumiaApplication.INSTANCE.clearBannerFlowSkus();
     }
 
+    /**
+     * fires the GA event for a specific Home teaser
+     * @param item
+     * @param groupType
+     */
+    private static void trackBannerType(PurchaseItem item,TeaserGroupType groupType){
 
+    switch (groupType){
+        case MAIN_TEASERS:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.MAIN_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case SMALL_TEASERS:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SMALL_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case CAMPAIGNS:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.CAMPAIGNS_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case SHOP_TEASERS:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOP_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case BRAND_TEASERS:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.BRAND_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case SHOP_OF_WEEK:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOPS_WEEK_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case FEATURED_STORES:
+            AnalyticsGoogle.get().trackEvent(TrackingEvent.FEATURE_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
+            break;
+        case UNKNOWN:
+            Log.w(TAG,"UNKNOWN TEASER GROUP");
+            break;
+        default:
+            break;
+    }
+}
 
 //    private static void saveUtmParams(Context context, String key, String value) {
 //        Log.d(TAG, "saving saveUtmParams params, key: " + key + ", value : " + value);

@@ -29,6 +29,8 @@ public class GetShopHelper extends BaseHelper {
 
     private static final EventType EVENT_TYPE = EventType.GET_SHOP_EVENT;
 
+    public static final String INNER_SHOP_TAG = "key";
+
     @Override
     public Bundle generateRequestBundle(Bundle args) {
         Bundle bundle = new Bundle();

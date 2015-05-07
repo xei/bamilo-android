@@ -3,16 +3,17 @@
  */
 package com.mobile.framework.objects;
 
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import org.json.JSONObject;
 
 /**
  * Class that represents a group of image teasers
  * @author nutzer2
  * 
  */
+@Deprecated
 public class TeaserGroupImages extends TeaserSpecification<TeaserImage> {
 
 	/**

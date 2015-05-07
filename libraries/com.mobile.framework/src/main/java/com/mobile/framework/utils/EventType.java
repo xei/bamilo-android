@@ -41,6 +41,8 @@ public enum EventType {
 
     GET_TEASERS_EVENT("http:/main/getteasers/", RestContract.MAX_CACHE_TIME),
 
+    GET_HOME_EVENT("http:/main/home/", RestContract.MAX_CACHE_TIME),
+
     GET_PRODUCT_EVENT,
 
     GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggest/", RestContract.DEFAULT_CACHE_TIME),
@@ -145,8 +147,6 @@ public enum EventType {
 
     SET_PAYMENT_METHOD_EVENT("https:/multistep/paymentmethod/", RestContract.DEFAULT_CACHE_TIME),
 
-    GET_MY_ORDER_EVENT("http:/order/status/", RestContract.NO_CACHE),
-
     GET_MY_ORDERS_LIST_EVENT("http:/order/list/", RestContract.NO_CACHE),
 
     CHECKOUT_FINISH_EVENT("https:/multistep/finish/", RestContract.NO_CACHE),
@@ -188,11 +188,10 @@ public enum EventType {
     GET_SELLER_REVIEWS,
 
     VALIDATE_PRODUCTS("http:/catalog/validate/", RestContract.NO_CACHE),
-
     // TODO: to remove: only for test porpose
     KICKOUT("http:/main/kickedout/", RestContract.NO_CACHE),
-
-    GET_SHOP_EVENT;
+    
+    GET_SHOP_EVENT("http:/main/getstatic/", RestContract.MAX_CACHE_TIME);
 
     public final String action;
     public final Integer cacheTime;

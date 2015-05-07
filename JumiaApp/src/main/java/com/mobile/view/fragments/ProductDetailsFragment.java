@@ -26,12 +26,12 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.HorizontalListView;
-import com.mobile.components.HorizontalListView.OnViewSelectedListener;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.HorizontalListView;
+import com.mobile.components.recycler.HorizontalListView.OnViewSelectedListener;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.BundleItemsListAdapter;
 import com.mobile.controllers.BundleItemsListAdapter.OnItemChecked;
@@ -268,8 +268,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     private View mWizardContainer;
 
     private View mSellerDeliveryContainer;
-    
-    private boolean isFromBanner;
 
     /**
      * Empty constructor
@@ -310,8 +308,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             } else {
                 categoryTree = "";
             }
-            // Verify if campaign page was open via a banner
-            isFromBanner = arguments.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
@@ -1129,7 +1125,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getRatingsAverage());
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
-        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
         if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 0) {
             bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories().get(0));
             if (null != mCompleteProduct && mCompleteProduct.getCategories().size() > 1) {
@@ -1288,7 +1284,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
             if(isRTL) mVariationsListView.enableReverseLayout();
             mVariationsListView.setAdapter(adapter);
-            mVariationsListView.setSelecetedItem(position);
+            mVariationsListView.setSelectedItem(position);
             mVariationsListView.setOnItemSelectedListener(new OnViewSelectedListener() {
                 @Override
                 public void onViewSelected(View view, int position, String url) {
@@ -1608,8 +1604,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, mCompleteProduct.getUrl());
             bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mCompleteProduct);
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle,
-                    FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -1822,6 +1817,8 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
+        // Hide dialog progress
+        hideActivityProgress();
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -1908,12 +1905,13 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
     public void onErrorEvent(Bundle bundle) {
         Log.i(TAG, "ON ERROR EVENT");
         // Validate fragment visibility
+
+        // Hide dialog progress
+        hideActivityProgress();
         if (isOnStoppingProcess) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-        // Hide dialog progress
-        hideActivityProgress();
 
         // Specific errors
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);

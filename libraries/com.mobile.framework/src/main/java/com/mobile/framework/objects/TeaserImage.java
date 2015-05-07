@@ -18,6 +18,7 @@ import de.akquinet.android.androlog.Log;
  *
  * @author GuilhermeSilva
  */
+@Deprecated
 public class TeaserImage implements IJSONSerializable, ITargeting, Parcelable {
 
     private int id = -1;

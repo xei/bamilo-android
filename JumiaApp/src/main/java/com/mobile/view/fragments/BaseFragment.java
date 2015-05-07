@@ -2,6 +2,7 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
@@ -27,12 +28,14 @@ import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.framework.Darwin;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.objects.TeaserCampaign;
-import com.mobile.framework.objects.TeaserGroupType;
+import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.utils.Constants;
@@ -46,6 +49,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.social.FacebookHelper;
@@ -128,6 +132,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private KeyboardState adjustState = KeyboardState.ADJUST_CONTENT;
 
+    protected TeaserGroupType mGroupType;
+
+    private int mDeepLinkOrigin = DeepLinkManager.FROM_UNKNOWN;
+
     /**
      * Constructor with layout to inflate
      */
@@ -196,6 +204,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle arguments = getArguments();
+        if(arguments != null){
+            mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
+            mDeepLinkOrigin = arguments.getInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, DeepLinkManager.FROM_UNKNOWN);
+        }
     }
 
     /*
@@ -463,6 +477,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     @Override
     public boolean allowBackPressed() {
+        if (mDeepLinkOrigin == DeepLinkManager.FROM_URI && getBaseActivity() != null) {
+            getBaseActivity().finish();
+            return true;
+        }
         // No intercept the back pressed
         return false;
     }
@@ -611,10 +629,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     public void gotoOldCheckoutMethod(BaseActivity activity, String email, String error) {
         Log.w(TAG, "WARNING: GOTO WEB CHECKOUT");
-        Bundle params = new Bundle();
-        params.putString(TrackerDelegator.EMAIL_KEY, email);
-        params.putString(TrackerDelegator.ERROR_KEY, error);
-        TrackerDelegator.trackNativeCheckoutError(params);
+        // Tracking
+        String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
+        TrackerDelegator.trackNativeCheckoutError(userId, email, error);
         // Warning user
         Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
         // Remove native checkout
@@ -781,7 +798,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         // Case home fall back
         else if(id == R.id.fragment_stub_home_fall_back)  {
-            onInflateHomeFallBack();
+            onInflateHomeFallBack(inflated);
         }
         // Case loading
         else if(id == R.id.fragment_stub_loading) {
@@ -831,8 +848,37 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Set the home fall back view.
      */
-    private void onInflateHomeFallBack() {
+    private void onInflateHomeFallBack(View inflated) {
         Log.i(TAG, "ON INFLATE STUB: FALL BACK");
+        try {
+            boolean isSingleShop = getResources().getBoolean(R.bool.is_single_shop_country);
+            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, getString(R.string.app_name));
+            TextView fallbackBest = (TextView) inflated.findViewById(R.id.fallback_best);
+            TextView fallbackCountry = (TextView) inflated.findViewById(R.id.fallback_country);
+            View countryD = inflated.findViewById(R.id.fallback_country_double);
+            TextView bottomCountry = (TextView) inflated.findViewById(R.id.fallback_country_bottom);
+            TextView topCountry = (TextView) inflated.findViewById(R.id.fallback_country_top);
+            fallbackBest.setText(R.string.fallback_best);
+            if (country.split(" ").length == 1) {
+                fallbackCountry.setText(country.toUpperCase());
+                fallbackCountry.setVisibility(View.VISIBLE);
+                countryD.setVisibility(View.GONE);
+                fallbackCountry.setText(isSingleShop ? "" : country.toUpperCase());
+                if(getResources().getBoolean(R.bool.is_bamilo_specific)){
+                    getView().findViewById(R.id.home_fallback_country_map).setVisibility(View.GONE);
+                }
+            } else {
+                topCountry.setText(country.split(" ")[0].toUpperCase());
+                bottomCountry.setText(country.split(" ")[1].toUpperCase());
+                fallbackBest.setTextSize(11.88f);
+                countryD.setVisibility(View.VISIBLE);
+                fallbackCountry.setVisibility(View.GONE);
+            }
+            fallbackBest.setSelected(true);
+        } catch (NullPointerException | ClassCastException e) {
+            e.printStackTrace();
+        }
         // Hide other stubs
         UIUtils.showOrHideViews(View.GONE, mContentView, mEmptyView, mRetryView, mErrorView, mMaintenanceView, mLoadingView);
     }
@@ -934,7 +980,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @return intercept or not
      */
     public boolean handleSuccessEvent(Bundle bundle) {
-        Log.i(TAG, "ON HANDLE ERROR EVENT");
+        Log.i(TAG, "ON HANDLE SUCCESS EVENT");
         // Validate event
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         switch (eventType) {
@@ -969,6 +1015,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         EventTask eventTask = (EventTask) bundle.getSerializable(Constants.BUNDLE_EVENT_TASK);
+
 
         if (!bundle.getBoolean(Constants.BUNDLE_PRIORITY_KEY)) {
             return false;
@@ -1044,6 +1091,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                         });
 
                 dialog.show(getActivity().getSupportFragmentManager(), null);
+                return true;
+            case SERVER_OVERLOAD:
+                if(getBaseActivity() != null){
+                    ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
+                    showFragmentErrorRetry();
+                }
                 return true;
             default:
                 break;
