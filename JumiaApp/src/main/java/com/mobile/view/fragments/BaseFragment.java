@@ -49,6 +49,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.social.FacebookHelper;
@@ -133,6 +134,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     protected TeaserGroupType mGroupType;
 
+    private int mDeepLinkOrigin = DeepLinkManager.FROM_UNKNOWN;
+
     /**
      * Constructor with layout to inflate
      */
@@ -205,6 +208,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         Bundle arguments = getArguments();
         if(arguments != null){
             mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
+            mDeepLinkOrigin = arguments.getInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, DeepLinkManager.FROM_UNKNOWN);
         }
     }
 
@@ -473,6 +477,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     @Override
     public boolean allowBackPressed() {
+        if (mDeepLinkOrigin == DeepLinkManager.FROM_URI && getBaseActivity() != null) {
+            getBaseActivity().finish();
+            return true;
+        }
         // No intercept the back pressed
         return false;
     }

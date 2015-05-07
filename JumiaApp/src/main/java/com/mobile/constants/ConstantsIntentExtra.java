@@ -87,6 +87,7 @@ public class ConstantsIntentExtra {
     // ########### DEEP LINK ##############    
     public static final String DEEP_LINK_TAG = "u";
     public static final String CART_DEEP_LINK_TAG = "cart";
+    public static final String DEEP_LINK_ORIGIN = "deepLinkOrigin";
 
     // ########### MAINTANCE ##############
     public static final String IN_MAINTANCE = "is_in_maintance";
