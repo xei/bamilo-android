@@ -132,7 +132,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private KeyboardState adjustState = KeyboardState.ADJUST_CONTENT;
 
-    private int mDeepLinkOrigin = -1;
+    private int mDeepLinkOrigin = DeepLinkManager.FROM_UNKNOWN;
 
     /**
      * Constructor with layout to inflate
@@ -203,8 +203,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
-        if(arguments != null && arguments.containsKey(ConstantsIntentExtra.DEEP_LINK_ORIGIN)){
-            mDeepLinkOrigin = arguments.getInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN);
+        if(arguments != null){
+            mDeepLinkOrigin = arguments.getInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, DeepLinkManager.FROM_UNKNOWN);
         }
     }
 
@@ -473,7 +473,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     @Override
     public boolean allowBackPressed() {
-        if (mDeepLinkOrigin != -1 && mDeepLinkOrigin == DeepLinkManager.FROM_URI && getBaseActivity() != null) {
+        if (mDeepLinkOrigin == DeepLinkManager.FROM_URI && getBaseActivity() != null) {
             getBaseActivity().finish();
             return true;
         }

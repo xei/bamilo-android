@@ -52,6 +52,7 @@ public class DeepLinkManager {
     private static final int PATH_DATA_POS = 2;
     public static final int FROM_GCM = 0;
     public static final int FROM_URI = 1;
+    public static final int FROM_UNKNOWN = -1;
     private static final int CC_SIZE = 2;
     private static final int MIN_SEGMENTS = 3;
     private static final String DEFAULT_TAG = "default";
@@ -90,7 +91,7 @@ public class DeepLinkManager {
         // Validate deep link
         List<String> segments = isValidLink(data);
         // Get the tag view and return values
-        return loadDeepViewTag(data, segments, validateDeepLinkOrigin(data.getHost()));
+        return loadDeepViewTag(data, segments);
     }
 
     /**
@@ -112,7 +113,7 @@ public class DeepLinkManager {
         if (CollectionUtils.isEmpty(segments)) {
             Log.w(TAG, "WARNING: DEEP LINK IS EMPTY");
         }
-        // Case from GCM: JUMIA://eg/cart/
+        // Case from URI: JUMIA://com.mobile.jumia.dev/eg/cart
         else if(origin == FROM_URI) {
             // Add country code
             ArrayList<String> arrayList = new ArrayList<>(segments);
@@ -120,7 +121,7 @@ public class DeepLinkManager {
             segments = arrayList;
             Log.i(TAG, "DEEP LINK FROM URI: " + segments.toString());
         }
-        // Case from URI: JUMIA://com.mobile.jumia.dev/eg/cart
+        // Case from GCM: JUMIA://eg/cart/
         else {
             Log.i(TAG, "DEEP LINK FROM GCM: " + segments.toString());
         }
@@ -135,9 +136,7 @@ public class DeepLinkManager {
      */
     private static int validateDeepLinkOrigin(String host){
         // Get deep link origin
-        int origin = !TextUtils.isEmpty(host) && host.length() == CC_SIZE ? FROM_URI : FROM_GCM;
-
-        return origin;
+        return  !TextUtils.isEmpty(host) && host.length() == CC_SIZE ? FROM_URI : FROM_GCM;
     }
 
     /**
@@ -148,7 +147,7 @@ public class DeepLinkManager {
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle loadDeepViewTag(Uri data, List<String> segments, int origin) {
+    private static Bundle loadDeepViewTag(Uri data, List<String> segments) {
         Log.i(TAG, "DEEP LINK URI: " + data + " " + segments);
         //
         Bundle bundle = null;
@@ -162,34 +161,34 @@ public class DeepLinkManager {
             // Get bundle
             switch (tag) {
                 case CATALOG_TAG:
-                    bundle = processCatalogLink(CatalogSort.POPULARITY, segments, data, origin);
+                    bundle = processCatalogLink(CatalogSort.POPULARITY, segments, data);
                     break;
                 case CATALOG_RATING_TAG:
-                    bundle = processCatalogLink(CatalogSort.BESTRATING, segments, data, origin);
+                    bundle = processCatalogLink(CatalogSort.BESTRATING, segments, data);
                     break;
                 case CATALOG_POPULARITY_TAG:
-                    bundle = processCatalogLink(CatalogSort.POPULARITY, segments, data, origin);
+                    bundle = processCatalogLink(CatalogSort.POPULARITY, segments, data);
                     break;
                 case CATALOG_NEW_TAG:
-                    bundle = processCatalogLink(CatalogSort.NEWIN, segments, data, origin);
+                    bundle = processCatalogLink(CatalogSort.NEWIN, segments, data);
                     break;
                 case CATALOG_PRICE_UP_TAG:
-                    bundle = processCatalogLink(CatalogSort.PRICE_UP, segments, data, origin);
+                    bundle = processCatalogLink(CatalogSort.PRICE_UP, segments, data);
                     break;
                 case CATALOG_PRICE_DOWN_TAG:
-                    bundle = processCatalogLink(CatalogSort.PRICE_DOWN, segments, data, origin);
+                    bundle = processCatalogLink(CatalogSort.PRICE_DOWN, segments, data);
                     break;
                 case CATALOG_NAME_TAG:
-                    bundle = processCatalogLink(CatalogSort.NAME, segments, data, origin);
+                    bundle = processCatalogLink(CatalogSort.NAME, segments, data);
                     break;
                 case CATALOG_BRAND_TAG:
-                    bundle = processCatalogLink(CatalogSort.BRAND, segments, data, origin);
+                    bundle = processCatalogLink(CatalogSort.BRAND, segments, data);
                     break;
                 case CART_TAG:
                     bundle = processCartLink(segments);
                     break;
                 case PDV_TAG:
-                    bundle = processPdvLink(segments, data, origin);
+                    bundle = processPdvLink(segments, data);
                     break;
                 case LOGIN_TAG:
                     bundle = processLoginLink();
@@ -198,16 +197,16 @@ public class DeepLinkManager {
                     bundle = processRegisterLink();
                     break;
                 case CATEGORY_TAG:
-                    bundle = processCategoryLink(segments.get(PATH_DATA_POS), origin);
+                    bundle = processCategoryLink(segments.get(PATH_DATA_POS));
                     break;
                 case SEARCH_TERM_TAG:
-                    bundle = processSearchTermLink(segments.get(PATH_DATA_POS), origin);
+                    bundle = processSearchTermLink(segments.get(PATH_DATA_POS));
                     break;
                 case ORDER_OVERVIEW_TAG:
                     bundle = processTrackOrderLink(segments.get(PATH_DATA_POS));
                     break;
                 case CAMPAIGN_TAG:
-                    bundle = processCampaignLink(segments.get(PATH_DATA_POS), origin);
+                    bundle = processCampaignLink(segments.get(PATH_DATA_POS));
                     break;
                 case NEWSLETTER_TAG:
                     bundle = processNewsletterLink();
@@ -222,7 +221,7 @@ public class DeepLinkManager {
                     bundle = processFavoritesLink();
                     break;
                 case SHOPS_IN_SHOP_TAG:
-                    bundle = processShopsInShopLink(segments.get(PATH_DATA_POS), origin);
+                    bundle = processShopsInShopLink(segments.get(PATH_DATA_POS));
                     break;
                 default:
                     bundle = processHomeLink();
@@ -230,6 +229,20 @@ public class DeepLinkManager {
             }
         } catch (NullPointerException | IndexOutOfBoundsException e) {
             Log.w(TAG, "ON LOAD DATA FROM DEEP VIEW TAG", e);
+        }
+        bundle = addOriginGroupType(data,bundle);
+        return bundle;
+    }
+
+    /**
+     *  method that adds the Deep link origin to all bundles
+     * @param bundle
+     * @param origin
+     * @return
+     */
+    private static Bundle addOriginGroupType(Uri data,Bundle bundle){
+        if(bundle != null && data != null){
+            bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, validateDeepLinkOrigin(data.getHost()));
         }
         return bundle;
     }
@@ -241,7 +254,7 @@ public class DeepLinkManager {
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle processCampaignLink(String campaignId, int origin) {
+    private static Bundle processCampaignLink(String campaignId) {
         Log.i(TAG, "DEEP LINK TO CAMPAIGN: " + campaignId);
         // Create bundle
         Bundle bundle = new Bundle();
@@ -252,7 +265,6 @@ public class DeepLinkManager {
         teaserCampaigns.add(campaign);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CAMPAIGNS);
-        bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, origin);
         return bundle;
     }
 
@@ -263,14 +275,13 @@ public class DeepLinkManager {
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle processCategoryLink(String categoryId, int origin) {
+    private static Bundle processCategoryLink(String categoryId) {
         Log.i(TAG, "DEEP LINK TO CATEGORY: " + categoryId);
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CATEGORY_URL, null);
         bundle.putString(ConstantsIntentExtra.CATEGORY_ID, categoryId);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATEGORIES);
-        bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, origin);
         return bundle;
     }
 
@@ -297,7 +308,7 @@ public class DeepLinkManager {
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle processSearchTermLink(String query, int origin) {
+    private static Bundle processSearchTermLink(String query) {
         Log.i(TAG, "DEEP LINK TO SEARCH: " + query);
         // Create bundle
         Bundle bundle = new Bundle();
@@ -307,7 +318,6 @@ public class DeepLinkManager {
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
-        bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, origin);
         return bundle;
     }
 
@@ -348,7 +358,7 @@ public class DeepLinkManager {
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle processPdvLink(List<String> segments, Uri data, int origin) {
+    private static Bundle processPdvLink(List<String> segments, Uri data) {
         Log.i(TAG, "DEEP LINK TO PDV: " + data.toString());
         // Get SKU
         String sku = segments.get(PATH_DATA_POS);
@@ -361,7 +371,6 @@ public class DeepLinkManager {
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.PRODUCT_DETAILS);
-        bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, origin);
         return bundle;
     }
 
@@ -471,7 +480,7 @@ public class DeepLinkManager {
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle processCatalogLink(CatalogSort page, List<String> segments, Uri data, int origin) {
+    private static Bundle processCatalogLink(CatalogSort page, List<String> segments, Uri data) {
         // Get catalog
         String catalogUrlKey = segments.get(PATH_DATA_POS);
 
@@ -500,7 +509,6 @@ public class DeepLinkManager {
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
         bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
-        bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, origin);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
         return bundle;
     }
@@ -513,14 +521,13 @@ public class DeepLinkManager {
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle processShopsInShopLink(String innerShopId, int origin) {
+    private static Bundle processShopsInShopLink(String innerShopId) {
         Log.i(TAG, "DEEP LINK TO SHOPS IN SHOP: " + innerShopId);
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, innerShopId.replaceAll("-", " "));
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, EventType.GET_SHOP_EVENT.action + "?" + GetShopHelper.INNER_SHOP_TAG + "=" + innerShopId);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.INNER_SHOP);
-        bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, origin);
         return bundle;
     }
 
