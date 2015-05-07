@@ -8,7 +8,7 @@ package com.mobile.framework.objects.home.type;
 public enum TeaserTargetType {
 
     CATALOG("catalog"),
-    PDV("product_detail"),
+    PRODUCT_DETAIL("product_detail"),
     CAMPAIGN("campaign"),
     STATIC_PAGE("static_page"),
     UNKNOWN;
@@ -47,8 +47,8 @@ public enum TeaserTargetType {
     public static TeaserTargetType byString(String string) {
         TeaserTargetType result = UNKNOWN;
         try {
-            result = valueOf(string);
-        } catch (IllegalArgumentException e) {
+            result = valueOf(string.toUpperCase());
+        } catch (IllegalArgumentException | NullPointerException e) {
             //...
         }
         return result;

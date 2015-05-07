@@ -452,6 +452,8 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         Log.i(TAG, "ON ERROR EVENT");
         // Validate fragment state
         if (isOnStoppingProcess) return;
+
+        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         /*
         // Generic errors
         if(super.handleErrorEvent(bundle)){
@@ -463,7 +465,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
             return;
         }
         */
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
         if(errorCode == ErrorCode.TIME_OUT || errorCode == ErrorCode.NO_NETWORK){
             showFragmentNoNetworkRetry();
         } else {

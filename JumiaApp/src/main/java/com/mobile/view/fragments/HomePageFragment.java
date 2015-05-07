@@ -420,7 +420,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         TeaserTargetType target = TeaserTargetType.byString(targetType);
         switch (target) {
             case CATALOG:
-                gotoCatalog(targetUrl, targetTitle, originGroupType);
+                gotoCatalog(targetTitle, targetUrl, originGroupType);
                 break;
             case CAMPAIGN:
                 gotoCampaignPage(targetTitle, targetUrl, originGroupType);
@@ -428,7 +428,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             case STATIC_PAGE:
                 gotoStaticPage(targetTitle, targetUrl, originGroupType);
                 break;
-            case PDV:
+            case PRODUCT_DETAIL:
                 gotoProductDetail(targetUrl, originGroupType);
                 break;
             case UNKNOWN:

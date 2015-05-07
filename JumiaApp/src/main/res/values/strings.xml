@@ -383,4 +383,9 @@
     <string name="product_desc_summary_title">Summary</string>
     <string name="description">Description</string>
     <string name="key_features">Key Features</string>
+
+    <string name="kickout_page_title">OUR CAMPAIGN IS BEING A GREAT SUCCESS!</string>
+    <string name="kickout_page_text1">So much that the shop is currently full, and we cannot welcome new customers at the moment.</string>
+    <string name="kickout_page_text2">We want to provide you with the best possible shopping experience, so we would like to ask you to try again later.</string>
+
 </resources>

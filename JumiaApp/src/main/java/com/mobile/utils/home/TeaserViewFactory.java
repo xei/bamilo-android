@@ -42,11 +42,11 @@ public class TeaserViewFactory {
                 return new HomeMainTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_main, parent, false), listener);
             case SMALL_TEASERS:
                 return new HomeSmallTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_small, parent, false), listener);
-            case CAMPAIGN_TEASERS:
+            case CAMPAIGNS:
                 return new HomeCampaignTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_campaign, parent, false), listener);
             case SHOP_TEASERS:
                 return new HomeShopTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_shop, parent, false), listener);
-            case SHOP_WEEK_TEASERS:
+            case SHOP_OF_WEEK:
                 return new HomeShopWeekTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_shop_week, parent, false), listener);
             case FEATURED_STORES:
                 return new HomeFeaturedTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_featured_stores, parent, false), listener);

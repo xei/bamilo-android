@@ -86,4 +86,7 @@
     <item name="home_teaser_top_sellers_item" type="layout">@layout/_def_home_teaser_top_sellers_item</item>
 
 
+
+    <!--KICK OUT -->
+    <item name="kickout_page" type="layout">@layout/_def_kickout_page</item>
 </resources>
