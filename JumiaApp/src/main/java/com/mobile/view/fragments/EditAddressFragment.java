@@ -601,7 +601,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * Trigger to get the address form
      */
     protected void triggerEditAddressForm(){
-        Log.i(TAG, "TRIGGER: LOGIN FORM");
+        Log.i(TAG, "TRIGGER: EDIT FORM");
         triggerContentEvent(new GetFormEditAddressHelper(), null, this);
     }
 
@@ -648,7 +648,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * @return boolean
      */
     protected boolean onSuccessEvent(Bundle bundle) {
-        Log.i(TAG, "ON SUCCESS EVENT");
 
         if(isOnStoppingProcess){
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -657,7 +656,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.i(TAG, "ON SUCCESS EVENT: " + eventType);
-
         switch (eventType) {
             case INIT_FORMS:
                 Log.d(TAG, "RECEIVED INIT_FORMS");

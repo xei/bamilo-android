@@ -13,20 +13,19 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.view.R;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
 public class RadioGroupLayout extends LinearLayout {
-    private final static String TAG = LogTagHelper.create(RadioGroupLayout.class);
 
-    public interface OnRadioGroupSelected {
-        public void onRadioGroupItemSelected(int position);
-    }
+    private final static String TAG = LogTagHelper.create(RadioGroupLayout.class);
 
     public static final int NO_DEFAULT_SELECTION = -1;
 
-    private ArrayList<String> mItems;
+    private ArrayList<?> mItems;
     private int mDefaultSelected;
     private RadioGroup mGroup;
     private LayoutInflater mInflater;
@@ -57,16 +56,15 @@ public class RadioGroupLayout extends LinearLayout {
         mGroup.setOnCheckedChangeListener(listener);
     }
 
-    public void setItems(ArrayList<String> items, int defaultSelected) {
+    public void setItems(ArrayList<?> items, int defaultSelected) {
         Log.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = " + defaultSelected);
         mItems = items;
         mDefaultSelected = defaultSelected;
         updateRadioGroup();
     }
-
     
     /**
-     * TODO: Validate this method to use the R.layout.form_radiobutton and not button.setPadding()
+     *
      */
     private void updateRadioGroup() {
         try {
@@ -74,41 +72,36 @@ public class RadioGroupLayout extends LinearLayout {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-        
-        int idx;
-        for (idx = 0; idx < mItems.size(); idx++) {
-            Log.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
+
+        for (int idx = 0; idx < mItems.size(); idx++) {
+            //Log.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
             RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, mGroup, false);
             button.setId(idx);
-            button.setText(mItems.get(idx));
+            button.setText(mItems.get(idx).toString());
             if (idx == mDefaultSelected) button.setChecked(true);
             mGroup.addView(button, idx);
         }
-
     }
 
     public int getSelectedIndex() {
         int radioButtonID = mGroup.getCheckedRadioButtonId();
         View radioButton = mGroup.findViewById(radioButtonID);
-
         return mGroup.indexOfChild(radioButton);
     }
 
     public String getItemByIndex(int idx) {
-        if (mItems == null)
-            return null;
-        if( idx < 0 )
-            return null;
-        return mItems.get(idx);
+        String result = null;
+        if (CollectionUtils.isNotEmpty(mItems) && idx >= 0) {
+            result = mItems.get(idx).toString();
+        }
+        return result;
     }
 
     public void setSelection(int idx) {
-        if(idx>=0){
+        if (idx >= 0 && idx < mItems.size()) {
             RadioButton button = (RadioButton) mGroup.getChildAt(idx);
-            button.setChecked(true);    
-            Log.i(TAG, "code1select :RadioButton "+idx);
+            button.setChecked(true);
         }
-        
     }
 
 }

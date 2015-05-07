@@ -28,6 +28,7 @@ import com.mobile.framework.objects.Customer;
 import com.mobile.framework.objects.PaymentInfo;
 import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.objects.VersionInfo;
+import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.rest.ICurrentCookie;
 import com.mobile.framework.rest.RestClientSingleton;
 import com.mobile.framework.service.IRemoteService;
@@ -120,7 +121,8 @@ public class JumiaApplication extends A4SApplication {
     // for tracking
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
-    private ArrayList<String> bannerSkus = new ArrayList<>();
+//    private ArrayList<String> bannerSkus = new ArrayList<>();
+    private HashMap<String,TeaserGroupType> bannerSkus = new HashMap<>();
 
     /*
      * (non-Javadoc)
@@ -638,16 +640,17 @@ public class JumiaApplication extends A4SApplication {
      * add a sku to a list of sku products that were added from a banner flow
      * @param sku
      */
-    public void setBannerFlowSkus(String sku) {
+    public void setBannerFlowSkus(String sku,TeaserGroupType groupType) {
         if(bannerSkus == null){
-            bannerSkus = new ArrayList<>();
+            bannerSkus = new HashMap<>();
         }
+
         if(!TextUtils.isEmpty(sku)){
             if(bannerSkus.size() == 0){
-                bannerSkus.add(sku);
+                bannerSkus.put(sku, groupType);
             } else {
-                if(!bannerSkus.contains(sku)){
-                    bannerSkus.add(sku);
+                if(!bannerSkus.containsKey(sku)){
+                    bannerSkus.put(sku, groupType);
                 }
             }
         }
@@ -658,9 +661,9 @@ public class JumiaApplication extends A4SApplication {
      *
      * @return list of skus
      */
-    public ArrayList<String> getBannerFlowSkus() {
+    public HashMap<String,TeaserGroupType> getBannerFlowSkus() {
         if(bannerSkus == null){
-            bannerSkus = new ArrayList<>();
+            bannerSkus = new HashMap<>();
         }
         return bannerSkus;
     }

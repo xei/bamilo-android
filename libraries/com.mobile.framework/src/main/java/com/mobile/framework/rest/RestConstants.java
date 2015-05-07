@@ -38,6 +38,8 @@ public class RestConstants {
 
     // FormsService Tags
     public static final String JSON_NAME_TAG = "name";
+    public static final String JSON_CODE_TAG = "code";
+    public static final String JSON_SORT_TAG = "sort";
     public static final String JSON_NUMBER_TAG = "number";
     public static final String JSON_VAL_TAG = "val";
     public static final String JSON_PRODUCTS_COUNT_TAG = "products_count";
@@ -65,7 +67,6 @@ public class RestConstants {
     public static final String JSON_KEY_TAG = "key";
     public static final String JSON_FIELD_NAME_TAG = JSON_NAME_TAG;
     public static final String JSON_LABEL_TAG = "label";
-    public static final String JSON_VALIDATION_TAG = "rules";
     public static final String JSON_DATA_SET_TAG = "dataset";
     public static final String JSON_VALUE_TAG = "value";
     public static final String JSON_DATA_SET_SOURCE_TAG = "dataset_source";
@@ -74,6 +75,8 @@ public class RestConstants {
     public static final String JSON_LINK_TEXT_TAG = "link_text";
     public static final String JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG = "newsletter_categories_subscribed";
     public static final String JSON_DELIVERY_TIME = "delivery_time";
+    public static final String JSON_RELATED_FIELD_TAG = "related_field";
+    public static final String JSON_CHECKED_TAG = "checked";
 
     // FieldValidation Tags
     public static final String JSON_REQUIRED_TAG = "required";
@@ -386,6 +389,8 @@ public class RestConstants {
     public static final String JSON_CUSTOMER_ADDRESS_COLLECTION_TAG = "address_collection";
     public static final String JSON_REGION_NAME_TAG = "customer_address_region";
     public static final String JSON_API_CALL_TAG = "api_call";
+    public static final String JSON_ID_ADDRESS_REGION_TAG = "id_customer_address_region";
+
 
     /**
      * Native Checkout
@@ -447,8 +452,6 @@ public class RestConstants {
     public static final String JSON_COUNTRY_THOUSANDS_SEP = "thousands_sep";
     public static final String JSON_COUNTRY_DECIMALS_SEP = "decimals_sep";
     public static final String JSON_COUNTRY_LANGUAGES = "languages";
-    public static final String JSON_COUNTRY_LANG_CODE = "code";
-    public static final String JSON_COUNTRY_LANG_NAME = "name";
     public static final String JSON_COUNTRY_LANG_DEFAULT = "default";
     public static final String JSON_COUNTRY_GA_ID = "ga_android_id";
     public static final String JSON_COUNTRY_CS_EMAIL = "cs_email";
@@ -487,7 +490,6 @@ public class RestConstants {
      */
 
     public static final String JSON_VALID_TAG = "valid";
-    public static final String JSON_INVALID_TAG = "invalid";
     public static final String JSON_VARIATION_NAME_TAG = "variation_name";
     public static final String JSON_VARIATION_VALUE_TAG = "variation_value";
 
