@@ -372,9 +372,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 if (item != null) {
                     item.getMandatoryControl().setVisibility(View.GONE);
                     item.getEditControl().setVisibility(View.GONE);
-//                    if(((RadioGroupLayout)item.getEditControl()).getChildCount() > 0){
-//                        ((RadioGroupLayout)item.getEditControl()).setSelection(0);
-//                    }
                     item.getControl().setVisibility(View.GONE);
                 }
             } catch (NullPointerException e) {
@@ -540,7 +537,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
         // Unknown view
         else {
-            Log.i(TAG, "ON CLICK: UNKNOWN VIEW FUK");
+            Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
         }
     }
 
