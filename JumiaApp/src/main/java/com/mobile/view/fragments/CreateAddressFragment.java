@@ -536,7 +536,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
         // Unknown view
         else {
-            Log.i(TAG, "ON CLICK: UNKNOWN VIEW");
+            Log.i(TAG, "ON CLICK: UNKNOWN VIEW FUK");
         }
     }
 
