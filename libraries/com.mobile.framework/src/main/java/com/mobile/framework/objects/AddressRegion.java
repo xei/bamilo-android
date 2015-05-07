@@ -1,14 +1,13 @@
 package com.mobile.framework.objects;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.LogTagHelper;
 
-import de.akquinet.android.androlog.Log;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AddressRegion implements IJSONSerializable, Parcelable {
 
@@ -132,12 +131,12 @@ public class AddressRegion implements IJSONSerializable, Parcelable {
 
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
-		id = jsonObject.getInt("id_customer_address_region");
-		countryId = jsonObject.getInt("fk_country");
-		code = jsonObject.getString("code");
-		name = jsonObject.getString("name");
-		sort = jsonObject.optString("sort");
-		Log.d(TAG, this.toString());
+		id = jsonObject.getInt(RestConstants.JSON_ID_ADDRESS_REGION_TAG);
+		countryId = jsonObject.getInt(RestConstants.JSON_COUNTRY_ID_TAG);
+		code = jsonObject.getString(RestConstants.JSON_CODE_TAG);
+		name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
+		sort = jsonObject.optString(RestConstants.JSON_SORT_TAG);
+		//Log.i(TAG, this.toString());
 		return true;
 	}
 

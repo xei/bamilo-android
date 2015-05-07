@@ -135,9 +135,6 @@ public class FormFactory {
             case FormConstants.SIGNUP_FORM:
                 parent = createSignupForm(context, form, ctrlParams);
                 break;
-        /*-case FormConstants.SHIPPING_DETAILS_FORM:
-            parent = createShippingMethodsForm(context, form);
-            break;*/
             case FormConstants.PAYMENT_DETAILS_FORM:
                 parent = createPaymentMethodsForm(context, form, ctrlParams);
                 break;
@@ -148,9 +145,6 @@ public class FormFactory {
                 parent = createSellerReviewOptionsForm(context, form, ctrlParams);
                 break;
         }
-
-//        FontLoader.applyDefaultFont( parent.getContainer());
-
         return parent;
     }
 
@@ -396,11 +390,7 @@ public class FormFactory {
             return null;
         }
         parent = new LinearLayout(context);
-        //#RTL
-//        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-//            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-////                parent.setLayoutDirection(LayoutDirection.LOCALE);
-//            }
+
         LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parent.setOrientation(LinearLayout.VERTICAL);
         parent.setLayoutParams(frmParams);
@@ -414,12 +404,6 @@ public class FormFactory {
         if(context.getResources().getBoolean(R.bool.is_bamilo_specific)){
             groupLayout.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
         }
-
-
-
-//        if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-////                groupLayout.setLayoutDirection(LayoutDirection.LOCALE);
-//        }
 
         groupLayout.setId( userForm.getNextId() );
         groupLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -435,7 +419,6 @@ public class FormFactory {
             ctrl = new DynamicFormItem(userForm, context, frmEntry);
 
             if (ctrl.isMeta() || ctrl.hasNoType()) {
-
                 // Don't waste space with meta fields nor field without type
                 Log.i(TAG, "Meta or no type field");
                 userForm.addControl(ctrl, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));

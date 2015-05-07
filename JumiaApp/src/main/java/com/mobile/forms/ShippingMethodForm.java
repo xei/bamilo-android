@@ -72,8 +72,8 @@ public class ShippingMethodForm implements IJSONSerializable, Parcelable {
             label = jsonObject.optString(RestConstants.JSON_LABEL_TAG);
             type = jsonObject.optString(RestConstants.JSON_TYPE_TAG);
             
-            if(jsonObject.has(RestConstants.JSON_VALIDATION_TAG)){
-                required = jsonObject.getJSONObject(RestConstants.JSON_VALIDATION_TAG).optBoolean(RestConstants.JSON_REQUIRED_TAG, false);
+            if(jsonObject.has(RestConstants.JSON_RULES_TAG)){
+                required = jsonObject.getJSONObject(RestConstants.JSON_RULES_TAG).optBoolean(RestConstants.JSON_REQUIRED_TAG, false);
             }
             
             JSONObject optionsObject = jsonObject.getJSONObject(RestConstants.JSON_OPTIONS_TAG);
