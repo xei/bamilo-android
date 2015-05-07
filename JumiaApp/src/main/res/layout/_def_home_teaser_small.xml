@@ -10,6 +10,4 @@
     android:fadingEdgeLength="@dimen/home_horizontal_fade"
     android:paddingLeft="@dimen/home_margin"
     android:paddingRight="@dimen/home_margin"
-    android:requiresFadingEdge="horizontal"
-
-    />
+    android:requiresFadingEdge="horizontal" />
