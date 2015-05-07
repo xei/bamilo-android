@@ -1,10 +1,9 @@
 /**
- * 
+ *
  */
 package com.mobile.helpers.search;
 
 import android.database.sqlite.SQLiteException;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -29,17 +28,17 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * Get Search Suggestion  helper
- * 
+ *
  * @author Manuel Silva
  * @modified sergiopereira
- * 
+ *
  */
 public class GetSearchSuggestionHelper extends BaseHelper {
-    
+
     private static final String TAG = GetSearchSuggestionHelper.class.getSimpleName();
 
-    private static final EventType EVENT_TYPE = EventType.GET_SEARCH_SUGGESTIONS_EVENT;
-    
+    private static final EventType EVENT_TYPE = EventType.KICKOUT;
+
     public static final String SEACH_PARAM = "searchParam";
 
     private String mQuery;
@@ -57,18 +56,19 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         // Get the current query
         mQuery = args.getString(SEACH_PARAM);
         // Request suggestions
-        Uri uri = Uri.parse(EventType.GET_SEARCH_SUGGESTIONS_EVENT.action).buildUpon().appendQueryParameter("q", mQuery).build();
-        bundle.putString(Constants.BUNDLE_URL_KEY, uri.toString());
+        // TODO: to remove: only for test porpose
+//        Uri uri = Uri.parse(EventType.KICKOUT.action).buildUpon().appendQueryParameter("q", mQuery).build();
+        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.KICKOUT.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.KICKOUT);
         return bundle;
     }
 
     /**
      * Constructor used to get only the recent queries
-     * 
+     *
      * @param requester
      */
     public GetSearchSuggestionHelper(IResponseCallback requester) {
@@ -79,19 +79,19 @@ public class GetSearchSuggestionHelper extends BaseHelper {
 
     /**
      * Get all recent queries and deliver them to the <code>requester</code>
-     * 
+     *
      * @param requester
      */
     private void getSearchSuggestionList(IResponseCallback requester) {
         Log.d(TAG, "ON GET_SEARCH_SUGGESTIONS_EVENT");
-        
+
         ArrayList<SearchSuggestion> suggestions = new ArrayList<>();
         try {
             suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
         } catch (InterruptedException e) {
             Log.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
         }
-        
+
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
         bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY, suggestions);
@@ -112,7 +112,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
             }
         }).start();
     }
-    
+
     /**
      * Update the recent query on the database
      * @param query
@@ -127,7 +127,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
             }
         }).start();
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
@@ -137,7 +137,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         Log.d(TAG, "ON PARSE RESPONSE");
 
         ArrayList<SearchSuggestion> suggestions = new ArrayList<>();
-        
+
         // Get recent queries
         try {
             if(TextUtils.isEmpty(mQuery)) suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
@@ -147,7 +147,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         } catch (InterruptedException e) {
             Log.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
         }
-        
+
         // Parse response
         try {
             JSONArray suggestionsArray = jsonObject.getJSONArray(RestConstants.JSON_SUGGESTIONS_TAG);
@@ -160,13 +160,13 @@ public class GetSearchSuggestionHelper extends BaseHelper {
             Log.w(TAG, "ERROR PARSING SUGGESTIONS", e);
             return parseErrorBundle(bundle);
         }
-        
+
         bundle.putString(SEACH_PARAM, mQuery);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, suggestions);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.KICKOUT);
         return bundle;
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
@@ -174,8 +174,8 @@ public class GetSearchSuggestionHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "ON PARSE ERROR BUNDLE");
-        
-        // Get the recent queries 
+
+        // Get the recent queries
         ArrayList<SearchSuggestion> suggestions = new ArrayList<>();
         // Get recent queries
         try {
@@ -187,12 +187,12 @@ public class GetSearchSuggestionHelper extends BaseHelper {
             Log.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
         }
         Log.d(TAG, "SUGGESTION: " + suggestions.size());
-        
+
         // Add error if no match
         if(suggestions.size() > 0 ) bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, false);
         bundle.putString(SEACH_PARAM, mQuery);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, suggestions);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.KICKOUT);
         return bundle;
     }
 
@@ -209,7 +209,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
 //        return bundle;
         return parseErrorBundle(bundle);
     }
-    
+
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
         return parseResponseErrorBundle(bundle);
