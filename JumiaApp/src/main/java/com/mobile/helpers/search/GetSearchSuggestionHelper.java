@@ -4,6 +4,7 @@
 package com.mobile.helpers.search;
 
 import android.database.sqlite.SQLiteException;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -37,7 +38,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
 
     private static final String TAG = GetSearchSuggestionHelper.class.getSimpleName();
 
-    private static final EventType EVENT_TYPE = EventType.KICKOUT;
+    private static final EventType EVENT_TYPE = EventType.GET_SEARCH_SUGGESTIONS_EVENT;
 
     public static final String SEACH_PARAM = "searchParam";
 
@@ -56,13 +57,12 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         // Get the current query
         mQuery = args.getString(SEACH_PARAM);
         // Request suggestions
-        // TODO: to remove: only for test porpose
-//        Uri uri = Uri.parse(EventType.KICKOUT.action).buildUpon().appendQueryParameter("q", mQuery).build();
-        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.KICKOUT.action);
+        Uri uri = Uri.parse(EventType.GET_SEARCH_SUGGESTIONS_EVENT.action).buildUpon().appendQueryParameter("q", mQuery).build();
+        bundle.putString(Constants.BUNDLE_URL_KEY, uri.toString());
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.KICKOUT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
         return bundle;
     }
 
@@ -163,7 +163,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
 
         bundle.putString(SEACH_PARAM, mQuery);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, suggestions);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.KICKOUT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
         return bundle;
     }
 
@@ -192,7 +192,7 @@ public class GetSearchSuggestionHelper extends BaseHelper {
         if(suggestions.size() > 0 ) bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, false);
         bundle.putString(SEACH_PARAM, mQuery);
         bundle.putParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY, suggestions);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.KICKOUT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_SEARCH_SUGGESTIONS_EVENT);
         return bundle;
     }
 
