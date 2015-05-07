@@ -1,9 +1,8 @@
 /**
- * 
+ *
  */
 package com.mobile.helpers.checkout;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.framework.enums.RequestType;
@@ -20,15 +19,15 @@ import de.akquinet.android.androlog.Log;
 
 /**
  * Example helper
- * 
+ *
  * @author Guilherme Silva
- * 
+ *
  */
 public class GetTrackOrderHelper extends BaseHelper {
-    
+
     private static String TAG = GetTrackOrderHelper.class.getSimpleName();
-    
-    private static final EventType EVENT_TYPE = EventType.TRACK_ORDER_EVENT;
+
+    private static final EventType EVENT_TYPE = EventType.KICKOUT;
 
     public static final String ORDER_NR = "ordernr";
 
@@ -38,14 +37,15 @@ public class GetTrackOrderHelper extends BaseHelper {
      */
     @Override
     public Bundle generateRequestBundle(Bundle args) {
-        Uri uri = Uri.parse(EventType.TRACK_ORDER_EVENT.action).buildUpon()
-                .appendQueryParameter("ordernr", args.getString(ORDER_NR)).build();
+        // TODO to remove
+//        Uri uri = Uri.parse(EventType.TRACK_ORDER_EVENT.action).buildUpon()
+//                .appendQueryParameter("ordernr", args.getString(ORDER_NR)).build();
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, uri.toString());
+        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.KICKOUT.action);
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.TRACK_ORDER_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.KICKOUT);
         return bundle;
     }
 
@@ -60,10 +60,10 @@ public class GetTrackOrderHelper extends BaseHelper {
             mOrderTracker.initialize(jsonObject);
         }
         bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, mOrderTracker);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.TRACK_ORDER_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.KICKOUT);
         return bundle;
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
@@ -71,7 +71,7 @@ public class GetTrackOrderHelper extends BaseHelper {
     @Override
     public Bundle parseErrorBundle(Bundle bundle) {
         Log.d(TAG, "parseErrorBundle GetTrackOrderHelper");
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.TRACK_ORDER_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.KICKOUT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
@@ -82,11 +82,11 @@ public class GetTrackOrderHelper extends BaseHelper {
      */
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle) {
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.TRACK_ORDER_EVENT);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.KICKOUT);
         bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
         return bundle;
     }
-    
+
     @Override
     public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
         return parseResponseErrorBundle(bundle);
