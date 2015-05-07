@@ -367,6 +367,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onDestroyView() {
         super.onDestroyView();
         JumiaApplication.INSTANCE.unRegisterFragmentCallback(mCallback);
+        isOnStoppingProcess = true;
     }
 
     /*
