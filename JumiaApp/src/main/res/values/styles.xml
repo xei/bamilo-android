@@ -618,7 +618,7 @@
 
     <!-- TEASER CONTAINER -->
     <style name="TeaserWhiteContainerStyle">
-        <item name="android:paddingBottom">@dimen/dimen_mat_4px</item>
+        <item name="android:paddingBottom">@dimen/dimen_mat_8px</item>
         <item name="android:background">@android:color/white</item>
     </style>
 
@@ -627,6 +627,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dimen_mat_48px</item>
         <item name="android:paddingLeft">@dimen/dimen_mat_8px</item>
+        <item name="android:paddingStart">@dimen/dimen_mat_8px</item>
     </style>
 
     <!-- SMALL TEASER -->
@@ -747,6 +748,22 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:clickable">true</item>
         <item name="android:background">@drawable/selector_card_view</item>
+    </style>
+
+    <!-- HORIZONTAL LIST -->
+
+    <style name="HorizontalListStyle" >
+        <item name="android:fadingEdge">horizontal</item>
+        <item name="android:fadingEdgeLength">@dimen/home_horizontal_fade</item>
+        <item name="android:requiresFadingEdge">horizontal</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
+    <!-- WHITE HORIZONTAL LIST -->
+
+    <style name="WhiteHorizontalListStyle" parent="HorizontalListStyle" >
+        <item name="android:paddingBottom">@dimen/dimen_mat_8px</item>
+        <item name="android:background">@android:color/white</item>
     </style>
 
 </resources>

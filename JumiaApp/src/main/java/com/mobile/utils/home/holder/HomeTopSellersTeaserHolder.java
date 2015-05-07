@@ -30,9 +30,9 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
             Log.i(TAG, "BRAND_TEASERS: ADAPTER IS NULL");
             // Use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
             horizontalListView.setHasFixedSize(true);
-            // RTL
-            Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-            if (isRTL) horizontalListView.enableReverseLayout();
+            //// RTL
+            //Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
+            //if (isRTL) horizontalListView.enableReverseLayout();
             // Set adapter
             horizontalListView.setAdapter(new HomeTopSellersTeaserAdapter(group.getData(), mParentClickListener));
         } else {

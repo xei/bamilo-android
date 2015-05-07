@@ -36,9 +36,9 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
         if (horizontal.getAdapter() == null) {
             // Use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
             horizontal.setHasFixedSize(true);
-            // RTL
-            Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-            if (isRTL) horizontal.enableReverseLayout();
+            //// RTL
+            //Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
+            //if (isRTL) horizontal.enableReverseLayout();
             // Set adapter
             horizontal.setAdapter(new HomeSmallTeaserAdapter(group.getData(), mParentClickListener));
         }

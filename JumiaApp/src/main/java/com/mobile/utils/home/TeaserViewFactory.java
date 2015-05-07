@@ -1,5 +1,6 @@
 package com.mobile.utils.home;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,8 @@ public class TeaserViewFactory {
      */
     public static void setClickableView(View view, BaseTeaserObject teaser, View.OnClickListener listener) {
         if (listener != null) {
-            view.setTag(R.id.target_title, teaser.getTitle());
+            String title = !TextUtils.isEmpty(teaser.getName()) ? teaser.getName() : teaser.getTitle();
+            view.setTag(R.id.target_title, title);
             view.setTag(R.id.target_type, teaser.getTargetType());
             view.setTag(R.id.target_url, teaser.getUrl());
             view.setTag(R.id.target_teaser_origin, teaser.getTeaserTypeId());
