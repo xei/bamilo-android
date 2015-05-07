@@ -87,6 +87,7 @@ public class ConstantsIntentExtra {
     // ########### DEEP LINK ##############    
     public static final String DEEP_LINK_TAG = "u";
     public static final String CART_DEEP_LINK_TAG = "cart";
+    public static final String DEEP_LINK_ORIGIN = "deepLinkOrigin";
 
     // ########### MAINTANCE ##############
     public static final String IN_MAINTANCE = "is_in_maintance";
@@ -100,7 +101,7 @@ public class ConstantsIntentExtra {
     public static final String ORDER_FINISH = mPackage + "OrderFinish";
 
     // ############ BANNER TRACKING ###############
-    public static final String BANNER_TRACKING = "isFromBanner";
+    public static final String BANNER_TRACKING_TYPE = "bannerGroupType";
 
     // ########### MY ORDER ##############
     public static final String PRODUCT_INFO_POS = "ProductInfoPosition";

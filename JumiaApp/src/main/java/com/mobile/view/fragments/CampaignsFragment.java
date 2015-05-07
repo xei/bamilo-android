@@ -45,9 +45,7 @@ public class CampaignsFragment extends BaseFragment {
 
     private SlidingTabLayout mCampaignPagerTabStrip;
     */
-    
-    private boolean isFromBanner;
-    
+
     /**
      * Constructor via bundle
      * @return CampaignsFragment
@@ -89,12 +87,7 @@ public class CampaignsFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "ON CREATE"); 
-        // Verify if campaign page was open via a banner
-        Bundle args = getArguments();
-        if(args != null) {
-            isFromBanner = args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
-        }
+        Log.i(TAG, "ON CREATE");
     }
     
     /*
@@ -225,7 +218,7 @@ public class CampaignsFragment extends BaseFragment {
         @Override
         public Fragment getItem(int position) {
             Bundle bundle = new Bundle();
-            bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
+            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
             bundle.putParcelable(CampaignPageFragment.TAG, this.mCampaigns.get(position));
             return CampaignPageFragment.getInstance(bundle);
         }

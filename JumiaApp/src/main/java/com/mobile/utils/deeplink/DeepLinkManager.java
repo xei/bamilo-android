@@ -50,9 +50,11 @@ public class DeepLinkManager {
     private static final int PATH_CC_POS = 0;
     private static final int PATH_VIEW_POS = 1;
     private static final int PATH_DATA_POS = 2;
-    private static final int FROM_URI = 0;
-    private static final int FROM_GCM = 1;
+    public static final int FROM_GCM = 0;
+    public static final int FROM_URI = 1;
+    public static final int FROM_UNKNOWN = -1;
     private static final int CC_SIZE = 2;
+    private static final int MIN_SEGMENTS = 3;
     private static final String DEFAULT_TAG = "default";
     private static final String CATALOG_TAG = "c";
     private static final String CATALOG_RATING_TAG = "cbr";
@@ -106,25 +108,35 @@ public class DeepLinkManager {
         List<String> segments = data.getPathSegments();
         Log.i(TAG, "DEEP LINK URI HOST: " + data.getHost() + " PATH: " + data.getPathSegments());
         // Get deep link origin
-        int origin = !TextUtils.isEmpty(host) && host.length() == CC_SIZE ? FROM_GCM : FROM_URI;
+        int origin = validateDeepLinkOrigin(host);
         // Case empty
         if (CollectionUtils.isEmpty(segments)) {
             Log.w(TAG, "WARNING: DEEP LINK IS EMPTY");
         }
-        // Case from GCM: JUMIA://eg/cart/
-        else if(origin == FROM_GCM) {
+        // Case from URI: JUMIA://com.mobile.jumia.dev/eg/cart
+        else if(origin == FROM_URI) {
             // Add country code
             ArrayList<String> arrayList = new ArrayList<>(segments);
             arrayList.add(PATH_CC_POS, host);
             segments = arrayList;
-            Log.i(TAG, "DEEP LINK FROM GCM: " + segments.toString());
-        }
-        // Case from URI: JUMIA://com.mobile.jumia.dev/eg/cart
-        else {
             Log.i(TAG, "DEEP LINK FROM URI: " + segments.toString());
+        }
+        // Case from GCM: JUMIA://eg/cart/
+        else {
+            Log.i(TAG, "DEEP LINK FROM GCM: " + segments.toString());
         }
         // Return segments
         return segments;
+    }
+
+    /**
+     * specifies if the deep link is FROM_URI or FROM_GCM
+     * @param host
+     * @return
+     */
+    private static int validateDeepLinkOrigin(String host){
+        // Get deep link origin
+        return  !TextUtils.isEmpty(host) && host.length() == CC_SIZE ? FROM_URI : FROM_GCM;
     }
 
     /**
@@ -217,6 +229,20 @@ public class DeepLinkManager {
             }
         } catch (NullPointerException | IndexOutOfBoundsException e) {
             Log.w(TAG, "ON LOAD DATA FROM DEEP VIEW TAG", e);
+        }
+        bundle = addOriginGroupType(data,bundle);
+        return bundle;
+    }
+
+    /**
+     *  method that adds the Deep link origin to all bundles
+     * @param bundle
+     * @param origin
+     * @return
+     */
+    private static Bundle addOriginGroupType(Uri data,Bundle bundle){
+        if(bundle != null && data != null){
+            bundle.putInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, validateDeepLinkOrigin(data.getHost()));
         }
         return bundle;
     }
@@ -457,6 +483,15 @@ public class DeepLinkManager {
     private static Bundle processCatalogLink(CatalogSort page, List<String> segments, Uri data) {
         // Get catalog
         String catalogUrlKey = segments.get(PATH_DATA_POS);
+
+        // create the url with more that one segment:
+        // case [KE, c, mobile-phones, samsung] ---> mobile-phones/samsung
+        if(segments.size() > MIN_SEGMENTS){
+            for (int i = MIN_SEGMENTS; i < segments.size(); i++) {
+                catalogUrlKey = catalogUrlKey + "/" + segments.get(i);
+            }
+        }
+
         // Get filters
         Set<String> filters = getQueryParameterNames(data);
         // Get all params
