@@ -164,9 +164,10 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 	    Bundle args = getArguments();
 	    if(args != null) {
             isFromBanner = args.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
-            if(args.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) != null){
+//            if(args.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) != null){
+                args.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, null);
                 mGroupType =(TeaserGroupType) args.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
-            }
+//            }
 	    }
         // Get campaigns from arguments
         mTeaserCampaign = getArguments().getParcelable(TAG);

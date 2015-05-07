@@ -414,22 +414,22 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         // Get origin id
         int origin = (int) view.getTag(R.id.target_teaser_origin);
         // Get teaser group type
-        TeaserGroupType groupType = TeaserGroupType.values()[origin];
+        TeaserGroupType originGroupType = TeaserGroupType.values()[origin];
         Log.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " URL:" + targetUrl);
         // Get target type
         TeaserTargetType target = TeaserTargetType.byString(targetType);
         switch (target) {
             case CATALOG:
-                gotoCatalog(targetUrl, targetTitle, groupType);
+                gotoCatalog(targetUrl, targetTitle, originGroupType);
                 break;
             case CAMPAIGN:
-                gotoCampaignPage(origin, targetTitle, targetUrl, groupType);
+                gotoCampaignPage(targetTitle, targetUrl, originGroupType);
                 break;
             case STATIC_PAGE:
-                gotoStaticPage(targetTitle, targetUrl, groupType);
+                gotoStaticPage(targetTitle, targetUrl, originGroupType);
                 break;
             case PDV:
-                gotoProductDetail(targetUrl, groupType);
+                gotoProductDetail(targetUrl, originGroupType);
                 break;
             case UNKNOWN:
             default:
@@ -484,12 +484,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     /**
      * Goto campaign page
      */
-    private void gotoCampaignPage(int origin, String targetTitle, String targetUrl, TeaserGroupType groupType) {
+    private void gotoCampaignPage(String targetTitle, String targetUrl, TeaserGroupType groupType) {
         // Get group
-        BaseTeaserGroupType group = mHomePage.getTeasers().get(origin);
+        BaseTeaserGroupType group = mHomePage.getTeasers().get(groupType.ordinal());
         // Case campaign origin
         ArrayList<TeaserCampaign> campaigns;
-        if (origin == TeaserGroupType.CAMPAIGN_TEASERS.ordinal()) {
+        if (groupType == TeaserGroupType.CAMPAIGN_TEASERS) {
             campaigns = createCampaign(group);
         }
         // Case other origin
