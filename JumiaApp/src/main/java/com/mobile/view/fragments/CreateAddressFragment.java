@@ -629,11 +629,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                     // Set the billing gender with the same as the shipping
                     ((RadioGroupLayout)billingGenderItem.getEditControl()).setSelection(genderIndex);
                 }
-
             }catch(Exception e){
                 e.printStackTrace();
             }
-
         }
 
     }
