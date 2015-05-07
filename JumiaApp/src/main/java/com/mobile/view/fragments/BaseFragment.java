@@ -131,6 +131,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private KeyboardState adjustState = KeyboardState.ADJUST_CONTENT;
 
+    protected TeaserGroupType mGroupType;
+
     /**
      * Constructor with layout to inflate
      */
@@ -199,6 +201,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle arguments = getArguments();
+        if(arguments != null){
+            mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
+        }
     }
 
     /*

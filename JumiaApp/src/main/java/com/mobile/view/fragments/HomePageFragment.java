@@ -450,7 +450,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
         bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES, false);
-        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
@@ -463,7 +462,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
@@ -476,7 +474,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
         getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
@@ -489,7 +486,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         BaseTeaserGroupType group = mHomePage.getTeasers().get(groupType.ordinal());
         // Case campaign origin
         ArrayList<TeaserCampaign> campaigns;
-        if (groupType == TeaserGroupType.CAMPAIGN_TEASERS) {
+        if (groupType == TeaserGroupType.CAMPAIGNS) {
             campaigns = createCampaign(group);
         }
         // Case other origin
@@ -503,7 +500,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
-        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, true);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
         // Switch
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);

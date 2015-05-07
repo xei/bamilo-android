@@ -783,12 +783,10 @@ public class TrackerDelegator {
         // FB
         FacebookTracker.get(sContext).trackAddedToCart(sku, price, category);
         //GA Banner Flow
-        if(bundle.getBoolean(ConstantsIntentExtra.BANNER_TRACKING)){
-            if(bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) == null){
-                bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE,TeaserGroupType.UNKNOWN);
-            }
-            JumiaApplication.INSTANCE.setBannerFlowSkus(sku,(TeaserGroupType)bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE));
+        if (bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) != null) {
+            JumiaApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE));
         }
+
     }
 
     /**
@@ -1255,7 +1253,7 @@ public class TrackerDelegator {
         case SMALL_TEASERS:
             AnalyticsGoogle.get().trackEvent(TrackingEvent.SMALL_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
             break;
-        case CAMPAIGN_TEASERS:
+        case CAMPAIGNS:
             AnalyticsGoogle.get().trackEvent(TrackingEvent.CAMPAIGNS_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
             break;
         case SHOP_TEASERS:
@@ -1264,7 +1262,7 @@ public class TrackerDelegator {
         case BRAND_TEASERS:
             AnalyticsGoogle.get().trackEvent(TrackingEvent.BRAND_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
             break;
-        case SHOP_WEEK_TEASERS:
+        case SHOP_OF_WEEK:
             AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOPS_WEEK_BANNER_CLICK, item.sku, (long) item.getPriceForTracking());
             break;
         case FEATURED_STORES:

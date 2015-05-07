@@ -100,7 +100,6 @@ public class ConstantsIntentExtra {
     public static final String ORDER_FINISH = mPackage + "OrderFinish";
 
     // ############ BANNER TRACKING ###############
-    public static final String BANNER_TRACKING = "isFromBanner";
     public static final String BANNER_TRACKING_TYPE = "bannerGroupType";
 
     // ########### MY ORDER ##############

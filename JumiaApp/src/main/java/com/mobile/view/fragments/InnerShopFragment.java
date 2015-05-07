@@ -12,7 +12,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.objects.TeaserCampaign;
-import com.mobile.framework.objects.home.type.TeaserGroupType;
 import com.mobile.framework.utils.Constants;
 import com.mobile.helpers.teasers.GetShopHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -64,10 +63,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
     private int mWebViewScrollPosition = 0;
 
-    private boolean isFromBanner;
-
-    private TeaserGroupType mGroupType;
-
     /**
      * Get a instance of InnerShopFragment.
      *
@@ -105,10 +100,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             Log.i(TAG, "RECEIVED DATA: " + mTitle + " " + mUrl);
-            isFromBanner = arguments.getBoolean(ConstantsIntentExtra.BANNER_TRACKING);
-            if(arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) != null){
-                mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
-            }
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
@@ -344,7 +335,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         Log.i(TAG, "PDV: " + url);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
@@ -359,7 +349,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
@@ -378,7 +367,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         campaign.setUrl(url);
         teaserCampaigns.add(campaign);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
-        bundle.putBoolean(ConstantsIntentExtra.BANNER_TRACKING, isFromBanner);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
