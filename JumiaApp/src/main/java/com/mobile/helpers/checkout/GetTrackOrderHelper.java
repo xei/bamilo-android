@@ -3,8 +3,6 @@
  */
 package com.mobile.helpers.checkout;
 
-import org.json.JSONObject;
-
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -15,6 +13,8 @@ import com.mobile.framework.utils.EventType;
 import com.mobile.framework.utils.Utils;
 import com.mobile.helpers.BaseHelper;
 import com.mobile.helpers.HelperPriorityConfiguration;
+
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
