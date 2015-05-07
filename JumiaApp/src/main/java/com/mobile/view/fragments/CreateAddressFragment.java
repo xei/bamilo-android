@@ -371,6 +371,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 if (item != null) {
                     item.getMandatoryControl().setVisibility(View.GONE);
                     item.getEditControl().setVisibility(View.GONE);
+                    item.getControl().setVisibility(View.GONE);
                 }
             } catch (NullPointerException e) {
                 Log.w(TAG, "WARNING: NPE ON TRY HIDE THE GENDER IN BILLING ADDRESS");
