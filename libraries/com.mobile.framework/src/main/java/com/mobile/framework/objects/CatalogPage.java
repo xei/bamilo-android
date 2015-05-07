@@ -291,6 +291,14 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     }
 
     /**
+     * Get id
+     * @return String
+     */
+    public String getCategoryId(){
+        return mId;
+    }
+
+    /**
      * Set search term
      */
     public void setSearchTerm(String searchTerm){
