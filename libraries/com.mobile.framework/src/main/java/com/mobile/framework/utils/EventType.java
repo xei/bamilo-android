@@ -188,8 +188,6 @@ public enum EventType {
     GET_SELLER_REVIEWS,
 
     VALIDATE_PRODUCTS("http:/catalog/validate/", RestContract.NO_CACHE),
-    // TODO: to remove: only for test porpose
-    KICKOUT("http:/main/kickedout/", RestContract.NO_CACHE),
 
     GET_SHOP_EVENT("http:/main/getstatic/", RestContract.MAX_CACHE_TIME);
 
