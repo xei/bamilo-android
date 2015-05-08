@@ -28,7 +28,7 @@ public class GetTrackOrderHelper extends BaseHelper {
 
     private static String TAG = GetTrackOrderHelper.class.getSimpleName();
 
-    +    private static final EventType EVENT_TYPE = EventType.TRACK_ORDER_EVENT;
+    private static final EventType EVENT_TYPE = EventType.TRACK_ORDER_EVENT;
 
     public static final String ORDER_NR = "ordernr";
 
