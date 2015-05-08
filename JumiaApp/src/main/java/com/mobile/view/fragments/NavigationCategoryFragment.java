@@ -510,18 +510,18 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         }
     }
 
-    protected void clearSelectedCategory() {
-        if(sCurrentCategory != null){
-            sSelectedCategoryId = "";
-            showSubCategory(sCurrentCategory);
-        }
-    }
-
-    protected void setSelectedCategory(String categoryId){
-        if(sCurrentCategory != null){
-            sSelectedCategoryId = categoryId;
-            showSubCategory(sCurrentCategory);
-        }
-    }
+//    protected void clearSelectedCategory() {
+//        if(sCurrentCategory != null){
+//            sSelectedCategoryId = "";
+//            showSubCategory(sCurrentCategory);
+//        }
+//    }
+//
+//    protected void setSelectedCategory(String categoryId){
+//        if(sCurrentCategory != null){
+//            sSelectedCategoryId = categoryId;
+//            showSubCategory(sCurrentCategory);
+//        }
+//    }
 
 }

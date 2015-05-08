@@ -41,6 +41,11 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     private NavigationCategoryFragment navigationCategoryFragment;
 
     private FragmentType mSavedStateType;
+
+    private int mHomeStringId = R.string.home_label;
+
+    private int mCategoryStringId = R.string.categories_label;
+
     /**
      * Constructor via bundle
      * @return CampaignsFragment
@@ -201,15 +206,16 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         try {
             mNavigationOptions.removeAllViews();
             // Add Home
-            createGenericComponent(mNavigationOptions, R.drawable.selector_navigation_home, R.string.home_label, this);
+            createGenericComponent(mNavigationOptions, R.drawable.selector_navigation_home, mHomeStringId, this);
             // Add Category
-            createGenericComponent(mNavigationOptions, R.drawable.selector_navigation_categories, R.string.categories_label, null);
+            createGenericComponent(mNavigationOptions, R.drawable.selector_navigation_categories, mCategoryStringId, null);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
     }
 
-    /* 
+    /**
+     * create generic component to add to navigation drawer
      * @param parent
      * @param component
      * @param iconRes
@@ -230,7 +236,10 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         } else {
             tVSearch.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);
         }
-        
+        // Remove selector from category item
+        if(stringId == mCategoryStringId){
+            tVSearch.setBackgroundResource(0);
+        }
         tVSearch.setOnClickListener(listener);
         tVSearch.setTag(stringId);
         parent.addView(navComponent);
@@ -254,8 +263,9 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void onUpdateCategorySelected(String categoryId) {
         Log.i(TAG, "ON UPDATE NAVIGATION MENU");
         // Update items
-        if (!isOnStoppingProcess)
-            setNavigationCategorySelection(categoryId);
+        // TODO
+//        if (!isOnStoppingProcess)
+//            setNavigationCategorySelection(categoryId);
     }
     
     /**
@@ -270,20 +280,16 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
                 Log.i(TAG, "ON UPDATE NAVIGATION MENU: HOME");
                 if(mNavigationOptions != null){
                     mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(true);
-                    clearNavigationCategorySelection();
+                    // TODO
+//                    clearNavigationCategorySelection();
                 }
                 break;
-//            case Products:
-//                Log.i(TAG, "ON UPDATE NAVIGATION MENU: CATALOG");
-//                if(mNavigationOptions != null && navigationCategoryFragment != null){
-//                    mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(false);
-//                }
-//                break;
             default:
                 Log.i(TAG, "ON UPDATE NAVIGATION MENU: UNKNOWN");
                 if(mNavigationOptions != null){
                     mNavigationOptions.findViewWithTag(R.string.home_label).setSelected(false);
-                    clearNavigationCategorySelection();
+                    // TODO
+//                    clearNavigationCategorySelection();
                 }
                 break;
         }
@@ -381,10 +387,10 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
                 break;
             // Case Back button
             case R.id.categories_back_navigation:
+                // TODO
                 // should I clear the selected category?
-                clearNavigationCategorySelection();
+//                clearNavigationCategorySelection();
                 goToParentCategory();
-
                 break;
             // Case unknown
             default:
@@ -405,24 +411,24 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
         }
         mCategoryBack.setVisibility(visibility);
     }
-
-    /**
-     * Clear selected Category
-     */
-    public void clearNavigationCategorySelection(){
-        if(navigationCategoryFragment != null){
-            navigationCategoryFragment.clearSelectedCategory();
-        }
-    }
-
-    /**
-     * Set selected Category
-     */
-    public void setNavigationCategorySelection(String categoryId){
-        if(navigationCategoryFragment != null){
-            navigationCategoryFragment.setSelectedCategory(categoryId);
-        }
-    }
+// TODO
+//    /**
+//     * Clear selected Category
+//     */
+//    public void clearNavigationCategorySelection(){
+//        if(navigationCategoryFragment != null){
+//            navigationCategoryFragment.clearSelectedCategory();
+//        }
+//    }
+//
+//    /**
+//     * Set selected Category
+//     */
+//    public void setNavigationCategorySelection(String categoryId){
+//        if(navigationCategoryFragment != null){
+//            navigationCategoryFragment.setSelectedCategory(categoryId);
+//        }
+//    }
 
 
 }
