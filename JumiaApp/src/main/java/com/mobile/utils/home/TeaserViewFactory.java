@@ -1,12 +1,15 @@
 package com.mobile.utils.home;
 
+import android.content.Context;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.framework.objects.home.object.BaseTeaserObject;
 import com.mobile.framework.objects.home.type.TeaserGroupType;
+import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeBrandTeaserHolder;
 import com.mobile.utils.home.holder.HomeCampaignTeaserHolder;
@@ -93,4 +96,13 @@ public class TeaserViewFactory {
         }
     }
 
+    /**
+     * Get the offset value for home page.
+     */
+    public static int getViewHolderOffset(Context context) {
+        TypedValue outValue = new TypedValue();
+        context.getResources().getValue(R.dimen.home_offset_percentage, outValue, true);
+        float margin = outValue.getFloat();
+        return (int) (DeviceInfoHelper.getWidth(context) * margin);
+    }
 }

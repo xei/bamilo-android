@@ -58,8 +58,7 @@
     <dimen name="pdv_image_with_seller">50dp</dimen>
 
     <!-- HOME -->
-    <dimen name="home_margin_15_percentage">200dp</dimen>
-    <dimen name="home_margin">@dimen/home_margin_15_percentage</dimen>
+    <item name="home_offset_percentage" format="float" type="dimen">.15</item>
     <dimen name="home_small_teaser_item_width">288dp</dimen>
     <dimen name="home_main_teaser_height">320dp</dimen>
 

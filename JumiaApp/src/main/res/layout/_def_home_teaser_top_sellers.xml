@@ -3,9 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/dimen_mat_8px"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/home_margin"
-    android:paddingRight="@dimen/home_margin">
+    android:orientation="vertical">
 
     <TextView
         style="@style/HeaderTeaser"

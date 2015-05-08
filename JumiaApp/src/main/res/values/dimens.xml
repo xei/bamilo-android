@@ -404,6 +404,8 @@
     <!-- ############## NEW MATERIAL DIMENSIONS ############## -->
 
     <!-- MATERIAL DIMENSION 1:1 -->
+    <dimen name="dimen_mat_1px">1dp</dimen>
+    <dimen name="dimen_mat_1_25px">1.25dp</dimen>
     <dimen name="dimen_mat_2px">2dp</dimen>
     <dimen name="dimen_mat_3px">3dp</dimen>
     <dimen name="dimen_mat_4px">4dp</dimen>
@@ -430,7 +432,7 @@
 
     <!-- ########### HOME ########### -->
     <!-- BASE -->
-    <dimen name="home_margin">0dp</dimen>
+    <item name="home_offset_percentage" format="float" type="dimen">0</item>
     <dimen name="home_horizontal_fade">20dp</dimen>
     <!-- MAIN TEASER -->
     <dimen name="home_main_teaser_height">@dimen/dimen_mat_148px</dimen>
@@ -449,10 +451,10 @@
     <dimen name="home_featured_stores_teaser_item_height">@dimen/dimen_mat_60px</dimen>
     <integer name="home_featured_stores_teaser_num_columns">2</integer>
     <!-- SHOP WEEK TEASER -->
-    <dimen name="home_shop_week_teaser_height">@dimen/dimen_mat_148px</dimen>
+    <dimen name="home_shop_week_teaser_min_height">@dimen/dimen_mat_148px</dimen>
     <!-- TOP SELLERS TEASER -->
     <dimen name="home_top_sellers_teaser_item_width">@dimen/dimen_mat_148px</dimen>
-    <dimen name="home_top_sellers_teaser_item_height">@dimen/dimen_mat_160px</dimen>
+    <dimen name="home_top_sellers_teaser_item_height">@dimen/dimen_mat_170px</dimen>
 
 
     <!-- KICKOUT -->

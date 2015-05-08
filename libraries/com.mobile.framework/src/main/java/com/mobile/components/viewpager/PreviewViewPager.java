@@ -52,26 +52,34 @@ public class PreviewViewPager extends ViewPager {
         // Get page transformer
         pageTransformer = a.getInt(R.styleable.PreviewViewPagerStyleable_transformer, NONE_TRANSFORMER);
         a.recycle();
-        // Set view pager with preview offset and page transformer
-        setViewPager();
+        // Show preview offset
+        applyPreviewOffset();
+        // Set page transformer
+        applyTransformer();
     }
 
-    /**
-     * Set the view pager using values from attrs
-     */
-    private void setViewPager() {
+    private void applyTransformer() {
+        if (pageTransformer == FADE_TRANSFORMER) {
+            setPageTransformer(false, new FadePageTransformer(this));
+        }
+    }
+
+    public void setPreviewOffset(int offset) {
+        // Save offset value
+        previewOffset = offset;
+        // Show preview
+        applyPreviewOffset();
+    }
+
+    private void applyPreviewOffset() {
         // Set preview offset
         if (previewOffset > NO_PREVIEW_OFFSET) {
             setOffscreenPageLimit(PREVIEW_OFFSCREEN_PAGE_LIMIT);
-            //float mLandscapeMarginFromWidth = DeviceInfoHelper.getWidth(getContext()) * 0.075f;
+            //previewOffset = (int) (DeviceInfoHelper.getWidth(getContext()) * 0.075f); // 15%
             setPadding(previewOffset, getPaddingTop(), previewOffset, getPaddingBottom());
             setClipToPadding(false);
             //setClipChildren(false);
             //pager.setPageMargin(100);
-        }
-        // Set page transformer
-        if (pageTransformer == FADE_TRANSFORMER) {
-            setPageTransformer(false, new FadePageTransformer(this));
         }
     }
 
