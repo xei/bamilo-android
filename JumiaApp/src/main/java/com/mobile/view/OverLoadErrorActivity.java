@@ -1,10 +1,12 @@
 package com.mobile.view;
 
 import android.annotation.TargetApi;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 
 import de.akquinet.android.androlog.Log;
@@ -24,6 +26,14 @@ public class OverLoadErrorActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
         setContentView(R.layout.kickout_page);
+
+        // control whether to allow the activity to rotate or not
+        if(DeviceInfoHelper.isTabletDevice(getApplicationContext())){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
 //        IsconfigChange = true ;
     }
 
