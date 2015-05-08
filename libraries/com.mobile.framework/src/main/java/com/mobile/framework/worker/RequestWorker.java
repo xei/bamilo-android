@@ -52,7 +52,6 @@ public class RequestWorker implements Runnable {
 			//TODO return response in case the above cases do not apply
 			break;
 		}
-		
 	}
 	
 

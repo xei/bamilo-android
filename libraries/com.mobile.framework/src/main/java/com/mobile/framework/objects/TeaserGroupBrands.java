@@ -3,14 +3,15 @@
  */
 package com.mobile.framework.objects;
 
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import org.json.JSONObject;
 /**
  * @author Manuel Silva
  * 
  */
+@Deprecated
 public class TeaserGroupBrands extends TeaserSpecification<TeaserBrand> {
 
 	/**

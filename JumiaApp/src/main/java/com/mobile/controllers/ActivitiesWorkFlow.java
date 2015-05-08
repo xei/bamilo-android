@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.mobile.framework.utils.LogTagHelper;
+import com.mobile.view.OverLoadErrorActivity;
 import com.mobile.view.R;
 import com.mobile.view.SplashScreenActivity;
 
@@ -100,7 +101,18 @@ public class ActivitiesWorkFlow {
     public static void addStandardTransition(Activity activity) {
         activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
-    
+
+    /**
+     * Shows server overload page
+     */
+    public static void showOverLoadErrorActivity(Activity activity){
+
+        Intent intent = new Intent(activity.getApplicationContext(), OverLoadErrorActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
 }
 	
 

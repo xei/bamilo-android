@@ -271,7 +271,6 @@ public class RecentSearchFragment extends BaseFragment implements OnClickListene
         Log.d(TAG, "ON RESPONSE ERROR:");
 
         if (isOnStoppingProcess) return;
-
         EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
         Log.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {

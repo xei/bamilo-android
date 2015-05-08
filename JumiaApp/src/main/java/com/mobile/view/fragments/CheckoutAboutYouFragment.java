@@ -33,7 +33,6 @@ import com.mobile.factories.FormFactory;
 import com.mobile.forms.Form;
 import com.mobile.framework.ErrorCode;
 import com.mobile.framework.objects.Customer;
-import com.mobile.framework.objects.OrderSummary;
 import com.mobile.framework.objects.ShoppingCart;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.tracking.TrackingEvent;
@@ -79,10 +78,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     private static final String TAG = LogTagHelper.create(CheckoutAboutYouFragment.class);
 
-    private static final String FORM_ITEM_EMAIL = "email";
-
-    private static final String FORM_ITEM_PASSWORD = "password";
-
     private Form formResponse = null;
 
     private DynamicForm loginForm;
@@ -107,22 +102,15 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     private Form signupFormResponse;
 
-    @SuppressWarnings("unused")
-    private boolean temp;
-
     private View loginToogle;
 
     private View signupToogle;
-
-    private OrderSummary mOrderSummary;
 
     private FragmentType mNextFragment;
 
     private boolean cameFromSignUp = false;
 
     private int retryForms = 0;
-
-    private LoginButton mLoginFacebookButton;
 
     /**
      * Get the instance of CheckoutAboutYouFragment
@@ -212,7 +200,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         view.findViewById(R.id.checkout_signup_form_button_enter).setOnClickListener(this);
 
         // FACEBOOK
-        mLoginFacebookButton = (LoginButton) view.findViewById(R.id.checkout_login_form_button_facebook);
+        LoginButton mLoginFacebookButton = (LoginButton) view.findViewById(R.id.checkout_login_form_button_facebook);
         LoginButton facebookButton2 = (LoginButton) view.findViewById(R.id.checkout_signup_form_button_facebook);
         View facebookDivider1 = view.findViewById(R.id.checkout_login_form_divider_facebook);
         View facebookDivider2 = view.findViewById(R.id.checkout_signup_form_divider_facebook);
@@ -227,9 +215,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             Log.d(TAG, "TRIGGER: INIT FORM");
             triggerInitForm();
         } else {
-            Log.d(TAG, "VALIDATE: LOGIN/SIGNUP FORM");
-            temp = (formResponse != null) ? loadForm(formResponse) : triggerLoginForm();
-            temp = (signupFormResponse != null && mOrderSummary != null) ? loadSignupForm(signupFormResponse) : triggerSignupForm();
+            boolean temp1 = (formResponse != null) ? loadForm(formResponse) : triggerLoginForm();
+            boolean temp2 = (signupFormResponse != null) ? loadSignUpForm(signupFormResponse) : triggerSignupForm();
+            Log.i(TAG, "VALIDATE: LOGIN/SIGNUP FORM: " + temp1 + " " + temp2);
         }
     }
 
@@ -470,7 +458,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
         Log.i(TAG, "ON CLICK: SIGNUP");
         try {
             if (signupForm.validate()) {
-                requestSignup();
+                requestSignUp();
             }
         } catch (NullPointerException e) {
             Log.w(TAG, "SIGNUP FORM IS NULL", e);
@@ -516,10 +504,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
 
     /**
      * Validate Facebook session.
-     *
-     * @param session
-     * @param state
-     * @param exception
+     * @param session The Facebook session
+     * @param state The session state
+     * @param exception The session exception
      * @author sergiopereira
      */
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
@@ -559,34 +546,15 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      */
 
     /**
-     * This method defines the click behavior of the edit texts from the dynamic form, allowing the to login only when the form is completely filled.
-     */
-    public void setFormClickDetails(DynamicForm dynamicForm) {
-        // Email
-        DynamicFormItem emailItem = dynamicForm.getItemByKey(FORM_ITEM_EMAIL);
-        if (emailItem == null) {
-            return;
-        }
-        emailItem.getEditControl().setId(21);
-        // Pass
-        DynamicFormItem passwordItem = dynamicForm.getItemByKey(FORM_ITEM_PASSWORD);
-        if (passwordItem == null) {
-            return;
-        }
-        emailItem.getEditControl().setId(22);
-    }
-
-    /**
      * Load the dynamic form
      *
-     * @param form
+     * @param form The login form
      */
     private boolean loadForm(Form form) {
         Log.i(TAG, "LOAD FORM: " + form.name);
         loginForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getBaseActivity(), form);
         loginFormContainer.removeAllViews();
         loginFormContainer.addView(loginForm.getContainer());
-        setFormClickDetails(loginForm);
 
         boolean fillEmail = false;
         String rememberedEmail = CustomerPreferences.getRememberedEmail(getBaseActivity());
@@ -626,17 +594,16 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     /**
      * Load the dynamic sign up form
      *
-     * @param form
+     * @param form The sign up form
      */
-    private boolean loadSignupForm(Form form) {
-        Log.i(TAG, "LOAD SIGNUP FORM: " + form.name);
+    private boolean loadSignUpForm(Form form) {
+        Log.i(TAG, "LOAD SIGN UP FORM: " + form.name);
         signupForm = FormFactory.getSingleton().CreateForm(FormConstants.SIGNUP_FORM, getBaseActivity(), form);
         signupFormContainer.removeAllViews();
         signupFormContainer.addView(signupForm.getContainer());
-        setFormClickDetails(signupForm);
         signupFormContainer.refreshDrawableState();
-        // Show order summary
-        super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_ABOUT_YOU, mOrderSummary);
+        // Show order summary only with cart info
+        super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_ABOUT_YOU, null);
         // Show container
         showFragmentContentContainer();
         return true;
@@ -661,8 +628,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     /**
      * Method used to trigger the sign up
      */
-    private void requestSignup() {
-        Log.i(TAG, "TRIGGER: SIGNUP EVENT");
+    private void requestSignUp() {
+        Log.i(TAG, "TRIGGER: SIGN UP EVENT");
         getBaseActivity().hideKeyboard();
         ContentValues values = signupForm.save();
         triggerSignup(values, true);
@@ -671,7 +638,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
     /**
      * Method used to trigger the Facebook login
      *
-     * @param user
+     * @param user The Facebook response
      */
     private void requestFacebookLogin(GraphUser user) {
         Log.d(TAG, "REQUEST FACEBOOK LOGIN");
@@ -713,16 +680,16 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                 Log.i(TAG, "USER HASN'T FACEBOOK CREDENTIALS");
             }
 
-            // Signup flag
+            // Sign up flag
             try {
                 if (values.getAsBoolean(CustomerUtils.INTERNAL_SIGNUP_FLAG)) {
-                    Log.i(TAG, "USER HAS SIGNUP CREDENTIALS");
+                    Log.i(TAG, "USER HAS SIGN UP CREDENTIALS");
                     showFragmentLoading();
                     triggerSignup(values, onAutoLogin);
                     return;
                 }
             } catch (NullPointerException e) {
-                Log.i(TAG, "USER HASN'T SIGNUP CREDENTIALS");
+                Log.i(TAG, "USER HASN'T SIGN UP CREDENTIALS");
             }
 
             // Try login with saved credentials
@@ -835,7 +802,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      */
 
     /**
-     * Method used to switch the checkoput step
+     * Method used to switch the checkout step
      *
      * @author sergiopereira
      */
@@ -846,12 +813,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "next step is null");
         } else {
             Log.i(TAG, "GOTO NEXT STEP: " + mNextFragment.toString());
-            // Update
-            getBaseActivity().hideKeyboard();
             // Clean stack for new native checkout on the back stack (auto login)
             getBaseActivity().removeAllNativeCheckoutFromBackStack();
-            // Goto next step
-            getBaseActivity().onSwitchFragment(mNextFragment, null, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(mNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -954,11 +918,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                 gotoNextStep();
                 break;
             case GET_SIGNUP_FORM_EVENT:
-                // Get order summary
-                mOrderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
                 // Save and load form
                 Form signupForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-                loadSignupForm(signupForm);
+                loadSignUpForm(signupForm);
                 this.signupFormResponse = signupForm;
                 break;
             case GET_LOGIN_FORM_EVENT:

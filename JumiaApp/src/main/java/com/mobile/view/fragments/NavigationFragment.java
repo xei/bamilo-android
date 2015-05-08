@@ -313,7 +313,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     }
     
     /**
-     * Method used to associate the container and fragment 
+     * Method used to associate the container and fragment
      * @param container
      * @param fragment
      * @param filterType 

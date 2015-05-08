@@ -41,6 +41,8 @@ public enum EventType {
 
     GET_TEASERS_EVENT("http:/main/getteasers/", RestContract.MAX_CACHE_TIME),
 
+    GET_HOME_EVENT("http:/main/home/", RestContract.MAX_CACHE_TIME),
+
     GET_PRODUCT_EVENT,
 
     GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggest/", RestContract.DEFAULT_CACHE_TIME),
@@ -89,7 +91,7 @@ public enum EventType {
 
     GET_API_INFO("http:/main/md5/", RestContract.NO_CACHE),
 
-    GET_CUSTOMER("https:/customer/getdetails/", RestContract.MIN_CACHE_TIME),
+    GET_CUSTOMER("https:/customer/getdetails/", RestContract.NO_CACHE),
 
     GET_RESOLUTIONS("http:/main/imageresolutions/", RestContract.MAX_CACHE_TIME),
 
@@ -115,11 +117,11 @@ public enum EventType {
 
     GET_EDIT_ADDRESS_FORM_FALLBACK_EVENT("http:/forms/addressedit/", RestContract.MAX_CACHE_TIME),
 
-    GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", RestContract.MIN_CACHE_TIME),
+    GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", RestContract.NO_CACHE),
 
-    SET_DEFAULT_SHIPPING_ADDRESS("https:/customer/address/makedefaultshipping/", RestContract.MIN_CACHE_TIME),
+    SET_DEFAULT_SHIPPING_ADDRESS("https:/customer/address/makedefaultshipping/", RestContract.NO_CACHE),
 
-    SET_DEFAULT_BILLING_ADDRESS("https:/customer/address/makedefaultbilling/", RestContract.MIN_CACHE_TIME),
+    SET_DEFAULT_BILLING_ADDRESS("https:/customer/address/makedefaultbilling/", RestContract.NO_CACHE),
 
     GET_BILLING_FORM_EVENT("https:/multistep/billing/", RestContract.NO_CACHE),
 
@@ -144,8 +146,6 @@ public enum EventType {
     GET_PAYMENT_METHODS_EVENT("https:/multistep/paymentmethod/", RestContract.DEFAULT_CACHE_TIME),
 
     SET_PAYMENT_METHOD_EVENT("https:/multistep/paymentmethod/", RestContract.DEFAULT_CACHE_TIME),
-
-    GET_MY_ORDER_EVENT("http:/order/status/", RestContract.NO_CACHE),
 
     GET_MY_ORDERS_LIST_EVENT("http:/order/list/", RestContract.NO_CACHE),
 
@@ -189,7 +189,7 @@ public enum EventType {
 
     VALIDATE_PRODUCTS("http:/catalog/validate/", RestContract.NO_CACHE),
 
-    GET_SHOP_EVENT;
+    GET_SHOP_EVENT("http:/main/getstatic/", RestContract.MAX_CACHE_TIME);
 
     public final String action;
     public final Integer cacheTime;

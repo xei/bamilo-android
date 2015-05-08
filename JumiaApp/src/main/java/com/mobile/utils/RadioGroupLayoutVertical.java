@@ -29,11 +29,6 @@ import de.akquinet.android.androlog.Log;
 
 public class RadioGroupLayoutVertical extends RadioGroup {
     private final static String TAG = LogTagHelper.create(RadioGroupLayoutVertical.class);
-
-    public interface OnRadioGroupSelected {
-        public void onRadioGroupItemSelected(int position);
-    }
-
     public static final int NO_DEFAULT_SELECTION = -1;
 
     private ArrayList<String> mItems;
@@ -62,8 +57,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     }
 
     public void setItems(ArrayList<String> items, HashMap<String, Form> map, int defaultSelected) {
-        Log.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = "
-                + defaultSelected);
+        Log.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = " + defaultSelected);
         mItems = items;
         formsMap = map;
         mDefaultSelected = defaultSelected;
@@ -91,11 +85,21 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                 RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, null, false);
                 button.setId(idx);
                 button.setText(mItems.get(idx));
-                if (idx == mDefaultSelected) button.setChecked(true);
+                if (idx == mDefaultSelected){
+                    button.setChecked(true);
+                }
                 RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
                 mGroup.addView(button, idx, layoutParams);
             }
 
+        }
+
+        if(mDefaultSelected != NO_DEFAULT_SELECTION){
+            for(int i = 0; i < mGroup.getChildCount(); i++) {
+                if(i == mDefaultSelected){
+                    check(mGroup.getChildAt(i).getId());
+                }
+            }
         }
 
     }
@@ -164,7 +168,6 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.checkout_shipping_item_height));
         layoutParams.setMargins(0, 0, getResources().getDimensionPixelSize(R.dimen.form_radiobutton_shipping_margin), 0);
         button.setText(mItems.get(idx));
-        if (idx == mDefaultSelected) button.setChecked(true);
         button.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -174,7 +177,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                         extras.setVisibility(View.VISIBLE);
                     } else {
                         extras.setVisibility(View.GONE);
-                    }    
+                    }
                 } catch (StackOverflowError e) {
                     e.printStackTrace();
                 }
@@ -182,6 +185,11 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                 mGroup.check(mLinearLayout.getId());
             }
         });
+
+        if (idx == mDefaultSelected){
+            button.setChecked(true);
+        }
+
 
         buttonContainer.addView(button, layoutParams);
 
@@ -235,7 +243,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     }
 
     public boolean validateSelected() {
-        boolean result = false;
+        boolean result;
         if (mGroup.getChildAt(mGroup.getCheckedRadioButtonId()) instanceof RadioButton) {
             result = true;
         } else if(!(mGroup.getChildAt(mGroup.getCheckedRadioButtonId()) instanceof RadioButton) && !generatedForms.containsKey(mGroup.getCheckedRadioButtonId())){

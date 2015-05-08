@@ -37,7 +37,7 @@ import com.mobile.view.fragments.CheckoutThanksFragment;
 import com.mobile.view.fragments.CheckoutWebFragment;
 import com.mobile.view.fragments.ChooseCountryFragment;
 import com.mobile.view.fragments.FavouritesFragment;
-import com.mobile.view.fragments.HomeFragment;
+import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
@@ -169,10 +169,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
     }
 
-
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.utils.BaseActivity#onResume()
      */
     @Override
@@ -237,7 +236,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             mCurrentFragmentType = FragmentType.getValue(tag);
             // Save the current back stack
             for (String entry : FragmentController.getInstance().returnAllEntries()) {
-                frags.add(entry.toString());
+                frags.add(entry);
             }
         } catch (Exception e) {
             Log.w(TAG, "ERROR ON GET CURRENT FRAGMENT TYPE", e);
@@ -272,7 +271,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                     popBackStack(FragmentType.HOME.toString());
                     return;
                 }
-                fragment = HomeFragment.newInstance();
+                fragment = HomePageFragment.newInstance(bundle);
                 break;
             case CATEGORIES:
                 fragment = CategoriesCollectionFragment.getInstance(bundle);
@@ -513,11 +512,15 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
             Log.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
             // Validate fragment type
-            if (fragmentType != FragmentType.HOME && fragmentType != FragmentType.UNKNOWN) {
+            if (fragmentType != FragmentType.UNKNOWN) {
+                // Restart back stack and fragment manager
+                FragmentController.getInstance().popAllBackStack(this);
                 // Validate this step to maintain the base TAG
-                onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                onSwitchFragment(FragmentType.HOME, bundle, FragmentController.ADD_TO_BACK_STACK);
                 // Switch to fragment with respective bundle
-                onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
+                if(fragmentType != FragmentType.HOME) {
+                    onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
+                }
                 return true;
             }
         }

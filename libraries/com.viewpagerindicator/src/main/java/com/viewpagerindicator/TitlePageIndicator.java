@@ -17,8 +17,6 @@
  */
 package com.viewpagerindicator;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -37,6 +35,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+
+import java.util.ArrayList;
 
 /**
  * A TitlePageIndicator is a PageIndicator which displays the title of left view
@@ -541,7 +541,7 @@ public class TitlePageIndicator extends View implements PageIndicator {
         }
     }
 
-    public boolean onTouchEvent(android.view.MotionEvent ev) {
+    public boolean onTouchEvent(MotionEvent ev) {
         if (super.onTouchEvent(ev)) {
             return true;
         }
@@ -847,7 +847,7 @@ public class TitlePageIndicator extends View implements PageIndicator {
         }
 
         @SuppressWarnings("UnusedDeclaration")
-        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
             @Override
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
