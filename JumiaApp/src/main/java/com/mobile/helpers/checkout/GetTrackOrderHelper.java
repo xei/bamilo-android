@@ -41,6 +41,7 @@ public class GetTrackOrderHelper extends BaseHelper {
         Uri uri = Uri.parse(EventType.TRACK_ORDER_EVENT.action).buildUpon()
                 .appendQueryParameter("ordernr", args.getString(ORDER_NR)).build();
         Bundle bundle = new Bundle();
+        bundle.putString(Constants.BUNDLE_URL_KEY, uri.toString());
         bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
         bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
         bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));

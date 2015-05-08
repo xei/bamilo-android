@@ -30,7 +30,7 @@ import ch.boye.httpclientandroidlib.client.utils.URIBuilder;
 import de.akquinet.android.androlog.Log;
 
 public class RemoteService extends Service {
-    
+
     private static final String TAG = RemoteService.class.getSimpleName();
 
     public static RemoteCallbackList<IRemoteServiceCallback> mCallbacks = new RemoteCallbackList<>();
@@ -73,21 +73,21 @@ public class RemoteService extends Service {
         bound = true;
         return mBinder;
     }
-    
+
 
     @Override
     public boolean onUnbind(Intent intent) {
         bound = false;
         return true; // ensures onRebind is called
     }
-    
+
     @Override
     public void onRebind(Intent intent) {
         bound = true;
     }
-    
+
     private final IRemoteService.Stub mBinder = new IRemoteService.Stub() {
-        
+
         @Override
         public void sendRequest(Bundle bundle) throws RemoteException {
             RequestWorker request = new RequestWorker(bundle, mHandler, getApplicationContext());
@@ -105,7 +105,7 @@ public class RemoteService extends Service {
             mCallbacks.unregister(cb);
         }
     };
-    
+
     /**
      * This class creates the threadpool executor that manages all the threads
      * @author josedourado
@@ -139,7 +139,6 @@ public class RemoteService extends Service {
      *
      */
     public static String completeUrlWithPort(Uri uri) {
-
         String completeUrl = completeUri(uri).toString();
         try {
             URL url = new URL(completeUrl);
@@ -150,8 +149,8 @@ public class RemoteService extends Service {
             e.printStackTrace();
         }
 
-        if ( Darwin.logDebugEnabled) {
-            Log.d( TAG, "completeUriWithPort: uri = " + completeUrl);
+        if (Darwin.logDebugEnabled) {
+            Log.d(TAG, "completeUriWithPort: uri = " + completeUrl);
         }
 
         return completeUrl;
@@ -192,39 +191,39 @@ public class RemoteService extends Service {
     }
 
     private static Handler mHandler = new Handler(){
-    	public void handleMessage(android.os.Message msg) {
-    		final int N = mCallbacks.beginBroadcast();
-    		switch(msg.what){
-    		case Constants.SUCCESS:
+        public void handleMessage(android.os.Message msg) {
+            final int N = mCallbacks.beginBroadcast();
+            switch(msg.what){
+                case Constants.SUCCESS:
 
 //    			Log.i(TAG,"Received success response from handler "+msg.getData().getString(Constants.BUNDLE_RESPONSE_KEY));
-    		        for (int i=0; i<N; i++) {
-    		            try {
-    		                mCallbacks.getBroadcastItem(i).getResponse(msg.getData());
-    		            } catch (RemoteException e) {
-    		                // The RemoteCallbackList will take care of removing
-    		                // the dead object for us.
-    		            	e.printStackTrace();
-    		            }
-    		        }
-    		        mCallbacks.finishBroadcast();
-    			break;
-    		case Constants.FAILURE:
+                    for (int i=0; i<N; i++) {
+                        try {
+                            mCallbacks.getBroadcastItem(i).getResponse(msg.getData());
+                        } catch (RemoteException e) {
+                            // The RemoteCallbackList will take care of removing
+                            // the dead object for us.
+                            e.printStackTrace();
+                        }
+                    }
+                    mCallbacks.finishBroadcast();
+                    break;
+                case Constants.FAILURE:
 //    			Log.i(TAG,"Received failed response from handler "+msg.getData().getString(Constants.BUNDLE_RESPONSE_KEY));
-		        for (int i=0; i<N; i++) {
-		            try {
-		                mCallbacks.getBroadcastItem(i).getError(msg.getData());
-		            } catch (RemoteException e) {
-		                // The RemoteCallbackList will take care of removing
-		                // the dead object for us.
-		            	e.printStackTrace();
-		            }
-		        }
-		        mCallbacks.finishBroadcast();
-    			break;
-    		}
+                    for (int i=0; i<N; i++) {
+                        try {
+                            mCallbacks.getBroadcastItem(i).getError(msg.getData());
+                        } catch (RemoteException e) {
+                            // The RemoteCallbackList will take care of removing
+                            // the dead object for us.
+                            e.printStackTrace();
+                        }
+                    }
+                    mCallbacks.finishBroadcast();
+                    break;
+            }
 
-    	};
+        };
     };
 
     public static boolean isServiceBound(){
