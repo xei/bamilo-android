@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <!-- CONTENT -->
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/checkout_address_button_container"
-        android:layout_alignParentTop="true" >
+        android:layout_above="@+id/checkout_edit_address_button_container"
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <!-- FORM -->
 
@@ -23,26 +23,26 @@
 
     <!-- BUTTONS -->
 
-        <LinearLayout
-            style="@style/button_container"
-            android:id="@+id/checkout_address_button_container"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true">
+    <LinearLayout
+        android:id="@+id/checkout_edit_address_button_container"
+        style="@style/button_container"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
-            <com.mobile.components.customfontviews.Button
-                android:id="@+id/checkout_edit_button_cancel"
-                style="@style/button_grey_bottom"
-                android:layout_marginRight="@dimen/margin_x_small"
-                android:layout_weight="1"
-                android:text="@string/cancel_label" />
+        <com.mobile.components.customfontviews.Button
+            android:id="@+id/checkout_edit_button_cancel"
+            style="@style/button_grey_bottom"
+            android:layout_marginRight="@dimen/margin_x_small"
+            android:layout_weight="1"
+            android:text="@string/cancel_label" />
 
-            <com.mobile.components.customfontviews.Button
-                android:id="@+id/checkout_edit_button_enter"
-                style="@style/button_orange_bottom"
-                android:layout_marginLeft="@dimen/margin_x_small"
-                android:layout_weight="1"
-                android:text="@string/save_changes_label" />
-        </LinearLayout>
+        <com.mobile.components.customfontviews.Button
+            android:id="@+id/checkout_edit_button_enter"
+            style="@style/button_orange_bottom"
+            android:layout_marginLeft="@dimen/margin_x_small"
+            android:layout_weight="1"
+            android:text="@string/save_changes_label" />
+    </LinearLayout>
 
 
 </RelativeLayout>

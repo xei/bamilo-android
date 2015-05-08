@@ -101,8 +101,8 @@ public class CountryConfigs {
         JSONArray languages = jsonObject.getJSONArray(RestConstants.JSON_COUNTRY_LANGUAGES);
         for (int i = 0; i < languages.length(); i++) {
             if (languages.getJSONObject(i).getBoolean(RestConstants.JSON_COUNTRY_LANG_DEFAULT)) {
-                mLangCode = languages.getJSONObject(i).getString(RestConstants.JSON_COUNTRY_LANG_CODE);
-                mLangName = languages.getJSONObject(i).getString(RestConstants.JSON_COUNTRY_LANG_NAME);
+                mLangCode = languages.getJSONObject(i).getString(RestConstants.JSON_CODE_TAG);
+                mLangName = languages.getJSONObject(i).getString(RestConstants.JSON_NAME_TAG);
                 break;
             }
         }

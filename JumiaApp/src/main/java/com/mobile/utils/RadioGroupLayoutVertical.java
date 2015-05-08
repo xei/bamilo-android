@@ -29,11 +29,6 @@ import de.akquinet.android.androlog.Log;
 
 public class RadioGroupLayoutVertical extends RadioGroup {
     private final static String TAG = LogTagHelper.create(RadioGroupLayoutVertical.class);
-
-    public interface OnRadioGroupSelected {
-        public void onRadioGroupItemSelected(int position);
-    }
-
     public static final int NO_DEFAULT_SELECTION = -1;
 
     private ArrayList<String> mItems;
@@ -43,7 +38,6 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     private RadioGroup mGroup;
     private LayoutInflater mInflater;
     Context mContext;
-    private OnCheckedChangeListener onCheckChangeListener;
 
     public RadioGroupLayoutVertical(Context context) {
         super(context);
@@ -63,8 +57,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     }
 
     public void setItems(ArrayList<String> items, HashMap<String, Form> map, int defaultSelected) {
-        Log.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = "
-                + defaultSelected);
+        Log.d(TAG, "setItems: items size = " + items.size() + " defaultSelected = " + defaultSelected);
         mItems = items;
         formsMap = map;
         mDefaultSelected = defaultSelected;
@@ -250,7 +243,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     }
 
     public boolean validateSelected() {
-        boolean result = false;
+        boolean result;
         if (mGroup.getChildAt(mGroup.getCheckedRadioButtonId()) instanceof RadioButton) {
             result = true;
         } else if(!(mGroup.getChildAt(mGroup.getCheckedRadioButtonId()) instanceof RadioButton) && !generatedForms.containsKey(mGroup.getCheckedRadioButtonId())){
@@ -282,12 +275,6 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     public String getSelectedFieldName() {
         String result = mItems.get(mGroup.getCheckedRadioButtonId());
         return result;
-    }
-
-    @Override
-    public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
-        super.setOnCheckedChangeListener(listener);
-        this.onCheckChangeListener = listener;
     }
 
 }

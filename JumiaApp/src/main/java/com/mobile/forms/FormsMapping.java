@@ -73,16 +73,15 @@ public class FormsMapping {
         currMapping.put("address1", 4);
         currMapping.put("address2", 5);
         currMapping.put("postcode", 6);
-        currMapping.put("phone", 7);
-        currMapping.put("fk_customer_address_region", 8);
-        currMapping.put("fk_customer_address_city", 9);
-        currMapping.put("city", 10);
-        currMapping.put("is_default_shipping", 11);
-        currMapping.put("is_default_billing", 12);
-//        currMapping.put("AddressForm_fk_customer", 14);   
-//        currMapping.put("AddressForm_middle_name", 3);
-//        currMapping.put("AddressForm_region", 9);
-        
+        currMapping.put("phoneNumberFormat", 7);
+        currMapping.put("phone", 8);
+        currMapping.put("additionalPhoneNumberFormat", 9);
+        currMapping.put("additional_phone", 10);
+        currMapping.put("fk_customer_address_region", 11);
+        currMapping.put("fk_customer_address_city", 12);
+        currMapping.put("city", 13);
+        currMapping.put("is_default_shipping", 14);
+        currMapping.put("is_default_billing", 15);
         addressForm = Collections.unmodifiableMap(currMapping);
     }
 
