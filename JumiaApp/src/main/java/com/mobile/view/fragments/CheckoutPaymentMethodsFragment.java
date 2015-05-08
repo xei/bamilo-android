@@ -259,15 +259,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         paymentMethodsContainer.addView(formGenerator.getContainer());
         loadSavedValues(mSavedState, formGenerator.getIterator());
         paymentMethodsContainer.refreshDrawableState();
-        // Try request focus for default selection
-        try {
-            if (formGenerator.getControlsCount() == 1) {
-                int selected = ((RadioGroupLayoutVertical) formGenerator.getItem(0).getEditControl()).getSelectedIndex();
-                ((RadioGroupLayoutVertical) formGenerator.getItem(0).getEditControl()).getChildAt(selected).requestFocus();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         prepareCouponView();
         showFragmentContentContainer();
     }
