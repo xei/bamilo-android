@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import com.adjust.sdk.Adjust;
 import com.adjust.sdk.AdjustAttribution;
 import com.adjust.sdk.AdjustConfig;
-import com.adjust.sdk.LogLevel;
 import com.adjust.sdk.OnAttributionChangedListener;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
@@ -102,7 +101,7 @@ public final class ShopSelector {
 			environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
 		}
 		AdjustConfig config = new AdjustConfig(context, appToken, environment);
-		config.setLogLevel(LogLevel.VERBOSE); // if not configured, INFO is used by default
+//		config.setLogLevel(LogLevel.VERBOSE); // if not configured, INFO is used by default
 		//PRE_INSTALL DEFAULT TRACKER
 		if (!TextUtils.isEmpty(context.getString(R.string.adjust_default_tracker))) {
 			config.setDefaultTracker(context.getString(R.string.adjust_default_tracker));
