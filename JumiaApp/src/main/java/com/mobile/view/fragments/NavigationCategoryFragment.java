@@ -281,10 +281,10 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
 //            }
 
             mCategoryList.setAdapter(mSubCategoryAdapter);
-            if (!TextUtils.isEmpty(sSelectedCategoryId)) {
-                mSubCategoryAdapter.setSelectedCategory(sSelectedCategoryId);
-                mSubCategoryAdapter.notifyDataSetChanged();
-            }
+//            if (!TextUtils.isEmpty(sSelectedCategoryId)) {
+//                mSubCategoryAdapter.setSelectedCategory(sSelectedCategoryId);
+//                mSubCategoryAdapter.notifyDataSetChanged();
+//            }
             // Set listener
             mCategoryList.setOnItemClickListener(this);
         } catch (NullPointerException e) {
