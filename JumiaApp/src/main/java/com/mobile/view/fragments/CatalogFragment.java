@@ -600,8 +600,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (filterValues.containsKey(DialogFilterFragment.BRAND)) {
             // Used to indicate that has filter q=<BRAND>
             mBrandQuery = filterValues.getAsString(DialogFilterFragment.BRAND);
-            // Remove brand from values (API: not supported)
-            filterValues.remove(DialogFilterFragment.BRAND);
         }
         // Clean brand filter
         else {
