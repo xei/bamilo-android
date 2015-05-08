@@ -39,6 +39,7 @@ import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.InputType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
@@ -573,6 +574,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 return;
             }
         } else {
+            validateSameGender();
             if (!shippingFormGenerator.validate() | !billingFormGenerator.validate()) {
                 return;
             }
@@ -603,6 +605,29 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 //            ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
 //            Log.d(TAG, "CONTENT BILL VALUES: " + mBillValues.toString());
 //            triggerCreateAddress(mBillValues,true);
+        }
+    }
+
+    /**
+     * method that controls that the addresses have the same gender when creating billing and shipping at the same time
+     */
+    private void validateSameGender() {
+        DynamicFormItem shippingGenderItem = shippingFormGenerator.getItemByKey(RestConstants.JSON_GENDER_TAG);
+        DynamicFormItem billingGenderItem = billingFormGenerator.getItemByKey(RestConstants.JSON_GENDER_TAG);
+        if (shippingGenderItem != null && billingGenderItem != null) {
+            try {
+                int genderIndex = -1;
+                if (((RadioGroupLayout) shippingGenderItem.getEditControl()).getChildCount() > 0) {
+                    // Get selected gender index from the shipping form
+                    genderIndex = ((RadioGroupLayout) shippingGenderItem.getEditControl()).getSelectedIndex();
+                }
+                if (((RadioGroupLayout) billingGenderItem.getEditControl()).getChildCount() > 0 && genderIndex != -1) {
+                    // Set the billing gender with the same as the shipping
+                    ((RadioGroupLayout) billingGenderItem.getEditControl()).setSelection(genderIndex);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -3,9 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/dimen_mat_8px"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/home_margin"
-    android:paddingRight="@dimen/home_margin">
+    android:orientation="vertical">
 
     <TextView
         style="@style/HeaderTeaser"
@@ -13,11 +11,8 @@
 
     <com.mobile.components.recycler.HorizontalListView
         android:id="@+id/home_teaser_top_sellers_horizontal_list"
+        style="@style/HorizontalListStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/home_top_sellers_teaser_item_height"
-        android:scrollbars="none"
-        android:requiresFadingEdge="horizontal"
-        android:fadingEdge="horizontal"
-        android:fadingEdgeLength="@dimen/home_horizontal_fade"/>
+        android:layout_height="@dimen/home_top_sellers_teaser_item_height" />
 
 </LinearLayout>

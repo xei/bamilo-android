@@ -76,8 +76,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * @return CampaignsFragment
      * @author sergiopereira
      */
-    public static HomePageFragment newInstance() {
-        return new HomePageFragment();
+    public static HomePageFragment newInstance(Bundle bundle) {
+        HomePageFragment homePageFragment = new HomePageFragment();
+        homePageFragment.setArguments(bundle);
+        return homePageFragment;
     }
 
     /**
@@ -486,6 +488,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * Goto campaign page
      */
     private void gotoCampaignPage(String targetTitle, String targetUrl, TeaserGroupType groupType) {
+        Log.i(TAG, "GOTO CAMPAIGN PAGE: " + targetTitle + " " + targetUrl);
         // Get group
         BaseTeaserGroupType group = mHomePage.getTeasers().get(groupType.ordinal());
         // Case campaign origin

@@ -333,10 +333,6 @@ public class FragmentController {
         }
         // Case visible fragment
         else Log.w(TAG, "WARNING ON POP BACK STACK: TAG IS EMPTY " + getBackStackSize());
-        // Find fragment on Fragment Manager
-        //Fragment fragment = activity.getSupportFragmentManager().findFragmentByTag(lastTag);
-        // Replace the current fragment
-        //startTransition(activity, R.id.main_fragment_container, fragment, lastTag, NO_ADD_TO_BACK_STACK, ANIMATION_OUT);
     }
     
     /**
@@ -348,12 +344,9 @@ public class FragmentController {
         cleanBackStack();
         // Pop all back stack
         try {
-            Log.d(TAG, "POP");
             activity.getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            //activity.getSupportFragmentManager().popBackStackImmediate(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            //addToBackStack(tag);
-            //activity.getSupportFragmentManager().popBackStackImmediate(tag, 0);
-        } catch (Exception e) {
+        } catch (IllegalStateException | NullPointerException e) {
+            Log.d(TAG, "POP ALL ENTRIES: ERROR IllegalStateException");
             e.printStackTrace();
         }
     }
@@ -366,22 +359,14 @@ public class FragmentController {
     public void popAllEntriesUntil(BaseActivity activity, String tag) {
         Log.d(TAG, "POP ALL ENTRIES UNTIL: " + tag + " " + getBackStackSize());
         // Get the new last fragment
-        // String lastTag = 
         removeEntriesUntilTag(tag);
-        
         try {
             // Pop stack until fragment tag
             activity.getSupportFragmentManager().popBackStackImmediate(tag, POP_BACK_STACK_NO_INCLUSIVE);   
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | NullPointerException e) {
             Log.d(TAG, "POP ALL ENTRIES UNTIL: ERROR IllegalStateException");
             e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-//        // Find fragment on Fragment Manager
-//        Fragment fragment = activity.getSupportFragmentManager().findFragmentByTag(lastTag);
-//        // Replace the current fragment
-//        startTransition(activity, R.id.main_fragment_container, fragment, lastTag, NO_ADD_TO_BACK_STACK, ANIMATION_OUT);
     }
     
     

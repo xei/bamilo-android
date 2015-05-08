@@ -404,10 +404,13 @@
     <!-- ############## NEW MATERIAL DIMENSIONS ############## -->
 
     <!-- MATERIAL DIMENSION 1:1 -->
+    <dimen name="dimen_mat_1px">1dp</dimen>
+    <dimen name="dimen_mat_1_25px">1.25dp</dimen>
     <dimen name="dimen_mat_2px">2dp</dimen>
     <dimen name="dimen_mat_3px">3dp</dimen>
     <dimen name="dimen_mat_4px">4dp</dimen>
     <dimen name="dimen_mat_8px">8dp</dimen>
+    <dimen name="dimen_mat_16px">16dp</dimen>
     <dimen name="dimen_mat_36px">36dp</dimen>
     <dimen name="dimen_mat_45px">45dp</dimen>
     <dimen name="dimen_mat_48px">48dp</dimen>
@@ -424,16 +427,19 @@
     <dimen name="dimen_mat_150px">150dp</dimen>
     <dimen name="dimen_mat_158px">158dp</dimen>
     <dimen name="dimen_mat_160px">160dp</dimen>
+    <dimen name="dimen_mat_165px">165dp</dimen>
     <dimen name="dimen_mat_170px">170dp</dimen>
+    <dimen name="dimen_mat_178px">178dp</dimen>
     <dimen name="dimen_mat_210px">210dp</dimen>
 
     <!-- ########### HOME ########### -->
     <!-- BASE -->
-    <dimen name="home_margin">0dp</dimen>
+    <item name="home_offset_percentage" format="float" type="dimen">0</item>
     <dimen name="home_horizontal_fade">20dp</dimen>
     <!-- MAIN TEASER -->
     <dimen name="home_main_teaser_height">@dimen/dimen_mat_148px</dimen>
     <!-- SMALL TEASER -->
+    <dimen name="home_small_teaser_height">@dimen/dimen_mat_165px</dimen>
     <dimen name="home_small_teaser_item_width">@dimen/dimen_mat_128px</dimen>
     <dimen name="home_small_teaser_item_height">@dimen/dimen_mat_158px</dimen>
     <!-- CAMPAIGN TEASER -->
@@ -447,10 +453,10 @@
     <dimen name="home_featured_stores_teaser_item_height">@dimen/dimen_mat_60px</dimen>
     <integer name="home_featured_stores_teaser_num_columns">2</integer>
     <!-- SHOP WEEK TEASER -->
-    <dimen name="home_shop_week_teaser_height">@dimen/dimen_mat_170px</dimen>
+    <dimen name="home_shop_week_teaser_min_height">@dimen/dimen_mat_148px</dimen>
     <!-- TOP SELLERS TEASER -->
     <dimen name="home_top_sellers_teaser_item_width">@dimen/dimen_mat_148px</dimen>
-    <dimen name="home_top_sellers_teaser_item_height">@dimen/dimen_mat_160px</dimen>
+    <dimen name="home_top_sellers_teaser_item_height">@dimen/dimen_mat_178px</dimen>
 
 
     <!-- KICKOUT -->

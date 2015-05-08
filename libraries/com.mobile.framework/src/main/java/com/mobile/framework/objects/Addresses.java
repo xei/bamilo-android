@@ -29,7 +29,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	
 	private Address fastline;
 	
-	private HashMap<String, Address> addresses = new HashMap<String, Address>();
+	private HashMap<String, Address> addresses = new HashMap<>();
 
 
 	/**
@@ -102,40 +102,11 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	}
 
 	/**
-	 * @return the fastline
-	 */
-	public Address getFastline() {
-		return fastline;
-	}
-
-	/**
 	 * @return the addresses
 	 */
 	public HashMap<String, Address> getAddresses() {
 		return addresses;
 	}
-
-	/**
-	 * @param shippingAddress the shippingAddress to set
-	 */
-	public void setShippingAddress(Address shippingAddress) {
-		this.shippingAddress = shippingAddress;
-	}
-
-	/**
-	 * @param billingAddress the billingAddress to set
-	 */
-	public void setBillingAddress(Address billingAddress) {
-		this.billingAddress = billingAddress;
-	}
-
-	/**
-	 * @param fastline the fastline to set
-	 */
-	public void setFastline(Address fastline) {
-		this.fastline = fastline;
-	}
-
 
 	/**
 	 * @param addresses the addresses to set
@@ -149,7 +120,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	 * @return true/false
 	 */
 	public boolean hasShippingAddress(){
-		return (shippingAddress != null) ? true : false;
+		return shippingAddress != null;
 	}
 	
 	/**
@@ -157,7 +128,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	 * @return true/false
 	 */
 	public boolean hasBillingAddress(){
-		return (billingAddress != null) ? true : false;
+		return billingAddress != null;
 	}
 	
 	/**
@@ -165,7 +136,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	 * @return true/false
 	 */
 	public boolean hasOtherAddresses(){
-		return (addresses != null && addresses.size() > 0) ? true : false;
+		return addresses != null && addresses.size() > 0;
 	}
 	
 	/**
@@ -174,7 +145,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	 */
 	public boolean hasDefaultShippingAndBillingAddress(){
 		Log.d(TAG, "SHIPPING ID:" + shippingAddress.getId() + " BILLING ID:" + billingAddress.getId());
-		return (shippingAddress.getId() == billingAddress.getId()) ? true : false;
+		return shippingAddress.getId() == billingAddress.getId();
 	}
 	
 	/**
@@ -183,7 +154,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 	 */
 	public void switchShippingAddress(int position){
 		try {
-			ArrayList<Address> array = new ArrayList<Address>(addresses.values()) ;
+			ArrayList<Address> array = new ArrayList<>(addresses.values()) ;
 			// Get selected address
 			Address selectedAddress = array.get(position);
 			// Add old shipping to map
@@ -239,7 +210,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 		shippingAddress = in.readParcelable(Address.class.getClassLoader());
 		billingAddress = in.readParcelable(Address.class.getClassLoader());
 		fastline = in.readParcelable(Address.class.getClassLoader());
-		addresses = new HashMap<String, Address>();
+		addresses = new HashMap<>();
         in.readMap(addresses, Address.class.getClassLoader());
     }
 		

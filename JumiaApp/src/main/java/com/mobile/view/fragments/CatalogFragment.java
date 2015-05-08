@@ -918,7 +918,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             showFeaturedBoxNoResult(featuredBox);
         }
         // Case network errors except No network
-        else if(errorCode != null && errorCode.isNetworkError() && errorCode != ErrorCode.NO_NETWORK && errorCode != ErrorCode.SERVER_OVERLOAD){
+        else if(errorCode != null && errorCode.isNetworkError() && errorCode != ErrorCode.NO_NETWORK
+                && errorCode != ErrorCode.HTTP_STATUS
+                && errorCode != ErrorCode.SERVER_OVERLOAD){
             showFilterUnexpectedError();
         }
         // Case No Network

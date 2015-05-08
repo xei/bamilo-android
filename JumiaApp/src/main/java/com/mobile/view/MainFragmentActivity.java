@@ -168,10 +168,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
     }
 
-
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.utils.BaseActivity#onResume()
      */
     @Override
@@ -269,7 +268,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                     popBackStack(FragmentType.HOME.toString());
                     return;
                 }
-                fragment = HomePageFragment.newInstance();
+                fragment = HomePageFragment.newInstance(bundle);
                 break;
             case CATEGORIES:
                 fragment = CategoriesCollectionFragment.getInstance(bundle);
@@ -510,11 +509,15 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
             Log.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
             // Validate fragment type
-            if (fragmentType != FragmentType.HOME && fragmentType != FragmentType.UNKNOWN) {
+            if (fragmentType != FragmentType.UNKNOWN) {
+                // Restart back stack and fragment manager
+                FragmentController.getInstance().popAllBackStack(this);
                 // Validate this step to maintain the base TAG
-                onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                onSwitchFragment(FragmentType.HOME, bundle, FragmentController.ADD_TO_BACK_STACK);
                 // Switch to fragment with respective bundle
-                onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
+                if(fragmentType != FragmentType.HOME) {
+                    onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
+                }
                 return true;
             }
         }

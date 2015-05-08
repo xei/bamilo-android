@@ -23,6 +23,8 @@ import java.util.ArrayList;
  */
 public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaserAdapter.ViewHolder> {
 
+    private int mViewHolderWidth;
+
     private View.OnClickListener mOnClickListener;
 
     private ArrayList<BaseTeaserObject> mDataSet;
@@ -53,12 +55,12 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
-     * @param teasers
      * @author sergiopereira
      */
-    public HomeSmallTeaserAdapter(ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener) {
+    public HomeSmallTeaserAdapter(ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener, int width) {
         mDataSet = teasers;
         mOnClickListener = listener;
+        mViewHolderWidth = width;
     }
 
     /*
@@ -68,7 +70,12 @@ public class HomeSmallTeaserAdapter extends RecyclerView.Adapter<HomeSmallTeaser
     @Override
     public HomeSmallTeaserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Create a new view
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_teaser_small_item, parent, false));
+        ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_teaser_small_item, parent, false));
+        // Set the width
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) viewHolder.itemView.getLayoutParams();
+        int adjust = parent.getContext().getResources().getDimensionPixelSize(R.dimen.dimen_mat_1_25px);
+        params.width = mViewHolderWidth - params.leftMargin - params.rightMargin - adjust;
+        return viewHolder;
     }
 
     /*

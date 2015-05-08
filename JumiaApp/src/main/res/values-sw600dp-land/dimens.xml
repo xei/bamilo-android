@@ -82,8 +82,7 @@
 
 
     <!-- HOME -->
-    <dimen name="home_margin_15_percentage">150dp</dimen>
-    <dimen name="home_margin">@dimen/home_margin_15_percentage</dimen>
+    <item name="home_offset_percentage" format="float" type="dimen">.15</item>
     <dimen name="home_small_teaser_item_width">215dp</dimen>
 
 </resources>
