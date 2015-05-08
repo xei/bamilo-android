@@ -611,26 +611,24 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     /**
      * method that controls that the addresses have the same gender when creating billing and shipping at the same time
      */
-    private void validateSameGender(){
-
+    private void validateSameGender() {
         DynamicFormItem shippingGenderItem = shippingFormGenerator.getItemByKey(RestConstants.JSON_GENDER_TAG);
         DynamicFormItem billingGenderItem = billingFormGenerator.getItemByKey(RestConstants.JSON_GENDER_TAG);
         if (shippingGenderItem != null && billingGenderItem != null) {
-            try{
+            try {
                 int genderIndex = -1;
-                if(((RadioGroupLayout)shippingGenderItem.getEditControl()).getChildCount() > 0){
+                if (((RadioGroupLayout) shippingGenderItem.getEditControl()).getChildCount() > 0) {
                     // Get selected gender index from the shipping form
-                    genderIndex = ((RadioGroupLayout)shippingGenderItem.getEditControl()).getSelectedIndex();
+                    genderIndex = ((RadioGroupLayout) shippingGenderItem.getEditControl()).getSelectedIndex();
                 }
-                if(((RadioGroupLayout)billingGenderItem.getEditControl()).getChildCount() > 0 && genderIndex != -1){
+                if (((RadioGroupLayout) billingGenderItem.getEditControl()).getChildCount() > 0 && genderIndex != -1) {
                     // Set the billing gender with the same as the shipping
-                    ((RadioGroupLayout)billingGenderItem.getEditControl()).setSelection(genderIndex);
+                    ((RadioGroupLayout) billingGenderItem.getEditControl()).setSelection(genderIndex);
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     /**
