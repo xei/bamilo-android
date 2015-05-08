@@ -271,7 +271,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                     popBackStack(FragmentType.HOME.toString());
                     return;
                 }
-                fragment = HomePageFragment.newInstance();
+                fragment = HomePageFragment.newInstance(bundle);
                 break;
             case CATEGORIES:
                 fragment = CategoriesCollectionFragment.getInstance(bundle);
@@ -516,7 +516,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 // Restart back stack and fragment manager
                 FragmentController.getInstance().popAllBackStack(this);
                 // Validate this step to maintain the base TAG
-                onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                onSwitchFragment(FragmentType.HOME, bundle, FragmentController.ADD_TO_BACK_STACK);
                 // Switch to fragment with respective bundle
                 if(fragmentType != FragmentType.HOME) {
                     onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
