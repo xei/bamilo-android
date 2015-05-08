@@ -91,7 +91,7 @@ public enum EventType {
 
     GET_API_INFO("http:/main/md5/", RestContract.NO_CACHE),
 
-    GET_CUSTOMER("https:/customer/getdetails/", RestContract.MIN_CACHE_TIME),
+    GET_CUSTOMER("https:/customer/getdetails/", RestContract.NO_CACHE),
 
     GET_RESOLUTIONS("http:/main/imageresolutions/", RestContract.MAX_CACHE_TIME),
 
@@ -117,11 +117,11 @@ public enum EventType {
 
     GET_EDIT_ADDRESS_FORM_FALLBACK_EVENT("http:/forms/addressedit/", RestContract.MAX_CACHE_TIME),
 
-    GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", RestContract.MIN_CACHE_TIME),
+    GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/address/list/", RestContract.NO_CACHE),
 
-    SET_DEFAULT_SHIPPING_ADDRESS("https:/customer/address/makedefaultshipping/", RestContract.MIN_CACHE_TIME),
+    SET_DEFAULT_SHIPPING_ADDRESS("https:/customer/address/makedefaultshipping/", RestContract.NO_CACHE),
 
-    SET_DEFAULT_BILLING_ADDRESS("https:/customer/address/makedefaultbilling/", RestContract.MIN_CACHE_TIME),
+    SET_DEFAULT_BILLING_ADDRESS("https:/customer/address/makedefaultbilling/", RestContract.NO_CACHE),
 
     GET_BILLING_FORM_EVENT("https:/multistep/billing/", RestContract.NO_CACHE),
 
