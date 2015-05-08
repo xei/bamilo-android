@@ -76,8 +76,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * @return CampaignsFragment
      * @author sergiopereira
      */
-    public static HomePageFragment newInstance() {
-        return new HomePageFragment();
+    public static HomePageFragment newInstance(Bundle bundle) {
+        HomePageFragment homePageFragment = new HomePageFragment();
+        homePageFragment.setArguments(bundle);
+        return homePageFragment;
     }
 
     /**
