@@ -121,7 +121,7 @@ public class JumiaApplication extends A4SApplication {
     // for tracking
     public boolean trackSearch = true;
     public boolean trackSearchCategory = true;
-//    private ArrayList<String> bannerSkus = new ArrayList<>();
+    //    private ArrayList<String> bannerSkus = new ArrayList<>();
     private HashMap<String,TeaserGroupType> bannerSkus = new HashMap<>();
 
     /*
@@ -227,8 +227,8 @@ public class JumiaApplication extends A4SApplication {
         Log.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = bundle;
-        if((eventType == EventType.INITIALIZE || 
-                errorType == ErrorCode.NO_COUNTRIES_CONFIGS || 
+        if((eventType == EventType.INITIALIZE ||
+                errorType == ErrorCode.NO_COUNTRIES_CONFIGS ||
                 errorType == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE)
                 && ServiceSingleton.getInstance().getService() == null ){
             Log.d(TAG, "ON HANDLE WITH ERROR");
@@ -278,7 +278,7 @@ public class JumiaApplication extends A4SApplication {
 
     /**
      * Method used to register the call back that is waiting for service.
-     * 
+     *
      * @author sergiopereira
      */
     private void registerCallBackIsWaiting() {
@@ -295,33 +295,29 @@ public class JumiaApplication extends A4SApplication {
 
     /**
      * Triggers the request for a new api call
-     * 
-     * @param helper
-     *            of the api call
-     * @param responseCallback
      * @return the md5 of the reponse
      */
     public String sendRequest(final BaseHelper helper, final Bundle args, final IResponseCallback responseCallback) {
         if (helper == null) {
             return "";
         }
-        final Bundle bundle = helper.newRequestBundle(args);
+        final Bundle requestBundle = helper.newRequestBundle(args);
 
-        final String md5 = bundle.getString(Constants.BUNDLE_MD5_KEY);
+        final String md5 = requestBundle.getString(Constants.BUNDLE_MD5_KEY);
 
         Log.d("TRACK", "sendRequest");
         new Thread(new Runnable() {
             @Override
             public void run() {
-                
+
                 //Log.i(TAG, "############ RQ CURRENT THREAD ID: " + Thread.currentThread().getId());
                 //Log.i(TAG, "############ RQ MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());
-                
+
                 JumiaApplication.INSTANCE.responseCallbacks.put(md5, new IResponseCallback() {
 
                     @Override
                     public void onRequestComplete(Bundle bundle) {
-                        
+
                         /**
                          * ###################################################
                          * # FIXME: WARNING - THIS IS RUNNING IN MAIN THREAD #
@@ -332,15 +328,23 @@ public class JumiaApplication extends A4SApplication {
                         //Log.i(TAG, "############ RP CURRENT THREAD ID: " + Thread.currentThread().getId());
                         //Log.i(TAG, "############ RP MAIN THREAD ID: " + Looper.getMainLooper().getThread().getId());                        
                         //new ParseSuccessAsyncTask(helper, bundle, responseCallback).execute();
-                        
+
                         Log.d("TRACK", "onRequestComplete BaseActivity");
                         // We have to parse this bundle to the final one
-                        Bundle formatedBundle = helper.checkResponseForStatus(bundle);
+                        Bundle responseBundle = helper.checkResponseForStatus(bundle);
                         if (responseCallback != null) {
-                            if (formatedBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
-                                responseCallback.onRequestError(formatedBundle);
-                            } else {
-                                responseCallback.onRequestComplete(formatedBundle);
+                            // CASE: Error parsing
+                            if (responseBundle.getBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY)) {
+                                // Remove request from cache
+                                String url = requestBundle.getString(Constants.BUNDLE_URL_KEY);
+                                EventType type = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+                                helper.removeRequestFromHttpCache(url, type);
+                                // Callback
+                                responseCallback.onRequestError(responseBundle);
+                            }
+                            // CASE: Success
+                            else {
+                                responseCallback.onRequestComplete(responseBundle);
                             }
                         }
                     }
@@ -349,16 +353,15 @@ public class JumiaApplication extends A4SApplication {
                     public void onRequestError(Bundle bundle) {
                         Log.d("TRACK", "onRequestError  BaseActivity");
                         // We have to parse this bundle to the final one
-                        Bundle formatedBundle = helper.parseErrorBundle(bundle);
+                        Bundle responseBundle = helper.parseErrorBundle(bundle);
                         if (responseCallback != null) {
-                            responseCallback.onRequestError(formatedBundle);
+                            responseCallback.onRequestError(responseBundle);
                         }
                     }
                 });
 
-                // Send request
-                if (!sendRequest(bundle)) {
-                    Log.e(TAG, "SERVICE NOT AVAILABLE FOR EVENT TYPE " + bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
+                if (!sendRequest(requestBundle)) {
+                    Log.e(TAG, "SERVICE NOT AVAILABLE FOR EVENT TYPE " + requestBundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY));
                 }
             }
         }).start();
@@ -525,7 +528,7 @@ public class JumiaApplication extends A4SApplication {
 
     /**
      * clean and return last saved rating
-     * 
+     *
      * @return last saved review
      */
     public static ContentValues getRatingReviewValues() {
@@ -540,7 +543,7 @@ public class JumiaApplication extends A4SApplication {
     }
 
     public static void setRatingReviewValues(ContentValues ratingReviewValues) {
-            JumiaApplication.ratingReviewValues = ratingReviewValues;
+        JumiaApplication.ratingReviewValues = ratingReviewValues;
     }
 
     /**
@@ -565,7 +568,6 @@ public class JumiaApplication extends A4SApplication {
 
     /**
      * flag to control if it is showing seller review, ou product review
-     * @param mIsSellerReview
      */
     public static void setIsSellerReview(boolean mIsSellerReview) {
         JumiaApplication.isSellerReview = mIsSellerReview;
@@ -577,7 +579,7 @@ public class JumiaApplication extends A4SApplication {
     public static boolean getIsSellerReview() {
         return JumiaApplication.isSellerReview;
     }
-    
+
     /**
      * @return the paymentsInfoList
      */
@@ -638,7 +640,6 @@ public class JumiaApplication extends A4SApplication {
 
     /**
      * add a sku to a list of sku products that were added from a banner flow
-     * @param sku
      */
     public void setBannerFlowSkus(String sku,TeaserGroupType groupType) {
         if(bannerSkus == null){
