@@ -484,6 +484,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      * Goto campaign page
      */
     private void gotoCampaignPage(String targetTitle, String targetUrl, TeaserGroupType groupType) {
+        Log.i(TAG, "GOTO CAMPAIGN PAGE: " + targetTitle + " " + targetUrl);
         // Get group
         BaseTeaserGroupType group = mHomePage.getTeasers().get(groupType.ordinal());
         // Case campaign origin

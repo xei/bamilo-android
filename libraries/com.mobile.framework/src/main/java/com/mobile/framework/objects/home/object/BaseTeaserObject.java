@@ -16,6 +16,8 @@ import org.json.JSONObject;
  */
 public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
+    protected String mName;
+
     protected String mTitle;
 
     protected String mSubTitle;
@@ -42,6 +44,10 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
     /*
      * ########## GETTERS ##########
      */
+
+    public String getName() {
+        return mName;
+    }
 
     public String getTitle() {
         return mTitle;
@@ -93,6 +99,8 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
+        // Get name
+        mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         // Get title
         mTitle = jsonObject.optString(RestConstants.JSON_TITLE_TAG);
         // Get sub title
@@ -132,6 +140,7 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mName);
         dest.writeString(this.mTitle);
         dest.writeString(this.mSubTitle);
         dest.writeString(this.mUrl);
@@ -143,6 +152,7 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
     }
 
     protected BaseTeaserObject(Parcel in) {
+        this.mName = in.readString();
         this.mTitle = in.readString();
         this.mSubTitle = in.readString();
         this.mUrl = in.readString();

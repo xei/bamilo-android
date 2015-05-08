@@ -136,7 +136,6 @@ public class AddressRegion implements IJSONSerializable, Parcelable {
 		code = jsonObject.getString(RestConstants.JSON_CODE_TAG);
 		name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
 		sort = jsonObject.optString(RestConstants.JSON_SORT_TAG);
-		//Log.i(TAG, this.toString());
 		return true;
 	}
 

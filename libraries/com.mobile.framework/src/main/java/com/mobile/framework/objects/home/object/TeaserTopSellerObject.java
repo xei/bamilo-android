@@ -48,16 +48,8 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
         return mPrice;
     }
 
-    public double getPriceConverted() {
-        return mPriceConverted;
-    }
-
     public double getSpecialPrice() {
         return mSpecialPrice;
-    }
-
-    public double getSpecialPriceConverted() {
-        return mSpecialPriceConverted;
     }
 
     /*
@@ -97,9 +89,7 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
     }
 
     /**
-     * TODO
      *
-     * @return
      */
     @Override
     public JSONObject toJSON() {

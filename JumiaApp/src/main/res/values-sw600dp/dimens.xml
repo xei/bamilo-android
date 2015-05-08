@@ -173,10 +173,10 @@
 
 
     <!-- HOME -->
-    <dimen name="home_margin">0dp</dimen>
+    <item name="home_offset_percentage" format="float" type="dimen">0</item>
     <dimen name="home_main_teaser_height">260dp</dimen>
     <dimen name="home_small_teaser_item_width">195dp</dimen>
-    <dimen name="home_shop_week_teaser_height">258dp</dimen>
+    <dimen name="home_shop_week_teaser_min_height">258dp</dimen>
     <integer name="home_featured_stores_teaser_num_columns">3</integer>
 
 </resources>

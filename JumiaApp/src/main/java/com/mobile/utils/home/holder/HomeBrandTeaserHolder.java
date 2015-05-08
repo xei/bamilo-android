@@ -30,10 +30,10 @@ public class HomeBrandTeaserHolder extends BaseTeaserViewHolder {
             // Use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
             container.setHasFixedSize(true);
             // RTL
-            Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
-            if (isRTL){
-                container.enableReverseLayout();
-            } 
+            //Boolean isRTL = mContext.getResources().getBoolean(R.bool.is_bamilo_specific);
+            //if (isRTL){
+            //    container.enableReverseLayout();
+            //}
             // Set adapter
             container.setAdapter(new HomeBrandTeaserAdapter(group.getData(), mParentClickListener));
         } else {
