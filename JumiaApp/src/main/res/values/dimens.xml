@@ -410,6 +410,7 @@
     <dimen name="dimen_mat_3px">3dp</dimen>
     <dimen name="dimen_mat_4px">4dp</dimen>
     <dimen name="dimen_mat_8px">8dp</dimen>
+    <dimen name="dimen_mat_16px">16dp</dimen>
     <dimen name="dimen_mat_36px">36dp</dimen>
     <dimen name="dimen_mat_45px">45dp</dimen>
     <dimen name="dimen_mat_48px">48dp</dimen>
@@ -428,6 +429,7 @@
     <dimen name="dimen_mat_160px">160dp</dimen>
     <dimen name="dimen_mat_165px">165dp</dimen>
     <dimen name="dimen_mat_170px">170dp</dimen>
+    <dimen name="dimen_mat_178px">178dp</dimen>
     <dimen name="dimen_mat_210px">210dp</dimen>
 
     <!-- ########### HOME ########### -->
@@ -454,7 +456,7 @@
     <dimen name="home_shop_week_teaser_min_height">@dimen/dimen_mat_148px</dimen>
     <!-- TOP SELLERS TEASER -->
     <dimen name="home_top_sellers_teaser_item_width">@dimen/dimen_mat_148px</dimen>
-    <dimen name="home_top_sellers_teaser_item_height">@dimen/dimen_mat_170px</dimen>
+    <dimen name="home_top_sellers_teaser_item_height">@dimen/dimen_mat_178px</dimen>
 
 
     <!-- KICKOUT -->

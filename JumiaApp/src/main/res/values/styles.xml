@@ -762,7 +762,6 @@
     <!-- WHITE HORIZONTAL LIST -->
 
     <style name="WhiteHorizontalListStyle" parent="HorizontalListStyle" >
-        <item name="android:paddingBottom">@dimen/dimen_mat_8px</item>
         <item name="android:background">@android:color/white</item>
     </style>
 

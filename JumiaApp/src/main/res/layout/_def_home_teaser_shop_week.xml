@@ -3,10 +3,10 @@
     android:id="@+id/home_teaser_shop_week_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="@dimen/home_shop_week_teaser_min_height"
     android:layout_marginBottom="@dimen/dimen_mat_8px"
     android:clickable="false"
     android:gravity="center"
+    android:minHeight="@dimen/home_shop_week_teaser_min_height"
     android:orientation="horizontal">
 
     <FrameLayout
@@ -22,7 +22,7 @@
 
     <View
         style="@style/divider_vertical"
-        android:layout_width="@dimen/dimen_mat_4px"
+        android:layout_width="@dimen/dimen_mat_8px"
         android:background="@null" />
 
     <FrameLayout
