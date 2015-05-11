@@ -7,9 +7,15 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 21
+        versionCode 1
+        versionName "4.0.2"
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+task jar(type: Jar) {
+    from 'src/main/java'
 }

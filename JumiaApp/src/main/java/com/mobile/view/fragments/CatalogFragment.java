@@ -24,6 +24,7 @@ import com.mobile.framework.objects.ITargeting;
 import com.mobile.framework.objects.Product;
 import com.mobile.framework.objects.TeaserCampaign;
 import com.mobile.framework.objects.home.type.TeaserGroupType;
+import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.tracking.AnalyticsGoogle;
 import com.mobile.framework.tracking.TrackingEvent;
 import com.mobile.framework.tracking.TrackingPage;
@@ -50,6 +51,8 @@ import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -113,6 +116,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private String mCategoryId; // Verify if catalog page was open via navigation drawer
 
+    private String mCategoryTree;
+
     /**
      * Create and return a new instance.
      *
@@ -161,6 +166,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             }
             // Verify if catalog page was open via navigation drawer
             mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
+            mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
@@ -232,6 +238,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onResume();
         Log.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
+        trackPageAdjust();
         if(!TextUtils.isEmpty(mCategoryId) && getBaseActivity() != null){
             getBaseActivity().updateNavigationCategorySelection(mCategoryId);
         }
@@ -607,8 +614,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (filterValues.containsKey(DialogFilterFragment.BRAND)) {
             // Used to indicate that has filter q=<BRAND>
             mBrandQuery = filterValues.getAsString(DialogFilterFragment.BRAND);
-            // Remove brand from values (API: not supported)
-            filterValues.remove(DialogFilterFragment.BRAND);
         }
         // Clean brand filter
         else {
@@ -863,6 +868,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mSortOrFilterApplied = false;
             Log.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
             onUpdateCatalogContainer(catalogPage);
+
+            if (catalogPage.getPage() == 1){
+                if(!TextUtils.isEmpty(mSearchQuery)){
+                    trackSearch(catalogPage);
+                }
+                trackPageAdjust();
+            }
+
         }
         // Case invalid success response
         else {
@@ -971,5 +984,46 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
         bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, 0);
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    /**
+     * fire the track catalog page for Adjust Tracker
+     */
+    private void trackPageAdjust(){
+        if(mCatalogPage != null){
+            // Track Adjust screen
+            Bundle bundle = new Bundle();
+
+            if(!TextUtils.isEmpty(mCatalogPage.getCategoryId())){
+                bundle.putString(AdjustTracker.CATEGORY_ID, mCatalogPage.getCategoryId());
+            }
+            if(!TextUtils.isEmpty(mCatalogPage.getName())){
+                bundle.putString(AdjustTracker.CATEGORY, mCatalogPage.getName());
+            }
+            if(!CollectionUtils.isEmpty(mCatalogPage.getProducts())){
+                bundle.putParcelableArrayList(AdjustTracker.TRANSACTION_ITEM_SKUS, mCatalogPage.getProducts());
+            }
+            if(!TextUtils.isEmpty(mCategoryTree)){
+                bundle.putString(AdjustTracker.TREE, mCategoryTree);
+            }
+            TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_LIST_SORTED, bundle);
+        }
+    }
+
+    /**
+     * fires the search event for all trackers
+     */
+    private void trackSearch(CatalogPage catalogPage){
+        Bundle bundle = new Bundle();
+        bundle.putString(TrackerDelegator.SEARCH_CRITERIA_KEY, catalogPage.getSearchTerm());
+        bundle.putLong(TrackerDelegator.SEARCH_RESULTS_KEY, catalogPage.getTotal());
+        if(!TextUtils.isEmpty(mCatalogPage.getCategoryId())){
+            bundle.putString(AdjustTracker.CATEGORY_ID, catalogPage.getCategoryId());
+        }
+        if(!TextUtils.isEmpty(mCatalogPage.getName())){
+            bundle.putString(AdjustTracker.CATEGORY, catalogPage.getName());
+        }
+        TrackerDelegator.trackSearch(bundle);
+
     }
 }

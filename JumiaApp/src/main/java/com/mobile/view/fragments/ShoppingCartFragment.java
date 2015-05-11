@@ -515,14 +515,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
             TrackerDelegator.trackLoadTiming(params);
 
-            params = new Bundle();
-            params.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
-            params.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-            if (JumiaApplication.CUSTOMER != null) {
-                params.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
-            }
+            params.clear();
             params.putParcelable(AdjustTracker.CART, shoppingCart);
-
             TrackerDelegator.trackPage(TrackingPage.CART_LOADED, getLoadTime(), false);
             TrackerDelegator.trackPageForAdjust(TrackingPage.CART_LOADED, params);
 

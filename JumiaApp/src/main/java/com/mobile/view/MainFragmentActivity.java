@@ -14,7 +14,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.framework.tracking.Ad4PushTracker;
-import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.utils.EventType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -180,8 +179,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         Log.d(TAG, "ON RESUME");
         //
         Ad4PushTracker.get().startActivity(this);
-        //
-        AdjustTracker.onResume(this);
     }
 
     /*

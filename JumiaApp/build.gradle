@@ -94,19 +94,16 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [AdjustEnvironment: "sandbox"]
             debuggable true
         }
         live {
             applicationIdSuffix ".live"
-            manifestPlaceholders = [AdjustEnvironment: "sandbox"]
             debuggable true
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-live.txt'
         }
         release {
-            manifestPlaceholders = [AdjustEnvironment: "production"]
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-market.txt'
@@ -231,13 +228,13 @@ dependencies {
     compile 'com.google.android.support:wearable:1.1.0'
     compile 'com.google.android.gms:play-services-wearable:7.0.0'
     /** Android wear releases **/
-//    jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
-//    jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
-//    jumiaSamsungWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
-//    jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
-//    bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
-//    shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
-//    darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
+    jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaSamsungWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
+    bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
+    shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
+    darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
 }
 
 /**

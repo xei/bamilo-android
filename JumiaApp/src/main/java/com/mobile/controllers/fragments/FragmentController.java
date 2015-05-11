@@ -190,8 +190,8 @@ public class FragmentController {
     
     /**
      * Search for a tag
-     * @param tag
-     * @return
+     * @param tag The fragment tag
+     * @return true or false
      */
     public Boolean hasEntry(String tag){
         return backStack != null && backStack.contains(tag);

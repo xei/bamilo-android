@@ -37,6 +37,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.adjust.sdk.Adjust;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -297,8 +298,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         // Get the cart and perform auto login
         recoverUserDataFromBackground();
-
-        AdjustTracker.onResume(this);
+        AdjustTracker.onResume();
 
         TrackerDelegator.trackAppOpenAdjust(getApplicationContext(), mLaunchTime);
     }
@@ -328,6 +328,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         hideSearchComponent();
         // Dispatch saved hits
         AnalyticsGoogle.get().dispatchHits();
+
         AdjustTracker.onPause();
     }
 
@@ -1998,12 +1999,7 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     private void trackPageAdjust() {
         Bundle bundle = new Bundle();
-        bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
-        bundle.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-        if (JumiaApplication.CUSTOMER != null) {
-            bundle.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
-        }
         TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
     }
 
