@@ -571,11 +571,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
         if(mIsSameCheckBox.isChecked()){
             if(!shippingFormGenerator.validate()){
+                Log.i(TAG, "SAME FORM: INVALID");
                 return;
             }
         } else {
             validateSameGender();
             if (!shippingFormGenerator.validate() | !billingFormGenerator.validate()) {
+                Log.i(TAG, "SHIP OR BILL FORM: INVALID");
                 return;
             }
         }

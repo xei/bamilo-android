@@ -96,7 +96,7 @@ public class Form implements IJSONSerializable, Parcelable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
      * )

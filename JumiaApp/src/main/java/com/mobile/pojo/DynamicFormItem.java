@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.text.TextWatcher;
 import android.util.LayoutDirection;
@@ -760,8 +761,12 @@ public class DynamicFormItem {
                 case text:
                 case password:
                 case number: {
+                    // Get value
                     String value = ((EditText) this.dataControl).getText().toString();
-                    result = validateStringToPattern(value);
+                    // TODO: REMOVE THIS APPROACH TO SET THE RELATED regex (TEMPORARY SOLUTION)
+                    String regex = (String) this.dataControl.getTag(R.id.regex);
+                    // Validate the value
+                    result = validateStringToPattern(value, regex);
                     break;
                 }
                 case hide:
@@ -778,7 +783,7 @@ public class DynamicFormItem {
         return result;
     }
 
-    private boolean validateStringToPattern(String value) {
+    private boolean validateStringToPattern(String value, String regexFromRelatedField) {
         boolean result;
 
         // SHOP: added empty space to prevent string from being cutted on burmese
@@ -797,8 +802,10 @@ public class DynamicFormItem {
                 setErrorText(this.entry.getLabel() + " " + context.getResources().getString(R.string.form_texttolong) + space);
                 result = false;
             } else {
-                //Log.i(TAG, "RADIO RELATED: " + this.entry.getKey() + " regex validate " + this.entry.getValidation().regex);
-                Pattern pattern = Pattern.compile(this.entry.getValidation().regex, Pattern.CASE_INSENSITIVE);
+                // TODO: REMOVE THIS regexFromRelatedField (TEMPORARY SOLUTION)
+                String regex = !TextUtils.isEmpty(regexFromRelatedField) ? regexFromRelatedField : this.entry.getValidation().regex;
+                //Log.i(TAG, "RADIO RELATED: " + this.entry.getKey() + " regex validate " + regex);
+                Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
                 setErrorText("The " + this.entry.getLabel() + " " + context.getString(R.string.dynamic_errortext) + space);
                 Matcher matcher = pattern.matcher(value);
                 result = matcher.find();
@@ -1540,9 +1547,11 @@ public class DynamicFormItem {
                     if (view.getId() == checkedId) {
                         DynamicFormItem related = parent.getItemByKey(entry.getRelatedFieldKey());
                         if (related != null) {
-                            related.entry.setValidation(entry.getRelatedFieldOptions().get(i).getRules());
+                            // TODO: UPDATE THIS FORM FIELD (TEMPORARY SOLUTION)
+                            related.dataControl.setTag(R.id.regex, entry.getRelatedFieldOptions().get(i).getRules().regex);
                             //Log.i(TAG, "RADIO RELATED: " + related.entry.getKey() + " new regex " + related.entry.getValidation().regex);
                         }
+                        break;
                     }
                 }
             }
