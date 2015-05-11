@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@null">
+    android:orientation="vertical">
 
     <!-- TABS -->
 
@@ -23,7 +22,6 @@
         android:id="@+id/campaign_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@null"/>
+        android:layout_weight="1" />
 
 </LinearLayout>

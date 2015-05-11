@@ -1166,7 +1166,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         @Override
         public void onNothingSelected(IcsAdapterView<?> parent) {
             // ...
-            
+
         }
         
 //        /*
