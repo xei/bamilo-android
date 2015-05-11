@@ -37,4 +37,7 @@
     <item type="id" name="target_position"/>
     <item type="id" name="target_teaser_origin"/>
 
+    <!-- TODO: REMOVE THIS ID FOR REGEX (TEMPORARY SOLUTION) -->
+    <item type="id" name="regex"/>
+
 </resources>

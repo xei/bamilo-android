@@ -272,6 +272,7 @@ public class RestConstants {
     public static final String JSON_ADDRESS_ID_TAG = "id_customer_address";
     public static final String JSON_ADDRESS_ID_TAG_2 = "customer_address_id";
     public static final String JSON_PHONE_TAG = "phone";
+    public static final String JSON_ADDITIONAL_PHONE_TAG = "additional_phone";
     public static final String JSON_TABLET_TAG = "tablet";
     public static final String JSON_ADDRESS1_TAG = "address1";
     public static final String JSON_ADDRESS2_TAG = "address2";
