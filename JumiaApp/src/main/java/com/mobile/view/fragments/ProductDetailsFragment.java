@@ -1469,36 +1469,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
         } else {
             getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEMS_TO_CART);
         }
-
-//        mDialogAddedToCart = DialogGenericFragment.newInstance(
-//                false,
-//                true,
-//                getString(R.string.your_cart),
-//                msgText,
-//                getString(R.string.go_to_cart), getString(R.string.continue_shopping),
-//                new OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(View v) {
-//                        int id = v.getId();
-//                        if (id == R.id.button1) {
-//                            if (getBaseActivity() != null) {
-//                                getBaseActivity().onSwitchFragment(
-//                                        FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
-//                                        FragmentController.ADD_TO_BACK_STACK);
-//                            }
-//                            if (mDialogAddedToCart != null) {
-//                                mDialogAddedToCart.dismiss();
-//                            }
-//
-//                        } else if (id == R.id.button2) {
-//                            showFragmentContentContainer();
-//                            mDialogAddedToCart.dismiss();
-//                        }
-//                    }
-//                });
-//
-//        mDialogAddedToCart.show(getFragmentManager(), null);
     }
 
     private void addToShoppingCartFailed() {

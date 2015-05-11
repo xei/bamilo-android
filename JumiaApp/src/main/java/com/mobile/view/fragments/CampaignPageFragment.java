@@ -58,6 +58,7 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.UIUtils;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -562,7 +563,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             Log.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
             isAddingProductToCart = false;
             hideActivityProgress();
-            showSuccessCartDialog();
+            if(getBaseActivity() != null) {
+                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+            }
             break;
         default:
             break;
@@ -624,47 +627,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         }
 
     }
-    
+
     /**
-     * ########### DIALOGS ###########  
-     */    
+     * ########### DIALOGS ###########
+     */
 
-    
-    private void showSuccessCartDialog() {
-
-        String msgText = "1 " + getResources().getString(R.string.added_to_shop_cart_dialog_text);
-
-        mDialogAddedToCart = DialogGenericFragment.newInstance(
-                false,
-                true,
-                getString(R.string.your_cart),
-                msgText,
-                getString(R.string.go_to_cart), getString(R.string.continue_shopping),
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        if (id == R.id.button1) {
-                            if(getBaseActivity() != null){
-                                getBaseActivity().onSwitchFragment(
-                                        FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
-                                        FragmentController.ADD_TO_BACK_STACK);    
-                            }
-                            if(mDialogAddedToCart != null){
-                                mDialogAddedToCart.dismiss();    
-                            }
-                            
-                        } else if (id == R.id.button2) {
-                            mDialogAddedToCart.dismiss();
-                        }
-                    }
-                });
-
-        mDialogAddedToCart.show(getFragmentManager(), null);
-    }
-    
-    
     private void showErrorCartDialog (){
         FragmentManager fm = getFragmentManager();
         mDialogErrorToCart = DialogGenericFragment.newInstance(true, false,
@@ -734,7 +701,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             private TextView mOfferEnded;
             private View mTimerContainer;
             private TextView mTimer;
-            private int mRemaingTime;
+            private int mRemainingTime;
 
             /**
              * Handler used to update Timer every second, when user is not scrolling
@@ -743,7 +710,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 public void handleMessage(android.os.Message msg) {
                     // only update if is not detected a fling (fast scrolling) on gridview
                     if (!isScrolling) {
-                        updateTimer(mTimer, mTimerContainer, mButtonBuy, mOfferEnded, mName, mImage, mRemaingTime, mImageContainer);
+                        updateTimer(mTimer, mTimerContainer, mButtonBuy, mOfferEnded, mName, mImage, mRemainingTime, mImageContainer);
                     }
                     this.sendEmptyMessageDelayed(0, 1000);
                 };
@@ -876,7 +843,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Set timer
             int remainingTime = item.getRemainingTime();
             // Set itemView's remainingTime to be used by handler
-            view.mRemaingTime = remainingTime;
+            view.mRemainingTime = remainingTime;
 
             // start handler processing
             if(remainingTime > 0) view.mHandler.sendEmptyMessageDelayed(0, 1000);
@@ -1253,9 +1220,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             if(mOnClickParentListener != null)
                 mOnClickParentListener.onClick(view);
         }
-
-
-        
     }
     
 }
