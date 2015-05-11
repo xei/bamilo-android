@@ -18,6 +18,7 @@ import android.widget.RatingBar;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
+import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
@@ -315,8 +316,9 @@ public class ReviewWriteFragment extends BaseFragment {
     private void setReviewName(DynamicForm reviewForm) {
         if(reviewForm != null && reviewForm.getItemByKey(NAME) != null && reviewForm.getItemByKey(NAME).getValue().equals("")){
             Customer customer = JumiaApplication.CUSTOMER;
-            String firstname = (customer != null && !TextUtils.isEmpty(customer.getFirstName())) ? customer.getFirstName() : ""; 
-            reviewForm.getItemByKey(NAME).setValue(firstname);
+            if(customer != null && !TextUtils.isEmpty(customer.getFirstName())){
+                reviewForm.getItemByKey(NAME).setValue(customer.getFirstName());
+            }
         }
     }
     
@@ -350,8 +352,8 @@ public class ReviewWriteFragment extends BaseFragment {
             ratingContainer.addView(dynamicRatingForm.getContainer());
             
             loadReviewAndRatingFormValues();
-            setReviewName(dynamicRatingForm);
             restoreTextReview(dynamicRatingForm);
+            setReviewName(dynamicRatingForm);
 
             //Validate if both reviews and ratings are enabled on country configuration
             if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
