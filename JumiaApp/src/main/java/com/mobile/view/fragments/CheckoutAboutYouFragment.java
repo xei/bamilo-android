@@ -57,6 +57,7 @@ import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.InputType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.social.FacebookHelper;
@@ -1020,6 +1021,8 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                     HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
                     showErrorDialog(errors, R.string.error_signup_title);
                     showFragmentContentContainer();
+                } else {
+                    Toast.makeText(getBaseActivity(), R.string.internet_no_connection_details_label, Toast.LENGTH_SHORT).show();
                 }
                 break;
             case GET_SIGNUP_FORM_EVENT:
