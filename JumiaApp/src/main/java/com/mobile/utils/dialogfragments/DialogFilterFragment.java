@@ -250,7 +250,7 @@ public class DialogFilterFragment extends DialogFragment {
         if(!catalogFilter.isPriceFilter()){
 
             SparseArray<CatalogFilterOption> catalogFilterOptions = catalogFilter.getSelectedOption();
-            initialFilterValues[position] =  (catalogFilterOptions != null) ? catalogFilterOptions.clone() : null;
+            initialFilterValues[position] =  (catalogFilterOptions != null && catalogFilterOptions.size() != 0) ? catalogFilterOptions.clone() : new SparseArray<>();
 
         //If Catalog filter price
         } else {
@@ -293,6 +293,20 @@ public class DialogFilterFragment extends DialogFragment {
             }
         }
 
+    }
+
+    /**
+     * Init all filter values which are not initialized yet.
+     *
+     */
+    void initAllInitialFilterValues(){
+
+        for(int i = 0; i < initialFilterValues.length; i++){
+            // If the position is null, means that initial values of the filter is not initialized yet
+            if(initialFilterValues[i] == null){
+                addToInitialFilterValues(i, mFilters.get(i));
+            }
+        }
     }
 
     /*
@@ -571,6 +585,9 @@ public class DialogFilterFragment extends DialogFragment {
          */
         private void processOnClickClean(){
             Log.d(TAG, "CLICKED ON: CLEAR");
+
+            mParent.initAllInitialFilterValues();
+
             // Clean all saved values
             cleanAllFilters();
             // Update adapter
