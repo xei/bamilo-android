@@ -409,7 +409,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         invalidateOptionsMenu();
         // Update the sliding menu
         this.action = action != null ? action : NavigationAction.Unknown;
-        updateNavigationMenu();
         // Select step on Checkout
         setCheckoutHeader(checkoutStep);
         // Set actionbarTitle
@@ -421,7 +420,6 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     public void updateActionForCountry(NavigationAction action) {
         this.action = action != null ? action : NavigationAction.Unknown;
-        updateNavigationMenu();
     }
 
     /**
@@ -573,23 +571,24 @@ public abstract class BaseActivity extends ActionBarActivity {
     /**
      * Update the sliding menu
      */
-    public void updateNavigationMenu() {
+    public void updateNavigationMenu(NavigationAction page) {
         Log.d(TAG, "UPDATE SLIDE MENU");
         NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
         if (slideMenuFragment != null) {
-            slideMenuFragment.onUpdateMenu();
+            slideMenuFragment.onUpdateMenu(page);
         }
     }
-
     /**
      * Update the sliding menu
      */
-    public void updateSlidingMenuCompletly() {
+    public void updateNavigationCategorySelection(String categoryId) {
+        Log.d(TAG, "UPDATE SLIDE MENU");
         NavigationFragment slideMenuFragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation);
         if (slideMenuFragment != null) {
-            slideMenuFragment.onUpdateMenu();
+            slideMenuFragment.onUpdateCategorySelected(categoryId);
         }
     }
+
 
     /*
      * ############### OPTIONS MENU #################
@@ -1205,11 +1204,11 @@ public abstract class BaseActivity extends ActionBarActivity {
      */
     public void updateCartInfo() {
         Log.d(TAG, "ON UPDATE CART INFO");
-        if (JumiaApplication.INSTANCE.getCart() != null) {
-            Log.d(TAG, "updateCartInfo value = "
-                    + JumiaApplication.INSTANCE.getCart().getCartValue() + " quantity = "
-                    + JumiaApplication.INSTANCE.getCart().getCartCount());
-        }
+//        if (JumiaApplication.INSTANCE.getCart() != null) {
+//            Log.d(TAG, "updateCartInfo value = "
+//                    + JumiaApplication.INSTANCE.getCart().getCartValue() + " quantity = "
+//                    + JumiaApplication.INSTANCE.getCart().getCartCount());
+//        }
         updateCartInfoInActionBar();
     }
 
@@ -1971,7 +1970,6 @@ public abstract class BaseActivity extends ActionBarActivity {
                 Log.i(TAG, "ON REQUEST ERROR: AUTO LOGIN");
                 JumiaApplication.INSTANCE.setLoggedIn(false);
                 JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-                updateNavigationMenu();
             }
 
             @Override
@@ -2004,10 +2002,6 @@ public abstract class BaseActivity extends ActionBarActivity {
         bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
         TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
     }
-
-    /**
-     * ##### WIZARDS #####
-     */
 
 //    /**
 //     * Shows server overload page

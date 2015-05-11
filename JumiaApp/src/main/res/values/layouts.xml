@@ -89,4 +89,15 @@
 
     <!--KICK OUT -->
     <item name="kickout_page" type="layout">@layout/_def_kickout_page</item>
+
+    <!-- NAVIGATION DRAWER -->
+    <item name="navigation_fragment_main"               type="layout">@layout/_def_navigation_fragment_main</item>
+
+    <!-- CATEGORY -->
+    <item name="category"                               type="layout">@layout/_def_category</item>
+    <item name="category_inner_top_back"                type="layout">@layout/_def_category_inner_top_back</item>
+    <item name="category_inner_childcat"                type="layout">@layout/_def_category_inner_childcat</item>
+    <item name="category_inner_currentcat"              type="layout">@layout/_def_category_inner_currentcat</item>
+    <item name="navigation_fragment_categories"         type="layout">@layout/_def_navigation_fragment_categories</item>
+
 </resources>

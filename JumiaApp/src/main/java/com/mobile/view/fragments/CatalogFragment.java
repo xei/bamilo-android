@@ -114,6 +114,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private boolean mIsToShowGridLayout = false;
 
+    private String mCategoryId; // Verify if catalog page was open via navigation drawer
+
     private String mCategoryTree;
 
     /**
@@ -162,6 +164,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             }
+            // Verify if catalog page was open via navigation drawer
+            mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
         }
         // Get data from saved instance
@@ -175,7 +179,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mBrandQuery = savedInstanceState.getString(ConstantsIntentExtra.CATALOG_FILTER_BRAND);
             mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
-            mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
         }
     }
 
@@ -236,6 +239,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Log.i(TAG, "ON RESUME");
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
         trackPageAdjust();
+        if(!TextUtils.isEmpty(mCategoryId) && getBaseActivity() != null){
+            getBaseActivity().updateNavigationCategorySelection(mCategoryId);
+        }
     }
 
     /*

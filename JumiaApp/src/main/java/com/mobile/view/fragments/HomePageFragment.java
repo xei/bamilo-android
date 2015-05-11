@@ -413,6 +413,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         boolean intercepted = true;
         // Get type
         String targetType = (String) view.getTag(R.id.target_type);
+        // validate the state of the view when clicking on the retry button on the Home page
+        if(TextUtils.isEmpty(targetType)){
+          return false;
+        }
         // Get url
         String targetUrl = (String) view.getTag(R.id.target_url);
         // Get title

@@ -3,22 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_height_normal"
     android:layoutDirection="locale"
-    android:background="@drawable/selector_listitem_highlight"
-    android:paddingTop="6dp">
+    android:background="@drawable/selector_listitem_highlight" >
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/category_name"
+        android:id="@+id/text"
+        style="@style/text_normal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/item_height_normal"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin_huge"
-        android:layout_marginStart="@dimen/margin_huge"
-        android:ellipsize="end"
+        android:layout_marginLeft="@dimen/margin_veryhuge"
+        android:layout_marginStart="@dimen/margin_veryhuge"
+        android:drawablePadding="@dimen/margin_mid"
         android:gravity="center_vertical"
-        android:fontFamily="roboto_regular"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:textColor="@color/grey_middle"
+        android:text="Inner category"
+        android:textColor="@color/grey_light"
         android:textSize="@dimen/text_m" />
 
     <View

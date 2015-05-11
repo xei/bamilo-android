@@ -274,7 +274,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     public ProductDetailsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
+                NavigationAction.Product,
                 R.layout.product_details_fragment_main,
                 NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);

@@ -492,8 +492,6 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
             Log.d(TAG, "facebookloginCompletedEvent : success");
             // Get Customer
             baseActivity.hideKeyboard();
-            baseActivity.updateSlidingMenuCompletly();
-
             // NullPointerException on orientation change
             if (baseActivity != null) {
                 Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
@@ -557,8 +555,6 @@ public class SessionLoginFragment extends BaseFragment implements Request.GraphU
         JumiaApplication.INSTANCE.setLoggedIn(true);
         // Get Customer
         baseActivity.hideKeyboard();
-        baseActivity.updateSlidingMenuCompletly();
-
         // NullPointerException on orientation change
         if (baseActivity != null && !cameFromRegister) {
             Customer customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);

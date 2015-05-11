@@ -23,6 +23,7 @@ public enum NavigationAction {
     // Sales("sales"),
     // Configurator("configurator"),
     Products("products"),
+    Product("product"),
     Country("language"),
     MyOrders("trackingorder"),
     Unknown("unknown"),

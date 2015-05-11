@@ -124,7 +124,7 @@ public class ReviewWriteFragment extends BaseFragment {
      */
     public ReviewWriteFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
+                NavigationAction.Product,
                 R.layout.review_write_fragment,
                 NO_TITLE,
                 KeyboardState.ADJUST_CONTENT);

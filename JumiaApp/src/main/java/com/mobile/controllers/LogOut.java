@@ -84,7 +84,6 @@ public class LogOut {
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         // Update layouts to clean cart info
         baseActivity.updateCartInfo();
-        baseActivity.updateSlidingMenuCompletly();
         // Inform parent activity
         baseActivity.onLogOut();
         TrackerDelegator.clearTransactionCount();

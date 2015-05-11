@@ -135,7 +135,7 @@ public class WriteSellerReviewFragment extends BaseFragment {
      */
     public WriteSellerReviewFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
+                NavigationAction.Product,
                 R.layout.review_write_fragment,
                 0,
                 KeyboardState.ADJUST_CONTENT);
