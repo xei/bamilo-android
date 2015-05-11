@@ -48,7 +48,7 @@ public class PersistentSessionStore extends CustomerUtils{
 
         Object cookieObj = values.get(CURRENT_COOKIE);
         if(cookieObj instanceof String) {
-            storeCookie((String) values.get(CURRENT_COOKIE));
+            storeCookie((String) cookieObj);
         }
     }
 

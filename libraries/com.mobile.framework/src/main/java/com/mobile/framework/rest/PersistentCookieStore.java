@@ -70,9 +70,11 @@ public class PersistentCookieStore extends BasicCookieStore implements ICurrentC
      */
     @Override
     public synchronized void addCookie(Cookie cookie) {
-        super.addCookie(cookie);
-        if(cookie.getName().contains(PHPSESSID_TAG)) {
-            this.domain = cookie.getDomain();
+        if(cookie != null) {
+            super.addCookie(cookie);
+            if (cookie.getName().contains(PHPSESSID_TAG)) {
+                this.domain = cookie.getDomain();
+            }
         }
     }
 
