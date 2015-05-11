@@ -1,14 +1,15 @@
 package com.mobile.framework.objects;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.utils.CurrencyFormatter;
 import com.mobile.framework.utils.LogTagHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.akquinet.android.androlog.Log;
 
@@ -81,7 +82,12 @@ public class ProductBundleSimple implements IJSONSerializable, Parcelable {
 
             simpleSku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
             simpleQuantity = jsonObject.getString(RestConstants.JSON_QUANTITY_TAG);
+
+            // TODO - Please Unify
             simpleSize = jsonObject.optString(RestConstants.JSON_SIZE_TAG,"");
+            if(TextUtils.isEmpty(simplePrice)) {
+                simpleSize = jsonObject.optString(RestConstants.JSON_VARIATION_TAG,"");
+            }
             
             String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
             
