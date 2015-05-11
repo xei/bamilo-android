@@ -86,7 +86,6 @@ public class AddableToCart extends BaseProduct {
         super(completeProduct);
 		maxSavingPercentage = completeProduct.getMaxSavingPercentage();
         isNew = Boolean.getBoolean(completeProduct.getAttributes().get(RestConstants.JSON_IS_NEW_TAG));
-		selectedSimple = NO_SIMPLE_SELECTED;
 		isComplete = true;
 		imageList = completeProduct.getImageList();
 		simples = completeProduct.getSimples();
@@ -136,6 +135,9 @@ public class AddableToCart extends BaseProduct {
 	 * @return the selectedSimple
 	 */
 	public int getSelectedSimple() {
+		if(selectedSimple == NO_SIMPLE_SELECTED){
+			return selectedSimple = (simples != null && simples.size() == 1) ? 0 : NO_SIMPLE_SELECTED;
+		}
 		return selectedSimple;
 	}
 

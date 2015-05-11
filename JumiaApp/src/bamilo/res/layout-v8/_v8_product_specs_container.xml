@@ -11,7 +11,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/specs_container_title"
         style="@style/rounded_box_title_grey"
-        android:text="@string/product_features_title" />
+        android:text="@string/product_details_title" />
 
     <View
         android:id="@+id/specs_container_divider"

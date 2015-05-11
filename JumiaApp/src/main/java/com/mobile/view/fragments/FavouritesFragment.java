@@ -662,8 +662,8 @@ public class FavouritesFragment extends BaseFragment implements IResponseCallbac
         Log.i(TAG, "ON GET SELECTED SIMPLE: " + addableToCart.getSimples().size());
         // Get item
         int selectedSimple = addableToCart.getSelectedSimple();
-        // if (selectedSimple >= addableToCart.getSimples().size()) return null;
-        // else if (selectedSimple == AddableToCart.NO_SIMPLE_SELECTED) return null;
+//         if (selectedSimple >= addableToCart.getSimples().size()) return null;
+//         else if (selectedSimple == AddableToCart.NO_SIMPLE_SELECTED) return null;
         return addableToCart.getSimples().get(selectedSimple);
     }
 
