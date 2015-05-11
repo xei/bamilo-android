@@ -64,21 +64,16 @@ public class GetFormEditAddressHelper extends BaseHelper {
     public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
         //Log.d(TAG, "PARSE BUNDLE: " + jsonObject.toString());
         Log.i(TAG, "PARSE BUNDLE");
-        
         final ArrayList<Form> forms = new ArrayList<>();
         JSONArray dataObject;
         try {
             dataObject = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
-
             for (int i = 0; i < dataObject.length(); ++i) {
                 Form form = new Form();
                 JSONObject formObject = dataObject.getJSONObject(i);
-                
                 if (!form.initialize(formObject)) Log.e(TAG, "Error initializing the form using the data");
-                
                 forms.add(form);
             }
-            // formRegistry.put(action, forms);
             if (forms.size() > 0) {
                 bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, forms.get(0));
             }

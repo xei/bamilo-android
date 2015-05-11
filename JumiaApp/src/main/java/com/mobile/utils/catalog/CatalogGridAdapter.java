@@ -390,14 +390,19 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
             onClickFavouriteButton(view);
         }
         // Header Click
-        else if(id == R.id.catalog_header_image){
+        else if(id == R.id.catalog_header_image_frame){
             if(mOnHeaderClicked != null){
                 mOnHeaderClicked.onHeaderClick(mTargetType, mUrl, mTitle);
             }
         }
         // Case other sent to listener
         else if(mOnViewHolderClicked != null){
-            mOnViewHolderClicked.onViewHolderClick(this, (Integer) view.getTag(R.id.position));
+            try{
+                mOnViewHolderClicked.onViewHolderClick(this, (Integer) view.getTag(R.id.position));
+            } catch (ClassCastException e){
+                e.printStackTrace();
+            }
+
         }
 
     }
@@ -458,7 +463,7 @@ public class CatalogGridAdapter extends RecyclerView.Adapter<CatalogGridAdapter.
     private void setHeaderImage(ProductViewHolder holder){
         if(!TextUtils.isEmpty(mBannerImage)){
             // set listener
-            holder.headerImage.setOnClickListener(this);
+            holder.itemView.setOnClickListener(this);
             // Set image
             RocketImageLoader.instance.loadImage(mBannerImage, holder.headerImage, null, R.drawable.no_image_large);
         }

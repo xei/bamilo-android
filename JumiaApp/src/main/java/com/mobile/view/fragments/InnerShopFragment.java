@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -22,6 +21,8 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Shops in shop Fragment. Created by Sergio Pereira on 3/4/15.
@@ -98,6 +99,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         if (arguments != null) {
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
+            Log.i(TAG, "RECEIVED DATA: " + mTitle + " " + mUrl);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
@@ -333,6 +335,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         Log.i(TAG, "PDV: " + url);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -346,6 +349,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -363,6 +367,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         campaign.setUrl(url);
         teaserCampaigns.add(campaign);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 

@@ -2,9 +2,6 @@
 <resources>
     <item type="id" name="request_login"/>
     <item type="id" name="request_register"/>
-    <item type="id" name="target_url"/>
-    <item type="id" name="target_type"/>
-    <item type="id" name="target_title"/>
     <item type="id" name="origin_type"/>
     <item type="id" name="item_id"/>
     <item name="nav_action" type="id"/>
@@ -32,5 +29,12 @@
     <item type="id" name="stub_drawable"/>
     <item type="id" name="stub_text_button"/>
     <item type="id" name="stub_listener"/>
-    
+
+    <!-- HOME PAGE -->
+    <item type="id" name="target_url"/>
+    <item type="id" name="target_type"/>
+    <item type="id" name="target_title"/>
+    <item type="id" name="target_position"/>
+    <item type="id" name="target_teaser_origin"/>
+
 </resources>

@@ -13,6 +13,7 @@ import org.json.JSONObject;
 /**
  * @author nutzer2
  */
+@Deprecated
 public class TeaserGroupCategories extends TeaserSpecification<TeaserCategory> {
 
     /**

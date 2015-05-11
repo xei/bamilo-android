@@ -30,7 +30,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     public static final int MAX_ITEMS_PER_PAGE = 24;
 
-    private static final int FIRST_PAGE = 1;
+    public static final int FIRST_PAGE = 1;
 
     private String mId;
 
@@ -276,20 +276,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         return mName;
     }
 
-    /**
-     * Get id
-     * @return String
-     */
-    public String getCategoryId(){
-        return mId;
-    }
-
     public Banner getmCatalogBanner() {
         return mCatalogBanner;
-    }
-
-    public void setmCatalogBanner(Banner mCatalogBanner) {
-        this.mCatalogBanner = mCatalogBanner;
     }
 
     /*
@@ -325,7 +313,6 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     /**
      * Parcel constructor
-     * @param in
      */
     private CatalogPage(Parcel in){
         mId = in.readString();

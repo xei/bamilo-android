@@ -1,9 +1,5 @@
 package com.mobile.framework.utils;
 
-import java.util.WeakHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -12,6 +8,10 @@ import android.os.Message;
 import com.mobile.framework.R;
 import com.mobile.framework.database.ImageResolutionTableHelper;
 import com.mobile.framework.objects.ImageResolution;
+
+import java.util.WeakHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.akquinet.android.androlog.Log;
 
@@ -25,7 +25,7 @@ public class ImageResolutionHelper {
     
     public final static String REGEX_RESOLUTION = DarwinRegex.REGEX_IMAGE_RESOLUTION;
     
-    private static WeakHashMap<String, ImageResolution> resolutionMap = new WeakHashMap<String, ImageResolution>(); 
+    private static WeakHashMap<String, ImageResolution> resolutionMap = new WeakHashMap<>();
 
     protected static Context CONTEXT;
     

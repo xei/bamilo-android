@@ -1,52 +1,51 @@
 package com.mobile.forms;
 
-import java.util.Map;
-
 import com.mobile.forms.FormField.OnDataSetReceived;
 import com.mobile.utils.InputType;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public interface IFormField {
 
-	public abstract Form getParent();
+    Form getParent();
 
-	public abstract String getId();
+    String getId();
 
-	public abstract String getKey();
+    String getKey();
 
-	public abstract String getName();
+    String getName();
 
-	public abstract InputType getInputType();
+    InputType getInputType();
 
-	public abstract String getLabel();
-	
-	public abstract String getLinkText();
+    String getLabel();
 
-	public abstract Map<String, String> getDataSet();
+    String getLinkText();
 
-	public abstract String getDatasetSource();
+    Map<String, String> getDataSet();
 
-	public abstract OnDataSetReceived getOnDataSetReceived();
+    ArrayList<RelatedFieldOption> getRelatedFieldOptions();
 
-	public abstract void setOnDataSetReceived( OnDataSetReceived listener );
-	
-	public abstract FieldValidation getValidation();
+    int getPreSelectedRelatedOptionPosition();
 
-	public abstract String getRegEx();
+    String getRelatedFieldKey();
 
-	public abstract String getValue();
-	
-	public abstract void setValue( String value );
-	
-	public abstract Map<String, IFormField> getSubFormFields();
-	
-	public abstract void setSubFormFields( Map<String, IFormField> formFields);
-	
-	public abstract Map<String, String> getDataValues();
+    void setOnDataSetReceived(OnDataSetReceived listener);
 
-	public abstract Map<String, String> getDataCalls();
+    FieldValidation getValidation();
+
+    void setValidation(FieldValidation validation);
+
+    String getValue();
+
+    Map<String, IFormField> getSubFormFields();
+
+    void setSubFormFields(Map<String, IFormField> formFields);
+
+    Map<String, String> getDataCalls();
 
     String getScenario();
-    
-    public abstract Map<String, String> getDateSetRating();
+
+    Map<String, String> getDateSetRating();
 
 }

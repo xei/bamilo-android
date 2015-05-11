@@ -10,6 +10,7 @@ package com.mobile.framework.objects;
  * @author Ralph Holland-Moritz
  * @modified sergiopereira
  */
+@Deprecated
 public interface ITargeting {
 
     public enum TargetType {
