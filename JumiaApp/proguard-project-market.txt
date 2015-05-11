@@ -69,6 +69,7 @@
 -keep public class * extends android.preference.Preference
 -keep public class * extends android.support.v4.view.ActionProvider
 -keep public class * extends android.support.v4.app.Fragment
+-keep class com.mobile.utils.JumiaWearableListenerService.** { *; }
 -keepclasseswithmembers class * {
     public <init>(android.content.Context, android.util.AttributeSet);
 }
