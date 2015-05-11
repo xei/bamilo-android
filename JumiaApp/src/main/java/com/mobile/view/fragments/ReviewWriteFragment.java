@@ -316,11 +316,9 @@ public class ReviewWriteFragment extends BaseFragment {
     private void setReviewName(DynamicForm reviewForm) {
         if(reviewForm != null && reviewForm.getItemByKey(NAME) != null && reviewForm.getItemByKey(NAME).getValue().equals("")){
             Customer customer = JumiaApplication.CUSTOMER;
-            String firstname = (customer != null && !TextUtils.isEmpty(customer.getFirstName())) ? customer.getFirstName() : "";
-            if (!firstname.equals("")) {
-                reviewForm.getItemByKey(NAME).setValue(firstname);
+            if(customer != null && !TextUtils.isEmpty(customer.getFirstName())){
+                reviewForm.getItemByKey(NAME).setValue(customer.getFirstName());
             }
-
         }
     }
     
