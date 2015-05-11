@@ -2,7 +2,6 @@ package com.mobile.framework.objects.home.group;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.mobile.framework.objects.IJSONSerializable;
 import com.mobile.framework.objects.home.object.BaseTeaserObject;
@@ -16,6 +15,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Class used to represent the base of a group of teasers.
