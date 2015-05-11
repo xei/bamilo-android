@@ -93,7 +93,7 @@
     <string name="fallback_bottom_text">ေနရာမေရြး အခ်ိန္မေရြး</string>
     <string name="fallback_bottom_text2">သင္ ရွာေဖြ၀ယ္ယူရန္ မ်ားစြာရွိပါေသးသည္</string>
     <string name="fallback_choice">ေရြးခ်ယ္စရာအစံုအလင္</string>
-    <string name="fallback_doorstep">သင့္အိမ္တံခါး၀မွ</string>
+    <string name="fallback_doorstep">အိမ္အေရာက္ပို႕ေဆာင္စနစ္</string>
     <string name="fallback_fashion">ဖက္ရွင္</string>
     <string name="fallback_health">အလွအပ ႏွင့္ က်န္းမာေရး</string>
     <string name="fallback_home_office">အိမ္သံုး၊ရုံးသံုး ပစၥည္းမ်ား</string>
@@ -164,7 +164,7 @@
     <string name="nav_country">ႏိုင္ငံေရြးခ်ယ္ပါ</string>
     <string name="nav_country_warning">ႏိုင္ငံေျပာင္းလဲပါက ေစ်း၀ယ္လွည္းအားရွင္းလင္းၿပီး Logout ျဖစ္သြားမည္။ ေျပာင္းရန္ေသခ်ာပါသလား?</string>
     <string name="nav_track_order">ေအာ္ဒါေျခရာခံရန္</string>
-    <string name="navigation_cart_empty">သင္၏လွည္းအတြင္းဘာမွ်မရွိပါ</string>
+    <string name="navigation_cart_empty">သင္၏လွည္းအတြင္းဘာမွမရွိပါ</string>
     <string name="new_password_hint">Password အသစ္</string>
     <string name="new_password_label">Password အသစ္</string>
     <string name="newsletter_saved_message">သင္၏ email notifications settings အားသိမ္းဆည္းၿပီးပါၿပီ</string>
@@ -181,7 +181,7 @@
     <string name="option2_description">Password ေျပာင္းလဲၿပီး အီးေမးလ္အား စီမံခန္႔ခြဲရန္</string>
     <string name="option3_description">Subscribe or Unsubscribe</string>
     <string name="or_text">သုိ႔မဟုတ္</string>
-    <string name="order_no_items">သင္၏လွည္းအတြင္းဘာမွ်မရွိပါ</string>
+    <string name="order_no_items">သင္၏လွည္းအတြင္းဘာမွမရွိပါ</string>
     <string name="order_status_label">ေအာ္ဒါအေျခအေန</string>
     <string name="order_success">ဤနံပါတ္ျဖင့္ သင့္ေအာ္ဒါအား စာရင္းသြင္းၿပီးပါၿပီ။</string>
     <string name="order_summary_label">ေအာ္ဒါအက်ဥ္းခ်ဳပ္</string>
@@ -209,9 +209,9 @@
     <string name="product_could_not_retrieved">ကုန္ပစၥည္းအခ်က္အလက္ျပန္လည္မရယူႏိုင္ပါ!</string>
     <string name="product_delivery_days">ေန႔</string>
     <string name="product_delivery_time">: အတြင္း ပို႔ေဆာင္ေပးမႈ</string>
-    <string name="product_description_title">ကုန္ပစၥည္းေဖာ္ျပခ်က္</string>
+    <!--<string name="product_description_title">ကုန္ပစၥည္းေဖာ္ျပခ်က္</string>-->
     <string name="product_details_title">ကုန္ပစၥည္းအခ်က္အလက္မ်ား</string>
-    <string name="product_features_title">ကုန္ပစၥည္းထူးျခားခ်က္မ်ား</string>
+    <!--<string name="product_features_title">ကုန္ပစၥည္းထူးျခားခ်က္မ်ား</string>-->
     <string name="product_offer_from_title">မွ ကမ္းလွမ္းခ်က္မ်ား</string>
     <string name="product_outof_stock">လက္က်န္ကုန္ပစၥည္းမရွိေတာ့ပါ</string>
     <string name="product_sold_by">: မွ ေရာင္းခ်ပါသည္</string>
@@ -366,4 +366,15 @@
     <string name="dialog_to_product">ပစစည္း၏ အေသးစိတ္အားၾကည့္ရႈရန္။</string>
     <string name="address_creation_failed_title">လိပ္စာျပဳလုုပ္ရာတြင္ မေအာင္ျမင္ပါ</string>
     <string name="address_creation_failed_main">ေက်းဇူျပဳရ်္ ပုုံစံတြင္ေပးထားေသာ လုုိအပ္ခ်က္မ်ားအားမွန္ကန္စြာျဖည့္စြတ္ပါ။</string>
+    <string name="product_desc_summary_title">အႏွစ္ခ်ဳပ္</string>
+    <string name="description">ေဖာ္ျပခ်က္</string>
+    <string name="key_features">အဓိက အေၾကာင္းအရာမ်ား</string>
+    <string name="kickout_page_title">ကြ်ဳန္တို႕၏ အထူးအစီအစဥ္ ေအာင္ျမင္စြာ ျပီးဆံုးပါျပီ!</string>
+    <string name="kickout_page_text1">၀ဘ္ဆိုဒ္တြင္ လတ္တေလာ လူျပည္႕ေနပါသျဖင့္ လူသစ္မ်ားထပ္မံလက္ခံ၍ မရေတာ့ပါ</string>
+    <string name="kickout_page_text2">၀ဘ္ဆိုဒ္ကို ပိုမိုေကာင္းမြန္ေအာင္ ျပင္ဆင္ေနသျဖင့္ ေနာက္တစ္ၾကိမ္ ထပ္ၾကိဳးစားၾကည္႕ပါ</string>
+    <string name="see_more_offers">အျခား အစီအစဥ္မ်ားကို ၾကည္႕ရွဳရန္</string>
+    <string name="shops_of_the_week">ဤအပတ္၏ အေရာင္းရဆံုးမ်ား</string>
+    <string name="featured_stores">အေရာင္းဆိုင္မ်ား</string>
+    <string name="you_may_like">သင္ႏွစ္သက္မည္႕</string>
+    <string name="top_sellers">ေရာင္းအားအေကာင္းဆံုး ဆုိင္မ်ား</string>
 </resources>
