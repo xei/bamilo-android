@@ -160,7 +160,7 @@
             <!-- http://wiki.accengage.com/android/doku.php?id=plugins&s[]=useful&s[]=commands -->
             <meta-data
                 android:name="com.ad4screen.location.priority"
-                android:value="high" />
+                android:value="low" />
             <meta-data
                 android:name="com.ad4screen.advertiser_id"
                 android:value="true" />
