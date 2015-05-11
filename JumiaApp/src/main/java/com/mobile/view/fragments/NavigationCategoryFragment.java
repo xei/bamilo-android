@@ -40,7 +40,6 @@ import de.akquinet.android.androlog.Log;
 public class NavigationCategoryFragment extends BaseFragment implements OnItemClickListener, IResponseCallback {
 
     private static final String TAG = LogTagHelper.create(NavigationCategoryFragment.class);
-    
 
     private static final int HEADER_FOR_ALL_POSITION = 0;
     
@@ -52,7 +51,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     
     private String mCategoryKey;
 
-    private ArrayList<Category>  mCategories;
+    private ArrayList<Category> mCategories;
 
 
     /**
@@ -290,10 +289,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      */
     private void showRetry() {
         Log.i(TAG, "ON SHOW RETRY");
-        if(mCategoryKey != ROOT_CATEGORIES){
-            //Show back button if error occurs on inner
-            ((NavigationFragment)getParentFragment()).setBackButtonVisibility(View.VISIBLE);
-        }
+        verifyBackButton();
         showFragmentErrorRetry();
     }
     
@@ -490,14 +486,20 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         }
     }
 
+    public void verifyBackButton(){
+        if(mCategoryKey != ROOT_CATEGORIES) {
+            ((NavigationFragment) getParentFragment()).setBackButtonVisibility(View.VISIBLE);
+        } else {
+            ((NavigationFragment)getParentFragment()).setBackButtonVisibility(View.GONE);
+        }
+    }
+
     @Override
     protected void showFragmentNoNetworkRetry() {
         super.showFragmentNoNetworkRetry();
         try {
             // Show back button
-            if(mCategoryKey != ROOT_CATEGORIES) {
-                ((NavigationFragment) getParentFragment()).setBackButtonVisibility(View.VISIBLE);
-            }
+            verifyBackButton();
             // Set no network view
             ((TextView) getView().findViewById(R.id.no_connection_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_small_size));
             ((TextView) getView().findViewById(R.id.no_connection_details_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_details_small_size));
