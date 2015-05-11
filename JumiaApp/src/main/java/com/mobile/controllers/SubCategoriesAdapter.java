@@ -147,31 +147,19 @@ public class SubCategoriesAdapter extends BaseAdapter {
         } else {
         	item = (Item)itemView.getTag();
         }
-        	
-       
         if ( position == 0 ) {
             item.textView.setText(headCategory.getName());
-            if(!TextUtils.isEmpty(selectedCategoryId) && headCategory.getId().equals(selectedCategoryId)){
-                itemView.setSelected(true);
-                itemView.setBackgroundResource(R.drawable.shape_itemhighlight);
-            } else {
-                itemView.setSelected(false);
-                itemView.setBackgroundResource(R.drawable.selector_listitem_highlight);
-            }
+//            if(!TextUtils.isEmpty(selectedCategoryId) && headCategory.getId().equals(selectedCategoryId)){
+//                itemView.setSelected(true);
+//                itemView.setBackgroundResource(R.drawable.shape_itemhighlight);
+//            } else {
+//                itemView.setSelected(false);
+//                itemView.setBackgroundResource(R.drawable.selector_listitem_highlight);
+//            }
         } else {
             item.textView.setText(categories.get(position - 1).getName());
-            if(!TextUtils.isEmpty(selectedCategoryId) && categories.get(position - 1).getId().equals(selectedCategoryId) ){
-                itemView.setSelected(true);
-                itemView.setBackgroundResource(R.drawable.shape_itemhighlight);
-            } else {
-                itemView.setSelected(false);
-                itemView.setBackgroundResource(R.drawable.selector_listitem_highlight);
-            }
         }
-        itemView.setSelected(true);
-
         return itemView;
-        	
     }
 
     /**

@@ -10,8 +10,8 @@
         style="@style/text_normal"
         android:layout_width="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin_60px"
-        android:layout_marginStart="@dimen/margin_60px"
+        android:layout_marginLeft="@dimen/margin_veryhuge"
+        android:layout_marginStart="@dimen/margin_veryhuge"
         android:gravity="center_vertical|left|start"
         android:text="Inner category"
         android:textSize="@dimen/text_m" />
