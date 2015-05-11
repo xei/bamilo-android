@@ -157,10 +157,10 @@
                 android:name="com.ad4screen.senderid"
                 android:value="@string/ad4push_sender_id" />
 
-            <!-- http://wiki.accengage.com/android/doku.php?id=plugins&s[]=useful&s[]=commands -->
+            <!-- http://wiki.accengage.com/android/doku.php?id=plugins -->
             <meta-data
                 android:name="com.ad4screen.location.priority"
-                android:value="high" />
+                android:value="low" />
             <meta-data
                 android:name="com.ad4screen.advertiser_id"
                 android:value="true" />

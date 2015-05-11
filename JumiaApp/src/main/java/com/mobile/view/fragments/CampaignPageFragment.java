@@ -99,8 +99,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
     private HeaderGridView mGridView;
 
-    private DialogGenericFragment mDialogAddedToCart;
-
     private boolean isAddingProductToCart;
 
     private DialogGenericFragment mDialogErrorToCart;
