@@ -516,4 +516,9 @@ public class RestConstants {
      */
 
     public static final String JSON_HTML_TAG = "html";
+
+    /**
+     * CATALOG
+     */
+    public static final String JSON_SEARCH_TERM_TAG = "searchterm";
 }

@@ -32,7 +32,6 @@ import com.mobile.framework.rest.RestConstants;
 import com.mobile.framework.rest.RestContract;
 import com.mobile.framework.service.IRemoteServiceCallback;
 import com.mobile.framework.tracking.Ad4PushTracker;
-import com.mobile.framework.tracking.AdjustTracker;
 import com.mobile.framework.utils.Constants;
 import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.EventType;
@@ -116,7 +115,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Get unexpected error layout
         mUnexpectedError = findViewById(R.id.fragment_stub_unexpected_error);
         // Tracking
-        AdjustTracker.onResume(this);
+//        if(Adjust.isEnabled())
+//            AdjustTracker.onResume();
         // Initialize application
         JumiaApplication.INSTANCE.init(initializationHandler);
     }

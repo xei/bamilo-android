@@ -813,8 +813,6 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
             super.gotoOldCheckoutMethod(getBaseActivity(), JumiaApplication.INSTANCE.getCustomerUtils().getEmail(), "next step is null");
         } else {
             Log.i(TAG, "GOTO NEXT STEP: " + mNextFragment.toString());
-            // Update
-            getBaseActivity().updateSlidingMenuCompletly();
             // Clean stack for new native checkout on the back stack (auto login)
             getBaseActivity().removeAllNativeCheckoutFromBackStack();
             getBaseActivity().onSwitchFragment(mNextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);

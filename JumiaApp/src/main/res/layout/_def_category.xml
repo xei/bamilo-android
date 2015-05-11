@@ -2,18 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_height_normal"
+    android:layoutDirection="locale"
     android:background="@drawable/selector_listitem_highlight"
     android:paddingTop="6dp">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/category_name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/margin_huge"
+        android:layout_marginLeft="@dimen/margin_veryhuge"
+        android:layout_marginStart="@dimen/margin_veryhuge"
         android:ellipsize="end"
+        android:gravity="center_vertical|left|start"
         android:fontFamily="roboto_regular"
-        android:gravity="center_vertical|right"
         android:maxLines="1"
         android:singleLine="true"
         android:textColor="@color/grey_middle"

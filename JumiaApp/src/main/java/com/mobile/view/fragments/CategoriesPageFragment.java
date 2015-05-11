@@ -273,7 +273,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             ArrayList<Category> child = category.getChildren();
             String categoryName = category.getName();
             // Set adapter, tag and listener
-            SubCategoriesAdapter mSubCategoryAdapter = new SubCategoriesAdapter(getBaseActivity(), child, categoryName);
+            SubCategoriesAdapter mSubCategoryAdapter = new SubCategoriesAdapter(getBaseActivity(), child, category);
             mCategoryList.setTag(CLICK_FROM_DEFAULT_CONTAINER);
             mCategoryList.setAdapter(mSubCategoryAdapter);
             mCategoryList.setOnItemClickListener(this);
@@ -335,7 +335,7 @@ public class CategoriesPageFragment extends BaseFragment implements OnItemClickL
             mLandscapeCategoryChildrenList.addHeaderView(headerForBack);
         }
         // Set adapter, tag and listener
-        SubCategoriesAdapter adapter = new SubCategoriesAdapter(getBaseActivity(), category.getChildren(), category.getName());
+        SubCategoriesAdapter adapter = new SubCategoriesAdapter(getBaseActivity(), category.getChildren(), category);
         mLandscapeCategoryChildrenList.setAdapter(adapter);
         mLandscapeCategoryChildrenList.setTag(CLICK_FROM_LANDSCAPE_CONTAINER);
         mLandscapeCategoryChildrenList.setOnItemClickListener(this);

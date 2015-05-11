@@ -319,6 +319,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             // Update view
             viewHolder.onUpdate();
             // Add view
+            // TODO  user deeplinks and presses back gets: The specified child already has a parent. You must call removeView() on the child's parent first.
+            if(mContainer.getChildCount() > 0){
+                mContainer.removeAllViews();
+            }
             mContainer.addView(viewHolder.itemView);
         }
         // Restore the scroll state
@@ -409,6 +413,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         boolean intercepted = true;
         // Get type
         String targetType = (String) view.getTag(R.id.target_type);
+        // validate the state of the view when clicking on the retry button on the Home page
+        if(TextUtils.isEmpty(targetType)){
+          return false;
+        }
         // Get url
         String targetUrl = (String) view.getTag(R.id.target_url);
         // Get title

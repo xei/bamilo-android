@@ -58,4 +58,15 @@
     <!-- MY ORDERS -->
     <item name="track_order_fragment"               type="layout">@layout/_def_track_order_fragment</item>
     <item name="myorders_fragment_main"             type="layout">@layout/_def_myorders_fragment_main</item>
+
+    <!-- NAVIGATION DRAWER -->
+    <item name="navigation_fragment_main"           type="layout">@layout/_def_navigation_fragment_main</item>
+
+    <!-- CATEGORY -->
+    <item name="category"                           type="layout">@layout/_def_category</item>
+    <item name="category_inner_top_back"            type="layout">@layout/_def_category_inner_top_back</item>
+    <item name="category_inner_childcat"            type="layout">@layout/_def_category_inner_childcat</item>
+    <item name="category_inner_currentcat"          type="layout">@layout/_def_category_inner_currentcat</item>
+    <item name="navigation_fragment_categories"     type="layout">@layout/_def_navigation_fragment_categories</item>
+
 </resources>

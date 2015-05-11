@@ -274,7 +274,7 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
      */
     public ProductDetailsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Products,
+                NavigationAction.Product,
                 R.layout.product_details_fragment_main,
                 NO_TITLE,
                 KeyboardState.NO_ADJUST_CONTENT);
@@ -1856,12 +1856,6 @@ public class ProductDetailsFragment extends BaseFragment implements OnDialogList
                 TrackerDelegator.trackLoadTiming(params);
 
                 params = new Bundle();
-                params.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
-                if (JumiaApplication.CUSTOMER != null) {
-                    params.putParcelable(AdjustTracker.CUSTOMER, JumiaApplication.CUSTOMER);
-                }
-                params.putBoolean(AdjustTracker.DEVICE, getResources().getBoolean(R.bool.isTablet));
-                params.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
                 params.putParcelable(AdjustTracker.PRODUCT, mCompleteProduct);
                 params.putString(AdjustTracker.TREE, categoryTree);
                 TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL_LOADED, getLoadTime(), false);

@@ -47,6 +47,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
     private ArrayList<CatalogFilter> mFilters;
 
     private Banner mCatalogBanner;
+    private String mSearchTerm;
 
 
     /*
@@ -73,6 +74,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         // Get data
         mId = metadataObject.optString(RestConstants.JSON_CATALOG_IDS_TAG);
         mName = metadataObject.optString(RestConstants.JSON_CATALOG_NAME_TAG);
+        mSearchTerm = metadataObject.optString(RestConstants.JSON_SEARCH_TERM_TAG);
         mTotal = metadataObject.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG);
         // Set the max pages that application can request
         mMaxPages = calcMaxPages();
@@ -280,6 +282,29 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         return mCatalogBanner;
     }
 
+    /**
+     * Get search term
+     * @return String
+     */
+    public String getSearchTerm(){
+        return mSearchTerm;
+    }
+
+    /**
+     * Get id
+     * @return String
+     */
+    public String getCategoryId(){
+        return mId;
+    }
+
+    /**
+     * Set search term
+     */
+    public void setSearchTerm(String searchTerm){
+        mSearchTerm = searchTerm;
+    }
+
     /*
      * ############### Parcelable ###############
      */
@@ -309,6 +334,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             dest.writeList(mFilters);
         }
         dest.writeValue(mCatalogBanner);
+        dest.writeString(mSearchTerm);
+
     }
 
     /**
@@ -333,6 +360,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             mFilters = null;
         }
         mCatalogBanner = (Banner) in.readValue(Banner.class.getClassLoader());
+        mSearchTerm = in.readString();
     }
 
     public static final Parcelable.Creator<CatalogPage> CREATOR = new Parcelable.Creator<CatalogPage>() {

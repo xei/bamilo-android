@@ -618,7 +618,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             Log.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
             mCart = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
             showOrderSummary();
-            getBaseActivity().updateNavigationMenu();
             hideActivityProgress();
             showFragmentContentContainer();
             break;
