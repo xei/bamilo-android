@@ -177,10 +177,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
         }
-        // Track catalog
-        Bundle tracking = new Bundle();
-        tracking.putString(TrackerDelegator.CATEGORY_KEY, !TextUtils.isEmpty(mTitle) ? mTitle : mSearchQuery);
-        TrackerDelegator.trackCategoryView(tracking);
     }
 
     /*

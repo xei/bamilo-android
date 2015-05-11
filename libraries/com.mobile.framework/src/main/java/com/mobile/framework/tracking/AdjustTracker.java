@@ -18,7 +18,11 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import com.adjust.sdk.Adjust;
+import com.adjust.sdk.AdjustAttribution;
+import com.adjust.sdk.AdjustConfig;
 import com.adjust.sdk.AdjustEvent;
+import com.adjust.sdk.LogLevel;
+import com.adjust.sdk.OnAttributionChangedListener;
 import com.mobile.framework.Darwin;
 import com.mobile.framework.R;
 import com.mobile.framework.objects.AddableToCart;
@@ -206,7 +210,7 @@ public class AdjustTracker {
     }
 
     private void initAdjustInstance() {
-        // Where the 2nd parameter isupdate should be set to
+        // Where the 2nd parameter is update should be set to
         // true if the App has been run before and false if it has
         // never been run before. Setting this correctly will allow
         // us to distinguish which installs are current users
@@ -229,12 +233,45 @@ public class AdjustTracker {
         Log.i(TAG, "ADJUST is APP_LAUNCH " + Adjust.isEnabled());
     }
 
+    /**
+     * initialized Adjust tracker
+     * @param context
+     */
+    public static void initializeAdjust(final Context context) {
+        String appToken = context.getString(R.string.adjust_app_token);
+        String environment = AdjustConfig.ENVIRONMENT_SANDBOX;
+        if (context.getResources().getBoolean(R.bool.adjust_is_production_env)) {
+            environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
+        }
+        AdjustConfig config = new AdjustConfig(context, appToken, environment);
+		config.setLogLevel(LogLevel.VERBOSE); // if not configured, INFO is used by default
+        //PRE_INSTALL DEFAULT TRACKER
+        if (!TextUtils.isEmpty(context.getString(R.string.adjust_default_tracker))) {
+            config.setDefaultTracker(context.getString(R.string.adjust_default_tracker));
+        }
+
+        config.setOnAttributionChangedListener(new OnAttributionChangedListener() {
+            @Override
+            public void onAttributionChanged(AdjustAttribution attribution) {
+                AdjustTracker.saveResponseDataInfo(context, attribution.adgroup, attribution.network, attribution.campaign, attribution.creative);
+            }
+        });
+        Adjust.onCreate(config);
+    }
+
+
     public static void onResume() {
-        Adjust.onResume();
+        if(Adjust.isEnabled()){
+            Adjust.onResume();
+        }
+
     }
 
     public static void onPause(){
-        Adjust.onPause();
+        if(Adjust.isEnabled()){
+            Adjust.onPause();
+        }
+
     }
     
     public static void saveResponseDataInfo(Context context,String adGroup, String network, String campaign, String creative){

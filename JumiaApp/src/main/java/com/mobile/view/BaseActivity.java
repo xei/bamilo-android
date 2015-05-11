@@ -298,8 +298,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         // Get the cart and perform auto login
         recoverUserDataFromBackground();
-        if(Adjust.isEnabled())
-            AdjustTracker.onResume();
+        AdjustTracker.onResume();
 
         TrackerDelegator.trackAppOpenAdjust(getApplicationContext(), mLaunchTime);
     }
@@ -329,8 +328,8 @@ public abstract class BaseActivity extends ActionBarActivity {
         hideSearchComponent();
         // Dispatch saved hits
         AnalyticsGoogle.get().dispatchHits();
-        if(Adjust.isEnabled())
-            AdjustTracker.onPause();
+
+        AdjustTracker.onPause();
     }
 
     /*

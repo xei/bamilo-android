@@ -301,19 +301,19 @@ public class TrackerDelegator {
     /**
      * 
      */
-    public static void trackCategoryView(Bundle params) {
-        try  {
-            // Data
-            String category = params.getString(CATEGORY_KEY);
-            //int page = params.getInt(PAGE_NUMBER_KEY);
-            TrackingEvent event = (TrackingEvent) params.getSerializable(LOCATION_KEY);
-            // AD4Push
-            Ad4PushTracker.get().trackCategorySelection();
-            // GA
-            AnalyticsGoogle.get().trackEvent(event, category, 0l);
-        } catch (NullPointerException e) {
-            Log.i(TAG, "WARNING: NPE ON TRACK CATEGORY ");
-        }
+    public static void trackCategoryView(String catKey) {
+//        try  {
+//            // Data
+//            String category = catKey;
+//            //int page = params.getInt(PAGE_NUMBER_KEY);
+//            TrackingEvent event = (TrackingEvent) params.getSerializable(LOCATION_KEY);
+//            // AD4Push
+//            Ad4PushTracker.get().trackCategorySelection();
+//            // GA
+//            AnalyticsGoogle.get().trackEvent(event, category, 0l);
+//        } catch (NullPointerException e) {
+//            Log.i(TAG, "WARNING: NPE ON TRACK CATEGORY ");
+//        }
     }
     
     /**
