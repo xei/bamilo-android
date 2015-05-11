@@ -319,10 +319,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             // Update view
             viewHolder.onUpdate();
             // Add view
-            // TODO  user deeplinks and presses back gets: The specified child already has a parent. You must call removeView() on the child's parent first.
-            if(mContainer.getChildCount() > 0){
-                mContainer.removeAllViews();
-            }
             mContainer.addView(viewHolder.itemView);
         }
         // Restore the scroll state
