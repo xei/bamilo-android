@@ -563,7 +563,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             Log.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
             isAddingProductToCart = false;
             hideActivityProgress();
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+            if(getBaseActivity() != null) {
+                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+            }
             break;
         default:
             break;
