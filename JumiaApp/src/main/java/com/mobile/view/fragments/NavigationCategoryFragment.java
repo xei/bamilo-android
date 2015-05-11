@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -50,14 +49,10 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     private ListView mCategoryList;
 
     private static Category sCurrentCategory;
-
-    private LayoutInflater mInflater;
     
     private String mCategoryKey;
 
     private ArrayList<Category>  mCategories;
-
-    private static String sSelectedCategoryId;
 
 
     /**
@@ -104,7 +99,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         if(bundle != null) {
             Log.i(TAG, "ON LOAD SAVED STATE");
             mCategoryKey = bundle.getString(ConstantsIntentExtra.CATEGORY_ID);
-//            sSelectedCategoryId = bundle.getString(ConstantsIntentExtra.CATALOG_SOURCE);
         }
     }
     
@@ -116,8 +110,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "ON VIEW CREATED");
-        // Get inflater
-        mInflater = LayoutInflater.from(getBaseActivity());
         // Get category list view
         mCategoryList = (ListView) view.findViewById(R.id.nav_sub_categories_grid);
         
@@ -169,8 +161,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
         super.onSaveInstanceState(outState);
         Log.i(TAG, "ON SAVE INSTANCE");
         outState.putString(ConstantsIntentExtra.CATEGORY_ID, mCategoryKey);
-        outState.putString(ConstantsIntentExtra.CATALOG_SOURCE, sSelectedCategoryId);
-
     }
 
     /*
@@ -299,6 +289,7 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
      * @author sergiopereira
      */
     private void showRetry() {
+        Log.i(TAG, "ON SHOW RETRY");
         if(mCategoryKey != ROOT_CATEGORIES){
             //Show back button if error occurs on inner
             ((NavigationFragment)getParentFragment()).setBackButtonVisibility(View.VISIBLE);
@@ -502,10 +493,15 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
     @Override
     protected void showFragmentNoNetworkRetry() {
         super.showFragmentNoNetworkRetry();
-        try{
-            ((TextView)getView().findViewById(R.id.no_connection_label)).setTextSize( TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_small_size) );
-            ((TextView)getView().findViewById(R.id.no_connection_details_label)).setTextSize( TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_details_small_size) );
-        }catch(NullPointerException e){
+        try {
+            // Show back button
+            if(mCategoryKey != ROOT_CATEGORIES) {
+                ((NavigationFragment) getParentFragment()).setBackButtonVisibility(View.VISIBLE);
+            }
+            // Set no network view
+            ((TextView) getView().findViewById(R.id.no_connection_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_small_size));
+            ((TextView) getView().findViewById(R.id.no_connection_details_label)).setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.no_connection_label_details_small_size));
+        } catch (NullPointerException e) {
             Log.w(TAG, "WARNING NPE ON SHOW RETRY LAYOUT");
         }
     }
@@ -523,5 +519,6 @@ public class NavigationCategoryFragment extends BaseFragment implements OnItemCl
 //            showSubCategory(sCurrentCategory);
 //        }
 //    }
+
 
 }
