@@ -2,10 +2,10 @@
 <resources>
 
     <string name="account_name">A Minha Conta</string>
-    <string name="action_label_add_address">Adicionar Morada</string>
+    <string name="action_label_add_address">Adicionar Nova Morada</string>
     <string name="action_label_basket">Cesto</string>
     <string name="action_label_logout">Sair</string>
-    <string name="action_label_search_hint">Procurar no Jumia</string>
+    <string name="action_label_search_hint">Procurar na %s</string>
     <string name="action_label_share">Partilhar</string>
     <string name="action_label_wishlist">Lista de Desejos</string>
     <string name="add_address">Adicionar Morada</string>
@@ -28,7 +28,7 @@
     <string name="bundle_title">Produtos frequentemente comprados juntos</string>
     <string name="bundle_total_price">Valor Total</string>
     <string name="buy_now">Comprar Já</string>
-    <string name="call_to_order">Ligar</string>
+    <string name="call_to_order">Ligar para encomendar</string>
     <string name="campaign_choose_size">Escolha o Tamanho</string>
     <string name="campaign_ramaining_stock">Stock Disponível:</string>
     <string name="campaign_save">Está a Poupar</string>
@@ -58,7 +58,7 @@
     <string name="close_app">Fechar Aplicação</string>
     <string name="color_label">Cor</string>
     <string name="confirm_order_loosing_order">Se voltar atrás, a sua encomenda será desativada e será redirecionado para a página principal. \nNúmero da encomenda:</string>
-    <string name="confirm_order_loosing_order_title">Aviso: compra já efetuada!</string>
+    <string name="confirm_order_loosing_order_title">Aviso:</string>
     <string name="continue_shopping">Continuar a Comprar</string>
     <string name="copied_to_clipboard">Copiado</string>
     <string name="create_addresses_success">A morada foi criada com sucesso.</string>
@@ -81,7 +81,7 @@
     <string name="error_register_alreadyexists">Este endereço de email já existe. Por favor selecione outro.</string>
     <string name="error_register_title">O registo falhou</string>
     <string name="error_signup_title">O registo da nova conta falhou</string>
-    <string name="error_tracking_order_text">Não foram encontrados resultados para o número da encomenda que especificou.\nPor favor verifique e tente novamente.</string>
+    <string name="error_tracking_order_text">Não foram encontrados resultados para o número da encomenda que especificou.\nPor favor verifique o número e tente novamente.</string>
     <string name="exit_press_back_again">Por favor carregue novamente em voltar se quiser sair da aplicação.</string>
     <string name="extra_costs">Custos Extra:</string>
     <string name="extra_costs_label">Custos Extra</string>
@@ -166,7 +166,7 @@
     <string name="nav_track_order">Localizar a Minha Encomenda</string>
     <string name="navigation_cart_empty">O seu carrinho está vazio</string>
     <string name="new_password_hint">Nova password</string>
-    <string name="new_password_label">Nova Password အသစ</string>
+    <string name="new_password_label">Nova Password</string>
     <string name="newsletter_saved_message">A configuração das notificações de email foram guardadas.</string>
     <string name="newsletters_label">Newsletters</string>
     <string name="next_button">Próximo</string>
@@ -209,9 +209,9 @@
     <string name="product_could_not_retrieved">A informação do produto não pôde ser recuperada!</string>
     <string name="product_delivery_days">dias</string>
     <string name="product_delivery_time">Entrega em:</string>
-    <string name="product_description_title">Descrição do Produto</string>
+    <!-- <string name="product_description_title">Product Description</string> -->
     <string name="product_details_title">Detalhes do Produto</string>
-    <string name="product_features_title">Características do Produto</string>
+    <!-- <string name="product_features_title">Product Features</string> -->
     <string name="product_offer_from_title">Ofertas de  </string>
     <string name="product_outof_stock">O artigo está esgotado</string>
     <string name="product_sold_by">Vendido por:</string>
@@ -240,7 +240,7 @@
     <string name="recent_searches">Pesquisas Recentes</string>
     <string name="recently_viewed">Visto Recentemente</string>
     <string name="recentlyview_clear_viewed">Limpar Produtos Vistos Recentemente</string>
-    <string name="recentlyview_no_searches">Nenhum Produto Recentemente Visto </string>
+    <string name="recentlyview_no_searches">Nenhum Produto Visto Recentemente</string>
     <string name="recentsearch_clear_searches">Limpar Pesquisas Recentes</string>
     <string name="recentsearch_no_searches">Não Existem Pesquisas Recentes</string>
     <string name="register_birthday">Aniversário</string>
@@ -259,7 +259,7 @@
     <string name="reviews">Avaliações</string>
     <string name="reviews_empty">Este Produto ainda não tem avaliações!</string>
     <string name="reviews_empty_seller">Este Vendedor ainda não tem avaliações!</string>
-    <string name="same_product_from_other_sellers">Mesmo produto de outros vendedores</string>
+    <string name="same_product_from_other_sellers">Mesmo Produto de Outros Vendedores</string>
     <string name="save_changes_label">Guardar Alterações</string>
     <string name="save_label">Guardar</string>
     <string name="search_label">Pesquisar</string>
@@ -268,7 +268,7 @@
     <string name="server_error">Encontrámos um pequeno problema na recuperação dos dados.</string>
     <string name="server_error_title">Ocorreu um problema</string>
     <string name="share_checkout_this_product">Veja este produto que encontrámos!</string>
-    <string name="share_subject">Partilha do Jumia</string>
+    <string name="share_subject">Partilha %s</string>
     <string name="shipping">Entrega</string>
     <string name="shipping_fee">Taxa de entrega:</string>
     <string name="shipping_time">Prazo de entrega:</string>
@@ -282,9 +282,9 @@
     <string name="shoppingcart_instock">Em stock.</string>
     <string name="shoppingcart_item_btn_delete">Eliminar</string>
     <string name="shoppingcart_items">Artigos</string>
-    <string name="shoppingcart_minamount">Infelizmente não podemos entregar encomendas que não excedam a encomenda mínima de %s.</string>
+    <string name="shoppingcart_minamount">Infelizmente não podemos entregar encomendas que não excedam o valor mínimo de %s.</string>
     <string name="shoppingcart_minamount_waiting">À espera de informações do servidor acerca do valor de encomenda mínimo</string>
-    <string name="shoppingcart_notinstock">Não está em Stock.</string>
+    <string name="shoppingcart_notinstock">Não Existe em Stock.</string>
     <string name="shoppingcart_quantity">Quantidade</string>
     <string name="shoppingcart_remove_products">Deseja remover os produtos do Carrinho de Compras?</string>
     <string name="shoppingcart_title">O Meu Carrinho</string>
@@ -296,7 +296,7 @@
     <string name="size_label">Tamanho</string>
     <string name="some_products_not_added">Infelizmente alguns produtos não foram adicionados ao carrinho.</string>
     <string name="splash_slogan">O maior centro comercial online em África</string>
-    <string name="splash_slogan_daraz">O único destino para comprar online que tu precisas!</string>
+    <string name="splash_slogan_daraz">O único destino de que necessita para as suas compras online!</string>
     <string name="stale_warning">Perda de ligação</string>
     <string name="string_appearance">Aparência</string>
     <string name="string_price">Preço</string>
@@ -305,7 +305,7 @@
     <string name="string_with_discount_only">Apenas com desconto</string>
     <string name="sub_total_title">Subtotal</string>
     <string name="submit_label">Submeter</string>
-    <string name="submit_text">O seu comentário foi submetido e está agora sujeita a aprovação.</string>
+    <string name="submit_text">O seu comentário foi submetido e será sujeito a aprovação.</string>
     <string name="submit_title">Avaliação enviada</string>
     <string name="succes_login">Está conetado</string>
     <string name="teaser_campaign_button_first_line">EM DESTQUE</string>
@@ -323,9 +323,9 @@
     <string name="track_your_order_tip">Procure pelo número da sua encomenda e todos os dados da encomenda serão exibidos aqui</string>
     <string name="try_again">Tentar Novamente</string>
     <string name="try_again_retry">Tente Novamente</string>
-    <string name="upgrade_forced_text">Encontrámos algo que foi necessário corrigir para que a experiência de comprar no Jumia seja ainda melhor! Para continuar a usar a aplicação, deverá atualizá-la.</string>
+    <string name="upgrade_forced_text">Encontrámos algo que foi necessário corrigir para que a experiência de comprar na %s seja ainda melhor! Para continuar a usar a aplicação, deverá atualizá-la.</string>
     <string name="upgrade_forced_title">Atualização necessária</string>
-    <string name="upgrade_optional_text">Há uma nova atualização disponível que preparamos para que a experiência de comprar no Jumia seja ainda melhor! Certifique-se que a aplicação é atualizada já hoje!</string>
+    <string name="upgrade_optional_text">Há uma nova atualização disponível que preparámos para que a experiência de comprar na %s seja ainda melhor! Certifique-se que a aplicação é atualizada já hoje!</string>
     <string name="upgrade_optional_title">Atualização disponível</string>
     <string name="upgrade_proceed">Atualizar</string>
     <string name="upgrade_remindmelater">Lembrar mais tarde</string>
@@ -346,24 +346,37 @@
     <string name="yes_label">Sim</string>
     <string name="your_cart">O Seu Carrinho</string>
     <string name="your_order">A Sua Encomenda</string>
-    <string name="app_sharing">Partilha a App</string>
-    <string name="install_jumia_android">Instala a Android App do Jumia num instante</string>
-    <string name="share_the_app">Partilha a App</string>
-    <string name="can_share_app_with_friends">Agora podes partilhar a App com os teus amigos</string>
+    <!-- Version v2.4 -->
+    <string name="app_sharing">Partilha de Aplicação</string>
+    <string name="install_jumia_android">Instale a Android App da %s num instante</string>
+    <string name="share_the_app">Partilhar a Aplicação</string>
+    <string name="can_share_app_with_friends">Agora podes partilhar a Aplicação com os teus amigos</string>
     <string name="app_social">App Social</string>
     <string name="sort_by">Ordena por</string>
+    <!-- PLURALS -->
     <string name="plurals_rating">%d Avaliação</string>
     <string name="plurals_ratings">%d avaliações</string>
-    <string name="plurals_item">%d producto</string>
-    <string name="plurals_items">%d productos</string>
+    <string name="plurals_item">%d produto</string>
+    <string name="plurals_items">%d produtos</string>
     <string name="plurals_article">%d artigo</string>
     <string name="plurals_articles">%d artigos</string>
-    <string name="my_addresses">Meus Endereços</string>
-    <string name="create_edit_address">Cria ou edita endereços</string>
+    <string name="my_addresses">As Minhas Moradas</string>
+    <string name="create_edit_address">Criar ou editar as suas moradas</string>
     <string name="string_more_choices">Opções Adicionais</string>
     <string name="string_vat_included">(IVA incl.)</string>
-    <string name="addresses_saved_message">As tuas opções da morada foram guardadas.</string>
-    <string name="dialog_to_product">Para os Detalhes do Producto</string>
+    <string name="addresses_saved_message">As suas opções de morada foram guardadas.</string>
+    <string name="dialog_to_product">Para os Detalhes do Produto</string>
     <string name="address_creation_failed_title">A criação da morada falhou</string>
-    <string name="address_creation_failed_main">Por favor preenche o formulário correctamente</string>
+    <string name="address_creation_failed_main">Por favor preencha o formulário corretamente</string>
+    <string name="product_desc_summary_title">Resumo</string>
+    <string name="description">Descrição</string>
+    <string name="key_features">Características Principais</string>
+    <string name="kickout_page_title">A NOSSA CAMPANHA ESTÁ A SER UM GRANDE SUCESSO!</string>
+    <string name="kickout_page_text1">A loja está atuamente lotada e não poderemos aceitar novos clientes neste momento.</string>
+    <string name="kickout_page_text2">Queremos proporcionar-lhe a melhor experiência de compra possível, por isso gostaríamos de lhe pedir para tentar novamente mais tarde.</string>
+    <string name="see_more_offers">VEJA MAIS OFERTAS</string>
+    <string name="shops_of_the_week">Lojas da semana</string>
+    <string name="featured_stores">Lojas em Destaque</string>
+    <string name="you_may_like">Poderá Gostar</string>
+    <string name="top_sellers">Top Vendedores</string>
 </resources>

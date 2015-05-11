@@ -5,7 +5,7 @@
     <string name="action_label_add_address">Ajouter une nouvelle adresse</string>
     <string name="action_label_basket">Panier</string>
     <string name="action_label_logout">Se déconnecter</string>
-    <string name="action_label_search_hint">Chercher sur Jumia</string>
+    <string name="action_label_search_hint">Chercher sur %s</string>
     <string name="action_label_share">Partager!</string>
     <string name="action_label_wishlist">Liste d\'envies</string>
     <string name="add_address">Ajouter une adresse</string>
@@ -209,9 +209,9 @@
     <string name="product_could_not_retrieved">Les informations sur ce produit n\'ont pas pu être trouvées</string>
     <string name="product_delivery_days">Jours</string>
     <string name="product_delivery_time">Livraison sous:</string>
-    <string name="product_description_title">Description du produit</string>
+    <!-- <string name="product_description_title">Product Description</string> -->
     <string name="product_details_title">Détails du produit</string>
-    <string name="product_features_title">Spécificités du produit</string>
+    <!-- <string name="product_features_title">Product Features</string> -->
     <string name="product_offer_from_title">Offres de </string>
     <string name="product_outof_stock">Le produit n\'est plus disponible</string>
     <string name="product_sold_by">Vendu par:</string>
@@ -268,7 +268,7 @@
     <string name="server_error">Nous avons rencontré un problème pour rafraîchir les données</string>
     <string name="server_error_title">Une erreur est produite</string>
     <string name="share_checkout_this_product">Découvre vite le produit que j\'ai trouvé!</string>
-    <string name="share_subject">Partage Jumia</string>
+    <string name="share_subject">Partage %s</string>
     <string name="shipping">Livraison</string>
     <string name="shipping_fee">Frais de livraison:</string>
     <string name="shipping_time">Délai de livraison:</string>
@@ -325,7 +325,7 @@
     <string name="try_again_retry">Réessayer</string>
     <string name="upgrade_forced_text">Nous avons trouvé une erreur que nous devons réparer pour améliorer votre expérience de shopping! Vous aurez besoin de mettre à jour l\'application avant de continuer.</string>
     <string name="upgrade_forced_title">Mise à jour nécessaire</string>
-    <string name="upgrade_optional_text">Des mises à jour sont disponibles pour un shopping encore plus simple sur Jumia! Mettez à jour votre application ici!</string>
+    <string name="upgrade_optional_text">Des mises à jour sont disponibles pour un shopping encore plus simple sur %s! Mettez à jour votre application ici!</string>
     <string name="upgrade_optional_title">Mise à jour disponible</string>
     <string name="upgrade_proceed">Mise à jour</string>
     <string name="upgrade_remindmelater">Me le rappeler plus tard</string>
@@ -347,7 +347,7 @@
     <string name="your_cart">Votre panier</string>
     <string name="your_order">Votre commande</string>
     <string name="app_sharing">Partage d\'application</string>
-    <string name="install_jumia_android">Installez l\'application Jumia Android en un instant</string>
+    <string name="install_jumia_android">Installez l\'application %s Android en un instant</string>
     <string name="share_the_app">Partagez l\'Application</string>
     <string name="can_share_app_with_friends">Vous pouvez maintenant partager l\'application avec vos amis</string>
     <string name="app_social">Cammunauté de l\'App</string>
@@ -366,4 +366,15 @@
     <string name="dialog_to_product">Détails du produit</string>
     <string name="address_creation_failed_title">La création d\'adresses échouée</string>
     <string name="address_creation_failed_main">Veuillez remplir correctement tous les champs du formulaire.</string>
+    <string name="product_desc_summary_title">Résumé</string>
+    <string name="description">Déscription</string>
+    <string name="key_features">Fonctionnalités</string>
+    <string name="kickout_page_title">Notre campagne était un grand succès!</string>
+    <string name="kickout_page_text1">Le magasin est actuellement plein, et on ne peut pas accueillir de nouveaux clients pour le moment.</string>
+    <string name="kickout_page_text2">Nous voulons vous offrir la meilleure expérience de shopping possible, alors nous aimerions vous demander de réessayer plus tard.</string>
+    <string name="see_more_offers">Voir plus d\'offres</string>
+    <string name="shops_of_the_week">Magazin de la semaine</string>
+    <string name="featured_stores">Magasins en vedette</string>
+    <string name="you_may_like">Vous aimerez</string>
+    <string name="top_sellers">Meilleures ventes</string>
 </resources>
