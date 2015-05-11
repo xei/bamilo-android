@@ -249,13 +249,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             mRelatedFieldKey = jsonObject.optString(RestConstants.JSON_RELATED_FIELD_TAG);
             Log.i(TAG, "FORM FIELD: " + key + " " + name + " " + " " + label + " " + value + " " + scenario + " RADIO RELATED:" + mRelatedFieldKey);
 
-            /**
-             * Validate the city key for create/edit address form.
-             * WARNING: In Uganda(Jumia) and Pakistan(Daraz), sometimes the city comes as a list and crashes the application.
-             * @author sergiopereira
-             */
-            if(key != null && key.equals(RestConstants.JSON_CITY_TAG)) inputType = InputType.text;
-
             // Case RULES TODO
             JSONObject validationObject = jsonObject.optJSONObject(RestConstants.JSON_RULES_TAG);
             if(validationObject != null) {
@@ -263,6 +256,15 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     //Log.e(TAG, "initialize: Error parsing the rules fields");
                     result = false;
                 }
+            }
+
+            /**
+             * Validate and hide the city key for create/edit address form.<br>
+             * WARNING: In Uganda(Jumia) and Pakistan(Daraz), sometimes the city comes as a list and crashes the application.
+             * @author sergiopereira
+             */
+            if(key != null && key.equals(RestConstants.JSON_CITY_TAG) && inputType == InputType.list) {
+                inputType = InputType.hide;
             }
 
             // Case "data_set" //should be more generic

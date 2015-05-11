@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ClickableStyle"
     android:layout_width="@dimen/home_brand_teaser_item_width"
-    android:layout_height="@dimen/home_brand_teaser_item_height"
+    android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/dimen_mat_8px"
     android:layout_marginRight="@dimen/dimen_mat_8px">
 

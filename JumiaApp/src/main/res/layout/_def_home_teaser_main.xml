@@ -3,12 +3,12 @@
     xmlns:pager="http://schemas.android.com/apk/res-auto"
     style="@style/TeaserWhiteContainerStyle"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/home_main_teaser_height">
+    android:layout_height="wrap_content">
 
     <com.mobile.components.viewpager.PreviewViewPager
         android:id="@+id/home_teaser_main_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/home_main_teaser_height"
         pager:transformer="fade" />
 
     <com.viewpagerindicator.CirclePageIndicator

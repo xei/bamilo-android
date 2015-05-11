@@ -58,6 +58,7 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.UIUtils;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -98,8 +99,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
     private HeaderGridView mGridView;
 
-    private DialogGenericFragment mDialogAddedToCart;
-
     private boolean isAddingProductToCart;
 
     private DialogGenericFragment mDialogErrorToCart;
@@ -107,7 +106,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private long mStartTimeInMilliseconds;
 
     private boolean isScrolling;
-    
+
     private enum BannerVisibility{
         DEFAULT,
         VISIBLE,
@@ -291,19 +290,22 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      */
     private void showCampaign() {
         Log.i(TAG, "LOAD CAMPAIGN");
-        // Get banner
-        View mBannerView = getBannerView();
-		// Add banner to header
-        if (BannerVisibility.HIDDEN != bannerState) mGridView.addHeaderView(mBannerView);
-        // Validate the current data
-        if (mGridView.getAdapter() == null) {
-            // Set adapter
-            CampaignAdapter mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), this);
-            mGridView.setAdapter(mArrayAdapter);
-        }
-        // Show content
-        if (BannerVisibility.HIDDEN == bannerState) showContent();
-		// else show when is loaded the banner
+//        // Get banner
+//        View mBannerView = getBannerView();
+//		// Add banner to header
+//        if (BannerVisibility.HIDDEN != bannerState) mGridView.addHeaderView(mBannerView);
+//        // Validate the current data
+//        if (mGridView.getAdapter() == null) {
+//            // Set adapter
+//            CampaignAdapter mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), this);
+//            mGridView.setAdapter(mArrayAdapter);
+//        }
+//        // Show content
+//        if (BannerVisibility.HIDDEN == bannerState) showContent();
+//		// else show when is loaded the banner
+
+        // Get banner and show items
+        getBannerView();
     }
     
     /**
@@ -314,7 +316,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private View getBannerView(){
         // Inflate the banner layout
         final View bannerView = LayoutInflater.from(getActivity()).inflate(R.layout.campaign_fragment_banner, mGridView, false);
-        if (BannerVisibility.HIDDEN != bannerState) {
+        //if (BannerVisibility.HIDDEN != bannerState) {
             // Get the image view
             final ImageView imageView = (ImageView) bannerView.findViewById(R.id.campaign_banner);
             // Load the bitmap
@@ -326,7 +328,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     // Show content
                     imageView.setImageBitmap(bitmap);
                     bannerState = BannerVisibility.VISIBLE;
-                    showContent();                
+                    showContent(bannerView);
                 }
                 
                 @Override
@@ -335,7 +337,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     mGridView.removeHeaderView(bannerView);
                     bannerState = BannerVisibility.HIDDEN;
                     // Show content
-                    showContent();                
+                    showContent(bannerView);
                 }
                 
                 @Override
@@ -344,10 +346,10 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     mGridView.removeHeaderView(bannerView);
                     bannerState = BannerVisibility.HIDDEN;
                     // Show content
-                    showContent();                
+                    showContent(bannerView);
                 }
             });
-        }
+        //}
         
         // Return the banner
         return bannerView;
@@ -357,7 +359,16 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      * Show only the content view
      * @author sergiopereira
      */
-    private synchronized void showContent() {
+    private synchronized void showContent(View bannerView) {
+        // Validate the current data
+        if (mGridView.getAdapter() == null) {
+            // Add banner to header
+            if (BannerVisibility.HIDDEN != bannerState) mGridView.addHeaderView(bannerView);
+            // Set adapter
+            CampaignAdapter mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), this);
+            mGridView.setAdapter(mArrayAdapter);
+        }
+        // Show content
         mGridView.refreshDrawableState();
         showFragmentContentContainer();
     }
@@ -562,7 +573,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             Log.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
             isAddingProductToCart = false;
             hideActivityProgress();
-            showSuccessCartDialog();
+            if(getBaseActivity() != null) {
+                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+            }
             break;
         default:
             break;
@@ -624,47 +637,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         }
 
     }
-    
+
     /**
-     * ########### DIALOGS ###########  
-     */    
+     * ########### DIALOGS ###########
+     */
 
-    
-    private void showSuccessCartDialog() {
-
-        String msgText = "1 " + getResources().getString(R.string.added_to_shop_cart_dialog_text);
-
-        mDialogAddedToCart = DialogGenericFragment.newInstance(
-                false,
-                true,
-                getString(R.string.your_cart),
-                msgText,
-                getString(R.string.go_to_cart), getString(R.string.continue_shopping),
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        if (id == R.id.button1) {
-                            if(getBaseActivity() != null){
-                                getBaseActivity().onSwitchFragment(
-                                        FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE,
-                                        FragmentController.ADD_TO_BACK_STACK);    
-                            }
-                            if(mDialogAddedToCart != null){
-                                mDialogAddedToCart.dismiss();    
-                            }
-                            
-                        } else if (id == R.id.button2) {
-                            mDialogAddedToCart.dismiss();
-                        }
-                    }
-                });
-
-        mDialogAddedToCart.show(getFragmentManager(), null);
-    }
-    
-    
     private void showErrorCartDialog (){
         FragmentManager fm = getFragmentManager();
         mDialogErrorToCart = DialogGenericFragment.newInstance(true, false,
@@ -734,7 +711,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             private TextView mOfferEnded;
             private View mTimerContainer;
             private TextView mTimer;
-            private int mRemaingTime;
+            private int mRemainingTime;
 
             /**
              * Handler used to update Timer every second, when user is not scrolling
@@ -743,7 +720,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 public void handleMessage(android.os.Message msg) {
                     // only update if is not detected a fling (fast scrolling) on gridview
                     if (!isScrolling) {
-                        updateTimer(mTimer, mTimerContainer, mButtonBuy, mOfferEnded, mName, mImage, mRemaingTime, mImageContainer);
+                        updateTimer(mTimer, mTimerContainer, mButtonBuy, mOfferEnded, mName, mImage, mRemainingTime, mImageContainer);
                     }
                     this.sendEmptyMessageDelayed(0, 1000);
                 };
@@ -876,7 +853,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Set timer
             int remainingTime = item.getRemainingTime();
             // Set itemView's remainingTime to be used by handler
-            view.mRemaingTime = remainingTime;
+            view.mRemainingTime = remainingTime;
 
             // start handler processing
             if(remainingTime > 0) view.mHandler.sendEmptyMessageDelayed(0, 1000);
@@ -1201,7 +1178,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         @Override
         public void onNothingSelected(IcsAdapterView<?> parent) {
             // ...
-            
+
         }
         
 //        /*
@@ -1253,9 +1230,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             if(mOnClickParentListener != null)
                 mOnClickParentListener.onClick(view);
         }
-
-
-        
     }
     
 }

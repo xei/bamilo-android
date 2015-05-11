@@ -38,6 +38,7 @@ public class Address implements IJSONSerializable, Parcelable {
     private String city;
     private String postcode;
     private String phone;
+    private String additionalPhone;
     private int fkCustomer;
     private int fkCountry;
     private int fkCustomerAddressRegion;
@@ -76,6 +77,7 @@ public class Address implements IJSONSerializable, Parcelable {
         city = dataObject.optString(RestConstants.JSON_CITY_TAG);
         postcode = dataObject.optString(RestConstants.JSON_POSTCODE_TAG);
         phone = dataObject.optString(RestConstants.JSON_PHONE_TAG);
+        additionalPhone = dataObject.optString(RestConstants.JSON_ADDITIONAL_PHONE_TAG);
         fkCustomer = dataObject.optInt(RestConstants.JSON_CUSTOMER_ID_TAG);
         fkCountry = dataObject.optInt(RestConstants.JSON_COUNTRY_ID_TAG);
         fkCustomerAddressRegion = dataObject.optInt(RestConstants.JSON_REGION_ID_TAG);
@@ -154,6 +156,10 @@ public class Address implements IJSONSerializable, Parcelable {
      */
     public String getPhone() {
         return phone;
+    }
+
+    public String getAdditionalPhone() {
+        return additionalPhone;
     }
 
     /**
@@ -281,6 +287,7 @@ public class Address implements IJSONSerializable, Parcelable {
         dest.writeString(city);
         dest.writeString(postcode);
         dest.writeString(phone);
+        dest.writeString(additionalPhone);
         dest.writeInt(fkCustomer);
         dest.writeInt(fkCountry);
         dest.writeInt(fkCustomerAddressRegion);
@@ -306,6 +313,7 @@ public class Address implements IJSONSerializable, Parcelable {
         city = in.readString();
         postcode = in.readString();
         phone = in.readString();
+        additionalPhone = in.readString();
         fkCustomer = in.readInt();
         fkCountry = in.readInt();
         fkCustomerAddressRegion = in.readInt();

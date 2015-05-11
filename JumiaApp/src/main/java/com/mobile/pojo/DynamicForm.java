@@ -235,6 +235,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         boolean result = true;
         for (DynamicFormItem dynamicFormItem : this) {
             result &= dynamicFormItem.validate();
+            //Log.i(TAG, "Validating: " + dynamicFormItem.getKey() + " " + result);
         }
         return result;
     }

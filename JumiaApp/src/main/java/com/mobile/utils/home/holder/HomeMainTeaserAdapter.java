@@ -1,7 +1,6 @@
 package com.mobile.utils.home.holder;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobile.framework.objects.home.object.BaseTeaserObject;
-import com.mobile.framework.utils.DeviceInfoHelper;
 import com.mobile.framework.utils.LogTagHelper;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
@@ -37,11 +35,11 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
      * @param teasers
      * @param listener
      */
-    public HomeMainTeaserAdapter(Context context, ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener) {
+    public HomeMainTeaserAdapter(Context context, ArrayList<BaseTeaserObject> teasers, View.OnClickListener listener, boolean tablet) {
         mTeasers = teasers;
         mInflater = LayoutInflater.from(context);
         mOnClickListener = listener;
-        isTablet = DeviceInfoHelper.isTabletDevice(context);
+        isTablet = tablet;
     }
 
     /*
@@ -83,22 +81,7 @@ public class HomeMainTeaserAdapter extends PagerAdapter {
     private void setImageToLoad(String imageUrl, View imageTeaserView) {
         View progressBar = imageTeaserView.findViewById(R.id.home_teaser_item_progress);
         final ImageView imageView = (ImageView) imageTeaserView.findViewById(R.id.home_teaser_item_image);
-        RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large, new RocketImageLoader.RocketImageLoaderListener() {
-            @Override
-            public void onLoadedSuccess(String imageUrl, Bitmap bitmap) {
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            }
-
-            @Override
-            public void onLoadedError() {
-
-            }
-
-            @Override
-            public void onLoadedCancel() {
-
-            }
-        });
+        RocketImageLoader.instance.loadImage(imageUrl, imageView, progressBar, R.drawable.no_image_large);
     }
 
     /*

@@ -288,6 +288,11 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_ADDRESS2_TAG).getEditControl()).setText(selectedAddress.getAddress2());
         // Phone
         ((EditText) dynamicForm.getItemByKey(RestConstants.JSON_PHONE_TAG).getEditControl()).setText(selectedAddress.getPhone());
+        // Additional phone
+        DynamicFormItem additionalPhone = dynamicForm.getItemByKey(RestConstants.JSON_ADDITIONAL_PHONE_TAG);
+        if(additionalPhone != null) {
+            ((EditText) additionalPhone.getEditControl()).setText(selectedAddress.getAdditionalPhone());
+        }
         // City
         View mControl = dynamicForm.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getControl();
         View mCityView = ((ViewGroup) mControl).getChildAt(0);
@@ -442,8 +447,10 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     private void onClickEditAddressButton() {
         Log.i(TAG, "ON CLICK: EDIT");
 
-        if(!mEditFormGenerator.validate())
+        if (!mEditFormGenerator.validate()) {
+            Log.i(TAG, "INVALID FORM");
             return;
+        }
 
         /**
          *
@@ -549,7 +556,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     @Override
     public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "CURRENT TAG: " + parent.getTag());
+        Log.d(TAG, "ON ITEM SELECTED");
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
             FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.JSON_CITY_ID_TAG);
@@ -571,7 +578,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 // Show
                 showFragmentContentContainer();
                 // City
-                // ((EditText) mEditFormGenerator.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl()).setText(mCurrentAddress.getCity());
+                //((EditText) mEditFormGenerator.getItemByKey(RestConstants.JSON_CITY_ID_TAG).getEditControl()).setText(mCurrentAddress.getCity());
             } else {
                 // Show
                 showFragmentContentContainer();

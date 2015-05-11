@@ -150,18 +150,6 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "ON CREATE");
-        // Get arguments
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
-            Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if(parcelableProduct instanceof CompleteProduct){
-                completeProduct = (CompleteProduct)parcelableProduct;
-            }
-        }
-        JumiaApplication.INSTANCE.setIsSellerReview(false);
-        isExecutingSendReview = false;
     }
 
     /*
@@ -205,6 +193,19 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUME");
+
+        // Get arguments
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            String contentUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
+            mCompleteProductUrl = !TextUtils.isEmpty(contentUrl) ? contentUrl : "";
+            Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
+            if(parcelableProduct instanceof CompleteProduct){
+                completeProduct = (CompleteProduct)parcelableProduct;
+            }
+        }
+        JumiaApplication.INSTANCE.setIsSellerReview(false);
+
         isExecutingSendReview = false;
         showFragmentLoading();
         if(getArguments() != null && getArguments().containsKey(RATING_SHOW)) {
@@ -298,8 +299,8 @@ public class ReviewWriteNestedFragment extends BaseFragment {
     private void setReviewName(DynamicForm reviewForm) {
         if(reviewForm != null && reviewForm.getItemByKey(NAME) != null && reviewForm.getItemByKey(NAME).getValue().equals("")){
             Customer customer = JumiaApplication.CUSTOMER;
-            String firstname = (customer != null && !TextUtils.isEmpty(customer.getFirstName())) ? customer.getFirstName() : ""; 
-            reviewForm.getItemByKey(NAME).setValue(firstname);
+            String firstName = (customer != null && !TextUtils.isEmpty(customer.getFirstName())) ? customer.getFirstName() : "";
+            reviewForm.getItemByKey(NAME).setValue(firstName);
         }
     }
     
@@ -366,9 +367,9 @@ public class ReviewWriteNestedFragment extends BaseFragment {
 
             }
 
-            
+
             setGenericLayout();
-            
+
         }
 
     }
