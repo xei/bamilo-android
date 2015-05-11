@@ -60,7 +60,10 @@ public final class ShopSelector {
 		RestClientSingleton.getSingleton(context).init();
 
 		String currencyCode = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null);
+		//ADJUST
 		AdjustTracker.startup(context);
+		AdjustTracker.initializeAdjust(context);
+
 		CurrencyFormatter.initialize(context, currencyCode);
 		AnalyticsGoogle.startup(context);
 		Ad4PushTracker.startup(context);
@@ -82,6 +85,8 @@ public final class ShopSelector {
         RestContract.init(context);
         RestClientSingleton.getSingleton(context).init();
 	}
+
+
 
 	/**
 	 * Initializing the country selector to a certain Country host.

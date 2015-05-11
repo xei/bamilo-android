@@ -643,3 +643,4 @@ public class JumiaApplication extends A4SApplication {
     }
 
 }
+
