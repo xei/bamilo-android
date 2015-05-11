@@ -106,7 +106,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private long mStartTimeInMilliseconds;
 
     private boolean isScrolling;
-    
+
     private enum BannerVisibility{
         DEFAULT,
         VISIBLE,
@@ -290,19 +290,22 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      */
     private void showCampaign() {
         Log.i(TAG, "LOAD CAMPAIGN");
-        // Get banner
-        View mBannerView = getBannerView();
-		// Add banner to header
-        if (BannerVisibility.HIDDEN != bannerState) mGridView.addHeaderView(mBannerView);
-        // Validate the current data
-        if (mGridView.getAdapter() == null) {
-            // Set adapter
-            CampaignAdapter mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), this);
-            mGridView.setAdapter(mArrayAdapter);
-        }
-        // Show content
-        if (BannerVisibility.HIDDEN == bannerState) showContent();
-		// else show when is loaded the banner
+//        // Get banner
+//        View mBannerView = getBannerView();
+//		// Add banner to header
+//        if (BannerVisibility.HIDDEN != bannerState) mGridView.addHeaderView(mBannerView);
+//        // Validate the current data
+//        if (mGridView.getAdapter() == null) {
+//            // Set adapter
+//            CampaignAdapter mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), this);
+//            mGridView.setAdapter(mArrayAdapter);
+//        }
+//        // Show content
+//        if (BannerVisibility.HIDDEN == bannerState) showContent();
+//		// else show when is loaded the banner
+
+        // Get banner and show items
+        getBannerView();
     }
     
     /**
@@ -313,7 +316,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private View getBannerView(){
         // Inflate the banner layout
         final View bannerView = LayoutInflater.from(getActivity()).inflate(R.layout.campaign_fragment_banner, mGridView, false);
-        if (BannerVisibility.HIDDEN != bannerState) {
+        //if (BannerVisibility.HIDDEN != bannerState) {
             // Get the image view
             final ImageView imageView = (ImageView) bannerView.findViewById(R.id.campaign_banner);
             // Load the bitmap
@@ -325,7 +328,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     // Show content
                     imageView.setImageBitmap(bitmap);
                     bannerState = BannerVisibility.VISIBLE;
-                    showContent();                
+                    showContent(bannerView);
                 }
                 
                 @Override
@@ -334,7 +337,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     mGridView.removeHeaderView(bannerView);
                     bannerState = BannerVisibility.HIDDEN;
                     // Show content
-                    showContent();                
+                    showContent(bannerView);
                 }
                 
                 @Override
@@ -343,10 +346,10 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     mGridView.removeHeaderView(bannerView);
                     bannerState = BannerVisibility.HIDDEN;
                     // Show content
-                    showContent();                
+                    showContent(bannerView);
                 }
             });
-        }
+        //}
         
         // Return the banner
         return bannerView;
@@ -356,7 +359,16 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      * Show only the content view
      * @author sergiopereira
      */
-    private synchronized void showContent() {
+    private synchronized void showContent(View bannerView) {
+        // Validate the current data
+        if (mGridView.getAdapter() == null) {
+            // Add banner to header
+            if (BannerVisibility.HIDDEN != bannerState) mGridView.addHeaderView(bannerView);
+            // Set adapter
+            CampaignAdapter mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), this);
+            mGridView.setAdapter(mArrayAdapter);
+        }
+        // Show content
         mGridView.refreshDrawableState();
         showFragmentContentContainer();
     }
