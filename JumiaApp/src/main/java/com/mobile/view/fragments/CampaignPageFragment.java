@@ -99,8 +99,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
     private HeaderGridView mGridView;
 
-    private DialogGenericFragment mDialogAddedToCart;
-
     private boolean isAddingProductToCart;
 
     private DialogGenericFragment mDialogErrorToCart;
@@ -1168,7 +1166,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         @Override
         public void onNothingSelected(IcsAdapterView<?> parent) {
             // ...
-            
+
         }
         
 //        /*
