@@ -1,8 +1,6 @@
 package com.mobile.utils.dialogfragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,7 +11,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.mobile.controllers.FilterOptionArrayAdapter;
-import com.mobile.framework.objects.CatalogFilter;
 import com.mobile.framework.objects.CatalogFilterOption;
 import com.mobile.view.R;
 
@@ -24,30 +21,11 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  *
  */
-public class FilterSizeFragment extends Fragment implements OnClickListener, OnItemClickListener{
+public class FilterSizeFragment extends FilterFragment implements OnClickListener, OnItemClickListener{
     
     private static final String TAG = FilterSizeFragment.class.getSimpleName();
 
-    private static int mBackButtonId = R.id.dialog_filter_header_title;
-    
-    private static int mClearButtonId = R.id.dialog_filter_header_clear;
-    
-    private static int mCancelButtonId = R.id.dialog_filter_button_cancel;
-    
-    private static int mDoneButtonId = R.id.dialog_filter_button_done;
-    
-    private static int mListId = R.id.dialog_filter_list;
-
-    private DialogFilterFragment mParent;
-    
-    private CatalogFilter mSizeFilter;
-
     private FilterOptionArrayAdapter mOptionArray;
-    
-    private SparseArray<CatalogFilterOption> mCurrentSelectedOptions = new SparseArray<>();
-    
-    private boolean allowMultiselection;
-
 
     /**
      * 
@@ -71,7 +49,7 @@ public class FilterSizeFragment extends Fragment implements OnClickListener, OnI
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        mSizeFilter = bundle.getParcelable(DialogFilterFragment.FILTER_TAG);
+        mCatalogFilter = bundle.getParcelable(DialogFilterFragment.FILTER_TAG);
     }
     
     /*
@@ -91,11 +69,11 @@ public class FilterSizeFragment extends Fragment implements OnClickListener, OnI
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Get multi selection option
-        allowMultiselection = mSizeFilter.isMulti();
-        Log.d(TAG, "IS MULTI SELECTION: " + allowMultiselection);
+        allowMultiSelection = mCatalogFilter.isMulti();
+        Log.d(TAG, "IS MULTI SELECTION: " + allowMultiSelection);
         
         // Get pre selected option
-        if(mSizeFilter.hasOptionSelected()) loadSelectedItems();
+        if(mCatalogFilter.hasOptionSelected()) loadSelectedItems();
         else Log.i(TAG, "PRE SELECTION IS EMPTY");
         
         // Back button
@@ -108,7 +86,7 @@ public class FilterSizeFragment extends Fragment implements OnClickListener, OnI
         view.findViewById(mDoneButtonId).setOnClickListener(this);
         // Filter list
         ((ListView) view.findViewById(mListId)).setOnItemClickListener(this);
-        mOptionArray = new FilterOptionArrayAdapter(getActivity(), mSizeFilter.getFilterOptions());
+        mOptionArray = new FilterOptionArrayAdapter(getActivity(), mCatalogFilter.getFilterOptions());
         ((ListView) view.findViewById(mListId)).setAdapter(mOptionArray);
     }
 
@@ -142,7 +120,7 @@ public class FilterSizeFragment extends Fragment implements OnClickListener, OnI
         } else if(id == mDoneButtonId) {
             Log.d(TAG, "FILTER SAVE: " + mCurrentSelectedOptions.size());
             // Save the current selection
-            mSizeFilter.setSelectedOption(mCurrentSelectedOptions);
+            mCatalogFilter.setSelectedOption(mCurrentSelectedOptions);
             // Goto back
             mParent.allowBackPressed();
         }
@@ -156,7 +134,7 @@ public class FilterSizeFragment extends Fragment implements OnClickListener, OnI
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "ON ITEM CLICK: FILTER OPTION " + position);
         // Validate if is multi
-        if(allowMultiselection) processMultiSelection(parent, position);
+        if(allowMultiSelection) processMultiSelection(parent, position);
         else processSingleSelection(parent, position);
         // Update adapter
         ((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
@@ -204,51 +182,17 @@ public class FilterSizeFragment extends Fragment implements OnClickListener, OnI
     }
 
     /**
-     * Clean selected item
-     * @author sergiopereira
-     */
-    private void cleanSelectedItem(CatalogFilterOption option, int position){
-        // Disable old selection
-        option.setSelected(false);
-        // Remove item
-        mCurrentSelectedOptions.remove(position);
-    }
-    
-    /**
-     * Clean all old selections
-     * @author sergiopereira
-     */
-    private void cleanOldSelections(){
-        // Disable old selection
-        for(int i = 0; i < mCurrentSelectedOptions.size(); i++) 
-            mCurrentSelectedOptions.valueAt(i).setSelected(false);
-        // Clean array
-        mCurrentSelectedOptions.clear();
-    }
-
-    /**
-     * Save the selected item
-     * @author sergiopereira
-     */
-    private void addSelectedItem(CatalogFilterOption option, int position){
-        // Add selected
-        mCurrentSelectedOptions.put(position, option);
-        // Set selected
-        option.setSelected(true);
-    }
-    
-    /**
      * Load the pre selected options
      * @author sergiopereira
      */
     private void loadSelectedItems(){
-        Log.d(TAG, "PRE SELECTION SIZE: " + mSizeFilter.getSelectedOption().size());
+        Log.d(TAG, "PRE SELECTION SIZE: " + mCatalogFilter.getSelectedOption().size());
         // Copy all selected items
-        for (int i = 0; i < mSizeFilter.getSelectedOption().size(); i++) {
+        for (int i = 0; i < mCatalogFilter.getSelectedOption().size(); i++) {
             // Get position
-            int position = mSizeFilter.getSelectedOption().keyAt(i);
+            int position = mCatalogFilter.getSelectedOption().keyAt(i);
             // Get option
-            CatalogFilterOption option = mSizeFilter.getSelectedOption().get(position);
+            CatalogFilterOption option = mCatalogFilter.getSelectedOption().get(position);
             // Save item
             mCurrentSelectedOptions.put(position, option);
             // Set option as selected
