@@ -1019,10 +1019,11 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
                     @SuppressWarnings("unchecked")
                     HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-                    showErrorDialog(errors, R.string.error_signup_title);
+                    // Show dialog or toast
+                    if (!showErrorDialog(errors, R.string.error_signup_title)) {
+                        Toast.makeText(getBaseActivity(), R.string.internet_no_connection_details_label, Toast.LENGTH_SHORT).show();
+                    }
                     showFragmentContentContainer();
-                } else {
-                    Toast.makeText(getBaseActivity(), R.string.internet_no_connection_details_label, Toast.LENGTH_SHORT).show();
                 }
                 break;
             case GET_SIGNUP_FORM_EVENT:
@@ -1110,7 +1111,7 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
      *
      * @param errors
      */
-    private void showErrorDialog(HashMap<String, List<String>> errors, int titleId) {
+    private boolean showErrorDialog(HashMap<String, List<String>> errors, int titleId) {
         Log.d(TAG, "SHOW ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {
@@ -1133,6 +1134,9 @@ public class CheckoutAboutYouFragment extends BaseFragment implements GraphUserC
                         }
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+            return true;
+        } else {
+            return false;
         }
     }
 
