@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.mobile.framework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.utils.home.TeaserViewFactory;
+import com.mobile.view.R;
 
 /**
  *
@@ -20,6 +21,8 @@ public abstract class BaseTeaserViewHolder extends RecyclerView.ViewHolder {
 
     protected int mOffset = NO_OFFSET;
 
+    protected boolean isRtl;
+
     /**
      * Constructor
      * @param context The application context
@@ -30,6 +33,7 @@ public abstract class BaseTeaserViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         mContext = context;
         mParentClickListener = onClickListener;
+        isRtl = context.getResources().getBoolean(R.bool.is_bamilo_specific);
         // Get view offset
         mOffset = TeaserViewFactory.getViewHolderOffset(context);
         // Set offset case not PreviewViewPager
