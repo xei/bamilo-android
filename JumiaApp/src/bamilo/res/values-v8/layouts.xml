@@ -69,5 +69,6 @@
 
     <!-- HOME -->
     <item name="home_teaser_campaign"               type="layout">@layout/_v8_home_teaser_campaign</item>
+    <item name="home_teaser_featured_stores_item"   type="layout">@layout/_v8_home_teaser_featured_stores_item</item>
 
 </resources>
