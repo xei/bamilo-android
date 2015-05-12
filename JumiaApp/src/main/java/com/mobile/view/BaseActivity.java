@@ -444,6 +444,14 @@ public abstract class BaseActivity extends ActionBarActivity {
             hideTitle();
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
             hideActionBarTitle();
+        }
+        // Case #specific_shop
+        else if (getResources().getBoolean(R.bool.is_shop_specific) ||
+                getResources().getBoolean(R.bool.is_bamilo_specific)) {
+            // Show the application name in the action bar
+            setActionBarTitle(R.string.app_name);
+            findViewById(R.id.totalProducts).setVisibility(View.GONE);
+            hideTitle();
         } else {
             hideTitle();
             findViewById(R.id.totalProducts).setVisibility(View.GONE);
