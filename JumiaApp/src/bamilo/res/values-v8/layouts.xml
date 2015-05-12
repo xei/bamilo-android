@@ -66,4 +66,9 @@
     <item name="category_inner_childcat"            type="layout">@layout/_v8_category_inner_childcat</item>
     <item name="category_inner_currentcat"          type="layout">@layout/_v8_category_inner_currentcat</item>
     <item name="navigation_fragment_categories"     type="layout">@layout/_v8_navigation_fragment_categories</item>
+
+    <!-- HOME -->
+    <item name="home_teaser_campaign"               type="layout">@layout/_v8_home_teaser_campaign</item>
+    <item name="home_teaser_featured_stores_item"   type="layout">@layout/_v8_home_teaser_featured_stores_item</item>
+
 </resources>

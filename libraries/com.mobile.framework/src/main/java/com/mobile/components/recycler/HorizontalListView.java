@@ -195,6 +195,7 @@ public class HorizontalListView extends RecyclerView {
      * @author sergiopereira
      */
     @SuppressLint("NewApi")
+    @Deprecated
     public void enableReverseLayout() {
         // Case API < 17: set reverse layout as true
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) 
@@ -202,25 +203,43 @@ public class HorizontalListView extends RecyclerView {
         // Case API >= 17: use the native support
         else setLayoutDirection(LAYOUT_DIRECTION_LOCALE);
     }
+
+    /**
+     * Method used to enable the reverse layout to support RTL direction.<br>
+     * @param rtl The RTL flag
+     */
+    public void enableRtlSupport(boolean rtl) {
+        // Case RTL
+        if (rtl) {
+            // Case API < 17: set reverse layout as true
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                ((LinearLayoutManager) getLayoutManager()).setReverseLayout(true);
+            }
+            // Case API >= 17: use the native support
+            else {
+                setLayoutDirection(LAYOUT_DIRECTION_LOCALE);
+            }
+        }
+    }
     
     /**
      * Interface for Adapter
      * @author sergiopereira
      *
      */
-    public static interface OnViewHolderSelected {
+    public interface OnViewHolderSelected {
         /**
          * Set the selected position.<br> 
          * @param position
          * @author sergiopereira
          */
-        public void setSelectedPosition(int position);
+        void setSelectedPosition(int position);
         /**
          * Set the listener for on item selected.<br>
          * @param listener
          * @author sergiopereira
          */
-        public void setOnViewHolderSelected(OnViewSelectedListener listener);
+        void setOnViewHolderSelected(OnViewSelectedListener listener);
     }
     
     /**
@@ -228,13 +247,13 @@ public class HorizontalListView extends RecyclerView {
      * @author sergiopereira
      *
      */
-    public static interface OnViewSelectedListener {
+    public interface OnViewSelectedListener {
         /**
          * Receives the selected view and the respective position
          * @param view
          * @param position
          */
-        public void onViewSelected(View view, int position, String string);
+        void onViewSelected(View view, int position, String string);
     }
     
 }

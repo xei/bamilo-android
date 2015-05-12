@@ -172,7 +172,7 @@
 
 ## BEGIN MOBILE #################################################################
 #### com.mobile.components
--keep interface com.mobile.components.HorizontalListView$** { public *; }
+#-keep interface com.mobile.components.HorizontalListView$** { public *; }
 -keep interface com.mobile.components.RangeSeekBar$** { public *; }
 -keep class com.mobile.components.RangeSeekBar { public *; }
 -keep public interface com.mobile.components.absspinner.IcsAdapterView$** { public *; }

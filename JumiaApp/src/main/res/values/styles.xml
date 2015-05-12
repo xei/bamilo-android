@@ -627,19 +627,23 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dimen_mat_48px</item>
         <item name="android:paddingLeft">@dimen/dimen_mat_8px</item>
-        <item name="android:paddingStart">@dimen/dimen_mat_8px</item>
+        <item name="android:paddingRight">@dimen/dimen_mat_8px</item>
     </style>
 
     <!-- SMALL TEASER -->
     <style name="SmallTeaserStyle" parent="CardViewFloatStyle">
         <item name="android:layout_width">@dimen/home_small_teaser_item_width</item>
         <item name="android:layout_height">@dimen/home_small_teaser_item_height</item>
+        <item name="android:layout_marginLeft">@dimen/dimen_mat_4px</item>
+        <item name="android:layout_marginStart">@dimen/dimen_mat_4px</item>
     </style>
 
     <!-- PRODUCT TEASER -->
     <style name="ProductTeaserStyle" parent="CardViewFloatStyle">
         <item name="android:layout_width">@dimen/home_top_sellers_teaser_item_width</item>
         <item name="android:layout_height">@dimen/home_top_sellers_teaser_item_height</item>
+        <item name="android:layout_marginLeft">@dimen/dimen_mat_4px</item>
+        <item name="android:layout_marginStart">@dimen/dimen_mat_4px</item>
     </style>
 
     <!-- FLOAT CARD VIEW -->
@@ -664,7 +668,7 @@
 
     <!-- BASE TEXT STYLES -->
     <style name="text_base">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">roboto_regular</item>
         <item name="android:gravity">left|start|center_vertical</item>

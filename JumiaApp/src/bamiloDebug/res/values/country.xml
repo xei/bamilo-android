@@ -2,6 +2,7 @@
 <resources>
 
     <!-- CONFIGS: Bamilo -->
-    <string name="single_shop_country_url">integration-mobile-www.bamilo.com</string>
+    <!--<string name="single_shop_country_url">integration-mobile-www.bamilo.com</string>-->
+    <string name="single_shop_country_url">integration-www.bamilo.com</string>
 
 </resources>
