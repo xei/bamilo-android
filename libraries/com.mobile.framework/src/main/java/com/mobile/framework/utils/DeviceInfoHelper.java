@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.telephony.TelephonyManager;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -44,7 +43,7 @@ public class DeviceInfoHelper {
 	 * - is pre-installed app<br>
 	 * - brand<br>
 	 * - sim operator<br>
-	 * @param context
+	 * @param context The application context
 	 * @return bundle
 	 * @author sergiopereira
 	 */
@@ -101,9 +100,9 @@ public class DeviceInfoHelper {
         // Validate specific folders
 		String[] paths = context.getResources().getStringArray(R.array.pre_install_folders);
 		for (String folder : paths) 
-			if (existSpecificFile(context, folder + "/" + app.packageName + "-1.apk") 
-					|| existSpecificFile(context, folder + "/" + app.packageName + ".apk")
-					|| existSpecificFile(context, folder + "/Jumia-release.apk")) 
+			if (existSpecificFile(folder + "/" + app.packageName + "-1.apk")
+					|| existSpecificFile(folder + "/" + app.packageName + ".apk")
+					|| existSpecificFile(folder + "/Jumia-release.apk"))
 				return true;
         
     	/**
@@ -125,11 +124,10 @@ public class DeviceInfoHelper {
     
     /**
      * Validate if exist the pre install file with the specific path.
-     * @param context
-     * @param path
+     * @param path The file path
      * @return true or false
      */
-    private static boolean existSpecificFile(Context context, String path) {
+    private static boolean existSpecificFile(String path) {
 	 	File file = new File(path);
 	 	if (file.exists()) {
             Log.i(TAG, "PRE INSTALLED: YES IN " + file.getAbsolutePath());
@@ -140,7 +138,7 @@ public class DeviceInfoHelper {
     
     /**
      * Validate if exist the pre install file in internal storage.
-     * @param context
+     * @param context The application context
      * @return true  or false
      */
     private static boolean existPreInstallFile(Context context) {
@@ -155,7 +153,7 @@ public class DeviceInfoHelper {
     
     /**
      * Create pre install file in internal storage.
-     * @param context
+     * @param context The application context
      * @return true
      * @author sergiopereira
      */
@@ -186,7 +184,7 @@ public class DeviceInfoHelper {
     
     /**
      * Get the version name.
-     * @param context
+     * @param context The application context
      * @return version or n.a.
      * @author sergiopereira
      */
@@ -208,7 +206,7 @@ public class DeviceInfoHelper {
     
     /**
      * Get the SIM card operator.
-     * @param context
+     * @param context The application context
      * @return String
      * @author sergiopereira
      */
@@ -220,7 +218,7 @@ public class DeviceInfoHelper {
     
     /**
      * Get the SIM card country code.
-     * @param context
+     * @param context The The application context
      * @return Country code or empty
      * @author sergiopereira
      */
@@ -237,14 +235,14 @@ public class DeviceInfoHelper {
     
     /**
      * Get the network country code.
-     * @param context
+     * @param context The application context
      * @return Country code or empty
      * @author sergiopereira
      */
     public static String getNetworkCountryIso(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String iso = tm.getPhoneType() == TelephonyManager.PHONE_TYPE_CDMA ? tm.getNetworkCountryIso().toUpperCase(Locale.getDefault()) : "";
-        Log.i(TAG, "GET NETWORK CONTRY CODE: " + iso);
+        Log.i(TAG, "GET NETWORK COUNTRY CODE: " + iso);
         return iso;
     }
     
@@ -254,7 +252,7 @@ public class DeviceInfoHelper {
     
     /**
 	 * Get the window width.
-	 * @return
+	 * @return width
 	 */
 	public static int getWidth(Context context){
 		int width = getMeasures(context).arg1;
@@ -264,7 +262,7 @@ public class DeviceInfoHelper {
 	
 	/**
 	 * Get the window height
-	 * @return
+	 * @return height
 	 */
 	public static int getHeight(Context context){
 		int height = getMeasures(context).arg2;
@@ -274,8 +272,8 @@ public class DeviceInfoHelper {
 	
     /**
      * Get the window measures
-     * @param context
-     * @return
+     * @param context The application context
+     * @return Message with arg1 and arg2 (width and height)
      */
     @SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
@@ -303,21 +301,21 @@ public class DeviceInfoHelper {
         return msg;
     }
     
-    /**
-     * Get the Screen size inches
-     * @param context
-     * @return float
-     * @author sergiopereira
-     */
-    public static Float getScreenSizeInches(Context context) {
-        DisplayMetrics dm = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        windowManager.getDefaultDisplay().getMetrics(dm);
-        double x = Math.pow(dm.widthPixels / dm.xdpi, 2);
-        double y = Math.pow(dm.heightPixels / dm.ydpi, 2);
-        double screenInches = Math.sqrt(x + y);
-        return (float) Math.round(screenInches * 10) / 10;
-    }
+//    /**
+//     * Get the Screen size inches
+//     * @param context The application context
+//     * @return float
+//     * @author sergiopereira
+//     */
+//    public static Float getScreenSizeInches(Context context) {
+//        DisplayMetrics dm = new DisplayMetrics();
+//        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+//        windowManager.getDefaultDisplay().getMetrics(dm);
+//        double x = Math.pow(dm.widthPixels / dm.xdpi, 2);
+//        double y = Math.pow(dm.heightPixels / dm.ydpi, 2);
+//        double screenInches = Math.sqrt(x + y);
+//        return (float) Math.round(screenInches * 10) / 10;
+//    }
 
     /**
      * ############### ORIENTATION #################
@@ -345,16 +343,16 @@ public class DeviceInfoHelper {
     /**
      * method that verifies if the device is tablet or phone
      *
-     * @param context
-     * @return
+     * @param context The application context
+     * @return true or false
      */
     public static boolean isTabletDevice(Context context) {
         return context.getResources().getBoolean(R.bool.isTablet);
     }
 
     public interface IDeviceVersionBasedCode{
-        public void highVersionCallback();
-        public void lowerVersionCallback();
+        void highVersionCallback();
+        void lowerVersionCallback();
     }
     /**
      * Execute callbacks based on version code of device.

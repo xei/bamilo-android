@@ -69,4 +69,7 @@
     <item name="category_inner_currentcat"          type="layout">@layout/_def_category_inner_currentcat</item>
     <item name="navigation_fragment_categories"     type="layout">@layout/_def_navigation_fragment_categories</item>
 
+    <!-- HOME -->
+    <item name="home_teaser_campaign"               type="layout">@layout/_def_home_teaser_campaign</item>
+
 </resources>
