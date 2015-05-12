@@ -23,7 +23,7 @@
 
         </FrameLayout>
 
-        <TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_stores_text_title"
             style="@style/TextBody_1"
             android:layout_alignParentLeft="true"
@@ -31,7 +31,7 @@
             android:layout_toLeftOf="@id/home_teaser_stores_image"
             android:layout_toStartOf="@id/home_teaser_stores_image"/>
 
-        <TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_stores_text_sub"
             style="@style/TextCaption"
             android:layout_alignParentLeft="true"

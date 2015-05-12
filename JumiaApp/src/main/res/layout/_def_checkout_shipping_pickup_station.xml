@@ -39,7 +39,7 @@
         android:gravity="center|left|start"
         android:orientation="vertical" >
 
-        <TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             android:singleLine="false"
             android:textSize="@dimen/text_subtitle" />
 
-        <TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
             android:singleLine="false"
             android:textSize="@dimen/text_subtitle" />
 
-        <TextView
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_opening_hours"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
