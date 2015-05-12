@@ -1,13 +1,13 @@
 package com.mobile.forms;
 
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.view.View;
-import android.widget.TextView;
 
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.rest.RestConstants;
 import com.mobile.view.R;
+
+import org.json.JSONObject;
 
 public class ShippingMethod {
     private String shippingMethod;

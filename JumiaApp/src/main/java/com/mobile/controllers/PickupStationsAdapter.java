@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mobile.components.customfontviews.RadioButton;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.framework.objects.PickUpStationObject;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;

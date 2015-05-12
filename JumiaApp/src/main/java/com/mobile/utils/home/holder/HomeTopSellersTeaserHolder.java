@@ -21,7 +21,10 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
 
     public HomeTopSellersTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
+        // Get horizontal container
         horizontalListView = (HorizontalListView) view.findViewById(R.id.home_teaser_top_sellers_horizontal_list);
+        // Validate orientation
+        horizontalListView.enableRtlSupport(isRtl);
     }
 
     @Override

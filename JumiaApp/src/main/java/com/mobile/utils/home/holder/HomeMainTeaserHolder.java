@@ -20,6 +20,8 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
 
     private static final int DEFAULT_POSITION = 1;
 
+    private static final int DEFAULT_REVERSE_POSITION = 2;
+
     private static final double PHONE_IMAGE_RATIO = 2.44d;
 
     private static final double TABLET_IMAGE_RATIO = 2.71d;
@@ -73,7 +75,11 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
             // Add pager to indicator
             indicator.setViewPager(pager);
             // Set default position
-            pager.setCurrentItem(DEFAULT_POSITION);
+            int position = DEFAULT_POSITION;
+            if (isRtl) {
+                position = group.hasData() ? adapter.getCount() - DEFAULT_REVERSE_POSITION : 0;
+            }
+            pager.setCurrentItem(position);
         } else {
             Log.i(TAG, "MAIN_TEASERS: ADAPTER IS NOT NULL");
         }

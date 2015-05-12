@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class ProductVariationsListAdapter extends RecyclerView.Adapter<ProductVariationsListAdapter.ViewHolder> implements OnClickListener, OnViewHolderSelected {
     
-    private ArrayList<Variation> mDataset;
+    private ArrayList<Variation> mDataSet;
     private int mSelectedItem = 0;
     private OnViewSelectedListener mOnViewHolderSelected;
 
@@ -41,8 +41,7 @@ public class ProductVariationsListAdapter extends RecyclerView.Adapter<ProductVa
         private View mContainer;
         
         /**
-         * Constructor 
-         * @param view
+         * Constructor
          */
         public ViewHolder(View view) {
             super(view);
@@ -55,13 +54,10 @@ public class ProductVariationsListAdapter extends RecyclerView.Adapter<ProductVa
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
-     * @param context
-     * @param productTeaserGroup
-     * @param parentClickListener
      * @author sergiopereira
      */
     public ProductVariationsListAdapter(ArrayList<Variation> variationsList) {
-        mDataset = variationsList;
+        mDataSet = variationsList;
     }
 
     /*
@@ -82,7 +78,7 @@ public class ProductVariationsListAdapter extends RecyclerView.Adapter<ProductVa
     public void onBindViewHolder(ViewHolder holder, int position) {
         // Replace the contents of a view (invoked by the layout manager)
         // Get item
-        Variation item = mDataset.get(position);
+        Variation item = mDataSet.get(position);
         // Set image
         RocketImageLoader.instance.loadImage(item.getImage(), holder.mImage, holder.mProgress, R.drawable.no_image_small);
         // Set listener
@@ -97,8 +93,8 @@ public class ProductVariationsListAdapter extends RecyclerView.Adapter<ProductVa
      */
     @Override
     public int getItemCount() {
-        // Return the size of your dataset (invoked by the layout manager)
-        return mDataset == null ? 0 : mDataset.size();
+        // Return the size of your data set (invoked by the layout manager)
+        return mDataSet == null ? 0 : mDataSet.size();
     }
     
     /*
@@ -112,7 +108,7 @@ public class ProductVariationsListAdapter extends RecyclerView.Adapter<ProductVa
         // Set the selected position and update
         setSelectedPosition(position);
         // Get the variation URL
-        String url = mDataset.get(position).getLink();
+        String url = mDataSet.get(position).getLink();
         // Send to listener
         if(mOnViewHolderSelected != null) mOnViewHolderSelected.onViewSelected(view, position, url);
     }

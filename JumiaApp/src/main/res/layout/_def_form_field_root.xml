@@ -18,7 +18,7 @@
 
     <!-- MANDATORY FIELD -->
 
-    <TextView
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/form_field_mandatory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
