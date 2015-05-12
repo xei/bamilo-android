@@ -85,7 +85,7 @@
     <!-- rounded_margin_mid + button_big_height + rounded_margin_mid + (bottom rounded_margin_mid) -->
     <dimen name="button_container_height">90dp</dimen>
     <!-- rounded_margin_mid + button_big_height + button_container_height -->
-    <dimen name="button_double_container_height">160dp</dimen>
+    <dimen name="button_double_container_height">163dp</dimen>
     <dimen name="button_landscape_width">640dp</dimen>
     <dimen name="product_item_button_height">@dimen/button_small_height</dimen>
     <dimen name="product_item_addtocart_variation_width">65dp</dimen>
